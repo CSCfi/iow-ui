@@ -1,0 +1,9 @@
+<p>{{graph.length}}</p>
+
+<b>Available models/<b>
+<div ng-repeat="graph in graphs">
+  <p>{{graph.defaultDataset.defaultGraph.title}}</p> 
+</div>
+
+<b>DEBUG: List of models in JSON</b>
+<pre>{{models|json}}</pre>
