@@ -6,9 +6,11 @@ Interoperability user interface is separate one page application that uses IOW b
 ![Alt text](/Technical architecture.jpg "Technical architecture")
 
 
-Application interface:
+Backend:
 
 https://github.com/CSC-IT-Center-for-Science/iow-api/
+
+Database configuration:
 
 https://github.com/CSC-IT-Center-for-Science/iow-database/
 
