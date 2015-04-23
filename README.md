@@ -1,5 +1,7 @@
 # iow-ui
-Interoperability workbench user interface
+Interoperability workbench user interface.
+
+Interoperability user interface is separate one page application that uses IOW backend services. Backend design follows restful three layer architecture:
 
 ![Alt text](/Technical architecture.jpg "Technical architecture")
 
