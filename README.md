@@ -1,5 +1,5 @@
 # iow-ui
-Interoperability workbench user interface.
+Interoperability workbench user interface seed.  
 
 Interoperability user interface is separate one page application that uses IOW backend services. Backend design follows restful three layer architecture:
 
