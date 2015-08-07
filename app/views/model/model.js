@@ -13,13 +13,28 @@ angular.module('myApp.model', ['ngRoute'])
 
 .controller('ModelCtrl', ['$scope', '$location','RestAPI', function($scope, $location, RestAPI) {
   
-  $scope.models;
-  $scope.graphs;
+  $scope.data;
+  $scope.graph;
+  $scope.model;
   
-    RestAPI.getModels().then(function(response){
-        var data = response.data;
-        $scope.models = data;
-        $scope.graphs = data["@graph"];
+    RestAPI.getAvailableModels().then(function(response){
+ 
+       $scope.data = response;
+       
+       $scope.graph = $scope.data["@graph"][0];
+   
+       console.log($scope.data);
+        
     });
+    
+    $scope.loadModel = function(id) {
+       
+        RestAPI.getModel(id).then(function(response){
+ 
+                $scope.model = response;
+                console.log($scope.model);
+        });
+        
+    }
 
 }]);

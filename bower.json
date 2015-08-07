@@ -16,6 +16,7 @@
     "angular-material": "~0.8.x", 
     "angular-translate": "2.6.1",
     "lodash":"3.5.0",
+    "jsonld":"0.3.24",
     "material-design-icons":"1.0.1"
   },
  "resolutions": {

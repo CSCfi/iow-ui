@@ -1,9 +1,15 @@
-<p>{{graph.length}}</p>
+<p>{{graph["@id"]}}</p>
+<p>{{graph.availableGraphs.namedGraph.name}}</p>
 
-<b>Available models/<b>
-<div ng-repeat="graph in graphs">
-  <p>{{graph.defaultDataset.defaultGraph.title}}</p> 
+<b ng-show="!graph.availableGraphs">No models available!</b>
+
+<h1 ng-show="graph.availableGraphs">Available models:</h1>
+
+<div ng-repeat="g in graph.availableGraphs.namedGraph">
+  <a href="" ng-click="loadModel(g.name)">{{g.name}}</a> 
 </div>
 
+<!--
 <b>DEBUG: List of models in JSON</b>
-<pre>{{models|json}}</pre>
+<pre>{{data|json}}</pre>
+-->

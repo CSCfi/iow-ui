@@ -42,8 +42,16 @@ var app = angular.module('myApp', [
               }
             });
 
- 
 }]);
+
+
+/* Tuotantovaiheessa NGINX ohjaus? */ 
+/*
+.config(['$locationProvider', function($locationProvider)
+{        
+    $locationProvider.html5Mode(true);
+}]);
+*/
 
 
 
