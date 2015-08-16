@@ -1,0 +1,25 @@
+{
+  "name": "iow-ui",
+  "version": "1.0.0",
+  "description": "Interoperability workbench user interface seed.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSC-IT-Center-for-Science/iow-ui.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/CSC-IT-Center-for-Science/iow-ui/issues"
+  },
+  "homepage": "https://github.com/CSC-IT-Center-for-Science/iow-ui#readme",
+  "dependencies": {
+    "angular": "1.4.4",
+    "angular-animate": "1.4.4",
+    "angular-aria": "1.4.4",
+    "angular-cookies": "1.4.4",
+    "angular-material": "0.10.1",
+    "angular-route": "1.4.4"
+  }
+}
