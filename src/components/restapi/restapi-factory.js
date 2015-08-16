@@ -1,3 +1,7 @@
+'use strict';
+
+const jsonld = require('jsonld');
+
 angular.module('myApp.restapi.restapi-factory', [])
 
 
@@ -6,7 +10,7 @@ angular.module('myApp.restapi.restapi-factory', [])
         response: function (response) {
             // Loggers on success
             console.log(response.headers()['content-type']);
-            
+
             return response;
         },
         responseError: function (response) {
@@ -26,16 +30,16 @@ angular.module('myApp.restapi.restapi-factory', [])
     var RestAPI = {};
 
     RestAPI.getAvailableModels = function () {
-        
+
         var chainedPromise = $http.get(urlBase + "model-data",
          {
-             headers:{"Accept": "application/ld+json"}, 
+             headers:{"Accept": "application/ld+json"},
              params:{"graph":"default"}
-             
+
          }).then(function(response){
-          
+
           var context = response.data["@context"];
-          
+
           var frame = {
           "@type":"sd:Service",
           "defaultDataset": {
@@ -46,40 +50,40 @@ angular.module('myApp.restapi.restapi-factory', [])
                  }
              }
           };
-        
+
           frame["@context"] = context;
-        
+
           return jsonld.promises.frame(response.data, frame);
-            
+
         });
-        
+
         return chainedPromise;
-        
+
     };
-    
+
     RestAPI.getModel = function(id) {
-        
+
           var chainedPromise = $http.get(urlBase + "model-data",
          {
-             headers:{"Accept": "application/ld+json"}, 
+             headers:{"Accept": "application/ld+json"},
              params:{"graph":id}
-             
-         }).then(function(response){ 
-         
+
+         }).then(function(response){
+
           var context = response.data["@context"];
-          
+
           context.label =  {
             "@id": "http://www.w3.org/2000/01/rdf-schema#label",
             "@container": "@language"
            }
-            
+
           context.comment =  {
             "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
             "@container": "@language"
            }
-          
+
           var frame = {
-              "@type": "iow:CoreComponentLibrary", 
+              "@type": "iow:CoreComponentLibrary",
               "classes": {
                "property": {
                  "predicate": {
@@ -89,25 +93,25 @@ angular.module('myApp.restapi.restapi-factory', [])
                    "@omitDefault": true,
                    "@default": [],
                    "@embed": false
-                 } 
+                 }
                 }
                }
            };
-        
+
           frame["@context"] = context;
-        
+
           return jsonld.promises.frame(response.data, frame);
-     
+
         });
-        
+
         return chainedPromise;
-        
+
     }
 
     RestAPI.getUsers = function () {
         return $http.get(urlBase + "users",{headers:{"Accept": "application/ld+json"}});
     };
-    
+
     RestAPI.getGroups = function () {
        return $http.get(urlBase + "groups",{headers:{"Accept": "application/ld+json"}});
     };
@@ -115,7 +119,7 @@ angular.module('myApp.restapi.restapi-factory', [])
     RestAPI.newUser = function (name,email) {
         return $http.put(urlBase +"users", {params:{"fullName":name,"email":email}});
     };
-    
+
     RestAPI.getUser = function (email) {
         return $http.get(urlBase + "users",{headers:{"Accept": "application/ld+json"},params:{"email":email}});
     };
