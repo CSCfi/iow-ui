@@ -1,5 +1,3 @@
-'use strict';
-
 const angular = require('angular');
 require('angular-material');
 require('angular-cookies');
@@ -11,7 +9,7 @@ require('./components/restapi/restapi');
 require('./components/version/version');
 
 // Declare app level module which depends on views, and components
-var app = angular.module('myApp', [
+angular.module('myApp', [
   require('angular-route'),
   'ngCookies',
   'ngMaterial',
@@ -19,7 +17,7 @@ var app = angular.module('myApp', [
   'myApp.model',
   'myApp.version',
   'myApp.restapi',
-  require('angular-translate'),
+  require('angular-translate')
 ])
 
 .config(['$routeProvider', function($routeProvider) {

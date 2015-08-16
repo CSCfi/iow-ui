@@ -1,5 +1,3 @@
-'use strict';
-
 require('./restapi-factory');
 
 angular.module('myApp.restapi', [

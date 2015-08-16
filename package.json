@@ -54,5 +54,11 @@
       "babelify",
       "stringify"
     ]
+  },
+  "devDependencies": {
+    "babel-eslint": "^4.0.7",
+    "eslint": "^1.1.0",
+    "eslint-config-airbnb": "0.0.7",
+    "eslint-plugin-react": "^3.2.2"
   }
 }
