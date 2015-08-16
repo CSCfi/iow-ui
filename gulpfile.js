@@ -27,19 +27,18 @@ var production = process.env.NODE_ENV === 'production';
 var config = {
   destination: './public',
   scripts: {
-    source: './src/main.js',
+    source: './src/app.js',
     destination: './public/js/',
-    extensions: ['.jsx'],
     filename: 'bundle.js'
   },
   templates: {
-    source: './src/*.jade',
-    watch: './src/*.jade',
+    source: './src/index.html',
+    watch: './src/index.html',
     destination: './public/',
     revision: './public/**/*.html'
   },
   styles: {
-    source: './src/style.styl',
+    source: './src/app.styl',
     watch: './src/**/*.styl',
     destination: './public/css/'
   },
@@ -88,9 +87,6 @@ gulp.task('scripts', function() {
 
 gulp.task('templates', function() {
   var pipeline = gulp.src(config.templates.source)
-  .pipe(jade({
-    pretty: !production
-  }))
   .on('error', handleError)
   .pipe(gulp.dest(config.templates.destination));
 

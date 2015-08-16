@@ -1,15 +1,19 @@
 'use strict';
 
+let angular = require('angular');
+require('angular-material');
+require('angular-cookies');
+
 // Declare app level module which depends on views, and components
 var app = angular.module('myApp', [
-  'ngRoute',
+  require('angular-route'),
   'ngCookies',
   'ngMaterial',
   'myApp.main',
   'myApp.model',
   'myApp.version',
   'myApp.restapi',
-  'pascalprecht.translate',
+  require('angular-translate'),
 ])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -32,9 +36,9 @@ var app = angular.module('myApp', [
 }])*/
 
 .controller('AppCtrl', ['$scope', '$location', function($scope, $location) {
- 
+
   $scope.selectedIndex = 0;
-    
+
             $scope.$watch('selectedIndex', function(current, old) {
               switch(current) {
                 case 0: $location.url("/main"); break;
@@ -45,13 +49,10 @@ var app = angular.module('myApp', [
 }]);
 
 
-/* Tuotantovaiheessa NGINX ohjaus? */ 
+/* Tuotantovaiheessa NGINX ohjaus? */
 /*
 .config(['$locationProvider', function($locationProvider)
-{        
+{
     $locationProvider.html5Mode(true);
 }]);
 */
-
-
-

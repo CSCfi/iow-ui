@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Interoperability workbench user interface seed.",
   "scripts": {
+    "start": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +26,7 @@
     "babelify": "^6.1.1",
     "browser-sync": "^2.7.2",
     "browserify": "^10.2.1",
+    "browserify-shim": "^3.8.10",
     "chai": "^3.0.0",
     "gulp": "~3.8.1",
     "gulp-autoprefixer": "1.0.1",
@@ -38,11 +40,18 @@
     "gulp-uglify": "~1.0.1",
     "gulp-util": "~3.0.1",
     "gulp-watch": "^4.3.4",
+    "jquery": "^2.1.4",
     "jsdom": "^5.6.0",
     "mocha": "^2.2.5",
     "node-notifier": "^4.2.1",
     "rimraf": "^2.3.4",
     "vinyl-source-stream": "~1.0.0",
     "watchify": "^3.2.1"
+  },
+  "browserify": {
+    "transform": [
+      "babelify",
+      "browserify-shim"
+    ]
   }
 }
