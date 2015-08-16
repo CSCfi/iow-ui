@@ -20,7 +20,7 @@ angular.module('myApp', [
   require('angular-translate')
 ])
 
-.config(['$routeProvider', function($routeProvider) {
+.config(['$routeProvider', function mainConfig($routeProvider) {
   $routeProvider.when('/', {
     template: require('./views/main/main.html'),
     controller: 'MainCtrl'
@@ -39,11 +39,10 @@ angular.module('myApp', [
   $http.defaults.headers.post['X-Requested-By'] = $cookies.csrftoken;
 }])*/
 
-.controller('AppCtrl', ['$scope', '$location', function($scope, $location) {
-
+.controller('AppCtrl', ['$scope', '$location', function mainAppCtrl($scope, $location) {
   $scope.selectedIndex = 0;
 
-  $scope.$watch('selectedIndex', function(current, old) {
+  $scope.$watch('selectedIndex', function watchSelectedIndex(current, old) {
     switch (current) {
       case 0:
         $location.url("/main");

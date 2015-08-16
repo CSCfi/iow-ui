@@ -1,6 +1,10 @@
 {
   "extends": "eslint-config-airbnb",
   "rules": {
-    "comma-dangle": [2, "never"]
+    "comma-dangle": [2, "never"],
+    "no-unused-vars": [2, {
+      "vars": "local",
+      "args": "none"
+    }],
   }
 }
