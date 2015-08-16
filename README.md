@@ -7,6 +7,10 @@ To run the build
     npm install
     npm start
 
+To make a production build
+
+    NODE_ENV=production npm run-script build
+
 ## Architechture
 Interoperability user interface is separate one page application that uses IOW backend services. Backend design follows restful three layer architecture:
 
