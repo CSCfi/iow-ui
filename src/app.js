@@ -4,6 +4,12 @@ let angular = require('angular');
 require('angular-material');
 require('angular-cookies');
 
+require('./views/main/main');
+require('./views/model/model');
+
+require('./components/restapi/restapi');
+require('./components/version/version');
+
 // Declare app level module which depends on views, and components
 var app = angular.module('myApp', [
   require('angular-route'),
@@ -18,7 +24,7 @@ var app = angular.module('myApp', [
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
-    templateUrl: 'views/main/main.html',
+    template: require('./views/main/main.html'),
     controller: 'MainCtrl'
   });
 }])
