@@ -33,7 +33,6 @@ angular.module('myApp.restapi.restapi-factory', [])
       }
 
     }).then(function(response) {
-
       var context = response.data["@context"];
 
       var frame = {

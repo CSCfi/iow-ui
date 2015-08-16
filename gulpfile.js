@@ -1,4 +1,4 @@
-/*eslint "no-var":0 */
+/* eslint "no-var":0 */
 'use strict';
 
 var browserify = require('browserify');
@@ -6,7 +6,6 @@ var browserSync = require('browser-sync');
 var duration = require('gulp-duration');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var jade = require('gulp-jade');
 var notifier = require('node-notifier');
 var path = require('path');
 var prefix = require('gulp-autoprefixer');
@@ -21,7 +20,7 @@ var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 var watch = require('gulp-watch');
 
-/*eslint "no-process-env":0 */
+/* eslint "no-process-env":0 */
 var production = process.env.NODE_ENV === 'production';
 
 var config = {
@@ -78,7 +77,7 @@ gulp.task('scripts', function() {
     .on('error', handleError)
     .pipe(source(config.scripts.filename));
 
-  if(production) {
+  if (production) {
     pipeline = pipeline.pipe(streamify(uglify()));
   }
 
@@ -90,7 +89,7 @@ gulp.task('templates', function() {
   .on('error', handleError)
   .pipe(gulp.dest(config.templates.destination));
 
-  if(production) {
+  if (production) {
     return pipeline;
   }
 
@@ -102,7 +101,7 @@ gulp.task('templates', function() {
 gulp.task('styles', function() {
   var pipeline = gulp.src(config.styles.source);
 
-  if(!production) {
+  if (!production) {
     pipeline = pipeline.pipe(sourcemaps.init());
   }
 
@@ -113,13 +112,13 @@ gulp.task('styles', function() {
   .on('error', handleError)
   .pipe(prefix('last 2 versions', 'Chrome 34', 'Firefox 28', 'iOS 7'));
 
-  if(!production) {
+  if (!production) {
     pipeline = pipeline.pipe(sourcemaps.write('.'));
   }
 
   pipeline = pipeline.pipe(gulp.dest(config.styles.destination));
 
-  if(production) {
+  if (production) {
     return pipeline;
   }
 
