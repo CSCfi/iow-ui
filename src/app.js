@@ -44,12 +44,14 @@ angular.module('myApp', [
 
   $scope.$watch('selectedIndex', function watchSelectedIndex(current, old) {
     switch (current) {
-      case 0:
-        $location.url("/main");
-        break;
-      case 1:
-        $location.url("/model");
-        break;
+    case 0:
+      $location.url('/main');
+      break;
+    case 1:
+      $location.url('/model');
+      break;
+    default:
+      break;
     }
   });
 }]);
