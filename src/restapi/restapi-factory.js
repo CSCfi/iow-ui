@@ -1,8 +1,8 @@
 const jsonld = require('jsonld');
 
 angular.module('myApp.restapi.restapi-factory', [])
-  .config(function restApiConfig($httpProvider, $log) {
-    $httpProvider.interceptors.push(function httpInterceptor($q) {
+  .config(function restApiConfig($httpProvider) {
+    $httpProvider.interceptors.push(function httpInterceptor($q, $log) {
       return {
         response: function responseInterceptor(response) {
           // Loggers on success

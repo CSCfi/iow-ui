@@ -7,8 +7,5 @@ angular.module('myApp.main', ['ngRoute'])
   });
 }])
 
-.controller('MainCtrl', ['$scope', '$location','RestAPI', function($scope, $location, RestAPI) {
-
-
-
+.controller('MainCtrl', ['$scope', '$location', 'RestAPI', function($scope, $location, RestAPI) {
 }]);

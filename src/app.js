@@ -6,8 +6,8 @@ require('angular-gettext');
 require('./views/main/main');
 require('./views/model/model');
 
-require('./components/restapi/restapi');
-require('./components/version/version');
+require('./restapi/restapi');
+require('./version/version');
 
 // Declare app level module which depends on views, and components
 angular.module('myApp', [
