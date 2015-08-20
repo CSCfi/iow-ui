@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('myApp.model', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {

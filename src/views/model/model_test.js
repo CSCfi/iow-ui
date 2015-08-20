@@ -1,5 +1,3 @@
-'use strict';
-
 describe('myApp.model module', function() {
 
   beforeEach(module('myApp.model'));

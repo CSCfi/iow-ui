@@ -1,5 +1,3 @@
-'use strict';
-
 describe('myApp.version module', function() {
   beforeEach(module('myApp.version'));
 

@@ -1,5 +1,3 @@
-'use strict';
-
 require('./interpolate-filter');
 require('./version-directive');
 
