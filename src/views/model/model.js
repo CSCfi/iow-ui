@@ -7,34 +7,34 @@ angular.module('myApp.model', ['ngRoute'])
     templateUrl: 'views/model/model.html',
     controller: 'ModelCtrl'
   });
-  
-  
+
+
 }])
 
-.controller('ModelCtrl', ['$scope', '$location','RestAPI', function($scope, $location, RestAPI) {
-  
+.controller('ModelCtrl', ['$scope', '$location','RestAPI', function($scope, $location, $log, RestAPI) {
+
   $scope.data;
   $scope.graph;
   $scope.model;
-  
+
     RestAPI.getAvailableModels().then(function(response){
- 
+
        $scope.data = response;
-       
+
        $scope.graph = $scope.data["@graph"][0];
-   
-       console.log($scope.data);
-        
+
+       $log.debug($scope.data);
+
     });
-    
+
     $scope.loadModel = function(id) {
-       
+
         RestAPI.getModel(id).then(function(response){
- 
+
                 $scope.model = response;
-                console.log($scope.model);
+                $log.debug($scope.model);
         });
-        
+
     }
 
 }]);
