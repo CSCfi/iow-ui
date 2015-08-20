@@ -22,6 +22,11 @@
       "from": "angular-cookies@1.4.4",
       "resolved": "https://registry.npmjs.org/angular-cookies/-/angular-cookies-1.4.4.tgz"
     },
+    "angular-gettext": {
+      "version": "2.1.0",
+      "from": "angular-gettext@*",
+      "resolved": "https://registry.npmjs.org/angular-gettext/-/angular-gettext-2.1.0.tgz"
+    },
     "angular-material": {
       "version": "0.10.1",
       "from": "angular-material@0.10.1",
@@ -31,11 +36,6 @@
       "version": "1.4.4",
       "from": "angular-route@1.4.4",
       "resolved": "https://registry.npmjs.org/angular-route/-/angular-route-1.4.4.tgz"
-    },
-    "angular-translate": {
-      "version": "2.7.2",
-      "from": "angular-translate@*",
-      "resolved": "https://registry.npmjs.org/angular-translate/-/angular-translate-2.7.2.tgz"
     },
     "babel": {
       "version": "5.8.21",

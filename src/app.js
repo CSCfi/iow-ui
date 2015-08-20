@@ -1,6 +1,7 @@
 const angular = require('angular');
 require('angular-material');
 require('angular-cookies');
+require('angular-gettext');
 
 require('./views/main/main');
 require('./views/model/model');
@@ -17,7 +18,7 @@ angular.module('myApp', [
   'myApp.model',
   'myApp.version',
   'myApp.restapi',
-  require('angular-translate')
+  'gettext'
 ])
 
 .config(['$routeProvider', function mainConfig($routeProvider) {
