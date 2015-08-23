@@ -28,6 +28,7 @@
     "babelify": "^6.1.1",
     "browser-sync": "^2.7.2",
     "browserify": "^10.2.1",
+    "browserify-ngannotate": "^1.0.1",
     "chai": "^3.0.0",
     "gulp": "~3.8.1",
     "gulp-autoprefixer": "1.0.1",
@@ -53,7 +54,8 @@
   "browserify": {
     "transform": [
       "babelify",
-      "stringify"
+      "stringify",
+      "browserify-ngannotate"
     ]
   },
   "devDependencies": {

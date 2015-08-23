@@ -18,13 +18,12 @@ angular.module('myApp', [
   'myApp.restapi',
   'gettext'
 ])
-
-.config(['$routeProvider', function mainConfig($routeProvider) {
+.config(function mainConfig($routeProvider) {
   $routeProvider.when('/', {
     template: require('./views/main/main.html'),
     controller: 'MainCtrl'
   });
-}])
+})
 
 /*
 .config(['$httpProvider', function($httpProvider) {
@@ -38,7 +37,7 @@ angular.module('myApp', [
   $http.defaults.headers.post['X-Requested-By'] = $cookies.csrftoken;
 }])*/
 
-.controller('AppCtrl', ['$scope', '$location', function mainAppCtrl($scope, $location) {
+.controller('AppCtrl', function mainAppCtrl($scope, $location) {
   $scope.selectedIndex = 0;
 
   $scope.$watch('selectedIndex', function watchSelectedIndex(current, old) {
@@ -48,7 +47,7 @@ angular.module('myApp', [
       $location.url('/model');
     }
   });
-}]);
+});
 
 
 /* Tuotantovaiheessa NGINX ohjaus? */
