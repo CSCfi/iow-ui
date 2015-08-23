@@ -7,7 +7,6 @@ require('./views/main/main');
 require('./views/model/model');
 
 require('./restapi/restapi');
-require('./version/version');
 
 // Declare app level module which depends on views, and components
 angular.module('myApp', [
@@ -16,7 +15,6 @@ angular.module('myApp', [
   'ngMaterial',
   'myApp.main',
   'myApp.model',
-  'myApp.version',
   'myApp.restapi',
   'gettext'
 ])
