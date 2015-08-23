@@ -6,7 +6,7 @@ angular.module('myApp.restapi.restapi-factory', [])
       return {
         response: function responseInterceptor(response) {
           // Loggers on success
-          $log.debug(response.headers()['content-type']);
+          $log.debug(response.headers['content-type']);
 
           return response;
         },
@@ -18,7 +18,7 @@ angular.module('myApp.restapi.restapi-factory', [])
     });
   })
 
-.factory('RestAPI', ['$http', function restApiFactory($http) {
+.factory('RestAPI', function restApiFactory($http) {
   const urlBase = 'http://localhost:8084/IOAPI/rest/';
   const RestAPI = {};
 
@@ -147,4 +147,4 @@ angular.module('myApp.restapi.restapi-factory', [])
   };
 
   return RestAPI;
-}]);
+});
