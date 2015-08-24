@@ -4,9 +4,6 @@ require('angular-material');
 require('angular-cookies');
 require('angular-gettext');
 
-require('./views/main/main');
-require('./views/model/model');
-
 require('./restapi/restapi');
 
 angular.module('myApp', [
@@ -19,10 +16,6 @@ angular.module('myApp', [
   'gettext'
 ])
 .config(function mainConfig($routeProvider) {
-  $routeProvider.when('/', {
-    template: require('./views/main/main.html'),
-    controller: 'MainCtrl'
-  });
 })
 
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {
