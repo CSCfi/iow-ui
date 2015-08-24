@@ -132,6 +132,11 @@ gulp.task('assets', function() {
     .pipe(gulp.dest(config.assets.destination));
 });
 
+gulp.task('fonts', function() {
+  return gulp.src('./src/vendor/bootstrap-3.3.5-dist/fonts/*')
+    .pipe(gulp.dest('./public/fonts'));
+});
+
 gulp.task('server', function() {
   return browserSync({
     open: false,
@@ -165,7 +170,7 @@ gulp.task('watch', function() {
   }).emit('update');
 });
 
-var buildTasks = ['templates', 'styles', 'assets'];
+var buildTasks = ['templates', 'styles', 'assets', 'fonts'];
 
 gulp.task('revision', buildTasks.concat(['scripts']), function() {
   return gulp.src(config.revision.source, {base: config.revision.base})
