@@ -27,11 +27,6 @@
       "from": "angular-gettext@*",
       "resolved": "https://registry.npmjs.org/angular-gettext/-/angular-gettext-2.1.0.tgz"
     },
-    "angular-material": {
-      "version": "0.10.1",
-      "from": "angular-material@0.10.1",
-      "resolved": "https://registry.npmjs.org/angular-material/-/angular-material-0.10.1.tgz"
-    },
     "angular-route": {
       "version": "1.4.4",
       "from": "angular-route@1.4.4",
