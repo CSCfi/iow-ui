@@ -38,7 +38,7 @@ var config = {
   },
   styles: {
     source: './src/app.sass',
-    watch: './src/**/*.sass',
+    watch: ['./src/**/*.sass', './src/**/*.scss'],
     destination: './public/css/'
   },
   assets: {
@@ -100,12 +100,13 @@ gulp.task('templates', function() {
 
 gulp.task('styles', function() {
   var pipeline = gulp.src(config.styles.source);
+  var sassOpts = production ? {outputStyle: 'compressed'} : {};
 
   if (!production) {
     pipeline = pipeline.pipe(sourcemaps.init());
   }
 
-  pipeline = pipeline.pipe(sass().on('error', sass.logError))
+  pipeline = pipeline.pipe(sass(sassOpts).on('error', sass.logError))
   .on('error', handleError)
   .pipe(prefix('last 2 versions', 'Chrome 34', 'Firefox 28', 'iOS 7'));
 
