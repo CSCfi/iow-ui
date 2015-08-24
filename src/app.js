@@ -1,4 +1,5 @@
 const angular = require('angular');
+
 require('angular-material');
 require('angular-cookies');
 require('angular-gettext');
