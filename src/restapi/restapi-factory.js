@@ -1,22 +1,6 @@
 const jsonld = require('jsonld');
 
 angular.module('myApp.restapi.restapi-factory', [])
-  .config(function restApiConfig($httpProvider) {
-    $httpProvider.interceptors.push(function httpInterceptor($q, $log) {
-      return {
-        response: function responseInterceptor(response) {
-          // Loggers on success
-          $log.debug(response.headers['content-type']);
-
-          return response;
-        },
-        responseError: function errorInterceptor(response) {
-          // Loggers on error
-          return $q.reject(response);
-        }
-      };
-    });
-  })
 
 .factory('RestAPI', function restApiFactory($http) {
   const urlBase = 'http://localhost:8084/IOAPI/rest/';
