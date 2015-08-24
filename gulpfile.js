@@ -15,7 +15,7 @@ var rimraf = require('rimraf');
 var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
 var streamify = require('gulp-streamify');
-var stylus = require('gulp-stylus');
+var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 var watch = require('gulp-watch');
@@ -37,8 +37,8 @@ var config = {
     revision: './public/**/*.html'
   },
   styles: {
-    source: './src/app.styl',
-    watch: './src/**/*.styl',
+    source: './src/app.sass',
+    watch: './src/**/*.sass',
     destination: './public/css/'
   },
   assets: {
@@ -105,10 +105,7 @@ gulp.task('styles', function() {
     pipeline = pipeline.pipe(sourcemaps.init());
   }
 
-  pipeline = pipeline.pipe(stylus({
-    'include css': true,
-    compress: production
-  }))
+  pipeline = pipeline.pipe(sass().on('error', sass.logError))
   .on('error', handleError)
   .pipe(prefix('last 2 versions', 'Chrome 34', 'Firefox 28', 'iOS 7'));
 
@@ -133,8 +130,8 @@ gulp.task('assets', function() {
 });
 
 gulp.task('fonts', function() {
-  return gulp.src('./src/vendor/bootstrap-3.3.5-dist/fonts/*')
-    .pipe(gulp.dest('./public/fonts'));
+  return gulp.src('./node_modules/bootstrap-sass/assets/fonts/bootstrap/*')
+    .pipe(gulp.dest('./public/fonts/bootstrap'));
 });
 
 gulp.task('server', function() {
