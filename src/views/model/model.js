@@ -1,38 +1,21 @@
 angular.module('myApp.model', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
+.config(function modelConfig($routeProvider) {
   $routeProvider.when('/model', {
-    templateUrl: 'views/model/model.html',
+    template: require('./model.html'),
     controller: 'ModelCtrl'
   });
+})
+.controller('ModelCtrl', function modelController($scope, $location, $log, RestAPI) {
+  RestAPI.getAvailableModels().then(response => {
+    $scope.data = response;
+    $scope.graph = $scope.data['@graph'][0];
+  });
 
-
-}])
-
-.controller('ModelCtrl', ['$scope', '$location','RestAPI', function($scope, $location, $log, RestAPI) {
-
-  $scope.data;
-  $scope.graph;
-  $scope.model;
-
-    RestAPI.getAvailableModels().then(function(response){
-
-       $scope.data = response;
-
-       $scope.graph = $scope.data["@graph"][0];
-
-       $log.debug($scope.data);
-
+  $scope.loadModel = id => {
+    RestAPI.getModel(id).then(response => {
+      $scope.model = response;
+      $log.debug($scope.model);
     });
-
-    $scope.loadModel = function(id) {
-
-        RestAPI.getModel(id).then(function(response){
-
-                $scope.model = response;
-                $log.debug($scope.model);
-        });
-
-    }
-
-}]);
+  };
+});
