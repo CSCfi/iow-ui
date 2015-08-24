@@ -13,7 +13,9 @@
 <body ng-controller="AppCtrl" layout="column" layout-fill>
   <h1>iow</h1>
   <tabset>
-    <tab heading="main tab">tab content</tab>
+    <tab heading="main tab">
+      This is xeditable <a href="#" editable-text="user.name">{{ user.name || "empty" }}</a>
+    </tab>
   </tabset>
 
   <div ng-view></div>
