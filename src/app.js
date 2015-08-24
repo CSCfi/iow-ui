@@ -8,7 +8,6 @@ require('./views/model/model');
 
 require('./restapi/restapi');
 
-// Declare app level module which depends on views, and components
 angular.module('myApp', [
   require('angular-route'),
   'ngCookies',
@@ -25,35 +24,6 @@ angular.module('myApp', [
   });
 })
 
-/*
-.config(['$httpProvider', function($httpProvider) {
- $httpProvider.defaults.withCredentials = true;
-}])
-*/
-
-/*
-.run(['$http', '$cookies', function($http, $cookies) {
-        //X-CSRFToken
-  $http.defaults.headers.post['X-Requested-By'] = $cookies.csrftoken;
-}])*/
-
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {
-  $scope.selectedIndex = 0;
 
-  $scope.$watch('selectedIndex', function watchSelectedIndex(current, old) {
-    if (current === 0) {
-      $location.url('/main');
-    } else if (current === 1) {
-      $location.url('/model');
-    }
-  });
 });
-
-
-/* Tuotantovaiheessa NGINX ohjaus? */
-/*
-.config(['$locationProvider', function($locationProvider)
-{
-    $locationProvider.html5Mode(true);
-}]);
-*/
