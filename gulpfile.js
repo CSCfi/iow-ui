@@ -39,7 +39,7 @@ var config = {
     revision: './public/**/*.html'
   },
   styles: {
-    source: './src/app.sass',
+    source: './src/app.scss',
     watch: ['./src/**/*.sass', './src/**/*.scss'],
     destination: './public/css/'
   },
