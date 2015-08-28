@@ -8,3 +8,21 @@
 .group-panel {
   width: 50%;
 }
+
+.list-panel {
+  padding: 0;
+}
+
+.group-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.group-list-item {
+  padding: 7px 15px 7px 15px;
+}
+
+.group-list-item:hover {
+  background-color: $list-group-hover-bg;
+}
