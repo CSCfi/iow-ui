@@ -11,6 +11,11 @@
 </head>
 
 <body ng-controller="AppCtrl" layout="column" layout-fill>
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <span class="navbar-brand">IOW</span>
+    </div>
+  </nav>
   <tabset>
     <tab heading="main tab">
       This is xeditable <a href="#" editable-text="user.name">{{ user.name || "empty" }}</a>
