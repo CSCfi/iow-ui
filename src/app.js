@@ -11,9 +11,14 @@ angular.module('myApp', [
   require('angular-ui-bootstrap'),
   'ngCookies',
   'gettext',
-  'xeditable'
+  'xeditable',
+  require('./groups')
 ])
 .config(function mainConfig($routeProvider) {
+  $routeProvider
+    .when('/', {
+      template: require('./main/_index.html')
+    });
 })
 .run(function onAppRun(editableOptions) {
   editableOptions.theme = 'bs3';
