@@ -9321,6 +9321,11 @@
         }
       }
     },
+    "proxy-middleware": {
+      "version": "0.13.1",
+      "from": "proxy-middleware@*",
+      "resolved": "https://registry.npmjs.org/proxy-middleware/-/proxy-middleware-0.13.1.tgz"
+    },
     "rimraf": {
       "version": "2.4.2",
       "from": "rimraf@>=2.3.4 <3.0.0",
@@ -9617,6 +9622,23 @@
           "version": "2.3.8",
           "from": "through@>=2.3.4 <3.0.0",
           "resolved": "https://registry.npmjs.org/through/-/through-2.3.8.tgz"
+        }
+      }
+    },
+    "url": {
+      "version": "0.11.0",
+      "from": "url@*",
+      "resolved": "https://registry.npmjs.org/url/-/url-0.11.0.tgz",
+      "dependencies": {
+        "punycode": {
+          "version": "1.3.2",
+          "from": "punycode@1.3.2",
+          "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.3.2.tgz"
+        },
+        "querystring": {
+          "version": "0.2.0",
+          "from": "querystring@0.2.0",
+          "resolved": "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz"
         }
       }
     },

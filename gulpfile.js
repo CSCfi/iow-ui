@@ -19,6 +19,8 @@ var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 var watch = require('gulp-watch');
+var url = require('url');
+var proxy = require('proxy-middleware');
 
 /* eslint "no-process-env":0 */
 var production = process.env.NODE_ENV === 'production';
@@ -136,13 +138,16 @@ gulp.task('fonts', function() {
 });
 
 gulp.task('server', function() {
+  var proxyOptions = url.parse('http://localhost:8084/IOAPI');
+  proxyOptions.route = '/IOAPI';
   return browserSync({
     open: false,
     port: 9001,
     notify: false,
     ghostMode: false,
     server: {
-      baseDir: config.destination
+      baseDir: config.destination,
+      middleware: [proxy(proxyOptions)]
     }
   });
 });

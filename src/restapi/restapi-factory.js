@@ -3,7 +3,7 @@ const jsonld = require('jsonld');
 angular.module('myApp.restapi.restapi-factory', [])
 
 .factory('RestAPI', function restApiFactory($http) {
-  const urlBase = 'http://localhost:8084/IOAPI/rest/';
+  const urlBase = '/IOAPI/rest/';
   return {
     getAvailableModels() {
         const chainedPromise = $http.get(urlBase + 'model-data', {
