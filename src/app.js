@@ -4,15 +4,14 @@ require('angular-cookies');
 require('angular-gettext');
 require('./vendor/angular-xeditable-0.1.8/js/xeditable');
 
-require('./restapi/restapi');
-
 angular.module('myApp', [
   require('angular-route'),
   require('angular-ui-bootstrap'),
   'ngCookies',
   'gettext',
   'xeditable',
-  require('./groups')
+  require('./groups'),
+  require('./restapi')
 ])
 .config(function mainConfig($routeProvider) {
   $routeProvider

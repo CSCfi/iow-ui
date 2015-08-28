@@ -1,8 +1,6 @@
 const jsonld = require('jsonld');
 
-angular.module('myApp.restapi.restapi-factory', [])
-
-.factory('RestAPI', function restApiFactory($http) {
+module.exports = function /* @ngInject */ restApiFactory($http) {
   const urlBase = '/IOAPI/rest/';
   return {
     getAvailableModels() {
@@ -113,4 +111,4 @@ angular.module('myApp.restapi.restapi-factory', [])
         });
       }
   };
-});
+};
