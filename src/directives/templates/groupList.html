@@ -3,7 +3,7 @@
   <div class="frontpage-panel__body">
     <ul class="frontpage-panel__list">
       <li class="frontpage-panel__list__item" ng-repeat="group in groups">
-        <a href="#/groups/{{group['@id']}}">{{group['rdfs:label']}}</a>
+        <a href="#/groups/{{group['@id']}}">{{group.label.fi}}</a>
       </li>
     </ul>
   </div>
