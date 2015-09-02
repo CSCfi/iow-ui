@@ -17,11 +17,6 @@
       "from": "angular-aria@1.4.4",
       "resolved": "https://registry.npmjs.org/angular-aria/-/angular-aria-1.4.4.tgz"
     },
-    "angular-cookies": {
-      "version": "1.4.4",
-      "from": "angular-cookies@1.4.4",
-      "resolved": "https://registry.npmjs.org/angular-cookies/-/angular-cookies-1.4.4.tgz"
-    },
     "angular-gettext": {
       "version": "2.1.0",
       "from": "angular-gettext@*",

@@ -1,13 +1,11 @@
 const angular = require('angular');
 
-require('angular-cookies');
 require('angular-gettext');
 require('./vendor/angular-xeditable-0.1.8/js/xeditable');
 
 angular.module('myApp', [
   require('angular-route'),
   require('angular-ui-bootstrap'),
-  'ngCookies',
   'gettext',
   'xeditable',
   require('./groups'),
