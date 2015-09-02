@@ -31,7 +31,7 @@
     "browserify": "^10.2.1",
     "browserify-ngannotate": "^1.0.1",
     "chai": "^3.0.0",
-    "gulp": "~3.8.1",
+    "gulp": "~3.9.0",
     "gulp-angular-gettext": "^2.1.0",
     "gulp-autoprefixer": "1.0.1",
     "gulp-duration": "0.0.0",
