@@ -21,6 +21,7 @@ var watchify = require('watchify');
 var watch = require('gulp-watch');
 var url = require('url');
 var proxy = require('proxy-middleware');
+var gettext = require('gulp-angular-gettext');
 
 /* eslint "no-process-env":0 */
 var production = process.env.NODE_ENV === 'production';
@@ -171,6 +172,20 @@ gulp.task('watch', function() {
     .pipe(duration('Rebundling browserify bundle'))
     .pipe(browserSync.reload({stream: true}));
   }).emit('update');
+});
+
+gulp.task('pot', function () {
+    return gulp.src(['src/**/*.html', 'src/**/*.js'])
+        .pipe(gettext.extract('template.pot'))
+        .pipe(gulp.dest('po/'));
+});
+
+gulp.task('translations', function () {
+    return gulp.src('po/**/*.po')
+        .pipe(gettext.compile({
+            format: 'json'
+        }))
+        .pipe(gulp.dest('public/translations/'));
 });
 
 var buildTasks = ['templates', 'styles', 'assets', 'fonts'];
