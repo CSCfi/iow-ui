@@ -1,0 +1,37 @@
+{
+  "@graph": [
+    {
+      "@id": "urn:uuid:4925a5ee-3468-45c2-b31d-bc1cf644ef87",
+      "@type": "foaf:Group",
+      "label": {
+	  "fi":"Opiskelu, opetus ja koulutus",
+	  "en":"Learning and Education"
+	  }
+    },
+    {
+      "@id": "urn:uuid:7a389eed-9f66-4d3c-8c6f-199117562d70",
+      "@type": "foaf:Group",
+      "label": {
+	  "fi":"Yhteisen tietokomponentit",
+	  "en":"Common vocabularies"
+	  }
+    }
+  ],
+  "@context": {
+      "label": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+      "@container": "@language"
+    },
+    "adms": "http://www.w3.org/ns/adms#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "sd": "http://www.w3.org/ns/sparql-service-description#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "void": "http://rdfs.org/ns/void#",
+    "vann": "http://purl.org/vocab/vann/",
+    "dcterms": "http://purl.org/dc/terms/"
+  }
+}
