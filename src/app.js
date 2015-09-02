@@ -9,7 +9,8 @@ angular.module('myApp', [
   'gettext',
   'xeditable',
   require('./groups'),
-  require('./restapi')
+  require('./restapi'),
+  require('./services')
 ])
 .config(function mainConfig($routeProvider) {
   $routeProvider
