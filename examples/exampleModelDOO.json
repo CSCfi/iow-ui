@@ -193,7 +193,7 @@
           "@id": "doo:paattymisPvm",
           "@type": "owl:DatatypeProperty",
           "label": {
-            "fi": "Päättymispäivä"
+            "fi": "PÃ¤Ã¤ttymispÃ¤ivÃ¤"
           },
           "range": "xsd:date"
         },
@@ -209,7 +209,7 @@
           "@id": "doo:paattymisHetki",
           "@type": "owl:DatatypeProperty",
           "label": {
-            "fi": "Päättymishetki"
+            "fi": "PÃ¤Ã¤ttymishetki"
           },
           "range": "xsd:dateTime"
         },
@@ -282,7 +282,7 @@
         {
           "@id": "doo:Ajanjakso",
           "@type": "sh:ShapeClass",
-          "rdfs:comment": "Aikamääreistä koostuva ajallisen ilmiön kuvaus",
+          "rdfs:comment": "AikamÃ¤Ã¤reistÃ¤ koostuva ajallisen ilmiÃ¶n kuvaus",
           "label": {
             "fi": "Ajanjakso",
             "en": "Period"
@@ -305,10 +305,10 @@
             {
               "@id": "_:b1",
               "comment": {
-                "fi": "Ajanjakson päättymisaika"
+                "fi": "Ajanjakson pÃ¤Ã¤ttymisaika"
               },
               "label": {
-                "fi": "Päättymisaika"
+                "fi": "PÃ¤Ã¤ttymisaika"
               },
               "datatype": "xsd:time",
               "predicate": "doo:paattymisAika"
@@ -316,7 +316,7 @@
             {
               "@id": "_:b12",
               "comment": {
-                "fi": "Ajanjaksolle määritelty lyhenne"
+                "fi": "Ajanjaksolle mÃ¤Ã¤ritelty lyhenne"
               },
               "label": {
                 "fi": "Ajanjakson lyhenne"
@@ -338,10 +338,10 @@
             {
               "@id": "_:b34",
               "comment": {
-                "fi": "Ajanjakson päättymishetki"
+                "fi": "Ajanjakson pÃ¤Ã¤ttymishetki"
               },
               "label": {
-                "fi": "Ajanjakson päättymishetki"
+                "fi": "Ajanjakson pÃ¤Ã¤ttymishetki"
               },
               "datatype": "xsd:dateTime",
               "predicate": "doo:paattymisHetki"
@@ -383,10 +383,10 @@
             {
               "@id": "_:b44",
               "comment": {
-                "fi": "Ajanjakson päättymispäivä"
+                "fi": "Ajanjakson pÃ¤Ã¤ttymispÃ¤ivÃ¤"
               },
               "label": {
-                "fi": "Ajanjakson päättymispäivä"
+                "fi": "Ajanjakson pÃ¤Ã¤ttymispÃ¤ivÃ¤"
               },
               "datatype": "xsd:time",
               "predicate": "doo:paattymisPvm"
@@ -397,7 +397,7 @@
           "@id": "doo:Arvostelu",
           "@type": "sh:ShapeClass",
           "comment": {
-            "fi": "oppilaan, opiskelijan tai tutkinnon suorittajan oppimisen, osaamisen tai oppimistulosten arvon määrittäminen"
+            "fi": "oppilaan, opiskelijan tai tutkinnon suorittajan oppimisen, osaamisen tai oppimistulosten arvon mÃ¤Ã¤rittÃ¤minen"
           },
           "label": {
             "fi": "Arvostelu",
@@ -440,7 +440,7 @@
             {
               "@id": "_:b4",
               "comment": {
-                "fi": "Arvostelussa määritelty arvosana"
+                "fi": "Arvostelussa mÃ¤Ã¤ritelty arvosana"
               },
               "label": {
                 "fi": "Arvostelun arvosana"
@@ -454,7 +454,7 @@
           "@id": "doo:Arvosana",
           "@type": "sh:ShapeClass",
           "comment": {
-            "fi": "arvioinnin tuloksena oppilaalle, opiskelijalle tai tutkinnon suorittajalle annettava, järjestetystä joukosta valittava numeerinen tai sanallinen ilmaus"
+            "fi": "arvioinnin tuloksena oppilaalle, opiskelijalle tai tutkinnon suorittajalle annettava, jÃ¤rjestetystÃ¤ joukosta valittava numeerinen tai sanallinen ilmaus"
           },
           "label": {
             "fi": "Arvosana",
@@ -476,7 +476,7 @@
             {
               "@id": "_:b6",
               "comment": {
-                "fi": "Arvosana-asteikon yksittäinen arvo"
+                "fi": "Arvosana-asteikon yksittÃ¤inen arvo"
               },
               "label": {
                 "fi": "Arvosana"
@@ -487,7 +487,7 @@
             {
               "@id": "_:b7",
               "comment": {
-                "fi": "Arvosanan yksilöivä tunnistetieto"
+                "fi": "Arvosanan yksilÃ¶ivÃ¤ tunnistetieto"
               },
               "label": {
                 "fi": "Arvosanan koodi"
@@ -502,7 +502,7 @@
           "@id": "doo:Opintokokonaisuus",
           "@type": "sh:ShapeClass",
           "comment": {
-            "fi": "opintojen osa, joka muodostuu kahdesta tai useammasta yhtä aihepiiriä tai ongelma-aluetta käsittelevästä tai jonkin tieteenalan perusteet muodostavasta opintojaksosta"
+            "fi": "opintojen osa, joka muodostuu kahdesta tai useammasta yhtÃ¤ aihepiiriÃ¤ tai ongelma-aluetta kÃ¤sittelevÃ¤stÃ¤ tai jonkin tieteenalan perusteet muodostavasta opintojaksosta"
           },
           "label": {
             "fi": "Opintokokonaisuus",
@@ -534,10 +534,10 @@
             {
               "@id": "_:b10",
               "comment": {
-                "fi": "Lisätietoja opintokokonaisuudesta"
+                "fi": "LisÃ¤tietoja opintokokonaisuudesta"
               },
               "label": {
-                "fi": "Lisätiedot"
+                "fi": "LisÃ¤tiedot"
               },
               "datatype": "xsd:string",
               "predicate": "doo:lisatietoTeksti"
@@ -578,7 +578,7 @@
             {
               "@id": "_:b15",
               "comment": {
-                "fi": "Opintokokonaisuudelle määritelty tunniste"
+                "fi": "Opintokokonaisuudelle mÃ¤Ã¤ritelty tunniste"
               },
               "label": {
                 "fi": "Opintokokonaisuuden tunniste"
@@ -622,7 +622,7 @@
             {
               "@id": "_:b19",
               "comment": {
-                "fi": "Opintokokonaisuuden laajuus opintopisteinä, jonka laajuisena kokonaisuuden voi maksimisaan suorittaa"
+                "fi": "Opintokokonaisuuden laajuus opintopisteinÃ¤, jonka laajuisena kokonaisuuden voi maksimisaan suorittaa"
               },
               "label": {
                 "fi": "Opintokokonaisuuden maksimilaajuus"
@@ -633,7 +633,7 @@
             {
               "@id": "_:b20",
               "comment": {
-                "fi": "Laajuus opintopisteinä, jonka kokonaisena kokonaisuus tulee vähintään suorittaa"
+                "fi": "Laajuus opintopisteinÃ¤, jonka kokonaisena kokonaisuus tulee vÃ¤hintÃ¤Ã¤n suorittaa"
               },
               "label": {
                 "fi": "Opintokokonaisuuden minimilaajuus"
@@ -647,7 +647,7 @@
           "@id": "doo:Opintojakso",
           "@type": "sh:ShapeClass",
           "comment": {
-            "fi": "tiettyä aihetta, sisältöä tai osaamisen alaa käsittelevä, erikseen suoritettavissa oleva opintojen osa"
+            "fi": "tiettyÃ¤ aihetta, sisÃ¤ltÃ¶Ã¤ tai osaamisen alaa kÃ¤sittelevÃ¤, erikseen suoritettavissa oleva opintojen osa"
           },
           "label": {
             "en": "Study module",
@@ -668,7 +668,7 @@
             {
               "@id": "_:b22",
               "comment": {
-                "fi": "Opintojakson laajuus opintopisteinä"
+                "fi": "Opintojakson laajuus opintopisteinÃ¤"
               },
               "label": {
                 "fi": "Opintojakson laajuus"
@@ -690,7 +690,7 @@
             {
               "@id": "_:b25",
               "comment": {
-                "fi": "Pienin opintopistemäärä jolla opintojakson voi suorittaa."
+                "fi": "Pienin opintopistemÃ¤Ã¤rÃ¤ jolla opintojakson voi suorittaa."
               },
               "label": {
                 "fi": "Opintojakson minimilaajuus"
@@ -712,7 +712,7 @@
             {
               "@id": "_:b27",
               "comment": {
-                "fi": "Suurin opintopistemäärä jonka opintojaksosta voi suorittaa."
+                "fi": "Suurin opintopistemÃ¤Ã¤rÃ¤ jonka opintojaksosta voi suorittaa."
               },
               "label": {
                 "fi": "Opintojakson maksimilaajuus"
@@ -723,7 +723,7 @@
             {
               "@id": "_:b28",
               "comment": {
-                "fi": "Opintokokonaisuus, johon opintojakso sisältyy"
+                "fi": "Opintokokonaisuus, johon opintojakso sisÃ¤ltyy"
               },
               "label": {
                 "fi": "Opintokokonaisuus"
@@ -734,10 +734,10 @@
             {
               "@id": "_:b29",
               "comment": {
-                "fi": "Opintojakson sisällön kuvaus"
+                "fi": "Opintojakson sisÃ¤llÃ¶n kuvaus"
               },
               "label": {
-                "fi": "Opintojakson sisältö"
+                "fi": "Opintojakson sisÃ¤ltÃ¶"
               },
               "datatype": "xsd:string",
               "predicate": "doo:kuvaus"
@@ -745,10 +745,10 @@
             {
               "@id": "_:b30",
               "comment": {
-                "fi": "Opintojaksolle määritellyt lisätiedot"
+                "fi": "Opintojaksolle mÃ¤Ã¤ritellyt lisÃ¤tiedot"
               },
               "label": {
-                "fi": "Opintojakson lisätiedot"
+                "fi": "Opintojakson lisÃ¤tiedot"
               },
               "datatype": "xsd:string",
               "predicate": "doo:lisatietoTeksti"
@@ -756,7 +756,7 @@
             {
               "@id": "_:b31",
               "label": {
-                "fi": "Opintojakson yksilöivä tunnistetieto"
+                "fi": "Opintojakson yksilÃ¶ivÃ¤ tunnistetieto"
               },
               "datatype": "xsd:string",
               "predicate": "doo:tunniste"
@@ -775,7 +775,7 @@
             {
               "@id": "_:b33",
               "comment": {
-                "fi": "Opintojakson yksilöivä tunnistetieto"
+                "fi": "Opintojakson yksilÃ¶ivÃ¤ tunnistetieto"
               },
               "label": {
                 "fi": "Opintojakson koodi"
@@ -790,7 +790,7 @@
           "@id": "doo:Asteikko",
           "@type": "sh:ShapeClass",
           "comment": {
-            "fi": "Arvosteluasteikko, joka määrittää arvosanojen keskinäisen järjestyksen ja suhteet"
+            "fi": "Arvosteluasteikko, joka mÃ¤Ã¤rittÃ¤Ã¤ arvosanojen keskinÃ¤isen jÃ¤rjestyksen ja suhteet"
           },
           "label": {
             "fi": "Asteikko"
@@ -799,7 +799,7 @@
             {
               "@id": "_:b35",
               "comment": {
-                "fi": "Asteikosta yleiskielessä käytettävä nimitys"
+                "fi": "Asteikosta yleiskielessÃ¤ kÃ¤ytettÃ¤vÃ¤ nimitys"
               },
               "label": {
                 "fi": "Arvosteluasteikon nimi"
@@ -810,7 +810,7 @@
             {
               "@id": "_:b36",
               "comment": {
-                "fi": "Asteikon käyttöä kuvaava selite"
+                "fi": "Asteikon kÃ¤yttÃ¶Ã¤ kuvaava selite"
               },
               "label": {
                 "fi": "Asteikon selite"
@@ -821,7 +821,7 @@
             {
               "@id": "_:b37",
               "comment": {
-                "fi": "Asteikon yksilöivä tunnistetieto"
+                "fi": "Asteikon yksilÃ¶ivÃ¤ tunnistetieto"
               },
               "label": {
                 "fi": "Asteikon tunniste"
@@ -843,7 +843,7 @@
             {
               "@id": "_:b39",
               "comment": {
-                "fi": "Asteikolle määritelty luokitus"
+                "fi": "Asteikolle mÃ¤Ã¤ritelty luokitus"
               },
               "label": {
                 "fi": "Asteikon arvoalue"

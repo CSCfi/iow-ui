@@ -88,7 +88,7 @@
           "@id": "jhs:siviilisaaty",
           "@type": "owl:ObjectProperty",
           "label": {
-            "fi": "Siviilis‰‰ty"
+            "fi": "Siviilis√§√§ty"
           },
           "range": "skos:Concept"
         },
@@ -126,7 +126,7 @@
           "@id": "jhs:aidinkieli",
           "@type": "owl:ObjectProperty",
           "label": {
-            "fi": "ƒidinkieli"
+            "fi": "√Ñidinkieli"
           },
           "range": "skos:Concept"
         },
@@ -228,7 +228,7 @@
           "@id": "jhs:paattymisKuukausi",
           "@type": "owl:DatatypeProperty",
           "label": {
-            "fi": "P‰‰ttymiskuukausi"
+            "fi": "P√§√§ttymiskuukausi"
           }
         },
         {
@@ -257,7 +257,7 @@
           "@id": "jhs:henkiloTunnus",
           "@type": "owl:DatatypeProperty",
           "label": {
-            "fi": "Henkilˆtunnus"
+            "fi": "Henkil√∂tunnus"
           },
           "range": "xsd:string"
         },
@@ -416,7 +416,7 @@
           "@id": "jhs:Henkilo",
           "@type": "sh:ShapeClass",
           "label": {
-            "fi": "Henkilˆ"
+            "fi": "Henkil√∂"
           },
           "http://www.w3.org/ns/adms#status": {
             "@id": "http://purl.org/adms/status/UnderDevelopment"
@@ -425,7 +425,7 @@
             {
               "@id": "_:b13",
               "label": {
-                "fi": "Henkilˆn ‰idinkieli"
+                "fi": "Henkil√∂n √§idinkieli"
               },
               "predicate": "jhs:aidinkieli",
               "valueClass": "skos:Concept"
@@ -433,7 +433,7 @@
             {
               "@id": "_:b14",
               "label": {
-                "fi": "Henkilˆn henkilˆtunnus"
+                "fi": "Henkil√∂n henkil√∂tunnus"
               },
               "datatype": "xsd:string",
               "sh:pattern": {
@@ -445,7 +445,7 @@
             {
               "@id": "_:b15",
               "label": {
-                "fi": "Henkilˆn kansalaisuus"
+                "fi": "Henkil√∂n kansalaisuus"
               },
               "predicate": "jhs:kansalaisuus",
               "valueClass": "skos:Concept"
@@ -453,7 +453,7 @@
             {
               "@id": "_:b16",
               "label": {
-                "fi": "Henkilˆn sukunimi"
+                "fi": "Henkil√∂n sukunimi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:sukuNimi"
@@ -461,7 +461,7 @@
             {
               "@id": "_:b17",
               "label": {
-                "fi": "Henkilon siviilis‰‰ty"
+                "fi": "Henkilon siviilis√§√§ty"
               },
               "predicate": "jhs:siviilisaaty",
               "valueClass": "skos:Concept"
@@ -469,7 +469,7 @@
             {
               "@id": "_:b18",
               "label": {
-                "fi": "Henkilˆn etunimi"
+                "fi": "Henkil√∂n etunimi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:etuNimi"
@@ -488,7 +488,7 @@
           "@id": "jhs:Ajanjakso",
           "@type": "sh:ShapeClass",
           "comment": {
-            "fi": "Nimetty aikav‰li, joka voidaan m‰‰ritell‰ eri tarkkuudella"
+            "fi": "Nimetty aikav√§li, joka voidaan m√§√§ritell√§ eri tarkkuudella"
           },
           "label": {
             "fi": "Ajanjakso"
@@ -501,7 +501,7 @@
             {
               "@id": "_:b20",
               "label": {
-                "fi": "Ajanjakson p‰‰ttymisaika"
+                "fi": "Ajanjakson p√§√§ttymisaika"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:paattymisAika"
@@ -517,7 +517,7 @@
             {
               "@id": "_:b3",
               "label": {
-                "fi": "Ajanjakson alkamisp‰iv‰m‰‰r‰"
+                "fi": "Ajanjakson alkamisp√§iv√§m√§√§r√§"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:alkamisPvm"
@@ -525,7 +525,7 @@
             {
               "@id": "_:b8",
               "label": {
-                "fi": "Ajanjakson p‰‰ttymishetki"
+                "fi": "Ajanjakson p√§√§ttymishetki"
               },
               "datatype": "xsd:dateTime",
               "predicate": "jhs:paattymisHetki"
@@ -541,7 +541,7 @@
             {
               "@id": "_:b23",
               "comment": {
-                "fi": "Ajanjaksolle m‰‰ritelty nimi"
+                "fi": "Ajanjaksolle m√§√§ritelty nimi"
               },
               "label": {
                 "fi": "Ajanjakson nimi"
@@ -552,7 +552,7 @@
             {
               "@id": "_:b24",
               "label": {
-                "fi": "Ajanjakson p‰‰ttymisp‰iv‰m‰‰r‰"
+                "fi": "Ajanjakson p√§√§ttymisp√§iv√§m√§√§r√§"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:paattymisPvm"
@@ -642,7 +642,7 @@
           "@id": "jhs:Asia",
           "@type": "sh:ShapeClass",
           "comment": {
-            "fi": "Teht‰v‰n yksitt‰inen instanssi, joka k‰sitell‰‰n prosessin mukaisessa menettelyss‰."
+            "fi": "Teht√§v√§n yksitt√§inen instanssi, joka k√§sitell√§√§n prosessin mukaisessa menettelyss√§."
           },
           "label": {
             "fi": "Asia"
@@ -676,7 +676,7 @@
             {
               "@id": "_:b38",
               "comment": {
-                "fi": "Asiaan liittyv‰ aihe, ilmiˆ tai teema. Aiheella voidaan luokitella asioita erilaisiin kokonaisuuksiin tai ryhmiin. Hyˆdynnet‰‰n esimerkiksi raportointi- ja hakun‰kymien rakentamisessa tietoj‰rjestelmiss‰."
+                "fi": "Asiaan liittyv√§ aihe, ilmi√∂ tai teema. Aiheella voidaan luokitella asioita erilaisiin kokonaisuuksiin tai ryhmiin. Hy√∂dynnet√§√§n esimerkiksi raportointi- ja hakun√§kymien rakentamisessa tietoj√§rjestelmiss√§."
               },
               "label": {
                 "fi": "Asian aiheteksti"
@@ -687,7 +687,7 @@
             {
               "@id": "_:b40",
               "comment": {
-                "fi": "Edellisen asian voimassaolo on esimerkiksi p‰‰ttynyt, mink‰ johdosta aiempi asia on jouduttu korvaamaan uudella. "
+                "fi": "Edellisen asian voimassaolo on esimerkiksi p√§√§ttynyt, mink√§ johdosta aiempi asia on jouduttu korvaamaan uudella. "
               },
               "label": {
                 "fi": "Asian korvaavuussuhde"
@@ -698,10 +698,10 @@
             {
               "@id": "_:b2",
               "comment": {
-                "fi": "Julkisen hallinnon yhteisen tai organisaation oman teht‰v‰luokituksen mukainen teht‰v‰."
+                "fi": "Julkisen hallinnon yhteisen tai organisaation oman teht√§v√§luokituksen mukainen teht√§v√§."
               },
               "label": {
-                "fi": "Asian teht‰v‰koodi"
+                "fi": "Asian teht√§v√§koodi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:tehtavaKoodi"
@@ -709,7 +709,7 @@
             {
               "@id": "_:b35",
               "comment": {
-                "fi": "Asian sis‰ltˆ‰ kuvaileva tieto"
+                "fi": "Asian sis√§lt√∂√§ kuvaileva tieto"
               },
               "label": {
                 "fi": "Asian asiasana",
@@ -721,7 +721,7 @@
             {
               "@id": "_:b41",
               "comment": {
-                "fi": "Asiatunnus voidaan muodostaa organisaatiokohtaisesti tai organisaatioiden v‰lill‰ yhteisesti sovitulla tavalla"
+                "fi": "Asiatunnus voidaan muodostaa organisaatiokohtaisesti tai organisaatioiden v√§lill√§ yhteisesti sovitulla tavalla"
               },
               "label": {
                 "fi": "Asiatunnus"
@@ -732,7 +732,7 @@
             {
               "@id": "_:b12",
               "comment": {
-                "fi": "Viittaussuhdetta voi k‰ytt‰‰ esim. osoittamaan eri asiatunnuksella esiintyvi‰ hakemuksia, jotka ratkaistaan samalla p‰‰tˆksell‰."
+                "fi": "Viittaussuhdetta voi k√§ytt√§√§ esim. osoittamaan eri asiatunnuksella esiintyvi√§ hakemuksia, jotka ratkaistaan samalla p√§√§t√∂ksell√§."
               },
               "label": {
                 "fi": "Asian viittaussuhde"
@@ -749,7 +749,7 @@
             "fi": "Ajankohdista muodostuva ajallinen jatkumo"
           },
           "label": {
-            "fi": "Aikav‰li"
+            "fi": "Aikav√§li"
           },
           "http://www.w3.org/ns/adms#status": {
             "@id": "http://purl.org/adms/status/UnderDevelopment"
@@ -758,7 +758,7 @@
             {
               "@id": "_:b11",
               "label": {
-                "fi": "Aikavalin p‰‰ttymishetki"
+                "fi": "Aikavalin p√§√§ttymishetki"
               },
               "datatype": "xsd:dateTime",
               "predicate": "jhs:paattymisHetki"
@@ -766,7 +766,7 @@
             {
               "@id": "_:b9",
               "label": {
-                "fi": "Aikav‰lin alkamishetki"
+                "fi": "Aikav√§lin alkamishetki"
               },
               "datatype": "xsd:dateTime",
               "predicate": "jhs:alkamisHetki"
@@ -794,7 +794,7 @@
             {
               "@id": "_:b5",
               "label": {
-                "fi": "Viittaus asiakirjassa k‰sitelt‰v‰‰n asiaan"
+                "fi": "Viittaus asiakirjassa k√§sitelt√§v√§√§n asiaan"
               },
               "predicate": "jhs:asia",
               "valueClass": "jhs:Asia"
@@ -861,7 +861,7 @@
             {
               "@id": "_:b31",
               "comment": {
-                "fi": "Organisaation yritys tai yhteisˆtunnus"
+                "fi": "Organisaation yritys tai yhteis√∂tunnus"
               },
               "label": {
                 "fi": "Y-tunnus"
@@ -942,7 +942,7 @@
             "@type": "skos:Concept",
             "notation": "O1",
             "prefLabel": {
-              "fi": "Avoin yhtiˆ"
+              "fi": "Avoin yhti√∂"
             }
           },
           {
@@ -958,7 +958,7 @@
             "@type": "skos:Concept",
             "notation": "O4",
             "prefLabel": {
-              "fi": "Osakeyhtiˆ"
+              "fi": "Osakeyhti√∂"
             }
           },
           {
@@ -974,7 +974,7 @@
             "@type": "skos:Concept",
             "notation": "O6",
             "prefLabel": {
-              "fi": "S‰‰tiˆ"
+              "fi": "S√§√§ti√∂"
             }
           },
           {
@@ -995,7 +995,7 @@
           }
         ]
       },
-      "rdfs:comment": "Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti k‰ytˆss‰ olevat tietosis‰llˆt",
+      "rdfs:comment": "Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti k√§yt√∂ss√§ olevat tietosis√§ll√∂t",
       "label": {
         "fi": "Julkishallinnon tietokomponentit"
       },
