@@ -17,6 +17,11 @@ npm install will automatically read resolved package versions from npm-shrinkwra
     npm install --save foo-bar-x
     npm shrinkwrap
 
+## Loading example data
+To load example data to a local api/fuseki installation, run
+
+    npm run-script example-data
+
 ## Architechture
 Interoperability user interface is separate one page application that uses IOW backend services. Backend design follows restful three layer architecture:
 

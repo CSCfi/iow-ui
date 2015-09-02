@@ -5,6 +5,7 @@
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
+    "example-data": "gulp example-data",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -187,6 +187,10 @@ gulp.task('translations', function () {
         .pipe(gulp.dest('public/translations/'));
 });
 
+gulp.task('example-data', function() {
+  require('./examples/loadExamples');
+});
+
 var buildTasks = ['templates', 'styles', 'assets', 'fonts'];
 
 gulp.task('revision', buildTasks.concat(['scripts']), function() {
