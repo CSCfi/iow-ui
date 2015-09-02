@@ -4,8 +4,10 @@ module.exports = function /* @ngInject */ groupListDirective() {
       title: '@'
     },
     template: require('./_groupList.html'),
-    controller($scope, RestAPI) {
-      $scope.groups = ['foo', 'bar'];
+    controller($scope, GroupService) {
+      GroupService.getGroups().then(response => {
+        $scope.groups = response.data['@graph'];
+      });
     }
   };
 };

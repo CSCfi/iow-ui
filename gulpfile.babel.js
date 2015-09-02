@@ -1,5 +1,4 @@
 /* eslint "no-var":0 */
-'use strict';
 
 var browserify = require('browserify');
 var browserSync = require('browser-sync');

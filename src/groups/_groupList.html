@@ -1,8 +1,8 @@
 <div class="frontpage-panel">
-  <div class="panel-heading">{{title}}</div>
+  <div class="panel-heading" translate>Selaile</div>
   <div class="frontpage-panel__body">
     <ul class="frontpage-panel__list">
-      <li class="frontpage-panel__list__item" ng-repeat="group in groups">{{group}}</li>
+      <li class="frontpage-panel__list__item" ng-repeat="group in groups">{{group['rdfs:label']}}</li>
     </ul>
   </div>
 </div>
