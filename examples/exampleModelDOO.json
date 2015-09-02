@@ -1,0 +1,873 @@
+{
+  "@context": {
+    "imports": {
+      "@id": "http://www.w3.org/2002/07/owl#imports",
+      "@type": "@id"
+    },
+    "label": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+      "@container": "@language"
+    },
+    "range": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#range",
+      "@type": "@id"
+    },
+    "comment": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
+      "@container": "@language"
+    },
+   "description": {
+      "@id": "http://purl.org/dc/elements/1.1/description"
+    },
+    "property": {
+      "@id": "http://www.w3.org/ns/shacl#property",
+      "@type": "@id"
+    },
+    "subClassOf": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "@type": "@id"
+    },
+    "attributes": {
+      "@id": "http://urn.fi/urn:nbn:fi:csc-iow-meta#attributes",
+      "@type": "@id"
+    },
+    "classes": {
+      "@id": "http://urn.fi/urn:nbn:fi:csc-iow-meta#classes",
+      "@type": "@id"
+    },
+    "associations": {
+      "@id": "http://urn.fi/urn:nbn:fi:csc-iow-meta#associations",
+      "@type": "@id"
+    },
+    "versionInfo": "http://www.w3.org/2002/07/owl#versionInfo",
+    "predicate": {
+      "@id": "http://www.w3.org/ns/shacl#predicate",
+      "@type": "@id"
+    },
+    "datatype": {
+      "@id": "http://www.w3.org/ns/shacl#datatype",
+      "@type": "@id"
+    },
+    "valueClass": {
+      "@id": "http://www.w3.org/ns/shacl#valueClass",
+      "@type": "@id"
+    },
+    "nodeKind": {
+      "@id": "http://www.w3.org/ns/shacl#nodeKind",
+      "@type": "@id"
+    },
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "doo": "http://urn.fi/urn:nbn:fi:csc-iow-doo#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "iow": "http://urn.fi/urn:nbn:fi:csc-iow-meta#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "doo:DooLibrary",
+      "@type": "iow:CoreComponentLibrary",
+      "associations": [
+        {
+          "@id": "doo:opintokokonaisuus",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": "Opintokokonaisuus"
+        },
+        {
+          "@id": "doo:opintojakso",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": "Opintojakso"
+        },
+        "doo:koodi",
+        {
+          "@id": "doo:arvosana",
+          "@type": "owl:ObjectProperty",
+          "label": {
+            "fi": "Arvosana"
+          },
+          "range": "doo:Arvosana"
+        },
+        {
+          "@id": "doo:arvoalue",
+          "@type": "owl:ObjectProperty",
+          "label": {
+            "fi": "Arvoalue"
+          },
+          "range": "skos:Concept"
+        }
+      ],
+      "attributes": [
+        {
+          "@id": "doo:peruste",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Perustelu"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:tunniste",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Tunniste"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:paattymisAika",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "paattymis aika"
+          },
+          "range": "xsd:time"
+        },
+        {
+          "@id": "doo:kuvaus",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "kuvaus"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:alkamisPvm",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "alkamis pvm"
+          },
+          "range": "xsd:date"
+        },
+        {
+          "@id": "doo:arvo",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "arvosana"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:selite",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Selite"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:tavoiteTeksti",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Tavoite"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:edellytys",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Edellytys"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:lisatietoTeksti",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "lisatieto teksti"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:laajuusTeksti",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Laajuus"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:paattymisPvm",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Päättymispäivä"
+          },
+          "range": "xsd:date"
+        },
+        {
+          "@id": "doo:maksimilaajuus",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "maksimi laajuus"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:paattymisHetki",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Päättymishetki"
+          },
+          "range": "xsd:dateTime"
+        },
+        {
+          "@id": "doo:nimi",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "nimi"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:lyhenne",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Lyhenne"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:avainsana",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Arvosana"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:alkamisHetki",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "alkamishetki"
+          },
+          "range": "xsd:dateTime"
+        },
+        {
+          "@id": "doo:alkamisAika",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "alkamis aika"
+          },
+          "range": "xsd:time"
+        },
+        {
+          "@id": "doo:minimilaajuus",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "minimilaajuus"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:laskennallinenArvosana",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Laskennallinen arvosana"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:verkkosivu",
+          "@type": "owl:DatatypeProperty",
+          "label": {
+            "fi": "Verkkosivu"
+          },
+          "range": "xsd:anyURI"
+        }
+      ],
+      "classes": [
+        {
+          "@id": "doo:Ajanjakso",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": "Aikamääreistä koostuva ajallisen ilmiön kuvaus",
+          "label": {
+            "fi": "Ajanjakso",
+            "en": "Period"
+          },
+          "subClassOf": "dcterms:Period",
+          "property": [
+            {
+              "@id": "_:b0",
+              "comment": {
+                "en": "Point in time when the period starts",
+                "fi": "Ajankohta jolloin ajanjakso katsotaan alkaneeksi"
+              },
+              "label": {
+                "fi": "Ajanjakson alkamisaika",
+                "en": "Starting time of the period"
+              },
+              "datatype": "xsd:date",
+              "predicate": "doo:alkamisAika"
+            },
+            {
+              "@id": "_:b1",
+              "comment": {
+                "fi": "Ajanjakson päättymisaika"
+              },
+              "label": {
+                "fi": "Päättymisaika"
+              },
+              "datatype": "xsd:time",
+              "predicate": "doo:paattymisAika"
+            },
+            {
+              "@id": "_:b12",
+              "comment": {
+                "fi": "Ajanjaksolle määritelty lyhenne"
+              },
+              "label": {
+                "fi": "Ajanjakson lyhenne"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:lyhenne"
+            },
+            {
+              "@id": "_:b23",
+              "comment": {
+                "fi": "Ajanjaksoa kuvaileva teksti"
+              },
+              "label": {
+                "fi": "Ajanjakson kuvaus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:kuvaus"
+            },
+            {
+              "@id": "_:b34",
+              "comment": {
+                "fi": "Ajanjakson päättymishetki"
+              },
+              "label": {
+                "fi": "Ajanjakson päättymishetki"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": "doo:paattymisHetki"
+            },
+            {
+              "@id": "_:b41",
+              "comment": {
+                "fi": "Ajanjakson luokitteleva arvo"
+              },
+              "label": {
+                "fi": "Ajanjakson koodi"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "doo:koodi",
+              "valueClass": "skos:Concept"
+            },
+            {
+              "@id": "_:b42",
+              "comment": {
+                "fi": "Ajanjakson alkamishetki"
+              },
+              "label": {
+                "fi": "Ajanjakson alkamishetki"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": "doo:alkamisHetki"
+            },
+            {
+              "@id": "_:b43",
+              "comment": {
+                "fi": "Ajanjaksolle annettu nimi"
+              },
+              "label": {
+                "fi": "Ajanjakson nimi"
+              },
+              "datatype": "rdf:PlainLiteral",
+              "predicate": "doo:nimi"
+            },
+            {
+              "@id": "_:b44",
+              "comment": {
+                "fi": "Ajanjakson päättymispäivä"
+              },
+              "label": {
+                "fi": "Ajanjakson päättymispäivä"
+              },
+              "datatype": "xsd:time",
+              "predicate": "doo:paattymisPvm"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Arvostelu",
+          "@type": "sh:ShapeClass",
+          "comment": {
+            "fi": "oppilaan, opiskelijan tai tutkinnon suorittajan oppimisen, osaamisen tai oppimistulosten arvon määrittäminen"
+          },
+          "label": {
+            "fi": "Arvostelu",
+            "en": "Grading"
+          },
+          "property": [
+            {
+              "@id": "_:b45",
+              "comment": {
+                "fi": "Arvostelulle annettu nimi"
+              },
+              "label": {
+                "fi": "Arvostelun nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:nimi"
+            },
+            {
+              "@id": "_:b2",
+              "comment": {
+                "fi": "Arvosteltu opintokokonaisuus"
+              },
+              "label": {
+                "fi": "Arvosteltu opintokokonaisuus"
+              },
+              "predicate": "doo:Opintokokonaisuus",
+              "valueClass": "doo:Opintokokonaisuus"
+            },
+            {
+              "@id": "_:b3",
+              "comment": {
+                "fi": "arvostelun selite"
+              },
+              "label": {
+                "fi": "Arvostelun selite"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:selite"
+            },
+            {
+              "@id": "_:b4",
+              "comment": {
+                "fi": "Arvostelussa määritelty arvosana"
+              },
+              "label": {
+                "fi": "Arvostelun arvosana"
+              },
+              "predicate": "doo:arvosana",
+              "valueClass": "doo:Arvosana"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Arvosana",
+          "@type": "sh:ShapeClass",
+          "comment": {
+            "fi": "arvioinnin tuloksena oppilaalle, opiskelijalle tai tutkinnon suorittajalle annettava, järjestetystä joukosta valittava numeerinen tai sanallinen ilmaus"
+          },
+          "label": {
+            "fi": "Arvosana",
+            "en": "Grade"
+          },
+          "property": [
+            {
+              "@id": "_:b5",
+              "comment": {
+                "fi": "Arvosanalle annettu nimi",
+                "en": "Name of the grade"
+              },
+              "label": {
+                "fi": "Arvosanan nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:nimi"
+            },
+            {
+              "@id": "_:b6",
+              "comment": {
+                "fi": "Arvosana-asteikon yksittäinen arvo"
+              },
+              "label": {
+                "fi": "Arvosana"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:arvo"
+            },
+            {
+              "@id": "_:b7",
+              "comment": {
+                "fi": "Arvosanan yksilöivä tunnistetieto"
+              },
+              "label": {
+                "fi": "Arvosanan koodi"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "doo:koodi",
+              "valueClass": "skos:Concept"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Opintokokonaisuus",
+          "@type": "sh:ShapeClass",
+          "comment": {
+            "fi": "opintojen osa, joka muodostuu kahdesta tai useammasta yhtä aihepiiriä tai ongelma-aluetta käsittelevästä tai jonkin tieteenalan perusteet muodostavasta opintojaksosta"
+          },
+          "label": {
+            "fi": "Opintokokonaisuus",
+            "en": "Study scheme"
+          },
+          "property": [
+            {
+              "@id": "_:b8",
+              "comment": {
+                "fi": "Opintokokonaisuuteen kuuluvat opintojaksot"
+              },
+              "label": {
+                "fi": "Opintojakso"
+              },
+              "predicate": "doo:opintojakso",
+              "valueClass": "doo:Opintojakso"
+            },
+            {
+              "@id": "_:b9",
+              "comment": {
+                "fi": "Opintokokonaisuuden kuvaus"
+              },
+              "label": {
+                "fi": "Opintojakson kuvaus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:kuvausTeksti"
+            },
+            {
+              "@id": "_:b10",
+              "comment": {
+                "fi": "Lisätietoja opintokokonaisuudesta"
+              },
+              "label": {
+                "fi": "Lisätiedot"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:lisatietoTeksti"
+            },
+            {
+              "@id": "_:b11",
+              "comment": {
+                "fi": "Opintokokonaisuuden laajuus"
+              },
+              "label": {
+                "fi": "Opintokokonaisuuden laajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:laajuusTeksti"
+            },
+            {
+              "@id": "_:b13",
+              "comment": {
+                "fi": "Opintokokonaisuutta kuvaavat avainsanat"
+              },
+              "label": {
+                "fi": "Opintojakson avainsana"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:avainsana"
+            },
+            {
+              "@id": "_:b14",
+              "comment": {
+                "fi": "Opintokokonaisuutta kuvaava sivusto"
+              },
+              "label": {
+                "fi": "Opintokokonaisuuden verkkosivu"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:verkkosivu"
+            },
+            {
+              "@id": "_:b15",
+              "comment": {
+                "fi": "Opintokokonaisuudelle määritelty tunniste"
+              },
+              "label": {
+                "fi": "Opintokokonaisuuden tunniste"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:tunniste"
+            },
+            {
+              "@id": "_:b16",
+              "comment": {
+                "fi": "Kuvaus opintokokonaisuuden tavoitteista"
+              },
+              "label": {
+                "fi": "Opintojakson tavoitteet"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:tavoiteTeksti"
+            },
+            {
+              "@id": "_:b17",
+              "comment": {
+                "fi": "Opintokokonaisuutta kuvaavat avainsanat"
+              },
+              "label": {
+                "fi": "Arvosteluperuste"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:peruste"
+            },
+            {
+              "@id": "_:b18",
+              "comment": {
+                "fi": "Opintokokonaisuuden nimi"
+              },
+              "label": {
+                "fi": "Opintokokonaisuuden nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:nimi"
+            },
+            {
+              "@id": "_:b19",
+              "comment": {
+                "fi": "Opintokokonaisuuden laajuus opintopisteinä, jonka laajuisena kokonaisuuden voi maksimisaan suorittaa"
+              },
+              "label": {
+                "fi": "Opintokokonaisuuden maksimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:maksimilaajuus"
+            },
+            {
+              "@id": "_:b20",
+              "comment": {
+                "fi": "Laajuus opintopisteinä, jonka kokonaisena kokonaisuus tulee vähintään suorittaa"
+              },
+              "label": {
+                "fi": "Opintokokonaisuuden minimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:minimilaajuus"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Opintojakso",
+          "@type": "sh:ShapeClass",
+          "comment": {
+            "fi": "tiettyä aihetta, sisältöä tai osaamisen alaa käsittelevä, erikseen suoritettavissa oleva opintojen osa"
+          },
+          "label": {
+            "en": "Study module",
+            "fi": "Opintojakso"
+          },
+          "property": [
+            {
+              "@id": "_:b21",
+              "comment": {
+                "fi": "Opintojakson arvosteluperusteiden kuvaus"
+              },
+              "label": {
+                "fi": "Opintojakson arvosteluperusteet"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:arvosteluPerusteet"
+            },
+            {
+              "@id": "_:b22",
+              "comment": {
+                "fi": "Opintojakson laajuus opintopisteinä"
+              },
+              "label": {
+                "fi": "Opintojakson laajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:laajuusTeksti"
+            },
+            {
+              "@id": "_:b24",
+              "comment": {
+                "fi": "Opintojakson tavoitteiden kuvaus"
+              },
+              "label": {
+                "fi": "Opintojakson tavoite"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:tavoiteTeksti"
+            },
+            {
+              "@id": "_:b25",
+              "comment": {
+                "fi": "Pienin opintopistemäärä jolla opintojakson voi suorittaa."
+              },
+              "label": {
+                "fi": "Opintojakson minimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:minimilaajuus"
+            },
+            {
+              "@id": "_:b26",
+              "comment": {
+                "fi": "Opintojakson nimi"
+              },
+              "label": {
+                "fi": "Opintojakson nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:nimi"
+            },
+            {
+              "@id": "_:b27",
+              "comment": {
+                "fi": "Suurin opintopistemäärä jonka opintojaksosta voi suorittaa."
+              },
+              "label": {
+                "fi": "Opintojakson maksimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:maksimilaajuus"
+            },
+            {
+              "@id": "_:b28",
+              "comment": {
+                "fi": "Opintokokonaisuus, johon opintojakso sisältyy"
+              },
+              "label": {
+                "fi": "Opintokokonaisuus"
+              },
+              "predicate": "doo:opintokokonaisuus",
+              "valueClass": "doo:Opintokokonaisuus"
+            },
+            {
+              "@id": "_:b29",
+              "comment": {
+                "fi": "Opintojakson sisällön kuvaus"
+              },
+              "label": {
+                "fi": "Opintojakson sisältö"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:kuvaus"
+            },
+            {
+              "@id": "_:b30",
+              "comment": {
+                "fi": "Opintojaksolle määritellyt lisätiedot"
+              },
+              "label": {
+                "fi": "Opintojakson lisätiedot"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:lisatietoTeksti"
+            },
+            {
+              "@id": "_:b31",
+              "label": {
+                "fi": "Opintojakson yksilöivä tunnistetieto"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:tunniste"
+            },
+            {
+              "@id": "_:b32",
+              "comment": {
+                "fi": "Ajanjakso, jolloin opintojakson kuvaus on voimassa"
+              },
+              "label": {
+                "fi": "Opintojakson ajanjakso"
+              },
+              "predicate": "doo:ajanjakso",
+              "valueClass": "doo:Ajanjakso"
+            },
+            {
+              "@id": "_:b33",
+              "comment": {
+                "fi": "Opintojakson yksilöivä tunnistetieto"
+              },
+              "label": {
+                "fi": "Opintojakson koodi"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "doo:koodi",
+              "valueClass": "skos:Concept"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Asteikko",
+          "@type": "sh:ShapeClass",
+          "comment": {
+            "fi": "Arvosteluasteikko, joka määrittää arvosanojen keskinäisen järjestyksen ja suhteet"
+          },
+          "label": {
+            "fi": "Asteikko"
+          },
+          "property": [
+            {
+              "@id": "_:b35",
+              "comment": {
+                "fi": "Asteikosta yleiskielessä käytettävä nimitys"
+              },
+              "label": {
+                "fi": "Arvosteluasteikon nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:nimi"
+            },
+            {
+              "@id": "_:b36",
+              "comment": {
+                "fi": "Asteikon käyttöä kuvaava selite"
+              },
+              "label": {
+                "fi": "Asteikon selite"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:selite"
+            },
+            {
+              "@id": "_:b37",
+              "comment": {
+                "fi": "Asteikon yksilöivä tunnistetieto"
+              },
+              "label": {
+                "fi": "Asteikon tunniste"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:tunniste"
+            },
+            {
+              "@id": "_:b38",
+              "comment": {
+                "fi": "Asteikon minimiarvo"
+              },
+              "label": {
+                "fi": "Asteikon minimiarvo"
+              },
+              "datatype": "xsd:integer",
+              "predicate": "doo:minimiArvo"
+            },
+            {
+              "@id": "_:b39",
+              "comment": {
+                "fi": "Asteikolle määritelty luokitus"
+              },
+              "label": {
+                "fi": "Asteikon arvoalue"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "doo:arvoalue",
+              "valueClass": "skos:Concept"
+            },
+            {
+              "@id": "_:b40",
+              "comment": {
+                "fi": "Asteikon maksimiarvo"
+              },
+              "label": {
+                "fi": "Asteikon maksimiarvo"
+              },
+              "datatype": "xsd:integer",
+              "predicate": "doo:maksimiArvo"
+            }
+          ]
+        }
+      ],
+      "label": "DOOLibrary",
+        "description":"Digitaalisen opiskelun ja opetuksen tietokomponentit"
+    }
+  ]
+}
