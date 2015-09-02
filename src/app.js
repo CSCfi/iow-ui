@@ -10,12 +10,17 @@ angular.module('myApp', [
   'xeditable',
   require('./directives'),
   require('./restapi'),
-  require('./services')
+  require('./services'),
+  require('./controllers')
 ])
 .config(function mainConfig($routeProvider) {
   $routeProvider
     .when('/', {
-      template: require('./main/_index.html')
+      template: require('./views/index.html')
+    })
+    .when('/groups/:groupId', {
+      template: require('./views/group.html'),
+      controller: 'GroupController'
     });
 })
 .run(function onAppRun(editableOptions) {
