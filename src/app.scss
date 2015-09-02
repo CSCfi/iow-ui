@@ -5,24 +5,31 @@
 @import './vendor/_variables';
 @import './vendor/angular-xeditable-0.1.8/css/xeditable';
 
-.group-panel {
+.iow-panel {
+  @extend .panel;
+  @extend .panel-default;
+}
+
+.frontpage-panel {
+  @extend .iow-panel;
   width: 50%;
 }
 
-.list-panel {
+.frontpage-panel__list-panel {
+  @extend .panel-body;
   padding: 0;
 }
 
-.group-list {
+.frontpage-panel__list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.group-list-item {
+.frontpage-panel__list__item {
   padding: 7px 15px 7px 15px;
 }
 
-.group-list-item:hover {
+.frontpage-panel__list__item:hover {
   background-color: $list-group-hover-bg;
 }
