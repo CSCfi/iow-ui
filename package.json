@@ -17,11 +17,9 @@
   },
   "homepage": "https://github.com/CSC-IT-Center-for-Science/iow-ui#readme",
   "dependencies": {
-    "angular": "1.4.4",
-    "angular-animate": "1.4.4",
-    "angular-aria": "1.4.4",
+    "angular": "1.4.5",
     "angular-gettext": "^2.1.0",
-    "angular-route": "1.4.4",
+    "angular-route": "1.4.5",
     "angular-ui-bootstrap": "^0.13.3",
     "babel": "^5.6.14",
     "babelify": "^6.1.1",
