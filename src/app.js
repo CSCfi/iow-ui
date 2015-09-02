@@ -18,7 +18,7 @@ angular.module('myApp', [
     .when('/', {
       template: require('./views/index.html')
     })
-    .when('/groups/:groupId', {
+    .when('/groups/:urn', {
       template: require('./views/group.html'),
       controller: 'groupController'
     });
