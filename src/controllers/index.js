@@ -2,6 +2,6 @@ const name = 'iow.controllers';
 
 const mod = angular.module(name, []);
 
-mod.controller('GroupController', require('./GroupController'));
+mod.controller('groupController', require('./groupController'));
 
 module.exports = name;

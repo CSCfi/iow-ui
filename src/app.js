@@ -20,7 +20,7 @@ angular.module('myApp', [
     })
     .when('/groups/:groupId', {
       template: require('./views/group.html'),
-      controller: 'GroupController'
+      controller: 'groupController'
     });
 })
 .run(function onAppRun(editableOptions) {

@@ -1,4 +1,4 @@
-module.exports = /* @ngInject */ function GroupService($http) {
+module.exports = /* @ngInject */ function groupService($http) {
   return {
     getGroups() {
       return $http.get('/IOAPI/rest/groups');

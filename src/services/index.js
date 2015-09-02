@@ -2,6 +2,6 @@ const name = 'iow.services';
 
 const mod = angular.module(name, []);
 
-mod.factory('GroupService', require('./GroupService'));
+mod.factory('groupService', require('./groupService'));
 
 module.exports = name;
