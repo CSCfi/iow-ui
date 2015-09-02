@@ -1,4 +1,4 @@
-const name = 'iow.groups';
+const name = 'iow.directives';
 
 const mod = angular.module(name, []);
 

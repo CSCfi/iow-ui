@@ -8,7 +8,7 @@ angular.module('myApp', [
   require('angular-ui-bootstrap'),
   'gettext',
   'xeditable',
-  require('./groups'),
+  require('./directives'),
   require('./restapi'),
   require('./services')
 ])
