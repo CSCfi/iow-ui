@@ -85,13 +85,6 @@ module.exports = function /* @ngInject */ restApiFactory($http) {
           }
         });
       },
-    getGroups() {
-        return $http.get(urlBase + 'groups', {
-          headers: {
-            Accept: 'application/ld+json'
-          }
-        });
-      },
     newUser(name, email) {
         return $http.put(urlBase + 'users', {
           params: {
