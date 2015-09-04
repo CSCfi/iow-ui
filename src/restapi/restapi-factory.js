@@ -4,7 +4,7 @@ module.exports = function /* @ngInject */ restApiFactory($http) {
   const urlBase = '/IOAPI/rest/';
   return {
     getAvailableModels() {
-        const chainedPromise = $http.get(urlBase + 'model-data', {
+        const chainedPromise = $http.get(urlBase + 'core', {
           headers: {
             Accept: 'application/ld+json'
           },
@@ -35,7 +35,7 @@ module.exports = function /* @ngInject */ restApiFactory($http) {
         return chainedPromise;
       },
     getModel(id) {
-        const chainedPromise = $http.get(urlBase + 'model-data', {
+        const chainedPromise = $http.get(urlBase + 'core', {
           headers: {
             Accept: 'application/ld+json'
           },
