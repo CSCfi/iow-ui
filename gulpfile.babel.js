@@ -52,6 +52,11 @@ var config = {
     source: ['./public/**/*.css', './public/**/*.js'],
     base: path.join(__dirname, 'public'),
     destination: './public/'
+  },
+  translations: {
+    source: './po/**/*.po',
+    watch: './po/**/*.po',
+    destination: './public/translations'
   }
 };
 
@@ -154,7 +159,7 @@ gulp.task('server', function() {
 
 gulp.task('watch', function() {
 
-  ['templates', 'styles', 'assets'].forEach(function(watched) {
+  ['templates', 'styles', 'assets', 'translations'].forEach(function(watched) {
     watch(config[watched].watch, function() {
       gulp.start(watched);
     });
@@ -180,18 +185,18 @@ gulp.task('pot', function () {
 });
 
 gulp.task('translations', function () {
-    return gulp.src('po/**/*.po')
+    return gulp.src(config.translations.source)
         .pipe(gettext.compile({
             format: 'json'
         }))
-        .pipe(gulp.dest('public/translations/'));
+        .pipe(gulp.dest(config.translations.destination));
 });
 
 gulp.task('example-data', function() {
   require('./examples/loadExamples');
 });
 
-var buildTasks = ['templates', 'styles', 'assets', 'fonts'];
+var buildTasks = ['templates', 'styles', 'assets', 'fonts', 'translations'];
 
 gulp.task('revision', buildTasks.concat(['scripts']), function() {
   return gulp.src(config.revision.source, {base: config.revision.base})
