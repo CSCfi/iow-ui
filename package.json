@@ -22,7 +22,7 @@
     "angular-gettext": "^2.1.0",
     "angular-route": "1.4.5",
     "angular-ui-bootstrap": "^0.13.3",
-    "babel": "^5.8.23",
+    "babel-core": "^5.8.23",
     "babelify": "^6.3.0",
     "bootstrap": "^3.3.5",
     "bootstrap-sass": "^3.3.5",
@@ -62,7 +62,6 @@
     ]
   },
   "devDependencies": {
-    "babel-core": "^5.8.23",
     "babel-eslint": "^4.0.7",
     "eslint": "^1.1.0",
     "eslint-config-airbnb": "0.0.7",
