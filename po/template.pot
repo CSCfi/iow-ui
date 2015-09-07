@@ -4,10 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: main/_index.html:11
-msgid "Selaa"
+#: directives/templates/groupList.html:2
+msgid "Browse"
 msgstr ""
 
-#: main/_index.html:12
-msgid "Uusimmat kuvaukset"
+#: views/index.html:3
+msgid "IOW header"
 msgstr ""
