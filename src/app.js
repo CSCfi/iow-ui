@@ -21,6 +21,10 @@ angular.module('myApp', [
     .when('/groups/:urn', {
       template: require('./views/group.html'),
       controller: 'groupController'
+    })
+    .when('/models/:urn', {
+      template: require('./views/model.html'),
+      controller: 'modelController'
     });
 })
 .run(function onAppRun($rootScope, editableOptions, languageService) {
