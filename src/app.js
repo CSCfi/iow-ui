@@ -23,11 +23,10 @@ angular.module('myApp', [
       controller: 'groupController'
     });
 })
-.run(function onAppRun(editableOptions, gettextCatalog) {
+.run(function onAppRun($rootScope, editableOptions, languageService) {
   editableOptions.theme = 'bs3';
-
-  gettextCatalog.setCurrentLanguage('fi');
-  gettextCatalog.loadRemote('translations/fi.json');
+  languageService.setLanguage('fi');
+  $rootScope.language = languageService.getLanguage();
 })
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {
 
