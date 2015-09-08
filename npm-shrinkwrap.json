@@ -8365,6 +8365,11 @@
         }
       }
     },
+    "lodash": {
+      "version": "3.10.1",
+      "from": "lodash@*",
+      "resolved": "https://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz"
+    },
     "mocha": {
       "version": "2.3.2",
       "from": "mocha@2.3.2",
