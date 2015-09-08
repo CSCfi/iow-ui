@@ -5,10 +5,9 @@ module.exports = /* @ngInject */ function GroupController($scope, $routeParams, 
 
   groupService.getGroups().then(response => {
     $scope.group = _.findWhere(response['@graph'], {'@id': urn});
-    $log.debug($scope.group);
-  });
+  }, error => $log.error(error));
 
   modelService.getModelsByGroup(urn).then(response => {
     $scope.models = response['@graph'];
-  });
+  }, error => $log.error(error));
 };
