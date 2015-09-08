@@ -1,31 +1,6 @@
 const jsonld = require('jsonld');
 
-const modelFrame = context => {
-  const newContext = angular.copy(context);
-  newContext.label = {
-    '@id': 'http://www.w3.org/2000/01/rdf-schema#label',
-    '@container': '@language'
-  };
-  newContext.comment = {
-    '@id': 'http://www.w3.org/2000/01/rdf-schema#comment',
-    '@container': '@language'
-  };
-  return  {
-    '@context': newContext,
-    classes: {
-      property: {
-        predicate: {
-          '@embed': false
-        },
-        valueClass: {
-          '@omitDefault': true,
-          '@default': [],
-          '@embed': false
-        }
-      }
-    }
-  };
-};
+const frames = require('./frames');
 
 function transformToList(response) {
   const frame = {
@@ -54,8 +29,7 @@ module.exports = /* $ngInject */ function modelService($http) {
           id: urn
         }
       }).then(response => {
-        const frame = modelFrame(response.data['@context']);
-        console.log(frame);
+        const frame = frames.modelFrame(response.data['@context']);
         return jsonld.promises.frame(response.data, frame);
       });
     }
