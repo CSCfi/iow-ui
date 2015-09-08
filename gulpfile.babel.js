@@ -1,4 +1,4 @@
-/* eslint "no-var":0 */
+/* eslint-disable */
 
 var browserify = require('browserify');
 var browserSync = require('browser-sync');
