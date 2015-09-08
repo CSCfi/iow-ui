@@ -20,6 +20,13 @@ module.exports = /* $ngInject */ function modelService($http) {
           group: groupUrn
         }
       }).then(transformToList);
+    },
+    getModelByUrn(urn) {
+      return $http.get('/IOAPI/rest/model', {
+        params: {
+          id: urn
+        }
+      });
     }
   };
 };

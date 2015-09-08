@@ -22,7 +22,7 @@ angular.module('myApp', [
       template: require('./views/group.html'),
       controller: 'groupController'
     })
-    .when('/models/:urn', {
+    .when('/models', {
       template: require('./views/model.html'),
       controller: 'modelController'
     });

@@ -4,4 +4,10 @@ const mod = angular.module(name, []);
 
 mod.directive('groupList', require('./groupList'));
 
+mod.filter('urlencode', function urlencode() {
+  return input => {
+    return window.encodeURIComponent(input);
+  };
+});
+
 module.exports = name;
