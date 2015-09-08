@@ -10,10 +10,16 @@ const comment = {
   '@container': '@language'
 };
 
+function addToContext(context, values) {
+  return _.chain(context)
+    .clone()
+    .assign(values)
+    .value();
+}
+
 function modelFrame(context) {
-  const newContext = _.chain(context).clone().assign({label, comment}).value();
   return  {
-    '@context': newContext,
+    '@context': addToContext(context, {label, comment}),
     classes: {
       property: {
         predicate: {
@@ -29,6 +35,14 @@ function modelFrame(context) {
   };
 }
 
+function modelListFrame(context, type) {
+  return {
+    '@context': addToContext(context, {label}),
+    '@type': type
+  };
+}
+
 module.exports = {
-  modelFrame
+  modelFrame,
+  modelListFrame
 };
