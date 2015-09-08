@@ -28,7 +28,7 @@
     "bootstrap": "^3.3.5",
     "bootstrap-sass": "^3.3.5",
     "browser-sync": "^2.7.2",
-    "browserify": "^10.2.1",
+    "browserify": "11.0.1",
     "browserify-ngannotate": "^1.0.1",
     "chai": "^3.0.0",
     "gulp": "~3.9.0",
@@ -53,7 +53,7 @@
     "stringify": "^3.1.0",
     "url": "^0.11.0",
     "vinyl-source-stream": "~1.0.0",
-    "watchify": "^3.2.1"
+    "watchify": "3.4.0"
   },
   "browserify": {
     "transform": [
