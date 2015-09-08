@@ -10,7 +10,7 @@ module.exports = /* $ngInject */ function modelService($http) {
           group: groupUrn
         }
       }).then(response => {
-        const frame = frames.modelListFrame(response.data['@context'], response.data['@type']);
+        const frame = frames.modelListFrame(response.data);
         return jsonld.promises.frame(response.data, frame);
       });
     },
@@ -20,7 +20,7 @@ module.exports = /* $ngInject */ function modelService($http) {
           id: urn
         }
       }).then(response => {
-        const frame = frames.modelFrame(response.data['@context']);
+        const frame = frames.modelFrame(response.data);
         return jsonld.promises.frame(response.data, frame);
       });
     }

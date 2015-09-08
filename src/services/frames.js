@@ -17,9 +17,9 @@ function addToContext(context, values) {
     .value();
 }
 
-function modelFrame(context) {
+function modelFrame(data) {
   return  {
-    '@context': addToContext(context, {label, comment}),
+    '@context': addToContext(data['@context'], {label, comment}),
     classes: {
       property: {
         predicate: {
@@ -35,10 +35,10 @@ function modelFrame(context) {
   };
 }
 
-function modelListFrame(context, type) {
+function modelListFrame(data) {
   return {
-    '@context': addToContext(context, {label}),
-    '@type': type
+    '@context': addToContext(data['@context'], {label}),
+    '@type': data['@type']
   };
 }
 
