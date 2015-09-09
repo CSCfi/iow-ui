@@ -4,10 +4,12 @@
 @import './vendor/_bootswatch';
 @import './vendor/_variables';
 @import './vendor/angular-xeditable-0.1.8/css/xeditable';
+@import './views/model';
 
 .iow-panel {
   @extend .panel;
   @extend .panel-default;
+  overflow: hidden;
 }
 
 .frontpage-panel {
