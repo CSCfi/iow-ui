@@ -1,6 +1,8 @@
 module.exports = function /* @ngInject */ classView($log) {
   return {
-    scope: {},
+    scope: {
+      class: '=activeClass'
+    },
     template: require('./templates/classView.html'),
     controller($scope) {
 

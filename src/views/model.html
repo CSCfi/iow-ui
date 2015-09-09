@@ -9,7 +9,7 @@
     <tabset>
       <tab heading="Classes">
         <ul>
-          <li ng-repeat="class in model.classes">{{class.label[language]}}</li>
+          <li ng-repeat="class in model.classes" ng-click="activate(class)">{{class.label[language]}}</li>
         </ul>
       </tab>
       <tab heading="Attributes">
@@ -20,6 +20,6 @@
     </tabset>
   </div>
   <div class="model-panel--right">
-    <class-view></class-view>
+    <class-view active-class="class"></class-view>
   </div>
 </div>
