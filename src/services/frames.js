@@ -5,6 +5,11 @@ const label = {
   '@container': '@language'
 };
 
+const title = {
+  '@id': 'http://purl.org/dc/terms/title',
+  '@container': '@language'
+};
+
 const comment = {
   '@id': 'http://www.w3.org/2000/01/rdf-schema#comment',
   '@container': '@language'
@@ -19,7 +24,8 @@ function addToContext(context, values) {
 
 function modelFrame(data) {
   return  {
-    '@context': addToContext(data['@context'], {label, comment}),
+    '@context': addToContext(data['@context'], {label, comment, title}),
+    requires: {'@embed':false},
     classes: {
       property: {
         predicate: {
