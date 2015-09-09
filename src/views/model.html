@@ -4,6 +4,18 @@
 <p>
   {{model.comment[language]}}
 </p>
+<tabset>
+  <tab heading="Classes">
+    <ul>
+      <li ng-repeat="class in model.classes">{{class.label[language]}}</li>
+    </ul>
+  </tab>
+  <tab heading="Attributes">
+    <ul>
+      <li ng-repeat="attribute in model.attributes">{{attribute.label[language]}}</li>
+    </ul>
+  </tab>
+</tabset>
 <pre>
 {{model | json}}
 </pre>
