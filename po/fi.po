@@ -1,20 +1,28 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"X-Generator: Poedit 1.8.4\n"
 "Last-Translator: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: \n"
 "Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: views/model.html:15
+msgid "Attributes"
+msgstr "Ominaisuudet"
 
 #: directives/templates/groupList.html:2
 msgid "Browse"
 msgstr "Selaa"
+
+#: views/model.html:10
+msgid "Classes"
+msgstr "Tietokomponentit"
 
 #: views/index.html:3
 msgid "IOW header"

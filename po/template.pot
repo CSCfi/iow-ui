@@ -4,8 +4,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: views/model.html:15
+msgid "Attributes"
+msgstr ""
+
 #: directives/templates/groupList.html:2
 msgid "Browse"
+msgstr ""
+
+#: views/model.html:10
+msgid "Classes"
 msgstr ""
 
 #: views/index.html:3

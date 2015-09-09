@@ -7,12 +7,12 @@
 <div class="iow-panel">
   <div class="model-panel--left">
     <tabset>
-      <tab heading="Classes">
+      <tab heading="{{'Classes' | translate}}">
         <ul class="panel__list">
           <li ng-repeat="class in model.classes" ng-class="activeClass == $index ? 'model-panel__selection' : ''" ng-click="activateClass(class, $index)">{{class.label[language]}}</li>
         </ul>
       </tab>
-      <tab heading="Attributes">
+      <tab heading="{{'Attributes' | translate}}">
         <ul class="panel__list">
           <li ng-repeat="attribute in model.attributes" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{attribute.label[language]}}</li>
         </ul>
