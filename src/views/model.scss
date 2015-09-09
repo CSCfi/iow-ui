@@ -6,3 +6,10 @@
 .model-panel--right {
   width: 100%;
 }
+
+.model-panel__selection {
+  background-color: $list-group-hover-bg;
+  border-style: solid none solid solid;
+  border-width: 1px;
+  border-color: $pre-border-color;
+}
