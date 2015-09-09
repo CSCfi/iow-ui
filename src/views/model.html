@@ -9,17 +9,17 @@
     <tabset>
       <tab heading="Classes">
         <ul class="panel__list">
-          <li ng-repeat="class in model.classes" ng-class="activeClassItem == $index ? 'model-panel__selection' : ''" ng-click="activate(class, $index)">{{class.label[language]}}</li>
+          <li ng-repeat="class in model.classes" ng-class="activeClass == $index ? 'model-panel__selection' : ''" ng-click="activateClass(class, $index)">{{class.label[language]}}</li>
         </ul>
       </tab>
       <tab heading="Attributes">
-        <ul>
-          <li ng-repeat="attribute in model.attributes">{{attribute.label[language]}}</li>
+        <ul class="panel__list">
+          <li ng-repeat="attribute in model.attributes" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{attribute.label[language]}}</li>
         </ul>
       </tab>
     </tabset>
   </div>
   <div class="model-panel--right">
-    <class-view active-class="class"></class-view>
+    <class-view active-class="class" ng-if="class"></class-view>
   </div>
 </div>
