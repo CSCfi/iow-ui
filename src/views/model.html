@@ -8,8 +8,8 @@
   <div class="model-panel--left">
     <tabset>
       <tab heading="Classes">
-        <ul>
-          <li ng-repeat="class in model.classes" ng-click="activate(class)">{{class.label[language]}}</li>
+        <ul class="panel__list">
+          <li ng-repeat="class in model.classes" ng-class="activeClassItem == $index ? 'model-panel__selection' : ''" ng-click="activate(class, $index)">{{class.label[language]}}</li>
         </ul>
       </tab>
       <tab heading="Attributes">

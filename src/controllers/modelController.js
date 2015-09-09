@@ -3,8 +3,9 @@ module.exports = /* @ngInject */ function modelController($scope, $routeParams, 
     $scope.rawModel = response;
     $scope.model = response['@graph'][0];
 
-    $scope.activate = klass => {
+    $scope.activate = (klass, index) => {
       $scope.class = klass;
+      $scope.activeClassItem = index;
     };
   });
 };
