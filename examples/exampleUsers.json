@@ -1,0 +1,39 @@
+{
+  "@graph": [
+    {
+      "@id": "mailto:tauno@example.org",
+      "@type": "foaf:Person",
+      "fullName": "Tauno Testaaja",
+      "mbox":"tauno@example.org",
+      "isPartOf": "urn:uuid:4925a5ee-3468-45c2-b31d-bc1cf644ef87"
+    },
+    {
+      "@id": "mailto:testi@example.org",
+      "@type": "foaf:Person",
+      "fullName": "Testi Testaaja",
+      "mbox":"testi@example.org",
+      "isPartOf": ["urn:uuid:7a389eed-9f66-4d3c-8c6f-199117562d70","urn:uuid:4925a5ee-3468-45c2-b31d-bc1cf644ef87"]
+    },
+    {
+      "@id": "mailto:turha@example.org",
+      "@type": "foaf:Person",
+      "mbox":"turha@example.org",
+      "fullName": "Turha Testaaja"
+    }
+  ],
+  "@context": {
+    "fullName": "http://xmlns.com/foaf/0.1/fullName",
+    "mbox": "http://xmlns.com/foaf/0.1/mbox",
+    "adms": "http://www.w3.org/ns/adms#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "sd": "http://www.w3.org/ns/sparql-service-description#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "void": "http://rdfs.org/ns/void#",
+    "vann": "http://purl.org/vocab/vann/",
+    "dcterms": "http://purl.org/dc/terms/"
+  }
+}
