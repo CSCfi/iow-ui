@@ -15,7 +15,7 @@ function languageTransform(response) {
 module.exports = /* @ngInject */ function groupService($http) {
   return {
     getGroups() {
-      return $http.get('/IOAPI/rest/groups').then(languageTransform);
+      return $http.get('/api/rest/groups').then(languageTransform);
     }
   };
 };

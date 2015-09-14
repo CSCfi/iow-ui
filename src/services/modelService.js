@@ -15,7 +15,7 @@ module.exports = /* $ngInject */ function modelService($http) {
       });
     },
     getModelByUrn(urn) {
-      return $http.get('/IOAPI/rest/model', {
+      return $http.get('/api/rest/model', {
         params: {
           id: urn
         }
