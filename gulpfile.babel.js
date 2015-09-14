@@ -143,8 +143,8 @@ gulp.task('fonts', function() {
 });
 
 gulp.task('server', function() {
-  var proxyOptions = url.parse('http://localhost:8084/IOAPI');
-  proxyOptions.route = '/IOAPI';
+  var proxyOptions = url.parse('http://localhost:8084/api');
+  proxyOptions.route = '/api';
   return browserSync({
     open: false,
     port: 9001,
