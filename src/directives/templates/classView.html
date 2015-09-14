@@ -1,7 +1,13 @@
-<ul>
-  <li ng-repeat="property in class.property">{{property.label.fi}}</li>
-</ul>
-
-<pre ng-if="class">
-{{class | json}}
-</pre>
+<h2>
+  {{class.label.fi}}
+</h2>
+<accordion style="width: 80%;">
+  <accordion-group ng-repeat="property in class.property" heading="{{property.label.fi}}">
+    <p>
+      {{property.comment.fi}}
+    </p>
+    <pre>
+{{property | json}}
+    </pre>
+  </accordion-group>
+</accordion>
