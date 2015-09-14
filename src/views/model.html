@@ -19,7 +19,7 @@
       </ul>
       <h3>Associations</h3>
       <ul class="panel__list">
-        <li ng-repeat="association in model.associations" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{association.label[language]}}</li>
+        <li ng-repeat="association in model.associations" ng-class="activeAssociation == $index ? 'model-panel__selection' : ''" ng-click="activateAssociation(association, $index)">{{association.label[language]}}</li>
       </ul>
     </tab>
   </tabset>
