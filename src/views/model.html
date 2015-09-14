@@ -13,8 +13,13 @@
       </ul>
     </tab>
     <tab heading="{{'Attributes' | translate}}">
+      <h3>Attributes</h3>
       <ul class="panel__list">
         <li ng-repeat="attribute in model.attributes" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{attribute.label[language]}}</li>
+      </ul>
+      <h3>Associations</h3>
+      <ul class="panel__list">
+        <li ng-repeat="association in model.associations" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{association.label[language]}}</li>
       </ul>
     </tab>
   </tabset>
