@@ -4,23 +4,22 @@
 <p>
   {{model.comment[language]}}
 </p>
-<div class="iow-panel">
-  <div class="model-panel--left">
-    <tabset>
-      <tab heading="{{'Classes' | translate}}">
-        <ul class="panel__list">
-          <li ng-repeat="class in model.classes" ng-class="activeClass == $index ? 'model-panel__selection' : ''" ng-click="activateClass(class, $index)">{{class.label[language]}}</li>
-        </ul>
-      </tab>
-      <tab heading="{{'Attributes' | translate}}">
-        <ul class="panel__list">
-          <li ng-repeat="attribute in model.attributes" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{attribute.label[language]}}</li>
-        </ul>
-      </tab>
-    </tabset>
-  </div>
-  <div class="model-panel--right">
-    <class-view active-class="class" ng-if="class"></class-view>
-    <attribute-view attribute="attribute" ng-if="attribute"></attribute-view>
-  </div>
+
+<div class="model-panel--left">
+  <tabset>
+    <tab heading="{{'Classes' | translate}}">
+      <ul class="panel__list">
+        <li ng-repeat="class in model.classes" ng-class="activeClass == $index ? 'model-panel__selection' : ''" ng-click="activateClass(class, $index)">{{class.label[language]}}</li>
+      </ul>
+    </tab>
+    <tab heading="{{'Attributes' | translate}}">
+      <ul class="panel__list">
+        <li ng-repeat="attribute in model.attributes" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{attribute.label[language]}}</li>
+      </ul>
+    </tab>
+  </tabset>
+</div>
+<div class="model-panel--right">
+  <class-view active-class="class" ng-if="class"></class-view>
+  <attribute-view attribute="attribute" ng-if="attribute"></attribute-view>
 </div>
