@@ -12,6 +12,7 @@
       "@type": "foaf:Person",
       "fullName": "Testi Testaaja",
       "mbox":"testi@example.org",
+      "login":true,
       "isPartOf": ["urn:uuid:7a389eed-9f66-4d3c-8c6f-199117562d70","urn:uuid:4925a5ee-3468-45c2-b31d-bc1cf644ef87"]
     },
     {
@@ -28,6 +29,8 @@
       "@id": "http://purl.org/dc/terms/isPartOf",
       "@type": "@id"
     },
+    "login":"http://urn.fi/urn:nbn:fi:csc-iow-meta#login",
+    "iow": "http://urn.fi/urn:nbn:fi:csc-iow-meta#",
     "adms": "http://www.w3.org/ns/adms#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
