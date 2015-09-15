@@ -5,7 +5,7 @@ const frames = require('./frames');
 module.exports = /* $ngInject */ function modelService($http) {
   return {
     getModelsByGroup(groupUrn) {
-      return $http.get('/IOAPI/rest/model', {
+      return $http.get('/api/rest/model', {
         params: {
           group: groupUrn
         }
