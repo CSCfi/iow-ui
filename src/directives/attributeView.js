@@ -4,8 +4,8 @@ module.exports = function /* @ngInject */ classView($log) {
       attribute: '='
     },
     template: require('./templates/attributeView.html'),
-    controller($scope) {
-
+    controller($scope, modelLanguage) {
+      $scope.getLanguage = modelLanguage.getLanguage;
     }
   };
 };

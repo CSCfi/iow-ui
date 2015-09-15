@@ -4,8 +4,8 @@ module.exports = function /* @ngInject */ classView($log) {
       class: '=activeClass'
     },
     template: require('./templates/classView.html'),
-    controller($scope) {
-
+    controller($scope, modelLanguage) {
+      $scope.getLanguage = modelLanguage.getLanguage;
     }
   };
 };
