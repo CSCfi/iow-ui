@@ -21,6 +21,7 @@ var watch = require('gulp-watch');
 var url = require('url');
 var proxy = require('proxy-middleware');
 var gettext = require('gulp-angular-gettext');
+var buffer = require('vinyl-buffer');
 
 /* eslint "no-process-env":0 */
 var production = process.env.NODE_ENV === 'production';
@@ -49,7 +50,7 @@ var config = {
     destination: './public/'
   },
   revision: {
-    source: ['./public/**/*.css', './public/**/*.js'],
+    source: ['./public/**/*.css', './public/**/*.js','./public/**/*.map'],
     base: path.join(__dirname, 'public'),
     destination: './public/'
   },
@@ -85,7 +86,10 @@ gulp.task('scripts', function() {
     .pipe(source(config.scripts.filename));
 
   if (production) {
-    pipeline = pipeline.pipe(streamify(uglify()));
+    pipeline = pipeline.pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(streamify(uglify()))
+      .pipe(sourcemaps.write());
   }
 
   return pipeline.pipe(gulp.dest(config.scripts.destination));
