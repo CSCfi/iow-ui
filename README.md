@@ -9,6 +9,7 @@ To run the build
 
 To make a production build
 
+    npm install
     NODE_ENV=production npm run-script build
 
 ## Installing new npm dependencies
