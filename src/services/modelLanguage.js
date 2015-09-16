@@ -1,4 +1,5 @@
-module.exports = /* @ngInject */ function modelLanguage() {
+module.exports = function modelLanguage() {
+  'ngInject';
   let language = 'fi';
 
   return {

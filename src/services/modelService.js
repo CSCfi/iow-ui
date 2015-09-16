@@ -2,7 +2,8 @@ const jsonld = require('jsonld');
 
 const frames = require('./frames');
 
-module.exports = /* $ngInject */ function modelService($http) {
+module.exports = function modelService($http) {
+  'ngInject';
   return {
     getModelsByGroup(groupUrn) {
       return $http.get('/api/rest/model', {

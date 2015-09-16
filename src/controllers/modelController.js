@@ -1,4 +1,5 @@
-module.exports = /* @ngInject */ function modelController($scope, $routeParams, modelService) {
+module.exports = function modelController($scope, $routeParams, modelService) {
+  'ngInject';
   modelService.getModelByUrn($routeParams.urn).then(response => {
     $scope.rawModel = response;
     $scope.model = response['@graph'][0];

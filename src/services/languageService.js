@@ -1,4 +1,5 @@
-module.exports = /* @ngInject */ function languageService(gettextCatalog) {
+module.exports = function languageService(gettextCatalog) {
+  'ngInject';
   let language;
 
   return {

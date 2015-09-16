@@ -1,6 +1,7 @@
 const _ = require('lodash');
 
-module.exports = /* @ngInject */ function GroupController($scope, $routeParams, $log, groupService, modelService) {
+module.exports = function GroupController($scope, $routeParams, $log, groupService, modelService) {
+  'ngInject';
   const urn = $routeParams.urn;
 
   groupService.getGroups().then(response => {

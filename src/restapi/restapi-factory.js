@@ -1,6 +1,7 @@
 const jsonld = require('jsonld');
 
-module.exports = function /* @ngInject */ restApiFactory($http) {
+module.exports = function restApiFactory($http) {
+  'ngInject';
   const urlBase = '/IOAPI/rest/';
   return {
     getAvailableModels() {
