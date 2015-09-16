@@ -23,7 +23,7 @@
     }
   ],
   "@context": {
-    "fullName": "http://xmlns.com/foaf/0.1/fullName",
+    "fullName": "http://xmlns.com/foaf/0.1/name",
     "mbox": "http://xmlns.com/foaf/0.1/mbox",
     "isPartOf": {
       "@id": "http://purl.org/dc/terms/isPartOf",
