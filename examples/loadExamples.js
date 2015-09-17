@@ -31,7 +31,7 @@ function makeRequest(requestPath, fileName) {
 
 makeRequest('/api/rest/groups', 'exampleGroups.json');
 makeRequest('/api/rest/users', 'exampleUsers.json');
-makeRequest('/api/rest/model?graph=http://urn.fi/urn:nbn:fi:csc-iow-doo#DooLibrary&group=urn:uuid:4925a5ee-3468-45c2-b31d-bc1cf644ef87',
+makeRequest('/api/rest/model?graph=http://urn.fi/urn:nbn:fi:csc-iow-doo&group=urn:uuid:4925a5ee-3468-45c2-b31d-bc1cf644ef87',
   'exampleModelDOO.json');
-makeRequest('/api/rest/model?graph=http://urn.fi/urn:nbn:fi:csc-iow-jhs#CoreLibrary&group=urn:uuid:7a389eed-9f66-4d3c-8c6f-199117562d70',
+makeRequest('/api/rest/model?graph=http://urn.fi/urn:nbn:fi:csc-iow-jhs&group=urn:uuid:7a389eed-9f66-4d3c-8c6f-199117562d70',
   'exampleModelJHS.json');

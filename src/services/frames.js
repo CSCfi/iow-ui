@@ -25,7 +25,7 @@ function addToContext(context, values) {
 function modelFrame(data) {
   return  {
     '@context': addToContext(data['@context'], {label, comment, title}),
-    requires: {'@embed': false},
+    imports: {'@embed': false},
     classes: {
       property: {
         predicate: {
