@@ -6,6 +6,7 @@ mod.directive('groupList', require('./groupList'));
 mod.directive('classView', require('./classView'));
 mod.directive('attributeView', require('./attributeView'));
 mod.directive('associationView', require('./associationView'));
+mod.directive('globalLanguageChooser', require('./globalLanguageChooser'));
 
 mod.filter('urlencode', function urlencode() {
   return input => {
