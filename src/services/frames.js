@@ -44,7 +44,7 @@ function modelFrame(data) {
 function modelListFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label}),
-    '@type': data['@type']
+    '@type': 'sd:NamedGraph'
   };
 }
 

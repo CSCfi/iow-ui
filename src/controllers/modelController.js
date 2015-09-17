@@ -3,6 +3,7 @@ module.exports = function modelController($scope, $routeParams, modelService) {
   modelService.getModelByUrn($routeParams.urn).then(response => {
     $scope.rawModel = response;
     $scope.model = response['@graph'][0];
+    $scope.context = response['@context'];
 
     function clearAll() {
       $scope.attribute = undefined;
