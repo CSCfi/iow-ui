@@ -7,7 +7,7 @@ module.exports = function groupListDirective($log) {
     template: require('./templates/groupList.html'),
     controller($scope, groupService, modelLanguage) {
       'ngInject';
-      $scope.getLanguage = modelLanguage.getLanguage;
+      $scope.translate = modelLanguage.translate;
 
       groupService.getGroups().then(framedResponse => {
         $scope.groups = framedResponse['@graph'];

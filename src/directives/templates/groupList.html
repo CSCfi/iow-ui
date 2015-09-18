@@ -3,7 +3,7 @@
   <div class="frontpage-panel__body">
     <ul class="panel__list">
       <li class="frontpage-panel__list__item" ng-repeat="group in groups">
-        <a href="#/groups/{{group['@id']}}">{{group.label[getLanguage()]}}</a>
+        <a href="#/groups/{{group['@id']}}">{{translate(group.label)}}</a>
       </li>
     </ul>
   </div>

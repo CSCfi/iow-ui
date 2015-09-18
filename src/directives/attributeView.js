@@ -7,7 +7,7 @@ module.exports = function classView($log) {
     template: require('./templates/attributeView.html'),
     controller($scope, modelLanguage) {
       'ngInject';
-      $scope.getLanguage = modelLanguage.getLanguage;
+      $scope.translate = modelLanguage.translate;
     }
   };
 };

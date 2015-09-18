@@ -7,7 +7,7 @@ module.exports = function associationView($log) {
     template: require('./templates/associationView.html'),
     controller($scope, modelLanguage) {
       'ngInject';
-      $scope.getLanguage = modelLanguage.getLanguage;
+      $scope.translate = modelLanguage.translate;
     }
   };
 };
