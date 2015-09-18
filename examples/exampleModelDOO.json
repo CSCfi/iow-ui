@@ -1,35 +1,15 @@
 {
   "@context": {
-    "predicate": {
-      "@id": "http://www.w3.org/ns/shacl#predicate",
-      "@type": "@id"
-    },
-    "datatype": {
-      "@id": "http://www.w3.org/ns/shacl#datatype",
-      "@type": "@id"
-    },
-    "label": {
-      "@id": "http://www.w3.org/2000/01/rdf-schema#label",
-      "@container": "@language"
-    },
-    "comment": {
-      "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
-      "@container": "@language"
-    },
     "range": {
       "@id": "http://www.w3.org/2000/01/rdf-schema#range",
       "@type": "@id"
     },
-    "valueClass": {
-      "@id": "http://www.w3.org/ns/shacl#valueClass",
+    "label": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#label",
       "@type": "@id"
     },
-    "property": {
-      "@id": "http://www.w3.org/ns/shacl#property",
-      "@type": "@id"
-    },
-    "subClassOf": {
-      "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+    "title": {
+      "@id": "http://purl.org/dc/terms/title",
       "@type": "@id"
     },
     "preferredXMLNamespacePrefix": {
@@ -40,16 +20,36 @@
       "@id": "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName",
       "@type": "@id"
     },
-    "title": {
-      "@id": "http://purl.org/dc/terms/title",
-      "@container": "@language"
+    "predicate": {
+      "@id": "http://www.w3.org/ns/shacl#predicate",
+      "@type": "@id"
     },
-    "nodeKind": {
-      "@id": "http://www.w3.org/ns/shacl#nodeKind",
+    "datatype": {
+      "@id": "http://www.w3.org/ns/shacl#datatype",
+      "@type": "@id"
+    },
+    "comment": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
+      "@type": "@id"
+    },
+    "property": {
+      "@id": "http://www.w3.org/ns/shacl#property",
+      "@type": "@id"
+    },
+    "subClassOf": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "@type": "@id"
+    },
+    "valueClass": {
+      "@id": "http://www.w3.org/ns/shacl#valueClass",
       "@type": "@id"
     },
     "example": {
       "@id": "http://www.w3.org/2004/02/skos/core#example",
+      "@type": "@id"
+    },
+    "nodeKind": {
+      "@id": "http://www.w3.org/ns/shacl#nodeKind",
       "@type": "@id"
     },
     "attributes": {
@@ -91,511 +91,688 @@
   "@graph": [
     {
       "@id": "http://urn.fi/urn:nbn:fi:csc-iow-doo",
+      "@type": [
+        "owl:Ontology",
+        "iow:CoreComponentLibrary"
+      ],
       "references": {
         "@id": "http://www.yso.fi/onto/yso/",
-        "title": {
-          "fi": "YSO - Yleinen suomalainen ontologia"
-        },
-        "rdf:type": {
-          "@id": "skos:ConceptScheme"
+        "@type": "skos:ConceptScheme",
+        "dct:title": {
+          "@language": "fi",
+          "@value": "YSO - Yleinen suomalainen ontologia"
         }
       },
-      "requires": {
-        "@id": "http://urn.fi/urn:nbn:fi:csc-iow-jhs",
-        "title": {
-          "fi": "Julkishallinnon tietokomponentit"
+      "requires": [
+        {
+          "@id": "http://urn.fi/urn:nbn:fi:csc-iow-jhs",
+          "@type": "dcap:MetadataVocabulary",
+          "dct:title": {
+            "@language": "fi",
+            "@value": "Julkishallinnon tietokomponentit"
+          },
+          "dcap:preferredXMLNamespaceName": "http://urn.fi/urn:nbn:fi:csc-iow-jhs#",
+          "dcap:preferredXMLNamespacePrefix": "jhs"
         },
-        "dcap:preferredXMLNamespaceName": "http://urn.fi/urn:nbn:fi:csc-iow-jhs#",
-        "dcap:preferredXMLNamespacePrefix": "jhs",
-        "rdf:type": {
-          "@id": "dcap:MetadataVocabulary"
+        {
+          "@id": "http://purl.iso.org/iso-iec/19788/-1/",
+          "@type": "dcap:MetadataVocabulary",
+          "dct:title": {
+            "@language": "en",
+            "@value": "Metadata for Learning Resources Part 1"
+          },
+          "dcap:preferredXMLNamespaceName": "http://purl.iso.org/iso-iec/19788/-1/",
+          "dcap:preferredXMLNamespacePrefix": "mlr-1"
         }
-      },
+      ],
       "associations": [
         {
           "@id": "doo:ilmoittautumisenKohde",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Ilmoittautumisen kohde"
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Ilmoittautumisen kohde"
           }
         },
-        {
-          "@id": "doo:haku",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Kohteena oleva koulutukseen tähtäävä haku"
-          }
-        },
-        {
-          "@id": "doo:arvoalue",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Arvoalue"
-          },
-          "range": "skos:Concept"
-        },
-        {
-          "@id": "doo:arvosana",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Arvosana"
-          },
-          "range": "doo:Arvosana"
-        },
-        {
-          "@id": "doo:tilaKoodi",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Tilakoodi"
-          }
-        },
-        {
-          "@id": "doo:hakijaryhma",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Hakijaryhmä"
-          }
-        },
-        {
-          "@id": "doo:harjoitteluKoulu",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Harjoittelukoulu"
-          }
-        },
-        {
-          "@id": "doo:ilmoittautumisenTila",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Ilmoittautumisen tila"
-          }
-        },
-        {
-          "@id": "doo:ilmoittautuja",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Ilmoittautuja"
-          }
-        },
-        {
-          "@id": "doo:hakukohde",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "comment": {
-            "fi": "Asiaan liittyvä hakukohde"
-          },
-          "label": {
-            "fi": "Hakukohde"
-          }
-        },
-        {
-          "@id": "doo:ajankohta",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Ajankohta"
-          },
-          "range": "xsd:date"
-        },
-        "doo:koodi",
         {
           "@id": "doo:voimassaolo",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
+          "@type": "owl:ObjectProperty",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "Voimassaolo aika"
           },
-          "comment": {
-            "fi": "Voimassaolo aika"
-          },
-          "label": {
-            "fi": "Voimassaolo"
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Voimassaolo"
           },
           "range": "doo:Ajanjakso"
         },
         {
-          "@id": "doo:opintokokonaisuus",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Opintokokonaisuus"
+          "@id": "doo:opintojakso",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Opintojakso"
           }
         },
         {
-          "@id": "doo:opintojakso",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Opintojakso"
+          "@id": "doo:ilmoittautuja",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Ilmoittautuja"
           }
+        },
+        {
+          "@id": "doo:arvosana",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Arvosana"
+          },
+          "range": "doo:Arvosana"
+        },
+        {
+          "@id": "doo:hakijaryhma",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Hakijaryhmä"
+          }
+        },
+        {
+          "@id": "doo:haku",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Kohteena oleva koulutukseen tähtäävä haku"
+          }
+        },
+        {
+          "@id": "doo:tilaKoodi",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Tilakoodi"
+          }
+        },
+        {
+          "@id": "doo:ilmoittautumisenTila",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Ilmoittautumisen tila"
+          }
+        },
+        {
+          "@id": "doo:hakukohde",
+          "@type": "owl:ObjectProperty",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "Asiaan liittyvä hakukohde"
+          },
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Hakukohde"
+          }
+        },
+        {
+          "@id": "doo:ajankohta",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Ajankohta"
+          },
+          "range": "xsd:date"
+        },
+        {
+          "@id": "doo:harjoitteluKoulu",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Harjoittelukoulu"
+          }
+        },
+        {
+          "@id": "doo:opintokokonaisuus",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Opintokokonaisuus"
+          }
+        },
+        {
+          "@id": "doo:arvoalue",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Arvoalue"
+          },
+          "range": "skos:Concept"
+        },
+        {
+          "@id": "doo:koodi",
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Koodi"
+          },
+          "range": "skos:Concept"
         },
         {
           "@id": "doo:tyyppi",
-          "rdf:type": {
-            "@id": "owl:ObjectProperty"
-          },
-          "label": {
-            "fi": "Tyyppi"
+          "@type": "owl:ObjectProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Tyyppi"
           }
         }
       ],
       "attributes": [
         {
-          "@id": "doo:selite",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Selite"
-          },
-          "range": "rdf:PlainLiteral"
-        },
-        {
-          "@id": "doo:arvo",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Arvosana"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "doo:maksimilaajuus",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Maksimilaajuus"
-          },
-          "range": "rdf:PlainLiteral"
-        },
-        {
-          "@id": "doo:paattymisHetki",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Päättymishetki"
-          },
-          "range": "xsd:dateTime"
-        },
-        {
-          "@id": "doo:nimilyhenne",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Lyhenne"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "doo:laskennallinenArvosana",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Laskennallinen arvosana"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "doo:korkeakouluperusta",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Korkeakouluperusta"
-          }
-        },
-        {
-          "@id": "doo:minimilaajuus",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Minimilaajuus"
-          },
-          "range": "rdf:PlainLiteral"
-        },
-        {
-          "@id": "doo:avainsana",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Avainsana"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "doo:edellytys",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Edellytys"
-          },
-          "range": "rdf:PlainLiteral"
-        },
-        {
-          "@id": "doo:tavoiteTeksti",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Tavoite"
-          },
-          "range": "rdf:PlainLiteral"
-        },
-        {
-          "@id": "doo:nimi",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Nimi"
-          },
-          "range": "rdf:PlainLiteral"
-        },
-        {
-          "@id": "doo:minimiArvo",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Minimiarvo"
-          },
-          "range": "xsd:integer"
-        },
-        {
-          "@id": "doo:lisatietoTeksti",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "lisatieto teksti"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "doo:verkkosivu",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Verkkosivu"
-          },
-          "range": "xsd:anyURI"
-        },
-        {
-          "@id": "doo:kuvaus",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Kuvaus"
-          },
-          "range": "rdf:PlainLiteral"
-        },
-        {
-          "@id": "doo:alkamisAika",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Alkamisaika"
-          },
-          "range": "xsd:time"
-        },
-        {
-          "@id": "doo:paattymisPvm",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Päättymispäivä"
-          },
-          "range": "xsd:date"
-        },
-        {
-          "@id": "doo:tunniste",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Tunniste"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "doo:alkamisPvm",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Alkamispäivä"
-          },
-          "range": "xsd:date"
-        },
-        {
-          "@id": "doo:maksimiArvo",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Maksimiarvo"
-          },
-          "range": "xsd:integer"
-        },
-        {
           "@id": "doo:alkamisHetki",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Alkamishetki"
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Alkamishetki"
           },
           "range": "xsd:dateTime"
         },
         {
           "@id": "doo:paattymisAika",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Päättymisaika"
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Päättymisaika"
           },
           "range": "xsd:time"
         },
         {
-          "@id": "doo:peruste",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
-          },
-          "label": {
-            "fi": "Perustelu"
+          "@id": "doo:laajuusTeksti",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Laajuus"
           },
           "range": "rdf:PlainLiteral"
         },
         {
-          "@id": "doo:laajuusTeksti",
-          "rdf:type": {
-            "@id": "owl:DatatypeProperty"
+          "@id": "doo:maksimiArvo",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Maksimiarvo"
           },
-          "label": {
-            "fi": "Laajuus"
+          "range": "xsd:integer"
+        },
+        {
+          "@id": "doo:verkkosivu",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Verkkosivu"
+          },
+          "range": "xsd:anyURI"
+        },
+        {
+          "@id": "doo:nimilyhenne",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Lyhenne"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:tunniste",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Tunniste"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:korkeakouluperusta",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Korkeakouluperusta"
+          }
+        },
+        {
+          "@id": "doo:tavoiteTeksti",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Tavoite"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:alkamisPvm",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Alkamispäivä"
+          },
+          "range": "xsd:date"
+        },
+        {
+          "@id": "doo:minimiArvo",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Minimiarvo"
+          },
+          "range": "xsd:integer"
+        },
+        {
+          "@id": "doo:lisatietoTeksti",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "lisatieto teksti"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:laskennallinenArvosana",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Laskennallinen arvosana"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:edellytys",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Edellytys"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:kuvaus",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Kuvaus"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:paattymisPvm",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Päättymispäivä"
+          },
+          "range": "xsd:date"
+        },
+        {
+          "@id": "doo:minimilaajuus",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Minimilaajuus"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:alkamisAika",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Alkamisaika"
+          },
+          "range": "xsd:time"
+        },
+        {
+          "@id": "doo:paattymisHetki",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Päättymishetki"
+          },
+          "range": "xsd:dateTime"
+        },
+        {
+          "@id": "doo:avainsana",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Avainsana"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:maksimilaajuus",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Maksimilaajuus"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:nimi",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Nimi"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:arvo",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Arvosana"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "doo:selite",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Selite"
+          },
+          "range": "rdf:PlainLiteral"
+        },
+        {
+          "@id": "doo:peruste",
+          "@type": "owl:DatatypeProperty",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Perustelu"
           },
           "range": "rdf:PlainLiteral"
         }
       ],
       "classes": [
         {
-          "@id": "doo:Koulutustoimija",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
+          "@id": "doo:Ajanjakso",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "Aikamääreistä koostuva ajallisen ilmiön kuvaus"
           },
-          "label": {
-            "fi": "Koulutustoimija"
-          },
-          "subClassOf": "jhs:Organisaatio",
+          "rdfs:label": [
+            {
+              "@language": "en",
+              "@value": "Period"
+            },
+            {
+              "@language": "fi",
+              "@value": "Ajanjakso"
+            }
+          ],
+          "subClassOf": "jhs:Ajanjakso",
           "property": [
             {
-              "@id": "_:b15",
-              "label": {
-                "fi": "Organisaation Y-tunnus"
+              "@id": "_:b70",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjaksolle määritelty lyhenne"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Ajanjakson lyhenne"
               },
               "datatype": "xsd:string",
-              "predicate": "jhs:ytunnus"
+              "predicate": "doo:nimilyhenne"
             },
             {
-              "@id": "_:b16",
-              "label": {
-                "fi": "Koulutustoimijan voimassaolo"
+              "@id": "_:b56",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjakson alkamishetki"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Ajanjakson alkamishetki"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": "doo:alkamisHetki"
+            },
+            {
+              "@id": "_:b58",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjakson päättymishetki"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Ajanjakson päättymishetki"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": "doo:paattymisHetki"
+            },
+            {
+              "@id": "_:b68",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjaksoa kuvaileva teksti"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Ajanjakson kuvaus"
               },
               "datatype": "xsd:string",
-              "predicate": "doo:Ajanjakso"
+              "predicate": "doo:kuvaus"
             },
             {
-              "@id": "_:b17",
-              "label": {
-                "fi": "Koulutustoimijan nimi"
+              "@id": "_:b66",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjakson luokitteleva arvo"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Ajanjakson koodi"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "doo:koodi",
+              "valueClass": "skos:Concept"
+            },
+            {
+              "@id": "_:b6",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjakson päättymispäivä"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Ajanjakson päättymispäivä"
+              },
+              "datatype": "xsd:time",
+              "predicate": "doo:paattymisPvm"
+            },
+            {
+              "@id": "_:b71",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjaksolle annettu nimi"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Ajanjakson nimi"
+              },
+              "datatype": "rdf:PlainLiteral",
+              "predicate": "doo:nimi"
+            },
+            {
+              "@id": "_:b72",
+              "rdfs:comment": [
+                {
+                  "@language": "fi",
+                  "@value": "Ajankohta jolloin ajanjakso katsotaan alkaneeksi"
+                },
+                {
+                  "@language": "en",
+                  "@value": "Point in time when the period starts"
+                }
+              ],
+              "rdfs:label": [
+                {
+                  "@language": "en",
+                  "@value": "Starting time of the period"
+                },
+                {
+                  "@language": "fi",
+                  "@value": "Ajanjakson alkamisaika"
+                }
+              ],
+              "datatype": "xsd:date",
+              "predicate": "doo:alkamisAika"
+            },
+            {
+              "@id": "_:b67",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjakson päättymisaika"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Päättymisaika"
+              },
+              "datatype": "xsd:time",
+              "predicate": "doo:paattymisAika"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Asteikko",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "Arvosteluasteikko, joka määrittää arvosanojen keskinäisen järjestyksen ja suhteet"
+          },
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Asteikko"
+          },
+          "property": [
+            {
+              "@id": "_:b7",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Asteikosta yleiskielessä käytettävä nimitys"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvosteluasteikon nimi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:nimi"
             },
             {
-              "@id": "_:b18",
-              "label": {
-                "fi": "Koulutustoimijan alaorganisaatio"
+              "@id": "_:b73",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Asteikon minimiarvo"
               },
-              "datatype": "xsd:string",
-              "predicate": "jhs:organisaatio"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Asteikon minimiarvo"
+              },
+              "datatype": "xsd:integer",
+              "predicate": "doo:minimiArvo"
             },
             {
-              "@id": "_:b19",
-              "comment": {
-                "fi": "Organisaation korkeakoulukytkentä"
+              "@id": "_:b63",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Asteikon maksimiarvo"
               },
-              "label": {
-                "fi": "Korkeakoululähtöinen yritys"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Asteikon maksimiarvo"
               },
-              "datatype": "xsd:boolean",
-              "predicate": "doo:korkeakouluperusta"
+              "datatype": "xsd:integer",
+              "predicate": "doo:maksimiArvo"
+            },
+            {
+              "@id": "_:b69",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Asteikolle määritelty luokitus"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Asteikon arvoalue"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "doo:arvoalue",
+              "valueClass": "skos:Concept"
+            },
+            {
+              "@id": "_:b62",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Asteikon yksilöivä tunnistetieto"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Asteikon tunniste"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:tunniste"
+            },
+            {
+              "@id": "_:b54",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Asteikon käyttöä kuvaava selite"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Asteikon selite"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:selite"
             }
           ]
         },
         {
           "@id": "doo:Harjoittelijavaihto",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "Opiskelijan suorittama opintoihin liittyvä työharjoittelu korkeakoulun ulkopuolella."
           },
-          "comment": {
-            "fi": "Opiskelijan suorittama opintoihin liittyvä työharjoittelu korkeakoulun ulkopuolella."
-          },
-          "label": {
-            "fi": "Harjoittelijavaihto"
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Harjoittelijavaihto"
           },
           "property": [
             {
-              "@id": "_:b56",
-              "comment": {
-                "fi": "Harjoitteluvaihdolle määritelty nimi"
+              "@id": "_:b0",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Harjoitteluvaihdolle määritelty nimi"
               },
-              "label": {
-                "fi": "Harjoitelijavaihdon nimi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Harjoitelijavaihdon nimi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:nimi"
             },
             {
-              "@id": "_:b72",
-              "comment": {
-                "fi": "Harjoittelijavaihdon kuvausteksti"
+              "@id": "_:b1",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Harjoittelijavaihdon kuvausteksti"
               },
-              "label": {
-                "fi": "Harjoittelijavaihdon selite"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Harjoittelijavaihdon selite"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:kuvausTeksti"
@@ -603,150 +780,84 @@
           ]
         },
         {
-          "@id": "doo:Ajanjakso",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
+          "@id": "doo:Valintatapa",
+          "@type": "sh:ShapeClass",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Valintatapa"
           },
-          "comment": {
-            "fi": "Aikamääreistä koostuva ajallisen ilmiön kuvaus"
-          },
-          "label": {
-            "fi": "Ajanjakso",
-            "en": "Period"
-          },
-          "subClassOf": "jhs:Ajanjakso",
           "property": [
             {
-              "@id": "_:b1",
-              "comment": {
-                "fi": "Ajanjakson luokitteleva arvo"
+              "@id": "_:b64",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Tieto, joka ilmaisee mitä valintaperustetta käytetään hakijan hyväksymisessä koulutukseen."
               },
-              "label": {
-                "fi": "Ajanjakson koodi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Valintatavan nimi"
               },
-              "nodeKind": "sh:IRI",
-              "predicate": "doo:koodi",
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b65",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Valintatavasta yleiskielessä käytettävä selite"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Valintatavan kuvaus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:kuvausTeksti"
+            },
+            {
+              "@id": "_:b57",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Valintatavan luokituksen mukaisesti yksilöivä tunnistetieto."
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "koodi"
+              },
+              "predicate": "jhs:koodi",
               "valueClass": "skos:Concept"
-            },
-            {
-              "@id": "_:b2",
-              "comment": {
-                "fi": "Ajanjakson päättymishetki"
-              },
-              "label": {
-                "fi": "Ajanjakson päättymishetki"
-              },
-              "datatype": "xsd:dateTime",
-              "predicate": "doo:paattymisHetki"
-            },
-            {
-              "@id": "_:b3",
-              "comment": {
-                "fi": "Ajanjakson alkamishetki"
-              },
-              "label": {
-                "fi": "Ajanjakson alkamishetki"
-              },
-              "datatype": "xsd:dateTime",
-              "predicate": "doo:alkamisHetki"
-            },
-            {
-              "@id": "_:b4",
-              "comment": {
-                "fi": "Ajanjaksolle määritelty lyhenne"
-              },
-              "label": {
-                "fi": "Ajanjakson lyhenne"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:nimilyhenne"
-            },
-            {
-              "@id": "_:b5",
-              "comment": {
-                "fi": "Ajanjakson päättymispäivä"
-              },
-              "label": {
-                "fi": "Ajanjakson päättymispäivä"
-              },
-              "datatype": "xsd:time",
-              "predicate": "doo:paattymisPvm"
-            },
-            {
-              "@id": "_:b6",
-              "comment": {
-                "fi": "Ajanjaksolle annettu nimi"
-              },
-              "label": {
-                "fi": "Ajanjakson nimi"
-              },
-              "datatype": "rdf:PlainLiteral",
-              "predicate": "doo:nimi"
-            },
-            {
-              "@id": "_:b7",
-              "comment": {
-                "en": "Point in time when the period starts",
-                "fi": "Ajankohta jolloin ajanjakso katsotaan alkaneeksi"
-              },
-              "label": {
-                "en": "Starting time of the period",
-                "fi": "Ajanjakson alkamisaika"
-              },
-              "datatype": "xsd:date",
-              "predicate": "doo:alkamisAika"
-            },
-            {
-              "@id": "_:b8",
-              "comment": {
-                "fi": "Ajanjakson päättymisaika"
-              },
-              "label": {
-                "fi": "Päättymisaika"
-              },
-              "datatype": "xsd:time",
-              "predicate": "doo:paattymisAika"
-            },
-            {
-              "@id": "_:b9",
-              "comment": {
-                "fi": "Ajanjaksoa kuvaileva teksti"
-              },
-              "label": {
-                "fi": "Ajanjakson kuvaus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:kuvaus"
             }
           ]
         },
         {
           "@id": "doo:Hakutoive",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "label": {
-            "fi": "Hakutoive"
+          "@type": "sh:ShapeClass",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Hakutoive"
           },
           "property": [
             {
-              "@id": "_:b57",
-              "comment": {
-                "fi": "Hakukohteelle määritelty prioriteetti"
+              "@id": "_:b74",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Hakukohteelle määritelty prioriteetti"
               },
-              "label": {
-                "fi": "Prioriteetti"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Prioriteetti"
               },
               "datatype": "xsd:integer",
               "predicate": "doo:prioriteetti"
             },
             {
-              "@id": "_:b50",
-              "comment": {
-                "fi": "Hakukohde, jonne henkilö hakee"
+              "@id": "_:b59",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Hakukohde, jonne henkilö hakee"
               },
-              "label": {
-                "fi": "Hakutoiveen kohde"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hakutoiveen kohde"
               },
               "predicate": "doo:hakukohde",
               "valueClass": "doo:Hakukohde"
@@ -754,615 +865,31 @@
           ]
         },
         {
-          "@id": "doo:Opintokokonaisuus",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
+          "@id": "doo:Valintakiintio",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "Tietyin perustein hakijaryhmälle määritelty kiintiö aloituspaikkoja"
           },
-          "comment": {
-            "fi": "opintojen osa, joka muodostuu kahdesta tai useammasta yhtä aihepiiriä tai ongelma-aluetta käsittelevästä tai jonkin tieteenalan perusteet muodostavasta opintojaksosta"
-          },
-          "label": {
-            "fi": "Opintokokonaisuus",
-            "en": "Study scheme"
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Valintakiintiö"
           },
           "property": [
             {
-              "@id": "_:b21",
-              "comment": {
-                "fi": "Opintokokonaisuutta kuvaavat avainsanat"
-              },
-              "label": {
-                "fi": "Opintojakson avainsana"
+              "@id": "_:b4",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "nimi"
               },
               "datatype": "xsd:string",
-              "predicate": "doo:avainsana"
-            },
-            {
-              "@id": "_:b28",
-              "comment": {
-                "fi": "Opintokokonaisuuden laajuus opintopisteinä, jonka laajuisena kokonaisuuden voi maksimisaan suorittaa"
-              },
-              "label": {
-                "fi": "Opintokokonaisuuden maksimilaajuus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:maksimilaajuus"
+              "predicate": "jhs:nimi"
             },
             {
               "@id": "_:b29",
-              "comment": {
-                "fi": "Opintokokonaisuuden kuvaus"
-              },
-              "label": {
-                "fi": "Opintojakson kuvaus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:kuvausTeksti"
-            },
-            {
-              "@id": "_:b30",
-              "comment": {
-                "fi": "Kuvaus opintokokonaisuuden tavoitteista"
-              },
-              "label": {
-                "fi": "Opintojakson tavoitteet"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:tavoiteTeksti"
-            },
-            {
-              "@id": "_:b31",
-              "comment": {
-                "fi": "Lisätietoja opintokokonaisuudesta"
-              },
-              "label": {
-                "fi": "Lisätiedot"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:lisatietoTeksti"
-            },
-            {
-              "@id": "_:b32",
-              "comment": {
-                "fi": "Opintokokonaisuuden laajuus"
-              },
-              "label": {
-                "fi": "Opintokokonaisuuden laajuus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:laajuusTeksti"
-            },
-            {
-              "@id": "_:b34",
-              "comment": {
-                "fi": "Opintokokonaisuutta kuvaavat avainsanat"
-              },
-              "label": {
-                "fi": "Arvosteluperuste"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:peruste"
-            },
-            {
-              "@id": "_:b35",
-              "comment": {
-                "fi": "Opintokokonaisuuden nimi"
-              },
-              "label": {
-                "fi": "Opintokokonaisuuden nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b25",
-              "comment": {
-                "fi": "Opintokokonaisuudelle määritelty tunniste"
-              },
-              "label": {
-                "fi": "Opintokokonaisuuden tunniste"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:tunniste"
-            },
-            {
-              "@id": "_:b36",
-              "comment": {
-                "fi": "Laajuus opintopisteinä, jonka kokonaisena kokonaisuus tulee vähintään suorittaa"
-              },
-              "label": {
-                "fi": "Opintokokonaisuuden minimilaajuus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:minimilaajuus"
-            },
-            {
-              "@id": "_:b37",
-              "comment": {
-                "fi": "Opintokokonaisuuteen kuuluvat opintojaksot"
-              },
-              "label": {
-                "fi": "Opintojakso"
-              },
-              "predicate": "doo:opintojakso",
-              "valueClass": "doo:Opintojakso"
-            },
-            {
-              "@id": "_:b10",
-              "comment": {
-                "fi": "Opintokokonaisuutta kuvaava sivusto"
-              },
-              "label": {
-                "fi": "Opintokokonaisuuden verkkosivu"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:verkkosivu"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Opintojakso",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "tiettyä aihetta, sisältöä tai osaamisen alaa käsittelevä, erikseen suoritettavissa oleva opintojen osa"
-          },
-          "label": {
-            "fi": "Opintojakso",
-            "en": "Study module"
-          },
-          "property": [
-            {
-              "@id": "_:b0",
-              "comment": {
-                "fi": "Opintojaksolle määritellyt lisätiedot"
-              },
-              "label": {
-                "fi": "Opintojakson lisätiedot"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:lisatietoTeksti"
-            },
-            {
-              "@id": "_:b11",
-              "comment": {
-                "fi": "Ajanjakso, jolloin opintojakson kuvaus on voimassa"
-              },
-              "label": {
-                "fi": "Opintojakson ajanjakso"
-              },
-              "predicate": "doo:ajanjakso",
-              "valueClass": "doo:Ajanjakso"
-            },
-            {
-              "@id": "_:b60",
-              "comment": {
-                "fi": "Opintojakson sisällön kuvaus"
-              },
-              "label": {
-                "fi": "Opintojakson sisältö"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:kuvaus"
-            },
-            {
-              "@id": "_:b61",
-              "label": {
-                "fi": "Opintojakson yksilöivä tunnistetieto"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:tunniste"
-            },
-            {
-              "@id": "_:b68",
-              "comment": {
-                "fi": "Opintojakson yksilöivä tunnistetieto"
-              },
-              "label": {
-                "fi": "Opintojakson koodi"
-              },
-              "nodeKind": "sh:IRI",
-              "predicate": "jhs:koodi",
-              "valueClass": "skos:Concept"
-            },
-            {
-              "@id": "_:b69",
-              "comment": {
-                "fi": "Opintojakson nimi"
-              },
-              "label": {
-                "fi": "Opintojakson nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b67",
-              "comment": {
-                "fi": "Opintokokonaisuus, johon opintojakso sisältyy"
-              },
-              "label": {
-                "fi": "Opintokokonaisuus"
-              },
-              "predicate": "doo:opintokokonaisuus",
-              "valueClass": "doo:Opintokokonaisuus"
-            },
-            {
-              "@id": "_:b70",
-              "comment": {
-                "fi": "Opintojakson arvosteluperusteiden kuvaus"
-              },
-              "label": {
-                "fi": "Opintojakson arvosteluperusteet"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:arvosteluPerusteet"
-            },
-            {
-              "@id": "_:b23",
-              "comment": {
-                "fi": "Opintojakson tavoitteiden kuvaus"
-              },
-              "label": {
-                "fi": "Opintojakson tavoite"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:tavoiteTeksti"
-            },
-            {
-              "@id": "_:b59",
-              "comment": {
-                "fi": "Suurin opintopistemäärä jonka opintojaksosta voi suorittaa."
-              },
-              "label": {
-                "fi": "Opintojakson maksimilaajuus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:maksimilaajuus"
-            },
-            {
-              "@id": "_:b22",
-              "comment": {
-                "fi": "Pienin opintopistemäärä jolla opintojakson voi suorittaa."
-              },
-              "label": {
-                "fi": "Opintojakson minimilaajuus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:minimilaajuus"
-            },
-            {
-              "@id": "_:b71",
-              "comment": {
-                "fi": "Opintojakson laajuus opintopisteinä"
-              },
-              "label": {
-                "fi": "Opintojakson laajuus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:laajuusTeksti"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Arvostelu",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "oppilaan, opiskelijan tai tutkinnon suorittajan oppimisen, osaamisen tai oppimistulosten arvon määrittäminen"
-          },
-          "label": {
-            "en": "Grading",
-            "fi": "Arvostelu"
-          },
-          "property": [
-            {
-              "@id": "_:b48",
-              "comment": {
-                "fi": "arvostelun selite"
-              },
-              "label": {
-                "fi": "Arvostelun selite"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:selite"
-            },
-            {
-              "@id": "_:b47",
-              "comment": {
-                "fi": "Arvostelussa määritelty arvosana"
-              },
-              "label": {
-                "fi": "Arvostelun arvosana"
-              },
-              "predicate": "doo:arvosana",
-              "valueClass": "doo:Arvosana"
-            },
-            {
-              "@id": "_:b24",
-              "comment": {
-                "fi": "Arvostelulle annettu nimi"
-              },
-              "label": {
-                "fi": "Arvostelun nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b49",
-              "comment": {
-                "fi": "Arvosteltu opintokokonaisuus"
-              },
-              "label": {
-                "fi": "Arvosteltu opintokokonaisuus"
-              },
-              "predicate": "doo:Opintokokonaisuus",
-              "valueClass": "doo:Opintokokonaisuus"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Arvosana",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "arvioinnin tuloksena oppilaalle, opiskelijalle tai tutkinnon suorittajalle annettava, järjestetystä joukosta valittava numeerinen tai sanallinen ilmaus"
-          },
-          "label": {
-            "en": "Grade",
-            "fi": "Arvosana"
-          },
-          "property": [
-            {
-              "@id": "_:b39",
-              "comment": {
-                "fi": "Arvosanan yksilöivä tunnistetieto"
-              },
-              "label": {
-                "fi": "Arvosanan koodi"
-              },
-              "nodeKind": "sh:IRI",
-              "predicate": "jhs:koodi",
-              "valueClass": "skos:Concept"
-            },
-            {
-              "@id": "_:b58",
-              "comment": {
-                "en": "Name of the grade",
-                "fi": "Arvosanalle annettu nimi"
-              },
-              "label": {
-                "fi": "Arvosanan nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b20",
-              "comment": {
-                "fi": "Arvosana-asteikon yksittäinen arvo"
-              },
-              "label": {
-                "fi": "Arvosana"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:arvo"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Asteikko",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "Arvosteluasteikko, joka määrittää arvosanojen keskinäisen järjestyksen ja suhteet"
-          },
-          "label": {
-            "fi": "Asteikko"
-          },
-          "property": [
-            {
-              "@id": "_:b40",
-              "comment": {
-                "fi": "Asteikosta yleiskielessä käytettävä nimitys"
-              },
-              "label": {
-                "fi": "Arvosteluasteikon nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b41",
-              "comment": {
-                "fi": "Asteikon yksilöivä tunnistetieto"
-              },
-              "label": {
-                "fi": "Asteikon tunniste"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:tunniste"
-            },
-            {
-              "@id": "_:b42",
-              "comment": {
-                "fi": "Asteikon minimiarvo"
-              },
-              "label": {
-                "fi": "Asteikon minimiarvo"
-              },
-              "datatype": "xsd:integer",
-              "predicate": "doo:minimiArvo"
-            },
-            {
-              "@id": "_:b43",
-              "comment": {
-                "fi": "Asteikon maksimiarvo"
-              },
-              "label": {
-                "fi": "Asteikon maksimiarvo"
-              },
-              "datatype": "xsd:integer",
-              "predicate": "doo:maksimiArvo"
-            },
-            {
-              "@id": "_:b45",
-              "comment": {
-                "fi": "Asteikon käyttöä kuvaava selite"
-              },
-              "label": {
-                "fi": "Asteikon selite"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:selite"
-            },
-            {
-              "@id": "_:b46",
-              "comment": {
-                "fi": "Asteikolle määritelty luokitus"
-              },
-              "label": {
-                "fi": "Asteikon arvoalue"
-              },
-              "nodeKind": "sh:IRI",
-              "predicate": "doo:arvoalue",
-              "valueClass": "skos:Concept"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Hallintoalue",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "yhteiskunnallisten toimintojen organisointia varten määritetty alue"
-          },
-          "label": {
-            "fi": "Hallintoalue"
-          },
-          "property": [
-            {
-              "@id": "_:b44",
-              "label": {
-                "fi": "Hallintoalueen tyyppi"
-              },
-              "predicate": "jhs:tyyppi",
-              "valueClass": "skos:Concept"
-            },
-            {
-              "@id": "_:b55",
-              "label": {
-                "fi": "Hallintoalueen tunniste"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:tunniste"
-            },
-            {
-              "@id": "_:b66",
-              "label": {
-                "fi": "Hallintoalueen nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b73",
-              "comment": {
-                "fi": "Hallintoalueen voimassaoloaika"
-              },
-              "label": {
-                "fi": "Hallintoalueen voimassaolo"
-              },
-              "predicate": "doo:voimassaolo",
-              "valueClass": "doo:Ajanjakso"
-            },
-            {
-              "@id": "_:b74",
-              "comment": {
-                "fi": "Hallintoalueen nimen lyhenne"
-              },
-              "label": {
-                "fi": "Lyhenne"
-              },
-              "datatype": "xsd:string",
-              "predicate": "doo:nimilyhenne"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Kohderyhma",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "kuvaus tiettyä tarkoitusta varten rajatusta joukosta"
-          },
-          "label": {
-            "fi": "Kohderyhma"
-          },
-          "property": [
-            {
-              "@id": "_:b12",
-              "label": {
-                "fi": "Kohderyhmän kuvaus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:kuvausTeksti"
-            },
-            {
-              "@id": "_:b13",
-              "comment": {
-                "fi": "kohderyhmän nimi"
-              },
-              "label": {
-                "fi": "Kohderyhmän nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b14",
-              "comment": {
-                "fi": "Kohderyhmälle määritellyt rajoitukset"
-              },
-              "label": {
-                "fi": "Kohderyhmän kiintiö"
-              },
-              "predicate": "doo:kiintio",
-              "valueClass": "doo:Valintakiintio"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Valintakiintio",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "Tietyin perustein hakijaryhmälle määritelty kiintiö aloituspaikkoja"
-          },
-          "label": {
-            "fi": "Valintakiintiö"
-          },
-          "property": [
-            {
-              "@id": "_:b33",
-              "label": {
-                "fi": "nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b54",
-              "label": {
-                "fi": "Valintakiintiön koodi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Valintakiintiön koodi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:koodi"
@@ -1370,137 +897,550 @@
           ]
         },
         {
-          "@id": "doo:Valintatapa",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
+          "@id": "doo:Koulutustoimija",
+          "@type": "sh:ShapeClass",
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Koulutustoimija"
           },
-          "label": {
-            "fi": "Valintatapa"
-          },
+          "subClassOf": "jhs:Organisaatio",
           "property": [
             {
-              "@id": "_:b51",
-              "comment": {
-                "fi": "Valintatavasta yleiskielessä käytettävä selite"
+              "@id": "_:b13",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Organisaation korkeakoulukytkentä"
               },
-              "label": {
-                "fi": "Valintatavan kuvaus"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Korkeakoululähtöinen yritys"
+              },
+              "datatype": "xsd:boolean",
+              "predicate": "doo:korkeakouluperusta"
+            },
+            {
+              "@id": "_:b41",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Organisaation Y-tunnus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:ytunnus"
+            },
+            {
+              "@id": "_:b42",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Koulutustoimijan nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b24",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Koulutustoimijan alaorganisaatio"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:organisaatio"
+            },
+            {
+              "@id": "_:b43",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Koulutustoimijan voimassaolo"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:Ajanjakso"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Opintojakso",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "tiettyä aihetta, sisältöä tai osaamisen alaa käsittelevä, erikseen suoritettavissa oleva opintojen osa"
+          },
+          "rdfs:label": [
+            {
+              "@language": "en",
+              "@value": "Study module"
+            },
+            {
+              "@language": "fi",
+              "@value": "Opintojakso"
+            }
+          ],
+          "property": [
+            {
+              "@id": "_:b44",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintojakson yksilöivä tunnistetieto"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson koodi"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "jhs:koodi",
+              "valueClass": "skos:Concept"
+            },
+            {
+              "@id": "_:b45",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Pienin opintopistemäärä jolla opintojakson voi suorittaa."
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson minimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:minimilaajuus"
+            },
+            {
+              "@id": "_:b46",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson yksilöivä tunnistetieto"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:tunniste"
+            },
+            {
+              "@id": "_:b47",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintojakson laajuus opintopisteinä"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson laajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:laajuusTeksti"
+            },
+            {
+              "@id": "_:b48",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintojakson nimi"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b31",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintojakson tavoitteiden kuvaus"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson tavoite"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:tavoiteTeksti"
+            },
+            {
+              "@id": "_:b49",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintojakson sisällön kuvaus"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson sisältö"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:kuvaus"
+            },
+            {
+              "@id": "_:b30",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintojakson arvosteluperusteiden kuvaus"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson arvosteluperusteet"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:arvosteluPerusteet"
+            },
+            {
+              "@id": "_:b50",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuus, johon opintojakso sisältyy"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuus"
+              },
+              "predicate": "doo:opintokokonaisuus",
+              "valueClass": "doo:Opintokokonaisuus"
+            },
+            {
+              "@id": "_:b51",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Ajanjakso, jolloin opintojakson kuvaus on voimassa"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson ajanjakso"
+              },
+              "predicate": "doo:ajanjakso",
+              "valueClass": "doo:Ajanjakso"
+            },
+            {
+              "@id": "_:b52",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintojaksolle määritellyt lisätiedot"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson lisätiedot"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:lisatietoTeksti"
+            },
+            {
+              "@id": "_:b53",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Suurin opintopistemäärä jonka opintojaksosta voi suorittaa."
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson maksimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:maksimilaajuus"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Opintokokonaisuus",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "opintojen osa, joka muodostuu kahdesta tai useammasta yhtä aihepiiriä tai ongelma-aluetta käsittelevästä tai jonkin tieteenalan perusteet muodostavasta opintojaksosta"
+          },
+          "rdfs:label": [
+            {
+              "@language": "fi",
+              "@value": "Opintokokonaisuus"
+            },
+            {
+              "@language": "en",
+              "@value": "Study scheme"
+            }
+          ],
+          "property": [
+            {
+              "@id": "_:b32",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuutta kuvaava sivusto"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden verkkosivu"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:verkkosivu"
+            },
+            {
+              "@id": "_:b28",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden kuvaus"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson kuvaus"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:kuvausTeksti"
             },
             {
-              "@id": "_:b52",
-              "comment": {
-                "fi": "Valintatavan luokituksen mukaisesti yksilöivä tunnistetieto."
+              "@id": "_:b33",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuutta kuvaavat avainsanat"
               },
-              "label": {
-                "fi": "koodi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvosteluperuste"
               },
-              "predicate": "jhs:koodi",
-              "valueClass": "skos:Concept"
+              "datatype": "xsd:string",
+              "predicate": "doo:peruste"
             },
             {
-              "@id": "_:b53",
-              "comment": {
-                "fi": "Tieto, joka ilmaisee mitä valintaperustetta käytetään hakijan hyväksymisessä koulutukseen."
+              "@id": "_:b34",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden nimi"
               },
-              "label": {
-                "fi": "Valintatavan nimi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden nimi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:nimi"
-            }
-          ]
-        },
-        {
-          "@id": "doo:Hakukohde",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
-          },
-          "comment": {
-            "fi": "koulutuksen toteutus, joka on liitetty tiettyyn hakuun"
-          },
-          "label": {
-            "fi": "Hakukohde"
-          },
-          "property": [
-            {
-              "@id": "_:b62",
-              "comment": {
-                "fi": "Koulutuksen järjestäjän määrittämät kriteerit täyttävä hakijoiden joukko"
-              },
-              "label": {
-                "fi": "Hakukohteen hakijaryhmä"
-              },
-              "predicate": "doo:hakijaryhma",
-              "valueClass": "doo:Kohderyhma"
             },
             {
-              "@id": "_:b63",
-              "comment": {
-                "fi": "Hakukohteeseen valittavien valintatapa"
+              "@id": "_:b35",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Lisätietoja opintokokonaisuudesta"
               },
-              "label": {
-                "fi": "Valintatapa"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Lisätiedot"
               },
-              "predicate": "doo:valintatapa",
-              "valueClass": "doo:Valintatapa"
+              "datatype": "xsd:string",
+              "predicate": "doo:lisatietoTeksti"
             },
             {
-              "@id": "_:b64",
-              "comment": {
-                "fi": "Hakukohteen tunniste"
+              "@id": "_:b36",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden laajuus"
               },
-              "label": {
-                "fi": "Hakukohteen tunniste"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden laajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:laajuusTeksti"
+            },
+            {
+              "@id": "_:b37",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuteen kuuluvat opintojaksot"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakso"
+              },
+              "predicate": "doo:opintojakso",
+              "valueClass": "doo:Opintojakso"
+            },
+            {
+              "@id": "_:b18",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuudelle määritelty tunniste"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden tunniste"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:tunniste"
             },
             {
               "@id": "_:b38",
-              "comment": {
-                "fi": "Haku, jossa hakukohde on mukana"
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuutta kuvaavat avainsanat"
               },
-              "label": {
-                "fi": "Haku"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson avainsana"
               },
-              "predicate": "doo:haku",
-              "valueClass": "doo:Haku"
+              "datatype": "xsd:string",
+              "predicate": "doo:avainsana"
             },
             {
-              "@id": "_:b65",
-              "comment": {
-                "fi": "Haettavan koulutuksen nimi"
+              "@id": "_:b3",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Laajuus opintopisteinä, jonka kokonaisena kokonaisuus tulee vähintään suorittaa"
               },
-              "label": {
-                "fi": "Hakukohteen nimi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden minimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:minimilaajuus"
+            },
+            {
+              "@id": "_:b39",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Kuvaus opintokokonaisuuden tavoitteista"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintojakson tavoitteet"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:tavoiteTeksti"
+            },
+            {
+              "@id": "_:b40",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden laajuus opintopisteinä, jonka laajuisena kokonaisuuden voi maksimisaan suorittaa"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Opintokokonaisuuden maksimilaajuus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:maksimilaajuus"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Arvosana",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "arvioinnin tuloksena oppilaalle, opiskelijalle tai tutkinnon suorittajalle annettava, järjestetystä joukosta valittava numeerinen tai sanallinen ilmaus"
+          },
+          "rdfs:label": [
+            {
+              "@language": "fi",
+              "@value": "Arvosana"
+            },
+            {
+              "@language": "en",
+              "@value": "Grade"
+            }
+          ],
+          "property": [
+            {
+              "@id": "_:b25",
+              "rdfs:comment": [
+                {
+                  "@language": "fi",
+                  "@value": "Arvosanalle annettu nimi"
+                },
+                {
+                  "@language": "en",
+                  "@value": "Name of the grade"
+                }
+              ],
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvosanan nimi"
               },
               "datatype": "xsd:string",
               "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b26",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Arvosana-asteikon yksittäinen arvo"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvosana"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:arvo"
+            },
+            {
+              "@id": "_:b27",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Arvosanan yksilöivä tunnistetieto"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvosanan koodi"
+              },
+              "nodeKind": "sh:IRI",
+              "predicate": "jhs:koodi",
+              "valueClass": "skos:Concept"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Kohderyhma",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "kuvaus tiettyä tarkoitusta varten rajatusta joukosta"
+          },
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Kohderyhma"
+          },
+          "property": [
+            {
+              "@id": "_:b5",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "kohderyhmän nimi"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Kohderyhmän nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b19",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Kohderyhmälle määritellyt rajoitukset"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Kohderyhmän kiintiö"
+              },
+              "predicate": "doo:kiintio",
+              "valueClass": "doo:Valintakiintio"
+            },
+            {
+              "@id": "_:b20",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Kohderyhmän kuvaus"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:kuvausTeksti"
             }
           ]
         },
         {
           "@id": "doo:Haku",
-          "rdf:type": {
-            "@id": "sh:ShapeClass"
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "Haku ilmaisee mikä hakutapa ja hakutyyppi on kyseessä ja milloin haku kyseinen haku järjestetään."
           },
-          "comment": {
-            "fi": "Haku ilmaisee mikä hakutapa ja hakutyyppi on kyseessä ja milloin haku kyseinen haku järjestetään."
-          },
-          "label": {
-            "fi": "Haku"
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Haku"
           },
           "property": [
             {
-              "@id": "_:b26",
-              "comment": {
-                "fi": "Haulle määritelty nimi"
+              "@id": "_:b21",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Haulle määritelty nimi"
               },
-              "label": {
-                "fi": "Haun nimi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Haun nimi"
               },
               "skos:example": {
                 "@language": "fi",
@@ -1510,42 +1450,266 @@
               "predicate": "jhs:nimi"
             },
             {
-              "@id": "_:b27",
-              "comment": {
-                "fi": "Haulle määritelty koodi"
+              "@id": "_:b22",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Haulle määritelty koodi"
               },
-              "label": {
-                "fi": "Haun koodi"
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Haun koodi"
               },
               "predicate": "jhs:koodi",
               "valueClass": "skos:Concept"
             }
           ]
-        }
-      ],
-      "rdf:type": [
-        {
-          "@id": "iow:CoreComponentLibrary"
         },
         {
-          "@id": "owl:Ontology"
+          "@id": "doo:Arvostelu",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "oppilaan, opiskelijan tai tutkinnon suorittajan oppimisen, osaamisen tai oppimistulosten arvon määrittäminen"
+          },
+          "rdfs:label": [
+            {
+              "@language": "en",
+              "@value": "Grading"
+            },
+            {
+              "@language": "fi",
+              "@value": "Arvostelu"
+            }
+          ],
+          "property": [
+            {
+              "@id": "_:b14",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Arvosteltu opintokokonaisuus"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvosteltu opintokokonaisuus"
+              },
+              "predicate": "doo:Opintokokonaisuus",
+              "valueClass": "doo:Opintokokonaisuus"
+            },
+            {
+              "@id": "_:b15",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Arvostelulle annettu nimi"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvostelun nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b16",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Arvostelussa määritelty arvosana"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvostelun arvosana"
+              },
+              "predicate": "doo:arvosana",
+              "valueClass": "doo:Arvosana"
+            },
+            {
+              "@id": "_:b17",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "arvostelun selite"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Arvostelun selite"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:selite"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Hallintoalue",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "yhteiskunnallisten toimintojen organisointia varten määritetty alue"
+          },
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Hallintoalue"
+          },
+          "property": [
+            {
+              "@id": "_:b8",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hallintoalueen tunniste"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:tunniste"
+            },
+            {
+              "@id": "_:b9",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Hallintoalueen nimen lyhenne"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Lyhenne"
+              },
+              "datatype": "xsd:string",
+              "predicate": "doo:nimilyhenne"
+            },
+            {
+              "@id": "_:b10",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Hallintoalueen voimassaoloaika"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hallintoalueen voimassaolo"
+              },
+              "predicate": "doo:voimassaolo",
+              "valueClass": "doo:Ajanjakso"
+            },
+            {
+              "@id": "_:b11",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hallintoalueen tyyppi"
+              },
+              "predicate": "jhs:tyyppi",
+              "valueClass": "skos:Concept"
+            },
+            {
+              "@id": "_:b12",
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hallintoalueen nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            }
+          ]
+        },
+        {
+          "@id": "doo:Hakukohde",
+          "@type": "sh:ShapeClass",
+          "rdfs:comment": {
+            "@language": "fi",
+            "@value": "koulutuksen toteutus, joka on liitetty tiettyyn hakuun"
+          },
+          "rdfs:label": {
+            "@language": "fi",
+            "@value": "Hakukohde"
+          },
+          "property": [
+            {
+              "@id": "_:b2",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Haettavan koulutuksen nimi"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hakukohteen nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b60",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Haku, jossa hakukohde on mukana"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Haku"
+              },
+              "predicate": "doo:haku",
+              "valueClass": "doo:Haku"
+            },
+            {
+              "@id": "_:b55",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Hakukohteen tunniste"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hakukohteen tunniste"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:tunniste"
+            },
+            {
+              "@id": "_:b23",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Koulutuksen järjestäjän määrittämät kriteerit täyttävä hakijoiden joukko"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Hakukohteen hakijaryhmä"
+              },
+              "predicate": "doo:hakijaryhma",
+              "valueClass": "doo:Kohderyhma"
+            },
+            {
+              "@id": "_:b61",
+              "rdfs:comment": {
+                "@language": "fi",
+                "@value": "Hakukohteeseen valittavien valintatapa"
+              },
+              "rdfs:label": {
+                "@language": "fi",
+                "@value": "Valintatapa"
+              },
+              "predicate": "doo:valintatapa",
+              "valueClass": "doo:Valintatapa"
+            }
+          ]
         }
       ],
-      "comment": {
-        "en": "Common core data model of teaching, learning and education",
-        "fi": "Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit"
-      },
-      "label": {
-        "fi": "Opiskelun, opetuksen ja koulutuksen tietokomponentit",
-        "en": "Core Vocabulary of Education"
-      },
+      "rdfs:comment": [
+        {
+          "@language": "fi",
+          "@value": "Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit"
+        },
+        {
+          "@language": "en",
+          "@value": "Common core data model of teaching, learning and education"
+        }
+      ],
+      "rdfs:label": [
+        {
+          "@language": "fi",
+          "@value": "Opiskelun, opetuksen ja koulutuksen tietokomponentit"
+        },
+        {
+          "@language": "en",
+          "@value": "Core Vocabulary of Education"
+        }
+      ],
       "imports": [
-        "http://SHACLFIX.fi",
         "http://purl.org/dc/elements/1.1/",
-        "http://urn.fi/urn:nbn:fi:csc-iow-jhs",
+        "http://www.w3.org/ns/shacl",
+        "http://purl.org/ws-mmi-dc/terms/",
         "http://www.w3.org/2004/02/skos/core",
         "http://urn.fi/urn:nbn:fi:csc-iow-meta",
-        "http://purl.org/ws-mmi-dc/terms/"
+        "http://urn.fi/urn:nbn:fi:csc-iow-jhs"
       ]
     }
   ]
