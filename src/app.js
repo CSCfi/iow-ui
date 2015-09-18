@@ -3,7 +3,7 @@ const angular = require('angular');
 require('angular-gettext');
 require('./vendor/angular-xeditable-0.1.8/js/xeditable');
 
-angular.module('myApp', [
+angular.module('iow-ui', [
   require('angular-route'),
   require('angular-ui-bootstrap'),
   'gettext',
