@@ -6,5 +6,6 @@ mod.factory('groupService', require('./groupService'));
 mod.factory('modelService', require('./modelService'));
 mod.factory('languageService', require('./languageService'));
 mod.factory('modelLanguage', require('./modelLanguage'));
+mod.factory('propertyService', require('./propertyService'));
 
 module.exports = name;

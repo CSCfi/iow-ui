@@ -8,21 +8,14 @@ module.exports = function propertyView($log) {
       context: '=context'
     },
     template: require('./templates/propertyView.html'),
-    controller($scope, $http, modelLanguage) {
+    controller($scope, $http, propertyService, modelLanguage) {
       'ngInject';
-      const data = {
-        predicate: $scope.predicate,
-        '@context': $scope.context
-      };
-      jsonld.promises.expand(data).then(expanded => {
-        const id = expanded[0]['http://www.w3.org/ns/shacl#predicate'][0]['@id'];
-        return $http.get('/api/rest/property', {params: {id}});
-      }).then(property => {
+
+      propertyService.getProperty($scope.predicate, $scope.context).then(property => {
         $scope.$apply(() => {
-          $scope.property = property;
+          $scope.property = property.data;
         });
       });
-
       $scope.translate = modelLanguage.translate;
     }
   };
