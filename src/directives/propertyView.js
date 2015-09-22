@@ -1,5 +1,3 @@
-const jsonld = require('jsonld');
-
 module.exports = function propertyView($log) {
   'ngInject';
   return {
@@ -13,7 +11,7 @@ module.exports = function propertyView($log) {
 
       propertyService.getProperty($scope.predicate, $scope.context).then(property => {
         $scope.$apply(() => {
-          $scope.property = property;
+          $scope.property = property['@graph'][0];
         });
       });
       $scope.translate = modelLanguage.translate;
