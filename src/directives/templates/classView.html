@@ -9,7 +9,11 @@
       <div>{{translate(class.label)}}</div>
       <div class="model-view__title" translate>Kuvaus</div>
       <div>{{translate(class.comment)}}</div>
-      <property-view predicate="property.predicate" context="context" ng-if="isOpen[property['@id']]"></property-view>
+      <accordion>
+        <accordion-group heading="{{translate(property.label)}}">
+          <property-view predicate="property.predicate" context="context" ng-if="isOpen[property['@id']]"></property-view>
+        </accordion-group>
+      </accordion>
     </div>
   </accordion-group>
 </accordion>
