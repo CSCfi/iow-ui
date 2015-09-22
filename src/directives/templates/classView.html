@@ -5,10 +5,15 @@
   <accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]" ng-click="isOpen[property['@id']] = !isOpen[property['@id']]">
     <accordion-heading>{{translate(property.label)}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></accordion-heading>
     <div ng-click="$event.stopPropagation()"><!-- prevent click anywhere to toggle visibility -->
-      <div class="model-view__title" translate>Nimi</div>
-      <div>{{translate(class.label)}}</div>
-      <div class="model-view__title" translate>Kuvaus</div>
-      <div>{{translate(class.comment)}}</div>
+      <form editable-form name="formFor">
+        <div class="model-view__title" translate>Nimi</div>
+        <div editable-text="property.label.fi">{{translate(property.label)}}</div>
+        <div class="model-view__title" translate>Kuvaus</div>
+        <div editable-text="class.comment.fi">{{translate(class.comment)}}</div>
+        <button type="button" class="btn btn-default" ng-click="formFor.$show()" ng-show="!formFor.$visible" translate>Edit</button>
+        <button type="submit" class="btn btn-default" ng-show="formFor.$visible" translate>Save</button>
+        <button type="button" class="btn btn-default" ng-click="formFor.$cancel()" ng-show="formFor.$visible" translate>Cancel</button>
+      </form>
       <accordion>
         <accordion-group heading="{{translate(property.label)}}">
           <property-view predicate="property.predicate" context="context" ng-if="isOpen[property['@id']]"></property-view>
