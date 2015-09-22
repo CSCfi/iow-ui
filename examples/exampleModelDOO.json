@@ -183,6 +183,7 @@
           }
         },
         "jhs:siviilisaaty",
+        "jhs:organisaatio",
         {
           "@id": "doo:harjoitteluKoulu",
           "@type": "owl:ObjectProperty",
