@@ -13,7 +13,7 @@ module.exports = function propertyView($log) {
 
       propertyService.getProperty($scope.predicate, $scope.context).then(property => {
         $scope.$apply(() => {
-          $scope.property = property.data;
+          $scope.property = property;
         });
       });
       $scope.translate = modelLanguage.translate;
