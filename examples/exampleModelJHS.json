@@ -181,6 +181,14 @@
             "fi": "ammatti"
           },
           "range": "skos:Concept"
+        },
+        {
+          "@id": "jhs:organisaatio",
+          "@type": "owl:ObjectProperty",
+          "label": {
+            "fi": "organisaatio"
+          },
+          "range": "jhs:Organisaatio"
         }
       ],
       "attributes": [
