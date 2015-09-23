@@ -1,6 +1,8 @@
 <div class="model-view__title" translate>Nimi</div>
 <div>{{translate(property.label)}}</div>
-<div class="model-view__title" translate>Kuvaus</div>
-<div>{{translate(property.comment)}}</div>
+<div ng-show="property.comment">
+  <div class="model-view__title" translate>Kuvaus</div>
+  <div>{{translate(property.comment)}}</div>
+</div>
 <div class="model-view__title" translate>Tyyppi</div>
 <div>{{property.range}}</div>
