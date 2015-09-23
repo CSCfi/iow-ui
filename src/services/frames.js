@@ -51,7 +51,7 @@ function modelListFrame(data) {
 function propertyFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label}),
-    '@type': 'owl:DatatypeProperty'
+    '@type': data['@type']
   };
 }
 
