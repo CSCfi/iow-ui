@@ -15,7 +15,7 @@
         <button type="button" class="btn btn-default" ng-click="formFor.$cancel()" ng-show="formFor.$visible" translate>Cancel</button>
       </form>
       <accordion>
-        <accordion-group heading="{{translate(property.label)}}">
+        <accordion-group heading="{{property.predicate}}">
           <property-view predicate="property.predicate" context="context" ng-if="isOpen[property['@id']]"></property-view>
         </accordion-group>
       </accordion>
