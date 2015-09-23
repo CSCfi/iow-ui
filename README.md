@@ -23,6 +23,10 @@ To load example data to a local api/fuseki installation, run
 
     npm run-script example-data
 
+To load example data to a custom host and/or port
+
+    npm run-script example-data -- --host foo.example.com --port 88
+
 ## Architechture
 Interoperability user interface is separate one page application that uses IOW backend services. Backend design follows restful three layer architecture:
 

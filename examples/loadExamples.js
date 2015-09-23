@@ -6,10 +6,17 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 
+var argv = require('optimist')
+  .default({
+    host: 'localhost',
+    port: 8084
+  })
+  .argv;
+
 function reqOpts(path) {
   return {
-    host: 'localhost',
-    port: 8084,
+    host: argv.host,
+    port: argv.port,
     path: path,
     method: 'PUT',
     headers: {
