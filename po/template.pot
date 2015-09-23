@@ -12,10 +12,36 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
+#: directives/templates/classView.html:15
+msgid "Cancel"
+msgstr ""
+
 #: views/model.html:10
 msgid "Classes"
 msgstr ""
 
+#: directives/templates/classView.html:11
+#: directives/templates/propertyView.html:4
+msgid "Description"
+msgstr ""
+
+#: directives/templates/classView.html:13
+msgid "Edit"
+msgstr ""
+
 #: views/index.html:3
 msgid "IOW header"
+msgstr ""
+
+#: directives/templates/propertyView.html:7
+msgid "Kind"
+msgstr ""
+
+#: directives/templates/classView.html:9
+#: directives/templates/propertyView.html:1
+msgid "Name"
+msgstr ""
+
+#: directives/templates/classView.html:14
+msgid "Save"
 msgstr ""

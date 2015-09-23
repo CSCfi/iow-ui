@@ -27,6 +27,12 @@ To load example data to a custom host and/or port
 
     npm run-script example-data -- --host foo.example.com --port 88
 
+## Updating translation file
+
+    npm run-script create-translations
+
+Copy new entries from `template.pot` to `po` translation files.
+
 ## Architechture
 Interoperability user interface is separate one page application that uses IOW backend services. Backend design follows restful three layer architecture:
 
