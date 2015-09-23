@@ -2,9 +2,9 @@
   {{translate(class.label)}}
 </h2>
 <accordion close-others="false">
-  <accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]" ng-click="isOpen[property['@id']] = !isOpen[property['@id']]">
+  <accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]">
     <accordion-heading>{{translate(property.label)}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></accordion-heading>
-    <div ng-click="$event.stopPropagation()"><!-- prevent click anywhere to toggle visibility -->
+    <div>
       <form editable-form name="formFor">
         <div class="model-view__title" translate>Nimi</div>
         <div editable-text="property.label.fi">{{translate(property.label)}}</div>
