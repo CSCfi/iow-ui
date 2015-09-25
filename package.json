@@ -61,7 +61,7 @@
   "browserify": {
     "transform": [
       "babelify",
-      "stringify",
+      ["stringify", {"minify": true}],
       "browserify-ngannotate"
     ]
   },
