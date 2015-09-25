@@ -7,5 +7,6 @@ mod.factory('modelService', require('./modelService'));
 mod.factory('languageService', require('./languageService'));
 mod.factory('modelLanguage', require('./modelLanguage'));
 mod.factory('propertyService', require('./propertyService'));
+mod.factory('searchService', require('./searchService'));
 
 module.exports = name;
