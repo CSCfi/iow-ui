@@ -9,6 +9,7 @@ mod.directive('associationView', require('./associationView'));
 mod.directive('globalLanguageChooser', require('./globalLanguageChooser'));
 mod.directive('modelLanguageChooser', require('./modelLanguageChooser'));
 mod.directive('propertyView', require('./propertyView'));
+mod.directive('searchForm', require('./searchForm'));
 
 mod.filter('urlencode', function urlencode() {
   return input => {
