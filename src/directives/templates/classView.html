@@ -8,7 +8,7 @@
     <div>
       <form editable-form name="formFor">
         <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
-        <form-input title="{{'Description' | translate}}" content="class.comment"></form-input>
+        <form-input title="{{'Description' | translate}}" content="property.comment"></form-input>
         <button type="button" class="btn btn-default" ng-click="formFor.$show()" ng-show="!formFor.$visible" translate>Edit</button>
         <button type="submit" class="btn btn-default" ng-show="formFor.$visible" translate>Save</button>
         <button type="button" class="btn btn-default" ng-click="formFor.$cancel()" ng-show="formFor.$visible" translate>Cancel</button>
