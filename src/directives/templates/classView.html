@@ -8,9 +8,9 @@
     <div>
       <form editable-form name="formFor">
         <div class="model-view__title" translate>Name</div>
-        <div editable-text="property.label.fi">{{translate(property.label)}}</div>
+        <div editable-text="property.label[getLanguage()]">{{translate(property.label)}}</div>
         <div class="model-view__title" translate>Description</div>
-        <div editable-text="class.comment.fi">{{translate(class.comment)}}</div>
+        <div editable-text="class.comment[getLanguage()]">{{translate(class.comment)}}</div>
         <button type="button" class="btn btn-default" ng-click="formFor.$show()" ng-show="!formFor.$visible" translate>Edit</button>
         <button type="submit" class="btn btn-default" ng-show="formFor.$visible" translate>Save</button>
         <button type="button" class="btn btn-default" ng-click="formFor.$cancel()" ng-show="formFor.$visible" translate>Cancel</button>

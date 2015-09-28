@@ -9,6 +9,7 @@ module.exports = function classView($log) {
     controller($scope, $modal, modelLanguage) {
       'ngInject';
       $scope.translate = modelLanguage.translate;
+      $scope.getLanguage = modelLanguage.getLanguage;
 
       $scope.addProperty = () => {
         const modal = $modal.open({
