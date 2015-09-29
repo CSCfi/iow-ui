@@ -5,6 +5,7 @@ module.exports = function classView($log) {
       title: '@',
       content: '=content'
     },
+    restrict: 'E',
     template: require('./templates/formInput.html'),
     controller($scope, $modal, modelLanguage) {
       'ngInject';

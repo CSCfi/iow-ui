@@ -5,6 +5,7 @@ module.exports = function classView($log) {
       class: '=activeClass',
       context: '=context'
     },
+    restrict: 'E',
     template: require('./templates/classView.html'),
     controller($scope, $modal, modelLanguage) {
       'ngInject';

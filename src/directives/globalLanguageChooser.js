@@ -3,6 +3,7 @@ module.exports = function globalLanguageChooser($log) {
   return {
     scope: {
     },
+    restrict: 'E',
     template: require('./templates/globalLanguageChooser.html'),
     controller($scope, languageService) {
       'ngInject';

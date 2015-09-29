@@ -4,6 +4,7 @@ module.exports = function classView($log) {
     scope: {
       attribute: '='
     },
+    restrict: 'E',
     template: require('./templates/attributeView.html'),
     controller($scope, modelLanguage) {
       'ngInject';

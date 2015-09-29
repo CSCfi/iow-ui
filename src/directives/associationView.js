@@ -4,6 +4,7 @@ module.exports = function associationView($log) {
     scope: {
       association: '='
     },
+    restrict: 'E',
     template: require('./templates/associationView.html'),
     controller($scope, modelLanguage) {
       'ngInject';

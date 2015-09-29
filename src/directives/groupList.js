@@ -4,6 +4,7 @@ module.exports = function groupListDirective($log) {
     scope: {
       title: '@'
     },
+    restrict: 'E',
     template: require('./templates/groupList.html'),
     controller($scope, groupService, modelLanguage) {
       'ngInject';
