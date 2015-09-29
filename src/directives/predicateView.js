@@ -1,11 +1,11 @@
-module.exports = function propertyView($log) {
+module.exports = function predicateView($log) {
   'ngInject';
   return {
     scope: {
       predicate: '=predicate',
       context: '=context'
     },
-    template: require('./templates/propertyView.html'),
+    template: require('./templates/predicateView.html'),
     controller($scope, $http, propertyService, modelLanguage) {
       'ngInject';
 
