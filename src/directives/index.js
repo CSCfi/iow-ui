@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const name = 'iow.directives';
 
 const mod = angular.module(name, []);
@@ -17,5 +19,9 @@ mod.filter('urlencode', function urlencode() {
     return window.encodeURIComponent(input);
   };
 });
+
+mod.filter('curie', () => (uri) =>
+  _.last(uri.split(":"))
+);
 
 module.exports = name;
