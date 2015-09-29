@@ -2,6 +2,10 @@
   <form editable-form name="formFor">
     <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
     <form-input title="{{'Description' | translate}}" content="property.comment"></form-input>
+    <div ng-if="property.datatype">
+      <div class="model-view__title" translate>Datatype</div>
+      <div>{{property.datatype}}</div>
+    </div>
     <button type="button" class="btn btn-default" ng-click="formFor.$show()" ng-show="!formFor.$visible" translate>Edit</button>
     <button type="submit" class="btn btn-default" ng-show="formFor.$visible" translate>Save</button>
     <button type="button" class="btn btn-default" ng-click="formFor.$cancel()" ng-show="formFor.$visible" translate>Cancel</button>
