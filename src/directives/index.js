@@ -20,7 +20,7 @@ mod.filter('urlencode', function urlencode() {
   };
 });
 
-mod.filter('curie', () => (uri) =>
+mod.filter('curie', () => uri =>
   _.last(uri.split(":"))
 );
 
