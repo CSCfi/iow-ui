@@ -4,6 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: directives/templates/addProperty.html:1
+msgid "Add property"
+msgstr ""
+
 #: views/model.html:15
 msgid "Attributes"
 msgstr ""
@@ -12,7 +16,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: directives/templates/classView.html:15
+#: directives/templates/propertyView.html:15
 msgid "Cancel"
 msgstr ""
 
@@ -20,28 +24,36 @@ msgstr ""
 msgid "Classes"
 msgstr ""
 
-#: directives/templates/classView.html:11
-#: directives/templates/propertyView.html:4
+#: directives/templates/propertyView.html:10
+msgid "Datatype"
+msgstr ""
+
+#: directives/templates/predicateView.html:4
+#: directives/templates/propertyView.html:7
 msgid "Description"
 msgstr ""
 
-#: directives/templates/classView.html:13
+#: directives/templates/propertyView.html:13
 msgid "Edit"
+msgstr ""
+
+#: directives/templates/propertyView.html:8
+msgid "Example"
 msgstr ""
 
 #: views/index.html:3
 msgid "IOW header"
 msgstr ""
 
-#: directives/templates/propertyView.html:7
-msgid "Kind"
-msgstr ""
-
-#: directives/templates/classView.html:9
-#: directives/templates/propertyView.html:1
+#: directives/templates/predicateView.html:1
+#: directives/templates/propertyView.html:6
 msgid "Name"
 msgstr ""
 
-#: directives/templates/classView.html:14
+#: directives/templates/propertyView.html:14
 msgid "Save"
+msgstr ""
+
+#: directives/templates/predicateView.html:7
+msgid "Type"
 msgstr ""

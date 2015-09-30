@@ -9,8 +9,12 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: directives/templates/addProperty.html:1
+msgid "Add property"
+msgstr "Lisää ominaisuus"
 
 #: views/model.html:15
 msgid "Attributes"
@@ -20,10 +24,44 @@ msgstr "Ominaisuudet"
 msgid "Browse"
 msgstr "Selaa"
 
+#: directives/templates/propertyView.html:15
+msgid "Cancel"
+msgstr "Peruuta"
+
 #: views/model.html:10
 msgid "Classes"
 msgstr "Tietokomponentit"
 
+#: directives/templates/propertyView.html:10
+msgid "Datatype"
+msgstr "Tyyppi"
+
+#: directives/templates/predicateView.html:4
+#: directives/templates/propertyView.html:7
+msgid "Description"
+msgstr "Kuvaus"
+
+#: directives/templates/propertyView.html:13
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: directives/templates/propertyView.html:8
+msgid "Example"
+msgstr "Esimerkki"
+
 #: views/index.html:3
 msgid "IOW header"
 msgstr "Otsikko tähän"
+
+#: directives/templates/predicateView.html:1
+#: directives/templates/propertyView.html:6
+msgid "Name"
+msgstr "Nimi"
+
+#: directives/templates/propertyView.html:14
+msgid "Save"
+msgstr "Tallenna"
+
+#: directives/templates/predicateView.html:7
+msgid "Type"
+msgstr "Tyyppi"
