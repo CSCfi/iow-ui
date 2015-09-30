@@ -11,6 +11,16 @@ module.exports = function classView($log) {
       'ngInject';
       $scope.translate = modelLanguage.translate;
       $scope.getLanguage = modelLanguage.getLanguage;
+
+      $scope.editing = false;
+
+      $scope.startEdit = () => {
+        $scope.editing = true;
+      }
+
+      $scope.stopEdit = () => {
+        $scope.editing = false;
+      }
     }
   };
 };

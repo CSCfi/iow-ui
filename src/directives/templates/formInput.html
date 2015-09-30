@@ -1,2 +1,4 @@
-<div class="model-view__title">{{title}}</div>
-<div editable-text="content[getLanguage()]">{{translate(content)}}</div>
+<div ng-show="content[getLanguage()] || editing">
+  <div class="model-view__title">{{title}}</div>
+  <div editable-text="content[getLanguage()]" onshow="startEdit()" onhide="stopEdit()">{{translate(content)}}</div>
+</div>
