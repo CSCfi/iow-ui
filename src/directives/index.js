@@ -14,6 +14,7 @@ mod.directive('predicateView', require('./predicateView'));
 mod.directive('propertyView', require('./propertyView'));
 mod.directive('searchForm', require('./searchForm'));
 mod.directive('formInput', require('./formInput'));
+mod.directive('editableForm', require('./editableForm'));
 
 mod.filter('urlencode', function urlencode() {
   return input => {

@@ -1,6 +1,10 @@
 <h2>
   {{translate(class.label)}}
 </h2>
+<editable-form>
+  <form-input title="{{'Description' | translate}}" content="class.comment"></form-input>
+  <form-input title="{{'PrefLabel' | translate}}" content="class.prefLabel"></form-input>
+</editable-form>
 <button type="button" class="btn btn-default" ng-click="addProperty()">Add property</button>
 <accordion close-others="false">
   <accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]">
