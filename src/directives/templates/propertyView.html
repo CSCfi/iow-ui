@@ -1,5 +1,5 @@
 <div>
-  <form editable-form name="formFor">
+  <editable-form>
     <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
     <form-input title="{{'Description' | translate}}" content="property.comment"></form-input>
     <form-input title="{{'Example' | translate}}" content="property.example"></form-input>
@@ -7,10 +7,7 @@
       <div class="model-view__title" translate>Datatype</div>
       <div>{{property.datatype}}</div>
     </div>
-    <button type="button" class="btn btn-default" ng-click="formFor.$show()" ng-show="!formFor.$visible" translate>Edit</button>
-    <button type="submit" class="btn btn-default" ng-show="formFor.$visible" translate>Save</button>
-    <button type="button" class="btn btn-default" ng-click="formFor.$cancel()" ng-show="formFor.$visible" translate>Cancel</button>
-  </form>
+  </editable-form>
   <accordion>
     <accordion-group is-open="isOpen[property.predicate]">
       <accordion-heading>{{property.predicate | curie}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicate], 'glyphicon-chevron-right': !isOpen[property.predicate]}"></span></accordion-heading>
