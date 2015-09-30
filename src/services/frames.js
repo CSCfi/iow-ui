@@ -15,6 +15,11 @@ const comment = {
   '@container': '@language'
 };
 
+const example = {
+  '@id': 'http://www.w3.org/2004/02/skos/core#example',
+  '@container': '@language'
+};
+
 function addToContext(context, values) {
   return _.chain(context)
     .clone()
@@ -24,7 +29,7 @@ function addToContext(context, values) {
 
 function modelFrame(data) {
   return  {
-    '@context': addToContext(data['@context'], {label, comment, title}),
+    '@context': addToContext(data['@context'], {label, comment, title, example}),
     imports: {'@embed': false},
     classes: {
       property: {
