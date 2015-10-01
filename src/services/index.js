@@ -8,5 +8,6 @@ mod.factory('languageService', require('./languageService'));
 mod.factory('modelLanguage', require('./modelLanguage'));
 mod.factory('propertyService', require('./propertyService'));
 mod.factory('searchService', require('./searchService'));
+mod.factory('classService', require('./classService'));
 
 module.exports = name;

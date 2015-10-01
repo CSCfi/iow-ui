@@ -65,8 +65,15 @@ function propertyFrame(data) {
   };
 }
 
+function classFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {comment, label})
+  };
+}
+
 module.exports = {
   modelFrame,
   modelListFrame,
-  propertyFrame
+  propertyFrame,
+  classFrame
 };
