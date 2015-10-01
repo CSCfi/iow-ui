@@ -67,7 +67,8 @@ function propertyFrame(data) {
 
 function classFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {comment, label})
+    '@context': addToContext(data['@context'], {comment, label}),
+    '@type': 'sh:ShapeClass'
   };
 }
 
