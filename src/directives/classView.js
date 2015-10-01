@@ -8,11 +8,13 @@ module.exports = function classView($log) {
     template: require('./templates/classView.html'),
     controller($scope, $modal, classService, modelLanguage) {
       'ngInject';
-      classService.getClass($scope.id).then(data => {
-        $scope.class = data['@graph'][0];
-        $scope.context = data['@context'];
-      }, err => {
-        $log.error(err);
+      $scope.$watch('id', id => {
+        classService.getClass($scope.id).then(data => {
+          $scope.class = data['@graph'][0];
+          $scope.context = data['@context'];
+        }, err => {
+          $log.error(err);
+        });
       });
 
       $scope.translate = modelLanguage.translate;
