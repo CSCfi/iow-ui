@@ -1,7 +1,7 @@
 {
   "@graph": [
     {
-      "@id": "urn:uuid:4925a5ee-3468-45c2-b31d-bc1cf644ef87",
+      "@id": "https://tt.eduuni.fi/sites/csc-iow#DOO",
       "@type": "foaf:Group",
       "label": {
 	  "fi":"Opiskelu, opetus ja koulutus",
@@ -9,7 +9,7 @@
 	  }
     },
     {
-      "@id": "urn:uuid:7a389eed-9f66-4d3c-8c6f-199117562d70",
+      "@id": "https://tt.eduuni.fi/sites/csc-iow#JHS",
       "@type": "foaf:Group",
       "label": {
 	  "fi":"Yhteisen tietokomponentit",
