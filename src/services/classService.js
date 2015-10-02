@@ -10,6 +10,12 @@ module.exports = function classService($http) {
         const frame = frames.classFrame(response.data);
         return jsonld.promises.frame(response.data, frame);
       });
+    },
+    getClassesForModel(model) {
+      return $http.get('/api/rest/class', {params: {model}}).then(response => {
+        const frame = frames.classFrame(response.data);
+        return jsonld.promises.frame(response.data, frame);
+      });
     }
   };
 };

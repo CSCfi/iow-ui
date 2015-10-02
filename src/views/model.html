@@ -9,7 +9,7 @@
   <tabset>
     <tab heading="{{'Classes' | translate}}">
       <ul class="panel__list">
-        <li ng-repeat="class in model.classes" ng-class="activeClass == $index ? 'model-panel__selection' : ''" ng-click="activateClass(class, $index)">{{class.label[language]}}</li>
+        <li ng-repeat="class in classes" ng-class="activeClass == $index ? 'model-panel__selection' : ''" ng-click="activateClass(class, $index)">{{class.label[language]}}</li>
       </ul>
     </tab>
     <tab heading="{{'Attributes' | translate}}">

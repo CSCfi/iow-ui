@@ -1,9 +1,15 @@
-module.exports = function modelController($scope, $routeParams, modelService) {
+module.exports = function modelController($scope, $routeParams, $log, modelService, classService) {
   'ngInject';
   modelService.getModelByUrn($routeParams.urn).then(response => {
     $scope.rawModel = response;
     $scope.model = response['@graph'][0];
     $scope.context = response['@context'];
+
+    classService.getClassesForModel($routeParams.urn).then(data => {
+      $scope.classes = data['@graph'];
+    }, err => {
+      $log.error(err);
+    });
 
     function clearAll() {
       $scope.attribute = undefined;
