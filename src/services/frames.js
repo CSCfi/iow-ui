@@ -61,7 +61,14 @@ function modelListFrame(data) {
 function propertyFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label}),
-    '@type': data['@type']
+    '@type': 'owl:DatatypeProperty'
+  };
+}
+
+function associationFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label}),
+    '@type': 'owl:ObjectProperty'
   };
 }
 
@@ -76,5 +83,6 @@ module.exports = {
   modelFrame,
   modelListFrame,
   propertyFrame,
-  classFrame
+  classFrame,
+  associationFrame
 };

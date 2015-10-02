@@ -2,7 +2,7 @@ const jsonld = require('jsonld');
 
 const frames = require('./frames');
 
-module.exports = function propertyService($http) {
+module.exports = function propertyService($http, $q) {
   'ngInject';
   return {
     getProperty(predicate, context) {
@@ -17,6 +17,15 @@ module.exports = function propertyService($http) {
         const frame = frames.propertyFrame(response.data);
         return jsonld.promises.frame(response.data, frame);
       });
+    },
+    getPropertiesForModel(model) {
+      return $http.get('/api/rest/property', {params: {model}}).then(response => {
+        const propertyFrame = frames.propertyFrame(response.data);
+        const associationFrame = frames.associationFrame(response.data);
+        return $q.all({
+          attributes: jsonld.promises.frame(response.data, propertyFrame),
+          associations: jsonld.promises.frame(response.data, associationFrame)
+      })});
     }
   };
 };

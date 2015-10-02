@@ -1,4 +1,4 @@
-module.exports = function modelController($scope, $routeParams, $log, modelService, classService) {
+module.exports = function modelController($scope, $routeParams, $log, modelService, classService, propertyService) {
   'ngInject';
   modelService.getModelByUrn($routeParams.urn).then(response => {
     $scope.rawModel = response;
@@ -7,6 +7,13 @@ module.exports = function modelController($scope, $routeParams, $log, modelServi
 
     classService.getClassesForModel($routeParams.urn).then(data => {
       $scope.classes = data['@graph'];
+    }, err => {
+      $log.error(err);
+    });
+
+    propertyService.getPropertiesForModel($routeParams.urn).then(data => {
+      $scope.attributes = data.attributes['@graph'];
+      $scope.associations = data.associations['@graph'];
     }, err => {
       $log.error(err);
     });
