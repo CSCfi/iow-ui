@@ -18,6 +18,13 @@ module.exports = function propertyService($http, $q) {
         return jsonld.promises.frame(response.data, frame);
       });
     },
+    getPropertyById(id, userFrame = 'propertyFrame') {
+      return $http.get('/api/rest/property', {params: {id}})
+        .then(response => {
+          const frame = frames[userFrame](response.data);
+          return jsonld.promises.frame(response.data, frame);
+        });
+    },
     getPropertiesForModel(model) {
       return $http.get('/api/rest/property', {params: {model}}).then(response => {
         const propertyFrame = frames.propertyFrame(response.data);
