@@ -1,5 +1,8 @@
 {
   "extends": "airbnb/base",
+  "globals": {
+    "angular": true
+  },
   "rules": {
     "comma-dangle": [2, "never"],
     "no-unused-vars": [2, {
