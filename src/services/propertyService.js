@@ -5,7 +5,7 @@ const frames = require('./frames');
 module.exports = function propertyService($http, $q) {
   'ngInject';
   return {
-    getProperty(predicate, context) {
+    getProperty(predicate, context, userFrame = 'propertyFrame') {
       const data = {
         predicate: predicate,
         '@context': context
@@ -14,7 +14,7 @@ module.exports = function propertyService($http, $q) {
         const id = expanded[0]['http://www.w3.org/ns/shacl#predicate'][0]['@id'];
         return $http.get('/api/rest/property', {params: {id}});
       }).then(response => {
-        const frame = frames.propertyFrame(response.data);
+        const frame = frames[userFrame](response.data);
         return jsonld.promises.frame(response.data, frame);
       });
     },
