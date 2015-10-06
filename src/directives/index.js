@@ -23,7 +23,7 @@ mod.filter('urlencode', function urlencode() {
 });
 
 mod.filter('curie', () => uri =>
-  _.last(uri.split(":"))
+  uri ? _.last(uri.split(':')) : ''
 );
 
 module.exports = name;
