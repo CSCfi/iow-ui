@@ -13,12 +13,12 @@ var argv = require('optimist')
   })
   .argv;
 
-function reqOpts(path) {
+function reqOpts(path,type) {
   return {
     host: argv.host,
     port: argv.port,
     path: path,
-    method: 'PUT',
+    method: type,
     headers: {
       'Content-Type': 'application/json'
     }
@@ -31,13 +31,18 @@ function logger(res) {
 }
 
 function makeRequest(requestPath, fileName) {
-  var req = http.request(reqOpts(requestPath), logger);
+  var req;
+  if(fileName!=null) {
+  req = http.request(reqOpts(requestPath,"PUT"), logger);
   req.write(fs.readFileSync(path.join(__dirname, fileName)));
+} else {
+  req =  http.request(reqOpts(requestPath,"GET"), logger);
+}
   req.end();
 }
 
+//makeRequest('/api/rest/drop');
 makeRequest('/api/rest/groups', 'exampleGroups.json');
-//makeRequest('/api/rest/users', 'exampleUsers.json');
 makeRequest('/api/rest/importModel?graph=http://urn.fi/urn:nbn:fi:csc-iow-doo&group=https://tt.eduuni.fi/sites/csc-iow#DOO',
   'exampleModelDOO.json');
 makeRequest('/api/rest/importModel?graph=http://urn.fi/urn:nbn:fi:csc-iow-jhs&group=https://tt.eduuni.fi/sites/csc-iow#JHS',
