@@ -18,7 +18,7 @@ angular.module('iow-ui', [
     .when('/', {
       template: require('./views/index.html')
     })
-    .when('/groups/:urn', {
+    .when('/groups', {
       template: require('./views/group.html'),
       controller: 'groupController'
     })
