@@ -9,20 +9,19 @@ angular.module('iow-ui', [
   'gettext',
   'xeditable',
   require('./components'),
-  require('./services'),
-  require('./controllers')
+  require('./services')
 ])
 .config(function mainConfig($routeProvider) {
   $routeProvider
     .when('/', {
-      template: require('./views/index.html')
+      template: require('./components/templates/index.html')
     })
     .when('/groups', {
-      template: require('./views/group.html'),
+      template: require('./components/templates/group.html'),
       controller: 'groupController'
     })
     .when('/models', {
-      template: require('./views/model.html'),
+      template: require('./components/templates/model.html'),
       controller: 'modelController'
     });
 })

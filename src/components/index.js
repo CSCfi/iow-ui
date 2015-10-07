@@ -16,6 +16,9 @@ mod.directive('searchForm', require('./searchForm'));
 mod.directive('formInput', require('./formInput'));
 mod.directive('editableForm', require('./editableForm'));
 
+mod.controller('groupController', require('./groupController'));
+mod.controller('modelController', require('./modelController'));
+
 mod.filter('urlencode', function urlencode() {
   return input => {
     return window.encodeURIComponent(input);

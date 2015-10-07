@@ -4,7 +4,7 @@
 @import './vendor/_bootswatch';
 @import './vendor/_variables';
 @import './vendor/angular-xeditable-0.1.8/css/xeditable';
-@import './views/model';
+@import './components/templates/model';
 
 .iow-panel {
   @extend .panel;
