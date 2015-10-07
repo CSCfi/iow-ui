@@ -9,7 +9,6 @@ angular.module('iow-ui', [
   'gettext',
   'xeditable',
   require('./directives'),
-  require('./restapi'),
   require('./services'),
   require('./controllers')
 ])
