@@ -1,9 +1,11 @@
 <h2>
   {{model.label[language]}}
 </h2>
-<p>
-  {{model.comment[language]}}
-</p>
+
+<editable-form>
+  <form-input title="{{'Comment' | translate}}" content="model.comment"></form-input>
+</editable-form>
+
 
 <div class="model-panel--left">
   <tabset>
