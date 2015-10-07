@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const name = 'iow.directives';
+const name = 'iow.components';
 
 const mod = angular.module(name, []);
 

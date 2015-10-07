@@ -8,7 +8,7 @@ angular.module('iow-ui', [
   require('angular-ui-bootstrap'),
   'gettext',
   'xeditable',
-  require('./directives'),
+  require('./components'),
   require('./services'),
   require('./controllers')
 ])
