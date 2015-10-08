@@ -32,7 +32,8 @@ module.exports = function propertyService($http, $q) {
         return $q.all({
           attributes: jsonld.promises.frame(response.data, propertyFrame),
           associations: jsonld.promises.frame(response.data, associationFrame)
-      })});
+        });
+      });
     }
   };
 };
