@@ -1,5 +1,5 @@
 <h2>
-  {{model.label[language]}}
+  {{model | translateLabel}}
 </h2>
 
 <editable-form>
@@ -11,17 +11,29 @@
   <tabset>
     <tab heading="{{'Classes' | translate}}">
       <ul class="panel__list">
-        <li ng-repeat="class in classes" ng-class="activeClass == $index ? 'model-panel__selection' : ''" ng-click="activateClass(class, $index)">{{class.label[language]}}</li>
+        <li ng-repeat="class in classes | orderByLabel"
+            ng-class="activeClass == $index ? 'model-panel__selection' : ''"
+            ng-click="activateClass(class, $index)">
+          {{class | translateLabel}}
+        </li>
       </ul>
     </tab>
     <tab heading="{{'Attributes' | translate}}">
       <h3>Attributes</h3>
       <ul class="panel__list">
-        <li ng-repeat="attribute in attributes" ng-class="activeAttribute == $index ? 'model-panel__selection' : ''" ng-click="activateAttribute(attribute, $index)">{{attribute.label[language]}}</li>
+        <li ng-repeat="attribute in attributes | orderByLabel"
+            ng-class="activeAttribute == $index ? 'model-panel__selection' : ''"
+            ng-click="activateAttribute(attribute, $index)">
+          {{attribute | translateLabel}}
+        </li>
       </ul>
       <h3>Associations</h3>
       <ul class="panel__list">
-        <li ng-repeat="association in associations" ng-class="activeAssociation == $index ? 'model-panel__selection' : ''" ng-click="activateAssociation(association, $index)">{{association.label[language]}}</li>
+        <li ng-repeat="association in associations | orderByLabel"
+            ng-class="activeAssociation == $index ? 'model-panel__selection' : ''"
+            ng-click="activateAssociation(association, $index)">
+          {{association | translateLabel}}
+        </li>
       </ul>
     </tab>
   </tabset>

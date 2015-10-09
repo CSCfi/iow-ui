@@ -1,7 +1,7 @@
-<h2>{{group.label[language]}}</h2>
+<h2>{{group | translateLabel}}</h2>
 
 <ul>
   <li ng-repeat="model in models">
-    <a href="#/models/?urn={{model['@id'] | urlencode}}">{{model.label[language]}}</a>
+    <a href="#/models/?urn={{model['@id'] | urlencode}}">{{model | translateLabel}}</a>
   </li>
 </ul>

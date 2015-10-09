@@ -9,18 +9,17 @@ module.exports = function classView($log) {
     template: require('./templates/formInput.html'),
     controller($scope, $modal, modelLanguage) {
       'ngInject';
-      $scope.translate = modelLanguage.translate;
-      $scope.getLanguage = modelLanguage.getLanguage;
+      $scope.hasContentForLanguage = () => $scope.content[modelLanguage.getLanguage()];
 
       $scope.editing = false;
 
       $scope.startEdit = () => {
         $scope.editing = true;
-      }
+      };
 
       $scope.stopEdit = () => {
         $scope.editing = false;
-      }
+      };
     }
   };
 };

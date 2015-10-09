@@ -6,7 +6,7 @@ module.exports = function classView($log) {
     },
     restrict: 'E',
     template: require('./templates/classView.html'),
-    controller($scope, $modal, classService, modelLanguage) {
+    controller($scope, $modal, classService) {
       'ngInject';
       $scope.$watch('id', id => {
         classService.getClass($scope.id).then(data => {
@@ -16,10 +16,6 @@ module.exports = function classView($log) {
           $log.error(err);
         });
       });
-
-      $scope.translate = modelLanguage.translate;
-      $scope.getLanguage = modelLanguage.getLanguage;
-
       $scope.addProperty = () => {
         const modal = $modal.open({
           template: require('./templates/addProperty.html')

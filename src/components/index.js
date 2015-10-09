@@ -19,6 +19,20 @@ mod.directive('editableForm', require('./editableForm'));
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
 
+mod.filter('translateValue', (modelLanguage) => {
+  return (input) => input ? modelLanguage.translate(input) : '';
+});
+
+mod.filter('translateLabel', (translateValueFilter) => {
+  return input => input ? translateValueFilter(input.label) : '';
+});
+
+mod.filter('orderByLabel', (translateLabelFilter, orderByFilter) => {
+  return array => {
+    return orderByFilter(array, translateLabelFilter);
+  };
+});
+
 mod.filter('urlencode', function urlencode() {
   return input => {
     return window.encodeURIComponent(input);

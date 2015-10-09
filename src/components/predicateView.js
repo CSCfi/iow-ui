@@ -7,7 +7,7 @@ module.exports = function predicateView($log) {
     },
     restrict: 'E',
     template: require('./templates/predicateView.html'),
-    controller($scope, $http, propertyService, modelLanguage) {
+    controller($scope, $http, propertyService) {
       'ngInject';
 
       propertyService.getProperty($scope.predicate, $scope.context).then(property => {
@@ -15,7 +15,6 @@ module.exports = function predicateView($log) {
           $scope.property = property['@graph'][0];
         });
       });
-      $scope.translate = modelLanguage.translate;
     }
   };
 };

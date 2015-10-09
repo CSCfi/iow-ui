@@ -1,8 +1,8 @@
 <div class="model-view__title" translate>Name</div>
-<div>{{translate(property.label)}}</div>
+<div>{{property | translateLabel}}</div>
 <div ng-show="property.comment">
   <div class="model-view__title" translate>Description</div>
-  <div>{{translate(property.comment)}}</div>
+  <div>{{property.comment | translateValue}}</div>
 </div>
 <div class="model-view__title" translate>Type</div>
 <div>{{property.range}}</div>

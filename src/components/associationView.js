@@ -6,9 +6,8 @@ module.exports = function associationView($log) {
     },
     restrict: 'E',
     template: require('./templates/associationView.html'),
-    controller($scope, propertyService, modelLanguage) {
+    controller($scope, propertyService) {
       'ngInject';
-      $scope.translate = modelLanguage.translate;
 
       $scope.$watch("associationParam['@id']", id => {
         propertyService.getPropertyById(id, 'associationFrame').then(data => {
