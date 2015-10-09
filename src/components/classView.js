@@ -2,7 +2,7 @@ module.exports = function classView($log) {
   'ngInject';
   return {
     scope: {
-      id: '=classId',
+      id: '=classId'
     },
     restrict: 'E',
     template: require('./templates/classView.html'),
