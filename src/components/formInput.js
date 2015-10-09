@@ -3,13 +3,14 @@ module.exports = function classView($log) {
   return {
     scope: {
       title: '@',
-      content: '=content'
+      content: '='
     },
     restrict: 'E',
     template: require('./templates/formInput.html'),
     controller($scope, $modal, modelLanguage) {
       'ngInject';
-      $scope.hasContentForLanguage = () => $scope.content[modelLanguage.getLanguage()];
+      $scope.getLanguage = modelLanguage.getLanguage;
+      $scope.hasContentForLanguage = () => $scope.content && $scope.content[modelLanguage.getLanguage()];
 
       $scope.editing = false;
 
