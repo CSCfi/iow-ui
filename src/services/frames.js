@@ -33,7 +33,7 @@ function addToContext(context, values) {
 }
 
 function modelFrame(data) {
-  return  {
+  return {
     '@context': addToContext(data['@context'], {label, comment, title, example, prefLabel}),
     imports: {'@embed': false},
     classes: {
@@ -65,6 +65,13 @@ function propertyFrame(data) {
   };
 }
 
+function predicateFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label}),
+    '@id': data['@id']
+  };
+}
+
 function associationFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label}),
@@ -84,5 +91,6 @@ module.exports = {
   modelListFrame,
   propertyFrame,
   classFrame,
-  associationFrame
+  associationFrame,
+  predicateFrame
 };
