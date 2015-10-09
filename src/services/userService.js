@@ -3,7 +3,7 @@ module.exports = function userService() {
 
   return {
     isLoggedIn() {
-      return true;
+      return false;
     }
   };
 };
