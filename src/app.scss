@@ -6,6 +6,22 @@
 @import './vendor/angular-xeditable-0.1.8/css/xeditable';
 @import './components/templates/model';
 
+body {
+  padding: 10px;
+}
+
+ul.nav {
+  margin-right: 0;
+  padding: 9px;
+  > li {
+    padding-right: 10px;
+  }
+}
+
+.modal-content {
+  padding: 10px;
+}
+
 .iow-panel {
   @extend .panel;
   @extend .panel-default;

@@ -1,6 +1,6 @@
 <form editable-form name="form">
   <div ng-transclude></div>
-  <div ng-if="isLoggedIn">
+  <div ng-if="isLoggedIn()">
     <button type="button" class="btn btn-default" ng-click="form.$show()" ng-show="!form.$visible" translate>Edit</button>
     <button type="submit" class="btn btn-default" ng-show="form.$visible" translate>Save</button>
     <button type="button" class="btn btn-default" ng-click="form.$cancel()" ng-show="form.$visible" translate>Cancel</button>

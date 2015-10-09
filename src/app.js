@@ -25,9 +25,10 @@ angular.module('iow-ui', [
       controller: 'modelController'
     });
 })
-.run(function onAppRun($rootScope, editableOptions, languageService) {
+.run(function onAppRun($rootScope, editableOptions, languageService, userService) {
   editableOptions.theme = 'bs3';
   languageService.setLanguage('fi');
+  userService.updateLogin();
   $rootScope.language = languageService.getLanguage();
 })
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {

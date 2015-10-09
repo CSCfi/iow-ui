@@ -15,6 +15,7 @@ mod.directive('propertyView', require('./propertyView'));
 mod.directive('searchForm', require('./searchForm'));
 mod.directive('formInput', require('./formInput'));
 mod.directive('editableForm', require('./editableForm'));
+mod.directive('login', require('./login'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
