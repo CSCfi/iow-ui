@@ -1,5 +1,5 @@
 # iow-ui
-Interoperability workbench user interface seed.  
+Interoperability workbench user interface  
 
 ## Usage
 To run the build
