@@ -1,3 +1,5 @@
+const fakeUser = {};
+
 export default class UserService {
 
   loggedInUser;
@@ -19,7 +21,7 @@ export default class UserService {
   }
 
   fakeLogin() {
-    this.loggedInUser = {};
+    this.loggedInUser = fakeUser;
   }
 
   isLoggedIn() {
@@ -27,7 +29,9 @@ export default class UserService {
   }
 
   logout() {
+    if (this.loggedInUser !== fakeUser) {
+      this.$http.get('/api/rest/logout');
+    }
     this.loggedInUser = null;
-    this.$http.get('/api/rest/logout');
   }
 }
