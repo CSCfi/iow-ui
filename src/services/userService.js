@@ -12,6 +12,8 @@ export default class UserService {
       const loggedIn = angular.fromJson(statusResponse.data);
       if (loggedIn) {
         this.$http.get('/api/rest/user').then(userResponse => this.loggedInUser = angular.fromJson(userResponse.data));
+      } else {
+        this.loggedInUser = null;
       }
     });
   }
