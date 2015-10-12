@@ -3,7 +3,7 @@ const fakeUser = {};
 function userService($http) {
   "ngInject";
   return {
-    updateLogin: () => {
+    updateLogin() {
       $http.get('/api/rest/loginstatus').then(statusResponse => {
         const loggedIn = angular.fromJson(statusResponse.data);
         if (loggedIn) {
@@ -13,13 +13,13 @@ function userService($http) {
         }
       });
     },
-    fakeLogin: () => {
+    fakeLogin() {
       this.loggedInUser = fakeUser;
     },
-    isLoggedIn: () => {
+    isLoggedIn() {
       return this.loggedInUser;
     },
-    logout: () => {
+    logout() {
       if (this.loggedInUser !== fakeUser) {
         $http.get('/api/rest/logout');
       }

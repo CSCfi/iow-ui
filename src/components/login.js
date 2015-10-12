@@ -12,17 +12,17 @@ function loginDirective() {
 function loginController($modal, userService) {
   "ngInject";
   return {
-    openLogin: () => {
+    openLogin() {
       $modal.open({
         template: require('./templates/login-modal.html'),
         controller: modalController,
         controllerAs: 'ctrl'
       });
     },
-    isLoggedIn: () => {
+    isLoggedIn() {
       return userService.isLoggedIn();
     },
-    logout: () => {
+    logout() {
       userService.logout();
     }
   }
@@ -32,14 +32,14 @@ function loginController($modal, userService) {
 function modalController($modalInstance, $window, userService) {
   "ngInject";
   return {
-    fakeLogin: () => {
+    fakeLogin() {
       userService.fakeLogin();
       $modalInstance.dismiss();
     },
-    login: () => {
+    login() {
       $window.location.href = '/api/login';
     },
-    register: () => {
+    register() {
       $window.location.href = 'http://eduuni.fi/registration.aspx';
     }
   }
