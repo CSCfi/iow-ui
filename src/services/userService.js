@@ -29,4 +29,4 @@ module.exports = function userService($http) {
       loggedInUser = null;
     }
   };
-}
+};
