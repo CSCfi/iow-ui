@@ -1,31 +1,32 @@
 const fakeUser = {};
 
-function userService($http) {
-  "ngInject";
+module.exports = function userService($http) {
+  'ngInject';
+
+  let loggedInUser;
+
   return {
     updateLogin() {
       $http.get('/api/rest/loginstatus').then(statusResponse => {
         const loggedIn = angular.fromJson(statusResponse.data);
         if (loggedIn) {
-          $http.get('/api/rest/user').then(userResponse => this.loggedInUser = angular.fromJson(userResponse.data));
+          $http.get('/api/rest/user').then(userResponse => loggedInUser = angular.fromJson(userResponse.data));
         } else {
-          this.loggedInUser = null;
+          loggedInUser = null;
         }
       });
     },
     fakeLogin() {
-      this.loggedInUser = fakeUser;
+      loggedInUser = fakeUser;
     },
     isLoggedIn() {
-      return this.loggedInUser;
+      return loggedInUser;
     },
     logout() {
-      if (this.loggedInUser !== fakeUser) {
+      if (loggedInUser !== fakeUser) {
         $http.get('/api/rest/logout');
       }
-      this.loggedInUser = null;
+      loggedInUser = null;
     }
   };
 }
-
-module.exports = userService;
