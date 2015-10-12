@@ -35,7 +35,7 @@ function modalController($window) {
       $window.location.href = '/api/login';
     },
     register() {
-      $window.location.href = 'http://eduuni.fi/registration.aspx';
+      $window.location.href = 'http://id.eduuni.fi/signup';
     }
   }
 }
