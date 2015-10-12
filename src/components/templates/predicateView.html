@@ -8,3 +8,11 @@
 <div>{{property['@type']}}</div>
 <div class="model-view__title" translate>Range</div>
 <div>{{property.range}}</div>
+<div ng-show="property.datatype">
+  <div class="model-view__title" translate>Datatype</div>
+  <div>{{property.datatype}}</div>
+</div>
+<div ng-show="property.valueClass">
+  <div class="model-view__title" translate>Valueclass</div>
+  <div>{{property.valueClass}}</div>
+</div>
