@@ -8,7 +8,7 @@ module.exports = function editableForm($log) {
     template: require('./templates/editableForm.html'),
     controller($scope, userService) {
       'ngInject';
-      $scope.isLoggedIn = () => userService.isLoggedIn();
+      $scope.isLoggedIn = userService.isLoggedIn;
     }
   };
 };
