@@ -7,6 +7,10 @@
       <div class="model-view__title" translate>Datatype</div>
       <div>{{property.datatype}}</div>
     </div>
+    <div ng-show="property.valueClass">
+      <div class="model-view__title" translate>Valueclass</div>
+      <div>{{property.valueClass}}</div>
+    </div>
   </editable-form>
   <accordion>
     <accordion-group is-open="isOpen[property.predicate]">
