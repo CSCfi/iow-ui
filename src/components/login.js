@@ -1,5 +1,5 @@
 
-function loginDirective() {
+module.exports = function loginDirective() {
   return {
     scope: {},
     restrict: 'E',
@@ -10,7 +10,7 @@ function loginDirective() {
 };
 
 function loginController($modal, userService) {
-  "ngInject";
+  'ngInject';
   return {
     openLogin() {
       $modal.open({
@@ -28,14 +28,9 @@ function loginController($modal, userService) {
   }
 }
 
-
-function modalController($modalInstance, $window, userService) {
-  "ngInject";
+function modalController($window) {
+  'ngInject';
   return {
-    fakeLogin() {
-      userService.fakeLogin();
-      $modalInstance.dismiss();
-    },
     login() {
       $window.location.href = '/api/login';
     },
@@ -44,5 +39,3 @@ function modalController($modalInstance, $window, userService) {
     }
   }
 }
-
-module.exports = loginDirective;

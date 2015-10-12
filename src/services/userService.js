@@ -1,5 +1,3 @@
-const fakeUser = {};
-
 module.exports = function userService($http) {
   'ngInject';
 
@@ -16,16 +14,11 @@ module.exports = function userService($http) {
         }
       });
     },
-    fakeLogin() {
-      loggedInUser = fakeUser;
-    },
     isLoggedIn() {
       return loggedInUser;
     },
     logout() {
-      if (loggedInUser !== fakeUser) {
-        $http.get('/api/rest/logout');
-      }
+      $http.get('/api/rest/logout');
       loggedInUser = null;
     }
   };
