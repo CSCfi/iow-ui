@@ -16,7 +16,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: components/templates/editableForm.html:5
+#: components/templates/editableForm.html:6
 msgid "Cancel"
 msgstr ""
 
@@ -34,14 +34,18 @@ msgstr ""
 msgid "Datatype"
 msgstr ""
 
-#: components/templates/classView.html:5
+#: components/templates/classView.html:11
 #: components/templates/predicateView.html:4
 #: components/templates/propertyView.html:4
 msgid "Description"
 msgstr ""
 
-#: components/templates/editableForm.html:3
+#: components/templates/editableForm.html:4
 msgid "Edit"
+msgstr ""
+
+#: components/templates/login-modal.html:4
+msgid "eDuuni tietoa"
 msgstr ""
 
 #: components/templates/propertyView.html:5
@@ -61,10 +65,34 @@ msgstr ""
 msgid "Is defined by"
 msgstr ""
 
+#: components/templates/login-modal.html:7
+msgid "Kirjaudu"
+msgstr ""
+
+#: components/templates/login-modal.html:2
+msgid "Kirjautuminen"
+msgstr ""
+
+#: components/templates/login-modal.html:5
+msgid "kirjautuminen tietoa"
+msgstr ""
+
 #: components/templates/associationView.html:2
 #: components/templates/attributeView.html:2
 #: components/templates/model.html:6
 msgid "Label"
+msgstr ""
+
+#: components/templates/login.html:1
+msgid "Login"
+msgstr ""
+
+#: components/templates/login.html:5
+msgid "Logout"
+msgstr ""
+
+#: components/templates/login-modal.html:8
+msgid "Luo tunnukset"
 msgstr ""
 
 #: components/templates/predicateView.html:1
@@ -72,19 +100,24 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/templates/classView.html:6
+#: components/templates/classView.html:12
 msgid "PrefLabel"
 msgstr ""
 
 #: components/templates/associationView.html:4
 #: components/templates/attributeView.html:4
+#: components/templates/predicateView.html:9
 msgid "Range"
 msgstr ""
 
-#: components/templates/editableForm.html:4
+#: components/templates/editableForm.html:5
 msgid "Save"
 msgstr ""
 
 #: components/templates/predicateView.html:7
 msgid "Type"
+msgstr ""
+
+#: components/templates/propertyView.html:11
+msgid "Valueclass"
 msgstr ""
