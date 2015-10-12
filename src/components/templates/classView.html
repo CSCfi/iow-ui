@@ -1,6 +1,10 @@
 <h2>
   {{class | translateLabel}}
 </h2>
+<div ng-show="class.subClassOf">
+  <div class="model-view__title">Superclass</div>
+  <div>{{class.subClassOf}}</div>
+</div>
 <editable-form>
   <form-input title="{{'Description' | translate}}" content="class.comment"></form-input>
   <form-input title="{{'PrefLabel' | translate}}" content="class.prefLabel"></form-input>
