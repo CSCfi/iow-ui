@@ -1,0 +1,6 @@
+<div ng-show="inputController.content || formController.visible()">
+  <div class="model-view__title">{{inputController.title}}</div>
+  <span editable-select="inputController.content" e-ng-options="s as inputController.displayName(s) for s in inputController.values">
+    {{ inputController.displayName(inputController.content) }}
+  </span>
+</div>

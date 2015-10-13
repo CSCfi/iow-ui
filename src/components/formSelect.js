@@ -1,25 +1,25 @@
-module.exports = function formInputDirective($log) {
+module.exports = function classView($log) {
   'ngInject';
   return {
     scope: {
       title: '@',
-      content: '='
+      content: '=',
+      values: '='
     },
     restrict: 'E',
-    template: require('./templates/formInput.html'),
+    template: require('./templates/formSelect.html'),
     controllerAs: 'inputController',
     bindToController: true,
     require: '^editableForm',
     link(scope, element, attributes, editableFormController) {
       scope.formController = editableFormController;
     },
-    controller(modelLanguage) {
+    controller(gettextCatalog) {
       'ngInject';
 
       return {
-        getLanguage: modelLanguage.getLanguage,
-        hasContentForLanguage() {
-          return this.content && this.content[this.getLanguage()];
+        displayName(s) {
+          return `${gettextCatalog.getString(s)} (${s})`;
         }
       };
     }

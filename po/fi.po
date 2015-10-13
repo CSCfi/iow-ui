@@ -120,6 +120,10 @@ msgstr ""
 msgid "Range"
 msgstr ""
 
+#: translations/attribute.html:5
+msgid "rdf:langString"
+msgstr "Kieliversioitu teksti"
+
 #: components/templates/editableForm.html:5
 msgid "Save"
 msgstr "Tallenna"
@@ -131,3 +135,71 @@ msgstr "Tyyppi"
 #: components/templates/propertyView.html:11
 msgid "Valueclass"
 msgstr ""
+
+#: translations/attribute.html:6
+msgid "xsd:anyURI"
+msgstr "URI"
+
+#: translations/attribute.html:7
+msgid "xsd:boolean"
+msgstr "Kytkin"
+
+#: translations/attribute.html:14
+msgid "xsd:date"
+msgstr "Päivämäärä"
+
+#: translations/attribute.html:15
+msgid "xsd:dateTime"
+msgstr "Ajanhetki"
+
+#: translations/attribute.html:8
+msgid "xsd:decimal"
+msgstr "Desimaali"
+
+#: translations/attribute.html:9
+msgid "xsd:double"
+msgstr "Desimaali (64bit)"
+
+#: translations/attribute.html:10
+msgid "xsd:float"
+msgstr "Desimaali (32bit)"
+
+#: translations/attribute.html:19
+msgid "xsd:gDay"
+msgstr "Päivämäärä"
+
+#: translations/attribute.html:18
+msgid "xsd:gMonth"
+msgstr "Kuukausi"
+
+#: translations/attribute.html:17
+msgid "xsd:gYear"
+msgstr "Vuosi"
+
+#: translations/attribute.html:20
+msgid "xsd:HTML"
+msgstr "HTML"
+
+#: translations/attribute.html:13
+msgid "xsd:int"
+msgstr "Kokonaisluku (32bit)"
+
+#: translations/attribute.html:11
+msgid "xsd:integer"
+msgstr "Kokonaisluku"
+
+#: translations/attribute.html:12
+msgid "xsd:long"
+msgstr "Kokonaisluku (64bit)"
+
+#: translations/attribute.html:4
+msgid "xsd:string"
+msgstr "Teksti"
+
+#: translations/attribute.html:16
+msgid "xsd:time"
+msgstr "Aika"
+
+#: translations/attribute.html:21
+msgid "xsd:XMLLiteral"
+msgstr "XML"

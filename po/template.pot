@@ -110,6 +110,10 @@ msgstr ""
 msgid "Range"
 msgstr ""
 
+#: translations/attribute.html:5
+msgid "rdf:langString"
+msgstr ""
+
 #: components/templates/editableForm.html:5
 msgid "Save"
 msgstr ""
@@ -120,4 +124,72 @@ msgstr ""
 
 #: components/templates/propertyView.html:11
 msgid "Valueclass"
+msgstr ""
+
+#: translations/attribute.html:6
+msgid "xsd:anyURI"
+msgstr ""
+
+#: translations/attribute.html:7
+msgid "xsd:boolean"
+msgstr ""
+
+#: translations/attribute.html:14
+msgid "xsd:date"
+msgstr ""
+
+#: translations/attribute.html:15
+msgid "xsd:dateTime"
+msgstr ""
+
+#: translations/attribute.html:8
+msgid "xsd:decimal"
+msgstr ""
+
+#: translations/attribute.html:9
+msgid "xsd:double"
+msgstr ""
+
+#: translations/attribute.html:10
+msgid "xsd:float"
+msgstr ""
+
+#: translations/attribute.html:19
+msgid "xsd:gDay"
+msgstr ""
+
+#: translations/attribute.html:18
+msgid "xsd:gMonth"
+msgstr ""
+
+#: translations/attribute.html:17
+msgid "xsd:gYear"
+msgstr ""
+
+#: translations/attribute.html:20
+msgid "xsd:HTML"
+msgstr ""
+
+#: translations/attribute.html:13
+msgid "xsd:int"
+msgstr ""
+
+#: translations/attribute.html:11
+msgid "xsd:integer"
+msgstr ""
+
+#: translations/attribute.html:12
+msgid "xsd:long"
+msgstr ""
+
+#: translations/attribute.html:4
+msgid "xsd:string"
+msgstr ""
+
+#: translations/attribute.html:16
+msgid "xsd:time"
+msgstr ""
+
+#: translations/attribute.html:21
+msgid "xsd:XMLLiteral"
 msgstr ""

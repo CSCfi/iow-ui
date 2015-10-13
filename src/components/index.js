@@ -14,6 +14,7 @@ mod.directive('predicateView', require('./predicateView'));
 mod.directive('propertyView', require('./propertyView'));
 mod.directive('searchForm', require('./searchForm'));
 mod.directive('formInput', require('./formInput'));
+mod.directive('formSelect', require('./formSelect'));
 mod.directive('editableForm', require('./editableForm'));
 mod.directive('login', require('./login'));
 

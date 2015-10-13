@@ -1,4 +1,4 @@
-<div ng-show="hasContentForLanguage() || editing">
-  <div class="model-view__title">{{title}}</div>
-  <div editable-text="content[getLanguage()]" onshow="startEdit()" onhide="stopEdit()">{{content | translateValue}}</div>
+<div ng-show="inputController.hasContentForLanguage() || formController.visible()">
+  <div class="model-view__title">{{inputController.title}}</div>
+  <div editable-text="inputController.content[inputController.getLanguage()]">{{inputController.content | translateValue}}</div>
 </div>
