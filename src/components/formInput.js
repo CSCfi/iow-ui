@@ -19,7 +19,7 @@ module.exports = function formInputDirective($log) {
 
       const vm = this;
       vm.getLanguage = modelLanguage.getLanguage;
-      vm.hasContent = () => vm.plainText || (vm.content && vm.content[vm.getLanguage()]);
+      vm.hasContent = () => vm.plainText || (vm.content && vm.content[modelLanguage.getLanguage()]);
     }
   };
 };
