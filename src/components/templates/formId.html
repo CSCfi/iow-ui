@@ -1,0 +1,4 @@
+<div ng-show="inputController.plainText">
+  <div class="model-view__title">{{inputController.title}}</div>
+  <div editable-text="inputController.id" ng-if="inputController.plainText" onaftersave="inputController.update()">{{inputController.plainText}}</div>
+</div>

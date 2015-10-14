@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 const name = 'iow.components';
 
 const mod = angular.module(name, []);
@@ -14,6 +12,7 @@ mod.directive('predicateView', require('./predicateView'));
 mod.directive('propertyView', require('./propertyView'));
 mod.directive('searchForm', require('./searchForm'));
 mod.directive('formInput', require('./formInput'));
+mod.directive('formId', require('./formId'));
 mod.directive('formSelect', require('./formSelect'));
 mod.directive('editableForm', require('./editableForm'));
 mod.directive('login', require('./login'));
