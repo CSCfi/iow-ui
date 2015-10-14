@@ -25,5 +25,5 @@ module.exports = function formInputDirective($log) {
         return this.content && this.content[this.getLanguage()];
       }
     }
-  }
+  };
 };
