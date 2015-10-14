@@ -1,13 +1,13 @@
-<h2>
-  {{class | translateLabel}}
-</h2>
-<div ng-show="class.subClassOf">
-  <div class="model-view__title">Superclass</div>
-  <div>{{class.subClassOf}}</div>
-</div>
-<div class="model-view__title">Is defined by</div>
-<div>{{class.isDefinedBy}}</div>
 <editable-form>
+  <h2>
+    <form-input content="class.label"></form-input>
+  </h2>
+  <div ng-show="class.subClassOf">
+    <div class="model-view__title">Superclass</div>
+    <div>{{class.subClassOf}}</div>
+  </div>
+  <div class="model-view__title">Is defined by</div>
+  <div>{{class.isDefinedBy}}</div>
   <form-input title="{{'Description' | translate}}" content="class.comment"></form-input>
   <form-input title="{{'PrefLabel' | translate}}" content="class.prefLabel"></form-input>
 </editable-form>
