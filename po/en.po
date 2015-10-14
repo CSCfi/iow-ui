@@ -1,0 +1,202 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-10-14 11:06+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.5\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: components/templates/addProperty.html:1
+msgid "Add property"
+msgstr ""
+
+#: components/templates/model.html:24
+msgid "Attributes"
+msgstr ""
+
+#: components/templates/groupList.html:2
+msgid "Browse"
+msgstr ""
+
+#: components/templates/editableForm.html:6
+msgid "Cancel"
+msgstr ""
+
+#: components/templates/model.html:15
+msgid "Classes"
+msgstr ""
+
+#: components/templates/associationView.html:3
+#: components/templates/attributeView.html:3 components/templates/model.html:7
+msgid "Comment"
+msgstr ""
+
+#: components/templates/propertyView.html:7
+msgid "Datatype"
+msgstr ""
+
+#: components/templates/classView.html:11
+#: components/templates/predicateView.html:4
+#: components/templates/propertyView.html:4
+msgid "Description"
+msgstr ""
+
+#: components/templates/editableForm.html:4
+msgid "Edit"
+msgstr ""
+
+#: components/templates/login-modal.html:4
+msgid "eDuuni tietoa"
+msgstr ""
+
+#: components/templates/propertyView.html:5
+msgid "Example"
+msgstr ""
+
+#: components/templates/model.html:8
+msgid "Id"
+msgstr ""
+
+#: components/templates/index.html:3
+msgid "IOW header"
+msgstr ""
+
+#: components/templates/associationView.html:5
+#: components/templates/attributeView.html:5
+msgid "Is defined by"
+msgstr ""
+
+#: components/templates/login-modal.html:7
+msgid "Kirjaudu"
+msgstr ""
+
+#: components/templates/login-modal.html:2
+msgid "Kirjautuminen"
+msgstr ""
+
+#: components/templates/login-modal.html:5
+msgid "kirjautuminen tietoa"
+msgstr ""
+
+#: components/templates/associationView.html:2
+#: components/templates/attributeView.html:2 components/templates/model.html:6
+msgid "Label"
+msgstr ""
+
+#: components/templates/login.html:1
+msgid "Login"
+msgstr ""
+
+#: components/templates/login.html:5
+msgid "Logout"
+msgstr ""
+
+#: components/templates/login-modal.html:8
+msgid "Luo tunnukset"
+msgstr ""
+
+#: components/templates/predicateView.html:1
+#: components/templates/propertyView.html:3
+msgid "Name"
+msgstr ""
+
+#: components/templates/classView.html:12
+msgid "PrefLabel"
+msgstr ""
+
+#: components/templates/associationView.html:4
+#: components/templates/attributeView.html:4
+#: components/templates/predicateView.html:9
+msgid "Range"
+msgstr ""
+
+#: translations/attribute.html:5
+msgid "rdf:langString"
+msgstr "Localized text"
+
+#: components/templates/editableForm.html:5
+msgid "Save"
+msgstr ""
+
+#: components/templates/predicateView.html:7
+msgid "Type"
+msgstr ""
+
+#: components/templates/propertyView.html:11
+msgid "Valueclass"
+msgstr ""
+
+#: translations/attribute.html:6
+msgid "xsd:anyURI"
+msgstr "URI"
+
+#: translations/attribute.html:7
+msgid "xsd:boolean"
+msgstr "Boolean"
+
+#: translations/attribute.html:14
+msgid "xsd:date"
+msgstr "Date"
+
+#: translations/attribute.html:15
+msgid "xsd:dateTime"
+msgstr "Point in time"
+
+#: translations/attribute.html:8
+msgid "xsd:decimal"
+msgstr "Decimal"
+
+#: translations/attribute.html:9
+msgid "xsd:double"
+msgstr "Decimal (64bit)"
+
+#: translations/attribute.html:10
+msgid "xsd:float"
+msgstr "Decimal (32bit)"
+
+#: translations/attribute.html:19
+msgid "xsd:gDay"
+msgstr "Day"
+
+#: translations/attribute.html:18
+msgid "xsd:gMonth"
+msgstr "Month"
+
+#: translations/attribute.html:17
+msgid "xsd:gYear"
+msgstr "Year"
+
+#: translations/attribute.html:20
+msgid "xsd:HTML"
+msgstr "HTML"
+
+#: translations/attribute.html:13
+msgid "xsd:int"
+msgstr "Integer (32bit)"
+
+#: translations/attribute.html:11
+msgid "xsd:integer"
+msgstr "Integer"
+
+#: translations/attribute.html:12
+msgid "xsd:long"
+msgstr "Integer (64bit)"
+
+#: translations/attribute.html:4
+msgid "xsd:string"
+msgstr "Text"
+
+#: translations/attribute.html:16
+msgid "xsd:time"
+msgstr "Time"
+
+#: translations/attribute.html:21
+msgid "xsd:XMLLiteral"
+msgstr "XML"
