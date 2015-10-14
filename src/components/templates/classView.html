@@ -1,7 +1,7 @@
-<h2>
-  {{class | translateLabel}}
-</h2>
 <editable-form>
+  <h2>
+    <form-input content="class.label"></form-input>
+  </h2>
   <form-input title="{{'Id' | translate}}" plain-text="class['@id']"></form-input>
   <div ng-show="class.subClassOf">
     <div class="model-view__title">Superclass</div>
