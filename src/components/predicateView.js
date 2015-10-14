@@ -2,19 +2,12 @@ module.exports = function predicateView($log) {
   'ngInject';
   return {
     scope: {
-      predicate: '=predicate',
-      context: '=context'
+      property: '=predicate'
     },
     restrict: 'E',
     template: require('./templates/predicateView.html'),
-    controller($scope, $http, propertyService) {
+    controller($scope) {
       'ngInject';
-
-      propertyService.getProperty($scope.predicate, $scope.context).then(property => {
-        $scope.$apply(() => {
-          $scope.property = property['@graph'][0];
-        });
-      });
     }
   };
 };

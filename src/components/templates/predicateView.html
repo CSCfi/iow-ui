@@ -8,7 +8,3 @@
 <div>{{property['@type']}}</div>
 <div class="model-view__title" translate>Range</div>
 <div>{{property.range}}</div>
-<editable-form>
-  <form-input title="{{'Datatype' | translate}}" content="property.datatype" ng-if="property['@type'] == 'owl:DatatypeProperty'"></form-input>
-  <form-input title="{{'Value class' | translate}}" content="property.valuesClass" ng-if="property['@type'] == 'owl:ObjectProperty'"></form-input>
-</editable-form>

@@ -3,19 +3,13 @@
     <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
     <form-input title="{{'Description' | translate}}" content="property.comment"></form-input>
     <form-input title="{{'Example' | translate}}" content="property.example"></form-input>
-    <div ng-if="property.datatype">
-      <div class="model-view__title" translate>Datatype</div>
-      <div>{{property.datatype}}</div>
-    </div>
-    <div ng-show="property.valueClass">
-      <div class="model-view__title" translate>Valueclass</div>
-      <div>{{property.valueClass}}</div>
-    </div>
+    <form-input title="{{'Datatype' | translate}}" content="property.datatype" ng-if="predicate['@type'] == 'owl:DatatypeProperty'"></form-input>
+    <form-input title="{{'Value class' | translate}}" content="property.valuesClass" ng-if="predicate['@type'] == 'owl:ObjectProperty'"></form-input>
   </editable-form>
   <accordion>
     <accordion-group is-open="isOpen[property.predicate]">
       <accordion-heading>{{property.predicate}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicate], 'glyphicon-chevron-right': !isOpen[property.predicate]}"></span></accordion-heading>
-      <predicate-view predicate="property.predicate" context="context" ng-if="isOpen[property.predicate]"></predicate-view>
+      <predicate-view predicate="predicate" ng-if="isOpen[property.predicate]"></predicate-view>
     </accordion-group>
   </accordion>
 </div>
