@@ -2,7 +2,7 @@ module.exports = function predicateView($log) {
   'ngInject';
   return {
     scope: {
-      property: '=predicate'
+      predicate: '='
     },
     restrict: 'E',
     template: require('./templates/predicateView.html'),
