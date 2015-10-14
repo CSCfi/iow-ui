@@ -1,4 +1,3 @@
-
 module.exports = function loginDirective() {
   return {
     scope: {},
