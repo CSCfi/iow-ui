@@ -16,12 +16,14 @@ module.exports = function formInputDirective($log) {
     controller(modelLanguage) {
       'ngInject';
 
-      return {
-        getLanguage: modelLanguage.getLanguage,
-        hasContentForLanguage() {
-          return this.content && this.content[this.getLanguage()];
-        }
-      };
+      const vm = this;
+
+      vm.getLanguage = modelLanguage.getLanguage;
+      vm.hasContentForLanguage = hasContentForLanguage;
+
+      function hasContentForLanguage() {
+        return this.content && this.content[this.getLanguage()];
+      }
     }
-  };
+  }
 };

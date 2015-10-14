@@ -5,37 +5,50 @@ module.exports = function loginDirective() {
     restrict: 'E',
     template: require('./templates/login.html'),
     controllerAs: 'ctrl',
-    controller: loginController
+    controller: LoginController
   };
 };
 
-function loginController($modal, userService) {
+function LoginController($modal, userService) {
   'ngInject';
-  return {
-    openLogin() {
-      $modal.open({
-        template: require('./templates/login-modal.html'),
-        controller: modalController,
-        controllerAs: 'ctrl'
-      });
-    },
-    isLoggedIn() {
-      return userService.isLoggedIn();
-    },
-    logout() {
-      userService.logout();
-    }
+
+  const vm = this;
+
+  vm.openLogin = openLogin;
+  vm.isLoggedIn = isLoggedIn;
+  vm.logout = logout;
+
+  function openLogin() {
+    $modal.open({
+      template: require('./templates/login-modal.html'),
+      controller: ModalController,
+      controllerAs: 'ctrl'
+    });
+  }
+
+  function isLoggedIn() {
+    return userService.isLoggedIn();
+  }
+
+  function logout() {
+    userService.logout();
   }
 }
 
-function modalController($window) {
+
+function ModalController($window) {
   'ngInject';
-  return {
-    login() {
-      $window.location.href = '/api/login';
-    },
-    register() {
-      $window.location.href = 'http://id.eduuni.fi/signup';
-    }
+
+  const vm = this;
+
+  vm.login = login;
+  vm.register = register;
+
+  function login() {
+    $window.location.href = '/api/login';
+  }
+
+  function register() {
+    $window.location.href = 'http://id.eduuni.fi/signup';
   }
 }

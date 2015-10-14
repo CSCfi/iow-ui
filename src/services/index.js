@@ -9,6 +9,6 @@ mod.factory('modelLanguage', require('./modelLanguage'));
 mod.factory('propertyService', require('./propertyService'));
 mod.factory('searchService', require('./searchService'));
 mod.factory('classService', require('./classService'));
-mod.service('userService', require('./userService'));
+mod.factory('userService', require('./userService'));
 
 module.exports = name;

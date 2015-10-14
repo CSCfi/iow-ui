@@ -10,17 +10,23 @@ module.exports = function editableForm($log) {
     controller($scope, userService) {
       'ngInject';
 
-      return {
-        isLoggedIn: userService.isLoggedIn,
-        visible() {
-          return $scope.form && $scope.form.$visible;
-        },
-        show() {
-          return $scope.form && $scope.form.$show();
-        },
-        cancel() {
-          return $scope.form && $scope.form.$cancel();
-        }
+      const vm = this;
+
+      vm.isLoggedIn = userService.isLoggedIn;
+      vm.visible = visible;
+      vm.show = show;
+      vm.cancel = cancel;
+
+      function visible() {
+        return $scope.form && $scope.form.$visible;
+      }
+
+      function show() {
+        return $scope.form && $scope.form.$show();
+      }
+
+      function cancel() {
+        return $scope.form && $scope.form.$cancel();
       }
     }
   };

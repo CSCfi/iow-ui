@@ -17,11 +17,9 @@ module.exports = function classView($log) {
     controller(gettextCatalog) {
       'ngInject';
 
-      return {
-        displayName(s) {
-          return `${gettextCatalog.getString(s)} (${s})`;
-        }
-      };
+      const vm = this;
+
+      vm.displayName = (s) => `${gettextCatalog.getString(s)} (${s})`;
     }
   };
 };
