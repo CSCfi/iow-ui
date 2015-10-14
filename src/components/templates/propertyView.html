@@ -3,8 +3,8 @@
     <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
     <form-input title="{{'Description' | translate}}" content="property.comment"></form-input>
     <form-input title="{{'Example' | translate}}" content="property.example"></form-input>
-    <form-input title="{{'Datatype' | translate}}" content="property.datatype" ng-if="predicate['@type'] == 'owl:DatatypeProperty'"></form-input>
-    <form-input title="{{'Value class' | translate}}" content="property.valuesClass" ng-if="predicate['@type'] == 'owl:ObjectProperty'"></form-input>
+    <form-input title="{{'Datatype' | translate}}" plain-text="property.datatype" ng-if="predicate['@type'] == 'owl:DatatypeProperty'"></form-input>
+    <form-input title="{{'Value class' | translate}}" plain-text="property.valuesClass" ng-if="predicate['@type'] == 'owl:ObjectProperty'"></form-input>
   </editable-form>
   <accordion>
     <accordion-group is-open="isOpen[property.predicate]">

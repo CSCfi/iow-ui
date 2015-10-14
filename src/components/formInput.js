@@ -3,7 +3,8 @@ module.exports = function formInputDirective($log) {
   return {
     scope: {
       title: '@',
-      content: '='
+      content: '=',
+      plainText: '='
     },
     restrict: 'E',
     template: require('./templates/formInput.html'),
@@ -17,13 +18,8 @@ module.exports = function formInputDirective($log) {
       'ngInject';
 
       const vm = this;
-
       vm.getLanguage = modelLanguage.getLanguage;
-      vm.hasContentForLanguage = hasContentForLanguage;
-
-      function hasContentForLanguage() {
-        return this.content && this.content[this.getLanguage()];
-      }
+      vm.hasContent = () => vm.plainText || vm.content;
     }
   };
 };
