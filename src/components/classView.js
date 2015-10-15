@@ -6,7 +6,7 @@ module.exports = function classView($log) {
     },
     restrict: 'E',
     template: require('./templates/classView.html'),
-    controller($scope, $modal, classService) {
+    controller($scope, $uibModal, classService) {
       'ngInject';
       $scope.$watch('id', id => {
         classService.getClass($scope.id).then(data => {
@@ -17,7 +17,7 @@ module.exports = function classView($log) {
         });
       });
       $scope.addProperty = () => {
-        const modal = $modal.open({
+        const modal = $uibModal.open({
           template: require('./templates/addProperty.html')
         });
       };

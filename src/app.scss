@@ -55,3 +55,8 @@ ul.nav {
 a.accordion-toggle {
   display: block;
 }
+
+// fix weird ui-bootstrap bug
+.panel-collapse.in {
+  height: auto !important;
+}

@@ -6,10 +6,10 @@
     <form-input title="{{'Datatype' | translate}}" plain-text="property.datatype" ng-if="predicate['@type'] == 'owl:DatatypeProperty'"></form-input>
     <form-input title="{{'Value class' | translate}}" plain-text="property.valuesClass" ng-if="predicate['@type'] == 'owl:ObjectProperty'"></form-input>
   </editable-form>
-  <accordion>
-    <accordion-group is-open="isOpen[property.predicate]">
-      <accordion-heading>{{property.predicate}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicate], 'glyphicon-chevron-right': !isOpen[property.predicate]}"></span></accordion-heading>
+  <uib-accordion>
+    <uib-accordion-group is-open="isOpen[property.predicate]">
+      <uib-accordion-heading>{{property.predicate}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicate], 'glyphicon-chevron-right': !isOpen[property.predicate]}"></span></uib-accordion-heading>
       <predicate-view predicate="predicate" ng-if="isOpen[property.predicate]"></predicate-view>
-    </accordion-group>
-  </accordion>
+    </uib-accordion-group>
+  </uib-accordion>
 </div>

@@ -11,8 +11,8 @@
 
 
 <div class="model-panel--left">
-  <tabset>
-    <tab heading="{{'Classes' | translate}}">
+  <uib-tabset>
+    <uib-tab heading="{{'Classes' | translate}}">
       <ul class="panel__list">
         <li ng-repeat="class in classes | orderByLabel"
             ng-class="activeClass == $index ? 'model-panel__selection' : ''"
@@ -20,8 +20,8 @@
           {{class | translateLabel}}
         </li>
       </ul>
-    </tab>
-    <tab heading="{{'Attributes' | translate}}">
+    </uib-tab>
+    <uib-tab heading="{{'Attributes' | translate}}">
       <h3>Attributes</h3>
       <ul class="panel__list">
         <li ng-repeat="attribute in attributes | orderByLabel"
@@ -38,8 +38,8 @@
           {{association | translateLabel}}
         </li>
       </ul>
-    </tab>
-  </tabset>
+    </uib-tab>
+  </uib-tabset>
 </div>
 <div class="model-panel--right">
   <class-view class-id="class['@id']" ng-if="class"></class-view>

@@ -13,9 +13,9 @@
   <form-input title="{{'PrefLabel' | translate}}" content="class.prefLabel"></form-input>
 </editable-form>
 <button type="button" class="btn btn-default" ng-click="addProperty()" ng-if="isLoggedIn()">Add property</button>
-<accordion close-others="false">
-  <accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]">
-    <accordion-heading>{{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></accordion-heading>
+<uib-accordion close-others="false">
+  <uib-accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]">
+    <uib-accordion-heading>{{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></uib-accordion-heading>
     <property-view property="property" context="context" ng-if="isOpen[property['@id']]"></property-view>
-  </accordion-group>
-</accordion>
+  </uib-accordion-group>
+</uib-accordion>

@@ -9,7 +9,7 @@ module.exports = function loginDirective() {
   };
 };
 
-function LoginController($modal, userService) {
+function LoginController($uibModal, userService) {
   'ngInject';
 
   const vm = this;
@@ -19,7 +19,7 @@ function LoginController($modal, userService) {
   vm.logout = logout;
 
   function openLogin() {
-    $modal.open({
+    $uibModal.open({
       template: require('./templates/login-modal.html'),
       controller: ModalController,
       controllerAs: 'ctrl'
