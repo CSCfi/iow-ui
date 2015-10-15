@@ -2,7 +2,8 @@ module.exports = function classView($log) {
   'ngInject';
   return {
     scope: {
-      id: '=classId'
+      id: '=classId',
+      modelId: '='
     },
     restrict: 'E',
     template: require('./templates/classView.html'),
@@ -20,6 +21,9 @@ module.exports = function classView($log) {
         const modal = $uibModal.open({
           template: require('./templates/addProperty.html')
         });
+      };
+      $scope.updateClass = () => {
+        classService.updateClass($scope.id, $scope.modelId, {'@context': $scope.context, '@graph': [$scope.class]});
       };
     }
   };

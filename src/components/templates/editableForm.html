@@ -1,4 +1,4 @@
-<form editable-form name="form">
+<form editable-form name="form" onbeforesave="formController.onbeforesave({$data: $data})" onaftersave="formController.onaftersave()">
   <div ng-transclude></div>
   <div ng-if="formController.isLoggedIn()">
     <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="!formController.visible()" translate>Edit</button>

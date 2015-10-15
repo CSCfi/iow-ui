@@ -16,6 +16,9 @@ module.exports = function classService($http) {
         const frame = frames.classFrame(response.data);
         return jsonld.promises.frame(response.data, frame);
       });
+    },
+    updateClass(id, model, data) {
+      return $http.post('api/rest/class', data, {params: {id, model}});
     }
   };
 };
