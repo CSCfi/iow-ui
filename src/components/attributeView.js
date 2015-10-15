@@ -1,24 +1,4 @@
-
-const values = [
-  'xsd:string',
-  'rdf:langString',
-  'xsd:anyURI',
-  'xsd:boolean',
-  'xsd:decimal',
-  'xsd:double',
-  'xsd:float',
-  'xsd:integer',
-  'xsd:long',
-  'xsd:int',
-  'xsd:date',
-  'xsd:dateTime',
-  'xsd:time',
-  'xsd:gYear',
-  'xsd:gMonth',
-  'xsd:gDay',
-  'xsd:HTML',
-  'xsd:XMLLiteral'
-];
+const constants = require('./constants');
 
 module.exports = function classView($log) {
   'ngInject';
@@ -31,7 +11,7 @@ module.exports = function classView($log) {
     controller($scope, propertyService) {
       'ngInject';
 
-      $scope.attributeValues = values;
+      $scope.attributeValues = constants.attributeValues;
 
       $scope.$watch("attributeParam['@id']", id => {
         propertyService.getPropertyById(id).then(data => {
