@@ -14,7 +14,7 @@ module.exports = function classView($log) {
     },
     restrict: 'E',
     template: require('./templates/attributeView.html'),
-    controller($scope, propertyService) {
+    controller($scope, $timeout, propertyService) {
       'ngInject';
 
       $scope.attributeValues = constants.attributeValues;
@@ -28,12 +28,15 @@ module.exports = function classView($log) {
       });
 
       $scope.updateAttribute = () => {
-        const ld = _.chain($scope.attribute)
-          .clone()
-          .assign({'@context': context})
-          .value();
-        const newId = $scope.attribute.id === originalId ? undefined : $scope.attribute.id;
-        propertyService.updateProperty(ld, newId);
+        $timeout(() => {
+          // wait for changes to settle in scope
+          const ld = _.chain($scope.attribute)
+            .clone()
+            .assign({'@context': context})
+            .value();
+          const newId = $scope.attribute.id === originalId ? undefined : $scope.attribute.id;
+          propertyService.updateProperty(ld, newId);
+        });
       };
     }
   };
