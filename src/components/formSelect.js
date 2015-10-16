@@ -19,7 +19,7 @@ module.exports = function classView($log) {
 
       const vm = this;
 
-      vm.displayName = (s) => `${gettextCatalog.getString(s)} (${s})`;
+      vm.displayName = (text) => `${gettextCatalog.getString(text)} (${text})`;
     }
   };
 };
