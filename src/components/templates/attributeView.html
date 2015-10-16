@@ -1,4 +1,4 @@
-<editable-form>
+<editable-form onAfterSave="updateAttribute()">
   <form-input title="{{'Label' | translate}}" content="attribute.label"></form-input>
   <form-id title="{{'Id' | translate}}" plain-text="attribute['@id']"></form-id>
   <form-input title="{{'Comment' | translate}}" content="attribute.comment"></form-input>

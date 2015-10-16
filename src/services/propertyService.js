@@ -34,6 +34,16 @@ module.exports = function propertyService($http, $q) {
           associations: jsonld.promises.frame(response.data, associationFrame)
         });
       });
+    },
+    updateProperty(property, newId) {
+      const requestParams = {
+        model: property.isDefinedBy,
+        newId
+      };
+      return jsonld.promises.expand(property).then(expanded => {
+        requestParams.id = expanded[0]['@id'];
+        return $http.post('/api/rest/property', property, {params: requestParams});
+      });
     }
   };
 };
