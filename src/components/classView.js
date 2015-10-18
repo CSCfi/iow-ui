@@ -11,33 +11,37 @@ module.exports = function classView($log) {
     },
     restrict: 'E',
     template: require('./templates/classView.html'),
-    controller($scope, $uibModal, $timeout, classService) {
+    controller($scope, $uibModal, classService) {
       'ngInject';
-      $scope.$watch('id', id => {
-        classService.getClass($scope.id).then(data => {
+
+      function fetchClass(id) {
+        classService.getClass(id).then(data => {
           $scope.class = data['@graph'][0];
           $scope.context = data['@context'];
           originalId = id;
         }, err => {
           $log.error(err);
         });
+      }
+
+      $scope.$watch('id', id => {
+        fetchClass(id);
       });
       $scope.addProperty = () => {
-        const modal = $uibModal.open({
+        $uibModal.open({
           template: require('./templates/addProperty.html')
         });
       };
       $scope.updateClass = () => {
-        $timeout(() => {
-          // FIXME: hack
-          // wait for changes to settle in scope
-          const ld = _.chain($scope.class)
-            .clone()
-            .assign({'@context': $scope.context})
-            .value();
+        const ld = _.chain($scope.class)
+          .clone()
+          .assign({'@context': $scope.context})
+          .value();
 
-          classService.updateClass(ld, originalId);
-        });
+        classService.updateClass(ld, originalId);
+      };
+      $scope.resetModel = () => {
+        fetchClass(originalId);
       };
     }
   };

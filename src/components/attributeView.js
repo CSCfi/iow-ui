@@ -14,28 +14,33 @@ module.exports = function classView($log) {
     },
     restrict: 'E',
     template: require('./templates/attributeView.html'),
-    controller($scope, $timeout, propertyService) {
+    controller($scope, propertyService) {
       'ngInject';
 
-      $scope.attributeValues = constants.attributeValues;
-
-      $scope.$watch("attributeParam['@id']", id => {
+      function fetchProperty(id) {
         propertyService.getPropertyById(id).then(data => {
           $scope.attribute = data['@graph'][0];
           context = data['@context'];
           originalId = id;
         });
+      }
+
+      $scope.attributeValues = constants.attributeValues;
+
+      $scope.$watch("attributeParam['@id']", id => {
+        fetchProperty(id);
       });
 
       $scope.updateAttribute = () => {
-        $timeout(() => {
-          // wait for changes to settle in scope
-          const ld = _.chain($scope.attribute)
-            .clone()
-            .assign({'@context': context})
-            .value();
-          propertyService.updateProperty(ld, originalId);
-        });
+        const ld = _.chain($scope.attribute)
+          .clone()
+          .assign({'@context': context})
+          .value();
+        propertyService.updateProperty(ld, originalId);
+      };
+
+      $scope.resetModel = () => {
+        fetchProperty(originalId);
       };
     }
   };
