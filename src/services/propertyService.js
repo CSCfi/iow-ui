@@ -35,13 +35,15 @@ module.exports = function propertyService($http, $q) {
         });
       });
     },
-    updateProperty(property, newId) {
+    updateProperty(property, originalId) {
       const requestParams = {
-        model: property.isDefinedBy,
-        newId
+        model: property.isDefinedBy
       };
       return jsonld.promises.expand(property).then(expanded => {
         requestParams.id = expanded[0]['@id'];
+        if (requestParams.id !== originalId) {
+          requestParams.oldid = originalId;
+        }
         return $http.post('/api/rest/property', property, {params: requestParams});
       });
     }

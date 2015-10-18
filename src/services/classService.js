@@ -17,8 +17,17 @@ module.exports = function classService($http) {
         return jsonld.promises.frame(response.data, frame);
       });
     },
-    updateClass(id, model, data) {
-      return $http.post('api/rest/class', data, {params: {id, model}});
+    updateClass(classData, originalId) {
+      const requestParams = {
+        model: classData.isDefinedBy
+      };
+      return jsonld.promises.expand(classData).then(expanded => {
+        requestParams.id = expanded[0]['@id'];
+        if (requestParams.id !== originalId) {
+          requestParams.oldid = originalId;
+        }
+        return $http.post('/api/rest/class', classData, {params: requestParams});
+      });
     }
   };
 };

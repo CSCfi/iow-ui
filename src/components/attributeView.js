@@ -34,8 +34,7 @@ module.exports = function classView($log) {
             .clone()
             .assign({'@context': context})
             .value();
-          const newId = $scope.attribute.id === originalId ? undefined : $scope.attribute.id;
-          propertyService.updateProperty(ld, newId);
+          propertyService.updateProperty(ld, originalId);
         });
       };
     }
