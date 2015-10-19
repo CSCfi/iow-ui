@@ -21,7 +21,7 @@ module.exports = function classService($http) {
         id,
         model: classData['@graph'][0].isDefinedBy
       };
-      if (requestParams.id !== originalId) {
+      if (id !== originalId) {
         requestParams.oldid = originalId;
       }
       return $http.post('/api/rest/class', classData, {params: requestParams});
