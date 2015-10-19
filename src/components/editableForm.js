@@ -41,7 +41,7 @@ module.exports = function editableForm() {
           const result = vm.actualOnSubmit();
 
           if (result) {
-            result.then(onSuccess, onError);
+            result.then(onSuccess, onError).then(() => $scope.$apply());
           }
         });
 
@@ -63,8 +63,6 @@ module.exports = function editableForm() {
         vm.submitError = false;
         if ($scope.form) {
           $scope.form.$cancel();
-          // FIXME: hack
-          $timeout(() => {});
         }
       }
     }

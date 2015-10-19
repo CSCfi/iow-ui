@@ -33,12 +33,15 @@ module.exports = function classView($log) {
         });
       };
       $scope.updateClass = () => {
-        const ld = _.chain($scope.class)
-          .clone()
+        const classData = _.chain({})
+          .assign({'@graph': [$scope.class]})
           .assign({'@context': $scope.context})
           .value();
 
-        return classService.updateClass(ld, originalId);
+        return jsonld.promises.expand(classData).then(expanded => {
+          const id = expanded[0]['@id'];
+          return classService.updateClass(classData, id, originalId).then(originalId = id);
+        });
       };
       $scope.resetModel = () => {
         fetchClass(originalId);

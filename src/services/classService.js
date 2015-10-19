@@ -17,17 +17,15 @@ module.exports = function classService($http) {
         return jsonld.promises.frame(response.data, frame);
       });
     },
-    updateClass(classData, originalId) {
+    updateClass(classData, id, originalId) {
       const requestParams = {
-        model: classData.isDefinedBy
+        id,
+        model: classData['@graph'][0].isDefinedBy
       };
-      return jsonld.promises.expand(classData).then(expanded => {
-        requestParams.id = expanded[0]['@id'];
-        if (requestParams.id !== originalId) {
-          requestParams.oldid = originalId;
-        }
-        return $http.post('/api/rest/class', classData, {params: requestParams});
-      });
+      if (requestParams.id !== originalId) {
+        requestParams.oldid = originalId;
+      }
+      return $http.post('/api/rest/class', classData, {params: requestParams});
     }
   };
 };
