@@ -10,6 +10,10 @@ module.exports = function editableForm() {
     template: require('./templates/editableForm.html'),
     controllerAs: 'formController',
     bindToController: true,
+    link($scope, element) {
+      // retrieves controller associated with the ngController directive
+      $scope.modelController = element.controller();
+    },
     controller($scope, $timeout, userService, modelLanguage) {
       'ngInject';
 
@@ -31,6 +35,7 @@ module.exports = function editableForm() {
 
         function onSuccess(response) {
           vm.submitError = false;
+          $scope.modelController.reload();
           cancel();
         }
 

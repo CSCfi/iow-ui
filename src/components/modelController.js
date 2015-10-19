@@ -9,18 +9,30 @@ module.exports = function modelController($scope, $routeParams, $log, modelServi
     $scope.model = response['@graph'][0];
     $scope.context = response['@context'];
 
-    classService.getClassesForModel(modelId).then(data => {
-      $scope.classes = data['@graph'];
-    }, err => {
-      $log.error(err);
-    });
+    fetchClasses();
+    fetchProperties();
 
-    propertyService.getPropertiesForModel(modelId).then(data => {
-      $scope.attributes = data.attributes['@graph'];
-      $scope.associations = data.associations['@graph'];
-    }, err => {
-      $log.error(err);
-    });
+    function fetchClasses() {
+      classService.getClassesForModel(modelId).then(data => {
+        $scope.classes = data['@graph'];
+      }, err => {
+        $log.error(err);
+      });
+    }
+
+    function fetchProperties() {
+      propertyService.getPropertiesForModel(modelId).then(data => {
+        $scope.attributes = data.attributes['@graph'];
+        $scope.associations = data.associations['@graph'];
+      }, err => {
+        $log.error(err);
+      });
+    }
+
+    this.reload = () => {
+      fetchClasses();
+      fetchProperties();
+    };
 
     function clearAll() {
       $scope.attribute = undefined;
