@@ -38,7 +38,7 @@ module.exports = function classView($log) {
           .assign({'@context': $scope.context})
           .value();
 
-        classService.updateClass(ld, originalId);
+        return classService.updateClass(ld, originalId);
       };
       $scope.resetModel = () => {
         fetchClass(originalId);

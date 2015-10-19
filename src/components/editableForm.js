@@ -42,9 +42,10 @@ module.exports = function editableForm() {
 
           if (result) {
             result.then(onSuccess, onError);
-            return ''; // prevents editable form to exit editing mode because our success callback does it
           }
         });
+
+        return ''; // prevents editable form to exit editing mode because our success callback does it
       }
 
       function visible() {
@@ -60,7 +61,11 @@ module.exports = function editableForm() {
           vm.onReset();
         }
         vm.submitError = false;
-        return $scope.form && $scope.form.$cancel();
+        if ($scope.form) {
+          $scope.form.$cancel();
+          // FIXME: hack
+          $timeout(() => {});
+        }
       }
     }
   };

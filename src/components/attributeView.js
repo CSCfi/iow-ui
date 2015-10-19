@@ -36,7 +36,7 @@ module.exports = function classView($log) {
           .clone()
           .assign({'@context': context})
           .value();
-        propertyService.updateProperty(ld, originalId);
+        return propertyService.updateProperty(ld, originalId);
       };
 
       $scope.resetModel = () => {
