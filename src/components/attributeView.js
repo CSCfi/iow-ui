@@ -36,7 +36,11 @@ module.exports = function classView($log) {
           .clone()
           .assign({'@context': context})
           .value();
-        return propertyService.updateProperty(ld, originalId);
+
+        return jsonld.promises.expand(ld).then(expanded => {
+          const id = expanded[0]['@id'];
+          return propertyService.updateProperty(ld, id, originalId).then(originalId = id);
+        });
       };
 
       $scope.resetModel = () => {
