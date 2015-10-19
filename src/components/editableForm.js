@@ -42,6 +42,8 @@ module.exports = function editableForm() {
 
           if (result) {
             result.then(onSuccess, onError).then(() => $scope.$apply());
+          } else {
+            $scope.$apply();
           }
         });
 
