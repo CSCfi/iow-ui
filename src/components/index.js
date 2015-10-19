@@ -16,6 +16,7 @@ mod.directive('formId', require('./formId'));
 mod.directive('formSelect', require('./formSelect'));
 mod.directive('editableForm', require('./editableForm'));
 mod.directive('login', require('./login'));
+mod.directive('addProperty', require('./addProperty'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));

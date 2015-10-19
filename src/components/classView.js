@@ -27,11 +27,7 @@ module.exports = function classView($log) {
       $scope.$watch('id', id => {
         fetchClass(id);
       });
-      $scope.addProperty = () => {
-        $uibModal.open({
-          template: require('./templates/addProperty.html')
-        });
-      };
+
       $scope.updateClass = () => {
         const classData = _.chain({})
           .assign({'@graph': [$scope.class]})
