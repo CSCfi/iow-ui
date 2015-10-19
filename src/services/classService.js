@@ -1,5 +1,4 @@
 const jsonld = require('jsonld');
-
 const frames = require('./frames');
 
 module.exports = function classService($http) {
