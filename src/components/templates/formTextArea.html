@@ -1,0 +1,5 @@
+<div ng-show="inputController.hasContent() || formController.visible()">
+  <div class="model-view__title">{{inputController.title}}</div>
+  <div editable-textarea="inputController.plainText" ng-if="inputController.plainText">{{inputController.plainText}}</div>
+  <div editable-textarea="inputController.content[inputController.getLanguage()]" ng-if="!inputController.plainText">{{inputController.content | translateValue}}</div>
+</div>
