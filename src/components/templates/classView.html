@@ -15,7 +15,7 @@
   <uib-accordion close-others="true">
     <uib-accordion-group ng-repeat="property in ctrl.class.property" is-open="isOpen[property['@id']]">
       <uib-accordion-heading>{{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></uib-accordion-heading>
-      <property-view property="property" context="context" ng-if="isOpen[property['@id']]"></property-view>
+      <property-view property="property" context="ctrl.context" ng-if="isOpen[property['@id']]"></property-view>
     </uib-accordion-group>
   </uib-accordion>
 </editable-form>
