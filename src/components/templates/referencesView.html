@@ -1,0 +1,9 @@
+<h4 translate>References</h4>
+
+<uib-accordion>
+  <uib-accordion-group ng-repeat="reference in references" heading="{{reference.title | translateValue}}">
+    <pre>
+{{reference | json}}
+    </pre>
+  </uib-accordion-group>
+</uib-accordion>
