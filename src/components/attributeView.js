@@ -11,10 +11,11 @@ module.exports = function attributeView($log) {
     },
     restrict: 'E',
     template: require('./templates/attributeView.html'),
-    link($scope, element) {
+    require: '^ngController',
+    link($scope, element, attributes, modelController) {
       const controller = $scope.ctrl;
-      controller.modelController = element.controller('ngController');
-      controller.modelController.registerView(controller);
+      modelController.registerView(controller);
+      controller.modelController = modelController;
       controller.formController = element.find('editable-form').controller('editableForm');
     },
     controllerAs: 'ctrl',
