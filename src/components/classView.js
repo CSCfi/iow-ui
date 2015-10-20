@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage) {
+    controller($scope, classService, modelLanguage, userService) {
       'ngInject';
 
       let originalId;
@@ -34,6 +34,7 @@ module.exports = function classView($log) {
 
       $scope.$watch('ctrl.id', id => fetchClass(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
+      $scope.$watch(userService.isLoggedIn, cancelEditing);
 
       function fetchClass(id) {
         classService.getClass(id).then(data => {

@@ -20,7 +20,7 @@ module.exports = function attributeView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, propertyService, modelLanguage) {
+    controller($scope, propertyService, modelLanguage, userService) {
       'ngInject';
 
       let context;
@@ -37,6 +37,7 @@ module.exports = function attributeView($log) {
 
       $scope.$watch('ctrl.id', id => fetchProperty(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
+      $scope.$watch(userService.isLoggedIn, cancelEditing);
 
       function fetchProperty(id) {
         propertyService.getPropertyById(id).then(data => {
