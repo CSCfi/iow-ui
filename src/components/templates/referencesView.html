@@ -2,8 +2,9 @@
 
 <uib-accordion>
   <uib-accordion-group ng-repeat="reference in references" heading="{{reference.title | translateValue}}">
-    <pre>
-{{reference | json}}
-    </pre>
+    <div class="model-view__title" translate>Type</div>
+    <div>{{reference['@type']}}</div>
+    <div class="model-view__title" translate>Identifier</div>
+    <div>{{reference['dct:identifier']}}</div>
   </uib-accordion-group>
 </uib-accordion>
