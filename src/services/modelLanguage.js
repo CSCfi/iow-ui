@@ -16,9 +16,9 @@ module.exports = function modelLanguage() {
     setLanguage(lang) {
       language = lang;
     },
-    translate(label, languagesLeft = defaultLanguages) {
-      if (label && languagesLeft.length > 0) {
-        return label[language] || label[_.first(languagesLeft)] || this.translate(label, _.rest(languagesLeft));
+    translate(label, currentLanguage = language, languagesLeft = defaultLanguages) {
+      if (label && languagesLeft.length >= 0) {
+        return label[currentLanguage] || this.translate(label, _.first(languagesLeft), _.rest(languagesLeft));
       }
     }
   };
