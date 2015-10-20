@@ -3,8 +3,7 @@ const _ = require('lodash');
 module.exports = function modelLanguage() {
   'ngInject';
   const languages = ['fi', 'en'];
-  const defaultLanguages = ['fi', 'en'];
-  let language = defaultLanguages[0];
+  let language = languages[0];
 
   return {
     getLanguage() {
@@ -17,13 +16,9 @@ module.exports = function modelLanguage() {
       language = lang;
     },
     translate(label) {
-      function innerTranslate(label, currentLanguage, languagesLeft) {
-        if (label && currentLanguage) {
-          return label[currentLanguage] || innerTranslate(label, _.first(languagesLeft), _.rest(languagesLeft));
-        }
+      if (label) {
+        return label[language] || _.chain(languages).map(lang => label[lang]).find().value();
       }
-
-      return innerTranslate(label, language, defaultLanguages);
     }
   };
 };
