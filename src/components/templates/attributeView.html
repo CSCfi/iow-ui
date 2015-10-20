@@ -1,8 +1,8 @@
-<editable-form on-submit="updateAttribute()" on-reset="resetModel()">
-  <form-input title="{{'Label' | translate}}" content="attribute.label"></form-input>
-  <form-id title="{{'Id' | translate}}" plain-text="attribute['@id']"></form-id>
-  <form-input title="{{'Comment' | translate}}" content="attribute.comment"></form-input>
-  <form-select title="{{'Range' | translate}}" content="attribute.range" values="attributeValues"></form-select>
+<editable-form on-submit="ctrl.updateAttribute()" on-reset="ctrl.resetModel()">
+  <form-input title="{{'Label' | translate}}" content="ctrl.attribute.label"></form-input>
+  <form-id title="{{'Id' | translate}}" plain-text="ctrl.attribute['@id']"></form-id>
+  <form-input title="{{'Comment' | translate}}" content="ctrl.attribute.comment"></form-input>
+  <form-select title="{{'Range' | translate}}" content="ctrl.attribute.range" values="ctrl.attributeValues"></form-select>
   <div class="model-view__title" translate>Is defined by</div>
-  <div>{{attribute.isDefinedBy}}</div>
+  <div>{{ctrl.attribute.isDefinedBy}}</div>
 </editable-form>

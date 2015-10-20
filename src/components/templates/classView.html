@@ -1,19 +1,19 @@
-<editable-form on-submit="updateClass()" on-reset="resetModel()">
+<editable-form on-submit="ctrl.updateClass()" on-reset="ctrl.resetModel()">
   <h2>
-    <form-input content="class.label"></form-input>
+    <form-input content="ctrl.class.label"></form-input>
   </h2>
-  <form-id title="{{'Id' | translate}}" plain-text="class['@id']"></form-id>
-  <div ng-show="class.subClassOf">
+  <form-id title="{{'Id' | translate}}" plain-text="ctrl.class['@id']"></form-id>
+  <div ng-show="ctrl.class.subClassOf">
     <div class="model-view__title">Superclass</div>
-    <div>{{class.subClassOf}}</div>
+    <div>{{ctrl.class.subClassOf}}</div>
   </div>
   <div class="model-view__title">Is defined by</div>
-  <div>{{class.isDefinedBy}}</div>
-  <form-text-area title="{{'Description' | translate}}" content="class.comment"></form-text-area>
-  <form-input title="{{'PrefLabel' | translate}}" content="class.prefLabel"></form-input>
+  <div>{{ctrl.class.isDefinedBy}}</div>
+  <form-text-area title="{{'Description' | translate}}" content="ctrl.class.comment"></form-text-area>
+  <form-input title="{{'PrefLabel' | translate}}" content="ctrl.class.prefLabel"></form-input>
   <add-property></add-property>
   <uib-accordion close-others="true">
-    <uib-accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]">
+    <uib-accordion-group ng-repeat="property in ctrl.class.property" is-open="isOpen[property['@id']]">
       <uib-accordion-heading>{{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></uib-accordion-heading>
       <property-view property="property" context="context" ng-if="isOpen[property['@id']]"></property-view>
     </uib-accordion-group>

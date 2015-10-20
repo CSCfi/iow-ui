@@ -12,31 +12,41 @@ module.exports = function attributeView($log) {
     restrict: 'E',
     template: require('./templates/attributeView.html'),
     link($scope, element) {
-      // retrieves controller associated with the ngController directive
-      $scope.modelController = element.controller();
+      const controller = $scope.ctrl;
+      controller.modelController = element.controller('ngController');
+      controller.modelController.registerView(controller);
+      controller.formController = element.find('editable-form').controller('editableForm');
+      $scope.$watch('ctrl.id', id => {
+        controller.fetchProperty(id);
+      });
     },
-    controller($scope, propertyService) {
+    controllerAs: 'ctrl',
+    bindToController: true,
+    controller(propertyService) {
       'ngInject';
 
       let context;
       let originalId;
+      const vm = this;
+
+      vm.fetchProperty = fetchProperty;
+      vm.updateAttribute = updateAttribute;
+      vm.resetModel = resetModel;
+      vm.attributeValues = constants.attributeValues;
+      // view contract
+      vm.isEditing = isEditing;
+      vm.cancelEditing = cancelEditing;
 
       function fetchProperty(id) {
         propertyService.getPropertyById(id).then(data => {
-          $scope.attribute = data['@graph'][0];
+          vm.attribute = data['@graph'][0];
           context = data['@context'];
           originalId = id;
         });
       }
 
-      $scope.attributeValues = constants.attributeValues;
-
-      $scope.$watch('id', id => {
-        fetchProperty(id);
-      });
-
-      $scope.updateAttribute = () => {
-        const ld = _.chain($scope.attribute)
+      function updateAttribute() {
+        const ld = _.chain(vm.attribute)
           .clone()
           .assign({'@context': context})
           .value();
@@ -45,15 +55,23 @@ module.exports = function attributeView($log) {
           const id = expanded[0]['@id'];
           return propertyService.updateProperty(ld, id, originalId).then(() => {
             originalId = id;
-            $scope.id = id;
-            $scope.modelController.reload();
+            vm.id = id;
+            vm.modelController.reload();
           });
         });
-      };
+      }
 
-      $scope.resetModel = () => {
+      function resetModel() {
         fetchProperty(originalId);
-      };
+      }
+
+      function isEditing() {
+        return vm.formController.visible();
+      }
+
+      function cancelEditing() {
+        vm.formController.cancel();
+      }
     }
   };
 };

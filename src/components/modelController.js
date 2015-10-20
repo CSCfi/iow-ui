@@ -1,7 +1,10 @@
-module.exports = function modelController($routeParams, $log, $q, modelService, classService, propertyService) {
+const _ = require('lodash');
+
+module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, propertyService) {
   'ngInject';
 
   const modelId = $routeParams.urn;
+  const views = [];
   const vm = this;
 
   vm.loading = true;
@@ -14,34 +17,68 @@ module.exports = function modelController($routeParams, $log, $q, modelService, 
     fetchProperties();
   };
 
-  vm.activateClass = (klass) => {
-    clearAll();
-    vm.activatedClassId = klass['@id'];
+  vm.registerView = (view) => {
+    views.push(view);
   };
 
-  vm.isClassActivated = (klass) => {
-    return vm.activatedClassId && vm.activatedClassId === klass['@id'];
+  vm.activateClass = (klass) => {
+    askPermissionWhenEditing(() => {
+      clearAll();
+      vm.activatedClassId = klass['@id'];
+    });
   };
 
   vm.activateAttribute = (attribute) => {
-    clearAll();
-    vm.activatedAttributeId = attribute['@id'];
-  };
-
-  vm.isAttributeActivated = (attribute) => {
-    return vm.activatedAttributeId && vm.activatedAttributeId === attribute['@id'];
+    askPermissionWhenEditing(() => {
+      clearAll();
+      vm.activatedAttributeId = attribute['@id'];
+    });
   };
 
   vm.activateAssociation = (association) => {
-    clearAll();
-    vm.activatedAssociationId = association['@id'];
+    askPermissionWhenEditing(() => {
+      clearAll();
+      vm.activatedAssociationId = association['@id'];
+    });
   };
 
-  vm.isAssociationActivated = (association) => {
-    return vm.activatedAssociationId && vm.activatedAssociationId === association['@id'];
-  };
+  vm.isClassActivated = (klass) => vm.activatedClassId && vm.activatedClassId === klass['@id'];
+  vm.isAttributeActivated = (attribute) => vm.activatedAttributeId && vm.activatedAttributeId === attribute['@id'];
+  vm.isAssociationActivated = (association) => vm.activatedAssociationId && vm.activatedAssociationId === association['@id'];
+
+  function askPermissionWhenEditing(callback) {
+    if (isEditing()) {
+      $uibModal.open({
+        template: require('./templates/cancelEditModal.html'),
+        controllerAs: 'ctrl',
+        controller($modalInstance) {
+          'ngInject';
+          this.ok = () => {
+            cancelEditing();
+            callback();
+            $modalInstance.close();
+          };
+
+          this.cancel = () => {
+            $modalInstance.close();
+          };
+        }
+      });
+    } else {
+      callback();
+    }
+  }
+
+  function isEditing() {
+    return _.find(views, view => view.isEditing());
+  }
+
+  function cancelEditing() {
+    return _.forEach(views, view => view.cancelEditing());
+  }
 
   function clearAll() {
+    cancelEditing();
     vm.activatedAttributeId = undefined;
     vm.activatedClassId = undefined;
     vm.activatedAssociationId = undefined;

@@ -11,47 +11,66 @@ module.exports = function classView($log) {
     restrict: 'E',
     template: require('./templates/classView.html'),
     link($scope, element) {
-      // retrieves controller associated with the ngController directive
-      $scope.modelController = element.controller();
+      const controller = $scope.ctrl;
+      controller.modelController = element.controller('ngController');
+      controller.modelController.registerView(controller);
+      controller.formController = element.find('editable-form').controller('editableForm');
+      $scope.$watch('ctrl.id', id => {
+        controller.fetchClass(id);
+      });
     },
-    controller($scope, classService) {
+    controllerAs: 'ctrl',
+    bindToController: true,
+    controller(classService) {
       'ngInject';
 
       let originalId;
+      const vm = this;
+
+      vm.fetchClass = fetchClass;
+      vm.updateClass = updateClass;
+      vm.resetModel = resetModel;
+      // view contract
+      vm.isEditing = isEditing;
+      vm.cancelEditing = cancelEditing;
 
       function fetchClass(id) {
         classService.getClass(id).then(data => {
-          $scope.class = data['@graph'][0];
-          $scope.context = data['@context'];
+          vm.class = data['@graph'][0];
+          vm.context = data['@context'];
           originalId = id;
         }, err => {
           $log.error(err);
         });
       }
 
-      $scope.$watch('id', id => {
-        fetchClass(id);
-      });
-
-      $scope.updateClass = () => {
+      function updateClass() {
         const classData = {
-          '@graph': [$scope.class],
-          '@context': $scope.context
+          '@graph': [vm.class],
+          '@context': vm.context
         };
 
         return jsonld.promises.expand(classData).then(expanded => {
           const id = expanded[0]['@id'];
           return classService.updateClass(classData, id, originalId).then(() => {
             originalId = id;
-            $scope.id = id;
-            $scope.modelController.reload();
+            vm.id = id;
+            vm.modelController.reload();
           });
         });
-      };
+      }
 
-      $scope.resetModel = () => {
+      function resetModel() {
         fetchClass(originalId);
-      };
+      }
+
+      function isEditing() {
+        return vm.formController.visible();
+      }
+
+      function cancelEditing() {
+        vm.formController.cancel();
+      }
     }
   };
 };
