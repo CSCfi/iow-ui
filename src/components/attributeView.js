@@ -2,12 +2,12 @@ const _ = require('lodash');
 const jsonld = require('jsonld');
 const constants = require('./constants');
 
-module.exports = function classView($log) {
+module.exports = function attributeView($log) {
   'ngInject';
 
   return {
     scope: {
-      attributeParam: '=attribute'
+      id: '='
     },
     restrict: 'E',
     template: require('./templates/attributeView.html'),
@@ -31,7 +31,7 @@ module.exports = function classView($log) {
 
       $scope.attributeValues = constants.attributeValues;
 
-      $scope.$watch("attributeParam['@id']", id => {
+      $scope.$watch('id', id => {
         fetchProperty(id);
       });
 
@@ -45,6 +45,7 @@ module.exports = function classView($log) {
           const id = expanded[0]['@id'];
           return propertyService.updateProperty(ld, id, originalId).then(() => {
             originalId = id;
+            $scope.id = id;
             $scope.modelController.reload();
           });
         });

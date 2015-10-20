@@ -1,18 +1,33 @@
-module.exports = function userService($http) {
+module.exports = function userService($http, $q) {
   'ngInject';
 
   let loggedInUser;
 
   return {
     updateLogin() {
-      $http.get('/api/rest/loginstatus').then(statusResponse => {
-        const loggedIn = angular.fromJson(statusResponse.data);
-        if (loggedIn) {
-          $http.get('/api/rest/user').then(userResponse => loggedInUser = angular.fromJson(userResponse.data));
-        } else {
-          loggedInUser = null;
-        }
-      });
+      const deferred = $q.defer();
+
+      function userResolved() {
+        deferred.resolve();
+      }
+
+      $http.get('/api/rest/loginstatus')
+        .success(statusResponse => {
+          const loggedIn = angular.fromJson(statusResponse);
+          if (loggedIn) {
+            $http.get('/api/rest/user')
+              .success(userResponse => {
+                loggedInUser = angular.fromJson(userResponse);
+              })
+              .finally(userResolved);
+          } else {
+            loggedInUser = null;
+            userResolved();
+          }
+        })
+        .error(userResolved);
+
+      return deferred.promise;
     },
     isLoggedIn() {
       return loggedInUser;

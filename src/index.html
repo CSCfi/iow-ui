@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="iow-ui" ng-strict-di>
+<html lang="en" ng-app="iow-ui" ng-strict-di ng-cloak>
 
 <head>
   <meta charset="utf-8">
@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body ng-controller="AppCtrl" layout="column" layout-fill>
+<body ng-controller="AppCtrl" layout="column" layout-fill ng-if="languageInitialized && userInitialized">
   <nav class="navbar navbar-default">
     <div class="navbar-header">
       <a class="navbar-brand" href="#/">IOW</a>

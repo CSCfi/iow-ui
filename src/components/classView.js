@@ -6,7 +6,7 @@ module.exports = function classView($log) {
 
   return {
     scope: {
-      id: '=classId'
+      id: '='
     },
     restrict: 'E',
     template: require('./templates/classView.html'),
@@ -43,6 +43,7 @@ module.exports = function classView($log) {
           const id = expanded[0]['@id'];
           return classService.updateClass(classData, id, originalId).then(() => {
             originalId = id;
+            $scope.id = id;
             $scope.modelController.reload();
           });
         });

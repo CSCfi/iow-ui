@@ -1,64 +1,72 @@
-module.exports = function modelController($scope, $routeParams, $log, modelService, classService, propertyService) {
+module.exports = function modelController($routeParams, $log, $q, modelService, classService, propertyService) {
   'ngInject';
 
   const modelId = $routeParams.urn;
-  $scope.modelId = modelId;
+  const vm = this;
 
-  modelService.getModelByUrn(modelId).then(response => {
-    $scope.rawModel = response;
-    $scope.model = response['@graph'][0];
-    $scope.context = response['@context'];
+  vm.loading = true;
 
+  $q.all([fetchModel(), fetchClasses(), fetchProperties()]).then(() => vm.loading = false);
+
+  vm.reload = () => {
+    fetchModel();
     fetchClasses();
     fetchProperties();
+  };
 
-    function fetchClasses() {
-      classService.getClassesForModel(modelId).then(data => {
-        $scope.classes = data['@graph'];
-      }, err => {
-        $log.error(err);
-      });
-    }
+  vm.activateClass = (klass) => {
+    clearAll();
+    vm.activatedClassId = klass['@id'];
+  };
 
-    function fetchProperties() {
-      propertyService.getPropertiesForModel(modelId).then(data => {
-        $scope.attributes = data.attributes['@graph'];
-        $scope.associations = data.associations['@graph'];
-      }, err => {
-        $log.error(err);
-      });
-    }
+  vm.isClassActivated = (klass) => {
+    return vm.activatedClassId && vm.activatedClassId === klass['@id'];
+  };
 
-    this.reload = () => {
-      fetchClasses();
-      fetchProperties();
-    };
+  vm.activateAttribute = (attribute) => {
+    clearAll();
+    vm.activatedAttributeId = attribute['@id'];
+  };
 
-    function clearAll() {
-      $scope.attribute = undefined;
-      $scope.activeAttribute = undefined;
-      $scope.class = undefined;
-      $scope.activeClass = undefined;
-      $scope.association = undefined;
-      $scope.activeAssociation = undefined;
-    }
+  vm.isAttributeActivated = (attribute) => {
+    return vm.activatedAttributeId && vm.activatedAttributeId === attribute['@id'];
+  };
 
-    $scope.activateClass = (klass, index) => {
-      clearAll();
-      $scope.class = klass;
-      $scope.activeClass = index;
-    };
+  vm.activateAssociation = (association) => {
+    clearAll();
+    vm.activatedAssociationId = association['@id'];
+  };
 
-    $scope.activateAttribute = (attribute, index) => {
-      clearAll();
-      $scope.attribute = attribute;
-      $scope.activeAttribute = index;
-    };
+  vm.isAssociationActivated = (association) => {
+    return vm.activatedAssociationId && vm.activatedAssociationId === association['@id'];
+  };
 
-    $scope.activateAssociation = (association, index) => {
-      clearAll();
-      $scope.association = association;
-      $scope.activeAssociation = index;
-    };
-  });
+  function clearAll() {
+    vm.activatedAttributeId = undefined;
+    vm.activatedClassId = undefined;
+    vm.activatedAssociationId = undefined;
+  }
+
+  function fetchModel() {
+    return modelService.getModelByUrn(modelId).then(data => {
+      vm.model = data['@graph'][0];
+    });
+  }
+
+  function fetchClasses() {
+    return classService.getClassesForModel(modelId).then(data => {
+      vm.classes = data['@graph'];
+    }, err => {
+      $log.error(err);
+    });
+  }
+
+  function fetchProperties() {
+    return propertyService.getPropertiesForModel(modelId).then(data => {
+      vm.attributes = data.attributes['@graph'];
+      vm.associations = data.associations['@graph'];
+    }, err => {
+      $log.error(err);
+    });
+  }
 };

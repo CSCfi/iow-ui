@@ -18,18 +18,20 @@ angular.module('iow-ui', [
     })
     .when('/groups', {
       template: require('./components/templates/group.html'),
-      controller: 'groupController'
+      controller: 'groupController',
+      controllerAs: 'ctrl'
     })
     .when('/models', {
       template: require('./components/templates/model.html'),
-      controller: 'modelController'
+      controller: 'modelController',
+      controllerAs: 'ctrl'
     });
 })
 .run(function onAppRun($rootScope, editableOptions, languageService, userService) {
   editableOptions.theme = 'bs3';
   languageService.setLanguage('fi');
-  userService.updateLogin();
-  $rootScope.language = languageService.getLanguage();
+  userService.updateLogin().then(() => $rootScope.userInitialized = true);
+  $rootScope.$on('gettextLanguageChanged', () => $rootScope.languageInitialized = true);
 })
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {
 
