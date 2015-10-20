@@ -19,6 +19,7 @@ mod.directive('editableForm', require('./editableForm'));
 mod.directive('login', require('./login'));
 mod.directive('addProperty', require('./addProperty'));
 mod.directive('referencesView', require('./referencesView'));
+mod.directive('requiresView', require('./requiresView'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));

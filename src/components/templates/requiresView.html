@@ -1,0 +1,16 @@
+<h4 translate>Requires</h4>
+
+<pre>
+{{requires | json}}
+</pre>
+
+<uib-accordion>
+  <uib-accordion-group ng-repeat="require in requires" heading="{{require.title | translateValue}}">
+    <div class="model-view__title" translate>Type</div>
+    <div>{{require['@type']}}</div>
+    <div class="model-view__title" translate>Preferred namespace</div>
+    <div>{{require['dcap:preferredXMLNamespaceName']}}</div>
+    <div class="model-view__title" translate>Preferred prefix</div>
+    <div>{{require['dcap:preferredXMLNamespacePrefix']}}</div>
+  </uib-accordion-group>
+</uib-accordion>
