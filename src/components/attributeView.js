@@ -1,12 +1,9 @@
 const _ = require('lodash');
-
+const jsonld = require('jsonld');
 const constants = require('./constants');
 
 module.exports = function classView($log) {
   'ngInject';
-
-  let context;
-  let originalId;
 
   return {
     scope: {
@@ -14,8 +11,15 @@ module.exports = function classView($log) {
     },
     restrict: 'E',
     template: require('./templates/attributeView.html'),
+    link($scope, element) {
+      // retrieves controller associated with the ngController directive
+      $scope.modelController = element.controller();
+    },
     controller($scope, propertyService) {
       'ngInject';
+
+      let context;
+      let originalId;
 
       function fetchProperty(id) {
         propertyService.getPropertyById(id).then(data => {
@@ -39,7 +43,10 @@ module.exports = function classView($log) {
 
         return jsonld.promises.expand(ld).then(expanded => {
           const id = expanded[0]['@id'];
-          return propertyService.updateProperty(ld, id, originalId).then(originalId = id);
+          return propertyService.updateProperty(ld, id, originalId).then(() => {
+            originalId = id;
+            $scope.modelController.reload();
+          });
         });
       };
 

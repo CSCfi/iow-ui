@@ -10,10 +10,6 @@ module.exports = function editableForm() {
     template: require('./templates/editableForm.html'),
     controllerAs: 'formController',
     bindToController: true,
-    link($scope, element) {
-      // retrieves controller associated with the ngController directive
-      $scope.modelController = element.controller();
-    },
     controller($scope, $timeout, userService, modelLanguage) {
       'ngInject';
 
@@ -29,14 +25,15 @@ module.exports = function editableForm() {
       $scope.$watch(modelLanguage.getLanguage, cancel);
 
       function onSubmit() {
-        function onError(response) {
+        function onError() {
           vm.submitError = true;
+          $scope.$apply();
         }
 
-        function onSuccess(response) {
+        function onSuccess() {
           vm.submitError = false;
-          $scope.modelController.reload();
           cancel();
+          $scope.$apply();
         }
 
         // FIXME: hack
@@ -46,9 +43,9 @@ module.exports = function editableForm() {
           const result = vm.actualOnSubmit();
 
           if (result) {
-            result.then(onSuccess, onError).then(() => $scope.$apply());
+            result.then(onSuccess, onError);
           } else {
-            $scope.$apply();
+            onSuccess();
           }
         });
 

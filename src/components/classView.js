@@ -1,9 +1,8 @@
 const _ = require('lodash');
+const jsonld = require('jsonld');
 
 module.exports = function classView($log) {
   'ngInject';
-
-  let originalId;
 
   return {
     scope: {
@@ -11,8 +10,14 @@ module.exports = function classView($log) {
     },
     restrict: 'E',
     template: require('./templates/classView.html'),
-    controller($scope, $uibModal, classService) {
+    link($scope, element) {
+      // retrieves controller associated with the ngController directive
+      $scope.modelController = element.controller();
+    },
+    controller($scope, classService) {
       'ngInject';
+
+      let originalId;
 
       function fetchClass(id) {
         classService.getClass(id).then(data => {
@@ -29,16 +34,20 @@ module.exports = function classView($log) {
       });
 
       $scope.updateClass = () => {
-        const classData = _.chain({})
-          .assign({'@graph': [$scope.class]})
-          .assign({'@context': $scope.context})
-          .value();
+        const classData = {
+          '@graph': [$scope.class],
+          '@context': $scope.context
+        };
 
         return jsonld.promises.expand(classData).then(expanded => {
           const id = expanded[0]['@id'];
-          return classService.updateClass(classData, id, originalId).then(originalId = id);
+          return classService.updateClass(classData, id, originalId).then(() => {
+            originalId = id;
+            $scope.modelController.reload();
+          });
         });
       };
+
       $scope.resetModel = () => {
         fetchClass(originalId);
       };
