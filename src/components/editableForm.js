@@ -10,7 +10,7 @@ module.exports = function editableForm() {
     template: require('./templates/editableForm.html'),
     controllerAs: 'formController',
     bindToController: true,
-    controller($scope, $timeout, userService, modelLanguage) {
+    controller($scope, $timeout, userService) {
       'ngInject';
 
       const vm = this;
@@ -21,8 +21,6 @@ module.exports = function editableForm() {
       vm.cancel = cancel;
       vm.onSubmit = onSubmit;
       vm.submitError = false;
-
-      $scope.$watch(modelLanguage.getLanguage, cancel);
 
       function onSubmit() {
         function onError() {

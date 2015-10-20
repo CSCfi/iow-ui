@@ -16,13 +16,10 @@ module.exports = function attributeView($log) {
       controller.modelController = element.controller('ngController');
       controller.modelController.registerView(controller);
       controller.formController = element.find('editable-form').controller('editableForm');
-      $scope.$watch('ctrl.id', id => {
-        controller.fetchProperty(id);
-      });
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller(propertyService) {
+    controller($scope, propertyService, modelLanguage) {
       'ngInject';
 
       let context;
@@ -36,6 +33,9 @@ module.exports = function attributeView($log) {
       // view contract
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
+
+      $scope.$watch('ctrl.id', id => fetchProperty(id));
+      $scope.$watch(modelLanguage.getLanguage, cancelEditing);
 
       function fetchProperty(id) {
         propertyService.getPropertyById(id).then(data => {

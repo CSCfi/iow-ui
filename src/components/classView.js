@@ -15,13 +15,10 @@ module.exports = function classView($log) {
       controller.modelController = element.controller('ngController');
       controller.modelController.registerView(controller);
       controller.formController = element.find('editable-form').controller('editableForm');
-      $scope.$watch('ctrl.id', id => {
-        controller.fetchClass(id);
-      });
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller(classService) {
+    controller($scope, classService, modelLanguage) {
       'ngInject';
 
       let originalId;
@@ -33,6 +30,9 @@ module.exports = function classView($log) {
       // view contract
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
+
+      $scope.$watch('ctrl.id', id => fetchClass(id));
+      $scope.$watch(modelLanguage.getLanguage, cancelEditing);
 
       function fetchClass(id) {
         classService.getClass(id).then(data => {
