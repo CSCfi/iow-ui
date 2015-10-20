@@ -15,8 +15,8 @@ module.exports = function attributeView($log) {
     link($scope, element, attributes, modelController) {
       const controller = $scope.ctrl;
       modelController.registerView(controller);
-      controller.modelController = modelController;
-      controller.formController = element.find('editable-form').controller('editableForm');
+      $scope.modelController = modelController;
+      $scope.formController = element.find('editable-form').controller('editableForm');
     },
     controllerAs: 'ctrl',
     bindToController: true,
@@ -57,7 +57,7 @@ module.exports = function attributeView($log) {
           return propertyService.updateProperty(ld, id, originalId).then(() => {
             originalId = id;
             vm.id = id;
-            vm.modelController.reload();
+            $scope.modelController.reload();
           });
         });
       }
@@ -67,11 +67,11 @@ module.exports = function attributeView($log) {
       }
 
       function isEditing() {
-        return vm.formController.visible();
+        return $scope.formController.visible();
       }
 
       function cancelEditing() {
-        vm.formController.cancel();
+        $scope.formController.cancel();
       }
     }
   };
