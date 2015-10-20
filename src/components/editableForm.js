@@ -63,9 +63,7 @@ module.exports = function editableForm() {
           vm.onReset();
         }
         vm.submitError = false;
-        if ($scope.form) {
-          $scope.form.$cancel();
-        }
+        return $scope.form && $scope.form.$cancel();
       }
     }
   };
