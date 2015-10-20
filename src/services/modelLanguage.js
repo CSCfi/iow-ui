@@ -6,6 +6,12 @@ module.exports = function modelLanguage() {
   const defaultLanguages = ['fi', 'en'];
   let language = defaultLanguages[0];
 
+  function innerTranslate(label, currentLanguage, languagesLeft) {
+    if (label && currentLanguage) {
+      return label[currentLanguage] || innerTranslate(label, _.first(languagesLeft), _.rest(languagesLeft));
+    }
+  }
+
   return {
     getLanguage() {
       return language;
@@ -16,10 +22,8 @@ module.exports = function modelLanguage() {
     setLanguage(lang) {
       language = lang;
     },
-    translate(label, currentLanguage = language, languagesLeft = defaultLanguages) {
-      if (label && languagesLeft.length >= 0) {
-        return label[currentLanguage] || this.translate(label, _.first(languagesLeft), _.rest(languagesLeft));
-      }
+    translate(label) {
+      return innerTranslate(label, language, defaultLanguages);
     }
   };
 };
