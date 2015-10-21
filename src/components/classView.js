@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage, userService) {
+    controller($scope, $log, classService, modelLanguage, userService) {
       'ngInject';
 
       let originalId;
@@ -47,19 +47,25 @@ module.exports = function classView($log) {
       }
 
       function updateClass() {
+
+
+
         const classData = {
           '@graph': [vm.class],
           '@context': vm.context
         };
 
-        return jsonld.promises.expand(classData).then(expanded => {
-          const id = expanded[0]['@id'];
+        const splittedID = vm.class['@id'].split(":");
+        const id = vm.context[splittedID[0]]+splittedID[1];
+
+        $log.info("Expanded id:"+id);
+
           return classService.updateClass(classData, id, originalId).then(() => {
             originalId = id;
             vm.id = id;
             $scope.modelController.reload();
           });
-        });
+
       }
 
       function resetModel() {
