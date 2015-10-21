@@ -12,21 +12,21 @@ module.exports = function propertyService($http, $q) {
       };
       return jsonld.promises.expand(data).then(expanded => {
         const id = expanded[0]['http://www.w3.org/ns/shacl#predicate'][0]['@id'];
-        return $http.get('/api/rest/property', {params: {id}});
+        return $http.get('/api/rest/predicate', {params: {id}});
       }).then(response => {
         const frame = frames.predicateFrame(response.data);
         return jsonld.promises.frame(response.data, frame);
       });
     },
     getPropertyById(id, userFrame = 'propertyFrame') {
-      return $http.get('/api/rest/property', {params: {id}})
+      return $http.get('/api/rest/predicate', {params: {id}})
         .then(response => {
           const frame = frames[userFrame](response.data);
           return jsonld.promises.frame(response.data, frame);
         });
     },
     getPropertiesForModel(model) {
-      return $http.get('/api/rest/property', {params: {model}}).then(response => {
+      return $http.get('/api/rest/predicate', {params: {model}}).then(response => {
         const propertyFrame = frames.propertyFrame(response.data);
         const associationFrame = frames.associationFrame(response.data);
         return $q.all({
@@ -43,7 +43,7 @@ module.exports = function propertyService($http, $q) {
       if (id !== originalId) {
         requestParams.oldid = originalId;
       }
-      return $http.post('/api/rest/property', property, {params: requestParams});
+      return $http.post('/api/rest/predicate', property, {params: requestParams});
     }
   };
 };

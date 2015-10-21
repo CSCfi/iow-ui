@@ -1,450 +1,371 @@
 {
   "@context": {
-    "imports": {
-      "@id": "http://www.w3.org/2002/07/owl#imports",
-      "@type": "@id"
+    "comment": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
+      "@container": "@language"
     },
     "label": {
       "@id": "http://www.w3.org/2000/01/rdf-schema#label",
-      "@container": "@language"
-    },
-    "title": {
-      "@id": "http://purl.org/dc/terms/title",
-      "@container": "@language"
-    },
-    "identifier": "http://purl.org/dc/terms/identifier",
-    "references": {
-      "@id": "http://purl.org/dc/terms/references",
-      "@type": "@id"
-    },
-    "range": {
-      "@id": "http://www.w3.org/2000/01/rdf-schema#range",
-      "@type": "@id"
-    },
-    "comment": {
-      "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
       "@container": "@language"
     },
     "property": {
       "@id": "http://www.w3.org/ns/shacl#property",
       "@type": "@id"
     },
+    "range": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#range",
+      "@type": "@id"
+    },
     "subClassOf": {
       "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
       "@type": "@id"
     },
-    "attributes": {
-      "@id": "http://urn.fi/urn:nbn:fi:csc-iow-meta#attributes",
+    "subject": {
+      "@id": "http://purl.org/dc/terms/subject",
       "@type": "@id"
     },
-    "classes": {
-      "@id": "http://urn.fi/urn:nbn:fi:csc-iow-meta#classes",
+    "title": {
+      "@id": "http://purl.org/dc/terms/title",
+      "@container": "@language"
+    },
+    "preferredXMLNamespaceName": {
+      "@id": "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName"
+    },
+    "preferredXMLNamespacePrefix": {
+      "@id": "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix"
+    },
+    "references": {
+      "@id": "http://purl.org/dc/terms/references",
       "@type": "@id"
     },
-    "classifications": {
-      "@id": "http://urn.fi/urn:nbn:fi:csc-iow-meta#classifications"
+    "requires": {
+      "@id": "http://purl.org/dc/terms/requires",
+      "@type": "@id"
+    },
+    "hasPart": {
+      "@id": "http://purl.org/dc/terms/hasPart",
+      "@type": "@id"
     },
     "associations": {
       "@id": "http://urn.fi/urn:nbn:fi:csc-iow-meta#associations",
       "@type": "@id"
     },
-    "versionInfo": "http://www.w3.org/2002/07/owl#versionInfo",
-    "predicate": {
-      "@id": "http://www.w3.org/ns/shacl#predicate",
+    "imports": {
+      "@id": "http://www.w3.org/2002/07/owl#imports",
       "@type": "@id"
+    },
+    "identifier": {
+      "@id": "http://purl.org/dc/terms/identifier"
     },
     "datatype": {
       "@id": "http://www.w3.org/ns/shacl#datatype",
       "@type": "@id"
     },
-    "valueClass": {
-      "@id": "http://www.w3.org/ns/shacl#valueClass",
+    "predicate": {
+      "@id": "http://www.w3.org/ns/shacl#predicate",
       "@type": "@id"
     },
     "nodeKind": {
       "@id": "http://www.w3.org/ns/shacl#nodeKind",
       "@type": "@id"
     },
-    "members": {
-      "@id": "http://www.w3.org/2004/02/skos/core#memberList",
-      "@container": "@list"
+    "valueClass": {
+      "@id": "http://www.w3.org/ns/shacl#valueClass",
+      "@type": "@id"
     },
-    "dc": "http://purl.org/dc/elements/1.1/",
+    "prefLabel": {
+      "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "@container": "@language"
+    },
+    "example": {
+      "@id": "http://www.w3.org/2004/02/skos/core#example",
+      "@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    },
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "doo": "http://urn.fi/urn:nbn:fi:csc-iow-doo#",
+    "dct": "http://purl.org/dc/terms/",
+    "jhs": "http://urn.fi/urn:nbn:fi:csc-iow-jhs#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "iow": "http://urn.fi/urn:nbn:fi:csc-iow-meta#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "sh": "http://www.w3.org/ns/shacl#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-    "jhs": "http://urn.fi/urn:nbn:fi:csc-iow-jhs#"
+    "dcap": "http://purl.org/ws-mmi-dc/terms/"
   },
   "@graph": [
     {
       "@id": "http://urn.fi/urn:nbn:fi:csc-iow-jhs",
-      "@type": [
-        "owl:Ontology",
-        "iow:CoreComponentLibrary"
-      ],
-      "references": [
+      "hasPart": [
         {
-          "@id": "http://www.yso.fi/onto/jupo/",
-          "@type": "skos:ConceptScheme",
-          "identifier": "jupo",
-          "title": {
-            "fi": "JUPO - Julkisen hallinnon palveluontologia"
-          }
-        },
-        {
-          "@id": "http://www.yso.fi/onto/juho/",
-          "@type": "skos:ConceptScheme",
-          "identifier": "juho",
-          "title": {
-            "fi": "JUHO - Julkishallinnon ontologia"
-          }
-        }
-      ],
-      "associations": [
-        {
-          "@id": "jhs:osoite",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "osoite"
-          }
-        },
-        {
-          "@id": "jhs:aidinkieli",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "Äidinkieli"
+          "@id": "jhs:paattymisVuosi",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
           },
-          "range": "skos:Concept"
-        },
-        {
-          "@id": "jhs:asia",
-          "@type": "owl:ObjectProperty",
           "label": {
-            "fi": "viittaus asiaan"
+            "fi": "Päättymisvuosi"
           }
         },
         {
-          "@id": "jhs:yhteystiedot",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "Yhteystiedot"
-          }
-        },
-        {
-          "@id": "jhs:asianosainen",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "asianosainen"
+          "@id": "jhs:alkamisPaiva",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
           },
-          "range": "skos:Concept"
+          "label": {
+            "fi": "Alkamispäivä"
+          }
+        },
+        {
+          "@id": "jhs:osoiteNumero",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Osoite numero"
+          },
+          "range": "xsd:integer"
+        },
+        {
+          "@id": "jhs:paattymisPaiva",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Päättymispäivä"
+          }
+        },
+        "jhs:alkamisHetki",
+        "jhs:siviilisaaty",
+        "jhs:sukuNimi",
+        "jhs:Aikavali",
+        "jhs:paattymisHetki",
+        "jhs:paattymisAika",
+        "jhs:alkamisVuosi",
+        {
+          "@id": "jhs:Ajanjakso",
+          "rdf:type": {
+            "@id": "sh:ShapeClass"
+          },
+          "comment": {
+            "fi": "Nimetty aikaväli, joka voidaan määritellä eri tarkkuudella"
+          },
+          "label": {
+            "fi": "Ajanjakso"
+          },
+          "subClassOf": {
+            "@id": "jhs:Aikavali",
+            "rdf:type": {
+              "@id": "sh:ShapeClass"
+            },
+            "comment": {
+              "fi": "Ajankohdista muodostuva ajallinen jatkumo"
+            },
+            "label": {
+              "fi": "Aikaväli"
+            },
+            "http://www.w3.org/ns/adms#status": {
+              "@id": "http://purl.org/adms/status/UnderDevelopment"
+            },
+            "property": [
+              {
+                "@id": "_:b18",
+                "label": {
+                  "fi": "Aikavälin alkamishetki"
+                },
+                "datatype": "xsd:dateTime",
+                "predicate": "jhs:alkamisHetki"
+              },
+              {
+                "@id": "_:b25",
+                "label": {
+                  "fi": "Aikavalin päättymishetki"
+                },
+                "datatype": "xsd:dateTime",
+                "predicate": "jhs:paattymisHetki"
+              }
+            ]
+          },
+          "http://www.w3.org/ns/adms#status": {
+            "@id": "http://purl.org/adms/status/UnderDevelopment"
+          },
+          "property": [
+            {
+              "@id": "_:b13",
+              "label": {
+                "fi": "Ajanjakson päättymispäivämäärä"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:paattymisPvm"
+            },
+            {
+              "@id": "_:b14",
+              "label": {
+                "fi": "Ajanjakson päättymisaika"
+              },
+              "datatype": "xsd:string",
+              "predicate": {
+                "@id": "jhs:paattymisAika",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Päättymisaika"
+                }
+              }
+            },
+            {
+              "@id": "_:b3",
+              "label": {
+                "fi": "Ajanjakson alkamiskuukausi"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": "jhs:alkamisKuukausi"
+            },
+            {
+              "@id": "_:b15",
+              "comment": {
+                "fi": "Ajanjaksolle määritelty nimi"
+              },
+              "label": {
+                "fi": "Ajanjakson nimi"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:nimi"
+            },
+            {
+              "@id": "_:b16",
+              "label": {
+                "fi": "Ajanjakson päättymishetki"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": {
+                "@id": "jhs:paattymisHetki",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Päättymishetki"
+                },
+                "range": "xsd:dateTime"
+              }
+            },
+            {
+              "@id": "_:b17",
+              "label": {
+                "fi": "alkamis hetki"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": {
+                "@id": "jhs:alkamisHetki",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Alkamishetki"
+                }
+              }
+            },
+            {
+              "@id": "_:b19",
+              "label": {
+                "fi": "Ajanjakson alkamisaika"
+              },
+              "datatype": "xsd:dateTime",
+              "predicate": "jhs:alkamisAika"
+            },
+            {
+              "@id": "_:b20",
+              "label": {
+                "fi": "Ajanjakson alkamisvuosi"
+              },
+              "datatype": "xsd:date",
+              "predicate": {
+                "@id": "jhs:alkamisVuosi",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Alkamisvuosi"
+                }
+              }
+            },
+            {
+              "@id": "_:b8",
+              "label": {
+                "fi": "Ajanjakson alkamispäivämäärä"
+              },
+              "datatype": "xsd:string",
+              "predicate": "jhs:alkamisPvm"
+            }
+          ]
+        },
+        {
+          "@id": "jhs:alkamisAika",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Alkamisaika"
+          }
+        },
+        {
+          "@id": "jhs:viittausSuhde",
+          "rdf:type": {
+            "@id": "owl:ObjectProperty"
+          },
+          "label": {
+            "fi": "Viittaussuhde"
+          }
+        },
+        {
+          "@id": "jhs:paattymisPvm",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Päättymispäivämäärä"
+          }
         },
         {
           "@id": "jhs:koodi",
-          "@type": "owl:ObjectProperty",
+          "rdf:type": {
+            "@id": "owl:ObjectProperty"
+          },
           "label": {
             "fi": "Viittaus koodistossa rajattuun luokitukseen"
           },
           "range": "skos:Concept"
         },
         {
-          "@id": "jhs:kansalaisuus",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "Kansalaisuus"
+          "@id": "jhs:alkamisPvm",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
           },
-          "range": "skos:Concept"
-        },
-        {
-          "@id": "jhs:viittausSuhde",
-          "@type": "owl:ObjectProperty",
           "label": {
-            "fi": "Viittaussuhde"
+            "fi": "Alkamispäivämäärä"
           }
         },
-        {
-          "@id": "jhs:siviilisaaty",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "Siviilisääty"
-          },
-          "range": "skos:Concept"
-        },
-        {
-          "@id": "jhs:ammatti",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "ammatti"
-          },
-          "range": "skos:Concept"
-        },
-        {
-          "@id": "jhs:organisaatio",
-          "@type": "owl:ObjectProperty",
-          "label": {
-            "fi": "organisaatio"
-          },
-          "range": "jhs:Organisaatio"
-        }
-      ],
-      "attributes": [
-        {
-          "@id": "jhs:osoiteNumero",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "osoite numero"
-          },
-          "range": "xsd:integer"
-        },
-        {
-          "@id": "jhs:jakokirjain",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "jakokirjain"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:ytunnus",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "Y-tunnus"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:paattymisKuukausi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "Päättymiskuukausi"
-          }
-        },
-        {
-          "@id": "jhs:numero",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "numero"
-          },
-          "range": "xsd:integer"
-        },
-        {
-          "@id": "jhs:asiasana",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "asiasana"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:nimi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "nimi"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:aiheTeksti",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "aihe teksti"
-          }
-        },
-        {
-          "@id": "jhs:alkamisVuosi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "alkamis vuosi"
-          }
-        },
-        {
-          "@id": "jhs:paattymisPaiva",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "paattymis paiva"
-          }
-        },
-        {
-          "@id": "jhs:kuvausTeksti",
-          "@type": "owl:DatatypeProperty",
-          "comment": {
-            "fi": "Tekstimuotoinen kuvaus"
-          },
-          "label": {
-            "fi": "Kuvausteksti"
-          }
-        },
-        {
-          "@id": "jhs:sukuNimi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "Sukunimi"
-          }
-        },
-        {
-          "@id": "jhs:tunniste",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "tunniste"
-          }
-        },
-        {
-          "@id": "jhs:postilokero",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "postilokero osoite teksti"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:alkamisAika",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "alkamisaika"
-          }
-        },
-        {
-          "@id": "jhs:henkiloTunnus",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "Henkilötunnus"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:viittaussuhdeTeksti",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "viittaussuhde teksti"
-          }
-        },
+        "jhs:postilokero",
         {
           "@id": "jhs:alkamisKuukausi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "alkamis kuukausi"
-          }
-        },
-        {
-          "@id": "jhs:tehtavaKoodi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "tehtava koodi"
-          }
-        },
-        {
-          "@id": "jhs:kirjainosa",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "kirjainosa"
-          }
-        },
-        {
-          "@id": "jhs:paattymisAika",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "paattymis aika"
-          }
-        },
-        {
-          "@id": "jhs:etuNimi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "etu nimi"
-          }
-        },
-        {
-          "@id": "jhs:nimeke",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "nimeke"
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
           },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:puhelinnumero",
-          "@type": "owl:DatatypeProperty",
           "label": {
-            "fi": "puhelinnumero"
+            "fi": "Alkamiskuukausi"
           }
         },
-        {
-          "@id": "jhs:tyyppi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "Tyyppi"
-          },
-          "range": "skos:Concept"
-        },
-        {
-          "@id": "jhs:korvaavuussuhdeTeksti",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "korvaavuussuhde teksti"
-          }
-        },
-        {
-          "@id": "jhs:asiaTunnus",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "asia tunnus"
-          }
-        },
-        {
-          "@id": "jhs:alkamisPvm",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "alkamis pvm"
-          }
-        },
-        {
-          "@id": "jhs:kadunNimi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "kadun nimi"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:alkamisPaiva",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "alkamis paiva"
-          }
-        },
-        {
-          "@id": "jhs:postinumero",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "postinumero"
-          },
-          "range": "xsd:string"
-        },
-        {
-          "@id": "jhs:paattymisVuosi",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "paattymis vuosi"
-          }
-        },
-        {
-          "@id": "jhs:paattymisPvm",
-          "@type": "owl:DatatypeProperty",
-          "label": {
-            "fi": "paattymis pvm"
-          }
-        },
-        "jhs:alkamisHetki",
-        "jhs:paattymisHetki"
-      ],
-      "classes": [
+        "jhs:ytunnus",
+        "jhs:yhteystiedot",
+        "jhs:puhelinnumero",
+        "jhs:osoite",
+        "jhs:Osoite",
+        "jhs:tyyppi",
         {
           "@id": "jhs:Organisaatio",
-          "@type": "sh:ShapeClass",
+          "rdf:type": {
+            "@id": "sh:ShapeClass"
+          },
           "label": {
             "fi": "Organisaatio"
           },
@@ -458,7 +379,46 @@
               "predicate": "jhs:nimi"
             },
             {
-              "@id": "_:b1",
+              "@id": "_:b7",
+              "comment": {
+                "fi": "Organisaation yritys tai yhteisötunnus"
+              },
+              "label": {
+                "fi": "Y-tunnus"
+              },
+              "datatype": "xsd:string",
+              "predicate": {
+                "@id": "jhs:ytunnus",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Y-tunnus"
+                },
+                "range": "xsd:string"
+              }
+            },
+            {
+              "@id": "_:b9",
+              "comment": {
+                "fi": "Organisaation yhteystiedot"
+              },
+              "label": {
+                "fi": "Organisaation yhteystiedot"
+              },
+              "predicate": {
+                "@id": "jhs:yhteystiedot",
+                "rdf:type": {
+                  "@id": "owl:ObjectProperty"
+                },
+                "label": {
+                  "fi": "Yhteystiedot"
+                }
+              },
+              "valueClass": "jhs:Yhteystieto"
+            },
+            {
+              "@id": "_:b10",
               "comment": {
                 "fi": "Organisaatiomuodon kuvaava tyyppi"
               },
@@ -490,171 +450,90 @@
                   }
                 ]
               },
-              "predicate": "jhs:tyyppi",
+              "predicate": {
+                "@id": "jhs:tyyppi",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Tyyppi"
+                },
+                "range": "skos:Concept"
+              },
               "valueClass": "skos:Concept"
-            },
-            {
-              "@id": "_:b2",
-              "comment": {
-                "fi": "Organisaation yhteystiedot"
-              },
-              "label": {
-                "fi": "Organisaation yhteystiedot"
-              },
-              "predicate": "jhs:yhteystiedot",
-              "valueClass": "jhs:Yhteystieto"
-            },
-            {
-              "@id": "_:b3",
-              "comment": {
-                "fi": "Organisaation yritys tai yhteisötunnus"
-              },
-              "label": {
-                "fi": "Y-tunnus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:ytunnus"
             }
           ]
         },
-        "jhs:Aikavali",
         {
-          "@id": "jhs:Ajanjakso",
-          "@type": "sh:ShapeClass",
+          "@id": "jhs:kuvausTeksti",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
           "comment": {
-            "fi": "Nimetty aikaväli, joka voidaan määritellä eri tarkkuudella"
+            "fi": "Tekstimuotoinen kuvaus"
           },
           "label": {
-            "fi": "Ajanjakso"
-          },
-          "subClassOf": {
-            "@id": "jhs:Aikavali",
-            "@type": "sh:ShapeClass",
-            "comment": {
-              "fi": "Ajankohdista muodostuva ajallinen jatkumo"
-            },
-            "label": {
-              "fi": "Aikaväli"
-            },
-            "http://www.w3.org/ns/adms#status": {
-              "@id": "http://purl.org/adms/status/UnderDevelopment"
-            },
-            "property": [
-              {
-                "@id": "_:b4",
-                "label": {
-                  "fi": "Aikavälin alkamishetki"
-                },
-                "datatype": "xsd:dateTime",
-                "predicate": {
-                  "@id": "jhs:alkamisHetki",
-                  "@type": "owl:DatatypeProperty",
-                  "label": {
-                    "fi": "Alkamishetki"
-                  }
-                }
-              },
-              {
-                "@id": "_:b5",
-                "label": {
-                  "fi": "Aikavalin päättymishetki"
-                },
-                "datatype": "xsd:dateTime",
-                "predicate": {
-                  "@id": "jhs:paattymisHetki",
-                  "@type": "owl:DatatypeProperty",
-                  "label": {
-                    "fi": "Päättymishetki"
-                  },
-                  "range": "xsd:dateTime"
-                }
-              }
-            ]
-          },
-          "http://www.w3.org/ns/adms#status": {
-            "@id": "http://purl.org/adms/status/UnderDevelopment"
-          },
-          "property": [
-            {
-              "@id": "_:b6",
-              "label": {
-                "fi": "Ajanjakson alkamispäivämäärä"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:alkamisPvm"
-            },
-            {
-              "@id": "_:b7",
-              "label": {
-                "fi": "alkamis hetki"
-              },
-              "datatype": "xsd:dateTime",
-              "predicate": "jhs:alkamisHetki"
-            },
-            {
-              "@id": "_:b8",
-              "label": {
-                "fi": "Ajanjakson alkamiskuukausi"
-              },
-              "datatype": "xsd:dateTime",
-              "predicate": "jhs:alkamisKuukausi"
-            },
-            {
-              "@id": "_:b9",
-              "label": {
-                "fi": "Ajanjakson päättymispäivämäärä"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:paattymisPvm"
-            },
-            {
-              "@id": "_:b10",
-              "label": {
-                "fi": "Ajanjakson alkamisaika"
-              },
-              "datatype": "xsd:dateTime",
-              "predicate": "jhs:alkamisAika"
-            },
-            {
-              "@id": "_:b11",
-              "label": {
-                "fi": "Ajanjakson päättymisaika"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:paattymisAika"
-            },
-            {
-              "@id": "_:b12",
-              "comment": {
-                "fi": "Ajanjaksolle määritelty nimi"
-              },
-              "label": {
-                "fi": "Ajanjakson nimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimi"
-            },
-            {
-              "@id": "_:b13",
-              "label": {
-                "fi": "Ajanjakson päättymishetki"
-              },
-              "datatype": "xsd:dateTime",
-              "predicate": "jhs:paattymisHetki"
-            },
-            {
-              "@id": "_:b14",
-              "label": {
-                "fi": "Ajanjakson alkamisvuosi"
-              },
-              "datatype": "xsd:date",
-              "predicate": "jhs:alkamisVuosi"
-            }
-          ]
+            "fi": "Kuvausteksti"
+          }
         },
         {
+          "@id": "jhs:paattymisKuukausi",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Päättymiskuukausi"
+          }
+        },
+        {
+          "@id": "jhs:postinumero",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Postinumero"
+          },
+          "range": "xsd:string"
+        },
+        {
+          "@id": "jhs:viittaussuhdeTeksti",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Viittaussuhdeteksi"
+          }
+        },
+        {
+          "@id": "jhs:nimi",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Nimi"
+          },
+          "range": "xsd:string"
+        },
+        "jhs:asia",
+        "jhs:Asia",
+        "jhs:tehtavaKoodi",
+        "jhs:asiasana",
+        "jhs:korvaavuussuhdeTeksti",
+        "jhs:aiheTeksti",
+        "jhs:nimeke",
+        "jhs:asianosainen",
+        "jhs:Henkilo",
+        "jhs:etuNimi",
+        "jhs:ammatti",
+        "jhs:aidinkieli",
+        "jhs:henkiloTunnus",
+        "jhs:kansalaisuus",
+        "jhs:asiaTunnus",
+        {
           "@id": "jhs:Asiakirja",
-          "@type": "sh:ShapeClass",
+          "rdf:type": {
+            "@id": "sh:ShapeClass"
+          },
           "label": {
             "fi": "Asiakirja"
           },
@@ -663,23 +542,320 @@
           },
           "property": [
             {
-              "@id": "_:b15",
+              "@id": "_:b2",
               "label": {
-                "fi": "Asiakirjan nimeke"
+                "fi": "Viittaus asiakirjassa käsiteltävään asiaan"
               },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimeke"
+              "predicate": {
+                "@id": "jhs:asia",
+                "rdf:type": {
+                  "@id": "owl:ObjectProperty"
+                },
+                "label": {
+                  "fi": "Viittaus asiaan"
+                }
+              },
+              "valueClass": {
+                "@id": "jhs:Asia",
+                "rdf:type": {
+                  "@id": "sh:ShapeClass"
+                },
+                "comment": {
+                  "fi": "Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä."
+                },
+                "label": {
+                  "fi": "Asia"
+                },
+                "http://www.w3.org/ns/adms#status": {
+                  "@id": "http://purl.org/adms/status/UnderDevelopment"
+                },
+                "property": [
+                  {
+                    "@id": "_:b26",
+                    "comment": {
+                      "fi": "Julkisen hallinnon yhteisen tai organisaation oman tehtäväluokituksen mukainen tehtävä."
+                    },
+                    "label": {
+                      "fi": "Asian tehtäväkoodi"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:tehtavaKoodi",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Tehtäväkoodi"
+                      }
+                    }
+                  },
+                  {
+                    "@id": "_:b21",
+                    "comment": {
+                      "fi": "Asian sisältöä kuvaileva tieto"
+                    },
+                    "label": {
+                      "en": "Keyword",
+                      "fi": "Asian asiasana"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:asiasana",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Asiasana"
+                      },
+                      "range": "xsd:string"
+                    }
+                  },
+                  {
+                    "@id": "_:b27",
+                    "comment": {
+                      "fi": "Edellisen asian voimassaolo on esimerkiksi päättynyt, minkä johdosta aiempi asia on jouduttu korvaamaan uudella. "
+                    },
+                    "label": {
+                      "fi": "Asian korvaavuussuhde"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:korvaavuussuhdeTeksti",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Korvaavuussuhde teksti"
+                      }
+                    }
+                  },
+                  {
+                    "@id": "_:b28",
+                    "comment": {
+                      "fi": "Asiaan liittyvä aihe, ilmiö tai teema. Aiheella voidaan luokitella asioita erilaisiin kokonaisuuksiin tai ryhmiin. Hyödynnetään esimerkiksi raportointi- ja hakunäkymien rakentamisessa tietojärjestelmissä."
+                    },
+                    "label": {
+                      "fi": "Asian aiheteksti"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:aiheTeksti",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Aiheteksti"
+                      }
+                    }
+                  },
+                  {
+                    "@id": "_:b6",
+                    "comment": {
+                      "fi": "Asian nimitys"
+                    },
+                    "label": {
+                      "fi": "nimeke"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": "jhs:nimeke"
+                  },
+                  {
+                    "@id": "_:b29",
+                    "comment": {
+                      "fi": "Viittaussuhdetta voi käyttää esim. osoittamaan eri asiatunnuksella esiintyviä hakemuksia, jotka ratkaistaan samalla päätöksellä."
+                    },
+                    "label": {
+                      "fi": "Asian viittaussuhde"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": "jhs:viittausssuhdeTeksti"
+                  },
+                  {
+                    "@id": "_:b30",
+                    "comment": {
+                      "fi": "Asian asianosaiset"
+                    },
+                    "label": {
+                      "fi": "Asianosainen"
+                    },
+                    "predicate": {
+                      "@id": "jhs:asianosainen",
+                      "rdf:type": {
+                        "@id": "owl:ObjectProperty"
+                      },
+                      "label": {
+                        "fi": "Asianosainen"
+                      },
+                      "range": "skos:Concept"
+                    },
+                    "valueClass": {
+                      "@id": "jhs:Henkilo",
+                      "rdf:type": {
+                        "@id": "sh:ShapeClass"
+                      },
+                      "label": {
+                        "fi": "Henkilö"
+                      },
+                      "http://www.w3.org/ns/adms#status": {
+                        "@id": "http://purl.org/adms/status/UnderDevelopment"
+                      },
+                      "property": [
+                        {
+                          "@id": "_:b32",
+                          "label": {
+                            "fi": "Henkilön etunimi"
+                          },
+                          "datatype": "xsd:string",
+                          "predicate": {
+                            "@id": "jhs:etuNimi",
+                            "rdf:type": {
+                              "@id": "owl:DatatypeProperty"
+                            },
+                            "label": {
+                              "fi": "Etunimi"
+                            }
+                          }
+                        },
+                        {
+                          "@id": "_:b41",
+                          "label": {
+                            "fi": "Henkilon siviilisääty"
+                          },
+                          "predicate": {
+                            "@id": "jhs:siviilisaaty",
+                            "rdf:type": {
+                              "@id": "owl:ObjectProperty"
+                            },
+                            "label": {
+                              "fi": "Siviilisääty"
+                            },
+                            "range": "skos:Concept"
+                          },
+                          "valueClass": "skos:Concept"
+                        },
+                        {
+                          "@id": "_:b33",
+                          "label": {
+                            "fi": "Ammatti"
+                          },
+                          "predicate": {
+                            "@id": "jhs:ammatti",
+                            "rdf:type": {
+                              "@id": "owl:ObjectProperty"
+                            },
+                            "label": {
+                              "fi": "Ammatti"
+                            },
+                            "range": "skos:Concept"
+                          },
+                          "valueClass": "skos:Concept"
+                        },
+                        {
+                          "@id": "_:b12",
+                          "label": {
+                            "fi": "Henkilön äidinkieli"
+                          },
+                          "predicate": {
+                            "@id": "jhs:aidinkieli",
+                            "rdf:type": {
+                              "@id": "owl:ObjectProperty"
+                            },
+                            "label": {
+                              "fi": "Äidinkieli"
+                            },
+                            "range": "skos:Concept"
+                          },
+                          "valueClass": "skos:Concept"
+                        },
+                        {
+                          "@id": "_:b35",
+                          "label": {
+                            "fi": "Henkilön henkilötunnus"
+                          },
+                          "datatype": "xsd:string",
+                          "sh:pattern": {
+                            "@language": "fi",
+                            "@value": "\\d{6}[+-A]\\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]"
+                          },
+                          "predicate": {
+                            "@id": "jhs:henkiloTunnus",
+                            "rdf:type": {
+                              "@id": "owl:DatatypeProperty"
+                            },
+                            "label": {
+                              "fi": "Henkilötunnus"
+                            },
+                            "range": "xsd:string"
+                          }
+                        },
+                        {
+                          "@id": "_:b36",
+                          "label": {
+                            "fi": "Henkilön sukunimi"
+                          },
+                          "datatype": "xsd:string",
+                          "predicate": {
+                            "@id": "jhs:sukuNimi",
+                            "rdf:type": {
+                              "@id": "owl:DatatypeProperty"
+                            },
+                            "label": {
+                              "fi": "Sukunimi"
+                            }
+                          }
+                        },
+                        {
+                          "@id": "_:b37",
+                          "label": {
+                            "fi": "Henkilön kansalaisuus"
+                          },
+                          "predicate": {
+                            "@id": "jhs:kansalaisuus",
+                            "rdf:type": {
+                              "@id": "owl:ObjectProperty"
+                            },
+                            "label": {
+                              "fi": "Kansalaisuus"
+                            },
+                            "range": "skos:Concept"
+                          },
+                          "valueClass": "skos:Concept"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "@id": "_:b31",
+                    "comment": {
+                      "fi": "Asiatunnus voidaan muodostaa organisaatiokohtaisesti tai organisaatioiden välillä yhteisesti sovitulla tavalla"
+                    },
+                    "label": {
+                      "fi": "Asiatunnus"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": "jhs:asiaTunnus"
+                  }
+                ]
+              }
             },
             {
-              "@id": "_:b16",
+              "@id": "_:b40",
               "label": {
                 "fi": "Asian tunnus"
               },
               "datatype": "xsd:string",
-              "predicate": "jhs:asiaTunnus"
+              "predicate": {
+                "@id": "jhs:asiaTunnus",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Asiatunnus"
+                }
+              }
             },
             {
-              "@id": "_:b17",
+              "@id": "_:b1",
               "label": {
                 "fi": "Asiakirjan tunnus"
               },
@@ -687,257 +863,42 @@
               "predicate": "jhs:tunnus"
             },
             {
-              "@id": "_:b18",
-              "label": {
-                "fi": "Viittaus asiakirjassa käsiteltävään asiaan"
-              },
-              "predicate": "jhs:asia",
-              "valueClass": "jhs:Asia"
-            }
-          ]
-        },
-        {
-          "@id": "jhs:Osoite",
-          "@type": "sh:ShapeClass",
-          "label": {
-            "fi": "Osoite"
-          },
-          "http://www.w3.org/ns/adms#status": {
-            "@id": "http://purl.org/adms/status/UnderDevelopment"
-          },
-          "property": [
-            {
-              "@id": "_:b19",
-              "label": {
-                "fi": "Huoneistotunnuksen numero-osa"
-              },
-              "datatype": "xsd:integer",
-              "predicate": "jhs:numero"
-            },
-            {
-              "@id": "_:b20",
-              "label": {
-                "fi": "Huoneistotunnuksen jakokirjain"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:jakokirjain"
-            },
-            {
-              "@id": "_:b21",
-              "label": {
-                "fi": "Postilokero-osoite"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:postilokero"
-            },
-            {
-              "@id": "_:b22",
-              "label": {
-                "fi": "Osoitenumero"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:osoitenumero"
-            },
-            {
-              "@id": "_:b23",
-              "comment": {
-                "fi": "Osoitteen kadunnimi"
-              },
-              "label": {
-                "fi": "Kadunnimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:kadunNimi"
-            },
-            {
-              "@id": "_:b24",
-              "label": {
-                "fi": "Huoneistotunnuksen kirjainosa"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:kirjainosa"
-            }
-          ]
-        },
-        {
-          "@id": "jhs:Asia",
-          "@type": "sh:ShapeClass",
-          "comment": {
-            "fi": "Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä."
-          },
-          "label": {
-            "fi": "Asia"
-          },
-          "http://www.w3.org/ns/adms#status": {
-            "@id": "http://purl.org/adms/status/UnderDevelopment"
-          },
-          "property": [
-            {
-              "@id": "_:b25",
-              "comment": {
-                "fi": "Asian sisältöä kuvaileva tieto"
-              },
-              "label": {
-                "en": "Keyword",
-                "fi": "Asian asiasana"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:asiasana"
-            },
-            {
-              "@id": "_:b26",
-              "comment": {
-                "fi": "Viittaussuhdetta voi käyttää esim. osoittamaan eri asiatunnuksella esiintyviä hakemuksia, jotka ratkaistaan samalla päätöksellä."
-              },
-              "label": {
-                "fi": "Asian viittaussuhde"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:viittausssuhdeTeksti"
-            },
-            {
-              "@id": "_:b27",
-              "comment": {
-                "fi": "Edellisen asian voimassaolo on esimerkiksi päättynyt, minkä johdosta aiempi asia on jouduttu korvaamaan uudella. "
-              },
-              "label": {
-                "fi": "Asian korvaavuussuhde"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:korvaavuussuhdeTeksti"
-            },
-            {
-              "@id": "_:b28",
-              "comment": {
-                "fi": "Asian nimitys"
-              },
-              "label": {
-                "fi": "nimeke"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:nimeke"
-            },
-            {
-              "@id": "_:b29",
-              "comment": {
-                "fi": "Asiatunnus voidaan muodostaa organisaatiokohtaisesti tai organisaatioiden välillä yhteisesti sovitulla tavalla"
-              },
-              "label": {
-                "fi": "Asiatunnus"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:asiaTunnus"
-            },
-            {
-              "@id": "_:b30",
-              "comment": {
-                "fi": "Asian asianosaiset"
-              },
-              "label": {
-                "fi": "Asianosainen"
-              },
-              "predicate": "jhs:asianosainen",
-              "valueClass": "jhs:Henkilo"
-            },
-            {
-              "@id": "_:b31",
-              "comment": {
-                "fi": "Asiaan liittyvä aihe, ilmiö tai teema. Aiheella voidaan luokitella asioita erilaisiin kokonaisuuksiin tai ryhmiin. Hyödynnetään esimerkiksi raportointi- ja hakunäkymien rakentamisessa tietojärjestelmissä."
-              },
-              "label": {
-                "fi": "Asian aiheteksti"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:aiheTeksti"
-            },
-            {
-              "@id": "_:b32",
-              "comment": {
-                "fi": "Julkisen hallinnon yhteisen tai organisaation oman tehtäväluokituksen mukainen tehtävä."
-              },
-              "label": {
-                "fi": "Asian tehtäväkoodi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:tehtavaKoodi"
-            }
-          ]
-        },
-        {
-          "@id": "jhs:Henkilo",
-          "@type": "sh:ShapeClass",
-          "label": {
-            "fi": "Henkilö"
-          },
-          "http://www.w3.org/ns/adms#status": {
-            "@id": "http://purl.org/adms/status/UnderDevelopment"
-          },
-          "property": [
-            {
-              "@id": "_:b33",
-              "label": {
-                "fi": "Henkilön äidinkieli"
-              },
-              "predicate": "jhs:aidinkieli",
-              "valueClass": "skos:Concept"
-            },
-            {
               "@id": "_:b34",
               "label": {
-                "fi": "Henkilon siviilisääty"
-              },
-              "predicate": "jhs:siviilisaaty",
-              "valueClass": "skos:Concept"
-            },
-            {
-              "@id": "_:b35",
-              "label": {
-                "fi": "Henkilön etunimi"
+                "fi": "Asiakirjan nimeke"
               },
               "datatype": "xsd:string",
-              "predicate": "jhs:etuNimi"
-            },
-            {
-              "@id": "_:b36",
-              "label": {
-                "fi": "Henkilön sukunimi"
-              },
-              "datatype": "xsd:string",
-              "predicate": "jhs:sukuNimi"
-            },
-            {
-              "@id": "_:b37",
-              "label": {
-                "fi": "Henkilön henkilötunnus"
-              },
-              "datatype": "xsd:string",
-              "sh:pattern": {
-                "@language": "fi",
-                "@value": "\\d{6}[+-A]\\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]"
-              },
-              "predicate": "jhs:henkiloTunnus"
-            },
-            {
-              "@id": "_:b38",
-              "label": {
-                "fi": "Ammatti"
-              },
-              "predicate": "jhs:ammatti",
-              "valueClass": "skos:Concept"
-            },
-            {
-              "@id": "_:b39",
-              "label": {
-                "fi": "Henkilön kansalaisuus"
-              },
-              "predicate": "jhs:kansalaisuus",
-              "valueClass": "skos:Concept"
+              "predicate": {
+                "@id": "jhs:nimeke",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Nimeke"
+                },
+                "range": "xsd:string"
+              }
             }
           ]
         },
         {
+          "@id": "jhs:tunniste",
+          "rdf:type": {
+            "@id": "owl:DatatypeProperty"
+          },
+          "label": {
+            "fi": "Tunniste"
+          }
+        },
+        "jhs:numero",
+        "jhs:kirjainosa",
+        "jhs:jakokirjain",
+        "jhs:kadunNimi",
+        {
           "@id": "jhs:Yhteystieto",
-          "@type": "sh:ShapeClass",
+          "rdf:type": {
+            "@id": "sh:ShapeClass"
+          },
           "label": {
             "fi": "Yhteystieto"
           },
@@ -946,18 +907,7 @@
           },
           "property": [
             {
-              "@id": "_:b40",
-              "comment": {
-                "fi": "Yhteystiedoissa mainittu osoite\n"
-              },
-              "label": {
-                "fi": "Osoite"
-              },
-              "predicate": "jhs:osoite",
-              "valueClass": "jhs:Osoite"
-            },
-            {
-              "@id": "_:b41",
+              "@id": "_:b4",
               "comment": {
                 "fi": "Yhteystiedoissa mainittu puhelinnumero"
               },
@@ -965,85 +915,256 @@
                 "fi": "Puhelinnumero"
               },
               "datatype": "xsd:string",
-              "predicate": "jhs:puhelinnumero"
+              "predicate": {
+                "@id": "jhs:puhelinnumero",
+                "rdf:type": {
+                  "@id": "owl:DatatypeProperty"
+                },
+                "label": {
+                  "fi": "Puhelinnumero"
+                }
+              }
+            },
+            {
+              "@id": "_:b5",
+              "comment": {
+                "fi": "Yhteystiedoissa mainittu osoite\n"
+              },
+              "label": {
+                "fi": "Osoite"
+              },
+              "predicate": {
+                "@id": "jhs:osoite",
+                "rdf:type": {
+                  "@id": "owl:ObjectProperty"
+                },
+                "label": {
+                  "fi": "Osoite"
+                }
+              },
+              "valueClass": {
+                "@id": "jhs:Osoite",
+                "rdf:type": {
+                  "@id": "sh:ShapeClass"
+                },
+                "label": {
+                  "fi": "Osoite"
+                },
+                "http://www.w3.org/ns/adms#status": {
+                  "@id": "http://purl.org/adms/status/UnderDevelopment"
+                },
+                "property": [
+                  {
+                    "@id": "_:b22",
+                    "label": {
+                      "fi": "Postilokero-osoite"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:postilokero",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Postilokeron osoiteteksti"
+                      },
+                      "range": "xsd:string"
+                    }
+                  },
+                  {
+                    "@id": "_:b11",
+                    "label": {
+                      "fi": "Osoitenumero"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": "jhs:osoitenumero"
+                  },
+                  {
+                    "@id": "_:b23",
+                    "label": {
+                      "fi": "Huoneistotunnuksen numero-osa"
+                    },
+                    "datatype": "xsd:integer",
+                    "predicate": {
+                      "@id": "jhs:numero",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Numero"
+                      },
+                      "range": "xsd:integer"
+                    }
+                  },
+                  {
+                    "@id": "_:b38",
+                    "label": {
+                      "fi": "Huoneistotunnuksen kirjainosa"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:kirjainosa",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Kirjainosa"
+                      }
+                    }
+                  },
+                  {
+                    "@id": "_:b39",
+                    "label": {
+                      "fi": "Huoneistotunnuksen jakokirjain"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:jakokirjain",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Jakokirjain"
+                      },
+                      "range": "xsd:string"
+                    }
+                  },
+                  {
+                    "@id": "_:b24",
+                    "comment": {
+                      "fi": "Osoitteen kadunnimi"
+                    },
+                    "label": {
+                      "fi": "Kadunnimi"
+                    },
+                    "datatype": "xsd:string",
+                    "predicate": {
+                      "@id": "jhs:kadunNimi",
+                      "rdf:type": {
+                        "@id": "owl:DatatypeProperty"
+                      },
+                      "label": {
+                        "fi": "Kadunnimi"
+                      },
+                      "range": "xsd:string"
+                    }
+                  }
+                ]
+              }
             }
           ]
         }
       ],
-      "classifications": {
+      "references": [
+        {
+          "@id": "http://www.yso.fi/onto/jupo/",
+          "identifier": "jupo",
+          "title": {
+            "fi": "JUPO - Julkisen hallinnon palveluontologia"
+          },
+          "rdf:type": {
+            "@id": "skos:ConceptScheme"
+          }
+        },
+        {
+          "@id": "http://www.yso.fi/onto/juho/",
+          "identifier": "juho",
+          "title": {
+            "fi": "JUHO - Julkishallinnon ontologia"
+          },
+          "rdf:type": {
+            "@id": "skos:ConceptScheme"
+          }
+        }
+      ],
+      "iow:classifications": {
         "@id": "jhs:Organisaatiomuoto",
-        "@type": "skos:Collection",
+        "rdf:type": {
+          "@id": "skos:Collection"
+        },
         "comment": {
           "fi": "Organisaatiomuodon luokitus"
         },
         "label": {
           "fi": "Organisaatiomuoto"
         },
-        "members": [
-          {
-            "@id": "jhs:AvoinYhtio",
-            "@type": "skos:Concept",
-            "skos:notation": "O1",
-            "skos:prefLabel": {
-              "@language": "fi",
-              "@value": "Avoin yhtiö"
+        "skos:memberList": {
+          "@list": [
+            {
+              "@id": "jhs:AvoinYhtio",
+              "rdf:type": {
+                "@id": "skos:Concept"
+              },
+              "skos:notation": "O1",
+              "prefLabel": {
+                "fi": "Avoin yhtiö"
+              }
+            },
+            {
+              "@id": "jhs:Kunta",
+              "rdf:type": {
+                "@id": "skos:Concept"
+              },
+              "skos:notation": "O3",
+              "prefLabel": {
+                "fi": "Kunta"
+              }
+            },
+            {
+              "@id": "jhs:Osakeyhtio",
+              "rdf:type": {
+                "@id": "skos:Concept"
+              },
+              "skos:notation": "O4",
+              "prefLabel": {
+                "fi": "Osakeyhtiö"
+              }
+            },
+            {
+              "@id": "jhs:Osuuskunta",
+              "rdf:type": {
+                "@id": "skos:Concept"
+              },
+              "skos:notation": "O5",
+              "prefLabel": {
+                "fi": "Osuuskunta"
+              }
+            },
+            {
+              "@id": "jhs:Saatio",
+              "rdf:type": {
+                "@id": "skos:Concept"
+              },
+              "skos:notation": "O6",
+              "prefLabel": {
+                "fi": "Säätiö"
+              }
+            },
+            {
+              "@id": "jhs:Valtio",
+              "rdf:type": {
+                "@id": "skos:Concept"
+              },
+              "skos:notation": "O7",
+              "prefLabel": {
+                "fi": "Valtio"
+              }
+            },
+            {
+              "@id": "jhs:Yhdistys",
+              "rdf:type": {
+                "@id": "skos:Concept"
+              },
+              "skos:notation": "O8",
+              "prefLabel": {
+                "fi": "Yhdistys"
+              }
             }
-          },
-          {
-            "@id": "jhs:Kunta",
-            "@type": "skos:Concept",
-            "skos:notation": "O3",
-            "skos:prefLabel": {
-              "@language": "fi",
-              "@value": "Kunta"
-            }
-          },
-          {
-            "@id": "jhs:Osakeyhtio",
-            "@type": "skos:Concept",
-            "skos:notation": "O4",
-            "skos:prefLabel": {
-              "@language": "fi",
-              "@value": "Osakeyhtiö"
-            }
-          },
-          {
-            "@id": "jhs:Osuuskunta",
-            "@type": "skos:Concept",
-            "skos:notation": "O5",
-            "skos:prefLabel": {
-              "@language": "fi",
-              "@value": "Osuuskunta"
-            }
-          },
-          {
-            "@id": "jhs:Saatio",
-            "@type": "skos:Concept",
-            "skos:notation": "O6",
-            "skos:prefLabel": {
-              "@language": "fi",
-              "@value": "Säätiö"
-            }
-          },
-          {
-            "@id": "jhs:Valtio",
-            "@type": "skos:Concept",
-            "skos:notation": "O7",
-            "skos:prefLabel": {
-              "@language": "fi",
-              "@value": "Valtio"
-            }
-          },
-          {
-            "@id": "jhs:Yhdistys",
-            "@type": "skos:Concept",
-            "skos:notation": "O8",
-            "skos:prefLabel": {
-              "@language": "fi",
-              "@value": "Yhdistys"
-            }
-          }
-        ]
+          ]
+        }
+      },
+      "rdf:type": {
+        "@id": "owl:Ontology"
       },
       "comment": {
         "fi": "Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti käytössä olevat tietosisällöt"
@@ -1052,16 +1173,15 @@
         "fi": "Julkishallinnon tietokomponentit"
       },
       "imports": [
-        "http://www.w3.org/2004/02/skos/core",
-        "http://urn.fi/urn:nbn:fi:csc-iow-meta",
         "http://purl.org/dc/elements/1.1/",
-        "http://SHACLFIX.fi"
+        "http://urn.fi/urn:nbn:fi:csc-iow-meta",
+        "http://www.w3.org/2004/02/skos/core",
+        "http://www.w3.org/ns/shacl"
       ],
       "http://www.w3.org/ns/adms#status": {
         "@id": "http://purl.org/adms/status/UnderDevelopment",
-        "skos:prefLabel": {
-          "@language": "fi",
-          "@value": "Luonnos"
+        "prefLabel": {
+          "fi": "Luonnos"
         }
       }
     }
