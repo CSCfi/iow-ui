@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const jsonld = require('jsonld');
 const constants = require('./constants');
 
 module.exports = function attributeView($log) {
@@ -20,10 +19,9 @@ module.exports = function attributeView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, $log, propertyService, modelLanguage, userService) {
+    controller($scope, propertyService, modelLanguage, userService) {
       'ngInject';
 
-      let context;
       let originalId;
       const vm = this;
 
@@ -53,7 +51,7 @@ module.exports = function attributeView($log) {
           .assign({'@context': vm.context})
           .value();
 
-        const splittedID = vm.attribute['@id'].split(":");
+        const splittedID = vm.attribute['@id'].split(':');
         const id = vm.context[splittedID[0]] + splittedID[1];
 
         $log.info(JSON.stringify(ld, null, 2));
@@ -63,7 +61,6 @@ module.exports = function attributeView($log) {
           vm.id = id;
           $scope.modelController.reload();
         });
-
       }
 
       function resetModel() {
