@@ -53,16 +53,16 @@ module.exports = function attributeView($log) {
           .assign({'@context': vm.context})
           .value();
 
-      const splittedID = vm.attribute['@id'].split(":");
-      const id = vm.context[splittedID[0]]+splittedID[1];
+        const splittedID = vm.attribute['@id'].split(":");
+        const id = vm.context[splittedID[0]] + splittedID[1];
 
-      $log.info(JSON.stringify(ld, null, 2));
+        $log.info(JSON.stringify(ld, null, 2));
 
-      return propertyService.updateProperty(ld, id, originalId).then(() => {
+        return propertyService.updateProperty(ld, id, originalId).then(() => {
           originalId = id;
           vm.id = id;
           $scope.modelController.reload();
-      });
+        });
 
       }
 
