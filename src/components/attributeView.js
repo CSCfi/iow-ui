@@ -20,7 +20,7 @@ module.exports = function attributeView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, propertyService, modelLanguage, userService) {
+    controller($scope, $log, propertyService, modelLanguage, userService) {
       'ngInject';
 
       let context;
@@ -42,7 +42,7 @@ module.exports = function attributeView($log) {
       function fetchProperty(id) {
         propertyService.getPropertyById(id).then(data => {
           vm.attribute = data['@graph'][0];
-          context = data['@context'];
+          vm.context = data['@context'];
           originalId = id;
         });
       }
@@ -50,17 +50,20 @@ module.exports = function attributeView($log) {
       function updateAttribute() {
         const ld = _.chain(vm.attribute)
           .clone()
-          .assign({'@context': context})
+          .assign({'@context': vm.context})
           .value();
 
-        return jsonld.promises.expand(ld).then(expanded => {
-          const id = expanded[0]['@id'];
-          return propertyService.updateProperty(ld, id, originalId).then(() => {
-            originalId = id;
-            vm.id = id;
-            $scope.modelController.reload();
-          });
-        });
+      const splittedID = vm.attribute['@id'].split(":");
+      const id = vm.context[splittedID[0]]+splittedID[1];
+
+      $log.info(JSON.stringify(ld, null, 2));
+
+      return propertyService.updateProperty(ld, id, originalId).then(() => {
+          originalId = id;
+          vm.id = id;
+          $scope.modelController.reload();
+      });
+
       }
 
       function resetModel() {

@@ -48,8 +48,6 @@ module.exports = function classView($log) {
 
       function updateClass() {
 
-
-
         const classData = {
           '@graph': [vm.class],
           '@context': vm.context
@@ -58,13 +56,13 @@ module.exports = function classView($log) {
         const splittedID = vm.class['@id'].split(":");
         const id = vm.context[splittedID[0]]+splittedID[1];
 
-        $log.info("Expanded id:"+id);
+        $log.info(JSON.stringify(classData, null, 2));
 
-          return classService.updateClass(classData, id, originalId).then(() => {
-            originalId = id;
-            vm.id = id;
-            $scope.modelController.reload();
-          });
+        return classService.updateClass(classData, id, originalId).then(() => {
+          originalId = id;
+          vm.id = id;
+          $scope.modelController.reload();
+        });
 
       }
 
