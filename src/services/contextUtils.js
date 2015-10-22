@@ -5,7 +5,7 @@ function withFullIRI(context, value) {
     if (!iri) {
       throw new Error(`Prefix '${result[1]}' not found from context: \n ${JSON.stringify(context, null, 2)}`);
     } else {
-      return context[result[1]] + result[2];
+      return iri + result[2];
     }
   } else {
     return value;
