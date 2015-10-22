@@ -25,13 +25,11 @@ module.exports = function editableForm() {
       function onSubmit() {
         function onError() {
           vm.submitError = true;
-          $scope.$apply();
         }
 
         function onSuccess() {
           vm.submitError = false;
           cancel();
-          $scope.$apply();
         }
 
         // FIXME: hack

@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const jsonld = require('jsonld');
+const contextUtils = require('../services/contextUtils');
 
 module.exports = function classView($log) {
   'ngInject';
@@ -19,42 +19,42 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, $log, classService, modelLanguage, userService) {
+    controller($scope, classService, modelLanguage, userService) {
       'ngInject';
 
       let originalId;
       const vm = this;
 
+      vm.loading = true;
       vm.fetchClass = fetchClass;
       vm.updateClass = updateClass;
       vm.resetModel = resetModel;
       // view contract
       vm.isEditing = isEditing;
-      vm.cancelEditing = cancelEditing;
 
       $scope.$watch('ctrl.id', id => fetchClass(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
       function fetchClass(id) {
+        vm.loading = true;
         classService.getClass(id).then(data => {
+          cancelEditing();
           vm.class = data['@graph'][0];
           vm.context = data['@context'];
           originalId = id;
         }, err => {
           $log.error(err);
-        });
+        }).finally(() => vm.loading = false);
       }
 
       function updateClass() {
-
         const classData = {
           '@graph': [vm.class],
           '@context': vm.context
         };
 
-        const splittedID = vm.class['@id'].split(":");
-        const id = vm.context[splittedID[0]]+splittedID[1];
+        const id = contextUtils.withFullIRI(vm.context, vm.class['@id']);
 
         $log.info(JSON.stringify(classData, null, 2));
 
@@ -63,7 +63,6 @@ module.exports = function classView($log) {
           vm.id = id;
           $scope.modelController.reload();
         });
-
       }
 
       function resetModel() {

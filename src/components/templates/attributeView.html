@@ -1,4 +1,4 @@
-<editable-form on-submit="ctrl.updateAttribute()" on-reset="ctrl.resetModel()">
+<editable-form on-submit="ctrl.updateAttribute()" on-reset="ctrl.resetModel()" ng-hide="ctrl.loading">
   <form-input title="{{'Label' | translate}}" content="ctrl.attribute.label"></form-input>
   <form-id title="{{'Id' | translate}}" plain-text="ctrl.attribute['@id']"></form-id>
   <form-input title="{{'Comment' | translate}}" content="ctrl.attribute.comment"></form-input>

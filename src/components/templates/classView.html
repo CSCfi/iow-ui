@@ -1,4 +1,4 @@
-<editable-form on-submit="ctrl.updateClass()" on-reset="ctrl.resetModel()">
+<editable-form on-submit="ctrl.updateClass()" on-reset="ctrl.resetModel()" ng-hide="ctrl.loading">
   <h2>
     <form-input content="ctrl.class.label"></form-input>
   </h2>

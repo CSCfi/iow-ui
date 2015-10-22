@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, propertyService) {
+module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, predicateService) {
   'ngInject';
 
   const modelId = $routeParams.urn;
@@ -54,7 +54,6 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
         controller($modalInstance) {
           'ngInject';
           this.ok = () => {
-            cancelEditing();
             callback();
             $modalInstance.close();
           };
@@ -73,12 +72,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
     return _.find(views, view => view.isEditing());
   }
 
-  function cancelEditing() {
-    return _.forEach(views, view => view.cancelEditing());
-  }
-
   function clearAll() {
-    cancelEditing();
     vm.activatedAttributeId = undefined;
     vm.activatedClassId = undefined;
     vm.activatedAssociationId = undefined;
@@ -99,7 +93,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
   }
 
   function fetchProperties() {
-    return propertyService.getPropertiesForModel(modelId).then(data => {
+    return predicateService.getPredicatesForModel(modelId).then(data => {
       vm.attributes = data.attributes['@graph'];
       vm.associations = data.associations['@graph'];
     }, err => {

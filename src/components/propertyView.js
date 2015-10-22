@@ -1,4 +1,5 @@
 const constants = require('./constants');
+const contextUtils = require('../services/contextUtils');
 
 module.exports = function propertyView($log) {
   'ngInject';
@@ -9,15 +10,15 @@ module.exports = function propertyView($log) {
     },
     restrict: 'E',
     template: require('./templates/propertyView.html'),
-    controller($scope, propertyService) {
+    controller($scope, predicateService) {
       'ngInject';
 
       $scope.attributeValues = constants.attributeValues;
 
-      propertyService.getProperty($scope.property.predicate, $scope.context).then(predicate => {
-        $scope.$apply(() => {
-          $scope.predicate = predicate['@graph'][0];
-        });
+      const predicateId = contextUtils.withFullIRI($scope.context, $scope.property.predicate);
+
+      predicateService.getPredicateById(predicateId, 'predicateFrame').then(predicate => {
+        $scope.predicate = predicate['@graph'][0];
       });
     }
   };

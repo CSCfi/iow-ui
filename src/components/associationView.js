@@ -6,11 +6,11 @@ module.exports = function associationView($log) {
     },
     restrict: 'E',
     template: require('./templates/associationView.html'),
-    controller($scope, propertyService) {
+    controller($scope, predicateService) {
       'ngInject';
 
       $scope.$watch('id', id => {
-        propertyService.getPropertyById(id, 'associationFrame').then(data => {
+        predicateService.getPredicateById(id, 'associationFrame').then(data => {
           $scope.association = data['@graph'][0];
         });
       });

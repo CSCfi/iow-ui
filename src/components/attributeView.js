@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const constants = require('./constants');
+const contextUtils = require('../services/contextUtils');
 
 module.exports = function attributeView($log) {
   'ngInject';
@@ -19,44 +20,46 @@ module.exports = function attributeView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, propertyService, modelLanguage, userService) {
+    controller($scope, predicateService, modelLanguage, userService) {
       'ngInject';
 
+      let context;
       let originalId;
       const vm = this;
 
+      vm.loading = true;
       vm.fetchProperty = fetchProperty;
       vm.updateAttribute = updateAttribute;
       vm.resetModel = resetModel;
       vm.attributeValues = constants.attributeValues;
       // view contract
       vm.isEditing = isEditing;
-      vm.cancelEditing = cancelEditing;
 
       $scope.$watch('ctrl.id', id => fetchProperty(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
       function fetchProperty(id) {
-        propertyService.getPropertyById(id).then(data => {
-          vm.attribute = data['@graph'][0];
-          vm.context = data['@context'];
+        vm.loading = true;
+        predicateService.getPredicateById(id).then(data => {
+          cancelEditing();
+          context = data['@context'];
           originalId = id;
-        });
+          vm.attribute = data['@graph'][0];
+        }).finally(() => vm.loading = false);
       }
 
       function updateAttribute() {
         const ld = _.chain(vm.attribute)
           .clone()
-          .assign({'@context': vm.context})
+          .assign({'@context': context})
           .value();
 
-        const splittedID = vm.attribute['@id'].split(':');
-        const id = vm.context[splittedID[0]] + splittedID[1];
+        const id = contextUtils.withFullIRI(context, vm.attribute['@id']);
 
         $log.info(JSON.stringify(ld, null, 2));
 
-        return propertyService.updateProperty(ld, id, originalId).then(() => {
+        return predicateService.updatePredicate(ld, id, originalId).then(() => {
           originalId = id;
           vm.id = id;
           $scope.modelController.reload();
