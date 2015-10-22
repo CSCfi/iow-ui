@@ -9,8 +9,6 @@ module.exports = function predicateService($http, $q) {
     getPredicateById(id, userFrame = 'propertyFrame') {
       return $http.get('/api/rest/predicate', {params: {id}})
         .then(response => {
-          console.log('predicate by id');
-          console.log(JSON.stringify(response, null, 2));
           const frame = frames[userFrame](response.data);
           return jsonld.promises.frame(response.data, frame);
         });
@@ -19,8 +17,6 @@ module.exports = function predicateService($http, $q) {
       return $http.get('/api/rest/predicate', {params: {model}}).then(response => {
         const propertyFrame = frames.propertyFrame(response.data);
         const associationFrame = frames.associationFrame(response.data);
-        console.log('predicates for model');
-        console.log(JSON.stringify(response, null, 2));
         return $q.all({
           attributes: jsonld.promises.frame(response.data, propertyFrame),
           associations: jsonld.promises.frame(response.data, associationFrame)
