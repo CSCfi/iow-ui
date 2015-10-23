@@ -12,6 +12,8 @@ module.exports = function associationView($log) {
     restrict: 'E',
     template: require('./templates/associationView.html'),
     require: '^ngController',
+    bindToController: true,
+    controllerAs: 'ctrl',
     link($scope, element, attributes, modelController) {
       const controller = $scope.ctrl;
       modelController.registerView(controller);
@@ -26,7 +28,7 @@ module.exports = function associationView($log) {
 
       $scope.attributeValues = constants.attributeValues;
 
-      $scope.$watch('id', id => {
+      $scope.$watch('ctrl.id', id => {
         predicateService.getPredicateById(id, 'associationFrame').then(data => {
           $scope.association = data['@graph'][0];
           context = data['@context'];
