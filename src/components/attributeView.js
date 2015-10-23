@@ -33,7 +33,7 @@ module.exports = function attributeView($log) {
       vm.resetModel = resetModel;
       vm.attributeValues = constants.attributeValues;
       // view contract
-      vm.isEditing = $scope.formController.visible;
+      vm.isEditing = () => $scope.formController.visible();
 
       $scope.$watch('ctrl.id', id => fetchProperty(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
