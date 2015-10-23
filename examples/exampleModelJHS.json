@@ -91,7 +91,8 @@
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "sh": "http://www.w3.org/ns/shacl#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcap": "http://purl.org/ws-mmi-dc/terms/"
+    "dcap": "http://purl.org/ws-mmi-dc/terms/",
+    "adms": "http://www.w3.org/ns/adms#"
   },
   "@graph": [
     {
