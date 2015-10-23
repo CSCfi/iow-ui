@@ -1,6 +1,7 @@
 const _ = require('lodash');
 
 const contextUtils = require('../services/contextUtils');
+const constants = require('./constants');
 
 module.exports = function associationView($log) {
   'ngInject';
@@ -22,6 +23,8 @@ module.exports = function associationView($log) {
 
       let context;
       let originalId;
+
+      $scope.attributeValues = constants.attributeValues;
 
       $scope.$watch('id', id => {
         predicateService.getPredicateById(id, 'associationFrame').then(data => {
