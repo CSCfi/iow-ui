@@ -15,9 +15,6 @@ const valueClass = { '@id': 'http://www.w3.org/ns/shacl#valueClass', '@type': '@
 const nodeKind = { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' };
 const references = { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' };
 const requires = { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' };
-const associations = { '@id': 'http://urn.fi/urn:nbn:fi:csc-iow-meta#associations', '@type': '@id' };
-const attributes = { '@id': 'http://urn.fi/urn:nbn:fi:csc-iow-meta#attributes', '@type': '@id' };
-// const classes = { '@id': 'http://urn.fi/urn:nbn:fi:csc-iow-meta#classes', '@type': '@id' };
 const imports = { '@id': 'http://www.w3.org/2002/07/owl#imports', '@type': '@id' };
 const hasPart = { '@id': 'http://purl.org/dc/terms/hasPart', '@type': '@id' };
 const preferredXMLNamespaceName = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
@@ -43,8 +40,6 @@ function modelFrame(data) {
     prefLabel,
     references,
     requires,
-    associations,
-    attributes,
     imports,
     hasPart,
     preferredXMLNamespaceName,
@@ -63,18 +58,6 @@ function modelFrame(data) {
   return {
     '@context': addToContext(data['@context'], contextValues),
     imports: {'@embed': false},
-    classes: {
-      property: {
-        predicate: {
-          '@embed': false
-        },
-        valueClass: {
-          '@omitDefault': true,
-          '@default': [],
-          '@embed': false
-        }
-      }
-    }
   };
 }
 
