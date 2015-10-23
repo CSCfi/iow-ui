@@ -1,7 +1,8 @@
-<editable-form>
+<editable-form on-submit="updateAssociation()" on-reset="resetModel()">
   <form-input title="{{'Label' | translate}}" content="association.label"></form-input>
+  <form-id title="{{'Id' | translate}}" plain-text="association['@id']"></form-id>
   <form-input title="{{'Comment' | translate}}" content="association.comment"></form-input>
-  <form-input title="{{'Range' | translate}}" content="association.range"></form-input>
+  <form-select title="{{'Range' | translate}}" content="association.range" values="attributeValues"></form-input>
   <div class="model-view__title" translate>Is defined by</div>
   <div>{{association.isDefinedBy}}</div>
 </editable-form>
