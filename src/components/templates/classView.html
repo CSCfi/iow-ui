@@ -10,8 +10,9 @@
   <div class="model-view__title">Is defined by</div>
   <div>{{ctrl.class.isDefinedBy}}</div>
   <form-text-area title="{{'Description' | translate}}" content="ctrl.class.comment"></form-text-area>
-  <form-input title="{{'PrefLabel' | translate}}" content="ctrl.class.prefLabel"></form-input>
+
   <add-property></add-property>
+
   <uib-accordion close-others="true">
     <uib-accordion-group ng-repeat="property in ctrl.class.property" is-open="isOpen[property['@id']]">
       <uib-accordion-heading>{{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></uib-accordion-heading>
