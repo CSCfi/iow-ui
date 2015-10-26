@@ -27,11 +27,21 @@ angular.module('iow-ui', [
       controllerAs: 'ctrl'
     });
 })
-.run(function onAppRun($rootScope, editableOptions, languageService, userService) {
+.run(function onAppRun($rootScope, $q, editableOptions, languageService, userService) {
   editableOptions.theme = 'bs3';
+
+  function languageChanged() {
+    const deferred = $q.defer();
+    const deregister = $rootScope.$on('gettextLanguageChanged', () => {
+      deferred.resolve();
+      deregister();
+    });
+    return deferred;
+  }
+
+  $q.all([languageChanged(), userService.updateLogin()]).then(() => $rootScope.applicationInitialized = true);
+
   languageService.setLanguage('fi');
-  userService.updateLogin().then(() => $rootScope.userInitialized = true);
-  $rootScope.$on('gettextLanguageChanged', () => $rootScope.languageInitialized = true);
 })
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {
 
