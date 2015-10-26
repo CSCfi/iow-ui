@@ -43,6 +43,13 @@ module.exports = function classView($log) {
           cancelEditing();
           vm.class = data['@graph'][0];
           vm.context = data['@context'];
+
+          if (!vm.class.property) {
+            vm.class.property = [];
+          } else if (!Array.isArray(vm.class.property)) {
+            vm.class.property = [vm.class.property];
+          }
+
           originalId = id;
         }, err => {
           $log.error(err);
