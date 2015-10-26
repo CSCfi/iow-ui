@@ -1,5 +1,5 @@
 function withFullIRI(context, value) {
-  const result = /(\w+):(\w+)/.exec(value);
+  const result = /^(\w+):(\w+)$/.exec(value);
   if (result) {
     const iri = context[result[1]];
     if (!iri) {
