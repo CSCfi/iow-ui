@@ -11,7 +11,6 @@ mod.directive('globalLanguageChooser', require('./globalLanguageChooser'));
 mod.directive('modelLanguageChooser', require('./modelLanguageChooser'));
 mod.directive('predicateView', require('./predicateView'));
 mod.directive('propertyView', require('./propertyView'));
-mod.directive('propertySearch', require('./propertySearch'));
 mod.directive('formInput', require('./formInput'));
 mod.directive('formId', require('./formId'));
 mod.directive('formSelect', require('./formSelect'));

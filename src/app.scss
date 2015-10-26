@@ -10,6 +10,12 @@
   display: none !important;
 }
 
+.add-property {
+  > p {
+    max-width: 600px;
+  }
+}
+
 a.accordion-toggle {
   outline: 0;
 }

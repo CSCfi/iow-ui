@@ -1,2 +1,29 @@
-<h2 translate>Add property</h2>
-<property-search></property-search>
+<div class="modal-header modal-header-confirm">
+  <h4 class="modal-title ng-binding">
+    <span translate>Hae ominaisuuksia</span>
+    <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.close()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+  </h4>
+</div>
+
+<div class="modal-body add-property">
+  <p>
+    Haen ensin tarvitsemaasi tietokomponenttia yhtenetoimivuuden kuvauksista. Jos et löydä tarpeisiisi sopivaa, voit luoda uuden tietokomponentin.
+  </p>
+
+  <div class="row">
+    <div class="col-md-4">
+      Hakukenttä
+    </div>
+    <div class="col-md-4">
+      Hakutulokset
+    </div>
+    <div class="col-md-4">
+      Valittu ominaisuus
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Peruuta</button>
+  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.addProperty()" ng-disabled="!ctrl.isAttributeSelected()" translate>Käytä ominaisuutta</button>
+</div>

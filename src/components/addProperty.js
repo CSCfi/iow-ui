@@ -8,32 +8,30 @@ module.exports = function addPropertyDirective() {
     link($scope, element, attribute, editableFormController) {
       $scope.ctrl.formController = editableFormController;
     },
-    controller: AddPropertyController
+    controller($uibModal, userService) {
+      'ngInject';
+
+      const vm = this;
+
+      vm.addProperty = () => {
+        $uibModal.open({
+          template: require('./templates/addProperty.html'),
+          size: 'large',
+          controller: AddPropertyController,
+          controllerAs: 'ctrl',
+          bindToController: true
+        });
+      };
+
+      vm.canAddProperty = () => userService.isLoggedIn() && vm.formController.visible();
+    }
   };
 };
 
-function AddPropertyController($uibModal, userService) {
+function AddPropertyController($modalInstance) {
   'ngInject';
 
   const vm = this;
-
-  vm.addProperty = addProperty;
-  vm.canAddProperty = canAddProperty;
-
-  function addProperty() {
-    $uibModal.open({
-      template: require('./templates/propertySearch.html'),
-      controller: ModalController,
-      controllerAs: 'ctrl'
-    });
-  }
-
-  function canAddProperty() {
-    return userService.isLoggedIn() && vm.formController.visible();
-  }
-}
-
-
-function ModalController($modalInstance) {
-  'ngInject';
+  vm.close = $modalInstance.dismiss;
+  vm.isAttributeSelected = () => false;
 }
