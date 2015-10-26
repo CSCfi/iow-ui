@@ -1,10 +1,13 @@
+$navbarWidth: 300px;
+
 .model-panel--left {
-  width: 300px;
+  width: $navbarWidth;
   float: left;
 }
 
 .model-panel--right {
-  overflow: hidden;
+  float: left;
+  width: calc(100% - #{$navbarWidth});
 }
 
 .model-panel__selection {
