@@ -10,6 +10,10 @@
   display: none !important;
 }
 
+a.accordion-toggle {
+  outline: 0;
+}
+
 body {
   padding: 10px;
   overflow-y: scroll;
