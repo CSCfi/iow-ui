@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage, userService) {
+    controller($scope, classService, modelLanguage, userService, classPropertyService) {
       'ngInject';
 
       let originalId;
@@ -29,6 +29,7 @@ module.exports = function classView($log) {
       vm.fetchClass = fetchClass;
       vm.updateClass = updateClass;
       vm.resetModel = resetModel;
+      vm.addPropertyByPredicateId = addPropertyByPredicateId;
       // view contract
       vm.isEditing = isEditing;
 
@@ -75,6 +76,12 @@ module.exports = function classView($log) {
 
       function cancelEditing() {
         $scope.formController.cancel();
+      }
+
+      function addPropertyByPredicateId(predicateId) {
+        classPropertyService.getPropertyForPredicateId(predicateId).then(result => {
+          vm.class.property.push(result['@graph'][0]);
+        });
       }
     }
   };

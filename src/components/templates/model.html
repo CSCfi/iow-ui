@@ -9,42 +9,44 @@
   <references-view references="ctrl.model.references"></references-view>
   <requires-view requires="ctrl.model.requires"></requires-view>
 
-  <div class="model-panel--left">
-    <uib-tabset>
-      <uib-tab heading="{{'Classes' | translate}}">
-        <ul class="panel__list">
-          <li ng-repeat="class in ctrl.classes | orderByLabel"
-              ng-class="{'model-panel__selection': ctrl.isClassActivated(class)}"
-              ng-click="ctrl.activateClass(class)">
-            {{class | translateLabel}}
-          </li>
-        </ul>
-      </uib-tab>
-      <uib-tab heading="{{'Attributes' | translate}}">
-        <h3>Attributes</h3>
-        <ul class="panel__list">
-          <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
-              ng-class="{'model-panel__selection': ctrl.isAttributeActivated(attribute)}"
-              ng-click="ctrl.activateAttribute(attribute)">
-            {{attribute | translateLabel}}
-          </li>
-        </ul>
-        <h3>Associations</h3>
-        <ul class="panel__list">
-          <li ng-repeat="association in ctrl.associations | orderByLabel"
-              ng-class="{'model-panel__selection': ctrl.isAssociationActivated(association)}"
-              ng-click="ctrl.activateAssociation(association)">
-            {{association | translateLabel}}
-          </li>
-        </ul>
-      </uib-tab>
-    </uib-tabset>
-  </div>
+  <div class="bottom">
+    <div class="model-panel--left">
+      <uib-tabset>
+        <uib-tab heading="{{'Classes' | translate}}">
+          <ul class="panel__list">
+            <li ng-repeat="class in ctrl.classes | orderByLabel"
+                ng-class="{'model-panel__selection': ctrl.isClassActivated(class)}"
+                ng-click="ctrl.activateClass(class)">
+              {{class | translateLabel}}
+            </li>
+          </ul>
+        </uib-tab>
+        <uib-tab heading="{{'Attributes' | translate}}">
+          <h3>Attributes</h3>
+          <ul class="panel__list">
+            <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
+                ng-class="{'model-panel__selection': ctrl.isAttributeActivated(attribute)}"
+                ng-click="ctrl.activateAttribute(attribute)">
+              {{attribute | translateLabel}}
+            </li>
+          </ul>
+          <h3>Associations</h3>
+          <ul class="panel__list">
+            <li ng-repeat="association in ctrl.associations | orderByLabel"
+                ng-class="{'model-panel__selection': ctrl.isAssociationActivated(association)}"
+                ng-click="ctrl.activateAssociation(association)">
+              {{association | translateLabel}}
+            </li>
+          </ul>
+        </uib-tab>
+      </uib-tabset>
+    </div>
 
-  <div class="model-panel--right">
-    <class-view id="ctrl.activatedClassId" ng-if="ctrl.activatedClassId"></class-view>
-    <attribute-view id="ctrl.activatedAttributeId" ng-if="ctrl.activatedAttributeId"></attribute-view>
-    <association-view id="ctrl.activatedAssociationId" ng-if="ctrl.activatedAssociationId"></association-view>
+    <div class="model-panel--right">
+      <class-view id="ctrl.activatedClassId" ng-if="ctrl.activatedClassId"></class-view>
+      <attribute-view id="ctrl.activatedAttributeId" ng-if="ctrl.activatedAttributeId"></attribute-view>
+      <association-view id="ctrl.activatedAssociationId" ng-if="ctrl.activatedAssociationId"></association-view>
+    </div>
   </div>
 
 </div>

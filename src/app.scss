@@ -10,9 +10,47 @@
   display: none !important;
 }
 
+.h2 {
+  background-color: #f5f5f5;
+}
+
+.editable-buttons {
+  float: right;
+  margin-right: 10%;
+  button {
+    text-align: right;
+  }
+}
+
+.editable-wrap {
+  width: 100%;
+  max-width: 500px;
+}
+
+.editable-textarea textarea {
+  height: 100px;
+}
+
+.add-property-button {
+  margin-top: 20px;
+  margin-left: 10%;
+}
+
 .add-property {
   > p {
     max-width: 600px;
+  }
+
+  .input-group {
+    width: 100%;
+  }
+
+  .search-result {
+    cursor: pointer;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
 }
 

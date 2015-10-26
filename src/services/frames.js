@@ -57,7 +57,7 @@ function modelFrame(data) {
 
   return {
     '@context': addToContext(data['@context'], contextValues),
-    imports: {'@embed': false},
+    imports: {'@embed': false}
   };
 }
 
@@ -68,10 +68,24 @@ function modelListFrame(data) {
   };
 }
 
-function propertyFrame(data) {
+function attributeFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
     '@type': 'owl:DatatypeProperty'
+  };
+}
+
+function associationFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
+    '@type': 'owl:ObjectProperty'
+  };
+}
+
+function propertyFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, predicate}),
+    '@id': data['@id']
   };
 }
 
@@ -82,10 +96,9 @@ function predicateFrame(data) {
   };
 }
 
-function associationFrame(data) {
+function predicateSearchFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
-    '@type': 'owl:ObjectProperty'
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy})
   };
 }
 
@@ -113,8 +126,10 @@ function classFrame(data) {
 module.exports = {
   modelFrame,
   modelListFrame,
-  propertyFrame,
   classFrame,
+  attributeFrame,
   associationFrame,
-  predicateFrame
+  propertyFrame,
+  predicateFrame,
+  predicateSearchFrame
 };

@@ -1,5 +1,9 @@
 $navbarWidth: 300px;
 
+.bottom {
+  border-top: solid 1px;
+}
+
 .model-panel--left {
   width: $navbarWidth;
   float: left;
@@ -17,13 +21,14 @@ $navbarWidth: 300px;
   border-color: $pre-border-color;
 }
 
-accordion .panel-group {
+uib-accordion .panel-group {
   width: 80%;
   margin: 20px auto;
 }
 
 .model-view__title {
   font-weight: bold;
+  margin-top: 15px;
 }
 
 .modal-dialog.modal-large {

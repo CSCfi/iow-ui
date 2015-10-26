@@ -1,5 +1,4 @@
 const jsonld = require('jsonld');
-
 const frames = require('./frames');
 
 module.exports = function predicateService($http, $q) {
@@ -15,10 +14,10 @@ module.exports = function predicateService($http, $q) {
     },
     getPredicatesForModel(model) {
       return $http.get('/api/rest/predicate', {params: {model}}).then(response => {
-        const propertyFrame = frames.propertyFrame(response.data);
+        const attributeFrame = frames.attributeFrame(response.data);
         const associationFrame = frames.associationFrame(response.data);
         return $q.all({
-          attributes: jsonld.promises.frame(response.data, propertyFrame),
+          attributes: jsonld.promises.frame(response.data, attributeFrame),
           associations: jsonld.promises.frame(response.data, associationFrame)
         });
       });
