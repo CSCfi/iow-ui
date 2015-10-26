@@ -22,7 +22,7 @@ function AddPropertyController($uibModal, userService) {
 
   function addProperty() {
     $uibModal.open({
-      template: require('./templates/searchForm.html'),
+      template: require('./templates/propertySearch.html'),
       controller: ModalController,
       controllerAs: 'ctrl'
     });

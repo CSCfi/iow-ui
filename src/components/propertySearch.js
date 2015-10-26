@@ -1,10 +1,10 @@
-module.exports = function searchForm($log) {
+module.exports = function propertySearch($log) {
   'ngInject';
   return {
     scope: {
     },
     restrict: 'E',
-    template: require('./templates/searchForm.html'),
+    template: require('./templates/propertySearch.html'),
     controller($scope) {
       'ngInject';
 
