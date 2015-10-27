@@ -98,7 +98,8 @@ function predicateFrame(data) {
 
 function predicateSearchFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy})
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
+    isDefinedBy:{}
   };
 }
 
