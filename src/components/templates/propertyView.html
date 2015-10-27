@@ -10,4 +10,5 @@
       <predicate-view predicate="predicate" ng-if="isOpen[property.predicate]"></predicate-view>
     </uib-accordion-group>
   </uib-accordion>
+  <button ng-show="classViewController.isEditing()" type="button" class="btn btn-default btn-lg" ng-click="classViewController.deleteProperty(property)" translate>Poista</button>
 </div>

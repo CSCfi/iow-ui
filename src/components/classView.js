@@ -30,6 +30,7 @@ module.exports = function classView($log) {
       vm.updateClass = updateClass;
       vm.resetModel = resetModel;
       vm.addPropertyByPredicateId = addPropertyByPredicateId;
+      vm.deleteProperty = deleteProperty;
       // view contract
       vm.isEditing = isEditing;
 
@@ -91,6 +92,10 @@ module.exports = function classView($log) {
         classPropertyService.getPropertyForPredicateId(predicateId).then(result => {
           vm.class.property.push(result['@graph'][0]);
         });
+      }
+
+      function deleteProperty(property) {
+        _.remove(vm.class.property, property);
       }
     }
   };

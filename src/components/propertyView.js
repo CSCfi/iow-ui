@@ -10,6 +10,10 @@ module.exports = function propertyView($log) {
     },
     restrict: 'E',
     template: require('./templates/propertyView.html'),
+    require: '^classView',
+    link($scope, element, attributes, classViewController) {
+      $scope.classViewController = classViewController;
+    },
     controller($scope, predicateService) {
       'ngInject';
 
