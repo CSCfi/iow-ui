@@ -41,12 +41,30 @@ function AddPropertyController($modalInstance, predicateService, modelLanguage) 
   vm.close = $modalInstance.dismiss;
   vm.selectedPredicate = null;
   vm.searchText = '';
+  vm.modelId = '';
+  vm.type = '';
+  vm.types = [];
+  vm.models = [];
 
-  predicateService.getAllPredicates().then(result => predicates = result['@graph']);
+  predicateService.getAllPredicates().then(result => {
+    predicates = result['@graph'];
+
+    vm.models = _.chain(predicates)
+      .map(predicate => predicate.isDefinedBy)
+      .uniq(db => db['@id'])
+      .value();
+
+    vm.types = _.chain(predicates)
+      .map(predicate => predicate['@type'])
+      .uniq()
+      .value();
+  });
 
   vm.searchResults = () => {
     return _.chain(predicates)
       .filter(textFilter)
+      .filter(modelFilter)
+      .filter(typeFilter)
       .sortBy(localizedLabelAsLower)
       .value();
   };
@@ -83,6 +101,14 @@ function AddPropertyController($modalInstance, predicateService, modelLanguage) 
   }
 
   function textFilter(predicate) {
-    return vm.searchText ? localizedLabelAsLower(predicate).includes(vm.searchText.toLowerCase()) : true;
+    return !vm.searchText || localizedLabelAsLower(predicate).includes(vm.searchText.toLowerCase());
+  }
+
+  function modelFilter(predicate) {
+    return !vm.modelId || predicate.isDefinedBy['@id'] === vm.modelId;
+  }
+
+  function typeFilter(predicate) {
+    return !vm.type || predicate['@type'] === vm.type;
   }
 }

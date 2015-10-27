@@ -19,6 +19,24 @@
                ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
         <i class="glyphicon glyphicon-search form-control-feedback"></i>
       </div>
+
+      <div class="input-group input-group-lg">
+        <div class="selectContainer">
+          <select class="form-control" ng-model="ctrl.modelId">
+            <option value="" translate>Kaikki kirjastot</option>
+            <option ng-repeat="model in ctrl.models" value="{{model['@id']}}">{{model | translateLabel}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group input-group-lg">
+        <div class="selectContainer">
+          <select class="form-control" ng-model="ctrl.type">
+            <option value="" translate>Kaikki tyypit</option>
+            <option ng-repeat="type in ctrl.types" value="{{type}}">{{type | translate}}</option>
+          </select>
+        </div>
+      </div>
     </div>
 
     <div class="col-md-4 search-results">
