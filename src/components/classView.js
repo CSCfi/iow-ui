@@ -37,19 +37,21 @@ module.exports = function classView($log) {
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
+      function ensurePropertyAsArray(obj, property) {
+        const propertyValue = obj[property];
+
+        if (!Array.isArray(propertyValue)) {
+          obj[property] = propertyValue ? [propertyValue] : [];
+        }
+      }
+
       function fetchClass(id) {
         vm.loading = true;
         classService.getClass(id).then(data => {
           cancelEditing();
           vm.class = data['@graph'][0];
           vm.context = data['@context'];
-
-          if (!vm.class.property) {
-            vm.class.property = [];
-          } else if (!Array.isArray(vm.class.property)) {
-            vm.class.property = [vm.class.property];
-          }
-
+          ensurePropertyAsArray(vm.class, 'property');
           originalId = id;
         }, err => {
           $log.error(err);
