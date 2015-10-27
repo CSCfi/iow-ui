@@ -70,14 +70,14 @@ function modelListFrame(data) {
 
 function attributeFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
     '@type': 'owl:DatatypeProperty'
   };
 }
 
 function associationFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
     '@type': 'owl:ObjectProperty'
   };
 }
@@ -91,15 +91,15 @@ function propertyFrame(data) {
 
 function predicateFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
     '@id': data['@id']
   };
 }
 
 function predicateSearchFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy}),
-    isDefinedBy:{}
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
+    isDefinedBy: {}
   };
 }
 

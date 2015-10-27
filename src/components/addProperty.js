@@ -31,33 +31,58 @@ module.exports = function addPropertyDirective() {
   };
 };
 
-function AddPropertyController($modalInstance, searchService, predicateService) {
+function AddPropertyController($modalInstance, predicateService, modelLanguage) {
   'ngInject';
 
   const vm = this;
+  let context;
+  let predicates;
+
   vm.close = $modalInstance.dismiss;
-  vm.searchResults = null;
   vm.selectedPredicate = null;
   vm.searchText = '';
 
-  let context;
+  predicateService.getAllPredicates().then(result => predicates = result['@graph']);
 
-  vm.search = () => {
-    if (vm.searchText) {
-      searchService.searchPredicates(vm.searchText).then(result => {
-        vm.searchResults = _.groupBy(result, item => item['@type']);
-      });
-    } else {
-      vm.searchResults = null;
-    }
+  vm.searchResults = () => {
+    return _.chain(predicates)
+      .filter(textFilter)
+      .sortBy(localizedLabelAsLower)
+      .value();
   };
+
   vm.selectPredicate = (predicate) => {
     predicateService.getPredicateById(predicate['@id'], 'predicateFrame').then(result => {
       context = result['@context'];
       vm.selectedPredicate = result['@graph'][0];
     });
   };
-  vm.addProperty = () => {
-    $modalInstance.close(contextUtils.withFullIRI(context, vm.selectedPredicate['@id']));
+
+  vm.isSelected = (predicate) => {
+    return predicate['@id'] === selectedPredicateId();
   };
+
+  vm.addProperty = () => {
+    $modalInstance.close(selectedPredicateId());
+  };
+
+  vm.iconClass = (predicate) => {
+    return ['glyphicon',
+      {
+        'glyphicon-random': predicate['@type'] === 'owl:ObjectProperty',
+        'glyphicon-pencil': predicate['@type'] === 'owl:DatatypeProperty'
+      }];
+  };
+
+  function selectedPredicateId() {
+    return vm.selectedPredicate && contextUtils.withFullIRI(context, vm.selectedPredicate['@id']);
+  }
+
+  function localizedLabelAsLower(predicate) {
+    return modelLanguage.translate(predicate.label).toLowerCase();
+  }
+
+  function textFilter(predicate) {
+    return vm.searchText ? localizedLabelAsLower(predicate).includes(vm.searchText.toLowerCase()) : true;
+  }
 }

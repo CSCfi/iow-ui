@@ -5,6 +5,13 @@ module.exports = function predicateService($http, $q) {
   'ngInject';
 
   return {
+    getAllPredicates() {
+      return $http.get('/api/rest/predicate')
+        .then(response => {
+          const frame = frames.predicateSearchFrame(response.data);
+          return jsonld.promises.frame(response.data, frame);
+        });
+    },
     getPredicateById(id, userFrame = 'propertyFrame') {
       return $http.get('/api/rest/predicate', {params: {id}})
         .then(response => {
