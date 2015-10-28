@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, predicateService, userService, searchClassModal) {
+module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
   'ngInject';
 
   const modelId = $routeParams.urn;
@@ -57,21 +57,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
 
   function askPermissionWhenEditing(callback) {
     if (isEditing()) {
-      $uibModal.open({
-        template: require('./templates/cancelEditModal.html'),
-        controllerAs: 'ctrl',
-        controller($modalInstance) {
-          'ngInject';
-          this.ok = () => {
-            callback();
-            $modalInstance.close();
-          };
-
-          this.cancel = () => {
-            $modalInstance.close();
-          };
-        }
-      });
+      editInProgressModal.open().result.then(callback);
     } else {
       callback();
     }

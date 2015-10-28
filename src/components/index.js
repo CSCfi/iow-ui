@@ -23,6 +23,7 @@ mod.directive('requiresView', require('./requiresView'));
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
 
+mod.factory('editInProgressModal', require('./editInProgressModalFactory'));
 mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
 mod.factory('searchClassModal', require('./searchClassModalFactory'));
 
