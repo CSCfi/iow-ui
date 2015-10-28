@@ -115,6 +115,7 @@ function classFrame(data) {
     predicate,
     valueClass,
     nodeKind,
+    example,
     dataType
   };
 
