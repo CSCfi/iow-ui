@@ -7,7 +7,7 @@ module.exports = function modalFactory($uibModal, modelLanguage) {
   return {
     open(confirmButtonText = 'Käytä ominaisuutta') {
       return $uibModal.open({
-        template: require('./templates/searchPredicate.html'),
+        template: require('./templates/searchPredicateModal.html'),
         size: 'large',
         controller: SearchPredicateController,
         controllerAs: 'ctrl',

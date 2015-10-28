@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage, userService, classPropertyService, predicateSearchModal) {
+    controller($scope, classService, modelLanguage, userService, classPropertyService, searchPredicateModal) {
       'ngInject';
 
       let originalId;
@@ -29,7 +29,6 @@ module.exports = function classView($log) {
       vm.fetchClass = fetchClass;
       vm.updateClass = updateClass;
       vm.resetModel = resetModel;
-      vm.addPropertyByPredicateId = addPropertyByPredicateId;
       vm.deleteProperty = deleteProperty;
       vm.addProperty = addProperty;
       vm.canAddProperty = canAddProperty;
@@ -95,12 +94,10 @@ module.exports = function classView($log) {
       }
 
       function addProperty() {
-        predicateSearchModal.open().result.then(result => addPropertyByPredicateId(result));
-      }
-
-      function addPropertyByPredicateId(predicateId) {
-        classPropertyService.getPropertyForPredicateId(predicateId).then(result => {
-          vm.class.property.push(result['@graph'][0]);
+        searchPredicateModal.open().result.then(predicateId => {
+          classPropertyService.getPropertyForPredicateId(predicateId).then(property => {
+            vm.class.property.push(property['@graph'][0]);
+          });
         });
       }
 

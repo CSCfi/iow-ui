@@ -23,7 +23,7 @@ mod.directive('requiresView', require('./requiresView'));
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
 
-mod.factory('predicateSearchModal', require('./predicateSearchModalFactory'));
+mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
 
 mod.filter('translateValue', (modelLanguage) => {
   return (input) => input ? modelLanguage.translate(input) : '';
