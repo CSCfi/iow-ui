@@ -1,10 +1,15 @@
-<div>
-  <h2 translate>Muokkaaminen on kesken</h2>
+<div class="modal-header modal-header-confirm">
+  <h4 class="modal-title ng-binding">
+    <span translate>Muokkaaminen on kesken</span>
+    <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.cancel()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+  </h4>
+</div>
 
+<div class="modal-body">
   <p translate>Oletko varma, että haluat siirtyä?</p>
+</div>
 
-  <div class="modal-footer">
-    <button class="btn btn-warning" type="button" ng-click="ctrl.ok()" translate>Kyllä</button>
-    <button class="btn btn-primary" type="button" ng-click="ctrl.cancel()" translate>Peruuta</button>
-  </div>
+<div class="modal-footer">
+  <button class="btn btn-warning" type="button" ng-click="ctrl.ok()" translate>Kyllä</button>
+  <button class="btn btn-primary" type="button" ng-click="ctrl.cancel()" translate>Peruuta</button>
 </div>
