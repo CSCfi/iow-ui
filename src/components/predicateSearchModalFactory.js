@@ -1,43 +1,32 @@
 const _ = require('lodash');
 const contextUtils = require('../services/contextUtils');
 
-module.exports = function addPropertyDirective() {
+module.exports = function modalFactory($uibModal, modelLanguage) {
+  'ngInject';
+
   return {
-    scope: {},
-    restrict: 'E',
-    template: '<button type="button" class="btn btn-default add-property-button" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>',
-    controllerAs: 'ctrl',
-    require: '^classView',
-    link($scope, element, attribute, classViewController) {
-      $scope.ctrl.classViewController = classViewController;
-    },
-    controller($uibModal, userService) {
-      'ngInject';
-
-      const vm = this;
-
-      vm.addProperty = () => {
-        $uibModal.open({
-          template: require('./templates/addProperty.html'),
-          size: 'large',
-          controller: AddPropertyController,
-          controllerAs: 'ctrl',
-          bindToController: true
-        }).result.then((result) => vm.classViewController.addPropertyByPredicateId(result));
-      };
-
-      vm.canAddProperty = () => userService.isLoggedIn() && vm.classViewController.isEditing();
+    open(confirmButtonText = 'Käytä ominaisuutta') {
+      return $uibModal.open({
+        template: require('./templates/searchPredicate.html'),
+        size: 'large',
+        controller: SearchPredicateController,
+        controllerAs: 'ctrl',
+        resolve: {
+          confirmButtonText: () => modelLanguage.translate(confirmButtonText)
+        }
+      });
     }
   };
 };
 
-function AddPropertyController($modalInstance, predicateService, modelLanguage) {
+function SearchPredicateController($modalInstance, predicateService, modelLanguage, confirmButtonText) {
   'ngInject';
 
   const vm = this;
   let context;
   let predicates;
 
+  vm.confirmButtonText = confirmButtonText;
   vm.close = $modalInstance.dismiss;
   vm.selectedPredicate = null;
   vm.searchText = '';

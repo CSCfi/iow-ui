@@ -17,12 +17,13 @@ mod.directive('formSelect', require('./formSelect'));
 mod.directive('formTextArea', require('./formTextArea'));
 mod.directive('editableForm', require('./editableForm'));
 mod.directive('login', require('./login'));
-mod.directive('addProperty', require('./addProperty'));
 mod.directive('referencesView', require('./referencesView'));
 mod.directive('requiresView', require('./requiresView'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
+
+mod.factory('predicateSearchModal', require('./predicateSearchModalFactory'));
 
 mod.filter('translateValue', (modelLanguage) => {
   return (input) => input ? modelLanguage.translate(input) : '';

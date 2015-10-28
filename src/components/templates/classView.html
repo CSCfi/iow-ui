@@ -11,7 +11,7 @@
   <div>{{ctrl.class.isDefinedBy}}</div>
   <form-text-area title="{{'Description' | translate}}" content="ctrl.class.comment"></form-text-area>
 
-  <add-property></add-property>
+  <button type="button" class="btn btn-default add-property-button" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
 
   <uib-accordion close-others="true">
     <uib-accordion-group ng-repeat="property in ctrl.class.property" is-open="isOpen[property['@id']]">

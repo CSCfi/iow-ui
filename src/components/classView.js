@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage, userService, classPropertyService) {
+    controller($scope, classService, modelLanguage, userService, classPropertyService, predicateSearchModal) {
       'ngInject';
 
       let originalId;
@@ -31,6 +31,8 @@ module.exports = function classView($log) {
       vm.resetModel = resetModel;
       vm.addPropertyByPredicateId = addPropertyByPredicateId;
       vm.deleteProperty = deleteProperty;
+      vm.addProperty = addProperty;
+      vm.canAddProperty = canAddProperty;
       // view contract
       vm.isEditing = isEditing;
 
@@ -86,6 +88,14 @@ module.exports = function classView($log) {
 
       function cancelEditing() {
         $scope.formController.cancel();
+      }
+
+      function canAddProperty() {
+        return userService.isLoggedIn() && isEditing();
+      }
+
+      function addProperty() {
+        predicateSearchModal.open().result.then(result => addPropertyByPredicateId(result));
       }
 
       function addPropertyByPredicateId(predicateId) {
