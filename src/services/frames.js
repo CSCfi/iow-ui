@@ -125,10 +125,18 @@ function classFrame(data) {
   };
 }
 
+function classSearchFrame(data) {
+  const frame = classFrame(data);
+  frame.isDefinedBy = {};
+  return frame;
+}
+
+
 module.exports = {
   modelFrame,
   modelListFrame,
   classFrame,
+  classSearchFrame,
   attributeFrame,
   associationFrame,
   propertyFrame,

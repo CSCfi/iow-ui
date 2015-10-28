@@ -13,6 +13,9 @@
     <div class="model-panel--left">
       <uib-tabset>
         <uib-tab heading="{{'Classes' | translate}}">
+
+          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md" ng-click="ctrl.addClass()" translate>Lisää luokka</button>
+
           <ul class="panel__list">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isClassActivated(class)}"

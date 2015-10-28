@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, predicateService) {
+module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, predicateService, userService, searchClassModal) {
   'ngInject';
 
   const modelId = $routeParams.urn;
@@ -45,6 +45,15 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
   vm.isClassActivated = (klass) => vm.activatedClassId && vm.activatedClassId === klass['@id'];
   vm.isAttributeActivated = (attribute) => vm.activatedAttributeId && vm.activatedAttributeId === attribute['@id'];
   vm.isAssociationActivated = (association) => vm.activatedAssociationId && vm.activatedAssociationId === association['@id'];
+
+  vm.isLoggedIn = userService.isLoggedIn;
+
+  vm.addClass = () => {
+    const classIds = _.map(vm.classes, klass => klass['@id']);
+    searchClassModal.open(classIds).result.then(classId => {
+      classService.assignClassToModel(classId, modelId).then(() => fetchClasses());
+    });
+  };
 
   function askPermissionWhenEditing(callback) {
     if (isEditing()) {

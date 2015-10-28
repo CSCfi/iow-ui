@@ -31,9 +31,9 @@ function SearchPredicateController($modalInstance, predicateService, modelLangua
   vm.selectedPredicate = null;
   vm.searchText = '';
   vm.modelId = '';
+  vm.models = [];
   vm.type = '';
   vm.types = [];
-  vm.models = [];
 
   predicateService.getAllPredicates().then(result => {
     predicates = result['@graph'];

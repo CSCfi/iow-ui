@@ -24,6 +24,7 @@ mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
 
 mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
+mod.factory('searchClassModal', require('./searchClassModalFactory'));
 
 mod.filter('translateValue', (modelLanguage) => {
   return (input) => input ? modelLanguage.translate(input) : '';
