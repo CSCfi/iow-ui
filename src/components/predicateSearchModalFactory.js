@@ -69,7 +69,7 @@ function SearchPredicateController($modalInstance, predicateService, modelLangua
     return predicate['@id'] === selectedPredicateId();
   };
 
-  vm.addProperty = () => {
+  vm.confirm = () => {
     $modalInstance.close(selectedPredicateId());
   };
 
