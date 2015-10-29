@@ -1,7 +1,6 @@
 const _ = require('lodash');
-
-const contextUtils = require('../services/contextUtils');
 const constants = require('./constants');
+const contextUtils = require('../services/contextUtils');
 
 module.exports = function associationView($log) {
   'ngInject';
@@ -12,52 +11,70 @@ module.exports = function associationView($log) {
     restrict: 'E',
     template: require('./templates/associationView.html'),
     require: '^ngController',
-    bindToController: true,
-    controllerAs: 'ctrl',
     link($scope, element, attributes, modelController) {
       const controller = $scope.ctrl;
       modelController.registerView(controller);
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
     },
-    controller($scope, predicateService) {
+    controllerAs: 'ctrl',
+    bindToController: true,
+    controller($scope, predicateService, modelLanguage, userService) {
       'ngInject';
 
       let context;
       let originalId;
+      const vm = this;
 
-      $scope.attributeValues = constants.attributeValues;
+      vm.loading = true;
+      vm.updateAssociation = updateAssociation;
+      vm.resetModel = resetModel;
+      vm.attributeValues = constants.attributeValues;
+      // view contract
+      vm.isEditing = isEditing;
 
-      $scope.$watch('ctrl.id', id => {
+      $scope.$watch('ctrl.id', id => fetchPredicate(id));
+      $scope.$watch(modelLanguage.getLanguage, cancelEditing);
+      $scope.$watch(userService.isLoggedIn, cancelEditing);
+
+      function fetchPredicate(id) {
+        vm.loading = true;
         predicateService.getPredicateById(id, 'associationFrame').then(data => {
-          $scope.association = data['@graph'][0];
+          cancelEditing();
           context = data['@context'];
           originalId = id;
-        });
-      });
+          vm.association = data['@graph'][0];
+        }).finally(() => vm.loading = false);
+      }
 
-      $scope.updateAssociation = () => {
-        const ld = _.chain($scope.association)
+      function updateAssociation() {
+        const ld = _.chain(vm.association)
           .clone()
           .assign({'@context': context})
           .value();
 
-        const id = contextUtils.withFullIRI(context, $scope.association['@id']);
+        const id = contextUtils.withFullIRI(context, vm.association['@id']);
 
         $log.info(JSON.stringify(ld, null, 2));
 
         return predicateService.updatePredicate(ld, id, originalId).then(() => {
           originalId = id;
-          $scope.id = id;
+          vm.id = id;
           $scope.modelController.reload();
         });
       };
 
-      return {
-        isEditing() {
-          $scope.formController.visible();
-        }
-      };
+      function resetModel() {
+        fetchPredicate(originalId);
+      }
+
+      function isEditing() {
+        return $scope.formController.visible();
+      }
+
+      function cancelEditing() {
+        $scope.formController.cancel();
+      }
     }
   };
 };

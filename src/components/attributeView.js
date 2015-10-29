@@ -4,7 +4,6 @@ const contextUtils = require('../services/contextUtils');
 
 module.exports = function attributeView($log) {
   'ngInject';
-
   return {
     scope: {
       id: '='
@@ -28,20 +27,19 @@ module.exports = function attributeView($log) {
       const vm = this;
 
       vm.loading = true;
-      vm.fetchProperty = fetchProperty;
       vm.updateAttribute = updateAttribute;
       vm.resetModel = resetModel;
       vm.attributeValues = constants.attributeValues;
       // view contract
       vm.isEditing = isEditing;
 
-      $scope.$watch('ctrl.id', id => fetchProperty(id));
+      $scope.$watch('ctrl.id', id => fetchPredicate(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
-      function fetchProperty(id) {
+      function fetchPredicate(id) {
         vm.loading = true;
-        predicateService.getPredicateById(id).then(data => {
+        predicateService.getPredicateById(id, 'attributeFrame').then(data => {
           cancelEditing();
           context = data['@context'];
           originalId = id;
@@ -67,7 +65,7 @@ module.exports = function attributeView($log) {
       }
 
       function resetModel() {
-        fetchProperty(originalId);
+        fetchPredicate(originalId);
       }
 
       function isEditing() {

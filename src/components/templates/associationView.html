@@ -1,4 +1,4 @@
-<editable-form on-submit="updateAssociation()" on-reset="resetModel()">
+<editable-form on-submit="ctrl.updateAssociation()" on-reset="ctrl.resetModel()">
 
   <div class="top-actions">
     <editable-form-buttons></editable-form-buttons>
@@ -6,11 +6,11 @@
   </div>
 
   <h2>
-    <form-input content="association.label"></form-input>
+    <form-input content="ctrl.association.label"></form-input>
   </h2>
-  <form-id title="{{'Id' | translate}}" plain-text="association['@id']"></form-id>
-  <form-text-area title="{{'Comment' | translate}}" content="association.comment"></form-text-area>
-  <form-select title="{{'Range' | translate}}" content="association.range" values="attributeValues"></form-input>
+  <form-id title="{{'Id' | translate}}" plain-text="ctrl.association['@id']"></form-id>
+  <form-text-area title="{{'Comment' | translate}}" content="ctrl.association.comment"></form-text-area>
+  <form-select title="{{'Range' | translate}}" content="ctrl.association.range" values="ctrl.attributeValues"></form-select>
   <div class="model-view__title" translate>Is defined by</div>
-  <div>{{association.isDefinedBy}}</div>
+  <div>{{ctrl.association.isDefinedBy}}</div>
 </editable-form>
