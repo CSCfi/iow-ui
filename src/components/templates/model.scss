@@ -9,6 +9,14 @@ $navbarWidth: 275px;
   float: left;
   border-right: solid 1px #ddd;
 
+  .nav-tabs li {
+    width: 33%;
+
+    > a {
+      padding: 10px 0 0 0;
+    }
+  }
+
   ul.nav {
     margin-right: 0;
     padding: 9px;

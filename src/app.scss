@@ -1,13 +1,28 @@
 /* app css stylesheet */
 
+@import './vendor/_variables';
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 @import './vendor/_bootswatch';
-@import './vendor/_variables';
 @import './vendor/angular-xeditable-0.1.8/css/xeditable';
 @import './components/templates/model';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+.navbar-right {
+  margin-right: 0;
+  margin-top: 5px;
+}
+
+.navbar-nav li {
+  color: $navbar-default-brand-color;
+}
+
+.navbar-button {
+  color: $navbar-default-brand-color;
+  background: transparent;
+  border-color: transparent;
 }
 
 .h2 {
