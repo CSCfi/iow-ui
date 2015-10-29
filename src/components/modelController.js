@@ -23,24 +23,24 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
     views.push(view);
   };
 
-  vm.activateClass = (klass) => {
+  vm.activateClass = (classId) => {
     askPermissionWhenEditing(() => {
       clearAll();
-      vm.activatedClassId = klass['@id'];
+      vm.activatedClassId = classId;
     });
   };
 
-  vm.activateAttribute = (attribute) => {
+  vm.activateAttribute = (attributeId) => {
     askPermissionWhenEditing(() => {
       clearAll();
-      vm.activatedAttributeId = attribute['@id'];
+      vm.activatedAttributeId = attributeId;
     });
   };
 
-  vm.activateAssociation = (association) => {
+  vm.activateAssociation = (associationId) => {
     askPermissionWhenEditing(() => {
       clearAll();
-      vm.activatedAssociationId = association['@id'];
+      vm.activatedAssociationId = associationId;
     });
   };
 
@@ -53,7 +53,10 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
   vm.addClass = () => {
     const classIds = _.map(vm.classes, klass => klass['@id']);
     searchClassModal.open(classIds).result.then(classId => {
-      classService.assignClassToModel(classId, modelId).then(() => fetchClasses());
+      classService.assignClassToModel(classId, modelId).then(() => {
+        vm.activateClass(classId);
+        fetchClasses();
+      });
     });
   };
 

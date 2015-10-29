@@ -23,7 +23,7 @@
           <ul class="panel__list">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isClassActivated(class)}"
-                ng-click="ctrl.activateClass(class)">
+                ng-click="ctrl.activateClass(class['@id'])">
               {{class | translateLabel}}
             </li>
           </ul>
@@ -35,7 +35,7 @@
           <ul class="panel__list">
             <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isAttributeActivated(attribute)}"
-                ng-click="ctrl.activateAttribute(attribute)">
+                ng-click="ctrl.activateAttribute(attribute['@id'])">
               {{attribute | translateLabel}}
             </li>
           </ul>
@@ -47,7 +47,7 @@
           <ul class="panel__list">
             <li ng-repeat="association in ctrl.associations | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isAssociationActivated(association)}"
-                ng-click="ctrl.activateAssociation(association)">
+                ng-click="ctrl.activateAssociation(association['@id'])">
               {{association | translateLabel}}
             </li>
           </ul>
