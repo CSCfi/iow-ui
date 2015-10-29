@@ -18,7 +18,7 @@
 
           <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Lisää luokka</button>
 
-          <ul class="panel__list">
+          <ul class="panel__list" window-height padding="150">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isClassActivated(class)}"
                 ng-click="ctrl.activateClass(class['@id'])">
@@ -30,7 +30,7 @@
           <uib-tab-heading>
             <i class="glyphicon glyphicon-tasks"></i><p>{{'Attributes' | translate}}</p>
           </uib-tab-heading>
-          <ul class="panel__list">
+          <ul class="panel__list" window-height padding="93">
             <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isAttributeActivated(attribute)}"
                 ng-click="ctrl.activateAttribute(attribute['@id'])">
@@ -42,7 +42,7 @@
           <uib-tab-heading>
             <i class="glyphicon glyphicon-sort"></i><p>{{'Associations' | translate}}</p>
           </uib-tab-heading>
-          <ul class="panel__list">
+          <ul class="panel__list" window-height padding="93">
             <li ng-repeat="association in ctrl.associations | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isAssociationActivated(association)}"
                 ng-click="ctrl.activateAssociation(association['@id'])">
@@ -53,7 +53,7 @@
       </uib-tabset>
     </div>
 
-    <div class="model-panel--right">
+    <div class="model-panel--right" window-height padding="3">
       <class-view id="ctrl.activatedClassId" ng-if="ctrl.activatedClassId"></class-view>
       <attribute-view id="ctrl.activatedAttributeId" ng-if="ctrl.activatedAttributeId"></attribute-view>
       <association-view id="ctrl.activatedAssociationId" ng-if="ctrl.activatedAssociationId"></association-view>

@@ -21,6 +21,7 @@ mod.directive('login', require('./login'));
 mod.directive('referencesView', require('./referencesView'));
 mod.directive('requiresView', require('./requiresView'));
 mod.directive('showSubmitError', require('./showSubmitError'));
+mod.directive('windowHeight', require('./windowHeight'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
