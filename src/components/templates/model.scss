@@ -1,4 +1,4 @@
-$navbarWidth: 300px;
+$navbarWidth: 350px;
 
 .bottom {
   border-top: solid 1px;
@@ -7,6 +7,7 @@ $navbarWidth: 300px;
 .model-panel--left {
   width: $navbarWidth;
   float: left;
+  border-right: solid 1px #ddd;
 }
 
 .model-panel--right {
@@ -31,6 +32,11 @@ uib-accordion .panel-group {
   margin-top: 15px;
 }
 
-.modal-dialog.modal-large {
-  width: 90%;
+.modal-dialog {
+  &.modal-large {
+    width: 90%;
+  }
+  &.modal-small {
+    width: 30%;
+  }
 }
