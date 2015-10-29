@@ -3,9 +3,15 @@
   <uib-accordion>
     <uib-accordion-group is-open="ctrl.showModelInfo">
       <uib-accordion-heading>{{ctrl.model | translateLabel}} <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': ctrl.showModelInfo, 'glyphicon-chevron-right': !ctrl.showModelInfo}"></span></uib-accordion-heading>
-      <model-view model="ctrl.model"></model-view>
-      <references-view references="ctrl.model.references"></references-view>
-      <requires-view requires="ctrl.model.requires"></requires-view>
+
+      <div class="row">
+        <model-view model="ctrl.model" class="col-md-6"></model-view>
+        <div class="col-md-6">
+          <references-view references="ctrl.model.references"></references-view>
+          <requires-view requires="ctrl.model.requires"></requires-view>
+        </div>
+      </div>
+
     </uib-accordion-group>
   </uib-accordion>
 
