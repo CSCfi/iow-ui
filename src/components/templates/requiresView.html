@@ -1,7 +1,8 @@
 <h4 translate>Requires</h4>
 
 <uib-accordion>
-  <uib-accordion-group ng-repeat="require in requires" heading="{{require.title | translateValue}}">
+  <uib-accordion-group ng-repeat="require in requires" is-open="isOpen[require['dcap:preferredXMLNamespaceName']]">
+    <uib-accordion-heading>{{require.title | translateValue}}<span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[require['dcap:preferredXMLNamespaceName']], 'glyphicon-chevron-right': !isOpen[require['dcap:preferredXMLNamespaceName']]}"></span></uib-accordion-heading>
     <div class="model-view__title" translate>Type</div>
     <div>{{require['@type']}}</div>
     <div class="model-view__title" translate>Preferred namespace</div>
