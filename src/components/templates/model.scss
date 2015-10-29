@@ -1,18 +1,24 @@
 $navbarWidth: 350px;
 
 .bottom {
-  border-top: solid 1px;
+  border-top: solid 1px #ddd;
 }
 
 .model-panel--left {
   width: $navbarWidth;
   float: left;
   border-right: solid 1px #ddd;
+
+  .add-class-button {
+    margin: 10px;
+    width: calc(100% - 20px);
+  }
 }
 
 .model-panel--right {
   float: left;
   width: calc(100% - #{$navbarWidth});
+  padding: 15px;
 }
 
 .model-panel__selection {
