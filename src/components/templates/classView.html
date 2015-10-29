@@ -1,4 +1,12 @@
 <editable-form on-submit="ctrl.updateClass()" on-reset="ctrl.resetModel()" ng-hide="ctrl.loading">
+
+  <div class="top-actions">
+    <editable-form-buttons></editable-form-buttons>
+    <button type="button" class="btn btn-default" ng-click="ctrl.deleteClass()" ng-if="ctrl.canDeleteClass()" translate>Delete</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
+    <show-submit-error></show-submit-error>
+  </div>
+
   <h2>
     <form-input content="ctrl.class.label"></form-input>
   </h2>
@@ -10,8 +18,6 @@
   <div class="model-view__title">Is defined by</div>
   <div>{{ctrl.class.isDefinedBy}}</div>
   <form-text-area title="{{'Description' | translate}}" content="ctrl.class.comment"></form-text-area>
-
-  <button type="button" class="btn btn-default add-property-button" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
 
   <uib-accordion close-others="true">
     <uib-accordion-group ng-repeat="property in ctrl.class.property" is-open="isOpen[property['@id']]">

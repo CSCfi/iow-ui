@@ -32,7 +32,14 @@
 .editable-buttons {
   float: right;
   button {
-    text-align: right;
+    float: right;
+  }
+}
+
+.top-actions {
+  button {
+    float: right;
+    margin-left: 5px;
   }
 }
 
@@ -43,11 +50,6 @@
 
 .editable-textarea textarea {
   height: 100px;
-}
-
-.add-property-button {
-  margin-top: 20px;
-  margin-left: 10%;
 }
 
 .search-modal {
@@ -91,10 +93,6 @@ a.accordion-toggle {
 body {
   padding: 10px;
   overflow-y: scroll;
-}
-
-.modal-content {
-  padding: 10px;
 }
 
 .iow-panel {

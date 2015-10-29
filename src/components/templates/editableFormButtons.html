@@ -1,0 +1,5 @@
+<div ng-if="formController.isLoggedIn()">
+  <button type="button" class="btn btn-default top-button" ng-click="formController.show()" ng-show="!formController.visible()" translate>Edit</button>
+  <button type="submit" class="btn btn-default top-button" ng-show="formController.visible()" translate>Save</button>
+  <button type="button" class="btn btn-default top-button" ng-click="formController.cancel()" ng-show="formController.visible()" translate>Cancel</button>
+</div>

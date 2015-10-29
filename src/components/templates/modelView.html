@@ -1,6 +1,22 @@
 <editable-form>
-  <form-input title="{{'Label' | translate}}" content="ctrl.model.label"></form-input>
-  <form-input title="{{'Comment' | translate}}" content="ctrl.model.comment"></form-input>
-  <div class="model-view__title" translate>Id</div>
-  <div>{{ctrl.model['@id']}}</div>
+
+  <div class="top-actions">
+    <editable-form-buttons></editable-form-buttons>
+    <show-submit-error></show-submit-error>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <form-input title="{{'Label' | translate}}" content="ctrl.model.label"></form-input>
+      <form-input title="{{'Comment' | translate}}" content="ctrl.model.comment"></form-input>
+      <div class="model-view__title" translate>Id</div>
+      <div>{{ctrl.model['@id']}}</div>
+    </div>
+
+    <div class="col-md-6">
+      <references-view references="ctrl.model.references"></references-view>
+      <requires-view requires="ctrl.model.requires"></requires-view>
+    </div>
+  </div>
+
 </editable-form>

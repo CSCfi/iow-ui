@@ -1,15 +1,3 @@
 <form editable-form name="form" onaftersave="formController.onSubmit()">
-
-  <div ng-if="formController.isLoggedIn()" class="editable-buttons">
-    <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="!formController.visible()" translate>Edit</button>
-    <button type="submit" class="btn btn-default" ng-show="formController.visible()" translate>Save</button>
-    <button type="button" class="btn btn-default" ng-click="formController.cancel()" ng-show="formController.visible()" translate>Cancel</button>
-  </div>
-
   <div ng-transclude></div>
-
-  <div class="alert alert-danger" role="alert" ng-show="formController.submitError">
-    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    <span translate>Tallentaminen epäonnistui</span>
-  </div>
 </form>

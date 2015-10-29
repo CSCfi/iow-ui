@@ -32,6 +32,8 @@ module.exports = function classView($log) {
       vm.deleteProperty = deleteProperty;
       vm.addProperty = addProperty;
       vm.canAddProperty = canAddProperty;
+      vm.deleteClass = deleteClass;
+      vm.canDeleteClass = canDeleteClass;
       // view contract
       vm.isEditing = isEditing;
 
@@ -91,6 +93,14 @@ module.exports = function classView($log) {
 
       function canAddProperty() {
         return userService.isLoggedIn() && isEditing();
+      }
+
+      function canDeleteClass() {
+        return userService.isLoggedIn();
+      }
+
+      function deleteClass() {
+        // TODO
       }
 
       function addProperty() {

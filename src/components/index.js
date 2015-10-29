@@ -16,9 +16,11 @@ mod.directive('formId', require('./formId'));
 mod.directive('formSelect', require('./formSelect'));
 mod.directive('formTextArea', require('./formTextArea'));
 mod.directive('editableForm', require('./editableForm'));
+mod.directive('editableFormButtons', require('./editableFormButtons'));
 mod.directive('login', require('./login'));
 mod.directive('referencesView', require('./referencesView'));
 mod.directive('requiresView', require('./requiresView'));
+mod.directive('showSubmitError', require('./showSubmitError'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));

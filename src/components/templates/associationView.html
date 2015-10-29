@@ -1,4 +1,10 @@
 <editable-form on-submit="updateAssociation()" on-reset="resetModel()">
+
+  <div class="top-actions">
+    <editable-form-buttons></editable-form-buttons>
+    <show-submit-error></show-submit-error>
+  </div>
+
   <form-input title="{{'Label' | translate}}" content="association.label"></form-input>
   <form-id title="{{'Id' | translate}}" plain-text="association['@id']"></form-id>
   <form-input title="{{'Comment' | translate}}" content="association.comment"></form-input>

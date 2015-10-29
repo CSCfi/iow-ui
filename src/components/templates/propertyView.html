@@ -1,4 +1,9 @@
 <div>
+
+  <div class="top-actions">
+    <button ng-show="classViewController.isEditing()" type="button" class="btn btn-default" ng-click="classViewController.deleteProperty(property)" translate>Delete property</button>
+  </div>
+
   <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
   <form-input title="{{'Description' | translate}}" content="property.comment"></form-input>
   <form-input title="{{'Example' | translate}}" content="property.example"></form-input>
@@ -10,5 +15,4 @@
       <predicate-view predicate="predicate" ng-if="isOpen[property.predicate]"></predicate-view>
     </uib-accordion-group>
   </uib-accordion>
-  <button ng-show="classViewController.isEditing()" type="button" class="btn btn-default btn-lg" ng-click="classViewController.deleteProperty(property)" translate>Poista</button>
 </div>
