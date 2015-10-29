@@ -5,9 +5,11 @@
     <show-submit-error></show-submit-error>
   </div>
 
-  <form-input title="{{'Label' | translate}}" content="association.label"></form-input>
+  <h2>
+    <form-input content="association.label"></form-input>
+  </h2>
   <form-id title="{{'Id' | translate}}" plain-text="association['@id']"></form-id>
-  <form-input title="{{'Comment' | translate}}" content="association.comment"></form-input>
+  <form-text-area title="{{'Comment' | translate}}" content="association.comment"></form-text-area>
   <form-select title="{{'Range' | translate}}" content="association.range" values="attributeValues"></form-input>
   <div class="model-view__title" translate>Is defined by</div>
   <div>{{association.isDefinedBy}}</div>

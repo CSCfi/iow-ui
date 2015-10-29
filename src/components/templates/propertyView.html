@@ -5,7 +5,7 @@
   </div>
 
   <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
-  <form-input title="{{'Description' | translate}}" content="property.comment"></form-input>
+  <form-text-area title="{{'Comment' | translate}}" content="property.comment"></form-text-area>
   <form-input title="{{'Example' | translate}}" content="property.example"></form-input>
   <form-select title="{{'Datatype' | translate}}" content="property.dataType" ng-if="predicate['@type'] == 'owl:DatatypeProperty'" values="attributeValues"></form-select>
   <form-input title="{{'Value class' | translate}}" plain-text="property.valuesClass" ng-if="predicate['@type'] == 'owl:ObjectProperty'"></form-input>

@@ -5,9 +5,11 @@
     <show-submit-error></show-submit-error>
   </div>
 
-  <form-input title="{{'Label' | translate}}" content="ctrl.attribute.label"></form-input>
+  <h2>
+    <form-input content="ctrl.attribute.label"></form-input>
+  </h2>
   <form-id title="{{'Id' | translate}}" plain-text="ctrl.attribute['@id']"></form-id>
-  <form-input title="{{'Comment' | translate}}" content="ctrl.attribute.comment"></form-input>
+  <form-text-area title="{{'Comment' | translate}}" content="ctrl.attribute.comment"></form-text-area>
   <form-select title="{{'Range' | translate}}" content="ctrl.attribute.range" values="ctrl.attributeValues"></form-select>
   <div class="model-view__title" translate>Is defined by</div>
   <div>{{ctrl.attribute.isDefinedBy}}</div>
