@@ -76,8 +76,8 @@ function SearchPredicateController($modalInstance, predicateService, modelLangua
   vm.iconClass = (predicate) => {
     return ['glyphicon',
       {
-        'glyphicon-random': predicate['@type'] === 'owl:ObjectProperty',
-        'glyphicon-pencil': predicate['@type'] === 'owl:DatatypeProperty'
+        'glyphicon-list-alt': predicate['@type'] === 'owl:ObjectProperty',
+        'glyphicon-tasks': predicate['@type'] === 'owl:DatatypeProperty'
       }];
   };
 

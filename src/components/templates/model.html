@@ -12,9 +12,13 @@
   <div class="bottom">
     <div class="model-panel--left">
       <uib-tabset>
-        <uib-tab heading="{{'Classes' | translate}}">
 
-          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md" ng-click="ctrl.addClass()" translate>Lisää luokka</button>
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="glyphicon glyphicon-list-alt"></i><p>{{'Classes' | translate}}</p>
+          </uib-tab-heading>
+
+          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Lisää luokka</button>
 
           <ul class="panel__list">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
@@ -24,8 +28,10 @@
             </li>
           </ul>
         </uib-tab>
-        <uib-tab heading="{{'Attributes' | translate}}">
-          <h3>Attributes</h3>
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="glyphicon glyphicon-tasks"></i><p>{{'Attributes' | translate}}</p>
+          </uib-tab-heading>
           <ul class="panel__list">
             <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isAttributeActivated(attribute)}"
@@ -33,7 +39,11 @@
               {{attribute | translateLabel}}
             </li>
           </ul>
-          <h3>Associations</h3>
+        </uib-tab>
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="glyphicon glyphicon-sort"></i><p>{{'Associations' | translate}}</p>
+          </uib-tab-heading>
           <ul class="panel__list">
             <li ng-repeat="association in ctrl.associations | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isAssociationActivated(association)}"

@@ -1,4 +1,4 @@
-$navbarWidth: 350px;
+$navbarWidth: 270px;
 
 .bottom {
   border-top: solid 1px #ddd;
@@ -9,9 +9,41 @@ $navbarWidth: 350px;
   float: left;
   border-right: solid 1px #ddd;
 
+  ul.nav {
+    margin-right: 0;
+    padding: 9px;
+  }
+
   .add-class-button {
-    margin: 10px;
-    width: calc(100% - 20px);
+    margin: 9px;
+    width: calc(100% - 28px);
+  }
+
+  uib-tab-heading {
+    i {
+      width: 100%;
+      padding-right: 2px;
+      text-align: center;
+      font-size: x-large;
+    }
+    p {
+      width: 100%;
+      text-align: center;
+      font-size: x-small;
+    }
+  }
+
+  .panel__list {
+    li {
+      padding-left: 10px;
+      font-size: medium;
+      margin-top: 5px;
+      border: 1px solid #fff;
+    }
+
+    li:hover {
+      border: 1px solid #ddd;
+    }
   }
 }
 

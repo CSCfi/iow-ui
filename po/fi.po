@@ -12,11 +12,20 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: translations/misc.html:4
+#: components/templates/searchClassModal.html:74
+#: components/templates/searchPredicateModal.html:62
+msgid "{{ctrl.confirmButtonText}}"
+msgstr ""
+
+#: components/templates/classView.html:14
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/templates/model.html:23
+#: components/templates/model.html:36
+msgid "Associations"
+msgstr "Assosiaatiot"
+
+#: components/templates/model.html:27
 msgid "Attributes"
 msgstr "Ominaisuudet"
 
@@ -24,13 +33,13 @@ msgstr "Ominaisuudet"
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/templates/editableForm.html:12
+#: components/templates/editableForm.html:6
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: components/templates/model.html:14
+#: components/templates/model.html:15
 msgid "Classes"
-msgstr "Tietokomponentit"
+msgstr "Luokat"
 
 #: components/templates/associationView.html:4
 #: components/templates/attributeView.html:4
@@ -43,12 +52,13 @@ msgid "Datatype"
 msgstr "Tyyppi"
 
 #: components/templates/classView.html:12
-#: components/templates/predicateView.html:4
+#: components/templates/predicateView.html:5
 #: components/templates/propertyView.html:3
+#: components/templates/searchClassModal.html:50
 msgid "Description"
 msgstr "Kuvaus"
 
-#: components/templates/editableForm.html:10
+#: components/templates/editableForm.html:4
 msgid "Edit"
 msgstr "Muokkaa"
 
@@ -58,15 +68,15 @@ msgstr ""
 "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
 "haluat muokata palvelun sisältöä."
 
-#: components/templates/addProperty.html:27
-msgid "Ei hakutuloksia"
-msgstr ""
-
 #: components/templates/propertyView.html:4
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/templates/addProperty.html:3
+#: components/templates/searchClassModal.html:3
+msgid "Hae luokkia"
+msgstr ""
+
+#: components/templates/searchPredicateModal.html:3
 msgid "Hae ominaisuuksia"
 msgstr ""
 
@@ -86,7 +96,17 @@ msgstr "Otsikko tähän"
 
 #: components/templates/associationView.html:6
 #: components/templates/attributeView.html:6
+#: components/templates/searchClassModal.html:54
 msgid "Is defined by"
+msgstr ""
+
+#: components/templates/searchClassModal.html:26
+#: components/templates/searchPredicateModal.html:26
+msgid "Kaikki kirjastot"
+msgstr ""
+
+#: components/templates/searchPredicateModal.html:35
+msgid "Kaikki tyypit"
 msgstr ""
 
 #: components/templates/login-modal.html:14
@@ -103,18 +123,18 @@ msgstr ""
 "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
 "sen jälkeen takaisin palveluun."
 
-#: components/templates/cancelEditModal.html:7
+#: components/templates/editInProgressModal.html:13
 msgid "Kyllä"
-msgstr ""
-
-#: components/templates/addProperty.html:51
-msgid "Käytä ominaisuutta"
 msgstr ""
 
 #: components/templates/associationView.html:2
 #: components/templates/attributeView.html:2
 #: components/templates/modelView.html:2
 msgid "Label"
+msgstr ""
+
+#: components/templates/model.html:17
+msgid "Lisää luokka"
 msgstr ""
 
 #: components/templates/login.html:1
@@ -129,16 +149,29 @@ msgstr "Kirjaudu ulos"
 msgid "Luo tunnukset"
 msgstr "Luo tunnukset"
 
-#: components/templates/cancelEditModal.html:2
+#: components/templates/searchClassConceptModal.html:21
+msgid "Luo uusi"
+msgstr ""
+
+#: components/templates/searchClassModal.html:71
+msgid "Luo uusi luokka"
+msgstr ""
+
+#: components/templates/editInProgressModal.html:3
 msgid "Muokkaaminen on kesken"
+msgstr ""
+
+#: components/templates/searchClassConceptModal.html:3
+msgid "Määrittele käsite uudelle luokalle"
 msgstr ""
 
 #: components/templates/predicateView.html:1
 #: components/templates/propertyView.html:2
+#: components/templates/searchClassModal.html:46
 msgid "Name"
 msgstr "Nimi"
 
-#: components/templates/cancelEditModal.html:4
+#: components/templates/editInProgressModal.html:9
 msgid "Oletko varma, että haluat siirtyä?"
 msgstr ""
 
@@ -150,9 +183,15 @@ msgstr "Attribuutti"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
-#: components/templates/addProperty.html:50
-#: components/templates/cancelEditModal.html:8
+#: components/templates/editInProgressModal.html:14
+#: components/templates/searchClassConceptModal.html:20
+#: components/templates/searchClassModal.html:73
+#: components/templates/searchPredicateModal.html:61
 msgid "Peruuta"
+msgstr ""
+
+#: components/templates/propertyView.html:13
+msgid "Poista"
 msgstr ""
 
 #: components/templates/requiresView.html:7
@@ -163,13 +202,9 @@ msgstr ""
 msgid "Preferred prefix"
 msgstr ""
 
-#: components/templates/classView.html:13
-msgid "PrefLabel"
-msgstr ""
-
 #: components/templates/associationView.html:5
 #: components/templates/attributeView.html:5
-#: components/templates/predicateView.html:9
+#: components/templates/predicateView.html:13
 msgid "Range"
 msgstr ""
 
@@ -185,15 +220,15 @@ msgstr ""
 msgid "Requires"
 msgstr ""
 
-#: components/templates/editableForm.html:11
+#: components/templates/editableForm.html:5
 msgid "Save"
 msgstr "Tallenna"
 
-#: components/templates/editableForm.html:6
+#: components/templates/editableForm.html:13
 msgid "Tallentaminen epäonnistui"
 msgstr ""
 
-#: components/templates/predicateView.html:7
+#: components/templates/predicateView.html:9
 #: components/templates/referencesView.html:5
 #: components/templates/requiresView.html:5
 msgid "Type"
