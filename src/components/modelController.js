@@ -9,6 +9,8 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
 
   vm.loading = true;
 
+  vm.showModelInfo = true;
+
   $q.all([fetchModel(), fetchClasses(), fetchProperties()]).then(() => vm.loading = false);
 
   vm.reload = () => {

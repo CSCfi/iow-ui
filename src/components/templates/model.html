@@ -1,7 +1,8 @@
 <div ng-if="!ctrl.loading">
 
   <uib-accordion>
-    <uib-accordion-group heading="{{ctrl.model | translateLabel}}" is-open="true">
+    <uib-accordion-group is-open="ctrl.showModelInfo">
+      <uib-accordion-heading>{{ctrl.model | translateLabel}} <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': ctrl.showModelInfo, 'glyphicon-chevron-right': !ctrl.showModelInfo}"></span></uib-accordion-heading>
       <model-view model="ctrl.model"></model-view>
       <references-view references="ctrl.model.references"></references-view>
       <requires-view requires="ctrl.model.requires"></requires-view>
