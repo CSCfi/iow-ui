@@ -11,7 +11,7 @@
             <i class="glyphicon glyphicon-list-alt"></i><p>{{'Classes' | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Lisää luokka</button>
+          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Add class</button>
 
           <ul class="panel__list" window-height padding="150">
             <li ng-repeat="class in ctrl.classes | orderByLabel"

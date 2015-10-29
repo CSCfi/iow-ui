@@ -1,33 +1,31 @@
 const _ = require('lodash');
 const contextUtils = require('../services/contextUtils');
 
-module.exports = function modalFactory($uibModal, modelLanguage) {
+module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(excludedClassIds = [], confirmButtonText = 'Käytä luokkaa') {
+    open(excludedClassIds = []) {
       return $uibModal.open({
         template: require('./templates/searchClassModal.html'),
         size: 'large',
         controller: SearchClassController,
         controllerAs: 'ctrl',
         resolve: {
-          excludedClassIds: () => excludedClassIds,
-          confirmButtonText: () => modelLanguage.translate(confirmButtonText)
+          excludedClassIds: () => excludedClassIds
         }
       });
     }
   };
 };
 
-function SearchClassController($modalInstance, classService, modelLanguage, excludedClassIds, confirmButtonText) {
+function SearchClassController($modalInstance, classService, modelLanguage, excludedClassIds) {
   'ngInject';
 
   const vm = this;
   let context;
   let classes;
 
-  vm.confirmButtonText = confirmButtonText;
   vm.close = $modalInstance.dismiss;
   vm.selectedClass = null;
   vm.searchText = '';

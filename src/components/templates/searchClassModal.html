@@ -1,20 +1,18 @@
 <div class="modal-header modal-header-confirm">
   <h4 class="modal-title ng-binding">
-    <span translate>Hae luokkia</span>
+    <span translate>Search classes</span>
     <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.close()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
   </h4>
 </div>
 
 <div class="modal-body search-modal">
-  <p>
-    Haen ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä tarpeisiisi sopivaa, voit luoda uuden luokan.
-  </p>
+  <p translate>Class search info</p>
 
   <div class="row">
 
     <div class="col-md-4">
       <div class="input-group input-group-lg">
-        <input autofocus type="text" class="form-control" placeholder="Hae luokkaa..."
+        <input autofocus type="text" class="form-control" placeholder="{{'search class' | translate}}"
                ng-model="ctrl.searchText"
                ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
         <i class="glyphicon glyphicon-search form-control-feedback"></i>
@@ -23,7 +21,7 @@
       <div class="input-group input-group-lg">
         <div class="selectContainer">
           <select class="form-control" ng-model="ctrl.modelId">
-            <option value="" translate>Kaikki kirjastot</option>
+            <option value="" translate>All models</option>
             <option ng-repeat="model in ctrl.models" value="{{model['@id']}}">{{model | translateLabel}}</option>
           </select>
         </div>
@@ -55,7 +53,7 @@
         <div>{{ctrl.selectedClass.isDefinedBy}}</div>
 
         <div ng-show="ctrl.selectedClass.subClassOf">
-          <div class="model-view__title">Superclass</div>
+          <div class="model-view__title" translate>Superclass</div>
           <div>{{ctrl.selectedClass.subClassOf}}</div>
         </div>
       </div>
@@ -66,6 +64,6 @@
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Peruuta</button>
-  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass" translate>{{ctrl.confirmButtonText}}</button>
+  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
+  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass" translate>Use class</button>
 </div>

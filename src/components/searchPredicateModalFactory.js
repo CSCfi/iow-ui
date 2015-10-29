@@ -1,32 +1,28 @@
 const _ = require('lodash');
 const contextUtils = require('../services/contextUtils');
 
-module.exports = function modalFactory($uibModal, modelLanguage) {
+module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(confirmButtonText = 'Käytä ominaisuutta') {
+    open() {
       return $uibModal.open({
         template: require('./templates/searchPredicateModal.html'),
         size: 'large',
         controller: SearchPredicateController,
-        controllerAs: 'ctrl',
-        resolve: {
-          confirmButtonText: () => modelLanguage.translate(confirmButtonText)
-        }
+        controllerAs: 'ctrl'
       });
     }
   };
 };
 
-function SearchPredicateController($modalInstance, predicateService, modelLanguage, confirmButtonText) {
+function SearchPredicateController($modalInstance, predicateService, modelLanguage) {
   'ngInject';
 
   const vm = this;
   let context;
   let predicates;
 
-  vm.confirmButtonText = confirmButtonText;
   vm.close = $modalInstance.dismiss;
   vm.selectedPredicate = null;
   vm.searchText = '';

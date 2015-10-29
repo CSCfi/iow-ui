@@ -12,20 +12,32 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: components/templates/searchClassModal.html:74
-#: components/templates/searchPredicateModal.html:62
-msgid "{{ctrl.confirmButtonText}}"
-msgstr ""
+#: components/templates/model.html:14
+msgid "Add class"
+msgstr "Lisää luokka"
 
-#: components/templates/classView.html:14
+#: components/templates/classView.html:6
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/templates/model.html:36
+#: components/templates/searchClassModal.html:24
+#: components/templates/searchPredicateModal.html:24
+msgid "All models"
+msgstr "Kaikki kirjastot"
+
+#: components/templates/searchPredicateModal.html:33
+msgid "All types"
+msgstr "Kaikki tyypit"
+
+#: components/templates/editInProgressModal.html:9
+msgid "Are you sure that you want to cancel edit?"
+msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
+
+#: components/templates/model.html:38
 msgid "Associations"
 msgstr "Assosiaatiot"
 
-#: components/templates/model.html:27
+#: components/templates/model.html:26
 msgid "Attributes"
 msgstr "Ominaisuudet"
 
@@ -33,147 +45,120 @@ msgstr "Ominaisuudet"
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/templates/editableForm.html:6
+#: components/templates/editInProgressModal.html:14
+#: components/templates/searchClassModal.html:67
+#: components/templates/searchPredicateModal.html:59
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: components/templates/model.html:15
+#: components/templates/editableFormButtons.html:4
+msgid "Cancel edit"
+msgstr "Peruuta muokkaus"
+
+#: components/templates/searchClassModal.html:9
+msgid "Class search info"
+msgstr ""
+"Haen ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
+"tarpeisiisi sopivaa, voit luoda uuden luokan."
+
+#: components/templates/model.html:11
 msgid "Classes"
 msgstr "Luokat"
 
-#: components/templates/associationView.html:4
-#: components/templates/attributeView.html:4
-#: components/templates/modelView.html:3
+#: components/templates/associationView.html:10
+#: components/templates/attributeView.html:10
+#: components/templates/modelView.html:13
 msgid "Comment"
-msgstr ""
+msgstr "Määritelmä"
 
-#: components/templates/propertyView.html:5
+#: index.html:19
+msgid "Data language"
+msgstr "Mallin kieli"
+
+#: components/templates/propertyView.html:10
 msgid "Datatype"
 msgstr "Tyyppi"
 
-#: components/templates/classView.html:12
+#: components/templates/classView.html:5
+msgid "Delete class"
+msgstr "Poista luokka"
+
+#: components/templates/propertyView.html:4
+msgid "Delete property"
+msgstr "Poista ominaisuus"
+
+#: components/templates/classView.html:20
 #: components/templates/predicateView.html:5
-#: components/templates/propertyView.html:3
-#: components/templates/searchClassModal.html:50
+#: components/templates/propertyView.html:8
+#: components/templates/searchClassModal.html:48
 msgid "Description"
 msgstr "Kuvaus"
 
-#: components/templates/editableForm.html:4
+#: components/templates/editableFormButtons.html:2
 msgid "Edit"
 msgstr "Muokkaa"
 
+#: components/templates/editInProgressModal.html:3
+msgid "Edit in progress"
+msgstr "Muokkaaminen on kesken"
+
 #: components/templates/login-modal.html:9
-msgid "eDuuni tietoa"
+msgid "eDuuni information"
 msgstr ""
 "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
 "haluat muokata palvelun sisältöä."
 
-#: components/templates/propertyView.html:4
+#: components/templates/propertyView.html:9
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/templates/searchClassModal.html:3
-msgid "Hae luokkia"
-msgstr ""
-
-#: components/templates/searchPredicateModal.html:3
-msgid "Hae ominaisuuksia"
-msgstr ""
-
-#: components/templates/associationView.html:3
-#: components/templates/attributeView.html:3
-#: components/templates/classView.html:5 components/templates/modelView.html:4
+#: components/templates/associationView.html:9
+#: components/templates/attributeView.html:9
+#: components/templates/classView.html:13
+#: components/templates/modelView.html:14
 msgid "Id"
-msgstr ""
+msgstr "Tunniste"
 
-#: components/templates/referencesView.html:7
+#: components/templates/referencesView.html:8
 msgid "Identifier"
-msgstr ""
+msgstr "Tunniste"
 
 #: components/templates/index.html:3
 msgid "IOW header"
 msgstr "Otsikko tähän"
 
-#: components/templates/associationView.html:6
-#: components/templates/attributeView.html:6
-#: components/templates/searchClassModal.html:54
+#: components/templates/associationView.html:12
+#: components/templates/attributeView.html:12
+#: components/templates/classView.html:18
+#: components/templates/searchClassModal.html:52
 msgid "Is defined by"
-msgstr ""
+msgstr "Kirjasto"
 
-#: components/templates/searchClassModal.html:26
-#: components/templates/searchPredicateModal.html:26
-msgid "Kaikki kirjastot"
-msgstr ""
-
-#: components/templates/searchPredicateModal.html:35
-msgid "Kaikki tyypit"
-msgstr ""
+#: components/templates/associationView.html:8
+#: components/templates/attributeView.html:8
+msgid "Label"
+msgstr "Nimi"
 
 #: components/templates/login-modal.html:14
-msgid "Kirjaudu"
+#: components/templates/login-modal.html:3 components/templates/login.html:1
+msgid "Login"
 msgstr "Kirjaudu"
 
-#: components/templates/login-modal.html:3
-msgid "Kirjautuminen"
-msgstr "Kirjautuminen"
-
 #: components/templates/login-modal.html:10
-msgid "kirjautuminen tietoa"
+msgid "Login information"
 msgstr ""
 "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
 "sen jälkeen takaisin palveluun."
-
-#: components/templates/editInProgressModal.html:13
-msgid "Kyllä"
-msgstr ""
-
-#: components/templates/associationView.html:2
-#: components/templates/attributeView.html:2
-#: components/templates/modelView.html:2
-msgid "Label"
-msgstr ""
-
-#: components/templates/model.html:17
-msgid "Lisää luokka"
-msgstr ""
-
-#: components/templates/login.html:1
-msgid "Login"
-msgstr "Kirjaudu"
 
 #: components/templates/login.html:5
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
-#: components/templates/login-modal.html:15
-msgid "Luo tunnukset"
-msgstr "Luo tunnukset"
-
-#: components/templates/searchClassConceptModal.html:21
-msgid "Luo uusi"
-msgstr ""
-
-#: components/templates/searchClassModal.html:71
-msgid "Luo uusi luokka"
-msgstr ""
-
-#: components/templates/editInProgressModal.html:3
-msgid "Muokkaaminen on kesken"
-msgstr ""
-
-#: components/templates/searchClassConceptModal.html:3
-msgid "Määrittele käsite uudelle luokalle"
-msgstr ""
-
 #: components/templates/predicateView.html:1
-#: components/templates/propertyView.html:2
-#: components/templates/searchClassModal.html:46
+#: components/templates/propertyView.html:7
+#: components/templates/searchClassModal.html:44
 msgid "Name"
 msgstr "Nimi"
-
-#: components/templates/editInProgressModal.html:9
-msgid "Oletko varma, että haluat siirtyä?"
-msgstr ""
 
 #: translations/type.html:4
 msgid "owl:DatatypeProperty"
@@ -183,30 +168,19 @@ msgstr "Attribuutti"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
-#: components/templates/editInProgressModal.html:14
-#: components/templates/searchClassConceptModal.html:20
-#: components/templates/searchClassModal.html:73
-#: components/templates/searchPredicateModal.html:61
-msgid "Peruuta"
-msgstr ""
-
-#: components/templates/propertyView.html:13
-msgid "Poista"
-msgstr ""
-
-#: components/templates/requiresView.html:7
+#: components/templates/requiresView.html:8
 msgid "Preferred namespace"
-msgstr ""
+msgstr "Suositeltu nimiavaruus"
 
-#: components/templates/requiresView.html:9
+#: components/templates/requiresView.html:10
 msgid "Preferred prefix"
-msgstr ""
+msgstr "Suositeltu etuliite"
 
-#: components/templates/associationView.html:5
-#: components/templates/attributeView.html:5
+#: components/templates/associationView.html:11
+#: components/templates/attributeView.html:11
 #: components/templates/predicateView.html:13
 msgid "Range"
-msgstr ""
+msgstr "Arvoalue"
 
 #: translations/attribute.html:5
 msgid "rdf:langString"
@@ -214,29 +188,72 @@ msgstr "Kieliversioitu teksti"
 
 #: components/templates/referencesView.html:1
 msgid "References"
-msgstr ""
+msgstr "Sanastot"
+
+#: components/templates/login-modal.html:15
+msgid "Register"
+msgstr "Luo tunnukset"
 
 #: components/templates/requiresView.html:1
 msgid "Requires"
-msgstr ""
+msgstr "Nimiavaruudet"
 
-#: components/templates/editableForm.html:5
-msgid "Save"
-msgstr "Tallenna"
+#: components/templates/editableFormButtons.html:3
+msgid "Save changes"
+msgstr "Tallenna muutokset"
 
-#: components/templates/editableForm.html:13
-msgid "Tallentaminen epäonnistui"
+#: components/templates/showSubmitError.html:3
+msgid "Save failed"
+msgstr "Tallentaminen epäonnistui"
+
+#: components/templates/searchClassModal.html:15
+msgid "search class"
+msgstr "Hae luokkaa…"
+
+#: components/templates/searchClassModal.html:3
+msgid "Search classes"
+msgstr "Hae luokkia"
+
+#: components/templates/searchPredicateModal.html:15
+msgid "search predicate"
+msgstr "Hae ominaisuutta…"
+
+#: components/templates/searchPredicateModal.html:9
+msgid "Search predicate info"
 msgstr ""
+"Haen ensin tarvitsemaasi ominaisuutta yhteentoimivuuden kuvauksista. Jos et "
+"löydä tarpeisiisi sopivaa, voit luoda uuden ominaisuuden."
+
+#: components/templates/searchPredicateModal.html:3
+msgid "Search predicates"
+msgstr "Hae ominaisuuksia"
+
+#: components/templates/classView.html:15
+#: components/templates/searchClassModal.html:56
+msgid "Superclass"
+msgstr "Yläluokka"
 
 #: components/templates/predicateView.html:9
-#: components/templates/referencesView.html:5
-#: components/templates/requiresView.html:5
+#: components/templates/referencesView.html:6
+#: components/templates/requiresView.html:6
 msgid "Type"
 msgstr "Tyyppi"
 
-#: components/templates/propertyView.html:6
+#: index.html:20
+msgid "UI language"
+msgstr "Käyttöliittymän kieli"
+
+#: components/templates/searchClassModal.html:68
+msgid "Use class"
+msgstr "Käytä luokkaa"
+
+#: components/templates/searchPredicateModal.html:60
+msgid "Use predicate"
+msgstr "Käytä ominaisuutta"
+
+#: components/templates/propertyView.html:11
 msgid "Value class"
-msgstr ""
+msgstr "Arvoluokka"
 
 #: translations/attribute.html:6
 msgid "xsd:anyURI"
@@ -305,3 +322,29 @@ msgstr "Aika"
 #: translations/attribute.html:21
 msgid "xsd:XMLLiteral"
 msgstr "XML"
+
+#: components/templates/editInProgressModal.html:13
+msgid "Yes"
+msgstr "Kyllä"
+
+#~ msgid "eDuuni tietoa"
+#~ msgstr ""
+#~ "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
+#~ "haluat muokata palvelun sisältöä."
+
+#~ msgid "Kirjaudu"
+#~ msgstr "Kirjaudu"
+
+#~ msgid "Kirjautuminen"
+#~ msgstr "Kirjautuminen"
+
+#~ msgid "kirjautuminen tietoa"
+#~ msgstr ""
+#~ "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
+#~ "sen jälkeen takaisin palveluun."
+
+#~ msgid "Luo tunnukset"
+#~ msgstr "Luo tunnukset"
+
+#~ msgid "Save"
+#~ msgstr "Tallenna"

@@ -2,7 +2,7 @@
 
   <div class="top-actions">
     <editable-form-buttons></editable-form-buttons>
-    <button type="button" class="btn btn-default" ng-click="ctrl.deleteClass()" ng-if="ctrl.canDeleteClass()" translate>Delete</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.deleteClass()" ng-if="ctrl.canDeleteClass()" translate>Delete class</button>
     <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
     <show-submit-error></show-submit-error>
   </div>
@@ -12,10 +12,10 @@
   </h2>
   <form-id title="{{'Id' | translate}}" plain-text="ctrl.class['@id']"></form-id>
   <div ng-show="ctrl.class.subClassOf">
-    <div class="model-view__title">Superclass</div>
+    <div class="model-view__title" translate>Superclass</div>
     <div>{{ctrl.class.subClassOf}}</div>
   </div>
-  <div class="model-view__title">Is defined by</div>
+  <div class="model-view__title" translate>Is defined by</div>
   <div>{{ctrl.class.isDefinedBy}}</div>
   <form-text-area title="{{'Description' | translate}}" content="ctrl.class.comment"></form-text-area>
 
