@@ -1,4 +1,3 @@
-const constants = require('./constants');
 const contextUtils = require('../services/contextUtils');
 
 module.exports = function propertyView($log) {
@@ -16,8 +15,6 @@ module.exports = function propertyView($log) {
     },
     controller($scope, predicateService) {
       'ngInject';
-
-      $scope.attributeValues = constants.attributeValues;
 
       const predicateId = contextUtils.withFullIRI($scope.context, $scope.property.predicate);
 

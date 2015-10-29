@@ -22,6 +22,7 @@ mod.directive('referencesView', require('./referencesView'));
 mod.directive('requiresView', require('./requiresView'));
 mod.directive('showSubmitError', require('./showSubmitError'));
 mod.directive('windowHeight', require('./windowHeight'));
+mod.directive('rangeSelect', require('./rangeSelect'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));

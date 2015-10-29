@@ -10,7 +10,7 @@
   </h2>
   <form-id title="{{'Id' | translate}}" plain-text="ctrl.attribute['@id']"></form-id>
   <form-text-area title="{{'Comment' | translate}}" content="ctrl.attribute.comment"></form-text-area>
-  <form-select title="{{'Range' | translate}}" content="ctrl.attribute.range" values="ctrl.attributeValues"></form-select>
+  <range-select content="ctrl.attribute.range"></range-select>
   <div class="model-view__title" translate>Is defined by</div>
   <div>{{ctrl.attribute.isDefinedBy}}</div>
 </editable-form>

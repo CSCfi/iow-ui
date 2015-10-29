@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const constants = require('./constants');
 const contextUtils = require('../services/contextUtils');
 
 module.exports = function attributeView($log) {
@@ -29,7 +28,6 @@ module.exports = function attributeView($log) {
       vm.loading = true;
       vm.updateAttribute = updateAttribute;
       vm.resetModel = resetModel;
-      vm.attributeValues = constants.attributeValues;
       // view contract
       vm.isEditing = isEditing;
 
