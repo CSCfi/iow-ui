@@ -31,29 +31,19 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, $lo
     views.push(view);
   };
 
-  vm.activateClass = (classId) => {
+  const activateByTypeAndId = (type, id) => {
     askPermissionWhenEditing(() => {
       clearAll();
-      vm.activatedClassId = classId;
-      $location.search({urn: modelId, class: classId});
+      vm['activated' + _.capitalize(type) + 'Id'] = id;
+      $location.search({urn: modelId, [type]: id});
     });
   };
 
-  vm.activateAttribute = (attributeId) => {
-    askPermissionWhenEditing(() => {
-      clearAll();
-      vm.activatedAttributeId = attributeId;
-      $location.search({urn: modelId, attribute: attributeId});
-    });
-  };
+  const activate = type => _.partial(activateByTypeAndId, type);
 
-  vm.activateAssociation = (associationId) => {
-    askPermissionWhenEditing(() => {
-      clearAll();
-      vm.activatedAssociationId = associationId;
-      $location.search({urn: modelId, association: associationId});
-    });
-  };
+  vm.activateClass = activate('class');
+  vm.activateAttribute = activate('attribute');
+  vm.activateAssociation = activate('association');
 
   vm.isClassActivated = (klass) => vm.activatedClassId && vm.activatedClassId === klass['@id'];
   vm.isAttributeActivated = (attribute) => vm.activatedAttributeId && vm.activatedAttributeId === attribute['@id'];
