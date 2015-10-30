@@ -32,6 +32,14 @@ module.exports = function userService($http, $q) {
     isLoggedIn() {
       return loggedInUser;
     },
+    isInGroup(group){
+      if(loggedInUser.isPartOf==group) {
+        return true
+      }
+      else {
+        return false
+      }
+    },
     logout() {
       $http.get('/api/rest/logout');
       loggedInUser = null;
