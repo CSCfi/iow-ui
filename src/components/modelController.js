@@ -9,7 +9,17 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
 
   vm.loading = true;
 
-  $q.all([fetchModel(), fetchClasses(), fetchProperties()]).then(() => vm.loading = false);
+  $q.all([fetchModel(), fetchClasses(), fetchProperties()]).then(() => {
+    vm.loading = false;
+
+    // load possible state from route
+    ['attribute', 'class', 'property'].map(function(key) {
+      const value = $routeParams[key];
+      if (value) {
+        vm['activate' + _.capitalize(key)](value);
+      }
+    });
+  });
 
   vm.reload = () => {
     fetchModel();
