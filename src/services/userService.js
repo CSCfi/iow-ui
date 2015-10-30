@@ -33,7 +33,7 @@ module.exports = function userService($http, $q) {
       return loggedInUser;
     },
     isInGroup(group){
-      if(loggedInUser.isPartOf==group) {
+      if(loggedInUser!=null && loggedInUser.isPartOf==group) {
         return true
       }
       else {
