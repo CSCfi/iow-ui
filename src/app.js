@@ -28,7 +28,7 @@ angular.module('iow-ui', [
       reloadOnSearch: false
     });
 })
-.run(function onAppRun($rootScope, $q, editableOptions, languageService, userService) {
+.run(function onAppRun($rootScope, $q, editableOptions, languageService, userService, gettextCatalog) {
   editableOptions.theme = 'bs3';
 
   function languageChanged() {
@@ -42,6 +42,7 @@ angular.module('iow-ui', [
 
   $q.all([languageChanged(), userService.updateLogin()]).then(() => $rootScope.applicationInitialized = true);
 
+  gettextCatalog.debug = true;
   languageService.setLanguage('fi');
 })
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {
