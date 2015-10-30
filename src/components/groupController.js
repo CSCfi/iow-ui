@@ -4,8 +4,6 @@ module.exports = function GroupController($scope, $routeParams, $log, groupServi
   'ngInject';
   const urn = $routeParams.urn;
 
- $scope.isPartOfGroup = false;
-
   groupService.getGroups().then(response => {
     $scope.group = _.findWhere(response['@graph'], {'@id': urn});
   }, error => $log.error(error));
@@ -14,7 +12,6 @@ module.exports = function GroupController($scope, $routeParams, $log, groupServi
     $scope.models = response['@graph'];
   }, error => $log.error(error));
 
- $scope.notInGroup = !userService.isInGroup(urn);
- $scope.isLoggedIn = userService.isLoggedIn();
-
+  $scope.notInGroup = () => !userService.isInGroup(urn);
+  $scope.isLoggedIn = userService.isLoggedIn;
 };
