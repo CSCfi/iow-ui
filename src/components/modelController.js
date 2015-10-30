@@ -21,6 +21,10 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, $lo
     });
   });
 
+  vm.activeTab = {
+    class: true
+  };
+
   vm.reload = () => {
     fetchModel();
     fetchClasses();
@@ -36,6 +40,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, $lo
       clearAll();
       vm['activated' + _.capitalize(type) + 'Id'] = id;
       $location.search({urn: modelId, [type]: id});
+      vm.activeTab = {[type]: true};
     });
   };
 

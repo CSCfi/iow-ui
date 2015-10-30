@@ -8,7 +8,7 @@
     <div class="model-panel--left">
       <uib-tabset>
 
-        <uib-tab>
+        <uib-tab active="ctrl.activeTab['class']">
           <uib-tab-heading>
             <i class="glyphicon glyphicon-list-alt"></i><p>{{'Classes' | translate}}</p>
           </uib-tab-heading>
@@ -23,7 +23,7 @@
             </li>
           </ul>
         </uib-tab>
-        <uib-tab>
+        <uib-tab active="ctrl.activeTab['attribute']">
           <uib-tab-heading>
             <i class="glyphicon glyphicon-tasks"></i><p>{{'Attributes' | translate}}</p>
           </uib-tab-heading>
@@ -35,7 +35,7 @@
             </li>
           </ul>
         </uib-tab>
-        <uib-tab>
+        <uib-tab active="ctrl.activeTab['association']">
           <uib-tab-heading>
             <i class="glyphicon glyphicon-sort"></i><p>{{'Associations' | translate}}</p>
           </uib-tab-heading>
