@@ -15,7 +15,7 @@
 
           <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Add class</button>
 
-          <ul class="panel__list" window-height padding="150">
+          <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isClassActivated(class)}"
                 ng-click="ctrl.activateClass(class['@id'])">
