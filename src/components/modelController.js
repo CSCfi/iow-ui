@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function modelController($routeParams, $log, $q, $uibModal, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
+module.exports = function modelController($routeParams, $log, $q, $uibModal, $location, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
   'ngInject';
 
   const modelId = $routeParams.urn;
@@ -13,7 +13,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
     vm.loading = false;
 
     // load possible state from route
-    ['attribute', 'class', 'property'].map(function(key) {
+    ['attribute', 'class', 'association'].map(function(key) {
       const value = $routeParams[key];
       if (value) {
         vm['activate' + _.capitalize(key)](value);
@@ -35,6 +35,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
     askPermissionWhenEditing(() => {
       clearAll();
       vm.activatedClassId = classId;
+      $location.search({urn: modelId, class: classId});
     });
   };
 
@@ -42,6 +43,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
     askPermissionWhenEditing(() => {
       clearAll();
       vm.activatedAttributeId = attributeId;
+      $location.search({urn: modelId, attribute: attributeId});
     });
   };
 
@@ -49,6 +51,7 @@ module.exports = function modelController($routeParams, $log, $q, $uibModal, mod
     askPermissionWhenEditing(() => {
       clearAll();
       vm.activatedAssociationId = associationId;
+      $location.search({urn: modelId, association: associationId});
     });
   };
 

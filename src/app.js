@@ -24,7 +24,8 @@ angular.module('iow-ui', [
     .when('/models', {
       template: require('./components/templates/model.html'),
       controller: 'modelController',
-      controllerAs: 'ctrl'
+      controllerAs: 'ctrl',
+      reloadOnSearch: false
     });
 })
 .run(function onAppRun($rootScope, $q, editableOptions, languageService, userService) {
