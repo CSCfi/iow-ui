@@ -15,5 +15,6 @@ module.exports = function GroupController($scope, $routeParams, $log, groupServi
   }, error => $log.error(error));
 
  $scope.notInGroup = !userService.isInGroup(urn);
+ $scope.isLoggedIn = userService.isLoggedIn();
 
 };
