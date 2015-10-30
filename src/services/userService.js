@@ -1,7 +1,7 @@
 module.exports = function userService($http, $q) {
   'ngInject';
 
-  let loggedInUser;
+  let loggedInUser = null;
 
   return {
     updateLogin() {
@@ -33,19 +33,10 @@ module.exports = function userService($http, $q) {
       return loggedInUser;
     },
     isLoggedIn() {
-      if(loggedInUser!=null) {
-        return true;
-      } else {
-        return false;
-      }
+      return loggedInUser !== null;
     },
-    isInGroup(group){
-      if(loggedInUser!=null && loggedInUser.isPartOf==group) {
-        return true
-      }
-      else {
-        return false
-      }
+    isInGroup(group) {
+      return loggedInUser !== null && loggedInUser.isPartOf === group;
     },
     logout() {
       $http.get('/api/rest/logout');
