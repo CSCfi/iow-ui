@@ -1,3 +1,4 @@
+window.jQuery = require('jquery');
 const angular = require('angular');
 
 require('angular-gettext');
