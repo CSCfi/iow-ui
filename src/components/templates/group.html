@@ -1,5 +1,9 @@
 <h2>{{group | translateLabel}}</h2>
 
+<div class="pull-right">
+  <a class="btn btn-default" href="{{group['@id']}}" target="_blank">Pyydä käyttöoikeuksia ryhmään</a>
+</div>
+
 <ul>
   <li ng-repeat="model in models">
     <a href="#/models/?urn={{model['@id'] | urlencode}}">{{model | translateLabel}}</a>
