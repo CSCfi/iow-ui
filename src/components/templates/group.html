@@ -1,6 +1,6 @@
 <h2>{{group | translateLabel}}</h2>
 
-<div ng-show="{{isLoggedIn!=null && notInGroup}}" class="pull-right">
+<div ng-show="{{isLoggedIn && notInGroup}}" class="pull-right">
   <a class="btn btn-default" href="{{group['@id']}}" target="_blank">Pyydä käyttöoikeuksia ryhmään</a>
 </div>
 

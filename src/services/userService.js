@@ -29,8 +29,15 @@ module.exports = function userService($http, $q) {
 
       return deferred.promise;
     },
-    isLoggedIn() {
+    getUser() {
       return loggedInUser;
+    },
+    isLoggedIn() {
+      if(loggedInUser!=null) {
+        return true;
+      } else {
+        return false;
+      }
     },
     isInGroup(group){
       if(loggedInUser!=null && loggedInUser.isPartOf==group) {
