@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function modelController(modelId, selected, $log, $q, $uibModal, $location, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
+module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
   'ngInject';
 
   const views = [];
