@@ -26,7 +26,21 @@ angular.module('iow-ui', [
       template: require('./components/templates/model.html'),
       controller: 'modelController',
       controllerAs: 'ctrl',
-      reloadOnSearch: false
+      reloadOnSearch: false,
+      resolve: {
+        modelId($route) {
+          return $route.current.params.urn;
+        },
+        selected($route) {
+          'ngInject';
+          for (const type of ['attribute', 'class', 'association']) {
+            const id = $route.current.params[type];
+            if (id) {
+              return {type, id};
+            }
+          }
+        }
+      }
     });
 })
 .run(function onAppRun($rootScope, $q, editableOptions, languageService, userService, gettextCatalog) {

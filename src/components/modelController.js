@@ -1,92 +1,68 @@
 const _ = require('lodash');
 
-module.exports = function modelController($routeParams, $log, $q, $uibModal, $location, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
+module.exports = function modelController(modelId, selected, $log, $q, $uibModal, $location, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
   'ngInject';
 
-  const modelId = $routeParams.urn;
   const views = [];
   const vm = this;
 
   vm.loading = true;
 
-  $q.all([fetchModel(), fetchClasses(), fetchProperties()]).then(() => {
-    vm.loading = false;
+  fetchAll().then(() => vm.loading = false);
 
-    // load possible state from route
-    ['attribute', 'class', 'association'].map(function(key) {
-      const value = $routeParams[key];
-      if (value) {
-        vm['activate' + _.capitalize(key)](value);
-      }
-    });
-  });
-
-  vm.activeTab = {
-    class: true
-  };
-
-  vm.reload = () => {
-    fetchModel();
-    fetchClasses();
-    fetchProperties();
-  };
-
-  vm.registerView = (view) => {
-    views.push(view);
-  };
-
-  const activateByTypeAndId = (type, id) => {
-    askPermissionWhenEditing(() => {
-      clearAll();
-      vm['activated' + _.capitalize(type) + 'Id'] = id;
-      $location.search({urn: modelId, [type]: id});
-      vm.activeTab = {[type]: true};
-    });
-  };
-
-  const activate = type => _.partial(activateByTypeAndId, type);
-
-  vm.activateClass = activate('class');
-  vm.activateAttribute = activate('attribute');
-  vm.activateAssociation = activate('association');
-
-  vm.isClassActivated = (klass) => vm.activatedClassId && vm.activatedClassId === klass['@id'];
-  vm.isAttributeActivated = (attribute) => vm.activatedAttributeId && vm.activatedAttributeId === attribute['@id'];
-  vm.isAssociationActivated = (association) => vm.activatedAssociationId && vm.activatedAssociationId === association['@id'];
-
+  vm.selected = selected;
+  vm.activeTab = selected ? {[selected.type]: true} : {class: true};
+  vm.reload = fetchAll;
+  vm.registerView = (view) => views.push(view);
+  vm.select = select;
+  vm.isSelected = (type, id) => _.isEqual(vm.selected, {type, id});
   vm.isLoggedIn = userService.isLoggedIn;
 
   vm.addClass = () => {
     const classIds = _.map(vm.classes, klass => klass['@id']);
     searchClassModal.open(classIds).result.then(classId => {
       classService.assignClassToModel(classId, modelId).then(() => {
-        vm.activateClass(classId);
+        vm.select('class', classId);
         fetchClasses();
       });
     });
   };
 
+  function select(type, id) {
+    askPermissionWhenEditing((editing) => {
+      if (editing) {
+        cancelEditing();
+      }
+      vm.selected = {type, id};
+      $location.search({urn: modelId, [type]: id});
+    });
+  }
+
   function askPermissionWhenEditing(callback) {
     if (isEditing()) {
-      editInProgressModal.open().result.then(callback);
+      editInProgressModal.open().result.then(() => callback(true));
     } else {
-      callback();
+      callback(false);
     }
+  }
+
+  function cancelEditing() {
+    return _.forEach(views, view => view.cancelEditing());
   }
 
   function isEditing() {
     return _.find(views, view => view.isEditing());
   }
 
-  function clearAll() {
-    vm.activatedAttributeId = undefined;
-    vm.activatedClassId = undefined;
-    vm.activatedAssociationId = undefined;
+  function fetchAll() {
+    return $q.all([fetchModel(), fetchClasses(), fetchProperties()]);
   }
 
   function fetchModel() {
     return modelService.getModelByUrn(modelId).then(data => {
       vm.model = data['@graph'][0];
+    }, err => {
+      $log.error(err);
     });
   }
 

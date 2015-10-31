@@ -17,8 +17,8 @@
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isClassActivated(class)}"
-                ng-click="ctrl.activateClass(class['@id'])">
+                ng-class="{'model-panel__selection': ctrl.isSelected('class', class['@id'])}"
+                ng-click="ctrl.select('class', class['@id'])">
               {{class | translateLabel}}
             </li>
           </ul>
@@ -29,8 +29,8 @@
           </uib-tab-heading>
           <ul class="panel__list" window-height padding="93">
             <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isAttributeActivated(attribute)}"
-                ng-click="ctrl.activateAttribute(attribute['@id'])">
+                ng-class="{'model-panel__selection': ctrl.isSelected('attribute', attribute['@id'])}"
+                ng-click="ctrl.select('attribute', attribute['@id'])">
               {{attribute | translateLabel}}
             </li>
           </ul>
@@ -41,8 +41,8 @@
           </uib-tab-heading>
           <ul class="panel__list" window-height padding="93">
             <li ng-repeat="association in ctrl.associations | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isAssociationActivated(association)}"
-                ng-click="ctrl.activateAssociation(association['@id'])">
+                ng-class="{'model-panel__selection': ctrl.isSelected('association', association['@id'])}"
+                ng-click="ctrl.select('association', association['@id'])">
               {{association | translateLabel}}
             </li>
           </ul>
@@ -51,9 +51,9 @@
     </div>
 
     <div class="model-panel--right" window-height padding="3">
-      <class-view id="ctrl.activatedClassId" ng-if="ctrl.activatedClassId"></class-view>
-      <attribute-view id="ctrl.activatedAttributeId" ng-if="ctrl.activatedAttributeId"></attribute-view>
-      <association-view id="ctrl.activatedAssociationId" ng-if="ctrl.activatedAssociationId"></association-view>
+      <class-view id="ctrl.selected.id" ng-if="ctrl.selected.type === 'class'"></class-view>
+      <attribute-view id="ctrl.selected.id" ng-if="ctrl.selected.type === 'attribute'"></attribute-view>
+      <association-view id="ctrl.selected.id" ng-if="ctrl.selected.type === 'association'"></association-view>
     </div>
   </div>
 

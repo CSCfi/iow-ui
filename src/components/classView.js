@@ -36,6 +36,7 @@ module.exports = function classView($log) {
       vm.canDeleteClass = canDeleteClass;
       // view contract
       vm.isEditing = isEditing;
+      vm.cancelEditing = cancelEditing;
 
       $scope.$watch('ctrl.id', id => fetchClass(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
@@ -52,7 +53,6 @@ module.exports = function classView($log) {
       function fetchClass(id) {
         vm.loading = true;
         classService.getClass(id).then(data => {
-          cancelEditing();
           vm.class = data['@graph'][0];
           vm.context = data['@context'];
           ensurePropertyAsArray(vm.class, 'property');

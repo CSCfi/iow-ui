@@ -30,6 +30,7 @@ module.exports = function attributeView($log) {
       vm.resetModel = resetModel;
       // view contract
       vm.isEditing = isEditing;
+      vm.cancelEditing = cancelEditing;
 
       $scope.$watch('ctrl.id', id => fetchPredicate(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
@@ -38,7 +39,6 @@ module.exports = function attributeView($log) {
       function fetchPredicate(id) {
         vm.loading = true;
         predicateService.getPredicateById(id, 'attributeFrame').then(data => {
-          cancelEditing();
           context = data['@context'];
           originalId = id;
           vm.attribute = data['@graph'][0];
