@@ -228,6 +228,10 @@ msgstr "Hae luokkaa…"
 msgid "Search classes"
 msgstr "Hae luokkia"
 
+#: components/templates/searchClassConceptModal.html:13
+msgid "Search from concept database"
+msgstr "Hae sanastosta…"
+
 #: components/templates/searchPredicateModal.html:15
 msgid "search predicate"
 msgstr "Hae ominaisuutta…"

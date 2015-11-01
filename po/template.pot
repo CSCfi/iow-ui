@@ -216,6 +216,10 @@ msgstr ""
 msgid "Search classes"
 msgstr ""
 
+#: components/templates/searchClassConceptModal.html:13
+msgid "Search from concept database"
+msgstr ""
+
 #: components/templates/searchPredicateModal.html:15
 msgid "search predicate"
 msgstr ""
