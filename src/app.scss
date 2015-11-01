@@ -3,6 +3,7 @@
 @import './vendor/_variables';
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 @import './vendor/_bootswatch';
+@import './vendor/_typeaheadjs';
 @import './vendor/angular-xeditable-0.1.8/css/xeditable';
 @import './components/templates/model';
 
@@ -53,6 +54,16 @@
 }
 
 .search-modal {
+
+  .tt-menu {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .details {
+    font-size: x-small;
+  }
+
   > p {
     max-width: 600px;
   }
@@ -60,6 +71,10 @@
   .input-group {
     width: 100%;
     padding-bottom: 20px;
+  }
+
+  .twitter-typeahead {
+    width: 100%;
   }
 
   .search-results {

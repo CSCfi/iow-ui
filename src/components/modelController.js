@@ -1,6 +1,7 @@
 const _ = require('lodash');
+const contextUtils = require('../services/contextUtils');
 
-module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, predicateService, userService, searchClassModal, editInProgressModal) {
+module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, userService, searchClassModal, editInProgressModal) {
   'ngInject';
 
   const views = [];
@@ -20,13 +21,31 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   vm.addClass = () => {
     const classIds = _.map(vm.classes, klass => klass['@id']);
-    searchClassModal.open(classIds).result.then(classId => {
-      classService.assignClassToModel(classId, modelId).then(() => {
+    searchClassModal.open(classIds).result.then(result => {
+      if (typeof result === 'object') {
+        createClass(result);
+      } else {
+        assignClassToModel(result);
+      }
+    });
+  };
+
+  function assignClassToModel(classId) {
+    classService.assignClassToModel(classId, modelId).then(() => {
+      vm.select('class', classId);
+      fetchClasses();
+    });
+  }
+
+  function createClass(conceptData) {
+    classCreatorService.createClass(modelId, conceptData.classLabel, conceptData.conceptId).then(response => {
+      const classId = contextUtils.withFullIRI(response['@context'], response['@graph'][0]['@id']);
+      classService.createClass(response, classId).then(() => {
         vm.select('class', classId);
         fetchClasses();
       });
     });
-  };
+  }
 
   function select(type, id) {
     askPermissionWhenEditing((editing) => {

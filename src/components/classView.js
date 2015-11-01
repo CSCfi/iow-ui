@@ -105,7 +105,7 @@ module.exports = function classView($log) {
 
       function addProperty() {
         searchPredicateModal.open().result.then(predicateId => {
-          classPropertyService.getPropertyForPredicateId(predicateId).then(property => {
+          classPropertyService.createPropertyForPredicateId(predicateId).then(property => {
             vm.class.property.push(property['@graph'][0]);
           });
         });

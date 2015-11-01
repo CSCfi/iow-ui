@@ -1,0 +1,28 @@
+<div class="modal-header modal-header-confirm">
+  <h4 class="modal-title ng-binding">
+    <span translate>Define concept for the new class</span>
+    <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.cancel()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+  </h4>
+</div>
+
+<div class="modal-body search-modal">
+  <form name="conceptForm">
+
+    <label for="concept" translate>Concept</label>
+    <div class="input-group input-group-md">
+      <input id="concept" type="text" class="form-control" iow-typeahead options="ctrl.options" datasets="ctrl.datasets" required ng-model="ctrl.concept" placeholder="Hae sanastosta..."/>
+      <i class="glyphicon glyphicon-search form-control-feedback"></i>
+    </div>
+
+    <label for="name" translate>Class label</label>
+    <div class="input-group input-group-md">
+      <input id="name" type="text" class="form-control" required ng-model="ctrl.classLabel" />
+    </div>
+
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
+  <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!conceptForm.$valid" translate>Create new</button>
+</div>

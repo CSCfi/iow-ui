@@ -19,7 +19,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($modalInstance, classService, modelLanguage, excludedClassIds) {
+function SearchClassController($modalInstance, classService, modelLanguage, excludedClassIds, searchClassConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -62,6 +62,12 @@ function SearchClassController($modalInstance, classService, modelLanguage, excl
 
   vm.confirm = () => {
     $modalInstance.close(selectedClassId());
+  };
+
+  vm.createNewClass = () => {
+    return searchClassConceptModal.open().result.then(result => {
+      $modalInstance.close(result);
+    });
   };
 
   function selectedClassId() {

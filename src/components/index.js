@@ -23,6 +23,7 @@ mod.directive('requiresView', require('./requiresView'));
 mod.directive('showSubmitError', require('./showSubmitError'));
 mod.directive('windowHeight', require('./windowHeight'));
 mod.directive('rangeSelect', require('./rangeSelect'));
+mod.directive('iowTypeahead', require('./typeahead'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
@@ -30,6 +31,7 @@ mod.controller('modelController', require('./modelController'));
 mod.factory('editInProgressModal', require('./editInProgressModalFactory'));
 mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
 mod.factory('searchClassModal', require('./searchClassModalFactory'));
+mod.factory('searchClassConceptModal', require('./searchClassConceptModalFactory'));
 
 mod.filter('translateValue', (modelLanguage) => {
   return (input) => input ? modelLanguage.translate(input) : '';

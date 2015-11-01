@@ -9,6 +9,7 @@
       "vars": "local",
       "args": "none"
     }],
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "no-else-return": 0
   }
 }

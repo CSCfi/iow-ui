@@ -1,4 +1,6 @@
 window.jQuery = require('jquery');
+require('typeahead.js-browserify').loadjQueryPlugin();
+
 const angular = require('angular');
 
 require('angular-gettext');

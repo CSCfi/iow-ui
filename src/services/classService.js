@@ -22,6 +22,13 @@ module.exports = function classService($http) {
         return jsonld.promises.frame(response.data, frame);
       });
     },
+    createClass(classData, id) {
+      const requestParams = {
+        id,
+        model: classData['@graph'][0].isDefinedBy
+      };
+      return $http.put('/api/rest/class', classData, {params: requestParams});
+    },
     updateClass(classData, id, originalId) {
       const requestParams = {
         id,

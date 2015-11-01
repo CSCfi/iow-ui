@@ -4,7 +4,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: components/templates/model.html:14
+#: components/templates/model.html:16
 msgid "Add class"
 msgstr ""
 
@@ -12,7 +12,7 @@ msgstr ""
 msgid "Add property"
 msgstr ""
 
-#: components/templates/searchClassModal.html:24
+#: components/templates/searchClassModal.html:32
 #: components/templates/searchPredicateModal.html:24
 msgid "All models"
 msgstr ""
@@ -25,11 +25,11 @@ msgstr ""
 msgid "Are you sure that you want to cancel edit?"
 msgstr ""
 
-#: components/templates/model.html:38
+#: components/templates/model.html:40
 msgid "Associations"
 msgstr ""
 
-#: components/templates/model.html:26
+#: components/templates/model.html:28
 msgid "Attributes"
 msgstr ""
 
@@ -38,7 +38,8 @@ msgid "Browse"
 msgstr ""
 
 #: components/templates/editInProgressModal.html:14
-#: components/templates/searchClassModal.html:67
+#: components/templates/searchClassConceptModal.html:26
+#: components/templates/searchClassModal.html:75
 #: components/templates/searchPredicateModal.html:59
 msgid "Cancel"
 msgstr ""
@@ -47,26 +48,44 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
-#: components/templates/searchClassModal.html:9
+#: components/templates/searchClassConceptModal.html:17
+msgid "Class label"
+msgstr ""
+
+#: components/templates/searchClassModal.html:17
 msgid "Class search info"
 msgstr ""
 
-#: components/templates/model.html:11
+#: components/templates/model.html:13
 msgid "Classes"
 msgstr ""
 
-#: components/templates/associationView.html:10
-#: components/templates/attributeView.html:10
-#: components/templates/modelView.html:13
+#: components/templates/associationView.html:12
+#: components/templates/attributeView.html:12
+#: components/templates/classView.html:14
+#: components/templates/modelView.html:15
+#: components/templates/propertyView.html:8
 msgid "Comment"
+msgstr ""
+
+#: components/templates/searchClassConceptModal.html:11
+msgid "Concept"
+msgstr ""
+
+#: components/templates/searchClassConceptModal.html:27
+msgid "Create new"
+msgstr ""
+
+#: components/templates/searchClassModal.html:13
+msgid "Create new class"
 msgstr ""
 
 #: index.html:19
 msgid "Data language"
 msgstr ""
 
-#: components/templates/propertyView.html:10
-msgid "Datatype"
+#: components/templates/searchClassConceptModal.html:3
+msgid "Define concept for the new class"
 msgstr ""
 
 #: components/templates/classView.html:5
@@ -77,10 +96,8 @@ msgstr ""
 msgid "Delete property"
 msgstr ""
 
-#: components/templates/classView.html:20
 #: components/templates/predicateView.html:5
-#: components/templates/propertyView.html:8
-#: components/templates/searchClassModal.html:48
+#: components/templates/searchClassModal.html:56
 msgid "Description"
 msgstr ""
 
@@ -100,10 +117,10 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: components/templates/associationView.html:9
-#: components/templates/attributeView.html:9
+#: components/templates/associationView.html:11
+#: components/templates/attributeView.html:11
 #: components/templates/classView.html:13
-#: components/templates/modelView.html:14
+#: components/templates/modelView.html:13
 msgid "Id"
 msgstr ""
 
@@ -115,16 +132,11 @@ msgstr ""
 msgid "IOW header"
 msgstr ""
 
-#: components/templates/associationView.html:12
-#: components/templates/attributeView.html:12
-#: components/templates/classView.html:18
-#: components/templates/searchClassModal.html:52
+#: components/templates/associationView.html:14
+#: components/templates/attributeView.html:14
+#: components/templates/classView.html:19
+#: components/templates/searchClassModal.html:60
 msgid "Is defined by"
-msgstr ""
-
-#: components/templates/associationView.html:8
-#: components/templates/attributeView.html:8
-msgid "Label"
 msgstr ""
 
 #: components/templates/login-modal.html:14
@@ -143,8 +155,13 @@ msgstr ""
 
 #: components/templates/predicateView.html:1
 #: components/templates/propertyView.html:7
-#: components/templates/searchClassModal.html:44
+#: components/templates/searchClassModal.html:52
 msgid "Name"
+msgstr ""
+
+#: components/searchClassConceptModalFactory.js:59
+#: translations/misc.html:3
+msgid "not found in the concept database"
 msgstr ""
 
 #: translations/type.html:4
@@ -163,8 +180,6 @@ msgstr ""
 msgid "Preferred prefix"
 msgstr ""
 
-#: components/templates/associationView.html:11
-#: components/templates/attributeView.html:11
 #: components/templates/predicateView.html:13
 msgid "Range"
 msgstr ""
@@ -193,7 +208,7 @@ msgstr ""
 msgid "Save failed"
 msgstr ""
 
-#: components/templates/searchClassModal.html:15
+#: components/templates/searchClassModal.html:23
 msgid "search class"
 msgstr ""
 
@@ -213,8 +228,8 @@ msgstr ""
 msgid "Search predicates"
 msgstr ""
 
-#: components/templates/classView.html:15
-#: components/templates/searchClassModal.html:56
+#: components/templates/classView.html:16
+#: components/templates/searchClassModal.html:64
 msgid "Superclass"
 msgstr ""
 
@@ -228,7 +243,7 @@ msgstr ""
 msgid "UI language"
 msgstr ""
 
-#: components/templates/searchClassModal.html:68
+#: components/templates/searchClassModal.html:76
 msgid "Use class"
 msgstr ""
 
