@@ -1,4 +1,4 @@
-module.exports = function directive() {
+module.exports = function directive($timeout) {
   'ngInject';
   return {
     scope: {
@@ -12,6 +12,15 @@ module.exports = function directive() {
       const datasets = (Array.isArray($scope.datasets) ? $scope.datasets : [$scope.datasets]) || [];
 
       element.typeahead(options, datasets);
+
+      // FIXME: hack, fixes bug in typeahead.js
+      if (attributes.autofocus) {
+        $timeout(() => {
+          $timeout(() => {
+            element.focus();
+          });
+        });
+      }
 
       ngModel.$parsers.push((viewValue) => {
         if (options.editable === false) {
