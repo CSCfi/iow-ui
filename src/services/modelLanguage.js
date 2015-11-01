@@ -17,7 +17,9 @@ module.exports = function modelLanguage() {
     },
     translate(label) {
       if (label) {
-        return label[language] || _.chain(languages).map(lang => label[lang]).find().value() || label;
+        return label[language] || _.chain(languages).map(lang => label[lang]).find().value() || '';
+      } else {
+        return '';
       }
     }
   };
