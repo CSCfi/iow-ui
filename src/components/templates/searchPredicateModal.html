@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="col-md-4 search-results">
+    <div class="col-md-4 search-results" window-height padding="320">
       <div ng-repeat="predicate in ctrl.searchResults() track by predicate['@id']">
           <div ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)">
             <i ng-class="ctrl.iconClass(predicate)"></i>
