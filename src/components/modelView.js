@@ -12,7 +12,7 @@ module.exports = function classView($log) {
     template: require('./templates/modelView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller(modelService) {
+    controller() {
       'ngInject';
     }
   };

@@ -7,7 +7,7 @@ module.exports = function referencesView($log) {
     },
     restrict: 'E',
     template: require('./templates/referencesView.html'),
-    controller($scope) {
+    controller() {
       'ngInject';
     }
   };

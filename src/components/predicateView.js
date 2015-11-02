@@ -6,7 +6,7 @@ module.exports = function predicateView($log) {
     },
     restrict: 'E',
     template: require('./templates/predicateView.html'),
-    controller($scope) {
+    controller() {
       'ngInject';
     }
   };
