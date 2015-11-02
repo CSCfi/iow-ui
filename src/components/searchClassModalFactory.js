@@ -19,14 +19,14 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($modalInstance, classService, modelLanguage, excludedClassIds, searchConceptModal) {
+function SearchClassController($uibModalInstance, classService, modelLanguage, excludedClassIds, searchConceptModal) {
   'ngInject';
 
   const vm = this;
   let context;
   let classes;
 
-  vm.close = $modalInstance.dismiss;
+  vm.close = $uibModalInstance.dismiss;
   vm.selectedClass = null;
   vm.searchText = '';
   vm.modelId = '';
@@ -61,12 +61,12 @@ function SearchClassController($modalInstance, classService, modelLanguage, excl
   };
 
   vm.confirm = () => {
-    $modalInstance.close(selectedClassId());
+    $uibModalInstance.close(selectedClassId());
   };
 
   vm.createNewClass = () => {
     return searchConceptModal.open('Define concept for the new class').result.then(result => {
-      $modalInstance.close(result);
+      $uibModalInstance.close(result);
     });
   };
 

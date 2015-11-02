@@ -6,14 +6,14 @@ module.exports = function modalFactory($uibModal) {
       return $uibModal.open({
         template: require('./templates/editInProgressModal.html'),
         controllerAs: 'ctrl',
-        controller($modalInstance) {
+        controller($uibModalInstance) {
           'ngInject';
           this.ok = () => {
-            $modalInstance.close();
+            $uibModalInstance.close();
           };
 
           this.cancel = () => {
-            $modalInstance.dismiss();
+            $uibModalInstance.dismiss();
           };
         }
       });

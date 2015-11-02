@@ -19,7 +19,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($scope, $modalInstance, modelLanguage, gettextCatalog, defineConceptTitle) {
+function SearchClassController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle) {
   'ngInject';
 
   const vm = this;
@@ -72,10 +72,10 @@ function SearchClassController($scope, $modalInstance, modelLanguage, gettextCat
   };
 
   vm.create = () => {
-    $modalInstance.close({conceptId: vm.concept.uri, label: vm.label});
+    $uibModalInstance.close({conceptId: vm.concept.uri, label: vm.label});
   };
 
   vm.cancel = () => {
-    $modalInstance.dismiss();
+    $uibModalInstance.dismiss();
   };
 }
