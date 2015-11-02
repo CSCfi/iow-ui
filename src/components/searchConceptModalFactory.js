@@ -19,7 +19,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($modalInstance, modelLanguage, gettextCatalog, defineConceptTitle) {
+function SearchClassController($scope, $modalInstance, modelLanguage, gettextCatalog, defineConceptTitle) {
   'ngInject';
 
   const vm = this;
@@ -34,6 +34,12 @@ function SearchClassController($modalInstance, modelLanguage, gettextCatalog, de
     minLength: 3,
     editable: false
   };
+
+  $scope.$watch('ctrl.concept', (concept) => {
+    if (concept) {
+      vm.label = concept.prefLabel;
+    }
+  });
 
   function identify(obj) {
     return obj.uri;
