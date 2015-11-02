@@ -2,7 +2,7 @@ const _ = require('lodash');
 const jsonld = require('jsonld');
 const frames = require('./frames');
 
-module.exports = function classCreatorService($http) {
+module.exports = function predicateCreatorService($http) {
   'ngInject';
 
   return {
