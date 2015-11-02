@@ -39,11 +39,13 @@ module.exports = function directive($timeout) {
 
       function updateModel(event, suggestion) {
         if (ngModel) {
+          $scope.$apply(() => {
             if (options.editable === false) {
               ngModel.$setViewValue({selected: true, value: suggestion});
             } else {
               ngModel.$setViewValue(angular.element(event.target).val());
             }
+          });
         }
       }
 
