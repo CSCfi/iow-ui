@@ -1,5 +1,41 @@
+const _ = require('lodash');
+
 module.exports = function directive($timeout) {
   'ngInject';
+
+  function normalizeAsArray(obj) {
+    return (Array.isArray(obj) ? obj : [obj]) || [];
+  }
+
+  function disableModelChangeEvents(ngModel) {
+    const disableEvents = {
+      updateOn: ''
+    };
+
+    if (ngModel.$options) {
+      _.assign(ngModel.$options, disableEvents);
+    } else {
+      ngModel.$options = disableEvents;
+    }
+  }
+
+  function focus(element) {
+    $timeout(() => {
+      $timeout(() => {
+        element.focus();
+      });
+    });
+  }
+
+  function elementValue(event) {
+    return angular.element(event.target).val();
+  }
+
+  function single(obj) {
+    const array = normalizeAsArray(obj);
+    return array.length === 1 ? array[0] : null;
+  }
+
   return {
     scope: {
       options: '=',
@@ -9,53 +45,50 @@ module.exports = function directive($timeout) {
     require: '?ngModel',
     link($scope, element, attributes, ngModel) {
       const options = $scope.options || {};
-      const datasets = (Array.isArray($scope.datasets) ? $scope.datasets : [$scope.datasets]) || [];
+      const datasets = normalizeAsArray($scope.datasets);
+
+      function isNotEditable() {
+        return options.editable === false;
+      }
+
+      if (isNotEditable() && ngModel) {
+        disableModelChangeEvents(ngModel);
+      }
 
       element.typeahead(options, datasets);
 
       // FIXME: hack, fixes bug in typeahead.js
       if (attributes.autofocus) {
-        $timeout(() => {
-          $timeout(() => {
-            element.focus();
-          });
+        focus(element);
+      }
+
+      function updateModel(event, suggestion) {
+        $scope.$apply(() => {
+          if (isNotEditable()) {
+            ngModel.$setViewValue(suggestion);
+          } else {
+            ngModel.$setViewValue(elementValue(event));
+          }
+          ngModel.$commitViewValue();
         });
       }
 
-      ngModel.$parsers.push((viewValue) => {
-        if (options.editable === false) {
-          if (ngModel) {
-            ngModel.$setValidity('notSelected', viewValue.selected);
-          }
-          return viewValue.selected ? viewValue.value : undefined;
-        } else {
-          return viewValue;
-        }
-      });
+      if (ngModel) {
+        element.bind('typeahead:selected', updateModel);
+        element.bind('typeahead:autocompleted', updateModel);
 
-      ngModel.$formatters.push((modelValue) => {
-        return modelValue;
-      });
-
-      function updateModel(event, suggestion) {
-        if (ngModel) {
-          $scope.$apply(() => {
-            if (options.editable === false) {
-              ngModel.$setViewValue({selected: true, value: suggestion});
-            } else {
-              ngModel.$setViewValue(angular.element(event.target).val());
+        if (isNotEditable()) {
+          element.bind('typeahead:render', (event, suggestions) => {
+            updateModel(event, single(suggestions));
+          });
+          element.bind('keyup', (event) => {
+            if (elementValue(event) < options.minLength) {
+              updateModel(event, null);
             }
           });
         }
       }
 
-      element.bind('typeahead:selected', updateModel);
-      element.bind('typeahead:autocompleted', updateModel);
-      element.bind('typeahead:change', (event) => {
-        if (options.editable === false && ngModel && !ngModel.$modelValue) {
-          angular.element(event.target).val(null);
-        }
-      });
       $scope.$on('$destroy', () => element.typeahead('destroy'));
     }
   };
