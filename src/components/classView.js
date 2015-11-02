@@ -121,7 +121,7 @@ module.exports = function classView($log) {
 
       function createPropertyByConcept(conceptData) {
         const modelId = vm.class.isDefinedBy;
-        predicateCreatorService.createPredicate(modelId, conceptData.label, conceptData.conceptId, conceptData.type).then(predicate => {
+        predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type).then(predicate => {
           const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
           predicateService.createPredicate(predicate, predicateId).then(() => {
             createPropertyByPredicateId(predicateId);
