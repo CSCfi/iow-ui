@@ -6,6 +6,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   const views = [];
   const vm = this;
+  let modelContext;
 
   vm.loading = true;
 
@@ -38,7 +39,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createClass(conceptData) {
-    classCreatorService.createClass(modelId, conceptData.label, conceptData.conceptId).then(response => {
+    classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId).then(response => {
       const classId = contextUtils.withFullIRI(response['@context'], response['@graph'][0]['@id']);
       classService.createClass(response, classId).then(() => {
         vm.select('class', classId);
@@ -80,6 +81,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   function fetchModel() {
     return modelService.getModelByUrn(modelId).then(data => {
       vm.model = data['@graph'][0];
+      modelContext = data['@context'];
     }, err => {
       $log.error(err);
     });
