@@ -133,7 +133,7 @@ module.exports = function classView($log) {
 
       function createPropertyByConcept(conceptData) {
         const modelId = vm.class.isDefinedBy;
-        predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type).then(predicate => {
+        predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage()).then(predicate => {
           unsavedPredicates.push(predicate);
           const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
           createPropertyByPredicateId(predicateId);

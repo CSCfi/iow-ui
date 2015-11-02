@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const contextUtils = require('../services/contextUtils');
 
-module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, userService, searchClassModal, editInProgressModal) {
+module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, userService, searchClassModal, editInProgressModal, modelLanguage) {
   'ngInject';
 
   const views = [];
@@ -39,7 +39,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createClass(conceptData) {
-    classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId).then(response => {
+    classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage()).then(response => {
       const classId = contextUtils.withFullIRI(response['@context'], response['@graph'][0]['@id']);
       classService.createClass(response, classId).then(() => {
         vm.select('class', classId);
