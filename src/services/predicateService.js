@@ -1,10 +1,23 @@
+const _ = require('lodash');
 const jsonld = require('jsonld');
 const frames = require('./frames');
 
 module.exports = function predicateService($http, $q) {
   'ngInject';
 
+  let unsavedPredicates = {};
+
   return {
+    addUnsavedPredicate(predicateId, predicate) {
+      unsavedPredicates[predicateId] = predicate;
+    },
+    createUnsavedPredicates() {
+      return $q.all(_.map(unsavedPredicates, (predicate, predicateId) => this.createPredicate(predicate, predicateId)))
+        .then(this.clearUnsavedPredicates);
+    },
+    clearUnsavedPredicates() {
+      unsavedPredicates = {};
+    },
     getAllPredicates() {
       return $http.get('/api/rest/predicate')
         .then(response => {
@@ -13,11 +26,20 @@ module.exports = function predicateService($http, $q) {
         });
     },
     getPredicateById(id, userFrame = 'propertyFrame') {
-      return $http.get('/api/rest/predicate', {params: {id}})
-        .then(response => {
-          const frame = frames[userFrame](response.data);
-          return jsonld.promises.frame(response.data, frame);
-        });
+      const unsaved = unsavedPredicates[id];
+      if (unsaved) {
+        return {
+          then(callback) {
+            return callback(unsaved);
+          }
+        };
+      } else {
+        return $http.get('/api/rest/predicate', {params: {id}})
+          .then(response => {
+            const frame = frames[userFrame](response.data);
+            return jsonld.promises.frame(response.data, frame);
+          });
+      }
     },
     getPredicatesForModel(model) {
       return $http.get('/api/rest/predicate', {params: {model}}).then(response => {
@@ -42,7 +64,7 @@ module.exports = function predicateService($http, $q) {
     createPredicate(predicate, id) {
       const requestParams = {
         id,
-        model: predicate.isDefinedBy
+        model: predicate.isDefinedBy || predicate['@graph'][0].isDefinedBy
       };
       return $http.put('/api/rest/predicate', predicate, {params: requestParams});
     }
