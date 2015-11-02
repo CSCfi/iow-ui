@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage, userService, classPropertyService, searchPredicateModal) {
+    controller($scope, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService) {
       'ngInject';
 
       let originalId;
@@ -104,9 +104,27 @@ module.exports = function classView($log) {
       }
 
       function addProperty() {
-        searchPredicateModal.open().result.then(predicateId => {
-          classPropertyService.createPropertyForPredicateId(predicateId).then(property => {
-            vm.class.property.push(property['@graph'][0]);
+        searchPredicateModal.open().result.then(result => {
+          if (typeof result === 'object') {
+            createPropertyByConcept(result);
+          } else {
+            createPropertyByPredicateId(result);
+          }
+        });
+      }
+
+      function createPropertyByPredicateId(predicateId) {
+        classPropertyService.createPropertyForPredicateId(predicateId).then(property => {
+          vm.class.property.push(property['@graph'][0]);
+        });
+      }
+
+      function createPropertyByConcept(conceptData) {
+        const modelId = vm.class.isDefinedBy;
+        predicateCreatorService.createPredicate(modelId, conceptData.label, conceptData.conceptId, conceptData.type).then(predicate => {
+          const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
+          predicateService.createPredicate(predicate, predicateId).then(() => {
+            createPropertyByPredicateId(predicateId);
           });
         });
       }

@@ -6,6 +6,18 @@
 </div>
 
 <div class="modal-body search-modal">
+
+  <div class="top-actions">
+    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:DatatypeProperty')">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{'Create new attribute' | translate}}
+    </button>
+    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:ObjectProperty')">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{'Create new association' | translate}}
+    </button>
+  </div>
+
   <p translate>Search predicate info</p>
 
   <div class="row">

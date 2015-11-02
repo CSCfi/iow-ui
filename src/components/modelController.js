@@ -38,7 +38,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createClass(conceptData) {
-    classCreatorService.createClass(modelId, conceptData.classLabel, conceptData.conceptId).then(response => {
+    classCreatorService.createClass(modelId, conceptData.label, conceptData.conceptId).then(response => {
       const classId = contextUtils.withFullIRI(response['@context'], response['@graph'][0]['@id']);
       classService.createClass(response, classId).then(() => {
         vm.select('class', classId);

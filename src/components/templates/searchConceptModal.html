@@ -1,6 +1,6 @@
 <div class="modal-header modal-header-confirm">
   <h4 class="modal-title ng-binding">
-    <span translate>Define concept for the new class</span>
+    <span>{{ctrl.defineConceptTitle | translate}}</span>
     <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.cancel()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
   </h4>
 </div>
@@ -14,9 +14,9 @@
       <i class="glyphicon glyphicon-search form-control-feedback"></i>
     </div>
 
-    <label for="name" translate>Class label</label>
+    <label for="name" translate>Label</label>
     <div class="input-group input-group-md">
-      <input id="name" type="text" class="form-control" required ng-model="ctrl.classLabel" />
+      <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
     </div>
 
   </form>

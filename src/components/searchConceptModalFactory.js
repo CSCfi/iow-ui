@@ -5,24 +5,28 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open() {
+    open(defineConceptTitle) {
       return $uibModal.open({
-        template: require('./templates/searchClassConceptModal.html'),
+        template: require('./templates/searchConceptModal.html'),
         size: 'small',
         controller: SearchClassController,
-        controllerAs: 'ctrl'
+        controllerAs: 'ctrl',
+        resolve: {
+          defineConceptTitle: () => defineConceptTitle
+        }
       });
     }
   };
 };
 
-function SearchClassController($modalInstance, modelLanguage, gettextCatalog) {
+function SearchClassController($modalInstance, modelLanguage, gettextCatalog, defineConceptTitle) {
   'ngInject';
 
   const vm = this;
 
   vm.concept = null;
-  vm.classLabel = null;
+  vm.label = null;
+  vm.defineConceptTitle = defineConceptTitle;
 
   vm.options = {
     hint: false,
@@ -62,7 +66,7 @@ function SearchClassController($modalInstance, modelLanguage, gettextCatalog) {
   };
 
   vm.create = () => {
-    $modalInstance.close({conceptId: vm.concept.uri, classLabel: vm.classLabel});
+    $modalInstance.close({conceptId: vm.concept.uri, label: vm.label});
   };
 
   vm.cancel = () => {

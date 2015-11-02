@@ -16,7 +16,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchPredicateController($modalInstance, predicateService, modelLanguage) {
+function SearchPredicateController($modalInstance, predicateService, modelLanguage, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -67,6 +67,12 @@ function SearchPredicateController($modalInstance, predicateService, modelLangua
 
   vm.confirm = () => {
     $modalInstance.close(selectedPredicateId());
+  };
+
+  vm.createNew = (type) => {
+    return searchConceptModal.open('Define concept for the new predicate').result.then(result => {
+      $modalInstance.close(_.extend(result, {type}));
+    });
   };
 
   vm.iconClass = (predicate) => {

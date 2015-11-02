@@ -19,7 +19,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($modalInstance, classService, modelLanguage, excludedClassIds, searchClassConceptModal) {
+function SearchClassController($modalInstance, classService, modelLanguage, excludedClassIds, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -65,7 +65,7 @@ function SearchClassController($modalInstance, classService, modelLanguage, excl
   };
 
   vm.createNewClass = () => {
-    return searchClassConceptModal.open().result.then(result => {
+    return searchConceptModal.open('Define concept for the new class').result.then(result => {
       $modalInstance.close(result);
     });
   };

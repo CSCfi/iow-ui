@@ -13,11 +13,11 @@ msgid "Add property"
 msgstr ""
 
 #: components/templates/searchClassModal.html:32
-#: components/templates/searchPredicateModal.html:24
+#: components/templates/searchPredicateModal.html:36
 msgid "All models"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:33
+#: components/templates/searchPredicateModal.html:45
 msgid "All types"
 msgstr ""
 
@@ -38,18 +38,14 @@ msgid "Browse"
 msgstr ""
 
 #: components/templates/editInProgressModal.html:14
-#: components/templates/searchClassConceptModal.html:26
 #: components/templates/searchClassModal.html:75
-#: components/templates/searchPredicateModal.html:59
+#: components/templates/searchConceptModal.html:26
+#: components/templates/searchPredicateModal.html:71
 msgid "Cancel"
 msgstr ""
 
 #: components/templates/editableFormButtons.html:4
 msgid "Cancel edit"
-msgstr ""
-
-#: components/templates/searchClassConceptModal.html:17
-msgid "Class label"
 msgstr ""
 
 #: components/templates/searchClassModal.html:17
@@ -68,12 +64,20 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: components/templates/searchClassConceptModal.html:11
+#: components/templates/searchConceptModal.html:11
 msgid "Concept"
 msgstr ""
 
-#: components/templates/searchClassConceptModal.html:27
+#: components/templates/searchConceptModal.html:27
 msgid "Create new"
+msgstr ""
+
+#: components/templates/searchPredicateModal.html:17
+msgid "Create new association"
+msgstr ""
+
+#: components/templates/searchPredicateModal.html:13
+msgid "Create new attribute"
 msgstr ""
 
 #: components/templates/searchClassModal.html:13
@@ -84,8 +88,12 @@ msgstr ""
 msgid "Data language"
 msgstr ""
 
-#: components/templates/searchClassConceptModal.html:3
+#: translations/misc.html:4
 msgid "Define concept for the new class"
+msgstr ""
+
+#: translations/misc.html:5
+msgid "Define concept for the new predicate"
 msgstr ""
 
 #: components/templates/classView.html:5
@@ -139,6 +147,10 @@ msgstr ""
 msgid "Is defined by"
 msgstr ""
 
+#: components/templates/searchConceptModal.html:17
+msgid "Label"
+msgstr ""
+
 #: components/templates/login-modal.html:14
 #: components/templates/login-modal.html:3
 #: components/templates/login.html:1
@@ -159,7 +171,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/searchClassConceptModalFactory.js:59
+#: components/searchConceptModalFactory.js:63
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -216,15 +228,15 @@ msgstr ""
 msgid "Search classes"
 msgstr ""
 
-#: components/templates/searchClassConceptModal.html:13
+#: components/templates/searchConceptModal.html:13
 msgid "Search from concept database"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:15
+#: components/templates/searchPredicateModal.html:27
 msgid "search predicate"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:9
+#: components/templates/searchPredicateModal.html:21
 msgid "Search predicate info"
 msgstr ""
 
@@ -251,7 +263,7 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:60
+#: components/templates/searchPredicateModal.html:72
 msgid "Use predicate"
 msgstr ""
 

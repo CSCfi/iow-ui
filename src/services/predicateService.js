@@ -29,15 +29,22 @@ module.exports = function predicateService($http, $q) {
         });
       });
     },
-    updatePredicate(property, id, originalId) {
+    updatePredicate(predicate, id, originalId) {
       const requestParams = {
         id,
-        model: property.isDefinedBy
+        model: predicate.isDefinedBy
       };
       if (id !== originalId) {
         requestParams.oldid = originalId;
       }
-      return $http.post('/api/rest/predicate', property, {params: requestParams});
+      return $http.post('/api/rest/predicate', predicate, {params: requestParams});
+    },
+    createPredicate(predicate, id) {
+      const requestParams = {
+        id,
+        model: predicate.isDefinedBy
+      };
+      return $http.put('/api/rest/predicate', predicate, {params: requestParams});
     }
   };
 };
