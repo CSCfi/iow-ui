@@ -19,11 +19,13 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService) {
+    controller($scope, $q, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService) {
       'ngInject';
 
-      let originalId;
       const vm = this;
+
+      let originalId;
+      let unsavedPredicates = [];
 
       vm.loading = true;
       vm.fetchClass = fetchClass;
@@ -63,23 +65,33 @@ module.exports = function classView($log) {
       }
 
       function updateClass() {
-        const classData = {
-          '@graph': [vm.class],
-          '@context': vm.context
-        };
+        const predicatesPersist = $q.all(_.map(unsavedPredicates, (predicate) => {
+          const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
+          return predicateService.createPredicate(predicate, predicateId);
+        }));
 
-        const id = contextUtils.withFullIRI(vm.context, vm.class['@id']);
+        return predicatesPersist.then(() => {
+          unsavedPredicates = [];
 
-        $log.info(JSON.stringify(classData, null, 2));
+          const classData = {
+            '@graph': [vm.class],
+            '@context': vm.context
+          };
 
-        return classService.updateClass(classData, id, originalId).then(() => {
-          originalId = id;
-          vm.id = id;
-          $scope.modelController.reload();
+          const id = contextUtils.withFullIRI(vm.context, vm.class['@id']);
+
+          $log.info(JSON.stringify(classData, null, 2));
+
+          return classService.updateClass(classData, id, originalId).then(() => {
+            originalId = id;
+            vm.id = id;
+            $scope.modelController.reload();
+          });
         });
       }
 
       function resetModel() {
+        unsavedPredicates = [];
         fetchClass(originalId);
       }
 
@@ -122,10 +134,11 @@ module.exports = function classView($log) {
       function createPropertyByConcept(conceptData) {
         const modelId = vm.class.isDefinedBy;
         predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type).then(predicate => {
+          unsavedPredicates.push(predicate);
           const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
-          predicateService.createPredicate(predicate, predicateId).then(() => {
-            createPropertyByPredicateId(predicateId);
-          });
+          createPropertyByPredicateId(predicateId);
+        }, err => {
+          $log.error(err);
         });
       }
 
