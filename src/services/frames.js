@@ -8,7 +8,7 @@ const prefLabel = { '@id': 'http://www.w3.org/2004/02/skos/core#prefLabel', '@co
 const dataType = { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' };
 const subClassOf = { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' };
 const property = { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' };
-const modified = { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
+const modified = { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' };
 const isDefinedBy = { '@id': 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', '@type': '@id' };
 const predicate = { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' };
 const valueClass = { '@id': 'http://www.w3.org/ns/shacl#valueClass', '@type': '@id' };
@@ -16,6 +16,7 @@ const nodeKind = { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' 
 const references = { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' };
 const requires = { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' };
 const imports = { '@id': 'http://www.w3.org/2002/07/owl#imports', '@type': '@id' };
+const versionInfo = { '@id': 'http://www.w3.org/2002/07/owl#versionInfo', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
 const hasPart = { '@id': 'http://purl.org/dc/terms/hasPart', '@type': '@id' };
 const preferredXMLNamespaceName = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
 const preferredXMLNamespacePrefix = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
@@ -52,7 +53,8 @@ function modelFrame(data) {
     dataType,
     predicate,
     valueClass,
-    nodeKind
+    nodeKind,
+    versionInfo
   };
 
   return {
@@ -70,14 +72,14 @@ function modelListFrame(data) {
 
 function attributeFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, versionInfo}),
     '@type': 'owl:DatatypeProperty'
   };
 }
 
 function associationFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, versionInfo}),
     '@type': 'owl:ObjectProperty'
   };
 }
@@ -91,7 +93,7 @@ function propertyFrame(data) {
 
 function predicateFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment,subject}),
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, subject, versionInfo}),
     'isDefinedBy':{},
     'subject':{
       '@omitDefault': true,
@@ -120,7 +122,8 @@ function classFrame(data) {
     valueClass,
     nodeKind,
     example,
-    dataType
+    dataType,
+    versionInfo
   };
 
   return {

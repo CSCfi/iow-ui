@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, $q, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService) {
+    controller($scope, $q, $log, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService) {
       'ngInject';
 
       const vm = this;
@@ -134,7 +134,11 @@ module.exports = function classView($log) {
       function createPropertyByConcept(conceptData) {
         const modelId = vm.class.isDefinedBy;
         predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage()).then(predicate => {
+
+        $log.info(JSON.stringify(predicate, null, 2));
+
           unsavedPredicates.push(predicate);
+
           const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
           createPropertyByPredicateId(predicateId);
         }, err => {
