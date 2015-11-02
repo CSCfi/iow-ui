@@ -2,6 +2,7 @@
   "name": "iow-ui",
   "version": "1.0.0",
   "description": "Interoperability workbench user interface seed.",
+  "license": "EUPL-1.1",
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
