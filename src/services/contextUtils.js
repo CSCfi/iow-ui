@@ -1,11 +1,11 @@
 function withFullIRI(context, value) {
-  const result = /^(\w+):(\w+)$/.exec(value);
-  if (result) {
-    const iri = context[result[1]];
+  const parts = value && value.split(':');
+  if (parts.length === 2) {
+    const iri = context[parts[0]];
     if (!iri) {
-      throw new Error(`Prefix '${result[1]}' not found from context: \n ${JSON.stringify(context, null, 2)}`);
+      throw new Error(`Prefix '${parts[0]}' not found from context: \n ${JSON.stringify(context, null, 2)}`);
     } else {
-      return iri + result[2];
+      return iri + parts[1];
     }
   } else {
     return value;
