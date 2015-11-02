@@ -91,8 +91,12 @@ function propertyFrame(data) {
 
 function predicateFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
-    '@id': data['@id']
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment,subject}),
+    'isDefinedBy':{},
+    'subject':{
+      '@omitDefault': true,
+      '@default': [],
+    }
   };
 }
 
