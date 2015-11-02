@@ -35,14 +35,14 @@ function LoginController($uibModal, userService) {
 }
 
 
-function ModalController($window, $uidModalInstance) {
+function ModalController($window, $uibModalInstance) {
   'ngInject';
 
   const vm = this;
 
   vm.login = login;
   vm.register = register;
-  vm.close = $uidModalInstance.dismiss;
+  vm.close = $uibModalInstance.dismiss;
 
   function login() {
     $window.location.href = '/api/login';
