@@ -37,9 +37,15 @@
   background-color: #f5f5f5;
 }
 
+.top-actions-placeholder {
+  float: right;
+}
+
 .top-actions {
+  z-index: 1000;
+  float: right;
+  text-align: right;
   button, a {
-    float: right;
     margin-left: 5px;
   }
 }

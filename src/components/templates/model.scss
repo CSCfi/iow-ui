@@ -1,5 +1,9 @@
 $navbarWidth: 275px;
 
+.model-panel--left-placeholder {
+  float: left;
+}
+
 .model-panel--left {
   width: $navbarWidth;
   float: left;
@@ -51,7 +55,7 @@ $navbarWidth: 275px;
 }
 
 .model-panel--right {
-  float: left;
+  float: right;
   width: calc(100% - #{$navbarWidth});
   padding: 15px;
 }

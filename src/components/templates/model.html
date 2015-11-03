@@ -5,7 +5,7 @@
   </div>
 
   <div class="bottom">
-    <div class="model-panel--left">
+    <div class="model-panel--left" float="model-panel--left-placeholder">
       <uib-tabset>
 
         <uib-tab active="ctrl.activeTab['class']">
@@ -30,7 +30,7 @@
 
           <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:DatatypeProperty')" translate>Add attribute</button>
 
-          <ul class="panel__list" window-height padding="93">
+          <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isSelected('attribute', attribute['@id'])}"
                 ng-click="ctrl.select('attribute', attribute['@id'])">
@@ -45,7 +45,7 @@
 
           <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:ObjectProperty')" translate>Add association</button>
 
-          <ul class="panel__list" window-height padding="93">
+          <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="association in ctrl.associations | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isSelected('association', association['@id'])}"
                 ng-click="ctrl.select('association', association['@id'])">
@@ -56,7 +56,7 @@
       </uib-tabset>
     </div>
 
-    <div class="model-panel--right" window-height padding="3">
+    <div class="model-panel--right">
       <class-view id="ctrl.selected.id" ng-if="ctrl.selected.type === 'class'"></class-view>
       <attribute-view id="ctrl.selected.id" ng-if="ctrl.selected.type === 'attribute'"></attribute-view>
       <association-view id="ctrl.selected.id" ng-if="ctrl.selected.type === 'association'"></association-view>

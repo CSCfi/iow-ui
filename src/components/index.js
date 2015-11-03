@@ -24,6 +24,7 @@ mod.directive('showSubmitError', require('./showSubmitError'));
 mod.directive('windowHeight', require('./windowHeight'));
 mod.directive('rangeSelect', require('./rangeSelect'));
 mod.directive('iowTypeahead', require('./typeahead'));
+mod.directive('float', require('./float'));
 
 mod.controller('groupController', require('./groupController'));
 mod.controller('modelController', require('./modelController'));
