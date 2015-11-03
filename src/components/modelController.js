@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const contextUtils = require('../services/contextUtils');
 
-module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, userService, searchClassModal, editInProgressModal, modelLanguage) {
+module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, predicateCreatorService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
   'ngInject';
 
   const views = [];
@@ -21,8 +21,8 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.isLoggedIn = userService.isLoggedIn;
 
   vm.addClass = () => {
-    const classIds = _.map(vm.classes, klass => klass['@id']);
-    searchClassModal.open(classIds).result.then(result => {
+    const classMap = _.indexBy(vm.classes, klass => klass['@id']);
+    searchClassModal.open(classMap).result.then(result => {
       if (typeof result === 'object') {
         createClass(result);
       } else {
@@ -31,13 +31,6 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     });
   };
 
-  function assignClassToModel(classId) {
-    classService.assignClassToModel(classId, modelId).then(() => {
-      vm.select('class', classId);
-      fetchClasses();
-    });
-  }
-
   function createClass(conceptData) {
     classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage()).then(response => {
       const classId = contextUtils.withFullIRI(response['@context'], response['@graph'][0]['@id']);
@@ -45,6 +38,45 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
         vm.select('class', classId);
         fetchClasses();
       });
+    });
+  }
+
+  function assignClassToModel(classId) {
+    classService.assignClassToModel(classId, modelId).then(() => {
+      vm.select('class', classId);
+      fetchClasses();
+    });
+  }
+
+  vm.addPredicate = (type) => {
+    const predicateMap = _.indexBy(vm.associations.concat(vm.attributes), (predicate) => predicate['@id']);
+    searchPredicateModal.open(type, predicateMap).result.then(result => {
+      if (typeof result === 'object') {
+        createPredicate(result);
+      } else {
+        assignPredicateToModel(result, type);
+      }
+    });
+  };
+
+  function owlTypeToType(owlType) {
+    return owlType === 'owl:ObjectProperty' ? 'association' : 'attribute';
+  }
+
+  function createPredicate(conceptData) {
+    predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage()).then(predicate => {
+      const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
+      predicateService.createPredicate(predicate, predicateId).then(() => {
+        vm.select(owlTypeToType(conceptData.type), predicateId);
+        fetchPredicates();
+      });
+    });
+  }
+
+  function assignPredicateToModel(predicateId, type) {
+    predicateService.assignPredicateToModel(predicateId, modelId).then(() => {
+      vm.select(owlTypeToType(type), predicateId);
+      fetchPredicates();
     });
   }
 
@@ -67,7 +99,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function cancelEditing() {
-    return _.forEach(views, view => view.cancelEditing());
+    return _.forEach(views, view => view.cancelEditing(false));
   }
 
   function isEditing() {
@@ -75,7 +107,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function fetchAll() {
-    return $q.all([fetchModel(), fetchClasses(), fetchProperties()]);
+    return $q.all([fetchModel(), fetchClasses(), fetchPredicates()]);
   }
 
   function fetchModel() {
@@ -95,7 +127,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     });
   }
 
-  function fetchProperties() {
+  function fetchPredicates() {
     return predicateService.getPredicatesForModel(modelId).then(data => {
       vm.attributes = data.attributes['@graph'];
       vm.associations = data.associations['@graph'];

@@ -67,6 +67,13 @@ module.exports = function predicateService($http, $q) {
         model: predicate.isDefinedBy || predicate['@graph'][0].isDefinedBy
       };
       return $http.put('/api/rest/predicate', predicate, {params: requestParams});
+    },
+    assignPredicateToModel(predicateId, modelId) {
+      const requestParams = {
+        id: predicateId,
+        model: modelId
+      };
+      return $http.post('/api/rest/predicate', undefined, {params: requestParams});
     }
   };
 };

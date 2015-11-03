@@ -12,6 +12,14 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: components/templates/model.html:46
+msgid "Add association"
+msgstr "Lisää assosiaatio"
+
+#: components/templates/model.html:31
+msgid "Add attribute"
+msgstr "Lisää ominaisuus"
+
 #: components/templates/model.html:16
 msgid "Add class"
 msgstr "Lisää luokka"
@@ -33,7 +41,7 @@ msgstr "Kaikki tyypit"
 msgid "Are you sure that you want to cancel edit?"
 msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 
-#: components/templates/model.html:40
+#: components/templates/model.html:43
 msgid "Associations"
 msgstr "Assosiaatiot"
 
@@ -184,7 +192,7 @@ msgstr "Kirjaudu ulos"
 msgid "Name"
 msgstr "Nimi"
 
-#: components/searchConceptModalFactory.js:63 translations/misc.html:3
+#: components/searchConceptModalFactory.js:69 translations/misc.html:3
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
 

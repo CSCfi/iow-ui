@@ -70,8 +70,8 @@ module.exports = function associationView($log) {
         return $scope.formController.visible();
       }
 
-      function cancelEditing() {
-        $scope.formController.cancel();
+      function cancelEditing(reset) {
+        $scope.formController.cancel(reset);
       }
     }
   };

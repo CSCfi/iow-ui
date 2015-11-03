@@ -5,21 +5,21 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(excludedClassIds = []) {
+    open(excludedClassMap = []) {
       return $uibModal.open({
         template: require('./templates/searchClassModal.html'),
         size: 'large',
         controller: SearchClassController,
         controllerAs: 'ctrl',
         resolve: {
-          excludedClassIds: () => excludedClassIds
+          excludedClassMap: () => excludedClassMap
         }
       });
     }
   };
 };
 
-function SearchClassController($uibModalInstance, classService, modelLanguage, excludedClassIds, searchConceptModal) {
+function SearchClassController($uibModalInstance, classService, modelLanguage, excludedClassMap, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -33,7 +33,7 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, e
   vm.models = [];
 
   classService.getAllClasses().then(result => {
-    classes = _.reject(result['@graph'], klass => _.includes(excludedClassIds, klass['@id']));
+    classes = _.reject(result['@graph'], klass => excludedClassMap[klass['@id']]);
 
     vm.models = _.chain(classes)
       .map(klass => klass.isDefinedBy)

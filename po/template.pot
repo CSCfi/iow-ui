@@ -4,6 +4,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: components/templates/model.html:46
+msgid "Add association"
+msgstr ""
+
+#: components/templates/model.html:31
+msgid "Add attribute"
+msgstr ""
+
 #: components/templates/model.html:16
 msgid "Add class"
 msgstr ""
@@ -25,7 +33,7 @@ msgstr ""
 msgid "Are you sure that you want to cancel edit?"
 msgstr ""
 
-#: components/templates/model.html:40
+#: components/templates/model.html:43
 msgid "Associations"
 msgstr ""
 
@@ -171,7 +179,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/searchConceptModalFactory.js:63
+#: components/searchConceptModalFactory.js:69
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""

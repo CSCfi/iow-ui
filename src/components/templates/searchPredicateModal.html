@@ -8,11 +8,11 @@
 <div class="modal-body search-modal">
 
   <div class="top-actions">
-    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:DatatypeProperty')">
+    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:DatatypeProperty')" ng-hide="!ctrl.typeSelectable && ctrl.type != 'owl:DatatypeProperty'">
       <span class="glyphicon glyphicon-plus"></span>
       {{'Create new attribute' | translate}}
     </button>
-    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:ObjectProperty')">
+    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:ObjectProperty')" ng-hide="!ctrl.typeSelectable && ctrl.type != 'owl:ObjectProperty'">
       <span class="glyphicon glyphicon-plus"></span>
       {{'Create new association' | translate}}
     </button>
@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <div class="input-group input-group-lg">
+      <div class="input-group input-group-lg" ng-if="ctrl.typeSelectable">
         <div class="selectContainer">
           <select class="form-control" ng-model="ctrl.type">
             <option value="" translate>All types</option>
