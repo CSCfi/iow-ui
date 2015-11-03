@@ -51,10 +51,6 @@ module.exports = function directive($timeout) {
         return options.editable === false;
       }
 
-      if (isNotEditable() && ngModel) {
-        disableModelChangeEvents(ngModel);
-      }
-
       element.typeahead(options, datasets);
 
       // FIXME: hack, fixes bug in typeahead.js
@@ -78,6 +74,8 @@ module.exports = function directive($timeout) {
         element.bind('typeahead:autocompleted', updateModel);
 
         if (isNotEditable()) {
+          disableModelChangeEvents(ngModel);
+
           element.bind('typeahead:render', (event, suggestions) => {
             updateModel(event, single(suggestions));
           });
