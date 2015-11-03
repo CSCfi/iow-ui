@@ -45,8 +45,11 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     return obj.uri;
   }
 
+  const limit = 1000;
+  const estimatedDuplicateCount = 2;
+
   function limitResults(results) {
-    return results.splice(0, Math.min(2000, results.length));
+    return results.splice(0, Math.min(limit * estimatedDuplicateCount, results.length));
   }
 
   const conceptEngine = new Bloodhound({
@@ -65,6 +68,7 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     display: 'prefLabel',
     name: 'concept',
     source: conceptEngine,
+    limit: limit,
     templates: {
       empty: (search) => `<div class="empty-message">'${search.query}' ${gettextCatalog.getString('not found in the concept database')}</div>`,
       suggestion: (data) => `<div>${data.prefLabel} <p class="details">${data.uri}</p></div>`
