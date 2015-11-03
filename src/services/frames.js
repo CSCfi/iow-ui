@@ -5,7 +5,7 @@ const title = { '@id': 'http://purl.org/dc/terms/title', '@container': '@languag
 const comment = { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' };
 const example = { '@id': 'http://www.w3.org/2004/02/skos/core#example', '@container': '@language' };
 const prefLabel = { '@id': 'http://www.w3.org/2004/02/skos/core#prefLabel', '@container': '@language' };
-const dataType = { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' };
+const datatype = { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' };
 const subClassOf = { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' };
 const property = { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' };
 const modified = { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' };
@@ -50,7 +50,7 @@ function modelFrame(data) {
     subClassOf,
     property,
     subject,
-    dataType,
+    datatype,
     predicate,
     valueClass,
     nodeKind,
@@ -122,7 +122,7 @@ function classFrame(data) {
     valueClass,
     nodeKind,
     example,
-    dataType,
+    datatype,
     versionInfo
   };
 
