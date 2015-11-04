@@ -6,7 +6,7 @@ module.exports = function directive($window, $timeout) {
     restrict: 'A',
     link($scope, element, attributes) {
       const placeholderClass = attributes.float;
-      const floatTop = attributes.floatTop || 0;
+      const topOffset = attributes.topOffset || 0;
       let elementLocation = null;
       let addedPlaceholder = null;
 
@@ -20,25 +20,30 @@ module.exports = function directive($window, $timeout) {
       });
 
       angular.element($window).on('scroll', () => {
-        if (elementLocation) {
-          if (!addedPlaceholder) {
+        if (isInitialized()) {
+          if (!isFloating()) {
             // re-refresh has to be done since location can change due to accordion etc
             refreshElementLocation();
             if (window.pageYOffset >= elementLocation.top) {
               setFloating();
-              addedPlaceholder = createPlaceholder().insertBefore(element);
             }
           } else if (window.pageYOffset < elementLocation.top) {
             setStatic();
-            addedPlaceholder.remove();
-            addedPlaceholder = null;
           }
         }
       });
 
+      function isInitialized() {
+        return elementLocation;
+      }
+
+      function isFloating() {
+        return addedPlaceholder;
+      }
+
       function refreshElementLocation() {
         const offset = element.offset();
-        elementLocation = {top: offset.top - floatTop, left: offset.left};
+        elementLocation = {top: offset.top - topOffset, left: offset.left};
       }
 
       function createPlaceholder() {
@@ -50,14 +55,17 @@ module.exports = function directive($window, $timeout) {
 
       function setFloating() {
         element.css('left', elementLocation.left + 'px');
-        element.css('top', floatTop + 'px');
+        element.css('top', topOffset + 'px');
         element.css('position', 'fixed');
+        addedPlaceholder = createPlaceholder().insertBefore(element);
       }
 
       function setStatic() {
         element.css('left', 'auto');
         element.css('top', 'auto');
         element.css('position', 'static');
+        addedPlaceholder.remove();
+        addedPlaceholder = null;
       }
     }
   };
