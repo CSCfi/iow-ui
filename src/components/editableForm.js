@@ -29,7 +29,7 @@ module.exports = function editableForm() {
 
         function onSuccess() {
           vm.submitError = false;
-          cancel();
+          cancel(false);
         }
 
         // FIXME: hack
@@ -53,7 +53,11 @@ module.exports = function editableForm() {
       }
 
       function show() {
-        return $scope.form && $scope.form.$show();
+        // FIXME: hack
+        // wait for changes to settle in scope
+        $timeout(() => {
+          return $scope.form.$show();
+        });
       }
 
       function cancel(reset = true) {
@@ -62,7 +66,7 @@ module.exports = function editableForm() {
             vm.onReset();
           }
           vm.submitError = false;
-          return $scope.form && $scope.form.$cancel();
+          return $scope.form.$cancel();
         }
       }
     }

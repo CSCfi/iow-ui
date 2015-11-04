@@ -16,8 +16,12 @@ module.exports = function modelLanguage() {
       language = lang;
     },
     translate(label) {
+      function localized(lang) {
+        const localization = label[lang];
+        return typeof localization === 'string' ? localization : null;
+      }
       if (label) {
-        return label[language] || _.chain(languages).map(lang => label[lang]).find().value() || '';
+        return localized(language) || _.chain(languages).map(localized).find().value() || '';
       } else {
         return '';
       }

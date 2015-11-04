@@ -72,28 +72,28 @@ function modelListFrame(data) {
 
 function attributeFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, versionInfo}),
+    '@context': addToContext(data['@context'], {label, range, datatype, modified, isDefinedBy, comment, versionInfo}),
     '@type': 'owl:DatatypeProperty'
   };
 }
 
 function associationFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, versionInfo}),
+    '@context': addToContext(data['@context'], {label, range, valueClass, modified, isDefinedBy, comment, versionInfo}),
     '@type': 'owl:ObjectProperty'
   };
 }
 
 function propertyFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, predicate}),
+    '@context': addToContext(data['@context'], {label, range, datatype, valueClass, modified, isDefinedBy, comment, predicate}),
     '@id': data['@id']
   };
 }
 
 function predicateFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment, subject, versionInfo}),
+    '@context': addToContext(data['@context'], {label, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo}),
     'isDefinedBy': {},
     'subject': {
       '@omitDefault': true,

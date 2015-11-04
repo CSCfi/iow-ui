@@ -18,6 +18,10 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.registerView = (view) => views.push(view);
   vm.select = select;
   vm.isSelected = (type, id) => _.isEqual(vm.selected, {type, id});
+  vm.deselect = () => {
+    vm.selected = null;
+    $location.search({urn: modelId});
+  };
   vm.isLoggedIn = userService.isLoggedIn;
 
   vm.addClass = () => {
@@ -31,23 +35,6 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     });
   };
 
-  function createClass(conceptData) {
-    classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage()).then(response => {
-      const classId = contextUtils.withFullIRI(response['@context'], response['@graph'][0]['@id']);
-      classService.createClass(response, classId).then(() => {
-        vm.select('class', classId);
-        fetchClasses();
-      });
-    });
-  }
-
-  function assignClassToModel(classId) {
-    classService.assignClassToModel(classId, modelId).then(() => {
-      vm.select('class', classId);
-      fetchClasses();
-    });
-  }
-
   vm.addPredicate = (type) => {
     const predicateMap = _.indexBy(vm.associations.concat(vm.attributes), (predicate) => predicate['@id']);
     searchPredicateModal.open(type, predicateMap).result.then(result => {
@@ -59,23 +46,36 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     });
   };
 
+  function createClass(conceptData) {
+    classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage()).then(klass => {
+      classService.addUnsavedClass(klass, modelContext);
+      const classId = contextUtils.withFullIRI(modelContext, klass['@graph'][0]['@id']);
+      select('class', classId);
+    });
+  }
+
+  function assignClassToModel(classId) {
+    classService.assignClassToModel(classId, modelId).then(() => {
+      select('class', classId);
+      fetchClasses();
+    });
+  }
+
   function owlTypeToType(owlType) {
     return owlType === 'owl:ObjectProperty' ? 'association' : 'attribute';
   }
 
   function createPredicate(conceptData) {
     predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage()).then(predicate => {
-      const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
-      predicateService.createPredicate(predicate, predicateId).then(() => {
-        vm.select(owlTypeToType(conceptData.type), predicateId);
-        fetchPredicates();
-      });
+      predicateService.addUnsavedPredicate(predicate, modelContext);
+      const predicateId = contextUtils.withFullIRI(modelContext, predicate['@graph'][0]['@id']);
+      select(owlTypeToType(conceptData.type), predicateId);
     });
   }
 
   function assignPredicateToModel(predicateId, type) {
     predicateService.assignPredicateToModel(predicateId, modelId).then(() => {
-      vm.select(owlTypeToType(type), predicateId);
+      select(owlTypeToType(type), predicateId);
       fetchPredicates();
     });
   }

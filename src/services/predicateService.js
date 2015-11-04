@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const jsonld = require('jsonld');
 const frames = require('./frames');
+const contextUtils = require('./contextUtils');
 
 module.exports = function predicateService($http, $q) {
   'ngInject';
@@ -8,7 +9,9 @@ module.exports = function predicateService($http, $q) {
   let unsavedPredicates = {};
 
   return {
-    addUnsavedPredicate(predicateId, predicate) {
+    addUnsavedPredicate(predicate, context) {
+      const predicateId = contextUtils.withFullIRI(context, predicate['@graph'][0]['@id']);
+      _.extend(predicate['@context'], context);
       unsavedPredicates[predicateId] = predicate;
     },
     createUnsavedPredicates() {
@@ -25,20 +28,17 @@ module.exports = function predicateService($http, $q) {
           return jsonld.promises.frame(response.data, frame);
         });
     },
-    getPredicateById(id, userFrame = 'propertyFrame') {
+    getPredicateById(id, userFrame = 'predicateFrame') {
       const unsaved = unsavedPredicates[id];
+
+      function frame(data) {
+        return jsonld.promises.frame(data, frames[userFrame](data));
+      }
+
       if (unsaved) {
-        return {
-          then(callback) {
-            return callback(unsaved);
-          }
-        };
+        return $q.when(frame(unsaved).then(framed => _.extend(framed, {unsaved: true})));
       } else {
-        return $http.get('/api/rest/predicate', {params: {id}})
-          .then(response => {
-            const frame = frames[userFrame](response.data);
-            return jsonld.promises.frame(response.data, frame);
-          });
+        return $http.get('/api/rest/predicate', {params: {id}}).then(response => frame(response.data));
       }
     },
     getPredicatesForModel(model) {
@@ -66,7 +66,7 @@ module.exports = function predicateService($http, $q) {
         id,
         model: predicate.isDefinedBy || predicate['@graph'][0].isDefinedBy
       };
-      return $http.put('/api/rest/predicate', predicate, {params: requestParams});
+      return $http.put('/api/rest/predicate', predicate, {params: requestParams}).then(() => delete unsavedPredicates[id]);
     },
     assignPredicateToModel(predicateId, modelId) {
       const requestParams = {

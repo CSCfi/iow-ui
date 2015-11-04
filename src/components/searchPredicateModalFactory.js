@@ -60,7 +60,7 @@ function SearchPredicateController($uibModalInstance, type, excludedPredicateMap
   };
 
   vm.selectPredicate = (predicate) => {
-    predicateService.getPredicateById(predicate['@id'], 'predicateFrame').then(result => {
+    predicateService.getPredicateById(predicate['@id']).then(result => {
       context = result['@context'];
       vm.selectedPredicate = result['@graph'][0];
     });

@@ -23,6 +23,7 @@ module.exports = function attributeView($log) {
 
       let context;
       let originalId;
+      let unsaved = false;
       const vm = this;
 
       vm.loading = true;
@@ -42,7 +43,12 @@ module.exports = function attributeView($log) {
           context = data['@context'];
           originalId = id;
           vm.attribute = data['@graph'][0];
-        }).finally(() => vm.loading = false);
+          unsaved = data.unsaved;
+          if (unsaved) {
+            $scope.formController.show();
+          }
+          vm.loading = false;
+        });
       }
 
       function updateAttribute() {
@@ -55,15 +61,27 @@ module.exports = function attributeView($log) {
 
         $log.info(JSON.stringify(ld, null, 2));
 
-        return predicateService.updatePredicate(ld, id, originalId).then(() => {
+        function updateView() {
+          unsaved = false;
           originalId = id;
           vm.id = id;
           $scope.modelController.reload();
-        });
+        }
+
+        if (unsaved) {
+          return predicateService.createPredicate(ld, id).then(updateView);
+        } else {
+          return predicateService.updatePredicate(ld, id, originalId).then(updateView);
+        }
       }
 
       function resetModel() {
-        fetchPredicate(originalId);
+        predicateService.clearUnsavedPredicates();
+        if (unsaved) {
+          $scope.modelController.deselect();
+        } else {
+          fetchPredicate(originalId);
+        }
       }
 
       function isEditing() {

@@ -1,4 +1,4 @@
-<editable-form on-submit="ctrl.updateAssociation()" on-reset="ctrl.resetModel()">
+<editable-form on-submit="ctrl.updateAssociation()" on-reset="ctrl.resetModel()" ng-hide="ctrl.loading">
 
   <div class="top-actions" float="top-actions-placeholder" top-offset="8">
     <editable-form-buttons></editable-form-buttons>
@@ -10,7 +10,7 @@
   </h2>
   <form-id title="{{'Id' | translate}}" plain-text="ctrl.association['@id']"></form-id>
   <form-text-area title="{{'Comment' | translate}}" content="ctrl.association.comment"></form-text-area>
-  <range-select content="ctrl.association.range"></range-select>
+  <form-input content="ctrl.association.valueclass"></form-input>
   <div class="model-view__title" translate>Is defined by</div>
   <div>{{ctrl.association.isDefinedBy}}</div>
 </editable-form>

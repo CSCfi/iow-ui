@@ -1,9 +1,26 @@
+const _ = require('lodash');
 const jsonld = require('jsonld');
 const frames = require('./frames');
+const contextUtils = require('./contextUtils');
 
-module.exports = function classService($http) {
+module.exports = function classService($http, $q) {
   'ngInject';
+
+  let unsavedClasses = {};
+
   return {
+    addUnsavedClass(klass, context) {
+      const classId = contextUtils.withFullIRI(context, klass['@graph'][0]['@id']);
+      _.extend(klass['@context'], context);
+      unsavedClasses[classId] = klass;
+    },
+    createUnsavedClasses() {
+      return $q.all(_.map(unsavedClasses, (klass, classId) => this.createClass(klass, classId)))
+        .then(this.clearUnsavedClasses);
+    },
+    clearUnsavedClasses() {
+      unsavedClasses = {};
+    },
     getAllClasses() {
       return $http.get('/api/rest/class').then(response => {
         const frame = frames.classSearchFrame(response.data);
@@ -11,10 +28,17 @@ module.exports = function classService($http) {
       });
     },
     getClass(id) {
-      return $http.get('/api/rest/class', {params: {id}}).then(response => {
-        const frame = frames.classFrame(response.data);
-        return jsonld.promises.frame(response.data, frame);
-      });
+      const unsaved = unsavedClasses[id];
+
+      function frame(data) {
+        return jsonld.promises.frame(data, frames.classFrame(data));
+      }
+
+      if (unsaved) {
+        return $q.when(frame(unsaved).then(framed => _.extend(framed, {unsaved: true})));
+      } else {
+        return $http.get('/api/rest/class', {params: {id}}).then(response => frame(response.data));
+      }
     },
     getClassesForModel(model) {
       return $http.get('/api/rest/class', {params: {model}}).then(response => {
