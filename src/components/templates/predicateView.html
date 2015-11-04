@@ -1,15 +1,17 @@
-<div class="model-view__title" translate>Name</div>
-<div>{{predicate | translateLabel}}</div>
+<editable-form on-submit="ctrl.updatePredicate()" on-reset="ctrl.resetModel()" ng-hide="ctrl.loading">
 
-<div ng-show="predicate.comment">
-  <div class="model-view__title" translate>Description</div>
-  <div>{{predicate.comment | translateValue}}</div>
-</div>
+  <div class="top-actions" float="top-actions-placeholder" top-offset="8">
+    <editable-form-buttons></editable-form-buttons>
+    <show-submit-error></show-submit-error>
+  </div>
 
-<div class="model-view__title" translate>Type</div>
-<div>{{predicate['@type']}}</div>
-
-<div ng-show="predicate.range">
-  <div class="model-view__title" translate>Range</div>
-  <div>{{predicate.range}}</div>
-</div>
+  <h2>
+    <form-input content="ctrl.predicate.label"></form-input>
+  </h2>
+  <form-id title="{{'Id' | translate}}" plain-text="ctrl.predicate['@id']"></form-id>
+  <form-text-area title="{{'Comment' | translate}}" content="ctrl.predicate.comment"></form-text-area>
+  <range-select ng-if="ctrl.type === 'attribute'" content="ctrl.predicate.datatype"></range-select>
+  <form-input ng-if="ctrl.type === 'association'"  title="{{'Value class' | translate}}"content="ctrl.predicate.valueclass"></form-input>
+  <div class="model-view__title" translate>Is defined by</div>
+  <div>{{ctrl.predicate.isDefinedBy}}</div>
+</editable-form>

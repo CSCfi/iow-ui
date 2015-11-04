@@ -291,7 +291,7 @@ msgstr "Käytä ominaisuutta"
 
 #: components/templates/propertyView.html:11
 msgid "Value class"
-msgstr "Arvoluokka"
+msgstr "Kohde"
 
 #: translations/attribute.html:6
 msgid "xsd:anyURI"
