@@ -46,6 +46,10 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     });
   };
 
+  vm.getModelId = () => {
+    return modelId;
+  };
+
   function createClass(conceptData) {
     classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage()).then(klass => {
       classService.addUnsavedClass(klass, modelContext);

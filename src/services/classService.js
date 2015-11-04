@@ -63,6 +63,13 @@ module.exports = function classService($http, $q) {
       }
       return $http.post('/api/rest/class', classData, {params: requestParams});
     },
+    deleteClass(id, model) {
+      const requestParams = {
+        id,
+        model: model
+      };
+      return $http.delete('/api/rest/class', {params: requestParams});
+    },
     assignClassToModel(classId, modelId) {
       const requestParams = {
         id: classId,

@@ -19,7 +19,7 @@ module.exports = function classView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService) {
+    controller($scope, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService, deleteConfirmModal) {
       'ngInject';
 
       let originalId;
@@ -122,7 +122,13 @@ module.exports = function classView($log) {
       }
 
       function deleteClass() {
-        // TODO
+        deleteConfirmModal.open().result.then(() => {
+          const id = contextUtils.withFullIRI(vm.context, vm.class['@id']);
+          classService.deleteClass(id, $scope.modelController.getModelId()).then(() => {
+            $scope.modelController.deselect();
+            $scope.modelController.reload();
+          });
+        });
       }
 
       function addProperty() {

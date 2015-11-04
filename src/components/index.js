@@ -32,6 +32,7 @@ mod.factory('editInProgressModal', require('./editInProgressModalFactory'));
 mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
 mod.factory('searchClassModal', require('./searchClassModalFactory'));
 mod.factory('searchConceptModal', require('./searchConceptModalFactory'));
+mod.factory('deleteConfirmModal', require('./deleteConfirmModalFactory'));
 
 mod.filter('translateValue', (modelLanguage) => {
   return (input) => input ? modelLanguage.translate(input) : '';

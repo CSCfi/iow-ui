@@ -74,6 +74,13 @@ module.exports = function predicateService($http, $q) {
         model: modelId
       };
       return $http.post('/api/rest/predicate', undefined, {params: requestParams});
-    }
+    },
+    deletePredicate(id, model) {
+      const requestParams = {
+        id,
+        model: model
+      };
+      return $http.delete('/api/rest/predicate', {params: requestParams});
+    },
   };
 };

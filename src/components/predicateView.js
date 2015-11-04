@@ -19,7 +19,7 @@ module.exports = function predicateView($log) {
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
     },
-    controller($scope, predicateService, modelLanguage, userService) {
+    controller($scope, predicateService, modelLanguage, userService, deleteConfirmModal) {
       'ngInject';
 
       let context;
@@ -30,6 +30,8 @@ module.exports = function predicateView($log) {
       vm.loading = true;
       vm.updatepredicate = updatePredicate;
       vm.resetModel = resetModel;
+      vm.deletePredicate = deletePredicate;
+      vm.canDeletePredicate = canDeletePredicate;
       // view contract
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
@@ -83,6 +85,20 @@ module.exports = function predicateView($log) {
         } else {
           fetchPredicate(originalId);
         }
+      }
+
+      function canDeletePredicate() {
+        return userService.isLoggedIn();
+      }
+
+      function deletePredicate() {
+        deleteConfirmModal.open().result.then(() => {
+          const id = contextUtils.withFullIRI(context, vm.predicate['@id']);
+          predicateService.deletePredicate(id, $scope.modelController.getModelId()).then(() => {
+            $scope.modelController.deselect();
+            $scope.modelController.reload();
+          });
+        });
       }
 
       function isEditing() {
