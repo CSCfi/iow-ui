@@ -6,7 +6,9 @@ module.exports = function directive($window, userService) {
       loggedInPadding: '='
     },
     restrict: 'A',
-    link($scope, element) {
+    link($scope, element, attributes) {
+      const minHeight = attributes.windowHeight;
+
       function getPadding() {
         const padding = $scope.padding || 0;
         const loggedInPadding = $scope.loggedInPadding || padding;
@@ -15,7 +17,11 @@ module.exports = function directive($window, userService) {
 
       function setHeight() {
         const height = $window.innerHeight - getPadding();
-        element.attr('style', 'overflow-y: scroll; height: ' + height + 'px');
+        if (minHeight) {
+          element.css('min-height', height + 'px');
+        } else {
+          element.css('overflow-y', 'scroll').css('height', height + 'px');
+        }
       }
 
       setHeight();
