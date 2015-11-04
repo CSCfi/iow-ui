@@ -25,7 +25,7 @@ To load example data to a local api/fuseki installation, run
 
 To load example data to a custom host and/or port
 
-    npm run-script example-data -- --host foo.example.com --port 88
+    npm run-script example-data -- --host 127.0.0.1 --port 8080
 
 ## Updating translation file
 
