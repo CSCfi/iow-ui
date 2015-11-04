@@ -1,7 +1,7 @@
 <div class="top">
 
   <div ng-show="isLoggedIn() && notInGroup()" class="top-actions">
-    <a class="btn btn-default" href="{{group['@id']}}" target="_blank">Pyydä käyttöoikeuksia ryhmään</a>
+    <a class="btn btn-default" href="{{group['@id']+'_MEMBERS'}}" target="_blank">Pyydä käyttöoikeuksia ryhmään</a>
   </div>
 
   <h2>{{group | translateLabel}}</h2>

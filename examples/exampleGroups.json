@@ -1,10 +1,10 @@
 {
   "@graph": [
     {
-      "@id": "https://tt.eduuni.fi/sites/csc-iow#DOO",
+      "@id": "https://tt.eduuni.fi/sites/csc-iow#KTK",
       "@type": "foaf:Group",
       "label": {
-	  "fi":"Opiskelu, opetus ja koulutus",
+	  "fi":"Koulutus, tiede ja kulttuuri",
 	  "en":"Learning and Education"
 	  }
     },
