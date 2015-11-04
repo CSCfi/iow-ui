@@ -7,7 +7,7 @@ module.exports = function directive($window, userService) {
     },
     restrict: 'A',
     link($scope, element, attributes) {
-      const minHeight = attributes.windowHeight;
+      const minHeight = attributes.windowHeight === 'min';
 
       function getPadding() {
         const padding = $scope.padding || 0;
