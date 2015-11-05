@@ -15,7 +15,7 @@ module.exports = function predicateView($log) {
     require: '^ngController',
     link($scope, element, attributes, modelController) {
       const controller = $scope.ctrl;
-      modelController.registerView(controller);
+      modelController.registerPredicateView(controller);
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
     },

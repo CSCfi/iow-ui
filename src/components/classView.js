@@ -13,7 +13,7 @@ module.exports = function classView($log) {
     require: '^ngController',
     link($scope, element, attributes, modelController) {
       const controller = $scope.ctrl;
-      modelController.registerView(controller);
+      modelController.registerClassView(controller);
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
     },

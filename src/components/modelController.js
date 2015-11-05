@@ -4,8 +4,10 @@ const contextUtils = require('../services/contextUtils');
 module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, predicateCreatorService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
   'ngInject';
 
-  const views = [];
   const vm = this;
+
+  let classView;
+  let predicateView;
   let modelContext;
 
   vm.loading = true;
@@ -15,7 +17,8 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.selected = selected;
   vm.activeTab = selected ? {[selected.type]: true} : {class: true};
   vm.reload = fetchAll;
-  vm.registerView = (view) => views.push(view);
+  vm.registerClassView = (view) => classView = view;
+  vm.registerPredicateView = (view) => predicateView = view;
   vm.select = select;
   vm.isSelected = (type, id) => _.isEqual(vm.selected, {type, id});
   vm.deselect = () => {
@@ -103,11 +106,12 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function cancelEditing() {
-    return _.forEach(views, view => view.cancelEditing(false));
+    classView.cancelEditing();
+    predicateView.cancelEditing();
   }
 
   function isEditing() {
-    return _.find(views, view => view.isEditing());
+    return classView.isEditing() || predicateView.isEditing();
   }
 
   function fetchAll() {
