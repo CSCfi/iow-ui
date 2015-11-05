@@ -35,6 +35,7 @@ module.exports = function classView($log) {
       vm.canAddProperty = canAddProperty;
       vm.deleteClass = deleteClass;
       vm.canDeleteClass = canDeleteClass;
+      vm.canEdit = canEdit;
       // view contract
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
@@ -107,6 +108,10 @@ module.exports = function classView($log) {
 
       function isEditing() {
         return $scope.formController.visible();
+      }
+
+      function canEdit() {
+        return userService.isLoggedIn() && vm.class && $scope.modelController.getModelId() === vm.class.isDefinedBy;
       }
 
       function cancelEditing(reset) {

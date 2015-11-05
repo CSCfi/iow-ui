@@ -32,6 +32,7 @@ module.exports = function predicateView($log) {
       vm.resetModel = resetModel;
       vm.deletePredicate = deletePredicate;
       vm.canDeletePredicate = canDeletePredicate;
+      vm.canEdit = canEdit;
       // view contract
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
@@ -103,6 +104,10 @@ module.exports = function predicateView($log) {
 
       function isEditing() {
         return $scope.formController.visible();
+      }
+
+      function canEdit() {
+        return userService.isLoggedIn() && vm.predicate && $scope.modelController.getModelId() === vm.predicate.isDefinedBy;
       }
 
       function cancelEditing(reset) {

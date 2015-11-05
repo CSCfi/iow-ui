@@ -12,8 +12,15 @@ module.exports = function classView($log) {
     template: require('./templates/modelView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller() {
+    link($scope, element, attributes, modelController) {
+      $scope.modelController = modelController;
+      $scope.formController = element.find('editable-form').controller('editableForm');
+    },
+    controller(userService) {
       'ngInject';
+
+      const vm = this;
+      vm.canEdit = userService.isLoggedIn;
     }
   };
 };
