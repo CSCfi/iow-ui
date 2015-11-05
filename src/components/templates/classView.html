@@ -8,24 +8,6 @@
       <show-submit-error></show-submit-error>
     </div>
 
-    <h2>
-      <form-input content="ctrl.class['@graph'][0].label"></form-input>
-    </h2>
-    <form-id title="{{'Id' | translate}}" plain-text="ctrl.class['@graph'][0]['@id']"></form-id>
-    <form-text-area title="{{'Comment' | translate}}" content="ctrl.class['@graph'][0].comment"></form-text-area>
-    <div ng-show="ctrl.class['@graph'][0].subClassOf">
-      <div class="model-view__title" translate>Superclass</div>
-      <div>{{ctrl.class['@graph'][0].subClassOf}}</div>
-    </div>
-    <div class="model-view__title" translate>Is defined by</div>
-    <div>{{ctrl.class['@graph'][0].isDefinedBy}}</div>
-
-
-    <uib-accordion close-others="true">
-      <uib-accordion-group ng-repeat="property in ctrl.class['@graph'][0].property" is-open="isOpen[property['@id']]">
-        <uib-accordion-heading><span class="glyphicon" ng-class="property.datatype ? 'glyphicon-tasks' : property.valueClass ? 'glyphicon-sort' : 'glyphicon-question-sign'"></span> {{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></uib-accordion-heading>
-        <property-view property="property" context="ctrl.class['@context']" ng-if="isOpen[property['@id']]"></property-view>
-      </uib-accordion-group>
-    </uib-accordion>
+    <class-form class="ctrl.class['@graph'][0]" context="ctrl.class['@context']"></class-form>
+  </div>
 </editable-form>
-</div>

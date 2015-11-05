@@ -23,7 +23,6 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, e
   'ngInject';
 
   const vm = this;
-  let context;
   let classes;
 
   vm.close = $uibModalInstance.dismiss;
@@ -50,10 +49,7 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, e
   };
 
   vm.selectClass = (klass) => {
-    classService.getClass(klass['@id']).then(result => {
-      context = result['@context'];
-      vm.selectedClass = result['@graph'][0];
-    });
+    classService.getClass(klass['@id']).then(result => vm.selectedClass = result);
   };
 
   vm.isSelected = (klass) => {
@@ -71,7 +67,7 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, e
   };
 
   function selectedClassId() {
-    return vm.selectedClass && graphUtils.withFullIRI(context, vm.selectedClass['@id']);
+    return graphUtils.withFullId(vm.selectedClass);
   }
 
   function localizedLabelAsLower(klass) {

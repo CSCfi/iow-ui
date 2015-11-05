@@ -1,0 +1,9 @@
+<h2>
+  <form-input content="predicate.label"></form-input>
+</h2>
+<form-id title="{{'Id' | translate}}" plain-text="predicate['@id']"></form-id>
+<form-text-area title="{{'Comment' | translate}}" content="predicate.comment"></form-text-area>
+<range-select ng-if="predicate['@type'] === 'owl:DatatypeProperty'" content="predicate.datatype"></range-select>
+<form-input ng-if="predicate['@type'] === 'owl:ObjectProperty'"  title="{{'Value class' | translate}}" content="predicate.valueclass"></form-input>
+<div class="model-view__title" translate>Is defined by</div>
+<div>{{predicate.isDefinedBy}}</div>

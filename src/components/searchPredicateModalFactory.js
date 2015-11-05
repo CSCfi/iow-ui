@@ -4,28 +4,39 @@ const graphUtils = require('../services/graphUtils');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
+  function openModal(type, excludedPredicateMap, model) {
+    return $uibModal.open({
+      template: require('./templates/searchPredicateModal.html'),
+      size: 'large',
+      controller: SearchPredicateController,
+      controllerAs: 'ctrl',
+      resolve: {
+        type: () => type,
+        excludedPredicateMap: () => excludedPredicateMap,
+        model: () => model
+      }
+    });
+  }
+
   return {
-    open(type, excludedPredicateMap = {}) {
-      return $uibModal.open({
-        template: require('./templates/searchPredicateModal.html'),
-        size: 'large',
-        controller: SearchPredicateController,
-        controllerAs: 'ctrl',
-        resolve: {
-          type: () => type,
-          excludedPredicateMap: () => excludedPredicateMap
-        }
-      });
+    open(type, excludedPredicateMap) {
+      return openModal(type, excludedPredicateMap, null);
+    },
+    openWithPredicationCreation(model) {
+      return openModal(null, {}, model);
     }
   };
 };
 
-function SearchPredicateController($uibModalInstance, type, excludedPredicateMap, predicateService, modelLanguage, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, $timeout, type, excludedPredicateMap, model, predicateService, predicateCreatorService, modelLanguage, searchConceptModal) {
   'ngInject';
 
   const vm = this;
-  let context;
   let predicates;
+
+  $timeout(() => {
+    $scope.editableFormController = angular.element(jQuery('#predicate-search-form')).controller('editableForm');
+  });
 
   vm.close = $uibModalInstance.dismiss;
   vm.selectedPredicate = null;
@@ -35,6 +46,7 @@ function SearchPredicateController($uibModalInstance, type, excludedPredicateMap
   vm.type = type;
   vm.types = [];
   vm.typeSelectable = !type;
+  vm.savedPredicateSelected = savedPredicateSelected;
 
   predicateService.getAllPredicates().then(result => {
     predicates = _.reject(result['@graph'], predicate => excludedPredicateMap[predicate['@id']]);
@@ -60,24 +72,35 @@ function SearchPredicateController($uibModalInstance, type, excludedPredicateMap
   };
 
   vm.selectPredicate = (predicate) => {
-    predicateService.getPredicateById(predicate['@id']).then(result => {
-      context = result['@context'];
-      vm.selectedPredicate = result['@graph'][0];
-    });
+    $scope.editableFormController.cancel();
+    predicateService.getPredicateById(predicate['@id']).then(result => vm.selectedPredicate = result);
   };
 
   vm.isSelected = (predicate) => {
     return predicate['@id'] === selectedPredicateId();
   };
 
-  vm.confirm = () => {
+  vm.usePredicate = () => {
     $uibModalInstance.close(selectedPredicateId());
   };
 
+  vm.createAndUsePredicate = () => {
+    predicateService.createPredicate(vm.selectedPredicate, graphUtils.withFullId(vm.selectedPredicate)).then(vm.usePredicate);
+  };
+
   vm.createNew = (selectionType) => {
-    return searchConceptModal.open('Define concept for the new predicate').result.then(result => {
-      $uibModalInstance.close(_.extend(result, {type: selectionType}));
-    });
+    return searchConceptModal.open('Define concept for the new predicate').result
+      .then(result => {
+        if (!vm.typeSelectable) {
+          $uibModalInstance.close(_.extend(result, {type: selectionType}));
+        } else {
+          predicateCreatorService.createPredicate(model['@context'], graphUtils.withFullId(model), result.label, result.conceptId, selectionType, modelLanguage.getLanguage())
+            .then(predicate => {
+              vm.selectedPredicate = predicate;
+              $scope.editableFormController.show();
+            });
+        }
+      });
   };
 
   vm.iconClass = (predicate) => {
@@ -88,8 +111,12 @@ function SearchPredicateController($uibModalInstance, type, excludedPredicateMap
       }];
   };
 
+  function savedPredicateSelected() {
+    return vm.selectedPredicate && !vm.selectedPredicate.unsaved;
+  }
+
   function selectedPredicateId() {
-    return vm.selectedPredicate && graphUtils.withFullIRI(context, vm.selectedPredicate['@id']);
+    return graphUtils.withFullId(vm.selectedPredicate);
   }
 
   function localizedLabelAsLower(predicate) {

@@ -9,7 +9,7 @@ module.exports = function propertyView() {
     },
     restrict: 'E',
     template: require('./templates/propertyView.html'),
-    require: '^classView',
+    require: '^?classView',
     link($scope, element, attributes, classViewController) {
       $scope.classViewController = classViewController;
     },

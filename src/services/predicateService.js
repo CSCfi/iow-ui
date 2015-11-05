@@ -6,20 +6,7 @@ const graphUtils = require('./graphUtils');
 module.exports = function predicateService($http, $q) {
   'ngInject';
 
-  let unsavedPredicates = {};
-
   return {
-    addUnsavedPredicate(predicate, context) {
-      _.extend(predicate['@context'], context);
-      unsavedPredicates[graphUtils.withFullId(predicate)] = predicate;
-    },
-    createUnsavedPredicates() {
-      return $q.all(_.map(unsavedPredicates, (predicate, predicateId) => this.createPredicate(predicate, predicateId)))
-        .then(this.clearUnsavedPredicates);
-    },
-    clearUnsavedPredicates() {
-      unsavedPredicates = {};
-    },
     getAllPredicates() {
       return $http.get('/api/rest/predicate')
         .then(response => {
@@ -28,17 +15,10 @@ module.exports = function predicateService($http, $q) {
         });
     },
     getPredicateById(id, userFrame = 'predicateFrame') {
-      const unsaved = unsavedPredicates[id];
-
       function frame(data) {
         return jsonld.promises.frame(data, frames[userFrame](data));
       }
-
-      if (unsaved) {
-        return $q.when(frame(unsaved).then(framed => _.extend(framed, {unsaved: true})));
-      } else {
-        return $http.get('/api/rest/predicate', {params: {id}}).then(response => frame(response.data));
-      }
+      return $http.get('/api/rest/predicate', {params: {id}}).then(response => frame(response.data));
     },
     getPredicatesForModel(model) {
       return $http.get('/api/rest/predicate', {params: {model}}).then(response => {
@@ -53,7 +33,7 @@ module.exports = function predicateService($http, $q) {
     updatePredicate(predicate, id, originalId) {
       const requestParams = {
         id,
-        model: predicate.isDefinedBy
+        model: predicate.isDefinedBy || predicate['@graph'][0].isDefinedBy
       };
       if (id !== originalId) {
         requestParams.oldid = originalId;
@@ -65,7 +45,7 @@ module.exports = function predicateService($http, $q) {
         id,
         model: predicate.isDefinedBy || predicate['@graph'][0].isDefinedBy
       };
-      return $http.put('/api/rest/predicate', predicate, {params: requestParams}).then(() => delete unsavedPredicates[id]);
+      return $http.put('/api/rest/predicate', predicate, {params: requestParams});
     },
     assignPredicateToModel(predicateId, modelId) {
       const requestParams = {

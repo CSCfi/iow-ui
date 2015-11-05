@@ -1,0 +1,22 @@
+<h2>
+  <form-input content="class.label"></form-input>
+</h2>
+<form-id title="{{'Id' | translate}}" plain-text="class['@id']"></form-id>
+<form-text-area title="{{'Comment' | translate}}" content="class.comment"></form-text-area>
+<div ng-show="class.subClassOf">
+  <div class="model-view__title" translate>Superclass</div>
+  <div>{{class.subClassOf}}</div>
+</div>
+<div class="model-view__title" translate>Is defined by</div>
+<div>{{class.isDefinedBy}}</div>
+
+<uib-accordion close-others="true">
+  <uib-accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]">
+    <uib-accordion-heading>
+      <span class="glyphicon" ng-class="property.datatype ? 'glyphicon-tasks' : property.valueClass ? 'glyphicon-sort' : 'glyphicon-question-sign'"></span>
+      {{property | translateLabel}}
+      <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span>
+    </uib-accordion-heading>
+    <property-view property="property" context="context" ng-if="isOpen[property['@id']]"></property-view>
+  </uib-accordion-group>
+</uib-accordion>

@@ -12,21 +12,36 @@ function withFullIRI(context, value) {
   }
 }
 
+function asTypeString(objType) {
+  if (objType === 'sh:ShapeClass') {
+    return 'class';
+  } else if (objType === 'owl:DatatypeProperty') {
+    return 'attribute';
+  } else if (objType === 'owl:ObjectProperty') {
+    return 'association';
+  } else {
+    throw new Error('Unknown type: ' + objType);
+  }
+}
+
 function graph(obj) {
   return obj && obj['@graph'][0];
 }
 
 function type(obj) {
-  return graph(obj)['@type'];
+  return asTypeString(graph(obj)['@type']);
 }
 
 function withFullId(obj) {
-  return withFullIRI(obj['@context'], graph(obj)['@id']);
+  if (obj) {
+    return withFullIRI(obj['@context'], graph(obj)['@id']);
+  }
 }
 
 module.exports = {
   withFullIRI,
   withFullId,
   graph,
-  type
+  type,
+  asTypeString
 };

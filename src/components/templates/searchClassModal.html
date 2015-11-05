@@ -46,26 +46,10 @@
       </div>
     </div>
 
-    <div class="col-md-4">
-
-      <div ng-if="ctrl.selectedClass">
-        <div class="model-view__title" translate>Name</div>
-        <div>{{ctrl.selectedClass | translateLabel}}</div>
-
-        <div ng-show="ctrl.selectedClass.comment">
-          <div class="model-view__title" translate>Description</div>
-          <div>{{ctrl.selectedClass.comment | translateValue}}</div>
-        </div>
-
-        <div class="model-view__title" translate>Is defined by</div>
-        <div>{{ctrl.selectedClass.isDefinedBy}}</div>
-
-        <div ng-show="ctrl.selectedClass.subClassOf">
-          <div class="model-view__title" translate>Superclass</div>
-          <div>{{ctrl.selectedClass.subClassOf}}</div>
-        </div>
-      </div>
-
+    <div class="col-md-4" window-height padding="320">
+      <editable-form>
+        <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass['@graph'][0]" context="ctrl.selectedClass['@context']"></class-form>
+      </editable-form>
     </div>
 
   </div>

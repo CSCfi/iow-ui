@@ -21,11 +21,11 @@ msgid "Add property"
 msgstr ""
 
 #: components/templates/searchClassModal.html:32
-#: components/templates/searchPredicateModal.html:36
+#: components/templates/searchPredicateModal.html:38
 msgid "All models"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:45
+#: components/templates/searchPredicateModal.html:47
 msgid "All types"
 msgstr ""
 
@@ -51,13 +51,13 @@ msgstr ""
 
 #: components/templates/deleteConfirmModal.html:14
 #: components/templates/editInProgressModal.html:14
-#: components/templates/searchClassModal.html:75
+#: components/templates/searchClassModal.html:59
 #: components/templates/searchConceptModal.html:26
-#: components/templates/searchPredicateModal.html:71
+#: components/templates/searchPredicateModal.html:73
 msgid "Cancel"
 msgstr ""
 
-#: components/templates/editableFormButtons.html:3
+#: components/templates/editableFormButtons.html:2
 msgid "Cancel edit"
 msgstr ""
 
@@ -69,9 +69,9 @@ msgstr ""
 msgid "Classes"
 msgstr ""
 
-#: components/templates/classView.html:14
-#: components/templates/modelView.html:15
-#: components/templates/predicateView.html:13
+#: components/templates/classForm.html:5
+#: components/templates/modelView.html:16
+#: components/templates/predicateForm.html:5
 #: components/templates/propertyView.html:8
 msgid "Comment"
 msgstr ""
@@ -84,15 +84,19 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
+#: components/templates/searchPredicateModal.html:75
+msgid "Create and use predicate"
+msgstr ""
+
 #: components/templates/searchConceptModal.html:27
 msgid "Create new"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:17
+#: components/templates/searchPredicateModal.html:19
 msgid "Create new association"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:13
+#: components/templates/searchPredicateModal.html:15
 msgid "Create new attribute"
 msgstr ""
 
@@ -125,11 +129,12 @@ msgid "Delete property"
 msgstr ""
 
 #: components/templates/propertyPredicateView.html:5
-#: components/templates/searchClassModal.html:56
 msgid "Description"
 msgstr ""
 
-#: components/templates/editableFormButtons.html:1
+#: components/templates/classView.html:6
+#: components/templates/modelView.html:4
+#: components/templates/predicateView.html:5
 msgid "Edit"
 msgstr ""
 
@@ -145,9 +150,9 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: components/templates/classView.html:13
-#: components/templates/modelView.html:13
-#: components/templates/predicateView.html:12
+#: components/templates/classForm.html:4
+#: components/templates/modelView.html:14
+#: components/templates/predicateForm.html:4
 msgid "Id"
 msgstr ""
 
@@ -159,9 +164,8 @@ msgstr ""
 msgid "IOW header"
 msgstr ""
 
-#: components/templates/classView.html:19
-#: components/templates/predicateView.html:16
-#: components/templates/searchClassModal.html:60
+#: components/templates/classForm.html:10
+#: components/templates/predicateForm.html:8
 msgid "Is defined by"
 msgstr ""
 
@@ -185,7 +189,6 @@ msgstr ""
 
 #: components/templates/propertyPredicateView.html:1
 #: components/templates/propertyView.html:7
-#: components/templates/searchClassModal.html:52
 msgid "Name"
 msgstr ""
 
@@ -230,7 +233,7 @@ msgstr ""
 msgid "Requires"
 msgstr ""
 
-#: components/templates/editableFormButtons.html:2
+#: components/templates/editableFormButtons.html:1
 msgid "Save changes"
 msgstr ""
 
@@ -250,20 +253,19 @@ msgstr ""
 msgid "Search from concept database"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:27
+#: components/templates/searchPredicateModal.html:29
 msgid "search predicate"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:21
+#: components/templates/searchPredicateModal.html:23
 msgid "Search predicate info"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:3
+#: components/templates/searchPredicateModal.html:5
 msgid "Search predicates"
 msgstr ""
 
-#: components/templates/classView.html:16
-#: components/templates/searchClassModal.html:64
+#: components/templates/classForm.html:7
 msgid "Superclass"
 msgstr ""
 
@@ -277,15 +279,15 @@ msgstr ""
 msgid "UI language"
 msgstr ""
 
-#: components/templates/searchClassModal.html:76
+#: components/templates/searchClassModal.html:60
 msgid "Use class"
 msgstr ""
 
-#: components/templates/searchPredicateModal.html:72
+#: components/templates/searchPredicateModal.html:74
 msgid "Use predicate"
 msgstr ""
 
-#: components/templates/predicateView.html:15
+#: components/templates/predicateForm.html:7
 #: components/templates/propertyView.html:11
 msgid "Value class"
 msgstr ""

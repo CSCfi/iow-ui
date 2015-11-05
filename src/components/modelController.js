@@ -8,7 +8,6 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   let classView;
   let predicateView;
-  let modelContext;
 
   vm.loading = true;
 
@@ -19,13 +18,13 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.registerClassView = (view) => {
     classView = view;
     if (selected && selected.type === 'class') {
-      selectClass(selected.id);
+      selectClassById(selected.id);
     }
   };
   vm.registerPredicateView = (view) => {
     predicateView = view;
     if (selected && selected.type !== 'class') {
-      selectPredicate(selected.id, selected.type);
+      selectPredicateByIdAndType(selected.id, selected.type);
     }
   };
   vm.select = select;
@@ -39,7 +38,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     fetchAll();
     const selection = classView.class || predicateView.predicate;
     if (selection) {
-      $location.search({urn: modelId, [mapType(graphUtils.type(selection))]: graphUtils.withFullId(selection)});
+      $location.search({urn: modelId, [graphUtils.type(selection)]: graphUtils.withFullId(selection)});
     } else {
       $location.search({urn: modelId});
     }
@@ -68,11 +67,8 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createClass(conceptData) {
-    classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage()).then(klass => {
-      classService.addUnsavedClass(klass, modelContext);
-      const classId = graphUtils.withFullId(klass);
-      selectByTypeAndId('class', classId);
-    });
+    classCreatorService.createClass(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
+      .then(klass => selectClass(klass, true));
   }
 
   function assignClassToModel(classId) {
@@ -83,23 +79,20 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createPredicate(conceptData) {
-    predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage()).then(predicate => {
-      predicateService.addUnsavedPredicate(predicate, modelContext);
-      const predicateId = graphUtils.withFullId(predicate);
-      selectByTypeAndId(mapType(conceptData.type), predicateId);
-    });
+    predicateCreatorService.createPredicate(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
+      .then(predicate => selectPredicate(predicate, true));
   }
 
   function assignPredicateToModel(predicateId, type) {
     predicateService.assignPredicateToModel(predicateId, modelId).then(() => {
-      selectByTypeAndId(mapType(type), predicateId);
+      selectByTypeAndId(graphUtils.asTypeString(type), predicateId);
       fetchPredicates();
     });
   }
 
   function isSelected(obj) {
     const id = obj['@id'];
-    const type = mapType(obj['@type']);
+    const type = graphUtils.asTypeString(obj['@type']);
 
     if (type === 'class') {
       return id === classView.getSelectionId();
@@ -109,48 +102,49 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function select(obj) {
-    selectByTypeAndId(mapType(obj['@type']), obj['@id']);
+    selectByTypeAndId(graphUtils.asTypeString(obj['@type']), obj['@id']);
   }
 
   function selectByTypeAndId(type, id) {
     if (type === 'class') {
-      selectClass(id);
+      selectClassById(id);
     } else {
-      selectPredicate(id, type);
+      selectPredicateByIdAndType(id, type);
     }
   }
 
-  function selectClass(id) {
-    askPermissionWhenEditing((editing) => {
-      if (editing) {
-        cancelEditing();
-      }
-      classService.getClass(id).then(klass => {
-        classView.selectClass(klass, klass.unsaved);
-        predicateView.selectPredicate(null);
-        $location.search({urn: modelId, 'class': id});
-      });
+  function selectClassById(id) {
+    classService.getClass(id).then(selectClass);
+  }
+
+  function selectClass(klass, unsaved) {
+    askPermissionWhenEditing(() => {
+      classView.selectClass(klass, unsaved);
+      predicateView.selectPredicate(null);
+      $location.search({urn: modelId, 'class': graphUtils.withFullId(klass)});
     });
   }
 
-  function selectPredicate(id, type) {
-    askPermissionWhenEditing((editing) => {
-      if (editing) {
-        cancelEditing();
-      }
-      predicateService.getPredicateById(id, type + 'Frame').then(predicate => {
-        predicateView.selectPredicate(predicate, predicate.unsaved);
-        classView.selectClass(null);
-        $location.search({urn: modelId, [type]: id});
-      });
+  function selectPredicateByIdAndType(id, type) {
+    predicateService.getPredicateById(id, type + 'Frame').then(selectPredicate);
+  }
+
+  function selectPredicate(predicate, unsaved) {
+    askPermissionWhenEditing(() => {
+      predicateView.selectPredicate(predicate, unsaved);
+      classView.selectClass(null);
+      $location.search({urn: modelId, [graphUtils.type(predicate)]: graphUtils.withFullId(predicate)});
     });
   }
 
   function askPermissionWhenEditing(callback) {
     if (isEditing()) {
-      editInProgressModal.open().result.then(() => callback(true));
+      editInProgressModal.open().result.then(() => {
+        cancelEditing();
+        callback();
+      });
     } else {
-      callback(false);
+      callback();
     }
   }
 
@@ -169,8 +163,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   function fetchModel() {
     return modelService.getModelByUrn(modelId).then(data => {
-      vm.model = data['@graph'][0];
-      modelContext = data['@context'];
+      vm.model = data;
     }, err => {
       $log.error(err);
     });
@@ -191,17 +184,5 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     }, err => {
       $log.error(err);
     });
-  }
-
-  function mapType(type) {
-    if (type === 'sh:ShapeClass') {
-      return 'class';
-    } else if (type === 'owl:DatatypeProperty') {
-      return 'attribute';
-    } else if (type === 'owl:ObjectProperty') {
-      return 'association';
-    } else {
-      throw new Error('Unknown type: ' + type);
-    }
   }
 };

@@ -75,7 +75,7 @@ module.exports = function predicateView($log) {
       }
 
       function canDeletePredicate() {
-        return userService.isLoggedIn();
+        return userService.isLoggedIn() && !isEditing() && !unsaved;
       }
 
       function deletePredicate() {

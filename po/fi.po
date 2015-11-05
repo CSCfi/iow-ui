@@ -29,11 +29,11 @@ msgid "Add property"
 msgstr "Lisää ominaisuus"
 
 #: components/templates/searchClassModal.html:32
-#: components/templates/searchPredicateModal.html:36
+#: components/templates/searchPredicateModal.html:38
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
-#: components/templates/searchPredicateModal.html:45
+#: components/templates/searchPredicateModal.html:47
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -59,13 +59,13 @@ msgstr "Selaa"
 
 #: components/templates/deleteConfirmModal.html:14
 #: components/templates/editInProgressModal.html:14
-#: components/templates/searchClassModal.html:75
+#: components/templates/searchClassModal.html:59
 #: components/templates/searchConceptModal.html:26
-#: components/templates/searchPredicateModal.html:71
+#: components/templates/searchPredicateModal.html:73
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: components/templates/editableFormButtons.html:3
+#: components/templates/editableFormButtons.html:2
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
@@ -79,9 +79,8 @@ msgstr ""
 msgid "Classes"
 msgstr "Luokat"
 
-#: components/templates/classView.html:14
-#: components/templates/modelView.html:15
-#: components/templates/predicateView.html:13
+#: components/templates/classForm.html:5 components/templates/modelView.html:16
+#: components/templates/predicateForm.html:5
 #: components/templates/propertyView.html:8
 msgid "Comment"
 msgstr "Määritelmä"
@@ -94,15 +93,19 @@ msgstr "Käsite"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
+#: components/templates/searchPredicateModal.html:75
+msgid "Create and use predicate"
+msgstr "Luo ominaisuus ja käytä"
+
 #: components/templates/searchConceptModal.html:27
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: components/templates/searchPredicateModal.html:17
+#: components/templates/searchPredicateModal.html:19
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: components/templates/searchPredicateModal.html:13
+#: components/templates/searchPredicateModal.html:15
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
@@ -135,11 +138,11 @@ msgid "Delete property"
 msgstr "Poista ominaisuus"
 
 #: components/templates/propertyPredicateView.html:5
-#: components/templates/searchClassModal.html:56
 msgid "Description"
 msgstr "Kuvaus"
 
-#: components/templates/editableFormButtons.html:1
+#: components/templates/classView.html:6 components/templates/modelView.html:4
+#: components/templates/predicateView.html:5
 msgid "Edit"
 msgstr "Muokkaa"
 
@@ -157,9 +160,8 @@ msgstr ""
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/templates/classView.html:13
-#: components/templates/modelView.html:13
-#: components/templates/predicateView.html:12
+#: components/templates/classForm.html:4 components/templates/modelView.html:14
+#: components/templates/predicateForm.html:4
 msgid "Id"
 msgstr "Tunniste"
 
@@ -171,9 +173,8 @@ msgstr "Tunniste"
 msgid "IOW header"
 msgstr "Otsikko tähän"
 
-#: components/templates/classView.html:19
-#: components/templates/predicateView.html:16
-#: components/templates/searchClassModal.html:60
+#: components/templates/classForm.html:10
+#: components/templates/predicateForm.html:8
 msgid "Is defined by"
 msgstr "Kirjasto"
 
@@ -198,7 +199,6 @@ msgstr "Kirjaudu ulos"
 
 #: components/templates/propertyPredicateView.html:1
 #: components/templates/propertyView.html:7
-#: components/templates/searchClassModal.html:52
 msgid "Name"
 msgstr "Nimi"
 
@@ -242,7 +242,7 @@ msgstr "Luo tunnukset"
 msgid "Requires"
 msgstr "Nimiavaruudet"
 
-#: components/templates/editableFormButtons.html:2
+#: components/templates/editableFormButtons.html:1
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
@@ -262,22 +262,21 @@ msgstr "Hae luokkia"
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
 
-#: components/templates/searchPredicateModal.html:27
+#: components/templates/searchPredicateModal.html:29
 msgid "search predicate"
 msgstr "Hae ominaisuutta…"
 
-#: components/templates/searchPredicateModal.html:21
+#: components/templates/searchPredicateModal.html:23
 msgid "Search predicate info"
 msgstr ""
 "Haen ensin tarvitsemaasi ominaisuutta yhteentoimivuuden kuvauksista. Jos et "
 "löydä tarpeisiisi sopivaa, voit luoda uuden ominaisuuden."
 
-#: components/templates/searchPredicateModal.html:3
+#: components/templates/searchPredicateModal.html:5
 msgid "Search predicates"
 msgstr "Hae ominaisuuksia"
 
-#: components/templates/classView.html:16
-#: components/templates/searchClassModal.html:64
+#: components/templates/classForm.html:7
 msgid "Superclass"
 msgstr "Yläluokka"
 
@@ -291,15 +290,15 @@ msgstr "Tyyppi"
 msgid "UI language"
 msgstr "Käyttöliittymän kieli"
 
-#: components/templates/searchClassModal.html:76
+#: components/templates/searchClassModal.html:60
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/templates/searchPredicateModal.html:72
+#: components/templates/searchPredicateModal.html:74
 msgid "Use predicate"
 msgstr "Käytä ominaisuutta"
 
-#: components/templates/predicateView.html:15
+#: components/templates/predicateForm.html:7
 #: components/templates/propertyView.html:11
 msgid "Value class"
 msgstr "Kohde"
