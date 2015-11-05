@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const jsonld = require('jsonld');
 const frames = require('./frames');
-const contextUtils = require('./contextUtils');
+const graphUtils = require('./graphUtils');
 
 module.exports = function predicateService($http, $q) {
   'ngInject';
@@ -10,9 +10,8 @@ module.exports = function predicateService($http, $q) {
 
   return {
     addUnsavedPredicate(predicate, context) {
-      const predicateId = contextUtils.withFullIRI(context, predicate['@graph'][0]['@id']);
       _.extend(predicate['@context'], context);
-      unsavedPredicates[predicateId] = predicate;
+      unsavedPredicates[graphUtils.withFullId(predicate)] = predicate;
     },
     createUnsavedPredicates() {
       return $q.all(_.map(unsavedPredicates, (predicate, predicateId) => this.createPredicate(predicate, predicateId)))
@@ -81,6 +80,6 @@ module.exports = function predicateService($http, $q) {
         model: model
       };
       return $http.delete('/api/rest/predicate', {params: requestParams});
-    },
+    }
   };
 };

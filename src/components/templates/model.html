@@ -17,8 +17,8 @@
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isSelected('class', class['@id'])}"
-                ng-click="ctrl.select('class', class['@id'])">
+                ng-class="{'model-panel__selection': ctrl.isSelected(class)}"
+                ng-click="ctrl.select(class)">
               {{class | translateLabel}}
             </li>
           </ul>
@@ -32,8 +32,8 @@
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isSelected('attribute', attribute['@id'])}"
-                ng-click="ctrl.select('attribute', attribute['@id'])">
+                ng-class="{'model-panel__selection': ctrl.isSelected(attribute)}"
+                ng-click="ctrl.select(attribute)">
               {{attribute | translateLabel}}
             </li>
           </ul>
@@ -47,8 +47,8 @@
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="association in ctrl.associations | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isSelected('association', association['@id'])}"
-                ng-click="ctrl.select('association', association['@id'])">
+                ng-class="{'model-panel__selection': ctrl.isSelected(association)}"
+                ng-click="ctrl.select(association)">
               {{association | translateLabel}}
             </li>
           </ul>
@@ -57,8 +57,8 @@
     </div>
 
     <div class="model-panel--right" window-height="min">
-      <class-view id="ctrl.selected.id" ng-show="ctrl.selected.type === 'class'"></class-view>
-      <predicate-view id="ctrl.selected.id" type="{{ctrl.selected.type}}" ng-show="ctrl.selected.type !== 'class'"></predicate-view>
+      <class-view></class-view>
+      <predicate-view></predicate-view>
     </div>
   </div>
 

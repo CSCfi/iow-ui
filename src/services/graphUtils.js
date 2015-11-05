@@ -12,7 +12,21 @@ function withFullIRI(context, value) {
   }
 }
 
+function graph(obj) {
+  return obj && obj['@graph'][0];
+}
+
+function type(obj) {
+  return graph(obj)['@type'];
+}
+
+function withFullId(obj) {
+  return withFullIRI(obj['@context'], graph(obj)['@id']);
+}
 
 module.exports = {
-  withFullIRI
+  withFullIRI,
+  withFullId,
+  graph,
+  type
 };

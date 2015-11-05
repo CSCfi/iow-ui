@@ -1,18 +1,25 @@
 const _ = require('lodash');
 const jsonld = require('jsonld');
 const frames = require('./frames');
-const contextUtils = require('./contextUtils');
+const graphUtils = require('./graphUtils');
 
 module.exports = function classService($http, $q) {
   'ngInject';
 
   let unsavedClasses = {};
 
+  function ensurePropertyAsArray(obj, property) {
+    const propertyValue = obj[property];
+
+    if (!Array.isArray(propertyValue)) {
+      obj[property] = propertyValue ? [propertyValue] : [];
+    }
+  }
+
   return {
     addUnsavedClass(klass, context) {
-      const classId = contextUtils.withFullIRI(context, klass['@graph'][0]['@id']);
       _.extend(klass['@context'], context);
-      unsavedClasses[classId] = klass;
+      unsavedClasses[graphUtils.withFullId(klass)] = klass;
     },
     createUnsavedClasses() {
       return $q.all(_.map(unsavedClasses, (klass, classId) => this.createClass(klass, classId)))
@@ -31,7 +38,11 @@ module.exports = function classService($http, $q) {
       const unsaved = unsavedClasses[id];
 
       function frame(data) {
-        return jsonld.promises.frame(data, frames.classFrame(data));
+        return jsonld.promises.frame(data, frames.classFrame(data))
+        .then(framedClass => {
+          ensurePropertyAsArray(graphUtils.graph(framedClass), 'property');
+          return framedClass;
+        });
       }
 
       if (unsaved) {

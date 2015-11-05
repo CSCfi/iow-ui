@@ -1,19 +1,20 @@
-<editable-form on-submit="ctrl.updatePredicate()" on-reset="ctrl.resetModel()" ng-hide="ctrl.loading">
+<editable-form on-submit="ctrl.updatePredicate()" on-reset="ctrl.resetModel()">
+  <div ng-if="ctrl.predicate">
+    <div class="top-actions" float="top-actions-placeholder" top-offset="8">
+      <button type="button" class="btn btn-default" ng-click="ctrl.deletePredicate()" ng-if="ctrl.canDeletePredicate()" translate>Delete predicate</button>
+      <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit() && !formController.visible()" translate>Edit</button>
+      <editable-form-buttons></editable-form-buttons>
+      <show-submit-error></show-submit-error>
+    </div>
 
-  <div class="top-actions" float="top-actions-placeholder" top-offset="8">
-    <button type="button" class="btn btn-default" ng-click="ctrl.deletePredicate()" ng-if="ctrl.canDeletePredicate()" translate>Delete predicate</button>
-    <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit() && !formController.visible()" translate>Edit</button>
-    <editable-form-buttons></editable-form-buttons>
-    <show-submit-error></show-submit-error>
+    <h2>
+      <form-input content="ctrl.predicate['@graph'][0].label"></form-input>
+    </h2>
+    <form-id title="{{'Id' | translate}}" plain-text="ctrl.predicate['@graph'][0]['@id']"></form-id>
+    <form-text-area title="{{'Comment' | translate}}" content="ctrl.predicate['@graph'][0].comment"></form-text-area>
+    <range-select ng-if="ctrl.predicate['@graph'][0]['@type'] === 'owl:DatatypeProperty'" content="ctrl.predicate['@graph'][0].datatype"></range-select>
+    <form-input ng-if="ctrl.predicate['@graph'][0]['@type'] === 'owl:ObjectProperty'"  title="{{'Value class' | translate}}" content="ctrl.predicate['@graph'][0].valueclass"></form-input>
+    <div class="model-view__title" translate>Is defined by</div>
+    <div>{{ctrl.predicate['@graph'][0].isDefinedBy}}</div>
   </div>
-
-  <h2>
-    <form-input content="ctrl.predicate.label"></form-input>
-  </h2>
-  <form-id title="{{'Id' | translate}}" plain-text="ctrl.predicate['@id']"></form-id>
-  <form-text-area title="{{'Comment' | translate}}" content="ctrl.predicate.comment"></form-text-area>
-  <range-select ng-if="ctrl.type === 'attribute'" content="ctrl.predicate.datatype"></range-select>
-  <form-input ng-if="ctrl.type === 'association'"  title="{{'Value class' | translate}}"content="ctrl.predicate.valueclass"></form-input>
-  <div class="model-view__title" translate>Is defined by</div>
-  <div>{{ctrl.predicate.isDefinedBy}}</div>
 </editable-form>

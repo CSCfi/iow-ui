@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const contextUtils = require('../services/contextUtils');
+const graphUtils = require('../services/graphUtils');
 
 module.exports = function modalFactory($uibModal) {
   'ngInject';
@@ -89,7 +89,7 @@ function SearchPredicateController($uibModalInstance, type, excludedPredicateMap
   };
 
   function selectedPredicateId() {
-    return vm.selectedPredicate && contextUtils.withFullIRI(context, vm.selectedPredicate['@id']);
+    return vm.selectedPredicate && graphUtils.withFullIRI(context, vm.selectedPredicate['@id']);
   }
 
   function localizedLabelAsLower(predicate) {

@@ -1,4 +1,4 @@
-const contextUtils = require('../services/contextUtils');
+const graphUtils = require('../services/graphUtils');
 
 module.exports = function propertyView() {
   'ngInject';
@@ -16,7 +16,7 @@ module.exports = function propertyView() {
     controller($scope, predicateService) {
       'ngInject';
 
-      const predicateId = contextUtils.withFullIRI($scope.context, $scope.property.predicate);
+      const predicateId = graphUtils.withFullIRI($scope.context, $scope.property.predicate);
 
       predicateService.getPredicateById(predicateId).then(predicate => {
         $scope.predicate = predicate['@graph'][0];

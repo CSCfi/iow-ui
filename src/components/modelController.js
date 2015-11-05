@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const contextUtils = require('../services/contextUtils');
+const graphUtils = require('../services/graphUtils');
 
 module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, predicateCreatorService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
   'ngInject';
@@ -14,20 +14,38 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   fetchAll().then(() => vm.loading = false);
 
-  vm.selected = selected;
   vm.activeTab = selected ? {[selected.type]: true} : {class: true};
-  vm.reload = fetchAll;
-  vm.registerClassView = (view) => classView = view;
-  vm.registerPredicateView = (view) => predicateView = view;
-  vm.select = select;
-  vm.isSelected = (type, id) => _.isEqual(vm.selected, {type, id});
-  vm.deselect = () => {
-    vm.selected = null;
-    $location.search({urn: modelId});
+  vm.reload = reload;
+  vm.registerClassView = (view) => {
+    classView = view;
+    if (selected && selected.type === 'class') {
+      selectClass(selected.id);
+    }
   };
+  vm.registerPredicateView = (view) => {
+    predicateView = view;
+    if (selected && selected.type !== 'class') {
+      selectPredicate(selected.id, selected.type);
+    }
+  };
+  vm.select = select;
+  vm.isSelected = isSelected;
   vm.isLoggedIn = userService.isLoggedIn;
+  vm.addClass = addClass;
+  vm.addPredicate = addPredicate;
+  vm.modelId = modelId;
 
-  vm.addClass = () => {
+  function reload() {
+    fetchAll();
+    const selection = classView.class || predicateView.predicate;
+    if (selection) {
+      $location.search({urn: modelId, [mapType(graphUtils.type(selection))]: graphUtils.withFullId(selection)});
+    } else {
+      $location.search({urn: modelId});
+    }
+  }
+
+  function addClass() {
     const classMap = _.indexBy(vm.classes, klass => klass['@id']);
     searchClassModal.open(classMap).result.then(result => {
       if (typeof result === 'object') {
@@ -36,9 +54,9 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
         assignClassToModel(result);
       }
     });
-  };
+  }
 
-  vm.addPredicate = (type) => {
+  function addPredicate(type) {
     const predicateMap = _.indexBy(vm.associations.concat(vm.attributes), (predicate) => predicate['@id']);
     searchPredicateModal.open(type, predicateMap).result.then(result => {
       if (typeof result === 'object') {
@@ -47,53 +65,84 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
         assignPredicateToModel(result, type);
       }
     });
-  };
-
-  vm.getModelId = () => {
-    return modelId;
-  };
+  }
 
   function createClass(conceptData) {
     classCreatorService.createClass(modelContext, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage()).then(klass => {
       classService.addUnsavedClass(klass, modelContext);
-      const classId = contextUtils.withFullIRI(modelContext, klass['@graph'][0]['@id']);
-      select('class', classId);
+      const classId = graphUtils.withFullId(klass);
+      selectByTypeAndId('class', classId);
     });
   }
 
   function assignClassToModel(classId) {
     classService.assignClassToModel(classId, modelId).then(() => {
-      select('class', classId);
+      selectByTypeAndId('class', classId);
       fetchClasses();
     });
-  }
-
-  function owlTypeToType(owlType) {
-    return owlType === 'owl:ObjectProperty' ? 'association' : 'attribute';
   }
 
   function createPredicate(conceptData) {
     predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage()).then(predicate => {
       predicateService.addUnsavedPredicate(predicate, modelContext);
-      const predicateId = contextUtils.withFullIRI(modelContext, predicate['@graph'][0]['@id']);
-      select(owlTypeToType(conceptData.type), predicateId);
+      const predicateId = graphUtils.withFullId(predicate);
+      selectByTypeAndId(mapType(conceptData.type), predicateId);
     });
   }
 
   function assignPredicateToModel(predicateId, type) {
     predicateService.assignPredicateToModel(predicateId, modelId).then(() => {
-      select(owlTypeToType(type), predicateId);
+      selectByTypeAndId(mapType(type), predicateId);
       fetchPredicates();
     });
   }
 
-  function select(type, id) {
+  function isSelected(obj) {
+    const id = obj['@id'];
+    const type = mapType(obj['@type']);
+
+    if (type === 'class') {
+      return id === classView.getSelectionId();
+    } else {
+      return id === predicateView.getSelectionId();
+    }
+  }
+
+  function select(obj) {
+    selectByTypeAndId(mapType(obj['@type']), obj['@id']);
+  }
+
+  function selectByTypeAndId(type, id) {
+    if (type === 'class') {
+      selectClass(id);
+    } else {
+      selectPredicate(id, type);
+    }
+  }
+
+  function selectClass(id) {
     askPermissionWhenEditing((editing) => {
       if (editing) {
         cancelEditing();
       }
-      vm.selected = {type, id};
-      $location.search({urn: modelId, [type]: id});
+      classService.getClass(id).then(klass => {
+        classView.selectClass(klass, klass.unsaved);
+        predicateView.selectPredicate(null);
+        $location.search({urn: modelId, 'class': id});
+      });
+    });
+  }
+
+  function selectPredicate(id, type) {
+    askPermissionWhenEditing((editing) => {
+      if (editing) {
+        cancelEditing();
+      }
+      predicateService.getPredicateById(id, type + 'Frame').then(predicate => {
+        predicateView.selectPredicate(predicate, predicate.unsaved);
+        classView.selectClass(null);
+        $location.search({urn: modelId, [type]: id});
+      });
     });
   }
 
@@ -106,12 +155,12 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function cancelEditing() {
-    classView.cancelEditing();
-    predicateView.cancelEditing();
+    classView.cancelEditing(false);
+    predicateView.cancelEditing(false);
   }
 
   function isEditing() {
-    return classView.isEditing() || predicateView.isEditing();
+    return (classView && classView.isEditing()) || (predicateView && predicateView.isEditing());
   }
 
   function fetchAll() {
@@ -142,5 +191,17 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     }, err => {
       $log.error(err);
     });
+  }
+
+  function mapType(type) {
+    if (type === 'sh:ShapeClass') {
+      return 'class';
+    } else if (type === 'owl:DatatypeProperty') {
+      return 'attribute';
+    } else if (type === 'owl:ObjectProperty') {
+      return 'association';
+    } else {
+      throw new Error('Unknown type: ' + type);
+    }
   }
 };

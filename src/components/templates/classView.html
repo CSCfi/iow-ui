@@ -1,30 +1,31 @@
-<editable-form on-submit="ctrl.updateClass()" on-reset="ctrl.resetModel()" ng-hide="ctrl.loading">
+<editable-form on-submit="ctrl.updateClass()" on-reset="ctrl.resetModel()">
+  <div ng-if="ctrl.class">
+    <div class="top-actions" float="top-actions-placeholder" top-offset="8">
+      <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.deleteClass()" ng-if="ctrl.canDeleteClass()" translate>Delete class</button>
+      <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit() && !formController.visible()" translate>Edit</button>
+      <editable-form-buttons></editable-form-buttons>
+      <show-submit-error></show-submit-error>
+    </div>
 
-  <div class="top-actions" float="top-actions-placeholder" top-offset="8">
-    <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.deleteClass()" ng-if="ctrl.canDeleteClass()" translate>Delete class</button>
-    <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit() && !formController.visible()" translate>Edit</button>
-    <editable-form-buttons></editable-form-buttons>
-    <show-submit-error></show-submit-error>
-  </div>
-
-  <h2>
-    <form-input content="ctrl.class.label"></form-input>
-  </h2>
-  <form-id title="{{'Id' | translate}}" plain-text="ctrl.class['@id']"></form-id>
-  <form-text-area title="{{'Comment' | translate}}" content="ctrl.class.comment"></form-text-area>
-  <div ng-show="ctrl.class.subClassOf">
-    <div class="model-view__title" translate>Superclass</div>
-    <div>{{ctrl.class.subClassOf}}</div>
-  </div>
-  <div class="model-view__title" translate>Is defined by</div>
-  <div>{{ctrl.class.isDefinedBy}}</div>
+    <h2>
+      <form-input content="ctrl.class['@graph'][0].label"></form-input>
+    </h2>
+    <form-id title="{{'Id' | translate}}" plain-text="ctrl.class['@graph'][0]['@id']"></form-id>
+    <form-text-area title="{{'Comment' | translate}}" content="ctrl.class['@graph'][0].comment"></form-text-area>
+    <div ng-show="ctrl.class['@graph'][0].subClassOf">
+      <div class="model-view__title" translate>Superclass</div>
+      <div>{{ctrl.class['@graph'][0].subClassOf}}</div>
+    </div>
+    <div class="model-view__title" translate>Is defined by</div>
+    <div>{{ctrl.class['@graph'][0].isDefinedBy}}</div>
 
 
-  <uib-accordion close-others="true">
-    <uib-accordion-group ng-repeat="property in ctrl.class.property" is-open="isOpen[property['@id']]">
-      <uib-accordion-heading><span class="glyphicon" ng-class="property.datatype ? 'glyphicon-tasks' : property.valueClass ? 'glyphicon-sort' : 'glyphicon-question-sign'"></span> {{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></uib-accordion-heading>
-      <property-view property="property" context="ctrl.context" ng-if="isOpen[property['@id']]"></property-view>
-    </uib-accordion-group>
-  </uib-accordion>
+    <uib-accordion close-others="true">
+      <uib-accordion-group ng-repeat="property in ctrl.class['@graph'][0].property" is-open="isOpen[property['@id']]">
+        <uib-accordion-heading><span class="glyphicon" ng-class="property.datatype ? 'glyphicon-tasks' : property.valueClass ? 'glyphicon-sort' : 'glyphicon-question-sign'"></span> {{property | translateLabel}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span></uib-accordion-heading>
+        <property-view property="property" context="ctrl.class['@context']" ng-if="isOpen[property['@id']]"></property-view>
+      </uib-accordion-group>
+    </uib-accordion>
 </editable-form>
+</div>

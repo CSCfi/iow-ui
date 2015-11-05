@@ -1,33 +1,28 @@
 const _ = require('lodash');
-const contextUtils = require('../services/contextUtils');
+const graphUtils = require('../services/graphUtils');
 
 module.exports = function classView($log) {
   'ngInject';
 
   return {
-    scope: {
-      id: '='
-    },
+    scope: {},
     restrict: 'E',
     template: require('./templates/classView.html'),
     require: '^ngController',
     link($scope, element, attributes, modelController) {
-      const controller = $scope.ctrl;
-      modelController.registerClassView(controller);
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
+      modelController.registerClassView($scope.ctrl);
     },
     controllerAs: 'ctrl',
     bindToController: true,
     controller($scope, classService, modelLanguage, userService, classPropertyService, searchPredicateModal, predicateCreatorService, predicateService, deleteConfirmModal) {
       'ngInject';
 
-      let originalId;
+      let originalClass;
       let unsaved = false;
       const vm = this;
 
-      vm.loading = true;
-      vm.fetchClass = fetchClass;
       vm.updateClass = updateClass;
       vm.resetModel = resetModel;
       vm.deleteProperty = deleteProperty;
@@ -37,61 +32,48 @@ module.exports = function classView($log) {
       vm.canDeleteClass = canDeleteClass;
       vm.canEdit = canEdit;
       // view contract
+      vm.selectClass = selectClass;
+      vm.getSelectionId = getSelectionId;
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
 
-      $scope.$watch('ctrl.id', id => fetchClass(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
-      function ensurePropertyAsArray(obj, property) {
-        const propertyValue = obj[property];
-
-        if (!Array.isArray(propertyValue)) {
-          obj[property] = propertyValue ? [propertyValue] : [];
-        }
+      function getSelectionId() {
+        return originalClass && graphUtils.withFullId(originalClass);
       }
 
-      function fetchClass(id) {
-        vm.loading = true;
-        classService.getClass(id).then(data => {
-          vm.context = data['@context'];
-          vm.class = data['@graph'][0];
-          originalId = id;
-          ensurePropertyAsArray(vm.class, 'property');
-          unsaved = data.unsaved;
-          if (unsaved) {
-            $scope.formController.show();
-          }
-          vm.loading = false;
-        });
+      function selectClass(klass, isUnsaved) {
+        vm.class = klass;
+        originalClass = _.cloneDeep(klass);
+
+        unsaved = isUnsaved;
+        if (unsaved) {
+          $scope.formController.show();
+        }
       }
 
       function updateClass() {
         return predicateService.createUnsavedPredicates().then(() => {
-          const classData = {
-            '@graph': [vm.class],
-            '@context': vm.context
-          };
+          const id = graphUtils.withFullId(vm.class);
+          const originalId = graphUtils.withFullId(originalClass);
 
-          const id = contextUtils.withFullIRI(vm.context, vm.class['@id']);
-
-          $log.info(JSON.stringify(classData, null, 2));
+          $log.info(JSON.stringify(vm.class, null, 2));
 
           function updateView() {
             unsaved = false;
-            originalId = id;
-            vm.id = id;
+            originalClass = _.cloneDeep(vm.class);
             $scope.modelController.reload();
           }
 
           if (unsaved) {
-            return classService.createClass(classData, id).then(() => {
+            return classService.createClass(vm.class, id).then(() => {
               classService.clearUnsavedClasses();
               updateView();
             });
           } else {
-            return classService.updateClass(classData, id, originalId).then(updateView);
+            return classService.updateClass(vm.class, id, originalId).then(updateView);
           }
         });
       }
@@ -99,11 +81,8 @@ module.exports = function classView($log) {
       function resetModel() {
         classService.clearUnsavedClasses();
         predicateService.clearUnsavedPredicates();
-        if (unsaved) {
-          $scope.modelController.deselect();
-        } else {
-          fetchClass(originalId);
-        }
+        selectClass(unsaved ? null : originalClass);
+        $scope.modelController.reload();
       }
 
       function isEditing() {
@@ -111,7 +90,8 @@ module.exports = function classView($log) {
       }
 
       function canEdit() {
-        return userService.isLoggedIn() && vm.class && $scope.modelController.getModelId() === vm.class.isDefinedBy;
+        const graph = graphUtils.graph(vm.class);
+        return userService.isLoggedIn() && graph && $scope.modelController.modelId === graph.isDefinedBy;
       }
 
       function cancelEditing(reset) {
@@ -128,9 +108,9 @@ module.exports = function classView($log) {
 
       function deleteClass() {
         deleteConfirmModal.open().result.then(() => {
-          const id = contextUtils.withFullIRI(vm.context, vm.class['@id']);
-          classService.deleteClass(id, $scope.modelController.getModelId()).then(() => {
-            $scope.modelController.deselect();
+          const id = graphUtils.withFullId(vm.class);
+          classService.deleteClass(id, $scope.modelController.modelId).then(() => {
+            selectClass(null);
             $scope.modelController.reload();
           });
         });
@@ -148,14 +128,14 @@ module.exports = function classView($log) {
 
       function createPropertyByPredicateId(predicateId) {
         classPropertyService.createPropertyForPredicateId(predicateId).then(property => {
-          vm.class.property.push(property['@graph'][0]);
+          graphUtils.graph(vm.class).property.push(property['@graph'][0]);
         });
       }
 
       function createPropertyByConcept(conceptData) {
-        const modelId = vm.class.isDefinedBy;
+        const modelId = $scope.modelController.modelId;
         predicateCreatorService.createPredicate(vm.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage()).then(predicate => {
-          const predicateId = contextUtils.withFullIRI(predicate['@context'], predicate['@graph'][0]['@id']);
+          const predicateId = graphUtils.withFullId(predicate);
           predicateService.addUnsavedPredicate(predicate, vm.context);
           createPropertyByPredicateId(predicateId);
         }, err => {
@@ -164,7 +144,7 @@ module.exports = function classView($log) {
       }
 
       function deleteProperty(property) {
-        _.remove(vm.class.property, property);
+        _.remove(graphUtils.graph(vm.class).property, property);
       }
     }
   };

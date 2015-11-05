@@ -1,91 +1,77 @@
 const _ = require('lodash');
-const contextUtils = require('../services/contextUtils');
+const graphUtils = require('../services/graphUtils');
 
 module.exports = function predicateView($log) {
   'ngInject';
   return {
-    scope: {
-      id: '=',
-      type: '@'
-    },
+    scope: {},
     restrict: 'E',
     template: require('./templates/predicateView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
     require: '^ngController',
     link($scope, element, attributes, modelController) {
-      const controller = $scope.ctrl;
-      modelController.registerPredicateView(controller);
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
+      modelController.registerPredicateView($scope.ctrl);
     },
     controller($scope, predicateService, modelLanguage, userService, deleteConfirmModal) {
       'ngInject';
 
-      let context;
-      let originalId;
+      let originalPredicate;
       let unsaved = false;
       const vm = this;
 
-      vm.loading = true;
-      vm.updatepredicate = updatePredicate;
+      vm.updatePredicate = updatePredicate;
       vm.resetModel = resetModel;
       vm.deletePredicate = deletePredicate;
       vm.canDeletePredicate = canDeletePredicate;
       vm.canEdit = canEdit;
       // view contract
+      vm.selectPredicate = selectPredicate;
+      vm.getSelectionId = getSelectionId;
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
 
-      $scope.$watch('ctrl.id', id => fetchPredicate(id));
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
-      function fetchPredicate(id) {
-        vm.loading = true;
-        predicateService.getPredicateById(id, vm.type + 'Frame').then(data => {
-          context = data['@context'];
-          originalId = id;
-          vm.predicate = data['@graph'][0];
-          unsaved = data.unsaved;
-          if (unsaved) {
-            $scope.formController.show();
-          }
-          vm.loading = false;
-        });
+      function getSelectionId() {
+        return originalPredicate && graphUtils.withFullId(originalPredicate);
+      }
+
+      function selectPredicate(predicate, isUnsaved) {
+        originalPredicate = _.cloneDeep(predicate);
+        vm.predicate = predicate;
+
+        unsaved = isUnsaved;
+        if (unsaved) {
+          $scope.formController.show();
+        }
       }
 
       function updatePredicate() {
-        const ld = _.chain(vm.predicate)
-          .clone()
-          .assign({'@context': context})
-          .value();
+        const id = graphUtils.withFullId(vm.predicate);
+        const originalId = graphUtils.withFullId(originalPredicate);
 
-        const id = contextUtils.withFullIRI(context, vm.predicate['@id']);
-
-        $log.info(JSON.stringify(ld, null, 2));
+        $log.info(JSON.stringify(vm.predicate, null, 2));
 
         function updateView() {
           unsaved = false;
-          originalId = id;
-          vm.id = id;
+          originalPredicate = _.cloneDeep(vm.predicate);
           $scope.modelController.reload();
         }
 
         if (unsaved) {
-          return predicateService.createPredicate(ld, id).then(updateView);
+          return predicateService.createPredicate(vm.predicate, id).then(updateView);
         } else {
-          return predicateService.updatePredicate(ld, id, originalId).then(updateView);
+          return predicateService.updatePredicate(vm.predicate, id, originalId).then(updateView);
         }
       }
 
       function resetModel() {
-        predicateService.clearUnsavedPredicates();
-        if (unsaved) {
-          $scope.modelController.deselect();
-        } else {
-          fetchPredicate(originalId);
-        }
+        selectPredicate(unsaved ? null : originalPredicate);
+        $scope.modelController.reload();
       }
 
       function canDeletePredicate() {
@@ -94,9 +80,9 @@ module.exports = function predicateView($log) {
 
       function deletePredicate() {
         deleteConfirmModal.open().result.then(() => {
-          const id = contextUtils.withFullIRI(context, vm.predicate['@id']);
-          predicateService.deletePredicate(id, $scope.modelController.getModelId()).then(() => {
-            $scope.modelController.deselect();
+          const id = graphUtils.withFullId(vm.predicate);
+          predicateService.deletePredicate(id, $scope.modelController.modelId).then(() => {
+            selectPredicate(null);
             $scope.modelController.reload();
           });
         });
@@ -107,11 +93,12 @@ module.exports = function predicateView($log) {
       }
 
       function canEdit() {
-        return userService.isLoggedIn() && vm.predicate && $scope.modelController.getModelId() === vm.predicate.isDefinedBy;
+        const graph = graphUtils.graph(vm.predicate);
+        return userService.isLoggedIn() && graph && $scope.modelController.modelId === graph.isDefinedBy;
       }
 
       function cancelEditing(reset) {
-        $scope.formController.cancel(reset);
+        return $scope.formController.cancel(reset);
       }
     }
   };

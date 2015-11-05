@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const contextUtils = require('../services/contextUtils');
+const graphUtils = require('../services/graphUtils');
 
 module.exports = function modalFactory($uibModal) {
   'ngInject';
@@ -71,7 +71,7 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, e
   };
 
   function selectedClassId() {
-    return vm.selectedClass && contextUtils.withFullIRI(context, vm.selectedClass['@id']);
+    return vm.selectedClass && graphUtils.withFullIRI(context, vm.selectedClass['@id']);
   }
 
   function localizedLabelAsLower(klass) {
