@@ -2,18 +2,10 @@ const _ = require('lodash');
 const jsonld = require('jsonld');
 const frames = require('./frames');
 const graphUtils = require('./graphUtils');
+const utils = require('./utils');
 
 module.exports = function classService($http) {
   'ngInject';
-
-  function ensurePropertyAsArray(obj, property) {
-    const propertyValue = obj[property];
-
-    if (!Array.isArray(propertyValue)) {
-      obj[property] = propertyValue ? [propertyValue] : [];
-    }
-  }
-
   return {
     getAllClasses() {
       return $http.get('/api/rest/class').then(response => {
@@ -25,7 +17,7 @@ module.exports = function classService($http) {
       function frame(data) {
         return jsonld.promises.frame(data, frames.classFrame(data))
         .then(framedClass => {
-          ensurePropertyAsArray(graphUtils.graph(framedClass), 'property');
+          utils.ensurePropertyAsArray(graphUtils.graph(framedClass), 'property');
           return framedClass;
         });
       }
