@@ -58,8 +58,7 @@
 
     <div class="model-panel--right" window-height="min">
       <class-view id="ctrl.selected.id" ng-if="ctrl.selected.type === 'class'"></class-view>
-      <predicate-view id="ctrl.selected.id" type="attribute" ng-if="ctrl.selected.type === 'attribute'"></predicate-view>
-      <predicate-view id="ctrl.selected.id" type="association" ng-if="ctrl.selected.type === 'association'"></predicate-view>
+      <predicate-view id="ctrl.selected.id" type="{{ctrl.selected.type}}" ng-if="ctrl.selected.type !== 'class'"></predicate-view>
     </div>
   </div>
 
