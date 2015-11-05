@@ -1,7 +1,7 @@
 <div>
 
   <div class="top-actions">
-    <button ng-show="classViewController.isEditing()" type="button" class="btn btn-default" ng-click="classViewController.deleteProperty(property)" translate>Delete property</button>
+    <button ng-show="editorViewController.canRemoveProperty()" type="button" class="btn btn-default" ng-click="editorViewController.removeProperty(property)" translate>Delete property</button>
   </div>
 
   <form-input title="{{'Name' | translate}}" content="property.label"></form-input>

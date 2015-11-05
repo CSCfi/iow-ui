@@ -12,104 +12,103 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: components/templates/model.html:46
+#: components/model/model.html:46
 msgid "Add association"
 msgstr "Lisää assosiaatio"
 
-#: components/templates/model.html:31
+#: components/model/model.html:31
 msgid "Add attribute"
 msgstr "Lisää ominaisuus"
 
-#: components/templates/model.html:16
+#: components/model/model.html:16
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: components/templates/classView.html:4
+#: components/model/editorView.html:4
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/templates/searchClassModal.html:32
-#: components/templates/searchPredicateModal.html:38
+#: components/model/searchClassModal.html:32
+#: components/model/searchPredicateModal.html:38
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
-#: components/templates/searchPredicateModal.html:47
+#: components/model/searchPredicateModal.html:47
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: components/templates/editInProgressModal.html:9
+#: components/modal/editInProgressModal.html:9
 msgid "Are you sure that you want to cancel edit?"
 msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 
-#: components/templates/deleteConfirmModal.html:9
+#: components/modal/deleteConfirmModal.html:9
 msgid "Are you sure that you want to delete?"
 msgstr "Oletko varma, että haluat poistaa?"
 
-#: components/templates/model.html:43
+#: components/model/model.html:43
 msgid "Associations"
 msgstr "Assosiaatiot"
 
-#: components/templates/model.html:28
+#: components/model/model.html:28
 msgid "Attributes"
 msgstr "Ominaisuudet"
 
-#: components/templates/groupList.html:2
+#: components/group/groupList.html:2
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/templates/deleteConfirmModal.html:14
-#: components/templates/editInProgressModal.html:14
-#: components/templates/searchClassModal.html:59
-#: components/templates/searchConceptModal.html:26
-#: components/templates/searchPredicateModal.html:73
+#: components/modal/deleteConfirmModal.html:14
+#: components/modal/editInProgressModal.html:14
+#: components/model/searchClassModal.html:59
+#: components/model/searchConceptModal.html:26
+#: components/model/searchPredicateModal.html:73
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: components/templates/editableFormButtons.html:2
+#: components/form/editableFormButtons.html:2
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
-#: components/templates/searchClassModal.html:17
+#: components/model/searchClassModal.html:17
 msgid "Class search info"
 msgstr ""
 "Haen ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
-#: components/templates/model.html:13
+#: components/model/model.html:13
 msgid "Classes"
 msgstr "Luokat"
 
-#: components/templates/classForm.html:5 components/templates/modelView.html:16
-#: components/templates/predicateForm.html:5
-#: components/templates/propertyView.html:8
+#: components/model/classForm.html:5 components/model/modelView.html:16
+#: components/model/predicateForm.html:5 components/model/propertyView.html:8
 msgid "Comment"
 msgstr "Määritelmä"
 
-#: components/templates/searchConceptModal.html:11
+#: components/model/searchConceptModal.html:11
 msgid "Concept"
 msgstr "Käsite"
 
-#: components/templates/deleteConfirmModal.html:3
+#: components/modal/deleteConfirmModal.html:3
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: components/templates/searchPredicateModal.html:75
+#: components/model/searchPredicateModal.html:75
 msgid "Create and use predicate"
 msgstr "Luo ominaisuus ja käytä"
 
-#: components/templates/searchConceptModal.html:27
+#: components/model/searchConceptModal.html:27
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: components/templates/searchPredicateModal.html:19
+#: components/model/searchPredicateModal.html:19
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: components/templates/searchPredicateModal.html:15
+#: components/model/searchPredicateModal.html:15
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
-#: components/templates/searchClassModal.html:13
+#: components/model/searchClassModal.html:13
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
@@ -125,84 +124,82 @@ msgstr "Määrittele käsite uudelle luokalle"
 msgid "Define concept for the new predicate"
 msgstr "Määrittele käsite uudelle ominaisuudelle"
 
-#: components/templates/classView.html:5
+#: translations/misc.html:6
 msgid "Delete class"
 msgstr "Poista luokka"
 
-#: components/templates/predicateView.html:4
+#: translations/misc.html:7
 msgid "Delete predicate"
 msgstr "Poista ominaisuus"
 
-#: components/templates/propertyView.html:4
+#: components/model/propertyView.html:4
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
-#: components/templates/propertyPredicateView.html:5
+#: components/model/propertyPredicateView.html:5
 msgid "Description"
 msgstr "Kuvaus"
 
-#: components/templates/classView.html:6 components/templates/modelView.html:4
-#: components/templates/predicateView.html:5
+#: components/model/editorView.html:6 components/model/modelView.html:4
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: components/templates/editInProgressModal.html:3
+#: components/modal/editInProgressModal.html:3
 msgid "Edit in progress"
 msgstr "Muokkaaminen on kesken"
 
-#: components/templates/login-modal.html:9
+#: components/navigation/login-modal.html:9
 msgid "eDuuni information"
 msgstr ""
 "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
 "haluat muokata palvelun sisältöä."
 
-#: components/templates/propertyView.html:9
+#: components/model/propertyView.html:9
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/templates/classForm.html:4 components/templates/modelView.html:14
-#: components/templates/predicateForm.html:4
+#: components/model/classForm.html:4 components/model/modelView.html:14
+#: components/model/predicateForm.html:4
 msgid "Id"
 msgstr "Tunniste"
 
-#: components/templates/referencesView.html:8
+#: components/model/referencesView.html:8
 msgid "Identifier"
 msgstr "Tunniste"
 
-#: components/templates/index.html:3
+#: components/index.html:3
 msgid "IOW header"
 msgstr "Otsikko tähän"
 
-#: components/templates/classForm.html:10
-#: components/templates/predicateForm.html:8
+#: components/model/classForm.html:10 components/model/predicateForm.html:8
 msgid "Is defined by"
 msgstr "Kirjasto"
 
-#: components/templates/searchConceptModal.html:17
+#: components/model/searchConceptModal.html:17
 msgid "Label"
 msgstr "Nimi"
 
-#: components/templates/login-modal.html:14
-#: components/templates/login-modal.html:3 components/templates/login.html:1
+#: components/navigation/login-modal.html:14
+#: components/navigation/login-modal.html:3 components/navigation/login.html:1
 msgid "Login"
 msgstr "Kirjaudu"
 
-#: components/templates/login-modal.html:10
+#: components/navigation/login-modal.html:10
 msgid "Login information"
 msgstr ""
 "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
 "sen jälkeen takaisin palveluun."
 
-#: components/templates/login.html:5
+#: components/navigation/login.html:5
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
-#: components/templates/propertyPredicateView.html:1
-#: components/templates/propertyView.html:7
+#: components/model/propertyPredicateView.html:1
+#: components/model/propertyView.html:7
 msgid "Name"
 msgstr "Nimi"
 
-#: components/searchConceptModalFactory.js:73 translations/misc.html:3
+#: components/model/searchConceptModalFactory.js:73 translations/misc.html:3
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
 
@@ -214,15 +211,15 @@ msgstr "Attribuutti"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
-#: components/templates/requiresView.html:8
+#: components/model/requiresView.html:8
 msgid "Preferred namespace"
 msgstr "Suositeltu nimiavaruus"
 
-#: components/templates/requiresView.html:10
+#: components/model/requiresView.html:10
 msgid "Preferred prefix"
 msgstr "Suositeltu etuliite"
 
-#: components/templates/propertyPredicateView.html:13
+#: components/model/propertyPredicateView.html:13
 msgid "Range"
 msgstr "Arvoalue"
 
@@ -230,59 +227,58 @@ msgstr "Arvoalue"
 msgid "rdf:langString"
 msgstr "Kieliversioitu teksti"
 
-#: components/templates/referencesView.html:1
+#: components/model/referencesView.html:1
 msgid "References"
 msgstr "Sanastot"
 
-#: components/templates/login-modal.html:15
+#: components/navigation/login-modal.html:15
 msgid "Register"
 msgstr "Luo tunnukset"
 
-#: components/templates/requiresView.html:1
+#: components/model/requiresView.html:1
 msgid "Requires"
 msgstr "Nimiavaruudet"
 
-#: components/templates/editableFormButtons.html:1
+#: components/form/editableFormButtons.html:1
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: components/templates/showSubmitError.html:3
+#: components/form/showSubmitError.html:3
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
 
-#: components/templates/searchClassModal.html:23
+#: components/model/searchClassModal.html:23
 msgid "search class"
 msgstr "Hae luokkaa…"
 
-#: components/templates/searchClassModal.html:3
+#: components/model/searchClassModal.html:3
 msgid "Search classes"
 msgstr "Hae luokkia"
 
-#: components/templates/searchConceptModal.html:13
+#: components/model/searchConceptModal.html:13
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
 
-#: components/templates/searchPredicateModal.html:29
+#: components/model/searchPredicateModal.html:29
 msgid "search predicate"
 msgstr "Hae ominaisuutta…"
 
-#: components/templates/searchPredicateModal.html:23
+#: components/model/searchPredicateModal.html:23
 msgid "Search predicate info"
 msgstr ""
 "Haen ensin tarvitsemaasi ominaisuutta yhteentoimivuuden kuvauksista. Jos et "
 "löydä tarpeisiisi sopivaa, voit luoda uuden ominaisuuden."
 
-#: components/templates/searchPredicateModal.html:5
+#: components/model/searchPredicateModal.html:5
 msgid "Search predicates"
 msgstr "Hae ominaisuuksia"
 
-#: components/templates/classForm.html:7
+#: components/model/classForm.html:7
 msgid "Superclass"
 msgstr "Yläluokka"
 
-#: components/templates/propertyPredicateView.html:9
-#: components/templates/referencesView.html:6
-#: components/templates/requiresView.html:6
+#: components/model/propertyPredicateView.html:9
+#: components/model/referencesView.html:6 components/model/requiresView.html:6
 msgid "Type"
 msgstr "Tyyppi"
 
@@ -290,16 +286,15 @@ msgstr "Tyyppi"
 msgid "UI language"
 msgstr "Käyttöliittymän kieli"
 
-#: components/templates/searchClassModal.html:60
+#: components/model/searchClassModal.html:60
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/templates/searchPredicateModal.html:74
+#: components/model/searchPredicateModal.html:74
 msgid "Use predicate"
 msgstr "Käytä ominaisuutta"
 
-#: components/templates/predicateForm.html:7
-#: components/templates/propertyView.html:11
+#: components/model/predicateForm.html:7 components/model/propertyView.html:11
 msgid "Value class"
 msgstr "Kohde"
 
@@ -371,8 +366,8 @@ msgstr "Aika"
 msgid "xsd:XMLLiteral"
 msgstr "XML"
 
-#: components/templates/deleteConfirmModal.html:13
-#: components/templates/editInProgressModal.html:13
+#: components/modal/deleteConfirmModal.html:13
+#: components/modal/editInProgressModal.html:13
 msgid "Yes"
 msgstr "Kyllä"
 

@@ -6,8 +6,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   const vm = this;
 
-  let classView;
-  let predicateView;
+  let editorView;
 
   vm.loading = true;
 
@@ -15,16 +14,10 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   vm.activeTab = selected ? {[selected.type]: true} : {class: true};
   vm.reload = reload;
-  vm.registerClassView = (view) => {
-    classView = view;
-    if (selected && selected.type === 'class') {
+  vm.registerEditorView = (view) => {
+    editorView = view;
+    if (selected) {
       selectClassById(selected.id);
-    }
-  };
-  vm.registerPredicateView = (view) => {
-    predicateView = view;
-    if (selected && selected.type !== 'class') {
-      selectPredicateByIdAndType(selected.id, selected.type);
     }
   };
   vm.select = select;
@@ -36,9 +29,9 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   function reload() {
     fetchAll();
-    const selection = classView.class || predicateView.predicate;
+    const selection = editorView.getSelection();
     if (selection) {
-      $location.search({urn: modelId, [graphUtils.type(selection)]: graphUtils.withFullId(selection)});
+      $location.search({urn: modelId, [selection.type]: selection.id});
     } else {
       $location.search({urn: modelId});
     }
@@ -68,7 +61,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   function createClass(conceptData) {
     classCreatorService.createClass(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
-      .then(klass => selectClass(klass, true));
+      .then(klass => selectEntity(klass, true));
   }
 
   function assignClassToModel(classId) {
@@ -80,7 +73,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   function createPredicate(conceptData) {
     predicateCreatorService.createPredicate(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
-      .then(predicate => selectPredicate(predicate, true));
+      .then(predicate => selectEntity(predicate, true));
   }
 
   function assignPredicateToModel(predicateId, type) {
@@ -93,12 +86,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   function isSelected(obj) {
     const id = obj['@id'];
     const type = graphUtils.asTypeString(obj['@type']);
-
-    if (type === 'class') {
-      return id === classView.getSelectionId();
-    } else {
-      return id === predicateView.getSelectionId();
-    }
+    return _.isEqual({id, type}, editorView.getSelection());
   }
 
   function select(obj) {
@@ -114,47 +102,29 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function selectClassById(id) {
-    classService.getClass(id).then(selectClass);
+    classService.getClass(id).then(selectEntity);
   }
 
-  function selectClass(klass, unsaved) {
+  function selectEntity(entity, unsaved) {
     askPermissionWhenEditing(() => {
-      classView.selectClass(klass, unsaved);
-      predicateView.selectPredicate(null);
-      $location.search({urn: modelId, 'class': graphUtils.withFullId(klass)});
+      editorView.select(entity, unsaved);
+      $location.search({urn: modelId, 'class': graphUtils.withFullId(entity)});
     });
   }
 
   function selectPredicateByIdAndType(id, type) {
-    predicateService.getPredicateById(id, type + 'Frame').then(selectPredicate);
-  }
-
-  function selectPredicate(predicate, unsaved) {
-    askPermissionWhenEditing(() => {
-      predicateView.selectPredicate(predicate, unsaved);
-      classView.selectClass(null);
-      $location.search({urn: modelId, [graphUtils.type(predicate)]: graphUtils.withFullId(predicate)});
-    });
+    predicateService.getPredicateById(id, type + 'Frame').then(selectEntity);
   }
 
   function askPermissionWhenEditing(callback) {
-    if (isEditing()) {
+    if (editorView && editorView.isEditing()) {
       editInProgressModal.open().result.then(() => {
-        cancelEditing();
+        editorView.cancelEditing(false);
         callback();
       });
     } else {
       callback();
     }
-  }
-
-  function cancelEditing() {
-    classView.cancelEditing(false);
-    predicateView.cancelEditing(false);
-  }
-
-  function isEditing() {
-    return (classView && classView.isEditing()) || (predicateView && predicateView.isEditing());
   }
 
   function fetchAll() {
