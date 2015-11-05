@@ -11,21 +11,27 @@ angular.module('iow-ui', [
   require('angular-ui-bootstrap'),
   'gettext',
   'xeditable',
-  require('./components'),
+  require('./components/common'),
+  require('./components/filter'),
+  require('./components/form'),
+  require('./components/group'),
+  require('./components/modal'),
+  require('./components/model'),
+  require('./components/navigation'),
   require('./services')
 ])
 .config(function mainConfig($routeProvider) {
   $routeProvider
     .when('/', {
-      template: require('./components/templates/index.html')
+      template: require('./components/index.html')
     })
     .when('/groups', {
-      template: require('./components/templates/group.html'),
+      template: require('./components/group/group.html'),
       controller: 'groupController',
       controllerAs: 'ctrl'
     })
     .when('/models', {
-      template: require('./components/templates/model.html'),
+      template: require('./components/model/model.html'),
       controller: 'modelController',
       controllerAs: 'ctrl',
       reloadOnSearch: false,
