@@ -6,19 +6,19 @@ module.exports = function entityView($log) {
   return {
     scope: {},
     restrict: 'E',
-    template: require('./editorView.html'),
+    template: require('./selectionView.html'),
     require: '^ngController',
     link($scope, element, attributes, modelController) {
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
-      modelController.registerEditorView($scope.ctrl);
+      modelController.registerSelectionView($scope.ctrl);
     },
     controllerAs: 'ctrl',
     bindToController: true,
     controller($scope, classService, predicateService, modelLanguage, userService, classPropertyService, searchPredicateModal, deleteConfirmModal) {
       'ngInject';
 
-      let originalEntity;
+      let originalSelection;
       let unsaved = false;
       const vm = this;
 
@@ -31,8 +31,8 @@ module.exports = function entityView($log) {
       vm.remove = remove;
       vm.canRemove = canRemove;
       vm.canEdit = canEdit;
-      vm.isClass = isClass;
-      vm.isPredicate = isPredicate;
+      vm.selectionIsClass = selectionIsClass;
+      vm.selectionIsPredicate = selectionIsPredicate;
       // view contract
       vm.select = select;
       vm.getSelection = getSelection;
@@ -42,23 +42,21 @@ module.exports = function entityView($log) {
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
-      function isClass() {
-        return graphUtils.type(originalEntity) === 'class';
+      function selectionIsClass() {
+        return graphUtils.type(originalSelection) === 'class';
       }
 
-      function isPredicate() {
-        return _.contains(['association', 'attribute'], graphUtils.type(originalEntity));
+      function selectionIsPredicate() {
+        return !selectionIsClass();
       }
 
       function getSelection() {
-        if (originalEntity) {
-          return {id: graphUtils.withFullId(originalEntity), type: graphUtils.type(originalEntity)};
-        }
+        return originalSelection;
       }
 
-      function select(entity, isUnsaved) {
-        vm.entity = entity;
-        originalEntity = _.cloneDeep(entity);
+      function select(selection, isUnsaved) {
+        vm.selection = selection;
+        originalSelection = _.cloneDeep(selection);
 
         unsaved = isUnsaved;
         if (unsaved) {
@@ -67,65 +65,28 @@ module.exports = function entityView($log) {
       }
 
       function update() {
-        const id = graphUtils.withFullId(vm.entity);
-        const originalId = graphUtils.withFullId(originalEntity);
+        const id = graphUtils.withFullId(vm.selection);
+        const originalId = graphUtils.withFullId(originalSelection);
 
-        $log.info(JSON.stringify(vm.entity, null, 2));
+        $log.info(JSON.stringify(vm.selection, null, 2));
 
-        function updateView() {
+        return selectionIsClass()
+          ? unsaved
+            ? classService.createClass(vm.selection, id)
+            : classService.updateClass(vm.selection, id, originalId)
+          : unsaved
+            ? predicateService.createPredicate(vm.selection, id)
+            : predicateService.updatePredicate(vm.selection, id, originalId)
+        .then(() => {
           unsaved = false;
-          originalEntity = _.cloneDeep(vm.entity);
+          originalSelection = _.cloneDeep(vm.selection);
           $scope.modelController.reload();
-        }
-
-        if (isClass()) {
-          if (unsaved) {
-            return classService.createClass(vm.entity, id).then(updateView);
-          } else {
-            return classService.updateClass(vm.entity, id, originalId).then(updateView);
-          }
-        } else {
-          if (unsaved) {
-            return predicateService.createPredicate(vm.entity, id).then(updateView);
-          } else {
-            return predicateService.updatePredicate(vm.entity, id, originalId).then(updateView);
-          }
-        }
-      }
-
-      function reset() {
-        select(unsaved ? null : originalEntity);
-        $scope.modelController.reload();
-      }
-
-      function isEditing() {
-        return $scope.formController.visible();
-      }
-
-      function canEdit() {
-        const graph = graphUtils.graph(vm.entity);
-        return userService.isLoggedIn() && graph && $scope.modelController.modelId === graph.isDefinedBy;
-      }
-
-      function cancelEditing(shouldReset) {
-        $scope.formController.cancel(shouldReset);
-      }
-
-      function canAddProperty() {
-        return isClass() && userService.isLoggedIn() && isEditing();
-      }
-
-      function canRemoveProperty() {
-        return isClass() && userService.isLoggedIn() && isEditing();
-      }
-
-      function canRemove() {
-        return userService.isLoggedIn() && !isEditing() && !unsaved;
+        });
       }
 
       function remove() {
         deleteConfirmModal.open().result.then(() => {
-          return isClass()
+          return selectionIsClass()
             ? classService.deleteClass(getSelection().id, $scope.modelController.modelId)
             : predicateService.deletePredicate(getSelection().id, $scope.modelController.modelId);
         })
@@ -135,18 +96,48 @@ module.exports = function entityView($log) {
         });
       }
 
+      function reset() {
+        select(unsaved ? null : originalSelection);
+        $scope.modelController.reload();
+      }
+
+      function isEditing() {
+        return $scope.formController.visible();
+      }
+
+      function canEdit() {
+        const graph = graphUtils.graph(vm.selection);
+        return userService.isLoggedIn() && graph && $scope.modelController.modelId === graph.isDefinedBy;
+      }
+
+      function canRemove() {
+        return userService.isLoggedIn() && !isEditing() && !unsaved;
+      }
+
+      function cancelEditing(shouldReset) {
+        $scope.formController.cancel(shouldReset);
+      }
+
+      function canAddProperty() {
+        return selectionIsClass() && userService.isLoggedIn() && isEditing();
+      }
+
+      function canRemoveProperty() {
+        return selectionIsClass() && userService.isLoggedIn() && isEditing();
+      }
+
       function addProperty() {
         searchPredicateModal.openWithPredicationCreation($scope.modelController.model).result.then(createPropertyByPredicateId);
       }
 
       function createPropertyByPredicateId(predicateId) {
         classPropertyService.createPropertyForPredicateId(predicateId).then(property => {
-          graphUtils.graph(vm.entity).property.push(graphUtils.graph(property));
+          graphUtils.graph(vm.selection).property.push(graphUtils.graph(property));
         });
       }
 
       function removeProperty(property) {
-        _.remove(graphUtils.graph(vm.entity).property, property);
+        _.remove(graphUtils.graph(vm.selection).property, property);
       }
     }
   };

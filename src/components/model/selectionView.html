@@ -1,0 +1,16 @@
+<editable-form on-submit="ctrl.update()" on-reset="ctrl.reset()">
+  <div ng-if="ctrl.selection">
+    <div class="top-actions" float="top-actions-placeholder" top-offset="8">
+      <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.remove()" ng-if="ctrl.canRemove()">
+        {{ctrl.selectionIsClass() ? 'Delete class' : 'Delete predicate' | translate}}
+      </button>
+      <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit() && !formController.visible()" translate>Edit</button>
+      <editable-form-buttons></editable-form-buttons>
+      <show-submit-error></show-submit-error>
+    </div>
+
+    <class-form ng-if="ctrl.selectionIsClass()" class="ctrl.selection['@graph'][0]" context="ctrl.selection['@context']"></class-form>
+    <predicate-form ng-if="ctrl.selectionIsPredicate()" predicate="ctrl.selection['@graph'][0]"></predicate-form>
+  </div>
+</editable-form>

@@ -13,7 +13,7 @@
             <i class="glyphicon glyphicon-list-alt"></i><p>{{'Classes' | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Add class</button>
+          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Add class</button>
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
@@ -28,7 +28,7 @@
             <i class="glyphicon glyphicon-tasks"></i><p>{{'Attributes' | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:DatatypeProperty')" translate>Add attribute</button>
+          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:DatatypeProperty')" translate>Add attribute</button>
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="attribute in ctrl.attributes | orderByLabel"
@@ -43,7 +43,7 @@
             <i class="glyphicon glyphicon-sort"></i><p>{{'Associations' | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.isLoggedIn()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:ObjectProperty')" translate>Add association</button>
+          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:ObjectProperty')" translate>Add association</button>
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="association in ctrl.associations | orderByLabel"
@@ -57,7 +57,7 @@
     </div>
 
     <div class="model-panel--right" window-height="min">
-      <editor-view></editor-view>
+      <selection-view></selection-view>
     </div>
   </div>
 

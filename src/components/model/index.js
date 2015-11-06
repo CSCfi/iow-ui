@@ -7,7 +7,7 @@ mod.controller('modelController', require('./modelController'));
 mod.directive('modelView', require('./modelView'));
 mod.directive('referencesView', require('./referencesView'));
 mod.directive('requiresView', require('./requiresView'));
-mod.directive('editorView', require('./editorView'));
+mod.directive('selectionView', require('./selectionView'));
 mod.directive('classForm', require('./classForm'));
 mod.directive('predicateForm', require('./predicateForm'));
 mod.directive('propertyView', require('./propertyView'));

@@ -24,12 +24,23 @@ function asTypeString(objType) {
   }
 }
 
+
+function asTypeAndId(obj) {
+  if (obj) {
+    return {type: type(obj), id: withFullId(obj)};
+  }
+}
+
 function graph(obj) {
-  return obj && obj['@graph'][0];
+  if (obj) {
+    return obj && obj['@graph'][0];
+  }
 }
 
 function type(obj) {
-  return asTypeString(graph(obj)['@type']);
+  if (obj) {
+    return asTypeString(graph(obj)['@type']);
+  }
 }
 
 function withFullId(obj) {
@@ -43,5 +54,6 @@ module.exports = {
   withFullId,
   graph,
   type,
-  asTypeString
+  asTypeString,
+  asTypeAndId
 };
