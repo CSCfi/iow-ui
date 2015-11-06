@@ -5,9 +5,6 @@ module.exports = function predicateView($log) {
       predicate: '='
     },
     restrict: 'E',
-    template: require('./propertyPredicateView.html'),
-    controller() {
-      'ngInject';
-    }
+    template: require('./propertyPredicateView.html')
   };
 };
