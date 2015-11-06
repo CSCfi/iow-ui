@@ -14,7 +14,6 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.activeTab = selected ? {[selected.type]: true} : {class: true};
   vm.reload = reload;
   vm.registerSelectionView = (view) => {
-    console.log('registering');
     selectionView = view;
     if (selected) {
       selectByTypeAndId(selected.type, selected.id);
@@ -26,19 +25,15 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.addClass = addClass;
   vm.addPredicate = addPredicate;
 
-  function getSelectionAsTypeAndId() {
-    return graphUtils.asTypeAndId(selectionView.getSelection());
-  }
-
   function isSelected(obj) {
     const id = obj['@id'];
     const type = graphUtils.asTypeString(obj['@type']);
-    return _.isEqual({id, type}, getSelectionAsTypeAndId());
+    return _.isEqual({id, type}, graphUtils.asTypeAndId(selectionView.selection));
   }
 
   function reload() {
     fetchAll();
-    const selection = getSelectionAsTypeAndId();
+    const selection = graphUtils.asTypeAndId(selectionView.selection);
     if (selection) {
       $location.search({urn: modelId, [selection.type]: selection.id});
     } else {

@@ -18,7 +18,6 @@ module.exports = function entityView($log) {
     controller($scope, classService, predicateService, modelLanguage, userService, classPropertyService, searchPredicateModal, deleteConfirmModal) {
       'ngInject';
 
-      let originalSelection;
       let unsaved = false;
       const vm = this;
 
@@ -35,28 +34,15 @@ module.exports = function entityView($log) {
       vm.selectionIsPredicate = selectionIsPredicate;
       // view contract
       vm.select = select;
-      vm.getSelection = getSelection;
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
 
       $scope.$watch(modelLanguage.getLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
-      function selectionIsClass() {
-        return graphUtils.type(originalSelection) === 'class';
-      }
-
-      function selectionIsPredicate() {
-        return !selectionIsClass();
-      }
-
-      function getSelection() {
-        return originalSelection;
-      }
-
       function select(selection, isUnsaved) {
         vm.selection = selection;
-        originalSelection = _.cloneDeep(selection);
+        vm.selectionInEdit = _.cloneDeep(selection);
 
         unsaved = isUnsaved;
         if (unsaved) {
@@ -65,21 +51,21 @@ module.exports = function entityView($log) {
       }
 
       function update() {
-        const id = graphUtils.withFullId(vm.selection);
-        const originalId = graphUtils.withFullId(originalSelection);
+        const id = graphUtils.withFullId(vm.selectionInEdit);
+        const originalId = graphUtils.withFullId(vm.selection);
 
-        $log.info(JSON.stringify(vm.selection, null, 2));
+        $log.info(JSON.stringify(vm.selectionInEdit, null, 2));
 
         return selectionIsClass()
           ? unsaved
-            ? classService.createClass(vm.selection, id)
-            : classService.updateClass(vm.selection, id, originalId)
+            ? classService.createClass(vm.selectionInEdit, id)
+            : classService.updateClass(vm.selectionInEdit, id, originalId)
           : unsaved
-            ? predicateService.createPredicate(vm.selection, id)
-            : predicateService.updatePredicate(vm.selection, id, originalId)
+            ? predicateService.createPredicate(vm.selectionInEdit, id)
+            : predicateService.updatePredicate(vm.selectionInEdit, id, originalId)
         .then(() => {
           unsaved = false;
-          originalSelection = _.cloneDeep(vm.selection);
+          vm.selection = _.cloneDeep(vm.selectionInEdit);
           $scope.modelController.reload();
         });
       }
@@ -97,7 +83,7 @@ module.exports = function entityView($log) {
       }
 
       function reset() {
-        select(unsaved ? null : originalSelection);
+        select(unsaved ? null : vm.selection);
         $scope.modelController.reload();
       }
 
@@ -132,12 +118,20 @@ module.exports = function entityView($log) {
 
       function createPropertyByPredicateId(predicateId) {
         classPropertyService.createPropertyForPredicateId(predicateId).then(property => {
-          graphUtils.graph(vm.selection).property.push(graphUtils.graph(property));
+          graphUtils.graph(vm.selectionInEdit).property.push(graphUtils.graph(property));
         });
       }
 
       function removeProperty(property) {
-        _.remove(graphUtils.graph(vm.selection).property, property);
+        _.remove(graphUtils.graph(vm.selectionInEdit).property, property);
+      }
+
+      function selectionIsClass() {
+        return graphUtils.type(vm.selection) === 'class';
+      }
+
+      function selectionIsPredicate() {
+        return !selectionIsClass();
       }
     }
   };

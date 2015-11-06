@@ -10,7 +10,7 @@
       <show-submit-error></show-submit-error>
     </div>
 
-    <class-form ng-if="ctrl.selectionIsClass()" class="ctrl.selection['@graph'][0]" context="ctrl.selection['@context']"></class-form>
-    <predicate-form ng-if="ctrl.selectionIsPredicate()" predicate="ctrl.selection['@graph'][0]"></predicate-form>
+    <class-form ng-if="ctrl.selectionIsClass()" class="ctrl.selectionInEdit['@graph'][0]" context="ctrl.selectionInEdit['@context']"></class-form>
+    <predicate-form ng-if="ctrl.selectionIsPredicate()" predicate="ctrl.selectionInEdit['@graph'][0]"></predicate-form>
   </div>
 </editable-form>
