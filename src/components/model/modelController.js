@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const graphUtils = require('../../services/graphUtils');
+const utils = require('../../services/utils');
 
 module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, predicateCreatorService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
   'ngInject';
@@ -24,6 +25,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.canEdit = userService.isLoggedIn;
   vm.addClass = addClass;
   vm.addPredicate = addPredicate;
+  vm.glyphIconClassForType = utils.glyphIconClassForType;
 
   function isSelected(obj) {
     const id = obj['@id'];

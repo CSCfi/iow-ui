@@ -10,7 +10,7 @@
 
         <uib-tab active="ctrl.activeTab['class']">
           <uib-tab-heading>
-            <i class="glyphicon glyphicon-list-alt"></i><p>{{'Classes' | translate}}</p>
+            <i ng-class="ctrl.glyphIconClassForType('class')"></i><p>{{'Classes' | translate}}</p>
           </uib-tab-heading>
 
           <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Add class</button>
@@ -25,7 +25,7 @@
         </uib-tab>
         <uib-tab active="ctrl.activeTab['attribute']">
           <uib-tab-heading>
-            <i class="glyphicon glyphicon-tasks"></i><p>{{'Attributes' | translate}}</p>
+            <i ng-class="ctrl.glyphIconClassForType('attribute')"></i><p>{{'Attributes' | translate}}</p>
           </uib-tab-heading>
 
           <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:DatatypeProperty')" translate>Add attribute</button>
@@ -40,7 +40,7 @@
         </uib-tab>
         <uib-tab active="ctrl.activeTab['association']">
           <uib-tab-heading>
-            <i class="glyphicon glyphicon-sort"></i><p>{{'Associations' | translate}}</p>
+            <i ng-class="ctrl.glyphIconClassForType('association')"></i><p>{{'Associations' | translate}}</p>
           </uib-tab-heading>
 
           <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('owl:ObjectProperty')" translate>Add association</button>

@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const graphUtils = require('../../services/graphUtils');
+const utils = require('../../services/utils');
 
 module.exports = function modalFactory($uibModal) {
   'ngInject';
@@ -104,11 +105,7 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, type, ex
   };
 
   vm.iconClass = (predicate) => {
-    return ['glyphicon',
-      {
-        'glyphicon-list-alt': predicate['@type'] === 'owl:ObjectProperty',
-        'glyphicon-tasks': predicate['@type'] === 'owl:DatatypeProperty'
-      }];
+    return utils.glyphIconClassForType(graphUtils.asTypeString(predicate['@type']));
   };
 
   function savedPredicateSelected() {

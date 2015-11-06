@@ -13,7 +13,7 @@
 <uib-accordion close-others="true">
   <uib-accordion-group ng-repeat="property in class.property" is-open="isOpen[property['@id']]">
     <uib-accordion-heading>
-      <span class="glyphicon" ng-class="property.datatype ? 'glyphicon-tasks' : property.valueClass ? 'glyphicon-sort' : 'glyphicon-question-sign'"></span>
+      <span ng-class="resolvePropertyIconClass(property)"></span>
       {{property | translateLabel}}
       <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property['@id']], 'glyphicon-chevron-right': !isOpen[property['@id']]}"></span>
     </uib-accordion-heading>
