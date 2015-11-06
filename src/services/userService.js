@@ -22,11 +22,11 @@ module.exports = function userService($http, $q) {
       return loggedInUser !== null;
     },
     isInGroup(group) {
-      return loggedInUser !== null && loggedInUser.isPartOf === group;
+      return loggedInUser && loggedInUser.isPartOf === group;
     },
     logout() {
-      $http.get('/api/rest/logout');
-      loggedInUser = null;
+      $http.get('/api/rest/logout')
+        .then(() => loggedInUser = null);
     }
   };
 };
