@@ -3,6 +3,7 @@ module.exports = function formInputDirective($log) {
   return {
     scope: {
       title: '@',
+      titleEditOnly: '@',
       content: '=',
       plainText: '='
     },
