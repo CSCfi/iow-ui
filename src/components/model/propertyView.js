@@ -18,7 +18,7 @@ module.exports = function propertyView() {
 
       const predicateId = graphUtils.withFullIRI($scope.context, $scope.property.predicate);
 
-      predicateService.getPredicateById(predicateId).then(predicate => {
+      predicateService.getPredicate(predicateId).then(predicate => {
         $scope.predicate = predicate['@graph'][0];
       });
     }

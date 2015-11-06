@@ -2,7 +2,7 @@ const _ = require('lodash');
 const graphUtils = require('../../services/graphUtils');
 const utils = require('../../services/utils');
 
-module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, classCreatorService, predicateService, predicateCreatorService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
+module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
   'ngInject';
 
   const vm = this;
@@ -56,7 +56,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createClass(conceptData) {
-    classCreatorService.createClass(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
+    classService.getClassTemplate(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
       .then(klass => updateSelectionView(klass, true));
   }
 
@@ -81,7 +81,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createPredicate(conceptData) {
-    predicateCreatorService.createPredicate(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
+    predicateService.getPredicateTemplate(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
       .then(predicate => updateSelectionView(predicate, true));
   }
 
@@ -110,7 +110,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function selectPredicateByIdAndType(id, type) {
-    predicateService.getPredicateById(id, type + 'Frame').then(updateSelectionView);
+    predicateService.getPredicate(id, type + 'Frame').then(updateSelectionView);
   }
 
   function updateSelectionView(selection, unsaved) {

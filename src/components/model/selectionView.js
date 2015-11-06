@@ -15,7 +15,7 @@ module.exports = function entityView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, predicateService, modelLanguage, userService, classPropertyService, searchPredicateModal, deleteConfirmModal) {
+    controller($scope, classService, predicateService, modelLanguage, userService, searchPredicateModal, deleteConfirmModal) {
       'ngInject';
 
       let unsaved = false;
@@ -117,7 +117,7 @@ module.exports = function entityView($log) {
       }
 
       function createPropertyByPredicateId(predicateId) {
-        classPropertyService.createPropertyForPredicateId(predicateId).then(property => {
+        classService.getPropertyTemplate(predicateId).then(property => {
           graphUtils.graph(vm.selectionInEdit).property.push(graphUtils.graph(property));
         });
       }

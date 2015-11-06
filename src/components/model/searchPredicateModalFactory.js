@@ -29,7 +29,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, $timeout, type, excludedPredicateMap, model, predicateService, predicateCreatorService, modelLanguage, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, $timeout, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -47,7 +47,6 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, type, ex
   vm.type = type;
   vm.types = [];
   vm.typeSelectable = !type;
-  vm.savedPredicateSelected = savedPredicateSelected;
 
   predicateService.getAllPredicates().then(result => {
     predicates = _.reject(result['@graph'], predicate => excludedPredicateMap[predicate['@id']]);
@@ -74,7 +73,7 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, type, ex
 
   vm.selectPredicate = (predicate) => {
     $scope.editableFormController.cancel();
-    predicateService.getPredicateById(predicate['@id']).then(result => vm.selectedPredicate = result);
+    predicateService.getPredicate(predicate['@id']).then(result => vm.selectedPredicate = result);
   };
 
   vm.isSelected = (predicate) => {
@@ -95,7 +94,7 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, type, ex
         if (!vm.typeSelectable) {
           $uibModalInstance.close(_.extend(result, {type: selectionType}));
         } else {
-          predicateCreatorService.createPredicate(model['@context'], graphUtils.withFullId(model), result.label, result.conceptId, selectionType, modelLanguage.getLanguage())
+          predicateService.getPredicateTemplate(model['@context'], graphUtils.withFullId(model), result.label, result.conceptId, selectionType, modelLanguage.getLanguage())
             .then(predicate => {
               vm.selectedPredicate = predicate;
               $scope.editableFormController.show();
@@ -107,10 +106,6 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, type, ex
   vm.iconClass = (predicate) => {
     return utils.glyphIconClassForType(graphUtils.asTypeString(predicate['@type']));
   };
-
-  function savedPredicateSelected() {
-    return vm.selectedPredicate && !vm.selectedPredicate.unsaved;
-  }
 
   function selectedPredicateId() {
     return graphUtils.withFullId(vm.selectedPredicate);
