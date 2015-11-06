@@ -43,6 +43,7 @@ $navbarWidth: 275px;
 
   .panel__list {
     li {
+      cursor: pointer;
       padding: 5px 0 5px 10px;
       font-size: medium;
       border: 1px solid #fff;
@@ -62,9 +63,8 @@ $navbarWidth: 275px;
 
 .model-panel__selection {
   background-color: $list-group-hover-bg;
-  border-style: solid none solid solid;
-  border-width: 1px;
-  border-color: $pre-border-color;
+  border: 1px solid $pre-border-color;
+  border-right-style: none;
 }
 
 uib-accordion .panel-group {
