@@ -85,7 +85,7 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, type, ex
   };
 
   vm.createAndUsePredicate = () => {
-    predicateService.createPredicate(vm.selectedPredicate, graphUtils.withFullId(vm.selectedPredicate)).then(vm.usePredicate);
+    return predicateService.createPredicate(vm.selectedPredicate, graphUtils.withFullId(vm.selectedPredicate)).then(vm.usePredicate);
   };
 
   vm.createNew = (selectionType) => {
