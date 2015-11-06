@@ -5,29 +5,15 @@ module.exports = function userService($http, $q) {
 
   return {
     updateLogin() {
-      const deferred = $q.defer();
-
-      function userResolved() {
-        deferred.resolve();
-      }
-
       $http.get('/api/rest/loginstatus')
-        .success(statusResponse => {
-          const loggedIn = angular.fromJson(statusResponse);
-          if (loggedIn) {
-            $http.get('/api/rest/user')
-              .success(userResponse => {
-                loggedInUser = angular.fromJson(userResponse);
-              })
-              .finally(userResolved);
+        .then(statusResponse => {
+          if (angular.fromJson(statusResponse)) {
+            return $http.get('/api/rest/user');
           } else {
-            loggedInUser = null;
-            userResolved();
+            return null;
           }
         })
-        .error(userResolved);
-
-      return deferred.promise;
+        .then(user => loggedInUser = user);
     },
     getUser() {
       return loggedInUser;

@@ -54,16 +54,14 @@ angular.module('iow-ui', [
 .run(function onAppRun($rootScope, $q, editableOptions, languageService, userService, gettextCatalog) {
   editableOptions.theme = 'bs3';
 
-  function languageChanged() {
-    const deferred = $q.defer();
+  const languageChanged = new Promise(resolve => {
     const deregister = $rootScope.$on('gettextLanguageChanged', () => {
-      deferred.resolve();
+      resolve();
       deregister();
     });
-    return deferred;
-  }
+  });
 
-  $q.all([languageChanged(), userService.updateLogin()]).then(() => $rootScope.applicationInitialized = true);
+  $q.all([languageChanged, userService.updateLogin()]).then(() => $rootScope.applicationInitialized = true);
 
   gettextCatalog.debug = true;
   languageService.setLanguage('fi');
