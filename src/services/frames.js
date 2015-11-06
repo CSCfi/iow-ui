@@ -59,7 +59,7 @@ function modelFrame(data) {
 
   return {
     '@context': addToContext(data['@context'], contextValues),
-    imports: {'@embed': false}
+    '@type':'owl:Ontology'
   };
 }
 
