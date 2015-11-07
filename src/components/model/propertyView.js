@@ -9,9 +9,9 @@ module.exports = function propertyView() {
     },
     restrict: 'E',
     template: require('./propertyView.html'),
-    require: '^?editorView',
-    link($scope, element, attributes, editorViewController) {
-      $scope.editorViewController = editorViewController;
+    require: '^?selectionView',
+    link($scope, element, attributes, selectionViewController) {
+      $scope.selectionViewController = selectionViewController;
     },
     controller($scope, predicateService) {
       'ngInject';
