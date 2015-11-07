@@ -48,7 +48,7 @@ module.exports = function classView($log) {
       };
       vm.update = () => {
         $log.info(JSON.stringify(vm.modelInEdit, null, 2));
-        modelService.updateModel(vm.modelInEdit)
+        return modelService.updateModel(vm.modelInEdit)
         .then(() => {
           vm.model = _.cloneDeep(vm.modelInEdit);
         });
