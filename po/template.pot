@@ -56,7 +56,7 @@ msgstr ""
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
 #: components/model/searchClassModal.html:59
-#: components/model/searchConceptModal.html:26
+#: components/model/searchConceptModal.html:30
 #: components/model/searchPredicateModal.html:74
 #: components/model/searchSchemeModal.html:32
 msgid "Cancel"
@@ -85,6 +85,10 @@ msgstr ""
 msgid "Concept"
 msgstr ""
 
+#: components/model/searchConceptModal.html:26
+msgid "Concepts can't be searched because there are no vocabularies"
+msgstr ""
+
 #: components/modal/deleteConfirmModal.html:3
 msgid "Confirm delete"
 msgstr ""
@@ -93,7 +97,7 @@ msgstr ""
 msgid "Create and use predicate"
 msgstr ""
 
-#: components/model/searchConceptModal.html:27
+#: components/model/searchConceptModal.html:31
 msgid "Create new"
 msgstr ""
 
@@ -203,7 +207,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:73
+#: components/model/searchConceptModalFactory.js:83
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -216,11 +220,11 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: components/model/requiresView.html:8
+#: components/model/requiresView.html:12
 msgid "Preferred namespace"
 msgstr ""
 
-#: components/model/requiresView.html:10
+#: components/model/requiresView.html:14
 msgid "Preferred prefix"
 msgstr ""
 
@@ -290,7 +294,7 @@ msgstr ""
 
 #: components/model/propertyPredicateView.html:9
 #: components/model/referencesView.html:13
-#: components/model/requiresView.html:6
+#: components/model/requiresView.html:10
 msgid "Type"
 msgstr ""
 

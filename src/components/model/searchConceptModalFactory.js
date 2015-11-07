@@ -5,25 +5,27 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(defineConceptTitle) {
+    open(vocabularies, defineConceptTitle) {
       return $uibModal.open({
         template: require('./searchConceptModal.html'),
         size: 'small',
         controller: SearchClassController,
         controllerAs: 'ctrl',
         resolve: {
-          defineConceptTitle: () => defineConceptTitle
+          defineConceptTitle: () => defineConceptTitle,
+          vocabularies: () => vocabularies
         }
       });
     }
   };
 };
 
-function SearchClassController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle) {
+function SearchClassController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, vocabularies) {
   'ngInject';
 
   const vm = this;
 
+  vm.hasVocabularies = vocabularies.length > 0;
   vm.concept = null;
   vm.label = null;
   vm.defineConceptTitle = defineConceptTitle;
@@ -52,28 +54,37 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     return results.splice(0, Math.min(limit * estimatedDuplicateCount, results.length));
   }
 
-  const conceptEngine = new Bloodhound({
-    identify: identify,
-    remote: {
-      url: `/api/rest/conceptSearch?term=%QUERY&lang=${modelLanguage.getLanguage()}&vocid=undefined`,
-      wildcard: '%QUERY',
-      transform: (response) => _.uniq(limitResults(response.results), identify)
-    },
-    rateLimitBy: 'debounce',
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    datumTokenizer: Bloodhound.tokenizers.whitespace
-  });
+  function createEngine(vocid) {
+    return new Bloodhound({
+      identify: identify,
+      remote: {
+        url: `/api/rest/conceptSearch?term=%QUERY&lang=${modelLanguage.getLanguage()}&vocid=${vocid}`,
+        wildcard: '%QUERY',
+        transform: (response) => _.uniq(limitResults(response.results), identify)
+      },
+      rateLimitBy: 'debounce',
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      datumTokenizer: Bloodhound.tokenizers.whitespace
+    });
+  }
 
-  vm.datasets = {
-    display: 'prefLabel',
-    name: 'concept',
-    source: conceptEngine,
-    limit: limit,
-    templates: {
-      empty: (search) => `<div class="empty-message">'${search.query}' ${gettextCatalog.getString('not found in the concept database')}</div>`,
-      suggestion: (data) => `<div>${data.prefLabel} <p class="details">${data.uri}</p></div>`
-    }
-  };
+  function createDataset(vocabulary) {
+    const vocid = vocabulary['dct:identifier'];
+    const label = modelLanguage.translate(vocabulary.title);
+
+    return {
+      display: 'prefLabel',
+      name: vocid,
+      source: createEngine(vocid),
+      limit: limit,
+      templates: {
+        empty: (search) => `<div class="empty-message">'${search.query}' ${gettextCatalog.getString('not found in the concept database')} ${label}</div>`,
+        suggestion: (data) => `<div>${data.prefLabel} <p class="details">${data.uri}</p></div>`
+      }
+    };
+  }
+
+  vm.datasets = _.map(vocabularies, vocabulary => createDataset(vocabulary));
 
   vm.create = () => {
     $uibModalInstance.close({conceptId: vm.concept.uri, label: vm.label});

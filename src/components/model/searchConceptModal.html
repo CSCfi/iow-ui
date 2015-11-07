@@ -5,7 +5,7 @@
   </h4>
 </div>
 
-<div class="modal-body search-modal">
+<div class="modal-body search-modal" ng-show="ctrl.hasVocabularies">
   <form name="conceptForm">
 
     <label for="concept" translate>Concept</label>
@@ -22,7 +22,11 @@
   </form>
 </div>
 
+<div class="modal-body search-modal" ng-hide="ctrl.hasVocabularies">
+  <p translate>Concepts can't be searched because there are no vocabularies</p>
+</div>
+
 <div class="modal-footer">
   <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
-  <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!conceptForm.$valid" translate>Create new</button>
+  <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-show="ctrl.hasVocabularies" ng-disabled="!conceptForm.$valid" translate>Create new</button>
 </div>

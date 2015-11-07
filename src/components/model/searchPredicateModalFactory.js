@@ -5,13 +5,14 @@ const utils = require('../../services/utils');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
-  function openModal(type, excludedPredicateMap, model) {
+  function openModal(vocabularies, type, excludedPredicateMap, model) {
     return $uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
       controller: SearchPredicateController,
       controllerAs: 'ctrl',
       resolve: {
+        vocabularies: () => vocabularies,
         type: () => type,
         excludedPredicateMap: () => excludedPredicateMap,
         model: () => model
@@ -20,16 +21,16 @@ module.exports = function modalFactory($uibModal) {
   }
 
   return {
-    open(type, excludedPredicateMap) {
-      return openModal(type, excludedPredicateMap, null);
+    open(vocabularies, type, excludedPredicateMap) {
+      return openModal(vocabularies, type, excludedPredicateMap, null);
     },
     openWithPredicationCreation(model) {
-      return openModal(null, {}, model);
+      return openModal(graphUtils.graph(model).references, null, {}, model);
     }
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, $timeout, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabularies, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -89,7 +90,7 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, type, ex
   };
 
   vm.createNew = (selectionType) => {
-    return searchConceptModal.open('Define concept for the new predicate').result
+    return searchConceptModal.open(vocabularies, 'Define concept for the new predicate').result
       .then(result => {
         if (!vm.typeSelectable) {
           $uibModalInstance.close(_.extend(result, {type: selectionType}));

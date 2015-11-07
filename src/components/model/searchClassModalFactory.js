@@ -5,13 +5,14 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(excludedClassMap = {}) {
+    open(vocabularies, excludedClassMap = {}) {
       return $uibModal.open({
         template: require('./searchClassModal.html'),
         size: 'large',
         controller: SearchClassController,
         controllerAs: 'ctrl',
         resolve: {
+          vocabularies: () => vocabularies,
           excludedClassMap: () => excludedClassMap
         }
       });
@@ -19,7 +20,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($uibModalInstance, classService, modelLanguage, excludedClassMap, searchConceptModal) {
+function SearchClassController($uibModalInstance, classService, modelLanguage, vocabularies, excludedClassMap, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -61,7 +62,7 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, e
   };
 
   vm.createNewClass = () => {
-    return searchConceptModal.open('Define concept for the new class').result.then(result => {
+    return searchConceptModal.open(vocabularies, 'Define concept for the new class').result.then(result => {
       $uibModalInstance.close(result);
     });
   };

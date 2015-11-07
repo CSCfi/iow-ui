@@ -45,7 +45,8 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   function addClass() {
     const classMap = _.indexBy(vm.classes, klass => klass['@id']);
-    searchClassModal.open(classMap).result
+    const references = graphUtils.graph(vm.model).references;
+    searchClassModal.open(references, classMap).result
       .then(result => {
         if (typeof result === 'object') {
           createClass(result);
@@ -70,7 +71,8 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
 
   function addPredicate(type) {
     const predicateMap = _.indexBy(vm.associations.concat(vm.attributes), (predicate) => predicate['@id']);
-    searchPredicateModal.open(type, predicateMap).result
+    const references = graphUtils.graph(vm.model).references;
+    searchPredicateModal.open(references, type, predicateMap).result
       .then(result => {
         if (typeof result === 'object') {
           createPredicate(result);
