@@ -93,7 +93,7 @@ module.exports = function entityView($log) {
 
       function canEdit() {
         const graph = graphUtils.graph(vm.selection);
-        return userService.isLoggedIn() && graph && $scope.modelController.modelId === graph.isDefinedBy;
+        return !isEditing() && userService.isLoggedIn() && graph && $scope.modelController.modelId === graph.isDefinedBy;
       }
 
       function canRemove() {
