@@ -7,6 +7,8 @@ module.exports = function requiresView($log) {
     },
     restrict: 'E',
     template: require('./requiresView.html'),
+    bindToController: true,
+    controllerAs: 'ctrl',
     controller() {
       'ngInject';
     }
