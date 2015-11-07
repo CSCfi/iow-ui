@@ -5,7 +5,7 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(excludedClassMap = []) {
+    open(excludedClassMap = {}) {
       return $uibModal.open({
         template: require('./searchClassModal.html'),
         size: 'large',
