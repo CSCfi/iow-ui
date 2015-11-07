@@ -24,9 +24,13 @@ msgstr "Lisää ominaisuus"
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: components/model/editorView.html:4
+#: components/model/selectionView.html:4
 msgid "Add property"
 msgstr "Lisää ominaisuus"
+
+#: components/model/modelView.html:4
+msgid "Add reference"
+msgstr "Lisää sanasto"
 
 #: components/model/searchClassModal.html:32
 #: components/model/searchPredicateModal.html:38
@@ -61,7 +65,8 @@ msgstr "Selaa"
 #: components/modal/editInProgressModal.html:14
 #: components/model/searchClassModal.html:59
 #: components/model/searchConceptModal.html:26
-#: components/model/searchPredicateModal.html:73
+#: components/model/searchPredicateModal.html:74
+#: components/model/searchSchemeModal.html:32
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -79,7 +84,7 @@ msgstr ""
 msgid "Classes"
 msgstr "Luokat"
 
-#: components/model/classForm.html:5 components/model/modelView.html:16
+#: components/model/classForm.html:5 components/model/modelView.html:17
 #: components/model/predicateForm.html:5 components/model/propertyView.html:8
 msgid "Comment"
 msgstr "Määritelmä"
@@ -92,7 +97,7 @@ msgstr "Käsite"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: components/model/searchPredicateModal.html:75
+#: components/model/searchPredicateModal.html:76
 msgid "Create and use predicate"
 msgstr "Luo ominaisuus ja käytä"
 
@@ -136,11 +141,15 @@ msgstr "Poista ominaisuus"
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
+#: components/model/referencesView.html:11
+msgid "Delete reference"
+msgstr "Poista sanasto"
+
 #: components/model/propertyPredicateView.html:5
 msgid "Description"
 msgstr "Kuvaus"
 
-#: components/model/editorView.html:6 components/model/modelView.html:4
+#: components/model/modelView.html:5 components/model/selectionView.html:8
 msgid "Edit"
 msgstr "Muokkaa"
 
@@ -158,12 +167,12 @@ msgstr ""
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/model/classForm.html:4 components/model/modelView.html:14
+#: components/model/classForm.html:4 components/model/modelView.html:15
 #: components/model/predicateForm.html:4
 msgid "Id"
 msgstr "Tunniste"
 
-#: components/model/referencesView.html:8
+#: components/model/referencesView.html:15
 msgid "Identifier"
 msgstr "Tunniste"
 
@@ -175,6 +184,8 @@ msgstr "Otsikko tähän"
 msgid "Is defined by"
 msgstr "Kirjasto"
 
+#: components/model/classForm.html:2 components/model/modelView.html:13
+#: components/model/predicateForm.html:2
 #: components/model/searchConceptModal.html:17
 msgid "Label"
 msgstr "Nimi"
@@ -273,12 +284,20 @@ msgstr ""
 msgid "Search predicates"
 msgstr "Hae ominaisuuksia"
 
+#: components/model/searchSchemeModal.html:13
+msgid "search scheme"
+msgstr "Hae sanastoa…"
+
+#: components/model/searchSchemeModal.html:3
+msgid "Search schemes"
+msgstr "Hae sanastoja"
+
 #: components/model/classForm.html:7
 msgid "Superclass"
 msgstr "Yläluokka"
 
 #: components/model/propertyPredicateView.html:9
-#: components/model/referencesView.html:6 components/model/requiresView.html:6
+#: components/model/referencesView.html:13 components/model/requiresView.html:6
 msgid "Type"
 msgstr "Tyyppi"
 
@@ -290,9 +309,13 @@ msgstr "Käyttöliittymän kieli"
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/model/searchPredicateModal.html:74
+#: components/model/searchPredicateModal.html:75
 msgid "Use predicate"
 msgstr "Käytä ominaisuutta"
+
+#: components/model/searchSchemeModal.html:33
+msgid "Use scheme"
+msgstr "Käytä sanastoa"
 
 #: components/model/predicateForm.html:7 components/model/propertyView.html:11
 msgid "Value class"

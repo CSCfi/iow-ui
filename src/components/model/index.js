@@ -16,4 +16,5 @@ mod.directive('propertyPredicateView', require('./propertyPredicateView'));
 mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
 mod.factory('searchClassModal', require('./searchClassModalFactory'));
 mod.factory('searchConceptModal', require('./searchConceptModalFactory'));
+mod.factory('searchSchemeModal', require('./searchSchemeModalFactory'));
 

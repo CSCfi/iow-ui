@@ -7,8 +7,9 @@ module.exports = function referencesView($log) {
     },
     restrict: 'E',
     template: require('./referencesView.html'),
-    controller() {
-      'ngInject';
+    require: '^modelView',
+    link($scope, element, attributes, modelViewController) {
+      $scope.modelViewController = modelViewController;
     }
   };
 };

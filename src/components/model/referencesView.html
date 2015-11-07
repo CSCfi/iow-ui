@@ -2,7 +2,14 @@
 
 <uib-accordion>
   <uib-accordion-group ng-repeat="reference in references" is-open="isOpen[reference['dct:identifier']]">
-    <uib-accordion-heading>{{reference.title | translateValue}} <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': isOpen[reference['dct:identifier']], 'glyphicon-chevron-right': !isOpen[reference['dct:identifier']]}"></span></uib-accordion-heading>
+    <uib-accordion-heading>{{reference.title | translateValue}}
+      <span class="glyphicon pull-right"
+            ng-class="{'glyphicon-chevron-down': isOpen[reference['dct:identifier']], 'glyphicon-chevron-right': !isOpen[reference['dct:identifier']]}">
+      </span>
+    </uib-accordion-heading>
+    <div class="top-actions">
+      <button ng-show="modelViewController.canRemoveReference()" type="button" class="btn btn-default" ng-click="modelViewController.removeReference(reference)" translate>Delete reference</button>
+    </div>
     <div class="model-view__title" translate>Type</div>
     <div>{{reference['@type']}}</div>
     <div class="model-view__title" translate>Identifier</div>

@@ -1,7 +1,8 @@
-<editable-form>
+<editable-form on-submit="ctrl.update()" on-reset="ctrl.reset()">
 
   <div class="top-actions">
-    <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit() && !formController.visible()" translate>Edit</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.addReference()" ng-if="ctrl.canAddReference()" translate>Add reference</button>
+    <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit()" translate>Edit</button>
     <editable-form-buttons></editable-form-buttons>
     <show-submit-error></show-submit-error>
   </div>
@@ -9,16 +10,16 @@
   <div class="row">
     <div class="col-md-6">
       <h2>
-        <form-input title-edit-only="true" title="{{'Label' | translate}}" content="ctrl.model.label"></form-input>
+        <form-input title-edit-only="true" title="{{'Label' | translate}}" content="ctrl.modelInEdit['@graph'][0].label"></form-input>
       </h2>
       <div class="model-view__title" translate>Id</div>
-      <div>{{ctrl.model['@id']}}</div>
-      <form-text-area title="{{'Comment' | translate}}" content="ctrl.model.comment"></form-text-area>
+      <div>{{ctrl.modelInEdit['@graph'][0]['@id']}}</div>
+      <form-text-area title="{{'Comment' | translate}}" content="ctrl.modelInEdit['@graph'][0].comment"></form-text-area>
     </div>
 
     <div class="col-md-6">
-      <references-view references="ctrl.model.references"></references-view>
-      <requires-view requires="ctrl.model.requires"></requires-view>
+      <references-view references="ctrl.modelInEdit['@graph'][0].references"></references-view>
+      <requires-view requires="ctrl.modelInEdit['@graph'][0].requires"></requires-view>
     </div>
   </div>
 

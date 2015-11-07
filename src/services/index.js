@@ -10,5 +10,6 @@ mod.factory('predicateService', require('./predicateService'));
 mod.factory('searchService', require('./searchService'));
 mod.factory('classService', require('./classService'));
 mod.factory('userService', require('./userService'));
+mod.factory('conceptService', require('./conceptService'));
 
 module.exports = name;

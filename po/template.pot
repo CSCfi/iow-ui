@@ -16,8 +16,12 @@ msgstr ""
 msgid "Add class"
 msgstr ""
 
-#: components/model/editorView.html:4
+#: components/model/selectionView.html:4
 msgid "Add property"
+msgstr ""
+
+#: components/model/modelView.html:4
+msgid "Add reference"
 msgstr ""
 
 #: components/model/searchClassModal.html:32
@@ -53,7 +57,8 @@ msgstr ""
 #: components/modal/editInProgressModal.html:14
 #: components/model/searchClassModal.html:59
 #: components/model/searchConceptModal.html:26
-#: components/model/searchPredicateModal.html:73
+#: components/model/searchPredicateModal.html:74
+#: components/model/searchSchemeModal.html:32
 msgid "Cancel"
 msgstr ""
 
@@ -70,7 +75,7 @@ msgid "Classes"
 msgstr ""
 
 #: components/model/classForm.html:5
-#: components/model/modelView.html:16
+#: components/model/modelView.html:17
 #: components/model/predicateForm.html:5
 #: components/model/propertyView.html:8
 msgid "Comment"
@@ -84,7 +89,7 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:75
+#: components/model/searchPredicateModal.html:76
 msgid "Create and use predicate"
 msgstr ""
 
@@ -128,12 +133,16 @@ msgstr ""
 msgid "Delete property"
 msgstr ""
 
+#: components/model/referencesView.html:11
+msgid "Delete reference"
+msgstr ""
+
 #: components/model/propertyPredicateView.html:5
 msgid "Description"
 msgstr ""
 
-#: components/model/editorView.html:6
-#: components/model/modelView.html:4
+#: components/model/modelView.html:5
+#: components/model/selectionView.html:8
 msgid "Edit"
 msgstr ""
 
@@ -150,12 +159,12 @@ msgid "Example"
 msgstr ""
 
 #: components/model/classForm.html:4
-#: components/model/modelView.html:14
+#: components/model/modelView.html:15
 #: components/model/predicateForm.html:4
 msgid "Id"
 msgstr ""
 
-#: components/model/referencesView.html:8
+#: components/model/referencesView.html:15
 msgid "Identifier"
 msgstr ""
 
@@ -168,6 +177,9 @@ msgstr ""
 msgid "Is defined by"
 msgstr ""
 
+#: components/model/classForm.html:2
+#: components/model/modelView.html:13
+#: components/model/predicateForm.html:2
 #: components/model/searchConceptModal.html:17
 msgid "Label"
 msgstr ""
@@ -264,12 +276,20 @@ msgstr ""
 msgid "Search predicates"
 msgstr ""
 
+#: components/model/searchSchemeModal.html:13
+msgid "search scheme"
+msgstr ""
+
+#: components/model/searchSchemeModal.html:3
+msgid "Search schemes"
+msgstr ""
+
 #: components/model/classForm.html:7
 msgid "Superclass"
 msgstr ""
 
 #: components/model/propertyPredicateView.html:9
-#: components/model/referencesView.html:6
+#: components/model/referencesView.html:13
 #: components/model/requiresView.html:6
 msgid "Type"
 msgstr ""
@@ -282,8 +302,12 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:74
+#: components/model/searchPredicateModal.html:75
 msgid "Use predicate"
+msgstr ""
+
+#: components/model/searchSchemeModal.html:33
+msgid "Use scheme"
 msgstr ""
 
 #: components/model/predicateForm.html:7

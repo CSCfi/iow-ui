@@ -11,6 +11,20 @@
   display: none !important;
 }
 
+
+.modal-dialog {
+  &.modal-large {
+    width: 90%;
+  }
+  &.modal-medium {
+    width: 60%;
+  }
+  &.modal-small {
+    width: 30%;
+  }
+}
+
+
 .top {
   padding: 0 15px 15px 15px;
 }
