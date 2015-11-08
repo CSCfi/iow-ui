@@ -304,6 +304,6 @@ module.exports = function entities() {
     deserializeProperty: (data) => frameAndMap(data, frames.propertyFrame, Property, false),
     deserializePredicateList: (data) => frameAndMap(data, frames.predicateListFrame, PredicateListItem, true),
     deserializePredicate: (data) => frameAndMap(data, frames.predicateFrame, Predicate, false),
-    Reference
+    deserializeReference: (data) => new Reference(data)
   };
 };

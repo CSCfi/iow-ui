@@ -38,9 +38,9 @@ module.exports = function classView($log) {
       };
       vm.addReference = () => {
         const vocabularyMap = _.indexBy(vm.modelInEdit.references, (reference) => reference.vocabularyId);
-        searchSchemeModal.open(vocabularyMap).result.then((reference) => {
-          vm.modelInEdit.addReference(reference);
-        });
+        searchSchemeModal.open(vocabularyMap).result
+          .then(scheme => modelService.newReference(scheme))
+          .then(reference => vm.modelInEdit.addReference(reference));
       };
       vm.removeReference = (reference) => {
         vm.modelInEdit.removeReference(reference);

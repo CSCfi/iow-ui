@@ -1,4 +1,4 @@
-module.exports = function modelService($http, entities) {
+module.exports = function modelService($http, $q, entities, modelLanguage) {
   'ngInject';
   return {
     getModelsByGroup(groupUrn) {
@@ -23,6 +23,17 @@ module.exports = function modelService($http, entities) {
           id: model.id
         }
       });
+    },
+    newReference(scheme) {
+      return $q.when({
+        '@id': `http://www.finto.fi/${scheme.id}`,
+        '@type': 'skos:ConceptScheme',
+        'dct:identifier': scheme.id,
+        'title': {
+          [modelLanguage.getLanguage()]: scheme.title
+        }
+      })
+      .then(reference => entities.deserializeReference(reference));
     }
   };
 };

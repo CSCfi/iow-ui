@@ -18,7 +18,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptService, modelLanguage, entities) {
+function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptService, modelLanguage) {
   'ngInject';
 
   const vm = this;
@@ -48,20 +48,8 @@ function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptSer
   };
 
   vm.confirm = () => {
-    $uibModalInstance.close(createReference(vm.selectedScheme));
+    $uibModalInstance.close(vm.selectedScheme);
   };
-
-  function createReference(scheme) {
-    return new entities.Reference(
-      {
-        '@id': `http://www.finto.fi/${scheme.id}`,
-        '@type': 'skos:ConceptScheme',
-        'dct:identifier': scheme.id,
-        'title': {
-          [modelLanguage.getLanguage()]: scheme.title
-        }
-      });
-  }
 
   function textFilter(scheme) {
     return !vm.searchText || (scheme.title || '').toLowerCase().includes(vm.searchText.toLowerCase());
