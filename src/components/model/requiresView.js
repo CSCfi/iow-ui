@@ -6,11 +6,6 @@ module.exports = function requiresView($log) {
       requires: '='
     },
     restrict: 'E',
-    template: require('./requiresView.html'),
-    bindToController: true,
-    controllerAs: 'ctrl',
-    controller() {
-      'ngInject';
-    }
+    template: require('./requiresView.html')
   };
 };

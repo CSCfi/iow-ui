@@ -41,6 +41,10 @@ msgstr ""
 msgid "Are you sure that you want to delete?"
 msgstr ""
 
+#: components/group/group.html:3
+msgid "Ask for group rights"
+msgstr ""
+
 #: components/model/model.html:43
 msgid "Associations"
 msgstr ""
@@ -168,7 +172,7 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: components/model/referencesView.html:15
+#: components/model/referencesView.html:13
 msgid "Identifier"
 msgstr ""
 
@@ -207,7 +211,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:83
+#: components/model/searchConceptModalFactory.js:81
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -220,11 +224,11 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: components/model/requiresView.html:12
+#: components/model/requiresView.html:10
 msgid "Preferred namespace"
 msgstr ""
 
-#: components/model/requiresView.html:14
+#: components/model/requiresView.html:12
 msgid "Preferred prefix"
 msgstr ""
 
@@ -293,8 +297,6 @@ msgid "Superclass"
 msgstr ""
 
 #: components/model/propertyPredicateView.html:9
-#: components/model/referencesView.html:13
-#: components/model/requiresView.html:10
 msgid "Type"
 msgstr ""
 

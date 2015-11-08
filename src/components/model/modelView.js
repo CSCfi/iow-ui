@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const graphUtils = require('../../services/graphUtils');
 
 module.exports = function classView($log) {
   'ngInject';
@@ -21,7 +20,7 @@ module.exports = function classView($log) {
 
       const vm = this;
 
-      vm.modelInEdit = _.cloneDeep(vm.model);
+      vm.modelInEdit = vm.model.clone();
 
       function isEditing() {
         return $scope.formController.visible();
@@ -37,24 +36,23 @@ module.exports = function classView($log) {
         return isEditing() && userService.isLoggedIn();
       };
       vm.addReference = () => {
-        const model = graphUtils.graph(vm.modelInEdit);
-        const referenceMap = _.indexBy(model.references, (reference) => reference['dct:identifier']);
-        searchSchemeModal.open(referenceMap).result.then((reference) => {
-          model.references.push(reference);
+        const vocabularyMap = _.indexBy(vm.modelInEdit.references, (reference) => reference.vocabularyId);
+        searchSchemeModal.open(vocabularyMap).result.then((reference) => {
+          vm.modelInEdit.addReference(reference);
         });
       };
       vm.removeReference = (reference) => {
-        _.remove(graphUtils.graph(vm.modelInEdit).references, reference);
+        vm.modelInEdit.removeReference(reference);
       };
       vm.update = () => {
-        $log.info(JSON.stringify(vm.modelInEdit, null, 2));
+        $log.info(JSON.stringify(vm.modelInEdit.serialize(), null, 2));
         return modelService.updateModel(vm.modelInEdit)
         .then(() => {
-          vm.model = _.cloneDeep(vm.modelInEdit);
+          vm.model = vm.modelInEdit.clone();
         });
       };
       vm.reset = () => {
-        vm.modelInEdit = _.cloneDeep(vm.model);
+        vm.modelInEdit = vm.model.clone();
       };
     }
   };

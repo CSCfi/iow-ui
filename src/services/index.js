@@ -11,5 +11,6 @@ mod.factory('searchService', require('./searchService'));
 mod.factory('classService', require('./classService'));
 mod.factory('userService', require('./userService'));
 mod.factory('conceptService', require('./conceptService'));
+mod.factory('entities', require('./entities'));
 
 module.exports = name;

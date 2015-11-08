@@ -32,6 +32,12 @@ function addToContext(context, values) {
     .value();
 }
 
+function groupListFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label})
+  };
+}
+
 function modelFrame(data) {
   const contextValues = {
     label,
@@ -59,7 +65,7 @@ function modelFrame(data) {
 
   return {
     '@context': addToContext(data['@context'], contextValues),
-    '@type':'owl:Ontology'
+    '@type': 'owl:Ontology'
   };
 }
 
@@ -70,24 +76,17 @@ function modelListFrame(data) {
   };
 }
 
-function attributeFrame(data) {
-  return {
-    '@context': addToContext(data['@context'], {label, range, datatype, modified, isDefinedBy, comment, versionInfo}),
-    '@type': 'owl:DatatypeProperty'
-  };
-}
-
-function associationFrame(data) {
-  return {
-    '@context': addToContext(data['@context'], {label, range, valueClass, modified, isDefinedBy, comment, versionInfo}),
-    '@type': 'owl:ObjectProperty'
-  };
-}
-
 function propertyFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label, range, datatype, valueClass, modified, isDefinedBy, comment, predicate}),
     '@id': data['@id']
+  };
+}
+
+function predicateListFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
+    isDefinedBy: {}
   };
 }
 
@@ -99,13 +98,6 @@ function predicateFrame(data) {
       '@omitDefault': true,
       '@default': []
     }
-  };
-}
-
-function predicateSearchFrame(data) {
-  return {
-    '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
-    isDefinedBy: {}
   };
 }
 
@@ -128,25 +120,24 @@ function classFrame(data) {
 
   return {
     '@context': addToContext(data['@context'], contextValues),
-    '@type': 'sh:ShapeClass'
+    '@type': 'sh:ShapeClass',
+    isDefinedBy: {}
   };
 }
 
-function classSearchFrame(data) {
+function classListFrame(data) {
   const frame = classFrame(data);
   frame.isDefinedBy = {};
   return frame;
 }
 
-
 module.exports = {
+  groupListFrame,
   modelFrame,
   modelListFrame,
   classFrame,
-  classSearchFrame,
-  attributeFrame,
-  associationFrame,
+  classListFrame,
   propertyFrame,
   predicateFrame,
-  predicateSearchFrame
+  predicateListFrame
 };

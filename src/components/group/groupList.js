@@ -10,8 +10,8 @@ module.exports = function groupListDirective($log) {
       'ngInject';
       $scope.translate = modelLanguage.translate;
 
-      groupService.getGroups().then(framedResponse => {
-        $scope.groups = framedResponse['@graph'];
+      groupService.getGroups().then(groups => {
+        $scope.groups = groups;
       }, error => $log.error(error));
     }
   };

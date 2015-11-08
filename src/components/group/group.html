@@ -1,14 +1,13 @@
 <div class="top">
-
   <div ng-show="isLoggedIn() && notInGroup()" class="top-actions">
-    <a class="btn btn-default" href="{{group['@id']+'_MEMBERS'}}" target="_blank">Pyydä käyttöoikeuksia ryhmään</a>
+    <a class="btn btn-default" href="{{group.id+'_MEMBERS'}}" target="_blank" translate>Ask for group rights</a>
   </div>
 
   <h2>{{group | translateLabel}}</h2>
 
   <ul>
     <li ng-repeat="model in models">
-      <a href="#/models/?urn={{model['@id'] | urlencode}}">{{model | translateLabel}}</a>
+      <a href="#/models/?urn={{model.id | urlencode}}">{{model | translateLabel}}</a>
     </li>
   </ul>
 </div>

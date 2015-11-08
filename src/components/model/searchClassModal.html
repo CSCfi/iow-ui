@@ -30,25 +30,25 @@
         <div class="selectContainer">
           <select class="form-control" ng-model="ctrl.modelId">
             <option value="" translate>All models</option>
-            <option ng-repeat="model in ctrl.models" value="{{model['@id']}}">{{model | translateLabel}}</option>
+            <option ng-repeat="model in ctrl.models" value="{{model.id}}">{{model | translateLabel}}</option>
           </select>
         </div>
       </div>
     </div>
 
     <div class="col-md-4 search-results" window-height padding="320">
-      <div ng-repeat="class in ctrl.searchResults() track by class['@id']">
+      <div ng-repeat="class in ctrl.searchResults() track by class.id">
         <div ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)">
           <h5>{{class | translateLabel}}</h5>
           <p>{{class.comment | translateValue}}</p>
-          <p>{{class.isDefinedBy | translateLabel}}</p>
+          <p>{{class.model | translateLabel}}</p>
         </div>
       </div>
     </div>
 
     <div class="col-md-4" window-height padding="320">
       <editable-form>
-        <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass['@graph'][0]" context="ctrl.selectedClass['@context']"></class-form>
+        <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass"></class-form>
       </editable-form>
     </div>
 

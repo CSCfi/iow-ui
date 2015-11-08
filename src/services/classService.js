@@ -1,55 +1,38 @@
 const _ = require('lodash');
-const jsonld = require('jsonld');
-const frames = require('./frames');
-const graphUtils = require('./graphUtils');
-const utils = require('./utils');
 
-module.exports = function classService($http, $q, predicateService) {
+module.exports = function classService($http, $q, predicateService, entities) {
   'ngInject';
   return {
     getClass(id) {
-      function frame(data) {
-        return jsonld.promises.frame(data, frames.classFrame(data))
-          .then(framedClass => {
-            utils.ensurePropertyAsArray(graphUtils.graph(framedClass), 'property');
-            return framedClass;
-          });
-      }
-      return $http.get('/api/rest/class', {params: {id}}).then(response => frame(response.data));
+      return $http.get('/api/rest/class', {params: {id}}).then(response => entities.deserializeClass(response.data));
     },
     getAllClasses() {
-      return $http.get('/api/rest/class').then(response => {
-        const frame = frames.classSearchFrame(response.data);
-        return jsonld.promises.frame(response.data, frame);
-      });
+      return $http.get('/api/rest/class').then(response => entities.deserializeClassList(response.data));
     },
     getClassesForModel(model) {
-      return $http.get('/api/rest/class', {params: {model}}).then(response => {
-        const frame = frames.classFrame(response.data);
-        return jsonld.promises.frame(response.data, frame);
-      });
+      return $http.get('/api/rest/class', {params: {model}}).then(response => entities.deserializeClassList(response.data));
     },
-    createClass(classData, id) {
+    createClass(classData) {
       const requestParams = {
-        id,
-        model: classData['@graph'][0].isDefinedBy
+        id: classData.id,
+        model: classData.modelId
       };
-      return $http.put('/api/rest/class', classData, {params: requestParams});
+      return $http.put('/api/rest/class', classData.serialize(), {params: requestParams});
     },
-    updateClass(classData, id, originalId) {
+    updateClass(classData, originalId) {
       const requestParams = {
-        id,
-        model: classData['@graph'][0].isDefinedBy
+        id: classData.id,
+        model: classData.modelId
       };
-      if (id !== originalId) {
+      if (requestParams.id !== originalId) {
         requestParams.oldid = originalId;
       }
-      return $http.post('/api/rest/class', classData, {params: requestParams});
+      return $http.post('/api/rest/class', classData.serialize(), {params: requestParams});
     },
-    deleteClass(id, model) {
+    deleteClass(id, modelId) {
       const requestParams = {
         id,
-        model: model
+        model: modelId
       };
       return $http.delete('/api/rest/class', {params: requestParams});
     },
@@ -60,19 +43,14 @@ module.exports = function classService($http, $q, predicateService) {
       };
       return $http.post('/api/rest/class', undefined, {params: requestParams});
     },
-    getClassTemplate(context, modelID, classLabel, conceptID, lang) {
+    newClass(context, modelID, classLabel, conceptID, lang) {
       return $http.get('/api/rest/classCreator', {params: {modelID, classLabel, conceptID, lang}})
         .then(response => {
           _.extend(response.data['@context'], context);
-          const frame = frames.classFrame(response.data);
-          return jsonld.promises.frame(response.data, frame);
-        })
-        .then(framedClass => {
-          utils.ensurePropertyAsArray(graphUtils.graph(framedClass), 'property');
-          return framedClass;
+          return entities.deserializeClass(response.data);
         });
     },
-    getPropertyTemplate(predicateId) {
+    newProperty(predicateId) {
       return $q.all([
         predicateService.getPredicate(predicateId),
         $http.get('/api/rest/classProperty', {params: {predicateID: predicateId}}).then(response => response.data)
@@ -80,22 +58,19 @@ module.exports = function classService($http, $q, predicateService) {
       .then(result => {
         const [predicate, property] = result;
 
-        _.extend(property['@context'], predicate['@context']);
+        _.extend(property['@context'], predicate.context);
 
         if (!property.label) {
-          property.label = predicate['@graph'][0].label;
+          property.label = predicate.label;
         }
 
-        const predicateType = predicate['@graph'][0]['@type'];
-
-        if (predicateType === 'owl:DatatypeProperty' && !property.datatype) {
-          property.datatype = predicate['@graph'][0].range || 'xsd:string';
-        } else if (predicateType === 'owl:ObjectProperty' && !property.valueClass) {
+        if (predicate.isAttribute() && !property.datatype) {
+          property.datatype = predicate.range || 'xsd:string';
+        } else if (predicate.isAssociation() && !property.valueClass) {
           property.valueClass = '';
         }
 
-        const frame = frames.propertyFrame(property);
-        return jsonld.promises.frame(property, frame);
+        return entities.deserializeProperty(property);
       });
     }
   };

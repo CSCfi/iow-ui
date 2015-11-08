@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const graphUtils = require('../../services/graphUtils');
 
 module.exports = function modalFactory($uibModal) {
   'ngInject';
@@ -32,12 +31,12 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, v
   vm.modelId = '';
   vm.models = [];
 
-  classService.getAllClasses().then(result => {
-    classes = _.reject(result['@graph'], klass => excludedClassMap[klass['@id']]);
+  classService.getAllClasses().then(allClasses => {
+    classes = _.reject(allClasses, klass => excludedClassMap[klass.id]);
 
     vm.models = _.chain(classes)
-      .map(klass => klass.isDefinedBy)
-      .uniq(db => db['@id'])
+      .map(klass => klass.model)
+      .uniq(model => model.id)
       .value();
   });
 
@@ -50,11 +49,11 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, v
   };
 
   vm.selectClass = (klass) => {
-    classService.getClass(klass['@id']).then(result => vm.selectedClass = result);
+    classService.getClass(klass.id).then(result => vm.selectedClass = result);
   };
 
   vm.isSelected = (klass) => {
-    return klass['@id'] === selectedClassId();
+    return klass.id === selectedClassId();
   };
 
   vm.confirm = () => {
@@ -68,7 +67,7 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, v
   };
 
   function selectedClassId() {
-    return graphUtils.withFullId(vm.selectedClass);
+    return vm.selectedClass && vm.selectedClass.id;
   }
 
   function localizedLabelAsLower(klass) {
@@ -80,6 +79,6 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, v
   }
 
   function modelFilter(klass) {
-    return !vm.modelId || klass.isDefinedBy['@id'] === vm.modelId;
+    return !vm.modelId || klass.model.id === vm.modelId;
   }
 }

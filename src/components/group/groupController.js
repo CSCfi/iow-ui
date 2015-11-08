@@ -4,12 +4,12 @@ module.exports = function GroupController($scope, $routeParams, $log, groupServi
   'ngInject';
   const urn = $routeParams.urn;
 
-  groupService.getGroups().then(response => {
-    $scope.group = _.findWhere(response['@graph'], {'@id': urn});
+  groupService.getGroups().then(groups => {
+    $scope.group = _.findWhere(groups, {id: urn});
   }, error => $log.error(error));
 
-  modelService.getModelsByGroup(urn).then(response => {
-    $scope.models = response['@graph'];
+  modelService.getModelsByGroup(urn).then(models => {
+    $scope.models = models;
   }, error => $log.error(error));
 
   $scope.notInGroup = () => !userService.isInGroup(urn);

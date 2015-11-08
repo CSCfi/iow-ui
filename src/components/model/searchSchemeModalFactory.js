@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const graphUtils = require('../../services/graphUtils');
 
 module.exports = function modalFactory($uibModal) {
   'ngInject';
@@ -19,7 +18,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptService, modelLanguage) {
+function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptService, modelLanguage, entities) {
   'ngInject';
 
   const vm = this;
@@ -53,14 +52,15 @@ function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptSer
   };
 
   function createReference(scheme) {
-    return {
-      '@id': `http://www.finto.fi/${scheme.id}`,
-      '@type': 'skos:ConceptScheme',
-      'dct:identifier': scheme.id,
-      'title': {
-        [modelLanguage.getLanguage()]: scheme.title
-      }
-    };
+    return new entities.Reference(
+      {
+        '@id': `http://www.finto.fi/${scheme.id}`,
+        '@type': 'skos:ConceptScheme',
+        'dct:identifier': scheme.id,
+        'title': {
+          [modelLanguage.getLanguage()]: scheme.title
+        }
+      });
   }
 
   function textFilter(scheme) {

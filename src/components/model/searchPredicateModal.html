@@ -10,11 +10,11 @@
   <div class="modal-body search-modal">
 
     <div class="top-actions">
-      <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:DatatypeProperty')" ng-hide="!ctrl.typeSelectable && ctrl.type != 'owl:DatatypeProperty'">
+      <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:DatatypeProperty')" ng-show="ctrl.isAttributeAddable()">
         <span class="glyphicon glyphicon-plus"></span>
         {{'Create new attribute' | translate}}
       </button>
-      <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:ObjectProperty')" ng-hide="!ctrl.typeSelectable && ctrl.type != 'owl:ObjectProperty'">
+      <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:ObjectProperty')" ng-show="ctrl.isAssociationAddable()">
         <span class="glyphicon glyphicon-plus"></span>
         {{'Create new association' | translate}}
       </button>
@@ -36,7 +36,7 @@
           <div class="selectContainer">
             <select class="form-control" ng-model="ctrl.modelId">
               <option value="" translate>All models</option>
-              <option ng-repeat="model in ctrl.models" value="{{model['@id']}}">{{model | translateLabel}}</option>
+              <option ng-repeat="model in ctrl.models" value="{{model.id}}">{{model | translateLabel}}</option>
             </select>
           </div>
         </div>
@@ -52,18 +52,18 @@
       </div>
 
       <div class="col-md-4 search-results" window-height padding="320">
-        <div ng-repeat="predicate in ctrl.searchResults() track by predicate['@id']">
+        <div ng-repeat="predicate in ctrl.searchResults() track by predicate.id">
           <div ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)">
-            <i ng-class="ctrl.iconClass(predicate)"></i>
+            <i ng-class="predicate.glyphIconClass()"></i>
             <h5>{{predicate | translateLabel}}</h5>
             <p>{{predicate.comment | translateValue}}</p>
-            <p>{{predicate.isDefinedBy | translateLabel}}</p>
+            <p>{{predicate.model | translateLabel}}</p>
           </div>
         </div>
       </div>
 
       <div class="col-md-4">
-        <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate['@graph'][0]"></predicate-form>
+        <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate"></predicate-form>
         <show-submit-error></show-submit-error>
       </div>
 

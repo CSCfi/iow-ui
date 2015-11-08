@@ -3,14 +3,14 @@
     <div class="top-actions" float="top-actions-placeholder" top-offset="8">
       <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
       <button type="button" class="btn btn-default" ng-click="ctrl.remove()" ng-if="ctrl.canRemove()">
-        {{ctrl.selectionIsClass() ? 'Delete class' : 'Delete predicate' | translate}}
+        {{ctrl.selection.isClass() ? 'Delete class' : 'Delete predicate' | translate}}
       </button>
       <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit()" translate>Edit</button>
       <editable-form-buttons></editable-form-buttons>
       <show-submit-error></show-submit-error>
     </div>
 
-    <class-form ng-if="ctrl.selectionIsClass()" class="ctrl.selectionInEdit['@graph'][0]" context="ctrl.selectionInEdit['@context']"></class-form>
-    <predicate-form ng-if="ctrl.selectionIsPredicate()" predicate="ctrl.selectionInEdit['@graph'][0]"></predicate-form>
+    <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit"></class-form>
+    <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selectionInEdit"></predicate-form>
   </div>
 </editable-form>

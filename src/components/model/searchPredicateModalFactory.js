@@ -1,6 +1,4 @@
 const _ = require('lodash');
-const graphUtils = require('../../services/graphUtils');
-const utils = require('../../services/utils');
 
 module.exports = function modalFactory($uibModal) {
   'ngInject';
@@ -25,7 +23,7 @@ module.exports = function modalFactory($uibModal) {
       return openModal(vocabularies, type, excludedPredicateMap, null);
     },
     openWithPredicationCreation(model) {
-      return openModal(graphUtils.graph(model).references, null, {}, model);
+      return openModal(model.references, null, {}, model);
     }
   };
 };
@@ -49,16 +47,16 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabula
   vm.types = [];
   vm.typeSelectable = !type;
 
-  predicateService.getAllPredicates().then(result => {
-    predicates = _.reject(result['@graph'], predicate => excludedPredicateMap[predicate['@id']]);
+  predicateService.getAllPredicates().then(allPredicates => {
+    predicates = _.reject(allPredicates, predicate => excludedPredicateMap[predicate.id]);
 
     vm.models = _.chain(predicates)
-      .map(predicate => predicate.isDefinedBy)
-      .uniq(db => db['@id'])
+      .map(predicate => predicate.model)
+      .uniq(classModel => classModel.id)
       .value();
 
     vm.types = _.chain(predicates)
-      .map(predicate => predicate['@type'])
+      .map(predicate => predicate.type)
       .uniq()
       .value();
   });
@@ -74,11 +72,11 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabula
 
   vm.selectPredicate = (predicate) => {
     $scope.editableFormController.cancel();
-    predicateService.getPredicate(predicate['@id']).then(result => vm.selectedPredicate = result);
+    predicateService.getPredicate(predicate.id).then(result => vm.selectedPredicate = result);
   };
 
   vm.isSelected = (predicate) => {
-    return predicate['@id'] === selectedPredicateId();
+    return predicate.id === selectedPredicateId();
   };
 
   vm.usePredicate = () => {
@@ -86,16 +84,16 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabula
   };
 
   vm.createAndUsePredicate = () => {
-    return predicateService.createPredicate(vm.selectedPredicate, graphUtils.withFullId(vm.selectedPredicate)).then(vm.usePredicate);
+    return predicateService.createPredicate(vm.selectedPredicate).then(vm.usePredicate);
   };
 
-  vm.createNew = (selectionType) => {
+  vm.createNew = (selectionOwlType) => {
     return searchConceptModal.open(vocabularies, 'Define concept for the new predicate').result
       .then(result => {
         if (!vm.typeSelectable) {
-          $uibModalInstance.close(_.extend(result, {type: selectionType}));
+          $uibModalInstance.close(_.extend(result, {type: selectionOwlType}));
         } else {
-          predicateService.getPredicateTemplate(model['@context'], graphUtils.withFullId(model), result.label, result.conceptId, selectionType, modelLanguage.getLanguage())
+          predicateService.newPredicate(model.context, model.id, result.label, result.conceptId, selectionOwlType, modelLanguage.getLanguage())
             .then(predicate => {
               vm.selectedPredicate = predicate;
               $scope.editableFormController.show();
@@ -104,12 +102,16 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabula
       });
   };
 
-  vm.iconClass = (predicate) => {
-    return utils.glyphIconClassForType(graphUtils.asTypeString(predicate['@type']));
+  vm.isAttributeAddable = () => {
+    return vm.typeSelectable || vm.type === 'attribute';
+  };
+
+  vm.isAssociationAddable = () => {
+    return vm.typeSelectable || vm.type === 'association';
   };
 
   function selectedPredicateId() {
-    return graphUtils.withFullId(vm.selectedPredicate);
+    return vm.selectedPredicate && vm.selectedPredicate.id;
   }
 
   function localizedLabelAsLower(predicate) {
@@ -121,10 +123,10 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabula
   }
 
   function modelFilter(predicate) {
-    return !vm.modelId || predicate.isDefinedBy['@id'] === vm.modelId;
+    return !vm.modelId || predicate.model.id === vm.modelId;
   }
 
   function typeFilter(predicate) {
-    return !vm.type || predicate['@type'] === vm.type;
+    return !vm.type || predicate.type === vm.type;
   }
 }

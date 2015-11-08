@@ -1,11 +1,4 @@
-
-function ensurePropertyAsArray(obj, property) {
-  const propertyValue = obj[property];
-
-  if (!Array.isArray(propertyValue)) {
-    obj[property] = propertyValue ? [propertyValue] : [];
-  }
-}
+const _ = require('lodash');
 
 function glyphIconClassForType(type) {
   return [
@@ -17,9 +10,8 @@ function glyphIconClassForType(type) {
       'glyphicon-question-sign': !type
     }
   ];
-};
+}
 
 module.exports = {
-  ensurePropertyAsArray,
   glyphIconClassForType
 };

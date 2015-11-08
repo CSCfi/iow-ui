@@ -1,7 +1,4 @@
-const _ = require('lodash');
-const graphUtils = require('../../services/graphUtils');
-
-module.exports = function entityView($log) {
+module.exports = function selectionView($log) {
   'ngInject';
   return {
     scope: {},
@@ -30,8 +27,6 @@ module.exports = function entityView($log) {
       vm.remove = remove;
       vm.canRemove = canRemove;
       vm.canEdit = canEdit;
-      vm.selectionIsClass = selectionIsClass;
-      vm.selectionIsPredicate = selectionIsPredicate;
       // view contract
       vm.select = select;
       vm.isEditing = isEditing;
@@ -42,7 +37,7 @@ module.exports = function entityView($log) {
 
       function select(selection, isUnsaved) {
         vm.selection = selection;
-        vm.selectionInEdit = _.cloneDeep(selection);
+        vm.selectionInEdit = selection.clone();
 
         unsaved = isUnsaved;
         if (unsaved) {
@@ -51,30 +46,27 @@ module.exports = function entityView($log) {
       }
 
       function update() {
-        const id = graphUtils.withFullId(vm.selectionInEdit);
-        const originalId = graphUtils.withFullId(vm.selection);
+        $log.info(JSON.stringify(vm.selectionInEdit.serialize(), null, 2));
 
-        $log.info(JSON.stringify(vm.selectionInEdit, null, 2));
-
-        return selectionIsClass()
+        return (vm.selection.isClass()
           ? unsaved
-            ? classService.createClass(vm.selectionInEdit, id)
-            : classService.updateClass(vm.selectionInEdit, id, originalId)
+            ? classService.createClass(vm.selectionInEdit)
+            : classService.updateClass(vm.selectionInEdit, vm.selection.id)
           : unsaved
-            ? predicateService.createPredicate(vm.selectionInEdit, id)
-            : predicateService.updatePredicate(vm.selectionInEdit, id, originalId)
+            ? predicateService.createPredicate(vm.selectionInEdit)
+            : predicateService.updatePredicate(vm.selectionInEdit, vm.selection.id))
         .then(() => {
           unsaved = false;
-          vm.selection = _.cloneDeep(vm.selectionInEdit);
+          vm.selection = vm.selectionInEdit.clone();
           $scope.modelController.reload();
         });
       }
 
       function remove() {
         deleteConfirmModal.open().result.then(() => {
-          return selectionIsClass()
-            ? classService.deleteClass(getSelection().id, $scope.modelController.modelId)
-            : predicateService.deletePredicate(getSelection().id, $scope.modelController.modelId);
+          return vm.selection.isClass()
+            ? classService.deleteClass(vm.selection.id, $scope.modelController.modelId)
+            : predicateService.deletePredicate(vm.selection.id, $scope.modelController.modelId);
         })
         .then(() => {
           select(null);
@@ -83,7 +75,7 @@ module.exports = function entityView($log) {
       }
 
       function reset() {
-        select(unsaved ? null : vm.selection);
+        select(unsaved ? null : vm.selection.clone());
         $scope.modelController.reload();
       }
 
@@ -92,8 +84,7 @@ module.exports = function entityView($log) {
       }
 
       function canEdit() {
-        const graph = graphUtils.graph(vm.selection);
-        return !isEditing() && userService.isLoggedIn() && graph && $scope.modelController.modelId === graph.isDefinedBy;
+        return !isEditing() && userService.isLoggedIn() && vm.selection && vm.selection.modelId === $scope.modelController.modelId;
       }
 
       function canRemove() {
@@ -105,11 +96,11 @@ module.exports = function entityView($log) {
       }
 
       function canAddProperty() {
-        return selectionIsClass() && userService.isLoggedIn() && isEditing();
+        return vm.selection.isClass() && userService.isLoggedIn() && isEditing();
       }
 
       function canRemoveProperty() {
-        return selectionIsClass() && userService.isLoggedIn() && isEditing();
+        return vm.selection.isClass() && userService.isLoggedIn() && isEditing();
       }
 
       function addProperty() {
@@ -117,21 +108,13 @@ module.exports = function entityView($log) {
       }
 
       function createPropertyByPredicateId(predicateId) {
-        classService.getPropertyTemplate(predicateId).then(property => {
-          graphUtils.graph(vm.selectionInEdit).property.push(graphUtils.graph(property));
+        classService.newProperty(predicateId).then(property => {
+          vm.selectionInEdit.addProperty(property);
         });
       }
 
       function removeProperty(property) {
-        _.remove(graphUtils.graph(vm.selectionInEdit).property, property);
-      }
-
-      function selectionIsClass() {
-        return graphUtils.type(vm.selection) === 'class';
-      }
-
-      function selectionIsPredicate() {
-        return !selectionIsClass();
+        vm.selectionInEdit.removeProperty(property);
       }
     }
   };

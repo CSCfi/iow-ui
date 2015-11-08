@@ -1,22 +1,8 @@
-const jsonld = require('jsonld');
-
-function languageTransform(response) {
-  const frame = {
-    '@context': angular.copy(response.data['@context'])
-  };
-  frame['@context'].label = {
-    '@id': 'http://www.w3.org/2000/01/rdf-schema#label',
-    '@container': '@language'
-  };
-
-  return jsonld.promises.frame(response.data, frame);
-}
-
-module.exports = function groupService($http) {
+module.exports = function groupService($http, entities) {
   'ngInject';
   return {
     getGroups() {
-      return $http.get('/api/rest/groups').then(languageTransform);
+      return $http.get('/api/rest/groups').then(response => entities.deserializeGroupList(response.data));
     }
   };
 };

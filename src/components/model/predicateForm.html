@@ -1,9 +1,9 @@
 <h2>
   <form-input title-edit-only="true" title="{{'Label' | translate}}" content="predicate.label"></form-input>
 </h2>
-<form-id title="{{'Id' | translate}}" plain-text="predicate['@id']"></form-id>
+<form-id title="{{'Id' | translate}}" plain-text="predicate.idName"></form-id>
 <form-text-area title="{{'Comment' | translate}}" content="predicate.comment"></form-text-area>
-<range-select ng-if="predicate['@type'] === 'owl:DatatypeProperty'" content="predicate.datatype"></range-select>
-<form-input ng-if="predicate['@type'] === 'owl:ObjectProperty'"  title="{{'Value class' | translate}}" content="predicate.valueclass"></form-input>
+<range-select ng-if="predicate.isAttribute()" content="predicate.range"></range-select>
+<form-input ng-if="predicate.isAssociation()"  title="{{'Value class' | translate}}" plain-text="predicate.range"></form-input>
 <div class="model-view__title" translate>Is defined by</div>
-<div>{{predicate.isDefinedBy}}</div>
+<div>{{predicate.modelId}}</div>

@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const graphUtils = require('../../services/graphUtils');
 const utils = require('../../services/utils');
 
 module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
@@ -26,16 +25,17 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.addClass = addClass;
   vm.addPredicate = addPredicate;
   vm.glyphIconClassForType = utils.glyphIconClassForType;
+  vm.associations = () => _.filter(vm.predicates, predicate => predicate.isAssociation());
+  vm.attributes = () => _.filter(vm.predicates, predicate => predicate.isAttribute());
 
-  function isSelected(obj) {
-    const id = obj['@id'];
-    const type = graphUtils.asTypeString(obj['@type']);
-    return _.isEqual({id, type}, graphUtils.asTypeAndId(selectionView.selection));
+  function isSelected(listItem) {
+    const selection = selectionView.selection;
+    if (selection) {
+      return selection.isEqual(listItem);
+    }
   }
 
-  function reload() {
-    fetchAll();
-    const selection = graphUtils.asTypeAndId(selectionView.selection);
+  function setLocationForSelection(selection) {
     if (selection) {
       $location.search({urn: modelId, [selection.type]: selection.id});
     } else {
@@ -43,10 +43,14 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     }
   }
 
+  function reload() {
+    fetchAll();
+    setLocationForSelection(selectionView.selection);
+  }
+
   function addClass() {
-    const classMap = _.indexBy(vm.classes, klass => klass['@id']);
-    const references = graphUtils.graph(vm.model).references;
-    searchClassModal.open(references, classMap).result
+    const classMap = _.indexBy(vm.classes, klass => klass.id);
+    searchClassModal.open(vm.model.references, classMap).result
       .then(result => {
         if (typeof result === 'object') {
           createClass(result);
@@ -57,7 +61,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createClass(conceptData) {
-    classService.getClassTemplate(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
+    classService.newClass(vm.model.context, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
       .then(klass => updateSelectionView(klass, true));
   }
 
@@ -70,9 +74,8 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function addPredicate(type) {
-    const predicateMap = _.indexBy(vm.associations.concat(vm.attributes), (predicate) => predicate['@id']);
-    const references = graphUtils.graph(vm.model).references;
-    searchPredicateModal.open(references, type, predicateMap).result
+    const predicateMap = _.indexBy(vm.predicates, (predicate) => predicate.id);
+    searchPredicateModal.open(vm.model.references, type, predicateMap).result
       .then(result => {
         if (typeof result === 'object') {
           createPredicate(result);
@@ -83,27 +86,27 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createPredicate(conceptData) {
-    predicateService.getPredicateTemplate(vm.model['@context'], modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
+    predicateService.newPredicate(vm.model.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
       .then(predicate => updateSelectionView(predicate, true));
   }
 
   function assignPredicateToModel(predicateId, type) {
     predicateService.assignPredicateToModel(predicateId, modelId)
       .then(() => {
-        selectByTypeAndId(graphUtils.asTypeString(type), predicateId);
+        selectByTypeAndId(type, predicateId);
         fetchPredicates();
       });
   }
 
-  function select(obj) {
-    selectByTypeAndId(graphUtils.asTypeString(obj['@type']), obj['@id']);
+  function select(listItem) {
+    selectByTypeAndId(listItem.type, listItem.id);
   }
 
   function selectByTypeAndId(type, id) {
     if (type === 'class') {
       selectClassById(id);
     } else {
-      selectPredicateByIdAndType(id, type);
+      selectPredicateById(id);
     }
   }
 
@@ -111,14 +114,14 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     classService.getClass(id).then(updateSelectionView);
   }
 
-  function selectPredicateByIdAndType(id, type) {
-    predicateService.getPredicate(id, type + 'Frame').then(updateSelectionView);
+  function selectPredicateById(id) {
+    predicateService.getPredicate(id).then(updateSelectionView);
   }
 
   function updateSelectionView(selection, unsaved) {
     askPermissionWhenEditing(() => {
       selectionView.select(selection, unsaved);
-      $location.search({urn: modelId, 'class': graphUtils.withFullId(selection)});
+      setLocationForSelection(selection);
     });
   }
 
@@ -138,25 +141,24 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function fetchModel() {
-    return modelService.getModelByUrn(modelId).then(data => {
-      vm.model = data;
+    return modelService.getModelByUrn(modelId).then(model => {
+      vm.model = model;
     }, err => {
       $log.error(err);
     });
   }
 
   function fetchClasses() {
-    return classService.getClassesForModel(modelId).then(data => {
-      vm.classes = data['@graph'];
+    return classService.getClassesForModel(modelId).then(classes => {
+      vm.classes = classes;
     }, err => {
       $log.error(err);
     });
   }
 
   function fetchPredicates() {
-    return predicateService.getPredicatesForModel(modelId).then(data => {
-      vm.attributes = data.attributes['@graph'];
-      vm.associations = data.associations['@graph'];
+    return predicateService.getPredicatesForModel(modelId).then(predicates => {
+      vm.predicates = predicates;
     }, err => {
       $log.error(err);
     });

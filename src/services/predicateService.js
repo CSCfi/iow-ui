@@ -1,56 +1,39 @@
 const _ = require('lodash');
-const jsonld = require('jsonld');
-const frames = require('./frames');
-const graphUtils = require('./graphUtils');
 
-module.exports = function predicateService($http, $q) {
+module.exports = function predicateService($http, $q, entities) {
   'ngInject';
 
   return {
-    getPredicate(id, userFrame = 'predicateFrame') {
-      function frame(data) {
-        return jsonld.promises.frame(data, frames[userFrame](data));
-      }
-      return $http.get('/api/rest/predicate', {params: {id}}).then(response => frame(response.data));
+    getPredicate(id) {
+      return $http.get('/api/rest/predicate', {params: {id}}).then(response => entities.deserializePredicate(response.data));
     },
     getAllPredicates() {
-      return $http.get('/api/rest/predicate')
-        .then(response => {
-          const frame = frames.predicateSearchFrame(response.data);
-          return jsonld.promises.frame(response.data, frame);
-        });
+      return $http.get('/api/rest/predicate').then(response => entities.deserializePredicateList(response.data));
     },
     getPredicatesForModel(model) {
-      return $http.get('/api/rest/predicate', {params: {model}}).then(response => {
-        const attributeFrame = frames.attributeFrame(response.data);
-        const associationFrame = frames.associationFrame(response.data);
-        return $q.all({
-          attributes: jsonld.promises.frame(response.data, attributeFrame),
-          associations: jsonld.promises.frame(response.data, associationFrame)
-        });
-      });
+      return $http.get('/api/rest/predicate', {params: {model}}).then(response => entities.deserializePredicateList(response.data));
     },
-    createPredicate(predicate, id) {
+    createPredicate(predicate) {
       const requestParams = {
-        id,
-        model: predicate.isDefinedBy || predicate['@graph'][0].isDefinedBy
+        id: predicate.id,
+        model: predicate.modelId
       };
-      return $http.put('/api/rest/predicate', predicate, {params: requestParams});
+      return $http.put('/api/rest/predicate', predicate.serialize(), {params: requestParams});
     },
-    updatePredicate(predicate, id, originalId) {
+    updatePredicate(predicate, originalId) {
       const requestParams = {
-        id,
-        model: predicate.isDefinedBy || predicate['@graph'][0].isDefinedBy
+        id: predicate.id,
+        model: predicate.modelId
       };
-      if (id !== originalId) {
+      if (requestParams.id !== originalId) {
         requestParams.oldid = originalId;
       }
-      return $http.post('/api/rest/predicate', predicate, {params: requestParams});
+      return $http.post('/api/rest/predicate', predicate.serialize(), {params: requestParams});
     },
-    deletePredicate(id, model) {
+    deletePredicate(id, modelId) {
       const requestParams = {
         id,
-        model: model
+        model: modelId
       };
       return $http.delete('/api/rest/predicate', {params: requestParams});
     },
@@ -61,13 +44,13 @@ module.exports = function predicateService($http, $q) {
       };
       return $http.post('/api/rest/predicate', undefined, {params: requestParams});
     },
-    getPredicateTemplate(context, modelID, predicateLabel, conceptID, type, lang) {
+    newPredicate(context, modelID, predicateLabel, conceptID, type, lang) {
       return $http.get('/api/rest/predicateCreator', {params: {modelID, predicateLabel, conceptID, type, lang}})
         .then(response => {
           _.extend(response.data['@context'], context);
-          const frame = frames.predicateFrame(response.data);
-          return jsonld.promises.frame(response.data, frame);
-        });
+          return response;
+        })
+        .then(response => entities.deserializePredicate(response.data));
     }
   };
 };

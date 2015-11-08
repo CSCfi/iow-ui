@@ -1,9 +1,4 @@
-const jsonld = require('jsonld');
-const frames = require('./frames');
-const graphUtils = require('./graphUtils');
-const utils = require('./utils');
-
-module.exports = function modelService($http) {
+module.exports = function modelService($http, entities) {
   'ngInject';
   return {
     getModelsByGroup(groupUrn) {
@@ -11,10 +6,8 @@ module.exports = function modelService($http) {
         params: {
           group: groupUrn
         }
-      }).then(response => {
-        const frame = frames.modelListFrame(response.data);
-        return jsonld.promises.frame(response.data, frame);
-      });
+      })
+      .then(response => entities.deserializeModelList(response.data));
     },
     getModelByUrn(urn) {
       return $http.get('/api/rest/model', {
@@ -22,20 +15,12 @@ module.exports = function modelService($http) {
           id: urn
         }
       })
-      .then(response => {
-        const frame = frames.modelFrame(response.data);
-        return jsonld.promises.frame(response.data, frame);
-      })
-      .then(framedModel => {
-        utils.ensurePropertyAsArray(graphUtils.graph(framedModel), 'references');
-        utils.ensurePropertyAsArray(graphUtils.graph(framedModel), 'requires');
-        return framedModel;
-      });
+      .then(response => entities.deserializeModel(response.data));
     },
     updateModel(model) {
-      return $http.post('/api/rest/model', model, {
+      return $http.post('/api/rest/model', model.serialize(), {
         params: {
-          id: graphUtils.withFullId(model)
+          id: model.id
         }
       });
     }

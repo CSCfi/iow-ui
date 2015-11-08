@@ -1,4 +1,4 @@
-module.exports = function userService($http, $q) {
+module.exports = function userService($http) {
   'ngInject';
 
   let loggedInUser = null;
