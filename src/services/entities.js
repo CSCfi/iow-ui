@@ -14,7 +14,7 @@ function withPrefixExpanded(context, value) {
   return value;
 }
 
-class GroupList {
+class GroupListItem {
   constructor(graph) {
     this.id = graph['@id'];
     this.label = graph.label;
@@ -296,7 +296,7 @@ function frameAndMap(data, frame, entityConstructor, isArray) {
 
 module.exports = function entities() {
   return {
-    deserializeGroupList: (data) => frameAndMap(data, frames.groupListFrame, GroupList, true),
+    deserializeGroupList: (data) => frameAndMap(data, frames.groupListFrame, GroupListItem, true),
     deserializeModelList: (data) => frameAndMap(data, frames.modelListFrame, ModelListItem, true),
     deserializeModel: (data) => frameAndMap(data, frames.modelFrame, Model, false),
     deserializeClassList: (data) => frameAndMap(data, frames.classListFrame, ClassListItem, true),
