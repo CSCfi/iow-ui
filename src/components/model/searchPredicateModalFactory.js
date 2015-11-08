@@ -3,14 +3,14 @@ const _ = require('lodash');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
-  function openModal(vocabularies, type, excludedPredicateMap, model) {
+  function openModal(references, type, excludedPredicateMap, model) {
     return $uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
       controller: SearchPredicateController,
       controllerAs: 'ctrl',
       resolve: {
-        vocabularies: () => vocabularies,
+        references: () => references,
         type: () => type,
         excludedPredicateMap: () => excludedPredicateMap,
         model: () => model
@@ -19,8 +19,8 @@ module.exports = function modalFactory($uibModal) {
   }
 
   return {
-    open(vocabularies, type, excludedPredicateMap) {
-      return openModal(vocabularies, type, excludedPredicateMap, null);
+    open(references, type, excludedPredicateMap) {
+      return openModal(references, type, excludedPredicateMap, null);
     },
     openWithPredicationCreation(model) {
       return openModal(model.references, null, {}, model);
@@ -28,7 +28,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabularies, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, $timeout, references, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -88,7 +88,7 @@ function SearchPredicateController($scope, $uibModalInstance, $timeout, vocabula
   };
 
   vm.createNew = (selectionOwlType) => {
-    return searchConceptModal.open(vocabularies, 'Define concept for the new predicate').result
+    return searchConceptModal.open(references, 'Define concept for the new predicate').result
       .then(result => {
         if (!vm.typeSelectable) {
           $uibModalInstance.close(_.extend(result, {type: selectionOwlType}));

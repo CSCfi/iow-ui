@@ -5,7 +5,7 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(vocabularies, defineConceptTitle) {
+    open(references, defineConceptTitle) {
       return $uibModal.open({
         template: require('./searchConceptModal.html'),
         size: 'small',
@@ -13,19 +13,19 @@ module.exports = function modalFactory($uibModal) {
         controllerAs: 'ctrl',
         resolve: {
           defineConceptTitle: () => defineConceptTitle,
-          vocabularies: () => vocabularies
+          references: () => references
         }
       });
     }
   };
 };
 
-function SearchClassController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, vocabularies) {
+function SearchClassController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, references) {
   'ngInject';
 
   const vm = this;
 
-  vm.hasVocabularies = vocabularies.length > 0;
+  vm.hasVocabularies = references.length > 0;
   vm.concept = null;
   vm.label = null;
   vm.defineConceptTitle = defineConceptTitle;
@@ -54,11 +54,11 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     return results.splice(0, Math.min(limit * estimatedDuplicateCount, results.length));
   }
 
-  function createEngine(vocid) {
+  function createEngine(vocId) {
     return new Bloodhound({
       identify: identify,
       remote: {
-        url: `/api/rest/conceptSearch?term=%QUERY&lang=${modelLanguage.getLanguage()}&vocid=${vocid}`,
+        url: `/api/rest/conceptSearch?term=%QUERY&lang=${modelLanguage.getLanguage()}&vocid=${vocId}`,
         wildcard: '%QUERY',
         transform: (response) => _.uniq(limitResults(response.results), identify)
       },
@@ -68,14 +68,14 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     });
   }
 
-  function createDataset(vocabulary) {
-    const vocid = vocabulary['dct:identifier'];
-    const label = modelLanguage.translate(vocabulary.title);
+  function createDataset(reference) {
+    const vocId = reference.vocabularyId;
+    const label = modelLanguage.translate(reference.title);
 
     return {
       display: 'prefLabel',
-      name: vocid,
-      source: createEngine(vocid),
+      name: vocId,
+      source: createEngine(vocId),
       limit: limit,
       templates: {
         empty: (search) => `<div class="empty-message">'${search.query}' ${gettextCatalog.getString('not found in the concept database')} ${label}</div>`,
@@ -84,7 +84,7 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     };
   }
 
-  vm.datasets = _.map(vocabularies, vocabulary => createDataset(vocabulary));
+  vm.datasets = _.map(references, reference => createDataset(reference));
 
   vm.create = () => {
     $uibModalInstance.close({conceptId: vm.concept.uri, label: vm.label});
