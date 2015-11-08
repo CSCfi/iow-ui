@@ -89,7 +89,6 @@ class Require {
   }
 }
 
-
 class ClassListItem {
   constructor(graph, context) {
     this.id = graph['@id'];
@@ -197,53 +196,20 @@ class Property {
   }
 }
 
-function predicateTypeAsEntityType(type) {
-  return type === 'owl:DatatypeProperty' ? 'attribute' : 'association';
-}
-
-class PredicateListItem {
+class AbstractPredicate {
   constructor(graph, context) {
-    this.id = graph['@id'];
+    function predicateTypeAsEntityType(type) {
+      return type === 'owl:DatatypeProperty' ? 'attribute' : 'association';
+    }
+    this.graph = graph;
+    this.context = context;
     this.type = predicateTypeAsEntityType(graph['@type']);
     this.label = graph.label;
     this.comment = graph.comment;
-    this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
-  }
-
-  isAssociation() {
-    return this.type === 'association';
-  }
-
-  isAttribute() {
-    return this.type === 'attribute';
-  }
-}
-
-class Predicate {
-  constructor(graph, context) {
-    this.graph = graph;
-    this.context = context;
-    this.idName = graph['@id'];
-    this.modelId = graph.isDefinedBy;
-    this.label = graph.label;
-    this.comment = graph.comment;
-    this.range = graph.range;
-  }
-
-  get id() {
-    return withPrefixExpanded(this.context, this.idName);
   }
 
   get owlType() {
     return this.graph['@type'];
-  }
-
-  get type() {
-    return predicateTypeAsEntityType(this.owlType);
-  }
-
-  glyphIconClass() {
-    return utils.glyphIconClassForType(this.type);
   }
 
   isEqual(other) {
@@ -264,6 +230,31 @@ class Predicate {
 
   isAttribute() {
     return this.type === 'attribute';
+  }
+
+  glyphIconClass() {
+    return utils.glyphIconClassForType(this.type);
+  }
+}
+
+class PredicateListItem extends AbstractPredicate {
+  constructor(graph, context) {
+    super(graph, context);
+    this.id = graph['@id'];
+    this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
+  }
+}
+
+class Predicate extends AbstractPredicate {
+  constructor(graph, context) {
+    super(graph, context);
+    this.idName = graph['@id'];
+    this.modelId = graph.isDefinedBy;
+    this.range = graph.range;
+  }
+
+  get id() {
+    return withPrefixExpanded(this.context, this.idName);
   }
 
   serialize() {
