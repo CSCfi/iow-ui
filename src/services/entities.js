@@ -54,15 +54,6 @@ class Model {
     _.remove(this.references, reference);
   }
 
-  clone() {
-    const model = new Model(this.graph, this.context);
-    _.extend(model.label, this.label);
-    _.extend(model.comment, this.comment);
-    _.extend(model.references, this.references.slice());
-    _.extend(model.requires, this.requires.slice());
-    return model;
-  }
-
   serialize() {
     return {
       '@context': this.context, '@graph': _.extend(this.graph,
@@ -153,16 +144,6 @@ class Class {
     return false;
   }
 
-  clone() {
-    const klass = new Class(this.graph, this.context);
-    _.extend(klass.idName, this.idName);
-    _.extend(klass.label, this.label);
-    _.extend(klass.comment, this.comment);
-    _.extend(klass.subClassOf, this.subClassOf);
-    _.extend(klass.properties, _.map(this.properties, property => property.clone()));
-    return klass;
-  }
-
   serialize() {
     return {
       '@context': this.context, '@graph': _.extend(this.graph,
@@ -201,17 +182,6 @@ class Property {
 
   glyphIconClass() {
     return utils.glyphIconClassForType(this.dataType ? 'attribute' : this.valueClass ? 'association' : null);
-  }
-
-  clone() {
-    const property = new Property(this.graph, this.context);
-    _.extend(property.label, this.label);
-    _.extend(property.comment, this.comment);
-    _.extend(property.example, this.example);
-    _.extend(property.datatype, this.dataType);
-    _.extend(property.valueClass, this.valueClass);
-    _.extend(property.predicate, this.predicateIdName);
-    return property;
   }
 
   serialize() {
@@ -294,15 +264,6 @@ class Predicate {
 
   isAttribute() {
     return this.type === 'attribute';
-  }
-
-  clone() {
-    const predicate = new Predicate(this.graph, this.context);
-    predicate.idName = this.idName;
-    predicate.label = this.label;
-    predicate.comment = this.comment;
-    predicate.range = this.range;
-    return predicate;
   }
 
   serialize() {

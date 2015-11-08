@@ -1,3 +1,5 @@
+const utils = require('../../services/utils');
+
 module.exports = function selectionView($log) {
   'ngInject';
   return {
@@ -37,7 +39,7 @@ module.exports = function selectionView($log) {
 
       function select(selection, isUnsaved) {
         vm.selection = selection;
-        vm.selectionInEdit = selection.clone();
+        vm.selectionInEdit = utils.clone(selection);
 
         unsaved = isUnsaved;
         if (unsaved) {
@@ -57,7 +59,7 @@ module.exports = function selectionView($log) {
             : predicateService.updatePredicate(vm.selectionInEdit, vm.selection.id))
         .then(() => {
           unsaved = false;
-          vm.selection = vm.selectionInEdit.clone();
+          vm.selection = utils.clone(vm.selectionInEdit);
           $scope.modelController.reload();
         });
       }
@@ -75,7 +77,7 @@ module.exports = function selectionView($log) {
       }
 
       function reset() {
-        select(unsaved ? null : vm.selection.clone());
+        select(unsaved ? null : utils.clone(vm.selection));
         $scope.modelController.reload();
       }
 

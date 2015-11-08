@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const utils = require('../../services/utils');
 
 module.exports = function classView($log) {
   'ngInject';
@@ -20,7 +21,7 @@ module.exports = function classView($log) {
 
       const vm = this;
 
-      vm.modelInEdit = vm.model.clone();
+      vm.modelInEdit = utils.clone(vm.model);
 
       function isEditing() {
         return $scope.formController.visible();
@@ -48,11 +49,11 @@ module.exports = function classView($log) {
         $log.info(JSON.stringify(vm.modelInEdit.serialize(), null, 2));
         return modelService.updateModel(vm.modelInEdit)
         .then(() => {
-          vm.model = vm.modelInEdit.clone();
+          vm.model = utils.clone(vm.modelInEdit);
         });
       };
       vm.reset = () => {
-        vm.modelInEdit = vm.model.clone();
+        vm.modelInEdit = utils.clone(vm.model);
       };
     }
   };
