@@ -20,7 +20,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchConceptController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, references, addConceptModal) {
+function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, gettextCatalog, defineConceptTitle, references, addConceptModal, conceptService) {
   'ngInject';
 
   const vm = this;
@@ -120,8 +120,13 @@ function SearchConceptController($scope, $uibModalInstance, modelLanguage, gette
 
   vm.addConcept = (conceptLabel, referenceId) => {
     addConceptModal.open(defineConceptTitle, conceptLabel).result
+      .then(result => $q.all(
+        {
+          label: result.label,
+          conceptId: conceptService.createConceptSuggestion(referenceId, result.concept.label, result.concept.comment)
+        }))
       .then(result => {
-        console.log(result);
+        $uibModalInstance.close(result);
       });
   };
 }
