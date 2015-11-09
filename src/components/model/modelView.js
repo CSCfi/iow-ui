@@ -16,7 +16,7 @@ module.exports = function classView($log) {
       $scope.modelController = modelController;
       $scope.formController = element.find('editable-form').controller('editableForm');
     },
-    controller($scope, userService, searchSchemeModal, modelService) {
+    controller($scope, userService, searchSchemeModal, modelService, modelLanguage) {
       'ngInject';
 
       const vm = this;
@@ -37,9 +37,10 @@ module.exports = function classView($log) {
         return isEditing() && userService.isLoggedIn();
       };
       vm.addReference = () => {
+        const language = modelLanguage.getLanguage();
         const vocabularyMap = _.indexBy(vm.modelInEdit.references, (reference) => reference.vocabularyId);
-        searchSchemeModal.open(vocabularyMap).result
-          .then(scheme => modelService.newReference(scheme))
+        searchSchemeModal.open(vocabularyMap, language).result
+          .then(scheme => modelService.newReference(scheme, language))
           .then(reference => vm.modelInEdit.addReference(reference));
       };
       vm.removeReference = (reference) => {

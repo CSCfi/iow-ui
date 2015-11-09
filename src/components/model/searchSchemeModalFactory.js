@@ -4,21 +4,22 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(excludedSchemeMap = {}) {
+    open(excludedSchemeMap = {}, language) {
       return $uibModal.open({
         template: require('./searchSchemeModal.html'),
         size: 'medium',
         controller: SearchSchemeController,
         controllerAs: 'ctrl',
         resolve: {
-          excludedSchemeMap: () => excludedSchemeMap
+          excludedSchemeMap: () => excludedSchemeMap,
+          language: () => language
         }
       });
     }
   };
 };
 
-function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptService, modelLanguage) {
+function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptService, language) {
   'ngInject';
 
   const vm = this;
@@ -28,7 +29,7 @@ function SearchSchemeController($uibModalInstance, excludedSchemeMap, conceptSer
   vm.selectedScheme = null;
   vm.searchText = '';
 
-  conceptService.getAllSchemes(modelLanguage.getLanguage()).then(result => {
+  conceptService.getAllSchemes(language).then(result => {
     schemes = _.reject(result.data.vocabularies, scheme => excludedSchemeMap[scheme.id]);
   });
 

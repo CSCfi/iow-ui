@@ -24,13 +24,13 @@ module.exports = function modelService($http, $q, entities, modelLanguage) {
         }
       });
     },
-    newReference(scheme) {
+    newReference(scheme, lang) {
       return $q.when({
         '@id': `http://www.finto.fi/${scheme.id}`,
         '@type': 'skos:ConceptScheme',
         'dct:identifier': scheme.id,
         'title': {
-          [modelLanguage.getLanguage()]: scheme.title
+          [lang]: scheme.title
         }
       })
       .then(reference => entities.deserializeReference(reference));
