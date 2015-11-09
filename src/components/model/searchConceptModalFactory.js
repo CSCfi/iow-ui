@@ -68,7 +68,7 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     });
   }
 
-  function createDataset(reference) {
+  function createDataSet(reference) {
     const vocId = reference.vocabularyId;
     const label = modelLanguage.translate(reference.title);
 
@@ -84,7 +84,7 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     };
   }
 
-  vm.datasets = _.map(references, reference => createDataset(reference));
+  vm.datasets = _.map(references, reference => createDataSet(reference));
 
   vm.create = () => {
     $uibModalInstance.close({conceptId: vm.concept.uri, label: vm.label});
