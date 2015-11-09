@@ -28,7 +28,12 @@ angular.module('iow-ui', [
     .when('/groups', {
       template: require('./components/group/group.html'),
       controller: 'groupController',
-      controllerAs: 'ctrl'
+      controllerAs: 'ctrl',
+      resolve: {
+        groupId($route) {
+          return $route.current.params.urn;
+        }
+      }
     })
     .when('/models', {
       template: require('./components/model/model.html'),
@@ -36,7 +41,11 @@ angular.module('iow-ui', [
       controllerAs: 'ctrl',
       reloadOnSearch: false,
       resolve: {
-        modelId($route) {
+        newModel($route) {
+          const params = $route.current.params;
+          return {label: params.label, prefix: params.prefix, groupId: params.group};
+        },
+        existingModelId($route) {
           return $route.current.params.urn;
         },
         selected($route) {

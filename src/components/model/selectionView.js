@@ -65,10 +65,11 @@ module.exports = function selectionView($log) {
       }
 
       function remove() {
+        const modelId = $scope.modelController.getModel().id;
         deleteConfirmModal.open().result.then(() => {
           return vm.selection.isClass()
-            ? classService.deleteClass(vm.selection.id, $scope.modelController.modelId)
-            : predicateService.deletePredicate(vm.selection.id, $scope.modelController.modelId);
+            ? classService.deleteClass(vm.selection.id, modelId)
+            : predicateService.deletePredicate(vm.selection.id, modelId);
         })
         .then(() => {
           select(null);
@@ -86,7 +87,7 @@ module.exports = function selectionView($log) {
       }
 
       function canEdit() {
-        return !isEditing() && userService.isLoggedIn() && vm.selection && vm.selection.modelId === $scope.modelController.modelId;
+        return !isEditing() && userService.isLoggedIn() && vm.selection && vm.selection.modelId === $scope.modelController.getModel().id;
       }
 
       function canRemove() {
@@ -106,7 +107,7 @@ module.exports = function selectionView($log) {
       }
 
       function addProperty() {
-        searchPredicateModal.openWithPredicationCreation($scope.modelController.model).result.then(createPropertyByPredicateId);
+        searchPredicateModal.openWithPredicationCreation($scope.modelController.getModel()).result.then(createPropertyByPredicateId);
       }
 
       function createPropertyByPredicateId(predicateId) {

@@ -1,24 +1,22 @@
 const _ = require('lodash');
 const utils = require('../../services/utils');
 
-module.exports = function modelController($log, $q, $uibModal, $location, modelId, selected, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
+module.exports = function modelController($log, $q, $uibModal, $location, newModel, existingModelId, selected, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
   'ngInject';
 
   const vm = this;
   let selectionView;
-
-  fetchAll().then(() => vm.loading = false);
+  let modelView;
 
   vm.loading = true;
-  vm.modelId = modelId;
+  vm.modelSaved = true;
   vm.activeTab = selected ? {[selected.type]: true} : {class: true};
+  vm.modelCreated = modelCreated;
+  vm.isModelSaved = isModelSaved;
   vm.reload = reload;
-  vm.registerSelectionView = (view) => {
-    selectionView = view;
-    if (selected) {
-      selectByTypeAndId(selected.type, selected.id);
-    }
-  };
+  vm.registerModelView = initialize;
+  vm.registerSelectionView = registerSelectionView;
+  vm.getModel = getModel;
   vm.select = select;
   vm.isSelected = isSelected;
   vm.canEdit = userService.isLoggedIn;
@@ -28,6 +26,48 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   vm.associations = () => _.filter(vm.predicates, predicate => predicate.isAssociation());
   vm.attributes = () => _.filter(vm.predicates, predicate => predicate.isAttribute());
 
+  function initialize(view) {
+    modelView = view;
+    if (existingModelId) {
+      $q.all({model: modelService.getModelByUrn(existingModelId), selectable: fetchSelectable(existingModelId)}).then(result => {
+        modelView.select(result.model, false);
+        vm.loading = false;
+      });
+    } else if (newModel) {
+      modelService.newModel(newModel.prefix, newModel.label, modelLanguage.getLanguage()).then(model => {
+        modelView.select(model, true, newModel.groupId);
+        vm.loading = false;
+      });
+    } else {
+      throw new Error('no existing selection or new model');
+    }
+  }
+
+  function modelCreated(model) {
+    if (model) {
+      fetchSelectable(model.id);
+      $location.search({urn: model.id});
+    } else {
+      $location.path('/groups');
+      $location.search({urn: newModel.groupId});
+    }
+  }
+
+  function registerSelectionView(view) {
+    selectionView = view;
+    if (selected) {
+      selectByTypeAndId(selected.type, selected.id);
+    }
+  }
+
+  function isModelSaved() {
+    return modelView && !modelView.unsaved;
+  }
+
+  function getModel() {
+    return modelView && modelView.model;
+  }
+
   function isSelected(listItem) {
     const selection = selectionView.selection;
     if (selection) {
@@ -36,21 +76,24 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function setLocationForSelection(selection) {
-    if (selection) {
-      $location.search({urn: modelId, [selection.type]: selection.id});
-    } else {
-      $location.search({urn: modelId});
+    const model = getModel();
+    if (model) {
+      if (selection) {
+        $location.search({urn: model.id, [selection.type]: selection.id});
+      } else {
+        $location.search({urn: model.id});
+      }
     }
   }
 
   function reload() {
-    fetchAll();
+    fetchSelectable(getModel().id);
     setLocationForSelection(selectionView.selection);
   }
 
   function addClass() {
     const classMap = _.indexBy(vm.classes, klass => klass.id);
-    searchClassModal.open(vm.model.references, classMap).result
+    searchClassModal.open(getModel().references, classMap).result
       .then(result => {
         if (typeof result === 'object') {
           createClass(result);
@@ -61,21 +104,22 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createClass(conceptData) {
-    classService.newClass(vm.model.context, modelId, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
+    classService.newClass(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
       .then(klass => updateSelectionView(klass, true));
   }
 
   function assignClassToModel(classId) {
+    const modelId = getModel().id;
     classService.assignClassToModel(classId, modelId)
       .then(() => {
         selectByTypeAndId('class', classId);
-        fetchClasses();
+        fetchClasses(modelId);
       });
   }
 
   function addPredicate(type) {
     const predicateMap = _.indexBy(vm.predicates, (predicate) => predicate.id);
-    searchPredicateModal.open(vm.model.references, type, predicateMap).result
+    searchPredicateModal.open(getModel().references, type, predicateMap).result
       .then(result => {
         if (typeof result === 'object') {
           createPredicate(result);
@@ -86,15 +130,16 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
   }
 
   function createPredicate(conceptData) {
-    predicateService.newPredicate(vm.model.context, modelId, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
+    predicateService.newPredicate(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
       .then(predicate => updateSelectionView(predicate, true));
   }
 
   function assignPredicateToModel(predicateId, type) {
+    const modelId = getModel().id;
     predicateService.assignPredicateToModel(predicateId, modelId)
       .then(() => {
         selectByTypeAndId(type, predicateId);
-        fetchPredicates();
+        fetchPredicates(modelId);
       });
   }
 
@@ -136,19 +181,11 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     }
   }
 
-  function fetchAll() {
-    return $q.all([fetchModel(), fetchClasses(), fetchPredicates()]);
+  function fetchSelectable(modelId) {
+    return $q.all([fetchClasses(modelId), fetchPredicates(modelId)]);
   }
 
-  function fetchModel() {
-    return modelService.getModelByUrn(modelId).then(model => {
-      vm.model = model;
-    }, err => {
-      $log.error(err);
-    });
-  }
-
-  function fetchClasses() {
+  function fetchClasses(modelId) {
     return classService.getClassesForModel(modelId).then(classes => {
       vm.classes = classes;
     }, err => {
@@ -156,7 +193,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, modelI
     });
   }
 
-  function fetchPredicates() {
+  function fetchPredicates(modelId) {
     return predicateService.getPredicatesForModel(modelId).then(predicates => {
       vm.predicates = predicates;
     }, err => {

@@ -1,12 +1,13 @@
-<div class="top">
-  <div ng-show="isLoggedIn() && notInGroup()" class="top-actions">
-    <a class="btn btn-default" href="{{group.id+'_MEMBERS'}}" target="_blank" translate>Ask for group rights</a>
+<div class="top" ng-hide="ctrl.loading">
+  <div class="top-actions">
+    <button type="button" class="btn btn-default" ng-click="ctrl.addModel()" ng-if="ctrl.canAddModel()" translate>Add model</button>
+    <a class="btn btn-default" ng-show="ctrl.canAskForRights()" href="{{ctrl.group.id+'_MEMBERS'}}" target="_blank" translate>Ask for group rights</a>
   </div>
 
-  <h2>{{group | translateLabel}}</h2>
+  <h2>{{ctrl.group | translateLabel}}</h2>
 
   <ul>
-    <li ng-repeat="model in models">
+    <li ng-repeat="model in ctrl.models">
       <a href="#/models/?urn={{model.id | urlencode}}">{{model | translateLabel}}</a>
     </li>
   </ul>

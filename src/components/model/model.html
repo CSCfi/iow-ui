@@ -1,10 +1,10 @@
-<div ng-if="!ctrl.loading">
+<div ng-hide="ctrl.loading">
 
   <div class="top">
-    <model-view model="ctrl.model"></model-view>
+    <model-view></model-view>
   </div>
 
-  <div class="bottom">
+  <div class="bottom" ng-if="ctrl.isModelSaved()">
     <div class="model-panel--left" float="model-panel--left-placeholder">
       <uib-tabset>
 

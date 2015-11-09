@@ -32,14 +32,11 @@ class Model {
   constructor(graph, context) {
     this.graph = graph;
     this.context = context;
+    this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
     this.references = mapAsEntity(context, graph.references, Reference, true);
     this.requires = mapAsEntity(context, graph.requires, Require, true);
-  }
-
-  get id() {
-    return withPrefixExpanded(this.context, this.graph['@id']);
   }
 
   get type() {
