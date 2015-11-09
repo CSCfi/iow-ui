@@ -20,7 +20,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchConceptController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, references) {
+function SearchConceptController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, references, addConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -77,17 +77,30 @@ function SearchConceptController($scope, $uibModalInstance, modelLanguage, gette
   }
 
   function createDataSet(reference) {
-    const vocId = reference.vocabularyId;
-    const label = modelLanguage.translate(reference.title);
-
     return {
       display: 'prefLabel',
-      name: vocId,
-      source: createEngine(vocId),
+      name: reference.vocabularyId,
+      source: createEngine(reference.vocabularyId),
       limit: limit,
       templates: {
-        empty: (search) => `<div class="empty-message">'${search.query}' ${gettextCatalog.getString('not found in the concept database')} ${label}</div>`,
-        suggestion: (data) => `<div>${data.prefLabel} <p class="details">${data.uri}</p></div>`
+        empty: (search) =>
+          `
+          <div class="empty-message">
+            '${search.query}' ${gettextCatalog.getString('not found in the concept database')} ${modelLanguage.translate(reference.title)}
+              <p>
+                <a onClick="angular.element(jQuery('#conceptForm').parents('[uib-modal-window]')).scope().ctrl.addConcept('${search.query}', '${reference.id}')">
+                  + ${gettextCatalog.getString('suggest')} '${search.query}' ${gettextCatalog.getString('and create new')}
+                </a>
+              </p>
+          </div>
+          `,
+        suggestion: (data) =>
+          `
+          <div>
+            ${data.prefLabel}
+            <p class="details">${data.uri}</p>
+          </div>
+          `
       }
     };
   }
@@ -103,5 +116,12 @@ function SearchConceptController($scope, $uibModalInstance, modelLanguage, gette
 
   vm.cancel = () => {
     $uibModalInstance.dismiss();
+  };
+
+  vm.addConcept = (conceptLabel, referenceId) => {
+    addConceptModal.open(defineConceptTitle, conceptLabel).result
+      .then(result => {
+        console.log(result);
+      });
   };
 }

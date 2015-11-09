@@ -42,6 +42,11 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
+#: components/model/searchConceptModalFactory.js:89
+#: translations/misc.html:9
+msgid "and create new"
+msgstr ""
+
 #: components/modal/editInProgressModal.html:9
 msgid "Are you sure that you want to cancel edit?"
 msgstr ""
@@ -69,6 +74,7 @@ msgstr ""
 #: components/group/addModelModal.html:25
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
+#: components/model/addConceptModal.html:30
 #: components/model/searchClassModal.html:59
 #: components/model/searchConceptModal.html:40
 #: components/model/searchPredicateModal.html:74
@@ -88,6 +94,7 @@ msgstr ""
 msgid "Classes"
 msgstr ""
 
+#: components/model/addConceptModal.html:16
 #: components/model/classForm.html:5
 #: components/model/modelView.html:17
 #: components/model/predicateForm.html:5
@@ -95,6 +102,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
+#: components/model/addConceptModal.html:11
 #: components/model/searchConceptModal.html:21
 msgid "Concept"
 msgstr ""
@@ -112,6 +120,7 @@ msgid "Create and use predicate"
 msgstr ""
 
 #: components/group/addModelModal.html:26
+#: components/model/addConceptModal.html:31
 #: components/model/searchConceptModal.html:41
 msgid "Create new"
 msgstr ""
@@ -197,6 +206,7 @@ msgid "Is defined by"
 msgstr ""
 
 #: components/group/addModelModal.html:16
+#: components/model/addConceptModal.html:21
 #: components/model/classForm.html:2
 #: components/model/modelView.html:13
 #: components/model/predicateForm.html:2
@@ -223,7 +233,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:89
+#: components/model/searchConceptModalFactory.js:100
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -310,6 +320,11 @@ msgstr ""
 
 #: components/model/searchSchemeModal.html:3
 msgid "Search schemes"
+msgstr ""
+
+#: components/model/searchConceptModalFactory.js:88
+#: translations/misc.html:8
+msgid "suggest"
 msgstr ""
 
 #: components/model/classForm.html:7
