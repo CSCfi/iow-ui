@@ -29,6 +29,10 @@ msgstr ""
 msgid "All models"
 msgstr ""
 
+#: components/model/searchConceptModal.html:15
+msgid "All references"
+msgstr ""
+
 #: components/model/searchPredicateModal.html:47
 msgid "All types"
 msgstr ""
@@ -60,7 +64,7 @@ msgstr ""
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
 #: components/model/searchClassModal.html:59
-#: components/model/searchConceptModal.html:30
+#: components/model/searchConceptModal.html:40
 #: components/model/searchPredicateModal.html:74
 #: components/model/searchSchemeModal.html:32
 msgid "Cancel"
@@ -85,11 +89,11 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: components/model/searchConceptModal.html:11
+#: components/model/searchConceptModal.html:21
 msgid "Concept"
 msgstr ""
 
-#: components/model/searchConceptModal.html:26
+#: components/model/searchConceptModal.html:36
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
 
@@ -101,7 +105,7 @@ msgstr ""
 msgid "Create and use predicate"
 msgstr ""
 
-#: components/model/searchConceptModal.html:31
+#: components/model/searchConceptModal.html:41
 msgid "Create new"
 msgstr ""
 
@@ -188,7 +192,7 @@ msgstr ""
 #: components/model/classForm.html:2
 #: components/model/modelView.html:13
 #: components/model/predicateForm.html:2
-#: components/model/searchConceptModal.html:17
+#: components/model/searchConceptModal.html:27
 msgid "Label"
 msgstr ""
 
@@ -211,7 +215,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:81
+#: components/model/searchConceptModalFactory.js:89
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -238,6 +242,10 @@ msgstr ""
 
 #: translations/attribute.html:5
 msgid "rdf:langString"
+msgstr ""
+
+#: components/model/searchConceptModal.html:11
+msgid "Reference"
 msgstr ""
 
 #: components/model/referencesView.html:1
@@ -268,7 +276,7 @@ msgstr ""
 msgid "Search classes"
 msgstr ""
 
-#: components/model/searchConceptModal.html:13
+#: components/model/searchConceptModal.html:23
 msgid "Search from concept database"
 msgstr ""
 

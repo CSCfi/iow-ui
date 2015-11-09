@@ -25,7 +25,7 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
 
   const vm = this;
 
-  vm.hasVocabularies = references.length > 0;
+  vm.references = references;
   vm.concept = null;
   vm.label = null;
   vm.defineConceptTitle = defineConceptTitle;
@@ -55,9 +55,10 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
   }
 
   function createEngine(vocId) {
-    return new Bloodhound({
+    const engine = new Bloodhound({
       identify: identify,
       remote: {
+        cache: false,
         url: `/api/rest/conceptSearch?term=%QUERY&lang=${modelLanguage.getLanguage()}&vocid=${vocId}`,
         wildcard: '%QUERY',
         transform: (response) => _.uniq(limitResults(response.results), identify)
@@ -66,6 +67,13 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       datumTokenizer: Bloodhound.tokenizers.whitespace
     });
+
+    engine.clear();
+    engine.clearPrefetchCache();
+    engine.clearRemoteCache();
+    engine.initialize(true);
+
+    return engine;
   }
 
   function createDataSet(reference) {
@@ -84,7 +92,10 @@ function SearchClassController($scope, $uibModalInstance, modelLanguage, gettext
     };
   }
 
-  vm.datasets = _.map(references, reference => createDataSet(reference));
+  $scope.$watch('ctrl.vocabularyId', vocabularyId => {
+    const searchReferences = vocabularyId ? [_.findWhere(references, {vocabularyId})] : references;
+    vm.datasets = _.map(searchReferences, reference => createDataSet(reference));
+  });
 
   vm.create = () => {
     $uibModalInstance.close({conceptId: vm.concept.uri, label: vm.label});
