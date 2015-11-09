@@ -28,13 +28,13 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, $timeout, references, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
   'ngInject';
 
   const vm = this;
   let predicates;
 
-  $timeout(() => {
+  $uibModalInstance.rendered.then(() => {
     $scope.editableFormController = angular.element(jQuery('#predicate-search-form')).controller('editableForm');
   });
 
