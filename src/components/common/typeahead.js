@@ -45,17 +45,31 @@ module.exports = function directive($timeout) {
     require: '?ngModel',
     link($scope, element, attributes, ngModel) {
       const options = $scope.options || {};
-      const datasets = normalizeAsArray($scope.datasets);
 
-      function isNotEditable() {
-        return options.editable === false;
-      }
-
-      element.typeahead(options, datasets);
+      let initialized = false;
 
       // FIXME: hack, fixes bug in typeahead.js
       if (attributes.autofocus) {
         focus(element);
+      }
+
+      $scope.$watch('datasets', datasets => {
+        if (datasets) {
+          if (initialized) {
+            destroy();
+          }
+          initialize(normalizeAsArray(datasets));
+        }
+      });
+
+      $scope.$on('$destroy', () => {
+        if (initialized) {
+          destroy();
+        }
+      });
+
+      function isNotEditable() {
+        return options.editable === false;
       }
 
       function updateModel(event, suggestion) {
@@ -69,25 +83,35 @@ module.exports = function directive($timeout) {
         });
       }
 
-      if (ngModel) {
-        element.bind('typeahead:selected', updateModel);
-        element.bind('typeahead:autocompleted', updateModel);
+      function initialize(datasets) {
+        element.typeahead(options, datasets);
 
-        if (isNotEditable()) {
-          disableModelChangeEvents(ngModel);
+        if (ngModel) {
+          element.bind('typeahead:selected', updateModel);
+          element.bind('typeahead:autocompleted', updateModel);
 
-          element.bind('typeahead:render', (event, suggestions) => {
-            updateModel(event, single(suggestions));
-          });
-          element.bind('keyup', (event) => {
-            if (elementValue(event) < options.minLength) {
-              updateModel(event, null);
-            }
-          });
+          if (isNotEditable()) {
+            disableModelChangeEvents(ngModel);
+
+            element.bind('typeahead:render', (event, suggestions) => {
+              updateModel(event, single(suggestions));
+            });
+            element.bind('keyup', (event) => {
+              if (elementValue(event) < options.minLength) {
+                updateModel(event, null);
+              }
+            });
+          }
         }
+
+        initialized = true;
       }
 
-      $scope.$on('$destroy', () => element.typeahead('destroy'));
+      function destroy() {
+        element.unbind('keyup');
+        element.typeahead('destroy');
+        initialized = false;
+      }
     }
   };
 };
