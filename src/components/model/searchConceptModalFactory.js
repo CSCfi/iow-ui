@@ -9,7 +9,7 @@ module.exports = function modalFactory($uibModal) {
       return $uibModal.open({
         template: require('./searchConceptModal.html'),
         size: 'small',
-        controller: SearchClassController,
+        controller: SearchConceptController,
         controllerAs: 'ctrl',
         resolve: {
           defineConceptTitle: () => defineConceptTitle,
@@ -20,7 +20,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, references) {
+function SearchConceptController($scope, $uibModalInstance, modelLanguage, gettextCatalog, defineConceptTitle, references) {
   'ngInject';
 
   const vm = this;
