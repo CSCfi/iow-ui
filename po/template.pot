@@ -42,7 +42,7 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:89
+#: components/model/searchConceptModalFactory.js:92
 #: translations/misc.html:9
 msgid "and create new"
 msgstr ""
@@ -74,7 +74,7 @@ msgstr ""
 #: components/group/addModelModal.html:25
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
-#: components/model/addConceptModal.html:30
+#: components/model/addConceptModal.html:31
 #: components/model/searchClassModal.html:59
 #: components/model/searchConceptModal.html:40
 #: components/model/searchPredicateModal.html:74
@@ -107,6 +107,10 @@ msgstr ""
 msgid "Concept"
 msgstr ""
 
+#: components/model/addConceptModal.html:26
+msgid "Concept is suggested to scheme"
+msgstr ""
+
 #: components/model/searchConceptModal.html:36
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
@@ -120,7 +124,7 @@ msgid "Create and use predicate"
 msgstr ""
 
 #: components/group/addModelModal.html:26
-#: components/model/addConceptModal.html:31
+#: components/model/addConceptModal.html:32
 #: components/model/searchConceptModal.html:41
 msgid "Create new"
 msgstr ""
@@ -233,7 +237,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:100
+#: components/model/searchConceptModalFactory.js:89
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -322,7 +326,7 @@ msgstr ""
 msgid "Search schemes"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:88
+#: components/model/searchConceptModalFactory.js:92
 #: translations/misc.html:8
 msgid "suggest"
 msgstr ""

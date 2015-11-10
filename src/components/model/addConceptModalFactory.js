@@ -4,7 +4,7 @@ module.exports = function modalFactory($uibModal) {
   'ngInject';
 
   return {
-    open(defineConceptTitle, conceptLabel) {
+    open(defineConceptTitle, conceptLabel, reference) {
       return $uibModal.open({
         template: require('./addConceptModal.html'),
         size: 'small',
@@ -12,26 +12,31 @@ module.exports = function modalFactory($uibModal) {
         controllerAs: 'ctrl',
         resolve: {
           defineConceptTitle: () => defineConceptTitle,
-          conceptLabel: () => conceptLabel
+          conceptLabel: () => conceptLabel,
+          reference: () => reference
         }
       });
     }
   };
 };
 
-function AddConceptController($uibModalInstance, defineConceptTitle, conceptLabel) {
+function AddConceptController($scope, $uibModalInstance, defineConceptTitle, conceptLabel, reference) {
   'ngInject';
 
   const vm = this;
   vm.conceptLabel = conceptLabel;
   vm.defineConceptTitle = defineConceptTitle;
+  vm.reference = reference;
+
+  $scope.$watch('ctrl.conceptLabel', label => vm.label = label);
 
   vm.create = () => {
     $uibModalInstance.close(
       {
         concept: {
           label: vm.conceptLabel,
-          comment: vm.conceptComment
+          comment: vm.conceptComment,
+          schemeId: reference.id
         },
         label: vm.label
       }
