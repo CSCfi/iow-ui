@@ -5,7 +5,7 @@ module.exports = function userService($http) {
 
   return {
     updateLogin() {
-      $http.get('/api/rest/loginstatus')
+      return $http.get('/api/rest/loginstatus')
         .then(statusResponse => {
           if (angular.fromJson(statusResponse.data)) {
             return $http.get('/api/rest/user')

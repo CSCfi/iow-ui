@@ -1,3 +1,4 @@
+require('babel-polyfill');
 window.jQuery = require('jquery');
 require('typeahead.js-browserify').loadjQueryPlugin();
 
