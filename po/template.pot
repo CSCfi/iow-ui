@@ -4,15 +4,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: components/model/model.html:46
+#: components/model/model.html:48
 msgid "Add association"
 msgstr ""
 
-#: components/model/model.html:31
+#: components/model/model.html:33
 msgid "Add attribute"
 msgstr ""
 
-#: components/model/model.html:16
+#: components/model/model.html:18
 msgid "Add class"
 msgstr ""
 
@@ -25,12 +25,12 @@ msgstr ""
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:4
+#: components/model/modelView.html:2
 msgid "Add reference"
 msgstr ""
 
 #: components/model/searchClassModal.html:32
-#: components/model/searchPredicateModal.html:38
+#: components/model/searchPredicateModal.html:37
 msgid "All models"
 msgstr ""
 
@@ -38,11 +38,11 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:47
+#: components/model/searchPredicateModal.html:46
 msgid "All types"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:92
+#: components/model/searchConceptModalFactory.js:153
 #: translations/misc.html:10
 msgid "and create new"
 msgstr ""
@@ -59,11 +59,11 @@ msgstr ""
 msgid "Ask for group rights"
 msgstr ""
 
-#: components/model/model.html:43
+#: components/model/model.html:45
 msgid "Associations"
 msgstr ""
 
-#: components/model/model.html:28
+#: components/model/model.html:30
 msgid "Attributes"
 msgstr ""
 
@@ -75,14 +75,15 @@ msgstr ""
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
 #: components/model/addConceptModal.html:31
-#: components/model/searchClassModal.html:59
-#: components/model/searchConceptModal.html:40
-#: components/model/searchPredicateModal.html:74
+#: components/model/searchClassModal.html:57
+#: components/model/searchConceptModal.html:43
+#: components/model/searchPredicateModal.html:78
 #: components/model/searchSchemeModal.html:32
 msgid "Cancel"
 msgstr ""
 
-#: components/form/editableFormButtons.html:2
+#: components/model/modelView.html:5
+#: components/model/selectionView.html:10
 msgid "Cancel edit"
 msgstr ""
 
@@ -90,15 +91,13 @@ msgstr ""
 msgid "Class search info"
 msgstr ""
 
-#: components/model/model.html:13
+#: components/model/model.html:15
 msgid "Classes"
 msgstr ""
 
 #: components/model/addConceptModal.html:16
-#: components/model/classForm.html:5
-#: components/model/modelView.html:17
-#: components/model/predicateForm.html:5
-#: components/model/propertyView.html:8
+#: components/model/propertyPredicateView.html:5
+#: components/model/searchConceptModal.html:27
 msgid "Comment"
 msgstr ""
 
@@ -111,7 +110,7 @@ msgstr ""
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: components/model/searchConceptModal.html:36
+#: components/model/searchConceptModal.html:39
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
 
@@ -119,21 +118,21 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:76
+#: components/model/searchPredicateModal.html:80
 msgid "Create and use predicate"
 msgstr ""
 
 #: components/group/addModelModal.html:26
 #: components/model/addConceptModal.html:32
-#: components/model/searchConceptModal.html:41
+#: components/model/searchConceptModal.html:44
 msgid "Create new"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:19
+#: components/model/searchPredicateModal.html:18
 msgid "Create new association"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:15
+#: components/model/searchPredicateModal.html:14
 msgid "Create new attribute"
 msgstr ""
 
@@ -169,11 +168,7 @@ msgstr ""
 msgid "Delete reference"
 msgstr ""
 
-#: components/model/propertyPredicateView.html:5
-msgid "Description"
-msgstr ""
-
-#: components/model/modelView.html:5
+#: components/model/modelView.html:3
 #: components/model/selectionView.html:8
 msgid "Edit"
 msgstr ""
@@ -186,13 +181,11 @@ msgstr ""
 msgid "eDuuni information"
 msgstr ""
 
-#: components/model/propertyView.html:9
+#: translations/misc.html:11
 msgid "Example"
 msgstr ""
 
-#: components/model/classForm.html:4
-#: components/model/modelView.html:15
-#: components/model/predicateForm.html:4
+#: components/model/modelView.html:18
 msgid "Id"
 msgstr ""
 
@@ -211,10 +204,7 @@ msgstr ""
 
 #: components/group/addModelModal.html:16
 #: components/model/addConceptModal.html:21
-#: components/model/classForm.html:2
-#: components/model/modelView.html:13
-#: components/model/predicateForm.html:2
-#: components/model/searchConceptModal.html:27
+#: components/model/searchConceptModal.html:30
 msgid "Label"
 msgstr ""
 
@@ -233,13 +223,16 @@ msgid "Logout"
 msgstr ""
 
 #: components/model/propertyPredicateView.html:1
-#: components/model/propertyView.html:7
 msgid "Name"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:89
+#: components/model/searchConceptModalFactory.js:150
 #: translations/misc.html:3
 msgid "not found in the concept database"
+msgstr ""
+
+#: components/form/formSelect.html:4
+msgid "Not selected"
 msgstr ""
 
 #: translations/type.html:4
@@ -286,11 +279,14 @@ msgstr ""
 msgid "Requires"
 msgstr ""
 
-#: components/form/editableFormButtons.html:1
+#: components/model/modelView.html:4
+#: components/model/selectionView.html:9
 msgid "Save changes"
 msgstr ""
 
-#: components/form/showSubmitError.html:3
+#: components/model/modelView.html:9
+#: components/model/searchPredicateModal.html:69
+#: components/model/selectionView.html:14
 msgid "Save failed"
 msgstr ""
 
@@ -306,15 +302,15 @@ msgstr ""
 msgid "Search from concept database"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:29
+#: components/model/searchPredicateModal.html:28
 msgid "search predicate"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:23
+#: components/model/searchPredicateModal.html:22
 msgid "Search predicate info"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:5
+#: components/model/searchPredicateModal.html:4
 msgid "Search predicates"
 msgstr ""
 
@@ -326,12 +322,12 @@ msgstr ""
 msgid "Search schemes"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:92
+#: components/model/searchConceptModalFactory.js:153
 #: translations/misc.html:8
 msgid "suggest"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:130
+#: components/model/searchConceptModalFactory.js:133
 #: translations/misc.html:9
 msgid "suggestion"
 msgstr ""
@@ -348,11 +344,11 @@ msgstr ""
 msgid "UI language"
 msgstr ""
 
-#: components/model/searchClassModal.html:60
+#: components/model/searchClassModal.html:58
 msgid "Use class"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:75
+#: components/model/searchPredicateModal.html:79
 msgid "Use predicate"
 msgstr ""
 
@@ -360,8 +356,7 @@ msgstr ""
 msgid "Use scheme"
 msgstr ""
 
-#: components/model/predicateForm.html:7
-#: components/model/propertyView.html:11
+#: translations/misc.html:12
 msgid "Value class"
 msgstr ""
 

@@ -1,5 +1,11 @@
-<div ng-show="inputController.hasContent() || formController.visible()">
-  <div ng-show="!inputController.titleEditOnly || formController.visible()" class="model-view__title">{{inputController.title}}</div>
-  <div editable-text="inputController.plainText" ng-if="inputController.plainText">{{inputController.plainText}}</div>
-  <div editable-text="inputController.content[inputController.getLanguage()]" ng-if="!inputController.plainText">{{inputController.content | translateValue}}</div>
+<div class="editable-wrap">
+  <div ng-show="(hasContent() || formController.editing) && (!titleEditOnly || formController.editing)" class="model-view__title">{{title | translate}}</div>
+  <div ng-if="localized">
+    <input ng-show="formController.editing" type="text" ng-model="ngModel" localized-input class="editable-input form-control" />
+    <span ng-hide="formController.editing">{{ngModel | translateValue}}</span>
+  </div>
+  <div ng-if="!localized">
+    <input ng-show="formController.editing" type="text" ng-model="ngModel" class="editable-input form-control" />
+    <span ng-hide="formController.editing">{{ngModel}}</span>
+  </div>
 </div>

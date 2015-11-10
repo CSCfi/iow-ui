@@ -35,7 +35,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   let predicates;
 
   $uibModalInstance.rendered.then(() => {
-    $scope.editableFormController = angular.element(jQuery('#predicate-search-form')).controller('editableForm');
+    $scope.formController = angular.element(jQuery('#predicate-search-form')).controller('form');
   });
 
   vm.close = $uibModalInstance.dismiss;
@@ -71,7 +71,8 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   };
 
   vm.selectPredicate = (predicate) => {
-    $scope.editableFormController.cancel();
+    $scope.formController.editing = false;
+    $scope.formController.submitError = false;
     predicateService.getPredicate(predicate.id).then(result => vm.selectedPredicate = result);
   };
 
@@ -84,7 +85,8 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   };
 
   vm.createAndUsePredicate = () => {
-    return predicateService.createPredicate(vm.selectedPredicate).then(vm.usePredicate);
+    return predicateService.createPredicate(vm.selectedPredicate)
+      .then(vm.usePredicate, err => vm.submitError = true);
   };
 
   vm.createNew = (selectionOwlType) => {
@@ -96,10 +98,14 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
           predicateService.newPredicate(model.context, model.id, result.label, result.conceptId, selectionOwlType, languageService.getModelLanguage())
             .then(predicate => {
               vm.selectedPredicate = predicate;
-              $scope.editableFormController.show();
+              $scope.formController.editing = true;
             });
         }
       });
+  };
+
+  vm.isEditing = () => {
+    return $scope.formController && $scope.formController.editing;
   };
 
   vm.isAttributeAddable = () => {

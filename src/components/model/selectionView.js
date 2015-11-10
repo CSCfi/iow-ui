@@ -6,22 +6,22 @@ module.exports = function selectionView($log) {
     scope: {},
     restrict: 'E',
     template: require('./selectionView.html'),
-    require: '^ngController',
-    link($scope, element, attributes, modelController) {
-      $scope.modelController = modelController;
-      $scope.formController = element.find('editable-form').controller('editableForm');
-      modelController.registerSelectionView($scope.ctrl);
+    require: ['^ngController', '^form'],
+    link($scope, element, attributes, controllers) {
+      $scope.modelController = controllers[0];
+      $scope.modelController.registerSelectionView($scope.ctrl);
+      $scope.formController = controllers[1];
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, predicateService, languageService, userService, searchPredicateModal, deleteConfirmModal) {
+    controller($scope, classService, predicateService, userService, searchPredicateModal, deleteConfirmModal) {
       'ngInject';
 
       let unsaved = false;
       const vm = this;
 
+      vm.submitError = false;
       vm.update = update;
-      vm.reset = reset;
       vm.removeProperty = removeProperty;
       vm.addProperty = addProperty;
       vm.canAddProperty = canAddProperty;
@@ -30,12 +30,12 @@ module.exports = function selectionView($log) {
       vm.canRemove = canRemove;
       vm.canEdit = canEdit;
       // view contract
-      vm.select = select;
       vm.isEditing = isEditing;
+      vm.select = select;
+      vm.edit = edit;
       vm.cancelEditing = cancelEditing;
 
-      $scope.$watch(languageService.getModelLanguage, cancelEditing);
-      $scope.$watch(userService.isLoggedIn, cancelEditing);
+      $scope.$watch(userService.isLoggedIn, () => cancelEditing(true));
 
       function select(selection, isUnsaved) {
         vm.selection = selection;
@@ -43,7 +43,7 @@ module.exports = function selectionView($log) {
 
         unsaved = isUnsaved;
         if (unsaved) {
-          $scope.formController.show();
+          edit();
         }
       }
 
@@ -61,7 +61,19 @@ module.exports = function selectionView($log) {
           unsaved = false;
           vm.selection = utils.clone(vm.selectionInEdit);
           $scope.modelController.reload();
+          cancelEditing(false);
+        }, err => {
+          $log.error(err);
+          vm.submitError = true;
         });
+      }
+
+      function cancelEditing(shouldReset) {
+        $scope.formController.editing = false;
+        vm.submitError = false;
+        if (shouldReset) {
+          select(unsaved ? null : utils.clone(vm.selection));
+        }
       }
 
       function remove() {
@@ -77,13 +89,12 @@ module.exports = function selectionView($log) {
         });
       }
 
-      function reset() {
-        select(unsaved ? null : utils.clone(vm.selection));
-        $scope.modelController.reload();
+      function edit() {
+        $scope.formController.editing = true;
       }
 
       function isEditing() {
-        return $scope.formController.visible();
+        return $scope.formController.editing;
       }
 
       function canEdit() {
@@ -92,10 +103,6 @@ module.exports = function selectionView($log) {
 
       function canRemove() {
         return userService.isLoggedIn() && !isEditing() && !unsaved;
-      }
-
-      function cancelEditing(shouldReset) {
-        $scope.formController.cancel(shouldReset);
       }
 
       function canAddProperty() {

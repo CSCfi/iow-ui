@@ -4,14 +4,14 @@
     <button ng-show="selectionViewController.canRemoveProperty()" type="button" class="btn btn-default" ng-click="selectionViewController.removeProperty(property)" translate>Delete property</button>
   </div>
 
-  <form-input title="{{'Name' | translate}}" content="property.label"></form-input>
-  <form-text-area title="{{'Comment' | translate}}" content="property.comment"></form-text-area>
-  <form-input title="{{'Example' | translate}}" content="property.example"></form-input>
-  <range-select content="property.datatype" ng-if="predicate.isAttribute()"></range-select>
-  <form-input title="{{'Value class' | translate}}" plain-text="property.valuesClass" ng-if="predicate.isAssociation()"></form-input>
+  <form-input title="Name" localized="true" ng-model="property.label"></form-input>
+  <form-text-area title="Comment" ng-model="property.comment"></form-text-area>
+  <form-input title="Example" localized="true" ng-model="property.example"></form-input>
+  <range-select ng-model="property.datatype" ng-if="predicate.isAttribute()"></range-select>
+  <form-input title="Value class" ng-model="property.valuesClass" ng-if="predicate.isAssociation()"></form-input>
   <uib-accordion>
     <uib-accordion-group is-open="isOpen[property.predicateId]">
-      <uib-accordion-heading>{{property.predicateId}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicateId], 'glyphicon-chevron-right': !isOpen[property.predicateId]}"></span></uib-accordion-heading>
+      <uib-accordion-heading>{{property.predicateIdName}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicateId], 'glyphicon-chevron-right': !isOpen[property.predicateId]}"></span></uib-accordion-heading>
       <property-predicate-view predicate="predicate" ng-if="isOpen[property.predicateId]"></property-predicate-view>
     </uib-accordion-group>
   </uib-accordion>

@@ -1,16 +1,21 @@
-<editable-form on-submit="ctrl.update()" on-reset="ctrl.reset()">
+<form>
   <div ng-if="ctrl.selection">
     <div class="top-actions" float="top-actions-placeholder" top-offset="8">
-      <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-if="ctrl.canAddProperty()" translate>Add property</button>
-      <button type="button" class="btn btn-default" ng-click="ctrl.remove()" ng-if="ctrl.canRemove()">
+      <button type="button" class="btn btn-default" ng-click="ctrl.addProperty()" ng-show="ctrl.canAddProperty()" translate>Add property</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.remove()" ng-show="ctrl.canRemove()">
         {{ctrl.selection.isClass() ? 'Delete class' : 'Delete predicate' | translate}}
       </button>
-      <button type="button" class="btn btn-default" ng-click="formController.show()" ng-show="ctrl.canEdit()" translate>Edit</button>
-      <editable-form-buttons></editable-form-buttons>
-      <show-submit-error></show-submit-error>
+      <button type="button" class="btn btn-default" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
+
+      <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span translate>Save failed</span>
+      </div>
     </div>
 
     <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit"></class-form>
     <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selectionInEdit"></predicate-form>
   </div>
-</editable-form>
+</form>

@@ -1,7 +1,9 @@
 <div ng-hide="ctrl.loading">
 
   <div class="top">
-    <model-view></model-view>
+    <form>
+      <model-view></model-view>
+    </form>
   </div>
 
   <div class="bottom" ng-if="ctrl.isModelSaved()">
@@ -57,8 +59,9 @@
     </div>
 
     <div class="model-panel--right" window-height="min">
-      <selection-view></selection-view>
+      <form>
+        <selection-view></selection-view>
+      </form>
     </div>
   </div>
-
 </div>

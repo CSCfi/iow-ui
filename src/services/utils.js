@@ -1,9 +1,11 @@
 const _ = require('lodash');
 
 function clone(obj) {
-  const cloned = Object.create(Object.getPrototypeOf(obj));
-  _.merge(cloned, obj);
-  return cloned;
+  if (obj) {
+    const cloned = Object.create(Object.getPrototypeOf(obj));
+    _.merge(cloned, obj);
+    return cloned;
+  }
 }
 
 function glyphIconClassForType(type) {

@@ -5,13 +5,11 @@ require('typeahead.js-browserify').loadjQueryPlugin();
 const angular = require('angular');
 
 require('angular-gettext');
-require('./vendor/angular-xeditable-0.1.8/js/xeditable');
 
 angular.module('iow-ui', [
   require('angular-route'),
   require('angular-ui-bootstrap'),
   'gettext',
-  'xeditable',
   require('./components/common'),
   require('./components/filter'),
   require('./components/form'),
@@ -61,18 +59,8 @@ angular.module('iow-ui', [
       }
     });
 })
-.run(function onAppRun($rootScope, $q, editableOptions, languageService, userService, gettextCatalog) {
-  editableOptions.theme = 'bs3';
-
-  const languageChanged = new Promise(resolve => {
-    const deregister = $rootScope.$on('gettextLanguageChanged', () => {
-      resolve();
-      deregister();
-    });
-  });
-
-  $q.all([languageChanged, userService.updateLogin()]).then(() => $rootScope.applicationInitialized = true);
-
+.run(function onAppRun($rootScope, $q, languageService, userService, gettextCatalog) {
+  userService.updateLogin().then(() => $rootScope.applicationInitialized = true);
   gettextCatalog.debug = true;
 })
 .controller('AppCtrl', function mainAppCtrl($scope, $location) {

@@ -10,11 +10,11 @@ module.exports = function classView($log) {
     template: require('./modelView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: '^ngController',
-    link($scope, element, attributes, modelController) {
-      $scope.modelController = modelController;
-      $scope.formController = element.find('editable-form').controller('editableForm');
-      modelController.registerModelView($scope.ctrl);
+    require: ['^ngController', '^form'],
+    link($scope, element, attributes, controllers) {
+      $scope.modelController = controllers[0];
+      $scope.modelController.registerModelView($scope.ctrl);
+      $scope.formController = controllers[1];
     },
     controller($scope, userService, searchSchemeModal, modelService, languageService) {
       'ngInject';
@@ -22,18 +22,20 @@ module.exports = function classView($log) {
       let groupId = null;
       const vm = this;
 
+      vm.submitError = false;
       vm.unsaved = false;
+      vm.isEditing = isEditing;
+      vm.cancelEditing = cancelEditing;
       vm.select = select;
+      vm.edit = edit;
       vm.canEdit = canEdit;
       vm.canAddReference = canAddReference;
       vm.canRemoveReference = canRemoveReference;
       vm.addReference = addReference;
       vm.removeReference = removeReverence;
       vm.update = update;
-      vm.reset = reset;
 
-      $scope.$watch(languageService.getModelLanguage, cancelEditing);
-      $scope.$watch(userService.isLoggedIn, cancelEditing);
+      $scope.$watch(userService.isLoggedIn, () => cancelEditing(true));
 
       function select(model, isUnsaved, creationGroupId) {
         vm.model = model;
@@ -42,12 +44,45 @@ module.exports = function classView($log) {
 
         vm.unsaved = isUnsaved;
         if (vm.unsaved) {
-          $scope.formController.show();
+          edit();
         }
       }
 
+      function update() {
+        $log.info(JSON.stringify(vm.modelInEdit.serialize(), null, 2));
+
+        return (vm.unsaved ? modelService.createModel(vm.modelInEdit, groupId) : modelService.updateModel(vm.modelInEdit))
+          .then(() => {
+            if (vm.unsaved) {
+              $scope.modelController.modelCreated(vm.model);
+            }
+            vm.unsaved = false;
+            vm.model = utils.clone(vm.modelInEdit);
+            cancelEditing(false);
+          }, err => {
+            $log.error(err);
+            vm.submitError = true;
+          });
+      }
+
+      function cancelEditing(shouldReset) {
+        $scope.formController.editing = false;
+        vm.submitError = false;
+        if (shouldReset) {
+          if (vm.unsaved) {
+            $scope.modelController.modelCreated(false);
+          } else {
+            vm.modelInEdit = utils.clone(vm.model);
+          }
+        }
+      }
+
+      function edit() {
+        $scope.formController.editing = true;
+      }
+
       function isEditing() {
-        return $scope.formController.visible();
+        return $scope.formController.editing;
       }
 
       function canEdit() {
@@ -72,31 +107,6 @@ module.exports = function classView($log) {
 
       function removeReverence(reference) {
         vm.modelInEdit.removeReference(reference);
-      }
-
-      function update() {
-        $log.info(JSON.stringify(vm.modelInEdit.serialize(), null, 2));
-
-        return (vm.unsaved ? modelService.createModel(vm.modelInEdit, groupId) : modelService.updateModel(vm.modelInEdit))
-          .then(() => {
-            if (vm.unsaved) {
-              $scope.modelController.modelCreated(vm.model);
-            }
-            vm.unsaved = false;
-            vm.model = utils.clone(vm.modelInEdit);
-          });
-      }
-
-      function reset() {
-        if (vm.unsaved) {
-          $scope.modelController.modelCreated(false);
-        } else {
-          vm.modelInEdit = utils.clone(vm.model);
-        }
-      }
-
-      function cancelEditing(shouldReset) {
-        $scope.formController.cancel(shouldReset);
       }
     }
   };

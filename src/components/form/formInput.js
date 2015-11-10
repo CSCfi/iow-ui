@@ -1,26 +1,21 @@
-module.exports = function formInputDirective($log) {
+module.exports = function formInputDirective() {
   'ngInject';
   return {
     scope: {
+      ngModel: '=',
       title: '@',
-      titleEditOnly: '@',
-      content: '=',
-      plainText: '='
+      localized: '@',
+      titleEditOnly: '@'
     },
     restrict: 'E',
     template: require('./formInput.html'),
-    controllerAs: 'inputController',
-    bindToController: true,
-    require: '^editableForm',
-    link(scope, element, attributes, editableFormController) {
-      scope.formController = editableFormController;
+    require: '^form',
+    link($scope, element, attributes, formController) {
+      $scope.formController = formController;
     },
-    controller(languageService) {
+    controller($scope, languageService) {
       'ngInject';
-
-      const vm = this;
-      vm.getLanguage = languageService.getModelLanguage;
-      vm.hasContent = () => vm.plainText || (vm.content && vm.content[languageService.getModelLanguage()]);
+      $scope.hasContent = () => $scope.localized ? languageService.translate($scope.ngModel) : $scope.ngModel;
     }
   };
 };

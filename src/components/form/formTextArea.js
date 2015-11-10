@@ -1,25 +1,19 @@
-module.exports = function formTextAreaDirective($log) {
+module.exports = function formTextAreaDirective() {
   'ngInject';
   return {
     scope: {
-      title: '@',
-      content: '=',
-      plainText: '='
+      ngModel: '=',
+      title: '@'
     },
     restrict: 'E',
     template: require('./formTextArea.html'),
-    controllerAs: 'inputController',
-    bindToController: true,
-    require: '^editableForm',
-    link(scope, element, attributes, editableFormController) {
-      scope.formController = editableFormController;
+    require: '^form',
+    link($scope, element, attributes, formController) {
+      $scope.formController = formController;
     },
-    controller(languageService) {
+    controller($scope, languageService) {
       'ngInject';
-
-      const vm = this;
-      vm.getLanguage = languageService.getModelLanguage;
-      vm.hasContent = () => vm.plainText || (vm.content && vm.content[languageService.getModelLanguage()]);
+      $scope.hasContent = () => languageService.translate($scope.ngModel);
     }
   };
 };

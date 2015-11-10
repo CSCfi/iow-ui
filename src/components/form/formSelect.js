@@ -3,23 +3,19 @@ module.exports = function classView($log) {
   return {
     scope: {
       title: '@',
-      content: '=',
+      ngModel: '=',
       values: '='
     },
     restrict: 'E',
     template: require('./formSelect.html'),
-    controllerAs: 'inputController',
-    bindToController: true,
-    require: '^editableForm',
-    link(scope, element, attributes, editableFormController) {
-      scope.formController = editableFormController;
+    require: '^form',
+    link($scope, element, attributes, formController) {
+      $scope.formController = formController;
     },
-    controller(gettextCatalog) {
+    controller($scope, gettextCatalog) {
       'ngInject';
-
-      const vm = this;
-
-      vm.displayName = (text) => `${gettextCatalog.getString(text)} (${text})`;
+      $scope.displayName = (text) => text && `${gettextCatalog.getString(text)} (${text})`;
+      $scope.hasContent = () => $scope.ngModel;
     }
   };
 };

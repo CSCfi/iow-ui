@@ -4,7 +4,6 @@
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 @import './vendor/_bootswatch';
 @import './vendor/_typeaheadjs';
-@import './vendor/angular-xeditable-0.1.8/css/xeditable';
 @import 'components/model/model';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -67,10 +66,10 @@
 .editable-wrap {
   width: 100%;
   max-width: 500px;
-}
 
-.editable-textarea textarea {
-  height: 100px;
+  textarea {
+    height: 100px;
+  }
 }
 
 .search-modal {

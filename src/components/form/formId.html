@@ -1,4 +1,5 @@
-<div ng-show="inputController.plainText">
-  <div class="model-view__title">{{inputController.title}}</div>
-  <div editable-text="inputController.id" ng-if="inputController.plainText" onaftersave="inputController.update()">{{inputController.plainText}}</div>
+<div class="editable-wrap">
+  <div class="model-view__title">{{title | translate}}</div>
+  <input ng-show="formController.editing" type="text" ng-model="ngModel" id-input class="editable-input form-control" />
+  <span ng-hide="formController.editing">{{ngModel}}</span>
 </div>

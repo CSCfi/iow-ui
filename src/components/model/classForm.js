@@ -4,8 +4,7 @@ module.exports = function classForm() {
   'ngInject';
   return {
     scope: {
-      class: '=',
-      context: '='
+      class: '='
     },
     restrict: 'E',
     template: require('./classForm.html')

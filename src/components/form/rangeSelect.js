@@ -20,14 +20,14 @@ const attributeValues = [
 ];
 
 
-module.exports = function classView($log) {
+module.exports = function rangeSelect() {
   'ngInject';
   return {
     scope: {
-      content: '='
+      ngModel: '='
     },
     restrict: 'E',
-    template: '<form-select title="{{\'Range\' | translate}}" content="ctrl.content" values="ctrl.values"></form-select>',
+    template: '<form-select title="Range" ng-model="ctrl.ngModel" values="ctrl.values"></form-select>',
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {
