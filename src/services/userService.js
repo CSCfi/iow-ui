@@ -25,6 +25,9 @@ module.exports = function userService($http) {
     isInGroup(group) {
       return loggedInUser && loggedInUser.isPartOf === group;
     },
+    isAdminOfGroup(group) {
+      return loggedInUser && loggedInUser.isAdminOf === group;
+    },
     logout() {
       $http.get('/api/rest/logout')
         .then(() => loggedInUser = null);
