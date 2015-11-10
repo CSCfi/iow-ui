@@ -20,7 +20,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, gettextCatalog, defineConceptTitle, references, addConceptModal, conceptService) {
+function SearchConceptController($scope, $uibModalInstance, $q, languageService, gettextCatalog, defineConceptTitle, references, addConceptModal, conceptService) {
   'ngInject';
 
   const vm = this;
@@ -42,8 +42,8 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
     if (concept.type === 'conceptSuggestion') {
       return {
         id: concept.id,
-        label: modelLanguage.translate(concept.label),
-        comment: modelLanguage.translate(concept.comment)
+        label: languageService.translate(concept.label),
+        comment: languageService.translate(concept.comment)
       };
     } else {
       return {
@@ -80,7 +80,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
       identify: identify,
       remote: {
         cache: false,
-        url: `/api/rest/conceptSearch?term=%QUERY&lang=${modelLanguage.getLanguage()}&vocid=${vocId}`,
+        url: `/api/rest/conceptSearch?term=%QUERY&lang=${languageService.getModelLanguage()}&vocid=${vocId}`,
         wildcard: '%QUERY',
         transform: (response) => _.uniq(limitResults(response.results), identify)
       },
@@ -106,7 +106,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
       });
 
     function suggestionContains(suggestion, query) {
-      return modelLanguage.translate(suggestion.label).toLowerCase().includes(query.toLowerCase());
+      return languageService.translate(suggestion.label).toLowerCase().includes(query.toLowerCase());
     }
 
     function suggestionsContain(query) {
@@ -117,10 +117,10 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
       return _.filter(suggestions, suggestion => suggestionContains(suggestion, query));
     }
 
-    const header = `<h5>${modelLanguage.translate(reference.title)}</h5>`;
+    const header = `<h5>${languageService.translate(reference.title)}</h5>`;
 
     const suggestionDataSet = {
-      display: suggestion => modelLanguage.translate(suggestion.label),
+      display: suggestion => languageService.translate(suggestion.label),
       name: reference.vocabularyId,
       source: (query, syncResults) => syncResults(matchingSuggestions(query)),
       limit: limit,
@@ -130,7 +130,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
         suggestion: (data) =>
           `
           <div>
-            ${modelLanguage.translate(data.label)} (${gettextCatalog.getString('suggestion')})
+            ${languageService.translate(data.label)} (${gettextCatalog.getString('suggestion')})
             <p class="details">${data.schemeId}</p>
           </div>
           `
@@ -182,7 +182,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
       .then(result => $q.all(
         {
           label: result.label,
-          conceptId: conceptService.createConceptSuggestion(Object.assign(result.concept, {lang: modelLanguage.getLanguage()}))
+          conceptId: conceptService.createConceptSuggestion(Object.assign(result.concept, {lang: languageService.getModelLanguage()}))
         }))
       .then(result => {
         $uibModalInstance.close(result);

@@ -1,4 +1,4 @@
-module.exports = function modelService($http, $q, entities, modelLanguage) {
+module.exports = function modelService($http, $q, entities) {
   'ngInject';
   return {
     getModelsByGroup(groupUrn) {

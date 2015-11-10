@@ -1,16 +1,47 @@
-module.exports = function languageService(gettextCatalog, modelLanguage) {
+const _ = require('lodash');
+
+module.exports = function languageService(gettextCatalog) {
   'ngInject';
-  let language;
+
+  const languages = ['fi', 'en'];
+  const defaultLanguage = 'fi';
+
+  let modelLanguage = defaultLanguage;
+
+  setGettextLanguage(defaultLanguage);
+
+  function setGettextLanguage(language) {
+    gettextCatalog.setCurrentLanguage(language);
+    gettextCatalog.loadRemote(`translations/${language}.json`);
+  }
 
   return {
-    setLanguage(code) {
-      language = code;
-      gettextCatalog.setCurrentLanguage(language);
-      gettextCatalog.loadRemote(`translations/${language}.json`);
-      modelLanguage.setLanguage(language);
+    getUiLanguage() {
+      return gettextCatalog.getCurrentLanguage();
     },
-    getLanguage() {
-      return language;
+    setUiLanguage(language) {
+      setGettextLanguage(language);
+    },
+    setModelLanguage(language) {
+      modelLanguage = language;
+    },
+    getModelLanguage() {
+      return modelLanguage;
+    },
+    getAvailableLanguages() {
+      return languages;
+    },
+    translate(data) {
+      function localized(lang) {
+        const localization = data[lang];
+        return typeof localization === 'string' ? localization : null;
+      }
+
+      if (!data) {
+        return '';
+      }
+
+      return localized(modelLanguage) || _.chain(languages).map(localized).find().value() || '';
     }
   };
 };

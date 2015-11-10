@@ -6,10 +6,8 @@ module.exports = function groupListDirective($log) {
     },
     restrict: 'E',
     template: require('./groupList.html'),
-    controller($scope, groupService, modelLanguage) {
+    controller($scope, groupService) {
       'ngInject';
-      $scope.translate = modelLanguage.translate;
-
       groupService.getGroups().then(groups => {
         $scope.groups = groups;
       }, error => $log.error(error));

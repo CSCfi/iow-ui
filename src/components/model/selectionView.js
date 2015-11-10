@@ -14,7 +14,7 @@ module.exports = function selectionView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, predicateService, modelLanguage, userService, searchPredicateModal, deleteConfirmModal) {
+    controller($scope, classService, predicateService, languageService, userService, searchPredicateModal, deleteConfirmModal) {
       'ngInject';
 
       let unsaved = false;
@@ -34,7 +34,7 @@ module.exports = function selectionView($log) {
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
 
-      $scope.$watch(modelLanguage.getLanguage, cancelEditing);
+      $scope.$watch(languageService.getModelLanguage, cancelEditing);
       $scope.$watch(userService.isLoggedIn, cancelEditing);
 
       function select(selection, isUnsaved) {

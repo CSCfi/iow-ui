@@ -16,7 +16,7 @@ module.exports = function classView($log) {
       $scope.formController = element.find('editable-form').controller('editableForm');
       modelController.registerModelView($scope.ctrl);
     },
-    controller($scope, userService, searchSchemeModal, modelService, modelLanguage) {
+    controller($scope, userService, searchSchemeModal, modelService, languageService) {
       'ngInject';
 
       let groupId = null;
@@ -31,6 +31,9 @@ module.exports = function classView($log) {
       vm.removeReference = removeReverence;
       vm.update = update;
       vm.reset = reset;
+
+      $scope.$watch(languageService.getModelLanguage, cancelEditing);
+      $scope.$watch(userService.isLoggedIn, cancelEditing);
 
       function select(model, isUnsaved, creationGroupId) {
         vm.model = model;
@@ -60,7 +63,7 @@ module.exports = function classView($log) {
       }
 
       function addReference() {
-        const language = modelLanguage.getLanguage();
+        const language = languageService.getModelLanguage();
         const vocabularyMap = _.indexBy(vm.modelInEdit.references, (reference) => reference.vocabularyId);
         searchSchemeModal.open(vocabularyMap, language).result
           .then(scheme => modelService.newReference(scheme, language))
@@ -90,6 +93,10 @@ module.exports = function classView($log) {
         } else {
           vm.modelInEdit = utils.clone(vm.model);
         }
+      }
+
+      function cancelEditing(shouldReset) {
+        $scope.formController.cancel(shouldReset);
       }
     }
   };

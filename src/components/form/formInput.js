@@ -15,12 +15,12 @@ module.exports = function formInputDirective($log) {
     link(scope, element, attributes, editableFormController) {
       scope.formController = editableFormController;
     },
-    controller(modelLanguage) {
+    controller(languageService) {
       'ngInject';
 
       const vm = this;
-      vm.getLanguage = modelLanguage.getLanguage;
-      vm.hasContent = () => vm.plainText || (vm.content && vm.content[modelLanguage.getLanguage()]);
+      vm.getLanguage = languageService.getModelLanguage;
+      vm.hasContent = () => vm.plainText || (vm.content && vm.content[languageService.getModelLanguage()]);
     }
   };
 };

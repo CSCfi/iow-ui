@@ -28,7 +28,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, model, predicateService, modelLanguage, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, model, predicateService, languageService, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -93,7 +93,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
         if (!vm.typeSelectable) {
           $uibModalInstance.close(_.extend(result, {type: selectionOwlType}));
         } else {
-          predicateService.newPredicate(model.context, model.id, result.label, result.conceptId, selectionOwlType, modelLanguage.getLanguage())
+          predicateService.newPredicate(model.context, model.id, result.label, result.conceptId, selectionOwlType, languageService.getModelLanguage())
             .then(predicate => {
               vm.selectedPredicate = predicate;
               $scope.editableFormController.show();
@@ -115,7 +115,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   }
 
   function localizedLabelAsLower(predicate) {
-    return modelLanguage.translate(predicate.label).toLowerCase();
+    return languageService.translate(predicate.label).toLowerCase();
   }
 
   function textFilter(predicate) {

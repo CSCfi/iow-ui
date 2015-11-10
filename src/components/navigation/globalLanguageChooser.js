@@ -7,9 +7,12 @@ module.exports = function globalLanguageChooser($log) {
     template: require('./globalLanguageChooser.html'),
     controller($scope, languageService) {
       'ngInject';
-      $scope.currentLanguage = languageService.getLanguage;
-      $scope.setLanguage = languageService.setLanguage;
-      $scope.languages = ['fi', 'en'];
+      $scope.currentLanguage = languageService.getUiLanguage;
+      $scope.setLanguage = language => {
+        languageService.setUiLanguage(language);
+        languageService.setModelLanguage(language);
+      };
+      $scope.languages = languageService.getAvailableLanguages();
     }
   };
 };

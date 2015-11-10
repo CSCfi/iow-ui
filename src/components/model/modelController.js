@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const utils = require('../../services/utils');
 
-module.exports = function modelController($log, $q, $uibModal, $location, newModel, existingModelId, selected, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, editInProgressModal, modelLanguage) {
+module.exports = function modelController($log, $q, $uibModal, $location, newModel, existingModelId, selected, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, editInProgressModal, languageService) {
   'ngInject';
 
   const vm = this;
@@ -34,7 +34,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
         vm.loading = false;
       });
     } else if (newModel) {
-      modelService.newModel(newModel.prefix, newModel.label, modelLanguage.getLanguage()).then(model => {
+      modelService.newModel(newModel.prefix, newModel.label, languageService.getModelLanguage()).then(model => {
         modelView.select(model, true, newModel.groupId);
         vm.loading = false;
       });
@@ -104,7 +104,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
   }
 
   function createClass(conceptData) {
-    classService.newClass(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, modelLanguage.getLanguage())
+    classService.newClass(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, languageService.getModelLanguage())
       .then(klass => updateSelectionView(klass, true));
   }
 
@@ -130,7 +130,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
   }
 
   function createPredicate(conceptData) {
-    predicateService.newPredicate(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, conceptData.type, modelLanguage.getLanguage())
+    predicateService.newPredicate(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, conceptData.type, languageService.getModelLanguage())
       .then(predicate => updateSelectionView(predicate, true));
   }
 

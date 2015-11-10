@@ -19,7 +19,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($uibModalInstance, classService, modelLanguage, references, excludedClassMap, searchConceptModal) {
+function SearchClassController($uibModalInstance, classService, languageService, references, excludedClassMap, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -71,7 +71,7 @@ function SearchClassController($uibModalInstance, classService, modelLanguage, r
   }
 
   function localizedLabelAsLower(klass) {
-    return modelLanguage.translate(klass.label).toLowerCase();
+    return languageService.translate(klass.label).toLowerCase();
   }
 
   function textFilter(klass) {

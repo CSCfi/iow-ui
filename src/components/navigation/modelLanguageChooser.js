@@ -5,11 +5,11 @@ module.exports = function modelLanguageChooser($log) {
     },
     restrict: 'E',
     template: require('./modelLanguageChooser.html'),
-    controller($scope, modelLanguage) {
+    controller($scope, languageService) {
       'ngInject';
-      $scope.currentLanguage = modelLanguage.getLanguage;
-      $scope.setLanguage = modelLanguage.setLanguage;
-      $scope.languages = modelLanguage.getAvailableLanguages();
+      $scope.currentLanguage = languageService.getModelLanguage;
+      $scope.setLanguage = languageService.setModelLanguage;
+      $scope.languages = languageService.getAvailableLanguages();
     }
   };
 };

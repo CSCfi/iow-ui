@@ -296,6 +296,7 @@ class User {
 class AnonymousUser {
   constructor() {
     this.type = 'person';
+    this.name = 'Anonymous';
   }
 
   isLoggedIn() {
