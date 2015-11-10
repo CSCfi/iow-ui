@@ -138,6 +138,13 @@ function conceptSuggestionFrame(data) {
   };
 }
 
+function userFrame(data) {
+  return {
+    '@context': data['@context'],
+    'foaf:name': {}
+  };
+}
+
 module.exports = {
   groupListFrame,
   modelFrame,
@@ -147,5 +154,6 @@ module.exports = {
   propertyFrame,
   predicateFrame,
   predicateListFrame,
-  conceptSuggestionFrame
+  conceptSuggestionFrame,
+  userFrame
 };

@@ -10,12 +10,11 @@ module.exports = function editableForm() {
     template: require('./editableForm.html'),
     controllerAs: 'formController',
     bindToController: true,
-    controller($scope, $timeout, userService) {
+    controller($scope, $timeout) {
       'ngInject';
 
       const vm = this;
 
-      vm.isLoggedIn = userService.isLoggedIn;
       vm.visible = visible;
       vm.show = show;
       vm.cancel = cancel;

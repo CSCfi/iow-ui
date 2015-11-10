@@ -270,6 +270,47 @@ class ConceptSuggestion {
   }
 }
 
+class User {
+  constructor(graph) {
+    this.graph = graph;
+    this.id = graph['@id'];
+    this.type = 'person';
+    this.createdAt = graph.created;
+    this.modifiedAt = graph.modified;
+    this.name = graph['foaf:name'];
+  }
+
+  isLoggedIn() {
+    return this.graph['iow:login'];
+  }
+
+  isInGroup(group) {
+    return this.graph.isPartOf === group;
+  }
+
+  isAdminOfGroup(group) {
+    return this.graph.isAdminOf === group;
+  }
+}
+
+class AnonymousUser {
+  constructor() {
+    this.type = 'person';
+  }
+
+  isLoggedIn() {
+    return false;
+  }
+
+  isInGroup() {
+    return false;
+  }
+
+  isAdminOfGroup() {
+    return false;
+  }
+}
+
 function withPrefixExpanded(context, value) {
   const parts = value.split(':');
   if (parts.length === 2) {
@@ -320,6 +361,8 @@ module.exports = function entities($log) {
     deserializePredicateList: (data) => frameAndMap(data, frames.predicateListFrame, PredicateListItem, true),
     deserializePredicate: (data) => frameAndMap(data, frames.predicateFrame, Predicate, false),
     deserializeReference: (data) => new Reference(data),
-    deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true)
+    deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true),
+    deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),
+    anonymousUser: () => new AnonymousUser()
   };
 };

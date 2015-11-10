@@ -19,7 +19,8 @@ module.exports = function GroupController($q, $log, $location, groupId, groupSer
   };
 
   vm.canAskForRights = () => {
-    return userService.isLoggedIn() && !userService.isInGroup(groupId);
+    const user = userService.getUser();
+    return user.isLoggedIn() && !user.isInGroup(groupId);
   };
 
   function fetchGroup() {
