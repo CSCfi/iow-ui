@@ -49,7 +49,7 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: components/model/searchConceptModalFactory.js:92 translations/misc.html:9
+#: components/model/searchConceptModalFactory.js:92 translations/misc.html:10
 msgid "and create new"
 msgstr "ja luo uusi"
 
@@ -334,6 +334,10 @@ msgstr "Hae sanastoja"
 #: components/model/searchConceptModalFactory.js:92 translations/misc.html:8
 msgid "suggest"
 msgstr "ehdota"
+
+#: components/model/searchConceptModalFactory.js:130 translations/misc.html:9
+msgid "suggestion"
+msgstr "ehdotus"
 
 #: components/model/classForm.html:7
 msgid "Superclass"

@@ -3,17 +3,6 @@ const utils = require('./utils');
 const jsonld = require('jsonld');
 const frames = require('./frames');
 
-function withPrefixExpanded(context, value) {
-  const parts = value.split(':');
-  if (parts.length === 2) {
-    const expansion = context[parts[0]];
-    if (expansion) {
-      return expansion + parts[1];
-    }
-  }
-  return value;
-}
-
 class GroupListItem {
   constructor(graph) {
     this.id = graph['@id'];
@@ -268,6 +257,30 @@ class Predicate extends AbstractPredicate {
   }
 }
 
+class ConceptSuggestion {
+  constructor(graph) {
+    this.id = graph['@id'];
+    this.uri = graph['@id'];
+    this.comment = graph.comment;
+    this.label = graph.label;
+    this.schemeId = graph.inScheme;
+    this.createdAt = graph.atTime;
+    this.creator = graph.wasAssociatedWith;
+    this.type = 'conceptSuggestion';
+  }
+}
+
+function withPrefixExpanded(context, value) {
+  const parts = value.split(':');
+  if (parts.length === 2) {
+    const expansion = context[parts[0]];
+    if (expansion) {
+      return expansion + parts[1];
+    }
+  }
+  return value;
+}
+
 function mapAsEntity(context, graph, EntityConstructor, isArray) {
   if (Array.isArray(graph)) {
     const mapped = _.map(graph, element => new EntityConstructor(element, context));
@@ -280,18 +293,23 @@ function mapAsEntity(context, graph, EntityConstructor, isArray) {
   }
 }
 
-function frameData(data, frameFn) {
-  return jsonld.promises.frame(data, frameFn(data));
-}
+module.exports = function entities($log) {
+  'ngInject';
 
-function frameAndMap(data, frame, entityConstructor, isArray) {
-  return frameData(data, frame)
-    .then(framed => {
-      return mapAsEntity(framed['@context'], framed['@graph'], entityConstructor, isArray);
-    });
-}
+  function frameData(data, frameFn) {
+    return jsonld.promises.frame(data, frameFn(data));
+  }
 
-module.exports = function entities() {
+  function frameAndMap(data, frame, entityConstructor, isArray) {
+    return frameData(data, frame)
+      .then(framed => {
+        return mapAsEntity(framed['@context'], framed['@graph'], entityConstructor, isArray);
+      }, err => {
+        $log.error(err.message);
+        $log.error(err.details.cause);
+      });
+  }
+
   return {
     deserializeGroupList: (data) => frameAndMap(data, frames.groupListFrame, GroupListItem, true),
     deserializeModelList: (data) => frameAndMap(data, frames.modelListFrame, ModelListItem, true),
@@ -301,6 +319,7 @@ module.exports = function entities() {
     deserializeProperty: (data) => frameAndMap(data, frames.propertyFrame, Property, false),
     deserializePredicateList: (data) => frameAndMap(data, frames.predicateListFrame, PredicateListItem, true),
     deserializePredicate: (data) => frameAndMap(data, frames.predicateFrame, Predicate, false),
-    deserializeReference: (data) => new Reference(data)
+    deserializeReference: (data) => new Reference(data),
+    deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true)
   };
 };

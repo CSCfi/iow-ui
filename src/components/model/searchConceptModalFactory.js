@@ -29,6 +29,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
   vm.concept = null;
   vm.label = null;
   vm.defineConceptTitle = defineConceptTitle;
+  vm.normalize = normalize;
 
   vm.options = {
     hint: false,
@@ -37,10 +38,30 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
     editable: false
   };
 
-  $scope.$watch('ctrl.concept', (concept) => {
-    if (concept) {
-      vm.label = concept.prefLabel;
+  function normalize(concept) {
+    if (concept.type === 'conceptSuggestion') {
+      return {
+        id: concept.id,
+        label: modelLanguage.translate(concept.label),
+        comment: modelLanguage.translate(concept.comment)
+      };
+    } else {
+      return {
+        id: concept.uri,
+        label: concept.prefLabel,
+        comment: concept['skos:definition'] || concept['rdfs:comment']
+      };
     }
+  }
+
+  $scope.$watch('ctrl.concept', (concept) => {
+    vm.normalizedConcept = concept ? normalize(concept) : null;
+    vm.label = concept ? vm.normalizedConcept.label : '';
+  });
+
+  $scope.$watch('ctrl.vocabularyId', vocabularyId => {
+    const searchReferences = vocabularyId ? [_.findWhere(references, {vocabularyId})] : references;
+    vm.datasets = _.flatten(_.map(searchReferences, reference => createDataSets(reference)));
   });
 
   function identify(obj) {
@@ -76,24 +97,65 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
     return engine;
   }
 
-  function createDataSet(reference) {
-    return {
+  function createDataSets(reference) {
+    const suggestions = [];
+
+    conceptService.getConceptSuggestions(reference.id)
+      .then(fetchedSuggestions => {
+        _.forEach(fetchedSuggestions, suggestion => suggestions.push(suggestion));
+      });
+
+    function suggestionContains(suggestion, query) {
+      return modelLanguage.translate(suggestion.label).toLowerCase().includes(query.toLowerCase());
+    }
+
+    function suggestionsContain(query) {
+      return _.find(suggestions, suggestion => suggestionContains(suggestion, query));
+    }
+
+    function matchingSuggestions(query) {
+      return _.filter(suggestions, suggestion => suggestionContains(suggestion, query));
+    }
+
+    const header = `<h5>${modelLanguage.translate(reference.title)}</h5>`;
+
+    const suggestionDataSet = {
+      display: suggestion => modelLanguage.translate(suggestion.label),
+      name: reference.vocabularyId,
+      source: (query, syncResults) => syncResults(matchingSuggestions(query)),
+      limit: limit,
+      templates: {
+        header: header,
+        empty: header,
+        suggestion: (data) =>
+          `
+          <div>
+            ${modelLanguage.translate(data.label)} (${gettextCatalog.getString('suggestion')})
+            <p class="details">${data.schemeId}</p>
+          </div>
+          `
+      }
+    };
+
+    const dataSet = {
       display: 'prefLabel',
       name: reference.vocabularyId,
       source: createEngine(reference.vocabularyId),
       limit: limit,
       templates: {
-        empty: (search) =>
-          `
-          <div class="empty-message">
-            '${search.query}' ${gettextCatalog.getString('not found in the concept database')} ${modelLanguage.translate(reference.title)}
-              <p>
-                <a onClick="angular.element(jQuery('#conceptForm').parents('[uib-modal-window]')).scope().ctrl.addConcept('${search.query}', '${reference.id}')">
-                  + ${gettextCatalog.getString('suggest')} '${search.query}' ${gettextCatalog.getString('and create new')}
-                </a>
-              </p>
-          </div>
-          `,
+        empty: (search) => {
+          if (!suggestionsContain(search.query)) {
+            return `
+              <div class="empty-message">
+                '${search.query}' ${gettextCatalog.getString('not found in the concept database')}
+                  <p>
+                    <a onClick="angular.element(jQuery('#conceptForm').parents('[uib-modal-window]')).scope().ctrl.addConcept('${search.query}', '${reference.id}')">
+                      + ${gettextCatalog.getString('suggest')} '${search.query}' ${gettextCatalog.getString('and create new')}
+                    </a>
+                  </p>
+              </div>`;
+          }
+        },
         suggestion: (data) =>
           `
           <div>
@@ -103,15 +165,12 @@ function SearchConceptController($scope, $uibModalInstance, $q, modelLanguage, g
           `
       }
     };
+
+    return [suggestionDataSet, dataSet];
   }
 
-  $scope.$watch('ctrl.vocabularyId', vocabularyId => {
-    const searchReferences = vocabularyId ? [_.findWhere(references, {vocabularyId})] : references;
-    vm.datasets = _.map(searchReferences, reference => createDataSet(reference));
-  });
-
   vm.create = () => {
-    $uibModalInstance.close({conceptId: vm.concept.uri, label: vm.label});
+    $uibModalInstance.close({conceptId: normalize(vm.concept).id, label: vm.label});
   };
 
   vm.cancel = () => {

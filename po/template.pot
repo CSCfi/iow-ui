@@ -43,7 +43,7 @@ msgid "All types"
 msgstr ""
 
 #: components/model/searchConceptModalFactory.js:92
-#: translations/misc.html:9
+#: translations/misc.html:10
 msgid "and create new"
 msgstr ""
 
@@ -329,6 +329,11 @@ msgstr ""
 #: components/model/searchConceptModalFactory.js:92
 #: translations/misc.html:8
 msgid "suggest"
+msgstr ""
+
+#: components/model/searchConceptModalFactory.js:130
+#: translations/misc.html:9
+msgid "suggestion"
 msgstr ""
 
 #: components/model/classForm.html:7

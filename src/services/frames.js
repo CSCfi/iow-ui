@@ -131,6 +131,13 @@ function classListFrame(data) {
   return frame;
 }
 
+function conceptSuggestionFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, comment}),
+    inScheme: {}
+  };
+}
+
 module.exports = {
   groupListFrame,
   modelFrame,
@@ -139,5 +146,6 @@ module.exports = {
   classListFrame,
   propertyFrame,
   predicateFrame,
-  predicateListFrame
+  predicateListFrame,
+  conceptSuggestionFrame
 };
