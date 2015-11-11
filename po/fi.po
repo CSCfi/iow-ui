@@ -24,15 +24,15 @@ msgstr "Lisää ominaisuus"
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: components/group/addModelModal.html:3 components/group/group.html:3
+#: components/group/addModelModal.html:3 components/group/group.html:4
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
-#: components/model/selectionView.html:4
+#: components/model/selectionView.html:10
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/model/modelView.html:2
+#: components/model/modelView.html:6
 msgid "Add reference"
 msgstr "Lisää sanasto"
 
@@ -61,7 +61,7 @@ msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 msgid "Are you sure that you want to delete?"
 msgstr "Oletko varma, että haluat poistaa?"
 
-#: components/group/group.html:4
+#: components/group/group.html:3
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
@@ -81,14 +81,14 @@ msgstr "Selaa"
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
 #: components/model/addConceptModal.html:31
-#: components/model/searchClassModal.html:57
+#: components/model/searchClassModal.html:59
 #: components/model/searchConceptModal.html:43
 #: components/model/searchPredicateModal.html:78
 #: components/model/searchSchemeModal.html:32
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: components/model/modelView.html:5 components/model/selectionView.html:10
+#: components/model/modelView.html:3 components/model/selectionView.html:4
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
@@ -135,11 +135,11 @@ msgstr "Luo ominaisuus ja käytä"
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: components/model/searchPredicateModal.html:18
+#: components/model/searchPredicateModal.html:14
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: components/model/searchPredicateModal.html:14
+#: components/model/searchPredicateModal.html:18
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
@@ -147,9 +147,9 @@ msgstr "Lisää uusi attribuutti"
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
-#: index.html:19
+#: components/navigation/modelLanguageChooser.html:1
 msgid "Data language"
-msgstr "Mallin kieli"
+msgstr "Sisällön kieli"
 
 #: translations/misc.html:4
 msgid "Define concept for the new class"
@@ -175,7 +175,7 @@ msgstr "Poista ominaisuus"
 msgid "Delete reference"
 msgstr "Poista sanasto"
 
-#: components/model/modelView.html:3 components/model/selectionView.html:8
+#: components/model/modelView.html:5 components/model/selectionView.html:6
 msgid "Edit"
 msgstr "Muokkaa"
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/model/modelView.html:18
+#: components/model/modelView.html:19
 msgid "Id"
 msgstr "Tunniste"
 
@@ -237,10 +237,6 @@ msgstr "Nimi"
 #: components/model/searchConceptModalFactory.js:150 translations/misc.html:3
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
-
-#: components/form/formSelect.html:4
-msgid "Not selected"
-msgstr "Ei valittu"
 
 #: translations/type.html:4
 msgid "owl:DatatypeProperty"
@@ -286,11 +282,11 @@ msgstr "Luo tunnukset"
 msgid "Requires"
 msgstr "Nimiavaruudet"
 
-#: components/model/modelView.html:4 components/model/selectionView.html:9
+#: components/model/modelView.html:4 components/model/selectionView.html:5
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: components/model/modelView.html:9
+#: components/model/modelView.html:10
 #: components/model/searchPredicateModal.html:69
 #: components/model/selectionView.html:14
 msgid "Save failed"
@@ -346,11 +342,7 @@ msgstr "Yläluokka"
 msgid "Type"
 msgstr "Tyyppi"
 
-#: index.html:20
-msgid "UI language"
-msgstr "Käyttöliittymän kieli"
-
-#: components/model/searchClassModal.html:58
+#: components/model/searchClassModal.html:60
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
@@ -438,6 +430,12 @@ msgstr "XML"
 #: components/modal/editInProgressModal.html:13
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "UI language"
+#~ msgstr "Käyttöliittymän kieli"
+
+#~ msgid "Not selected"
+#~ msgstr "Ei valittu"
 
 #~ msgid "Description"
 #~ msgstr "Kuvaus"

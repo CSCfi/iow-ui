@@ -7,6 +7,7 @@ module.exports = function directive($window, $timeout) {
     link($scope, element, attributes) {
       const placeholderClass = attributes.float;
       const topOffset = attributes.topOffset || 0;
+      const preserveParentWidth = attributes.preserveParentWidth;
       let elementLocation = null;
       let addedPlaceholder = null;
 
@@ -57,13 +58,17 @@ module.exports = function directive($window, $timeout) {
         element.css('left', elementLocation.left + 'px');
         element.css('top', topOffset + 'px');
         element.css('position', 'fixed');
+        if (preserveParentWidth) {
+          element.css('width', element.parent().width());
+        }
         addedPlaceholder = createPlaceholder().insertBefore(element);
       }
 
       function setStatic() {
-        element.css('left', 'auto');
-        element.css('top', 'auto');
-        element.css('position', 'static');
+        element.css('left', '');
+        element.css('top', '');
+        element.css('position', '');
+        element.css('width', '');
         addedPlaceholder.remove();
         addedPlaceholder = null;
       }

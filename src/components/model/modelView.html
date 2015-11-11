@@ -1,8 +1,9 @@
 <div class="top-actions">
-  <button type="button" class="btn btn-default" ng-click="ctrl.addReference()" ng-show="ctrl.canAddReference()" translate>Add reference</button>
-  <button type="button" class="btn btn-default" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
-  <button type="button" class="btn btn-default" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
-  <button type="button" class="btn btn-default" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
+  <model-language-chooser></model-language-chooser>
+  <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
+  <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
+  <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
+  <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canAddReference()" translate>Add reference</button>
 
   <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

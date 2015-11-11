@@ -9,13 +9,13 @@
 <div class="modal-body search-modal">
 
   <div class="top-actions">
-    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:DatatypeProperty')" ng-show="ctrl.isAttributeAddable()">
-      <span class="glyphicon glyphicon-plus"></span>
-      {{'Create new attribute' | translate}}
-    </button>
-    <button type="button" class="btn btn-default btn-md" ng-click="ctrl.createNew('owl:ObjectProperty')" ng-show="ctrl.isAssociationAddable()">
+    <button type="button" class="btn btn-default btn-md right" ng-click="ctrl.createNew('owl:ObjectProperty')" ng-show="ctrl.isAssociationAddable()">
       <span class="glyphicon glyphicon-plus"></span>
       {{'Create new association' | translate}}
+    </button>
+    <button type="button" class="btn btn-default btn-md right" ng-click="ctrl.createNew('owl:DatatypeProperty')" ng-show="ctrl.isAttributeAddable()">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{'Create new attribute' | translate}}
     </button>
   </div>
 

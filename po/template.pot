@@ -17,15 +17,15 @@ msgid "Add class"
 msgstr ""
 
 #: components/group/addModelModal.html:3
-#: components/group/group.html:3
+#: components/group/group.html:4
 msgid "Add model"
 msgstr ""
 
-#: components/model/selectionView.html:4
+#: components/model/selectionView.html:10
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:2
+#: components/model/modelView.html:6
 msgid "Add reference"
 msgstr ""
 
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Are you sure that you want to delete?"
 msgstr ""
 
-#: components/group/group.html:4
+#: components/group/group.html:3
 msgid "Ask for group rights"
 msgstr ""
 
@@ -75,15 +75,15 @@ msgstr ""
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
 #: components/model/addConceptModal.html:31
-#: components/model/searchClassModal.html:57
+#: components/model/searchClassModal.html:59
 #: components/model/searchConceptModal.html:43
 #: components/model/searchPredicateModal.html:78
 #: components/model/searchSchemeModal.html:32
 msgid "Cancel"
 msgstr ""
 
-#: components/model/modelView.html:5
-#: components/model/selectionView.html:10
+#: components/model/modelView.html:3
+#: components/model/selectionView.html:4
 msgid "Cancel edit"
 msgstr ""
 
@@ -128,11 +128,11 @@ msgstr ""
 msgid "Create new"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:18
+#: components/model/searchPredicateModal.html:14
 msgid "Create new association"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:14
+#: components/model/searchPredicateModal.html:18
 msgid "Create new attribute"
 msgstr ""
 
@@ -140,7 +140,7 @@ msgstr ""
 msgid "Create new class"
 msgstr ""
 
-#: index.html:19
+#: components/navigation/modelLanguageChooser.html:1
 msgid "Data language"
 msgstr ""
 
@@ -168,8 +168,8 @@ msgstr ""
 msgid "Delete reference"
 msgstr ""
 
-#: components/model/modelView.html:3
-#: components/model/selectionView.html:8
+#: components/model/modelView.html:5
+#: components/model/selectionView.html:6
 msgid "Edit"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: components/model/modelView.html:18
+#: components/model/modelView.html:19
 msgid "Id"
 msgstr ""
 
@@ -229,10 +229,6 @@ msgstr ""
 #: components/model/searchConceptModalFactory.js:150
 #: translations/misc.html:3
 msgid "not found in the concept database"
-msgstr ""
-
-#: components/form/formSelect.html:4
-msgid "Not selected"
 msgstr ""
 
 #: translations/type.html:4
@@ -280,11 +276,11 @@ msgid "Requires"
 msgstr ""
 
 #: components/model/modelView.html:4
-#: components/model/selectionView.html:9
+#: components/model/selectionView.html:5
 msgid "Save changes"
 msgstr ""
 
-#: components/model/modelView.html:9
+#: components/model/modelView.html:10
 #: components/model/searchPredicateModal.html:69
 #: components/model/selectionView.html:14
 msgid "Save failed"
@@ -340,11 +336,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: index.html:20
-msgid "UI language"
-msgstr ""
-
-#: components/model/searchClassModal.html:58
+#: components/model/searchClassModal.html:60
 msgid "Use class"
 msgstr ""
 

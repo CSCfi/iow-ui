@@ -1,7 +1,7 @@
 <div class="top" ng-hide="ctrl.loading">
   <div class="top-actions">
-    <button type="button" class="btn btn-default" ng-click="ctrl.addModel()" ng-if="ctrl.canAddModel()" translate>Add model</button>
-    <a class="btn btn-default" ng-show="ctrl.canAskForRights()" href="{{ctrl.group.id+'_MEMBERS'}}" target="_blank" translate>Ask for group rights</a>
+    <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" href="{{ctrl.group.id+'_MEMBERS'}}" target="_blank" translate>Ask for group rights</a>
+    <button type="button" class="btn btn-default right" ng-click="ctrl.addModel()" ng-if="ctrl.canAddModel()" translate>Add model</button>
   </div>
 
   <h2>{{ctrl.group | translateLabel}}</h2>

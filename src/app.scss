@@ -51,17 +51,28 @@
 }
 
 .top-actions-placeholder {
-  float: right;
 }
 
 .top-actions {
+  @include clearfix;
+
   z-index: 1000;
-  float: right;
-  text-align: right;
-  button, a {
+
+  p.button-label {
+    padding-top: 8px;
+  }
+
+  .left {
+    float: left;
+    margin-right: 5px;
+  }
+
+  .right {
+    float: right;
     margin-left: 5px;
   }
 }
+
 
 .editable-wrap {
   input, select, textarea {
