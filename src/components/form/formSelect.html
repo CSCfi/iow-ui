@@ -1,9 +1,0 @@
-<div class="editable-wrap">
-  <div ng-show="hasContent() || formController.editing" class="model-view__title">{{title | translate}}</div>
-  <select ng-show="formController.editing" class="editable-input form-control" ng-model="ngModel">
-    <option value="" translate>Not selected</option>
-    <option ng-repeat="value in values" value="{{value}}">{{displayName(value)}}</option>
-  </select>
-
-  <span ng-hide="formController.editing">{{displayName(ngModel)}}</span>
-</div>

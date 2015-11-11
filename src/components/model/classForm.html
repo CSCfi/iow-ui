@@ -1,8 +1,8 @@
 <h2>
-  <form-input title-edit-only="true" title="Label" localized="true" ng-model="class.label"></form-input>
+  <editable title-edit-only="true" title="Label"><input class="form-control" type="text" localized-input ng-model="class.label"/></editable>
 </h2>
-<form-id title="Id" ng-model="class.idName"></form-id>
-<form-text-area title="Comment" ng-model="class.comment"></form-text-area>
+<editable title="Id"><input class="form-control" type="text" id-input ng-model="class.idName" /></editable>
+<editable title="Comment"><textarea class="form-control" localized-input title="Comment" ng-model="class.comment"></textarea></editable>
 <div ng-show="class.subClassOf">
   <div class="model-view__title" translate>Superclass</div>
   <div>{{class.subClassOf}}</div>

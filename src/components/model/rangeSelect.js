@@ -24,14 +24,19 @@ module.exports = function rangeSelect() {
   'ngInject';
   return {
     scope: {
-      ngModel: '='
+      range: '='
     },
     restrict: 'E',
-    template: '<form-select title="Range" ng-model="ctrl.ngModel" values="ctrl.values"></form-select>',
+    template: `<select class="editable-input form-control" ng-model="range">
+                 <option value="" translate>Not selected</option>
+                 <option ng-repeat="value in ctrl.values" value="{{value}}">{{ctrl.displayName(value)}}</option>
+               </select>`,
     controllerAs: 'ctrl',
     bindToController: true,
-    controller() {
+    controller(gettextCatalog) {
+      'ngInject';
       this.values = attributeValues;
+      this.displayName = (text) => text && `${gettextCatalog.getString(text)} (${text})`;
     }
   };
 };
