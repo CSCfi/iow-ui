@@ -1,5 +1,5 @@
 <div class="editable-wrap">
-  <div ng-show="displayValue() || formController.editing" class="model-view__title">{{title | translate}}</div>
+  <div ng-show="(displayValue() || formController.editing) && (!titleEditOnly || formController.editing)" class="model-view__title">{{title | translate}}</div>
   <div ng-show="formController.editing">
     <ng-transclude></ng-transclude>
   </div>
