@@ -32,16 +32,16 @@ module.exports = function languageService(gettextCatalog) {
       return languages;
     },
     translate(data) {
-      function localized(lang) {
+      function localized(lang, showLang) {
         const localization = data[lang];
-        return typeof localization === 'string' ? localization : null;
+        return typeof localization === 'string' ? localization + (showLang ? `(${lang})` : '') : null;
       }
 
       if (!data) {
         return '';
       }
 
-      return localized(modelLanguage) || _.chain(languages).map((lang) => localized(lang) + ` (${lang})`).find().value() || '';
+      return localized(modelLanguage, false) || _.chain(languages).map((lang) => localized(lang, true)).find().value() || '';
     }
   };
 };
