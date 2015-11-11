@@ -34,7 +34,7 @@ module.exports = function languageService(gettextCatalog) {
     translate(data) {
       function localized(lang, showLang) {
         const localization = data[lang];
-        return typeof localization === 'string' ? localization + (showLang ? `(${lang})` : '') : null;
+        return typeof localization === 'string' ? localization + (showLang ? ` (${lang})` : '') : null;
       }
 
       if (!data) {
