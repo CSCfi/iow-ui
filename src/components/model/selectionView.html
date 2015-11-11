@@ -1,6 +1,7 @@
 <form>
   <div ng-if="ctrl.selection">
     <div class="top-actions" float="top-actions-placeholder" preserve-parent-width="true" top-offset="8">
+      <model-language-chooser></model-language-chooser>
       <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
       <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
       <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
