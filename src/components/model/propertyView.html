@@ -8,7 +8,7 @@
   <editable title="Comment"><textarea class="form-control" localized-input ng-model="property.comment"></textarea></editable>
   <editable title="Example"><input class="form-control" type="text" localized-input ng-model="property.example" /></editable>
   <editable title="Range" ng-if="predicate.isAttribute()"><range-select range="property.datatype"></range-select></editable>
-  <editable title="Value class" ng-if="predicate.isAssociation()"><input class="form-control" type="text" ng-model="property.valuesClass" /></editable>
+  <editable title="Value class" ng-if="predicate.isAssociation()"><class-select class-name="property.valuesClass"></class-select></editable>
   <uib-accordion>
     <uib-accordion-group is-open="isOpen[property.predicateId]">
       <uib-accordion-heading>{{property.predicateIdName}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicateId], 'glyphicon-chevron-right': !isOpen[property.predicateId]}"></span></uib-accordion-heading>

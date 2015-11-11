@@ -77,11 +77,11 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   };
 
   vm.isSelected = (predicate) => {
-    return predicate.id === selectedPredicateId();
+    return predicate.id === (vm.selectedPredicate && vm.selectedPredicate.id);
   };
 
   vm.usePredicate = () => {
-    $uibModalInstance.close(selectedPredicateId());
+    $uibModalInstance.close(vm.selectedPredicate);
   };
 
   vm.createAndUsePredicate = () => {
@@ -115,10 +115,6 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   vm.isAssociationAddable = () => {
     return vm.typeSelectable || vm.type === 'association';
   };
-
-  function selectedPredicateId() {
-    return vm.selectedPredicate && vm.selectedPredicate.id;
-  }
 
   function localizedLabelAsLower(predicate) {
     return languageService.translate(predicate.label).toLowerCase();

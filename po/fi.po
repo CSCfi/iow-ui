@@ -92,6 +92,10 @@ msgstr "Peruuta"
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
+#: components/model/classSelect.html:2
+msgid "Choose class"
+msgstr "Valitse luokka"
+
 #: components/model/searchClassModal.html:17
 msgid "Class search info"
 msgstr ""
@@ -226,7 +230,7 @@ msgstr ""
 "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
 "sen jälkeen takaisin palveluun."
 
-#: components/navigation/login.html:5
+#: components/navigation/login.html:11
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 

@@ -4,6 +4,6 @@
 <editable title="Id"><input type="text" id-input ng-model="predicate.idName" /></editable>
 <editable title="Comment"><textarea class="form-control" localized-input ng-model="predicate.comment"></textarea></editable>
 <editable title="Range" ng-if="predicate.isAttribute()"><range-select range="predicate.range"></range-select></editable>
-<editable title="Value class" ng-if="predicate.isAssociation()"><input class="form-control" type="text" ng-model="predicate.range /"></editable>
+<editable title="Value class" ng-if="predicate.isAssociation()"><class-select class-name="predicate.range"></class-select></editable>
 <div class="model-view__title" translate>Is defined by</div>
 <div>{{predicate.modelId}}</div>

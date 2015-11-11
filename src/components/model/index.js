@@ -12,7 +12,8 @@ mod.directive('classForm', require('./classForm'));
 mod.directive('predicateForm', require('./predicateForm'));
 mod.directive('propertyView', require('./propertyView'));
 mod.directive('propertyPredicateView', require('./propertyPredicateView'));
-mod.directive('rangeSelect', require('./../model/rangeSelect'));
+mod.directive('rangeSelect', require('./rangeSelect'));
+mod.directive('classSelect', require('./classSelect'));
 
 mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
 mod.factory('searchClassModal', require('./searchClassModalFactory'));

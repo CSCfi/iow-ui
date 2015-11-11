@@ -87,6 +87,10 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
+#: components/model/classSelect.html:2
+msgid "Choose class"
+msgstr ""
+
 #: components/model/searchClassModal.html:17
 msgid "Class search info"
 msgstr ""
@@ -218,7 +222,7 @@ msgstr ""
 msgid "Login information"
 msgstr ""
 
-#: components/navigation/login.html:5
+#: components/navigation/login.html:11
 msgid "Logout"
 msgstr ""
 

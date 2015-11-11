@@ -114,11 +114,11 @@ module.exports = function selectionView($log) {
       }
 
       function addProperty() {
-        searchPredicateModal.openWithPredicationCreation($scope.modelController.getModel()).result.then(createPropertyByPredicateId);
+        searchPredicateModal.openWithPredicationCreation($scope.modelController.getModel()).result.then(createPropertyByPredicate);
       }
 
-      function createPropertyByPredicateId(predicateId) {
-        classService.newProperty(predicateId).then(property => {
+      function createPropertyByPredicate(predicate) {
+        classService.newProperty(predicate.id).then(property => {
           vm.selectionInEdit.addProperty(property);
         });
       }

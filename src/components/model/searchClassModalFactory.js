@@ -3,23 +3,31 @@ const _ = require('lodash');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
+  function open(references, excludedClassMap, onlySelection) {
+    return $uibModal.open({
+      template: require('./searchClassModal.html'),
+      size: 'large',
+      controller: SearchClassController,
+      controllerAs: 'ctrl',
+      resolve: {
+        references: () => references,
+        excludedClassMap: () => excludedClassMap,
+        onlySelection: () => onlySelection
+      }
+    });
+  }
+
   return {
     open(references, excludedClassMap = {}) {
-      return $uibModal.open({
-        template: require('./searchClassModal.html'),
-        size: 'large',
-        controller: SearchClassController,
-        controllerAs: 'ctrl',
-        resolve: {
-          references: () => references,
-          excludedClassMap: () => excludedClassMap
-        }
-      });
+      return open(references, excludedClassMap, false);
+    },
+    openWithOnlySelection() {
+      return open([], {}, true);
     }
   };
 };
 
-function SearchClassController($uibModalInstance, classService, languageService, references, excludedClassMap, searchConceptModal) {
+function SearchClassController($uibModalInstance, classService, languageService, references, excludedClassMap, onlySelection, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -30,6 +38,7 @@ function SearchClassController($uibModalInstance, classService, languageService,
   vm.searchText = '';
   vm.modelId = '';
   vm.models = [];
+  vm.onlySelection = onlySelection;
 
   classService.getAllClasses().then(allClasses => {
     classes = _.reject(allClasses, klass => excludedClassMap[klass.id]);
@@ -53,11 +62,11 @@ function SearchClassController($uibModalInstance, classService, languageService,
   };
 
   vm.isSelected = (klass) => {
-    return klass.id === selectedClassId();
+    return klass.id === (vm.selectedClass && vm.selectedClass.id);
   };
 
   vm.confirm = () => {
-    $uibModalInstance.close(selectedClassId());
+    $uibModalInstance.close(vm.selectedClass);
   };
 
   vm.createNewClass = () => {
@@ -65,10 +74,6 @@ function SearchClassController($uibModalInstance, classService, languageService,
       $uibModalInstance.close(result);
     });
   };
-
-  function selectedClassId() {
-    return vm.selectedClass && vm.selectedClass.id;
-  }
 
   function localizedLabelAsLower(klass) {
     return languageService.translate(klass.label).toLowerCase();
