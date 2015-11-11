@@ -30,6 +30,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     modelView = view;
     if (existingModelId) {
       $q.all({model: modelService.getModelByUrn(existingModelId), selectable: fetchSelectable(existingModelId)}).then(result => {
+        $log.info(JSON.stringify(result.model,null,2));
         modelView.select(result.model, false);
         vm.loading = false;
       });
@@ -95,7 +96,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     const classMap = _.indexBy(vm.classes, klass => klass.id);
     searchClassModal.open(getModel().references, classMap).result
       .then(result => {
-        if (result.conceptId) {
+        if (typeof result === 'object') {
           createClass(result);
         } else {
           assignClassToModel(result);
@@ -108,11 +109,11 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
       .then(klass => updateSelectionView(klass, true));
   }
 
-  function assignClassToModel(klass) {
+  function assignClassToModel(classId) {
     const modelId = getModel().id;
-    classService.assignClassToModel(klass.id, modelId)
+    classService.assignClassToModel(classId, modelId)
       .then(() => {
-        selectByTypeAndId('class', klass.id);
+        selectByTypeAndId('class', classId);
         fetchClasses(modelId);
       });
   }
@@ -121,7 +122,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     const predicateMap = _.indexBy(vm.predicates, (predicate) => predicate.id);
     searchPredicateModal.open(getModel().references, type, predicateMap).result
       .then(result => {
-        if (result.conceptId) {
+        if (typeof result === 'object') {
           createPredicate(result);
         } else {
           assignPredicateToModel(result, type);
@@ -134,11 +135,11 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
       .then(predicate => updateSelectionView(predicate, true));
   }
 
-  function assignPredicateToModel(predicate, type) {
+  function assignPredicateToModel(predicateId, type) {
     const modelId = getModel().id;
-    predicateService.assignPredicateToModel(predicate.id, modelId)
+    predicateService.assignPredicateToModel(predicateId, modelId)
       .then(() => {
-        selectByTypeAndId(type, predicate.id);
+        selectByTypeAndId(type, predicateId);
         fetchPredicates(modelId);
       });
   }
