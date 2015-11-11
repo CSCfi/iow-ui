@@ -14,8 +14,8 @@ function LoginController($uibModal, userService) {
   const vm = this;
 
   vm.openLogin = openLogin;
-  vm.isLoggedIn = isLoggedIn;
-  vm.logout = logout;
+  vm.getUser = userService.getUser;
+  vm.logout = userService.logout;
 
   function openLogin() {
     $uibModal.open({
@@ -23,14 +23,6 @@ function LoginController($uibModal, userService) {
       controller: ModalController,
       controllerAs: 'ctrl'
     });
-  }
-
-  function isLoggedIn() {
-    return userService.isLoggedIn();
-  }
-
-  function logout() {
-    userService.logout();
   }
 }
 
