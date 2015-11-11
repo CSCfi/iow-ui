@@ -64,8 +64,10 @@
 }
 
 .editable-wrap {
-  width: 100%;
-  max-width: 500px;
+  input, select, textarea {
+    width: 100%;
+    max-width: 500px;
+  }
 
   textarea {
     height: 100px;

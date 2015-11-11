@@ -41,7 +41,7 @@ module.exports = function languageService(gettextCatalog) {
         return '';
       }
 
-      return localized(modelLanguage) || _.chain(languages).map(localized).find().value() || '';
+      return localized(modelLanguage) || _.chain(languages).map((lang) => localized(lang) + ` (${lang})`).find().value() || '';
     }
   };
 };
