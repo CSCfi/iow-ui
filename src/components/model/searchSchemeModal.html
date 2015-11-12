@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="col-md-6 search-results" window-height padding="320">
+    <div class="col-md-6 search-results" window-height padding="260">
       <div ng-repeat="scheme in ctrl.searchResults() track by scheme.id">
         <div ng-class="['search-result', {selected: ctrl.isSelected(scheme)}]" ng-click="ctrl.selectScheme(scheme)">
           <h5>{{scheme.title}}</h5>

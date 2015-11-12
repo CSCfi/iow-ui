@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="col-md-4 search-results" window-height padding="320">
+    <div class="col-md-4 search-results" window-height padding="355">
       <div ng-repeat="predicate in ctrl.searchResults() track by predicate.id">
         <div ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)">
           <i ng-class="predicate.glyphIconClass()"></i>
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4"  window-height padding="355">
       <form id="predicate-search-form">
         <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate"></predicate-form>
         <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
