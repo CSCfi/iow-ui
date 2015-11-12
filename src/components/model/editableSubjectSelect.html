@@ -1,0 +1,23 @@
+<div class="editable-wrap">
+  <div ng-show="ctrl.subject || formController.editing">
+    <div class="model-view__title" translate>Subject</div>
+    <div ng-hide="ctrl.subject" translate>Not defined</div>
+    <div class="model-view__sub">
+      <div ng-show="ctrl.subject.id">
+        <div class="model-view__title" translate>Id</div>
+        <a href="{{ctrl.subject.id}}" target="_blank">{{ctrl.subject.id}}</a>
+      </div>
+      <div ng-show="ctrl.subject.label">
+        <div class="model-view__title" translate>Label</div>
+        <div>{{ctrl.subject | translateLabel}}</div>
+      </div>
+      <div ng-if="ctrl.subject.comment">
+        <div class="model-view__title" translate>Comment</div>
+        <div>{{ctrl.subject.comment}}</div>
+      </div>
+    </div>
+    <div ng-class="{'model-view__sub': ctrl.subject}">
+      <button ng-show="formController.editing" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectSubject()" translate>Choose subject</button>
+    </div>
+  </div>
+</div>

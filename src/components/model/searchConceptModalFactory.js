@@ -4,23 +4,31 @@ const Bloodhound = require('typeahead.js-browserify').Bloodhound;
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
+  function open(references, type, newCreation) {
+    return $uibModal.open({
+      template: require('./searchConceptModal.html'),
+      size: 'small',
+      controller: SearchConceptController,
+      controllerAs: 'ctrl',
+      resolve: {
+        references: () => references,
+        type: () => type,
+        newCreation: () => newCreation
+      }
+    });
+  }
+
   return {
-    open(references, defineConceptTitle) {
-      return $uibModal.open({
-        template: require('./searchConceptModal.html'),
-        size: 'small',
-        controller: SearchConceptController,
-        controllerAs: 'ctrl',
-        resolve: {
-          defineConceptTitle: () => defineConceptTitle,
-          references: () => references
-        }
-      });
+    openSelection(references, type) {
+      return open(references, type, false);
+    },
+    openNewCreation(references, type) {
+      return open(references, type, true);
     }
   };
 };
 
-function SearchConceptController($scope, $uibModalInstance, $q, languageService, gettextCatalog, defineConceptTitle, references, addConceptModal, conceptService) {
+function SearchConceptController($scope, $uibModalInstance, $q, languageService, gettextCatalog, type, newCreation, references, addConceptModal, conceptService) {
   'ngInject';
 
   const vm = this;
@@ -28,7 +36,9 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
   vm.references = references;
   vm.concept = null;
   vm.label = null;
-  vm.defineConceptTitle = defineConceptTitle;
+  vm.defineConceptTitle = `Define concept for the ${newCreation ? 'new ' : ''}${type}`;
+  vm.buttonTitle = newCreation ? 'Create new' : 'Use';
+  vm.newCreation = newCreation;
   vm.normalize = normalize;
 
   vm.options = {
@@ -170,7 +180,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
   }
 
   vm.create = () => {
-    $uibModalInstance.close({conceptId: normalize(vm.concept).id, label: vm.label});
+    $uibModalInstance.close({conceptId: normalize(vm.concept), label: vm.label});
   };
 
   vm.cancel = () => {

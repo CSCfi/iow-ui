@@ -1,4 +1,4 @@
-module.exports = function conceptService($http, entities) {
+module.exports = function conceptService($http, $q, entities) {
   'ngInject';
   return {
     getAllSchemes(lang) {
@@ -11,6 +11,14 @@ module.exports = function conceptService($http, entities) {
     createConceptSuggestion({schemeId, label, comment, lang}) {
       return $http.put('/api/rest/conceptSuggestion', null, {params: {schemeID: schemeId, label, comment, lang}})
         .then(response => response.data['@id']);
+    },
+    newSubject({id, label, comment}, lang) {
+      return $q.when({
+        '@id': id,
+        prefLabel: { [lang]: label },
+        comment: comment
+      })
+      .then(reference => entities.deserializeSubject(reference));
     }
   };
 };

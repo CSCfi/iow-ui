@@ -90,16 +90,17 @@ class Class {
   constructor(graph, context) {
     this.graph = graph;
     this.context = context;
-    this.idName = graph['@id'];
+    this.curie = graph['@id'];
     this.modelId = graph.isDefinedBy;
     this.label = graph.label;
     this.comment = graph.comment;
     this.subClassOf = graph.subClassOf;
     this.properties = mapAsEntity(context, graph.property, Property, true);
+    this.subject = mapAsEntity(context, graph.subject, Subject, false);
   }
 
   get id() {
-    return withPrefixExpanded(this.context, this.idName);
+    return withPrefixExpanded(this.context, this.curie);
   }
 
   get type() {
@@ -138,7 +139,8 @@ class Class {
           label: this.label,
           comment: this.comment,
           subClassOf: this.subClassOf,
-          property: _.map(this.properties, property => property.serialize())
+          property: _.map(this.properties, property => property.serialize()),
+          subject: this.subject && this.subject.serialize()
         }
       )
     };
@@ -155,7 +157,7 @@ class Property {
     this.example = graph.example;
     this.dataType = graph.datatype;
     this.valueClass = graph.valueClass;
-    this.predicateIdName = graph.predicate;
+    this.predicateCurie = graph.predicate;
   }
 
   get type() {
@@ -163,7 +165,7 @@ class Property {
   }
 
   get predicateId() {
-    return withPrefixExpanded(this.context, this.predicateIdName);
+    return withPrefixExpanded(this.context, this.predicateCurie);
   }
 
   glyphIconClass() {
@@ -178,7 +180,7 @@ class Property {
         example: this.example,
         datatype: this.dataType,
         valueClass: this.valueClass,
-        predicate: this.predicateIdName
+        predicate: this.predicateCurie
       });
   }
 }
@@ -235,13 +237,14 @@ class PredicateListItem extends AbstractPredicate {
 class Predicate extends AbstractPredicate {
   constructor(graph, context) {
     super(graph, context);
-    this.idName = graph['@id'];
+    this.curie = graph['@id'];
     this.modelId = graph.isDefinedBy;
     this.range = graph.range;
+    this.subject = mapAsEntity(context, graph.subject, Subject, false);
   }
 
   get id() {
-    return withPrefixExpanded(this.context, this.idName);
+    return withPrefixExpanded(this.context, this.curie);
   }
 
   serialize() {
@@ -251,10 +254,20 @@ class Predicate extends AbstractPredicate {
           '@id': this.id,
           label: this.label,
           comment: this.comment,
-          range: this.range
+          range: this.range,
+          subject: this.subject && this.subject.serialize()
         }
       )
     };
+  }
+}
+
+class Subject {
+  constructor(graph) {
+    this.id = graph['@id'];
+    this.label = graph.prefLabel;
+    this.comment = graph.comment;
+    this.serialize = () => (graph);
   }
 }
 
@@ -364,6 +377,7 @@ module.exports = function entities($log) {
     deserializePredicate: (data) => frameAndMap(data, frames.predicateFrame, Predicate, false),
     deserializeReference: (data) => new Reference(data),
     deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true),
+    deserializeSubject: (data) => new Subject(data),
     deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),
     anonymousUser: () => new AnonymousUser()
   };

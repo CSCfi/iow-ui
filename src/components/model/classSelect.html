@@ -1,5 +1,2 @@
-<div ng-show="formController.editing">
-  <input type="text" class="form-control" ng-model="ctrl.className" /> <a ng-show="formController.editing" ng-click="ctrl.selectClass()" translate>Choose class</a>
-</div>
-<span ng-hide="formController.editing">{{ctrl.className}}</span>
-
+<input type="text" class="form-control" ng-model="ctrl.curie" />
+<button ng-show="formController.editing" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectClass()" translate>Choose class</button>

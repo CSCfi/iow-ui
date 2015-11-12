@@ -1,9 +1,8 @@
-module.exports = function editableClassSelect() {
+module.exports = function classSelect() {
   'ngInject';
   return {
     scope: {
-      title: '@',
-      className: '='
+      curie: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -18,7 +17,7 @@ module.exports = function editableClassSelect() {
       const vm = this;
       vm.selectClass = () => {
         searchClassModal.openWithOnlySelection().result.then(klass => {
-          vm.className = klass.idName;
+          vm.curie = klass.curie;
         });
       };
     }

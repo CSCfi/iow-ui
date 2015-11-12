@@ -96,7 +96,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     const classMap = _.indexBy(vm.classes, klass => klass.id);
     searchClassModal.open(getModel().references, classMap).result
       .then(result => {
-        if (result.conceptId) {
+        if (result.concept) {
           createClass(result);
         } else {
           assignClassToModel(result);
@@ -105,7 +105,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
   }
 
   function createClass(conceptData) {
-    classService.newClass(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, languageService.getModelLanguage())
+    classService.newClass(getModel().context, getModel().id, conceptData.label, conceptData.concept.id, languageService.getModelLanguage())
       .then(klass => updateSelectionView(klass, true));
   }
 
@@ -122,7 +122,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     const predicateMap = _.indexBy(vm.predicates, (predicate) => predicate.id);
     searchPredicateModal.open(getModel().references, type, predicateMap).result
       .then(result => {
-        if (result.conceptId) {
+        if (result.concept) {
           createPredicate(result);
         } else {
           assignPredicateToModel(result, type);
@@ -131,7 +131,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
   }
 
   function createPredicate(conceptData) {
-    predicateService.newPredicate(getModel().context, getModel().id, conceptData.label, conceptData.conceptId, conceptData.type, languageService.getModelLanguage())
+    predicateService.newPredicate(getModel().context, getModel().id, conceptData.label, conceptData.concept.id, conceptData.type, languageService.getModelLanguage())
       .then(predicate => updateSelectionView(predicate, true));
   }
 

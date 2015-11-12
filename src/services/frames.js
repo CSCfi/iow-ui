@@ -35,7 +35,7 @@ function addToContext(context, values) {
 
 function groupListFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label,comment,homepage})
+    '@context': addToContext(data['@context'], {label, comment, homepage})
   };
 }
 
@@ -92,14 +92,15 @@ function predicateListFrame(data) {
 }
 
 function predicateFrame(data) {
-  return {
-    '@context': addToContext(data['@context'], {label, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo}),
+  const result = {
+    '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo}),
     'isDefinedBy': {},
     'subject': {
       '@omitDefault': true,
       '@default': []
     }
   };
+  return result;
 }
 
 function classFrame(data) {

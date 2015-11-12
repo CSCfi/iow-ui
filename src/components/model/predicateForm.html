@@ -1,9 +1,10 @@
 <h2>
   <editable title-edit-only="true" title="Label"><input class="form-control" type="text" localized-input ng-model="predicate.label" /></editable>
 </h2>
-<editable title="Id"><input type="text" id-input ng-model="predicate.idName" /></editable>
+<editable title="Id"><input type="text" id-input ng-model="predicate.curie" /></editable>
 <editable title="Comment"><textarea class="form-control" localized-input ng-model="predicate.comment"></textarea></editable>
 <editable title="Range" ng-if="predicate.isAttribute()"><range-select range="predicate.range"></range-select></editable>
 <editable title="Value class" ng-if="predicate.isAssociation()"><class-select class-name="predicate.range"></class-select></editable>
 <div class="model-view__title" translate>Is defined by</div>
 <div>{{predicate.modelId}}</div>
+<editable-subject-select references="references" type="predicate" subject="predicate.subject"></editable-subject-select>

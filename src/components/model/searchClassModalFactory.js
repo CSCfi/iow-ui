@@ -70,7 +70,7 @@ function SearchClassController($uibModalInstance, classService, languageService,
   };
 
   vm.createNewClass = () => {
-    return searchConceptModal.open(references, 'Define concept for the new class').result.then(result => {
+    return searchConceptModal.openNewCreation(references, 'class').result.then(result => {
       $uibModalInstance.close(result);
     });
   };

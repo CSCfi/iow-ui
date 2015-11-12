@@ -21,7 +21,7 @@ msgstr ""
 msgid "Add model"
 msgstr ""
 
-#: components/model/selectionView.html:10
+#: components/model/selectionView.html:11
 msgid "Add property"
 msgstr ""
 
@@ -42,8 +42,8 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:153
-#: translations/misc.html:10
+#: components/model/searchConceptModalFactory.js:163
+#: translations/misc.html:12
 msgid "and create new"
 msgstr ""
 
@@ -76,19 +76,23 @@ msgstr ""
 #: components/modal/editInProgressModal.html:14
 #: components/model/addConceptModal.html:31
 #: components/model/searchClassModal.html:59
-#: components/model/searchConceptModal.html:43
+#: components/model/searchConceptModal.html:45
 #: components/model/searchPredicateModal.html:78
 #: components/model/searchSchemeModal.html:32
 msgid "Cancel"
 msgstr ""
 
 #: components/model/modelView.html:3
-#: components/model/selectionView.html:4
+#: components/model/selectionView.html:5
 msgid "Cancel edit"
 msgstr ""
 
 #: components/model/classSelect.html:2
 msgid "Choose class"
+msgstr ""
+
+#: components/model/editableSubjectSelect.html:20
+msgid "Choose subject"
 msgstr ""
 
 #: components/model/searchClassModal.html:17
@@ -100,6 +104,7 @@ msgid "Classes"
 msgstr ""
 
 #: components/model/addConceptModal.html:16
+#: components/model/editableSubjectSelect.html:15
 #: components/model/propertyPredicateView.html:5
 #: components/model/searchConceptModal.html:27
 msgid "Comment"
@@ -114,7 +119,7 @@ msgstr ""
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: components/model/searchConceptModal.html:39
+#: components/model/searchConceptModal.html:41
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
 
@@ -128,7 +133,6 @@ msgstr ""
 
 #: components/group/addModelModal.html:26
 #: components/model/addConceptModal.html:32
-#: components/model/searchConceptModal.html:44
 msgid "Create new"
 msgstr ""
 
@@ -149,18 +153,26 @@ msgid "Data language"
 msgstr ""
 
 #: translations/misc.html:4
-msgid "Define concept for the new class"
+msgid "Define concept for the class"
 msgstr ""
 
 #: translations/misc.html:5
+msgid "Define concept for the new class"
+msgstr ""
+
+#: translations/misc.html:7
 msgid "Define concept for the new predicate"
 msgstr ""
 
 #: translations/misc.html:6
+msgid "Define concept for the predicate"
+msgstr ""
+
+#: translations/misc.html:8
 msgid "Delete class"
 msgstr ""
 
-#: translations/misc.html:7
+#: translations/misc.html:9
 msgid "Delete predicate"
 msgstr ""
 
@@ -173,7 +185,7 @@ msgid "Delete reference"
 msgstr ""
 
 #: components/model/modelView.html:5
-#: components/model/selectionView.html:6
+#: components/model/selectionView.html:7
 msgid "Edit"
 msgstr ""
 
@@ -185,10 +197,11 @@ msgstr ""
 msgid "eDuuni information"
 msgstr ""
 
-#: translations/misc.html:11
+#: translations/misc.html:13
 msgid "Example"
 msgstr ""
 
+#: components/model/editableSubjectSelect.html:7
 #: components/model/modelView.html:19
 msgid "Id"
 msgstr ""
@@ -208,7 +221,8 @@ msgstr ""
 
 #: components/group/addModelModal.html:16
 #: components/model/addConceptModal.html:21
-#: components/model/searchConceptModal.html:30
+#: components/model/editableSubjectSelect.html:11
+#: components/model/searchConceptModal.html:31
 msgid "Label"
 msgstr ""
 
@@ -230,7 +244,11 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:150
+#: components/model/editableSubjectSelect.html:4
+msgid "Not defined"
+msgstr ""
+
+#: components/model/searchConceptModalFactory.js:160
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -280,13 +298,13 @@ msgid "Requires"
 msgstr ""
 
 #: components/model/modelView.html:4
-#: components/model/selectionView.html:5
+#: components/model/selectionView.html:6
 msgid "Save changes"
 msgstr ""
 
 #: components/model/modelView.html:10
 #: components/model/searchPredicateModal.html:69
-#: components/model/selectionView.html:14
+#: components/model/selectionView.html:15
 msgid "Save failed"
 msgstr ""
 
@@ -322,13 +340,17 @@ msgstr ""
 msgid "Search schemes"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:153
-#: translations/misc.html:8
+#: components/model/editableSubjectSelect.html:3
+msgid "Subject"
+msgstr ""
+
+#: components/model/searchConceptModalFactory.js:163
+#: translations/misc.html:10
 msgid "suggest"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:133
-#: translations/misc.html:9
+#: components/model/searchConceptModalFactory.js:143
+#: translations/misc.html:11
 msgid "suggestion"
 msgstr ""
 
@@ -338,6 +360,10 @@ msgstr ""
 
 #: components/model/propertyPredicateView.html:9
 msgid "Type"
+msgstr ""
+
+#: translations/misc.html:15
+msgid "Use"
 msgstr ""
 
 #: components/model/searchClassModal.html:60
@@ -352,7 +378,7 @@ msgstr ""
 msgid "Use scheme"
 msgstr ""
 
-#: translations/misc.html:12
+#: translations/misc.html:14
 msgid "Value class"
 msgstr ""
 

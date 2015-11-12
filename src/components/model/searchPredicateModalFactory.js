@@ -90,12 +90,12 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   };
 
   vm.createNew = (selectionOwlType) => {
-    return searchConceptModal.open(references, 'Define concept for the new predicate').result
+    return searchConceptModal.openNewCreation(references, 'predicate').result
       .then(result => {
         if (!vm.typeSelectable) {
           $uibModalInstance.close(_.extend(result, {type: selectionOwlType}));
         } else {
-          predicateService.newPredicate(model.context, model.id, result.label, result.conceptId, selectionOwlType, languageService.getModelLanguage())
+          predicateService.newPredicate(model.context, model.id, result.label, result.concept.id, selectionOwlType, languageService.getModelLanguage())
             .then(predicate => {
               vm.selectedPredicate = predicate;
               $scope.formController.editing = true;

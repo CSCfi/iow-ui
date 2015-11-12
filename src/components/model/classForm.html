@@ -1,7 +1,7 @@
 <h2>
   <editable title-edit-only="true" title="Label"><input class="form-control" type="text" localized-input ng-model="class.label"/></editable>
 </h2>
-<editable title="Id"><input class="form-control" type="text" id-input ng-model="class.idName" /></editable>
+<editable title="Id"><input class="form-control" type="text" id-input ng-model="class.curie" /></editable>
 <editable title="Comment"><textarea class="form-control" localized-input ng-model="class.comment"></textarea></editable>
 <div ng-show="class.subClassOf">
   <div class="model-view__title" translate>Superclass</div>
@@ -9,6 +9,7 @@
 </div>
 <div class="model-view__title" translate>Is defined by</div>
 <div>{{class.modelId}}</div>
+<editable-subject-select references="references" type="class" subject="class.subject"></editable-subject-select>
 
 <uib-accordion close-others="true">
   <uib-accordion-group ng-repeat="property in class.properties" is-open="isOpen[property.id]">

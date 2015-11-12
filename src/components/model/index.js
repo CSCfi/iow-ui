@@ -14,6 +14,7 @@ mod.directive('propertyView', require('./propertyView'));
 mod.directive('propertyPredicateView', require('./propertyPredicateView'));
 mod.directive('rangeSelect', require('./rangeSelect'));
 mod.directive('classSelect', require('./classSelect'));
+mod.directive('editableSubjectSelect', require('./editableSubjectSelect'));
 
 mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
 mod.factory('searchClassModal', require('./searchClassModalFactory'));
