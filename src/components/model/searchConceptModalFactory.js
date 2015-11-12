@@ -39,7 +39,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
   vm.defineConceptTitle = `Define concept for the ${newCreation ? 'new ' : ''}${type}`;
   vm.buttonTitle = newCreation ? 'Create new' : 'Use';
   vm.newCreation = newCreation;
-  vm.normalize = normalize;
+  vm.mapSelection = mapSelection;
 
   vm.options = {
     hint: false,
@@ -48,25 +48,19 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
     editable: false
   };
 
-  function normalize(concept) {
-    if (concept.type === 'conceptSuggestion') {
-      return {
-        id: concept.id,
-        label: languageService.translate(concept.label),
-        comment: languageService.translate(concept.comment)
-      };
+  function mapSelection(selection) {
+    if (!selection) {
+      return null;
+    } else if (selection.type === 'conceptSuggestion') {
+      return selection;
     } else {
-      return {
-        id: concept.uri,
-        label: concept.prefLabel,
-        comment: concept['skos:definition'] || concept['rdfs:comment']
-      };
+      // FIXME: concept framing and mapping pipeline is not working (return conceptService.getConcept(selection.uri);)
+      return conceptService.newConcept(selection.uri, selection.prefLabel, selection.comment, languageService.getModelLanguage());
     }
   }
 
   $scope.$watch('ctrl.concept', (concept) => {
-    vm.normalizedConcept = concept ? normalize(concept) : null;
-    vm.label = concept ? vm.normalizedConcept.label : '';
+    vm.label = concept ? languageService.translate(concept.label) : '';
   });
 
   $scope.$watch('ctrl.vocabularyId', vocabularyId => {
@@ -180,7 +174,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
   }
 
   vm.create = () => {
-    $uibModalInstance.close({concept: normalize(vm.concept), label: vm.label});
+    $uibModalInstance.close(newCreation ? {concept: vm.concept, label: vm.label} : vm.concept);
   };
 
   vm.cancel = () => {
@@ -196,7 +190,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
             .then(conceptId => conceptService.getConceptSuggestion(conceptId))
         }))
       .then(result => {
-        $uibModalInstance.close(result);
+        $uibModalInstance.close(newCreation ? result : result.concept);
       });
   };
 }

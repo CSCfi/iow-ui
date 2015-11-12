@@ -14,13 +14,11 @@ module.exports = function editableSubjectSelect() {
     link($scope, element, attributes, formController) {
       $scope.formController = formController;
     },
-    controller(searchConceptModal, conceptService, languageService) {
+    controller(searchConceptModal) {
       'ngInject';
       const vm = this;
       vm.selectSubject = () => {
-        searchConceptModal.openSelection(vm.references, vm.type).result
-          .then(selection => conceptService.newSubject(selection.conceptId, languageService.getModelLanguage()))
-          .then(subject => vm.subject = subject);
+        searchConceptModal.openSelection(vm.references, vm.type).result.then(concept => vm.subject = concept);
       };
     }
   };

@@ -140,6 +140,13 @@ function conceptSuggestionFrame(data) {
   };
 }
 
+function conceptFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, comment}),
+    inScheme: {}
+  };
+}
+
 function userFrame(data) {
   return {
     '@context': data['@context'],
@@ -157,5 +164,6 @@ module.exports = {
   predicateFrame,
   predicateListFrame,
   conceptSuggestionFrame,
+  conceptFrame,
   userFrame
 };

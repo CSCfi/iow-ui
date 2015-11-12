@@ -96,7 +96,7 @@ class Class {
     this.comment = graph.comment;
     this.subClassOf = graph.subClassOf;
     this.properties = mapAsEntity(context, graph.property, Property, true);
-    this.subject = mapAsEntity(context, graph.subject, Subject, false);
+    this.subject = mapAsEntity(context, graph.subject, Concept, false);
   }
 
   get id() {
@@ -240,7 +240,7 @@ class Predicate extends AbstractPredicate {
     this.curie = graph['@id'];
     this.modelId = graph.isDefinedBy;
     this.range = graph.range;
-    this.subject = mapAsEntity(context, graph.subject, Subject, false);
+    this.subject = mapAsEntity(context, graph.subject, Concept, false);
   }
 
   get id() {
@@ -262,25 +262,27 @@ class Predicate extends AbstractPredicate {
   }
 }
 
-class Subject {
-  constructor(graph) {
-    this.id = graph['@id'];
-    this.label = graph.prefLabel;
-    this.comment = graph.comment;
-    this.serialize = () => (graph);
-  }
-}
-
 class ConceptSuggestion {
   constructor(graph) {
     this.id = graph['@id'];
-    this.uri = graph['@id'];
-    this.comment = graph.comment;
     this.label = graph.label;
+    this.comment = graph.comment;
     this.schemeId = graph.inScheme;
     this.createdAt = graph.atTime;
     this.creator = graph.wasAssociatedWith;
     this.type = 'conceptSuggestion';
+    this.serialize = () => (graph);
+  }
+}
+
+class Concept {
+  constructor(graph) {
+    this.id = graph['@id'];
+    this.label = graph.prefLabel;
+    this.comment = graph.comment;
+    this.schemeId = graph.inScheme;
+    this.type = 'concept';
+    this.serialize = () => (graph);
   }
 }
 
@@ -378,8 +380,7 @@ module.exports = function entities($log) {
     deserializeReference: (data) => new Reference(data),
     deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, false),
     deserializeConceptSuggestions: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true),
-    deserializeConcept: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true),
-    deserializeSubject: (data) => new Subject(data),
+    deserializeConcept: (data) => new Concept(data),
     deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),
     anonymousUser: () => new AnonymousUser()
   };

@@ -20,12 +20,12 @@
 
     <label for="concept" translate>Concept</label>
     <div class="input-group input-group-md">
-      <input id="concept" type="text" class="form-control" autofocus iow-typeahead options="ctrl.options" datasets="ctrl.datasets" required ng-model="ctrl.concept" placeholder="{{'Search from concept database' | translate}}"/>
+      <input id="concept" type="text" class="form-control" autofocus iow-typeahead selection-mapper="ctrl.mapSelection" options="ctrl.options" datasets="ctrl.datasets" required ng-model="ctrl.concept" placeholder="{{'Search from concept database' | translate}}"/>
       <i class="glyphicon glyphicon-search form-control-feedback"></i>
     </div>
 
     <label for="concept" translate>Comment</label>
-    <p>{{ctrl.normalizedConcept.comment}}</p>
+    <p>{{ctrl.concept.comment | translateValue}}</p>
 
     <div ng-if="ctrl.newCreation">
       <label for="name" translate>Label</label>

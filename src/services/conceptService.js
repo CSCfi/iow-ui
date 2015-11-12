@@ -20,13 +20,13 @@ module.exports = function conceptService($http, $q, entities) {
       return $http.get('/api/rest/concept', {params: {uri: id}})
         .then(response => entities.deserializeConcept(response.data));
     },
-    newSubject({id, label, comment}, lang) {
+    newConcept(id, label, comment, lang) {
       return $q.when({
         '@id': id,
         prefLabel: { [lang]: label },
         comment: comment
       })
-      .then(reference => entities.deserializeSubject(reference));
+      .then(reference => entities.deserializeConcept(reference));
     }
   };
 };

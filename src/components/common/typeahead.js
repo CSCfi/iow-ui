@@ -39,12 +39,14 @@ module.exports = function directive($timeout, $q) {
   return {
     scope: {
       options: '=',
-      datasets: '='
+      datasets: '=',
+      selectionMapper: '='
     },
     restrict: 'A',
     require: '?ngModel',
     link($scope, element, attributes, ngModel) {
       const options = $scope.options || {};
+      const selectionMapper = $scope.selectionMapper || $q.when;
 
       let initialized = false;
 
@@ -74,8 +76,12 @@ module.exports = function directive($timeout, $q) {
 
       function updateModel(event, suggestion) {
         $scope.$apply(() => {
-          ngModel.$setViewValue(isNotEditable() ? suggestion : elementValue(event));
-          ngModel.$commitViewValue();
+          $q.when(selectionMapper(isNotEditable() ? suggestion : elementValue(event)))
+            .then(mapped => {
+              ngModel.$setViewValue(mapped);
+              ngModel.$commitViewValue();
+            },
+            err => console.log(err));
         });
       }
 

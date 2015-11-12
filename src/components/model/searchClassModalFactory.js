@@ -70,9 +70,7 @@ function SearchClassController($uibModalInstance, classService, languageService,
   };
 
   vm.createNewClass = () => {
-    return searchConceptModal.openNewCreation(references, 'class').result.then(result => {
-      $uibModalInstance.close(result);
-    });
+    return searchConceptModal.openNewCreation(references, 'class').result.then($uibModalInstance.close);
   };
 
   function localizedLabelAsLower(klass) {
