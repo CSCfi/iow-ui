@@ -3,7 +3,8 @@ module.exports = function editableDirective() {
   return {
     scope: {
       title: '@',
-      titleEditOnly: '@'
+      titleEditOnly: '@',
+      valueAsLocalizationKey: '@'
     },
     restrict: 'E',
     template: require('./editable.html'),
@@ -13,12 +14,12 @@ module.exports = function editableDirective() {
       $scope.formController = formController;
       $scope.ngModel = element.find('[ng-model]').controller('ngModel');
     },
-    controller($scope, languageService) {
+    controller($scope, languageService, gettextCatalog) {
       'ngInject';
 
       $scope.displayValue = () => {
         const value = $scope.ngModel && $scope.ngModel.$modelValue;
-        return typeof value === 'object' ? languageService.translate(value) : value;
+        return typeof value === 'object' ? languageService.translate(value) : $scope.valueAsLocalizationKey ? gettextCatalog.getString(value) : value;
       };
     }
   };

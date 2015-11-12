@@ -25,6 +25,7 @@ class Model {
     this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
+    this.state = graph.versionInfo;
     this.references = mapAsEntity(context, graph.references, Reference, true);
     this.requires = mapAsEntity(context, graph.requires, Require, true);
   }
@@ -47,6 +48,7 @@ class Model {
         {
           label: this.label,
           comment: this.comment,
+          versionInfo: this.state,
           references: _.map(this.references, reference => reference.serialize()),
           requires: _.map(this.requires, require => require.serialize())
         }
@@ -95,6 +97,7 @@ class Class {
     this.label = graph.label;
     this.comment = graph.comment;
     this.subClassOf = graph.subClassOf;
+    this.state = graph.versionInfo;
     this.properties = mapAsEntity(context, graph.property, Property, true);
     this.subject = mapAsEntity(context, graph.subject, Concept, false);
   }
@@ -139,6 +142,7 @@ class Class {
           label: this.label,
           comment: this.comment,
           subClassOf: this.subClassOf,
+          versionInfo: this.state,
           property: _.map(this.properties, property => property.serialize()),
           subject: this.subject && this.subject.serialize()
         }
@@ -240,6 +244,7 @@ class Predicate extends AbstractPredicate {
     this.curie = graph['@id'];
     this.modelId = graph.isDefinedBy;
     this.range = graph.range;
+    this.state = graph.versionInfo;
     this.subject = mapAsEntity(context, graph.subject, Concept, false);
   }
 
@@ -255,6 +260,7 @@ class Predicate extends AbstractPredicate {
           label: this.label,
           comment: this.comment,
           range: this.range,
+          versionInfo: this.state,
           subject: this.subject && this.subject.serialize()
         }
       )

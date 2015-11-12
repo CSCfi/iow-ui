@@ -49,7 +49,7 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: components/model/searchConceptModalFactory.js:163 translations/misc.html:12
+#: components/model/searchConceptModalFactory.js:157 translations/misc.html:12
 msgid "and create new"
 msgstr "ja luo uusi"
 
@@ -191,6 +191,14 @@ msgstr "Poista ominaisuus"
 msgid "Delete reference"
 msgstr "Poista sanasto"
 
+#: translations/misc.html:20
+msgid "Deprecated"
+msgstr "Käytöstä poistunut"
+
+#: translations/misc.html:18
+msgid "Draft"
+msgstr "Keskeneräinen"
+
 #: components/model/modelView.html:5 components/model/selectionView.html:7
 msgid "Edit"
 msgstr "Muokkaa"
@@ -256,7 +264,7 @@ msgstr "Nimi"
 msgid "Not defined"
 msgstr "Ei määritelty"
 
-#: components/model/searchConceptModalFactory.js:160 translations/misc.html:3
+#: components/model/searchConceptModalFactory.js:154 translations/misc.html:3
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
 
@@ -287,6 +295,10 @@ msgstr "Arvoalue"
 #: translations/attribute.html:5
 msgid "rdf:langString"
 msgstr "Kieliversioitu teksti"
+
+#: translations/misc.html:19
+msgid "Recommendation"
+msgstr "Suositus"
 
 #: components/model/searchConceptModal.html:11
 msgid "Reference"
@@ -348,15 +360,19 @@ msgstr "Hae sanastoa…"
 msgid "Search schemes"
 msgstr "Hae sanastoja"
 
+#: translations/misc.html:16
+msgid "State"
+msgstr "Tila"
+
 #: components/model/editableSubjectSelect.html:3
 msgid "Subject"
 msgstr "Käsite"
 
-#: components/model/searchConceptModalFactory.js:163 translations/misc.html:10
+#: components/model/searchConceptModalFactory.js:157 translations/misc.html:10
 msgid "suggest"
 msgstr "ehdota"
 
-#: components/model/searchConceptModalFactory.js:143 translations/misc.html:11
+#: components/model/searchConceptModalFactory.js:137 translations/misc.html:11
 msgid "suggestion"
 msgstr "ehdotus"
 
@@ -367,6 +383,10 @@ msgstr "Yläluokka"
 #: components/model/propertyPredicateView.html:9
 msgid "Type"
 msgstr "Tyyppi"
+
+#: translations/misc.html:17
+msgid "Unstable"
+msgstr "Epävakaa"
 
 #: translations/misc.html:15
 msgid "Use"

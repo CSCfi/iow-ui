@@ -27,16 +27,12 @@ module.exports = function rangeSelect() {
       range: '='
     },
     restrict: 'E',
-    template: `<select class="editable-input form-control" ng-model="range">
-                 <option value="" translate>Not defined</option>
-                 <option ng-repeat="value in ctrl.values" value="{{value}}">{{ctrl.displayName(value)}}</option>
-               </select>`,
+    template: '<value-select values="ctrl.ranges" value="ctrl.range"></value-select>',
     controllerAs: 'ctrl',
     bindToController: true,
-    controller(gettextCatalog) {
+    controller() {
       'ngInject';
-      this.values = attributeValues;
-      this.displayName = (text) => text && `${gettextCatalog.getString(text)} (${text})`;
+      this.ranges = attributeValues;
     }
   };
 };
