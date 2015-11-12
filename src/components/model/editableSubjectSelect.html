@@ -13,7 +13,7 @@
       </div>
       <div ng-if="ctrl.subject.comment">
         <div class="model-view__title" translate>Comment</div>
-        <div>{{ctrl.subject.comment}}</div>
+        <div>{{ctrl.subject.comment | translateValue}}</div>
       </div>
     </div>
     <div ng-class="{'model-view__sub': ctrl.subject}">

@@ -188,11 +188,12 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
   };
 
   vm.addConcept = (conceptLabel, referenceId) => {
-    addConceptModal.open(defineConceptTitle, conceptLabel, _.findWhere(references, {id: referenceId})).result
+    addConceptModal.open(vm.defineConceptTitle, conceptLabel, _.findWhere(references, {id: referenceId})).result
       .then(result => $q.all(
         {
           label: result.label,
-          conceptId: conceptService.createConceptSuggestion(Object.assign(result.concept, {lang: languageService.getModelLanguage()}))
+          concept: conceptService.createConceptSuggestion(Object.assign(result.concept, {lang: languageService.getModelLanguage()}))
+            .then(conceptId => conceptService.getConceptSuggestion(conceptId))
         }))
       .then(result => {
         $uibModalInstance.close(result);
