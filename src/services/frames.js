@@ -17,6 +17,7 @@ const references = { '@id': 'http://purl.org/dc/terms/references', '@type': '@id
 const requires = { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' };
 const imports = { '@id': 'http://www.w3.org/2002/07/owl#imports', '@type': '@id' };
 const versionInfo = { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' };
+const homepage = { '@id': 'http://xmlns.com/foaf/0.1/homepage' };
 const hasPart = { '@id': 'http://purl.org/dc/terms/hasPart', '@type': '@id' };
 const preferredXMLNamespaceName = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
 const preferredXMLNamespacePrefix = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
@@ -34,7 +35,7 @@ function addToContext(context, values) {
 
 function groupListFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label})
+    '@context': addToContext(data['@context'], {label,comment,homepage})
   };
 }
 

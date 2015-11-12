@@ -7,6 +7,7 @@ class GroupListItem {
   constructor(graph) {
     this.id = graph['@id'];
     this.label = graph.label;
+    this.homepage = graph.homepage;
   }
 }
 
