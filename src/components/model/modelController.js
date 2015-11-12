@@ -97,15 +97,15 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     searchClassModal.open(getModel().references, classMap).result
       .then(result => {
         if (result.concept) {
-          createClass(result);
+          createClass(result.concept, result.label);
         } else {
           assignClassToModel(result);
         }
       });
   }
 
-  function createClass(conceptData) {
-    classService.newClass(getModel().context, getModel().id, conceptData.label, conceptData.concept.id, languageService.getModelLanguage())
+  function createClass(concept, label) {
+    classService.newClass(getModel().context, getModel().id, label, concept.id, languageService.getModelLanguage())
       .then(klass => updateSelectionView(klass, true));
   }
 
@@ -123,15 +123,15 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     searchPredicateModal.open(getModel().references, type, predicateMap).result
       .then(result => {
         if (result.concept) {
-          createPredicate(result);
+          createPredicate(result.concept, result.label, result.type);
         } else {
           assignPredicateToModel(result, type);
         }
       });
   }
 
-  function createPredicate(conceptData) {
-    predicateService.newPredicate(getModel().context, getModel().id, conceptData.label, conceptData.concept.id, conceptData.type, languageService.getModelLanguage())
+  function createPredicate(concept, label, type) {
+    predicateService.newPredicate(getModel().context, getModel().id, label, concept.id, type, languageService.getModelLanguage())
       .then(predicate => updateSelectionView(predicate, true));
   }
 

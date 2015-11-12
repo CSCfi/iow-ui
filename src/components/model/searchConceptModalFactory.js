@@ -180,7 +180,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
   }
 
   vm.create = () => {
-    $uibModalInstance.close({conceptId: normalize(vm.concept), label: vm.label});
+    $uibModalInstance.close({concept: normalize(vm.concept), label: vm.label});
   };
 
   vm.cancel = () => {
