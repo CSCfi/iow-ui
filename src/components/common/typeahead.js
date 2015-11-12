@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function directive($timeout) {
+module.exports = function directive($timeout, $q) {
   'ngInject';
 
   function normalizeAsArray(obj) {
@@ -74,11 +74,7 @@ module.exports = function directive($timeout) {
 
       function updateModel(event, suggestion) {
         $scope.$apply(() => {
-          if (isNotEditable()) {
-            ngModel.$setViewValue(suggestion);
-          } else {
-            ngModel.$setViewValue(elementValue(event));
-          }
+          ngModel.$setViewValue(isNotEditable() ? suggestion : elementValue(event));
           ngModel.$commitViewValue();
         });
       }
