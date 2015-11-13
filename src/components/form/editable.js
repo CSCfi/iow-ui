@@ -19,7 +19,9 @@ module.exports = function editableDirective() {
 
       $scope.displayValue = () => {
         const value = $scope.ngModel && $scope.ngModel.$modelValue;
-        return typeof value === 'object' ? languageService.translate(value) : $scope.valueAsLocalizationKey ? gettextCatalog.getString(value) : value;
+        if (value) {
+          return typeof value === 'object' ? languageService.translate(value) : $scope.valueAsLocalizationKey ? gettextCatalog.getString(value) : value;
+        }
       };
     }
   };
