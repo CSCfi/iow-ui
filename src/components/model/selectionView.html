@@ -2,7 +2,7 @@
   <div class="col-md-7">
     <div class="component">
       <div class="component-header">
-        <h3>{{ctrl.selection | translateLabel}}</h3>
+        <h3><span ng-class="ctrl.selection.glyphIconClass()"></span> {{ctrl.selection | translateLabel}}</h3>
       </div>
 
       <form>
