@@ -18,6 +18,7 @@ const requires = { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' };
 const imports = { '@id': 'http://www.w3.org/2002/07/owl#imports', '@type': '@id' };
 const versionInfo = { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' };
 const homepage = { '@id': 'http://xmlns.com/foaf/0.1/homepage' };
+const name = { '@id': 'http://xmlns.com/foaf/0.1/name' };
 const hasPart = { '@id': 'http://purl.org/dc/terms/hasPart', '@type': '@id' };
 const preferredXMLNamespaceName = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
 const preferredXMLNamespacePrefix = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
@@ -87,7 +88,7 @@ function propertyFrame(data) {
 function predicateListFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label, range, modified, isDefinedBy, comment}),
-    isDefinedBy: {}
+    'isDefinedBy': {}
   };
 }
 
@@ -123,7 +124,7 @@ function classFrame(data) {
   return {
     '@context': addToContext(data['@context'], contextValues),
     '@type': 'sh:ShapeClass',
-    isDefinedBy: {}
+    'isDefinedBy': {}
   };
 }
 
@@ -136,21 +137,21 @@ function classListFrame(data) {
 function conceptSuggestionFrame(data) {
   return {
     '@context': addToContext(data['@context'], {label, comment}),
-    inScheme: {}
+    'inScheme': {}
   };
 }
 
 function conceptFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, comment}),
-    inScheme: {}
+    '@context': addToContext(data['@context'], {prefLabel, comment}),
+    'inScheme': {}
   };
 }
 
 function userFrame(data) {
   return {
     '@context': data['@context'],
-    'foaf:name': {}
+    'name': {}
   };
 }
 

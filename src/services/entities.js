@@ -299,7 +299,7 @@ class User {
     this.type = 'person';
     this.createdAt = graph.created;
     this.modifiedAt = graph.modified;
-    this.name = graph['foaf:name'];
+    this.name = graph.name;
   }
 
   isLoggedIn() {
