@@ -9,6 +9,7 @@ const datatype = { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' 
 const subClassOf = { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' };
 const property = { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' };
 const modified = { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' };
+const created = { '@id': 'http://purl.org/dc/terms/created', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' };
 const isDefinedBy = { '@id': 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', '@type': '@id' };
 const predicate = { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' };
 const valueClass = { '@id': 'http://www.w3.org/ns/shacl#valueClass', '@type': '@id' };
@@ -18,7 +19,7 @@ const requires = { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' };
 const imports = { '@id': 'http://www.w3.org/2002/07/owl#imports', '@type': '@id' };
 const versionInfo = { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' };
 const homepage = { '@id': 'http://xmlns.com/foaf/0.1/homepage' };
-const name = { '@id': 'http://xmlns.com/foaf/0.1/name' };
+const name = { '@id': 'http://xmlns.com/foaf/0.1/name'};
 const hasPart = { '@id': 'http://purl.org/dc/terms/hasPart', '@type': '@id' };
 const preferredXMLNamespaceName = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
 const preferredXMLNamespacePrefix = { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix', '@type': 'http://www.w3.org/2001/XMLSchema#string' };
@@ -26,6 +27,7 @@ const identifier = { '@id': 'http://purl.org/dc/terms/identifier', '@type': 'htt
 const range = { '@id': 'http://www.w3.org/2000/01/rdf-schema#range', '@type': '@id' };
 const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
 const isPartOf = { '@id': 'http://purl.org/dc/terms/isPartOf', '@type': '@id' };
+const isAdminOf = { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' };
 
 function addToContext(context, values) {
   return _.chain(context)
@@ -95,11 +97,7 @@ function predicateListFrame(data) {
 function predicateFrame(data) {
   const result = {
     '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo}),
-    'isDefinedBy': {},
-    'subject': {
-      '@omitDefault': true,
-      '@default': []
-    }
+    'isDefinedBy': {}
   };
   return result;
 }
@@ -118,6 +116,7 @@ function classFrame(data) {
     nodeKind,
     example,
     datatype,
+    subject,
     versionInfo
   };
 
@@ -150,8 +149,8 @@ function conceptFrame(data) {
 
 function userFrame(data) {
   return {
-    '@context': data['@context'],
-    'name': {}
+    '@context': addToContext(data['@context'], {name,isPartOf,isAdminOf,created,modified}),
+    'name':{}
   };
 }
 

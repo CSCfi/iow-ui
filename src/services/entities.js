@@ -299,6 +299,8 @@ class User {
     this.type = 'person';
     this.createdAt = graph.created;
     this.modifiedAt = graph.modified;
+    this.isAdminOf = graph.isAdminOf;
+    this.isPartOf = graph.isPartOf;
     this.name = graph.name;
   }
 
