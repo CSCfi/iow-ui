@@ -4,6 +4,7 @@ module.exports = function directive($window, userService) {
     restrict: 'A',
     link($scope, element, attributes) {
       const minHeight = attributes.windowHeight === 'min';
+      const noScroll = attributes.windowHeight === 'no-scroll';
 
       function getPadding() {
         const padding = attributes.padding || 0;
@@ -16,7 +17,7 @@ module.exports = function directive($window, userService) {
         if (minHeight) {
           element.css('min-height', height + 'px');
         } else {
-          element.css('overflow-y', 'scroll').css('height', height + 'px');
+          element.css('overflow-y', noScroll ? 'hidden' : 'scroll').css('height', height + 'px');
         }
       }
 

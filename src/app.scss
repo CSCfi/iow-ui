@@ -11,7 +11,7 @@
 }
 
 .editable-content {
-  padding: 20px;
+  @include clearfix;
 }
 
 .component {
@@ -34,7 +34,7 @@
 
 .model-header {
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 15px;
   border: solid 1px #ddd;
 
   h2 {

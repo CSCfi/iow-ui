@@ -25,7 +25,7 @@ $navbarWidth: 275px;
 
   ul.nav {
     margin-right: 0;
-    padding: 9px;
+    padding: 9px 0;
   }
 
   .add-class-button {
@@ -64,7 +64,11 @@ $navbarWidth: 275px;
 .model-panel--right {
   float: right;
   width: calc(100% - #{$navbarWidth});
-  padding: 10px 20px;
+  padding: 10px 0;
+
+  .col-md-8, .col-md-4 {
+    padding: 0 0 0 10px;
+  }
 }
 
 .model-panel__selection {
