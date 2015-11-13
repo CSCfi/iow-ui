@@ -9,11 +9,17 @@ $navbarWidth: 275px;
   float: left;
   border-right: solid 1px #ddd;
 
-  .nav-tabs li {
-    width: 33%;
+  .nav-tabs {
 
-    > a {
-      padding: 10px 0 0 0;
+    border-bottom: none;
+
+    li {
+
+      width: 33%;
+
+      > a {
+        padding: 10px 0 0 0;
+      }
     }
   }
 
