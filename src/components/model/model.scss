@@ -64,7 +64,7 @@ $navbarWidth: 275px;
 .model-panel--right {
   float: right;
   width: calc(100% - #{$navbarWidth});
-  padding: 15px;
+  padding: 10px 20px;
 }
 
 .model-panel__selection {

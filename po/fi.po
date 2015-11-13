@@ -12,10 +12,6 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: components/model/modelView.html:6
-msgid "{{ctrl.togglingText()}}"
-msgstr ""
-
 #: components/model/model.html:48
 msgid "Add association"
 msgstr "Lisää assosiaatio"
@@ -32,11 +28,11 @@ msgstr "Lisää luokka"
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
-#: components/model/selectionView.html:11
+#: components/model/selectionView.html:19
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/model/modelView.html:7
+#: components/model/modelView.html:12
 msgid "Add reference"
 msgstr "Lisää sanasto"
 
@@ -92,7 +88,7 @@ msgstr "Selaa"
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: components/model/modelView.html:3 components/model/selectionView.html:5
+#: components/model/modelView.html:9 components/model/selectionView.html:13
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
@@ -203,7 +199,7 @@ msgstr "Käytöstä poistunut"
 msgid "Draft"
 msgstr "Luonnos"
 
-#: components/model/modelView.html:5 components/model/selectionView.html:7
+#: components/model/modelView.html:11 components/model/selectionView.html:15
 msgid "Edit"
 msgstr "Muokkaa"
 
@@ -226,7 +222,7 @@ msgid "Hide"
 msgstr "Piilota"
 
 #: components/model/editableSubjectSelect.html:7
-#: components/model/modelView.html:24
+#: components/model/modelView.html:22
 msgid "Id"
 msgstr "Tunniste"
 
@@ -238,7 +234,7 @@ msgstr "Tunniste"
 msgid "IOW header"
 msgstr "Otsikko tähän"
 
-#: components/model/classForm.html:10 components/model/predicateForm.html:8
+#: components/model/classForm.html:8 components/model/predicateForm.html:8
 msgid "Is defined by"
 msgstr "Kirjasto"
 
@@ -324,13 +320,13 @@ msgstr "Luo tunnukset"
 msgid "Requires"
 msgstr "Nimiavaruudet"
 
-#: components/model/modelView.html:4 components/model/selectionView.html:6
+#: components/model/modelView.html:10 components/model/selectionView.html:14
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: components/model/modelView.html:11
+#: components/model/modelView.html:16
 #: components/model/searchPredicateModal.html:69
-#: components/model/selectionView.html:15
+#: components/model/selectionView.html:23
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
 
@@ -388,7 +384,7 @@ msgstr "ehdota"
 msgid "suggestion"
 msgstr "ehdotus"
 
-#: components/model/classForm.html:7
+#: components/model/classForm.html:5
 msgid "Superclass"
 msgstr "Yläluokka"
 
@@ -419,6 +415,10 @@ msgstr "Käytä sanastoa"
 #: translations/misc.html:14
 msgid "Value class"
 msgstr "Kohde"
+
+#: components/model/selectionView.html:38
+msgid "Visualization"
+msgstr "Visualisointi"
 
 #: translations/attribute.html:6
 msgid "xsd:anyURI"

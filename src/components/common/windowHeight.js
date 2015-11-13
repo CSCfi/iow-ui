@@ -1,17 +1,13 @@
 module.exports = function directive($window, userService) {
   'ngInject';
   return {
-    scope: {
-      padding: '=',
-      loggedInPadding: '='
-    },
     restrict: 'A',
     link($scope, element, attributes) {
       const minHeight = attributes.windowHeight === 'min';
 
       function getPadding() {
-        const padding = $scope.padding || 0;
-        const loggedInPadding = $scope.loggedInPadding || padding;
+        const padding = attributes.padding || 0;
+        const loggedInPadding = attributes.loggedInPadding || padding;
         return userService.isLoggedIn() ? loggedInPadding : padding;
       }
 

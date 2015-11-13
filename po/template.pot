@@ -4,10 +4,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: components/model/modelView.html:6
-msgid "{{ctrl.togglingText()}}"
-msgstr ""
-
 #: components/model/model.html:48
 msgid "Add association"
 msgstr ""
@@ -25,11 +21,11 @@ msgstr ""
 msgid "Add model"
 msgstr ""
 
-#: components/model/selectionView.html:11
+#: components/model/selectionView.html:19
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:7
+#: components/model/modelView.html:12
 msgid "Add reference"
 msgstr ""
 
@@ -86,8 +82,8 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: components/model/modelView.html:3
-#: components/model/selectionView.html:5
+#: components/model/modelView.html:9
+#: components/model/selectionView.html:13
 msgid "Cancel edit"
 msgstr ""
 
@@ -196,8 +192,8 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: components/model/modelView.html:5
-#: components/model/selectionView.html:7
+#: components/model/modelView.html:11
+#: components/model/selectionView.html:15
 msgid "Edit"
 msgstr ""
 
@@ -218,7 +214,7 @@ msgid "Hide"
 msgstr ""
 
 #: components/model/editableSubjectSelect.html:7
-#: components/model/modelView.html:24
+#: components/model/modelView.html:22
 msgid "Id"
 msgstr ""
 
@@ -230,7 +226,7 @@ msgstr ""
 msgid "IOW header"
 msgstr ""
 
-#: components/model/classForm.html:10
+#: components/model/classForm.html:8
 #: components/model/predicateForm.html:8
 msgid "Is defined by"
 msgstr ""
@@ -317,14 +313,14 @@ msgstr ""
 msgid "Requires"
 msgstr ""
 
-#: components/model/modelView.html:4
-#: components/model/selectionView.html:6
+#: components/model/modelView.html:10
+#: components/model/selectionView.html:14
 msgid "Save changes"
 msgstr ""
 
-#: components/model/modelView.html:11
+#: components/model/modelView.html:16
 #: components/model/searchPredicateModal.html:69
-#: components/model/selectionView.html:15
+#: components/model/selectionView.html:23
 msgid "Save failed"
 msgstr ""
 
@@ -382,7 +378,7 @@ msgstr ""
 msgid "suggestion"
 msgstr ""
 
-#: components/model/classForm.html:7
+#: components/model/classForm.html:5
 msgid "Superclass"
 msgstr ""
 
@@ -412,6 +408,10 @@ msgstr ""
 
 #: translations/misc.html:14
 msgid "Value class"
+msgstr ""
+
+#: components/model/selectionView.html:38
+msgid "Visualization"
 msgstr ""
 
 #: translations/attribute.html:6

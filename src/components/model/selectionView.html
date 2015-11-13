@@ -1,22 +1,43 @@
-<form>
-  <div ng-if="ctrl.selection">
-    <div class="top-actions" float="top-actions-placeholder" preserve-parent-width="true" top-offset="8">
-      <model-language-chooser></model-language-chooser>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.remove()" ng-show="ctrl.canRemove()">
-        {{ctrl.selection.isClass() ? 'Delete class' : 'Delete predicate' | translate}}
-      </button>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canAddProperty()" translate>Add property</button>
-
-      <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span translate>Save failed</span>
+<div class="row">
+  <div class="col-md-8">
+    <div class="component">
+      <div class="component-header">
+        <h3>{{ctrl.selection | translateLabel}}</h3>
       </div>
-    </div>
 
-    <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit" references="modelController.getModel().references"></class-form>
-    <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selectionInEdit" references="modelController.getModel().references"></predicate-form>
+      <form>
+        <div ng-if="ctrl.selection">
+
+          <div class="top-actions" float preserve-parent-width="true">
+            <model-language-chooser></model-language-chooser>
+            <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
+            <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
+            <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
+            <button type="button" class="btn btn-default right" ng-click="ctrl.remove()" ng-show="ctrl.canRemove()">
+              {{ctrl.selection.isClass() ? 'Delete class' : 'Delete predicate' | translate}}
+            </button>
+            <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canAddProperty()" translate>Add property</button>
+
+            <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span translate>Save failed</span>
+            </div>
+          </div>
+
+          <div class="selection-form">
+            <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit" references="modelController.getModel().references"></class-form>
+            <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selectionInEdit" references="modelController.getModel().references"></predicate-form>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
-</form>
+  <div class="col-md-4" style="padding-left: 5px">
+    <div class="component" float preserve-parent-width="true" top-offset="8">
+      <div class="component-header">
+        <h3 translate>Visualization</h3>
+      </div>
+      <div window-height padding="80"></div>
+    </div>
+  </div>
+</div>

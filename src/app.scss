@@ -10,6 +10,41 @@
   display: none !important;
 }
 
+.editable-content {
+  padding: 20px;
+}
+
+.component {
+  border: solid 1px #ddd;
+}
+
+.selection-form {
+  padding: 15px;
+}
+
+.component-header {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-bottom: solid 1px #ddd;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.model-header {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border: solid 1px #ddd;
+
+  h2 {
+    margin: 0;
+  }
+
+  button {
+    float: right;
+  }
+}
 
 .modal-dialog {
   &.modal-large {
@@ -21,11 +56,6 @@
   &.modal-small {
     width: 30%;
   }
-}
-
-
-.top {
-  padding: 0 15px 15px 15px;
 }
 
 .bottom {
@@ -50,13 +80,11 @@
   background-color: #f5f5f5;
 }
 
-.top-actions-placeholder {
-}
-
 .top-actions {
   @include clearfix;
 
   z-index: 1000;
+  padding: 15px;
 
   p.button-label {
     padding-top: 8px;
@@ -164,10 +192,8 @@ a.accordion-toggle {
   outline: 0;
 }
 
-body {
+.main {
   padding: 10px;
-  overflow-y: scroll;
-  overflow-x: hidden;
 }
 
 .iow-panel {

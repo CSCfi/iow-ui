@@ -1,39 +1,33 @@
-<div class="top-actions">
-  <model-language-chooser></model-language-chooser>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.toggleVisibility()" ng-hide="ctrl.isEditing()">{{ctrl.togglingText() | translate}}</button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canAddReference()" translate>Add reference</button>
-
-  <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
-    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    <span translate>Save failed</span>
-  </div>
+<div class="model-header">
+  <h2>{{ctrl.model | translateLabel}}<button type="button" class="btn btn-default right" ng-click="ctrl.toggleVisibility()">{{ctrl.togglingText() | translate}}</button></h2>
 </div>
 
-<div class="row">
+<div uib-collapse="!ctrl.visible" class="row editable-content">
 
-  <div ng-hide="ctrl.visible" class="panel-body">
-    <h2>{{ctrl.model | translateLabel}}</h2>
+  <div class="top-actions">
+    <model-language-chooser></model-language-chooser>
+    <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
+    <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
+    <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
+    <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canAddReference()" translate>Add reference</button>
+
+    <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span translate>Save failed</span>
+    </div>
   </div>
 
-  <div uib-collapse="!ctrl.visible">
-
-    <div class="col-md-6">
-      <h2>
-        <editable title-edit-only="true" title="Label"><input class="form-control" type="text" localized-input ng-model="ctrl.modelInEdit.label" /></editable>
-      </h2>
-      <div class="model-view__title" translate>Id</div>
-      <div>{{ctrl.modelInEdit.id}}</div>
-      <editable title="Comment"><textarea class="form-control" localized-input ng-model="ctrl.modelInEdit.comment"></textarea></editable>
-      <editable title="State" value-as-localization-key="true"><state-select state="ctrl.model.state"></state-select></editable>
-    </div>
-
-    <div class="col-md-6">
-      <references-view references="ctrl.modelInEdit.references"></references-view>
-      <requires-view requires="ctrl.modelInEdit.requires"></requires-view>
-    </div>
-
+  <div class="col-md-6">
+    <editable title="Label"><input class="form-control" type="text" localized-input ng-model="ctrl.modelInEdit.label" /></editable>
+    <div class="model-view__title" translate>Id</div>
+    <div>{{ctrl.modelInEdit.id}}</div>
+    <editable title="Comment"><textarea class="form-control" localized-input ng-model="ctrl.modelInEdit.comment"></textarea></editable>
+    <editable title="State" value-as-localization-key="true"><state-select state="ctrl.model.state"></state-select></editable>
   </div>
+
+  <div class="col-md-6">
+    <references-view references="ctrl.modelInEdit.references"></references-view>
+    <requires-view requires="ctrl.modelInEdit.requires"></requires-view>
+  </div>
+
 </div>

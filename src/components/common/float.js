@@ -1,8 +1,6 @@
 module.exports = function directive($window, $timeout) {
   'ngInject';
   return {
-    scope: {
-    },
     restrict: 'A',
     link($scope, element, attributes) {
       const placeholderClass = attributes.float;
