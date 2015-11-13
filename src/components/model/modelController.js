@@ -9,7 +9,6 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
   let modelView;
 
   vm.loading = true;
-  vm.modelSaved = true;
   vm.isModelCollapsed = true;
   vm.activeTab = selected ? {[selected.type]: true} : {class: true};
   vm.modelCreated = modelCreated;
