@@ -25,8 +25,6 @@ module.exports = function classView($log) {
       vm.submitError = false;
       vm.unsaved = false;
       vm.visible = false;
-      vm.toggleVisibility = () => vm.visible = !vm.visible;
-      vm.togglingText = () => vm.visible ? 'Hide' : 'Show';
       vm.isEditing = isEditing;
       vm.cancelEditing = cancelEditing;
       vm.select = select;

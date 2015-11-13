@@ -1,5 +1,7 @@
-<div class="model-header">
-  <h2>{{ctrl.model | translateLabel}}<button type="button" class="btn btn-default right" ng-click="ctrl.toggleVisibility()">{{ctrl.togglingText() | translate}}</button></h2>
+<div class="model-header" ng-click="ctrl.visible = !ctrl.visible">
+  <h2>{{ctrl.model | translateLabel}}
+    <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': ctrl.visible, 'glyphicon-chevron-right': !ctrl.visible}"></span>
+  </h2>
 </div>
 
 <div uib-collapse="!ctrl.visible" class="editable-content">
