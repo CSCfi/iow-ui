@@ -19,7 +19,10 @@ angular.module('iow-ui', [
   require('./components/navigation'),
   require('./services')
 ])
-.config(function mainConfig($routeProvider) {
+.config(function mainConfig($routeProvider, $logProvider) {
+
+  $logProvider.debugEnabled(false);
+
   $routeProvider
     .when('/', {
       template: require('./components/index.html')

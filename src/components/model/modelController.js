@@ -29,7 +29,7 @@ module.exports = function modelController($log, $q, $uibModal, $location, newMod
     modelView = view;
     if (existingModelId) {
       $q.all({model: modelService.getModelByUrn(existingModelId), selectable: fetchSelectable(existingModelId)}).then(result => {
-        $log.info(JSON.stringify(result.model, null, 2));
+        $log.debug(JSON.stringify(result.model, null, 2));
         modelView.select(result.model, false);
         vm.loading = false;
       });
