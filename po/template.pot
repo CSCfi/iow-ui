@@ -71,6 +71,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
+#: components/form/modal.html:16
 #: components/group/addModelModal.html:25
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
@@ -470,6 +471,7 @@ msgstr ""
 msgid "xsd:XMLLiteral"
 msgstr ""
 
+#: components/form/modal.html:15
 #: components/modal/deleteConfirmModal.html:13
 #: components/modal/editInProgressModal.html:13
 msgid "Yes"

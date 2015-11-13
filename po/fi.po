@@ -77,7 +77,7 @@ msgstr "Ominaisuudet"
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/group/addModelModal.html:25
+#: components/form/modal.html:16 components/group/addModelModal.html:25
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
 #: components/model/addConceptModal.html:31
@@ -197,7 +197,7 @@ msgstr "Käytöstä poistunut"
 
 #: translations/misc.html:18
 msgid "Draft"
-msgstr "Keskeneräinen"
+msgstr "Luonnos"
 
 #: components/model/modelView.html:5 components/model/selectionView.html:7
 msgid "Edit"
@@ -386,7 +386,7 @@ msgstr "Tyyppi"
 
 #: translations/misc.html:17
 msgid "Unstable"
-msgstr "Epävakaa"
+msgstr "Keskeneräinen"
 
 #: translations/misc.html:15
 msgid "Use"
@@ -476,7 +476,7 @@ msgstr "Aika"
 msgid "xsd:XMLLiteral"
 msgstr "XML"
 
-#: components/modal/deleteConfirmModal.html:13
+#: components/form/modal.html:15 components/modal/deleteConfirmModal.html:13
 #: components/modal/editInProgressModal.html:13
 msgid "Yes"
 msgstr "Kyllä"
