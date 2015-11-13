@@ -4,6 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: components/model/modelView.html:6
+msgid "{{ctrl.togglingText()}}"
+msgstr ""
+
 #: components/model/model.html:48
 msgid "Add association"
 msgstr ""
@@ -25,7 +29,7 @@ msgstr ""
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:6
+#: components/model/modelView.html:7
 msgid "Add reference"
 msgstr ""
 
@@ -71,7 +75,6 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: components/form/modal.html:16
 #: components/group/addModelModal.html:25
 #: components/modal/deleteConfirmModal.html:14
 #: components/modal/editInProgressModal.html:14
@@ -210,8 +213,12 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
+#: translations/misc.html:22
+msgid "Hide"
+msgstr ""
+
 #: components/model/editableSubjectSelect.html:7
-#: components/model/modelView.html:19
+#: components/model/modelView.html:24
 msgid "Id"
 msgstr ""
 
@@ -315,7 +322,7 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: components/model/modelView.html:10
+#: components/model/modelView.html:11
 #: components/model/searchPredicateModal.html:69
 #: components/model/selectionView.html:15
 msgid "Save failed"
@@ -351,6 +358,10 @@ msgstr ""
 
 #: components/model/searchSchemeModal.html:3
 msgid "Search schemes"
+msgstr ""
+
+#: translations/misc.html:21
+msgid "Show"
 msgstr ""
 
 #: translations/misc.html:16
@@ -471,7 +482,6 @@ msgstr ""
 msgid "xsd:XMLLiteral"
 msgstr ""
 
-#: components/form/modal.html:15
 #: components/modal/deleteConfirmModal.html:13
 #: components/modal/editInProgressModal.html:13
 msgid "Yes"

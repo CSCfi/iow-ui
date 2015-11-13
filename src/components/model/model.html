@@ -1,26 +1,9 @@
-<div>
+<div ng-hide="ctrl.loading">
 
   <div class="top">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a href="" tabindex="0" class="accordion-toggle" ng-click="ctrl.isModelCollapsed = !ctrl.isModelCollapsed">
-            <span class="ng-binding ng-scope">{{ctrl.getModel() | translateLabel}}</span>
-            <span class="glyphicon pull-right ng-scope"></span>
-          </a>
-        </h4>
-      </div>
-    </div>
-
-    <div uib-collapse="ctrl.isModelCollapsed">
-      <div class="panel-collapse in collapse" aria-expanded="true" aria-hidden="false" style="height: auto">
-        <div class="panel-body">
-          <form>
-            <model-view></model-view>
-          </form>
-        </div>
-      </div>
-    </div>
+    <form>
+      <model-view></model-view>
+    </form>
   </div>
 
   <div class="bottom" ng-if="ctrl.isModelSaved()">
