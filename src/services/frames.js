@@ -149,8 +149,8 @@ function conceptFrame(data) {
 
 function userFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {name,isPartOf,isAdminOf,created,modified}),
-    'name':{}
+    '@context': addToContext(data['@context'], {name, isPartOf, isAdminOf, created, modified}),
+    'name': {}
   };
 }
 
