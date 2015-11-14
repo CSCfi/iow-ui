@@ -86,7 +86,7 @@
   @include clearfix;
 
   z-index: 1000;
-  padding: 15px 15px 0 15px;
+  padding: 10px 15px 0 10px;
 
   p.button-label {
     padding-top: 8px;
@@ -105,8 +105,6 @@
   .alert {
     clear: both;
   }
-
-  background-color: rgba(255,255,255,0.8);
 }
 
 

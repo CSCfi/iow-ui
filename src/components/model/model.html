@@ -11,7 +11,7 @@
             <i ng-class="ctrl.glyphIconClassForType('class')"></i><p>{{'Classes' | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addClass()" translate>Add class</button>
+          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addClass()" translate>Add class</button>
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
@@ -26,7 +26,7 @@
             <i ng-class="ctrl.glyphIconClassForType('attribute')"></i><p>{{'Attributes' | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('attribute')" translate>Add attribute</button>
+          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addPredicate('attribute')" translate>Add attribute</button>
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="attribute in ctrl.attributes() | orderByLabel"
@@ -41,7 +41,7 @@
             <i ng-class="ctrl.glyphIconClassForType('association')"></i><p>{{'Associations' | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-class-button" ng-click="ctrl.addPredicate('association')" translate>Add association</button>
+          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addPredicate('association')" translate>Add association</button>
 
           <ul class="panel__list" window-height padding="93" logged-in-padding="150">
             <li ng-repeat="association in ctrl.associations() | orderByLabel"
