@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function directive($timeout, $q) {
+module.exports = function directive($timeout, $q, $log) {
   'ngInject';
 
   function normalizeAsArray(obj) {
@@ -81,7 +81,7 @@ module.exports = function directive($timeout, $q) {
               ngModel.$setViewValue(mapped);
               ngModel.$commitViewValue();
             },
-            err => console.log(err));
+            err => $log.error(err));
         });
       }
 
