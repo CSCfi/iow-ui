@@ -160,8 +160,12 @@ msgstr ""
 msgid "Create new class"
 msgstr ""
 
-#: components/navigation/modelLanguageChooser.html:1
-msgid "Data language"
+#: translations/misc.html:32
+msgid "data en"
+msgstr ""
+
+#: translations/misc.html:30
+msgid "data fi"
 msgstr ""
 
 #: translations/misc.html:4
@@ -217,8 +221,16 @@ msgstr ""
 msgid "eDuuni information"
 msgstr ""
 
+#: translations/misc.html:33
+msgid "en"
+msgstr ""
+
 #: translations/misc.html:13
 msgid "Example"
+msgstr ""
+
+#: translations/misc.html:31
+msgid "fi"
 msgstr ""
 
 #: translations/misc.html:23

@@ -1,9 +1,9 @@
-<p class="left button-label text"><span translate>Data language</span>:</p>
+<p class="left button-label text">
 <div class="btn-group left" uib-dropdown is-open="status.isopen">
   <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-    {{currentLanguage()}} <span class="caret"></span>
+    {{'data ' + currentLanguage() | translate}} <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-    <li role="menuitem" ng-repeat="language in languages"><a ng-click="setLanguage(language)">{{language}}</a></li>
+    <li role="menuitem" ng-repeat="language in languages"><a ng-click="setLanguage(language)">{{language | translate}}</a></li>
   </ul>
 </div>

@@ -167,9 +167,13 @@ msgstr "Lisää uusi attribuutti"
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
-#: components/navigation/modelLanguageChooser.html:1
-msgid "Data language"
-msgstr "Sisällön kieli"
+#: translations/misc.html:32
+msgid "data en"
+msgstr "Sisältö englanniksi"
+
+#: translations/misc.html:30
+msgid "data fi"
+msgstr "Sisälto suomeksi"
 
 #: translations/misc.html:4
 msgid "Define concept for the class"
@@ -225,9 +229,17 @@ msgstr ""
 "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
 "haluat muokata palvelun sisältöä."
 
+#: translations/misc.html:33
+msgid "en"
+msgstr "Englanniksi"
+
 #: translations/misc.html:13
 msgid "Example"
 msgstr "Esimerkki"
+
+#: translations/misc.html:31
+msgid "fi"
+msgstr "Suomeksi"
 
 #: translations/misc.html:23
 msgid "Front page"
@@ -520,6 +532,9 @@ msgstr "XML"
 #: components/modal/editInProgressModal.html:13
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Data language"
+#~ msgstr "Sisällön kieli"
 
 #~ msgid "UI language"
 #~ msgstr "Käyttöliittymän kieli"
