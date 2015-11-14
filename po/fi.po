@@ -173,7 +173,7 @@ msgstr "Sisältö englanniksi"
 
 #: translations/misc.html:30
 msgid "data fi"
-msgstr "Sisälto suomeksi"
+msgstr "Sisältö suomeksi"
 
 #: translations/misc.html:4
 msgid "Define concept for the class"
