@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function GroupController($q, $log, locationService, groupId, groupService, modelService, userService, addModelModal) {
+module.exports = function GroupController($q, $log, locationService, $location, groupId, groupService, modelService, userService, addModelModal) {
   'ngInject';
 
   const vm = this;
@@ -21,8 +21,9 @@ module.exports = function GroupController($q, $log, locationService, groupId, gr
   };
 
   vm.addModel = () => {
-    addModelModal.open().result.then(result => {
-      locationService.toNewModelCreation(_.extend(result, {group: groupId}));
+    addModelModal.open().result.then(({prefix, label}) => {
+      $location.path('/models');
+      $location.search({prefix, label, group: groupId});
     });
   };
 

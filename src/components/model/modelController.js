@@ -29,7 +29,8 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
   $scope.$watch('ctrl.model', (newModel, oldModel) => {
     if (oldModel) {
       if (!newModel) {
-        locationService.toGroupWithId($routeParams.group);
+        $location.path('/groups');
+        $location.search({urn: $routeParams.group});
       } else {
         locationService.atModel(newModel, vm.selection);
       }

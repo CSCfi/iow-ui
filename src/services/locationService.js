@@ -13,14 +13,6 @@ module.exports = function locationService($location) {
     getLocation() {
       return location;
     },
-    toNewModelCreation({prefix, label, group}) {
-      $location.path('/models');
-      $location.search({prefix, label, group});
-    },
-    toGroupWithId(groupId) {
-      $location.path('/groups');
-      $location.search({urn: groupId});
-    },
     atModel(model, selection) {
       if (model) {
         // TODO: group
