@@ -27,7 +27,7 @@ module.exports = function rangeSelect() {
       range: '='
     },
     restrict: 'E',
-    template: '<value-select values="ctrl.ranges" value="ctrl.range"></value-select>',
+    template: '<value-select name="Range" values="ctrl.ranges" value="ctrl.range"></value-select>',
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {

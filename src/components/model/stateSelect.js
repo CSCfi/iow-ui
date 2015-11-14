@@ -7,7 +7,7 @@ module.exports = function stateSelect() {
       state: '='
     },
     restrict: 'E',
-    template: '<value-select values="ctrl.states" value="ctrl.state"></value-select>',
+    template: '<value-select name="State" values="ctrl.states" value="ctrl.state"></value-select>',
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {

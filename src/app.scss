@@ -10,6 +10,10 @@
   display: none !important;
 }
 
+.breadcrumb {
+  padding: 10px;
+}
+
 .editable-content {
   @include clearfix;
   padding-bottom: 10px;

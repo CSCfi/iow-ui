@@ -8,6 +8,11 @@ class GroupListItem {
     this.id = graph['@id'];
     this.label = graph.label;
     this.homepage = graph.homepage;
+    this.type = 'group';
+  }
+
+  get iowUrl() {
+    return `#/groups?urn=${this.id}`;
   }
 }
 
@@ -15,6 +20,10 @@ class ModelListItem {
   constructor(graph) {
     this.id = graph['@id'];
     this.label = graph.label;
+  }
+
+  get iowUrl() {
+    return `#/models?urn=${this.id}`;
   }
 }
 
@@ -26,12 +35,9 @@ class Model {
     this.label = graph.label;
     this.comment = graph.comment;
     this.state = graph.versionInfo;
+    this.type = 'model';
     this.references = mapAsEntity(context, graph.references, Reference, true);
     this.requires = mapAsEntity(context, graph.requires, Require, true);
-  }
-
-  get type() {
-    return 'model';
   }
 
   addReference(reference) {
@@ -40,6 +46,10 @@ class Model {
 
   removeReference(reference) {
     _.remove(this.references, reference);
+  }
+
+  get iowUrl() {
+    return `#/models?urn=${this.id}`;
   }
 
   serialize() {
@@ -123,7 +133,7 @@ class Class {
   }
 
   isEqual(other) {
-    return this.id === other.id && this.type === other.type;
+    return other && this.id === other.id && this.type === other.type;
   }
 
   isClass() {
@@ -132,6 +142,10 @@ class Class {
 
   isPredicate() {
     return false;
+  }
+
+  get iowUrl() {
+    return `#/models?urn=${this.modelId}&${this.type}=${this.id}`;
   }
 
   serialize() {
@@ -206,7 +220,7 @@ class AbstractPredicate {
   }
 
   isEqual(other) {
-    return this.id === other.id && this.type === other.type;
+    return other && this.id === other.id && this.type === other.type;
   }
 
   isClass() {
@@ -250,6 +264,10 @@ class Predicate extends AbstractPredicate {
 
   get id() {
     return withPrefixExpanded(this.context, this.curie);
+  }
+
+  get iowUrl() {
+    return `#/models?urn=${this.modelId}&${this.type}=${this.id}`;
   }
 
   serialize() {

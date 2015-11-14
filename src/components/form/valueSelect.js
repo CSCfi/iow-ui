@@ -3,10 +3,11 @@ module.exports = function valueSelect() {
   return {
     scope: {
       value: '=',
-      values: '='
+      values: '=',
+      name: '@'
     },
     restrict: 'E',
-    template: `<select class="form-control" ng-model="ctrl.value">
+    template: `<select name="{{ctrl.name}}" class="form-control" ng-model="ctrl.value">
                  <option ng-repeat="value in ctrl.values" value="{{value}}">{{ctrl.displayName(value)}}</option>
                </select>`,
     controllerAs: 'ctrl',

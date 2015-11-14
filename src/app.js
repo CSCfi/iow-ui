@@ -17,6 +17,7 @@ angular.module('iow-ui', [
   require('./components/modal'),
   require('./components/model'),
   require('./components/navigation'),
+  require('./components'),
   require('./services')
 ])
 .config(function mainConfig($routeProvider, $logProvider) {
@@ -25,7 +26,9 @@ angular.module('iow-ui', [
 
   $routeProvider
     .when('/', {
-      template: require('./components/index.html')
+      template: require('./components/index.html'),
+      controller: 'frontPageController',
+      controllerAs: 'ctrl'
     })
     .when('/groups', {
       template: require('./components/group/group.html'),
@@ -41,31 +44,13 @@ angular.module('iow-ui', [
       template: require('./components/model/model.html'),
       controller: 'modelController',
       controllerAs: 'ctrl',
-      reloadOnSearch: false,
-      resolve: {
-        newModel($route) {
-          const params = $route.current.params;
-          return {label: params.label, prefix: params.prefix, groupId: params.group};
-        },
-        existingModelId($route) {
-          return $route.current.params.urn;
-        },
-        selected($route) {
-          'ngInject';
-          for (const type of ['attribute', 'class', 'association']) {
-            const id = $route.current.params[type];
-            if (id) {
-              return {type, id};
-            }
-          }
-        }
-      }
+      reloadOnSearch: false
     });
 })
 .run(function onAppRun($rootScope, $q, languageService, userService, gettextCatalog) {
   userService.updateLogin().then(() => $rootScope.applicationInitialized = true);
   gettextCatalog.debug = true;
 })
-.controller('AppCtrl', function mainAppCtrl($scope, $location) {
+.controller('AppCtrl', function mainAppCtrl($scope) {
 
 });

@@ -18,7 +18,8 @@ module.exports = function predicateService($http, $q, entities) {
         id: predicate.id,
         model: predicate.modelId
       };
-      return $http.put('/api/rest/predicate', predicate.serialize(), {params: requestParams});
+      return $http.put('/api/rest/predicate', predicate.serialize(), {params: requestParams})
+        .then(() => predicate.unsaved = false);
     },
     updatePredicate(predicate, originalId) {
       const requestParams = {
@@ -44,13 +45,17 @@ module.exports = function predicateService($http, $q, entities) {
       };
       return $http.post('/api/rest/predicate', undefined, {params: requestParams});
     },
-    newPredicate(context, modelID, predicateLabel, conceptID, type, lang) {
-      return $http.get('/api/rest/predicateCreator', {params: {modelID, predicateLabel, conceptID, type, lang}})
+    newPredicate(model, predicateLabel, conceptID, type, lang) {
+      return $http.get('/api/rest/predicateCreator', {params: {modelID: model.id, predicateLabel, conceptID, type, lang}})
         .then(response => {
-          _.extend(response.data['@context'], context);
+          _.extend(response.data['@context'], model.context);
           return response;
         })
-        .then(response => entities.deserializePredicate(response.data));
+        .then(response => entities.deserializePredicate(response.data))
+        .then(predicate => {
+          predicate.unsaved = true;
+          return predicate;
+        });
     }
   };
 };

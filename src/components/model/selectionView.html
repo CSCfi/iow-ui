@@ -23,8 +23,8 @@
         </div>
 
         <div class="selection-form">
-          <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit" references="modelController.getModel().references"></class-form>
-          <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selectionInEdit" references="modelController.getModel().references"></predicate-form>
+          <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit" references="ctrl.model.references"></class-form>
+          <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selectionInEdit" references="ctrl.model.references"></predicate-form>
         </div>
       </form>
     </div>

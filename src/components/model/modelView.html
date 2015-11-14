@@ -8,7 +8,7 @@
 
   <div class="top-actions">
     <model-language-chooser></model-language-chooser>
-    <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
+    <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing()" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
     <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
     <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
     <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canAddReference()" translate>Add reference</button>
@@ -20,10 +20,10 @@
   </div>
 
   <div class="col-md-6">
-    <editable title="Label"><input class="form-control" type="text" localized-input ng-model="ctrl.modelInEdit.label" /></editable>
+    <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.modelInEdit.label" /></editable>
     <div class="model-view__title" translate>Id</div>
     <div>{{ctrl.modelInEdit.id}}</div>
-    <editable title="Comment"><textarea class="form-control" localized-input ng-model="ctrl.modelInEdit.comment"></textarea></editable>
+    <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.modelInEdit.comment"></textarea></editable>
     <editable title="State" value-as-localization-key="true"><state-select state="ctrl.modelInEdit.state"></state-select></editable>
   </div>
 

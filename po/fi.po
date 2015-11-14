@@ -12,15 +12,15 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: components/model/model.html:48
+#: components/model/model.html:44
 msgid "Add association"
 msgstr "Lisää assosiaatio"
 
-#: components/model/model.html:33
+#: components/model/model.html:29
 msgid "Add attribute"
 msgstr "Lisää ominaisuus"
 
-#: components/model/model.html:18
+#: components/model/model.html:14
 msgid "Add class"
 msgstr "Lisää luokka"
 
@@ -28,11 +28,11 @@ msgstr "Lisää luokka"
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
-#: components/model/selectionView.html:19
+#: components/model/selectionView.html:17
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/model/modelView.html:12
+#: components/model/modelView.html:14
 msgid "Add reference"
 msgstr "Lisää sanasto"
 
@@ -65,11 +65,19 @@ msgstr "Oletko varma, että haluat poistaa?"
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
-#: components/model/model.html:45
+#: translations/misc.html:29
+msgid "association"
+msgstr "Assosiaatio"
+
+#: components/model/model.html:41
 msgid "Associations"
 msgstr "Assosiaatiot"
 
-#: components/model/model.html:30
+#: translations/misc.html:28
+msgid "attribute"
+msgstr "Ominaisuus"
+
+#: components/model/model.html:26
 msgid "Attributes"
 msgstr "Ominaisuudet"
 
@@ -88,7 +96,7 @@ msgstr "Selaa"
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: components/model/modelView.html:9 components/model/selectionView.html:13
+#: components/model/modelView.html:11 components/model/selectionView.html:11
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
@@ -100,13 +108,17 @@ msgstr "valitse luokka"
 msgid "Choose subject"
 msgstr "valitse käsite"
 
+#: translations/misc.html:27
+msgid "class"
+msgstr "Luokka"
+
 #: components/model/searchClassModal.html:17
 msgid "Class search info"
 msgstr ""
 "Haen ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
-#: components/model/model.html:15
+#: components/model/model.html:11
 msgid "Classes"
 msgstr "Luokat"
 
@@ -199,7 +211,7 @@ msgstr "Käytöstä poistunut"
 msgid "Draft"
 msgstr "Luonnos"
 
-#: components/model/modelView.html:11 components/model/selectionView.html:15
+#: components/model/modelView.html:13 components/model/selectionView.html:13
 msgid "Edit"
 msgstr "Muokkaa"
 
@@ -217,12 +229,20 @@ msgstr ""
 msgid "Example"
 msgstr "Esimerkki"
 
+#: translations/misc.html:23
+msgid "Front page"
+msgstr "Etusivu"
+
+#: translations/misc.html:25
+msgid "group"
+msgstr "Ryhmä"
+
 #: translations/misc.html:22
 msgid "Hide"
 msgstr "Piilota"
 
 #: components/model/editableSubjectSelect.html:7
-#: components/model/modelView.html:22
+#: components/model/modelView.html:24
 msgid "Id"
 msgstr "Tunniste"
 
@@ -234,7 +254,7 @@ msgstr "Tunniste"
 msgid "IOW header"
 msgstr "Otsikko tähän"
 
-#: components/model/classForm.html:8 components/model/predicateForm.html:8
+#: components/model/classForm.html:8 components/model/predicateForm.html:6
 msgid "Is defined by"
 msgstr "Kirjasto"
 
@@ -260,9 +280,17 @@ msgstr ""
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
+#: translations/misc.html:26
+msgid "model"
+msgstr "Tietokomponenttikirjasto"
+
 #: components/model/propertyPredicateView.html:1
 msgid "Name"
 msgstr "Nimi"
+
+#: translations/misc.html:24
+msgid "New model creation"
+msgstr "Uuden tietokomponenttikirjaston luonti"
 
 #: components/model/editableSubjectSelect.html:4
 msgid "Not defined"
@@ -320,13 +348,13 @@ msgstr "Luo tunnukset"
 msgid "Requires"
 msgstr "Nimiavaruudet"
 
-#: components/model/modelView.html:10 components/model/selectionView.html:14
+#: components/model/modelView.html:12 components/model/selectionView.html:12
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: components/model/modelView.html:16
+#: components/model/modelView.html:18
 #: components/model/searchPredicateModal.html:69
-#: components/model/selectionView.html:23
+#: components/model/selectionView.html:21
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
 
@@ -416,7 +444,7 @@ msgstr "Käytä sanastoa"
 msgid "Value class"
 msgstr "Kohde"
 
-#: components/model/selectionView.html:38
+#: components/model/selectionView.html:35
 msgid "Visualization"
 msgstr "Visualisointi"
 

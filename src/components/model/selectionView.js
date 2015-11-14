@@ -3,13 +3,16 @@ const utils = require('../../services/utils');
 module.exports = function selectionView($log) {
   'ngInject';
   return {
-    scope: {},
+    scope: {
+      model: '=',
+      selection: '='
+    },
     restrict: 'E',
     template: require('./selectionView.html'),
     require: ['^ngController', '^form'],
     link($scope, element, attributes, controllers) {
       $scope.modelController = controllers[0];
-      $scope.modelController.registerSelectionView($scope.ctrl);
+      $scope.modelController.registerView($scope.ctrl);
       $scope.formController = controllers[1];
     },
     controllerAs: 'ctrl',
@@ -17,7 +20,6 @@ module.exports = function selectionView($log) {
     controller($scope, classService, predicateService, userService, searchPredicateModal, deleteConfirmModal) {
       'ngInject';
 
-      let unsaved = false;
       const vm = this;
 
       vm.submitError = false;
@@ -35,15 +37,22 @@ module.exports = function selectionView($log) {
       vm.edit = edit;
       vm.cancelEditing = cancelEditing;
 
-      $scope.$watch(userService.isLoggedIn, () => cancelEditing(true));
+      $scope.$watch(userService.isLoggedIn, (newUser, oldUser) => {
+        if (newUser && oldUser) {
+          cancelEditing();
+        }
+      });
 
-      function select(selection, isUnsaved) {
+      $scope.$watch('ctrl.selection', select);
+
+      function select(selection) {
         vm.selection = selection;
         vm.selectionInEdit = utils.clone(selection);
 
-        unsaved = isUnsaved;
-        if (unsaved) {
+        if (selection && selection.unsaved) {
           edit();
+        } else {
+          cancelEditing();
         }
       }
 
@@ -51,42 +60,34 @@ module.exports = function selectionView($log) {
         $log.info(JSON.stringify(vm.selectionInEdit.serialize(), null, 2));
 
         return (vm.selection.isClass()
-          ? unsaved
+          ? vm.selection.unsaved
             ? classService.createClass(vm.selectionInEdit)
             : classService.updateClass(vm.selectionInEdit, vm.selection.id)
-          : unsaved
+          : vm.selection.unsaved
             ? predicateService.createPredicate(vm.selectionInEdit)
             : predicateService.updatePredicate(vm.selectionInEdit, vm.selection.id))
-        .then(() => {
-          unsaved = false;
-          vm.selection = utils.clone(vm.selectionInEdit);
-          $scope.modelController.reload();
-          cancelEditing(false);
-        }, err => {
-          $log.error(err);
-          vm.submitError = true;
-        });
+        .then(() => select(utils.clone(vm.selectionInEdit)),
+          err => {
+            $log.error(err);
+            vm.submitError = true;
+          });
       }
 
-      function cancelEditing(shouldReset) {
-        $scope.formController.editing = false;
-        vm.submitError = false;
-        if (shouldReset) {
-          select(unsaved ? null : utils.clone(vm.selection));
+      function cancelEditing() {
+        if (isEditing()) {
+          vm.submitError = false;
+          $scope.formController.editing = false;
+          select(vm.selection.unsaved ? null : vm.selection);
         }
       }
 
       function remove() {
-        const modelId = $scope.modelController.getModel().id;
         deleteConfirmModal.open().result.then(() => {
           return vm.selection.isClass()
-            ? classService.deleteClass(vm.selection.id, modelId)
-            : predicateService.deletePredicate(vm.selection.id, modelId);
+            ? classService.deleteClass(vm.selection.id, vm.model.id)
+            : predicateService.deletePredicate(vm.selection.id, vm.model.id);
         })
-        .then(() => {
-          select(null);
-          $scope.modelController.reload();
-        });
+        .then(() => select(null));
       }
 
       function edit() {
@@ -98,11 +99,11 @@ module.exports = function selectionView($log) {
       }
 
       function canEdit() {
-        return !isEditing() && userService.isLoggedIn() && vm.selection && vm.selection.modelId === $scope.modelController.getModel().id;
+        return !isEditing() && userService.isLoggedIn() && vm.selection && vm.selection.modelId === vm.model.id;
       }
 
       function canRemove() {
-        return userService.isLoggedIn() && !isEditing() && !unsaved;
+        return userService.isLoggedIn() && !isEditing() && !vm.selection.unsaved;
       }
 
       function canAddProperty() {
@@ -114,7 +115,7 @@ module.exports = function selectionView($log) {
       }
 
       function addProperty() {
-        searchPredicateModal.openWithPredicationCreation($scope.modelController.getModel()).result.then(createPropertyByPredicate);
+        searchPredicateModal.openWithPredicationCreation(vm.model).result.then(createPropertyByPredicate);
       }
 
       function createPropertyByPredicate(predicate) {

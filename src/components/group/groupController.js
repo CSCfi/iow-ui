@@ -1,11 +1,20 @@
 const _ = require('lodash');
 
-module.exports = function GroupController($q, $log, $location, groupId, groupService, modelService, userService, addModelModal) {
+module.exports = function GroupController($q, $log, locationService, groupId, groupService, modelService, userService, addModelModal) {
   'ngInject';
 
   const vm = this;
 
-  fetchAll().then(() => vm.loading = false);
+  $q.all({
+    group: groupService.getGroups().then(groups => _.findWhere(groups, {id: groupId})),
+    models: modelService.getModelsByGroup(groupId)
+  })
+  .then(({group, models}) => {
+    vm.group = group;
+    vm.models = models;
+    locationService.atGroup(group);
+    vm.loading = false;
+  });
 
   vm.canAddModel = () => {
     return userService.isLoggedIn();
@@ -13,8 +22,7 @@ module.exports = function GroupController($q, $log, $location, groupId, groupSer
 
   vm.addModel = () => {
     addModelModal.open().result.then(result => {
-      $location.path('/models');
-      $location.search(_.extend(result, {group: groupId}));
+      locationService.toNewModelCreation(_.extend(result, {group: groupId}));
     });
   };
 
@@ -22,22 +30,4 @@ module.exports = function GroupController($q, $log, $location, groupId, groupSer
     const user = userService.getUser();
     return user.isLoggedIn() && !user.isInGroup(groupId);
   };
-
-  function fetchGroup() {
-    return groupService.getGroups()
-      .then(groups => {
-        vm.group = _.findWhere(groups, {id: groupId});
-      }, error => $log.error(error));
-  }
-
-  function fetchModels() {
-    return modelService.getModelsByGroup(groupId)
-      .then(models => {
-        vm.models = models;
-      }, error => $log.error(error));
-  }
-
-  function fetchAll() {
-    return $q.all([fetchGroup(), fetchModels()]);
-  }
 };

@@ -17,13 +17,14 @@ module.exports = function modelService($http, $q, entities) {
       })
       .then(response => entities.deserializeModel(response.data));
     },
-    createModel(model, groupId) {
+    createModel(model) {
       return $http.put('/api/rest/model', model.serialize(), {
         params: {
           id: model.id,
-          group: groupId
+          group: model.groupId
         }
-      });
+      })
+      .then(() => model.unsaved = false);
     },
     updateModel(model) {
       return $http.post('/api/rest/model', model.serialize(), {
@@ -32,9 +33,14 @@ module.exports = function modelService($http, $q, entities) {
         }
       });
     },
-    newModel(prefix, label, lang) {
+    newModel(prefix, label, groupId, lang) {
       return $http.get('/api/rest/modelCreator', {params: {prefix, label, lang}})
-        .then(response => entities.deserializeModel(response.data));
+        .then(response => entities.deserializeModel(response.data))
+        .then(model => {
+          model.unsaved = true;
+          model.groupId = groupId;
+          return model;
+        });
     },
     newReference(scheme, lang) {
       return $q.when({

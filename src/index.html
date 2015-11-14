@@ -13,13 +13,15 @@
 <body ng-controller="AppCtrl" layout="column" layout-fill ng-show="applicationInitialized">
   <nav class="navbar navbar-default">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#/">IOW</a>
+      <a class="navbar-brand" ng-href="#/">IOW</a>
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li><global-language-chooser></global-language-chooser></li>
       <li><login></login></li>
     </ul>
   </nav>
+
+  <breadcrumb></breadcrumb>
 
   <div class="main" ng-view></div>
 

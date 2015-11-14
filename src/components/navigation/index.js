@@ -5,3 +5,4 @@ module.exports = name;
 mod.directive('globalLanguageChooser', require('./globalLanguageChooser'));
 mod.directive('modelLanguageChooser', require('./modelLanguageChooser'));
 mod.directive('login', require('./login'));
+mod.directive('breadcrumb', require('./../navigation/breadcrumb'));

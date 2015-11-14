@@ -12,22 +12,23 @@ module.exports = function classService($http, $q, predicateService, entities) {
     getClassesForModel(model) {
       return $http.get('/api/rest/class', {params: {model}}).then(response => entities.deserializeClassList(response.data));
     },
-    createClass(classData) {
+    createClass(klass) {
       const requestParams = {
-        id: classData.id,
-        model: classData.modelId
+        id: klass.id,
+        model: klass.modelId
       };
-      return $http.put('/api/rest/class', classData.serialize(), {params: requestParams});
+      return $http.put('/api/rest/class', klass.serialize(), {params: requestParams})
+       .then(() => klass.unsaved = false);
     },
-    updateClass(classData, originalId) {
+    updateClass(klass, originalId) {
       const requestParams = {
-        id: classData.id,
-        model: classData.modelId
+        id: klass.id,
+        model: klass.modelId
       };
       if (requestParams.id !== originalId) {
         requestParams.oldid = originalId;
       }
-      return $http.post('/api/rest/class', classData.serialize(), {params: requestParams});
+      return $http.post('/api/rest/class', klass.serialize(), {params: requestParams});
     },
     deleteClass(id, modelId) {
       const requestParams = {
@@ -43,11 +44,15 @@ module.exports = function classService($http, $q, predicateService, entities) {
       };
       return $http.post('/api/rest/class', undefined, {params: requestParams});
     },
-    newClass(context, modelID, classLabel, conceptID, lang) {
-      return $http.get('/api/rest/classCreator', {params: {modelID, classLabel, conceptID, lang}})
+    newClass(model, classLabel, conceptID, lang) {
+      return $http.get('/api/rest/classCreator', {params: {modelID: model.id, classLabel, conceptID, lang}})
         .then(response => {
-          _.extend(response.data['@context'], context);
+          _.extend(response.data['@context'], model.context);
           return entities.deserializeClass(response.data);
+        })
+        .then(klass => {
+          klass.unsaved = true;
+          return klass;
         });
     },
     newProperty(predicateId) {

@@ -1,8 +1,8 @@
 <div ng-hide="ctrl.loading">
 
-  <form><model-view></model-view></form>
+  <form><model-view model="ctrl.model"></model-view></form>
 
-  <div class="bottom" ng-if="ctrl.isModelSaved()">
+  <div class="bottom" ng-if="!ctrl.model.unsaved">
     <div class="model-panel--left" float="model-panel--left-placeholder">
       <uib-tabset>
 
@@ -55,9 +55,7 @@
     </div>
 
     <div class="model-panel--right" window-height="min">
-      <form>
-        <selection-view></selection-view>
-      </form>
+      <form><selection-view selection="ctrl.selection" model="ctrl.model"></selection-view></form>
     </div>
   </div>
 </div>
