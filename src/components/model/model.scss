@@ -9,6 +9,10 @@ $navbarWidth: 275px;
   float: left;
   border-right: solid 1px #ddd;
 
+  .tab-pane {
+    border-bottom: solid 1px #ddd;
+  }
+
   .nav-tabs {
 
     border-bottom: none;

@@ -23,7 +23,7 @@ module.exports = function directive($window, userService) {
 
       setHeight();
       angular.element($window).on('resize', setHeight);
-      if ($scope.loggedInPadding) {
+      if (attributes.loggedInPadding) {
         $scope.$watch(userService.isLoggedIn, setHeight);
       }
     }
