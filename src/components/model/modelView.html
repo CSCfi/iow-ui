@@ -1,10 +1,10 @@
 <div class="model-header" ng-click="ctrl.visible = !ctrl.visible">
   <h2>{{ctrl.model | translateLabel}}
-    <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-down': ctrl.visible, 'glyphicon-chevron-right': !ctrl.visible}"></span>
+    <span class="glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.visible, 'glyphicon-chevron-right': !ctrl.visible}"></span>
   </h2>
 </div>
 
-<div uib-collapse="!ctrl.visible" class="editable-content">
+<div uib-collapse="!ctrl.visible" class="model-editable-content">
 
   <div class="top-actions">
     <model-language-chooser></model-language-chooser>
