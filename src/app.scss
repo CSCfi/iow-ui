@@ -44,8 +44,11 @@
   h2:hover {
     text-decoration: underline;
   }
-  h2 .glyphicon {
-    font-size: large;
+  h2 {
+    padding-left: 10px;
+    .glyphicon {
+      font-size: large;
+    }
   }
 }
 
