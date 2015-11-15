@@ -1,0 +1,18 @@
+<div class="modal-header modal-header-confirm">
+  <h4 class="modal-title ng-binding">
+    <transcluded-title></transcluded-title>
+    <a type="button" title="Close" data-dismiss="modal"><i ng-click="$dismiss()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+  </h4>
+</div>
+
+<div class="modal-body">
+  <transcluded-body></transcluded-body>
+</div>
+
+<div class="modal-footer">
+  <transcluded-buttons></transcluded-buttons>
+  <div ng-if="defaultButtons">
+    <button class="btn btn-default" type="button" ng-click="$close()" translate>Yes</button>
+    <button class="btn btn-primary" type="button" ng-click="$dismiss()" translate>Cancel</button>
+  </div>
+</div>

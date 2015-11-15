@@ -17,7 +17,7 @@ module.exports = function selectionView($log) {
     },
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope, classService, predicateService, userService, searchPredicateModal, deleteConfirmModal) {
+    controller($scope, classService, predicateService, userService, searchPredicateModal, confirmationModal) {
       'ngInject';
 
       const vm = this;
@@ -82,7 +82,7 @@ module.exports = function selectionView($log) {
       }
 
       function remove() {
-        deleteConfirmModal.open().result.then(() => {
+        confirmationModal.openDeleteConfirm().result.then(() => {
           return vm.selection.isClass()
             ? classService.deleteClass(vm.selection.id, vm.model.id)
             : predicateService.deletePredicate(vm.selection.id, vm.model.id);

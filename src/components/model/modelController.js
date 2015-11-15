@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const utils = require('../../services/utils');
 
-module.exports = function modelController($scope, $location, $routeParams, $log, $q, $uibModal, locationService, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, editInProgressModal, languageService) {
+module.exports = function modelController($scope, $location, $routeParams, $log, $q, $uibModal, locationService, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, confirmationModal, languageService) {
   'ngInject';
 
   const vm = this;
@@ -9,6 +9,7 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
 
   vm.loading = true;
   vm.registerView = view => views.push(view);
+  vm.selectionEdited = selectionEdited;
   vm.select = select;
   vm.isSelected = listItem => listItem.isEqual(vm.selectedItem);
   vm.canEdit = userService.isLoggedIn;
@@ -173,7 +174,7 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
     const editingViews = _.filter(views, view => view.isEditing());
 
     if (editingViews.length > 0) {
-      editInProgressModal.open().result.then(() => {
+      confirmationModal.openEditInProgress().result.then(() => {
         _.forEach(editingViews, view => view.cancelEditing());
         callback();
       });

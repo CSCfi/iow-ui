@@ -1,61 +1,56 @@
-<div class="modal-header modal-header-confirm">
-  <h4 class="modal-title ng-binding">
-    <span translate>Search classes</span>
-    <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.close()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
-  </h4>
-</div>
+<modal-template>
+  <modal-title translate>Search classes</modal-title>
 
-<div class="modal-body search-modal">
+  <modal-body class="search-modal">
 
-  <div class="top-actions">
-    <button ng-if="!ctrl.onlySelection" type="button" class="btn btn-default btn-md right" ng-click="ctrl.createNewClass()">
+    <button ng-if="!ctrl.onlySelection" type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNewClass()">
       <span class="glyphicon glyphicon-plus"></span>
       {{'Create new class' | translate}}
     </button>
-  </div>
 
-  <p translate>Class search info</p>
+    <div class="row">
 
-  <div class="row">
+      <div class="col-md-4">
+        <p translate>Class search info</p>
+        <div class="input-group input-group-lg">
+          <input autofocus type="text" class="form-control" placeholder="{{'search class' | translate}}"
+                 ng-model="ctrl.searchText"
+                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+          <i class="glyphicon glyphicon-search form-control-feedback"></i>
+        </div>
 
-    <div class="col-md-4">
-      <div class="input-group input-group-lg">
-        <input autofocus type="text" class="form-control" placeholder="{{'search class' | translate}}"
-               ng-model="ctrl.searchText"
-               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
-        <i class="glyphicon glyphicon-search form-control-feedback"></i>
-      </div>
-
-      <div class="input-group input-group-lg">
-        <div class="selectContainer">
-          <select class="form-control" ng-model="ctrl.modelId">
-            <option value="" translate>All models</option>
-            <option ng-repeat="model in ctrl.models" value="{{model.id}}">{{model | translateLabel}}</option>
-          </select>
+        <div class="input-group input-group-lg">
+          <div class="selectContainer">
+            <select class="form-control" ng-model="ctrl.modelId">
+              <option value="" translate>All models</option>
+              <option ng-repeat="model in ctrl.models" value="{{model.id}}">{{model | translateLabel}}</option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-md-4 search-results" window-height padding="355">
-      <div ng-repeat="class in ctrl.searchResults() track by class.id">
-        <div ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)">
-          <h5>{{class | translateLabel}}</h5>
-          <p>{{class.comment | translateValue}}</p>
-          <p>{{class.model | translateLabel}}</p>
+      <div class="col-md-4 search-results" window-height padding="260">
+        <div ng-repeat="class in ctrl.searchResults() track by class.id">
+          <div ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)">
+            <h5>{{class | translateLabel}}</h5>
+            <p>{{class.comment | translateValue}}</p>
+            <p>{{class.model | translateLabel}}</p>
+          </div>
         </div>
       </div>
+
+      <div class="col-md-4" window-height padding="300">
+        <form>
+          <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass"></class-form>
+        </form>
+      </div>
+
     </div>
+  </modal-body>
 
-    <div class="col-md-4" window-height padding="355">
-      <form>
-        <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass"></class-form>
-      </form>
-    </div>
+  <modal-buttons>
+    <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
+    <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass" translate>Use class</button>
+  </modal-buttons>
+</modal-template>
 
-  </div>
-</div>
-
-<div class="modal-footer">
-  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
-  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass" translate>Use class</button>
-</div>
