@@ -6,7 +6,7 @@
     </a>
     <span ng-if="!path.iowUrl || $last">
       <span ng-hide="path.label">{{path.type | translate}}</span>
-      <span ng-show="path.label">{{path | translateLabel}}</span>
+      <i ng-class="path.glyphIconClass()"></i> <span ng-show="path.label">{{path | translateLabel}}</span>
     </span>
   </li>
 </ol>

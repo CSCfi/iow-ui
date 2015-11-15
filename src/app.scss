@@ -10,6 +10,10 @@
   display: none !important;
 }
 
+.panel-title span {
+  vertical-align: middle;
+}
+
 .breadcrumb {
   margin-bottom: 0;
 }
@@ -26,9 +30,12 @@
   background-color: #f5f5f5;
   padding: 15px;
   border-bottom: solid 1px #ddd;
-
+  font-size: 26px;
   h3 {
     margin: 0;
+    span {
+      vertical-align: middle;
+    }
   }
 }
 

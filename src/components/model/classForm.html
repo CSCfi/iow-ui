@@ -14,7 +14,7 @@
   <uib-accordion-group ng-repeat="property in class.properties" is-open="isOpen[property.id]">
     <uib-accordion-heading>
       <span ng-class="property.glyphIconClass()"></span>
-      {{property | translateLabel}}
+      <span>{{property | translateLabel}}</span>
       <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.id], 'glyphicon-chevron-right': !isOpen[property.id]}"></span>
     </uib-accordion-heading>
     <property-view property="property" context="context" ng-if="isOpen[property.id]"></property-view>
