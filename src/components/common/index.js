@@ -5,8 +5,8 @@ module.exports = name;
 mod.directive('windowHeight', require('./windowHeight'));
 mod.directive('iowTypeahead', require('./typeahead'));
 mod.directive('float', require('./float'));
-mod.directive('modalTemplate', require('./modalTemplateDirective'));
-mod.factory('confirmationModal', require('./confirmationModalFactory'));
+mod.directive('modalTemplate', require('./modalTemplate'));
+mod.factory('confirmationModal', require('./confirmationModal'));
 
 mod.filter('translateValue', (languageService) => {
   'ngInject';

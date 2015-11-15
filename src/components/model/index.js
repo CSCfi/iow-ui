@@ -17,9 +17,9 @@ mod.directive('stateSelect', require('./stateSelect'));
 mod.directive('classSelect', require('./classSelect'));
 mod.directive('editableSubjectSelect', require('./editableSubjectSelect'));
 
-mod.factory('searchPredicateModal', require('./searchPredicateModalFactory'));
-mod.factory('searchClassModal', require('./searchClassModalFactory'));
-mod.factory('addConceptModal', require('./addConceptModalFactory'));
-mod.factory('searchConceptModal', require('./searchConceptModalFactory'));
-mod.factory('searchSchemeModal', require('./searchSchemeModalFactory'));
+mod.factory('searchPredicateModal', require('./searchPredicateModal'));
+mod.factory('searchClassModal', require('./searchClassModal'));
+mod.factory('addConceptModal', require('./addConceptModal'));
+mod.factory('searchConceptModal', require('./searchConceptModal'));
+mod.factory('searchSchemeModal', require('./searchSchemeModal'));
 

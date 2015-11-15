@@ -4,4 +4,4 @@ module.exports = name;
 
 mod.directive('groupList', require('./groupList'));
 mod.controller('groupController', require('./groupController'));
-mod.factory('addModelModal', require('./addModelModalFactory'));
+mod.factory('addModelModal', require('./addModelModal'));
