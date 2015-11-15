@@ -13,7 +13,7 @@
 
           <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addClass()" translate>Add class</button>
 
-          <ul class="panel__list" window-height padding="93" logged-in-padding="150">
+          <ul class="panel__list" window-height padding="95" logged-in-padding="146">
             <li ng-repeat="class in ctrl.classes | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isSelected(class)}"
                 ng-click="ctrl.select(class)">
@@ -28,7 +28,7 @@
 
           <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addPredicate('attribute')" translate>Add attribute</button>
 
-          <ul class="panel__list" window-height padding="93" logged-in-padding="150">
+          <ul class="panel__list" window-height padding="95" logged-in-padding="146">
             <li ng-repeat="attribute in ctrl.attributes() | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isSelected(attribute)}"
                 ng-click="ctrl.select(attribute)">
@@ -43,7 +43,7 @@
 
           <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addPredicate('association')" translate>Add association</button>
 
-          <ul class="panel__list" window-height padding="93" logged-in-padding="150">
+          <ul class="panel__list" window-height padding="95" logged-in-padding="146">
             <li ng-repeat="association in ctrl.associations() | orderByLabel"
                 ng-class="{'model-panel__selection': ctrl.isSelected(association)}"
                 ng-click="ctrl.select(association)">
