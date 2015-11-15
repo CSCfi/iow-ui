@@ -39,6 +39,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
 
   vm.close = $uibModalInstance.dismiss;
   vm.selectedPredicate = null;
+  vm.selectedItem = null;
   vm.searchText = '';
   vm.modelId = '';
   vm.models = [];
@@ -72,11 +73,12 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   vm.selectPredicate = (predicate) => {
     $scope.formController.editing = false;
     $scope.formController.submitError = false;
+    vm.selectedItem = predicate;
     predicateService.getPredicate(predicate.id).then(result => vm.selectedPredicate = result);
   };
 
   vm.isSelected = (predicate) => {
-    return predicate.id === (vm.selectedPredicate && vm.selectedPredicate.id);
+    return predicate === vm.selectedItem;
   };
 
   vm.usePredicate = () => {

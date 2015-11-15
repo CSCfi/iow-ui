@@ -35,6 +35,7 @@ function SearchClassController($uibModalInstance, classService, languageService,
 
   vm.close = $uibModalInstance.dismiss;
   vm.selectedClass = null;
+  vm.selectedItem = null;
   vm.searchText = '';
   vm.modelId = '';
   vm.models = [];
@@ -58,11 +59,12 @@ function SearchClassController($uibModalInstance, classService, languageService,
   };
 
   vm.selectClass = (klass) => {
+    vm.selectedItem = klass;
     classService.getClass(klass.id).then(result => vm.selectedClass = result);
   };
 
   vm.isSelected = (klass) => {
-    return klass.id === (vm.selectedClass && vm.selectedClass.id);
+    return klass === vm.selectedItem;
   };
 
   vm.confirm = () => {
