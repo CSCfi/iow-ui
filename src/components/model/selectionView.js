@@ -66,11 +66,13 @@ module.exports = function selectionView($log) {
           : vm.selection.unsaved
             ? predicateService.createPredicate(vm.selectionInEdit)
             : predicateService.updatePredicate(vm.selectionInEdit, vm.selection.id))
-        .then(() => select(utils.clone(vm.selectionInEdit)),
-          err => {
-            $log.error(err);
-            vm.submitError = true;
-          });
+        .then(() => {
+          $scope.modelController.selectionEdited(vm.selection, vm.selectionInEdit);
+          select(utils.clone(vm.selectionInEdit));
+        }, err => {
+          $log.error(err);
+          vm.submitError = true;
+        });
       }
 
       function cancelEditing() {
@@ -87,7 +89,10 @@ module.exports = function selectionView($log) {
             ? classService.deleteClass(vm.selection.id, vm.model.id)
             : predicateService.deletePredicate(vm.selection.id, vm.model.id);
         })
-        .then(() => select(null));
+        .then(() => {
+          $scope.modelController.selectionDeleted(vm.selection);
+          select(null);
+        });
       }
 
       function edit() {
