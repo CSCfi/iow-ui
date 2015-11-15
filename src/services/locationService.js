@@ -1,4 +1,4 @@
-module.exports = function locationService($location) {
+module.exports = function locationService() {
   'ngInject';
 
   const frontPage = {type: 'Front page', iowUrl: '/#/'};
