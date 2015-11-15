@@ -88,48 +88,11 @@ class Require {
   }
 }
 
-class ClassListItem {
+class AbstractClass {
   constructor(graph, context) {
-    this.id = graph['@id'];
     this.type = 'class';
     this.label = graph.label;
     this.comment = graph.comment;
-    this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
-  }
-}
-
-class Class {
-  constructor(graph, context) {
-    this.graph = graph;
-    this.context = context;
-    this.curie = graph['@id'];
-    this.modelId = graph.isDefinedBy;
-    this.label = graph.label;
-    this.comment = graph.comment;
-    this.subClassOf = graph.subClassOf;
-    this.state = graph.versionInfo;
-    this.properties = mapAsEntity(context, graph.property, Property, true);
-    this.subject = mapAsEntity(context, graph.subject, Concept, false);
-  }
-
-  get id() {
-    return withPrefixExpanded(this.context, this.curie);
-  }
-
-  get type() {
-    return 'class';
-  }
-
-  addProperty(property) {
-    this.properties.push(property);
-  }
-
-  removeProperty(property) {
-    _.remove(this.properties, property);
-  }
-
-  glyphIconClass() {
-    return utils.glyphIconClassForType('class');
   }
 
   isEqual(other) {
@@ -144,8 +107,46 @@ class Class {
     return false;
   }
 
+  glyphIconClass() {
+    return utils.glyphIconClassForType('class');
+  }
+
   get iowUrl() {
     return `#/models?urn=${this.modelId}&${this.type}=${this.id}`;
+  }
+}
+
+class ClassListItem extends AbstractClass {
+  constructor(graph, context) {
+    super(graph, context);
+    this.id = graph['@id'];
+    this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
+  }
+}
+
+class Class extends AbstractClass {
+  constructor(graph, context) {
+    super(graph, context);
+    this.graph = graph;
+    this.context = context;
+    this.curie = graph['@id'];
+    this.modelId = graph.isDefinedBy;
+    this.subClassOf = graph.subClassOf;
+    this.state = graph.versionInfo;
+    this.properties = mapAsEntity(context, graph.property, Property, true);
+    this.subject = mapAsEntity(context, graph.subject, Concept, false);
+  }
+
+  get id() {
+    return withPrefixExpanded(this.context, this.curie);
+  }
+
+  addProperty(property) {
+    this.properties.push(property);
+  }
+
+  removeProperty(property) {
+    _.remove(this.properties, property);
   }
 
   serialize() {
@@ -242,6 +243,10 @@ class AbstractPredicate {
   glyphIconClass() {
     return utils.glyphIconClassForType(this.type);
   }
+
+  get iowUrl() {
+    return `#/models?urn=${this.modelId}&${this.type}=${this.id}`;
+  }
 }
 
 class PredicateListItem extends AbstractPredicate {
@@ -264,10 +269,6 @@ class Predicate extends AbstractPredicate {
 
   get id() {
     return withPrefixExpanded(this.context, this.curie);
-  }
-
-  get iowUrl() {
-    return `#/models?urn=${this.modelId}&${this.type}=${this.id}`;
   }
 
   serialize() {

@@ -21,10 +21,8 @@ module.exports = function locationService($location) {
         } else {
           if (selection) {
             changeLocation([model, selection]);
-            $location.search({urn: model.id, [selection.type]: selection.id});
           } else {
             changeLocation([model]);
-            $location.search({urn: model.id});
           }
         }
       }

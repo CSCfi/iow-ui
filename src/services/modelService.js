@@ -33,7 +33,7 @@ module.exports = function modelService($http, $q, entities) {
         }
       });
     },
-    newModel(prefix, label, groupId, lang) {
+    newModel({prefix, label, groupId}, lang) {
       return $http.get('/api/rest/modelCreator', {params: {prefix, label, lang}})
         .then(response => entities.deserializeModel(response.data))
         .then(model => {
