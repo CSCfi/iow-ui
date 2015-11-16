@@ -1,0 +1,11 @@
+<form name="form">
+  <selection-view editable-controller="ctrl">
+    <selection-buttons>
+      <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
+    </selection-buttons>
+
+    <selection-content>
+      <predicate-form predicate="ctrl.predicateInEdit" references="ctrl.model.references"></predicate-form>
+    </selection-content>
+  </selection-view>
+</form>

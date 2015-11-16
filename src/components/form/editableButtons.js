@@ -2,7 +2,7 @@ module.exports = function editableView() {
   return {
     restrict: 'E',
     scope: {
-      editableController: '='
+      ctrl: '=editableController'
     },
     template: require('./editableButtons.html'),
     transclude: true

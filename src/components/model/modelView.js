@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function classView() {
+module.exports = function modelView() {
   'ngInject';
 
   return {
@@ -11,24 +11,19 @@ module.exports = function classView() {
     template: require('./modelView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: '^ngController',
-    link($scope, element, attributes, modelController) {
-      $scope.modelController = modelController;
-      modelController.registerView($scope.ctrl);
+    require: ['modelView', '^ngController'],
+    link($scope, element, attributes, controllers) {
+      $scope.modelController = controllers[1];
+      $scope.modelController.registerView(controllers[0]);
     },
-    controller($scope, userService, modelService, searchSchemeModal, languageService, editableController) {
+    controller($scope, modelService, searchSchemeModal, languageService, editableController) {
       'ngInject';
 
+      editableController.mixin($scope, this, 'model', modelService.createModel, modelService.updateModel);
+
       const vm = this;
-
-      editableController.mixin($scope, 'ctrl', 'model', modelService.createModel, modelService.updateModel, hasModifyRight);
-
       vm.addReference = addReference;
       vm.removeReference = removeReverence;
-
-      function hasModifyRight() {
-        return userService.isLoggedIn();
-      }
 
       function addReference() {
         const language = languageService.getModelLanguage();

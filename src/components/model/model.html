@@ -24,7 +24,8 @@
     </div>
 
     <div class="model-panel--right" window-height="min">
-      <selection-view selection="ctrl.selection" model="ctrl.model"></selection-view>
+      <class-view ng-if="ctrl.selection.isClass()" class="ctrl.selection" model="ctrl.model"></class-view>
+      <predicate-view ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" model="ctrl.model"></predicate-view>
     </div>
   </div>
 </div>

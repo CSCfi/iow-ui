@@ -1,30 +1,24 @@
-<div ng-show="ctrl.selection">
-  <div class="col-md-7">
-    <div class="component">
-      <div class="component-header">
-        <h3><span ng-class="ctrl.selection.glyphIconClass()"></span> <span>{{ctrl.selection | translateLabel}}</span></h3>
-      </div>
-      <form name="form">
-        <editable-buttons ng-if="ctrl.selection" editable-controller="ctrl" float preserve-parent-width="true">
-          <button type="button" class="btn btn-default right" ng-click="ctrl.remove()" ng-show="ctrl.canRemove()">
-            {{'Delete ' + ctrl.selection.type | translate}}
-          </button>
-          <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModifyProperty()" translate>Add property</button>
-        </editable-buttons>
+<div class="col-md-7">
+  <div class="component">
+    <div class="component-header">
+      <h3><span ng-class="editableController.getEditable().glyphIconClass()"></span> <span>{{editableController.getEditable() | translateLabel}}</span></h3>
+    </div>
 
-        <div class="selection-form" window-height="min" padding="134">
-          <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit" references="ctrl.model.references"></class-form>
-          <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selectionInEdit" references="ctrl.model.references"></predicate-form>
-        </div>
-      </form>
+    <editable-buttons editable-controller="editableController" float preserve-parent-width="true">
+      <named-transclude name="selection-buttons"></named-transclude>
+    </editable-buttons>
+
+    <div class="selection-form" window-height="min" padding="134">
+      <named-transclude name="selection-content"></named-transclude>
     </div>
   </div>
-  <div class="col-md-5">
-    <div class="component" float preserve-parent-width="true" top-offset="8">
-      <div class="component-header">
-        <h3 translate>Visualization</h3>
-      </div>
-      <div window-height="no-scroll" padding="85"></div>
+</div>
+
+<div class="col-md-5">
+  <div class="component" float preserve-parent-width="true" top-offset="8">
+    <div class="component-header">
+      <h3 translate>Visualization</h3>
     </div>
+    <div window-height="no-scroll" padding="85"></div>
   </div>
 </div>
