@@ -1,5 +1,3 @@
-const utils = require('../../services/utils');
-
 module.exports = function classForm() {
   'ngInject';
   return {
