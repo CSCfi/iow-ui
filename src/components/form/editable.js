@@ -8,7 +8,7 @@ module.exports = function editableDirective() {
     },
     restrict: 'E',
     template: require('./editable.html'),
-    require: '^form',
+    require: '?^form',
     transclude: true,
     link($scope, element, attributes, formController) {
       $scope.formController = formController;

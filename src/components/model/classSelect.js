@@ -8,7 +8,7 @@ module.exports = function classSelect() {
     controllerAs: 'ctrl',
     bindToController: true,
     template: require('./classSelect.html'),
-    require: '^form',
+    require: '?^form',
     link($scope, element, attributes, formController) {
       $scope.formController = formController;
     },

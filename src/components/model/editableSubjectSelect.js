@@ -10,7 +10,7 @@ module.exports = function editableSubjectSelect() {
     controllerAs: 'ctrl',
     bindToController: true,
     template: require('./editableSubjectSelect.html'),
-    require: '^form',
+    require: '?^form',
     link($scope, element, attributes, formController) {
       $scope.formController = formController;
     },
