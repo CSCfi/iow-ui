@@ -34,10 +34,6 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   const vm = this;
   let predicates;
 
-  $uibModalInstance.rendered.then(() => {
-    $scope.formController = angular.element(jQuery('#predicate-search-form')).controller('form');
-  });
-
   vm.close = $uibModalInstance.dismiss;
   vm.selectedPredicate = null;
   vm.selectedItem = null;
@@ -72,8 +68,8 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   };
 
   vm.selectPredicate = (predicate) => {
-    $scope.formController.editing = false;
-    $scope.formController.submitError = false;
+    $scope.form.editing = false;
+    $scope.form.submitError = false;
     vm.selectedItem = predicate;
     predicateService.getPredicate(predicate.id).then(result => vm.selectedPredicate = result);
   };
@@ -100,14 +96,14 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
           predicateService.newPredicate(model, result.label, result.concept.id, selectionOwlType, languageService.getModelLanguage())
             .then(predicate => {
               vm.selectedPredicate = predicate;
-              $scope.formController.editing = true;
+              $scope.form.editing = true;
             });
         }
       });
   };
 
   vm.isEditing = () => {
-    return $scope.formController && $scope.formController.editing;
+    return $scope.form && $scope.form.editing;
   };
 
   vm.isAttributeAddable = () => {
