@@ -3,7 +3,7 @@ const _ = require('lodash');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
-  function openModal(references, type, excludedPredicateMap) {
+  function openModal(references, type, excludedPredicateMap, model) {
     return $uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
@@ -12,7 +12,8 @@ module.exports = function modalFactory($uibModal) {
       resolve: {
         references: () => references,
         type: () => type,
-        excludedPredicateMap: () => excludedPredicateMap
+        excludedPredicateMap: () => excludedPredicateMap,
+        model: () => model
       }
     });
   }
@@ -22,12 +23,12 @@ module.exports = function modalFactory($uibModal) {
       return openModal(references, type, excludedPredicateMap);
     },
     openWithPredicationCreation(model) {
-      return openModal(model.references, null, {});
+      return openModal(model.references, null, {}, model);
     }
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, predicateService, languageService, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, model, predicateService, languageService, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -96,7 +97,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
         if (!vm.typeSelectable) {
           $uibModalInstance.close(_.extend(result, {type: selectionOwlType}));
         } else {
-          predicateService.newPredicate(vm.model, result.label, result.concept.id, selectionOwlType, languageService.getModelLanguage())
+          predicateService.newPredicate(model, result.label, result.concept.id, selectionOwlType, languageService.getModelLanguage())
             .then(predicate => {
               vm.selectedPredicate = predicate;
               $scope.formController.editing = true;
