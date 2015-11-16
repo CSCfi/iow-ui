@@ -53,13 +53,13 @@ module.exports = function directive($window, $timeout) {
       }
 
       function setFloating() {
+        addedPlaceholder = createPlaceholder().insertBefore(element);
         element.css('left', elementLocation.left + 'px');
         element.css('top', topOffset + 'px');
         element.css('position', 'fixed');
         if (preserveParentWidth) {
           element.css('width', element.parent().width());
         }
-        addedPlaceholder = createPlaceholder().insertBefore(element);
       }
 
       function setStatic() {
