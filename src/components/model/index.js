@@ -13,7 +13,6 @@ mod.directive('classView', require('./classView'));
 mod.directive('predicateForm', require('./predicateForm'));
 mod.directive('predicateView', require('./predicateView'));
 mod.directive('propertyView', require('./propertyView'));
-mod.directive('propertyPredicateView', require('./propertyPredicateView'));
 mod.directive('rangeSelect', require('./rangeSelect'));
 mod.directive('stateSelect', require('./stateSelect'));
 mod.directive('classSelect', require('./classSelect'));

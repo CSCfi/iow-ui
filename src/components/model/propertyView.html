@@ -12,7 +12,23 @@
   <uib-accordion>
     <uib-accordion-group is-open="isOpen[property.predicateId]">
       <uib-accordion-heading>{{property.predicateCurie}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicateId], 'glyphicon-chevron-right': !isOpen[property.predicateId]}"></span></uib-accordion-heading>
-      <property-predicate-view predicate="predicate" ng-if="isOpen[property.predicateId]"></property-predicate-view>
+      <div ng-if="isOpen[property.predicateId]">
+        <div class="model-view__title" translate>Name</div>
+        <div>{{predicate | translateLabel}}</div>
+
+        <div ng-show="predicate.comment">
+          <div class="model-view__title" translate>Comment</div>
+          <div>{{predicate.comment | translateValue}}</div>
+        </div>
+
+        <div class="model-view__title" translate>Type</div>
+        <div>{{predicate.owlType}}</div>
+
+        <div ng-show="predicate.range">
+          <div class="model-view__title" translate>Range</div>
+          <div>{{predicate.range}}</div>
+        </div>
+      </div>
     </uib-accordion-group>
   </uib-accordion>
 </div>

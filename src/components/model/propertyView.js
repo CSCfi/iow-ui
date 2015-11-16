@@ -1,5 +1,3 @@
-const graphUtils = require('../../services/entities');
-
 module.exports = function propertyView() {
   'ngInject';
   return {
