@@ -1,53 +1,22 @@
 <div ng-hide="ctrl.loading">
 
-  <form><model-view model="ctrl.model"></model-view></form>
+  <model-view model="ctrl.model"></model-view>
 
   <div class="bottom" ng-if="!ctrl.model.unsaved">
     <div class="model-panel--left" float="model-panel--left-placeholder">
       <uib-tabset>
-
-        <uib-tab active="ctrl.activeTab['class']">
+        <uib-tab active="tab.active" ng-repeat="tab in ctrl.tabs">
           <uib-tab-heading>
-            <i ng-class="ctrl.glyphIconClassForType('class')"></i><p>{{'Classes' | translate}}</p>
+            <i ng-class="tab.glyphIconClass"></i><p>{{tab.label | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addClass()" translate>Add class</button>
+          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="tab.addNew()">{{tab.addLabel | translate}}</button>
 
           <ul class="panel__list" window-height padding="95" logged-in-padding="146">
-            <li ng-repeat="class in ctrl.classes | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isSelected(class)}"
-                ng-click="ctrl.select(class)">
-              {{class | translateLabel}}
-            </li>
-          </ul>
-        </uib-tab>
-        <uib-tab active="ctrl.activeTab['attribute']">
-          <uib-tab-heading>
-            <i ng-class="ctrl.glyphIconClassForType('attribute')"></i><p>{{'Attributes' | translate}}</p>
-          </uib-tab-heading>
-
-          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addPredicate('attribute')" translate>Add attribute</button>
-
-          <ul class="panel__list" window-height padding="95" logged-in-padding="146">
-            <li ng-repeat="attribute in ctrl.attributes() | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isSelected(attribute)}"
-                ng-click="ctrl.select(attribute)">
-              {{attribute | translateLabel}}
-            </li>
-          </ul>
-        </uib-tab>
-        <uib-tab active="ctrl.activeTab['association']">
-          <uib-tab-heading>
-            <i ng-class="ctrl.glyphIconClassForType('association')"></i><p>{{'Associations' | translate}}</p>
-          </uib-tab-heading>
-
-          <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="ctrl.addPredicate('association')" translate>Add association</button>
-
-          <ul class="panel__list" window-height padding="95" logged-in-padding="146">
-            <li ng-repeat="association in ctrl.associations() | orderByLabel"
-                ng-class="{'model-panel__selection': ctrl.isSelected(association)}"
-                ng-click="ctrl.select(association)">
-              {{association | translateLabel}}
+            <li ng-repeat="item in tab.items() | orderByLabel"
+                ng-class="{'model-panel__selection': ctrl.isSelected(item)}"
+                ng-click="ctrl.select(item)">
+              {{item | translateLabel}}
             </li>
           </ul>
         </uib-tab>
@@ -55,7 +24,7 @@
     </div>
 
     <div class="model-panel--right" window-height="min">
-      <form><selection-view selection="ctrl.selection" model="ctrl.model"></selection-view></form>
+      <selection-view selection="ctrl.selection" model="ctrl.model"></selection-view>
     </div>
   </div>
 </div>

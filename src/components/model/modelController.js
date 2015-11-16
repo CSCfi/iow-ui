@@ -14,11 +14,15 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
   vm.select = select;
   vm.isSelected = listItem => listItem.isEqual(vm.selectedItem);
   vm.canEdit = userService.isLoggedIn;
-  vm.addClass = addClass;
-  vm.addPredicate = addPredicate;
   vm.glyphIconClassForType = utils.glyphIconClassForType;
-  vm.associations = () => _.filter(vm.predicates, predicate => predicate.isAssociation());
-  vm.attributes = () => _.filter(vm.predicates, predicate => predicate.isAttribute());
+
+  function createTab(type, items, addNew) {
+    return {type, items, label: _.capitalize(type) + ' list', addLabel: 'Add ' + type, glyphIconClass: utils.glyphIconClassForType(type), addNew};
+  }
+
+  vm.tabs = [createTab('class', () => vm.classes, addClass),
+             createTab('attribute', () => _.filter(vm.predicates, predicate => predicate.isAttribute()), () => addPredicate('attribute')),
+             createTab('association', () => _.filter(vm.predicates, predicate => predicate.isAssociation()), () => addPredicate('association'))];
 
   init(routeData($routeParams));
 

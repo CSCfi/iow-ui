@@ -1,7 +1,7 @@
 <div>
 
   <div class="top-actions">
-    <button ng-show="selectionViewController.canRemoveProperty()" type="button" class="btn btn-default right" ng-click="selectionViewController.removeProperty(property)" translate>Delete property</button>
+    <button ng-show="selectionViewController.canModifyProperty()" type="button" class="btn btn-default right" ng-click="selectionViewController.removeProperty(property)" translate>Delete property</button>
   </div>
 
   <editable title="Name"><input name="Name" class="form-control" type="text" localized-input ng-model="property.label" /></editable>

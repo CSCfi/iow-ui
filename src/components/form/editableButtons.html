@@ -1,0 +1,13 @@
+<div class="top-actions">
+  <model-language-chooser></model-language-chooser>
+  <button type="button" class="btn btn-default right" ng-click="editableController.cancelEditing()" ng-show="editableController.isEditing()" translate>Cancel edit</button>
+  <button type="button" class="btn btn-default right" ng-click="editableController.saveEdited()" ng-show="editableController.isEditing()" translate>Save changes</button>
+  <button type="button" class="btn btn-default right" ng-click="editableController.edit()" ng-show="editableController.canEdit()" translate>Edit</button>
+
+  <ng-transclude></ng-transclude>
+
+  <div class="alert alert-danger" role="alert" ng-show="editableController.submitError">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span translate>Save failed</span>
+  </div>
+</div>

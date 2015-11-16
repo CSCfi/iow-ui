@@ -1,26 +1,16 @@
-<div ng-if="ctrl.selection">
+<div ng-show="ctrl.selection">
   <div class="col-md-7">
     <div class="component">
       <div class="component-header">
         <h3><span ng-class="ctrl.selection.glyphIconClass()"></span> <span>{{ctrl.selection | translateLabel}}</span></h3>
       </div>
-
-      <form>
-        <div class="top-actions" float preserve-parent-width="true">
-          <model-language-chooser></model-language-chooser>
-          <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing(true)" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
-          <button type="button" class="btn btn-default right" ng-click="ctrl.update()" ng-show="ctrl.isEditing()" translate>Save changes</button>
-          <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
+      <form name="form">
+        <editable-buttons ng-if="ctrl.selection" editable-controller="ctrl" float preserve-parent-width="true">
           <button type="button" class="btn btn-default right" ng-click="ctrl.remove()" ng-show="ctrl.canRemove()">
-            {{ctrl.selection.isClass() ? 'Delete class' : 'Delete predicate' | translate}}
+            {{'Delete ' + ctrl.selection.type | translate}}
           </button>
-          <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canAddProperty()" translate>Add property</button>
-
-          <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span translate>Save failed</span>
-          </div>
-        </div>
+          <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModifyProperty()" translate>Add property</button>
+        </editable-buttons>
 
         <div class="selection-form" window-height="min" padding="134">
           <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selectionInEdit" references="ctrl.model.references"></class-form>

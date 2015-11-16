@@ -4,15 +4,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: components/model/model.html:44
+#: translations/misc.html:44
 msgid "Add association"
 msgstr ""
 
-#: components/model/model.html:29
+#: translations/misc.html:41
 msgid "Add attribute"
 msgstr ""
 
-#: components/model/model.html:14
+#: translations/misc.html:38
 msgid "Add class"
 msgstr ""
 
@@ -21,37 +21,37 @@ msgstr ""
 msgid "Add model"
 msgstr ""
 
-#: components/model/selectionView.html:17
+#: components/model/selectionView.html:12
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:14
+#: components/model/modelView.html:11
 msgid "Add reference"
 msgstr ""
 
-#: components/model/searchClassModal.html:32
-#: components/model/searchPredicateModal.html:37
+#: components/model/searchClassModal.html:25
+#: components/model/searchPredicateModal.html:31
 msgid "All models"
 msgstr ""
 
-#: components/model/searchConceptModal.html:15
+#: components/model/searchConceptModal.html:12
 msgid "All references"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:46
+#: components/model/searchPredicateModal.html:40
 msgid "All types"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:157
+#: components/model/searchConceptModal.js:157
 #: translations/misc.html:12
 msgid "and create new"
 msgstr ""
 
-#: components/modal/editInProgressModal.html:9
+#: translations/misc.html:35
 msgid "Are you sure that you want to cancel edit?"
 msgstr ""
 
-#: components/modal/deleteConfirmModal.html:9
+#: translations/misc.html:37
 msgid "Are you sure that you want to delete?"
 msgstr ""
 
@@ -63,35 +63,33 @@ msgstr ""
 msgid "association"
 msgstr ""
 
-#: components/model/model.html:41
-msgid "Associations"
+#: translations/misc.html:46
+msgid "Association list"
 msgstr ""
 
 #: translations/misc.html:28
 msgid "attribute"
 msgstr ""
 
-#: components/model/model.html:26
-msgid "Attributes"
+#: translations/misc.html:43
+msgid "Attribute list"
 msgstr ""
 
 #: components/group/groupList.html:2
 msgid "Browse"
 msgstr ""
 
+#: components/common/modalTemplate.html:16
 #: components/group/addModelModal.html:25
-#: components/modal/deleteConfirmModal.html:14
-#: components/modal/editInProgressModal.html:14
-#: components/model/addConceptModal.html:31
-#: components/model/searchClassModal.html:59
-#: components/model/searchConceptModal.html:45
-#: components/model/searchPredicateModal.html:78
-#: components/model/searchSchemeModal.html:32
+#: components/model/addConceptModal.html:27
+#: components/model/searchClassModal.html:52
+#: components/model/searchConceptModal.html:53
+#: components/model/searchPredicateModal.html:72
+#: components/model/searchSchemeModal.html:26
 msgid "Cancel"
 msgstr ""
 
-#: components/model/modelView.html:11
-#: components/model/selectionView.html:11
+#: components/form/editableButtons.html:3
 msgid "Cancel edit"
 msgstr ""
 
@@ -107,56 +105,56 @@ msgstr ""
 msgid "class"
 msgstr ""
 
-#: components/model/searchClassModal.html:17
+#: translations/misc.html:40
+msgid "Class list"
+msgstr ""
+
+#: components/model/searchClassModal.html:14
 msgid "Class search info"
 msgstr ""
 
-#: components/model/model.html:11
-msgid "Classes"
-msgstr ""
-
-#: components/model/addConceptModal.html:16
+#: components/model/addConceptModal.html:12
 #: components/model/editableSubjectSelect.html:15
 #: components/model/propertyPredicateView.html:5
-#: components/model/searchConceptModal.html:27
+#: components/model/searchConceptModal.html:34
 msgid "Comment"
 msgstr ""
 
-#: components/model/addConceptModal.html:11
-#: components/model/searchConceptModal.html:21
+#: components/model/addConceptModal.html:7
+#: components/model/searchConceptModal.html:18
 msgid "Concept"
 msgstr ""
 
-#: components/model/addConceptModal.html:26
+#: components/model/addConceptModal.html:22
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: components/model/searchConceptModal.html:41
+#: components/model/searchConceptModal.html:48
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
 
-#: components/modal/deleteConfirmModal.html:3
+#: translations/misc.html:36
 msgid "Confirm delete"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:80
+#: components/model/searchPredicateModal.html:74
 msgid "Create and use predicate"
 msgstr ""
 
 #: components/group/addModelModal.html:26
-#: components/model/addConceptModal.html:32
+#: components/model/addConceptModal.html:28
 msgid "Create new"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:14
+#: components/model/searchPredicateModal.html:9
 msgid "Create new association"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:18
+#: components/model/searchPredicateModal.html:14
 msgid "Create new attribute"
 msgstr ""
 
-#: components/model/searchClassModal.html:13
+#: components/model/searchClassModal.html:8
 msgid "Create new class"
 msgstr ""
 
@@ -184,6 +182,15 @@ msgstr ""
 msgid "Define concept for the predicate"
 msgstr ""
 
+#: translations/misc.html:45
+msgid "Delete association"
+msgstr ""
+
+#: translations/misc.html:42
+msgid "Delete attribute"
+msgstr ""
+
+#: translations/misc.html:39
 #: translations/misc.html:8
 msgid "Delete class"
 msgstr ""
@@ -208,12 +215,11 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: components/model/modelView.html:13
-#: components/model/selectionView.html:13
+#: components/form/editableButtons.html:5
 msgid "Edit"
 msgstr ""
 
-#: components/modal/editInProgressModal.html:3
+#: translations/misc.html:34
 msgid "Edit in progress"
 msgstr ""
 
@@ -246,7 +252,7 @@ msgid "Hide"
 msgstr ""
 
 #: components/model/editableSubjectSelect.html:7
-#: components/model/modelView.html:24
+#: components/model/modelView.html:16
 msgid "Id"
 msgstr ""
 
@@ -264,9 +270,9 @@ msgid "Is defined by"
 msgstr ""
 
 #: components/group/addModelModal.html:16
-#: components/model/addConceptModal.html:21
+#: components/model/addConceptModal.html:17
 #: components/model/editableSubjectSelect.html:11
-#: components/model/searchConceptModal.html:31
+#: components/model/searchConceptModal.html:38
 msgid "Label"
 msgstr ""
 
@@ -300,7 +306,7 @@ msgstr ""
 msgid "Not defined"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:154
+#: components/model/searchConceptModal.js:154
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
@@ -337,7 +343,7 @@ msgstr ""
 msgid "Recommendation"
 msgstr ""
 
-#: components/model/searchConceptModal.html:11
+#: components/model/searchConceptModal.html:8
 msgid "Reference"
 msgstr ""
 
@@ -353,46 +359,44 @@ msgstr ""
 msgid "Requires"
 msgstr ""
 
-#: components/model/modelView.html:12
-#: components/model/selectionView.html:12
+#: components/form/editableButtons.html:4
 msgid "Save changes"
 msgstr ""
 
-#: components/model/modelView.html:18
-#: components/model/searchPredicateModal.html:69
-#: components/model/selectionView.html:21
+#: components/form/editableButtons.html:11
+#: components/model/searchPredicateModal.html:63
 msgid "Save failed"
 msgstr ""
 
-#: components/model/searchClassModal.html:23
+#: components/model/searchClassModal.html:16
 msgid "search class"
 msgstr ""
 
-#: components/model/searchClassModal.html:3
+#: components/model/searchClassModal.html:2
 msgid "Search classes"
 msgstr ""
 
-#: components/model/searchConceptModal.html:23
+#: components/model/searchConceptModal.html:30
 msgid "Search from concept database"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:28
+#: components/model/searchPredicateModal.html:22
 msgid "search predicate"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:22
+#: components/model/searchPredicateModal.html:20
 msgid "Search predicate info"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:4
+#: components/model/searchPredicateModal.html:2
 msgid "Search predicates"
 msgstr ""
 
-#: components/model/searchSchemeModal.html:13
+#: components/model/searchSchemeModal.html:8
 msgid "search scheme"
 msgstr ""
 
-#: components/model/searchSchemeModal.html:3
+#: components/model/searchSchemeModal.html:2
 msgid "Search schemes"
 msgstr ""
 
@@ -408,12 +412,12 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:157
+#: components/model/searchConceptModal.js:157
 #: translations/misc.html:10
 msgid "suggest"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:137
+#: components/model/searchConceptModal.js:137
 #: translations/misc.html:11
 msgid "suggestion"
 msgstr ""
@@ -434,15 +438,15 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: components/model/searchClassModal.html:60
+#: components/model/searchClassModal.html:53
 msgid "Use class"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:79
+#: components/model/searchPredicateModal.html:73
 msgid "Use predicate"
 msgstr ""
 
-#: components/model/searchSchemeModal.html:33
+#: components/model/searchSchemeModal.html:27
 msgid "Use scheme"
 msgstr ""
 
@@ -450,7 +454,7 @@ msgstr ""
 msgid "Value class"
 msgstr ""
 
-#: components/model/selectionView.html:35
+#: components/model/selectionView.html:25
 msgid "Visualization"
 msgstr ""
 
@@ -522,7 +526,6 @@ msgstr ""
 msgid "xsd:XMLLiteral"
 msgstr ""
 
-#: components/modal/deleteConfirmModal.html:13
-#: components/modal/editInProgressModal.html:13
+#: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr ""
