@@ -34,7 +34,9 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
 
   $scope.$watch('ctrl.model', (newModel, oldModel) => {
     updateLocation();
-    if (oldModel && !newModel) {
+    const isNewNewModelCreationCancelled = oldModel && !newModel;
+
+    if (isNewNewModelCreationCancelled) {
       $location.path('/groups');
       $location.search({urn: $routeParams.group});
     }
@@ -77,10 +79,6 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
       }
     }
 
-    function existingModelId() {
-      return params.urn;
-    }
-
     function selected() {
       for (const type of ['attribute', 'class', 'association']) {
         const id = params[type];
@@ -90,7 +88,7 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
       }
     }
 
-    return {newModel: newModel(), existingModelId: existingModelId(), selected: selected()};
+    return {newModel: newModel(), existingModelId: params.urn, selected: selected()};
   }
 
   function init({newModel, existingModelId, selected}) {
