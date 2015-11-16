@@ -3,7 +3,8 @@ module.exports = function classForm() {
   return {
     scope: {
       class: '=',
-      references: '='
+      references: '=',
+      editableController: '='
     },
     restrict: 'E',
     template: require('./classForm.html')

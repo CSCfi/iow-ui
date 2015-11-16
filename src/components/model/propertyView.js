@@ -2,14 +2,13 @@ module.exports = function propertyView() {
   'ngInject';
   return {
     scope: {
-      property: '=',
-      context: '='
+      property: '='
     },
     restrict: 'E',
     template: require('./propertyView.html'),
-    require: '^?selectionView',
-    link($scope, element, attributes, selectionViewController) {
-      $scope.selectionViewController = selectionViewController;
+    require: '^?classView',
+    link($scope, element, attributes, editableController) {
+      $scope.editableController = editableController;
     },
     controller($scope, predicateService) {
       'ngInject';
