@@ -5,9 +5,7 @@
     <uib-accordion-heading>
       <span accordion-chevron is-open="isOpen[require.id]">{{require.title | translateValue}}</span>
     </uib-accordion-heading>
-    <div class="model-view__title" translate>Preferred namespace</div>
-    <div>{{require.namespace}}</div>
-    <div class="model-view__title" translate>Preferred prefix</div>
-    <div>{{require.prefix}}</div>
+    <non-editable title="Preferred namespace" value="require.namespace"></non-editable>
+    <non-editable title="Preferred prefix" value="require.prefix"></non-editable>
   </uib-accordion-group>
 </uib-accordion>

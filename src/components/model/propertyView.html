@@ -15,21 +15,10 @@
         <span accordion-chevron is-open="isOpen[property.predicateId]">{{property.predicateCurie}}</span>
       </uib-accordion-heading>
       <div ng-if="isOpen[property.predicateId]">
-        <div class="model-view__title" translate>Name</div>
-        <div>{{predicate | translateLabel}}</div>
-
-        <div ng-show="predicate.comment">
-          <div class="model-view__title" translate>Comment</div>
-          <div>{{predicate.comment | translateValue}}</div>
-        </div>
-
-        <div class="model-view__title" translate>Type</div>
-        <div>{{predicate.owlType}}</div>
-
-        <div ng-show="predicate.range">
-          <div class="model-view__title" translate>Range</div>
-          <div>{{predicate.range}}</div>
-        </div>
+        <non-editable title="Name" value="predicate"></non-editable>
+        <non-editable title="Comment" value="predicate.comment"></non-editable>
+        <non-editable title="Type" value="predicate.owlType"></non-editable>
+        <non-editable title="Range" value="predicate.range"></non-editable>
       </div>
     </uib-accordion-group>
   </uib-accordion>

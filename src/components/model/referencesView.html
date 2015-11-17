@@ -8,7 +8,6 @@
     <div class="top-actions">
       <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default right" ng-click="modelViewController.removeReference(reference)" translate>Delete reference</button>
     </div>
-    <div class="model-view__title" translate>Identifier</div>
-    <div>{{reference.vocabularyId}}</div>
+    <non-editable title="Id" value="reference.vocabularyId"></non-editable>
   </uib-accordion-group>
 </uib-accordion>

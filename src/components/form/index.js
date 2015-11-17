@@ -5,6 +5,7 @@ module.exports = name;
 mod.directive('idInput', require('./idInput'));
 mod.directive('localizedInput', require('./localizedInput'));
 mod.directive('editable', require('./editable'));
+mod.directive('nonEditable', require('./nonEditable'));
 mod.directive('editableButtons', require('./editableButtons'));
 mod.directive('valueSelect', require('./valueSelect'));
 mod.directive('modelLanguageChooser', require('./modelLanguageChooser'));

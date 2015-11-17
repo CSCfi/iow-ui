@@ -28,16 +28,16 @@ msgstr "Lisää luokka"
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
-#: components/model/selectionView.html:12
+#: components/model/classView.html:4 components/model/predicateView.html:4
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/model/modelView.html:11
+#: components/model/modelView.html:9
 msgid "Add reference"
 msgstr "Lisää sanasto"
 
 #: components/model/searchClassModal.html:25
-#: components/model/searchPredicateModal.html:31
+#: components/model/searchPredicateModal.html:32
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
@@ -45,7 +45,7 @@ msgstr "Kaikki kirjastot"
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/model/searchPredicateModal.html:40
+#: components/model/searchPredicateModal.html:41
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -90,7 +90,7 @@ msgstr "Selaa"
 #: components/model/addConceptModal.html:27
 #: components/model/searchClassModal.html:52
 #: components/model/searchConceptModal.html:53
-#: components/model/searchPredicateModal.html:72
+#: components/model/searchPredicateModal.html:71
 #: components/model/searchSchemeModal.html:26
 msgid "Cancel"
 msgstr "Peruuta"
@@ -103,7 +103,7 @@ msgstr "Peruuta muokkaus"
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/model/editableSubjectSelect.html:20
+#: components/model/editableSubjectSelect.html:11
 msgid "Choose subject"
 msgstr "valitse käsite"
 
@@ -122,8 +122,6 @@ msgstr ""
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
 #: components/model/addConceptModal.html:12
-#: components/model/editableSubjectSelect.html:15
-#: components/model/propertyPredicateView.html:5
 #: components/model/searchConceptModal.html:34
 msgid "Comment"
 msgstr "Määritelmä"
@@ -145,7 +143,7 @@ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: components/model/searchPredicateModal.html:74
+#: components/model/searchPredicateModal.html:73
 msgid "Create and use predicate"
 msgstr "Luo ominaisuus ja käytä"
 
@@ -154,11 +152,11 @@ msgstr "Luo ominaisuus ja käytä"
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: components/model/searchPredicateModal.html:9
+#: components/model/searchPredicateModal.html:10
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: components/model/searchPredicateModal.html:14
+#: components/model/searchPredicateModal.html:15
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
@@ -210,7 +208,7 @@ msgstr "Poista ominaisuus"
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
-#: components/model/referencesView.html:11
+#: components/model/referencesView.html:9
 msgid "Delete reference"
 msgstr "Poista sanasto"
 
@@ -260,26 +258,20 @@ msgstr "Ryhmä"
 msgid "Hide"
 msgstr "Piilota"
 
-#: components/model/editableSubjectSelect.html:7
-#: components/model/modelView.html:16
+#: translations/misc.html:47
 msgid "Id"
-msgstr "Tunniste"
-
-#: components/model/referencesView.html:13
-msgid "Identifier"
 msgstr "Tunniste"
 
 #: components/index.html:3
 msgid "IOW header"
 msgstr "Otsikko tähän"
 
-#: components/model/classForm.html:8 components/model/predicateForm.html:6
+#: translations/misc.html:51
 msgid "Is defined by"
 msgstr "Kirjasto"
 
 #: components/group/addModelModal.html:16
 #: components/model/addConceptModal.html:17
-#: components/model/editableSubjectSelect.html:11
 #: components/model/searchConceptModal.html:38
 msgid "Label"
 msgstr "Nimi"
@@ -303,7 +295,7 @@ msgstr "Kirjaudu ulos"
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
 
-#: components/model/propertyPredicateView.html:1
+#: translations/misc.html:48
 msgid "Name"
 msgstr "Nimi"
 
@@ -327,11 +319,11 @@ msgstr "Attribuutti"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
-#: components/model/requiresView.html:10
+#: translations/misc.html:53
 msgid "Preferred namespace"
 msgstr "Suositeltu nimiavaruus"
 
-#: components/model/requiresView.html:12
+#: translations/misc.html:54
 msgid "Preferred prefix"
 msgstr "Suositeltu etuliite"
 
@@ -339,7 +331,7 @@ msgstr "Suositeltu etuliite"
 msgid "Prefix"
 msgstr "Etuliite"
 
-#: components/model/propertyPredicateView.html:13
+#: translations/misc.html:49
 msgid "Range"
 msgstr "Arvoalue"
 
@@ -371,7 +363,7 @@ msgstr "Nimiavaruudet"
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: components/form/editableButtons.html:11
+#: components/form/editableButtons.html:12
 #: components/model/searchPredicateModal.html:63
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
@@ -388,17 +380,17 @@ msgstr "Hae luokkia"
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
 
-#: components/model/searchPredicateModal.html:22
+#: components/model/searchPredicateModal.html:23
 msgid "search predicate"
 msgstr "Hae ominaisuutta…"
 
-#: components/model/searchPredicateModal.html:20
+#: components/model/searchPredicateModal.html:21
 msgid "Search predicate info"
 msgstr ""
 "Haen ensin tarvitsemaasi ominaisuutta yhteentoimivuuden kuvauksista. Jos et "
 "löydä tarpeisiisi sopivaa, voit luoda uuden ominaisuuden."
 
-#: components/model/searchPredicateModal.html:2
+#: components/model/searchPredicateModal.html:3
 msgid "Search predicates"
 msgstr "Hae ominaisuuksia"
 
@@ -430,11 +422,11 @@ msgstr "ehdota"
 msgid "suggestion"
 msgstr "ehdotus"
 
-#: components/model/classForm.html:5
+#: translations/misc.html:52
 msgid "Superclass"
 msgstr "Yläluokka"
 
-#: components/model/propertyPredicateView.html:9
+#: translations/misc.html:50
 msgid "Type"
 msgstr "Tyyppi"
 
@@ -450,7 +442,7 @@ msgstr "Käytä"
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/model/searchPredicateModal.html:73
+#: components/model/searchPredicateModal.html:72
 msgid "Use predicate"
 msgstr "Käytä ominaisuutta"
 
@@ -462,7 +454,7 @@ msgstr "Käytä sanastoa"
 msgid "Value class"
 msgstr "Kohde"
 
-#: components/model/selectionView.html:25
+#: components/model/selectionView.html:20
 msgid "Visualization"
 msgstr "Visualisointi"
 
@@ -537,6 +529,9 @@ msgstr "XML"
 #: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Identifier"
+#~ msgstr "Tunniste"
 
 #~ msgid "Associations"
 #~ msgstr "Assosiaatiot"

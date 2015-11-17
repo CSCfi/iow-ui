@@ -11,8 +11,7 @@
 
     <div class="col-md-6">
       <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.modelInEdit.label" /></editable>
-      <div class="model-view__title" translate>Id</div>
-      <div>{{ctrl.modelInEdit.id}}</div>
+      <non-editable title="Id" value="ctrl.modelInEdit.id"></non-editable>
       <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.modelInEdit.comment"></textarea></editable>
       <editable title="State" value-as-localization-key="true"><state-select state="ctrl.modelInEdit.state"></state-select></editable>
     </div>
