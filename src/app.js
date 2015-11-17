@@ -11,6 +11,7 @@ angular.module('iow-ui', [
   require('angular-ui-bootstrap'),
   'gettext',
   require('./components/common'),
+  require('./components/editor'),
   require('./components/form'),
   require('./components/group'),
   require('./components/model'),
