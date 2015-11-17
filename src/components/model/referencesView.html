@@ -2,10 +2,8 @@
 
 <uib-accordion>
   <uib-accordion-group ng-repeat="reference in references" is-open="isOpen[reference.id]">
-    <uib-accordion-heading>{{reference.title | translateValue}}
-      <span class="glyphicon pull-right"
-            ng-class="{'glyphicon-chevron-down': isOpen[reference.id], 'glyphicon-chevron-right': !isOpen[reference.id]}">
-      </span>
+    <uib-accordion-heading>
+      <span accordion-chevron is-open="isOpen[reference.id]">{{reference.title | translateValue}}</span>
     </uib-accordion-heading>
     <div class="top-actions">
       <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default right" ng-click="modelViewController.removeReference(reference)" translate>Delete reference</button>

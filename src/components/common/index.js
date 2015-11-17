@@ -7,6 +7,7 @@ mod.directive('iowTypeahead', require('./typeahead'));
 mod.directive('float', require('./float'));
 mod.directive('modalTemplate', require('./modalTemplate'));
 mod.directive('namedTransclude', require('./namedTransclude'));
+mod.directive('accordionChevron', require('./accordionChevron'));
 mod.factory('confirmationModal', require('./confirmationModal'));
 
 mod.filter('translateValue', (languageService) => {

@@ -11,7 +11,9 @@
   <editable title="Value class" ng-if="predicate.isAssociation()"><class-select class-name="property.valuesClass"></class-select></editable>
   <uib-accordion>
     <uib-accordion-group is-open="isOpen[property.predicateId]">
-      <uib-accordion-heading>{{property.predicateCurie}} <span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isOpen[property.predicateId], 'glyphicon-chevron-right': !isOpen[property.predicateId]}"></span></uib-accordion-heading>
+      <uib-accordion-heading>
+        <span accordion-chevron is-open="isOpen[property.predicateId]">{{property.predicateCurie}}</span>
+      </uib-accordion-heading>
       <div ng-if="isOpen[property.predicateId]">
         <div class="model-view__title" translate>Name</div>
         <div>{{predicate | translateLabel}}</div>

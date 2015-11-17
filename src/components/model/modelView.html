@@ -1,7 +1,5 @@
 <div class="model-header" ng-click="ctrl.visible = !ctrl.visible">
-  <h2>{{ctrl.model | translateLabel}}
-    <span class="glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.visible, 'glyphicon-chevron-right': !ctrl.visible}"></span>
-  </h2>
+  <h2 accordion-chevron is-open="ctrl.visible" no-pull="true">{{ctrl.model | translateLabel}}</h2>
 </div>
 
 <form name="form">
