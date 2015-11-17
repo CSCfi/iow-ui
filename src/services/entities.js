@@ -45,6 +45,7 @@ class Model extends AbstractModel {
     this.type = 'model';
     this.references = mapAsEntity(context, graph.references, Reference, true);
     this.requires = mapAsEntity(context, graph.requires, Require, true);
+    this.copyNamespacesFromRequires();
   }
 
   addReference(reference) {
@@ -63,7 +64,14 @@ class Model extends AbstractModel {
     _.remove(this.requires, require);
   }
 
+  copyNamespacesFromRequires() {
+    _.forEach(this.requires, reference => {
+      this.context[reference.prefix] = reference.namespace;
+    });
+  }
+
   serialize() {
+    this.copyNamespacesFromRequires();
     return {
       '@context': this.context, '@graph': _.extend(this.graph,
         {
