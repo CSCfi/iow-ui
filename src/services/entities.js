@@ -94,13 +94,23 @@ class Require {
     this.id = graph['@id'];
     this.label = graph.label;
     this.type = 'require';
-    this.namespace = graph['dcap:preferredXMLNamespaceName'];
+    this._namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
+  }
+
+  get namespace() {
+    return this._namespace;
+  }
+
+  set namespace(value) {
+    this._namespace = value;
+    this.id = _.trimRight(value, '#/');
   }
 
   serialize() {
     return _.extend(this.graph,
       {
+        '@id': this.id,
         label: this.label,
         'dcap:preferredXMLNamespaceName': this.namespace,
         'dcap:preferredXMLNamespacePrefix': this.prefix
