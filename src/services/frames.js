@@ -96,11 +96,10 @@ function predicateListFrame(data) {
 }
 
 function predicateFrame(data) {
-  const result = {
+  return {
     '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo}),
     'isDefinedBy': {}
   };
-  return result;
 }
 
 function classFrame(data) {
@@ -141,10 +140,10 @@ function conceptSuggestionFrame(data) {
   };
 }
 
-function conceptFrame(data,id) {
+function conceptFrame(data, id) {
   return {
     '@context': addToContext(data['@context'], {prefLabel, comment}),
-    '@id':id
+    '@id': id
   };
 }
 

@@ -48,7 +48,7 @@
         <div class="col-md-4 search-results" window-height padding="260">
           <div ng-repeat="predicate in ctrl.searchResults() track by predicate.id">
             <div ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)">
-              <i ng-class="predicate.glyphIconClass()"></i>
+              <i ng-class="predicate.glyphIconClass"></i>
               <h5>{{predicate | translateLabel}}</h5>
               <p>{{predicate.comment | translateValue}}</p>
               <p>{{predicate.model | translateLabel}}</p>

@@ -14,7 +14,6 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
   vm.select = select;
   vm.isSelected = listItem => listItem.isEqual(vm.selectedItem);
   vm.canEdit = userService.isLoggedIn;
-  vm.glyphIconClassForType = utils.glyphIconClassForType;
 
   function createTab(type, items, addNew) {
     return {type, items, label: _.capitalize(type) + ' list', addLabel: 'Add ' + type, glyphIconClass: utils.glyphIconClassForType(type), addNew};

@@ -1,4 +1,4 @@
-const utils = require('../../services/utils');
+const _ = require('lodash');
 
 module.exports = function editableControllerFactory($log, userService, confirmationModal) {
   'ngInject';
@@ -30,9 +30,16 @@ module.exports = function editableControllerFactory($log, userService, confirmat
       $scope.$watch(getEditable, select);
 
       function select(editable) {
+        function clone(obj) {
+          if (obj) {
+            const cloned = Object.create(Object.getPrototypeOf(obj));
+            _.merge(cloned, obj);
+            return cloned;
+          }
+        }
         vm.submitError = false;
         vm[editableName] = editable;
-        vm[editableInEditName] = utils.clone(editable);
+        vm[editableInEditName] = clone(editable);
 
         if (editable && editable.unsaved) {
           edit();

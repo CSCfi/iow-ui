@@ -1,4 +1,4 @@
-module.exports = function globalLanguageChooser($log) {
+module.exports = function globalLanguageChooser() {
   'ngInject';
   return {
     scope: {

@@ -17,9 +17,7 @@ class GroupListItem {
 }
 
 class AbstractModel {
-  constructor(graph, context) {
-    this.graph = graph;
-    this.context = context;
+  constructor(graph) {
     this.id = graph['@id'];
     this.label = graph.label;
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
@@ -32,14 +30,16 @@ class AbstractModel {
 }
 
 class ModelListItem extends AbstractModel {
-  constructor(graph, context) {
-    super(graph, context);
+  constructor(graph) {
+    super(graph);
   }
 }
 
 class Model extends AbstractModel {
   constructor(graph, context) {
-    super(graph, context);
+    super(graph);
+    this.graph = graph;
+    this.context = context;
     this.comment = graph.comment;
     this.state = graph.versionInfo;
     this.type = 'model';
@@ -110,7 +110,7 @@ class Require {
 }
 
 class AbstractClass {
-  constructor(graph, context) {
+  constructor(graph) {
     this.type = 'class';
     this.label = graph.label;
     this.comment = graph.comment;
@@ -128,8 +128,8 @@ class AbstractClass {
     return false;
   }
 
-  glyphIconClass() {
-    return utils.glyphIconClassForType('class');
+  get glyphIconClass() {
+    return utils.glyphIconClassForType(this.type);
   }
 
   get iowUrl() {
@@ -151,7 +151,7 @@ class ClassListItem extends AbstractClass {
 
 class Class extends AbstractClass {
   constructor(graph, context) {
-    super(graph, context);
+    super(graph);
     this.graph = graph;
     this.context = context;
     this.curie = graph['@id'];
@@ -216,7 +216,7 @@ class Property {
     return withPrefixExpanded(this.context, this.predicateCurie);
   }
 
-  glyphIconClass() {
+  get glyphIconClass() {
     return utils.glyphIconClassForType(this.dataType ? 'attribute' : this.valueClass ? 'association' : null);
   }
 
@@ -235,12 +235,9 @@ class Property {
 
 class AbstractPredicate {
   constructor(graph, context) {
-    function predicateTypeAsEntityType(type) {
-      return type === 'owl:DatatypeProperty' ? 'attribute' : 'association';
-    }
     this.graph = graph;
     this.context = context;
-    this.type = predicateTypeAsEntityType(graph['@type']);
+    this.type = graph['@type'] === 'owl:DatatypeProperty' ? 'attribute' : 'association';
     this.label = graph.label;
     this.comment = graph.comment;
   }
@@ -269,7 +266,7 @@ class AbstractPredicate {
     return this.type === 'attribute';
   }
 
-  glyphIconClass() {
+  get glyphIconClass() {
     return utils.glyphIconClassForType(this.type);
   }
 

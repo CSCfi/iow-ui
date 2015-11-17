@@ -9,7 +9,7 @@
 <uib-accordion close-others="true">
   <uib-accordion-group ng-repeat="property in class.properties" is-open="isOpen[property.id]">
     <uib-accordion-heading>
-      <span ng-class="property.glyphIconClass()"></span>
+      <span ng-class="property.glyphIconClass"></span>
       <span>{{property | translateLabel}}</span>
       <accordion-chevron is-open="isOpen[property.id]"></accordion-chevron>
     </uib-accordion-heading>
