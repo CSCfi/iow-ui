@@ -1613,7 +1613,7 @@
       "requires": [
         {
           "@id": "http://urn.fi/urn:nbn:fi:csc-iow-jhs",
-          "title": {
+          "label": {
             "fi": "Julkishallinnon tietokomponentit"
           },
           "preferredXMLNamespaceName": "http://urn.fi/urn:nbn:fi:csc-iow-jhs#",
@@ -1624,7 +1624,7 @@
         },
         {
           "@id": "http://purl.iso.org/iso-iec/19788/-1/",
-          "title": {
+          "label": {
             "en": "Metadata for Learning Resources Part 1"
           },
           "preferredXMLNamespaceName": "http://purl.iso.org/iso-iec/19788/-1/",
