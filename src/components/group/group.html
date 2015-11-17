@@ -6,7 +6,7 @@
   <h2>{{ctrl.group | translateLabel}}</h2>
   <ul>
     <li ng-repeat="model in ctrl.models">
-      <a href="#/models/?urn={{model.id | urlencode}}">{{model | translateLabel}}</a>
+      <a ng-href="{{model.iowUrl}}">{{model | translateLabel}}</a>
     </li>
   </ul>
 </div>
