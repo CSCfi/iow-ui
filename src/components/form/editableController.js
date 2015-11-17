@@ -66,7 +66,7 @@ module.exports = function editableControllerFactory($log, userService, confirmat
       }
 
       function canRemove() {
-        const editable = getEditable()
+        const editable = getEditable();
         return remove && editable && !editable.unsaved && canEdit();
       }
 
