@@ -1,4 +1,4 @@
-module.exports = function referencesView($log) {
+module.exports = function referencesView() {
   'ngInject';
 
   return {
