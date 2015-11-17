@@ -5,7 +5,8 @@
     <uib-accordion-heading>
       <span accordion-chevron is-open="isOpen[require.id]">{{require.title | translateValue}}</span>
     </uib-accordion-heading>
-    <non-editable title="Preferred namespace" value="require.namespace"></non-editable>
-    <non-editable title="Preferred prefix" value="require.prefix"></non-editable>
+    <editable title="Label"><input type="text" ng-model="require.label" /></editable>
+    <editable title="Preferred namespace"><input type="text" ng-model="require.namespace" /></editable>
+    <editable title="Preferred prefix"><input type="text" ng-model="require.prefix" /></editable>
   </uib-accordion-group>
 </uib-accordion>

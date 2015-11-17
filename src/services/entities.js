@@ -82,6 +82,7 @@ class Require {
   constructor(graph) {
     this.id = graph['@id'];
     this.title = graph.title;
+    this.label = graph.label;
     this.type = 'require';
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
