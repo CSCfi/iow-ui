@@ -5,6 +5,7 @@ const title = { '@id': 'http://purl.org/dc/terms/title', '@container': '@languag
 const comment = { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' };
 const example = { '@id': 'http://www.w3.org/2004/02/skos/core#example', '@container': '@language' };
 const prefLabel = { '@id': 'http://www.w3.org/2004/02/skos/core#prefLabel', '@container': '@language' };
+const inScheme = { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme'};
 const datatype = { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' };
 const subClassOf = { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' };
 const property = { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' };
@@ -135,15 +136,15 @@ function classListFrame(data) {
 
 function conceptSuggestionFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, comment}),
+    '@context': addToContext(data['@context'], {label, comment, inScheme}),
     'inScheme': {}
   };
 }
 
-function conceptFrame(data) {
+function conceptFrame(data,id) {
   return {
     '@context': addToContext(data['@context'], {prefLabel, comment}),
-    'inScheme': {}
+    '@id':id
   };
 }
 
