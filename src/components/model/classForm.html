@@ -2,7 +2,7 @@
 <editable title="Id"><input name="Id" class="form-control" type="text" id-input ng-model="class.curie" /></editable>
 <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="class.comment"></textarea></editable>
 <non-editable title="Superclass" value="class.subClassOf"></non-editable>
-<non-editable title="Is defined by" value="class.modelId"></non-editable>
+<non-editable title="Is defined by" value="class.modelId" link="class.iowUrl"></non-editable>
 <editable title="State" value-as-localization-key="true"><state-select state="class.state"></state-select></editable>
 <editable-subject-select references="references" type="class" subject="class.subject"></editable-subject-select>
 

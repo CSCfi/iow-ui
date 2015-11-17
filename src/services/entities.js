@@ -12,27 +12,32 @@ class GroupListItem {
   }
 
   get iowUrl() {
-    return `#/groups?urn=${this.id}`;
+    return `#/groups?urn=${window.encodeURIComponent(this.id)}`;
   }
 }
 
-class ModelListItem {
-  constructor(graph) {
-    this.id = graph['@id'];
-    this.label = graph.label;
-  }
-
-  get iowUrl() {
-    return `#/models?urn=${this.id}`;
-  }
-}
-
-class Model {
+class AbstractModel {
   constructor(graph, context) {
     this.graph = graph;
     this.context = context;
     this.id = graph['@id'];
     this.label = graph.label;
+  }
+
+  get iowUrl() {
+    return `#/models?urn=${window.encodeURIComponent(this.id)}`;
+  }
+}
+
+class ModelListItem extends AbstractModel {
+  constructor(graph, context) {
+    super(graph, context);
+  }
+}
+
+class Model extends AbstractModel {
+  constructor(graph, context) {
+    super(graph, context);
     this.comment = graph.comment;
     this.state = graph.versionInfo;
     this.type = 'model';
@@ -46,10 +51,6 @@ class Model {
 
   removeReference(reference) {
     _.remove(this.references, reference);
-  }
-
-  get iowUrl() {
-    return `#/models?urn=${this.id}`;
   }
 
   serialize() {
@@ -112,7 +113,7 @@ class AbstractClass {
   }
 
   get iowUrl() {
-    return `#/models?urn=${this.modelId}&${this.type}=${this.id}`;
+    return `${this.modelIowUrl}&${this.type}=${window.encodeURIComponent(this.id)}`;
   }
 }
 
@@ -121,6 +122,10 @@ class ClassListItem extends AbstractClass {
     super(graph, context);
     this.id = graph['@id'];
     this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
+  }
+
+  get modelIowUrl() {
+    return this.model.iowUrl();
   }
 }
 
@@ -147,6 +152,10 @@ class Class extends AbstractClass {
 
   removeProperty(property) {
     _.remove(this.properties, property);
+  }
+
+  get modelIowUrl() {
+    return `#/models?urn=${window.encodeURIComponent(this.modelId)}`;
   }
 
   serialize() {
@@ -245,7 +254,7 @@ class AbstractPredicate {
   }
 
   get iowUrl() {
-    return `#/models?urn=${this.modelId}&${this.type}=${this.id}`;
+    return `${this.modelIowUrl}&${this.type}=${window.encodeURIComponent(this.id)}`;
   }
 }
 
@@ -254,6 +263,10 @@ class PredicateListItem extends AbstractPredicate {
     super(graph, context);
     this.id = graph['@id'];
     this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
+  }
+
+  get modelIowUrl() {
+    return this.model.iowUrl();
   }
 }
 
@@ -269,6 +282,10 @@ class Predicate extends AbstractPredicate {
 
   get id() {
     return withPrefixExpanded(this.context, this.curie);
+  }
+
+  get modelIowUrl() {
+    return `#/models?urn=${window.encodeURIComponent(this.modelId)}`;
   }
 
   serialize() {
