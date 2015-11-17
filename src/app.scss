@@ -4,10 +4,109 @@
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 @import './vendor/_bootswatch';
 @import './vendor/_typeaheadjs';
-@import 'components/model/model';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+.model-panel--left-placeholder {
+  float: left;
+}
+
+$selectionListWidth: 275px;
+
+.model-panel--left {
+  width: $selectionListWidth;
+  float: left;
+  border-right: solid 1px #ddd;
+
+  .tab-pane {
+    border-bottom: solid 1px #ddd;
+  }
+
+  .nav-tabs {
+
+    border-bottom: none;
+
+    li {
+
+      width: 33%;
+
+      > a {
+        padding: 10px 0 0 0;
+      }
+    }
+  }
+
+  ul.nav {
+    margin-right: 0;
+    padding: 9px 0;
+  }
+
+  .add-new-button {
+    margin: 3px 9px 9px 9px;
+    width: calc(100% - 23px);
+  }
+
+  uib-tab-heading {
+    i {
+      width: 100%;
+      padding-right: 2px;
+      text-align: center;
+      font-size: x-large;
+    }
+    p {
+      width: 100%;
+      text-align: center;
+      font-size: x-small;
+    }
+  }
+
+  .panel__list {
+    li {
+      cursor: pointer;
+      padding: 5px 0 5px 10px;
+      font-size: medium;
+      border: 1px solid #fff;
+    }
+
+    li:hover {
+      border: 1px solid #ddd;
+    }
+  }
+}
+
+.model-panel--right {
+  float: right;
+  width: calc(100% - #{$selectionListWidth});
+  padding: 10px 0;
+
+  .col-md-7, .col-md-5 {
+    padding: 0 0 0 10px;
+  }
+}
+
+.model-panel__selection {
+  background-color: $list-group-hover-bg;
+  border: 1px solid $pre-border-color;
+  border-right-style: none;
+}
+
+uib-accordion .panel-group {
+  margin: 20px auto;
+}
+
+.model-view__title {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.model-view__sub {
+  margin-left: 20px;
+}
+
+h2 .model-view__title {
+  font-weight: normal;
 }
 
 .panel-title span {
