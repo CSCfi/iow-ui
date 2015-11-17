@@ -3,10 +3,11 @@
 <uib-accordion>
   <uib-accordion-group ng-repeat="require in requires" is-open="isOpen[require.id]">
     <uib-accordion-heading>
-      <span accordion-chevron is-open="isOpen[require.id]">{{require.title | translateValue}}</span>
+      <span accordion-chevron is-open="isOpen[require.id]">{{require | translateLabel}}</span>
     </uib-accordion-heading>
-    <editable title="Label"><input type="text" ng-model="require.label" /></editable>
-    <editable title="Preferred namespace"><input type="text" ng-model="require.namespace" /></editable>
-    <editable title="Preferred prefix"><input type="text" ng-model="require.prefix" /></editable>
+    <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeRequire(require)" translate>Delete require</button>
+    <editable title="Label"><input type="text" class="form-control" localized-input ng-model="require.label" /></editable>
+    <editable title="Preferred namespace"><input type="text" class="form-control" ng-model="require.namespace" /></editable>
+    <editable title="Preferred prefix"><input type="text" class="form-control" ng-model="require.prefix" /></editable>
   </uib-accordion-group>
 </uib-accordion>

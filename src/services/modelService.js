@@ -52,6 +52,14 @@ module.exports = function modelService($http, $q, entities) {
         }
       })
       .then(reference => entities.deserializeReference(reference));
+    },
+    getAllRequires() {
+      return $http.get('/api/rest/model')
+        .then(response => entities.deserializeRequires(response.data));
+    },
+    newRequire(namespace, prefix, label, lang) {
+      return $http.get('/api/rest/modelRequirementCreator', {params: {namespace, prefix, label, lang}})
+        .then(response => entities.deserializeRequire(response.data));
     }
   };
 };

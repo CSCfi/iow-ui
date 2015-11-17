@@ -155,6 +155,13 @@ function userFrame(data) {
   };
 }
 
+function requireFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, preferredXMLNamespaceName, preferredXMLNamespacePrefix}),
+    'name': {}
+  };
+}
+
 module.exports = {
   groupListFrame,
   modelFrame,
@@ -166,5 +173,6 @@ module.exports = {
   predicateListFrame,
   conceptSuggestionFrame,
   conceptFrame,
-  userFrame
+  userFrame,
+  requireFrame
 };

@@ -23,4 +23,6 @@ mod.factory('searchClassModal', require('./searchClassModal'));
 mod.factory('addConceptModal', require('./addConceptModal'));
 mod.factory('searchConceptModal', require('./searchConceptModal'));
 mod.factory('searchSchemeModal', require('./searchSchemeModal'));
+mod.factory('addRequireModal', require('./addRequireModal'));
+mod.factory('searchRequireModal', require('./searchRequireModal'));
 

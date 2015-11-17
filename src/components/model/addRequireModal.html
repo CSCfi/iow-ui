@@ -1,0 +1,34 @@
+<modal-template>
+  <modal-title translate>Add require</modal-title>
+
+  <modal-body class="search-modal">
+    <form name="form">
+
+      <label for="label" translate>Label</label>
+      <div class="input-group input-group-md">
+        <input id="label" type="text" class="form-control" autofocus required ng-model="ctrl.label" />
+      </div>
+
+      <label for="namespace" translate>Preferred namespace</label>
+      <div class="input-group input-group-md">
+        <input id="namespace" class="form-control" required ng-model="ctrl.namespace" />
+      </div>
+
+      <label for="prefix" translate>Preferred prefix</label>
+      <div class="input-group input-group-md">
+        <input id="prefix" type="text" class="form-control" required ng-model="ctrl.prefix" />
+      </div>
+
+    </form>
+  </modal-body>
+
+  <modal-buttons>
+    <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span translate>Save failed</span>
+    </div>
+
+    <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
+    <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!form.$valid" translate>Create new</button>
+  </modal-buttons>
+</modal-template>

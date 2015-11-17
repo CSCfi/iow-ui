@@ -1,0 +1,37 @@
+<modal-template>
+  <modal-title translate>Search requires</modal-title>
+
+  <modal-body class="search-modal">
+    <div class="clearfix" style="margin-bottom: 15px">
+      <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew()">
+        <span class="glyphicon glyphicon-plus"></span>
+        {{'Create new require' | translate}}
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group input-group-lg">
+          <input autofocus type="text" class="form-control" placeholder="{{'search require' | translate}}"
+                 ng-model="ctrl.searchText"
+                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+          <i class="glyphicon glyphicon-search form-control-feedback"></i>
+        </div>
+      </div>
+
+      <div class="col-md-6 search-results" window-height padding="315">
+        <div ng-repeat="require in ctrl.searchResults() track by require.id">
+          <div ng-class="['search-result', {selected: ctrl.isSelected(require)}]" ng-click="ctrl.selectRequire(require)">
+            <h5>{{require | translateLabel}}</h5>
+            <p>{{require.namespace}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </modal-body>
+
+  <modal-buttons>
+    <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
+    <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedRequire" translate>Use require</button>
+  </modal-buttons>
+</modal-template>

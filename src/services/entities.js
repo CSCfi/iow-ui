@@ -22,6 +22,8 @@ class AbstractModel {
     this.context = context;
     this.id = graph['@id'];
     this.label = graph.label;
+    this.namespace = graph['dcap:preferredXMLNamespaceName'];
+    this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
   }
 
   get iowUrl() {
@@ -53,6 +55,14 @@ class Model extends AbstractModel {
     _.remove(this.references, reference);
   }
 
+  addRequire(require) {
+    this.requires.push(require);
+  }
+
+  removeRequire(require) {
+    _.remove(this.requires, require);
+  }
+
   serialize() {
     return {
       '@context': this.context, '@graph': _.extend(this.graph,
@@ -80,13 +90,22 @@ class Reference {
 
 class Require {
   constructor(graph) {
+    this.graph = graph;
     this.id = graph['@id'];
-    this.title = graph.title;
     this.label = graph.label;
     this.type = 'require';
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
-    this.serialize = () => graph;
+  }
+
+  serialize() {
+    return _.extend(this.graph,
+      {
+        label: this.label,
+        'dcap:preferredXMLNamespaceName': this.namespace,
+        'dcap:preferredXMLNamespacePrefix': this.prefix
+      }
+    );
   }
 }
 
@@ -426,6 +445,8 @@ module.exports = function entities($log) {
     deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, false),
     deserializeConceptSuggestions: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true),
     deserializeConcept: (data) => new Concept(data),
+    deserializeRequire: (data) => frameAndMap(data, frames.requireFrame, Require, false),
+    deserializeRequires: (data) => frameAndMap(data, frames.requireFrame, Require, true),
     deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),
     anonymousUser: () => new AnonymousUser()
   };

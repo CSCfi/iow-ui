@@ -16,7 +16,7 @@ module.exports = function modelView() {
       $scope.modelController = controllers[1];
       $scope.modelController.registerView(controllers[0]);
     },
-    controller($scope, modelService, searchSchemeModal, languageService, editableController) {
+    controller($scope, modelService, searchSchemeModal, searchRequireModal, languageService, editableController) {
       'ngInject';
 
       editableController.mixin($scope, this, 'model', modelService.createModel, modelService.updateModel);
@@ -24,6 +24,8 @@ module.exports = function modelView() {
       const vm = this;
       vm.addReference = addReference;
       vm.removeReference = removeReverence;
+      vm.addRequire = addRequire;
+      vm.removeRequire = removeRequire;
 
       function addReference() {
         const language = languageService.getModelLanguage();
@@ -35,6 +37,18 @@ module.exports = function modelView() {
 
       function removeReverence(reference) {
         vm.modelInEdit.removeReference(reference);
+      }
+
+      function addRequire() {
+        const language = languageService.getModelLanguage();
+        const requireMap = _.indexBy(vm.modelInEdit.requires, (require) => require.id);
+        requireMap[vm.model.id] = vm.model;
+        searchRequireModal.open(requireMap, language).result
+          .then(require => vm.modelInEdit.addRequire(require));
+      }
+
+      function removeRequire(require) {
+        vm.modelInEdit.removeRequire(require);
       }
     }
   };

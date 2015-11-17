@@ -1,4 +1,4 @@
-module.exports = function requiresView($log) {
+module.exports = function requiresView() {
   'ngInject';
 
   return {
@@ -6,6 +6,10 @@ module.exports = function requiresView($log) {
       requires: '='
     },
     restrict: 'E',
-    template: require('./requiresView.html')
+    template: require('./requiresView.html'),
+    require: '^modelView',
+    link($scope, element, attributes, modelViewController) {
+      $scope.modelViewController = modelViewController;
+    }
   };
 };

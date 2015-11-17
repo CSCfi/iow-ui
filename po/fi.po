@@ -32,9 +32,13 @@ msgstr "Lisää tietokomponenttikirjasto"
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/model/modelView.html:9
+#: components/model/modelView.html:10
 msgid "Add reference"
 msgstr "Lisää sanasto"
+
+#: components/model/modelView.html:9
+msgid "Add require"
+msgstr "Lisää nimiavaruus"
 
 #: components/model/searchClassModal.html:25
 #: components/model/searchPredicateModal.html:32
@@ -91,6 +95,7 @@ msgstr "Selaa"
 #: components/model/searchClassModal.html:52
 #: components/model/searchConceptModal.html:53
 #: components/model/searchPredicateModal.html:71
+#: components/model/searchRequireModal.html:34
 #: components/model/searchSchemeModal.html:26
 msgid "Cancel"
 msgstr "Peruuta"
@@ -164,6 +169,10 @@ msgstr "Lisää uusi attribuutti"
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
+#: components/model/searchRequireModal.html:8
+msgid "Create new require"
+msgstr "Luo uusi nimiavaruus"
+
 #: translations/misc.html:32
 msgid "data en"
 msgstr "Sisältö englanniksi"
@@ -204,13 +213,17 @@ msgstr "Poista luokka"
 msgid "Delete predicate"
 msgstr "Poista ominaisuus"
 
-#: components/model/propertyView.html:4
+#: components/model/propertyView.html:2
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
-#: components/model/referencesView.html:9
+#: components/model/referencesView.html:8
 msgid "Delete reference"
 msgstr "Poista sanasto"
+
+#: components/model/requiresView.html:8
+msgid "Delete require"
+msgstr "Poista nimiavaruus"
 
 #: translations/misc.html:20
 msgid "Deprecated"
@@ -394,6 +407,14 @@ msgstr ""
 msgid "Search predicates"
 msgstr "Hae ominaisuuksia"
 
+#: components/model/searchRequireModal.html:15
+msgid "search require"
+msgstr "Hae nimiavaruutta…"
+
+#: components/model/searchRequireModal.html:2
+msgid "Search requires"
+msgstr "Hae nimiavaruuksia"
+
 #: components/model/searchSchemeModal.html:8
 msgid "search scheme"
 msgstr "Hae sanastoa…"
@@ -445,6 +466,10 @@ msgstr "Käytä luokkaa"
 #: components/model/searchPredicateModal.html:72
 msgid "Use predicate"
 msgstr "Käytä ominaisuutta"
+
+#: components/model/searchRequireModal.html:35
+msgid "Use require"
+msgstr "Käytä nimiavaruutta"
 
 #: components/model/searchSchemeModal.html:27
 msgid "Use scheme"
