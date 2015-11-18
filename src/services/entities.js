@@ -379,12 +379,16 @@ class User {
     return this.graph['iow:login'];
   }
 
-  isInGroup(group) {
-    return this.graph.isPartOf === group;
+  isInGroup(groupId) {
+    if(this.graph.isPartOf!=null)
+      return this.graph.isPartOf.indexOf(groupId)!==-1
+    else return false;
   }
 
-  isAdminOfGroup(group) {
-    return this.graph.isAdminOf === group;
+  isAdminOfGroup(groupId) {
+    if(this.graph.isAdminOf!=null)
+      return this.graph.isAdminOf.indexOf(groupId)!==-1
+    else return false;
   }
 }
 
