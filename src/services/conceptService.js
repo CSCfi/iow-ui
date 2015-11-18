@@ -18,15 +18,7 @@ module.exports = function conceptService($http, $q, entities) {
     },
     getConcept(id) {
       return $http.get('/api/rest/concept', {params: {uri: id}})
-        .then(response => entities.deserializeConcept(response.data));
-    },
-    newConcept(id, label, comment, lang) {
-      return $q.when({
-        '@id': id,
-        prefLabel: { [lang]: label },
-        comment: comment
-      })
-      .then(reference => entities.deserializeConcept(reference));
+        .then(response => entities.deserializeConcept(response.data, id));
     }
   };
 };

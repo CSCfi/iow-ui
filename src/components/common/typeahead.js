@@ -92,9 +92,6 @@ module.exports = function directive($timeout, $q, $log) {
           if (isNotEditable()) {
             disableModelChangeEvents(ngModel);
 
-            element.bind('typeahead:render', (event, suggestions) => {
-              updateModel(event, single(suggestions));
-            });
             element.bind('keyup', (event) => {
               if (elementValue(event) < options.minLength) {
                 updateModel(event, null);

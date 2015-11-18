@@ -30,10 +30,6 @@ const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
 const isPartOf = { '@id': 'http://purl.org/dc/terms/isPartOf', '@type': '@id' };
 const isAdminOf = { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' };
 
-/* Finto API fix */
-const value = null;
-const lang = null;
-
 function addToContext(context, values) {
   return _.chain(context)
     .clone()
@@ -144,7 +140,11 @@ function conceptSuggestionFrame(data) {
   };
 }
 
-function conceptFrame(data, id) {
+function fintoConceptFrame(data, id) {
+  /* Finto API fix */
+  const value = null;
+  const lang = null;
+
   return {
     '@context': addToContext(data['@context'], {prefLabel, comment, value, lang}),
     '@id': id
@@ -175,7 +175,7 @@ module.exports = {
   predicateFrame,
   predicateListFrame,
   conceptSuggestionFrame,
-  conceptFrame,
+  fintoConceptFrame,
   userFrame,
   requireFrame
 };

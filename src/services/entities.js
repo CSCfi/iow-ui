@@ -418,6 +418,12 @@ function withPrefixExpanded(context, value) {
   return value;
 }
 
+function renameProperty(obj, name, newName) {
+  obj[newName] = obj[name];
+  delete obj[name];
+  return obj;
+}
+
 function mapAsEntity(context, graph, EntityConstructor, isArray) {
   if (Array.isArray(graph)) {
     const mapped = _.map(graph, element => new EntityConstructor(element, context));
@@ -459,7 +465,11 @@ module.exports = function entities($log) {
     deserializeReference: (data) => new Reference(data),
     deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, false),
     deserializeConceptSuggestions: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true),
-    deserializeConcept: (data) => new Concept(data),
+    deserializeConcept: (data, id) => {
+      // TODO: something less hacky?
+      return jsonld.promises.frame(data, frames.fintoConceptFrame(data, id))
+      .then(framed => mapAsEntity(framed['@context'], renameProperty(framed.graph[0], 'uri', '@id'), Concept, false));
+    },
     deserializeRequire: (data) => frameAndMap(data, frames.requireFrame, Require, false),
     deserializeRequires: (data) => frameAndMap(data, frames.requireFrame, Require, true),
     deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),

@@ -54,8 +54,7 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
     } else if (selection.type === 'conceptSuggestion') {
       return selection;
     } else {
-      // FIXME: concept framing and mapping pipeline is not working (return conceptService.getConcept(selection.uri);)
-      return conceptService.newConcept(selection.uri, selection.prefLabel, selection.comment, languageService.getModelLanguage());
+      return conceptService.getConcept(selection.uri);
     }
   }
 
