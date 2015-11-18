@@ -465,11 +465,9 @@ module.exports = function entities($log) {
     deserializeReference: (data) => new Reference(data),
     deserializeConceptSuggestion: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, false),
     deserializeConceptSuggestions: (data) => frameAndMap(data, frames.conceptSuggestionFrame, ConceptSuggestion, true),
-    deserializeConcept: (data, id) => {
-      // TODO: something less hacky?
-      return jsonld.promises.frame(data, frames.fintoConceptFrame(data, id))
-      .then(framed => mapAsEntity(framed['@context'], renameProperty(framed.graph[0], 'uri', '@id'), Concept, false));
-    },
+    // TODO: something less hacky?
+    deserializeConcept: (data, id) => jsonld.promises.frame(data, frames.fintoConceptFrame(data, id))
+      .then(framed => mapAsEntity(framed['@context'], renameProperty(framed.graph[0], 'uri', '@id'), Concept, false)),
     deserializeRequire: (data) => frameAndMap(data, frames.requireFrame, Require, false),
     deserializeRequires: (data) => frameAndMap(data, frames.requireFrame, Require, true),
     deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),
