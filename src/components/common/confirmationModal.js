@@ -3,7 +3,7 @@ module.exports = function modalFactory($uibModal) {
 
   function open(title, body) {
     return $uibModal.open({
-      template: `<modal-template>
+      template: `<modal-template default="true">
                    <modal-title>{{ctrl.title | translate}}</modal-title>
                    <modal-body>{{ctrl.body | translate}}</modal-body>
                  </modal-template>`,

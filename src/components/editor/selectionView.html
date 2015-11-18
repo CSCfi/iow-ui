@@ -5,11 +5,11 @@
     </div>
 
     <editable-buttons editable-controller="editableController" float preserve-parent-width="true">
-      <named-transclude name="selection-buttons"></named-transclude>
+      <div ng-transclude="buttons"></div>
     </editable-buttons>
 
     <div class="selection-form" window-height="min" padding="134">
-      <named-transclude name="selection-content"></named-transclude>
+      <div ng-transclude="content"></div>
     </div>
   </div>
 </div>

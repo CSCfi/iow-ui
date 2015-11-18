@@ -1,13 +1,14 @@
 module.exports = function modalDirective() {
   return {
     restrict: 'E',
-    transclude: true,
+    transclude: {
+      modalTitle: 'title',
+      modalBody: 'body',
+      modalButtons: '?buttons'
+    },
     template: require('./modalTemplate.html'),
-    link($scope, element, attributes, ctrls, transclude) {
-      const transclusion = transclude();
-      if (transclusion.filter('modal-buttons').size() === 0) {
-        $scope.defaultButtons = true;
-      }
+    link($scope, element, attributes) {
+      $scope.defaultButtons = attributes.default;
     }
   };
 };

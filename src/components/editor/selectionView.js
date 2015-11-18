@@ -6,6 +6,9 @@ module.exports = function selectionView() {
     },
     restrict: 'E',
     template: require('./selectionView.html'),
-    transclude: true
+    transclude: {
+      'selectionContent': 'content',
+      'selectionButtons': 'buttons'
+    }
   };
 };
