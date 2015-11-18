@@ -31,6 +31,12 @@ module.exports = function modelView() {
       vm.registerReferencesView = view => referencesView = view;
       vm.registerRequiresView = view => requiresView = view;
 
+      $scope.$watch(vm.isEditing, editing => {
+        if (editing) {
+          vm.visible = true;
+        }
+      });
+
       function addReference() {
         const language = languageService.getModelLanguage();
         const vocabularyMap = _.indexBy(vm.modelInEdit.references, (reference) => reference.vocabularyId);
