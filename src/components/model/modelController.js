@@ -41,12 +41,8 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
   });
 
   $scope.$watch('ctrl.model', (newModel, oldModel) => {
-    const modelChange = oldModel && newModel;
+    updateLocation();
     const isNewNewModelCreationCancelled = oldModel && !newModel;
-
-    if (modelChange) {
-      updateLocation();
-    }
 
     if (isNewNewModelCreationCancelled) {
       $location.path('/groups');
@@ -54,13 +50,7 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
     }
   });
 
-  $scope.$watch('ctrl.selection', (newSelection, oldSelection) => {
-    const selectionChange = oldSelection && newSelection;
-
-    if (selectionChange) {
-      updateLocation();
-    }
-  });
+  $scope.$watch('ctrl.selection', updateLocation);
 
   function selectionDeleted(selection) {
     _.remove(vm.classes, item => item.isEqual(selection));
@@ -81,11 +71,17 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
       locationService.atModel(vm.model, vm.selection);
 
       if (!vm.model.unsaved) {
-        const params = {urn: vm.model.id};
+        const newSearch = {urn: vm.model.id};
         if (vm.selection) {
-          params[vm.selection.type] = vm.selection.id;
+          newSearch[vm.selection.type] = vm.selection.id;
         }
-        $location.search(params);
+
+        const search = _.clone($location.search());
+        delete search.property;
+
+        if (!_.isEqual(search, newSearch)) {
+          $location.search(newSearch);
+        }
       }
     }
   }
