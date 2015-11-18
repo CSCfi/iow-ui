@@ -344,7 +344,7 @@ class ConceptSuggestion {
     this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
-    this.schemeId = graph.inScheme;
+    this.schemeId = graph.inScheme['@id'];
     this.createdAt = graph.atTime;
     this.creator = graph.wasAssociatedWith;
     this.type = 'conceptSuggestion';
