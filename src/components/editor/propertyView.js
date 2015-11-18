@@ -1,4 +1,4 @@
-module.exports = function propertyView($location) {
+module.exports = function propertyView($location, $timeout) {
   'ngInject';
   return {
     scope: {
@@ -39,7 +39,11 @@ module.exports = function propertyView($location) {
 
       function openAndScrollTo() {
         vm.isOpen = true;
-        vm.scroll();
+        $timeout(() => {
+          $timeout(() => {
+            vm.scroll();
+          });
+        });
       }
     }
   };
