@@ -1,11 +1,8 @@
 const _ = require('lodash');
+const utils = require('../../services/utils');
 
 module.exports = function directive($timeout, $q, $log) {
   'ngInject';
-
-  function normalizeAsArray(obj) {
-    return (Array.isArray(obj) ? obj : [obj]) || [];
-  }
 
   function disableModelChangeEvents(ngModel) {
     const disableEvents = {
@@ -32,7 +29,7 @@ module.exports = function directive($timeout, $q, $log) {
   }
 
   function single(obj) {
-    const array = normalizeAsArray(obj);
+    const array = utils.normalizeAsArray(obj);
     return array.length === 1 ? array[0] : null;
   }
 
@@ -60,7 +57,7 @@ module.exports = function directive($timeout, $q, $log) {
           if (initialized) {
             destroy();
           }
-          initialize(normalizeAsArray(datasets));
+          initialize(utils.normalizeAsArray(datasets));
         }
       });
 

@@ -380,15 +380,11 @@ class User {
   }
 
   isInGroup(groupId) {
-    if(this.graph.isPartOf!=null)
-      return this.graph.isPartOf.indexOf(groupId)!==-1
-    else return false;
+    return _.find(utils.normalizeAsArray(this.graph.isPartOf), groupId);
   }
 
   isAdminOfGroup(groupId) {
-    if(this.graph.isAdminOf!=null)
-      return this.graph.isAdminOf.indexOf(groupId)!==-1
-    else return false;
+    return _.find(utils.normalizeAsArray(this.graph.isAdminOf), groupId);
   }
 }
 

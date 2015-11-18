@@ -10,6 +10,11 @@ function glyphIconClassForType(type) {
   ];
 }
 
+function normalizeAsArray(obj) {
+  return (Array.isArray(obj) ? obj : [obj]) || [];
+}
+
 module.exports = {
-  glyphIconClassForType
+  glyphIconClassForType,
+  normalizeAsArray
 };
