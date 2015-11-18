@@ -102,12 +102,10 @@ function SearchConceptController($scope, $uibModalInstance, $q, languageService,
   }
 
   function createDataSets(reference) {
-    const suggestions = [];
+    let suggestions = [];
 
     conceptService.getConceptSuggestions(reference.id)
-      .then(fetchedSuggestions => {
-        _.forEach(fetchedSuggestions, suggestion => suggestions.push(suggestion));
-      });
+      .then(fetchedSuggestions => suggestions = fetchedSuggestions);
 
     function suggestionContains(suggestion, query) {
       return languageService.translate(suggestion.label).toLowerCase().includes(query.toLowerCase());
