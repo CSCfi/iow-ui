@@ -11,7 +11,7 @@
         <span accordion-chevron is-open="isOpen[property.predicateId]">{{property.predicateCurie}}</span>
       </uib-accordion-heading>
       <div ng-if="isOpen[property.predicateId]">
-        <non-editable title="Name" value="predicate"></non-editable>
+        <non-editable title="Name" value="predicate.label"></non-editable>
         <non-editable title="Comment" value="predicate.comment"></non-editable>
         <non-editable title="Type" value="predicate.owlType"></non-editable>
         <non-editable title="Range" value="predicate.range"></non-editable>
