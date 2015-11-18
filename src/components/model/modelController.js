@@ -41,8 +41,12 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
   });
 
   $scope.$watch('ctrl.model', (newModel, oldModel) => {
-    updateLocation();
+    const modelChange = oldModel && newModel;
     const isNewNewModelCreationCancelled = oldModel && !newModel;
+
+    if (modelChange) {
+      updateLocation();
+    }
 
     if (isNewNewModelCreationCancelled) {
       $location.path('/groups');
@@ -50,7 +54,13 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
     }
   });
 
-  $scope.$watch('ctrl.selection', updateLocation);
+  $scope.$watch('ctrl.selection', (newSelection, oldSelection) => {
+    const selectionChange = oldSelection && newSelection;
+
+    if (selectionChange) {
+      updateLocation();
+    }
+  });
 
   function selectionDeleted(selection) {
     _.remove(vm.classes, item => item.isEqual(selection));
