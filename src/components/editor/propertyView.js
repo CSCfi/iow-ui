@@ -13,7 +13,15 @@ module.exports = function propertyView($location, $timeout) {
       const controller = controllers[0];
       $scope.editableController = controllers[2];
       controllers[1].registerPropertyView(controller.property.id, controller);
-      controller.scroll = () => jQuery('html, body').animate({scrollTop: element.offset().top}, 'slow');
+
+      controller.scroll = () => {
+        const scrollTop = element.offset().top;
+        if (scrollTop === 0) {
+          $timeout(controller.scroll, 100);
+        } else {
+          jQuery('html, body').animate({scrollTop}, 'slow');
+        }
+      };
 
       if ($location.search().property === controller.property.id) {
         controller.openAndScrollTo();
@@ -39,11 +47,7 @@ module.exports = function propertyView($location, $timeout) {
 
       function openAndScrollTo() {
         vm.isOpen = true;
-        $timeout(() => {
-          $timeout(() => {
-            vm.scroll();
-          });
-        });
+        vm.scroll();
       }
     }
   };
