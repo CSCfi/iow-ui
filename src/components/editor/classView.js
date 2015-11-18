@@ -20,13 +20,18 @@ module.exports = function classView() {
       editableController.mixin($scope, this, 'class', classService.createClass, classService.updateClass, classService.deleteClass);
 
       const vm = this;
+      let classForm;
       vm.removeProperty = removeProperty;
       vm.addProperty = addProperty;
+      vm.registerForm = form => classForm = form;
 
       function addProperty() {
         searchPredicateModal.openWithPredicationCreation(vm.model).result
           .then(predicate => classService.newProperty(predicate.id))
-          .then(property => vm.classInEdit.addProperty(property));
+          .then(property => {
+            vm.classInEdit.addProperty(property);
+            classForm.openPropertyAndScrollTo(property);
+          });
       }
 
       function removeProperty(property) {

@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = function requiresView() {
   'ngInject';
 
@@ -7,9 +9,17 @@ module.exports = function requiresView() {
     },
     restrict: 'E',
     template: require('./requiresView.html'),
-    require: '^modelView',
-    link($scope, element, attributes, modelViewController) {
-      $scope.modelViewController = modelViewController;
+    controllerAs: 'ctrl',
+    bindToController: true,
+    require: ['requiresView', '^modelView'],
+    link($scope, element, attributes, controllers) {
+      $scope.modelViewController = controllers[1];
+      $scope.modelViewController.registerRequiresView(controllers[0]);
+    },
+    controller() {
+      const vm = this;
+      vm.opened = _.map(vm.requires, () => false);
+      vm.open = require => vm.opened[vm.requires.indexOf(require)] = true;
     }
   };
 };

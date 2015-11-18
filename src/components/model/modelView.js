@@ -22,17 +22,24 @@ module.exports = function modelView() {
       editableController.mixin($scope, this, 'model', modelService.createModel, modelService.updateModel);
 
       const vm = this;
+      let referencesView;
+      let requiresView;
       vm.addReference = addReference;
       vm.removeReference = removeReverence;
       vm.addRequire = addRequire;
       vm.removeRequire = removeRequire;
+      vm.registerReferencesView = view => referencesView = view;
+      vm.registerRequiresView = view => requiresView = view;
 
       function addReference() {
         const language = languageService.getModelLanguage();
         const vocabularyMap = _.indexBy(vm.modelInEdit.references, (reference) => reference.vocabularyId);
         searchSchemeModal.open(vocabularyMap, language).result
           .then(scheme => modelService.newReference(scheme, language))
-          .then(reference => vm.modelInEdit.addReference(reference));
+          .then(reference => {
+            vm.modelInEdit.addReference(reference);
+            referencesView.open(reference);
+          });
       }
 
       function removeReverence(reference) {
@@ -44,7 +51,10 @@ module.exports = function modelView() {
         const requireMap = _.indexBy(vm.modelInEdit.requires, (require) => require.id);
         requireMap[vm.model.id] = vm.model;
         searchRequireModal.open(requireMap, language).result
-          .then(require => vm.modelInEdit.addRequire(require));
+          .then(require => {
+            vm.modelInEdit.addRequire(require);
+            requiresView.open(require);
+          });
       }
 
       function removeRequire(require) {

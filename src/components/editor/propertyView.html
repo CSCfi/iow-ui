@@ -1,21 +1,19 @@
 <div>
   <button ng-show="editableController.canModify()" type="button" class="btn btn-default pull-right" ng-click="editableController.removeProperty(property)" translate>Delete property</button>
-  <editable title="Name"><input name="Name" class="form-control" type="text" localized-input ng-model="property.label" /></editable>
-  <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="property.comment"></textarea></editable>
-  <editable title="Example"><input name="Example" class="form-control" type="text" localized-input ng-model="property.example" /></editable>
-  <editable title="Range" ng-if="predicate.isAttribute()"><range-select range="property.datatype"></range-select></editable>
-  <editable title="Value class" ng-if="predicate.isAssociation()"><class-select class-name="property.valuesClass"></class-select></editable>
+  <editable title="Name"><input name="Name" class="form-control" type="text" localized-input ng-model="ctrl.property.label" /></editable>
+  <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea></editable>
+  <editable title="Example"><input name="Example" class="form-control" type="text" localized-input ng-model="ctrl.property.example" /></editable>
+  <editable title="Range" ng-if="predicate.isAttribute()"><range-select range="ctrl.property.datatype"></range-select></editable>
+  <editable title="Value class" ng-if="predicate.isAssociation()"><class-select class-name="ctrl.property.valuesClass"></class-select></editable>
   <uib-accordion>
-    <uib-accordion-group is-open="isOpen[property.predicateId]">
+    <uib-accordion-group is-open="predicateOpen">
       <uib-accordion-heading>
-        <span accordion-chevron is-open="isOpen[property.predicateId]">{{property.predicateCurie}}</span>
+        <span accordion-chevron is-open="predicateOpen">{{ctrl.property.predicateCurie}}</span>
       </uib-accordion-heading>
-      <div ng-if="isOpen[property.predicateId]">
-        <non-editable title="Name" value="predicate.label"></non-editable>
-        <non-editable title="Comment" value="predicate.comment"></non-editable>
-        <non-editable title="Type" value="predicate.owlType"></non-editable>
-        <non-editable title="Range" value="predicate.range"></non-editable>
-      </div>
+      <non-editable title="Name" value="ctrl.predicate.label"></non-editable>
+      <non-editable title="Comment" value="ctrl.predicate.comment"></non-editable>
+      <non-editable title="Type" value="ctrl.predicate.owlType"></non-editable>
+      <non-editable title="Range" value="ctrl.predicate.range"></non-editable>
     </uib-accordion-group>
   </uib-accordion>
 </div>

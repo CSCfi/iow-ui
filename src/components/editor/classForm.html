@@ -1,18 +1,18 @@
-<editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="class.label"/></editable>
-<editable title="Id"><input name="Id" class="form-control" type="text" id-input ng-model="class.curie" /></editable>
-<editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="class.comment"></textarea></editable>
-<non-editable title="Superclass" value="class.subClassOf"></non-editable>
-<non-editable title="Is defined by" value="class.modelId" link="class.iowUrl"></non-editable>
-<editable title="State" value-as-localization-key="true"><state-select state="class.state"></state-select></editable>
-<editable-subject-select references="references" type="class" subject="class.subject"></editable-subject-select>
+<editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.class.label"/></editable>
+<editable title="Id"><input name="Id" class="form-control" type="text" id-input ng-model="ctrl.class.curie" /></editable>
+<editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea></editable>
+<non-editable title="Superclass" value="ctrl.class.subClassOf"></non-editable>
+<non-editable title="Is defined by" value="ctrl.class.modelId" link="ctrl.class.iowUrl"></non-editable>
+<editable title="State" value-as-localization-key="true"><state-select state="ctrl.class.state"></state-select></editable>
+<editable-subject-select references="references" type="ctrl.class" subject="ctrl.class.subject"></editable-subject-select>
 
 <uib-accordion close-others="true">
-  <uib-accordion-group ng-repeat="property in class.properties" is-open="isOpen[property.id]">
+  <uib-accordion-group ng-repeat="property in ctrl.class.properties" is-open="ctrl.propertyViews[property.id].isOpen">
     <uib-accordion-heading>
       <span ng-class="property.glyphIconClass"></span>
       <span>{{property | translateLabel}}</span>
-      <accordion-chevron is-open="isOpen[property.id]"></accordion-chevron>
+      <accordion-chevron is-open="ctrl.propertyViews[property.id].isOpen"></accordion-chevron>
     </uib-accordion-heading>
-    <property-view property="property" ng-if="isOpen[property.id]"></property-view>
+    <property-view property="property"></property-view>
   </uib-accordion-group>
 </uib-accordion>

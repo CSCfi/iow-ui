@@ -1,11 +1,13 @@
 <form name="form">
-  <selection-view editable-controller="ctrl">
-    <selection-buttons>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
-    </selection-buttons>
+  <div ng-if="ctrl.class">
+    <selection-view editable-controller="ctrl">
+      <selection-buttons>
+        <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
+      </selection-buttons>
 
-    <selection-content>
-      <class-form class="ctrl.classInEdit" references="ctrl.model.references"></class-form>
-    </selection-content>
-  </selection-view>
+      <selection-content>
+        <class-form class="ctrl.classInEdit" references="ctrl.model.references"></class-form>
+      </selection-content>
+    </selection-view>
+  </div>
 </form>

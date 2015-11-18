@@ -1,9 +1,9 @@
 <h4 translate>References</h4>
 
 <uib-accordion>
-  <uib-accordion-group ng-repeat="reference in references" is-open="isOpen[reference.id]">
+  <uib-accordion-group ng-repeat="reference in ctrl.references" is-open="ctrl.opened[reference.id]">
     <uib-accordion-heading>
-      <span accordion-chevron is-open="isOpen[reference.id]">{{reference.title | translateValue}}</span>
+      <span accordion-chevron is-open="ctrl.opened[reference.if]">{{reference.title | translateValue}}</span>
     </uib-accordion-heading>
     <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeReference(reference)" translate>Delete reference</button>
     <non-editable title="Id" value="reference.vocabularyId"></non-editable>

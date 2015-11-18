@@ -7,9 +7,17 @@ module.exports = function referencesView() {
     },
     restrict: 'E',
     template: require('./referencesView.html'),
-    require: '^modelView',
-    link($scope, element, attributes, modelViewController) {
-      $scope.modelViewController = modelViewController;
+    controllerAs: 'ctrl',
+    bindToController: true,
+    require: ['referencesView', '^modelView'],
+    link($scope, element, attributes, controllers) {
+      $scope.modelViewController = controllers[1];
+      $scope.modelViewController.registerReferencesView(controllers[0]);
+    },
+    controller() {
+      const vm = this;
+      vm.opened = {};
+      vm.open = reference => vm.opened[reference.id] = true;
     }
   };
 };
