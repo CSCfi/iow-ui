@@ -15,15 +15,24 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
   vm.isSelected = listItem => listItem.isEqual(vm.selectedItem);
   vm.canEdit = userService.isLoggedIn;
 
+  init(routeData($routeParams));
+
   function createTab(type, items, addNew) {
-    return {type, items, label: _.capitalize(type) + ' list', addLabel: 'Add ' + type, glyphIconClass: utils.glyphIconClassForType(type), addNew};
+    return {
+      type,
+      items,
+      label: _.capitalize(type) + ' list',
+      addLabel: 'Add ' + type,
+      glyphIconClass: utils.glyphIconClassForType(type),
+      addNew,
+      active: (vm.selectedItem && vm.selectedItem.type === type)
+    };
   }
 
   vm.tabs = [createTab('class', () => vm.classes, addClass),
              createTab('attribute', () => _.filter(vm.predicates, predicate => predicate.isAttribute()), () => addPredicate('attribute')),
              createTab('association', () => _.filter(vm.predicates, predicate => predicate.isAssociation()), () => addPredicate('association'))];
 
-  init(routeData($routeParams));
 
   $scope.$on('$locationChangeSuccess', () => {
     if ($location.path() === '/models') {
@@ -92,7 +101,6 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
 
   function init({newModel, existingModelId, selected}) {
     vm.selectedItem = selected;
-    vm.activeTab = selected ? {[selected.type]: true} : {class: true};
 
     (newModel
       ? updateNewModel(newModel)
