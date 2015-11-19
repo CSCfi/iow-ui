@@ -1,24 +1,24 @@
-module.exports = function classSelect() {
+module.exports = function predicateSelect() {
   'ngInject';
   return {
     scope: {
       curie: '=',
-      name: '@'
+      type: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: require('./classSelect.html'),
+    template: require('./predicateSelect.html'),
     require: '?^form',
     link($scope, element, attributes, formController) {
       $scope.formController = formController;
     },
-    controller(searchClassModal) {
+    controller(searchPredicateModal) {
       'ngInject';
       const vm = this;
-      vm.selectClass = () => {
-        searchClassModal.openWithOnlySelection().result.then(klass => {
-          vm.curie = klass.curie;
+      vm.selectPredicate = () => {
+        searchPredicateModal.openWithOnlySelection(vm.type).result.then(predicate => {
+          vm.curie = predicate.curie;
         });
       };
     }

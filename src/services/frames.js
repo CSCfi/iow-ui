@@ -8,6 +8,7 @@ const prefLabel = { '@id': 'http://www.w3.org/2004/02/skos/core#prefLabel', '@co
 const inScheme = { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme'};
 const datatype = { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' };
 const subClassOf = { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' };
+const subPropertyOf = { '@id': 'http://www.w3.org/2000/01/rdf-schema#subPropertyOf', '@type': '@id' };
 const property = { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' };
 const modified = { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' };
 const created = { '@id': 'http://purl.org/dc/terms/created', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' };
@@ -59,6 +60,7 @@ function modelFrame(data) {
     identifier,
     range,
     subClassOf,
+    subPropertyOf,
     property,
     subject,
     datatype,
@@ -97,7 +99,7 @@ function predicateListFrame(data) {
 
 function predicateFrame(data) {
   return {
-    '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo}),
+    '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo, subPropertyOf}),
     'isDefinedBy': {}
   };
 }

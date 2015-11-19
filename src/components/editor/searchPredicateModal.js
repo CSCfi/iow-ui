@@ -3,7 +3,7 @@ const _ = require('lodash');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
-  function openModal(references, type, excludedPredicateMap, model) {
+  function openModal(references, type, excludedPredicateMap, model, onlySelection) {
     return $uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
@@ -14,22 +14,26 @@ module.exports = function modalFactory($uibModal) {
         references: () => references,
         type: () => type,
         excludedPredicateMap: () => excludedPredicateMap,
-        model: () => model
+        model: () => model,
+        onlySelection: () => onlySelection
       }
     });
   }
 
   return {
     open(references, type, excludedPredicateMap) {
-      return openModal(references, type, excludedPredicateMap);
+      return openModal(references, type, excludedPredicateMap, null, false);
     },
     openWithPredicationCreation(model) {
-      return openModal(model.references, null, {}, model);
+      return openModal(model.references, null, {}, model, false);
+    },
+    openWithOnlySelection(type) {
+      return openModal([], type, {}, null, true);
     }
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, model, predicateService, languageService, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, model, onlySelection, predicateService, languageService, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -45,6 +49,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   vm.types = [];
   vm.typeSelectable = !type;
   vm.references = references;
+  vm.onlySelection = onlySelection;
 
   predicateService.getAllPredicates().then(allPredicates => {
     predicates = _.reject(allPredicates, predicate => excludedPredicateMap[predicate.id]);

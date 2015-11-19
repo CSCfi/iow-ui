@@ -312,6 +312,7 @@ class Predicate extends AbstractPredicate {
     this.modelId = graph.isDefinedBy;
     this.range = graph.range;
     this.state = graph.versionInfo;
+    this.subPropertyOf = graph.subPropertyOf;
     this.subject = mapAsEntity(context, graph.subject, Concept, false);
   }
 
@@ -332,6 +333,7 @@ class Predicate extends AbstractPredicate {
           comment: this.comment,
           range: this.range,
           versionInfo: this.state,
+          subPropertyOf: this.subPropertyOf,
           subject: this.subject && this.subject.serialize()
         }
       )

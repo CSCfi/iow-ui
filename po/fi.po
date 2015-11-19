@@ -28,7 +28,7 @@ msgstr "Lisää luokka"
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
-#: components/model/classView.html:4 components/model/predicateView.html:4
+#: components/editor/classView.html:5 components/editor/predicateView.html:4
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
@@ -36,24 +36,24 @@ msgstr "Lisää ominaisuus"
 msgid "Add reference"
 msgstr "Lisää sanasto"
 
-#: components/model/modelView.html:9
+#: components/model/addRequireModal.html:2 components/model/modelView.html:9
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
-#: components/model/searchClassModal.html:25
-#: components/model/searchPredicateModal.html:32
+#: components/editor/searchClassModal.html:25
+#: components/editor/searchPredicateModal.html:32
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
-#: components/model/searchConceptModal.html:12
+#: components/editor/searchConceptModal.html:12
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/model/searchPredicateModal.html:41
+#: components/editor/searchPredicateModal.html:41
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: components/model/searchConceptModal.js:157 translations/misc.html:12
+#: components/editor/searchConceptModal.js:155 translations/misc.html:12
 msgid "and create new"
 msgstr "ja luo uusi"
 
@@ -83,18 +83,19 @@ msgstr "Ominaisuus"
 
 #: translations/misc.html:43
 msgid "Attribute list"
-msgstr "Attribuutit"
+msgstr "Ominaisuudet"
 
 #: components/group/groupList.html:2
 msgid "Browse"
 msgstr "Selaa"
 
 #: components/common/modalTemplate.html:16
+#: components/editor/searchClassModal.html:52
+#: components/editor/searchConceptModal.html:51
+#: components/editor/searchPredicateModal.html:71
 #: components/group/addModelModal.html:25
 #: components/model/addConceptModal.html:27
-#: components/model/searchClassModal.html:52
-#: components/model/searchConceptModal.html:53
-#: components/model/searchPredicateModal.html:71
+#: components/model/addRequireModal.html:31
 #: components/model/searchRequireModal.html:34
 #: components/model/searchSchemeModal.html:26
 msgid "Cancel"
@@ -104,11 +105,19 @@ msgstr "Peruuta"
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
-#: components/model/classSelect.html:2
+#: translations/misc.html:58
+msgid "Choose association"
+msgstr "Valitse assosiaatio"
+
+#: translations/misc.html:57
+msgid "Choose attribute"
+msgstr "Valitse ominaisuus"
+
+#: components/editor/classSelect.html:2
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/model/editableSubjectSelect.html:11
+#: components/editor/editableSubjectSelect.html:11
 msgid "Choose subject"
 msgstr "valitse käsite"
 
@@ -120,19 +129,19 @@ msgstr "Luokka"
 msgid "Class list"
 msgstr "Luokat"
 
-#: components/model/searchClassModal.html:14
+#: components/editor/searchClassModal.html:14
 msgid "Class search info"
 msgstr ""
 "Haen ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
+#: components/editor/searchConceptModal.html:34
 #: components/model/addConceptModal.html:12
-#: components/model/searchConceptModal.html:34
 msgid "Comment"
 msgstr "Määritelmä"
 
+#: components/editor/searchConceptModal.html:18
 #: components/model/addConceptModal.html:7
-#: components/model/searchConceptModal.html:18
 msgid "Concept"
 msgstr "Käsite"
 
@@ -140,7 +149,7 @@ msgstr "Käsite"
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
-#: components/model/searchConceptModal.html:48
+#: components/editor/searchConceptModal.html:46
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 
@@ -148,24 +157,25 @@ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: components/model/searchPredicateModal.html:73
+#: components/editor/searchPredicateModal.html:73
 msgid "Create and use predicate"
 msgstr "Luo ominaisuus ja käytä"
 
 #: components/group/addModelModal.html:26
 #: components/model/addConceptModal.html:28
+#: components/model/addRequireModal.html:32
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: components/model/searchPredicateModal.html:10
+#: components/editor/searchPredicateModal.html:10
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: components/model/searchPredicateModal.html:15
+#: components/editor/searchPredicateModal.html:15
 msgid "Create new attribute"
-msgstr "Lisää uusi attribuutti"
+msgstr "Lisää uusi ominaisuus"
 
-#: components/model/searchClassModal.html:8
+#: components/editor/searchClassModal.html:8
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
@@ -203,7 +213,7 @@ msgstr "Poista assosiaatio"
 
 #: translations/misc.html:42
 msgid "Delete attribute"
-msgstr "Poista attribuutti"
+msgstr "Poista ominaisuus"
 
 #: translations/misc.html:39 translations/misc.html:8
 msgid "Delete class"
@@ -213,7 +223,7 @@ msgstr "Poista luokka"
 msgid "Delete predicate"
 msgstr "Poista ominaisuus"
 
-#: components/model/propertyView.html:2
+#: components/editor/propertyView.html:2
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
@@ -283,9 +293,10 @@ msgstr "Otsikko tähän"
 msgid "Is defined by"
 msgstr "Kirjasto"
 
+#: components/editor/searchConceptModal.html:38
 #: components/group/addModelModal.html:16
 #: components/model/addConceptModal.html:17
-#: components/model/searchConceptModal.html:38
+#: components/model/addRequireModal.html:7
 msgid "Label"
 msgstr "Nimi"
 
@@ -316,27 +327,27 @@ msgstr "Nimi"
 msgid "New model creation"
 msgstr "Uuden tietokomponenttikirjaston luonti"
 
-#: components/model/editableSubjectSelect.html:4
+#: components/editor/editableSubjectSelect.html:4
 msgid "Not defined"
 msgstr "Ei määritelty"
 
-#: components/model/searchConceptModal.js:154 translations/misc.html:3
+#: components/editor/searchConceptModal.js:152 translations/misc.html:3
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
 
 #: translations/type.html:4
 msgid "owl:DatatypeProperty"
-msgstr "Attribuutti"
+msgstr "Ominaisuus"
 
 #: translations/type.html:5
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
-#: translations/misc.html:53
+#: components/model/addRequireModal.html:12 translations/misc.html:55
 msgid "Preferred namespace"
 msgstr "Suositeltu nimiavaruus"
 
-#: translations/misc.html:54
+#: components/model/addRequireModal.html:17 translations/misc.html:56
 msgid "Preferred prefix"
 msgstr "Suositeltu etuliite"
 
@@ -356,7 +367,7 @@ msgstr "Kieliversioitu teksti"
 msgid "Recommendation"
 msgstr "Suositus"
 
-#: components/model/searchConceptModal.html:8
+#: components/editor/searchConceptModal.html:8
 msgid "Reference"
 msgstr "Sanasto"
 
@@ -376,34 +387,35 @@ msgstr "Nimiavaruudet"
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
+#: components/editor/searchPredicateModal.html:63
 #: components/form/editableButtons.html:12
-#: components/model/searchPredicateModal.html:63
+#: components/model/addRequireModal.html:28
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
 
-#: components/model/searchClassModal.html:16
+#: components/editor/searchClassModal.html:16
 msgid "search class"
 msgstr "Hae luokkaa…"
 
-#: components/model/searchClassModal.html:2
+#: components/editor/searchClassModal.html:2
 msgid "Search classes"
 msgstr "Hae luokkia"
 
-#: components/model/searchConceptModal.html:30
+#: components/editor/searchConceptModal.html:30
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
 
-#: components/model/searchPredicateModal.html:23
+#: components/editor/searchPredicateModal.html:23
 msgid "search predicate"
 msgstr "Hae ominaisuutta…"
 
-#: components/model/searchPredicateModal.html:21
+#: components/editor/searchPredicateModal.html:21
 msgid "Search predicate info"
 msgstr ""
 "Haen ensin tarvitsemaasi ominaisuutta yhteentoimivuuden kuvauksista. Jos et "
 "löydä tarpeisiisi sopivaa, voit luoda uuden ominaisuuden."
 
-#: components/model/searchPredicateModal.html:3
+#: components/editor/searchPredicateModal.html:3
 msgid "Search predicates"
 msgstr "Hae ominaisuuksia"
 
@@ -431,17 +443,25 @@ msgstr "Näytä"
 msgid "State"
 msgstr "Tila"
 
-#: components/model/editableSubjectSelect.html:3
+#: components/editor/editableSubjectSelect.html:3
 msgid "Subject"
 msgstr "Käsite"
 
-#: components/model/searchConceptModal.js:157 translations/misc.html:10
+#: components/editor/searchConceptModal.js:155 translations/misc.html:10
 msgid "suggest"
 msgstr "ehdota"
 
-#: components/model/searchConceptModal.js:137 translations/misc.html:11
+#: components/editor/searchConceptModal.js:135 translations/misc.html:11
 msgid "suggestion"
 msgstr "ehdotus"
+
+#: translations/misc.html:53
+msgid "Superassociation"
+msgstr "Yläassosiaatio"
+
+#: translations/misc.html:54
+msgid "Superattribute"
+msgstr "Yläominaisuus"
 
 #: translations/misc.html:52
 msgid "Superclass"
@@ -459,11 +479,11 @@ msgstr "Keskeneräinen"
 msgid "Use"
 msgstr "Käytä"
 
-#: components/model/searchClassModal.html:53
+#: components/editor/searchClassModal.html:53
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/model/searchPredicateModal.html:72
+#: components/editor/searchPredicateModal.html:72
 msgid "Use predicate"
 msgstr "Käytä ominaisuutta"
 
@@ -479,7 +499,7 @@ msgstr "Käytä sanastoa"
 msgid "Value class"
 msgstr "Kohde"
 
-#: components/model/selectionView.html:20
+#: components/editor/selectionView.html:22
 msgid "Visualization"
 msgstr "Visualisointi"
 
@@ -554,6 +574,9 @@ msgstr "XML"
 #: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Superproperty"
+#~ msgstr "Yläkäsite"
 
 #~ msgid "Identifier"
 #~ msgstr "Tunniste"

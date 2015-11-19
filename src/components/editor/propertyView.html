@@ -4,7 +4,7 @@
   <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea></editable>
   <editable title="Example"><input name="Example" class="form-control" type="text" localized-input ng-model="ctrl.property.example" /></editable>
   <editable title="Range" ng-if="predicate.isAttribute()"><range-select range="ctrl.property.datatype"></range-select></editable>
-  <editable title="Value class" ng-if="predicate.isAssociation()"><class-select class-name="ctrl.property.valuesClass"></class-select></editable>
+  <editable title="Value class" ng-if="predicate.isAssociation()"><class-select name="Value class" curie="ctrl.property.valuesClass"></class-select></editable>
   <uib-accordion>
     <uib-accordion-group is-open="predicateOpen">
       <uib-accordion-heading>

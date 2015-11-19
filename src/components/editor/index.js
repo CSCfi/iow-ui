@@ -7,6 +7,7 @@ mod.directive('classSelect', require('./classSelect'));
 mod.directive('classView', require('./classView'));
 mod.directive('editableSubjectSelect', require('./editableSubjectSelect'));
 mod.directive('predicateForm', require('./predicateForm'));
+mod.directive('predicateSelect', require('./predicateSelect'));
 mod.directive('predicateView', require('./predicateView'));
 mod.directive('propertyView', require('./propertyView'));
 mod.factory('searchClassModal', require('./searchClassModal'));
