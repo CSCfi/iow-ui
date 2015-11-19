@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const utils = require('../../services/utils');
 
-module.exports = function modelController($scope, $location, $routeParams, $log, $q, $uibModal, locationService, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, confirmationModal, languageService) {
+module.exports = function modelController($scope, $location, $routeParams, $q, locationService, modelService, classService, predicateService, userService, searchClassModal, searchPredicateModal, confirmationModal, languageService) {
   'ngInject';
 
   const vm = this;
