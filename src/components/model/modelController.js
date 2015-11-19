@@ -140,6 +140,9 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
         updateSelection(klass);
         updateClasses();
       });
+
+    _.forEach(_.map(klass.properties, property => predicateService.getPredicate(property.predicateId)),
+      predicate => predicate.then(assignPredicateToModel));
   }
 
   function addPredicate(type) {
