@@ -43,6 +43,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   vm.type = type;
   vm.types = [];
   vm.typeSelectable = !type;
+  vm.references = references;
 
   predicateService.getAllPredicates().then(allPredicates => {
     predicates = _.reject(allPredicates, predicate => excludedPredicateMap[predicate.id]);

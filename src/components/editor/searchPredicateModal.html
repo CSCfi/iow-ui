@@ -57,7 +57,7 @@
         </div>
 
         <div class="col-md-4" window-height padding="300">
-          <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate"></predicate-form>
+          <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate" references="ctrl.references"></predicate-form>
           <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span translate>Save failed</span>
@@ -69,7 +69,7 @@
 
     <modal-buttons>
       <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default btn-lg" ng-show="!ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate" translate>Use predicate</button>
+      <button type="button" class="btn btn-default btn-lg" ng-show="!ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate || !form.$valid" translate>Use predicate</button>
       <button type="button" class="btn btn-default btn-lg" ng-show="ctrl.isEditing()" ng-click="ctrl.createAndUsePredicate()" translate>Create and use predicate</button>
     </modal-buttons>
   </modal-template>
