@@ -9,7 +9,7 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
 
   vm.loading = true;
   vm.registerView = view => views.push(view);
-  vm.selectionEdited = selectionEdited;
+  vm.selectionEdited = updateSelectables;
   vm.selectionDeleted = selectionDeleted;
   vm.select = select;
   vm.isSelected = listItem => listItem.isEqual(vm.selectedItem);
@@ -55,15 +55,6 @@ module.exports = function modelController($scope, $location, $routeParams, $log,
   function selectionDeleted(selection) {
     _.remove(vm.classes, item => item.isEqual(selection));
     _.remove(vm.predicates, item => item.isEqual(selection));
-  }
-
-  function selectionEdited(oldSelection, newSelection) {
-    const listItem = _.find(vm.classes, item => item.isEqual(oldSelection)) ||
-                     _.find(vm.predicates, item => item.isEqual(oldSelection));
-
-    listItem.id = newSelection.id;
-    listItem.label = newSelection.label;
-    vm.selectedItem = listItem;
   }
 
   function updateLocation() {

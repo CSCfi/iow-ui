@@ -55,11 +55,13 @@ module.exports = function editableControllerFactory($log, userService, confirmat
 
         const unsaved = editable.unsaved;
         (unsaved ? create(editableInEdit) : update(editableInEdit, editable.id))
-          .then(() => select(editableInEdit),
-            err => {
-              $log.error(err);
-              vm.submitError = true;
-            });
+          .then(() => {
+            $scope.modelController.selectionEdited(editable, editableInEdit);
+            select(editableInEdit);
+          }, err => {
+            $log.error(err);
+            vm.submitError = true;
+          });
       }
 
       function removeEdited() {
