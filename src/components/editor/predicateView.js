@@ -14,10 +14,16 @@ module.exports = function predicateView() {
       $scope.modelController = controllers[1];
       $scope.modelController.registerView(controllers[0]);
     },
-    controller($scope, predicateService, editableController) {
+    controller($scope, predicateService, editableController, userService) {
       'ngInject';
 
-      editableController.mixin($scope, this, 'predicate', predicateService.createPredicate, predicateService.updatePredicate, predicateService.deletePredicate);
+      const vm = this;
+      const rights = {
+        edit: () => userService.isLoggedIn() && vm.predicate.modelId === vm.model.id,
+        remove: userService.isLoggedIn
+      };
+
+      editableController.mixin($scope, this, 'predicate', rights, predicateService.createPredicate, predicateService.updatePredicate, predicateService.deletePredicate);
     }
   };
 };

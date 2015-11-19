@@ -3,7 +3,7 @@ const _ = require('lodash');
 module.exports = function editableControllerFactory($log, userService, confirmationModal) {
   'ngInject';
   return {
-    mixin($scope, vm, editableName, create, update, remove) {
+    mixin($scope, vm, editableName, rights, create, update, remove) {
       const editableInEditName = editableName + 'InEdit';
 
       vm.submitError = false;
@@ -76,7 +76,7 @@ module.exports = function editableControllerFactory($log, userService, confirmat
 
       function canRemove() {
         const editable = getEditable();
-        return remove && editable && !editable.unsaved && canEdit();
+        return remove && editable && !editable.unsaved && !isEditing() && rights.remove();
       }
 
       function cancelEditing() {
@@ -97,15 +97,11 @@ module.exports = function editableControllerFactory($log, userService, confirmat
       }
 
       function canEdit() {
-        return !isEditing() && hasModifyRight();
+        return !isEditing() && rights.edit();
       }
 
       function canModify() {
-        return isEditing() && hasModifyRight();
-      }
-
-      function hasModifyRight() {
-        return userService.isLoggedIn();
+        return isEditing() && rights.edit();
       }
     }
   };

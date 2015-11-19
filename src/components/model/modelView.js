@@ -16,10 +16,10 @@ module.exports = function modelView() {
       $scope.modelController = controllers[1];
       $scope.modelController.registerView(controllers[0]);
     },
-    controller($scope, modelService, searchSchemeModal, searchRequireModal, languageService, editableController) {
+    controller($scope, modelService, searchSchemeModal, searchRequireModal, languageService, editableController, userService) {
       'ngInject';
 
-      editableController.mixin($scope, this, 'model', modelService.createModel, modelService.updateModel);
+      editableController.mixin($scope, this, 'model', { edit: userService.isLoggedIn }, modelService.createModel, modelService.updateModel);
 
       const vm = this;
       let referencesView;

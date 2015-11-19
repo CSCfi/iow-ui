@@ -14,13 +14,19 @@ module.exports = function classView() {
       $scope.modelController = controllers[1];
       $scope.modelController.registerView(controllers[0]);
     },
-    controller($scope, classService, searchPredicateModal, editableController) {
+    controller($scope, classService, searchPredicateModal, editableController, userService) {
       'ngInject';
 
-      editableController.mixin($scope, this, 'class', classService.createClass, classService.updateClass, classService.deleteClass);
-
-      const vm = this;
       let classForm;
+      const vm = this;
+
+      const rights = {
+        edit: () => userService.isLoggedIn() && vm.class.modelId === vm.model.id,
+        remove: userService.isLoggedIn
+      };
+
+      editableController.mixin($scope, this, 'class', rights, classService.createClass, classService.updateClass, classService.deleteClass);
+
       vm.removeProperty = removeProperty;
       vm.addProperty = addProperty;
       vm.registerForm = form => classForm = form;
