@@ -1,10 +1,29 @@
-<editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.class.label"/></editable>
-<editable title="Id"><input name="Id" class="form-control" type="text" id-input ng-model="ctrl.class.curie" /></editable>
-<editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea></editable>
-<editable title="Superclass" name="Superclass"><class-select name="Superclass" curie="ctrl.class.subClassOf"></class-select></editable>
+<editable title="Label">
+  <input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.class.label"/>
+</editable>
+
+<editable title="Id">
+  <input name="Id" class="form-control" type="text" id-input ng-model="ctrl.class.curie" />
+</editable>
+
+<editable title="Comment">
+  <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea>
+</editable>
+
+<editable title="Superclass"
+          name="Superclass"
+          link="ctrl.model.linkToCurie(ctrl.class.type, ctrl.class.subClassOf)"
+          external-link="ctrl.model.linkToExternalCurie(ctrl.class.subClassOf)">
+  <class-select name="Superclass" curie="ctrl.class.subClassOf"></class-select>
+</editable>
+
 <non-editable title="Is defined by" value="ctrl.class.modelId" link="ctrl.class.iowUrl"></non-editable>
-<editable title="State" value-as-localization-key="true"><state-select state="ctrl.class.state"></state-select></editable>
-<editable-subject-select references="references" type="ctrl.class" subject="ctrl.class.subject"></editable-subject-select>
+
+<editable title="State" value-as-localization-key="true">
+  <state-select state="ctrl.class.state"></state-select>
+</editable>
+
+<editable-subject-select references="ctrl.model.references" type="ctrl.class" subject="ctrl.class.subject"></editable-subject-select>
 
 <uib-accordion close-others="true">
   <uib-accordion-group ng-repeat="property in ctrl.class.properties" is-open="ctrl.propertyViews[property.id].isOpen">

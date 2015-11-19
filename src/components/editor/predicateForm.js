@@ -3,7 +3,7 @@ module.exports = function predicateForm() {
   return {
     scope: {
       predicate: '=',
-      references: '='
+      model: '='
     },
     restrict: 'E',
     template: require('./predicateForm.html')

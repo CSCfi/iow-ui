@@ -3,7 +3,8 @@ module.exports = function editableDirective() {
   return {
     scope: {
       title: '@',
-      titleEditOnly: '@',
+      link: '=',
+      externalLink: '=',
       valueAsLocalizationKey: '@'
     },
     restrict: 'E',
@@ -14,9 +15,13 @@ module.exports = function editableDirective() {
       $scope.formController = formController;
       $scope.ngModel = element.find('[ng-model]').controller('ngModel');
     },
-    controller($scope, languageService, gettextCatalog) {
+    controller($scope, $location, languageService, gettextCatalog) {
       'ngInject';
 
+      $scope.isDifferentUrl = url => {
+        const location = '#' + $location.url().replace(/:/g, '%3A');
+        return location !== url;
+      };
       $scope.displayValue = () => {
         const value = $scope.ngModel && $scope.ngModel.$modelValue;
         if (value) {

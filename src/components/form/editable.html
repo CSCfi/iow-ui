@@ -1,7 +1,10 @@
 <div class="editable-wrap">
-  <div ng-show="(displayValue() || formController.editing) && (!titleEditOnly || formController.editing)" class="model-view__title">{{title | translate}}</div>
+  <div ng-show="displayValue() || formController.editing" class="model-view__title">{{title | translate}}</div>
   <div ng-show="formController.editing">
     <ng-transclude></ng-transclude>
   </div>
-  <span ng-hide="formController.editing">{{displayValue()}}</span>
+
+  <a ng-if="!formController.editing && link && isDifferentUrl(link)" ng-href="{{link}}">{{displayValue()}}</a>
+  <a ng-if="!formController.editing && externalLink" ng-href="{{externalLink}}" target="_blank">{{displayValue()}}</a>
+  <span ng-if="!formController.editing && (!link || !isDifferentUrl(link)) && !externalLink" >{{displayValue()}}</span>
 </div>

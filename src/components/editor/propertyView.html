@@ -1,10 +1,29 @@
 <div>
   <button ng-show="editableController.canModify()" type="button" class="btn btn-default pull-right" ng-click="editableController.removeProperty(property)" translate>Delete property</button>
-  <editable title="Name"><input name="Name" class="form-control" type="text" localized-input ng-model="ctrl.property.label" /></editable>
-  <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea></editable>
-  <editable title="Example"><input name="Example" class="form-control" type="text" localized-input ng-model="ctrl.property.example" /></editable>
-  <editable title="Range" ng-if="predicate.isAttribute()"><range-select range="ctrl.property.datatype"></range-select></editable>
-  <editable title="Value class" ng-if="predicate.isAssociation()"><class-select name="Value class" curie="ctrl.property.valuesClass"></class-select></editable>
+
+  <editable title="Name">
+    <input name="Name" class="form-control" type="text" localized-input ng-model="ctrl.property.label" />
+  </editable>
+
+  <editable title="Comment">
+    <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea>
+  </editable>
+
+  <editable title="Example">
+    <input name="Example" class="form-control" type="text" localized-input ng-model="ctrl.property.example" />
+  </editable>
+
+  <editable ng-if="predicate.isAttribute()" title="Range">
+    <range-select range="ctrl.property.datatype"></range-select>
+  </editable>
+
+  <editable ng-if="predicate.isAssociation()"
+            title="Value class"
+            link="ctrl.model.linkToCurie('class', ctrl.property.valueClass)"
+            external-link="ctrl.model.linkToExternalCurie(ctrl.property.valueClass)">
+    <class-select name="Value class" curie="ctrl.property.valuesClass"></class-select>
+  </editable>
+
   <uib-accordion>
     <uib-accordion-group is-open="predicateOpen">
       <uib-accordion-heading>

@@ -3,7 +3,7 @@ const _ = require('lodash');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
-  function open(references, excludedClassMap, onlySelection) {
+  function open(model, excludedClassMap, onlySelection) {
     return $uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -11,7 +11,7 @@ module.exports = function modalFactory($uibModal) {
       controllerAs: 'ctrl',
       backdrop: false,
       resolve: {
-        references: () => references,
+        model: () => model,
         excludedClassMap: () => excludedClassMap,
         onlySelection: () => onlySelection
       }
@@ -28,7 +28,7 @@ module.exports = function modalFactory($uibModal) {
   };
 };
 
-function SearchClassController($uibModalInstance, classService, languageService, references, excludedClassMap, onlySelection, searchConceptModal) {
+function SearchClassController($uibModalInstance, classService, languageService, model, excludedClassMap, onlySelection, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -47,7 +47,7 @@ function SearchClassController($uibModalInstance, classService, languageService,
 
     vm.models = _.chain(classes)
       .map(klass => klass.model)
-      .uniq(model => model.id)
+      .uniq(classModel => classModel.id)
       .value();
   });
 
@@ -73,7 +73,7 @@ function SearchClassController($uibModalInstance, classService, languageService,
   };
 
   vm.createNewClass = () => {
-    return searchConceptModal.openNewCreation(references, 'class').result.then($uibModalInstance.close);
+    return searchConceptModal.openNewCreation(model.references, 'class').result.then($uibModalInstance.close);
   };
 
   function localizedLabelAsLower(klass) {

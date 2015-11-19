@@ -3,7 +3,7 @@ module.exports = function classForm() {
   return {
     scope: {
       class: '=',
-      references: '=',
+      model: '=',
       editableController: '='
     },
     restrict: 'E',

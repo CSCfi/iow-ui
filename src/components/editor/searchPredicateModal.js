@@ -3,7 +3,7 @@ const _ = require('lodash');
 module.exports = function modalFactory($uibModal) {
   'ngInject';
 
-  function openModal(references, type, excludedPredicateMap, model, onlySelection) {
+  function openModal(model, type, excludedPredicateMap, onlySelection) {
     return $uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
@@ -11,29 +11,28 @@ module.exports = function modalFactory($uibModal) {
       controllerAs: 'ctrl',
       backdrop: false,
       resolve: {
-        references: () => references,
+        model: () => model,
         type: () => type,
         excludedPredicateMap: () => excludedPredicateMap,
-        model: () => model,
         onlySelection: () => onlySelection
       }
     });
   }
 
   return {
-    open(references, type, excludedPredicateMap) {
-      return openModal(references, type, excludedPredicateMap, null, false);
+    open(model, type, excludedPredicateMap) {
+      return openModal(model, type, excludedPredicateMap, false);
     },
     openWithPredicationCreation(model) {
-      return openModal(model.references, null, {}, model, false);
+      return openModal(model, null, {}, false);
     },
     openWithOnlySelection(type) {
-      return openModal([], type, {}, null, true);
+      return openModal(null, type, {}, true);
     }
   };
 };
 
-function SearchPredicateController($scope, $uibModalInstance, references, type, excludedPredicateMap, model, onlySelection, predicateService, languageService, searchConceptModal) {
+function SearchPredicateController($scope, $uibModalInstance, model, type, excludedPredicateMap, onlySelection, predicateService, languageService, searchConceptModal) {
   'ngInject';
 
   const vm = this;
@@ -48,7 +47,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   vm.type = type;
   vm.types = [];
   vm.typeSelectable = !type;
-  vm.references = references;
+  vm.model = model;
   vm.onlySelection = onlySelection;
 
   predicateService.getAllPredicates().then(allPredicates => {
@@ -95,7 +94,7 @@ function SearchPredicateController($scope, $uibModalInstance, references, type, 
   };
 
   vm.createNew = (selectionOwlType) => {
-    return searchConceptModal.openNewCreation(references, 'predicate').result
+    return searchConceptModal.openNewCreation(model.references, 'predicate').result
       .then(result => {
         if (!vm.typeSelectable) {
           $uibModalInstance.close(_.extend(result, {type: selectionOwlType}));

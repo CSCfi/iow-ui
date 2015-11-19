@@ -110,7 +110,7 @@ module.exports = function modelController($scope, $location, $routeParams, $q, l
 
   function addClass() {
     const classMap = _.indexBy(vm.classes, klass => klass.id);
-    searchClassModal.open(vm.model.references, classMap).result
+    searchClassModal.open(vm.model, classMap).result
       .then(result => {
         if (result.concept) {
           createClass(result);
@@ -138,7 +138,7 @@ module.exports = function modelController($scope, $location, $routeParams, $q, l
 
   function addPredicate(type) {
     const predicateMap = _.indexBy(vm.predicates, (predicate) => predicate.id);
-    searchPredicateModal.open(vm.model.references, type, predicateMap).result
+    searchPredicateModal.open(vm.model, type, predicateMap).result
       .then(result => {
         if (result.concept) {
           createPredicate(result);
