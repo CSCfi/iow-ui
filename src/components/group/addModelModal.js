@@ -7,7 +7,8 @@ module.exports = function modalFactory($uibModal) {
         template: require('./addModelModal.html'),
         size: 'small',
         controller: AddModelController,
-        controllerAs: 'ctrl'
+        controllerAs: 'ctrl',
+        backdrop: false
       });
     }
   };

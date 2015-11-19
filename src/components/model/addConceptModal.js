@@ -8,6 +8,7 @@ module.exports = function modalFactory($uibModal) {
         size: 'small',
         controller: AddConceptController,
         controllerAs: 'ctrl',
+        backdrop: false,
         resolve: {
           defineConceptTitle: () => defineConceptTitle,
           conceptLabel: () => conceptLabel,

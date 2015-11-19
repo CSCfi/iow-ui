@@ -10,6 +10,7 @@ module.exports = function modalFactory($uibModal) {
         size: 'medium',
         controller: SearchSchemeController,
         controllerAs: 'ctrl',
+        backdrop: false,
         resolve: {
           excludedSchemeMap: () => excludedSchemeMap,
           language: () => language

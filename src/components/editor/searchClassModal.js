@@ -9,6 +9,7 @@ module.exports = function modalFactory($uibModal) {
       size: 'large',
       controller: SearchClassController,
       controllerAs: 'ctrl',
+      backdrop: false,
       resolve: {
         references: () => references,
         excludedClassMap: () => excludedClassMap,

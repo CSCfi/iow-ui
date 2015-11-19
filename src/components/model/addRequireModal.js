@@ -8,6 +8,7 @@ module.exports = function modalFactory($uibModal) {
         size: 'small',
         controller: AddRequireController,
         controllerAs: 'ctrl',
+        backdrop: false,
         resolve: {
           language: () => language
         }

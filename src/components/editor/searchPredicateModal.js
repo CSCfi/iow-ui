@@ -9,6 +9,7 @@ module.exports = function modalFactory($uibModal) {
       size: 'large',
       controller: SearchPredicateController,
       controllerAs: 'ctrl',
+      backdrop: false,
       resolve: {
         references: () => references,
         type: () => type,
