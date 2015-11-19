@@ -5,22 +5,27 @@ module.exports = function directive($window, $timeout) {
     link($scope, element, attributes) {
       const placeholderClass = attributes.float;
       const topOffset = attributes.topOffset || 0;
-      const preserveParentWidth = attributes.preserveParentWidth;
+      let placeholder =
+        jQuery(document.createElement('div'))
+          .hide()
+          .addClass(placeholderClass)
+          .insertBefore(element);
       let elementLocation = null;
-      let addedPlaceholder = null;
+      let floating = false;
 
       element.attr('will-change', 'scroll-position');
 
       // after DOM is fully rendered, initialize element location
-      $timeout(() => {
-        $timeout(() => {
-          refreshElementLocation();
-        });
-      });
+      (function init() {
+        refreshElementLocation();
+        if (!isInitialized()) {
+          $timeout(init, 100);
+        }
+      })();
 
       angular.element($window).on('scroll', () => {
         if (isInitialized()) {
-          if (!isFloating()) {
+          if (!floating) {
             // re-refresh has to be done since location can change due to accordion etc
             refreshElementLocation();
             if (window.pageYOffset >= elementLocation.top) {
@@ -33,11 +38,7 @@ module.exports = function directive($window, $timeout) {
       });
 
       function isInitialized() {
-        return elementLocation;
-      }
-
-      function isFloating() {
-        return addedPlaceholder;
+        return elementLocation && elementLocation.top !== 0;
       }
 
       function refreshElementLocation() {
@@ -45,30 +46,24 @@ module.exports = function directive($window, $timeout) {
         elementLocation = {top: offset.top - topOffset, left: offset.left};
       }
 
-      function createPlaceholder() {
-        return jQuery(document.createElement('div'))
-          .css('width', element.outerWidth() + 'px')
-          .css('height', element.outerHeight() + 'px')
-          .addClass(placeholderClass);
-      }
-
       function setFloating() {
+        floating = true;
+        placeholder.css('width', element.outerWidth() + 'px');
+        placeholder.css('height', element.outerHeight() + 'px');
         element.css('left', elementLocation.left + 'px');
         element.css('top', topOffset + 'px');
+        element.css('width', element.outerWidth() + 'px');
         element.css('position', 'fixed');
-        if (preserveParentWidth) {
-          element.css('width', element.parent().width());
-        }
-        addedPlaceholder = createPlaceholder().insertBefore(element);
+        placeholder.show();
       }
 
       function setStatic() {
+        floating = false;
         element.css('left', '');
         element.css('top', '');
         element.css('position', '');
         element.css('width', '');
-        addedPlaceholder.remove();
-        addedPlaceholder = null;
+        placeholder.hide();
       }
     }
   };

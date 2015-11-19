@@ -4,9 +4,11 @@
       <h3><span ng-class="editableController.getEditable().glyphIconClass"></span> <span>{{editableController.getEditable() | translateLabel}}</span></h3>
     </div>
 
-    <editable-buttons editable-controller="editableController" float preserve-parent-width="true" class="clearfix">
-      <div ng-transclude="buttons"></div>
-    </editable-buttons>
+    <div float="top-actions-placeholder">
+      <editable-buttons editable-controller="editableController">
+        <div ng-transclude="buttons"></div>
+      </editable-buttons>
+    </div>
 
     <div class="selection-form" window-height="min" padding="134">
       <div ng-transclude="content"></div>
@@ -15,7 +17,7 @@
 </div>
 
 <div class="col-md-5">
-  <div class="component" float preserve-parent-width="true" top-offset="8">
+  <div class="component" float top-offset="8">
     <div class="component-header">
       <h3 translate>Visualization</h3>
     </div>
