@@ -2,7 +2,7 @@
 <editable title="Id"><input name="Id" type="text" id-input ng-model="predicate.curie" /></editable>
 <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="predicate.comment"></textarea></editable>
 <editable title="Range" name="Range" ng-if="predicate.isAttribute()"><range-select range="predicate.range"></range-select></editable>
-<editable title="Value class" name="Value class" ng-if="predicate.isAssociation()"><class-select class-name="predicate.range"></class-select></editable>
+<editable title="Value class" name="Value class" ng-if="predicate.isAssociation()"><class-select curie="predicate.range"></class-select></editable>
 <non-editable title="Is defined by" value="predicate.modelId" link="predicate.iowUrl"></non-editable>
 <editable title="State" value-as-localization-key="true"><state-select state="predicate.state"></state-select></editable>
 <editable-subject-select references="references" type="predicate" subject="predicate.subject"></editable-subject-select>
