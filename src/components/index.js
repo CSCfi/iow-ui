@@ -3,3 +3,4 @@ const mod = angular.module(name, []);
 module.exports = name;
 
 mod.controller('frontPageController', require('./frontPageController'));
+mod.factory('advancedSearchModal', require('./advancedSearchModal'));

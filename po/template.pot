@@ -35,6 +35,10 @@ msgstr ""
 msgid "Add require"
 msgstr ""
 
+#: components/frontPage.html:29
+msgid "Advanced search"
+msgstr ""
+
 #: components/editor/searchClassModal.html:25
 #: components/editor/searchPredicateModal.html:33
 msgid "All models"
@@ -81,7 +85,7 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
-#: components/frontPage.html:42
+#: components/frontPage.html:44
 msgid "Browse"
 msgstr ""
 
@@ -331,7 +335,7 @@ msgstr ""
 msgid "New model creation"
 msgstr ""
 
-#: components/frontPage.html:30
+#: components/frontPage.html:32
 msgid "No search results"
 msgstr ""
 

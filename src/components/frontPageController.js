@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function frontPageController($scope, $log, $location, locationService, groupService, searchService, languageService) {
+module.exports = function frontPageController($scope, $log, $location, locationService, groupService, searchService, languageService, advancedSearchModal) {
   'ngInject';
   const vm = this;
 
@@ -21,6 +21,10 @@ module.exports = function frontPageController($scope, $log, $location, locationS
 
   $scope.$watch(() => vm.searchText, search);
 
+  vm.selectSearchResult = go;
+  vm.selectGroup = go;
+  vm.openAdvancedSearch = () => advancedSearchModal.open().result.then(go);
+
   function search(text) {
     if (text) {
       searchService.searchAnything(vm.searchText, languageService.getModelLanguage())
@@ -30,11 +34,9 @@ module.exports = function frontPageController($scope, $log, $location, locationS
     }
   }
 
-  vm.selectSearchResult = searchResult => {
-    if (searchResult.iowUrl) {
-      $location.url(searchResult.iowUrl);
+  function go(withIowUrl) {
+    if (withIowUrl.iowUrl) {
+      $location.url(withIowUrl.iowUrl);
     }
-  };
-
-  vm.selectGroup = group => $location.url(group.iowUrl);
+  }
 };

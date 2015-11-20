@@ -1,11 +1,13 @@
 <form name="form">
-  <selection-view editable-controller="ctrl">
-    <selection-buttons>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
-    </selection-buttons>
+  <div ng-if="ctrl.predicate && ctrl.model">
+    <selection-view editable-controller="ctrl">
+      <selection-buttons>
+        <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
+      </selection-buttons>
 
-    <selection-content>
-      <predicate-form predicate="ctrl.predicateInEdit" model="ctrl.model"></predicate-form>
-    </selection-content>
-  </selection-view>
+      <selection-content>
+        <predicate-form predicate="ctrl.predicateInEdit" model="ctrl.model"></predicate-form>
+      </selection-content>
+    </selection-view>
+  </div>
 </form>

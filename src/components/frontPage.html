@@ -26,6 +26,8 @@
         <i class="glyphicon glyphicon-search form-control-feedback"></i>
       </div>
 
+      <span class="advanced-search link" ng-click="ctrl.openAdvancedSearch()" translate>Advanced search</span>
+
       <ul class="selectable-panel__list">
         <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
         <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)">

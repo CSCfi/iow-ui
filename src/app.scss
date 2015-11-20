@@ -13,6 +13,11 @@
   color: $link-color;
 }
 
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .panel-group .glyphicon {
   position: inherit;
 }
@@ -388,6 +393,11 @@ a.accordion-toggle {
     .glyphicon {
       font-size: x-large;
     }
+  }
+
+  .advanced-search {
+    top: -20px;
+    position: relative;
   }
 }
 
