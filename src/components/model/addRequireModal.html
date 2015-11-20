@@ -1,8 +1,8 @@
-<modal-template>
-  <modal-title translate>Add require</modal-title>
+<form name="form">
+  <modal-template>
+    <modal-title translate>Add require</modal-title>
 
-  <modal-body class="search-modal">
-    <form name="form">
+    <modal-body class="search-modal">
 
       <label for="label" translate>Label</label>
       <div class="input-group input-group-md">
@@ -18,17 +18,16 @@
       <div class="input-group input-group-md">
         <input id="prefix" type="text" class="form-control" required ng-model="ctrl.prefix" />
       </div>
+    </modal-body>
 
-    </form>
-  </modal-body>
+    <modal-buttons>
+      <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span translate>Save failed</span>
+      </div>
 
-  <modal-buttons>
-    <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span translate>Save failed</span>
-    </div>
-
-    <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
-    <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!form.$valid" translate>Create new</button>
-  </modal-buttons>
-</modal-template>
+      <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
+      <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!form.$valid" translate>Create new</button>
+    </modal-buttons>
+  </modal-template>
+</form>

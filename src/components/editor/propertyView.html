@@ -19,9 +19,9 @@
 
   <editable ng-if="predicate.isAssociation()"
             title="Value class"
-            link="ctrl.model.linkToCurie('class', ctrl.property.valueClass)"
-            external-link="ctrl.model.linkToExternalCurie(ctrl.property.valueClass)">
-    <class-select name="Value class" curie="ctrl.property.valuesClass"></class-select>
+            link="ctrl.linkToValueClass()"
+            external-link="ctrl.linkToExternalValueClass()">
+    <class-select name="Value class" curie="ctrl.property.valuesClass" model="ctrl.model"></class-select>
   </editable>
 
   <uib-accordion>
@@ -31,7 +31,7 @@
       </uib-accordion-heading>
       <non-editable title="Name" value="ctrl.predicate.label"></non-editable>
       <non-editable title="Comment" value="ctrl.predicate.comment"></non-editable>
-      <non-editable title="Type" value="ctrl.predicate.owlType"></non-editable>
+      <non-editable title="Type" value="ctrl.predicate.rawType"></non-editable>
       <non-editable title="Range" value="ctrl.predicate.range"></non-editable>
       <non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl"></non-editable>
     </uib-accordion-group>

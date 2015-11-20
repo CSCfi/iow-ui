@@ -1,40 +1,40 @@
 <editable title="Label">
-  <input name="Label" class="form-control" type="text" localized-input ng-model="predicate.label" />
+  <input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.predicate.label" />
 </editable>
 
 <editable title="Id">
-  <input name="Id" class="form-control" type="text" id-input ng-model="predicate.curie" />
+  <input name="Id" class="form-control" type="text" id-input ng-model="ctrl.predicate.curie" />
 </editable>
 
 <editable title="Comment">
-  <textarea name="Comment" class="form-control" localized-input ng-model="predicate.comment"></textarea>
+  <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.predicate.comment"></textarea>
 </editable>
 
-<editable title="{{'Super' + predicate.type}}"
-          link="model.linkToCurie(predicate.type, predicate.subPropertyOf)"
-          external-link="model.linkToExternalCurie(predicate.subPropertyOf)"
+<editable title="{{'Super' + ctrl.predicate.type}}"
+          link="ctrl.linkToSubProperty()"
+          external-link="ctrl.linkToExternalSubProperty()"
           name="Superproperty">
-  <predicate-select name="Superproperty" type="predicate.type" curie="predicate.subPropertyOf"></predicate-select>
+  <predicate-select name="Superproperty" type="ctrl.predicate.type" curie="ctrl.predicate.subPropertyOf" model="ctrl.model"></predicate-select>
 </editable>
 
-<editable ng-if="predicate.isAttribute()"
+<editable ng-if="ctrl.predicate.isAttribute()"
           title="Range"
           name="Range">
-  <range-select range="predicate.range"></range-select>
+  <range-select range="ctrl.predicate.range"></range-select>
 </editable>
 
-<editable ng-if="predicate.isAssociation()"
+<editable ng-if="ctrl.predicate.isAssociation()"
           title="Value class"
           name="Value class"
-          link="model.linkToCurie('class', predicate.range)"
-          external-link="model.linkToExternalCurie(predicate.range)">
-  <class-select name="Value class" curie="predicate.range"></class-select>
+          link="ctrl.linkToValueClass()"
+          external-link="ctrl.linkToExternalValueClass()">
+  <class-select name="Value class" curie="ctrl.predicate.range" model="ctrl.model"></class-select>
 </editable>
 
-<non-editable title="Is defined by" value="predicate.modelId" link="predicate.iowUrl"></non-editable>
+<non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl"></non-editable>
 
 <editable title="State" value-as-localization-key="true">
-  <state-select state="predicate.state"></state-select>
+  <state-select state="ctrl.predicate.state"></state-select>
 </editable>
 
-<editable-subject-select references="model.references" type="predicate" subject="predicate.subject"></editable-subject-select>
+<editable-subject-select references="ctrl.model.references" type="predicate" subject="ctrl.predicate.subject"></editable-subject-select>

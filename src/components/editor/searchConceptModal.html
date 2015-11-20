@@ -10,7 +10,7 @@
           <div class="selectContainer">
             <select id="reference" class="form-control" ng-model="ctrl.vocabularyId">
               <option value="" translate>All references</option>
-              <option ng-repeat="reference in ctrl.references" value="{{reference.vocabularyId}}">{{reference.title | translateValue}}</option>
+              <option ng-repeat="reference in ctrl.references" value="{{reference.vocabularyId}}">{{reference.label | translateValue}}</option>
             </select>
           </div>
         </div>

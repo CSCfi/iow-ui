@@ -33,7 +33,6 @@
         <div ng-repeat="class in ctrl.searchResults() track by class.id">
           <div ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)">
             <h5>{{class | translateLabel}}</h5>
-            <p>{{class.comment | translateValue}}</p>
             <p>{{class.model | translateLabel}}</p>
           </div>
         </div>
@@ -41,7 +40,7 @@
 
       <div class="col-md-4" window-height padding="300">
         <form>
-          <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass"></class-form>
+          <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass" model="ctrl.model"></class-form>
         </form>
       </div>
 

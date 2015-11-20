@@ -7,7 +7,7 @@
       <uib-tabset>
         <uib-tab active="tab.active" ng-repeat="tab in ctrl.tabs">
           <uib-tab-heading>
-            <i ng-class="tab.glyphIconClass"></i><p>{{tab.label | translate}}</p>
+            <i ng-class="tab.glyphIconClass"></i><p>{{tab.type | translate}}</p>
           </uib-tab-heading>
 
           <button ng-show="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="tab.addNew()">{{tab.addLabel | translate}}</button>

@@ -1,12 +1,12 @@
 <ol class="breadcrumb">
   <li ng-repeat="path in ctrl.location" ng-class="{active: $last}">
     <i ng-class="path.glyphIconClass"></i>
-    <a ng-if="path.iowUrl && !$last" ng-href="{{'#' + path.iowUrl}}">
-      <span ng-hide="path.label">{{path.type | translate}}</span>
+    <a ng-if="path.iowUrl && !$last" ng-href="{{'#' + path.iowUrl()}}">
+      <span ng-hide="path.label">{{path.localizationKey | translate}}</span>
       <span ng-show="path.label">{{path | translateLabel}}</span>
     </a>
     <span ng-if="!path.iowUrl || $last">
-      <span ng-hide="path.label">{{path.type | translate}}</span>
+      <span ng-hide="path.label">{{path.localizationKey | translate}}</span>
       <span ng-show="path.label">{{path | translateLabel}}</span>
     </span>
   </li>

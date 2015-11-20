@@ -11,15 +11,15 @@
     </editable-buttons>
 
     <div class="col-md-6">
-      <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.modelInEdit.label" /></editable>
-      <non-editable title="Id" value="ctrl.modelInEdit.id"></non-editable>
-      <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.modelInEdit.comment"></textarea></editable>
-      <editable title="State" value-as-localization-key="true"><state-select state="ctrl.modelInEdit.state"></state-select></editable>
+      <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.editableInEdit.label" /></editable>
+      <non-editable title="Id" value="ctrl.editableInEdit.id"></non-editable>
+      <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea></editable>
+      <editable title="State" value-as-localization-key="true"><state-select state="ctrl.editableInEdit.state"></state-select></editable>
     </div>
 
     <div class="col-md-6">
-      <references-view references="ctrl.modelInEdit.references"></references-view>
-      <requires-view requires="ctrl.modelInEdit.requires"></requires-view>
+      <references-view references="ctrl.editableInEdit.references"></references-view>
+      <requires-view requires="ctrl.editableInEdit.requires"></requires-view>
     </div>
   </div>
 </form>

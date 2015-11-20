@@ -12,9 +12,9 @@
 
 <editable title="Superclass"
           name="Superclass"
-          link="ctrl.model.linkToCurie(ctrl.class.type, ctrl.class.subClassOf)"
-          external-link="ctrl.model.linkToExternalCurie(ctrl.class.subClassOf)">
-  <class-select name="Superclass" curie="ctrl.class.subClassOf"></class-select>
+          link="ctrl.linkToSubclass()"
+          external-link="ctrl.linkToExternalSubclass()">
+  <class-select name="Superclass" curie="ctrl.class.subClassOf" model="ctrl.model"></class-select>
 </editable>
 
 <non-editable title="Is defined by" value="ctrl.class.modelId" link="ctrl.class.iowUrl"></non-editable>
@@ -32,6 +32,6 @@
       <span>{{property | translateLabel}}</span>
       <accordion-chevron is-open="ctrl.propertyViews[property.id].isOpen"></accordion-chevron>
     </uib-accordion-heading>
-    <property-view property="property"></property-view>
+    <property-view property="property" model="ctrl.model"></property-view>
   </uib-accordion-group>
 </uib-accordion>
