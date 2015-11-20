@@ -1,12 +1,8 @@
-module.exports = function frontPageController($scope, $log, locationService, groupService) {
+module.exports = function frontPageController($scope, $log, locationService, groupService, searchService, languageService) {
   'ngInject';
   const vm = this;
 
   locationService.atFrontPage();
-
-  groupService.getGroups().then(groups => {
-    vm.groups = groups;
-  }, error => $log.error(error));
 
   vm.bullets = [
     { title: 'What is description?', content: 'What is description content'},
@@ -15,4 +11,20 @@ module.exports = function frontPageController($scope, $log, locationService, gro
     { title: 'How?', content: 'How content'}
   ];
 
+  groupService.getGroups().then(groups => {
+    vm.groups = groups;
+  }, error => $log.error(error));
+
+  vm.searchResults = [];
+
+  $scope.$watch(() => vm.searchText, search);
+
+  function search(text) {
+    if (text) {
+      searchService.searchAnything(vm.searchText, languageService.getModelLanguage())
+        .then(results => vm.searchResults = results);
+    } else {
+      vm.searchResults = [];
+    }
+  };
 };

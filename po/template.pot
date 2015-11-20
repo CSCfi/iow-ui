@@ -81,7 +81,7 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
-#: components/index.html:5
+#: components/index.html:18
 msgid "Browse"
 msgstr ""
 
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: components/index.html:18
+#: components/index.html:31
 msgid "Interoperability method"
 msgstr ""
 
@@ -396,12 +396,20 @@ msgstr ""
 msgid "Save failed"
 msgstr ""
 
+#: components/index.html:6
+msgid "Search"
+msgstr ""
+
 #: components/editor/searchClassModal.html:16
 msgid "search class"
 msgstr ""
 
 #: components/editor/searchClassModal.html:2
 msgid "Search classes"
+msgstr ""
+
+#: components/index.html:9
+msgid "search descriptions"
 msgstr ""
 
 #: components/editor/searchConceptModal.html:30

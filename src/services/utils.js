@@ -5,6 +5,7 @@ function glyphIconClassForType(type) {
       'glyphicon-list-alt': type === 'class',
       'glyphicon-tasks': type === 'attribute',
       'glyphicon-sort': type === 'association',
+      'glyphicon-book': type === 'model',
       'glyphicon-question-sign': !type
     }
   ];

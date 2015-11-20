@@ -167,6 +167,13 @@ function requireFrame(data) {
   };
 }
 
+function searchResultFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, comment}),
+    'name': {}
+  };
+}
+
 module.exports = {
   groupListFrame,
   modelFrame,
@@ -179,5 +186,6 @@ module.exports = {
   conceptSuggestionFrame,
   fintoConceptFrame,
   userFrame,
-  requireFrame
+  requireFrame,
+  searchResultFrame
 };

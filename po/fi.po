@@ -85,7 +85,7 @@ msgstr "Ominaisuus"
 msgid "Attribute list"
 msgstr "Ominaisuudet"
 
-#: components/index.html:5
+#: components/index.html:18
 msgid "Browse"
 msgstr "Selaa"
 
@@ -299,7 +299,7 @@ msgstr "Kuinka pääsen osallistumaan?"
 msgid "Id"
 msgstr "Tunniste"
 
-#: components/index.html:18
+#: components/index.html:31
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
@@ -407,6 +407,10 @@ msgstr "Tallenna muutokset"
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
 
+#: components/index.html:6
+msgid "Search"
+msgstr "Etsi"
+
 #: components/editor/searchClassModal.html:16
 msgid "search class"
 msgstr "Hae luokkaa…"
@@ -414,6 +418,10 @@ msgstr "Hae luokkaa…"
 #: components/editor/searchClassModal.html:2
 msgid "Search classes"
 msgstr "Hae luokkia"
+
+#: components/index.html:9
+msgid "search descriptions"
+msgstr "Etsi yhteensopivuuden kuvauksista..."
 
 #: components/editor/searchConceptModal.html:30
 msgid "Search from concept database"

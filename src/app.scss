@@ -369,16 +369,33 @@ a.accordion-toggle {
 .frontpage-panel__body {
   @extend .panel-body;
   padding: 0;
+  margin: 20px;
+
+  .input-group {
+    width: 100%;
+    padding-bottom: 20px;
+
+    .glyphicon {
+      font-size: x-large;
+    }
+  }
 }
 
 .panel__list {
   list-style: none;
-  padding: 10px;
+  padding: 0;
   margin: 0;
+  max-height: 400px;
+  overflow-y: scroll;
+
+  p {
+    font-size: small;
+    padding-left: 20px;
+  }
 }
 
 .frontpage-panel__list__item {
-  padding: 7px 15px 7px 15px;
+  padding: 7px 15px 7px 0;
 }
 
 .frontpage-panel__list__item:hover {

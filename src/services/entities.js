@@ -15,7 +15,7 @@ module.exports = function entities($log, modelCache) {
     }
 
     get iowUrl() {
-      return `#/groups?urn=${encodeURIComponent(this.id)}`;
+      return groupUrl(this.id);
     }
   }
 
@@ -28,7 +28,7 @@ module.exports = function entities($log, modelCache) {
     }
 
     get iowUrl() {
-      return `#/models?urn=${encodeURIComponent(this.id)}`;
+      return modelUrl(this.id);
     }
   }
 
@@ -61,7 +61,7 @@ module.exports = function entities($log, modelCache) {
             if (type === 'external' && !id) {
               return namespace + value;
             } else if (type !== 'external' && id) {
-              return `#/models?urn=${encodeURIComponent(id)}&${type}=${encodeURIComponent(namespace + value)}`;
+              return selectableUrl(namespace + value, type);
             }
           }
         }
@@ -221,7 +221,7 @@ module.exports = function entities($log, modelCache) {
     }
 
     get modelIowUrl() {
-      return `#/models?urn=${encodeURIComponent(this.modelId)}`;
+      return modelUrl(this.modelId);
     }
 
     serialize() {
@@ -349,7 +349,7 @@ module.exports = function entities($log, modelCache) {
     }
 
     get modelIowUrl() {
-      return `#/models?urn=${encodeURIComponent(this.modelId)}`;
+      return modelUrl(this.modelId);
     }
 
     serialize() {
@@ -437,6 +437,65 @@ module.exports = function entities($log, modelCache) {
     }
   }
 
+  class SearchResult {
+    constructor(graph) {
+      this.graph = graph;
+      this.id = graph['@id'];
+      this.label = graph.label;
+      this.comment = graph.comment;
+      this.type = mapType(graph['@type']);
+    }
+
+    get iowUrl() {
+      switch (this.type) {
+        case 'group':
+          return groupUrl(this.id);
+        case 'model':
+          return modelUrl(this.id);
+        default:
+          if (this.type) {
+            return selectableUrl(this.id, this.type);
+          }
+      }
+    }
+
+    get glyphIconClass() {
+      return utils.glyphIconClassForType(this.type);
+    }
+  }
+
+  function mapType(type) {
+    for (const item of utils.normalizeAsArray(type)) {
+      switch (item) {
+        case 'sh:ShapeClass':
+          return 'class';
+        case 'owl:DatatypeProperty':
+          return 'attribute';
+        case 'owl:ObjectProperty':
+          return 'association';
+        case 'owl:Ontology':
+          return 'model';
+        case 'foaf:Group':
+          return 'group';
+        default:
+          // continue
+      }
+    }
+  }
+
+  function groupUrl(id) {
+    return `#/groups?urn=${encodeURIComponent(id)}`;
+  }
+
+  function modelUrl(id) {
+    return `#/models?urn=${encodeURIComponent(id)}`;
+  }
+
+  function selectableUrl(id, type) {
+    const [modelId] = id.split('#');
+    return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
+  }
+
   function splitCurie(curie) {
     const parts = curie.split(':');
     if (parts.length === 2) {
@@ -508,6 +567,7 @@ module.exports = function entities($log, modelCache) {
     deserializeRequire: (data) => frameAndMap(data, frames.requireFrame, Require, false),
     deserializeRequires: (data) => frameAndMap(data, frames.requireFrame, Require, true),
     deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),
-    anonymousUser: () => new AnonymousUser()
+    anonymousUser: () => new AnonymousUser(),
+    deserializeSearch: (data) => frameAndMap(data, frames.searchResultFrame, SearchResult, true)
   };
 };
