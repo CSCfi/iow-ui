@@ -350,6 +350,7 @@ a.accordion-toggle {
   $bullet-width: 100px;
 
   .content {
+    padding-left: 20px;
     width: calc(100% - #{$bullet-width});
     float: left;
   }
@@ -359,7 +360,6 @@ a.accordion-toggle {
     width: $bullet-width;
 
     .bullet {
-      margin-right: 20px;
       text-align: center;
       vertical-align: text-bottom;
       border: 2px solid #ddd;

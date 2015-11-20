@@ -4,7 +4,7 @@
 
   <div ng-repeat="bullet in ctrl.bullets" class="point">
     <div class="bullet-container">
-      <div class="bullet"><span></span></div>
+      <div class="bullet"><span>{{$index + 1}}</span></div>
     </div>
     <div class="content">
       <h4>{{bullet.title | translate}}</h4>
