@@ -489,11 +489,11 @@ module.exports = function entities($log, modelCache) {
   }
 
   function groupUrl(id) {
-    return `#/groups?urn=${encodeURIComponent(id)}`;
+    return `/groups?urn=${encodeURIComponent(id)}`;
   }
 
   function modelUrl(id) {
-    return `#/models?urn=${encodeURIComponent(id)}`;
+    return `/models?urn=${encodeURIComponent(id)}`;
   }
 
   function selectableUrl(id, type) {

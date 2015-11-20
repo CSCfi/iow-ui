@@ -19,8 +19,7 @@ module.exports = function editableDirective() {
       'ngInject';
 
       $scope.isDifferentUrl = url => {
-        const location = '#' + $location.url().replace(/:/g, '%3A');
-        return location !== url;
+        return $location.url().replace(/:/g, '%3A') !== url;
       };
       $scope.displayValue = () => {
         const value = $scope.ngModel && $scope.ngModel.$modelValue;

@@ -11,7 +11,7 @@ module.exports = function editableDirective() {
     restrict: 'E',
     template: `<div ng-show="value">
                  <div class="model-view__title">{{title | translate}}</div>
-                 <a ng-if="link && isDifferentUrl(link)" ng-href="{{link}}">{{displayValue()}}</a>
+                 <a ng-if="link && isDifferentUrl(link)" ng-href="{{'#' + link}}">{{displayValue()}}</a>
                  <a ng-if="externalLink" ng-href="{{externalLink}}" target="_blank">{{displayValue()}}</a>
                  <div ng-if="(!link || !isDifferentUrl(link)) && !externalLink">{{displayValue()}}</div>
                </div>`,
@@ -19,8 +19,7 @@ module.exports = function editableDirective() {
       'ngInject';
 
       $scope.isDifferentUrl = url => {
-        const location = '#' + $location.url().replace(/:/g, '%3A');
-        return location !== url;
+        return $location.url().replace(/:/g, '%3A') !== url;
       };
 
       $scope.displayValue = () => {

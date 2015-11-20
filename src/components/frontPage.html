@@ -26,11 +26,10 @@
         <i class="glyphicon glyphicon-search form-control-feedback"></i>
       </div>
 
-      <ul class="scrolling-panel__list">
-        <li class="frontpage-panel__list__item" ng-repeat="searchResult in ctrl.searchResults">
+      <ul class="selectable-panel__list">
+        <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)">
           <i ng-class="searchResult.glyphIconClass"></i>
-          <a ng-show="searchResult.iowUrl" ng-href="{{searchResult.iowUrl}}">{{searchResult | translateLabel}}</a>
-          <span ng-hide="searchResult.iowUrl">{{searchResult | translateLabel}}</span>
+          <span ng-class="{link: searchResult.iowUrl}">{{searchResult | translateLabel}}</span>
           <p>{{searchResult.comment | translateValue}}</p>
         </li>
       </ul>
@@ -41,9 +40,9 @@
   <div class="frontpage-panel">
     <div class="iow-panel-heading"><h2 translate>Browse</h2></div>
     <div class="frontpage-panel__body">
-      <ul class="scrolling-panel__list">
-        <li class="frontpage-panel__list__item" ng-repeat="group in ctrl.groups">
-          <a ng-href="{{group.iowUrl}}">{{group | translateLabel}}</a>
+      <ul class="selectable-panel__list">
+        <li ng-repeat="group in ctrl.groups" ng-click="ctrl.selectGroup(group)">
+          <span class="link">{{group | translateLabel}}</span>
         </li>
       </ul>
     </div>

@@ -1,4 +1,4 @@
-module.exports = function GroupController($scope, $q, $log, locationService, $location, groupId, groupService, modelService, userService, addModelModal, editableController) {
+module.exports = function GroupController($scope, $q, $log, $location, locationService, groupId, groupService, modelService, userService, addModelModal, editableController) {
   'ngInject';
 
   const vm = this;
@@ -31,4 +31,6 @@ module.exports = function GroupController($scope, $q, $log, locationService, $lo
     const user = userService.getUser();
     return user.isLoggedIn() && !user.isInGroup(groupId);
   };
+
+  vm.selectModel = model => $location.url(model.iowUrl);
 };

@@ -21,10 +21,11 @@
         <div class="group-panel">
           <div class="iow-panel-heading"><h2 translate>Models</h2></div>
           <div class="panel-body">
-            <ul class="scrolling-panel__list">
-              <li ng-repeat="model in ctrl.models">
+            <ul class="selectable-panel__list">
+              <li ng-repeat="model in ctrl.models"
+                  ng-click="ctrl.selectModel(model)">
                 <i ng-class="model.glyphIconClass"></i>
-                <a ng-href="{{model.iowUrl}}">{{model | translateLabel}}</a>
+                <span class="link">{{model | translateLabel}}</span>
                 <p>{{model.comment | translateValue}}</p>
               </li>
             </ul>

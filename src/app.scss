@@ -9,6 +9,10 @@
   display: none !important;
 }
 
+.link {
+  color: $link-color;
+}
+
 .panel-group .glyphicon {
   position: inherit;
 }
@@ -376,12 +380,10 @@ a.accordion-toggle {
 
 .frontpage-panel__body {
   @extend .panel-body;
-  padding: 0;
-  margin: 20px;
 
   .input-group {
     width: 100%;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
 
     .glyphicon {
       font-size: x-large;
@@ -396,21 +398,22 @@ a.accordion-toggle {
   p {
     font-size: small;
     padding-left: 20px;
+    margin-bottom: 0;
   }
 }
 
-.scrolling-panel__list {
+.selectable-panel__list {
   @extend .panel__list;
   max-height: 400px;
   overflow-y: scroll;
-}
-
-.frontpage-panel__list__item {
-  padding: 7px 15px 7px 0;
-}
-
-.frontpage-panel__list__item:hover {
-  background-color: $list-group-hover-bg;
+  margin: -15px;
+  li {
+    cursor: pointer;
+    padding: 10px 20px;
+  }
+  li:hover {
+    background-color: $list-group-hover-bg;
+  }
 }
 
 a.accordion-toggle {

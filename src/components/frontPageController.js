@@ -1,4 +1,6 @@
-module.exports = function frontPageController($scope, $log, locationService, groupService, searchService, languageService) {
+const _ = require('lodash');
+
+module.exports = function frontPageController($scope, $log, $location, locationService, groupService, searchService, languageService) {
   'ngInject';
   const vm = this;
 
@@ -26,5 +28,13 @@ module.exports = function frontPageController($scope, $log, locationService, gro
     } else {
       vm.searchResults = [];
     }
+  }
+
+  vm.selectSearchResult = searchResult => {
+    if (searchResult.iowUrl) {
+      $location.url(searchResult.iowUrl);
+    }
   };
+
+  vm.selectGroup = group => $location.url(group.iowUrl);
 };
