@@ -142,11 +142,7 @@ h2 .model-view__title {
   }
 }
 
-.model-header {
-  cursor: pointer;
-  h2:hover {
-    text-decoration: underline;
-  }
+.main-header {
   h2 {
     padding-left: 10px;
     .glyphicon {
@@ -155,7 +151,15 @@ h2 .model-view__title {
   }
 }
 
-.model-editable-content {
+.model-header {
+  @extend .main-header;
+  cursor: pointer;
+  h2:hover {
+    text-decoration: underline;
+  }
+}
+
+.main-editable-content {
   @include clearfix;
   padding-bottom: 10px;
   border-top: solid 1px #ddd;

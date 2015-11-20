@@ -1,11 +1,11 @@
 <div ng-hide="ctrl.loading">
 
-  <div class="model-header">
+  <div class="main-header">
     <h2>{{ctrl.group | translateLabel}}</h2>
   </div>
 
   <form name="form">
-    <div class="model-editable-content">
+    <div class="main-editable-content">
 
       <editable-buttons editable-controller="ctrl">
         <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.group.homepage}}" target="_blank" translate>Ask for group rights</a>

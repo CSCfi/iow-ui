@@ -1,55 +1,51 @@
-<div class="row">
+<div class="col-md-7">
 
-  <div class="col-md-7">
-
-    <div class="frontpage-panel">
-      <div class="iow-panel-heading"><h2 translate>Search</h2></div>
-      <div class="frontpage-panel__body">
-        <div class="input-group input-group-lg">
-          <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
-                 ng-model="ctrl.searchText"
-                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
-          <i class="glyphicon glyphicon-search form-control-feedback"></i>
-        </div>
-
-        <ul class="scrolling-panel__list">
-          <li class="frontpage-panel__list__item" ng-repeat="searchResult in ctrl.searchResults">
-            <i ng-class="searchResult.glyphIconClass"></i>
-            <a ng-show="searchResult.iowUrl" ng-href="{{searchResult.iowUrl}}">{{searchResult | translateLabel}}</a>
-            <span ng-hide="searchResult.iowUrl">{{searchResult | translateLabel}}</span>
-            <p>{{searchResult.comment | translateValue}}</p>
-          </li>
-        </ul>
-
+  <div class="frontpage-panel">
+    <div class="iow-panel-heading"><h2 translate>Search</h2></div>
+    <div class="frontpage-panel__body">
+      <div class="input-group input-group-lg">
+        <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
+               ng-model="ctrl.searchText"
+               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+        <i class="glyphicon glyphicon-search form-control-feedback"></i>
       </div>
-    </div>
 
-    <div class="frontpage-panel">
-      <div class="iow-panel-heading"><h2 translate>Browse</h2></div>
-      <div class="frontpage-panel__body">
-        <ul class="scrolling-panel__list">
-          <li class="frontpage-panel__list__item" ng-repeat="group in ctrl.groups">
-            <a ng-href="{{group.iowUrl}}">{{group | translateLabel}}</a>
-          </li>
-        </ul>
-      </div>
+      <ul class="scrolling-panel__list">
+        <li class="frontpage-panel__list__item" ng-repeat="searchResult in ctrl.searchResults">
+          <i ng-class="searchResult.glyphIconClass"></i>
+          <a ng-show="searchResult.iowUrl" ng-href="{{searchResult.iowUrl}}">{{searchResult | translateLabel}}</a>
+          <span ng-hide="searchResult.iowUrl">{{searchResult | translateLabel}}</span>
+          <p>{{searchResult.comment | translateValue}}</p>
+        </li>
+      </ul>
+
     </div>
   </div>
 
-  <div class="col-md-5">
-
-    <h2 translate>Interoperability method</h2>
-
-    <div ng-repeat="bullet in ctrl.bullets" class="point">
-      <div class="bullet-container">
-        <div class="bullet"><span></span></div>
-      </div>
-      <div class="content">
-        <h4>{{bullet.title | translate}}</h4>
-        <span>{{bullet.content | translate}}</span>
-      </div>
+  <div class="frontpage-panel">
+    <div class="iow-panel-heading"><h2 translate>Browse</h2></div>
+    <div class="frontpage-panel__body">
+      <ul class="scrolling-panel__list">
+        <li class="frontpage-panel__list__item" ng-repeat="group in ctrl.groups">
+          <a ng-href="{{group.iowUrl}}">{{group | translateLabel}}</a>
+        </li>
+      </ul>
     </div>
+  </div>
+</div>
 
+<div class="col-md-5">
+
+  <h2 translate>Interoperability method</h2>
+
+  <div ng-repeat="bullet in ctrl.bullets" class="point">
+    <div class="bullet-container">
+      <div class="bullet"><span></span></div>
+    </div>
+    <div class="content">
+      <h4>{{bullet.title | translate}}</h4>
+      <span>{{bullet.content | translate}}</span>
+    </div>
   </div>
 
 </div>
