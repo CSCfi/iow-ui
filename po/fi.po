@@ -24,7 +24,7 @@ msgstr "Lisää ominaisuus"
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: components/group/addModelModal.html:3 components/group/group.html:4
+#: components/group/addModelModal.html:3 components/group/group.html:12
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
@@ -65,7 +65,7 @@ msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 msgid "Are you sure that you want to delete?"
 msgstr "Oletko varma, että haluat poistaa?"
 
-#: components/group/group.html:3
+#: components/group/group.html:11
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
@@ -85,7 +85,7 @@ msgstr "Ominaisuus"
 msgid "Attribute list"
 msgstr "Ominaisuudet"
 
-#: components/index.html:18
+#: components/frontPage.html:28
 msgid "Browse"
 msgstr "Selaa"
 
@@ -299,7 +299,7 @@ msgstr "Kuinka pääsen osallistumaan?"
 msgid "Id"
 msgstr "Tunniste"
 
-#: components/index.html:31
+#: components/frontPage.html:41
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
@@ -332,6 +332,10 @@ msgstr "Kirjaudu ulos"
 #: translations/misc.html:26
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
+
+#: components/group/group.html:23
+msgid "Models"
+msgstr "Tietokomponenttikirjastot"
 
 #: translations/misc.html:48
 msgid "Name"
@@ -407,7 +411,7 @@ msgstr "Tallenna muutokset"
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
 
-#: components/index.html:6
+#: components/frontPage.html:6
 msgid "Search"
 msgstr "Etsi"
 
@@ -419,7 +423,7 @@ msgstr "Hae luokkaa…"
 msgid "Search classes"
 msgstr "Hae luokkia"
 
-#: components/index.html:9
+#: components/frontPage.html:9
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 

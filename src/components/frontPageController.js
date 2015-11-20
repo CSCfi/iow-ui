@@ -11,7 +11,7 @@ module.exports = function frontPageController($scope, $log, locationService, gro
     { title: 'How?', content: 'How content'}
   ];
 
-  groupService.getGroups().then(groups => {
+  groupService.getAllGroups().then(groups => {
     vm.groups = groups;
   }, error => $log.error(error));
 

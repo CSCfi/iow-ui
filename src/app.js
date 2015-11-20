@@ -20,12 +20,11 @@ angular.module('iow-ui', [
   require('./services')
 ])
 .config(function mainConfig($routeProvider, $logProvider) {
-
   $logProvider.debugEnabled(false);
 
   $routeProvider
     .when('/', {
-      template: require('./components/index.html'),
+      template: require('./components/frontPage.html'),
       controller: 'frontPageController',
       controllerAs: 'ctrl'
     })

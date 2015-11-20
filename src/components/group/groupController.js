@@ -1,12 +1,12 @@
-const _ = require('lodash');
-
-module.exports = function GroupController($q, $log, locationService, $location, groupId, groupService, modelService, userService, addModelModal) {
+module.exports = function GroupController($scope, $q, $log, locationService, $location, groupId, groupService, modelService, userService, addModelModal, editableController) {
   'ngInject';
 
   const vm = this;
 
+  editableController.mixin($scope, this, 'group', { edit: () => false });
+
   $q.all({
-    group: groupService.getGroups().then(groups => _.findWhere(groups, {id: groupId})),
+    group: groupService.getGroup(groupId),
     models: modelService.getModelsByGroup(groupId)
   })
   .then(({group, models}) => {

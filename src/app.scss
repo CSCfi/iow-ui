@@ -323,7 +323,12 @@ a.accordion-toggle {
   margin-top: 21px;
 }
 
-.frontpage-panel-heading {
+.group-panel {
+  @extend .iow-panel;
+  margin-top: 30px;
+}
+
+.iow-panel-heading {
   @extend .panel-heading;
   h2 {
     margin: 5px;
@@ -385,13 +390,16 @@ a.accordion-toggle {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 400px;
-  overflow-y: scroll;
-
   p {
     font-size: small;
     padding-left: 20px;
   }
+}
+
+.scrolling-panel__list {
+  @extend .panel__list;
+  max-height: 400px;
+  overflow-y: scroll;
 }
 
 .frontpage-panel__list__item {

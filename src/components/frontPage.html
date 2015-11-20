@@ -3,7 +3,7 @@
   <div class="col-md-7">
 
     <div class="frontpage-panel">
-      <div class="frontpage-panel-heading"><h2 translate>Search</h2></div>
+      <div class="iow-panel-heading"><h2 translate>Search</h2></div>
       <div class="frontpage-panel__body">
         <div class="input-group input-group-lg">
           <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
@@ -12,7 +12,7 @@
           <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
-        <ul class="panel__list">
+        <ul class="scrolling-panel__list">
           <li class="frontpage-panel__list__item" ng-repeat="searchResult in ctrl.searchResults">
             <i ng-class="searchResult.glyphIconClass"></i>
             <a ng-show="searchResult.iowUrl" ng-href="{{searchResult.iowUrl}}">{{searchResult | translateLabel}}</a>
@@ -25,9 +25,9 @@
     </div>
 
     <div class="frontpage-panel">
-      <div class="frontpage-panel-heading"><h2 translate>Browse</h2></div>
+      <div class="iow-panel-heading"><h2 translate>Browse</h2></div>
       <div class="frontpage-panel__body">
-        <ul class="panel__list">
+        <ul class="scrolling-panel__list">
           <li class="frontpage-panel__list__item" ng-repeat="group in ctrl.groups">
             <a ng-href="{{group.iowUrl}}">{{group | translateLabel}}</a>
           </li>

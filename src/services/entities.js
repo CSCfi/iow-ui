@@ -10,6 +10,7 @@ module.exports = function entities($log, modelCache) {
     constructor(graph) {
       this.id = graph['@id'];
       this.label = graph.label;
+      this.comment = graph.comment;
       this.homepage = graph.homepage;
       this.type = 'group';
     }
@@ -25,10 +26,15 @@ module.exports = function entities($log, modelCache) {
       this.label = graph.label;
       this.namespace = graph['dcap:preferredXMLNamespaceName'];
       this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
+      this.type = 'model';
     }
 
     get iowUrl() {
       return modelUrl(this.id);
+    }
+
+    get glyphIconClass() {
+      return utils.glyphIconClassForType(this.type);
     }
   }
 
@@ -45,7 +51,6 @@ module.exports = function entities($log, modelCache) {
       this.context = context;
       this.comment = graph.comment;
       this.state = graph.versionInfo;
-      this.type = 'model';
       this.references = mapAsEntity(context, graph.references, Reference, true);
       this.requires = mapAsEntity(context, graph.requires, Require, true);
       this.copyNamespacesFromRequires();
