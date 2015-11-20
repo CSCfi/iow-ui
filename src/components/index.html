@@ -1,13 +1,32 @@
 <div class="row">
-  <div class="col-md-6">
-    <h2 translate>IOW header</h2>
-    <ol>
-      <li>just</li>
-      <li>do</li>
-      <li>it</li>
-    </ol>
+
+  <div class="col-md-7">
+    <div class="frontpage-panel">
+      <div class="frontpage-panel-heading"><h2 translate>Browse</h2></div>
+      <div class="frontpage-panel__body">
+        <ul class="panel__list">
+          <li class="frontpage-panel__list__item" ng-repeat="group in ctrl.groups">
+            <a ng-href="{{group.iowUrl}}">{{group | translateLabel}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <div class="col-md-6">
-    <group-list></group-list>
+
+  <div class="col-md-5">
+
+    <h2 translate>Interoperability method</h2>
+
+    <div ng-repeat="bullet in ctrl.bullets" class="point">
+      <div class="bullet-container">
+        <div class="bullet"><span></span></div>
+      </div>
+      <div class="content">
+        <h4>{{bullet.title | translate}}</h4>
+        <span>{{bullet.content | translate}}</span>
+      </div>
+    </div>
+
   </div>
+
 </div>

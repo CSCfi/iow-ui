@@ -36,7 +36,7 @@ msgid "Add require"
 msgstr ""
 
 #: components/editor/searchClassModal.html:25
-#: components/editor/searchPredicateModal.html:32
+#: components/editor/searchPredicateModal.html:33
 msgid "All models"
 msgstr ""
 
@@ -44,7 +44,7 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:41
+#: components/editor/searchPredicateModal.html:42
 msgid "All types"
 msgstr ""
 
@@ -81,14 +81,14 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
-#: components/group/groupList.html:2
+#: components/index.html:5
 msgid "Browse"
 msgstr ""
 
 #: components/common/modalTemplate.html:16
 #: components/editor/searchClassModal.html:52
 #: components/editor/searchConceptModal.html:51
-#: components/editor/searchPredicateModal.html:71
+#: components/editor/searchPredicateModal.html:72
 #: components/group/addModelModal.html:25
 #: components/model/addConceptModal.html:27
 #: components/model/addRequireModal.html:31
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:73
+#: components/editor/searchPredicateModal.html:74
 msgid "Create and use predicate"
 msgstr ""
 
@@ -274,12 +274,20 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
+#: translations/misc.html:66
+msgid "How content"
+msgstr ""
+
+#: translations/misc.html:65
+msgid "How?"
+msgstr ""
+
 #: translations/misc.html:47
 msgid "Id"
 msgstr ""
 
-#: components/index.html:3
-msgid "IOW header"
+#: components/index.html:18
+msgid "Interoperability method"
 msgstr ""
 
 #: translations/misc.html:51
@@ -382,7 +390,7 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:63
+#: components/editor/searchPredicateModal.html:64
 #: components/form/editableButtons.html:12
 #: components/model/addRequireModal.html:28
 msgid "Save failed"
@@ -400,11 +408,11 @@ msgstr ""
 msgid "Search from concept database"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:23
+#: components/editor/searchPredicateModal.html:24
 msgid "search predicate"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:21
+#: components/editor/searchPredicateModal.html:22
 msgid "Search predicate info"
 msgstr ""
 
@@ -478,7 +486,7 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:72
+#: components/editor/searchPredicateModal.html:73
 msgid "Use predicate"
 msgstr ""
 
@@ -496,6 +504,30 @@ msgstr ""
 
 #: components/editor/selectionView.html:22
 msgid "Visualization"
+msgstr ""
+
+#: translations/misc.html:64
+msgid "What can I do content"
+msgstr ""
+
+#: translations/misc.html:63
+msgid "What can I do?"
+msgstr ""
+
+#: translations/misc.html:60
+msgid "What is description content"
+msgstr ""
+
+#: translations/misc.html:59
+msgid "What is description?"
+msgstr ""
+
+#: translations/misc.html:62
+msgid "What is method content"
+msgstr ""
+
+#: translations/misc.html:61
+msgid "What is method?"
 msgstr ""
 
 #: translations/attribute.html:6
