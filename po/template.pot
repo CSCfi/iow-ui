@@ -81,16 +81,16 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
-#: components/frontPage.html:28
+#: components/frontPage.html:42
 msgid "Browse"
 msgstr ""
 
 #: components/common/modalTemplate.html:16
+#: components/editor/addConceptModal.html:27
 #: components/editor/searchClassModal.html:52
 #: components/editor/searchConceptModal.html:51
 #: components/editor/searchPredicateModal.html:72
 #: components/group/addModelModal.html:25
-#: components/model/addConceptModal.html:27
 #: components/model/addRequireModal.html:31
 #: components/model/searchRequireModal.html:34
 #: components/model/searchSchemeModal.html:26
@@ -129,17 +129,17 @@ msgstr ""
 msgid "Class search info"
 msgstr ""
 
+#: components/editor/addConceptModal.html:12
 #: components/editor/searchConceptModal.html:34
-#: components/model/addConceptModal.html:12
 msgid "Comment"
 msgstr ""
 
+#: components/editor/addConceptModal.html:7
 #: components/editor/searchConceptModal.html:18
-#: components/model/addConceptModal.html:7
 msgid "Concept"
 msgstr ""
 
-#: components/model/addConceptModal.html:22
+#: components/editor/addConceptModal.html:22
 msgid "Concept is suggested to scheme"
 msgstr ""
 
@@ -155,8 +155,8 @@ msgstr ""
 msgid "Create and use predicate"
 msgstr ""
 
+#: components/editor/addConceptModal.html:28
 #: components/group/addModelModal.html:26
-#: components/model/addConceptModal.html:28
 #: components/model/addRequireModal.html:32
 msgid "Create new"
 msgstr ""
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: components/frontPage.html:41
+#: components/frontPage.html:3
 msgid "Interoperability method"
 msgstr ""
 
@@ -294,9 +294,9 @@ msgstr ""
 msgid "Is defined by"
 msgstr ""
 
+#: components/editor/addConceptModal.html:17
 #: components/editor/searchConceptModal.html:38
 #: components/group/addModelModal.html:16
-#: components/model/addConceptModal.html:17
 #: components/model/addRequireModal.html:7
 msgid "Label"
 msgstr ""
@@ -319,7 +319,7 @@ msgstr ""
 msgid "model"
 msgstr ""
 
-#: components/group/group.html:23
+#: components/group/group.html:22
 msgid "Models"
 msgstr ""
 
@@ -329,6 +329,10 @@ msgstr ""
 
 #: translations/misc.html:24
 msgid "New model creation"
+msgstr ""
+
+#: components/frontPage.html:30
+msgid "No search results"
 msgstr ""
 
 #: components/editor/editableSubjectSelect.html:4
@@ -400,7 +404,7 @@ msgstr ""
 msgid "Save failed"
 msgstr ""
 
-#: components/frontPage.html:6
+#: components/frontPage.html:20
 msgid "Search"
 msgstr ""
 
@@ -412,7 +416,7 @@ msgstr ""
 msgid "Search classes"
 msgstr ""
 
-#: components/frontPage.html:9
+#: components/frontPage.html:23
 msgid "search descriptions"
 msgstr ""
 

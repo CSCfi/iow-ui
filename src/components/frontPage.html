@@ -27,6 +27,7 @@
       </div>
 
       <ul class="selectable-panel__list">
+        <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
         <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)">
           <i ng-class="searchResult.glyphIconClass"></i>
           <span ng-class="{link: searchResult.iowUrl}">{{searchResult | translateLabel}}</span>

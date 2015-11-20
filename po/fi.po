@@ -85,16 +85,16 @@ msgstr "Ominaisuus"
 msgid "Attribute list"
 msgstr "Ominaisuudet"
 
-#: components/frontPage.html:28
+#: components/frontPage.html:42
 msgid "Browse"
 msgstr "Selaa"
 
 #: components/common/modalTemplate.html:16
+#: components/editor/addConceptModal.html:27
 #: components/editor/searchClassModal.html:52
 #: components/editor/searchConceptModal.html:51
 #: components/editor/searchPredicateModal.html:72
 #: components/group/addModelModal.html:25
-#: components/model/addConceptModal.html:27
 #: components/model/addRequireModal.html:31
 #: components/model/searchRequireModal.html:34
 #: components/model/searchSchemeModal.html:26
@@ -135,17 +135,17 @@ msgstr ""
 "Haen ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
+#: components/editor/addConceptModal.html:12
 #: components/editor/searchConceptModal.html:34
-#: components/model/addConceptModal.html:12
 msgid "Comment"
 msgstr "Määritelmä"
 
+#: components/editor/addConceptModal.html:7
 #: components/editor/searchConceptModal.html:18
-#: components/model/addConceptModal.html:7
 msgid "Concept"
 msgstr "Käsite"
 
-#: components/model/addConceptModal.html:22
+#: components/editor/addConceptModal.html:22
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
@@ -161,8 +161,8 @@ msgstr "Poistamisen hyväksyntä"
 msgid "Create and use predicate"
 msgstr "Luo ominaisuus ja käytä"
 
+#: components/editor/addConceptModal.html:28
 #: components/group/addModelModal.html:26
-#: components/model/addConceptModal.html:28
 #: components/model/addRequireModal.html:32
 msgid "Create new"
 msgstr "Luo uusi"
@@ -299,7 +299,7 @@ msgstr "Kuinka pääsen osallistumaan?"
 msgid "Id"
 msgstr "Tunniste"
 
-#: components/frontPage.html:41
+#: components/frontPage.html:3
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
@@ -307,9 +307,9 @@ msgstr "Yhteentoimivuusmenetelmä"
 msgid "Is defined by"
 msgstr "Kirjasto"
 
+#: components/editor/addConceptModal.html:17
 #: components/editor/searchConceptModal.html:38
 #: components/group/addModelModal.html:16
-#: components/model/addConceptModal.html:17
 #: components/model/addRequireModal.html:7
 msgid "Label"
 msgstr "Nimi"
@@ -333,7 +333,7 @@ msgstr "Kirjaudu ulos"
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
 
-#: components/group/group.html:23
+#: components/group/group.html:22
 msgid "Models"
 msgstr "Tietokomponenttikirjastot"
 
@@ -344,6 +344,10 @@ msgstr "Nimi"
 #: translations/misc.html:24
 msgid "New model creation"
 msgstr "Uuden tietokomponenttikirjaston luonti"
+
+#: components/frontPage.html:30
+msgid "No search results"
+msgstr "Ei hakutuloksia"
 
 #: components/editor/editableSubjectSelect.html:4
 msgid "Not defined"
@@ -411,7 +415,7 @@ msgstr "Tallenna muutokset"
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
 
-#: components/frontPage.html:6
+#: components/frontPage.html:20
 msgid "Search"
 msgstr "Etsi"
 
@@ -423,7 +427,7 @@ msgstr "Hae luokkaa…"
 msgid "Search classes"
 msgstr "Hae luokkia"
 
-#: components/frontPage.html:9
+#: components/frontPage.html:23
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
