@@ -2,6 +2,7 @@ const name = 'iow.components.editor';
 const mod = angular.module(name, []);
 module.exports = name;
 
+mod.factory('addConceptModal', require('./addConceptModal'));
 mod.directive('classForm', require('./classForm'));
 mod.directive('classSelect', require('./classSelect'));
 mod.directive('classView', require('./classView'));

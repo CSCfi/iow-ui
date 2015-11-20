@@ -4,7 +4,6 @@ module.exports = name;
 
 mod.controller('modelController', require('./modelController'));
 
-mod.factory('addConceptModal', require('./addConceptModal'));
 mod.factory('addRequireModal', require('./addRequireModal'));
 mod.directive('modelView', require('./modelView'));
 mod.directive('referencesView', require('./referencesView'));
