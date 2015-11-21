@@ -1,54 +1,57 @@
-<div class="col-md-6">
+<div ng-show="ctrl.groups">
 
-  <h2 translate>Interoperability method</h2>
+  <div class="col-md-6">
 
-  <div ng-repeat="bullet in ctrl.bullets" class="point">
-    <div class="bullet-container">
-      <div class="bullet"><span>{{$index + 1}}</span></div>
-    </div>
-    <div class="content">
-      <h4>{{bullet.title | translate}}</h4>
-      <span>{{bullet.content | translate}}</span>
-    </div>
-  </div>
+    <h2 translate>Interoperability method</h2>
 
-</div>
-
-<div class="col-md-6">
-
-  <div class="frontpage-panel">
-    <div class="iow-panel-heading"><h2 translate>Search</h2></div>
-    <div class="frontpage-panel__body">
-      <div class="input-group input-group-lg">
-        <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
-               ng-model="ctrl.searchText"
-               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
-        <i class="glyphicon glyphicon-search form-control-feedback"></i>
+    <div ng-repeat="bullet in ctrl.bullets" class="point">
+      <div class="bullet-container">
+        <div class="bullet"><span>{{$index + 1}}</span></div>
       </div>
+      <div class="content">
+        <h4>{{bullet.title | translate}}</h4>
+        <span>{{bullet.content | translate}}</span>
+      </div>
+    </div>
 
-      <span class="advanced-search link" ng-click="ctrl.openAdvancedSearch()" translate>Advanced search</span>
+  </div>
 
-      <ul class="selectable-panel__list">
-        <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
-        <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)">
-          <i ng-class="searchResult.glyphIconClass"></i>
-          <span ng-class="{link: searchResult.iowUrl}">{{searchResult | translateLabel}}</span>
-          <p>{{searchResult.comment | translateValue}}</p>
-        </li>
-      </ul>
+  <div class="col-md-6">
 
+    <div class="frontpage-panel">
+      <div class="iow-panel-heading"><h2 translate>Search</h2></div>
+      <div class="frontpage-panel__body">
+        <div class="input-group input-group-lg">
+          <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
+                 ng-model="ctrl.searchText"
+                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+          <i class="glyphicon glyphicon-search form-control-feedback"></i>
+        </div>
+
+        <span class="advanced-search link" ng-click="ctrl.openAdvancedSearch()" translate>Advanced search</span>
+
+        <ul class="selectable-panel__list">
+          <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
+          <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)">
+            <i ng-class="searchResult.glyphIconClass"></i>
+            <span ng-class="{link: searchResult.iowUrl}">{{searchResult | translateLabel}}</span>
+            <p>{{searchResult.comment | translateValue}}</p>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="frontpage-panel">
+      <div class="iow-panel-heading"><h2 translate>Browse</h2></div>
+      <div class="frontpage-panel__body">
+        <ul class="selectable-panel__list">
+          <li ng-repeat="group in ctrl.groups" ng-click="ctrl.selectGroup(group)">
+            <span class="link">{{group | translateLabel}}</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
-  <div class="frontpage-panel">
-    <div class="iow-panel-heading"><h2 translate>Browse</h2></div>
-    <div class="frontpage-panel__body">
-      <ul class="selectable-panel__list">
-        <li ng-repeat="group in ctrl.groups" ng-click="ctrl.selectGroup(group)">
-          <span class="link">{{group | translateLabel}}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
 </div>
-
