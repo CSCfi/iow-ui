@@ -2,21 +2,21 @@ const _ = require('lodash');
 const utils = require('../../services/utils');
 const jointjs = require('jointjs');
 
-module.exports = function visualizationDirective($timeout, languageService) {
+module.exports = function visualizationDirective($timeout, $window, languageService) {
   'ngInject';
 
   function isAssociation(property) {
-    return property.valueClass && property.valueClass !== 'skos:Concept';
+    return property.valueClass;
   }
 
   function createClass(graph, klass, properties) {
-    function attributeAsString(property) {
+    function propertyAsString(property) {
       const name = languageService.translate(property.label);
       const range = isAssociation(property) ? property.valueClass : property.datatype;
       return range ? `${name} (${range})` : name;
     }
 
-    const propertyNames = _.map(properties, attributeAsString);
+    const propertyNames = _.map(properties, propertyAsString);
     const width = _.max([_.max(_.map(propertyNames, name => name.length)) * 5.5, 150]);
     const height = 15 * (properties.length + 1);
 
@@ -129,12 +129,16 @@ module.exports = function visualizationDirective($timeout, languageService) {
       model: '='
     },
     link($scope, element) {
-      $scope.$watch('data', () => {
+      $scope.$watch('data', refresh);
+      $scope.$watch(languageService.getModelLanguage, refresh);
+      angular.element($window).on('resize', refresh);
+
+      function refresh() {
         element.empty();
         $timeout(() => {
           createVisualization(element, $scope.model, $scope.data)
         });
-      });
+      }
     }
   }
 };
