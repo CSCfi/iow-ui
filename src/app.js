@@ -1,5 +1,7 @@
 require('babel-polyfill');
-window.jQuery = require('jquery');
+const jQuery = require('jquery');
+window.jQuery = jQuery;
+require('jquery-mousewheel')(jQuery);
 require('typeahead.js-browserify').loadjQueryPlugin();
 
 const angular = require('angular');

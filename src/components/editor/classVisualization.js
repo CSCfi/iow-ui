@@ -21,7 +21,7 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
     const height = 15 * (properties.length + 1);
 
     graph.addCell(new jointjs.shapes.uml.Class({
-      id: klass["@id"],
+      id: klass['@id'],
       size: { width, height },
       name: languageService.translate(klass.label),
       attributes: propertyNames,
@@ -46,7 +46,7 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
   function createAssociation(graph, {klass, association}) {
     graph.addCell(
       new jointjs.dia.Link({
-        source: { id: klass["@id"] },
+        source: { id: klass['@id'] },
         target: { id: association.valueClass },
         attrs: {
           '.marker-target': {
@@ -101,17 +101,56 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
       marginY: 20,
       nodeSep: 50,
       edgeSep: 200,
-      rankSep: 100,
-      rankDir: "LR"
+      rankSep: 200,
+      rankDir: 'LR'
+    });
+  }
+
+  function zoomAndPan(element, paper) {
+    paper.scaleContentToFit({
+      padding: 20,
+      minScaleX: 0.1,
+      minScaleY: 0.1,
+      maxScaleX: 2,
+      maxScaleY: 2
+    });
+
+    let scale = jointjs.V(paper.viewport).scale().sx;
+    let origin = { x: 0, y: 0 };
+    let drag;
+    let mouse = {};
+
+    paper.on('blank:pointerdown', () => drag = mouse);
+
+    element.mousemove(event => {
+      mouse = {x: event.offsetX, y: event.offsetY};
+      if (drag) {
+        origin = {x: origin.x - (drag.x - mouse.x), y: origin.y - (drag.y - mouse.y)};
+        drag = mouse;
+        paper.setOrigin(origin.x, origin.y);
+      }
+    });
+
+    element.mouseup(() => {
+      drag = null;
+    });
+
+    element.children().mousewheel(event => {
+      scale = Math.min(Math.max(scale + (event.deltaY * event.deltaFactor / 500), 0.3), 3);
+      paper.scale(scale);
+      event.preventDefault();
+    });
+
+    angular.element($window).on('resize', () => {
+      const container = element.closest('.visualization-container');
+      paper.setDimensions(container.width(), container.height());
     });
   }
 
   function createVisualization(element, model, data) {
     const container = element.closest('.visualization-container');
-
-    var graph = new jointjs.dia.Graph;
-
-    new jointjs.dia.Paper({
+    const graph = new jointjs.dia.Graph;
+    const paper = new jointjs.dia.Paper({
       el: element,
       width: container.width(),
       height: container.height(),
@@ -120,6 +159,7 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
 
     createCells(graph, model, data);
     layoutGraph(graph);
+    zoomAndPan(element, paper);
   }
 
   return {
@@ -130,15 +170,18 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
     },
     link($scope, element) {
       $scope.$watch('data', refresh);
-      $scope.$watch(languageService.getModelLanguage, refresh);
-      angular.element($window).on('resize', refresh);
+      $scope.$watch(languageService.getModelLanguage, (newValue, oldValue) => {
+        if (newValue && oldValue && newValue !== oldValue) {
+          refresh();
+        }
+      });
 
       function refresh() {
         element.empty();
         $timeout(() => {
-          createVisualization(element, $scope.model, $scope.data)
+          createVisualization(element, $scope.model, $scope.data);
         });
       }
     }
-  }
+  };
 };
