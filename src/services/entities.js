@@ -56,18 +56,31 @@ module.exports = function entities($log, modelCache) {
       this.copyNamespacesFromRequires();
     }
 
-    linkToCurie(type, curie) {
+    expandCurie(curie) {
       if (curie) {
         const {prefix, value} = splitCurie(curie);
         if (prefix) {
-          const namespace = this.context[prefix];
-          if (namespace) {
-            const id = modelCache.modelIdForNamespace(namespace);
-            if (type === 'external' && !id) {
-              return namespace + value;
-            } else if (type !== 'external' && id) {
-              return selectableUrl(namespace + value, type);
-            }
+          return { namespace: this.context[prefix], value };
+        }
+      }
+    }
+
+    isCurieDefinedInModel(curie) {
+      const { namespace } = this.expandCurie(curie);
+      if (namespace) {
+        return modelCache.modelIdForNamespace(namespace);
+      }
+    }
+
+    linkToCurie(type, curie) {
+      if (curie) {
+        const {namespace, value} = this.expandCurie(curie);
+        if (namespace) {
+          const id = modelCache.modelIdForNamespace(namespace)
+          if (type === 'external' && !id) {
+            return namespace + value;
+          } else if (type !== 'external' && id) {
+            return selectableUrl(namespace + value, type);
           }
         }
       }
@@ -573,6 +586,7 @@ module.exports = function entities($log, modelCache) {
     deserializeRequires: (data) => frameAndMap(data, frames.requireFrame, Require, true),
     deserializeUser: (data) => frameAndMap(data, frames.userFrame, User, false),
     anonymousUser: () => new AnonymousUser(),
-    deserializeSearch: (data) => frameAndMap(data, frames.searchResultFrame, SearchResult, true)
+    deserializeSearch: (data) => frameAndMap(data, frames.searchResultFrame, SearchResult, true),
+    deserializeClassVisualization: (data) => frameData(data, frames.classVisualizationFrame)
   };
 };

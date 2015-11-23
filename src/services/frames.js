@@ -174,6 +174,23 @@ function searchResultFrame(data) {
   };
 }
 
+function classVisualizationFrame(data) {
+  return {
+    '@context': addToContext(data['@context'], {label, property, datatype, predicate, valueClass}),
+    '@name': 'sh:ShapeClass',
+    'property': {
+      'predicate': {
+        '@embed': false
+      },
+      'valueClass': {
+        '@omitDefault': true,
+        '@default': [],
+        '@embed': false
+      }
+    }
+  };
+}
+
 module.exports = {
   groupListFrame,
   modelFrame,
@@ -187,5 +204,6 @@ module.exports = {
   fintoConceptFrame,
   userFrame,
   requireFrame,
-  searchResultFrame
+  searchResultFrame,
+  classVisualizationFrame
 };

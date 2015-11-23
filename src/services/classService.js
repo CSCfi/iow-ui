@@ -77,6 +77,10 @@ module.exports = function classService($http, $q, predicateService, entities) {
 
         return entities.deserializeProperty(property);
       });
+    },
+    getVisualizationData(classId, modelId) {
+      return $http.get('/api/rest/classVisualizer', {params: {classID: classId, modelID: modelId}})
+        .then(response => entities.deserializeClassVisualization(response.data));
     }
   };
 };

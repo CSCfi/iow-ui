@@ -47,6 +47,7 @@
     "gulp-uglify": "~1.4.2",
     "gulp-util": "~3.0.7",
     "gulp-watch": "^4.3.5",
+    "jointjs": "0.9.5",
     "jquery": "^2.1.4",
     "jsdom": "^7.0.2",
     "jsonld": "0.4.2",

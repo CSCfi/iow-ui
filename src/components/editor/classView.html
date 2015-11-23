@@ -8,6 +8,10 @@
       <selection-content>
         <class-form class="ctrl.classInEdit" model="ctrl.model"></class-form>
       </selection-content>
+
+      <selection-visualization>
+        <class-visualization ng-if="ctrl.visualizationData && ctrl.class" model="ctrl.model" data="ctrl.visualizationData"></class-visualization>
+      </selection-visualization>
     </selection-view>
   </div>
 </form>

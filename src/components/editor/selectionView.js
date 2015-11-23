@@ -8,7 +8,8 @@ module.exports = function selectionView() {
     template: require('./selectionView.html'),
     transclude: {
       'selectionContent': 'content',
-      'selectionButtons': 'buttons'
+      'selectionButtons': 'buttons',
+      'selectionVisualization': 'visualization'
     }
   };
 };
