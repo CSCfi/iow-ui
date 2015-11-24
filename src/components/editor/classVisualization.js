@@ -107,6 +107,9 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
   }
 
   function zoomAndPan(element, paper) {
+    const V = jointjs.V(paper.viewport);
+    const window = angular.element($window);
+
     paper.scaleContentToFit({
       padding: 20,
       minScaleX: 0.1,
@@ -115,29 +118,29 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
       maxScaleY: 2
     });
 
-    let scale = jointjs.V(paper.viewport).scale().sx;
-    let origin = { x: 0, y: 0 };
     let drag;
-    let mouse = {};
+    let mouse;
+
+    function moveOrigin(dx, dy) {
+      const translation = V.translate();
+      paper.setOrigin(translation.tx - dx, translation.ty - dy);
+    }
 
     paper.on('blank:pointerdown', () => drag = mouse);
-
+    window.mouseup(() => drag = null);
     element.mousemove(event => {
       mouse = {x: event.offsetX, y: event.offsetY};
       if (drag) {
-        origin = {x: origin.x - (drag.x - mouse.x), y: origin.y - (drag.y - mouse.y)};
+        moveOrigin(drag.x - mouse.x, drag.y - mouse.y);
         drag = mouse;
-        paper.setOrigin(origin.x, origin.y);
       }
     });
 
-    element.mouseup(() => {
-      drag = null;
-    });
-
     element.children().mousewheel(event => {
-      scale = Math.min(Math.max(scale + (event.deltaY * event.deltaFactor / 500), 0.3), 3);
-      paper.scale(scale);
+      const scale = jointjs.V(paper.viewport).scale().sx;
+      const normalizedScalingDiff = (event.deltaY * event.deltaFactor / 500);
+      const newScale = Math.min(Math.max(scale + normalizedScalingDiff, 0.3), 3);
+      paper.scale(newScale);
       event.preventDefault();
     });
 
