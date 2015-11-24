@@ -21,14 +21,6 @@ module.exports = function entities($log, modelCache) {
   }
 
   class AbstractModel {
-    constructor(graph) {
-      this.id = graph['@id'];
-      this.label = graph.label;
-      this.namespace = graph['dcap:preferredXMLNamespaceName'];
-      this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
-      this.type = 'model';
-    }
-
     get iowUrl() {
       return modelUrl(this.id);
     }
@@ -40,17 +32,25 @@ module.exports = function entities($log, modelCache) {
 
   class ModelListItem extends AbstractModel {
     constructor(graph) {
-      super(graph);
+      super();
+      this.id = graph['@id'];
+      this.label = graph.label;
+      this.type = 'model';
     }
   }
 
   class Model extends AbstractModel {
     constructor(graph, context) {
-      super(graph);
+      super();
+      this.id = graph['@id'];
+      this.label = graph.label;
+      this.type = 'model';
       this.graph = graph;
       this.context = context;
       this.comment = graph.comment;
       this.state = graph.versionInfo;
+      this.namespace = graph['dcap:preferredXMLNamespaceName'];
+      this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
       this.references = mapAsEntity(context, graph.references, Reference, true);
       this.requires = mapAsEntity(context, graph.requires, Require, true);
       this.copyNamespacesFromRequires();
@@ -174,12 +174,6 @@ module.exports = function entities($log, modelCache) {
   }
 
   class AbstractClass {
-    constructor(graph) {
-      this.type = 'class';
-      this.label = graph.label;
-      this.comment = graph.comment;
-    }
-
     isEqual(other) {
       return other && this.id === other.id && this.type === other.type;
     }
@@ -203,8 +197,11 @@ module.exports = function entities($log, modelCache) {
 
   class ClassListItem extends AbstractClass {
     constructor(graph, context) {
-      super(graph, context);
+      super();
       this.id = graph['@id'];
+      this.type = 'class';
+      this.label = graph.label;
+      this.comment = graph.comment;
       this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
     }
 
@@ -215,9 +212,12 @@ module.exports = function entities($log, modelCache) {
 
   class Class extends AbstractClass {
     constructor(graph, context) {
-      super(graph);
+      super();
       this.graph = graph;
       this.context = context;
+      this.type = 'class';
+      this.label = graph.label;
+      this.comment = graph.comment;
       this.curie = graph['@id'];
       this.modelId = graph.isDefinedBy;
       this.subClassOf = graph.subClassOf;
@@ -298,14 +298,6 @@ module.exports = function entities($log, modelCache) {
   }
 
   class AbstractPredicate {
-    constructor(graph, context) {
-      this.graph = graph;
-      this.context = context;
-      this.type = graph['@type'] === 'owl:DatatypeProperty' ? 'attribute' : 'association';
-      this.label = graph.label;
-      this.comment = graph.comment;
-    }
-
     get owlType() {
       return this.graph['@type'];
     }
@@ -341,8 +333,11 @@ module.exports = function entities($log, modelCache) {
 
   class PredicateListItem extends AbstractPredicate {
     constructor(graph, context) {
-      super(graph, context);
+      super();
       this.id = graph['@id'];
+      this.type = graph['@type'] === 'owl:DatatypeProperty' ? 'attribute' : 'association';
+      this.label = graph.label;
+      this.comment = graph.comment;
       this.model = mapAsEntity(context, graph.isDefinedBy, ModelListItem, false);
     }
 
@@ -353,7 +348,12 @@ module.exports = function entities($log, modelCache) {
 
   class Predicate extends AbstractPredicate {
     constructor(graph, context) {
-      super(graph, context);
+      super();
+      this.graph = graph;
+      this.context = context;
+      this.type = graph['@type'] === 'owl:DatatypeProperty' ? 'attribute' : 'association';
+      this.label = graph.label;
+      this.comment = graph.comment;
       this.curie = graph['@id'];
       this.modelId = graph.isDefinedBy;
       this.range = graph.range;

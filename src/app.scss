@@ -138,6 +138,7 @@ h2 .model-view__title {
 .visualization-container {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 
   .link-tools .tool-remove { display: none }
   .link-tools .tool-options { display: none }
