@@ -10,6 +10,8 @@
   display: none !important;
 }
 
+$selectionListWidth: 275px;
+
 .link {
   color: $link-color;
 }
@@ -26,8 +28,6 @@
 .model-panel--left-placeholder {
   float: left;
 }
-
-$selectionListWidth: 275px;
 
 .model-panel--left {
   width: $selectionListWidth;
@@ -144,6 +144,21 @@ h2 .model-view__title {
   .link-tools .tool-options { display: none }
   .link .mark-errors { display: none; }
   .marker-arrowheads { display: none; }
+
+  .loading-indicator {
+    position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 64px);
+    z-index: 1000;
+    background-color: #ffffff;
+
+    .uil-default-css {
+      position: absolute;
+      top: 100px;
+      left: calc(50% - 100px);
+      margin: 0 auto;
+    }
+  }
 }
 
 .selection-form {

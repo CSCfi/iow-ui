@@ -20,14 +20,6 @@ module.exports = function classView() {
       let classForm;
       const vm = this;
 
-      $scope.$watch(() => vm.class, () => {
-        classService.getVisualizationData(vm.class.id, vm.model.id)
-          .then(data => {
-            data.root = vm.class.curie;
-            vm.visualizationData = data
-          });
-      });
-
       const rights = {
         edit: () => userService.isLoggedIn() && vm.class.modelId === vm.model.id,
         remove: userService.isLoggedIn

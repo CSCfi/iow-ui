@@ -69,9 +69,9 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
     );
   }
 
-  function createCells(graph, model, data) {
+  function createCells(graph, model, data, root) {
     function isRootClass(klass) {
-      return klass['@id'] === data.root;
+      return klass['@id'] === root;
     }
 
     const associations = [];
@@ -155,12 +155,29 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
   return {
     restrict: 'E',
     scope: {
-      data: '=',
+      class: '=',
       model: '='
     },
-    link($scope, element) {
-      $timeout(() => {
-        const container = element.closest('.visualization-container');
+    template: `<ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>`,
+    bindToController: true,
+    controllerAs: 'ctrl',
+    require: 'classVisualization',
+    link($scope, element, attributes, controller) {
+      const container = element.closest('.visualization-container');
+
+      function isNotInitialized() {
+        return container.width() === 100 || container.width === 0 || container.height() === 100 || container.height() === 0;
+      }
+
+      (function init() {
+        if (isNotInitialized()) {
+          $timeout(init, 100);
+        } else {
+          createGraph();
+        }
+      })();
+
+      function createGraph() {
         const graph = new jointjs.dia.Graph;
         const paper = new jointjs.dia.Paper({
           el: element,
@@ -170,21 +187,48 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
         });
 
         zoomAndPan(element, paper);
-        angular.element($window).on('resize', () => resizeToContainer(element, paper));
-        $scope.$watch('data', refresh);
-        $scope.$watch(languageService.getModelLanguage, (newValue, oldValue) => {
-          if (newValue && oldValue && newValue !== oldValue) {
-            refresh();
-          }
-        });
 
-        function refresh() {
-          graph.clear();
-          createCells(graph, $scope.model, $scope.data);
-          layoutGraph(graph);
-          scaleToFit(paper);
+        controller.graph = graph;
+        controller.paper = paper;
+        controller.initGraph();
+
+        angular.element($window).on('resize', () => resizeToContainer(element, paper));
+      }
+    },
+    controller($scope, classService) {
+      'ngInject';
+
+      const vm = this;
+      vm.initGraph = initGraph;
+      let visualizationData;
+
+      $scope.$watch(() => vm.class, refresh);
+      $scope.$watch(languageService.getModelLanguage, (newValue, oldValue) => {
+        if (newValue && oldValue && newValue !== oldValue) {
+          refresh();
         }
       });
+
+      function initGraph() {
+        vm.graph.clear();
+        createCells(vm.graph, vm.model, visualizationData, vm.class.curie);
+        layoutGraph(vm.graph);
+        scaleToFit(vm.paper);
+      }
+
+      function refresh() {
+        if (vm.class) {
+          vm.loading = true;
+          classService.getVisualizationData(vm.class.id, vm.model.id)
+            .then(data => {
+              visualizationData = data;
+              vm.loading = false;
+              if (vm.graph) {
+                vm.initGraph();
+              }
+            });
+        }
+      }
     }
   };
 };
