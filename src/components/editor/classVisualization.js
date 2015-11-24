@@ -106,10 +106,7 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
     });
   }
 
-  function zoomAndPan(element, paper) {
-    const V = jointjs.V(paper.viewport);
-    const window = angular.element($window);
-
+  function scaleToFit(paper) {
     paper.scaleContentToFit({
       padding: 20,
       minScaleX: 0.1,
@@ -117,6 +114,16 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
       maxScaleX: 2,
       maxScaleY: 2
     });
+  }
+
+  function resizeToContainer(element, paper) {
+    const container = element.closest('.visualization-container');
+    paper.setDimensions(container.width(), container.height());
+  }
+
+  function zoomAndPan(element, paper) {
+    const V = jointjs.V(paper.viewport);
+    const window = angular.element($window);
 
     let drag;
     let mouse;
@@ -143,26 +150,6 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
       paper.scale(newScale);
       event.preventDefault();
     });
-
-    angular.element($window).on('resize', () => {
-      const container = element.closest('.visualization-container');
-      paper.setDimensions(container.width(), container.height());
-    });
-  }
-
-  function createVisualization(element, model, data) {
-    const container = element.closest('.visualization-container');
-    const graph = new jointjs.dia.Graph;
-    const paper = new jointjs.dia.Paper({
-      el: element,
-      width: container.width(),
-      height: container.height(),
-      model: graph
-    });
-
-    createCells(graph, model, data);
-    layoutGraph(graph);
-    zoomAndPan(element, paper);
   }
 
   return {
@@ -172,19 +159,32 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
       model: '='
     },
     link($scope, element) {
-      $scope.$watch('data', refresh);
-      $scope.$watch(languageService.getModelLanguage, (newValue, oldValue) => {
-        if (newValue && oldValue && newValue !== oldValue) {
-          refresh();
+      $timeout(() => {
+        const container = element.closest('.visualization-container');
+        const graph = new jointjs.dia.Graph;
+        const paper = new jointjs.dia.Paper({
+          el: element,
+          width: container.width(),
+          height: container.height(),
+          model: graph
+        });
+
+        zoomAndPan(element, paper);
+        angular.element($window).on('resize', () => resizeToContainer(element, paper));
+        $scope.$watch('data', refresh);
+        $scope.$watch(languageService.getModelLanguage, (newValue, oldValue) => {
+          if (newValue && oldValue && newValue !== oldValue) {
+            refresh();
+          }
+        });
+
+        function refresh() {
+          graph.clear();
+          createCells(graph, $scope.model, $scope.data);
+          layoutGraph(graph);
+          scaleToFit(paper);
         }
       });
-
-      function refresh() {
-        element.empty();
-        $timeout(() => {
-          createVisualization(element, $scope.model, $scope.data);
-        });
-      }
     }
   };
 };
