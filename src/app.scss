@@ -4,6 +4,7 @@
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 @import './vendor/_bootswatch';
 @import './vendor/_typeaheadjs';
+@import '../node_modules/jointjs/joint';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
