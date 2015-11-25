@@ -144,7 +144,7 @@ module.exports = function visualizationDirective($timeout, $window, languageServ
     });
 
     element.children().mousewheel(event => {
-      const scale = jointjs.V(paper.viewport).scale().sx;
+      const scale = V.scale().sx;
       const normalizedScalingDiff = (event.deltaY * event.deltaFactor / 500);
       const newScale = Math.min(Math.max(scale + normalizedScalingDiff, 0.3), 3);
       paper.scale(newScale);
