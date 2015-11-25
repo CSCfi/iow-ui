@@ -82,9 +82,9 @@
       "@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
     },
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "doo": "http://urn.fi/urn:nbn:fi:csc-iow-doo#",
+    "doo": "http://iow.csc.fi/ns/doo#",
     "dct": "http://purl.org/dc/terms/",
-    "jhs": "http://urn.fi/urn:nbn:fi:csc-iow-jhs#",
+    "jhs": "http://iow.csc.fi/ns/jhs#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "iow": "http://urn.fi/urn:nbn:fi:csc-iow-meta#",
@@ -96,7 +96,7 @@
   },
   "@graph": [
     {
-      "@id": "http://urn.fi/urn:nbn:fi:csc-iow-doo",
+      "@id": "http://iow.csc.fi/ns/doo",
       "hasPart": [
         "jhs:henkiloTunnus",
         "jhs:nimi",
@@ -1612,11 +1612,11 @@
       ],
       "requires": [
         {
-          "@id": "http://urn.fi/urn:nbn:fi:csc-iow-jhs",
+          "@id": "http://iow.csc.fi/ns/jhs",
           "label": {
             "fi": "Julkishallinnon tietokomponentit"
           },
-          "preferredXMLNamespaceName": "http://urn.fi/urn:nbn:fi:csc-iow-jhs#",
+          "preferredXMLNamespaceName": "http://iow.csc.fi/ns/jhs#",
           "preferredXMLNamespacePrefix": "jhs",
           "rdf:type": {
             "@id": "dcap:MetadataVocabulary"
@@ -1649,7 +1649,7 @@
         "http://www.w3.org/2004/02/skos/core",
         "http://purl.org/ws-mmi-dc/terms/",
         "http://urn.fi/urn:nbn:fi:csc-iow-meta",
-        "http://urn.fi/urn:nbn:fi:csc-iow-jhs",
+        "http://iow.csc.fi/ns/jhs",
         "http://www.w3.org/ns/shacl",
         "http://purl.org/dc/elements/1.1/"
       ]
