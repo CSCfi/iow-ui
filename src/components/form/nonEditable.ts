@@ -1,6 +1,7 @@
 import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Localizable } from '../../services/entities';
+import { Localizable, isLocalizable } from '../../services/entities';
+import { isString } from '../../services/utils';
 import { LanguageService } from '../../services/languageService';
 
 export const mod = angular.module('iow.components.form');
@@ -47,13 +48,6 @@ class NonEditableController {
   }
 
   displayValue(): string {
-    function isLocalizable(obj: any): obj is Localizable {
-      return typeof obj === 'object';
-    }
-    function isString(str: any): str is string {
-      return typeof str === 'string';
-    }
-
     const value = this.value;
 
     if (isLocalizable(value)) {

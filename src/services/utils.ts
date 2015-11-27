@@ -1,7 +1,11 @@
 import * as _ from 'lodash';
 import { Type, Uri } from './entities';
 
-export function glyphIconClassForType(type: Type): any {
+export function isString(str: any): str is string {
+  return typeof str === 'string';
+}
+
+export function glyphIconClassForType(type: Type) {
   return [
     'glyphicon',
     {

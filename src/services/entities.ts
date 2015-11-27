@@ -16,6 +16,10 @@ export type State = string;
 
 type EntityFactory<T extends GraphNode> = (graph: any, context: any) => T
 
+export function isLocalizable(obj: any): obj is Localizable {
+  return typeof obj === 'object';
+}
+
 export interface Location {
   localizationKey?: string;
   label?: Localizable;

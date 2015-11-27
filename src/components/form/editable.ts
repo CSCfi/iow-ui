@@ -6,7 +6,8 @@ import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from './editableController';
-import { Localizable } from '../../services/entities';
+import { Localizable, isLocalizable } from '../../services/entities';
+import { isString } from '../../services/utils';
 
 export const mod = angular.module('iow.components.form');
 
@@ -54,13 +55,6 @@ class EditableController {
   }
 
   displayValue(): string {
-    function isLocalizable(obj: any): obj is Localizable {
-      return typeof obj === 'object';
-    }
-    function isString(str: any): str is string {
-      return typeof str === 'string';
-    }
-
     const value: Localizable|string = this.ngModel && this.ngModel.$modelValue;
 
     if (isLocalizable(value)) {
