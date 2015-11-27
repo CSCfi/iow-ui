@@ -612,7 +612,7 @@ export class DefaultUser extends GraphNode implements User {
   }
 
   isAdminOfGroup(groupId: Uri): boolean {
-    return !!_.find(this.graph.isAdminOf, groupId);
+    return !!_.find(this.isAdminOf, v => v === groupId);
   }
 }
 
