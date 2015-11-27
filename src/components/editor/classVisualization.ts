@@ -77,7 +77,7 @@ class ClassVisualizationController {
   refresh() {
     if (this.class) {
       this.loading = true;
-      this.classService.getVisualizationData(this.class.id, this.model.id)
+      this.classService.getVisualizationData(this.model, this.class.id)
         .then(data => {
           this.visualizationData = data;
           this.loading = false;

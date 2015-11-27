@@ -44,6 +44,11 @@ export abstract class GraphNode {
     return {};
   }
 
+  expandContext(data: any) {
+    Object.assign(data['@context'], this.context);
+    return data;
+  }
+
   expandCurie(curie: string) {
     if (curie) {
       const split = splitCurie(curie);

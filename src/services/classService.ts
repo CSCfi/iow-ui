@@ -79,12 +79,10 @@ export class ClassService {
         property: this.$http.get('/api/rest/classProperty', {params: {predicateID: predicateId}})
       })
       .then(result => {
-        const property = result['property'].data;
         const predicate = result['predicate'];
-        _.extend(property['@context'], predicate.context);
         return this.$q.all({
           predicate,
-          property: this.entities.deserializeProperty(property)
+          property: this.entities.deserializeProperty(predicate.expandContext(result['property'].data))
         })})
       .then(result => {
         const property: Property = result['property'];
@@ -104,8 +102,8 @@ export class ClassService {
       });
   }
 
-  getVisualizationData(classId: Uri, modelId: Uri) {
-    return this.$http.get('/api/rest/classVisualizer', {params: {classID: classId, modelID: modelId}})
-      .then(response => this.entities.deserializeClassVisualization(response.data));
+  getVisualizationData(model: Model, classId: Uri) {
+    return this.$http.get('/api/rest/classVisualizer', {params: {classID: classId, modelID: model.id}})
+      .then(response => this.entities.deserializeClassVisualization(model.expandContext(response.data)));
   }
 }
