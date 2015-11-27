@@ -403,7 +403,6 @@ export class Property extends GraphNode {
     this.dataType = graph.datatype;
     this.valueClass = graph.valueClass;
     this.predicateCurie = graph.predicate;
-    console.log(this);
   }
 
   get predicateId(): Uri {
