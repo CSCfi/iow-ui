@@ -131,6 +131,7 @@ export class Model extends AbstractModel {
   groupId: Uri;
   namespace: Uri;
   prefix: string;
+  group: GroupListItem;
 
   constructor(graph: any, context: any) {
     super(graph, context);
@@ -138,6 +139,7 @@ export class Model extends AbstractModel {
     this.state = graph.versionInfo;
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
+    this.group = new GroupListItem(graph.isPartOf, context);
     this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference));
     this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context));
     this.copyNamespacesFromRequires();

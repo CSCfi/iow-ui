@@ -12,14 +12,14 @@ export class LocationService {
 
   atModel(model: Model, selection: Location): void {
     if (model) {
-      // TODO: group
       if (model.unsaved) {
+        // TODO group
         this.changeLocation([{localizationKey: 'New model creation'}]);
       } else {
         if (selection) {
-          this.changeLocation([model, selection]);
+          this.changeLocation([model.group, model, selection]);
         } else {
-          this.changeLocation([model]);
+          this.changeLocation([model.group, model]);
         }
       }
     }
