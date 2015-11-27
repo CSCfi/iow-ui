@@ -669,6 +669,8 @@ function mapType(type: string): Type {
         return 'model';
       case 'foaf:Group':
         return 'group';
+      case 'skos:Collection': // TODO what is this?
+        return null;
       default:
       // continue
     }
