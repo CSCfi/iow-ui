@@ -142,6 +142,10 @@ export class Group extends AbstractGroup {
     this.label = graph.label;
     this.comment = graph.comment;
   }
+
+  get groupId() {
+    return this.id;
+  }
 }
 
 abstract class AbstractModel extends GraphNode implements Location {
@@ -187,6 +191,10 @@ export class Model extends AbstractModel {
     this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference));
     this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context));
     this.copyNamespacesFromRequires();
+  }
+
+  get groupId() {
+    return this.group.id;
   }
 
   addReference(reference: Reference) {
@@ -594,8 +602,8 @@ export class ConceptSuggestion extends Concept {
 
 export interface User {
   isLoggedIn(): boolean;
-  isInGroup(groupId:Uri): boolean;
-  isAdminOfGroup(groupId:Uri): boolean;
+  isMemberOf(entity: Model|Group): boolean;
+  isAdminOf(entity: Model|Group): boolean;
   name?: string;
 }
 
@@ -603,16 +611,16 @@ export class DefaultUser extends GraphNode implements User {
 
   createdAt: string;
   modifiedAt: string;
-  isAdminOf: Uri[];
-  isPartOf: Uri[];
+  adminGroups: Uri[];
+  memberGroups: Uri[];
   name: string;
 
   constructor(graph: any) {
     super('user', graph);
     this.createdAt = graph.created;
     this.modifiedAt = graph.modified;
-    this.isAdminOf = normalizeAsArray<Uri>(graph.isAdminOf);
-    this.isPartOf = normalizeAsArray<Uri>(graph.isPartOf);
+    this.adminGroups = normalizeAsArray<Uri>(graph.isAdminOf);
+    this.memberGroups = normalizeAsArray<Uri>(graph.isPartOf);
     this.name = graph.name;
   }
 
@@ -620,12 +628,20 @@ export class DefaultUser extends GraphNode implements User {
     return this.graph['iow:login'];
   }
 
-  isInGroup(groupId: Uri): boolean {
-    return !!_.find(this.isPartOf, v => v === groupId);
+  isMemberOf(entity: Model|Group) {
+    return this.isMemberOfGroup(entity.groupId);
   }
 
-  isAdminOfGroup(groupId: Uri): boolean {
-    return !!_.find(this.isAdminOf, v => v === groupId);
+  isMemberOfGroup(id: Uri) {
+    return !!_.find(this.memberGroups, v => v === id);
+  }
+
+  isAdminOf(entity: Model|Group) {
+    return this.isAdminOfGroup(entity.groupId);
+  }
+
+  isAdminOfGroup(id: Uri) {
+    return !!_.find(this.adminGroups, v => v === id);
   }
 }
 
@@ -634,11 +650,11 @@ export class AnonymousUser implements User {
     return false;
   }
 
-  isInGroup(): boolean {
+  isMemberOf(entity: Model|Group) {
     return false;
   }
 
-  isAdminOfGroup(): boolean {
+  isAdminOf(entity: Model|Group) {
     return false;
   }
 }

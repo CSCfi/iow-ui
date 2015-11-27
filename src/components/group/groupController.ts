@@ -58,7 +58,7 @@ export class GroupController extends EditableController<Group> {
 
   canAskForRights(): boolean {
     const user = this.userService.user;
-    return user.isLoggedIn() && !user.isInGroup(this.groupId);
+    return this.group && user.isLoggedIn() && !user.isMemberOf(this.group);
   }
 
   selectModel(model: ModelListItem) {
