@@ -77,13 +77,16 @@ export class ModelController {
 
     this.selectedItem = routeData.selected;
 
-    routeData.newModel
-      ? this.updateNewModel(routeData.newModel)
-      : this.$q.all([
+    if (routeData.newModel) {
+      this.updateNewModel(routeData.newModel)
+        .then(() => this.loading = false);
+    } else {
+      this.$q.all([
           this.updateModelById(routeData.existingModelId).then(() => this.updateSelectables()),
           this.updateSelectionByTypeAndId(routeData.selected)
         ])
-      .then(() => this.loading = false);
+        .then(() => this.loading = false);
+    }
   }
 
   registerView(view: View) {
