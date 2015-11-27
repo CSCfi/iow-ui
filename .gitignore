@@ -5,3 +5,4 @@ rev-manifest.json
 .idea/*
 typings/*
 **/.DS_Store
+*.iml
