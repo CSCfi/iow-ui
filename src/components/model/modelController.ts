@@ -255,7 +255,8 @@ export class ModelController {
   }
 
   private updateNewModel(newModel: {prefix: string, label: string, groupId: Uri}) {
-    return this.modelService.newModel(newModel, this.languageService.modelLanguage).then(model => this.updateModel(model));
+    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, this.languageService.modelLanguage)
+      .then(model => this.updateModel(model));
   }
 
   private updateModel(model: Model) {

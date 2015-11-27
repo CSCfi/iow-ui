@@ -32,7 +32,7 @@ export class ModelService {
     return this.$http.post('/api/rest/model', model.serialize(), { params: { id: model.id } });
   }
 
-  newModel({prefix, label, groupId}, lang: Language): IPromise<Model> {
+  newModel(prefix: string, label: string, groupId: Uri, lang: Language): IPromise<Model> {
     return this.$http.get('/api/rest/modelCreator', { params: {prefix, label, lang, group: groupId} })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
