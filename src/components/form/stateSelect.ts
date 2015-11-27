@@ -1,4 +1,5 @@
 import {UserService} from '../../services/userService';
+import IScope = angular.IScope;
 
 export const mod = angular.module('iow.components.form');
 
@@ -16,18 +17,20 @@ mod.directive('stateSelect', () => {
     template: '<value-select name="State" values="ctrl.states" value="ctrl.state"></value-select>',
     controllerAs: 'ctrl',
     bindToController: true,
-    controller(userService: UserService) {
+    controller($scope: IScope, userService: UserService) {
       'ngInject';
 
-      const group = this.model.graph.isPartOf['@id'];
-      const user = userService.user;
+      $scope.$watch(() => userService.user, () => {
+        const group = this.model.graph.isPartOf['@id'];
+        const user = userService.user;
 
-      if (user.isAdminOfGroup(group)) {
-        this.states = states.concat(adminStates);
-      }
-      else {
-        this.states = states;
-      }
+        if (user.isAdminOfGroup(group)) {
+          this.states = states.concat(adminStates);
+        }
+        else {
+          this.states = states;
+        }
+      });
     }
   };
 });
