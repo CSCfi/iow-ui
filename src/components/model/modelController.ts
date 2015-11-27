@@ -63,7 +63,7 @@ export class ModelController {
       // new model creation cancelled
       if (oldModel && !newModel) {
         $location.path('/groups');
-        $location.search({urn: $routeParams['Group']});
+        $location.search({urn: oldModel.groupId});
       }
     });
 
