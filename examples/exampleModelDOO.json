@@ -193,7 +193,7 @@
               "label": {
                 "fi": "Arvosteltu opintokokonaisuus"
               },
-              "predicate": "doo:Opintokokonaisuus",
+              "predicate": "doo:opintokokonaisuus",
               "valueClass": "doo:Opintokokonaisuus"
             }
           ]
