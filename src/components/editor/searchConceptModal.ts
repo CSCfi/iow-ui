@@ -206,9 +206,10 @@ class ConceptSuggestionDataset implements Dataset {
     return !!_.find(this.suggestions, suggestion => this.suggestionContains(suggestion, query));
   }
 
-  display(suggestion: ConceptSuggestion): string {
+  // needs to be lambda wrapping this properly for typeahead lib
+  display = (suggestion: ConceptSuggestion) => {
     return this.languageService.translate(suggestion.label);
-  }
+  };
 
   // needs to be lambda wrapping this properly for typeahead lib
   source = (query: string, syncResults: any) => {
