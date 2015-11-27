@@ -439,6 +439,14 @@ abstract class AbstractPredicate extends GraphNode implements Location {
     return true;
   }
 
+  isAttribute() {
+    return this.type =='attribute';
+  }
+
+  isAssociation() {
+    return this.type =='association';
+  }
+
   iowUrl(): RelativeUrl {
     return `${this.modelIowUrl}&${this.type}=${encodeURIComponent(this.fullId())}`;
   }
