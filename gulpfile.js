@@ -152,7 +152,7 @@ gulp.task('build-app', function () {
   return compileAppJs(false);
 });
 
-gulp.task('scripts', ['build-vendor', 'build-app']);
+gulp.task('scripts', ['tsd', 'build-vendor', 'build-app']);
 
 gulp.task('templates', function() {
   var pipeline = gulp.src(config.templates.source)
@@ -220,7 +220,7 @@ gulp.task('server', function() {
   });
 });
 
-gulp.task('watch', ['build-vendor'], function() {
+gulp.task('watch', ['tsd', 'build-vendor'], function() {
 
   ['templates', 'styles', 'assets', 'translations'].forEach(function(watched) {
     watch(config[watched].watch, function() {
