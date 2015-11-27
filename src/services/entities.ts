@@ -44,6 +44,46 @@ export abstract class GraphNode {
     return {};
   }
 
+  expandCurie(curie: string) {
+    if (curie) {
+      const split = splitCurie(curie);
+      if (split) {
+        const { prefix, value } = split;
+        return { namespace: this.context[prefix], value };
+      }
+    }
+  }
+
+  withPrefixExpanded(curie: Curie) {
+    return withPrefixExpanded(this.context, curie);
+  }
+
+  isCurieDefinedInModel(curie: string, modelCache: ModelCache) {
+    const expanded = this.expandCurie(curie);
+    if (expanded) {
+      return modelCache.modelIdForNamespace(expanded.namespace);
+    }
+  }
+
+  linkToCurie(type: Type, curie: Curie, modelCache: ModelCache) {
+    if (curie) {
+      const expanded = this.expandCurie(curie);
+      if (expanded) {
+        const {namespace, value} = expanded;
+        const id = modelCache.modelIdForNamespace(namespace);
+        if (type === 'external' && !id) {
+          return namespace + value;
+        } else if (type !== 'external' && id) {
+          return selectableUrl(namespace + value, type);
+        }
+      }
+    }
+  }
+
+  linkToExternalCurie(curie: Curie, modelCache: ModelCache) {
+    return this.linkToCurie('external', curie, modelCache);
+  }
+
   serialize(inline: boolean = false): any {
     const values = Object.assign(this.graph, this.serializationValues());
 
@@ -143,46 +183,6 @@ export class Model extends AbstractModel {
     this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference));
     this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context));
     this.copyNamespacesFromRequires();
-  }
-
-  expandCurie(curie: string) {
-    if (curie) {
-      const split = splitCurie(curie);
-      if (split) {
-        const { prefix, value } = split;
-        return { namespace: this.context[prefix], value };
-      }
-    }
-  }
-
-  isCurieDefinedInModel(curie: string, modelCache: ModelCache) {
-    const expanded = this.expandCurie(curie);
-    if (expanded) {
-      return modelCache.modelIdForNamespace(expanded.namespace);
-    }
-  }
-
-  linkToCurie(type: Type, curie: Curie, modelCache: ModelCache) {
-    if (curie) {
-      const expanded = this.expandCurie(curie);
-      if (expanded) {
-        const {namespace, value} = expanded;
-        const id = modelCache.modelIdForNamespace(namespace);
-        if (type === 'external' && !id) {
-          return namespace + value;
-        } else if (type !== 'external' && id) {
-          return selectableUrl(namespace + value, type);
-        }
-      }
-    }
-  }
-
-  linkToExternalCurie(curie: Curie, modelCache: ModelCache) {
-    return this.linkToCurie('external', curie, modelCache);
-  }
-
-  withPrefixExpanded(curie: Curie) {
-    return withPrefixExpanded(this.context, curie);
   }
 
   addReference(reference: Reference) {
