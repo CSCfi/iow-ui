@@ -31,9 +31,9 @@
   <class-select name="Value class" curie="ctrl.predicate.range" model="ctrl.model"></class-select>
 </editable>
 
-<non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl"></non-editable>
+<non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl()"></non-editable>
 
-<editable title="State" value-as-localization-key="true">
+<editable title="State" value-as-localization-key="true" ng-if="!ctrl.predicate.unsaved">
   <state-select state="ctrl.predicate.state" model="ctrl.model"></state-select>
 </editable>
 

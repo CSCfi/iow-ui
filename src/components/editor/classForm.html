@@ -17,9 +17,9 @@
   <class-select name="Superclass" curie="ctrl.class.subClassOf" model="ctrl.model"></class-select>
 </editable>
 
-<non-editable title="Is defined by" value="ctrl.class.modelId" link="ctrl.class.iowUrl"></non-editable>
+<non-editable title="Is defined by" value="ctrl.class.modelId" link="ctrl.class.iowUrl()"></non-editable>
 
-<editable title="State" value-as-localization-key="true">
+<editable title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved">
   <state-select state="ctrl.class.state" model="ctrl.model"></state-select>
 </editable>
 
