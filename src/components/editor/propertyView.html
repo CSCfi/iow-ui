@@ -13,15 +13,15 @@
     <input name="Example" class="form-control" type="text" localized-input ng-model="ctrl.property.example" />
   </editable>
 
-  <editable ng-if="predicate.isAttribute()" title="Range">
-    <range-select range="ctrl.property.datatype"></range-select>
+  <editable ng-if="ctrl.predicate.isAttribute()" title="Range">
+    <range-select range="ctrl.property.dataType"></range-select>
   </editable>
 
-  <editable ng-if="predicate.isAssociation()"
+  <editable ng-if="ctrl.predicate.isAssociation()"
             title="Value class"
             link="ctrl.linkToValueClass()"
             external-link="ctrl.linkToExternalValueClass()">
-    <class-select name="Value class" curie="ctrl.property.valuesClass" model="ctrl.model"></class-select>
+    <class-select name="Value class" curie="ctrl.property.valueClass" model="ctrl.model"></class-select>
   </editable>
 
   <uib-accordion>
@@ -33,7 +33,7 @@
       <non-editable title="Comment" value="ctrl.predicate.comment"></non-editable>
       <non-editable title="Type" value="ctrl.predicate.rawType"></non-editable>
       <non-editable title="Range" value="ctrl.predicate.range"></non-editable>
-      <non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl"></non-editable>
+      <non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl()"></non-editable>
     </uib-accordion-group>
   </uib-accordion>
 </div>
