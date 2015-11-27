@@ -182,7 +182,7 @@ export class ModelController {
       });
 
     _.forEach(_.map(klass.properties, (property: Property) => this.predicateService.getPredicate(property.predicateId)),
-      predicate => predicate.then(this.assignPredicateToModel));
+      predicatePromise => predicatePromise.then(predicate => this.assignPredicateToModel(predicate, false)));
   }
 
   private addPredicate(type: Type) {
@@ -201,10 +201,12 @@ export class ModelController {
       .then(predicate => this.updateSelection(predicate));
   }
 
-  private assignPredicateToModel(predicate: Predicate) {
+  private assignPredicateToModel(predicate: Predicate, updateSelection: boolean = true) {
     this.predicateService.assignPredicateToModel(predicate.id, this.model.id)
       .then(() => {
-        this.updateSelection(predicate);
+        if (updateSelection) {
+          this.updateSelection(predicate);
+        }
         this.updatePredicates();
       });
   }
