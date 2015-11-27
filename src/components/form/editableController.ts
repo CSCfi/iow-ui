@@ -48,7 +48,7 @@ export abstract class EditableController<T extends Class|Predicate|Model|Group> 
   abstract setEditable(editable: T): void;
 
   select(editable: T) {
-    function clone(obj: any) {
+    function clone<T>(obj: T): T {
       if (obj) {
         const cloned = Object.create(Object.getPrototypeOf(obj));
         _.merge(cloned, obj);
