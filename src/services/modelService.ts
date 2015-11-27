@@ -24,7 +24,7 @@ export class ModelService {
   }
 
   createModel(model: Model): IPromise<boolean> {
-    return this.$http.put('/api/rest/model', model.serialize(), { params: { id: model.id, group: model.groupId } })
+    return this.$http.put('/api/rest/model', model.serialize(), { params: { id: model.id, group: model.group.id } })
       .then(() => model.unsaved = false);
   }
 
@@ -33,11 +33,10 @@ export class ModelService {
   }
 
   newModel({prefix, label, groupId}, lang: Language): IPromise<Model> {
-    return this.$http.get('/api/rest/modelCreator', { params: {prefix, label, lang} })
+    return this.$http.get('/api/rest/modelCreator', { params: {prefix, label, lang, group: groupId} })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
         model.unsaved = true;
-        model.groupId = groupId;
         return model;
       });
   }

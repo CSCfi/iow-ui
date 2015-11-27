@@ -168,7 +168,6 @@ export class Model extends AbstractModel {
   references: Reference[];
   requires: Require[];
   unsaved: boolean = false;
-  groupId: Uri;
   namespace: Uri;
   prefix: string;
   group: GroupListItem;
