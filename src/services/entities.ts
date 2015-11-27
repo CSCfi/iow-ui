@@ -305,7 +305,7 @@ abstract class AbstractClass extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return `${this.modelIowUrl}&${this.type}=${encodeURIComponent(this.fullId())}`;
+    return `${this.modelIowUrl()}&${this.type}=${encodeURIComponent(this.fullId())}`;
   }
 }
 
@@ -403,6 +403,7 @@ export class Property extends GraphNode {
     this.dataType = graph.datatype;
     this.valueClass = graph.valueClass;
     this.predicateCurie = graph.predicate;
+    console.log(this);
   }
 
   get predicateId(): Uri {
@@ -461,7 +462,7 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   }
 
   iowUrl(): RelativeUrl {
-    return `${this.modelIowUrl}&${this.type}=${encodeURIComponent(this.fullId())}`;
+    return `${this.modelIowUrl()}&${this.type}=${encodeURIComponent(this.fullId())}`;
   }
 }
 
