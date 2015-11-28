@@ -20,7 +20,10 @@ export abstract class FormElementController {
   abstract showNonEditable(): boolean;
 
   private isDifferentUrl(url: string): boolean {
-    return this.$location.url().replace(/:/g, '%3A') !== url;
+    function normalize(url: string): string {
+      return url.replace(/:/g, '%3A').replace(/&property.*/, '');
+    }
+    return normalize(this.$location.url()) !== normalize(url);
   }
 
   get external(): boolean {
