@@ -10,10 +10,7 @@
   <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea>
 </editable>
 
-<editable title="Superclass"
-          name="Superclass"
-          link="ctrl.linkToSubclass()"
-          external-link="ctrl.linkToExternalSubclass()">
+<editable title="Superclass" name="Superclass" link="ctrl.linkToSubclass()">
   <class-select name="Superclass" curie="ctrl.class.subClassOf" model="ctrl.model"></class-select>
 </editable>
 

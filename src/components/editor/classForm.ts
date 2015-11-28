@@ -46,10 +46,6 @@ export class ClassFormController {
     return this.model.linkToCurie(this.class.type, this.class.subClassOf, this.modelCache);
   }
 
-  linkToExternalSubclass() {
-    return this.model.linkToExternalCurie(this.class.subClassOf, this.modelCache);
-  }
-
   registerPropertyView(propertyId: Uri, view: PropertyViewController) {
     this.propertyViews[propertyId] = view;
   }

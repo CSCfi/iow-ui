@@ -10,25 +10,16 @@
   <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.predicate.comment"></textarea>
 </editable>
 
-<editable title="{{'Super' + ctrl.predicate.type}}"
-          link="ctrl.linkToSubProperty()"
-          external-link="ctrl.linkToExternalSubProperty()"
-          name="Superproperty">
+<editable title="{{'Super' + ctrl.predicate.type}}" link="ctrl.linkToSubProperty()" name="Superproperty">
   <predicate-select name="Superproperty" type="ctrl.predicate.type" curie="ctrl.predicate.subPropertyOf" model="ctrl.model"></predicate-select>
 </editable>
 
-<editable ng-if="ctrl.predicate.isAttribute()"
-          title="Range"
-          name="Range">
-  <range-select range="ctrl.predicate.range"></range-select>
+<editable ng-if="ctrl.predicate.isAttribute()" title="Range" name="Range">
+  <range-select range="ctrl.predicate.dataType"></range-select>
 </editable>
 
-<editable ng-if="ctrl.predicate.isAssociation()"
-          title="Value class"
-          name="Value class"
-          link="ctrl.linkToValueClass()"
-          external-link="ctrl.linkToExternalValueClass()">
-  <class-select name="Value class" curie="ctrl.predicate.range" model="ctrl.model"></class-select>
+<editable ng-if="ctrl.predicate.isAssociation()" title="Value class" name="Value class" link="ctrl.linkToValueClass()">
+  <class-select name="Value class" curie="ctrl.predicate.valueClass" model="ctrl.model"></class-select>
 </editable>
 
 <non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl()"></non-editable>

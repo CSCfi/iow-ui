@@ -30,21 +30,10 @@ class PredicateFormController {
     return this.model.linkToCurie(this.predicate.type, this.predicate.subPropertyOf, this.modelCache);
   }
 
-  linkToExternalSubProperty() {
-    return this.model.linkToExternalCurie(this.predicate.subPropertyOf, this.modelCache);
-  }
-
   linkToValueClass() {
     const predicate = this.predicate;
     if (predicate instanceof Association) {
       return this.model.linkToCurie('class', predicate.valueClass, this.modelCache);
-    }
-  }
-
-  linkToExternalValueClass() {
-    const predicate = this.predicate;
-    if (predicate instanceof Association) {
-      return this.model.linkToExternalCurie(predicate.valueClass, this.modelCache);
     }
   }
 }

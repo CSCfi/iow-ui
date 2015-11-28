@@ -3,6 +3,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 import { LanguageService } from '../../services/languageService';
+import { FormElementController } from "./formElementController";
 
 export const mod = angular.module('iow.components.form');
 
@@ -13,47 +14,30 @@ mod.directive('nonEditable', () => {
       title: '@',
       value: '=',
       link: '=',
-      externalLink: '=',
       valueAsLocalizationKey: '@'
     },
     restrict: 'E',
-    template: `<div ng-show="ctrl.value">
-                 <div class="model-view__title">{{ctrl.title | translate}}</div>
-                 <a ng-if="ctrl.link && ctrl.isDifferentUrl(ctrl.link)" ng-href="{{'#' + ctrl.link}}">{{ctrl.displayValue()}}</a>
-                 <a ng-if="ctrl.externalLink" ng-href="{{ctrl.externalLink}}" target="_blank">{{ctrl.displayValue()}}</a>
-                 <div ng-if="(!ctrl.link || !ctrl.isDifferentUrl(ctrl.link)) && !ctrl.externalLink">{{ctrl.displayValue()}}</div>
-               </div>`,
+    template: require('./nonEditable.html'),
     bindToController: true,
     controllerAs: 'ctrl',
     controller: NonEditableController
   };
 });
 
-// TODO copy paste with editable
-// TODO proper view model
-class NonEditableController {
+class NonEditableController extends FormElementController {
 
-  title: string;
-  value: Localizable|string;
-  link: string;
-  externalLink: string;
-  valueAsLocalizationKey: boolean;
+  value: string|Localizable;
 
   /* @ngInject */
-  constructor(private $location: ILocationService, private languageService: LanguageService, private gettextCatalog: gettextCatalog) {
+  constructor($location: ILocationService, languageService: LanguageService, gettextCatalog: gettextCatalog) {
+    super($location, languageService, gettextCatalog);
   }
 
-  isDifferentUrl(url: string): boolean {
-    return this.$location.url().replace(/:/g, '%3A') !== url;
+  showNonEditable() {
+    return true;
   }
 
-  displayValue(): string {
-    const value = this.value;
-
-    if (isLocalizable(value)) {
-      return this.languageService.translate(value);
-    } else if (isString(value)) {
-      return value && this.valueAsLocalizationKey ? this.gettextCatalog.getString(value) : value;
-    }
-  };
+  getValue(): string|Localizable {
+    return this.value;
+  }
 }

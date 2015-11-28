@@ -4,8 +4,10 @@ import IFormController = angular.IFormController;
 import INgModelController = angular.INgModelController;
 import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
+import * as _ from 'lodash';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from './editableEntityController';
+import { FormElementController } from "./formElementController";
 import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 
@@ -17,7 +19,6 @@ mod.directive('editable', () => {
     scope: {
       title: '@',
       link: '=',
-      externalLink: '=',
       valueAsLocalizationKey: '@'
     },
     restrict: 'E',
@@ -26,41 +27,30 @@ mod.directive('editable', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['editable', '?^form'],
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      $scope.formController = controllers[1];
-      controllers[0].ngModel = element.find('[ng-model]').controller('ngModel');
+    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
+      const editableController = controllers[0];
+      editableController.ngModelController = element.find('[ng-model]').controller('ngModel');
+      editableController.isEditing = () => controllers[1].editing;
     },
     controller: EditableController
   }
 });
 
-interface EditableScope extends IScope {
-  formController: EditableForm;
-}
 
-class EditableController {
+class EditableController extends FormElementController {
 
-  ngModel: INgModelController;
-  title: string;
-  link: string;
-  externalLink: string;
-  valueAsLocalizationKey: boolean;
+  isEditing: () => boolean;
+  ngModelController: INgModelController;
 
-  /* @ngInject */
-  constructor(private $location: ILocationService, private languageService: LanguageService, private gettextCatalog: gettextCatalog) {
+  constructor($location: ILocationService, languageService: LanguageService, gettextCatalog: gettextCatalog) {
+    super($location, languageService, gettextCatalog);
   }
 
-  isDifferentUrl(url: string): boolean {
-    return this.$location.url().replace(/:/g, '%3A') !== url;
+  showNonEditable() {
+    return !this.isEditing || !this.isEditing();
   }
 
-  displayValue(): string {
-    const value: Localizable|string = this.ngModel && this.ngModel.$modelValue;
-
-    if (isLocalizable(value)) {
-      return this.languageService.translate(value);
-    } else if (isString(value)) {
-      return value && this.valueAsLocalizationKey ? this.gettextCatalog.getString(value) : value;
-    }
+  getValue() {
+    return this.ngModelController && this.ngModelController.$modelValue;
   }
 }

@@ -5,6 +5,7 @@ export = mod.name;
 
 import './editable';
 import './editableEntityButtons';
+import './href';
 import './idInput';
 import './localizedInput';
 import './modelLanguageChooser';

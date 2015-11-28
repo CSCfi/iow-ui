@@ -76,17 +76,13 @@ export abstract class GraphNode {
       if (expanded) {
         const {namespace, value} = expanded;
         const id = modelCache.modelIdForNamespace(namespace);
-        if (type === 'external' && !id) {
+        if (!type || !id) {
           return namespace + value;
-        } else if (type !== 'external' && id) {
+        } else if (type && id) {
           return selectableUrl(namespace + value, type);
         }
       }
     }
-  }
-
-  linkToExternalCurie(curie: Curie, modelCache: ModelCache) {
-    return this.linkToCurie('external', curie, modelCache);
   }
 
   serialize(inline: boolean = false): any {
@@ -583,7 +579,7 @@ export class Concept extends GraphNode {
     super('concept', graph, context);
     this.id = graph['@id'];
     this.label = graph.label || graph.prefLabel;
-    this.comment = graph.comment;
+    this.comment = graph.comment || graph['rdfs:comment'];
     this.inScheme = _.map(normalizeAsArray<any>(graph.inScheme), scheme => scheme['@id'] || scheme.uri);
   }
 }

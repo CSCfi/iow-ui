@@ -17,10 +17,7 @@
     <range-select range="ctrl.property.dataType"></range-select>
   </editable>
 
-  <editable ng-if="ctrl.predicate.isAssociation()"
-            title="Value class"
-            link="ctrl.linkToValueClass()"
-            external-link="ctrl.linkToExternalValueClass()">
+  <editable ng-if="ctrl.predicate.isAssociation()" title="Value class" link="ctrl.linkToValueClass()">
     <class-select name="Value class" curie="ctrl.property.valueClass" model="ctrl.model"></class-select>
   </editable>
 
