@@ -18,8 +18,8 @@ export function glyphIconClassForType(type: Type) {
   ];
 }
 
-export function normalizeAsArray<T>(obj: any): T[] {
-  return Array.isArray(obj) ? <T[]> obj : obj ? <T[]> [obj] : <T[]> [];
+export function normalizeAsArray<T>(obj: T|T[]): T[] {
+  return Array.isArray(obj) ? obj : obj ? [obj] : [];
 }
 
 export function collectIds(items: {id: Uri}[]): Set<Uri> {

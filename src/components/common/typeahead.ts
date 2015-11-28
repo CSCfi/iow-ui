@@ -58,12 +58,12 @@ mod.directive('iowTypeahead', ($timeout: ITimeoutService, $q: IQService, $log: I
         focus(element);
       }
 
-      $scope.$watch('datasets', datasets => {
+      $scope.$watch('datasets', (datasets: Dataset|Dataset[]) => {
         if (datasets) {
           if (initialized) {
             destroy();
           }
-          initialize(normalizeAsArray<Dataset>(datasets));
+          initialize(normalizeAsArray(datasets));
         }
       });
 
