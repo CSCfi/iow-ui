@@ -5,7 +5,7 @@ import INgModelController = angular.INgModelController;
 import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
-import { EditableForm } from './editableController';
+import { EditableForm } from './editableEntityController';
 import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 

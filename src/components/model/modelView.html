@@ -5,10 +5,10 @@
 <form name="form">
   <div uib-collapse="!ctrl.visible" class="main-editable-content">
 
-    <editable-buttons editable-controller="ctrl">
+    <editable-entity-buttons editable-controller="ctrl">
       <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
       <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
-    </editable-buttons>
+    </editable-entity-buttons>
 
     <div class="col-md-6">
       <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.editableInEdit.label" /></editable>

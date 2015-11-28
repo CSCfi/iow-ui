@@ -3,7 +3,7 @@ import ILogService = angular.ILogService;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
-import { EditableController, EditableScope, EditableForm, Rights } from '../form/editableController';
+import { EditableEntityController, EditableScope, EditableForm, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
 import { Model, Require, Reference, Uri } from '../../services/entities';
 import { ModelController } from './modelController';
@@ -38,7 +38,7 @@ interface View<T> {
   open(item: T): void;
 }
 
-export class ModelViewController extends EditableController<Model> {
+export class ModelViewController extends EditableEntityController<Model> {
 
   visible: boolean = false;
   model: Model;

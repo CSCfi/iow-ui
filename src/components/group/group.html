@@ -7,10 +7,10 @@
   <form name="form">
     <div class="main-editable-content">
 
-      <editable-buttons editable-controller="ctrl">
+      <editable-entity-buttons editable-controller="ctrl">
         <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.group.homepage}}" target="_blank" translate>Ask for group rights</a>
         <button type="button" class="btn btn-default right" ng-click="ctrl.addModel()" ng-if="ctrl.canAddModel()" translate>Add model</button>
-      </editable-buttons>
+      </editable-entity-buttons>
 
       <div class="col-md-6">
         <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.editableInEdit.label" /></editable>

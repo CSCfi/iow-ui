@@ -1,12 +1,12 @@
 export const mod = angular.module('iow.components.form');
 
-mod.directive('editableButtons', () => {
+mod.directive('editableEntityButtons', () => {
   return {
     restrict: 'E',
     scope: {
       ctrl: '=editableController'
     },
-    template: require('./editableButtons.html'),
+    template: require('./editableEntityButtons.html'),
     transclude: true
   };
 });

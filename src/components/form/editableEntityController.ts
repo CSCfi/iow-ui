@@ -1,14 +1,13 @@
-import _ = require('lodash');
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
 import IFormController = angular.IFormController;
 import ILogService = angular.ILogService;
-import { UserService } from "../../services/userService";
-import { ModelController } from "../model/modelController";
-import { Class, Predicate, Model } from "../../services/entities";
-import { ConfirmationModal } from "../common/confirmationModal";
-import {GroupListItem} from "../../services/entities";
-import {Group} from "../../services/entities";
+import IPromise = angular.IPromise;
+import IScope = angular.IScope;
+import * as _ from 'lodash';
+import { clone } from '../../services/utils';
+import { UserService } from '../../services/userService';
+import { ModelController } from '../model/modelController';
+import { ConfirmationModal } from '../common/confirmationModal';
+import { Class, Group, GroupListItem, Model, Predicate, Uri } from '../../services/entities';
 
 export interface EditableForm extends IFormController {
   editing: boolean;
@@ -24,7 +23,7 @@ export type Rights = {
   remove(): boolean;
 }
 
-export abstract class EditableController<T extends Class|Predicate|Model|Group> {
+export abstract class EditableEntityController<T extends Class|Predicate|Model|Group> {
 
   submitError = false;
   editableInEdit: T;
@@ -41,23 +40,16 @@ export abstract class EditableController<T extends Class|Predicate|Model|Group> 
   }
 
   abstract create(entity: T): IPromise<any>;
-  abstract update(entity: T, oldId: string): IPromise<any>;
+  abstract update(entity: T, oldId: Uri): IPromise<any>;
   abstract remove(entity: T): IPromise<any>;
   abstract rights(): Rights;
   abstract getEditable(): T;
   abstract setEditable(editable: T): void;
 
   select(editable: T) {
-    function clone<T>(obj: T): T {
-      if (obj) {
-        const cloned = Object.create(Object.getPrototypeOf(obj));
-        _.merge(cloned, obj);
-        return cloned;
-      }
-    }
     this.submitError = false;
     this.setEditable(editable);
-    this.editableInEdit = clone(editable);
+    this.editableInEdit = clone<T>(editable);
 
     if (editable && editable.unsaved) {
       this.edit();

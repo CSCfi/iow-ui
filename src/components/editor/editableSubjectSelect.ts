@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
-import { EditableForm } from '../form/editableController';
+import { EditableForm } from '../form/editableEntityController';
 import { SearchConceptModal } from './searchConceptModal';
 import { Concept, ConceptSuggestion, Reference, Type } from '../../services/entities';
 

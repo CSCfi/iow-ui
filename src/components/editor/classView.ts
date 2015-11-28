@@ -3,7 +3,7 @@ import IScope = angular.IScope;
 import IPromise = angular.IPromise;
 import ILogService = angular.ILogService;
 import { ModelController } from '../model/modelController';
-import { EditableController, EditableScope, Rights } from '../form/editableController';
+import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
 import { Class, Model, Property } from '../../services/entities';
@@ -34,7 +34,7 @@ mod.directive('classView', () => {
   }
 });
 
-export class ClassViewController extends EditableController<Class> {
+export class ClassViewController extends EditableEntityController<Class> {
 
   private classForm: ClassFormController;
   class: Class;

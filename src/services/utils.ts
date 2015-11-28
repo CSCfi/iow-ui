@@ -25,3 +25,11 @@ export function normalizeAsArray<T>(obj: T|T[]): T[] {
 export function collectIds(items: {id: Uri}[]): Set<Uri> {
   return new Set<Uri>(_.map(items, item => item.id));
 }
+
+export function clone<T>(obj: T): T {
+  if (obj) {
+    const cloned: T = Object.create(Object.getPrototypeOf(obj));
+    _.merge(cloned, obj);
+    return cloned;
+  }
+}

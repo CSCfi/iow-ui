@@ -1,15 +1,13 @@
-import { EditableController } from './editableController';
+import { EditableEntityController } from './editableEntityController';
 
 const mod = angular.module('iow.components.form', ['iow.services']);
 export = mod.name;
 
 import './editable';
-import './editableButtons';
+import './editableEntityButtons';
 import './idInput';
 import './localizedInput';
 import './modelLanguageChooser';
 import './nonEditable';
 import './stateSelect';
 import './valueSelect';
-
-mod.service('editableController', EditableController);

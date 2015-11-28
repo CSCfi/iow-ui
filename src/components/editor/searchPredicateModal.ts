@@ -7,7 +7,7 @@ import { Predicate, PredicateListItem, Model, ModelListItem, Type, Uri } from '.
 import { PredicateService} from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
-import { EditableForm } from '../form/editableController';
+import { EditableForm } from '../form/editableEntityController';
 
 export class SearchPredicateModal {
 

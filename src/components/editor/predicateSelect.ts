@@ -2,7 +2,7 @@ import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
 import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
-import { EditableForm } from '../form/editableController';
+import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
 
 export const mod = angular.module('iow.components.editor');

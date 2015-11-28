@@ -3,7 +3,7 @@ import ILogService = angular.ILogService;
 import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
-import { EditableController, EditableScope, Rights } from '../form/editableController';
+import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { Predicate, Model, Uri } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 
@@ -29,7 +29,7 @@ mod.directive('predicateView', () => {
   };
 });
 
-class PredicateViewController extends EditableController<Predicate> {
+class PredicateViewController extends EditableEntityController<Predicate> {
 
   predicate: Predicate;
   model: Model;

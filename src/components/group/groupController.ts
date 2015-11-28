@@ -3,7 +3,7 @@ import ILogService = angular.ILogService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _ from 'lodash';
-import { EditableController, EditableScope, Rights } from '../form/editableController';
+import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { AddModelModal } from './addModelModal';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { LocationService } from '../../services/locationService';
@@ -13,7 +13,7 @@ import { UserService } from '../../services/userService';
 import { Group, GroupListItem, ModelListItem, Uri} from '../../services/entities';
 
 
-export class GroupController extends EditableController<Group> {
+export class GroupController extends EditableEntityController<Group> {
 
   loading: boolean = true;
   group: Group;
