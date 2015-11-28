@@ -10,7 +10,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import IProvideService = angular.auto.IProvideService;
 import 'core-js';
 import { UserService } from './services/userService';
-import { LanguageService } from "./services/languageService";
+import { LanguageService } from './services/languageService';
 import { FrontPageController } from './components/frontPageController';
 import { ModelController } from './components/model/modelController';
 import { GroupController } from './components/group/groupController';

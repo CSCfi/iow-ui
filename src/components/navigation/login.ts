@@ -1,8 +1,8 @@
 import IModalService = angular.ui.bootstrap.IModalService;
-import {UserService} from "../../services/userService";
-import {User} from "../../services/entities";
-import IWindowService = angular.IWindowService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import IWindowService = angular.IWindowService;
+import { User } from '../../services/entities';
+import { UserService } from '../../services/userService';
 
 export const mod = angular.module('iow.components.navigation');
 

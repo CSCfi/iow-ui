@@ -1,9 +1,9 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
-import { ModelService } from "../../services/modelService";
-import { Language } from "../../services/languageService";
-import { Require } from "../../services/entities";
+import { ModelService } from '../../services/modelService';
+import { Language } from '../../services/languageService';
+import { Require } from '../../services/entities';
 
 export class AddRequireModal {
   /* @ngInject */

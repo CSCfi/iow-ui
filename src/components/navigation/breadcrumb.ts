@@ -1,5 +1,5 @@
 import IScope = angular.IScope;
-import {LocationService} from "../../services/locationService";
+import { LocationService } from '../../services/locationService';
 
 export const mod = angular.module('iow.components.navigation');
 

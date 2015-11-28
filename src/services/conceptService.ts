@@ -2,7 +2,7 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import { EntityDeserializer, Concept, ConceptSuggestion, Uri } from "./entities";
+import { EntityDeserializer, Concept, ConceptSuggestion, Uri } from './entities';
 import { Language } from './languageService';
 
 export class ConceptService {

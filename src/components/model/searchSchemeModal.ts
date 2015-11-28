@@ -2,9 +2,9 @@ import IPromise = angular.IPromise;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
-import { ConceptService } from "../../services/conceptService";
-import { Language } from "../../services/languageService";
-import { Uri } from "../../services/entities";
+import { ConceptService } from '../../services/conceptService';
+import { Language } from '../../services/languageService';
+import { Uri } from '../../services/entities';
 
 
 export class SearchSchemeModal {
