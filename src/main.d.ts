@@ -1,7 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-import IControllerService = angular.IControllerService;
-
 interface Window {
   jQuery: JQueryStatic;
   encodeURIComponent: any;
