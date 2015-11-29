@@ -1,10 +1,10 @@
-<div ng-if="ctrl.model">
+<div>
   <div class="model-header" ng-click="ctrl.visible = !ctrl.visible">
     <h2 accordion-chevron is-open="ctrl.visible" no-pull="true">{{ctrl.model | translateLabel}}</h2>
   </div>
 
   <form name="form">
-    <div uib-collapse="!ctrl.visible" class="main-editable-content">
+    <div ng-if="ctrl.model" uib-collapse="!ctrl.visible" class="main-editable-content">
 
       <editable-entity-buttons editable-controller="ctrl">
         <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
