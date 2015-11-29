@@ -5,6 +5,7 @@ import IQService = angular.IQService;
 import { EntityDeserializer, Model, ModelListItem, Reference, Require, Uri } from './entities';
 import { ModelCache } from './modelCache';
 import { Language } from './languageService';
+import { upperCaseFirst } from 'change-case';
 
 export class ModelService {
 
@@ -33,7 +34,7 @@ export class ModelService {
   }
 
   newModel(prefix: string, label: string, groupId: Uri, lang: Language): IPromise<Model> {
-    return this.$http.get('/api/rest/modelCreator', { params: {prefix, label, lang, group: groupId} })
+    return this.$http.get('/api/rest/modelCreator', { params: {prefix, label, lang: upperCaseFirst(label), group: groupId} })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
         model.unsaved = true;

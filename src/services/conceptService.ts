@@ -4,6 +4,7 @@ import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { EntityDeserializer, Concept, ConceptSuggestion, Uri } from './entities';
 import { Language } from './languageService';
+import { upperCaseFirst } from 'change-case';
 
 export class ConceptService {
   /* @ngInject */
@@ -25,7 +26,7 @@ export class ConceptService {
   }
 
   createConceptSuggestion({schemeId, label, comment, lang}): IPromise<string> {
-    return this.$http.put('/api/rest/conceptSuggestion', null, {params: {schemeID: schemeId, label, comment, lang}})
+    return this.$http.put('/api/rest/conceptSuggestion', null, {params: {schemeID: schemeId, label: upperCaseFirst(label), comment, lang}})
       .then((response: any) => response.data['@id']);
   }
 

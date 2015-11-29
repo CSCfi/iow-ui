@@ -6,6 +6,7 @@ import * as _  from 'lodash';
 import { EntityDeserializer, Attribute, Association, Class, ClassListItem, Predicate, Property, Type, Uri, Model } from './entities';
 import { PredicateService } from './predicateService';
 import { Language } from './languageService';
+import { upperCaseFirst } from 'change-case';
 
 export class ClassService {
 
@@ -62,7 +63,7 @@ export class ClassService {
   }
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
-    return this.$http.get('/api/rest/classCreator', {params: {modelID: model.id, classLabel, conceptID, lang}})
+    return this.$http.get('/api/rest/classCreator', {params: {modelID: model.id, classLabel: upperCaseFirst(classLabel), conceptID, lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], model.context);
         return this.entities.deserializeClass(response.data);

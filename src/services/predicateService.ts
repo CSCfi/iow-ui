@@ -5,6 +5,7 @@ import IQService = angular.IQService;
 import * as _  from 'lodash';
 import { EntityDeserializer, Predicate, PredicateListItem, Uri, Model, Type } from './entities';
 import { Language } from './languageService';
+import { upperCaseFirst } from 'change-case';
 
 export class PredicateService {
   /* @ngInject */
@@ -60,7 +61,7 @@ export class PredicateService {
   }
 
   newPredicate(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<Predicate> {
-    return this.$http.get('/api/rest/predicateCreator', {params: {modelID: model.id, predicateLabel, conceptID, type, lang}})
+    return this.$http.get('/api/rest/predicateCreator', {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type, lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], model.context);
         return response;
