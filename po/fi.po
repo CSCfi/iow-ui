@@ -77,6 +77,10 @@ msgstr "Pyydä käyttöoikeuksia ryhmään"
 msgid "association"
 msgstr "Assosiaatio"
 
+#: translations/misc.html:71
+msgid "Association label"
+msgstr "Assosiaation nimi"
+
 #: translations/misc.html:47
 msgid "Association list"
 msgstr "Assosiaatiot"
@@ -84,6 +88,10 @@ msgstr "Assosiaatiot"
 #: translations/misc.html:26
 msgid "attribute"
 msgstr "Ominaisuus"
+
+#: translations/misc.html:72
+msgid "Attribute label"
+msgstr "Ominaisuuden nimi"
 
 #: translations/misc.html:43
 msgid "Attribute list"
@@ -129,6 +137,10 @@ msgstr "valitse käsite"
 #: translations/misc.html:25
 msgid "class"
 msgstr "Luokka"
+
+#: translations/misc.html:70
+msgid "Class label"
+msgstr "Luokan nimi"
 
 #: translations/misc.html:39
 msgid "Class list"
@@ -290,6 +302,10 @@ msgstr "Etusivu"
 msgid "group"
 msgstr "Ryhmä"
 
+#: translations/misc.html:69
+msgid "Group label"
+msgstr "Ryhmän nimi"
+
 #: translations/misc.html:20
 msgid "Hide"
 msgstr "Piilota"
@@ -345,6 +361,10 @@ msgstr "Kirjaudu ulos"
 #: translations/misc.html:24
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
+
+#: translations/misc.html:68
+msgid "Model label"
+msgstr "Tietokomponenttikirjaston nimi"
 
 #: components/group/group.html:22
 msgid "Models"
@@ -704,9 +724,6 @@ msgstr "Kyllä"
 
 #~ msgid "create new property"
 #~ msgstr "ja luo uusi ominaisuus"
-
-#~ msgid "Class label"
-#~ msgstr "Luokan nimi"
 
 #~ msgid "Datatype"
 #~ msgstr "Tyyppi"

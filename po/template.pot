@@ -73,12 +73,20 @@ msgstr ""
 msgid "association"
 msgstr ""
 
+#: translations/misc.html:71
+msgid "Association label"
+msgstr ""
+
 #: translations/misc.html:47
 msgid "Association list"
 msgstr ""
 
 #: translations/misc.html:26
 msgid "attribute"
+msgstr ""
+
+#: translations/misc.html:72
+msgid "Attribute label"
 msgstr ""
 
 #: translations/misc.html:43
@@ -124,6 +132,10 @@ msgstr ""
 
 #: translations/misc.html:25
 msgid "class"
+msgstr ""
+
+#: translations/misc.html:70
+msgid "Class label"
 msgstr ""
 
 #: translations/misc.html:39
@@ -282,6 +294,10 @@ msgstr ""
 msgid "group"
 msgstr ""
 
+#: translations/misc.html:69
+msgid "Group label"
+msgstr ""
+
 #: translations/misc.html:20
 msgid "Hide"
 msgstr ""
@@ -329,6 +345,10 @@ msgstr ""
 
 #: translations/misc.html:24
 msgid "model"
+msgstr ""
+
+#: translations/misc.html:68
+msgid "Model label"
 msgstr ""
 
 #: components/group/group.html:22

@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { ModelCache } from '../../services/modelCache';
 import { Association, Model, Predicate } from '../../services/entities';
 
@@ -35,5 +36,9 @@ class PredicateFormController {
     if (predicate instanceof Association) {
       return this.model.linkToCurie('class', predicate.valueClass, this.modelCache);
     }
+  }
+
+  get labelName(): string {
+    return _.capitalize(this.predicate.type) + ' label';
   }
 }
