@@ -69,7 +69,7 @@
 
     <modal-buttons>
       <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default btn-lg" ng-show="!ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate || !form.$valid" translate>Use predicate</button>
+      <button type="button" class="btn btn-default btn-lg" ng-show="!ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate || form.$invalid || form.$pending" translate>Use predicate</button>
       <button type="button" class="btn btn-default btn-lg" ng-show="ctrl.isEditing()" ng-click="ctrl.createAndUsePredicate()" translate>Create and use predicate</button>
     </modal-buttons>
   </modal-template>

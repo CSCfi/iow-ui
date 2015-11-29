@@ -1,7 +1,7 @@
 <div class="top-actions">
   <model-language-chooser></model-language-chooser>
   <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing()" ng-show="ctrl.isEditing()" translate>Cancel edit</button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.saveEdited()" ng-show="ctrl.isEditing()" translate>Save changes</button>
+  <button type="button" class="btn btn-default right" ng-click="ctrl.saveEdited()" ng-show="ctrl.isEditing()" ng-disabled="form.$invalid || form.$pending" translate>Save changes</button>
   <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" translate>Edit</button>
   <button type="button" class="btn btn-default right" ng-click="ctrl.removeEdited()" ng-show="ctrl.canRemove()">{{ctrl.getRemoveText() | translate}}</button>
 
