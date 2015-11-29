@@ -1,5 +1,5 @@
-<form name="form" ng-if="ctrl.predicate && ctrl.model">
-  <div>
+<form name="form">
+  <div ng-if="ctrl.predicate && ctrl.model">
     <selection-view editable-controller="ctrl">
       <selection-buttons>
         <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
