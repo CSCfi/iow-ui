@@ -113,4 +113,8 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
   canModify(): boolean {
     return this.isEditing() && this.rights().edit();
   }
+
+  getRemoveText(): string {
+    return 'Delete ' + this.getEditable().type;
+  }
 }

@@ -48,7 +48,7 @@ class PredicateViewController extends EditableEntityController<Predicate> {
   }
 
   remove(entity: Predicate) {
-    return this.predicateService.deletePredicate(entity.id, this.model.id);;
+    return this.predicateService.deletePredicate(entity.id, this.model.id);
   }
 
   rights(): Rights {
@@ -64,5 +64,17 @@ class PredicateViewController extends EditableEntityController<Predicate> {
 
   setEditable(editable: Predicate) {
     this.predicate = editable;
+  }
+
+  isDefinedInThisModel(): boolean {
+    return this.predicate.modelId === this.model.id;
+  }
+
+  getRemoveText(): string {
+    if (this.isDefinedInThisModel()) {
+      return super.getRemoveText();
+    } else {
+      return `Delete ${this.predicate.type} from this model`;
+    }
   }
 }

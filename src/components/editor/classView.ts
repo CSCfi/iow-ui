@@ -93,4 +93,16 @@ export class ClassViewController extends EditableEntityController<Class> {
   setEditable(editable: Class) {
     this.class = editable;
   }
+
+  isDefinedInThisModel(): boolean {
+    return this.class.modelId === this.model.id;
+  }
+
+  getRemoveText(): string {
+    if (this.isDefinedInThisModel()) {
+      return super.getRemoveText();
+    } else {
+      return 'Delete class from this model';
+    }
+  }
 }

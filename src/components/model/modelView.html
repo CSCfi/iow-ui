@@ -1,25 +1,27 @@
-<div class="model-header" ng-click="ctrl.visible = !ctrl.visible">
-  <h2 accordion-chevron is-open="ctrl.visible" no-pull="true">{{ctrl.model | translateLabel}}</h2>
-</div>
-
-<form name="form">
-  <div uib-collapse="!ctrl.visible" class="main-editable-content">
-
-    <editable-entity-buttons editable-controller="ctrl">
-      <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
-      <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
-    </editable-entity-buttons>
-
-    <div class="col-md-6">
-      <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.editableInEdit.label" /></editable>
-      <non-editable title="Id" value="ctrl.editableInEdit.id"></non-editable>
-      <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea></editable>
-      <editable title="State" value-as-localization-key="true"><state-select state="ctrl.editableInEdit.state" model="ctrl.model" ng-if="ctrl.model"></state-select></editable>
-    </div>
-
-    <div class="col-md-6">
-      <references-view references="ctrl.editableInEdit.references"></references-view>
-      <requires-view requires="ctrl.editableInEdit.requires"></requires-view>
-    </div>
+<div ng-if="ctrl.model">
+  <div class="model-header" ng-click="ctrl.visible = !ctrl.visible">
+    <h2 accordion-chevron is-open="ctrl.visible" no-pull="true">{{ctrl.model | translateLabel}}</h2>
   </div>
-</form>
+
+  <form name="form">
+    <div uib-collapse="!ctrl.visible" class="main-editable-content">
+
+      <editable-entity-buttons editable-controller="ctrl">
+        <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
+        <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
+      </editable-entity-buttons>
+
+      <div class="col-md-6">
+        <editable title="Label"><input name="Label" class="form-control" type="text" localized-input ng-model="ctrl.editableInEdit.label" /></editable>
+        <non-editable title="Id" value="ctrl.editableInEdit.id"></non-editable>
+        <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea></editable>
+        <editable title="State" value-as-localization-key="true"><state-select state="ctrl.editableInEdit.state" model="ctrl.model" ng-if="ctrl.model"></state-select></editable>
+      </div>
+
+      <div class="col-md-6">
+        <references-view references="ctrl.editableInEdit.references"></references-view>
+        <requires-view requires="ctrl.editableInEdit.requires"></requires-view>
+      </div>
+    </div>
+  </form>
+</div>
