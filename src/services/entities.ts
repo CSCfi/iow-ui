@@ -223,6 +223,8 @@ export class Model extends AbstractModel {
   }
 
   serializationValues(): any {
+    this.copyNamespacesFromRequires();
+
     return {
       '@id': this.id,
       label: this.label,
