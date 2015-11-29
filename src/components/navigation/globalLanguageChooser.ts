@@ -18,16 +18,18 @@ mod.directive('globalLanguageChooser', () => {
 
 class GlobalLanguageChooserController {
 
-  currentLanguage: Language;
   languages: Language[];
 
   /* @ngInject */
   constructor(private languageService: LanguageService) {
-    this.currentLanguage = languageService.UILanguage;
     this.languages = languageService.availableLanguages;
   }
 
-  setLanguage(language: Language) {
+  get language(): Language {
+    return this.languageService.UILanguage;
+  }
+
+  set language(language: Language) {
     this.languageService.UILanguage = language;
     this.languageService.modelLanguage = language;
   }

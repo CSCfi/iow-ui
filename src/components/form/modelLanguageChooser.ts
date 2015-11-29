@@ -18,16 +18,18 @@ mod.directive('modelLanguageChooser', () => {
 
 class ModelLanguageChooserController {
 
-  currentLanguage: Language;
   languages: Language[];
 
   /* @ngInject */
   constructor(private languageService: LanguageService) {
-    this.currentLanguage = languageService.modelLanguage;
     this.languages = languageService.availableLanguages;
   }
 
-  setLanguage(language: Language) {
+  get language(): Language {
+    return this.languageService.modelLanguage;
+  }
+
+  set language(language: Language) {
     this.languageService.modelLanguage = language;
   }
 }
