@@ -2,7 +2,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableForm } from '../form/editableEntityController';
 import { SearchConceptModal } from './searchConceptModal';
-import { Concept, ConceptSuggestion, Reference, Type } from '../../services/entities';
+import { Concept, ConceptSuggestion, Reference, Type, State, states } from '../../services/entities';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -13,26 +13,25 @@ mod.directive('editableSubjectSelect', () => {
     scope: {
       subject: '=',
       references: '=',
-      type: '@'
+      type: '@',
+      disable: '=',
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
     template: require('./editableSubjectSelect.html'),
-    require: '?^form',
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, formController: EditableForm) {
-      $scope.formController = formController;
+    require: ['editableSubjectSelect', '?^form'],
+    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
+      const editableSubjectSelectController = controllers[0];
+      editableSubjectSelectController.isEditing = () => controllers[1].editing;
     },
     controller: EditableSubjectSelectController
   }
 });
 
-interface EditableScope extends IScope {
-  formController: EditableForm;
-}
-
 class EditableSubjectSelectController {
 
+  isEditing: () => boolean;
   subject: Concept|ConceptSuggestion;
   references: Reference[];
   type: Type;

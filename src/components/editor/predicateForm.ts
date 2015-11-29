@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { ModelCache } from '../../services/modelCache';
-import { Association, Model, Predicate } from '../../services/entities';
+import { Association, Model, Predicate, states } from '../../services/entities';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -40,5 +40,9 @@ class PredicateFormController {
 
   get labelName(): string {
     return _.capitalize(this.predicate.type) + ' label';
+  }
+
+  get inUnstableState(): boolean {
+    return this.predicate.state === states.unstable;
   }
 }

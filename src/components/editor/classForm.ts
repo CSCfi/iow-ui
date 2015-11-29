@@ -3,7 +3,7 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
-import { Class, Model, Property, Uri } from '../../services/entities';
+import { Class, Model, Property, Uri, states } from '../../services/entities';
 import { ModelCache } from '../../services/modelCache';
 
 export const mod = angular.module('iow.components.editor');
@@ -44,6 +44,10 @@ export class ClassFormController {
 
   linkToSubclass() {
     return this.model.linkToCurie(this.class.type, this.class.subClassOf, this.modelCache);
+  }
+
+  get inUnstableState(): boolean {
+    return this.class.state === states.unstable;
   }
 
   registerPropertyView(propertyId: Uri, view: PropertyViewController) {
