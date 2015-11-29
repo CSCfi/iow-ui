@@ -14,6 +14,13 @@ export type Curie = string;
 export type Type = string;
 export type State = string;
 
+export const states = {
+  unstable:'Unstable',
+  draft: 'Draft',
+  recommendation: 'Recommendation',
+  deprecated: 'Deprecated'
+};
+
 type EntityFactory<T extends GraphNode> = (graph: any, context: any) => T
 
 export function isLocalizable(obj: any): obj is Localizable {

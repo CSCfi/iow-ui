@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Predicate, Model, Uri } from '../../services/entities';
+import { Predicate, Model, Uri, states } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 
 export const mod = angular.module('iow.components.editor');
@@ -54,7 +54,7 @@ class PredicateViewController extends EditableEntityController<Predicate> {
   rights(): Rights {
     return {
       edit: () => this.userService.isLoggedIn() && this.predicate.modelId === this.model.id,
-      remove: () => this.userService.isLoggedIn()
+      remove: () => this.userService.isLoggedIn()&& this.predicate.state === states.unstable
     };
   }
 

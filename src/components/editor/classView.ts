@@ -6,7 +6,7 @@ import { ModelController } from '../model/modelController';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, Model, Property } from '../../services/entities';
+import { Class, Model, Property, states } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
@@ -82,7 +82,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   rights(): Rights {
     return {
       edit: () => this.userService.isLoggedIn() && this.class.modelId === this.model.id,
-      remove: () => this.userService.isLoggedIn()
+      remove: () => this.userService.isLoggedIn() && this.class.state === states.unstable
     };
   }
 

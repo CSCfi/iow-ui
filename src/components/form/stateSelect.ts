@@ -1,11 +1,11 @@
 import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
-import { Model, State } from '../../services/entities';
+import { Model, State, states } from '../../services/entities';
 
 export const mod = angular.module('iow.components.form');
 
-const states = ['Unstable', 'Draft'];
-const adminStates = states.concat(['Recommendation', 'Deprecated']);
+const userStates = [states.unstable, states.draft];
+const adminStates = userStates.concat([states.recommendation, states.deprecated]);
 
 mod.directive('stateSelect', () => {
   'ngInject';
@@ -19,7 +19,7 @@ mod.directive('stateSelect', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller(userService: UserService) {
-      this.getStates = () => userService.user.isAdminOf(this.model) ? adminStates : states;
+      this.getStates = () => userService.user.isAdminOf(this.model) ? adminStates : userStates;
     }
   };
 });
