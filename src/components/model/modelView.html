@@ -12,10 +12,19 @@
       </editable-entity-buttons>
 
       <div class="col-md-6">
-        <editable title="Model label"><input name="Label" class="form-control" type="text" localized-input="required" ng-model="ctrl.editableInEdit.label" /></editable>
+        <editable title="Model label">
+          <input name="Label" class="form-control" type="text" localized-input="required" ng-model="ctrl.editableInEdit.label" />
+        </editable>
+
         <non-editable title="Id" value="ctrl.editableInEdit.id"></non-editable>
-        <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea></editable>
-        <editable title="State" value-as-localization-key="true"><state-select state="ctrl.editableInEdit.state" model="ctrl.model" ng-if="ctrl.model"></state-select></editable>
+
+        <editable title="Comment">
+          <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
+        </editable>
+
+        <editable title="State" value-as-localization-key="true" ng-if="!ctrl.model.unsaved">
+          <state-select state="ctrl.editableInEdit.state" model="ctrl.model" ng-if="ctrl.model"></state-select>
+        </editable>
       </div>
 
       <div class="col-md-6">
