@@ -28,8 +28,10 @@ mod.directive('editable', () => {
     controllerAs: 'ctrl',
     require: ['editable', '?^form'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
+      const input = element.find('[ng-model]');
+      input.after(element.find('error-messages').detach());
       const editableController = controllers[0];
-      editableController.ngModelController = element.find('[ng-model]').controller('ngModel');
+      editableController.ngModelController = input.controller('ngModel');
       editableController.isEditing = () => controllers[1].editing;
     },
     controller: EditableController
