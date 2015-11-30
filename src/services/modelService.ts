@@ -34,7 +34,7 @@ export class ModelService {
   }
 
   newModel(prefix: string, label: string, groupId: Uri, lang: Language): IPromise<Model> {
-    return this.$http.get('/api/rest/modelCreator', { params: {prefix, label, lang: upperCaseFirst(label), group: groupId} })
+    return this.$http.get('/api/rest/modelCreator', { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
         model.unsaved = true;
