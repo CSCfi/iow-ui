@@ -5,6 +5,8 @@ import IQService = angular.IQService;
 import { pascalCase, camelCase } from 'change-case';
 import { ValidatorService } from '../../services/validatorService';
 import { Group, Model, Class, Predicate } from '../../services/entities';
+import { splitCurie } from '../../services/utils';
+
 
 export const mod = angular.module('iow.components.form');
 
@@ -32,10 +34,10 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
       });
 
       modelController.$formatters.push(value => {
-        if (value) {
-          const split = value.split(':');
-          prefix = split[0];
-          return split[1];
+        const split = splitCurie(value);
+        if (split) {
+          prefix = split.prefix;
+          return split.value;
         }
       });
 
