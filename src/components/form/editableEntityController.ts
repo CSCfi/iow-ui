@@ -120,7 +120,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
   }
 
   canAskForRights(): boolean {
-    return !this.belongToGroup();
+    return this.userService.isLoggedIn() && !this.belongToGroup();
   }
 
   belongToGroup(): boolean {
