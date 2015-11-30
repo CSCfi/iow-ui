@@ -1,7 +1,7 @@
 import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import * as frames from './frames';
-import { glyphIconClassForType, normalizeAsArray } from './utils';
+import { glyphIconClassForType, normalizeAsArray, splitCurie } from './utils';
 import { ModelCache } from './modelCache';
 
 const jsonld: any = require('jsonld');
@@ -38,6 +38,23 @@ export interface WithIdAndType {
   type: Type
 }
 
+export class ExpandedCurie {
+  constructor(public namespace: string, public value: string) {
+  }
+
+  isDefined(): boolean {
+    return !!this.namespace;
+  }
+
+  get uri(): Uri {
+    return this.namespace + this.value;
+  }
+
+  withValue(value: string) {
+    return new ExpandedCurie(this.namespace, value);
+  }
+}
+
 export abstract class GraphNode {
 
   constructor(public type: Type, public graph: any, public context?: any) {
@@ -56,18 +73,13 @@ export abstract class GraphNode {
     return data;
   }
 
-  expandCurie(curie: string) {
+  expandCurie(curie: Curie) {
     if (curie) {
       const split = splitCurie(curie);
       if (split) {
-        const { prefix, value } = split;
-        return { namespace: this.context[prefix], value };
+        return new ExpandedCurie(this.context[split.prefix], split.value);
       }
     }
-  }
-
-  withPrefixExpanded(curie: Curie) {
-    return withPrefixExpanded(this.context, curie);
   }
 
   isCurieDefinedInModel(curie: string, modelCache: ModelCache) {
@@ -356,7 +368,7 @@ export class Class extends AbstractClass {
 
   fullId(): Uri {
     if (this.curie) {
-      return withPrefixExpanded(this.context, this.curie);
+      return this.expandCurie(this.curie).uri;
     }
   }
 
@@ -407,7 +419,7 @@ export class Property extends GraphNode {
   }
 
   get predicateId(): Uri {
-    return withPrefixExpanded(this.context, this.predicateCurie);
+    return this.expandCurie(this.predicateCurie).uri;
   }
 
   get glyphIconClass() {
@@ -514,7 +526,7 @@ export abstract class Predicate extends AbstractPredicate {
 
   fullId() {
     if (this.curie) {
-      return withPrefixExpanded(this.context, this.curie);
+      return this.expandCurie(this.curie).uri;
     }
   }
 
@@ -733,24 +745,6 @@ function modelUrl(id: Uri): RelativeUrl {
 function selectableUrl(id: Uri, type: Type): RelativeUrl {
   const [modelId] = id.split('#');
   return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
-}
-
-function splitCurie(curie: string): {prefix: string, value: string} {
-  const parts = curie.split(':');
-  if (parts.length === 2) {
-    return {prefix: parts[0], value: parts[1]};
-  }
-}
-
-function withPrefixExpanded(context: any, curie: string): string {
-  const {prefix, value} = splitCurie(curie);
-  if (prefix) {
-    const expansion = context[prefix];
-    if (expansion) {
-      return expansion + value;
-    }
-  }
-  return curie;
 }
 
 function renameProperty(obj: any, name: string, newName: string) {

@@ -33,3 +33,10 @@ export function clone<T>(obj: T): T {
     return cloned;
   }
 }
+
+export function splitCurie(curie: string): {prefix: string, value: string} {
+  const parts = curie.split(':');
+  if (parts.length === 2) {
+    return {prefix: parts[0], value: parts[1]};
+  }
+}
