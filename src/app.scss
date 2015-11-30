@@ -121,6 +121,15 @@ ul.errors {
 
 uib-accordion .panel-group {
   margin: 20px auto;
+
+  .panel-title {
+    a:hover {
+      text-decoration: none;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
 }
 
 .model-view__title {
