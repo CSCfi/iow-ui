@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, EditableForm, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { Model, Require, Reference, Uri } from '../../services/entities';
+import { GroupListItem, Model, Require, Reference, Uri } from '../../services/entities';
 import { ModelController } from './modelController';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
@@ -53,7 +53,7 @@ export class ModelViewController extends EditableEntityController<Model> {
               private searchSchemeModal: SearchSchemeModal,
               private searchRequireModal: SearchRequireModal,
               private languageService: LanguageService,
-              private userService: UserService) {
+              userService: UserService) {
     super($scope, $log, confirmationModal, userService);
 
     $scope.$watch(() => this.isEditing(), editing => {
@@ -126,5 +126,9 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   setEditable(editable: Model) {
     this.model = editable;
+  }
+
+  getGroup(): GroupListItem {
+    return this.model.group;
   }
 }

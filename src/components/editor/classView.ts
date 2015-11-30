@@ -6,11 +6,10 @@ import { ModelController } from '../model/modelController';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, Model, Property, states } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, Uri, states } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
-
 
 export const mod = angular.module('iow.components.editor');
 
@@ -46,7 +45,7 @@ export class ClassViewController extends EditableEntityController<Class> {
               confirmationModal: ConfirmationModal,
               private classService: ClassService,
               private searchPredicateModal: SearchPredicateModal,
-              private userService: UserService) {
+              userService: UserService) {
     super($scope, $log, confirmationModal, userService);
   }
 
@@ -104,5 +103,9 @@ export class ClassViewController extends EditableEntityController<Class> {
     } else {
       return 'Delete class from this model';
     }
+  }
+
+  getGroup(): GroupListItem {
+    return this.model.group;
   }
 }

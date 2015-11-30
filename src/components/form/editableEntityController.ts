@@ -7,7 +7,7 @@ import { clone } from '../../services/utils';
 import { UserService } from '../../services/userService';
 import { ModelController } from '../model/modelController';
 import { ConfirmationModal } from '../common/confirmationModal';
-import { Class, Group, GroupListItem, Model, Predicate, Uri } from '../../services/entities';
+import { Class, AbstractGroup, Group, GroupListItem, Model, Predicate, Uri } from '../../services/entities';
 
 export interface EditableForm extends IFormController {
   editing: boolean;
@@ -28,7 +28,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
   submitError = false;
   editableInEdit: T;
 
-  constructor(private $scope: EditableScope, private $log: ILogService, private confirmationModal: ConfirmationModal, userService: UserService) {
+  constructor(private $scope: EditableScope, private $log: ILogService, private confirmationModal: ConfirmationModal, protected userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
       if (!isLoggedIn && wasLoggedIn) {
         this.cancelEditing();
@@ -44,6 +44,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
   abstract rights(): Rights;
   abstract getEditable(): T;
   abstract setEditable(editable: T): void;
+  abstract getGroup(): AbstractGroup;
 
   select(editable: T) {
     this.submitError = false;
@@ -85,7 +86,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
 
   canRemove() {
     const editable = this.getEditable();
-    return editable && !editable.unsaved && !this.isEditing() && this.rights().remove();
+    return editable && !editable.unsaved && !this.isEditing() && this.belongToGroup() && this.rights().remove();
   }
 
   cancelEditing() {
@@ -107,7 +108,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
   }
 
   canEdit(): boolean {
-    return !this.isEditing() && this.rights().edit();
+    return !this.isEditing() && this.belongToGroup() && this.rights().edit();
   }
 
   canModify(): boolean {
@@ -116,5 +117,15 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
 
   getRemoveText(): string {
     return 'Delete ' + this.getEditable().type;
+  }
+
+  canAskForRights(): boolean {
+    return !this.belongToGroup();
+  }
+
+  belongToGroup(): boolean {
+    const user = this.userService.user;
+    const group = this.getGroup();
+    return user.isMemberOf(group) || user.isAdminOf(group);
   }
 }

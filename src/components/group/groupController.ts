@@ -28,7 +28,7 @@ export class GroupController extends EditableEntityController<Group> {
               private groupId: Uri,
               private groupService: GroupService,
               private modelService: ModelService,
-              private userService: UserService,
+              userService: UserService,
               private addModelModal: AddModelModal,
               confirmationModal: ConfirmationModal) {
     super($scope, $log, confirmationModal, userService);
@@ -46,7 +46,7 @@ export class GroupController extends EditableEntityController<Group> {
   }
 
   canAddModel(): boolean {
-    return this.userService.isLoggedIn();
+    return this.userService.isLoggedIn() && this.belongToGroup();
   }
 
   addModel() {
@@ -90,5 +90,9 @@ export class GroupController extends EditableEntityController<Group> {
 
   setEditable(editable: Group) {
     this.group = editable;
+  }
+
+  getGroup(): Group {
+    return this.group;
   }
 }

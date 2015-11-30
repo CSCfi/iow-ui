@@ -106,7 +106,7 @@ export abstract class GraphNode {
   }
 }
 
-abstract class AbstractGroup extends GraphNode implements Location {
+export abstract class AbstractGroup extends GraphNode implements Location {
 
   id: Uri;
   label: Localizable;
@@ -119,6 +119,10 @@ abstract class AbstractGroup extends GraphNode implements Location {
     this.label = graph.label;
     this.comment = graph.comment;
     this.homepage = graph.homepage;
+  }
+
+  get groupId() {
+    return this.id;
   }
 
   iowUrl() {
@@ -134,20 +138,10 @@ export class GroupListItem extends AbstractGroup {
 
 export class Group extends AbstractGroup {
 
-  id: Uri;
-  label: Localizable;
-  comment: Localizable;
   unsaved: boolean;
 
   constructor(graph: any, context: any) {
     super(graph, context);
-    this.id = graph['@id'];
-    this.label = graph.label;
-    this.comment = graph.comment;
-  }
-
-  get groupId() {
-    return this.id;
   }
 }
 
@@ -611,8 +605,10 @@ export class ConceptSuggestion extends Concept {
 
 export interface User {
   isLoggedIn(): boolean;
-  isMemberOf(entity: Model|Group): boolean;
-  isAdminOf(entity: Model|Group): boolean;
+  isMemberOf(entity: AbstractModel|AbstractGroup): boolean;
+  isMemberOfGroup(id: Uri): boolean;
+  isAdminOf(entity: AbstractModel|AbstractGroup): boolean;
+  isAdminOfGroup(id: Uri): boolean;
   name?: string;
 }
 
@@ -637,7 +633,7 @@ export class DefaultUser extends GraphNode implements User {
     return this.graph['iow:login'];
   }
 
-  isMemberOf(entity: Model|Group) {
+  isMemberOf(entity: Model|AbstractGroup) {
     return this.isMemberOfGroup(entity.groupId);
   }
 
@@ -645,7 +641,7 @@ export class DefaultUser extends GraphNode implements User {
     return !!_.find(this.memberGroups, v => v === id);
   }
 
-  isAdminOf(entity: Model|Group) {
+  isAdminOf(entity: Model|AbstractGroup) {
     return this.isAdminOfGroup(entity.groupId);
   }
 
@@ -659,11 +655,19 @@ export class AnonymousUser implements User {
     return false;
   }
 
-  isMemberOf(entity: Model|Group) {
+  isMemberOf(entity: Model|AbstractGroup) {
     return false;
   }
 
-  isAdminOf(entity: Model|Group) {
+  isMemberOfGroup(id: Uri) {
+    return false;
+  }
+
+  isAdminOf(entity: Model|AbstractGroup) {
+    return false;
+  }
+
+  isAdminOfGroup(id: Uri) {
     return false;
   }
 }

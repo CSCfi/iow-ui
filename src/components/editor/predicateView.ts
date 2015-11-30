@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Predicate, Model, Uri, states } from '../../services/entities';
+import { GroupListItem, Predicate, Model, Uri, states } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 
 export const mod = angular.module('iow.components.editor');
@@ -35,7 +35,7 @@ class PredicateViewController extends EditableEntityController<Predicate> {
   model: Model;
 
   /* @ngInject */
-  constructor($scope: EditableScope, $log: ILogService, confirmationModal: ConfirmationModal, private predicateService: PredicateService, private userService: UserService) {
+  constructor($scope: EditableScope, $log: ILogService, confirmationModal: ConfirmationModal, private predicateService: PredicateService, userService: UserService) {
     super($scope, $log, confirmationModal, userService);
   }
 
@@ -76,5 +76,9 @@ class PredicateViewController extends EditableEntityController<Predicate> {
     } else {
       return `Delete ${this.predicate.type} from this model`;
     }
+  }
+
+  getGroup(): GroupListItem {
+    return this.model.group;
   }
 }
