@@ -9,6 +9,7 @@ import { ModelService } from './modelService';
 import { PredicateService } from './predicateService';
 import { SearchService } from './searchService';
 import { UserService } from './userService';
+import { ValidatorService } from './validatorService';
 
 const mod = angular.module('iow.services', []);
 export = mod.name;
@@ -24,3 +25,4 @@ mod.service('modelService', ModelService);
 mod.service('predicateService', PredicateService);
 mod.service('searchService', SearchService);
 mod.service('userService', UserService);
+mod.service('validatorService', ValidatorService);

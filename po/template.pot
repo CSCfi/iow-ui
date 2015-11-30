@@ -282,6 +282,10 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
+#: components/form/editable.html:10
+msgid "Existing id error"
+msgstr ""
+
 #: translations/misc.html:29
 msgid "fi"
 msgstr ""
@@ -316,6 +320,10 @@ msgstr ""
 
 #: components/frontPage.html:5
 msgid "Interoperability method"
+msgstr ""
+
+#: components/form/editable.html:9
+msgid "Invalid curie error"
 msgstr ""
 
 #: translations/misc.html:52
@@ -420,6 +428,14 @@ msgstr ""
 
 #: components/navigation/login-modal.html:15
 msgid "Register"
+msgstr ""
+
+#: components/form/editable.html:11
+msgid "Required error"
+msgstr ""
+
+#: components/form/editable.html:12
+msgid "Required localized error"
 msgstr ""
 
 #: components/model/requiresView.html:1

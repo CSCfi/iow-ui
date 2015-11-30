@@ -9,6 +9,7 @@ mod.directive('predicateForm', () => {
   return {
     scope: {
       predicate: '=',
+      oldPredicate: '=',
       model: '='
     },
     restrict: 'E',

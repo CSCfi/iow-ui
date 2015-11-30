@@ -361,7 +361,9 @@ export class Class extends AbstractClass {
   }
 
   fullId(): Uri {
-    return withPrefixExpanded(this.context, this.curie);
+    if (this.curie) {
+      return withPrefixExpanded(this.context, this.curie);
+    }
   }
 
   addProperty(property: Property): void {
@@ -517,7 +519,9 @@ export abstract class Predicate extends AbstractPredicate {
   abstract getRange(): any;
 
   fullId() {
-    return withPrefixExpanded(this.context, this.curie);
+    if (this.curie) {
+      return withPrefixExpanded(this.context, this.curie);
+    }
   }
 
   modelIowUrl(): RelativeUrl {

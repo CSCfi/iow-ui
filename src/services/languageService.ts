@@ -34,8 +34,18 @@ export class LanguageService {
 
   translate(data: Localizable): string {
     function localized(lang: Language, showLang: boolean): string {
-      const localization = data[lang];
-      return typeof localization === 'string' ? localization + (showLang ? ` (${lang})` : '') : null;
+      let localization = data[lang];
+
+      if (Array.isArray(localization)) {
+        // TODO array of localizations
+        localization = localization[0];
+      }
+
+      if (!localization) {
+        return '';
+      } else {
+        return localization + (showLang ? ` (${lang})` : '');
+      }
     }
 
     if (!data) {

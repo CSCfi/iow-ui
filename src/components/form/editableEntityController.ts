@@ -30,8 +30,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
 
   constructor(private $scope: EditableScope, private $log: ILogService, private confirmationModal: ConfirmationModal, userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
-      // TODO: check weird condition
-      if (isLoggedIn && wasLoggedIn) {
+      if (!isLoggedIn && wasLoggedIn) {
         this.cancelEditing();
       }
     });
@@ -93,6 +92,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
     if (this.isEditing()) {
       this.submitError = false;
       this.$scope.form.editing = false;
+      this.$scope.form.$setPristine();
       const editable = this.getEditable();
       this.select(editable.unsaved ? null : editable);
     }

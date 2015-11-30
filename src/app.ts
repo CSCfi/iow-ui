@@ -25,6 +25,7 @@ require('angular-gettext');
 require('checklist-model');
 
 angular.module('iow-ui', [
+  require('angular-messages'),
   require('angular-route'),
   require('angular-ui-bootstrap'),
   'gettext',
@@ -38,7 +39,7 @@ angular.module('iow-ui', [
   require('./components'),
   require('./services')
 ])
-.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILogProvider, $provide: IProvideService) {
+.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILogProvider) {
   $logProvider.debugEnabled(false);
 
   $routeProvider

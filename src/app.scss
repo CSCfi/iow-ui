@@ -12,6 +12,19 @@
 
 $selectionListWidth: 275px;
 
+ul.errors {
+  border-left: 5px solid $state-danger-text;
+  padding-left: 15px;
+
+  li {
+    list-style-type: none;
+  }
+
+  li:before {
+    content: '\b7\a0';
+  }
+}
+
 .link {
   color: $link-color;
 }

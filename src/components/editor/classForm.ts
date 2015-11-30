@@ -13,6 +13,7 @@ mod.directive('classForm', () => {
   return {
     scope: {
       class: '=',
+      oldClass: '=',
       model: '='
     },
     restrict: 'E',

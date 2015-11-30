@@ -1,7 +1,9 @@
-<div class="editable-wrap">
+<div class="editable-wrap form-group">
   <div ng-show="ctrl.displayValue || ctrl.isEditing()" class="model-view__title">{{ctrl.title | translate}}</div>
   <div ng-show="ctrl.isEditing()" ng-transclude></div>
 
   <a ng-show="ctrl.showLink" ng-href="{{ctrl.href}}">{{ctrl.displayValue}}</a>
   <span ng-show="ctrl.showPlain" >{{ctrl.displayValue}}</span>
+
+  <error-messages error="ctrl.ngModelController.$error"></error-messages>
 </div>
