@@ -18,7 +18,12 @@ mod.directive('curieInput', () => {
     require: 'ngModel',
     link($scope: CurieInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
       modelController.$validators['invalidCurie'] = (modelValue: string) => {
-        return !modelValue || !!$scope.model.expandCurie(modelValue);
+        if (modelValue) {
+          const expanded = $scope.model.expandCurie(modelValue);
+          return !!(expanded && expanded.namespace);
+        } else {
+          return true;
+        }
       }
     }
   };
