@@ -159,14 +159,16 @@ export class ModelController {
   }
 
   private addClass() {
-    this.searchClassModal.open(this.model, collectIds(this.classes))
-      .then((result: ConceptCreation|Class) => {
-        if (isConceptCreation(result)) {
-          this.createClass(result);
-        } else if (result instanceof Class) {
-          this.assignClassToModel(result);
-        }
-      });
+    this.askPermissionWhenEditing(() => {
+      this.searchClassModal.open(this.model, collectIds(this.classes))
+        .then((result:ConceptCreation|Class) => {
+          if (isConceptCreation(result)) {
+            this.createClass(result);
+          } else if (result instanceof Class) {
+            this.assignClassToModel(result);
+          }
+        });
+    });
   }
 
   private createClass(conceptCreation: ConceptCreation) {
@@ -186,14 +188,16 @@ export class ModelController {
   }
 
   private addPredicate(type: Type) {
-    this.searchPredicateModal.open(this.model, type, collectIds(this.predicates))
-      .then((result: ConceptCreation|Predicate) => {
-        if (isConceptCreation(result)) {
-          this.createPredicate(result);
-        } else {
-          this.assignPredicateToModel(result);
-        }
-      });
+    this.askPermissionWhenEditing(() => {
+      this.searchPredicateModal.open(this.model, type, collectIds(this.predicates))
+        .then((result:ConceptCreation|Predicate) => {
+          if (isConceptCreation(result)) {
+            this.createPredicate(result);
+          } else {
+            this.assignPredicateToModel(result);
+          }
+        });
+    });
   }
 
   private createPredicate(conceptCreation: ConceptCreation) {
