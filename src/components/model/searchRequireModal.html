@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="col-md-6 search-results" window-height padding="315">
+      <div class="col-md-6 search-results with-button">
         <div ng-repeat="require in ctrl.searchResults() track by require.id">
           <div ng-class="['search-result', {selected: ctrl.isSelected(require)}]" ng-click="ctrl.selectRequire(require)">
             <h5>{{require | translateLabel}}</h5>

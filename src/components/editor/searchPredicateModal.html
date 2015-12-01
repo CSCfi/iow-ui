@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div class="col-md-4 search-results" window-height padding="260">
+        <div class="col-md-4 search-results">
           <div ng-repeat="predicate in ctrl.searchResults() track by predicate.id">
             <div ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)">
               <i ng-class="predicate.glyphIconClass"></i>
@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <div class="col-md-4" window-height padding="300">
+        <div class="col-md-4 search-selection">
           <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate" model="ctrl.model"></predicate-form>
           <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

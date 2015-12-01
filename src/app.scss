@@ -90,6 +90,13 @@ ul.errors {
   }
 
   .panel__list {
+    height: calc(100vh - 95px);
+    overflow-y: auto;
+
+    &.has-button {
+      height: calc(100vh - 146px);
+    }
+
     li {
       cursor: pointer;
       padding: 5px 0 5px 10px;
@@ -106,6 +113,7 @@ ul.errors {
 .model-panel--right {
   float: right;
   width: calc(100% - #{$selectionListWidth});
+  min-height: 100vh;
   padding: 10px 0;
 
   .col-md-7, .col-md-5 {
@@ -155,11 +163,15 @@ h2 .model-view__title {
 
 .component {
   border: solid 1px #ddd;
+
+  .selection-form {
+    min-height: calc(100vh - 134px);
+  }
 }
 
 .visualization-container {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 85px);
   overflow: hidden;
 
   .link-tools .tool-remove { display: none }
@@ -344,7 +356,21 @@ h2 .model-view__title {
     }
   }
 
+  .search-selection {
+    height: calc(100vh - 300px);
+    overflow-y: auto;
+  }
+
   .search-results {
+
+    height: calc(100vh - 260px);
+
+    &.with-button {
+      height: calc(100vh - 315px);
+    }
+
+    overflow-y: auto;
+
     .search-result {
       font-size: small;
       cursor: pointer;
@@ -464,7 +490,7 @@ a.accordion-toggle {
 .selectable-panel__list {
   @extend .panel__list;
   max-height: 400px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin: -15px;
   li {
     cursor: pointer;

@@ -6,7 +6,6 @@ import { Localizable } from '../../services/entities';
 const mod = angular.module('iow.components.common', []);
 export = mod.name;
 
-import './windowHeight';
 import './typeahead';
 import './float';
 import './modalTemplate';

@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="col-md-6 search-results" window-height padding="260">
+      <div class="col-md-6 search-results" >
         <div ng-show="ctrl.searchText && ctrl.searchResults().length === 0" translate>No search results</div>
         <div ng-repeat="searchResult in ctrl.searchResults() track by searchResult.id">
           <div ng-class="['search-result']" ng-click="ctrl.selectSearchResult(searchResult)">
