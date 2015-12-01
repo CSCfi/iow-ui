@@ -4,6 +4,10 @@ import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 import { LanguageService } from '../../services/languageService';
 import { FormElementController } from "./formElementController";
+import IAttributes = angular.IAttributes;
+import IScope = angular.IScope;
+import {EditableEntityController} from "./editableEntityController";
+import IFormController = angular.IFormController;
 
 export const mod = angular.module('iow.components.form');
 
@@ -20,12 +24,17 @@ mod.directive('nonEditable', () => {
     template: require('./nonEditable.html'),
     bindToController: true,
     controllerAs: 'ctrl',
+    require: ['nonEditable', '?^form'],
+    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
+      controllers[0].isEditing = () => controllers[1].editing;
+    },
     controller: NonEditableController
   };
 });
 
 class NonEditableController extends FormElementController {
 
+  isEditing: () => boolean;
   value: string|Localizable;
 
   /* @ngInject */
@@ -35,6 +44,10 @@ class NonEditableController extends FormElementController {
 
   showNonEditable() {
     return true;
+  }
+
+  hideLinks() {
+    return this.isEditing();
   }
 
   getValue(): string|Localizable {

@@ -19,6 +19,10 @@ export abstract class FormElementController {
   abstract getValue(): string|Localizable;
   abstract showNonEditable(): boolean;
 
+  protected hideLinks(): boolean {
+    return false;
+  }
+
   private isDifferentUrl(url: string): boolean {
     function normalize(url: string): string {
       return url.replace(/:/g, '%3A').replace(/&property.*/, '');
@@ -35,7 +39,7 @@ export abstract class FormElementController {
   }
 
   get showLink(): boolean {
-    return this.showNonEditable() && this.link && this.isDifferentUrl(this.link)
+    return !this.hideLinks() && this.showNonEditable() && this.link && this.isDifferentUrl(this.link);
   }
 
   get showPlain(): boolean {
