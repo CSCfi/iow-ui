@@ -2,6 +2,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import IWindowService = angular.IWindowService;
 import ITimeoutService = angular.ITimeoutService;
+import * as _ from 'lodash';
 
 export const mod = angular.module('iow.components.common');
 
@@ -15,6 +16,7 @@ mod.directive('float', ($window: IWindowService, $timeout: ITimeoutService) => {
   return {
     restrict: 'A',
     link($scope: IScope, element: JQuery, attributes: FloatAttributes) {
+      const windowElement = angular.element($window);
       const placeholderClass = attributes.float;
       const topOffset = attributes.topOffset || 0;
       let placeholder =
@@ -31,15 +33,13 @@ mod.directive('float', ($window: IWindowService, $timeout: ITimeoutService) => {
       (function init() {
         refreshElementLocation();
         if (!isInitialized()) {
-          $timeout(init, 100);
+          $timeout(init, 500);
         }
       })();
 
-      angular.element($window).on('scroll', () => {
+      windowElement.on('scroll', () => {
         if (isInitialized()) {
           if (!floating) {
-            // re-refresh has to be done since location can change due to accordion etc
-            refreshElementLocation();
             if (window.pageYOffset >= elementLocation.top) {
               setFloating();
             }
@@ -49,13 +49,18 @@ mod.directive('float', ($window: IWindowService, $timeout: ITimeoutService) => {
         }
       });
 
+      // re-refresh has to be done since location can change due to accordion etc
+      windowElement.on('scroll', _.throttle(refreshElementLocation, 500));
+
       function isInitialized() {
-        return elementLocation && elementLocation.top !== 0;
+        return elementLocation && elementLocation.top > 0;
       }
 
       function refreshElementLocation() {
-        const offset = element.offset();
-        elementLocation = {top: offset.top - topOffset, left: offset.left};
+        if (!floating) {
+          const offset = element.offset();
+          elementLocation = {top: offset.top - topOffset, left: offset.left};
+        }
       }
 
       function setFloating() {
