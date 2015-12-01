@@ -130,7 +130,7 @@ export class ModelController {
   }
 
   canEdit(): boolean {
-    return this.userService.isLoggedIn();
+    return this.model && this.userService.user.isMemberOf(this.model);
   }
 
   selectionDeleted(selection: WithIdAndType) {

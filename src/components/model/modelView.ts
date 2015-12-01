@@ -115,7 +115,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   rights(): Rights {
     return {
-      edit: () => this.userService.isLoggedIn(),
+      edit: () => true,
       remove: () => false
     }
   }

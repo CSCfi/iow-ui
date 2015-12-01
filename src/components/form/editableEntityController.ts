@@ -124,8 +124,6 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
   }
 
   belongToGroup(): boolean {
-    const user = this.userService.user;
-    const group = this.getGroup();
-    return user.isMemberOf(group) || user.isAdminOf(group);
+    return this.userService.user.isMemberOf(this.getGroup());
   }
 }

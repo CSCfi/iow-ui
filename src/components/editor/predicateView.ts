@@ -53,8 +53,8 @@ class PredicateViewController extends EditableEntityController<Predicate> {
 
   rights(): Rights {
     return {
-      edit: () => this.userService.isLoggedIn() && this.predicate.modelId === this.model.id,
-      remove: () => this.userService.isLoggedIn()&& this.predicate.state === states.unstable
+      edit: () => this.predicate.modelId === this.model.id,
+      remove: () => this.predicate.state === states.unstable
     };
   }
 
