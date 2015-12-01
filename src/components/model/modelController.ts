@@ -57,6 +57,14 @@ export class ModelController {
       }
     });
 
+    $scope.$on('$locationChangeStart', (event, next, current) => {
+      if (next !== current) {
+        this.ifEditing(() => event.preventDefault(), () => {
+          $location.url($location.url(next).hash());
+        });
+      }
+    });
+
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
       this.updateLocation();
 
@@ -215,14 +223,31 @@ export class ModelController {
       });
   }
 
-  private askPermissionWhenEditing(callback: () => void) {
-    const editingViews = _.filter(this.views, view => view.isEditing());
+  private findEditingViews() {
+    return _.filter(this.views, view => view.isEditing());
+  }
+
+  private confirmThenCancelEditing(editingViews: View[], callback: () => void) {
+    this.confirmationModal.openEditInProgress().then(() => {
+      _.forEach(editingViews, view => view.cancelEditing());
+      callback();
+    });
+  }
+
+  private ifEditing(synchronousCallback: () => void, confirmedCallback: () => void) {
+    const editingViews = this.findEditingViews();
 
     if (editingViews.length > 0) {
-      this.confirmationModal.openEditInProgress().then(() => {
-        _.forEach(editingViews, view => view.cancelEditing());
-        callback();
-      });
+      synchronousCallback();
+      this.confirmThenCancelEditing(editingViews, confirmedCallback);
+    }
+  }
+
+  private askPermissionWhenEditing(callback: () => void) {
+    const editingViews = this.findEditingViews();
+
+    if (editingViews.length > 0) {
+      this.confirmThenCancelEditing(editingViews, callback);
     } else {
       callback();
     }
