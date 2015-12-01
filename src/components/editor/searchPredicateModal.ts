@@ -78,6 +78,7 @@ export class SearchPredicateController {
       this.predicates = _.reject(allPredicates, predicate => excludedPredicates.has(predicate.id));
 
       this.models = _.chain(this.predicates)
+        .filter(predicate => this.requireFilter(predicate))
         .map(predicate => predicate.model)
         .uniq(classModel => classModel.id)
         .value();
@@ -91,6 +92,7 @@ export class SearchPredicateController {
 
   searchResults(): PredicateListItem[] {
     return _.chain(this.predicates)
+      .filter(predicate => this.requireFilter(predicate))
       .filter(predicate => this.textFilter(predicate))
       .filter(predicate => this.modelFilter(predicate))
       .filter(predicate => this.typeFilter(predicate))
@@ -159,5 +161,9 @@ export class SearchPredicateController {
 
   private typeFilter(predicate: PredicateListItem): boolean {
     return !this.type || predicate.type === this.type;
+  }
+
+  private requireFilter(predicate: PredicateListItem): boolean {
+    return _.any(this.model.requires, require => require.id === predicate.model.id);
   }
 }

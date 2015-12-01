@@ -61,6 +61,7 @@ export class SearchClassController {
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
       this.classes = _.reject(allClasses, klass => excludedClasses.has(klass.id));
       this.models = _.chain(this.classes)
+        .filter(klass => this.requireFilter(klass))
         .map(klass => klass.model)
         .uniq(classModel => classModel.id)
         .value();
@@ -69,6 +70,7 @@ export class SearchClassController {
 
   searchResults(): ClassListItem[] {
     return _.chain(this.classes)
+      .filter(klass => this.requireFilter(klass))
       .filter(klass => this.textFilter(klass))
       .filter(klass => this.modelFilter(klass))
       .sortBy(klass => this.localizedLabelAsLower(klass))
@@ -103,5 +105,9 @@ export class SearchClassController {
 
   private modelFilter(klass: ClassListItem): boolean {
     return !this.modelId || klass.model.id === this.modelId;
+  }
+
+  private requireFilter(klass: ClassListItem): boolean {
+    return _.any(this.model.requires, require => require.id === klass.model.id);
   }
 }
