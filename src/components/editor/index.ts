@@ -14,7 +14,6 @@ import './editableSubjectSelect';
 import './predicateForm';
 import './predicateSelect';
 import './predicateView';
-import './predicateVisualization';
 import './propertyView';
 import './rangeSelect';
 import './selectionView';

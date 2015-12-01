@@ -1,4 +1,4 @@
-<div class="col-md-7">
+<div ng-class="{'col-md-7': !hideVisualization, 'col-md-12': hideVisualization}">
   <div class="component">
     <div class="component-header">
       <h3><span ng-class="editableController.getEditable().glyphIconClass"></span> <span>{{editableController.getEditable() | translateLabel}}</span></h3>
@@ -16,7 +16,7 @@
   </div>
 </div>
 
-<div class="col-md-5">
+<div ng-if="!hideVisualization" class="col-md-5">
   <div class="component" float top-offset="8">
     <div class="component-header">
       <h3 translate>Visualization</h3>
