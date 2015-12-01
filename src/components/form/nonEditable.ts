@@ -1,13 +1,12 @@
+import IAttributes = angular.IAttributes;
+import IFormController = angular.IFormController;
 import ILocationService = angular.ILocationService;
+import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 import { LanguageService } from '../../services/languageService';
-import { FormElementController } from "./formElementController";
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import {EditableEntityController} from "./editableEntityController";
-import IFormController = angular.IFormController;
+import { FormElementController } from './formElementController';
 
 export const mod = angular.module('iow.components.form');
 
