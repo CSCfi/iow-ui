@@ -30,7 +30,9 @@ const identifier = { '@id': 'http://purl.org/dc/terms/identifier', '@type': 'htt
 const range = { '@id': 'http://www.w3.org/2000/01/rdf-schema#range', '@type': '@id' };
 const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
 const isPartOf = { '@id': 'http://purl.org/dc/terms/isPartOf', '@type': '@id' };
+const isReferencedBy = { '@id': 'http://purl.org/dc/terms/isReferencedBy', '@type': '@id' };
 const isAdminOf = { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' };
+
 
 type Frame = {};
 
@@ -79,6 +81,13 @@ export function modelFrame(data: any): Frame {
   return {
     '@context': addToContext(data['@context'], contextValues),
     '@type': 'owl:Ontology'
+  };
+}
+
+export function usageFrame(data: any): Frame {
+  return {
+    '@context': addToContext(data['@context'], {label, isDefinedBy, isReferencedBy}),
+    'isReferencedBy':{}
   };
 }
 
