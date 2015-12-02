@@ -12,19 +12,19 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: translations/misc.html:44
+#: translations/misc.html:46
 msgid "Add association"
 msgstr "Lisää assosiaatio"
 
-#: translations/misc.html:40
+#: translations/misc.html:42
 msgid "Add attribute"
 msgstr "Lisää ominaisuus"
 
-#: translations/misc.html:36
+#: translations/misc.html:38
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: components/group/addModelModal.html:3 components/group/group.html:12
+#: components/group/addModelModal.html:3 components/group/group.html:11
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
@@ -57,43 +57,43 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: translations/misc.html:10
+#: translations/misc.html:12
 msgid "and create new"
 msgstr "ja luo uusi"
 
-#: translations/misc.html:33
+#: translations/misc.html:35
 msgid "Are you sure that you want to cancel edit?"
 msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 
-#: translations/misc.html:35
+#: translations/misc.html:37
 msgid "Are you sure that you want to delete?"
 msgstr "Oletko varma, että haluat poistaa?"
 
-#: components/group/group.html:11
+#: components/form/editableEntityButtons.html:6
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
-#: translations/misc.html:27
+#: translations/misc.html:29
 msgid "association"
 msgstr "Assosiaatio"
 
-#: translations/misc.html:71
+#: translations/misc.html:73
 msgid "Association label"
 msgstr "Assosiaation nimi"
 
-#: translations/misc.html:47
+#: translations/misc.html:49
 msgid "Association list"
 msgstr "Assosiaatiot"
 
-#: translations/misc.html:26
+#: translations/misc.html:28
 msgid "attribute"
 msgstr "Ominaisuus"
 
-#: translations/misc.html:72
+#: translations/misc.html:74
 msgid "Attribute label"
 msgstr "Ominaisuuden nimi"
 
-#: translations/misc.html:43
+#: translations/misc.html:45
 msgid "Attribute list"
 msgstr "Ominaisuudet"
 
@@ -118,11 +118,11 @@ msgstr "Peruuta"
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
-#: translations/misc.html:59
+#: translations/misc.html:61
 msgid "Choose association"
 msgstr "Valitse assosiaatio"
 
-#: translations/misc.html:58
+#: translations/misc.html:60
 msgid "Choose attribute"
 msgstr "Valitse ominaisuus"
 
@@ -134,15 +134,15 @@ msgstr "valitse luokka"
 msgid "Choose subject"
 msgstr "valitse käsite"
 
-#: translations/misc.html:25
+#: translations/misc.html:27
 msgid "class"
 msgstr "Luokka"
 
-#: translations/misc.html:70
+#: translations/misc.html:72
 msgid "Class label"
 msgstr "Luokan nimi"
 
-#: translations/misc.html:39
+#: translations/misc.html:41
 msgid "Class list"
 msgstr "Luokat"
 
@@ -170,7 +170,7 @@ msgstr "Käsitettä ehdotetaan sanastoon"
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 
-#: translations/misc.html:34
+#: translations/misc.html:36
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
@@ -200,51 +200,59 @@ msgstr "Luo uusi luokka"
 msgid "Create new require"
 msgstr "Luo uusi nimiavaruus"
 
-#: translations/misc.html:30
+#: translations/misc.html:32
 msgid "data en"
 msgstr "Sisältö englanniksi"
 
-#: translations/misc.html:28
+#: translations/misc.html:30
 msgid "data fi"
 msgstr "Sisältö suomeksi"
+
+#: translations/misc.html:8
+msgid "Define concept for the association"
+msgstr "Määrittele käsite assosiaatiolle"
+
+#: translations/misc.html:6
+msgid "Define concept for the attribute"
+msgstr "Määrittele käsite ominaisuudelle"
 
 #: translations/misc.html:4
 msgid "Define concept for the class"
 msgstr "Määrittele käsite luokalle"
 
+#: translations/misc.html:9
+msgid "Define concept for the new association"
+msgstr "Määrittele käsite uudelle assosiaatiolle"
+
+#: translations/misc.html:7
+msgid "Define concept for the new attribute"
+msgstr "Määrittele käsite uudelle ominaisuudelle"
+
 #: translations/misc.html:5
 msgid "Define concept for the new class"
 msgstr "Määrittele käsite uudelle luokalle"
 
-#: translations/misc.html:7
-msgid "Define concept for the new predicate"
-msgstr "Määrittele käsite uudelle ominaisuudelle"
-
-#: translations/misc.html:6
-msgid "Define concept for the predicate"
-msgstr "Määrittele käsite ominaisuudelle"
-
-#: translations/misc.html:45
+#: translations/misc.html:47
 msgid "Delete association"
 msgstr "Poista assosiaatio"
 
-#: translations/misc.html:46
+#: translations/misc.html:48
 msgid "Delete association from this model"
 msgstr "Poista assosiaatio tästä kirjastosta"
 
-#: translations/misc.html:41
+#: translations/misc.html:43
 msgid "Delete attribute"
 msgstr "Poista ominaisuus"
 
-#: translations/misc.html:42
+#: translations/misc.html:44
 msgid "Delete attribute from this model"
 msgstr "Poista ominaisuus tästä kirjastosta"
 
-#: translations/misc.html:37
+#: translations/misc.html:39
 msgid "Delete class"
 msgstr "Poista luokka"
 
-#: translations/misc.html:38
+#: translations/misc.html:40
 msgid "Delete class from this model"
 msgstr "Poista luokka tästä kirjastosta"
 
@@ -260,11 +268,11 @@ msgstr "Poista sanasto"
 msgid "Delete require"
 msgstr "Poista nimiavaruus"
 
-#: translations/misc.html:18
+#: translations/misc.html:20
 msgid "Deprecated"
 msgstr "Käytöstä poistunut"
 
-#: translations/misc.html:16
+#: translations/misc.html:18
 msgid "Draft"
 msgstr "Luonnos"
 
@@ -272,7 +280,7 @@ msgstr "Luonnos"
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: translations/misc.html:32
+#: translations/misc.html:34
 msgid "Edit in progress"
 msgstr "Muokkaaminen on kesken"
 
@@ -282,39 +290,39 @@ msgstr ""
 "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
 "haluat muokata palvelun sisältöä."
 
-#: translations/misc.html:31
+#: translations/misc.html:33
 msgid "en"
 msgstr "Englanniksi"
 
-#: translations/misc.html:11
+#: translations/misc.html:13
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/form/editable.html:10
+#: components/form/errorMessages.html:3
 msgid "Existing id error"
 msgstr "Tunniste on jo käytössä"
 
-#: translations/misc.html:29
+#: translations/misc.html:31
 msgid "fi"
 msgstr "Suomeksi"
 
-#: translations/misc.html:21
+#: translations/misc.html:23
 msgid "Front page"
 msgstr "Etusivu"
 
-#: translations/misc.html:23
+#: translations/misc.html:25
 msgid "group"
 msgstr "Ryhmä"
 
-#: translations/misc.html:69
+#: translations/misc.html:71
 msgid "Group label"
 msgstr "Ryhmän nimi"
 
-#: translations/misc.html:20
+#: translations/misc.html:22
 msgid "Hide"
 msgstr "Piilota"
 
-#: translations/misc.html:67
+#: translations/misc.html:69
 msgid "How content"
 msgstr ""
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
@@ -324,11 +332,11 @@ msgstr ""
 "nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:66
+#: translations/misc.html:68
 msgid "How?"
 msgstr "Kuinka pääsen osallistumaan?"
 
-#: translations/misc.html:48
+#: translations/misc.html:50
 msgid "Id"
 msgstr "Tunniste"
 
@@ -336,11 +344,11 @@ msgstr "Tunniste"
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
-#: components/form/editable.html:9
+#: components/form/errorMessages.html:2
 msgid "Invalid curie error"
 msgstr "Virheellinen tunniste"
 
-#: translations/misc.html:52
+#: translations/misc.html:54
 msgid "Is defined by"
 msgstr "Kirjasto"
 
@@ -366,23 +374,23 @@ msgstr ""
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
-#: translations/misc.html:24
+#: translations/misc.html:26
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
 
-#: translations/misc.html:68
+#: translations/misc.html:70
 msgid "Model label"
 msgstr "Tietokomponenttikirjaston nimi"
 
-#: components/group/group.html:22
+#: components/group/group.html:21
 msgid "Models"
 msgstr "Tietokomponenttikirjastot"
 
-#: translations/misc.html:49
+#: translations/misc.html:51
 msgid "Name"
 msgstr "Nimi"
 
-#: translations/misc.html:22
+#: translations/misc.html:24
 msgid "New model creation"
 msgstr "Uuden tietokomponenttikirjaston luonti"
 
@@ -406,11 +414,11 @@ msgstr "Ominaisuus"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
-#: components/model/addRequireModal.html:12 translations/misc.html:56
+#: components/model/addRequireModal.html:12 translations/misc.html:58
 msgid "Preferred namespace"
 msgstr "Suositeltu nimiavaruus"
 
-#: components/model/addRequireModal.html:17 translations/misc.html:57
+#: components/model/addRequireModal.html:17 translations/misc.html:59
 msgid "Preferred prefix"
 msgstr "Suositeltu etuliite"
 
@@ -418,7 +426,7 @@ msgstr "Suositeltu etuliite"
 msgid "Prefix"
 msgstr "Etuliite"
 
-#: translations/misc.html:50
+#: translations/misc.html:52
 msgid "Range"
 msgstr "Arvoalue"
 
@@ -426,7 +434,7 @@ msgstr "Arvoalue"
 msgid "rdf:langString"
 msgstr "Kieliversioitu teksti"
 
-#: translations/misc.html:17
+#: translations/misc.html:19
 msgid "Recommendation"
 msgstr "Suositus"
 
@@ -442,11 +450,11 @@ msgstr "Sanastot"
 msgid "Register"
 msgstr "Luo tunnukset"
 
-#: components/form/editable.html:11
+#: components/form/errorMessages.html:4
 msgid "Required error"
 msgstr "Pakollinen kenttä"
 
-#: components/form/editable.html:12
+#: components/form/errorMessages.html:5
 msgid "Required localized error"
 msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 
@@ -459,7 +467,7 @@ msgid "Save changes"
 msgstr "Tallenna muutokset"
 
 #: components/editor/searchPredicateModal.html:63
-#: components/form/editableEntityButtons.html:12
+#: components/form/editableEntityButtons.html:13
 #: components/model/addRequireModal.html:26
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
@@ -514,11 +522,11 @@ msgstr "Hae sanastoa…"
 msgid "Search schemes"
 msgstr "Hae sanastoja"
 
-#: translations/misc.html:19
+#: translations/misc.html:21
 msgid "Show"
 msgstr "Näytä"
 
-#: translations/misc.html:14
+#: translations/misc.html:16
 msgid "State"
 msgstr "Tila"
 
@@ -526,35 +534,35 @@ msgstr "Tila"
 msgid "Subject"
 msgstr "Käsite"
 
-#: translations/misc.html:8
+#: translations/misc.html:10
 msgid "suggest"
 msgstr "ehdota"
 
-#: translations/misc.html:9
+#: translations/misc.html:11
 msgid "suggestion"
 msgstr "ehdotus"
 
-#: translations/misc.html:54
+#: translations/misc.html:56
 msgid "Superassociation"
 msgstr "Yläassosiaatio"
 
-#: translations/misc.html:55
+#: translations/misc.html:57
 msgid "Superattribute"
 msgstr "Yläominaisuus"
 
-#: translations/misc.html:53
+#: translations/misc.html:55
 msgid "Superclass"
 msgstr "Yläluokka"
 
-#: translations/misc.html:51
+#: translations/misc.html:53
 msgid "Type"
 msgstr "Tyyppi"
 
-#: translations/misc.html:15
+#: translations/misc.html:17
 msgid "Unstable"
 msgstr "Keskeneräinen"
 
-#: translations/misc.html:13
+#: translations/misc.html:15
 msgid "Use"
 msgstr "Käytä"
 
@@ -574,7 +582,7 @@ msgstr "Käytä nimiavaruutta"
 msgid "Use scheme"
 msgstr "Käytä sanastoa"
 
-#: translations/misc.html:12
+#: translations/misc.html:14
 msgid "Value class"
 msgstr "Kohde"
 
@@ -582,7 +590,7 @@ msgstr "Kohde"
 msgid "Visualization"
 msgstr "Visualisointi"
 
-#: translations/misc.html:65
+#: translations/misc.html:67
 msgid "What can I do content"
 msgstr ""
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
@@ -592,11 +600,11 @@ msgstr ""
 "nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:64
+#: translations/misc.html:66
 msgid "What can I do?"
 msgstr "Mitä yhteensopivuuden välineistöllä voi tehdä?"
 
-#: translations/misc.html:61
+#: translations/misc.html:63
 msgid "What is description content"
 msgstr ""
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
@@ -606,11 +614,11 @@ msgstr ""
 "nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:60
+#: translations/misc.html:62
 msgid "What is description?"
 msgstr "Mitä ovat yhteentoimivuuden kuvaukset?"
 
-#: translations/misc.html:63
+#: translations/misc.html:65
 msgid "What is method content"
 msgstr ""
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
@@ -620,7 +628,7 @@ msgstr ""
 "nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:62
+#: translations/misc.html:64
 msgid "What is method?"
 msgstr "Mikä on yhteentoimivuusmenetelmä?"
 
@@ -695,6 +703,12 @@ msgstr "XML"
 #: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Define concept for the new predicate"
+#~ msgstr "Määrittele käsite uudelle ominaisuudelle"
+
+#~ msgid "Define concept for the predicate"
+#~ msgstr "Määrittele käsite ominaisuudelle"
 
 #~ msgid "Delete predicate"
 #~ msgstr "Poista ominaisuus"

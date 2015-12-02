@@ -121,7 +121,7 @@ export class SearchPredicateController {
   }
 
   createNew(selectionOwlType: string) {
-    return this.searchConceptModal.openNewCreation(this.model.references, 'predicate')
+    return this.searchConceptModal.openNewCreation(this.model.references, this.type)
       .then(result => {
         if (!this.typeSelectable) {
           this.$uibModalInstance.close(_.extend(result, {type: selectionOwlType}));

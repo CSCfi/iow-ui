@@ -20,7 +20,7 @@
   <state-select state="ctrl.class.state" model="ctrl.model"></state-select>
 </editable>
 
-<editable-subject-select references="ctrl.model.references" type="ctrl.class" subject="ctrl.class.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
+<editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
 
 <uib-accordion close-others="true">
   <uib-accordion-group ng-repeat="property in ctrl.class.properties" is-open="ctrl.propertyViews[property.id].isOpen">
