@@ -27,8 +27,10 @@ mod.directive('modelView', () => {
     bindToController: true,
     require: ['modelView', '^ngController'],
     link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      $scope.modelController = controllers[1];
-      $scope.modelController.registerView(controllers[0]);
+      const modelViewController: ModelViewController = controllers[0];
+      const modelController: ModelController = controllers[1];
+      modelController.registerView(modelViewController);
+      modelViewController.getRequiredModels = () => modelController.getRequiredModels();
     },
     controller: ModelViewController
   };
@@ -42,6 +44,8 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   visible: boolean = false;
   model: Model;
+  getRequiredModels: () => Set<Uri>;
+
   private referencesView: View<Reference>;
   private requiresView: View<Require>;
 
@@ -95,6 +99,10 @@ export class ModelViewController extends EditableEntityController<Model> {
         this.editableInEdit.addRequire(require);
         this.requiresView.open(require);
       });
+  }
+
+  isRequireInUse(require: Require) {
+    return this.getRequiredModels().has(require.id);
   }
 
   removeRequire(require: Require) {

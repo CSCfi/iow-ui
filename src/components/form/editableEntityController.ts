@@ -65,7 +65,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
     const unsaved = editable.unsaved;
     (unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable.id))
       .then(() => {
-        this.$scope.modelController.selectionEdited(editable, editableInEdit);
+        this.$scope.modelController && this.$scope.modelController.selectionEdited(editable, editableInEdit);
         this.select(editableInEdit);
       }, err => {
         this.$log.error(err);
@@ -78,7 +78,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
     this.confirmationModal.openDeleteConfirm()
       .then(() => this.remove(editable))
       .then(() => {
-        this.$scope.modelController.selectionDeleted(editable);
+        this.$scope.modelController && this.$scope.modelController.selectionDeleted(editable);
         this.select(null);
       });
   }

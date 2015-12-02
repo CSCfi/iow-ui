@@ -11,12 +11,11 @@ import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { glyphIconClassForType, collectIds, isDifferentUrl } from '../../services/utils';
-import { Class, Attribute, Predicate, PredicateListItem, ClassListItem, Association, Model, Type, Concept, ConceptSuggestion, Property, WithIdAndType, Uri } from '../../services/entities';
+import { Class, Attribute, Predicate, PredicateListItem, ClassListItem, Association, Model, ModelListItem, Type, Concept, ConceptSuggestion, Property, WithIdAndType, Uri, Localizable } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal';
-import { Localizable } from '../../services/entities';
 
 export class ModelController {
 
@@ -95,6 +94,11 @@ export class ModelController {
         ])
         .then(() => this.loading = false);
     }
+  }
+
+  getRequiredModels(): Set<Uri> {
+    type WithModel = { model: ModelListItem };
+    return new Set<Uri>(_.chain<WithModel>(this.predicates).concat(this.classes).map(item => item.model.id).value());
   }
 
   registerView(view: View) {
