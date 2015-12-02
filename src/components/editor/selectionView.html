@@ -1,7 +1,7 @@
 <div ng-class="{'col-md-7': !ctrl.hideVisualization, 'col-md-12': ctrl.hideVisualization}">
   <div class="component">
     <div class="component-header">
-      <h3><span ng-class="editableController.getEditable().glyphIconClass"></span> <span>{{editableController.getEditable() | translateLabel}}</span></h3>
+      <h3><span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span> <span>{{ctrl.editableController.getEditable() | translateLabel}}</span></h3>
     </div>
 
     <div float="top-actions-placeholder">
