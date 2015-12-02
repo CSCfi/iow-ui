@@ -22,8 +22,8 @@
 <div ng-if="!ctrl.hideVisualization" ng-class="{'col-md-5': !ctrl.visCollapsed && !ctrl.contentCollapsed, 'col-md-1': ctrl.visCollapsed, 'col-md-11': !ctrl.visCollapsed && ctrl.contentCollapsed}">
   <div class="component" float top-offset="8">
     <div class="component-header">
-      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="ctrl.visCollapsed"><span translate>Visualization</span> <span class="glyphicon glyphicon-chevron-right pull-right"></span></h3>
-      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="!ctrl.visCollapsed"><span class="glyphicon glyphicon-chevron-left"></span></h3>
+      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="ctrl.visCollapsed"><span class="glyphicon glyphicon-th"> <span translate>Visualization</span></span></h3>
+      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="!ctrl.visCollapsed"><span class="glyphicon glyphicon-th"></span></h3>
     </div>
     <div class="visualization-container" ng-hide="ctrl.visCollapsed">
       <div ng-transclude="visualization"></div>
