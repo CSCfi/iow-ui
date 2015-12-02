@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { GroupListItem, Predicate, Model, Uri, states } from '../../services/entities';
+import { Attribute, Association, GroupListItem, Predicate, Model, Uri, states } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 
 export const mod = angular.module('iow.components.editor');
@@ -29,9 +29,9 @@ mod.directive('predicateView', () => {
   };
 });
 
-class PredicateViewController extends EditableEntityController<Predicate> {
+class PredicateViewController extends EditableEntityController<Association|Attribute> {
 
-  predicate: Predicate;
+  predicate: Association|Attribute;
   model: Model;
 
   /* @ngInject */
@@ -39,15 +39,15 @@ class PredicateViewController extends EditableEntityController<Predicate> {
     super($scope, $log, confirmationModal, userService);
   }
 
-  create(entity: Predicate) {
+  create(entity: Association|Attribute) {
     return this.predicateService.createPredicate(entity);
   }
 
-  update(entity: Predicate, oldId: Uri) {
+  update(entity: Association|Attribute, oldId: Uri) {
     return this.predicateService.updatePredicate(entity, oldId);
   }
 
-  remove(entity: Predicate) {
+  remove(entity: Association|Attribute) {
     return this.predicateService.deletePredicate(entity.id, this.model.id);
   }
 
@@ -58,11 +58,11 @@ class PredicateViewController extends EditableEntityController<Predicate> {
     };
   }
 
-  getEditable(): Predicate {
+  getEditable(): Association|Attribute {
     return this.predicate;
   }
 
-  setEditable(editable: Predicate) {
+  setEditable(editable: Association|Attribute) {
     this.predicate = editable;
   }
 

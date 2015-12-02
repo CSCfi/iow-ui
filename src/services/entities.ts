@@ -155,6 +155,11 @@ export class Group extends AbstractGroup {
   constructor(graph: any, context: any) {
     super(graph, context);
   }
+
+  clone(): Group {
+    const serialization = this.serialize();
+    return new Group(serialization['@graph'], serialization['@context']);
+  }
 }
 
 abstract class AbstractModel extends GraphNode implements Location {
@@ -228,13 +233,18 @@ export class Model extends AbstractModel {
     });
   }
 
+  clone(): Model {
+    const serialization = this.serialize();
+    return new Model(serialization['@graph'], serialization['@context']);
+  }
+
   serializationValues(): any {
     this.copyNamespacesFromRequires();
 
     return {
       '@id': this.id,
-      label: this.label,
-      comment: this.comment,
+      label: Object.assign({}, this.label),
+      comment: Object.assign({}, this.comment),
       versionInfo: this.state,
       references: _.map(this.references, reference => reference.serialize(true)),
       requires: _.map(this.requires, require => require.serialize(true))
@@ -285,7 +295,7 @@ export class Require extends GraphNode {
   serializationValues() {
     return {
       '@id': this.id,
-      label: this.label,
+      label: Object.assign({}, this.label),
       'dcap:preferredXMLNamespaceName': this.namespace,
       'dcap:preferredXMLNamespacePrefix': this.prefix
     }
@@ -384,11 +394,16 @@ export class Class extends AbstractClass {
     return modelUrl(this.modelId);
   }
 
+  clone(): Class {
+    const serialization = this.serialize();
+    return new Class(serialization['@graph'], serialization['@context']);
+  }
+
   serializationValues() {
     return {
       '@id': this.curie,
-      label: this.label,
-      comment: this.comment,
+      label: Object.assign({}, this.label),
+      comment: Object.assign({}, this.comment),
       subClassOf: this.subClassOf,
       versionInfo: this.state,
       property: _.map(this.properties, property => property.serialize(true)),
@@ -429,8 +444,8 @@ export class Property extends GraphNode {
   serializationValues() {
     return {
       '@id': this.id,
-      label: this.label,
-      comment: this.comment,
+      label: Object.assign({}, this.label),
+      comment: Object.assign({}, this.comment),
       example: this.example,
       datatype: this.dataType,
       valueClass: this.valueClass,
@@ -537,8 +552,8 @@ export abstract class Predicate extends AbstractPredicate {
   serializationValues() {
     return {
       '@id': this.curie,
-      label: this.label,
-      comment: this.comment,
+      label: Object.assign({}, this.label),
+      comment: Object.assign({}, this.comment),
       range: this.getRange(),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf,
@@ -560,6 +575,11 @@ export class Association extends Predicate {
     return this.valueClass;
   }
 
+  clone(): Association {
+    const serialization = this.serialize();
+    return new Association(serialization['@graph'], serialization['@context']);
+  }
+
   serializationValues() {
     return Object.assign(super.serializationValues(), {
       range: this.valueClass
@@ -578,6 +598,11 @@ export class Attribute extends Predicate {
 
   getRange() {
     return this.dataType;
+  }
+
+  clone(): Attribute {
+    const serialization = this.serialize();
+    return new Attribute(serialization['@graph'], serialization['@context']);
   }
 
   serializationValues() {

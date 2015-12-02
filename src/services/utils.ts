@@ -26,14 +26,6 @@ export function collectIds(items: {id: Uri}[]): Set<Uri> {
   return new Set<Uri>(_.map(items, item => item.id));
 }
 
-export function clone<T>(obj: T): T {
-  if (obj) {
-    const cloned: T = Object.create(Object.getPrototypeOf(obj));
-    _.merge(cloned, obj);
-    return cloned;
-  }
-}
-
 export function splitCurie(curie: string): {prefix: string, value: string} {
   const parts = curie.split(':');
   if (parts.length === 2) {

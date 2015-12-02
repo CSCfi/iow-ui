@@ -3,11 +3,10 @@ import ILogService = angular.ILogService;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
-import { clone } from '../../services/utils';
 import { UserService } from '../../services/userService';
 import { ModelController } from '../model/modelController';
 import { ConfirmationModal } from '../common/confirmationModal';
-import { Class, AbstractGroup, Group, GroupListItem, Model, Predicate, Uri } from '../../services/entities';
+import { Attribute, Association, Class, AbstractGroup, Group, GroupListItem, Model, Predicate, Uri } from '../../services/entities';
 
 export interface EditableForm extends IFormController {
   editing: boolean;
@@ -23,7 +22,7 @@ export type Rights = {
   remove(): boolean;
 }
 
-export abstract class EditableEntityController<T extends Class|Predicate|Model|Group> {
+export abstract class EditableEntityController<T extends Class|Association|Attribute|Model|Group> {
 
   submitError = false;
   editableInEdit: T;
@@ -49,7 +48,7 @@ export abstract class EditableEntityController<T extends Class|Predicate|Model|G
   select(editable: T) {
     this.submitError = false;
     this.setEditable(editable);
-    this.editableInEdit = clone<T>(editable);
+    this.editableInEdit = editable ? <T> editable.clone() : null;
 
     if (editable && editable.unsaved) {
       this.edit();
