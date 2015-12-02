@@ -98,7 +98,11 @@ export class ModelController {
 
   getRequiredModels(): Set<Uri> {
     type WithModel = { model: ModelListItem };
-    return new Set<Uri>(_.chain<WithModel>(this.predicates).concat(this.classes).map(item => item.model.id).value());
+    return new Set<Uri>(_.chain<WithModel>(this.predicates)
+                         .concat(this.classes)
+                         .filter(item => item && item.model)
+                         .map(item => item.model.id)
+                         .value());
   }
 
   registerView(view: View) {
