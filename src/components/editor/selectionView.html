@@ -1,4 +1,4 @@
-<div ng-class="{'col-md-1': ctrl.contentCollapsed, 'col-md-7': !ctrl.visCollapsed && !ctrl.contentCollapsed, 'col-md-11': ctrl.visCollapsed && !ctrl.contentCollapsed}">
+<div ng-class="{'col-md-1': ctrl.contentCollapsed, 'col-md-7': !ctrl.visCollapsed && !ctrl.contentCollapsed && !ctrl.hideVisualization, 'col-md-11': ctrl.visCollapsed && !ctrl.contentCollapsed, 'col-md-12': ctrl.hideVisualization}">
   <div class="component">
     <div class="component-header">
       <h3 ng-click="ctrl.collapseContent()" ng-hide="ctrl.contentCollapsed"><span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span> <span>{{ctrl.editableController.getEditable() | translateLabel}}</span></h3>
