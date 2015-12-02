@@ -20,9 +20,10 @@ mod.directive('selectionView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {
+      this.collapsed = false;
       return {
         collapseVisualization() {
-          console.log('tuubaa');
+          this.collapsed = !this.collapsed;
         }
       };
     }
