@@ -17,7 +17,7 @@
       "@id": "https://tt.eduuni.fi/sites/csc-iow#JHS",
       "@type": "foaf:Group",
       "label": {
-	  "fi":"Yhteisen tietokomponentit",
+	  "fi":"Yhteiset tietokomponentit",
 	  "en":"Common vocabularies"
   },
   "homepage":"https://tt.eduuni.fi/sites/csc-iow/yhteiset_komponentit",
