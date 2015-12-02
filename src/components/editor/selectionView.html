@@ -1,31 +1,32 @@
-<div ng-class="{'col-md-7': !ctrl.hideVisualization, 'col-md-11': ctrl.collapsed, 'col-md-12': !ctrl.collapsed && ctrl.hideVisualization}">
+<div ng-class="{'col-md-1': ctrl.contentCollapsed, 'col-md-7': !ctrl.visCollapsed && !ctrl.contentCollapsed, 'col-md-11': ctrl.visCollapsed && !ctrl.contentCollapsed}">
   <div class="component">
     <div class="component-header">
-      <h3><span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span> <span>{{ctrl.editableController.getEditable() | translateLabel}}</span></h3>
+      <h3 ng-click="ctrl.collapseContent()" ng-hide="ctrl.contentCollapsed"><span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span> <span>{{ctrl.editableController.getEditable() | translateLabel}}</span></h3>
+      <h3 ng-click="ctrl.collapseContent()" ng-hide="!ctrl.contentCollapsed"><span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span></h3>
     </div>
 
-    <div float="top-actions-placeholder">
-      <editable-entity-buttons editable-controller="ctrl.editableController">
-        <div ng-transclude="buttons"></div>
-      </editable-entity-buttons>
-    </div>
+    <div ng-hide="ctrl.contentCollapsed">
+      <div float="top-actions-placeholder">
+        <editable-entity-buttons editable-controller="ctrl.editableController">
+          <div ng-transclude="buttons"></div>
+        </editable-entity-buttons>
+      </div>
 
-    <div class="selection-form">
-      <div ng-transclude="content"></div>
+      <div class="selection-form">
+        <div ng-transclude="content"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<div ng-if="!ctrl.hideVisualization" ng-class="{'col-md-5': !ctrl.collapsed, 'col-md-1': ctrl.collapsed}">
+<div ng-if="!ctrl.hideVisualization" ng-class="{'col-md-5': !ctrl.visCollapsed && !ctrl.contentCollapsed, 'col-md-1': ctrl.visCollapsed, 'col-md-11': !ctrl.visCollapsed && ctrl.contentCollapsed}">
   <div class="component" float top-offset="8">
     <div class="component-header">
-      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="ctrl.collapsed"><span translate>Visualization</span> <span class="glyphicon glyphicon-chevron-right pull-right"></span></h3>
-      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="!ctrl.collapsed"><span class="glyphicon glyphicon-chevron-left"></span></h3>
+      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="ctrl.visCollapsed"><span translate>Visualization</span> <span class="glyphicon glyphicon-chevron-right pull-right"></span></h3>
+      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="!ctrl.visCollapsed"><span class="glyphicon glyphicon-chevron-left"></span></h3>
     </div>
-    <div class="visualization-container" ng-hide="ctrl.collapsed">
+    <div class="visualization-container" ng-hide="ctrl.visCollapsed">
       <div ng-transclude="visualization"></div>
     </div>
   </div>
 </div>
-
-

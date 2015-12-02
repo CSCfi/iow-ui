@@ -20,10 +20,15 @@ mod.directive('selectionView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {
-      this.collapsed = false;
+      this.visCollapsed = false;
+      this.contentCollapsed = false;
+
       return {
         collapseVisualization() {
-          this.collapsed = !this.collapsed;
+          this.visCollapsed = !this.visCollapsed;
+        },
+        collapseContent() {
+          this.contentCollapsed = !this.contentCollapsed;
         }
       };
     }
