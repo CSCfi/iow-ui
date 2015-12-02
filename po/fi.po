@@ -298,7 +298,7 @@ msgstr "Englanniksi"
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/form/errorMessages.html:3
+#: components/form/errorMessages.html:4
 msgid "Existing id error"
 msgstr "Tunniste on jo käytössä"
 
@@ -344,9 +344,13 @@ msgstr "Tunniste"
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
-#: components/form/errorMessages.html:2
+#: components/form/errorMessages.html:3
 msgid "Invalid curie error"
 msgstr "Virheellinen tunniste"
+
+#: components/form/errorMessages.html:2
+msgid "Invalid namespace error"
+msgstr "Nimiavaruuden täytyy päättyä ‘#’ tai ‘/‘ -merkkeihin"
 
 #: translations/misc.html:54
 msgid "Is defined by"
@@ -450,11 +454,11 @@ msgstr "Sanastot"
 msgid "Register"
 msgstr "Luo tunnukset"
 
-#: components/form/errorMessages.html:4
+#: components/form/errorMessages.html:5
 msgid "Required error"
 msgstr "Pakollinen kenttä"
 
-#: components/form/errorMessages.html:5
+#: components/form/errorMessages.html:6
 msgid "Required localized error"
 msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 

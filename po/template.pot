@@ -290,7 +290,7 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: components/form/errorMessages.html:3
+#: components/form/errorMessages.html:4
 msgid "Existing id error"
 msgstr ""
 
@@ -330,8 +330,12 @@ msgstr ""
 msgid "Interoperability method"
 msgstr ""
 
-#: components/form/errorMessages.html:2
+#: components/form/errorMessages.html:3
 msgid "Invalid curie error"
+msgstr ""
+
+#: components/form/errorMessages.html:2
+msgid "Invalid namespace error"
 msgstr ""
 
 #: translations/misc.html:54
@@ -438,11 +442,11 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: components/form/errorMessages.html:4
+#: components/form/errorMessages.html:5
 msgid "Required error"
 msgstr ""
 
-#: components/form/errorMessages.html:5
+#: components/form/errorMessages.html:6
 msgid "Required localized error"
 msgstr ""
 
