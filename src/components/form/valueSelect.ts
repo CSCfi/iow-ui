@@ -8,10 +8,10 @@ mod.directive('valueSelect', () => {
     scope: {
       value: '=',
       values: '=',
-      name: '@'
+      id: '@'
     },
     restrict: 'E',
-    template: `<select name="{{ctrl.name}}" class="form-control" ng-model="ctrl.value">
+    template: `<select id="{{ctrl.id}}" class="form-control" ng-model="ctrl.value">
                  <option ng-repeat="value in ctrl.values" value="{{value}}">{{ctrl.displayName(value)}}</option>
                </select>`,
     controllerAs: 'ctrl',

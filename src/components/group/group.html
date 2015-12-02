@@ -4,7 +4,7 @@
     <h2>{{ctrl.group | translateLabel}}</h2>
   </div>
 
-  <form name="form">
+  <form name="form" class="editable-form">
     <div class="main-editable-content">
 
       <editable-entity-buttons editable-controller="ctrl">
@@ -12,8 +12,13 @@
       </editable-entity-buttons>
 
       <div class="col-md-6">
-        <editable title="Group label"><input name="Label" class="form-control" type="text" localized-input="required" ng-model="ctrl.editableInEdit.label" /></editable>
-        <editable title="Comment"><textarea name="Comment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea></editable>
+        <editable title="Group label">
+          <input id="groupLabel" class="form-control" type="text" localized-input="required" ng-model="ctrl.editableInEdit.label" />
+        </editable>
+
+        <editable title="Comment">
+          <textarea id="groupComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
+        </editable>
       </div>
 
       <div class="col-md-6">

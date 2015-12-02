@@ -1,7 +1,9 @@
-<ul ng-messages="error" ng-messages-multiple class="errors">
-  <li ng-message="invalidNamespace">{{'Invalid namespace error' | translate}}</li>
-  <li ng-message="invalidCurie">{{'Invalid curie error' | translate}}</li>
-  <li ng-message="idAlreadyInUse">{{'Existing id error' | translate}}</li>
-  <li ng-message="required">{{'Required error' | translate}}</li>
-  <li ng-message="requiredLocalized">{{'Required localized error' | translate}}</li>
-</ul>
+<div ng-show="ngModelController.$dirty">
+  <ul ng-messages="ngModelController.$error" ng-messages-multiple class="errors">
+    <li ng-message="invalidNamespace">{{'Invalid namespace error' | translate}}</li>
+    <li ng-message="invalidCurie">{{'Invalid curie error' | translate}}</li>
+    <li ng-message="idAlreadyInUse">{{'Existing id error' | translate}}</li>
+    <li ng-message="required">{{'Required error' | translate}}</li>
+    <li ng-message="requiredLocalized">{{'Required localized error' | translate}}</li>
+  </ul>
+</div>

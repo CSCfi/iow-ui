@@ -13,7 +13,8 @@ mod.directive('predicateSelect', () => {
     scope: {
       curie: '=',
       type: '=',
-      model: '='
+      model: '=',
+      id: '@'
     },
     restrict: 'E',
     controllerAs: 'ctrl',

@@ -26,10 +26,11 @@ mod.directive('rangeSelect', () => {
   'ngInject';
   return {
     scope: {
-      range: '='
+      range: '=',
+      id: '@'
     },
     restrict: 'E',
-    template: '<value-select name="Range" values="ctrl.ranges" value="ctrl.range"></value-select>',
+    template: '<value-select id="{{ctrl.id}}" values="ctrl.ranges" value="ctrl.range"></value-select>',
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {

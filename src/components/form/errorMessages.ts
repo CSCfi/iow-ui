@@ -5,7 +5,7 @@ mod.directive('errorMessages', () => {
   return {
     restrict: 'EA',
     scope: {
-      error: '='
+      ngModelController: '='
     },
     template: require('./errorMessages.html')
   }

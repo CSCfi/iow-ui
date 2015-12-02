@@ -1,5 +1,5 @@
 <div ng-show="ctrl.value">
-  <div class="model-view__title">{{ctrl.title | translate}}</div>
+  <label>{{ctrl.title | translate}}</label>
   <a ng-if="ctrl.showLink" ng-href="{{ctrl.href}}">{{ctrl.displayValue}}</a>
   <div ng-if="ctrl.showPlain">{{ctrl.displayValue}}</div>
 </div>

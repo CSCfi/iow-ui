@@ -2,7 +2,7 @@ import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
 import IScope = angular.IScope;
 import { SearchClassModal } from './searchClassModal';
-import { Model } from '../../services/entities';
+import { Model, Uri } from '../../services/entities';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -15,8 +15,8 @@ mod.directive('classSelect', () => {
   return {
     scope: {
       curie: '=',
-      name: '@',
-      model: '='
+      model: '=',
+      id: '@'
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -35,6 +35,7 @@ export class ClassSelectController {
   curie: string;
   name: string;
   model: Model;
+  id: Uri;
 
   constructor(private searchClassModal: SearchClassModal) {
   }

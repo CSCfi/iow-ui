@@ -12,10 +12,11 @@ mod.directive('stateSelect', () => {
   return {
     scope: {
       state: '=',
-      model: '='
+      model: '=',
+      id: '@'
     },
     restrict: 'E',
-    template: '<value-select name="State" values="ctrl.getStates()" value="ctrl.state"></value-select>',
+    template: '<value-select id="{{ctrl.id}}" values="ctrl.getStates()" value="ctrl.state"></value-select>',
     controllerAs: 'ctrl',
     bindToController: true,
     controller(userService: UserService) {

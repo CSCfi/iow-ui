@@ -4,20 +4,24 @@
 
     <modal-body class="search-modal">
 
-      <label for="label" translate>Label</label>
-      <div class="input-group input-group-md">
-        <input id="label" type="text" class="form-control" autofocus required ng-model="ctrl.label" />
-      </div>
+      <editable title="Label">
+        <div class="input-group input-group-md">
+          <input id="label" type="text" class="form-control" autofocus required ng-model="ctrl.label" />
+        </div>
+      </editable>
 
-      <label for="namespace" translate>Preferred namespace</label>
-      <div class="input-group input-group-md">
-        <input id="namespace" class="form-control" required namespace-input ng-model="ctrl.namespace" />
-      </div>
+      <editable title="Preferred namespace">
+        <div class="input-group input-group-md">
+          <input id="namespace" class="form-control" required namespace-input ng-model="ctrl.namespace" />
+        </div>
+      </editable>
 
-      <label for="prefix" translate>Preferred prefix</label>
-      <div class="input-group input-group-md">
-        <input id="prefix" type="text" class="form-control" required ng-model="ctrl.prefix" />
-      </div>
+      <editable title="Preferred prefix">
+        <div class="input-group input-group-md">
+          <input id="prefix" type="text" class="form-control" required ng-model="ctrl.prefix" />
+        </div>
+      </editable>
+
     </modal-body>
 
     <modal-buttons>

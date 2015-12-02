@@ -35,10 +35,11 @@
         <p>{{ctrl.concept.comment | translateValue}}</p>
 
         <div ng-if="ctrl.newCreation">
-          <label for="name" translate>Label</label>
-          <div class="input-group input-group-md">
-            <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
-          </div>
+          <editable title="Label">
+            <div class="input-group input-group-md">
+              <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
+            </div>
+          </editable>
         </div>
       </div>
 

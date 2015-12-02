@@ -4,20 +4,23 @@
 
     <modal-body class="search-modal">
 
-      <label for="conceptLabel" translate>Concept</label>
-      <div class="input-group input-group-md">
-        <input id="conceptLabel" type="text" class="form-control" autofocus required ng-model="ctrl.conceptLabel" />
-      </div>
+      <editable title="Concept">
+        <div class="input-group input-group-md">
+          <input id="conceptLabel" type="text" class="form-control" autofocus required ng-model="ctrl.conceptLabel" />
+        </div>
+      </editable>
 
-      <label for="conceptComment" translate>Comment</label>
-      <div class="input-group input-group-md">
-        <textarea id="conceptComment" class="form-control" autofocus required ng-model="ctrl.conceptComment"></textarea>
-      </div>
+      <editable title="Comment">
+        <div class="input-group input-group-md">
+          <textarea id="conceptComment" class="form-control" autofocus required ng-model="ctrl.conceptComment"></textarea>
+        </div>
+      </editable>
 
-      <label for="name" translate>Label</label>
-      <div class="input-group input-group-md">
-        <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
-      </div>
+      <editable title="Label">
+        <div class="input-group input-group-md">
+          <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
+        </div>
+      </editable>
 
       <p><span translate>Concept is suggested to scheme</span> {{ctrl.reference.title | translateValue}}</p>
     </modal-body>

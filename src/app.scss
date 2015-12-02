@@ -141,17 +141,37 @@ uib-accordion .panel-group {
   }
 }
 
-.model-view__title {
-  font-weight: bold;
-  margin-top: 15px;
+.editable-form {
+  label {
+    font-weight: bold;
+    font-size: 15px;
+    margin: 15px 0 0 0;
+    padding: 0;
+    display: block;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    max-width: 500px;
+  }
+}
+
+.editable-wrap {
+  a {
+    cursor: pointer;
+  }
+
+  button {
+    margin-top: 10px;
+  }
+
+  textarea {
+    height: 100px;
+  }
 }
 
 .model-view__sub {
   margin-left: 20px;
-}
-
-h2 .model-view__title {
-  font-weight: normal;
 }
 
 .panel-title span {
@@ -295,26 +315,6 @@ h2 .model-view__title {
   }
 
   background-color: #fff;
-}
-
-
-.editable-wrap {
-  input, select, textarea {
-    width: 100%;
-    max-width: 500px;
-  }
-
-  a {
-    cursor: pointer;
-  }
-
-  button {
-    margin-top: 10px;
-  }
-
-  textarea {
-    height: 100px;
-  }
 }
 
 .search-modal {
