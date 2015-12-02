@@ -58,7 +58,7 @@ export class ModelController {
     });
 
     $scope.$on('$locationChangeStart', (event, next, current) => {
-      if (isDifferentUrl(current, next)) {
+      if ((this.selection && !this.selection.unsaved) && isDifferentUrl(current, next)) {
         this.ifEditing(() => event.preventDefault(), () => {
           $location.url($location.url(next).hash());
         });
