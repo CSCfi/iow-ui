@@ -3,7 +3,7 @@ import ILocationService = angular.ILocationService;
 import { EditableForm } from './editableEntityController';
 import { LanguageService } from '../../services/languageService';
 import { Localizable, isLocalizable } from '../../services/entities';
-import { isString } from '../../services/utils';
+import { isString, isDifferentUrl } from '../../services/utils';
 
 export abstract class FormElementController {
 
@@ -23,13 +23,6 @@ export abstract class FormElementController {
     return false;
   }
 
-  private isDifferentUrl(url: string): boolean {
-    function normalize(url: string): string {
-      return url.replace(/:/g, '%3A').replace(/&property.*/, '');
-    }
-    return normalize(this.$location.url()) !== normalize(url);
-  }
-
   get external(): boolean {
     return this.link && !this.link.startsWith('/');
   }
@@ -39,7 +32,7 @@ export abstract class FormElementController {
   }
 
   get showLink(): boolean {
-    return !this.hideLinks() && this.showNonEditable() && this.link && this.isDifferentUrl(this.link);
+    return !this.hideLinks() && this.showNonEditable() && this.link && isDifferentUrl(this.link, this.$location.url());
   }
 
   get showPlain(): boolean {

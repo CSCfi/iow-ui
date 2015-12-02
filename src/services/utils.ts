@@ -40,3 +40,11 @@ export function splitCurie(curie: string): {prefix: string, value: string} {
     return {prefix: parts[0], value: parts[1]};
   }
 }
+
+function normalizeUrl(url: string): string {
+  return url.replace(/:/g, '%3A').replace(/&property.*/, '');
+}
+
+export function isDifferentUrl(lhs: string, rhs: string): boolean {
+  return normalizeUrl(lhs) !== normalizeUrl(rhs);
+}

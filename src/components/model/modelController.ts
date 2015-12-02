@@ -10,7 +10,7 @@ import { LocationService } from '../../services/locationService';
 import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
-import { glyphIconClassForType, collectIds } from '../../services/utils';
+import { glyphIconClassForType, collectIds, isDifferentUrl } from '../../services/utils';
 import { Class, Attribute, Predicate, PredicateListItem, ClassListItem, Association, Model, Type, Concept, ConceptSuggestion, Property, WithIdAndType, Uri } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -58,7 +58,7 @@ export class ModelController {
     });
 
     $scope.$on('$locationChangeStart', (event, next, current) => {
-      if (next !== current) {
+      if (isDifferentUrl(current, next)) {
         this.ifEditing(() => event.preventDefault(), () => {
           $location.url($location.url(next).hash());
         });
