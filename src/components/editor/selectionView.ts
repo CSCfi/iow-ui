@@ -16,6 +16,15 @@ mod.directive('selectionView', () => {
       'selectionContent': 'content',
       'selectionButtons': 'buttons',
       'selectionVisualization': '?visualization'
+    },
+    controllerAs: 'ctrl',
+    bindToController: true,
+    controller() {
+      return {
+        collapseVisualization() {
+          console.log('tuubaa');
+        }
+      };
     }
   };
 });

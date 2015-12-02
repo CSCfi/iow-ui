@@ -1,11 +1,11 @@
-<div ng-class="{'col-md-7': !hideVisualization, 'col-md-12': hideVisualization}">
+<div ng-class="{'col-md-7': !ctrl.hideVisualization, 'col-md-12': ctrl.hideVisualization}">
   <div class="component">
     <div class="component-header">
       <h3><span ng-class="editableController.getEditable().glyphIconClass"></span> <span>{{editableController.getEditable() | translateLabel}}</span></h3>
     </div>
 
     <div float="top-actions-placeholder">
-      <editable-entity-buttons editable-controller="editableController">
+      <editable-entity-buttons editable-controller="ctrl.editableController">
         <div ng-transclude="buttons"></div>
       </editable-entity-buttons>
     </div>
@@ -16,10 +16,10 @@
   </div>
 </div>
 
-<div ng-if="!hideVisualization" class="col-md-5">
+<div ng-if="!ctrl.hideVisualization" class="col-md-5">
   <div class="component" float top-offset="8">
     <div class="component-header">
-      <h3 translate>Visualization</h3>
+      <h3 ng-click="ctrl.collapseVisualization()"><span translate>Visualization</span> <span class="glyphicon glyphicon-fast-forward pull-right" style="vertical-align: text-bottom"></span></h3>
     </div>
     <div class="visualization-container">
       <div ng-transclude="visualization"></div>
