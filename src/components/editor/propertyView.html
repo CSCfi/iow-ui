@@ -1,24 +1,24 @@
 <div>
-  <button ng-show="editableController.canModify()" type="button" class="btn btn-default pull-right" ng-click="editableController.removeProperty(property)" translate>Delete property</button>
+  <button ng-show="editableController.canModify()" type="button" class="btn btn-default pull-right" ng-click="editableController.removeProperty(ctrl.property)" translate>Delete property</button>
 
   <editable title="Name">
-    <input id="{{property.id + 'label'}}" class="form-control" type="text" localized-input="required" ng-model="ctrl.property.label" />
+    <input id="{{ctrl.property.id + 'label'}}" class="form-control" type="text" localized-input="required" ng-model="ctrl.property.label" />
   </editable>
 
   <editable title="Comment">
-    <textarea id="{{property.id + 'comment'}}" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea>
+    <textarea id="{{ctrl.property.id + 'comment'}}" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea>
   </editable>
 
   <editable title="Example">
-    <input id="{{property.id + 'example'}}" class="form-control" type="text" localized-input ng-model="ctrl.property.example" />
+    <input id="{{ctrl.property.id + 'example'}}" class="form-control" type="text" localized-input ng-model="ctrl.property.example" />
   </editable>
 
   <editable ng-if="ctrl.predicate.isAttribute()" title="Range">
-    <range-select id="{{property.id + 'range'}}" range="ctrl.property.dataType"></range-select>
+    <range-select id="{{ctrl.property.id + 'range'}}" range="ctrl.property.dataType"></range-select>
   </editable>
 
   <editable ng-if="ctrl.predicate.isAssociation()" title="Value class" link="ctrl.linkToValueClass()">
-    <class-select id="{{property.id + 'valueClass'}}" curie="ctrl.property.valueClass" model="ctrl.model"></class-select>
+    <class-select id="{{ctrl.property.id + 'valueClass'}}" curie="ctrl.property.valueClass" model="ctrl.model"></class-select>
   </editable>
 
   <uib-accordion>
