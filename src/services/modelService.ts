@@ -42,7 +42,7 @@ export class ModelService {
       });
   }
 
-  newReference(scheme: any, lang: Language): IPromise<Reference> {
+  newReference(scheme: any, lang: Language, context: any): IPromise<Reference> {
     return this.$q.when(
       new Reference({
         '@id': `http://www.finto.fi/${scheme.id}`,
@@ -51,7 +51,7 @@ export class ModelService {
         'title': {
           [lang]: scheme.title
         }
-      }));
+      }, context));
   }
 
   getAllRequires(): IPromise<Require[]> {

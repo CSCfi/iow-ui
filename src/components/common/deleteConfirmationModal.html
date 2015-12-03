@@ -1,0 +1,23 @@
+<modal-template default="true">
+  <modal-title translate>Confirm delete</modal-title>
+  <modal-body>
+
+    <div ng-if="ctrl.referrers">
+      <p><span translate>Following items are depending on the deleted</span> <span>{{'of ' + ctrl.entity.type | translate}}</span></p>
+      <ul>
+        <li ng-repeat="(type, referrers) in ctrl.referrers">
+          <span>{{type | translate}}</span>
+          <ul>
+            <li ng-repeat="referrer in referrers">
+              {{referrer | translateLabel}} ({{referrer.id}})
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <br />
+    </div>
+
+    <span translate>Are you sure that you want to delete?</span>
+
+  </modal-body>
+</modal-template>

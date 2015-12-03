@@ -23,8 +23,4 @@ export class ConfirmationModal {
   openEditInProgress() {
     return this.open('Edit in progress', 'Are you sure that you want to cancel edit?');
   }
-
-  openDeleteConfirm() {
-    return this.open('Confirm delete', 'Are you sure that you want to delete?');
-  }
 };

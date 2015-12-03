@@ -8,6 +8,7 @@ import { ModelCache } from './modelCache';
 import { ModelService } from './modelService';
 import { PredicateService } from './predicateService';
 import { SearchService } from './searchService';
+import { UsageService } from './usageService';
 import { UserService } from './userService';
 import { ValidatorService } from './validatorService';
 
@@ -24,5 +25,6 @@ mod.service('modelCache', ModelCache);
 mod.service('modelService', ModelService);
 mod.service('predicateService', PredicateService);
 mod.service('searchService', SearchService);
+mod.service('usageService', UsageService);
 mod.service('userService', UserService);
 mod.service('validatorService', ValidatorService);

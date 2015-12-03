@@ -1,18 +1,20 @@
 import IFilterService = angular.IFilterService;
 import { ConfirmationModal } from './confirmationModal';
+import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { LanguageService } from '../../services/languageService';
 import { Localizable } from '../../services/entities';
 
 const mod = angular.module('iow.components.common', []);
 export = mod.name;
 
-import './typeahead';
-import './float';
-import './modalTemplate';
 import './accordionChevron';
 import './ajaxLoadingIndicator';
+import './float';
+import './modalTemplate';
+import './typeahead';
 
 mod.service('confirmationModal', ConfirmationModal);
+mod.service('deleteConfirmationModal', DeleteConfirmationModal);
 
 mod.filter('translateValue', (languageService: LanguageService) => {
   'ngInject';

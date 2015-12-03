@@ -5,7 +5,7 @@ import IQService = angular.IQService;
 import * as _ from 'lodash';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { AddModelModal } from './addModelModal';
-import { ConfirmationModal } from '../common/confirmationModal';
+import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
@@ -30,8 +30,8 @@ export class GroupController extends EditableEntityController<Group> {
               private modelService: ModelService,
               userService: UserService,
               private addModelModal: AddModelModal,
-              confirmationModal: ConfirmationModal) {
-    super($scope, $log, confirmationModal, userService);
+              deleteConfirmationModal: DeleteConfirmationModal) {
+    super($scope, $log, deleteConfirmationModal, userService);
 
     $q.all({
         group: groupService.getGroup(groupId),

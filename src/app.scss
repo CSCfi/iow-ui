@@ -266,6 +266,11 @@ uib-accordion .panel-group {
   &.modal-small {
     width: 30%;
   }
+  &.modal-adapting {
+    width: auto;
+    min-width: 30%;
+    display: table;
+  }
 }
 
 .bottom {

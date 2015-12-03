@@ -9,7 +9,7 @@ import { ClassService } from '../../services/classService';
 import { Class, GroupListItem, Model, Property, Uri, states } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
-import { ConfirmationModal } from '../common/confirmationModal';
+import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -42,11 +42,11 @@ export class ClassViewController extends EditableEntityController<Class> {
   /* @ngInject */
   constructor($scope: EditableScope,
               $log: ILogService,
-              confirmationModal: ConfirmationModal,
+              deleteConfirmationModal: DeleteConfirmationModal,
               private classService: ClassService,
               private searchPredicateModal: SearchPredicateModal,
               userService: UserService) {
-    super($scope, $log, confirmationModal, userService);
+    super($scope, $log, deleteConfirmationModal, userService);
   }
 
   registerForm(form: ClassFormController) {
@@ -93,16 +93,8 @@ export class ClassViewController extends EditableEntityController<Class> {
     this.class = editable;
   }
 
-  isDefinedInThisModel(): boolean {
+  isNotReference(): boolean {
     return this.class.modelId === this.model.id;
-  }
-
-  getRemoveText(): string {
-    if (this.isDefinedInThisModel()) {
-      return super.getRemoveText();
-    } else {
-      return 'Delete class from this model';
-    }
   }
 
   getGroup(): GroupListItem {

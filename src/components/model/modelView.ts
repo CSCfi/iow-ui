@@ -12,7 +12,7 @@ import { UserService } from '../../services/userService';
 import { collectIds } from '../../services/utils';
 import { SearchSchemeModal } from './searchSchemeModal';
 import { SearchRequireModal } from './searchRequireModal';
-import { ConfirmationModal } from '../common/confirmationModal';
+import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 
 export const mod = angular.module('iow.components.model');
 
@@ -53,12 +53,12 @@ export class ModelViewController extends EditableEntityController<Model> {
   constructor($scope: EditableScope,
               $log: ILogService,
               private modelService: ModelService,
-              confirmationModal: ConfirmationModal,
+              deleteConfirmationModal: DeleteConfirmationModal,
               private searchSchemeModal: SearchSchemeModal,
               private searchRequireModal: SearchRequireModal,
               private languageService: LanguageService,
               userService: UserService) {
-    super($scope, $log, confirmationModal, userService);
+    super($scope, $log, deleteConfirmationModal, userService);
 
     $scope.$watch(() => this.isEditing(), editing => {
       if (editing) {
@@ -79,7 +79,7 @@ export class ModelViewController extends EditableEntityController<Model> {
     const language = this.languageService.modelLanguage;
     const vocabularyMap = collectIds(this.editableInEdit.references);
     this.searchSchemeModal.open(vocabularyMap, language)
-      .then((scheme: any) => this.modelService.newReference(scheme, language))
+      .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
       .then((reference: Reference) => {
         this.editableInEdit.addReference(reference);
         this.referencesView.open(reference);

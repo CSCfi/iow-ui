@@ -5,7 +5,7 @@ import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { Attribute, Association, GroupListItem, Predicate, Model, Uri, states } from '../../services/entities';
-import { ConfirmationModal } from '../common/confirmationModal';
+import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -35,8 +35,8 @@ class PredicateViewController extends EditableEntityController<Association|Attri
   model: Model;
 
   /* @ngInject */
-  constructor($scope: EditableScope, $log: ILogService, confirmationModal: ConfirmationModal, private predicateService: PredicateService, userService: UserService) {
-    super($scope, $log, confirmationModal, userService);
+  constructor($scope: EditableScope, $log: ILogService, deleteConfirmationModal: DeleteConfirmationModal, private predicateService: PredicateService, userService: UserService) {
+    super($scope, $log, deleteConfirmationModal, userService);
   }
 
   create(entity: Association|Attribute) {
@@ -66,16 +66,8 @@ class PredicateViewController extends EditableEntityController<Association|Attri
     this.predicate = editable;
   }
 
-  isDefinedInThisModel(): boolean {
+  isNotReference(): boolean {
     return this.predicate.modelId === this.model.id;
-  }
-
-  getRemoveText(): string {
-    if (this.isDefinedInThisModel()) {
-      return super.getRemoveText();
-    } else {
-      return `Delete ${this.predicate.type} from this model`;
-    }
   }
 
   getGroup(): GroupListItem {

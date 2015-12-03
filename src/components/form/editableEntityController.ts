@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { UserService } from '../../services/userService';
 import { ModelController } from '../model/modelController';
-import { ConfirmationModal } from '../common/confirmationModal';
+import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { Attribute, Association, Class, AbstractGroup, Group, GroupListItem, Model, Predicate, Uri } from '../../services/entities';
 
 export interface EditableForm extends IFormController {
@@ -27,7 +27,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   submitError = false;
   editableInEdit: T;
 
-  constructor(private $scope: EditableScope, private $log: ILogService, private confirmationModal: ConfirmationModal, protected userService: UserService) {
+  constructor(private $scope: EditableScope, private $log: ILogService, private deleteConfirmationModal: DeleteConfirmationModal, protected userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
       if (!isLoggedIn && wasLoggedIn) {
         this.cancelEditing();
@@ -44,6 +44,10 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   abstract getEditable(): T;
   abstract setEditable(editable: T): void;
   abstract getGroup(): AbstractGroup;
+
+  isNotReference(): boolean {
+    return true;
+  }
 
   select(editable: T) {
     this.submitError = false;
@@ -75,7 +79,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
 
   removeEdited() {
     const editable = this.getEditable();
-    this.confirmationModal.openDeleteConfirm()
+    this.deleteConfirmationModal.open(this.getEditable(), this.isNotReference())
       .then(() => this.remove(editable))
       .then(() => {
         this.$scope.modelController && this.$scope.modelController.selectionDeleted(editable);
@@ -115,7 +119,8 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   getRemoveText(): string {
-    return 'Delete ' + this.getEditable().type;
+    const text = 'Delete ' + this.getEditable().type;
+    return this.isNotReference() ? text : text + ' from this model';
   }
 
   canAskForRights(): boolean {

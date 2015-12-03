@@ -57,7 +57,7 @@ export class ExpandedCurie {
 
 export abstract class GraphNode {
 
-  constructor(public type: Type, public graph: any, public context?: any) {
+  constructor(public type: Type, public graph: any, public context: any) {
   }
 
   get glyphIconClass(): any {
@@ -202,7 +202,7 @@ export class Model extends AbstractModel {
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
     this.group = new GroupListItem(graph.isPartOf, context);
-    this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference));
+    this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference, context));
     this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context));
     this.copyNamespacesFromRequires();
   }
@@ -259,8 +259,8 @@ export class Reference extends GraphNode {
   comment: Localizable;
   vocabularyId: string;
 
-  constructor(graph: any) {
-    super('reference', graph);
+  constructor(graph: any, context: any) {
+    super('reference', graph, context);
     this.vocabularyId = graph['dct:identifier'];
     this.id = graph['@id'];
     this.label = graph.title;
@@ -657,8 +657,8 @@ export class DefaultUser extends GraphNode implements User {
   memberGroups: Uri[];
   name: string;
 
-  constructor(graph: any) {
-    super('user', graph);
+  constructor(graph: any, context: any) {
+    super('user', graph, context);
     this.createdAt = graph.created;
     this.modifiedAt = graph.modified;
     this.adminGroups = normalizeAsArray<Uri>(graph.isAdminOf);
@@ -715,8 +715,8 @@ export class SearchResult extends GraphNode {
   label: Localizable;
   comment: Localizable;
 
-  constructor(graph: any) {
-    super(mapType(graph['@type']), graph);
+  constructor(graph: any, context: any) {
+    super(mapType(graph['@type']), graph, context);
     this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
@@ -733,6 +733,37 @@ export class SearchResult extends GraphNode {
           return selectableUrl(this.id, this.type);
         }
     }
+  }
+}
+
+export class Usage extends GraphNode {
+
+  id: Uri;
+  label: Localizable;
+  modelId: Uri;
+  referrers: Referrer[];
+
+  constructor(graph: any, context: any) {
+    super(mapType(graph['@type']), graph, context);
+    this.id = graph['@id'];
+    this.label = graph.label;
+    this.modelId = graph.isDefinedBy;
+    this.referrers = _.map(normalizeAsArray(graph.isReferencedBy), referrer => new Referrer(referrer, context));
+  }
+}
+
+export class Referrer extends GraphNode {
+
+  id: Uri;
+  label: Localizable;
+  type: Type;
+  modelId: Uri;
+
+  constructor(graph: any, context: any) {
+    super(mapType(graph['@type']), graph, context);
+    this.id = graph['@id'];
+    this.label = graph.label;
+    this.modelId = graph.isDefinedBy;
   }
 }
 
@@ -879,14 +910,18 @@ export class EntityDeserializer {
   }
 
   deserializeUser(data: any): IPromise<User> {
-    return frameAndMap(this.$log, data, frames.userFrame, (graph, context) => new DefaultUser(graph));
+    return frameAndMap(this.$log, data, frames.userFrame, (graph, context) => new DefaultUser(graph, context));
   }
 
   deserializeSearch(data: any): IPromise<SearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (graph, context) => new SearchResult(graph))
+    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (graph, context) => new SearchResult(graph, context))
   }
 
   deserializeClassVisualization(data: any): IPromise<any> {
     return frameData(this.$log, data, frames.classVisualizationFrame(data));
+  }
+
+  deserializeUsage(data: any): IPromise<Usage> {
+    return frameAndMap(this.$log, data, frames.usageFrame, (graph, context) => graph ? new Usage(graph, context) : null);
   }
 }

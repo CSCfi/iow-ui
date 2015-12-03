@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-11-14 16:49+0200\n"
+"PO-Revision-Date: 2015-12-03 12:57+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -13,56 +13,64 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: components/model/model.html:44
+#: translations/misc.html:46
 msgid "Add association"
 msgstr ""
 
-#: components/model/model.html:29
+#: translations/misc.html:42
 msgid "Add attribute"
 msgstr ""
 
-#: components/model/model.html:14
+#: translations/misc.html:38
 msgid "Add class"
 msgstr ""
 
-#: components/group/addModelModal.html:3 components/group/group.html:4
+#: components/group/addModelModal.html:3 components/group/group.html:11
 msgid "Add model"
 msgstr ""
 
-#: components/model/selectionView.html:17
+#: components/editor/classView.html:5 components/editor/predicateView.html:5
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:14
+#: components/model/modelView.html:11
 msgid "Add reference"
 msgstr ""
 
-#: components/model/searchClassModal.html:32
-#: components/model/searchPredicateModal.html:37
+#: components/model/addRequireModal.html:3 components/model/modelView.html:10
+msgid "Add require"
+msgstr ""
+
+#: components/advancedSearchModal.html:2 components/frontPage.html:31
+msgid "Advanced search"
+msgstr ""
+
+#: components/editor/searchClassModal.html:25
+#: components/editor/searchPredicateModal.html:33
 msgid "All models"
 msgstr ""
 
-#: components/model/searchConceptModal.html:15
+#: components/editor/searchConceptModal.html:12
 msgid "All references"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:46
+#: components/editor/searchPredicateModal.html:42
 msgid "All types"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:157 translations/misc.html:12
+#: translations/misc.html:12
 msgid "and create new"
 msgstr ""
 
-#: components/modal/editInProgressModal.html:9
+#: translations/misc.html:35
 msgid "Are you sure that you want to cancel edit?"
 msgstr ""
 
-#: components/modal/deleteConfirmModal.html:9
+#: components/common/deleteConfirmationModal.html:20 translations/misc.html:37
 msgid "Are you sure that you want to delete?"
 msgstr ""
 
-#: components/group/group.html:3
+#: components/form/editableEntityButtons.html:6
 msgid "Ask for group rights"
 msgstr ""
 
@@ -70,42 +78,60 @@ msgstr ""
 msgid "association"
 msgstr "Association"
 
-#: components/model/model.html:41
-msgid "Associations"
+#: translations/misc.html:73
+msgid "Association label"
+msgstr ""
+
+#: translations/misc.html:49
+msgid "Association list"
 msgstr ""
 
 #: translations/misc.html:28
 msgid "attribute"
 msgstr "Attribute"
 
-#: components/model/model.html:26
-msgid "Attributes"
+#: translations/misc.html:74
+msgid "Attribute label"
 msgstr ""
 
-#: components/group/groupList.html:2
+#: translations/misc.html:45
+msgid "Attribute list"
+msgstr ""
+
+#: components/frontPage.html:46
 msgid "Browse"
 msgstr ""
 
+#: components/advancedSearchModal.html:33
+#: components/common/modalTemplate.html:16
+#: components/editor/addConceptModal.html:29
+#: components/editor/searchClassModal.html:51
+#: components/editor/searchConceptModal.html:52
+#: components/editor/searchPredicateModal.html:71
 #: components/group/addModelModal.html:25
-#: components/modal/deleteConfirmModal.html:14
-#: components/modal/editInProgressModal.html:14
-#: components/model/addConceptModal.html:31
-#: components/model/searchClassModal.html:59
-#: components/model/searchConceptModal.html:45
-#: components/model/searchPredicateModal.html:78
-#: components/model/searchSchemeModal.html:32
+#: components/model/addRequireModal.html:33
+#: components/model/searchRequireModal.html:34
+#: components/model/searchSchemeModal.html:26
 msgid "Cancel"
 msgstr ""
 
-#: components/model/modelView.html:11 components/model/selectionView.html:11
+#: components/form/editableEntityButtons.html:3
 msgid "Cancel edit"
 msgstr ""
 
-#: components/model/classSelect.html:2
+#: translations/misc.html:61
+msgid "Choose association"
+msgstr ""
+
+#: translations/misc.html:60
+msgid "Choose attribute"
+msgstr ""
+
+#: components/editor/classSelect.html:2
 msgid "Choose class"
 msgstr ""
 
-#: components/model/editableSubjectSelect.html:20
+#: components/editor/editableSubjectSelect.html:11
 msgid "Choose subject"
 msgstr ""
 
@@ -113,57 +139,62 @@ msgstr ""
 msgid "class"
 msgstr "Class"
 
-#: components/model/searchClassModal.html:17
+#: translations/misc.html:72
+msgid "Class label"
+msgstr ""
+
+#: translations/misc.html:41
+msgid "Class list"
+msgstr ""
+
+#: components/editor/searchClassModal.html:14
 msgid "Class search info"
 msgstr ""
 
-#: components/model/model.html:11
-msgid "Classes"
-msgstr ""
-
-#: components/model/addConceptModal.html:16
-#: components/model/editableSubjectSelect.html:15
-#: components/model/propertyPredicateView.html:5
-#: components/model/searchConceptModal.html:27
+#: components/editor/searchConceptModal.html:34
 msgid "Comment"
 msgstr ""
 
-#: components/model/addConceptModal.html:11
-#: components/model/searchConceptModal.html:21
+#: components/editor/searchConceptModal.html:18
 msgid "Concept"
 msgstr ""
 
-#: components/model/addConceptModal.html:26
+#: components/editor/addConceptModal.html:25
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: components/model/searchConceptModal.html:41
+#: components/editor/searchConceptModal.html:47
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
 
-#: components/modal/deleteConfirmModal.html:3
+#: components/common/deleteConfirmationModal.html:2 translations/misc.html:36
 msgid "Confirm delete"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:80
+#: components/editor/searchPredicateModal.html:73
 msgid "Create and use predicate"
 msgstr ""
 
+#: components/editor/addConceptModal.html:30
 #: components/group/addModelModal.html:26
-#: components/model/addConceptModal.html:32
+#: components/model/addRequireModal.html:34
 msgid "Create new"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:14
+#: components/editor/searchPredicateModal.html:10
 msgid "Create new association"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:18
+#: components/editor/searchPredicateModal.html:15
 msgid "Create new attribute"
 msgstr ""
 
-#: components/model/searchClassModal.html:13
+#: components/editor/searchClassModal.html:8
 msgid "Create new class"
+msgstr ""
+
+#: components/model/searchRequireModal.html:8
+msgid "Create new require"
 msgstr ""
 
 #: translations/misc.html:32
@@ -174,36 +205,64 @@ msgstr "Data in english"
 msgid "data fi"
 msgstr "Data in finnish"
 
+#: translations/misc.html:8
+msgid "Define concept for the association"
+msgstr ""
+
+#: translations/misc.html:6
+msgid "Define concept for the attribute"
+msgstr ""
+
 #: translations/misc.html:4
 msgid "Define concept for the class"
+msgstr ""
+
+#: translations/misc.html:9
+msgid "Define concept for the new association"
+msgstr ""
+
+#: translations/misc.html:7
+msgid "Define concept for the new attribute"
 msgstr ""
 
 #: translations/misc.html:5
 msgid "Define concept for the new class"
 msgstr ""
 
-#: translations/misc.html:7
-msgid "Define concept for the new predicate"
+#: translations/misc.html:47
+msgid "Delete association"
 msgstr ""
 
-#: translations/misc.html:6
-msgid "Define concept for the predicate"
+#: translations/misc.html:48
+msgid "Delete association from this model"
 msgstr ""
 
-#: translations/misc.html:8
+#: translations/misc.html:43
+msgid "Delete attribute"
+msgstr ""
+
+#: translations/misc.html:44
+msgid "Delete attribute from this model"
+msgstr ""
+
+#: translations/misc.html:39
 msgid "Delete class"
 msgstr ""
 
-#: translations/misc.html:9
-msgid "Delete predicate"
+#: translations/misc.html:40
+msgid "Delete class from this model"
 msgstr ""
 
-#: components/model/propertyView.html:4
+#: components/editor/propertyView.html:2
 msgid "Delete property"
 msgstr ""
 
-#: components/model/referencesView.html:11
+#: components/model/referencesView.html:8
 msgid "Delete reference"
+msgstr ""
+
+#: components/model/requiresView.html:9
+msgid "Delete require"
 msgstr ""
 
 #: translations/misc.html:20
@@ -214,11 +273,11 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: components/model/modelView.html:13 components/model/selectionView.html:13
+#: components/form/editableEntityButtons.html:5
 msgid "Edit"
 msgstr ""
 
-#: components/modal/editInProgressModal.html:3
+#: translations/misc.html:34
 msgid "Edit in progress"
 msgstr ""
 
@@ -234,9 +293,17 @@ msgstr "English"
 msgid "Example"
 msgstr ""
 
+#: components/form/errorMessages.html:5
+msgid "Existing id error"
+msgstr ""
+
 #: translations/misc.html:31
 msgid "fi"
 msgstr "Finnish"
+
+#: components/common/deleteConfirmationModal.html:6
+msgid "Following items are depending on the deleted"
+msgstr ""
 
 #: translations/misc.html:23
 msgid "Front page"
@@ -246,31 +313,43 @@ msgstr ""
 msgid "group"
 msgstr "Group"
 
+#: translations/misc.html:71
+msgid "Group label"
+msgstr ""
+
 #: translations/misc.html:22
 msgid "Hide"
 msgstr ""
 
-#: components/model/editableSubjectSelect.html:7
-#: components/model/modelView.html:24
+#: translations/misc.html:69
+msgid "How content"
+msgstr ""
+
+#: translations/misc.html:68
+msgid "How?"
+msgstr ""
+
+#: translations/misc.html:50
 msgid "Id"
 msgstr "Identifier"
 
-#: components/model/referencesView.html:13
-msgid "Identifier"
+#: components/frontPage.html:5
+msgid "Interoperability method"
 msgstr ""
 
-#: components/index.html:3
-msgid "IOW header"
+#: components/form/errorMessages.html:4
+msgid "Invalid curie error"
 msgstr ""
 
-#: components/model/classForm.html:8 components/model/predicateForm.html:6
+#: components/form/errorMessages.html:3
+msgid "Invalid namespace error"
+msgstr ""
+
+#: translations/misc.html:54
 msgid "Is defined by"
 msgstr "Library"
 
 #: components/group/addModelModal.html:16
-#: components/model/addConceptModal.html:21
-#: components/model/editableSubjectSelect.html:11
-#: components/model/searchConceptModal.html:31
 msgid "Label"
 msgstr ""
 
@@ -291,7 +370,15 @@ msgstr ""
 msgid "model"
 msgstr "Component library"
 
-#: components/model/propertyPredicateView.html:1
+#: translations/misc.html:70
+msgid "Model label"
+msgstr ""
+
+#: components/group/group.html:26
+msgid "Models"
+msgstr ""
+
+#: translations/misc.html:51
 msgid "Name"
 msgstr ""
 
@@ -299,13 +386,37 @@ msgstr ""
 msgid "New model creation"
 msgstr ""
 
-#: components/model/editableSubjectSelect.html:4
+#: components/advancedSearchModal.html:20 components/frontPage.html:34
+msgid "No search results"
+msgstr ""
+
+#: components/editor/editableSubjectSelect.html:4
 msgid "Not defined"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:154 translations/misc.html:3
+#: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr ""
+
+#: translations/misc.html:78
+msgid "of association"
+msgstr "association"
+
+#: translations/misc.html:79
+msgid "of attribute"
+msgstr "attribute"
+
+#: translations/misc.html:77
+msgid "of class"
+msgstr "class"
+
+#: translations/misc.html:75
+msgid "of group"
+msgstr "group"
+
+#: translations/misc.html:76
+msgid "of model"
+msgstr "model"
 
 #: translations/type.html:4
 msgid "owl:DatatypeProperty"
@@ -315,11 +426,11 @@ msgstr "Attribute"
 msgid "owl:ObjectProperty"
 msgstr "Association"
 
-#: components/model/requiresView.html:10
+#: translations/misc.html:58
 msgid "Preferred namespace"
 msgstr ""
 
-#: components/model/requiresView.html:12
+#: translations/misc.html:59
 msgid "Preferred prefix"
 msgstr ""
 
@@ -327,7 +438,7 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: components/model/propertyPredicateView.html:13
+#: translations/misc.html:52
 msgid "Range"
 msgstr ""
 
@@ -339,7 +450,7 @@ msgstr "Localized text"
 msgid "Recommendation"
 msgstr ""
 
-#: components/model/searchConceptModal.html:11
+#: components/editor/searchConceptModal.html:8
 msgid "Reference"
 msgstr ""
 
@@ -351,49 +462,73 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
+#: components/form/errorMessages.html:6
+msgid "Required error"
+msgstr ""
+
+#: components/form/errorMessages.html:7
+msgid "Required localized error"
+msgstr ""
+
 #: components/model/requiresView.html:1
 msgid "Requires"
 msgstr ""
 
-#: components/model/modelView.html:12 components/model/selectionView.html:12
+#: components/form/editableEntityButtons.html:4
 msgid "Save changes"
 msgstr ""
 
-#: components/model/modelView.html:18
-#: components/model/searchPredicateModal.html:69
-#: components/model/selectionView.html:21
+#: components/editor/searchPredicateModal.html:63
+#: components/form/editableEntityButtons.html:13
+#: components/model/addRequireModal.html:30
 msgid "Save failed"
 msgstr ""
 
-#: components/model/searchClassModal.html:23
+#: components/frontPage.html:22
+msgid "Search"
+msgstr ""
+
+#: components/editor/searchClassModal.html:16
 msgid "search class"
 msgstr "Search class…"
 
-#: components/model/searchClassModal.html:3
+#: components/editor/searchClassModal.html:2
 msgid "Search classes"
 msgstr ""
 
-#: components/model/searchConceptModal.html:23
+#: components/advancedSearchModal.html:8 components/frontPage.html:25
+msgid "search descriptions"
+msgstr ""
+
+#: components/editor/searchConceptModal.html:30
 msgid "Search from concept database"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:28
+#: components/editor/searchPredicateModal.html:24
 msgid "search predicate"
 msgstr "Search predicate…"
 
-#: components/model/searchPredicateModal.html:22
+#: components/editor/searchPredicateModal.html:22
 msgid "Search predicate info"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:4
+#: components/editor/searchPredicateModal.html:3
 msgid "Search predicates"
 msgstr ""
 
-#: components/model/searchSchemeModal.html:13
+#: components/model/searchRequireModal.html:15
+msgid "search require"
+msgstr ""
+
+#: components/model/searchRequireModal.html:2
+msgid "Search requires"
+msgstr ""
+
+#: components/model/searchSchemeModal.html:8
 msgid "search scheme"
 msgstr "Search scheme…"
 
-#: components/model/searchSchemeModal.html:3
+#: components/model/searchSchemeModal.html:2
 msgid "Search schemes"
 msgstr ""
 
@@ -405,23 +540,31 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: components/model/editableSubjectSelect.html:3
+#: components/editor/editableSubjectSelect.html:3
 msgid "Subject"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:157 translations/misc.html:10
+#: translations/misc.html:10
 msgid "suggest"
 msgstr ""
 
-#: components/model/searchConceptModalFactory.js:137 translations/misc.html:11
+#: translations/misc.html:11
 msgid "suggestion"
 msgstr ""
 
-#: components/model/classForm.html:5
+#: translations/misc.html:56
+msgid "Superassociation"
+msgstr ""
+
+#: translations/misc.html:57
+msgid "Superattribute"
+msgstr ""
+
+#: translations/misc.html:55
 msgid "Superclass"
 msgstr ""
 
-#: components/model/propertyPredicateView.html:9
+#: translations/misc.html:53
 msgid "Type"
 msgstr ""
 
@@ -433,15 +576,19 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: components/model/searchClassModal.html:60
+#: components/editor/searchClassModal.html:52
 msgid "Use class"
 msgstr ""
 
-#: components/model/searchPredicateModal.html:79
+#: components/editor/searchPredicateModal.html:72
 msgid "Use predicate"
 msgstr ""
 
-#: components/model/searchSchemeModal.html:33
+#: components/model/searchRequireModal.html:35
+msgid "Use require"
+msgstr ""
+
+#: components/model/searchSchemeModal.html:27
 msgid "Use scheme"
 msgstr ""
 
@@ -449,8 +596,32 @@ msgstr ""
 msgid "Value class"
 msgstr ""
 
-#: components/model/selectionView.html:35
+#: components/editor/selectionView.html:25
 msgid "Visualization"
+msgstr ""
+
+#: translations/misc.html:67
+msgid "What can I do content"
+msgstr ""
+
+#: translations/misc.html:66
+msgid "What can I do?"
+msgstr ""
+
+#: translations/misc.html:63
+msgid "What is description content"
+msgstr ""
+
+#: translations/misc.html:62
+msgid "What is description?"
+msgstr ""
+
+#: translations/misc.html:65
+msgid "What is method content"
+msgstr ""
+
+#: translations/misc.html:64
+msgid "What is method?"
 msgstr ""
 
 #: translations/attribute.html:6
@@ -521,7 +692,6 @@ msgstr "Time"
 msgid "xsd:XMLLiteral"
 msgstr "XML"
 
-#: components/modal/deleteConfirmModal.html:13
-#: components/modal/editInProgressModal.html:13
+#: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr ""
