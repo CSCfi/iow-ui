@@ -1,4 +1,5 @@
 import IAttributes = angular.IAttributes;
+import IIntervalService = angular.IIntervalService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
@@ -12,7 +13,7 @@ const joint = require('jointjs');
 
 export const mod = angular.module('iow.components.editor');
 
-mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindowService) => {
+mod.directive('classVisualization', ($timeout: ITimeoutService, $interval: IIntervalService, $window: IWindowService) => {
   'ngInject';
 
   return {
@@ -44,7 +45,19 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
           controller.paper = paper;
           controller.initGraph();
 
-          angular.element($window).on('resize', () => paper.setDimensions(container.width(), container.height()));
+          let previousWidth = container.width();
+          let previousHeight = container.height();
+
+          $interval(() => {
+            const width = container.width();
+            const height = container.height();
+            if (previousWidth !== width || previousHeight !== height) {
+              paper.setDimensions(container.width(), container.height());
+              scaleToFit(paper);
+              previousWidth = width;
+              previousHeight = height;
+            }
+          }, 200);
         }
       })();
     },
