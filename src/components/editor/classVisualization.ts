@@ -76,15 +76,9 @@ class ClassVisualizationController {
   private visualizationData: any;
 
   /* @ngInject */
-  constructor($scope: IScope, private classService: ClassService, private languageService: LanguageService, private modelCache: ModelCache) {
+  constructor(private $scope: IScope, private classService: ClassService, private languageService: LanguageService, private modelCache: ModelCache) {
     'ngInject';
-
     $scope.$watch(() => this.class, () => this.refresh());
-    $scope.$watch(() => languageService.modelLanguage, (newValue, oldValue) => {
-      if (newValue && oldValue && newValue !== oldValue) {
-        this.refresh();
-      }
-    });
   }
 
   refresh() {
@@ -104,7 +98,7 @@ class ClassVisualizationController {
   initGraph() {
     if (this.visualizationData) {
       this.graph.clear();
-      createCells(this.languageService, this.modelCache, this.graph, this.model, this.visualizationData, this.class.curie);
+      createCells(this.$scope, this.languageService, this.modelCache, this.graph, this.model, this.visualizationData, this.class.curie);
       layoutGraph(this.graph);
       scaleToFit(this.paper);
     }
@@ -185,7 +179,7 @@ function isAssociation(property: any) {
   return property.valueClass;
 }
 
-function createCells(languageService: LanguageService, modelCache: ModelCache, graph: joint.dia.Graph, model: Model, data: any, root: Uri) {
+function createCells($scope: IScope, languageService: LanguageService, modelCache: ModelCache, graph: joint.dia.Graph, model: Model, data: any, root: Uri) {
   function isRootClass(klass: any) {
     return klass['@id'] === root;
   }
@@ -203,28 +197,40 @@ function createCells(languageService: LanguageService, modelCache: ModelCache, g
       }
     }
 
-    createClass(languageService, graph, klass, attributes);
+    createClass($scope, languageService, graph, klass, attributes);
   }
 
-  _.forEach(associations, association => createAssociation(languageService, graph, association));
+  _.forEach(associations, association => createAssociation($scope, languageService, graph, association));
 }
 
-function createClass(languageService: LanguageService, graph: joint.dia.Graph, klass: any, properties: any[]) {
+function createClass($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, klass: any, properties: any[]) {
 
-  function propertyAsString(property: any): string {
-    const name = languageService.translate(property.label);
-    const range = isAssociation(property) ? property.valueClass : property.datatype;
-    return range ? `${name} (${range})` : name;
+  function getName() {
+    return languageService.translate(klass.label);
   }
 
-  const propertyNames = _.map(properties, propertyAsString);
-  const width = _.max([_.max(_.map(propertyNames, name => name.length)) * 5.5, 150]);
-  const height = 15 * (properties.length + 1);
+  function getPropertyNames() {
+    function propertyAsString(property: any): string {
+      const name = languageService.translate(property.label);
+      const range = isAssociation(property) ? property.valueClass : property.datatype;
+      return range ? `${name} (${range})` : name;
+    }
+    return _.map(properties, propertyAsString);
+  }
 
-  graph.addCell(new joint.shapes.uml.Class({
+  function size(propertyNames: string[]) {
+    const width = _.max([_.max(_.map(propertyNames, name => name.length)) * 5.5, 150]);
+    const height = 15 * (propertyNames.length + 1);
+
+    return { width, height };
+  }
+
+  const propertyNames = getPropertyNames();
+
+  const classCell: any = new joint.shapes.uml.Class({
     id: klass['@id'],
-    size: { width, height },
-    name: languageService.translate(klass.label),
+    size: size(propertyNames),
+    name: getName(),
     attributes: propertyNames,
     methods: [],
     attrs: {
@@ -241,32 +247,50 @@ function createClass(languageService: LanguageService, graph: joint.dia.Graph, k
         stroke: '#9687fe'
       }
     }
-  }));
+  });
+
+  $scope.$watch(() => languageService.modelLanguage, () => {
+    const propertyNames = getPropertyNames();
+    classCell.prop('name', getName());
+    classCell.prop('attributes', propertyNames);
+    classCell.prop('size', size(propertyNames));
+  });
+
+  graph.addCell(classCell);
 }
 
-function createAssociation(languageService: LanguageService, graph: joint.dia.Graph, {klass, association}) {
-  graph.addCell(
-    new joint.dia.Link({
-      source: { id: klass['@id'] },
-      target: { id: association.valueClass },
-      attrs: {
-        '.marker-target': {
-          fill: '#4b4a67',
-          stroke: '#4b4a67',
-          d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
-        }
-      },
-      labels: [
-        {
-          position: 0.5,
-          attrs: {
-            text: {
-              text: languageService.translate(association.label)
-            }
+function createAssociation($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, {klass, association}) {
+
+  function getName() {
+    return languageService.translate(association.label);
+  }
+
+  const associationCell: any = new joint.dia.Link({
+    source: { id: klass['@id'] },
+    target: { id: association.valueClass },
+    attrs: {
+      '.marker-target': {
+        fill: '#4b4a67',
+        stroke: '#4b4a67',
+        d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
+      }
+    },
+    labels: [
+      {
+        position: 0.5,
+        attrs: {
+          text: {
+            text: getName()
           }
         }
-      ]
-    })
-  );
+      }
+    ]
+  });
+
+  $scope.$watch(() => languageService.modelLanguage, () => {
+    associationCell.prop('labels/0/attrs/text/text', getName());
+  });
+
+  graph.addCell(associationCell);
 }
 
