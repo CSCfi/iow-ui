@@ -1,4 +1,4 @@
-<h4 translate>Requires</h4>
+<h4 translate>Imported requires</h4>
 
 <uib-accordion>
   <uib-accordion-group ng-repeat="require in ctrl.requires" is-open="ctrl.opened[$index]">
@@ -14,11 +14,11 @@
       <input type="text" class="form-control" localized-input="required" ng-model="require.label" />
     </editable>
 
-    <editable title="Preferred namespace">
+    <editable title="Namespace">
       <input type="text" class="form-control" ng-disabled="modelViewController.isRequireInUse(require)" required namespace-input ng-model="require.namespace" />
     </editable>
 
-    <editable title="Preferred prefix">
+    <editable title="Prefix">
       <input type="text" class="form-control" required ng-model="require.prefix" />
     </editable>
   </uib-accordion-group>
