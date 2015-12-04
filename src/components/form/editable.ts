@@ -28,12 +28,13 @@ mod.directive('editable', () => {
     controllerAs: 'ctrl',
     require: ['editable', '?^form'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
+      const editableController: EditableController = controllers[0];
+      const formController: EditableForm = controllers[1];
       const input = element.find('[ng-model]');
       input.after(element.find('error-messages').detach());
-      const editableController = controllers[0];
       Object.defineProperty(editableController, 'inputId', { get: () => input.attr('id') });
       editableController.ngModelController = input.controller('ngModel');
-      editableController.isEditing = () => controllers[1].editing;
+      editableController.isEditing = () => formController.editing;
     },
     controller: EditableController
   }
@@ -57,7 +58,7 @@ class EditableController extends FormElementController {
   }
 
   showNonEditable() {
-    return !this.isEditing || !this.isEditing();
+    return !this.isEditing();
   }
 
   getValue() {

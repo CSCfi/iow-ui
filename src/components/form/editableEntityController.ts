@@ -70,8 +70,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
     const editableInEdit = this.editableInEdit;
     this.$log.info(JSON.stringify(editableInEdit.serialize(), null, 2));
 
-    const unsaved = editable.unsaved;
-    (unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable.id))
+    (editable.unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable.id))
       .then(() => {
         this.$scope.modelController && this.$scope.modelController.selectionEdited(editable, editableInEdit);
         this.select(editableInEdit);
