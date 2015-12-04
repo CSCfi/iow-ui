@@ -1071,7 +1071,10 @@
     "rdf:type" : {
       "@id" : "rdfs:Resource"
     },
-    "rdfs:label" : "Schema.org"
+    "rdfs:label" : {
+      "@language" : "en",
+      "@value" : "Schema.org"
+    }
   }, {
     "@id" : "http://www.yso.fi/onto/juho/",
     "dcterms:identifier" : "juho",
@@ -1150,12 +1153,12 @@
       "@id" : "http://www.w3.org/2004/02/skos/core#notation",
       "@type" : "@id"
     },
-    "preferredXMLNamespacePrefix" : {
-      "@id" : "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix",
-      "@type" : "@id"
-    },
     "preferredXMLNamespaceName" : {
       "@id" : "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName",
+      "@type" : "@id"
+    },
+    "preferredXMLNamespacePrefix" : {
+      "@id" : "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix",
       "@type" : "@id"
     },
     "equivalentProperty" : {
