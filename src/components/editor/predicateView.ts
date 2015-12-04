@@ -53,8 +53,8 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   rights(): Rights {
     return {
-      edit: () => this.predicate.modelId === this.model.id,
-      remove: () => this.predicate.state === states.unstable
+      edit: () => this.isNotReference(),
+      remove: () => this.isReference() || this.predicate.state === states.unstable
     };
   }
 

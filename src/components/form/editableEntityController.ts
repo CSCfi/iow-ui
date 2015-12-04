@@ -49,6 +49,10 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
     return true;
   }
 
+  isReference(): boolean {
+    return !this.isNotReference();
+  }
+
   select(editable: T) {
     this.submitError = false;
     this.setEditable(editable);

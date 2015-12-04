@@ -80,8 +80,8 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   rights(): Rights {
     return {
-      edit: () => this.class.modelId === this.model.id,
-      remove: () => this.class.state === states.unstable
+      edit: () => this.isNotReference(),
+      remove: () => this.isReference() || this.class.state === states.unstable
     };
   }
 
