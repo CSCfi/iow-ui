@@ -746,7 +746,7 @@
       "@language" : "fi",
       "@value" : "Ajanjakson nimi"
     },
-    "datatype" : "rdf:PlainLiteral",
+    "datatype" : "rdf:langString",
     "predicate" : "doo:nimi"
   }, {
     "@id" : "_:t69",
