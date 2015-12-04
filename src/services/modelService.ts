@@ -33,6 +33,10 @@ export class ModelService {
     return this.$http.post('/api/rest/model', model.serialize(), { params: { id: model.id } });
   }
 
+  deleteModel(id: Uri): IHttpPromise<any> {
+    return this.$http.delete('/api/rest/model', { params: { id } });
+  }
+
   newModel(prefix: string, label: string, groupId: Uri, lang: Language): IPromise<Model> {
     return this.$http.get('/api/rest/modelCreator', { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
       .then(response => this.entities.deserializeModel(response.data))

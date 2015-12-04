@@ -4,7 +4,7 @@
   </div>
 
   <form name="form" class="editable-form">
-    <div uib-collapse="!ctrl.visible" class="main-editable-content">
+    <div ng-if="ctrl.model" uib-collapse="!ctrl.visible" class="main-editable-content">
 
       <editable-entity-buttons editable-controller="ctrl">
         <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>

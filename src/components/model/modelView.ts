@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, EditableForm, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { GroupListItem, Model, Require, Reference, Uri } from '../../services/entities';
+import { GroupListItem, Model, Require, Reference, Uri, states } from '../../services/entities';
 import { ModelController } from './modelController';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
@@ -118,13 +118,13 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   remove(model: Model): IPromise<any> {
-    throw new Error('Cannot remove');
+    return this.modelService.deleteModel(model.id);
   }
 
   rights(): Rights {
     return {
       edit: () => true,
-      remove: () => false
+      remove: () => this.model.state === states.unstable
     }
   }
 
