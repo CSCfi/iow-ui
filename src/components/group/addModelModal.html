@@ -1,27 +1,24 @@
-<div class="modal-header modal-header-confirm">
-  <h4 class="modal-title ng-binding">
-    <span translate>Add model</span>
-    <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.cancel()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
-  </h4>
-</div>
+<form name="addModelForm">
+<modal-template>
+  <modal-title>{{'Add model' | translate}}</modal-title>
 
-<div class="modal-body search-modal">
-  <form name="addModelForm">
+  <modal-body>
+    <editable title="Prefix">
+      <div class="input-group input-group-md">
+        <input id="prefix" type="text" class="form-control" autofocus required ng-model="ctrl.prefix" />
+      </div>
+    </editable>
 
-    <label for="prefix" translate>Prefix</label>
-    <div class="input-group input-group-md">
-      <input id="prefix" type="text" class="form-control" autofocus required ng-model="ctrl.prefix" />
-    </div>
+    <editable title="Label">
+      <div class="input-group input-group-md">
+        <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
+      </div>
+    </editable>
+  </modal-body>
 
-    <label for="name" translate>Label</label>
-    <div class="input-group input-group-md">
-      <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
-    </div>
-
-  </form>
-</div>
-
-<div class="modal-footer">
-  <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
-  <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!addModelForm.$valid" translate>Create new</button>
-</div>
+  <modal-buttons>
+    <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
+    <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!addModelForm.$valid" translate>Create new</button>
+  </modal-buttons>
+</modal-template>
+</form>

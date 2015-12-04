@@ -1,16 +1,13 @@
-<div class="modal-header modal-header-confirm">
-  <h4 class="modal-title ng-binding">
-    <span translate>Login</span>
-    <a type="button" title="Close" data-dismiss="modal"><i ng-click="ctrl.close()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
-  </h4>
-</div>
+<modal-template>
+  <modal-title>{{'Login' | translate}}</modal-title>
 
-<div class="modal-body">
-  <p translate>eDuuni information</p>
-  <p translate>Login information</p>
-</div>
+  <modal-body>
+    <p translate>eDuuni information</p>
+    <p translate>Login information</p>
+  </modal-body>
 
-<div class="modal-footer">
-  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.login()" translate>Login</button>
-  <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.register()" translate>Register</button>
-</div>
+  <modal-buttons>
+    <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.login()" translate>Login</button>
+    <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.register()" translate>Register</button>
+  </modal-buttons>
+</modal-template>
