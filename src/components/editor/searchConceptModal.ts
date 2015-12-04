@@ -59,6 +59,7 @@ class SearchConceptController {
   label: string;
   defineConceptTitle: string;
   buttonTitle: string;
+  labelTitle: string;
   vocabularyId: string;
 
   options = {
@@ -82,6 +83,7 @@ class SearchConceptController {
 
     this.defineConceptTitle = `Define concept for the ${this.newCreation ? 'new ' : ''}${this.type}`;
     this.buttonTitle = newCreation ? 'Create new' : 'Use';
+    this.labelTitle = `${_.capitalize(this.type)} label`;
 
     $scope.$watch(() => this.concept, (concept) => {
       this.label = concept ? languageService.translate(concept.label) : '';
@@ -105,7 +107,7 @@ class SearchConceptController {
   };
 
   addConcept(conceptLabel: string, referenceId: Uri) {
-    this.addConceptModal.open(this.defineConceptTitle, conceptLabel, _.findWhere(this.references, {id: referenceId}))
+    this.addConceptModal.open(this.labelTitle, this.defineConceptTitle, conceptLabel, _.findWhere(this.references, {id: referenceId}))
       .then((result: ConceptSuggestionCreation) => this.$q.all(
         {
           label: this.$q.when(result.label),

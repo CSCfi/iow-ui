@@ -22,7 +22,6 @@ msgid "Add model"
 msgstr ""
 
 #: components/editor/classView.html:5
-#: components/editor/predicateView.html:5
 msgid "Add property"
 msgstr ""
 
@@ -41,7 +40,7 @@ msgid "Advanced search"
 msgstr ""
 
 #: components/editor/searchClassModal.html:25
-#: components/editor/searchPredicateModal.html:33
+#: components/editor/searchPredicateModal.html:37
 msgid "All models"
 msgstr ""
 
@@ -49,7 +48,7 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:42
+#: components/editor/searchPredicateModal.html:46
 msgid "All types"
 msgstr ""
 
@@ -103,8 +102,8 @@ msgstr ""
 #: components/editor/addConceptModal.html:29
 #: components/editor/searchClassModal.html:51
 #: components/editor/searchConceptModal.html:52
-#: components/editor/searchPredicateModal.html:71
-#: components/group/addModelModal.html:25
+#: components/editor/searchPredicateModal.html:75
+#: components/group/addModelModal.html:20
 #: components/model/addRequireModal.html:33
 #: components/model/searchRequireModal.html:34
 #: components/model/searchSchemeModal.html:26
@@ -168,21 +167,25 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:73
-msgid "Create and use predicate"
+#: translations/misc.html:90
+msgid "Create and use association"
+msgstr ""
+
+#: translations/misc.html:89
+msgid "Create and use attribute"
 msgstr ""
 
 #: components/editor/addConceptModal.html:30
-#: components/group/addModelModal.html:26
+#: components/group/addModelModal.html:21
 #: components/model/addRequireModal.html:34
 msgid "Create new"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:10
+#: components/editor/searchPredicateModal.html:13
 msgid "Create new association"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:15
+#: components/editor/searchPredicateModal.html:18
 msgid "Create new attribute"
 msgstr ""
 
@@ -282,7 +285,7 @@ msgstr ""
 msgid "Edit in progress"
 msgstr ""
 
-#: components/navigation/login-modal.html:9
+#: components/navigation/login-modal.html:5
 msgid "eDuuni information"
 msgstr ""
 
@@ -354,17 +357,17 @@ msgstr ""
 msgid "Is defined by"
 msgstr ""
 
-#: components/group/addModelModal.html:16
+#: translations/misc.html:91
 msgid "Label"
 msgstr ""
 
-#: components/navigation/login-modal.html:14
-#: components/navigation/login-modal.html:3
+#: components/navigation/login-modal.html:10
+#: components/navigation/login-modal.html:2
 #: components/navigation/login.html:1
 msgid "Login"
 msgstr ""
 
-#: components/navigation/login-modal.html:10
+#: components/navigation/login-modal.html:6
 msgid "Login information"
 msgstr ""
 
@@ -437,7 +440,6 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: components/group/addModelModal.html:11
 #: translations/misc.html:60
 msgid "Prefix"
 msgstr ""
@@ -462,7 +464,7 @@ msgstr ""
 msgid "References"
 msgstr ""
 
-#: components/navigation/login-modal.html:15
+#: components/navigation/login-modal.html:11
 msgid "Register"
 msgstr ""
 
@@ -478,7 +480,7 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:63
+#: components/editor/searchPredicateModal.html:67
 #: components/form/editableEntityButtons.html:13
 #: components/model/addRequireModal.html:30
 msgid "Save failed"
@@ -486,6 +488,30 @@ msgstr ""
 
 #: components/frontPage.html:22
 msgid "Search"
+msgstr ""
+
+#: translations/misc.html:85
+msgid "search association"
+msgstr ""
+
+#: translations/misc.html:84
+msgid "Search associations"
+msgstr ""
+
+#: translations/misc.html:83
+msgid "search attribute"
+msgstr ""
+
+#: translations/misc.html:81
+msgid "search attribute or association"
+msgstr ""
+
+#: translations/misc.html:82
+msgid "Search attributes"
+msgstr ""
+
+#: components/editor/searchPredicateModal.html:4
+msgid "Search attributes and associations"
 msgstr ""
 
 #: components/editor/searchClassModal.html:16
@@ -505,16 +531,8 @@ msgstr ""
 msgid "Search from concept database"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:24
-msgid "search predicate"
-msgstr ""
-
-#: components/editor/searchPredicateModal.html:22
+#: components/editor/searchPredicateModal.html:25
 msgid "Search predicate info"
-msgstr ""
-
-#: components/editor/searchPredicateModal.html:3
-msgid "Search predicates"
 msgstr ""
 
 #: components/model/searchRequireModal.html:15
@@ -577,12 +595,16 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: components/editor/searchClassModal.html:52
-msgid "Use class"
+#: translations/misc.html:88
+msgid "Use association"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:72
-msgid "Use predicate"
+#: translations/misc.html:87
+msgid "Use attribute"
+msgstr ""
+
+#: components/editor/searchClassModal.html:52
+msgid "Use class"
 msgstr ""
 
 #: components/model/searchRequireModal.html:35
@@ -591,6 +613,10 @@ msgstr ""
 
 #: components/model/searchSchemeModal.html:27
 msgid "Use scheme"
+msgstr ""
+
+#: translations/misc.html:86
+msgid "Use selection"
 msgstr ""
 
 #: translations/misc.html:14

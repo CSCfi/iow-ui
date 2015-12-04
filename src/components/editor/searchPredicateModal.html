@@ -1,16 +1,19 @@
 <form name="form" class="editable-form">
   <modal-template>
-    <modal-title translate>Search predicates</modal-title>
+    <modal-title>
+      <span ng-show="ctrl.typeSelectable" translate>Search attributes and associations</span>
+      <span ng-hide="ctrl.typeSelectable">{{('Search ' + ctrl.type + 's') | translate}}</span>
+    </modal-title>
 
     <modal-body>
 
       <div ng-if="!ctrl.onlySelection">
-        <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew('owl:ObjectProperty')" ng-show="ctrl.isAssociationAddable()" style="margin-left: 10px">
+        <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew('association')" ng-show="ctrl.isAssociationAddable()" style="margin-left: 10px">
           <span class="glyphicon glyphicon-plus"></span>
           {{'Create new association' | translate}}
         </button>
 
-        <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew('owl:DatatypeProperty')" ng-show="ctrl.isAttributeAddable()">
+        <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew('attribute')" ng-show="ctrl.isAttributeAddable()">
           <span class="glyphicon glyphicon-plus"></span>
           {{'Create new attribute' | translate}}
         </button>
@@ -21,7 +24,8 @@
         <div class="col-md-4">
           <p translate>Search predicate info</p>
           <div class="input-group input-group-lg">
-            <input autofocus type="text" class="form-control" placeholder="{{'search predicate' | translate}}"
+            <input autofocus type="text" class="form-control"
+                   placeholder="{{(ctrl.typeSelectable ? 'search attribute or association' : 'search ' + ctrl.type) | translate}}"
                    ng-model="ctrl.searchText"
                    ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
@@ -69,8 +73,12 @@
 
     <modal-buttons>
       <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default btn-lg" ng-show="!ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate" translate>Use predicate</button>
-      <button type="button" class="btn btn-default btn-lg" ng-show="ctrl.isEditing()" ng-click="ctrl.createAndUsePredicate()" ng-disabled="form.$invalid || form.$pending" translate>Create and use predicate</button>
+      <button type="button" class="btn btn-default btn-lg" ng-hide="ctrl.editing" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate">
+        {{(!ctrl.typeSelectable ? 'Use ' + ctrl.type : 'Use selection') | translate}}
+      </button>
+      <button type="button" class="btn btn-default btn-lg" ng-show="ctrl.editing" ng-click="ctrl.createAndUsePredicate()" ng-disabled="form.$invalid || form.$pending">
+        {{('Create and use ' + ctrl.selectedPredicate.type) | translate}}
+      </button>
     </modal-buttons>
   </modal-template>
 </form>

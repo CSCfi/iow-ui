@@ -11,7 +11,7 @@ export class AddConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(defineConceptTitle: string, conceptLabel: string, reference: Reference): IPromise<ConceptSuggestionCreation> {
+  open(labelTitle: string, defineConceptTitle: string, conceptLabel: string, reference: Reference): IPromise<ConceptSuggestionCreation> {
     return this.$uibModal.open({
       template: require('./addConceptModal.html'),
       size: 'small',
@@ -19,6 +19,7 @@ export class AddConceptModal {
       controllerAs: 'ctrl',
       backdrop: false,
       resolve: {
+        labelTitle: () => labelTitle,
         defineConceptTitle: () => defineConceptTitle,
         conceptLabel: () => conceptLabel,
         reference: () => reference
@@ -35,6 +36,7 @@ class AddConceptController {
   /* @ngInject */
   constructor(private $scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
+              public labelTitle: string,
               public defineConceptTitle: string,
               public conceptLabel: string,
               public reference: Reference) {
