@@ -35,7 +35,7 @@ export class SearchPredicateModal {
     return this.openModal(model, type, excludedPredicateMap, false);
   }
 
-  openWithPredicationCreation(model: Model): IPromise<Predicate> {
+  openForProperty(model: Model): IPromise<Predicate> {
     return this.openModal(model, null, new Set<Uri>(), false);
   }
 
@@ -166,6 +166,7 @@ export class SearchPredicateController {
   }
 
   private requireFilter(predicate: PredicateListItem): boolean {
-    return _.any(this.model.requires, require => require.id === predicate.model.id);
+    let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
+    return _.any(modelIds, id => id === predicate.model.id);
   }
 }

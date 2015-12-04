@@ -54,7 +54,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   addProperty() {
-    this.searchPredicateModal.openWithPredicationCreation(this.model)
+    this.searchPredicateModal.openForProperty(this.model)
       .then(predicate => this.classService.newProperty(predicate.id))
       .then(property => {
         this.editableInEdit.addProperty(property);

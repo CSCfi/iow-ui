@@ -108,6 +108,7 @@ export class SearchClassController {
   }
 
   private requireFilter(klass: ClassListItem): boolean {
-    return _.any(this.model.requires, require => require.id === klass.model.id);
+    let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
+    return _.any(modelIds, id => id === klass.model.id);
   }
 }

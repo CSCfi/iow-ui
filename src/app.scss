@@ -152,6 +152,11 @@ uib-accordion .panel-group {
 
   input, select, textarea {
     width: 100%;
+  }
+}
+
+selection-view, .main-editable-content {
+  input, select, textarea {
     max-width: 500px;
   }
 }
