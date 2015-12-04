@@ -1,6 +1,6 @@
 <div class="modal-header modal-header-confirm">
   <h4 class="modal-title ng-binding">
-    <a type="button" title="Close" data-dismiss="modal"><i ng-click="$dismiss()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+    <a type="button" title="Close" data-dismiss="modal"><i ng-click="$dismiss('cancel')" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
     <div ng-transclude="title"></div>
   </h4>
 </div>
@@ -13,6 +13,6 @@
   <div ng-transclude="buttons"></div>
   <div ng-if="defaultButtons">
     <button class="btn btn-default" type="button" ng-click="$close()" translate>Yes</button>
-    <button class="btn btn-primary" type="button" ng-click="$dismiss()" translate>Cancel</button>
+    <button class="btn btn-primary" type="button" ng-click="$dismiss('cancel')" translate>Cancel</button>
   </div>
 </div>
