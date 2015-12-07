@@ -232,21 +232,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
     size: size(propertyNames),
     name: getName(),
     attributes: propertyNames,
-    methods: [],
-    attrs: {
-      '.uml-class-name-rect': {
-        fill: '#68ddd5',
-        stroke: '#68ddd5'
-      },
-      '.uml-class-attrs-rect, .uml-class-methods-rect': {
-        fill: '#9687fe',
-        stroke: '#9687fe'
-      },
-      '.uml-class-methods-rect, .uml-class-attrs-rect': {
-        fill: '#9687fe',
-        stroke: '#9687fe'
-      }
-    }
+    methods: []
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
@@ -270,8 +256,6 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     target: { id: association.valueClass },
     attrs: {
       '.marker-target': {
-        fill: '#4b4a67',
-        stroke: '#4b4a67',
         d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
       }
     },

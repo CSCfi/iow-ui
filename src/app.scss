@@ -205,6 +205,21 @@ selection-view, .main-editable-content {
   .link .mark-errors { display: none; }
   .marker-arrowheads { display: none; }
 
+  .uml-class-name-rect {
+    fill: #68ddd5;
+    stroke: #68ddd5;
+  }
+
+  .uml-class-attrs-rect, .uml-class-methods-rect {
+    fill: #9687fe;
+    stroke: #9687fe;
+  }
+
+  .marker-target {
+    fill: #4b4a67;
+    stroke: #4b4a67;
+  }
+
   .loading-indicator {
     position: absolute;
     width: calc(100% - 10px);
