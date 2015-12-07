@@ -51,7 +51,7 @@ export class ModelService {
       new Reference({
         '@id': `http://www.finto.fi/${scheme.id}`,
         '@type': 'skos:ConceptScheme',
-        'dct:identifier': scheme.id,
+        'dcterms:identifier': scheme.id,
         'title': {
           [lang]: scheme.title
         }
