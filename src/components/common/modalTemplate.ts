@@ -6,7 +6,8 @@ import { EditableForm } from '../form/editableEntityController';
 export const mod = angular.module('iow.components.common');
 
 interface ModalTemplateAttributes extends IAttributes {
-  'default': boolean;
+  'default': string;
+  'editing': string;
 }
 
 mod.directive('modalTemplate', () => {
@@ -20,8 +21,9 @@ mod.directive('modalTemplate', () => {
     template: require('./modalTemplate.html'),
     require: '^?form',
     link($scope: ModalTemplateScope, element: JQuery, attributes: ModalTemplateAttributes, formController: EditableForm) {
-      $scope.defaultButtons = attributes.default;
-      if (formController) {
+      $scope.defaultButtons = attributes.default === 'true';
+      const editing = 'editing' in attributes.$attr ? attributes.editing === 'true' : true;
+      if (formController && editing) {
         formController.editing = true;
       }
     }
