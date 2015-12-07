@@ -213,14 +213,14 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
     function propertyAsString(property: any): string {
       const name = languageService.translate(property.label);
       const range = isAssociation(property) ? property.valueClass : property.datatype;
-      return range ? `${name} (${range})` : name;
+      return range ? `- ${name} : ${range}` : name;
     }
     return _.map(properties, propertyAsString);
   }
 
   function size(propertyNames: string[]) {
-    const width = _.max([_.max(_.map(propertyNames, name => name.length)) * 5.5, 150]);
-    const height = 15 * (propertyNames.length + 1);
+    const width = _.max([_.max(_.map(propertyNames, name => name.length)) * 6.5, 150]);
+    const height = 12 * propertyNames.length + 35;
 
     return { width, height };
   }
@@ -232,7 +232,11 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
     size: size(propertyNames),
     name: getName(),
     attributes: propertyNames,
-    methods: []
+    attrs: {
+      '.uml-class-name-text': {
+        'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
+      }
+    }
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {

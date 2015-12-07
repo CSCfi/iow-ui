@@ -204,15 +204,26 @@ selection-view, .main-editable-content {
   .link-tools .tool-options { display: none }
   .link .mark-errors { display: none; }
   .marker-arrowheads { display: none; }
+  .uml-class-methods-rect { display: none }
 
-  .uml-class-name-rect {
-    fill: #68ddd5;
-    stroke: #68ddd5;
+  text {
+    font-family: $font-family-base;
+    font-weight: normal;
   }
 
-  .uml-class-attrs-rect, .uml-class-methods-rect {
-    fill: #9687fe;
-    stroke: #9687fe;
+  .uml-class-name-text {
+    fill: #fff;
+  }
+
+  .uml-class-name-rect {
+    fill: $brand-primary;
+    stroke: none;
+  }
+
+  .uml-class-attrs-rect {
+    fill: #f5f5f5;
+    stroke: #ddd;
+    stroke-width: 1px;
   }
 
   .marker-target {
