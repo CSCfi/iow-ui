@@ -8,7 +8,7 @@
           <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
                  ng-model="ctrl.searchText"
                  ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                 key-control="searchResults" />
+                 key-control="ctrl.searchResults" />
           <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
@@ -18,8 +18,8 @@
       </div>
 
       <div class="col-md-6 search-results">
-        <div ng-show="ctrl.searchText && ctrl.searchResults().length === 0" translate>No search results</div>
-        <div ng-repeat="searchResult in (searchResults = ctrl.searchResults()) track by searchResult.id"
+        <div ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</div>
+        <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.id"
              class="search-result" ng-click="ctrl.selectSearchResult(searchResult)" key-control-selection>
           <i ng-class="searchResult.glyphIconClass"></i>
           <h5>{{searchResult | translateLabel}}</h5>

@@ -53,6 +53,7 @@ export class SearchPredicateController {
   private predicates: PredicateListItem[];
 
   close = this.$uibModalInstance.dismiss;
+  searchResults: PredicateListItem[];
   selectedPredicate: Predicate;
   selectedItem: PredicateListItem;
   searchText: string = '';
@@ -87,11 +88,17 @@ export class SearchPredicateController {
         .map(predicate => predicate.type)
         .uniq()
         .value();
+
+      this.search();
     });
+
+    $scope.$watch(() => this.searchText, () => this.search());
+    $scope.$watch(() => this.type, () => this.search());
+    $scope.$watch(() => this.modelId, () => this.search());
   }
 
-  searchResults(): PredicateListItem[] {
-    return _.chain(this.predicates)
+  search() {
+    this.searchResults = _.chain(this.predicates)
       .filter(predicate => this.requireFilter(predicate))
       .filter(predicate => this.textFilter(predicate))
       .filter(predicate => this.modelFilter(predicate))

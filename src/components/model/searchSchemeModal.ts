@@ -1,6 +1,7 @@
-import IPromise = angular.IPromise;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import IPromise = angular.IPromise;
+import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { ConceptService } from '../../services/conceptService';
 import { Language } from '../../services/languageService';
@@ -29,12 +30,14 @@ export class SearchSchemeModal {
 
 class SearchSchemeController {
 
+  searchResults: any[];
   schemes: any[];
   selectedScheme: any;
   searchText: string = '';
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance,
+  constructor($scope: IScope,
+              private $uibModalInstance: IModalServiceInstance,
               private excludedSchemes: Set<Uri>,
               private conceptService: ConceptService,
               private language: Language) {
@@ -42,11 +45,14 @@ class SearchSchemeController {
 
     conceptService.getAllSchemes(language).then(result => {
       this.schemes = _.reject(result.data.vocabularies, (scheme: any) => excludedSchemes.has(scheme.id));
+      this.search();
     });
+
+    $scope.$watch(() => this.searchText, () => this.search());
   }
 
-  searchResults(): any[] {
-    return _.chain(this.schemes)
+  search() {
+    this.searchResults = _.chain(this.schemes)
       .filter(scheme => this.textFilter(scheme))
       .sortBy(scheme => scheme.title)
       .value();

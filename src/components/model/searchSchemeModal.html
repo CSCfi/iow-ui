@@ -13,7 +13,7 @@
       </div>
 
       <div class="col-md-6 search-results">
-        <div ng-repeat="scheme in ctrl.searchResults() track by scheme.id">
+        <div ng-repeat="scheme in ctrl.searchResults track by scheme.id">
           <div ng-class="['search-result', {selected: ctrl.isSelected(scheme)}]" ng-click="ctrl.selectScheme(scheme)">
             <h5>{{scheme.title}}</h5>
           </div>

@@ -1,6 +1,7 @@
-import IPromise = angular.IPromise;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import IPromise = angular.IPromise;
+import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal'
 import { Class, ClassListItem, Concept, Model, Reference, Uri } from '../../services/entities';
@@ -43,6 +44,7 @@ export class SearchClassController {
   private classes: ClassListItem[];
 
   close = this.$uibModalInstance.dismiss;
+  searchResults: ClassListItem[];
   selectedClass: Class;
   selectedItem: ClassListItem;
   searchText: string = '';
@@ -50,7 +52,8 @@ export class SearchClassController {
   models: ModelListItem[] = [];
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance,
+  constructor($scope: IScope,
+              private $uibModalInstance: IModalServiceInstance,
               private classService: ClassService,
               private languageService: LanguageService,
               private model: Model,
@@ -65,11 +68,16 @@ export class SearchClassController {
         .map(klass => klass.model)
         .uniq(classModel => classModel.id)
         .value();
+
+      this.search();
     });
+
+    $scope.$watch(() => this.searchText, () => this.search());
+    $scope.$watch(() => this.modelId, () => this.search());
   }
 
-  searchResults(): ClassListItem[] {
-    return _.chain(this.classes)
+  search() {
+    this.searchResults = _.chain(this.classes)
       .filter(klass => this.requireFilter(klass))
       .filter(klass => this.textFilter(klass))
       .filter(klass => this.modelFilter(klass))

@@ -30,7 +30,7 @@
       </div>
 
       <div class="col-md-4 search-results">
-        <div ng-repeat="class in ctrl.searchResults() track by class.id">
+        <div ng-repeat="class in ctrl.searchResults track by class.id">
           <div ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)">
             <h5>{{class | translateLabel}}</h5>
             <p>{{class.model | translateLabel}}</p>

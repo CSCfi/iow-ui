@@ -1,4 +1,5 @@
 import IPromise = angular.IPromise;
+import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { LanguageService, Language } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
@@ -28,12 +29,14 @@ export class SearchRequireModal {
 
 class SearchRequireController {
 
+  searchResults: Require[];
   requires: Require[];
   selectedRequire: Require;
   searchText: string = '';
 
   /* @ngInject */
-  constructor(private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
+  constructor($scope: IScope,
+              private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
               private excludedRequires: Set<Uri>,
               private language: Language,
               private modelService: ModelService,
@@ -42,11 +45,14 @@ class SearchRequireController {
 
     modelService.getAllRequires().then(result => {
       this.requires = _.reject(result, require => excludedRequires.has(require.id));
+      this.search();
     });
+
+    $scope.$watch(() => this.searchText, () => this.search());
   }
 
-  searchResults(): Require[] {
-    return _.chain(this.requires)
+  search() {
+    this.searchResults = _.chain(this.requires)
       .filter(require => this.textFilter(require))
       .sortBy(require => require.namespace)
       .value();

@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { SearchResult, Type } from '../services/entities';
+import IQService = angular.IQService;
 
 
 export class AdvancedSearchModal {
@@ -28,6 +29,7 @@ class AdvancedSearchController {
   private apiSearchResults: SearchResult[] = [];
 
   close = this.$uibModalInstance.dismiss;
+  searchResults: SearchResult[];
   types: Type[] = ['model', 'class', 'attribute', 'association'];
   searchText: string = '';
   searchTypes: Type[] = _.clone(this.types);
@@ -38,16 +40,22 @@ class AdvancedSearchController {
               private searchService: SearchService,
               private languageService: LanguageService) {
 
-    $scope.$watch(() => this.searchText, text => this.search(text));
+    $scope.$watch(() => this.searchText, text => {
+      if (text) {
+        this.searchService.searchAnything(text, this.languageService.modelLanguage)
+        .then(results => this.apiSearchResults = results)
+        .then(() => this.search());
+      }
+    });
+
+    $scope.$watch(() => this.searchTypes, () => this.search(), true);
   }
 
-  search(text: string) {
-    if (text) {
-      this.searchService.searchAnything(text, this.languageService.modelLanguage)
-        .then(searchResults => this.apiSearchResults = searchResults);
-    } else {
-      this.apiSearchResults = [];
-    }
+  search() {
+    this.searchResults = _.chain(this.apiSearchResults)
+      .sortBy(result => this.localizedLabelAsLower(result))
+      .filter(result => this.typeFilter(result))
+      .value();
   }
 
   selectSearchResult(searchResult: SearchResult) {
@@ -55,13 +63,6 @@ class AdvancedSearchController {
       this.$uibModalInstance.close(searchResult);
     }
   };
-
-  searchResults(): SearchResult[] {
-    return _.chain(this.apiSearchResults)
-      .sortBy(result => this.localizedLabelAsLower(result))
-      .filter(result => this.typeFilter(result))
-      .value();
-  }
 
   private localizedLabelAsLower(searchResult: SearchResult) {
     return this.languageService.translate(searchResult.label).toLowerCase();

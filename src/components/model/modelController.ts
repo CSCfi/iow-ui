@@ -25,12 +25,13 @@ export class ModelController {
   model: Model;
   selection: Class|Predicate;
   classes: ClassListItem[];
-  predicates: PredicateListItem[];
+  associations: PredicateListItem[];
+  attributes: PredicateListItem[];
 
   tabs = [
     new Tab('class', () => this.classes, () => this.addClass()),
-    new Tab('attribute', () => _.filter(this.predicates, predicate => predicate.type === 'attribute'), () => this.addPredicate('attribute')),
-    new Tab('association', () => _.filter(this.predicates, predicate => predicate.type === 'association'), () => this.addPredicate('association'))
+    new Tab('attribute', () => this.attributes, () => this.addPredicate('attribute')),
+    new Tab('association', () => this.associations, () => this.addPredicate('association'))
   ];
 
   /* @ngInject */
@@ -98,7 +99,8 @@ export class ModelController {
 
   getRequiredModels(): Set<Uri> {
     type WithModel = { model: ModelListItem };
-    return new Set<Uri>(_.chain<WithModel>(this.predicates)
+    return new Set<Uri>(_.chain<WithModel>(this.associations)
+                         .concat(this.attributes)
                          .concat(this.classes)
                          .filter(item => item && item.model)
                          .map(item => item.model.id)
@@ -151,7 +153,8 @@ export class ModelController {
 
   selectionDeleted(selection: WithIdAndType) {
     _.remove(this.classes, item => areEqual(item, selection));
-    _.remove(this.predicates, item => areEqual(item, selection));
+    _.remove(this.attributes, item => areEqual(item, selection));
+    _.remove(this.associations, item => areEqual(item, selection));
   }
 
   private updateLocation() {
@@ -205,7 +208,7 @@ export class ModelController {
 
   private addPredicate(type: Type) {
     this.askPermissionWhenEditing(() => {
-      this.searchPredicateModal.open(this.model, type, collectIds(this.predicates))
+      this.searchPredicateModal.open(this.model, type, collectIds([this.attributes, this.associations]))
         .then((result:ConceptCreation|Predicate) => {
           if (isConceptCreation(result)) {
             this.createPredicate(result);
@@ -309,7 +312,11 @@ export class ModelController {
   }
 
   private updatePredicates(): IPromise<PredicateListItem[]> {
-    return this.predicateService.getPredicatesForModel(this.model.id).then(predicates => this.predicates = predicates);
+    return this.predicateService.getPredicatesForModel(this.model.id).then(predicates => {
+      this.attributes = _.filter(predicates, predicate => predicate.type === 'attribute');
+      this.associations = _.filter(predicates, predicate => predicate.type === 'association');
+      return predicates;
+    });
   }
 }
 

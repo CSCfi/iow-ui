@@ -26,12 +26,22 @@ export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : obj ? [obj] : [];
 }
 
-export function collectIds(items: WithId[]): Set<Uri> {
-  return collectProperties(items, item => item.id);
+export function collectIds(items: WithId[]|WithId[][]): Set<Uri> {
+  return collectProperties<WithId, Uri>(items, item => item.id);
 }
 
-export function collectProperties<T, TResult>(items: T[], propertyExtractor: (item: T) => TResult): Set<TResult> {
-  return new Set<TResult>(_.map<T, TResult>(items, item => propertyExtractor(item)));
+export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult): Set<TResult> {
+  const result = new Set<TResult>();
+  for (const item of items) {
+    if (Array.isArray(item)) {
+      for (const innerItem of item) {
+        result.add(propertyExtractor(innerItem));
+      }
+    } else {
+      result.add(propertyExtractor(item));
+    }
+  }
+  return result;
 }
 
 export function splitCurie(curie: string): {prefix: string, value: string} {
