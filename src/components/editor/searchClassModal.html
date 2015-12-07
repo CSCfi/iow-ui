@@ -15,7 +15,8 @@
         <div class="input-group input-group-lg">
           <input autofocus type="text" class="form-control" placeholder="{{'search class' | translate}}"
                  ng-model="ctrl.searchText"
-                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                 key-control="ctrl.searchResults" />
           <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
@@ -30,11 +31,10 @@
       </div>
 
       <div class="col-md-4 search-results">
-        <div ng-repeat="class in ctrl.searchResults track by class.id">
-          <div ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)">
-            <h5>{{class | translateLabel}}</h5>
-            <p>{{class.model | translateLabel}}</p>
-          </div>
+        <div ng-repeat="class in ctrl.searchResults track by class.id"
+             ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)" key-control-selection>
+          <h5>{{class | translateLabel}}</h5>
+          <p>{{class.model | translateLabel}}</p>
         </div>
       </div>
 

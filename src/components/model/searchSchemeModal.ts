@@ -59,19 +59,11 @@ class SearchSchemeController {
   }
 
   selectScheme(scheme: any) {
-    this.selectedScheme = scheme;
-  }
-
-  isSelected(scheme: any): boolean {
-    return scheme.id === (this.selectedScheme && this.selectedScheme.id);
+    this.$uibModalInstance.close(scheme);
   }
 
   private textFilter(scheme: any): boolean {
     return !this.searchText || (scheme.title || '').toLowerCase().includes(this.searchText.toLowerCase());
-  }
-
-  confirm() {
-    this.$uibModalInstance.close(this.selectedScheme);
   }
 
   close() {

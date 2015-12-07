@@ -27,7 +27,8 @@
             <input autofocus type="text" class="form-control"
                    placeholder="{{(ctrl.typeSelectable ? 'search attribute or association' : 'search ' + ctrl.type) | translate}}"
                    ng-model="ctrl.searchText"
-                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                   key-control="ctrl.searchResults" />
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
 
@@ -51,12 +52,11 @@
         </div>
 
         <div class="col-md-4 search-results">
-          <div ng-repeat="predicate in ctrl.searchResults track by predicate.id">
-            <div ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)">
-              <i ng-class="predicate.glyphIconClass"></i>
-              <h5>{{predicate | translateLabel}}</h5>
-              <p>{{predicate.model | translateLabel}}</p>
-            </div>
+          <div ng-repeat="predicate in ctrl.searchResults track by predicate.id"
+               ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)" key-control-selection>
+            <i ng-class="predicate.glyphIconClass"></i>
+            <h5>{{predicate | translateLabel}}</h5>
+            <p>{{predicate.model | translateLabel}}</p>
           </div>
         </div>
 

@@ -31,7 +31,6 @@ class SearchRequireController {
 
   searchResults: Require[];
   requires: Require[];
-  selectedRequire: Require;
   searchText: string = '';
 
   /* @ngInject */
@@ -69,15 +68,7 @@ class SearchRequireController {
   }
 
   selectRequire(require: Require) {
-    this.selectedRequire = require;
-  }
-
-  isSelected(require: Require): boolean {
-    return require.id === (this.selectedRequire && this.selectedRequire.id);
-  }
-
-  confirm() {
-    this.$uibModalInstance.close(this.selectedRequire);
+    this.$uibModalInstance.close(require);
   }
 
   createNew () {
