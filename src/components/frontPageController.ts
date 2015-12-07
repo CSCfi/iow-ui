@@ -66,7 +66,7 @@ export class FrontPageController {
   }
 
   openAdvancedSearch() {
-    this.advancedSearchModal.open().then(this.selectSearchResult);
+    this.advancedSearchModal.open().then(searchResult => this.selectSearchResult(searchResult));
   }
 
   private go(withIowUrl: {iowUrl(): Url}) {
