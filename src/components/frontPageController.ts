@@ -9,18 +9,18 @@ import { LanguageService } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
 import { GroupListItem, SearchResult, Url } from '../services/entities';
 
-class Bullet {
-  constructor(public title: string, public content: string) {
-  }
+interface Bullet {
+  title: string;
+  content: string;
 }
 
 export class FrontPageController {
 
   bullets: Bullet[] = [
-    new Bullet('What is description?', 'What is description content'),
-    new Bullet('What is method?', 'What is method content'),
-    new Bullet('What can I do?', 'What can I do content'),
-    new Bullet('How?', 'How content')
+    { title: 'What is description?', content: 'What is description content' },
+    { title: 'What is method?', content: 'What is method content' },
+    { title: 'What can I do?', content: 'What can I do content' },
+    { title: 'How?', content: 'How content' }
   ];
 
   groups: GroupListItem[];
