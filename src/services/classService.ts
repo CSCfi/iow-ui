@@ -87,7 +87,7 @@ export class ClassService {
         })})
       .then(result => {
         const property: Property = result['property'];
-        const predicate: Predicate = result['predicate]'];
+        const predicate: Predicate = result['predicate'];
 
         if (!property.label) {
           property.label = predicate.label;
