@@ -11,7 +11,7 @@ mod.directive('valueSelect', () => {
       id: '@'
     },
     restrict: 'E',
-    template: `<select id="{{ctrl.id}}" class="form-control" ng-model="ctrl.value">
+    template: `<select id="{{ctrl.id}}" class="form-control" required ng-model="ctrl.value">
                  <option ng-repeat="value in ctrl.values" value="{{value}}">{{ctrl.displayName(value)}}</option>
                </select>`,
     controllerAs: 'ctrl',
