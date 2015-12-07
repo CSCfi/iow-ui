@@ -95,8 +95,8 @@ export class ClassService {
 
         if (predicate instanceof Attribute && !property.dataType) {
           property.dataType = predicate.dataType || 'xsd:string';
-        } else if (predicate instanceof Association && !property.dataType) {
-          property.valueClass = '';
+        } else if (predicate instanceof Association && !property.valueClass) {
+          property.valueClass = predicate.valueClass;
         }
 
         return property;
