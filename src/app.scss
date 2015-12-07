@@ -390,7 +390,7 @@ modal-body {
       margin-bottom: 10px;
       padding-left: 10px;
 
-      &.selected {
+      &.selected, &.selection {
         background-color: #ffffff;
       }
 
@@ -508,6 +508,9 @@ a.accordion-toggle {
     padding: 10px 20px;
   }
   li:hover {
+    background-color: $list-group-hover-bg;
+  }
+  li.selection {
     background-color: $list-group-hover-bg;
   }
 }
