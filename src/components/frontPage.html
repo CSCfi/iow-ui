@@ -24,7 +24,8 @@
         <div class="input-group input-group-lg">
           <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
                  ng-model="ctrl.searchText"
-                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }" />
+                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                 key-control="ctrl.searchResults" />
           <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
@@ -32,7 +33,7 @@
 
         <ul class="selectable-panel__list">
           <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
-          <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)">
+          <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)" key-control-selection>
             <i ng-class="searchResult.glyphIconClass"></i>
             <span ng-class="{link: searchResult.iowUrl}">{{searchResult | translateLabel}}</span>
             <p>{{searchResult.comment | translateValue}}</p>
