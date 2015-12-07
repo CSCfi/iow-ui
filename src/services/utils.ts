@@ -1,6 +1,10 @@
 import * as _ from 'lodash';
 import { Type, Uri } from './entities';
 
+interface WithId {
+  id: Uri;
+}
+
 export function isString(str: any): str is string {
   return typeof str === 'string';
 }
@@ -22,8 +26,12 @@ export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : obj ? [obj] : [];
 }
 
-export function collectIds(items: {id: Uri}[]): Set<Uri> {
-  return new Set<Uri>(_.map(items, item => item.id));
+export function collectIds(items: WithId[]): Set<Uri> {
+  return collectProperties(items, item => item.id);
+}
+
+export function collectProperties<T, TResult>(items: T[], propertyExtractor: (item: T) => TResult): Set<TResult> {
+  return new Set<TResult>(_.map<T, TResult>(items, item => propertyExtractor(item)));
 }
 
 export function splitCurie(curie: string): {prefix: string, value: string} {

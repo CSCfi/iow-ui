@@ -9,7 +9,7 @@ import { GroupListItem, Model, Require, Reference, Uri, states } from '../../ser
 import { ModelController } from './modelController';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { collectIds } from '../../services/utils';
+import { collectIds, collectProperties } from '../../services/utils';
 import { SearchSchemeModal } from './searchSchemeModal';
 import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -77,7 +77,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addReference() {
     const language = this.languageService.modelLanguage;
-    const vocabularyMap = collectIds(this.editableInEdit.references);
+    const vocabularyMap = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId);
     this.searchSchemeModal.open(vocabularyMap, language)
       .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
       .then((reference: Reference) => {

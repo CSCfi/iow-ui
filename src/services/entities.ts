@@ -261,7 +261,7 @@ export class Reference extends GraphNode {
 
   constructor(graph: any, context: any) {
     super('reference', graph, context);
-    this.vocabularyId = graph['dct:identifier'];
+    this.vocabularyId = graph['dcterms:identifier'];
     this.id = graph['@id'];
     this.label = graph.title;
     this.comment = graph.comment;
