@@ -1600,10 +1600,7 @@
       "@value" : "Julkishallinnon tietokomponentit"
     },
     "dcap:preferredXMLNamespaceName" : "http://iow.csc.fi/ns/jhs#",
-    "dcap:preferredXMLNamespacePrefix" : "jhs",
-    "rdf:type" : {
-      "@id" : "dcap:MetadataVocabulary"
-    }
+    "dcap:preferredXMLNamespacePrefix" : "jhs"
   }, {
     "@id" : "http://purl.iso.org/iso-iec/19788/-1/",
     "dcap:preferredXMLNamespaceName" : "http://standards.iso.org/iso-iec/19788/-5/v0200#",
@@ -1667,7 +1664,7 @@
     "dcap:preferredXMLNamespaceName" : "http://xmlns.com/foaf/0.1/",
     "dcap:preferredXMLNamespacePrefix" : "foaf",
     "rdf:type" : {
-      "@id" : "rdfs:Resource"
+      "@id" : "dcap:MetadataVocabulary"
     },
     "rdfs:label" : {
       "@language" : "en",
