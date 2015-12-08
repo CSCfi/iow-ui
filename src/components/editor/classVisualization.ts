@@ -216,7 +216,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
       return range ? `- ${name} : ${range}` : name;
     }
 
-    return _.map(_.sortBy(properties, property => property['sh:index']), propertyAsString);
+    return _.map(_.sortBy(properties, property => property['index']), propertyAsString);
   }
 
   function size(propertyNames: string[]) {
