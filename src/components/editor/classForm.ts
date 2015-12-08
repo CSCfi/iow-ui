@@ -1,4 +1,5 @@
 import IAttributes = angular.IAttributes;
+import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import * as _ from 'lodash';
@@ -43,7 +44,12 @@ export class ClassFormController {
   propertyViews: { [key: string]: PropertyViewController } = {};
 
   /* @ngInject */
-  constructor(private $timeout: ITimeoutService, private modelCache: ModelCache) {
+  constructor($scope: IScope, private $timeout: ITimeoutService, $location: ILocationService, private modelCache: ModelCache) {
+    $scope.$watch(() => this.propertyViews, views => {
+      if (!_.any(views, view => view.isOpen)) {
+        $location.search('property', null);
+      }
+    }, true);
   }
 
   linkToSubclass() {
