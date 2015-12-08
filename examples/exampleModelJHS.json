@@ -1069,7 +1069,7 @@
     "dcap:preferredXMLNamespaceName" : "http://schema.org/",
     "dcap:preferredXMLNamespacePrefix" : "schema",
     "rdf:type" : {
-      "@id" : "rdfs:Resource"
+      "@id" : "dcap:MetadataVocabulary"
     },
     "rdfs:label" : {
       "@language" : "en",
@@ -1206,7 +1206,6 @@
       "@type" : "@id"
     },
     "dc" : "http://purl.org/dc/elements/1.1/",
-    "doo" : "http://iow.csc.fi/ns/doo#",
     "foaf" : "http://xmlns.com/foaf/0.1/",
     "vs" : "http://www.w3.org/2003/06/sw-vocab-status/ns#",
     "sh" : "http://www.w3.org/ns/shacl#",
