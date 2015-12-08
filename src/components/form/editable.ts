@@ -19,7 +19,8 @@ mod.directive('editable', () => {
     scope: {
       title: '@',
       link: '=',
-      valueAsLocalizationKey: '@'
+      valueAsLocalizationKey: '@',
+      disable: '='
     },
     restrict: 'E',
     template: require('./editable.html'),
@@ -34,7 +35,7 @@ mod.directive('editable', () => {
       input.after(element.find('error-messages').detach());
       Object.defineProperty(editableController, 'inputId', { get: () => input.attr('id') });
       editableController.ngModelController = input.controller('ngModel');
-      editableController.isEditing = () => formController.editing;
+      editableController.isEditing = () => formController.editing && !editableController.disable;
     },
     controller: EditableController
   }
@@ -45,6 +46,7 @@ class EditableController extends FormElementController {
   inputId: string;
   isEditing: () => boolean;
   ngModelController: INgModelController;
+  disable: boolean;
 
   constructor($location: ILocationService, languageService: LanguageService, gettextCatalog: gettextCatalog) {
     super($location, languageService, gettextCatalog);

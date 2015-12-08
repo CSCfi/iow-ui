@@ -228,8 +228,8 @@ export class Model extends AbstractModel {
   }
 
   copyNamespacesFromRequires() {
-    _.forEach(this.requires, reference => {
-      this.context[reference.prefix] = reference.namespace;
+    _.forEach(this.requires, require => {
+      this.context[require.prefix] = require.namespace;
     });
   }
 
@@ -274,6 +274,7 @@ export class Require extends GraphNode {
   label: Localizable;
   prefix: string;
   private _namespace: Uri;
+  modifiable: boolean;
 
   constructor(graph: any, context: any) {
     super('require', graph, context);
@@ -281,6 +282,7 @@ export class Require extends GraphNode {
     this.label = graph.label;
     this._namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
+    this.modifiable = graph['@type'] === 'dcap:MetadataVocabulary';
   }
 
   get namespace() {
@@ -812,6 +814,8 @@ function renameProperty(obj: any, name: string, newName: string) {
 function frameData($log: angular.ILogService, data: any, frame: any): IPromise<any> {
   return jsonld.promises.frame(data, frame)
     .then((framed: any) => framed, (err: any) => {
+      $log.error(frame);
+      $log.error(data);
       $log.error(err.message);
       $log.error(err.details.cause);
     });

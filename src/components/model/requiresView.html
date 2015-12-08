@@ -10,15 +10,15 @@
             ng-disabled="modelViewController.isRequireInUse(require)" type="button" class="btn btn-default pull-right"
             ng-click="modelViewController.removeRequire(require)" translate>Delete require</button>
 
-    <editable title="Label">
+    <editable title="Label" disable="!require.modifiable">
       <input type="text" class="form-control" localized-input="required" ng-model="require.label" />
     </editable>
 
-    <editable title="Namespace">
+    <editable title="Namespace" disable="!require.modifiable">
       <input type="text" class="form-control" ng-disabled="modelViewController.isRequireInUse(require)" required namespace-input ng-model="require.namespace" />
     </editable>
 
-    <editable title="Prefix">
+    <editable title="Prefix" disable="!require.modifiable">
       <input type="text" class="form-control" required ng-model="require.prefix" />
     </editable>
   </uib-accordion-group>
