@@ -16,6 +16,7 @@ const created = { '@id': 'http://purl.org/dc/terms/created', '@type': 'http://ww
 const isDefinedBy = { '@id': 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', '@type': '@id' };
 const predicate = { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' };
 const valueClass = { '@id': 'http://www.w3.org/ns/shacl#valueClass', '@type': '@id' };
+const index = { '@id': 'http://www.w3.org/ns/shacl#index'};
 const nodeKind = { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' };
 const references = { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' };
 const requires = { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' };
@@ -100,7 +101,7 @@ export function modelListFrame(data: any): Frame {
 
 export function propertyFrame(data: any): Frame {
   return {
-    '@context': addToContext(data['@context'], {label, range, datatype, valueClass, modified, isDefinedBy, comment, predicate}),
+    '@context': addToContext(data['@context'], {label, range, datatype, valueClass, modified, isDefinedBy, comment, predicate, index}),
     '@id': data['@id']
   };
 }
