@@ -219,7 +219,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   }
 
   function getSortedPropertyNames() {
-    return _.sortBy(getPropertyNames());
+    return _.sortBy(getPropertyNames(), name => name && name.toLowerCase());
   }
 
   function size(propertyNames: string[]) {
