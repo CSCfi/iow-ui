@@ -74,7 +74,7 @@ export class ClassService {
       });
   }
 
-  newProperty(predicateId: Uri): IPromise<Property> {
+  newProperty(predicateId: Uri, numberOfProperties: number): IPromise<Property> {
     return this.$q.all({
         predicate: this.predicateService.getPredicate(predicateId),
         property: this.$http.get('/api/rest/classProperty', {params: {predicateID: predicateId}})
@@ -98,6 +98,8 @@ export class ClassService {
         } else if (predicate instanceof Association && !property.valueClass) {
           property.valueClass = predicate.valueClass;
         }
+
+        property.index = numberOfProperties + 1;
 
         return property;
       });

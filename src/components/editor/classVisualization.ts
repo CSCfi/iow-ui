@@ -215,11 +215,8 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
       const range = isAssociation(property) ? property.valueClass : property.datatype;
       return range ? `- ${name} : ${range}` : name;
     }
-    return _.map(properties, propertyAsString);
-  }
 
-  function getSortedPropertyNames() {
-    return _.sortBy(getPropertyNames(), name => name && name.toLowerCase());
+    return _.map(_.sortBy(properties, property => property['sh:index']), propertyAsString);
   }
 
   function size(propertyNames: string[]) {
@@ -229,7 +226,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
     return { width, height };
   }
 
-  const propertyNames = getSortedPropertyNames();
+  const propertyNames = getPropertyNames();
 
   const classCell: any = new joint.shapes.uml.Class({
     id: klass['@id'],
@@ -244,7 +241,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
-    const propertyNames = getSortedPropertyNames();
+    const propertyNames = getPropertyNames();
     classCell.prop('name', getName());
     classCell.prop('attributes', propertyNames);
     classCell.prop('size', size(propertyNames));

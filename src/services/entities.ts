@@ -423,6 +423,7 @@ export class Property extends GraphNode {
   dataType: string;
   valueClass: Uri;
   predicateCurie: string;
+  index: number;
 
   constructor(graph: any, context: any) {
     super('property', graph, context);
@@ -433,6 +434,7 @@ export class Property extends GraphNode {
     this.dataType = graph.datatype;
     this.valueClass = graph.valueClass;
     this.predicateCurie = graph.predicate;
+    this.index = graph['sh:index'];
   }
 
   get predicateId(): Uri {
@@ -451,7 +453,8 @@ export class Property extends GraphNode {
       example: this.example,
       datatype: this.dataType,
       valueClass: this.valueClass,
-      predicate: this.predicateCurie
+      predicate: this.predicateCurie,
+      'sh:index': this.index
     }
   }
 }
