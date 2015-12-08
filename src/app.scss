@@ -162,6 +162,9 @@ selection-view, .main-editable-content {
 }
 
 .editable-wrap {
+
+  word-break: break-all;
+
   a {
     cursor: pointer;
   }
