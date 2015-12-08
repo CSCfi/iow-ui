@@ -18,7 +18,7 @@
   </editable>
 
   <editable ng-if="ctrl.predicate.isAssociation()" title="Value class" link="ctrl.linkToValueClass()">
-    <class-select id="{{ctrl.property.id + 'valueClass'}}" curie="ctrl.property.valueClass" model="ctrl.model"></class-select>
+    <curie-select id="{{ctrl.property.id + 'valueClass'}}" type="class" curie="ctrl.property.valueClass" model="ctrl.model"></curie-select>
   </editable>
 
   <uib-accordion>

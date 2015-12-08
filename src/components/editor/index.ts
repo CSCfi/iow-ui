@@ -7,12 +7,11 @@ const mod = angular.module('iow.components.editor', ['iow.components.common', 'i
 export = mod.name;
 
 import './classForm';
-import './classSelect';
 import './classView';
 import './classVisualization';
+import './curieSelect';
 import './editableSubjectSelect';
 import './predicateForm';
-import './predicateSelect';
 import './predicateView';
 import './propertyView';
 import './rangeSelect';

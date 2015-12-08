@@ -4,27 +4,29 @@ import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
+import IPromise = angular.IPromise;
+import {SearchClassModal} from "./searchClassModal";
 
 export const mod = angular.module('iow.components.editor');
 
-mod.directive('predicateSelect', () => {
+mod.directive('curieSelect', () => {
   'ngInject';
   return {
     scope: {
       curie: '=',
-      type: '=',
+      type: '@',
       model: '=',
       id: '@'
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: require('./predicateSelect.html'),
+    template: require('./curieSelect.html'),
     require: '?^form',
     link($scope: EditableScope, element: JQuery, attributes: IAttributes, formController: EditableForm) {
       $scope.formController = formController;
     },
-    controller: PredicateSelectController
+    controller: CurieSelectController
   };
 });
 
@@ -32,19 +34,25 @@ interface EditableScope extends IScope {
   formController: EditableForm;
 }
 
-class PredicateSelectController {
+interface WithCurie {
+  curie: string;
+}
+
+class CurieSelectController {
 
   curie: string;
   type: Type;
   model: Model;
+  id: string;
 
-  /* @ngInject */
-  constructor(private searchPredicateModal: SearchPredicateModal) {
+  constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
   }
 
-  selectPredicate() {
-    this.searchPredicateModal.openWithOnlySelection(this.model, this.type).then(predicate => {
-      this.curie = predicate.curie;
-    });
-  };
+  selectCurie() {
+    const promise: IPromise<WithCurie> = this.type ==='class'
+      ? this.searchClassModal.openWithOnlySelection(this.model)
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type);
+
+    promise.then(withCurie => this.curie = withCurie.curie);
+  }
 }

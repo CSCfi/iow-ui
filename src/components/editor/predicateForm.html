@@ -11,7 +11,7 @@
 </editable>
 
 <editable title="{{'Super' + ctrl.predicate.type}}" link="ctrl.linkToSubProperty()">
-  <predicate-select id="superPredicate" type="ctrl.predicate.type" curie="ctrl.predicate.subPropertyOf" model="ctrl.model"></predicate-select>
+  <curie-select id="superPredicate" type="{{ctrl.predicate.type}}" curie="ctrl.predicate.subPropertyOf" model="ctrl.model"></curie-select>
 </editable>
 
 <editable ng-if="ctrl.predicate.isAttribute()" title="Range" name="Range">
@@ -19,7 +19,7 @@
 </editable>
 
 <editable ng-if="ctrl.predicate.isAssociation()" title="Value class" name="Value class" link="ctrl.linkToValueClass()">
-  <class-select id="predicateValueClass" curie="ctrl.predicate.valueClass" model="ctrl.model"></class-select>
+  <curie-select id="predicateValueClass" type="class" curie="ctrl.predicate.valueClass" model="ctrl.model"></curie-select>
 </editable>
 
 <non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl()"></non-editable>
