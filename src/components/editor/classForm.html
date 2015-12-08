@@ -23,7 +23,7 @@
 <editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
 
 <uib-accordion close-others="true">
-  <uib-accordion-group ng-repeat="property in ctrl.class.properties | orderByLabel" is-open="ctrl.propertyViews[property.id].isOpen">
+  <uib-accordion-group ng-repeat="property in ctrl.class.properties  | orderBy:'index'" is-open="ctrl.propertyViews[property.id].isOpen">
     <uib-accordion-heading>
       <span ng-class="property.glyphIconClass"></span>
       <span>{{property | translateLabel}}</span>
