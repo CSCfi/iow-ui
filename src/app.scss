@@ -156,7 +156,7 @@ uib-accordion .panel-group {
 }
 
 selection-view, .main-editable-content {
-  input, select, textarea {
+  .form-control {
     max-width: 500px;
   }
 }
@@ -195,6 +195,18 @@ selection-view, .main-editable-content {
 
   .selection-form {
     min-height: calc(100vh - 134px);
+
+    .property-ordering {
+      margin-right: 50%;
+      margin-top: -8px;
+
+      span {
+        font-size: xx-small;
+      }
+      span:hover {
+        color: $brand-primary;
+      }
+    }
   }
 }
 

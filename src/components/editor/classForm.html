@@ -28,6 +28,15 @@
       <span ng-class="property.glyphIconClass"></span>
       <span>{{property | translateLabel}}</span>
       <accordion-chevron is-open="ctrl.propertyViews[property.id].isOpen"></accordion-chevron>
+      <div class="property-ordering pull-right" ng-show="ctrl.isEditing()">
+        <span ng-show="!$first"
+              class="glyphicon glyphicon-chevron-up"
+              ng-click="ctrl.movePropertyUp($event, property)"></span>
+        <br />
+        <span ng-show="!$last"
+              class="glyphicon glyphicon-chevron-down"
+              ng-click="ctrl.movePropertyDown($event, property)"></span>
+      </div>
     </uib-accordion-heading>
     <property-view property="property" model="ctrl.model"></property-view>
   </uib-accordion-group>

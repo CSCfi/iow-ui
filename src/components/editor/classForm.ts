@@ -1,6 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
+import * as _ from 'lodash';
 import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
 import { Class, Model, Property, Uri, states } from '../../services/entities';
@@ -26,6 +27,7 @@ mod.directive('classForm', () => {
       const classViewController: ClassViewController = controllers[1];
       if (classViewController) {
         classViewController.registerForm(classFormController);
+        classFormController.isEditing = () => classViewController.isEditing();
       }
     },
     controller: ClassFormController
@@ -36,6 +38,7 @@ export class ClassFormController {
 
   class: Class;
   model: Model;
+  isEditing: () => boolean;
 
   propertyViews: { [key: string]: PropertyViewController } = {};
 
@@ -61,4 +64,20 @@ export class ClassFormController {
       this.propertyViews[property.id].openAndScrollTo();
     });
   };
+
+  movePropertyUp($event: JQueryEventObject, property: Property) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    const previous = _.find(this.class.properties, p => p.index === property.index - 1);
+    property.index--;
+    previous.index++;
+  }
+
+  movePropertyDown($event: JQueryEventObject, property: Property) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    const next = _.find(this.class.properties, p => p.index === property.index + 1);
+    property.index++;
+    next.index--;
+  }
 }
