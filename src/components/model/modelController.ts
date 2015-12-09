@@ -20,6 +20,7 @@ import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal
 export class ModelController {
 
   loading = true;
+  firstLoading = true;
   views: View[] = [];
   selectedItem: WithIdAndType;
   model: Model;
@@ -79,6 +80,8 @@ export class ModelController {
   }
 
   init(routeData: RouteData) {
+    this.loading = true;
+
     if (routeData.selected) {
       _.find(this.tabs, tab => tab.type === routeData.selected.type).active = true;
     }
@@ -90,10 +93,17 @@ export class ModelController {
         .then(() => this.loading = false);
     } else {
       this.$q.all([
-          this.updateModelById(routeData.existingModelId).then(() => this.updateSelectables()),
+          this.updateModelById(routeData.existingModelId).then(updated => {
+            if (updated) {
+              this.updateSelectables();
+            }
+          }),
           this.updateSelectionByTypeAndId(routeData.selected)
         ])
-        .then(() => this.loading = false);
+        .then(() => {
+          this.loading = false;
+          this.firstLoading = false;
+        });
     }
   }
 
@@ -158,7 +168,7 @@ export class ModelController {
   }
 
   private updateLocation() {
-    if (this.model) {
+    if (!this.loading) {
       this.locationService.atModel(this.model, this.selection);
 
       if (!this.model.unsaved) {
@@ -288,9 +298,11 @@ export class ModelController {
 
   private updateModelById(modelId: Uri) {
     if (!this.model || this.model.id !== modelId) {
-      return this.modelService.getModelByUrn(modelId).then(model => this.updateModel(model));
+      return this.modelService.getModelByUrn(modelId)
+        .then(model => this.updateModel(model))
+        .then(model => true);
     } else {
-      return this.$q.reject();
+      return this.$q.when(false);
     }
   }
 
