@@ -194,7 +194,7 @@ export function searchResultFrame(data: any): Frame {
 export function classVisualizationFrame(data: any): Frame {
   return {
     '@context': addToContext(data['@context'], {label, property, datatype, predicate, valueClass, index}),
-    '@name': 'sh:ShapeClass',
+    '@type': 'sh:ShapeClass',
     'property': {
       'predicate': {
         '@embed': false
