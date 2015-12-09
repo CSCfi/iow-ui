@@ -197,14 +197,26 @@ selection-view, .main-editable-content {
     min-height: calc(100vh - 134px);
 
     .property-ordering {
-      margin-right: 50%;
-      margin-top: -8px;
+      position: absolute;
+      left: 50%;
 
       span {
         font-size: xx-small;
       }
       span:hover {
         color: $brand-primary;
+      }
+
+      .glyphicon-chevron-up {
+        position: absolute;
+        top: -25px;
+        color: #bbb;
+      }
+
+      .glyphicon-chevron-down {
+        position: absolute;
+        top: -5px;
+        color: #bbb;
       }
     }
   }
