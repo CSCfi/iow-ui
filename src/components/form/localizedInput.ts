@@ -18,20 +18,41 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
     link($scope: IScope, element: JQuery, attributes: LocalizedInputAttributes, modelController: INgModelController) {
       let localized: Localizable;
 
+      function setPlaceholder() {
+        element.attr('placeholder', languageService.translate(localized));
+      }
+
+      function removePlaceholder() {
+        element.attr('placeholder', null);
+      }
+
       $scope.$watch(() => languageService.modelLanguage, lang => {
-        element.val(localized[lang]);
+        const val = localized[lang];
+        if (!val) {
+          setPlaceholder();
+        }
+        element.val(val);
       });
 
       modelController.$parsers.push(viewValue => {
         localized = Object.assign(localized, {
           [languageService.modelLanguage]: viewValue
         });
+        if (viewValue) {
+          removePlaceholder();
+        } else {
+          setPlaceholder();
+        }
         return localized;
       });
 
       modelController.$formatters.push(modelValue => {
         localized = modelValue || {};
-        return localized[languageService.modelLanguage];
+        const val = localized[languageService.modelLanguage];
+        if (!val) {
+          setPlaceholder();
+        }
+        return val;
       });
 
       if (attributes.localizedInput === "required") {
