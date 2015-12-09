@@ -13,7 +13,7 @@ const joint = require('jointjs');
 
 export const mod = angular.module('iow.components.editor');
 
-mod.directive('classVisualization', ($timeout: ITimeoutService, $interval: IIntervalService, $window: IWindowService) => {
+mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindowService) => {
   'ngInject';
 
   return {
@@ -48,7 +48,7 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $interval: IInte
           let previousWidth = container.width();
           let previousHeight = container.height();
 
-          $interval(() => {
+          const intervalHandle = window.setInterval(() => {
             const width = container.width();
             const height = container.height();
             if (previousWidth !== width || previousHeight !== height) {
@@ -58,6 +58,8 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $interval: IInte
               previousHeight = height;
             }
           }, 200);
+
+          $scope.$on('$destroy', () => window.clearInterval(intervalHandle));
         }
       })();
     },
