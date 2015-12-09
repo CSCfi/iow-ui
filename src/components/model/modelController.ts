@@ -168,7 +168,7 @@ export class ModelController {
   }
 
   private updateLocation() {
-    if (!this.loading) {
+    if (!this.loading && this.model) {
       this.locationService.atModel(this.model, this.selection);
 
       if (!this.model.unsaved) {
