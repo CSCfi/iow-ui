@@ -7,7 +7,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from './editableEntityController';
-import { FormElementController } from "./formElementController";
+import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 
@@ -41,15 +41,23 @@ mod.directive('editable', () => {
   }
 });
 
-class EditableController extends FormElementController {
+class EditableController {
+
+  title: string;
+  valueAsLocalizationKey: boolean;
+  link: string;
+  disable: boolean;
 
   inputId: string;
   isEditing: () => boolean;
   ngModelController: INgModelController;
-  disable: boolean;
 
-  constructor($location: ILocationService, languageService: LanguageService, gettextCatalog: gettextCatalog) {
-    super($location, languageService, gettextCatalog);
+  item: DisplayItem;
+
+  /* @ngInject */
+  constructor(private displayItemFactory: DisplayItemFactory) {
+    const value: () => Value = () => this.ngModelController && this.ngModelController.$modelValue;
+    this.item = displayItemFactory.create(value, (value: string) => this.link, this.valueAsLocalizationKey);
   }
 
   get required(): boolean {
@@ -57,13 +65,5 @@ class EditableController extends FormElementController {
       const validators = this.ngModelController.$validators;
       return 'required' in validators || 'requiredLocalized' in validators;
     }
-  }
-
-  showNonEditable() {
-    return !this.isEditing();
-  }
-
-  getValue() {
-    return this.ngModelController && this.ngModelController.$modelValue;
   }
 }

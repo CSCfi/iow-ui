@@ -1,4 +1,4 @@
-import { EditableEntityController } from './editableEntityController';
+import { DisplayItemFactory } from './displayItemFactory';
 
 const mod = angular.module('iow.components.form', ['iow.services']);
 export = mod.name;
@@ -16,3 +16,5 @@ import './namespaceInput';
 import './nonEditable';
 import './stateSelect';
 import './valueSelect';
+
+mod.service('displayItemFactory', DisplayItemFactory);

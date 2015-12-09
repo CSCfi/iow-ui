@@ -1,9 +1,10 @@
 <div class="editable-wrap form-group">
-  <label for="{{ctrl.inputId}}" ng-show="ctrl.displayValue || ctrl.isEditing()">{{ctrl.title | translate}} <span ng-show="ctrl.required && ctrl.isEditing()" style="color: red">*</span></label>
+  <label for="{{ctrl.inputId}}" ng-show="ctrl.item.displayValue || ctrl.isEditing()">{{ctrl.title | translate}} <span ng-show="ctrl.required && ctrl.isEditing()" style="color: red">*</span></label>
   <div ng-show="ctrl.isEditing()" ng-transclude></div>
 
-  <a ng-show="ctrl.showLink" ng-href="{{ctrl.href}}">{{ctrl.displayValue}}</a>
-  <span ng-show="ctrl.showPlain" >{{ctrl.displayValue}}</span>
-
+  <div ng-if="!ctrl.isEditing()">
+    <a ng-show="ctrl.item.showLink" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
+    <span ng-show="ctrl.item.showPlain" >{{ctrl.item.displayValue}}</span>
+  </div>
   <error-messages ng-model-controller="ctrl.ngModelController"></error-messages>
 </div>

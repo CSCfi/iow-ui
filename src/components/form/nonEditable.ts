@@ -6,7 +6,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 import { LanguageService } from '../../services/languageService';
-import { FormElementController } from './formElementController';
+import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 
 export const mod = angular.module('iow.components.form');
 
@@ -31,25 +31,18 @@ mod.directive('nonEditable', () => {
   };
 });
 
-class NonEditableController extends FormElementController {
+class NonEditableController {
 
+  title: string;
+  value: Value;
+  link: string;
+  valueAsLocalizationKey: boolean;
   isEditing: () => boolean;
-  value: string|Localizable;
+
+  item: DisplayItem;
 
   /* @ngInject */
-  constructor($location: ILocationService, languageService: LanguageService, gettextCatalog: gettextCatalog) {
-    super($location, languageService, gettextCatalog);
-  }
-
-  showNonEditable() {
-    return true;
-  }
-
-  hideLinks() {
-    return this.isEditing();
-  }
-
-  getValue(): string|Localizable {
-    return this.value;
+  constructor(displayItemFactory: DisplayItemFactory) {
+    this.item = displayItemFactory.create(() => this.value, (value: string) => this.link, this.valueAsLocalizationKey, () => this.isEditing())
   }
 }
