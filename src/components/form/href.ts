@@ -1,21 +1,20 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
+import ITimeoutService = angular.ITimeoutService;
 
 export const mod = angular.module('iow.components.form');
 
-mod.directive('ngHref', () => {
+mod.directive('ngHref', ($timeout: ITimeoutService) => {
   return {
     restrict: 'A',
-    require: ['?^editable', '?^nonEditable'],
-    link($scope: IScope, element: JQuery, attributes: HrefAttributes, controllers: any[]) {
-      if (_.any(controllers, ctrl => ctrl && ctrl.external)) {
-        element.attr('target', '_blank');
-      }
+    link($scope: IScope, element: JQuery) {
+      $timeout(() => {
+        const link = element.attr('href');
+        if (link && !link.startsWith('/') && !link.startsWith('#')) {
+          element.attr('target', '_blank');
+        }
+      });
     }
   }
 });
-
-interface HrefAttributes extends IAttributes {
-  external: boolean;
-}
