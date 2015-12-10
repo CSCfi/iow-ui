@@ -29,6 +29,7 @@ mod.directive('modelView', () => {
     link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
       const modelViewController: ModelViewController = controllers[0];
       const modelController: ModelController = controllers[1];
+      $scope.modelController = modelController;
       modelController.registerView(modelViewController);
       modelViewController.getRequiredModels = () => modelController.getRequiredModels();
     },
