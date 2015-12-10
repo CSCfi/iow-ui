@@ -149,7 +149,7 @@ msgstr "Luokat"
 #: components/editor/searchClassModal.html:14
 msgid "Class search info"
 msgstr ""
-"Haen ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
+"Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
 #: components/editor/searchConceptModal.html:34
@@ -546,7 +546,7 @@ msgstr "Hae sanastosta…"
 #: components/editor/searchPredicateModal.html:25
 msgid "Search predicate info"
 msgstr ""
-"Haen ensin tarvitsemaasi ominaisuutta yhteentoimivuuden kuvauksista. Jos et "
+"Hae ensin tarvitsemaasi attribuuttia tai assosiaatiota yhteentoimivuuden kuvauksista. Jos et "
 "löydä tarpeisiisi sopivaa, voit luoda uuden ominaisuuden."
 
 #: components/model/searchRequireModal.html:15
