@@ -216,7 +216,7 @@ msgstr "Määrittele käsite assosiaatiolle"
 
 #: translations/misc.html:6
 msgid "Define concept for the attribute"
-msgstr "Määrittele käsite ominaisuudelle"
+msgstr "Määrittele käsite attribuutille"
 
 #: translations/misc.html:4
 msgid "Define concept for the class"
@@ -228,7 +228,7 @@ msgstr "Määrittele käsite uudelle assosiaatiolle"
 
 #: translations/misc.html:7
 msgid "Define concept for the new attribute"
-msgstr "Määrittele käsite uudelle ominaisuudelle"
+msgstr "Määrittele käsite uudelle attribuutille"
 
 #: translations/misc.html:5
 msgid "Define concept for the new class"
@@ -431,7 +431,7 @@ msgstr "assosiaatiosta"
 
 #: translations/misc.html:80
 msgid "of attribute"
-msgstr "ominaisuudesta"
+msgstr "attribuutista"
 
 #: translations/misc.html:78
 msgid "of class"
@@ -513,19 +513,19 @@ msgstr "Hae assosiaatioita"
 
 #: translations/misc.html:83
 msgid "search attribute"
-msgstr "Hae ominaisuutta…"
+msgstr "Hae attribuuttia…"
 
 #: translations/misc.html:81
 msgid "search attribute or association"
-msgstr "Hae ominaisuutta tai assosiaatiota…"
+msgstr "Hae attribuuttia tai assosiaatiota…"
 
 #: translations/misc.html:82
 msgid "Search attributes"
-msgstr "Hae ominaisuuksia"
+msgstr "Hae attribuutteja"
 
 #: components/editor/searchPredicateModal.html:4
 msgid "Search attributes and associations"
-msgstr "Hae ominaisuuksia ja assosiaatitoita"
+msgstr "Hae attribuutteja ja assosiaatitoita"
 
 #: components/editor/searchClassModal.html:16
 msgid "search class"
@@ -591,7 +591,7 @@ msgstr "Yläassosiaatio"
 
 #: translations/misc.html:58
 msgid "Superattribute"
-msgstr "Yläominaisuus"
+msgstr "Yläattribuutti"
 
 #: translations/misc.html:56
 msgid "Superclass"
@@ -615,7 +615,7 @@ msgstr "Käytä assosiaatiota"
 
 #: translations/misc.html:87
 msgid "Use attribute"
-msgstr "Käytä ominaisuutta"
+msgstr "Käytä attribuuttia"
 
 #: components/editor/searchClassModal.html:52
 msgid "Use class"
@@ -810,7 +810,7 @@ msgstr "Kyllä"
 #~ msgstr "Assosiaatiot"
 
 #~ msgid "Attributes"
-#~ msgstr "Ominaisuudet"
+#~ msgstr "Attribuutit"
 
 #~ msgid "Classes"
 #~ msgstr "Luokat"
