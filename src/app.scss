@@ -12,6 +12,52 @@
 
 $selectionListWidth: 275px;
 
+.multi-input {
+  border: 1px solid #ccc;
+  height: auto !important;
+  min-height: 39px;
+  padding: 0;
+  display: inline-block;
+  margin-bottom: -5px;
+
+  .added-item {
+    padding: 5px 4px;
+    margin: 6px 0 0 6px;
+    line-height: 12px;
+    font-size: 12px;
+    background-color: #f5f5f5;
+    display: inline-block;
+    float: left;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+
+    .delete-item {
+      display: inline-block;
+      cursor: pointer;
+      padding: 0 2px;
+      background-color: $btn-default-border;
+      margin-left: 5px;
+    }
+
+    .delete-item:hover {
+      background-color: $btn-default-color;
+    }
+  }
+
+  input {
+    display: inline-block;
+    float: left;
+    height: 37px;
+    padding: 0 12px 0 12px;
+    border: 0;
+  }
+
+  input:focus {
+    outline: 0;
+    box-shadow: 0;
+  }
+}
+
 ul.errors {
   border-left: 5px solid $state-danger-text;
   padding-left: 15px;
