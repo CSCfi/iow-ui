@@ -24,7 +24,7 @@ export type Rights = {
 
 export abstract class EditableEntityController<T extends Class|Association|Attribute|Model|Group> {
 
-  submitError = false;
+  submitError: string;
   editableInEdit: T;
 
   constructor(private $scope: EditableScope, private $log: ILogService, private deleteConfirmationModal: DeleteConfirmationModal, protected userService: UserService) {
@@ -54,7 +54,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   select(editable: T) {
-    this.submitError = false;
+    this.submitError = null;
     this.setEditable(editable);
     this.editableInEdit = editable ? <T> editable.clone() : null;
 
@@ -76,7 +76,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
         this.select(editableInEdit);
       }, err => {
         this.$log.error(err);
-        this.submitError = true;
+        this.submitError = err.statusText;
       });
   }
 
@@ -90,7 +90,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
       }, err => {
         if (err !== 'cancel') {
           this.$log.error(err);
-          this.submitError = true;
+          this.submitError = err.statusText;
         }
       });
   }
@@ -102,7 +102,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
 
   cancelEditing() {
     if (this.isEditing()) {
-      this.submitError = false;
+      this.submitError = null;
       this.$scope.form.editing = false;
       this.$scope.form.$setPristine();
       const editable = this.getEditable();

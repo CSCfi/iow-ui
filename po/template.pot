@@ -353,6 +353,10 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
+#: translations/misc.html:98
+msgid "ID is already in use"
+msgstr ""
+
 #: components/model/requiresView.html:1
 msgid "Imported requires"
 msgstr ""
@@ -363,6 +367,10 @@ msgstr ""
 
 #: components/form/errorMessages.html:6
 msgid "Invalid curie error"
+msgstr ""
+
+#: translations/misc.html:97
+msgid "Invalid ID"
 msgstr ""
 
 #: components/form/errorMessages.html:5
@@ -424,8 +432,16 @@ msgstr ""
 msgid "Not defined"
 msgstr ""
 
+#: translations/misc.html:100
+msgid "Not found"
+msgstr ""
+
 #: translations/misc.html:3
 msgid "not found in the concept database"
+msgstr ""
+
+#: translations/misc.html:101
+msgid "Not removed"
 msgstr ""
 
 #: translations/misc.html:80
@@ -490,6 +506,14 @@ msgstr ""
 
 #: components/form/errorMessages.html:9
 msgid "Required localized error"
+msgstr ""
+
+#: translations/misc.html:103
+msgid "Resource is in use"
+msgstr ""
+
+#: translations/misc.html:102
+msgid "Resource status restricts removing"
 msgstr ""
 
 #: components/form/editableEntityButtons.html:4
@@ -601,6 +625,14 @@ msgstr ""
 
 #: translations/misc.html:54
 msgid "Type"
+msgstr ""
+
+#: translations/misc.html:96
+msgid "Unauthorized"
+msgstr ""
+
+#: translations/misc.html:99
+msgid "Unexpected error"
 msgstr ""
 
 #: translations/misc.html:17

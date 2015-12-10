@@ -366,6 +366,10 @@ msgstr "Kuinka pääsen osallistumaan?"
 msgid "Id"
 msgstr "Tunniste"
 
+#: translations/misc.html:98
+msgid "ID is already in use"
+msgstr "Tunniste on jo käytössä"
+
 #: components/model/requiresView.html:1
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
@@ -376,6 +380,10 @@ msgstr "Yhteentoimivuusmenetelmä"
 
 #: components/form/errorMessages.html:6
 msgid "Invalid curie error"
+msgstr "Virheellinen tunniste"
+
+#: translations/misc.html:97
+msgid "Invalid ID"
 msgstr "Virheellinen tunniste"
 
 #: components/form/errorMessages.html:5
@@ -437,9 +445,17 @@ msgstr "Ei hakutuloksia"
 msgid "Not defined"
 msgstr "Ei määritelty"
 
+#: translations/misc.html:100
+msgid "Not found"
+msgstr "Ei löydy"
+
 #: translations/misc.html:3
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
+
+#: translations/misc.html:101
+msgid "Not removed"
+msgstr "Ei saatu poistettua"
 
 #: translations/misc.html:80
 msgid "of association"
@@ -504,6 +520,14 @@ msgstr "Pakollinen kenttä"
 #: components/form/errorMessages.html:9
 msgid "Required localized error"
 msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
+
+#: translations/misc.html:103
+msgid "Resource is in use"
+msgstr "On jo käytössä"
+
+#: translations/misc.html:102
+msgid "Resource status restricts removing"
+msgstr "Ei ole poistettavassa tilassa"
 
 #: components/form/editableEntityButtons.html:4
 msgid "Save changes"
@@ -616,6 +640,14 @@ msgstr "Yläluokka"
 #: translations/misc.html:54
 msgid "Type"
 msgstr "Tyyppi"
+
+#: translations/misc.html:96
+msgid "Unauthorized"
+msgstr "Ei oikeuksia"
+
+#: translations/misc.html:99
+msgid "Unexpected error"
+msgstr "Tapahtui odottamaton virhe"
 
 #: translations/misc.html:17
 msgid "Unstable"

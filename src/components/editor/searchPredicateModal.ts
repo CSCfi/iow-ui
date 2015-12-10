@@ -61,7 +61,7 @@ export class SearchPredicateController {
   models: ModelListItem[];
   types: Type[];
   typeSelectable: boolean;
-  submitError: boolean;
+  submitError: string;
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -109,7 +109,7 @@ export class SearchPredicateController {
 
   selectPredicate(predicate: PredicateListItem) {
     this.$scope.form.editing = false;
-    this.submitError = false;
+    this.submitError = null;
     this.selectedItem = predicate;
     this.predicateService.getPredicate(predicate.id).then(result => this.selectedPredicate = result);
   }
@@ -124,7 +124,7 @@ export class SearchPredicateController {
 
   createAndUsePredicate() {
     return this.predicateService.createPredicate(this.selectedPredicate)
-      .then(() => this.usePredicate(), err => this.submitError = true);
+      .then(() => this.usePredicate(), err => this.submitError = err.statusText);
   }
 
   createNew(type: Type) {

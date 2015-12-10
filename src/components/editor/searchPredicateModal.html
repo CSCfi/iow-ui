@@ -62,10 +62,7 @@
 
         <div class="col-md-4 search-selection">
           <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate" model="ctrl.model"></predicate-form>
-          <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span translate>Save failed</span>
-          </div>
+          <submit-error-panel error="ctrl.submitError"></submit-error-panel>
         </div>
 
       </div>

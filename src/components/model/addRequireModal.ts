@@ -29,7 +29,7 @@ class AddRequireController {
   namespace: string;
   prefix: string;
   label: string;
-  submitError: boolean;
+  submitError: string;
 
   /* @ngInject */
   constructor(private $uibModalInstance: IModalServiceInstance, private language: Language, private modelService: ModelService) {
@@ -37,7 +37,7 @@ class AddRequireController {
 
   create() {
     return this.modelService.newRequire(this.namespace, this.prefix, this.label, this.language)
-      .then(newRequire => this.$uibModalInstance.close(newRequire), err => this.submitError = true);
+      .then(newRequire => this.$uibModalInstance.close(newRequire), err => this.submitError = err.statusText);
   }
 
   cancel() {

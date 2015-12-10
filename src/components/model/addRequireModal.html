@@ -25,10 +25,7 @@
     </modal-body>
 
     <modal-buttons>
-      <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span translate>Save failed</span>
-      </div>
+      <submit-error-panel error="ctrl.submitError"></submit-error-panel>
 
       <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
       <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!form.$valid" translate>Create new</button>

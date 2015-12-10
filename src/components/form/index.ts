@@ -16,6 +16,7 @@ import './namespaceInput';
 import './nonEditable';
 import './restrictDuplicates';
 import './stateSelect';
+import './submitErrorPanel';
 import './valueSelect';
 
 mod.service('displayItemFactory', DisplayItemFactory);

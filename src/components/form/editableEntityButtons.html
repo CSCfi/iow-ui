@@ -7,9 +7,5 @@
   <button type="button" class="btn btn-default right" ng-click="ctrl.removeEdited()" ng-show="ctrl.canRemove()">{{ctrl.getRemoveText() | translate}}</button>
 
   <ng-transclude></ng-transclude>
-
-  <div class="alert alert-danger" role="alert" ng-show="ctrl.submitError">
-    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    <span translate>Save failed</span>
-  </div>
+  <submit-error-panel error="ctrl.submitError"></submit-error-panel>
 </div>
