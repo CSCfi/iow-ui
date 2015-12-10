@@ -13,7 +13,7 @@ export class DisplayItem {
   constructor(private $location: ILocationService,
               private languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
-              private value: () => Value,
+              public value: () => Value,
               private link: (value: string) => string,
               private hideLinks: () => boolean,
               private valueAsLocalizationKey: boolean) {
