@@ -3,6 +3,7 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { Localizable } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
+import { isStringValid } from './stringInput';
 
 export const mod = angular.module('iow.components.form');
 
@@ -59,6 +60,17 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
         modelController.$validators['requiredLocalized'] = modelValue => {
           return !!languageService.translate(modelValue);
         };
+      }
+
+      modelController.$validators['string'] = (modelValue, viewValue) => {
+        if (modelValue) {
+          for (let localized of Object.values(modelValue)) {
+            if (!isStringValid(localized)) {
+              return false;
+            }
+          }
+        }
+        return true;
       }
     }
   };

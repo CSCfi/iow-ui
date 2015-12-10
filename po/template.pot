@@ -102,9 +102,9 @@ msgstr ""
 #: components/editor/addConceptModal.html:29
 #: components/editor/searchClassModal.html:51
 #: components/editor/searchConceptModal.html:52
-#: components/editor/searchPredicateModal.html:75
+#: components/editor/searchPredicateModal.html:72
 #: components/group/addModelModal.html:20
-#: components/model/addRequireModal.html:33
+#: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:34
 #: components/model/searchSchemeModal.html:26
 msgid "Cancel"
@@ -177,7 +177,7 @@ msgstr ""
 
 #: components/editor/addConceptModal.html:30
 #: components/group/addModelModal.html:21
-#: components/model/addRequireModal.html:34
+#: components/model/addRequireModal.html:31
 msgid "Create new"
 msgstr ""
 
@@ -520,12 +520,6 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:67
-#: components/form/editableEntityButtons.html:13
-#: components/model/addRequireModal.html:30
-msgid "Save failed"
-msgstr ""
-
 #: components/frontPage.html:22
 msgid "Search"
 msgstr ""
@@ -597,6 +591,10 @@ msgstr ""
 
 #: translations/misc.html:16
 msgid "State"
+msgstr ""
+
+#: components/form/errorMessages.html:11
+msgid "String error"
 msgstr ""
 
 #: components/editor/editableSubjectSelect.html:3

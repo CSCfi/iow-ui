@@ -6,19 +6,19 @@
 
       <editable title="Concept">
         <div class="input-group input-group-md">
-          <input id="conceptLabel" type="text" class="form-control" autofocus required ng-model="ctrl.conceptLabel" />
+          <input id="conceptLabel" type="text" class="form-control" autofocus required string-input ng-model="ctrl.conceptLabel" />
         </div>
       </editable>
 
       <editable title="Comment">
         <div class="input-group input-group-md">
-          <textarea id="conceptComment" class="form-control" autofocus required ng-model="ctrl.conceptComment"></textarea>
+          <textarea id="conceptComment" class="form-control" autofocus required string-input ng-model="ctrl.conceptComment"></textarea>
         </div>
       </editable>
 
       <editable title="{{ctrl.labelTitle}}">
         <div class="input-group input-group-md">
-          <input id="name" type="text" class="form-control" required ng-model="ctrl.label" />
+          <input id="name" type="text" class="form-control" required string-input ng-model="ctrl.label" />
         </div>
       </editable>
 

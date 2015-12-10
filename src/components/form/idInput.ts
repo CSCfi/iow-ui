@@ -6,7 +6,7 @@ import { pascalCase, camelCase } from 'change-case';
 import { ValidatorService } from '../../services/validatorService';
 import { Group, Model, Class, Predicate } from '../../services/entities';
 import { splitCurie } from '../../services/utils';
-
+import { isStringValid } from './stringInput';
 
 export const mod = angular.module('iow.components.form');
 
@@ -50,6 +50,15 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
             ]);
         } else {
           return $q.when(true);
+        }
+      };
+
+      modelController.$validators['string'] = value => {
+        if (value) {
+          const split = splitCurie(value);
+          if (split) {
+            return isStringValid(split.value);
+          }
         }
       }
     }

@@ -106,9 +106,9 @@ msgstr "Selaa"
 #: components/editor/addConceptModal.html:29
 #: components/editor/searchClassModal.html:51
 #: components/editor/searchConceptModal.html:52
-#: components/editor/searchPredicateModal.html:75
+#: components/editor/searchPredicateModal.html:72
 #: components/group/addModelModal.html:20
-#: components/model/addRequireModal.html:33
+#: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:34
 #: components/model/searchSchemeModal.html:26
 msgid "Cancel"
@@ -182,7 +182,7 @@ msgstr "Luo attribuutti ja käytä"
 
 #: components/editor/addConceptModal.html:30
 #: components/group/addModelModal.html:21
-#: components/model/addRequireModal.html:34
+#: components/model/addRequireModal.html:31
 msgid "Create new"
 msgstr "Luo uusi"
 
@@ -533,12 +533,6 @@ msgstr "Ei ole poistettavassa tilassa"
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: components/editor/searchPredicateModal.html:67
-#: components/form/editableEntityButtons.html:13
-#: components/model/addRequireModal.html:30
-msgid "Save failed"
-msgstr "Tallentaminen epäonnistui"
-
 #: components/frontPage.html:22
 msgid "Search"
 msgstr "Etsi"
@@ -612,6 +606,10 @@ msgstr "Näytä"
 #: translations/misc.html:16
 msgid "State"
 msgstr "Tila"
+
+#: components/form/errorMessages.html:11
+msgid "String error"
+msgstr "Literaalin täytyy alkaa kirjaimella"
 
 #: components/editor/editableSubjectSelect.html:3
 msgid "Subject"
@@ -794,6 +792,9 @@ msgstr "XML"
 #: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Save failed"
+#~ msgstr "Tallentaminen epäonnistui"
 
 #~ msgid "Use require"
 #~ msgstr "Käytä nimiavaruutta"
