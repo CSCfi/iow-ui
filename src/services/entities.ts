@@ -360,6 +360,7 @@ export class Class extends AbstractClass {
   state: State;
   properties: Property[];
   subject: Concept;
+  equivalentClasses: Curie[];
   unsaved: boolean = false;
 
   constructor(graph: any, context: any) {
@@ -372,6 +373,7 @@ export class Class extends AbstractClass {
     if (graph.subject) {
       this.subject = new Concept(graph.subject, context);
     }
+    this.equivalentClasses = normalizeAsArray<Curie>(graph.equivalentClass);
   }
 
   get id() {
@@ -409,7 +411,8 @@ export class Class extends AbstractClass {
       subClassOf: this.subClassOf,
       versionInfo: this.state,
       property: _.map(this.properties, property => property.serialize(true)),
-      subject: this.subject && this.subject.serialize(true)
+      subject: this.subject && this.subject.serialize(true),
+      equivalentClass: this.equivalentClasses.slice()
     }
   }
 }
@@ -525,6 +528,7 @@ export abstract class Predicate extends AbstractPredicate {
   state: State;
   subPropertyOf: Uri;
   subject: Concept;
+  equivalentProperties: Curie[];
   unsaved: boolean = false;
 
   constructor(graph: any, context: any) {
@@ -536,6 +540,7 @@ export abstract class Predicate extends AbstractPredicate {
     if (graph.subject) {
       this.subject = new Concept(graph.subject, context);
     }
+    this.equivalentProperties = normalizeAsArray<Curie>(graph.equivalentProperty);
   }
 
   get id() {
@@ -562,7 +567,8 @@ export abstract class Predicate extends AbstractPredicate {
       range: this.getRange(),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf,
-      subject: this.subject && this.subject.serialize(true)
+      subject: this.subject && this.subject.serialize(true),
+      equivalentProperty: this.equivalentProperties.slice()
     }
   }
 }

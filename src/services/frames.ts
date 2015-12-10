@@ -33,6 +33,8 @@ const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
 const isPartOf = { '@id': 'http://purl.org/dc/terms/isPartOf', '@type': '@id' };
 const isReferencedBy = { '@id': 'http://purl.org/dc/terms/isReferencedBy', '@type': '@id' };
 const isAdminOf = { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' };
+const equivalentClass = { '@id' : 'http://www.w3.org/2002/07/owl#equivalentClass', '@type' : '@id' };
+const equivalentProperty = { '@id' : 'http://www.w3.org/2002/07/owl#equivalentProperty', '@type' : '@id' };
 
 
 type Frame = {};
@@ -115,7 +117,7 @@ export function predicateListFrame(data: any): Frame {
 
 export function predicateFrame(data: any): Frame {
   return {
-    '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo, subPropertyOf}),
+    '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo, subPropertyOf, equivalentProperty}),
     'isDefinedBy': {}
   };
 }
@@ -135,7 +137,8 @@ export function classFrame(data: any): Frame {
     example,
     datatype,
     subject,
-    versionInfo
+    versionInfo,
+    equivalentClass,
   };
 
   return {
