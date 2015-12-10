@@ -18,7 +18,7 @@ msgstr "Lisää assosiaatio"
 
 #: translations/misc.html:43
 msgid "Add attribute"
-msgstr "Lisää ominaisuus"
+msgstr "Lisää attribuutti"
 
 #: translations/misc.html:39
 msgid "Add class"
@@ -87,15 +87,15 @@ msgstr "Assosiaatiot"
 
 #: translations/misc.html:29
 msgid "attribute"
-msgstr "Ominaisuus"
+msgstr "Attribuutti"
 
 #: translations/misc.html:75
 msgid "Attribute label"
-msgstr "Ominaisuuden nimi"
+msgstr "Attribuutin nimi"
 
 #: translations/misc.html:46
 msgid "Attribute list"
-msgstr "Ominaisuudet"
+msgstr "Attribuutit"
 
 #: components/frontPage.html:46
 msgid "Browse"
@@ -124,7 +124,7 @@ msgstr "Valitse assosiaatio"
 
 #: translations/misc.html:61
 msgid "Choose attribute"
-msgstr "Valitse ominaisuus"
+msgstr "Valitse attribuutti"
 
 #: components/editor/classSelect.html:2
 msgid "Choose class"
@@ -178,7 +178,7 @@ msgstr "Luo assosiaatio ja käytä"
 
 #: translations/misc.html:89
 msgid "Create and use attribute"
-msgstr "Luo ominaisuus ja käytä"
+msgstr "Luo attribuutti ja käytä"
 
 #: components/editor/addConceptModal.html:30
 #: components/group/addModelModal.html:21
@@ -192,7 +192,7 @@ msgstr "Lisää uusi assosiaatio"
 
 #: components/editor/searchPredicateModal.html:18
 msgid "Create new attribute"
-msgstr "Lisää uusi ominaisuus"
+msgstr "Lisää uusi attribuutti"
 
 #: components/editor/searchClassModal.html:8
 msgid "Create new class"
@@ -244,11 +244,11 @@ msgstr "Poista assosiaatio tästä kirjastosta"
 
 #: translations/misc.html:44
 msgid "Delete attribute"
-msgstr "Poista ominaisuus"
+msgstr "Poista attribuutti"
 
 #: translations/misc.html:45
 msgid "Delete attribute from this model"
-msgstr "Poista ominaisuus tästä kirjastosta"
+msgstr "Poista attribuutti tästä kirjastosta"
 
 #: translations/misc.html:40
 msgid "Delete class"
@@ -447,7 +447,7 @@ msgstr "tietokomponenttikirjastosta"
 
 #: translations/type.html:4
 msgid "owl:DatatypeProperty"
-msgstr "Ominaisuus"
+msgstr "Attribuutti"
 
 #: translations/type.html:5
 msgid "owl:ObjectProperty"
