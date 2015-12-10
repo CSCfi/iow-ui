@@ -276,7 +276,8 @@ export class ModelController {
 
   private updateSelectionByTypeAndId(selection: WithIdAndType) {
     if (selection) {
-      return this.fetchEntityByTypeAndId(selection).then(entity => this.updateSelection(entity));
+      return this.fetchEntityByTypeAndId(selection)
+        .then(entity => this.updateSelection(entity), err => this.updateSelection(null));
     } else {
       return this.updateSelection(null);
     }
