@@ -1,6 +1,6 @@
 <div>
-  <div class="model-header" ng-click="ctrl.visible = !ctrl.visible">
-    <h2 accordion-chevron is-open="ctrl.visible" no-pull="true">{{ctrl.model | translateLabel}}</h2>
+  <div ng-class="{'model-header': !ctrl.model.unsaved, 'main-header': ctrl.model.unsaved}" ng-click="ctrl.visible = ctrl.model.unsaved || !ctrl.visible">
+    <h2>{{ctrl.model | translateLabel}} <accordion-chevron ng-show="!ctrl.model.unsaved" no-pull="true" is-open="ctrl.visible"></accordion-chevron></h2>
   </div>
 
   <form name="form" class="editable-form">
