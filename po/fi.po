@@ -40,12 +40,11 @@ msgstr "Lisää sanasto"
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
-#: components/advancedSearchModal.html:2 components/frontPage.html:31
+#: components/advancedSearchModal.html:2 components/frontPage.html:32
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/editor/searchClassModal.html:25
-#: components/editor/searchPredicateModal.html:37
+#: components/editor/searchClassModal.html:26 components/editor/searchPredicateModal.html:38
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
@@ -53,7 +52,7 @@ msgstr "Kaikki kirjastot"
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/editor/searchPredicateModal.html:46
+#: components/editor/searchPredicateModal.html:47
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -77,7 +76,7 @@ msgstr "Pyydä käyttöoikeuksia ryhmään"
 msgid "association"
 msgstr "Assosiaatio"
 
-#: translations/misc.html:74
+#: translations/misc.html:75
 msgid "Association label"
 msgstr "Assosiaation nimi"
 
@@ -89,7 +88,7 @@ msgstr "Assosiaatiot"
 msgid "attribute"
 msgstr "Attribuutti"
 
-#: translations/misc.html:75
+#: translations/misc.html:76
 msgid "Attribute label"
 msgstr "Attribuutin nimi"
 
@@ -97,20 +96,15 @@ msgstr "Attribuutin nimi"
 msgid "Attribute list"
 msgstr "Attribuutit"
 
-#: components/frontPage.html:46
+#: components/frontPage.html:47
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/advancedSearchModal.html:33
-#: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:29
-#: components/editor/searchClassModal.html:51
-#: components/editor/searchConceptModal.html:52
-#: components/editor/searchPredicateModal.html:75
-#: components/group/addModelModal.html:20
-#: components/model/addRequireModal.html:33
-#: components/model/searchRequireModal.html:34
-#: components/model/searchSchemeModal.html:26
+#: components/advancedSearchModal.html:33 components/common/modalTemplate.html:16
+#: components/editor/addConceptModal.html:29 components/editor/searchClassModal.html:51
+#: components/editor/searchConceptModal.html:52 components/editor/searchPredicateModal.html:75
+#: components/group/addModelModal.html:20 components/model/addRequireModal.html:33
+#: components/model/searchRequireModal.html:34 components/model/searchSchemeModal.html:26
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -118,15 +112,15 @@ msgstr "Peruuta"
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
-#: translations/misc.html:62
+#: translations/misc.html:63
 msgid "Choose association"
-msgstr "Valitse assosiaatio"
+msgstr "valitse assosiaatio"
+
+#: translations/misc.html:62
+msgid "Choose attribute"
+msgstr "valitse attribuutti"
 
 #: translations/misc.html:61
-msgid "Choose attribute"
-msgstr "Valitse attribuutti"
-
-#: components/editor/classSelect.html:2
 msgid "Choose class"
 msgstr "valitse luokka"
 
@@ -138,7 +132,7 @@ msgstr "valitse käsite"
 msgid "class"
 msgstr "Luokka"
 
-#: translations/misc.html:73
+#: translations/misc.html:74
 msgid "Class label"
 msgstr "Luokan nimi"
 
@@ -149,8 +143,8 @@ msgstr "Luokat"
 #: components/editor/searchClassModal.html:14
 msgid "Class search info"
 msgstr ""
-"Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
-"tarpeisiisi sopivaa, voit luoda uuden luokan."
+"Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä tarpeisiisi "
+"sopivaa, voit luoda uuden luokan."
 
 #: components/editor/searchConceptModal.html:34
 msgid "Comment"
@@ -172,16 +166,15 @@ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: translations/misc.html:90
+#: translations/misc.html:91
 msgid "Create and use association"
 msgstr "Luo assosiaatio ja käytä"
 
-#: translations/misc.html:89
+#: translations/misc.html:90
 msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
-#: components/editor/addConceptModal.html:30
-#: components/group/addModelModal.html:21
+#: components/editor/addConceptModal.html:30 components/group/addModelModal.html:21
 #: components/model/addRequireModal.html:34
 msgid "Create new"
 msgstr "Luo uusi"
@@ -293,18 +286,30 @@ msgstr "Muokkaaminen on kesken"
 #: components/navigation/login-modal.html:5
 msgid "eDuuni information"
 msgstr ""
-"Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
-"haluat muokata palvelun sisältöä."
+"Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos haluat muokata "
+"palvelun sisältöä."
 
 #: translations/misc.html:34
 msgid "en"
 msgstr "Englanniksi"
 
+#: translations/misc.html:95
+msgid "Equivalent association"
+msgstr "Vastaavat assosiaatiot"
+
+#: translations/misc.html:94
+msgid "Equivalent attribute"
+msgstr "Vastaavat ominaisuudet"
+
+#: translations/misc.html:93
+msgid "Equivalent class"
+msgstr "Vastaavat luokat"
+
 #: translations/misc.html:13
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/form/errorMessages.html:5
+#: components/form/errorMessages.html:7
 msgid "Existing id error"
 msgstr "Tunniste on jo käytössä"
 
@@ -324,7 +329,7 @@ msgstr "Etusivu"
 msgid "group"
 msgstr "Ryhmä"
 
-#: translations/misc.html:72
+#: translations/misc.html:73
 msgid "Group label"
 msgstr "Ryhmän nimi"
 
@@ -332,17 +337,16 @@ msgstr "Ryhmän nimi"
 msgid "Hide"
 msgstr "Piilota"
 
-#: translations/misc.html:70
+#: translations/misc.html:71
 msgid "How content"
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
-"scelerisque orci. Cras vitae lacus in tellus porta convallis. Lorem ipsum "
-"dolor sit amet, consectetur adipiscing elit. Nulla sodales eget nisi sed "
-"finibus. Vivamus euismod efficitur semper. Ut non lorem ultricies, dictum "
-"nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac scelerisque orci. Cras "
+"vitae lacus in tellus porta convallis. Lorem ipsum dolor sit amet, consectetur adipiscing "
+"elit. Nulla sodales eget nisi sed finibus. Vivamus euismod efficitur semper. Ut non lorem "
+"ultricies, dictum nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:69
+#: translations/misc.html:70
 msgid "How?"
 msgstr "Kuinka pääsen osallistumaan?"
 
@@ -358,11 +362,11 @@ msgstr "Käytetyt nimiavaruudet"
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
-#: components/form/errorMessages.html:4
+#: components/form/errorMessages.html:6
 msgid "Invalid curie error"
 msgstr "Virheellinen tunniste"
 
-#: components/form/errorMessages.html:3
+#: components/form/errorMessages.html:5
 msgid "Invalid namespace error"
 msgstr "Nimiavaruuden täytyy päättyä ‘#’ tai ‘/‘ -merkkeihin"
 
@@ -370,20 +374,20 @@ msgstr "Nimiavaruuden täytyy päättyä ‘#’ tai ‘/‘ -merkkeihin"
 msgid "Is defined by"
 msgstr "Kirjasto"
 
-#: translations/misc.html:91
+#: translations/misc.html:92
 msgid "Label"
 msgstr "Nimi"
 
-#: components/navigation/login-modal.html:10
-#: components/navigation/login-modal.html:2 components/navigation/login.html:1
+#: components/navigation/login-modal.html:10 components/navigation/login-modal.html:2
+#: components/navigation/login.html:1
 msgid "Login"
 msgstr "Kirjaudu"
 
 #: components/navigation/login-modal.html:6
 msgid "Login information"
 msgstr ""
-"Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
-"sen jälkeen takaisin palveluun."
+"Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa sen jälkeen "
+"takaisin palveluun."
 
 #: components/navigation/login.html:11
 msgid "Logout"
@@ -393,7 +397,7 @@ msgstr "Kirjaudu ulos"
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
 
-#: translations/misc.html:71
+#: translations/misc.html:72
 msgid "Model label"
 msgstr "Tietokomponenttikirjaston nimi"
 
@@ -413,7 +417,7 @@ msgstr "Nimiavaruus"
 msgid "New model creation"
 msgstr "Uuden tietokomponenttikirjaston luonti"
 
-#: components/advancedSearchModal.html:20 components/frontPage.html:34
+#: components/advancedSearchModal.html:21 components/frontPage.html:35
 msgid "No search results"
 msgstr "Ei hakutuloksia"
 
@@ -425,23 +429,23 @@ msgstr "Ei määritelty"
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
 
-#: translations/misc.html:79
+#: translations/misc.html:80
 msgid "of association"
 msgstr "assosiaatiosta"
 
-#: translations/misc.html:80
+#: translations/misc.html:81
 msgid "of attribute"
 msgstr "attribuutista"
 
-#: translations/misc.html:78
+#: translations/misc.html:79
 msgid "of class"
 msgstr "luokasta"
 
-#: translations/misc.html:76
+#: translations/misc.html:77
 msgid "of group"
 msgstr "ryhmästä"
 
-#: translations/misc.html:77
+#: translations/misc.html:78
 msgid "of model"
 msgstr "tietokomponenttikirjastosta"
 
@@ -481,11 +485,11 @@ msgstr "Sanastot"
 msgid "Register"
 msgstr "Luo tunnukset"
 
-#: components/form/errorMessages.html:6
+#: components/form/errorMessages.html:8
 msgid "Required error"
 msgstr "Pakollinen kenttä"
 
-#: components/form/errorMessages.html:7
+#: components/form/errorMessages.html:9
 msgid "Required localized error"
 msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 
@@ -493,8 +497,7 @@ msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: components/editor/searchPredicateModal.html:67
-#: components/form/editableEntityButtons.html:13
+#: components/editor/searchPredicateModal.html:67 components/form/editableEntityButtons.html:13
 #: components/model/addRequireModal.html:30
 msgid "Save failed"
 msgstr "Tallentaminen epäonnistui"
@@ -503,23 +506,23 @@ msgstr "Tallentaminen epäonnistui"
 msgid "Search"
 msgstr "Etsi"
 
-#: translations/misc.html:85
+#: translations/misc.html:86
 msgid "search association"
 msgstr "Hae assosiaatiota…"
 
-#: translations/misc.html:84
+#: translations/misc.html:85
 msgid "Search associations"
 msgstr "Hae assosiaatioita"
 
-#: translations/misc.html:83
+#: translations/misc.html:84
 msgid "search attribute"
 msgstr "Hae attribuuttia…"
 
-#: translations/misc.html:81
+#: translations/misc.html:82
 msgid "search attribute or association"
 msgstr "Hae attribuuttia tai assosiaatiota…"
 
-#: translations/misc.html:82
+#: translations/misc.html:83
 msgid "Search attributes"
 msgstr "Hae attribuutteja"
 
@@ -609,11 +612,11 @@ msgstr "Keskeneräinen"
 msgid "Use"
 msgstr "Käytä"
 
-#: translations/misc.html:88
+#: translations/misc.html:89
 msgid "Use association"
 msgstr "Käytä assosiaatiota"
 
-#: translations/misc.html:87
+#: translations/misc.html:88
 msgid "Use attribute"
 msgstr "Käytä attribuuttia"
 
@@ -621,15 +624,7 @@ msgstr "Käytä attribuuttia"
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/model/searchRequireModal.html:35
-msgid "Use require"
-msgstr "Käytä nimiavaruutta"
-
-#: components/model/searchSchemeModal.html:27
-msgid "Use scheme"
-msgstr "Käytä sanastoa"
-
-#: translations/misc.html:86
+#: translations/misc.html:87
 msgid "Use selection"
 msgstr "Käytä valintaa"
 
@@ -641,45 +636,42 @@ msgstr "Kohde"
 msgid "Visualization"
 msgstr "Visualisointi"
 
-#: translations/misc.html:68
+#: translations/misc.html:69
 msgid "What can I do content"
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
-"scelerisque orci. Cras vitae lacus in tellus porta convallis. Lorem ipsum "
-"dolor sit amet, consectetur adipiscing elit. Nulla sodales eget nisi sed "
-"finibus. Vivamus euismod efficitur semper. Ut non lorem ultricies, dictum "
-"nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac scelerisque orci. Cras "
+"vitae lacus in tellus porta convallis. Lorem ipsum dolor sit amet, consectetur adipiscing "
+"elit. Nulla sodales eget nisi sed finibus. Vivamus euismod efficitur semper. Ut non lorem "
+"ultricies, dictum nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:67
+#: translations/misc.html:68
 msgid "What can I do?"
 msgstr "Mitä yhteensopivuuden välineistöllä voi tehdä?"
 
-#: translations/misc.html:64
+#: translations/misc.html:65
 msgid "What is description content"
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
-"scelerisque orci. Cras vitae lacus in tellus porta convallis. Lorem ipsum "
-"dolor sit amet, consectetur adipiscing elit. Nulla sodales eget nisi sed "
-"finibus. Vivamus euismod efficitur semper. Ut non lorem ultricies, dictum "
-"nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac scelerisque orci. Cras "
+"vitae lacus in tellus porta convallis. Lorem ipsum dolor sit amet, consectetur adipiscing "
+"elit. Nulla sodales eget nisi sed finibus. Vivamus euismod efficitur semper. Ut non lorem "
+"ultricies, dictum nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:63
+#: translations/misc.html:64
 msgid "What is description?"
 msgstr "Mitä ovat yhteentoimivuuden kuvaukset?"
 
-#: translations/misc.html:66
+#: translations/misc.html:67
 msgid "What is method content"
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
-"scelerisque orci. Cras vitae lacus in tellus porta convallis. Lorem ipsum "
-"dolor sit amet, consectetur adipiscing elit. Nulla sodales eget nisi sed "
-"finibus. Vivamus euismod efficitur semper. Ut non lorem ultricies, dictum "
-"nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac scelerisque orci. Cras "
+"vitae lacus in tellus porta convallis. Lorem ipsum dolor sit amet, consectetur adipiscing "
+"elit. Nulla sodales eget nisi sed finibus. Vivamus euismod efficitur semper. Ut non lorem "
+"ultricies, dictum nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
 "risus consequat vel."
 
-#: translations/misc.html:65
+#: translations/misc.html:66
 msgid "What is method?"
 msgstr "Mikä on yhteentoimivuusmenetelmä?"
 
@@ -754,6 +746,12 @@ msgstr "XML"
 #: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Use require"
+#~ msgstr "Käytä nimiavaruutta"
+
+#~ msgid "Use scheme"
+#~ msgstr "Käytä sanastoa"
 
 #~ msgid "Create and use predicate"
 #~ msgstr "Luo ominaisuus ja käytä"
@@ -835,8 +833,8 @@ msgstr "Kyllä"
 
 #~ msgid "eDuuni tietoa"
 #~ msgstr ""
-#~ "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
-#~ "haluat muokata palvelun sisältöä."
+#~ "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos haluat muokata "
+#~ "palvelun sisältöä."
 
 #~ msgid "Kirjaudu"
 #~ msgstr "Kirjaudu"
@@ -846,8 +844,8 @@ msgstr "Kyllä"
 
 #~ msgid "kirjautuminen tietoa"
 #~ msgstr ""
-#~ "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
-#~ "sen jälkeen takaisin palveluun."
+#~ "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa sen jälkeen "
+#~ "takaisin palveluun."
 
 #~ msgid "Luo tunnukset"
 #~ msgstr "Luo tunnukset"

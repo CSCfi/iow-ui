@@ -10,6 +10,7 @@ import './classForm';
 import './classView';
 import './classVisualization';
 import './curieSelect';
+import './editableMultipleCurieSelect';
 import './editableSubjectSelect';
 import './predicateForm';
 import './predicateView';

@@ -35,12 +35,12 @@ msgid "Add require"
 msgstr ""
 
 #: components/advancedSearchModal.html:2
-#: components/frontPage.html:31
+#: components/frontPage.html:32
 msgid "Advanced search"
 msgstr ""
 
-#: components/editor/searchClassModal.html:25
-#: components/editor/searchPredicateModal.html:37
+#: components/editor/searchClassModal.html:26
+#: components/editor/searchPredicateModal.html:38
 msgid "All models"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:46
+#: components/editor/searchPredicateModal.html:47
 msgid "All types"
 msgstr ""
 
@@ -73,7 +73,7 @@ msgstr ""
 msgid "association"
 msgstr ""
 
-#: translations/misc.html:74
+#: translations/misc.html:75
 msgid "Association label"
 msgstr ""
 
@@ -85,7 +85,7 @@ msgstr ""
 msgid "attribute"
 msgstr ""
 
-#: translations/misc.html:75
+#: translations/misc.html:76
 msgid "Attribute label"
 msgstr ""
 
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
-#: components/frontPage.html:46
+#: components/frontPage.html:47
 msgid "Browse"
 msgstr ""
 
@@ -114,15 +114,15 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
-#: translations/misc.html:62
+#: translations/misc.html:63
 msgid "Choose association"
 msgstr ""
 
-#: translations/misc.html:61
+#: translations/misc.html:62
 msgid "Choose attribute"
 msgstr ""
 
-#: components/editor/classSelect.html:2
+#: translations/misc.html:61
 msgid "Choose class"
 msgstr ""
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "class"
 msgstr ""
 
-#: translations/misc.html:73
+#: translations/misc.html:74
 msgid "Class label"
 msgstr ""
 
@@ -167,11 +167,11 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/misc.html:90
+#: translations/misc.html:91
 msgid "Create and use association"
 msgstr ""
 
-#: translations/misc.html:89
+#: translations/misc.html:90
 msgid "Create and use attribute"
 msgstr ""
 
@@ -293,11 +293,23 @@ msgstr ""
 msgid "en"
 msgstr ""
 
+#: translations/misc.html:95
+msgid "Equivalent association"
+msgstr ""
+
+#: translations/misc.html:94
+msgid "Equivalent attribute"
+msgstr ""
+
+#: translations/misc.html:93
+msgid "Equivalent class"
+msgstr ""
+
 #: translations/misc.html:13
 msgid "Example"
 msgstr ""
 
-#: components/form/errorMessages.html:5
+#: components/form/errorMessages.html:7
 msgid "Existing id error"
 msgstr ""
 
@@ -317,7 +329,7 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-#: translations/misc.html:72
+#: translations/misc.html:73
 msgid "Group label"
 msgstr ""
 
@@ -325,11 +337,11 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: translations/misc.html:70
+#: translations/misc.html:71
 msgid "How content"
 msgstr ""
 
-#: translations/misc.html:69
+#: translations/misc.html:70
 msgid "How?"
 msgstr ""
 
@@ -345,11 +357,11 @@ msgstr ""
 msgid "Interoperability method"
 msgstr ""
 
-#: components/form/errorMessages.html:4
+#: components/form/errorMessages.html:6
 msgid "Invalid curie error"
 msgstr ""
 
-#: components/form/errorMessages.html:3
+#: components/form/errorMessages.html:5
 msgid "Invalid namespace error"
 msgstr ""
 
@@ -357,7 +369,7 @@ msgstr ""
 msgid "Is defined by"
 msgstr ""
 
-#: translations/misc.html:91
+#: translations/misc.html:92
 msgid "Label"
 msgstr ""
 
@@ -379,7 +391,7 @@ msgstr ""
 msgid "model"
 msgstr ""
 
-#: translations/misc.html:71
+#: translations/misc.html:72
 msgid "Model label"
 msgstr ""
 
@@ -399,8 +411,8 @@ msgstr ""
 msgid "New model creation"
 msgstr ""
 
-#: components/advancedSearchModal.html:20
-#: components/frontPage.html:34
+#: components/advancedSearchModal.html:21
+#: components/frontPage.html:35
 msgid "No search results"
 msgstr ""
 
@@ -412,23 +424,23 @@ msgstr ""
 msgid "not found in the concept database"
 msgstr ""
 
-#: translations/misc.html:79
+#: translations/misc.html:80
 msgid "of association"
 msgstr ""
 
-#: translations/misc.html:80
+#: translations/misc.html:81
 msgid "of attribute"
 msgstr ""
 
-#: translations/misc.html:78
+#: translations/misc.html:79
 msgid "of class"
 msgstr ""
 
-#: translations/misc.html:76
+#: translations/misc.html:77
 msgid "of group"
 msgstr ""
 
-#: translations/misc.html:77
+#: translations/misc.html:78
 msgid "of model"
 msgstr ""
 
@@ -468,11 +480,11 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: components/form/errorMessages.html:6
+#: components/form/errorMessages.html:8
 msgid "Required error"
 msgstr ""
 
-#: components/form/errorMessages.html:7
+#: components/form/errorMessages.html:9
 msgid "Required localized error"
 msgstr ""
 
@@ -490,23 +502,23 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: translations/misc.html:85
+#: translations/misc.html:86
 msgid "search association"
 msgstr ""
 
-#: translations/misc.html:84
+#: translations/misc.html:85
 msgid "Search associations"
 msgstr ""
 
-#: translations/misc.html:83
+#: translations/misc.html:84
 msgid "search attribute"
 msgstr ""
 
-#: translations/misc.html:81
+#: translations/misc.html:82
 msgid "search attribute or association"
 msgstr ""
 
-#: translations/misc.html:82
+#: translations/misc.html:83
 msgid "Search attributes"
 msgstr ""
 
@@ -595,11 +607,11 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: translations/misc.html:88
+#: translations/misc.html:89
 msgid "Use association"
 msgstr ""
 
-#: translations/misc.html:87
+#: translations/misc.html:88
 msgid "Use attribute"
 msgstr ""
 
@@ -607,15 +619,7 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: components/model/searchRequireModal.html:35
-msgid "Use require"
-msgstr ""
-
-#: components/model/searchSchemeModal.html:27
-msgid "Use scheme"
-msgstr ""
-
-#: translations/misc.html:86
+#: translations/misc.html:87
 msgid "Use selection"
 msgstr ""
 
@@ -627,27 +631,27 @@ msgstr ""
 msgid "Visualization"
 msgstr ""
 
-#: translations/misc.html:68
+#: translations/misc.html:69
 msgid "What can I do content"
 msgstr ""
 
-#: translations/misc.html:67
+#: translations/misc.html:68
 msgid "What can I do?"
 msgstr ""
 
-#: translations/misc.html:64
+#: translations/misc.html:65
 msgid "What is description content"
 msgstr ""
 
-#: translations/misc.html:63
+#: translations/misc.html:64
 msgid "What is description?"
 msgstr ""
 
-#: translations/misc.html:66
+#: translations/misc.html:67
 msgid "What is method content"
 msgstr ""
 
-#: translations/misc.html:65
+#: translations/misc.html:66
 msgid "What is method?"
 msgstr ""
 
