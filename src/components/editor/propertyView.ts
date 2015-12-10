@@ -3,7 +3,7 @@ import ILocaleService = angular.ILocaleService;
 import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
-import { Property, Predicate, Model } from '../../services/entities';
+import { Property, Predicate, Model, states } from '../../services/entities';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
 import { ModelCache } from '../../services/modelCache';
@@ -78,5 +78,9 @@ export class PropertyViewController {
   openAndScrollTo() {
     this.isOpen = true;
     this.scroll();
+  }
+
+  get inUnstableState(): boolean {
+    return this.property.state === states.unstable;
   }
 }

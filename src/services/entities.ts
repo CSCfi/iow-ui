@@ -420,6 +420,7 @@ export class Class extends AbstractClass {
 export class Property extends GraphNode {
 
   id: Uri;
+  state: State;
   label: Localizable;
   comment: Localizable;
   example: string;
@@ -431,6 +432,7 @@ export class Property extends GraphNode {
   constructor(graph: any, context: any) {
     super('property', graph, context);
     this.id = graph['@id'];
+    this.state = graph.versionInfo;
     this.label = graph.label;
     this.comment = graph.comment;
     this.example = graph.example;
@@ -451,6 +453,7 @@ export class Property extends GraphNode {
   serializationValues() {
     return {
       '@id': this.id,
+      versionInfo: this.state,
       label: Object.assign({}, this.label),
       comment: Object.assign({}, this.comment),
       example: this.example,

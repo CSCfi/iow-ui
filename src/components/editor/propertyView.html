@@ -1,5 +1,9 @@
 <div>
-  <button ng-show="editableController.canModify()" type="button" class="btn btn-default pull-right" ng-click="editableController.removeProperty(ctrl.property)" translate>Delete property</button>
+  <button ng-show="editableController.canModify()"
+          type="button"
+          class="btn btn-default pull-right"
+          ng-disabled="!ctrl.inUnstableState"
+          ng-click="editableController.removeProperty(ctrl.property)" translate>Delete property</button>
 
   <editable title="Name">
     <input id="{{ctrl.property.id + 'label'}}" class="form-control" type="text" localized-input="required" ng-model="ctrl.property.label" />
@@ -11,6 +15,10 @@
 
   <editable title="Example">
     <input id="{{ctrl.property.id + 'example'}}" class="form-control" type="text" localized-input ng-model="ctrl.property.example" />
+  </editable>
+
+  <editable title="State" value-as-localization-key="true">
+    <state-select id="{{ctrl.property.id + 'state'}}" state="ctrl.property.state" model="ctrl.model"></state-select>
   </editable>
 
   <editable ng-if="ctrl.predicate.isAttribute()" title="Range">
