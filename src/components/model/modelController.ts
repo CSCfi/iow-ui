@@ -188,15 +188,17 @@ export class ModelController {
   }
 
   private addClass() {
-    this.askPermissionWhenEditing(() => {
-      this.searchClassModal.open(this.model, collectIds(this.classes))
-        .then((result:ConceptCreation|Class) => {
-          if (isConceptCreation(result)) {
-            this.createClass(result);
-          } else if (result instanceof Class) {
-            this.assignClassToModel(result);
-          }
-        });
+    this.userService.ifStillLoggedIn(() => {
+      this.askPermissionWhenEditing(() => {
+        this.searchClassModal.open(this.model, collectIds(this.classes))
+          .then((result:ConceptCreation|Class) => {
+            if (isConceptCreation(result)) {
+              this.createClass(result);
+            } else if (result instanceof Class) {
+              this.assignClassToModel(result);
+            }
+          });
+      });
     });
   }
 
@@ -217,15 +219,17 @@ export class ModelController {
   }
 
   private addPredicate(type: Type) {
-    this.askPermissionWhenEditing(() => {
-      this.searchPredicateModal.open(this.model, type, collectIds([this.attributes, this.associations]))
-        .then((result:ConceptCreation|Predicate) => {
-          if (isConceptCreation(result)) {
-            this.createPredicate(result);
-          } else {
-            this.assignPredicateToModel(result);
-          }
-        });
+    this.userService.ifStillLoggedIn(() => {
+      this.askPermissionWhenEditing(() => {
+        this.searchPredicateModal.open(this.model, type, collectIds([this.attributes, this.associations]))
+          .then((result:ConceptCreation|Predicate) => {
+            if (isConceptCreation(result)) {
+              this.createPredicate(result);
+            } else {
+              this.assignPredicateToModel(result);
+            }
+          });
+      });
     });
   }
 

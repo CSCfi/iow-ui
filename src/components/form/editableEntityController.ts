@@ -81,18 +81,20 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   removeEdited() {
-    const editable = this.getEditable();
-    this.deleteConfirmationModal.open(this.getEditable(), this.isNotReference())
-      .then(() => this.remove(editable))
-      .then(() => {
-        this.$scope.modelController && this.$scope.modelController.selectionDeleted(editable);
-        this.select(null);
-      }, err => {
-        if (err !== 'cancel') {
-          this.$log.error(err);
-          this.submitError = err.statusText;
-        }
-      });
+    this.userService.ifStillLoggedIn(() => {
+      const editable = this.getEditable();
+      this.deleteConfirmationModal.open(this.getEditable(), this.isNotReference())
+        .then(() => this.remove(editable))
+        .then(() => {
+          this.$scope.modelController && this.$scope.modelController.selectionDeleted(editable);
+          this.select(null);
+        }, err => {
+          if (err !== 'cancel') {
+            this.$log.error(err);
+            this.submitError = err.statusText;
+          }
+        });
+    });
   }
 
   canRemove() {
@@ -102,6 +104,9 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
 
   cancelEditing() {
     if (this.isEditing()) {
+      if (this.submitError) {
+        this.userService.updateLogin();
+      }
       this.submitError = null;
       this.$scope.form.editing = false;
       this.$scope.form.$setPristine();
@@ -111,7 +116,9 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   edit() {
-    this.$scope.form.editing = true;
+    this.userService.ifStillLoggedIn(() => {
+      this.$scope.form.editing = true;
+    });
   }
 
   isEditing(): boolean {

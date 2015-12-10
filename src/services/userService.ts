@@ -19,6 +19,14 @@ export class UserService {
       .then(updatedUser => this.user = updatedUser);
   }
 
+  ifStillLoggedIn(callback: () => void) {
+    this.updateLogin().then(user => {
+      if (user.isLoggedIn()) {
+        callback();
+      }
+    });
+  }
+
   isLoggedIn(): boolean {
     return this.user.isLoggedIn();
   }
