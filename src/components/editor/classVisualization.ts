@@ -22,7 +22,10 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       class: '=',
       model: '='
     },
-    template: `<ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>`,
+    template: `<div>
+                <div class="zoom zoom-in" ng-click="ctrl.zoomIn($event)"><span>+</span></div><div class="zoom zoom-out" ng-click="ctrl.zoomOut($event)"><span>-</span></div>
+                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
+               </div>`,
     bindToController: true,
     controllerAs: 'ctrl',
     require: 'classVisualization',
@@ -105,8 +108,17 @@ class ClassVisualizationController {
       scaleToFit(this.paper);
     }
   }
-}
 
+  zoomIn(event: JQueryEventObject) {
+    event.stopPropagation();
+    scale(this.paper, 0.1);
+  }
+
+  zoomOut(event: JQueryEventObject) {
+    event.stopPropagation();
+    scale(this.paper, -0.1);
+  }
+}
 
 function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia.Paper} {
   const container = element.closest('.visualization-container');
@@ -123,33 +135,37 @@ function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia
 
 type Coordinates = {x: number, y: number };
 
-function zoomAndPan($window: IWindowService, element: JQuery, paper: joint.dia.Paper) {
-  const viewport: any = joint.V(paper.viewport);
-  const window = angular.element($window);
 
+function moveOrigin(paper: joint.dia.Paper, dx: number, dy: number) {
+  const viewport: any = joint.V(paper.viewport);
+  const translation: any = viewport.translate();
+  paper.setOrigin(translation.tx - dx, translation.ty - dy);
+}
+
+function scale(paper: joint.dia.Paper, scaleDiff: number) {
+  const viewport: any = joint.V(paper.viewport);
+  const scale: number = viewport.scale().sx;
+  const newScale = Math.min(Math.max(scale + scaleDiff, 0.3), 3);
+  paper.scale(newScale, newScale);
+}
+
+function zoomAndPan($window: IWindowService, element: JQuery, paper: joint.dia.Paper) {
+  const window = angular.element($window);
   let drag: Coordinates;
   let mouse: Coordinates;
-
-  function moveOrigin(dx: number, dy: number) {
-    const translation: any = viewport.translate();
-    paper.setOrigin(translation.tx - dx, translation.ty - dy);
-  }
 
   paper.on('blank:pointerdown', () => drag = mouse);
   window.mouseup(() => drag = null);
   element.mousemove(event => {
     mouse = {x: event.offsetX, y: event.offsetY};
     if (drag) {
-      moveOrigin(drag.x - mouse.x, drag.y - mouse.y);
+      moveOrigin(paper, drag.x - mouse.x, drag.y - mouse.y);
       drag = mouse;
     }
   });
 
   element.children().mousewheel(event => {
-    const scale: number = viewport.scale().sx;
-    const normalizedScalingDiff = (event.deltaY * event.deltaFactor / 500);
-    const newScale = Math.min(Math.max(scale + normalizedScalingDiff, 0.3), 3);
-    paper.scale(newScale, newScale);
+    scale(paper, (event.deltaY * event.deltaFactor / 500));
     event.preventDefault();
   });
 }
@@ -158,8 +174,6 @@ function layoutGraph(graph: joint.dia.Graph) {
   joint.layout.DirectedGraph.layout(graph, {
     setLinkVertices: false,
     center: true,
-    marginX: 20,
-    marginY: 20,
     nodeSep: 50,
     edgeSep: 200,
     rankSep: 200,
@@ -175,6 +189,8 @@ function scaleToFit(paper: joint.dia.Paper) {
     maxScaleX: 2,
     maxScaleY: 2
   });
+
+  moveOrigin(paper, 0, -25);
 }
 
 function isAssociation(property: any) {

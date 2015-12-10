@@ -273,6 +273,26 @@ selection-view, .main-editable-content {
   height: calc(100vh - 85px);
   overflow: hidden;
 
+  .zoom {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 10px;
+    top: 75px;
+    background-color: rgba(231,231,231,0.5);
+    border: 1px solid #ccc;
+    line-height: 0.6;
+  }
+
+  .zoom:hover {
+    background-color: #ddd;
+    cursor: pointer;
+  }
+
+  .zoom-in { left: 20px; }
+  .zoom-out { left: 60px; }
+
   .link-tools .tool-remove { display: none }
   .link-tools .tool-options { display: none }
   .link .mark-errors { display: none; }
