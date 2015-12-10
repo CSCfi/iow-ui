@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type } from '../../services/entities';
+import { Model, Type, Uri } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem, Value } from '../form/displayItemFactory';
 import { ModelCache } from '../../services/modelCache';
@@ -63,9 +63,11 @@ class EditableMultipleCurieSelectController {
   }
 
   addCurie() {
+    const excluded = new Set<Uri>(_.map(this.curies, curie => this.model.expandCurie(curie).uri));
+
     const promise: IPromise<WithCurie> = this.type ==='class'
-      ? this.searchClassModal.openWithOnlySelection(this.model)
-      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type);
+      ? this.searchClassModal.openWithOnlySelection(this.model, excluded)
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, excluded);
 
     promise.then(withCurie => {
       this.curies.push(withCurie.curie);

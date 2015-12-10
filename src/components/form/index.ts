@@ -14,6 +14,7 @@ import './localizedInput';
 import './modelLanguageChooser';
 import './namespaceInput';
 import './nonEditable';
+import './restrictDuplicates';
 import './stateSelect';
 import './valueSelect';
 

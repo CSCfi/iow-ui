@@ -20,6 +20,7 @@
                curie-input
                model="ctrl.model"
                type="text"
+               restrict-duplicates="ctrl.curies"
                ng-model="ctrl.curieInput"
                ng-keydown="ctrl.keyPressed($event)"
                ng-blur="ctrl.addCurieFromInput()" />

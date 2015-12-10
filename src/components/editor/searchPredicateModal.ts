@@ -31,16 +31,16 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  open(model: Model, type: Type, excludedPredicateMap: Set<Uri>): IPromise<ConceptCreation|Predicate> {
-    return this.openModal(model, type, excludedPredicateMap, false);
+  open(model: Model, type: Type, excludedPredicates: Set<Uri>): IPromise<ConceptCreation|Predicate> {
+    return this.openModal(model, type, excludedPredicates, false);
   }
 
   openForProperty(model: Model): IPromise<Predicate> {
     return this.openModal(model, null, new Set<Uri>(), false);
   }
 
-  openWithOnlySelection(model: Model, type: Type): IPromise<Predicate> {
-    return this.openModal(model, type, new Set<Uri>(), true);
+  openWithOnlySelection(model: Model, type: Type, excludedPredicates: Set<Uri> = new Set<Uri>()): IPromise<Predicate> {
+    return this.openModal(model, type, excludedPredicates, true);
   }
 };
 

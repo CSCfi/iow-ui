@@ -30,12 +30,12 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, excludedClassMap: Set<Uri>): IPromise<ConceptCreation|Class> {
-    return this.openModal(model, excludedClassMap, false);
+  open(model: Model, excludedClasses: Set<Uri>): IPromise<ConceptCreation|Class> {
+    return this.openModal(model, excludedClasses, false);
   }
 
-  openWithOnlySelection(model: Model): IPromise<Class> {
-    return this.openModal(model, new Set<Uri>(), true);
+  openWithOnlySelection(model: Model, excludedClasses: Set<Uri> = new Set<Uri>()): IPromise<Class> {
+    return this.openModal(model, excludedClasses, true);
   }
 };
 

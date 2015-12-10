@@ -277,6 +277,10 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
+#: components/form/errorMessages.html:10
+msgid "Duplicate error"
+msgstr ""
+
 #: components/form/editableEntityButtons.html:5
 msgid "Edit"
 msgstr ""
