@@ -14,12 +14,24 @@ export function isStringValid(value: string): boolean {
   return !value || !!value.match(/^[a-zåäö]/i);
 }
 
+export function isValidLabelLength(label: string): boolean {
+  return !label || label.length <= 40;
+}
+
+interface StringInputAttributes extends IAttributes {
+  stringInput: string;
+}
+
 mod.directive('stringInput', () => {
   return {
     restrict: 'A',
     require: 'ngModel',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, ngModel: INgModelController) {
+    link($scope: IScope, element: JQuery, attributes: StringInputAttributes, ngModel: INgModelController) {
       ngModel.$validators['string'] = isStringValid;
+
+      if (attributes.stringInput === 'label') {
+        ngModel.$validators['length'] = isValidLabelLength;
+      }
     }
   }
 });

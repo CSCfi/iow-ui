@@ -3,12 +3,23 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { Localizable } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
-import { isStringValid } from './stringInput';
+import { isStringValid, isValidLabelLength } from './stringInput';
 
 export const mod = angular.module('iow.components.form');
 
 interface LocalizedInputAttributes extends IAttributes {
   localizedInput: string;
+}
+
+function anyLocalization(localizable: Localizable, predicate: (localized: string) => boolean) {
+  if (localizable) {
+    for (let localized of Object.values(localizable)) {
+      if (!predicate(localized)) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 mod.directive('localizedInput', (languageService: LanguageService) => {
@@ -56,22 +67,21 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
         return val;
       });
 
-      if (attributes.localizedInput === "required") {
+      if (attributes.localizedInput === 'required' || attributes.localizedInput === 'label') {
         modelController.$validators['requiredLocalized'] = modelValue => {
           return !!languageService.translate(modelValue);
         };
       }
 
-      modelController.$validators['string'] = (modelValue, viewValue) => {
-        if (modelValue) {
-          for (let localized of Object.values(modelValue)) {
-            if (!isStringValid(localized)) {
-              return false;
-            }
-          }
-        }
-        return true;
+      if (attributes.localizedInput === 'label') {
+        modelController.$validators['length'] = modelValue => {
+          return anyLocalization(modelValue, isValidLabelLength);
+        };
       }
+
+      modelController.$validators['string'] = modelValue => {
+        return anyLocalization(modelValue, isStringValid);
+      };
     }
   };
 });

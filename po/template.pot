@@ -385,6 +385,10 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
+#: components/form/errorMessages.html:12
+msgid "Length error"
+msgstr ""
+
 #: components/navigation/login-modal.html:10
 #: components/navigation/login-modal.html:2
 #: components/navigation/login.html:1

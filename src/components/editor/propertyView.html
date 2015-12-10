@@ -6,7 +6,7 @@
           ng-click="editableController.removeProperty(ctrl.property)" translate>Delete property</button>
 
   <editable title="Name">
-    <input id="{{ctrl.property.id + 'label'}}" class="form-control" type="text" localized-input="required" ng-model="ctrl.property.label" />
+    <input id="{{ctrl.property.id + 'label'}}" class="form-control" type="text" localized-input="label" ng-model="ctrl.property.label" />
   </editable>
 
   <editable title="Comment">

@@ -6,9 +6,19 @@ import { pascalCase, camelCase } from 'change-case';
 import { ValidatorService } from '../../services/validatorService';
 import { Group, Model, Class, Predicate } from '../../services/entities';
 import { splitCurie } from '../../services/utils';
-import { isStringValid } from './stringInput';
+import { isStringValid, isValidLabelLength } from './stringInput';
 
 export const mod = angular.module('iow.components.form');
+
+function curieValue(curie: string, predicate: (value: string) => boolean) {
+  if (curie) {
+    const split = splitCurie(curie);
+    if (split) {
+      return predicate(split.value);
+    }
+  }
+  return true;
+}
 
 mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => {
   'ngInject';
@@ -54,13 +64,12 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
       };
 
       modelController.$validators['string'] = value => {
-        if (value) {
-          const split = splitCurie(value);
-          if (split) {
-            return isStringValid(split.value);
-          }
-        }
-      }
+        return curieValue(value, isStringValid);
+      };
+
+      modelController.$validators['length'] = value => {
+        return curieValue(value, isValidLabelLength);
+      };
     }
   };
 });
