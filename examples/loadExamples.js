@@ -43,7 +43,7 @@ function makeRequest(requestPath, fileName) {
 
 //makeRequest('/api/rest/drop');
 makeRequest('/api/rest/groups', 'exampleGroups.json');
-makeRequest('/api/rest/importModel?graph=http://iow.csc.fi/ns/doo&group=https://tt.eduuni.fi/sites/csc-iow#KTK',
+makeRequest('/api/rest/importModel?graph=http://iow.csc.fi/ns/edu&group=https://tt.eduuni.fi/sites/csc-iow#KTK',
   'exampleModelDOO.json');
 makeRequest('/api/rest/importModel?graph=http://iow.csc.fi/ns/jhs&group=https://tt.eduuni.fi/sites/csc-iow#JHS',
   'exampleModelJHS.json');
