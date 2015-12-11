@@ -93,6 +93,10 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
+#: components/footer.html:6
+msgid "Backend"
+msgstr ""
+
 #: components/frontPage.html:47
 msgid "Browse"
 msgstr ""
@@ -167,6 +171,10 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
+#: components/footer.html:2
+msgid "Contact info"
+msgstr ""
+
 #: translations/misc.html:91
 msgid "Create and use association"
 msgstr ""
@@ -197,12 +205,20 @@ msgstr ""
 msgid "Create new require"
 msgstr ""
 
+#: components/footer.html:2
+msgid "CSC - IT Center for Science Ltd"
+msgstr ""
+
 #: translations/misc.html:33
 msgid "data en"
 msgstr ""
 
 #: translations/misc.html:31
 msgid "data fi"
+msgstr ""
+
+#: components/footer.html:7
+msgid "Database"
 msgstr ""
 
 #: translations/misc.html:8
@@ -329,6 +345,10 @@ msgstr ""
 msgid "Front page"
 msgstr ""
 
+#: components/footer.html:5
+msgid "Frontend"
+msgstr ""
+
 #: translations/misc.html:26
 msgid "group"
 msgstr ""
@@ -391,6 +411,10 @@ msgstr ""
 
 #: components/form/errorMessages.html:13
 msgid "Length error"
+msgstr ""
+
+#: components/footer.html:8
+msgid "licensed under the"
 msgstr ""
 
 #: components/navigation/login-modal.html:10
@@ -595,6 +619,10 @@ msgstr ""
 
 #: translations/misc.html:21
 msgid "Show"
+msgstr ""
+
+#: components/footer.html:4
+msgid "Source code"
 msgstr ""
 
 #: translations/misc.html:16

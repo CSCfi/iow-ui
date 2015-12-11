@@ -1,13 +1,14 @@
 /// <reference path="./main.d.ts" />
 
-import IRouteProvider = angular.route.IRouteProvider;
+import ILocationService = angular.ILocationService;
 import ILogProvider = angular.ILogProvider;
-import IRoute = angular.route.IRoute;
-import IRouteService = angular.route.IRouteService;
+import IProvideService = angular.auto.IProvideService;
 import IRootScopeService = angular.IRootScopeService;
+import IRoute = angular.route.IRoute;
+import IRouteProvider = angular.route.IRouteProvider;
+import IRouteService = angular.route.IRouteService;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import IProvideService = angular.auto.IProvideService;
 import 'core-js';
 import { UserService } from './services/userService';
 import { LanguageService } from './services/languageService';
@@ -65,8 +66,9 @@ angular.module('iow-ui', [
       reloadOnSearch: false
     });
 })
-.run(function onAppRun($rootScope: RootScope, $q: IQService, languageService: LanguageService, userService: UserService, gettextCatalog: gettextCatalog) {
+.run(function onAppRun($rootScope: RootScope, $location: ILocationService, languageService: LanguageService, userService: UserService, gettextCatalog: gettextCatalog) {
   userService.updateLogin().then(() => $rootScope.applicationInitialized = true);
+  $rootScope.showFooter = () => $location.path() === '/';
   gettextCatalog.debug = true;
 })
 .controller('AppCtrl', function mainAppCtrl() {
@@ -75,4 +77,5 @@ angular.module('iow-ui', [
 
 interface RootScope extends IRootScopeService {
   applicationInitialized: boolean;
+  showFooter: () => boolean;
 }

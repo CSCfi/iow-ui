@@ -97,6 +97,10 @@ msgstr "Attribuutin nimi"
 msgid "Attribute list"
 msgstr "Attribuutit"
 
+#: components/footer.html:6
+msgid "Backend"
+msgstr "Taustajärjestelmä"
+
 #: components/frontPage.html:47
 msgid "Browse"
 msgstr "Selaa"
@@ -172,6 +176,10 @@ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
+#: components/footer.html:2
+msgid "Contact info"
+msgstr "Yhteystiedot"
+
 #: translations/misc.html:91
 msgid "Create and use association"
 msgstr "Luo assosiaatio ja käytä"
@@ -202,6 +210,10 @@ msgstr "Luo uusi luokka"
 msgid "Create new require"
 msgstr "Luo uusi nimiavaruus"
 
+#: components/footer.html:2
+msgid "CSC - IT Center for Science Ltd"
+msgstr "CSC - Tieteen tietotekniikan keskus Oy"
+
 #: translations/misc.html:33
 msgid "data en"
 msgstr "Sisältö englanniksi"
@@ -209,6 +221,10 @@ msgstr "Sisältö englanniksi"
 #: translations/misc.html:31
 msgid "data fi"
 msgstr "Sisältö suomeksi"
+
+#: components/footer.html:7
+msgid "Database"
+msgstr "Tietokanta"
 
 #: translations/misc.html:8
 msgid "Define concept for the association"
@@ -336,6 +352,10 @@ msgstr "Seuraavat asiat riippuvat poistettavasta"
 msgid "Front page"
 msgstr "Etusivu"
 
+#: components/footer.html:5
+msgid "Frontend"
+msgstr "Käyttöliittymä"
+
 #: translations/misc.html:26
 msgid "group"
 msgstr "Ryhmä"
@@ -405,6 +425,10 @@ msgstr "Nimi"
 #: components/form/errorMessages.html:13
 msgid "Length error"
 msgstr "Syöte on liian pitkä"
+
+#: components/footer.html:8
+msgid "licensed under the"
+msgstr "lisenssillä"
 
 #: components/navigation/login-modal.html:10
 #: components/navigation/login-modal.html:2 components/navigation/login.html:1
@@ -611,6 +635,10 @@ msgstr "Hae sanastoja"
 msgid "Show"
 msgstr "Näytä"
 
+#: components/footer.html:4
+msgid "Source code"
+msgstr "Lähdekoodi"
+
 #: translations/misc.html:16
 msgid "State"
 msgstr "Tila"
@@ -800,6 +828,12 @@ msgstr "XML"
 #: components/common/modalTemplate.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Code licensed under the"
+#~ msgstr "lisenssi"
+
+#~ msgid "Iow info"
+#~ msgstr "Tietoja palvelusta"
 
 #~ msgid "Save failed"
 #~ msgstr "Tallentaminen epäonnistui"

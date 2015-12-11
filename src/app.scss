@@ -11,6 +11,15 @@
 }
 
 $selectionListWidth: 275px;
+$footer-height: 40px;
+
+.panel-footer {
+  position: fixed;
+  bottom: 0;
+  height: $footer-height;
+  width: 100%;
+  font-size: small;
+}
 
 .multi-input {
   border: 1px solid #ccc;
@@ -526,7 +535,12 @@ a.accordion-toggle {
 }
 
 .main {
+  @include clearfix;
   padding: 10px;
+
+  &.with-footer {
+    margin-bottom: $footer-height;
+  }
 }
 
 .iow-panel {
