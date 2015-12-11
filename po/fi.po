@@ -282,7 +282,7 @@ msgstr "Käytöstä poistunut"
 msgid "Draft"
 msgstr "Luonnos"
 
-#: components/form/errorMessages.html:10
+#: components/form/errorMessages.html:11
 msgid "Duplicate error"
 msgstr "Syöte on jo lisätty"
 
@@ -320,7 +320,7 @@ msgstr "Vastaavat luokat"
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/form/errorMessages.html:7
+#: components/form/errorMessages.html:8
 msgid "Existing id error"
 msgstr "Tunniste on jo käytössä"
 
@@ -378,7 +378,7 @@ msgstr "Käytetyt nimiavaruudet"
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
-#: components/form/errorMessages.html:6
+#: components/form/errorMessages.html:7
 msgid "Invalid curie error"
 msgstr "Virheellinen tunniste"
 
@@ -386,9 +386,13 @@ msgstr "Virheellinen tunniste"
 msgid "Invalid ID"
 msgstr "Virheellinen tunniste"
 
-#: components/form/errorMessages.html:5
+#: components/form/errorMessages.html:6
 msgid "Invalid namespace error"
 msgstr "Nimiavaruuden täytyy päättyä ‘#’ tai ‘/‘ -merkkeihin"
+
+#: components/form/errorMessages.html:5
+msgid "Invalid url error"
+msgstr "Syöte ei ole URL"
 
 #: translations/misc.html:55
 msgid "Is defined by"
@@ -398,7 +402,7 @@ msgstr "Kirjasto"
 msgid "Label"
 msgstr "Nimi"
 
-#: components/form/errorMessages.html:12
+#: components/form/errorMessages.html:13
 msgid "Length error"
 msgstr "Syöte on liian pitkä"
 
@@ -517,11 +521,11 @@ msgstr "Sanastot"
 msgid "Register"
 msgstr "Luo tunnukset"
 
-#: components/form/errorMessages.html:8
+#: components/form/errorMessages.html:9
 msgid "Required error"
 msgstr "Pakollinen kenttä"
 
-#: components/form/errorMessages.html:9
+#: components/form/errorMessages.html:10
 msgid "Required localized error"
 msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 
@@ -611,7 +615,7 @@ msgstr "Näytä"
 msgid "State"
 msgstr "Tila"
 
-#: components/form/errorMessages.html:11
+#: components/form/errorMessages.html:12
 msgid "String error"
 msgstr "Literaalin täytyy alkaa kirjaimella"
 

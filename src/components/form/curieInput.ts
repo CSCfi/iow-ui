@@ -26,7 +26,7 @@ mod.directive('curieInput', () => {
         return !value ? '' : value;
       });
 
-      modelController.$validators['invalidCurie'] = (modelValue: string) => {
+      modelController.$validators['curie'] = (modelValue: string) => {
         if (modelValue) {
           const expanded = $scope.model.expandCurie(modelValue);
           return !!(expanded && expanded.namespace);

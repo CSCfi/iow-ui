@@ -2,9 +2,10 @@
 
 <div ng-show="ngModelController.$dirty">
   <ul ng-messages="ngModelController.$error" ng-messages-multiple class="errors">
-    <li ng-message="invalidNamespace">{{'Invalid namespace error' | translate}}</li>
-    <li ng-message="invalidCurie">{{'Invalid curie error' | translate}}</li>
-    <li ng-message="idAlreadyInUse">{{'Existing id error' | translate}}</li>
+    <li ng-message="url">{{'Invalid url error' | translate}}</li>
+    <li ng-message="namespace">{{'Invalid namespace error' | translate}}</li>
+    <li ng-message="curie">{{'Invalid curie error' | translate}}</li>
+    <li ng-message="existingId">{{'Existing id error' | translate}}</li>
     <li ng-message="required">{{'Required error' | translate}}</li>
     <li ng-message="requiredLocalized">{{'Required localized error' | translate}}</li>
     <li ng-message="duplicate">{{'Duplicate error' | translate}}</li>

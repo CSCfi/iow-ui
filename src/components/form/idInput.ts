@@ -51,7 +51,7 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
         }
       });
 
-      modelController.$asyncValidators['idAlreadyInUse'] = (modelValue: string) => {
+      modelController.$asyncValidators['existingId'] = (modelValue: string) => {
         if ($scope.old && $scope.old.curie !== modelValue) {
           const expanded = $scope.old.expandCurie(modelValue);
           return $q.all([
