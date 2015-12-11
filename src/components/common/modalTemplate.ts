@@ -14,9 +14,9 @@ mod.directive('modalTemplate', () => {
   return {
     restrict: 'E',
     transclude: {
-      modalTitle: 'title',
-      modalBody: 'body',
-      modalButtons: '?buttons'
+      title: 'modalTitle',
+      body: 'modalBody',
+      buttons: '?modalButtons'
     },
     template: require('./modalTemplate.html'),
     require: '^?form',
