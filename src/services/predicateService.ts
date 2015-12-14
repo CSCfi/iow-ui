@@ -6,6 +6,7 @@ import * as _  from 'lodash';
 import { EntityDeserializer, Predicate, PredicateListItem, Uri, Model, Type } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
+import {Attribute} from "./entities";
 
 export class PredicateService {
   /* @ngInject */
@@ -68,6 +69,9 @@ export class PredicateService {
       })
       .then(response => this.entities.deserializePredicate(response.data))
       .then((predicate: Predicate) => {
+        if (predicate instanceof Attribute && !predicate.dataType) {
+          predicate.dataType = 'xsd:string';
+        }
         predicate.unsaved = true;
         return predicate;
       });
