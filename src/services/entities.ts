@@ -158,7 +158,9 @@ export class Group extends AbstractGroup {
 
   clone(): Group {
     const serialization = this.serialize();
-    return new Group(serialization['@graph'], serialization['@context']);
+    const result =  new Group(serialization['@graph'], serialization['@context']);
+    result.unsaved = this.unsaved;
+    return result;
   }
 }
 
@@ -235,7 +237,9 @@ export class Model extends AbstractModel {
 
   clone(): Model {
     const serialization = this.serialize();
-    return new Model(serialization['@graph'], serialization['@context']);
+    const result = new Model(serialization['@graph'], serialization['@context']);
+    result.unsaved = this.unsaved;
+    return result;
   }
 
   serializationValues(): any {
@@ -400,7 +404,9 @@ export class Class extends AbstractClass {
 
   clone(): Class {
     const serialization = this.serialize();
-    return new Class(serialization['@graph'], serialization['@context']);
+    const result = new Class(serialization['@graph'], serialization['@context']);
+    result.unsaved = this.unsaved;
+    return result;
   }
 
   serializationValues() {
@@ -591,7 +597,9 @@ export class Association extends Predicate {
 
   clone(): Association {
     const serialization = this.serialize();
-    return new Association(serialization['@graph'], serialization['@context']);
+    const result = new Association(serialization['@graph'], serialization['@context']);
+    result.unsaved = this.unsaved;
+    return result;
   }
 
   serializationValues() {
@@ -616,7 +624,9 @@ export class Attribute extends Predicate {
 
   clone(): Attribute {
     const serialization = this.serialize();
-    return new Attribute(serialization['@graph'], serialization['@context']);
+    const result = new Attribute(serialization['@graph'], serialization['@context']);
+    result.unsaved = this.unsaved;
+    return result;
   }
 
   serializationValues() {
