@@ -8,14 +8,15 @@ export const mod = angular.module('iow.components.form');
 mod.directive('errorMessages', () => {
   return {
     restrict: 'E',
-    scope: {
-      ngModelController: '='
-    },
     transclude: true,
     template: require('./errorMessages.html'),
     link($scope: ErrorMessagesScope, element: JQuery, attributes: ErrorMessagesAttributes) {
       if (!attributes.ngModelController) {
         $scope.ngModelController = element.find('[ng-model]').controller('ngModel');
+      } else {
+        $scope.$watch(attributes.ngModelController, (ngModelController: INgModelController) => {
+          $scope.ngModelController = ngModelController;
+        });
       }
     }
   }
