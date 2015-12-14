@@ -172,7 +172,7 @@ ul.errors {
   min-height: 100vh;
   padding: 10px 0;
 
-  .col-md-7, .col-md-5, .col-md-12 {
+  .col-md-1, .col-md-5, .col-md-7, .col-md-11, .col-md-12 {
     padding: 0 0 0 10px;
   }
 }
@@ -213,6 +213,15 @@ uib-accordion .panel-group {
 selection-view, .main-editable-content {
   .form-control {
     max-width: 500px;
+  }
+
+  .collapsable {
+    font-size: large;
+  }
+
+  .collapsable:hover {
+    color: $brand-primary;
+    cursor: pointer;
   }
 }
 

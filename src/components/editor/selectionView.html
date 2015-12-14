@@ -1,11 +1,15 @@
-<div ng-class="{'col-md-1': ctrl.contentCollapsed, 'col-md-7': !ctrl.visCollapsed && !ctrl.contentCollapsed && !ctrl.hideVisualization, 'col-md-11': ctrl.visCollapsed && !ctrl.contentCollapsed, 'col-md-12': ctrl.hideVisualization}">
+<div ng-class="ctrl.classForSelection()">
   <div class="component">
     <div class="component-header">
-      <h3 ng-click="ctrl.collapseContent()" ng-hide="ctrl.contentCollapsed"><span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span> <span>{{ctrl.editableController.getEditable() | translateLabel}}</span></h3>
-      <h3 ng-click="ctrl.collapseContent()" ng-hide="!ctrl.contentCollapsed"><span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span></h3>
+      <h3>
+        <span ng-class="ctrl.editableController.getEditable().glyphIconClass"></span>
+        <span ng-hide="ctrl.show === 2">{{ctrl.editableController.getEditable() | translateLabel}}</span>
+        <span class="glyphicon glyphicon-collapse-up pull-right collapsable" ng-hide="ctrl.hideVisualization || ctrl.show === 0" ng-click="ctrl.enlargeSelection()"></span>
+        <span class="glyphicon glyphicon-collapse-down pull-right collapsable" ng-hide="ctrl.hideVisualization || ctrl.show === 2" ng-click="ctrl.shrinkSelection()"></span>
+      </h3>
     </div>
 
-    <div ng-hide="ctrl.contentCollapsed">
+    <div ng-hide="ctrl.show === 2">
       <div float="top-actions-placeholder">
         <editable-entity-buttons editable-controller="ctrl.editableController">
           <div ng-transclude="buttons"></div>
@@ -19,13 +23,17 @@
   </div>
 </div>
 
-<div ng-if="!ctrl.hideVisualization" ng-class="{'col-md-5': !ctrl.visCollapsed && !ctrl.contentCollapsed, 'col-md-1': ctrl.visCollapsed, 'col-md-11': !ctrl.visCollapsed && ctrl.contentCollapsed}">
+<div ng-if="!ctrl.hideVisualization" ng-class="ctrl.classForVisualization()">
   <div class="component" float top-offset="8">
     <div class="component-header">
-      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="ctrl.visCollapsed"><span class="glyphicon glyphicon-th"></span> <span translate>Visualization</span></h3>
-      <h3 ng-click="ctrl.collapseVisualization()" ng-hide="!ctrl.visCollapsed"><span class="glyphicon glyphicon-th"></span></h3>
+      <h3>
+        <span class="glyphicon glyphicon-th"></span>
+        <span ng-hide="ctrl.show === 0" translate>Visualization</span>
+        <span class="glyphicon glyphicon-collapse-up pull-right collapsable" ng-hide="ctrl.show === 2" ng-click="ctrl.enlargeVisualization()"></span>
+        <span class="glyphicon glyphicon-collapse-down pull-right collapsable" ng-hide="ctrl.show === 0" ng-click="ctrl.shrinkVisualization()"></span>
+      </h3>
     </div>
-    <div class="visualization-container" ng-hide="ctrl.visCollapsed">
+    <div class="visualization-container" ng-hide="ctrl.show === 0">
       <div ng-transclude="visualization"></div>
     </div>
   </div>
