@@ -45,11 +45,11 @@ export class ClassFormController {
 
   /* @ngInject */
   constructor($scope: IScope, private $timeout: ITimeoutService, $location: ILocationService, private modelCache: ModelCache) {
-    $scope.$watch(() => this.propertyViews, views => {
+    $scope.$watchCollection(() => this.propertyViews, views => {
       if (!_.any(views, view => view.isOpen)) {
         $location.search('property', null);
       }
-    }, true);
+    });
   }
 
   linkToSubclass() {
