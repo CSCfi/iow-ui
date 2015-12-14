@@ -76,7 +76,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
         this.select(editableInEdit);
       }, err => {
         this.$log.error(err);
-        this.submitError = err.statusText;
+        this.submitError = err.data.errorMessage;
       });
   }
 
@@ -91,7 +91,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
         }, err => {
           if (err !== 'cancel') {
             this.$log.error(err);
-            this.submitError = err.statusText;
+            this.submitError = err.data.errorMessage;
           }
         });
     });

@@ -124,7 +124,7 @@ export class SearchPredicateController {
 
   createAndUsePredicate() {
     return this.predicateService.createPredicate(this.selectedPredicate)
-      .then(() => this.usePredicate(), err => this.submitError = err.statusText);
+      .then(() => this.usePredicate(), err => this.submitError = err.data.errorMessage);
   }
 
   createNew(type: Type) {
