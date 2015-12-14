@@ -1,6 +1,6 @@
 <ng-transclude></ng-transclude>
 
-<div ng-show="ngModelController.$dirty">
+<div ng-show="ngModelController.$dirty || ngModelController.$modelValue">
   <ul ng-messages="ngModelController.$error" ng-messages-multiple class="errors">
     <li ng-message="url">{{'Invalid url error' | translate}}</li>
     <li ng-message="namespace">{{'Invalid namespace error' | translate}}</li>
