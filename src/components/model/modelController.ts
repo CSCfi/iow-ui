@@ -30,9 +30,9 @@ export class ModelController {
   attributes: PredicateListItem[];
 
   tabs = [
-    new Tab('class', () => this.classes, () => this.addClass()),
-    new Tab('attribute', () => this.attributes, () => this.addPredicate('attribute')),
-    new Tab('association', () => this.associations, () => this.addPredicate('association'))
+    new Tab('class', () => this.classes, this),
+    new Tab('attribute', () => this.attributes, this),
+    new Tab('association', () => this.associations, this)
   ];
 
   /* @ngInject */
@@ -187,65 +187,72 @@ export class ModelController {
     }
   }
 
-  private addClass() {
+  public addEntity(type: Type) {
+    if (type === 'class') {
+      this.createOrAssignEntity(
+        () => this.searchClassModal.open(this.model, collectIds(this.classes)),
+        (concept: ConceptCreation) => this.createClass(concept),
+        (klass: Class) => this.assignClassToModel(klass)
+      );
+    } else {
+      this.createOrAssignEntity(
+        () => this.searchPredicateModal.open(this.model, type, this.getPredicateIds()),
+        (concept: ConceptCreation) => this.createPredicate(concept),
+        (predicate: Predicate) => this.assignPredicateToModel(predicate.id)
+      );
+    }
+  }
+
+  private getPredicateIds(): Set<Uri> {
+    return collectIds([this.attributes, this.associations]);
+  }
+
+  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ConceptCreation|T>, createNew: (concept: ConceptCreation) => IPromise<T>, assignToModel: (entity: T) => IPromise<any>) {
     this.userService.ifStillLoggedIn(() => {
       this.askPermissionWhenEditing(() => {
-        this.searchClassModal.open(this.model, collectIds(this.classes))
-          .then((result:ConceptCreation|Class) => {
-            if (isConceptCreation(result)) {
-              this.createClass(result);
-            } else if (result instanceof Class) {
-              this.assignClassToModel(result);
-            }
-          });
+        modal().then((result: ConceptCreation|T) => {
+          if (isConceptCreation(result)) {
+            createNew(result)
+              .then(entity => this.updateSelection(entity));
+          } else if (result instanceof Class || result instanceof Predicate) {
+            assignToModel(result)
+              .then(() => {
+                this.updateSelection(result);
+                this.updateSelectables();
+              });
+          }
+        });
       });
     });
   }
 
   private createClass(conceptCreation: ConceptCreation) {
-    this.classService.newClass(this.model, conceptCreation.label, conceptCreation.concept.id, this.languageService.modelLanguage)
+    return this.classService.newClass(this.model, conceptCreation.label, conceptCreation.concept.id, this.languageService.modelLanguage)
       .then(klass => this.updateSelection(klass));
   }
 
   private assignClassToModel(klass: Class) {
-    this.classService.assignClassToModel(klass.id, this.model.id)
-      .then(() => {
-        this.updateSelection(klass);
-        this.updateClasses();
-      });
 
-    _.forEach(_.map(klass.properties, (property: Property) => this.predicateService.getPredicate(property.predicateId)),
-      predicatePromise => predicatePromise.then(predicate => this.assignPredicateToModel(predicate, false)));
-  }
+    var predicateIds = this.getPredicateIds();
 
-  private addPredicate(type: Type) {
-    this.userService.ifStillLoggedIn(() => {
-      this.askPermissionWhenEditing(() => {
-        this.searchPredicateModal.open(this.model, type, collectIds([this.attributes, this.associations]))
-          .then((result:ConceptCreation|Predicate) => {
-            if (isConceptCreation(result)) {
-              this.createPredicate(result);
-            } else {
-              this.assignPredicateToModel(result);
-            }
-          });
-      });
-    });
+    this.$q.all(
+      _.chain(klass.properties)
+        .map((property: Property) => property.predicateId)
+        .filter((predicateId: Uri) => !predicateIds.has(predicateId))
+        .map((predicateId: Uri) => this.assignPredicateToModel(predicateId))
+        .value()
+      )
+      .then(() => this.updatePredicates());
+
+    return this.classService.assignClassToModel(klass.id, this.model.id);
   }
 
   private createPredicate(conceptCreation: ConceptCreation) {
-    this.predicateService.newPredicate(this.model, conceptCreation.label, conceptCreation.concept.id, conceptCreation.type, this.languageService.modelLanguage)
-      .then(predicate => this.updateSelection(predicate));
+    return this.predicateService.newPredicate(this.model, conceptCreation.label, conceptCreation.concept.id, conceptCreation.type, this.languageService.modelLanguage)
   }
 
-  private assignPredicateToModel(predicate: Predicate, updateSelection: boolean = true) {
-    this.predicateService.assignPredicateToModel(predicate.id, this.model.id)
-      .then(() => {
-        if (updateSelection) {
-          this.updateSelection(predicate);
-        }
-        this.updatePredicates();
-      });
+  private assignPredicateToModel(id: Uri) {
+    return this.predicateService.assignPredicateToModel(id, this.model.id);
   }
 
   private findEditingViews() {
@@ -374,10 +381,12 @@ class Tab {
   addLabel: string;
   glyphIconClass: any;
   active: boolean;
+  addNew: () => void;
 
-  constructor(public type: Type, public items: () => WithIdAndType[], public addNew: () => void) {
+  constructor(public type: Type, public items: () => WithIdAndType[], modelController: ModelController) {
     this.addLabel = 'Add ' + type;
     this.glyphIconClass = glyphIconClassForType(type);
+    this.addNew = () => modelController.addEntity(type);
   }
 }
 
