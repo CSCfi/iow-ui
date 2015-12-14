@@ -50,7 +50,7 @@ export class GroupController extends EditableEntityController<Group> {
   }
 
   addModel() {
-    this.addModelModal.open().then((result: {prefix: string, label: string}) => {
+    this.addModelModal.open(this.groupId).then((result: {prefix: string, label: string}) => {
       this.$location.path('/models');
       this.$location.search({prefix: result.prefix, label: result.label, group: this.groupId});
     });
