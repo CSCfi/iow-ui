@@ -37,7 +37,7 @@ class AddRequireController {
 
   create() {
     return this.modelService.newRequire(this.namespace, this.prefix, this.label, this.language)
-      .then(newRequire => this.$uibModalInstance.close(newRequire), err => err.data.errorMessage);
+      .then(newRequire => this.$uibModalInstance.close(newRequire), err => this.submitError = err.data.errorMessage);
   }
 
   cancel() {
