@@ -3,7 +3,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _  from 'lodash';
-import { EntityDeserializer, Attribute, Association, Class, ClassListItem, Predicate, Property, Type, Uri, Model } from './entities';
+import { EntityDeserializer, Attribute, Association, Class, ClassListItem, Predicate, Property, Type, Uri, Model, states } from './entities';
 import { PredicateService } from './predicateService';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
@@ -99,6 +99,7 @@ export class ClassService {
           property.valueClass = predicate.valueClass;
         }
 
+        property.state = states.unstable;
         property.index = numberOfProperties + 1;
 
         return property;
