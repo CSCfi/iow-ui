@@ -1,9 +1,17 @@
 <div class="panel-footer">
+
   <span>{{'Contact info' | translate}} <a href="https://www.csc.fi/" translate>CSC - IT Center for Science Ltd</a></span>
+
   <span class="pull-right">
-          {{'Source code' | translate}}:
-      <a href="https://github.com/CSC-IT-Center-for-Science/iow-ui" translate>Frontend</a>,
-      <a href="https://github.com/CSC-IT-Center-for-Science/iow-api" translate>Backend</a>,
-      <a href="https://github.com/CSC-IT-Center-for-Science/iow-database" translate>Database</a>
-    {{'licensed under the' | translate}} <a href="https://github.com/CSC-IT-Center-for-Science/iow-ui/blob/master/LICENCE">European Union Public Licence</a></span>
+    <span ng-show="ctrl.gitHash && ctrl.gitDate">
+      {{'Version' | translate}}
+      <a ng-href="{{'https://github.com/CSC-IT-Center-for-Science/iow-ui/commit/' + ctrl.gitHash}}">{{ctrl.gitDate | date : 'dd.MM.yyyy HH:mm'}}</a>
+    </span>
+
+    {{'Source code' | translate}}:
+    <a href="https://github.com/CSC-IT-Center-for-Science/iow-ui" translate>Frontend</a>,
+    <a href="https://github.com/CSC-IT-Center-for-Science/iow-api" translate>Backend</a>,
+    <a href="https://github.com/CSC-IT-Center-for-Science/iow-database" translate>Database</a>
+    {{'licensed under the' | translate}} <a href="https://github.com/CSC-IT-Center-for-Science/iow-ui/blob/master/LICENCE">European Union Public Licence</a>
+  </span>
 </div>

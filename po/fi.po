@@ -101,7 +101,7 @@ msgstr "Attribuutin nimi"
 msgid "Attribute list"
 msgstr "Attribuutit"
 
-#: components/footer.html:6
+#: components/footer.html:9
 msgid "Backend"
 msgstr "Taustajärjestelmä"
 
@@ -181,7 +181,7 @@ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: components/footer.html:2
+#: components/footer.html:3
 msgid "Contact info"
 msgstr "Yhteystiedot"
 
@@ -215,7 +215,7 @@ msgstr "Luo uusi luokka"
 msgid "Create new require"
 msgstr "Luo uusi nimiavaruus"
 
-#: components/footer.html:2
+#: components/footer.html:3
 msgid "CSC - IT Center for Science Ltd"
 msgstr "CSC - Tieteen tietotekniikan keskus Oy"
 
@@ -227,7 +227,7 @@ msgstr "Sisältö englanniksi"
 msgid "data fi"
 msgstr "Sisältö suomeksi"
 
-#: components/footer.html:7
+#: components/footer.html:10
 msgid "Database"
 msgstr "Tietokanta"
 
@@ -361,7 +361,7 @@ msgstr "Seuraavat asiat riippuvat poistettavasta"
 msgid "Front page"
 msgstr "Etusivu"
 
-#: components/footer.html:5
+#: components/footer.html:8
 msgid "Frontend"
 msgstr "Käyttöliittymä"
 
@@ -435,7 +435,7 @@ msgstr "Nimi"
 msgid "Length error"
 msgstr "Syöte on liian pitkä"
 
-#: components/footer.html:8
+#: components/footer.html:11
 msgid "licensed under the"
 msgstr "lisenssillä"
 
@@ -648,7 +648,7 @@ msgstr "Hae sanastoja"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/footer.html:4
+#: components/footer.html:6
 msgid "Source code"
 msgstr "Lähdekoodi"
 
@@ -723,6 +723,10 @@ msgstr "Käytä valintaa"
 #: translations/misc.html:14
 msgid "Value class"
 msgstr "Kohde"
+
+#: components/footer.html:7
+msgid "Version"
+msgstr "Versio"
 
 #: components/editor/selectionView.html:31
 msgid "Visualization"

@@ -130,7 +130,9 @@ function compileAppJs(watch) {
   pipeline.plugin('tsify');
 
   pipeline.transform(envify({
-    NODE_ENV: process.env.NODE_ENV || 'development'
+    NODE_ENV: process.env.NODE_ENV || 'development',
+    GIT_DATE: process.env.GIT_DATE,
+    GIT_HASH: process.env.GIT_HASH
   }));
 
   function rebundle() {

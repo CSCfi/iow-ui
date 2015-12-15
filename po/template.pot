@@ -97,7 +97,7 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
-#: components/footer.html:6
+#: components/footer.html:9
 msgid "Backend"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: components/footer.html:2
+#: components/footer.html:3
 msgid "Contact info"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Create new require"
 msgstr ""
 
-#: components/footer.html:2
+#: components/footer.html:3
 msgid "CSC - IT Center for Science Ltd"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgstr ""
 msgid "data fi"
 msgstr ""
 
-#: components/footer.html:7
+#: components/footer.html:10
 msgid "Database"
 msgstr ""
 
@@ -354,7 +354,7 @@ msgstr ""
 msgid "Front page"
 msgstr ""
 
-#: components/footer.html:5
+#: components/footer.html:8
 msgid "Frontend"
 msgstr ""
 
@@ -422,7 +422,7 @@ msgstr ""
 msgid "Length error"
 msgstr ""
 
-#: components/footer.html:8
+#: components/footer.html:11
 msgid "licensed under the"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: components/footer.html:4
+#: components/footer.html:6
 msgid "Source code"
 msgstr ""
 
@@ -708,6 +708,10 @@ msgstr ""
 
 #: translations/misc.html:14
 msgid "Value class"
+msgstr ""
+
+#: components/footer.html:7
+msgid "Version"
 msgstr ""
 
 #: components/editor/selectionView.html:31
