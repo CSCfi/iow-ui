@@ -7,6 +7,7 @@ import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
 import { Class, Model, Property, Uri, states } from '../../services/entities';
 import { ModelCache } from '../../services/modelCache';
+import { AddPropertiesFromSuperClassModal} from './addPropertiesFromSuperClassModal';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -44,12 +45,18 @@ export class ClassFormController {
   propertyViews: { [key: string]: PropertyViewController } = {};
 
   /* @ngInject */
-  constructor($scope: IScope, private $timeout: ITimeoutService, $location: ILocationService, private modelCache: ModelCache) {
+  constructor($scope: IScope, private $timeout: ITimeoutService, $location: ILocationService, private modelCache: ModelCache, private addPropertiesFromSuperClassModal: AddPropertiesFromSuperClassModal) {
     $scope.$watchCollection(() => this.propertyViews, views => {
       if (!_.any(views, view => view.isOpen)) {
         $location.search('property', null);
       }
     });
+  }
+
+  addPropertiesFromSuperClass(id: Uri) {
+    const existingPredicates = new Set<Uri>(_.map(this.class.properties, property => property.predicateId));
+    this.addPropertiesFromSuperClassModal.open(id, existingPredicates)
+      .then(properties => _.forEach(properties, property => this.class.addProperty(property)));
   }
 
   linkToSubclass() {

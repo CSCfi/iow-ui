@@ -1,11 +1,12 @@
 import IAttributes = angular.IAttributes;
+import ICompiledExpression = angular.ICompiledExpression;
 import IFormController = angular.IFormController;
+import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
+import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
-import IPromise = angular.IPromise;
-import {SearchClassModal} from "./searchClassModal";
 
 export const mod = angular.module('iow.components.editor');
 
@@ -16,7 +17,8 @@ mod.directive('curieSelect', () => {
       curie: '=',
       type: '@',
       model: '=',
-      id: '@'
+      id: '@',
+      afterSelected: '&'
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -44,6 +46,7 @@ class CurieSelectController {
   type: Type;
   model: Model;
   id: string;
+  afterSelected: ICompiledExpression;
 
   constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
   }
@@ -53,6 +56,9 @@ class CurieSelectController {
       ? this.searchClassModal.openWithOnlySelection(this.model)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type);
 
-    promise.then(withCurie => this.curie = withCurie.curie);
+    promise.then(withCurie => {
+      this.curie = withCurie.curie;
+      this.afterSelected({id: this.model.expandCurie(withCurie.curie).uri});
+    });
   }
 }
