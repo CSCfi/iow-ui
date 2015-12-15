@@ -121,11 +121,11 @@ export class ModelController {
     this.views.push(view);
   }
 
-  private selectionQueue: WithIdAndType[] = [];
-
   isSelected(selection: WithIdAndType) {
     return areEqual(selection, this.selectedItem);
   }
+
+  private selectionQueue: WithIdAndType[] = [];
 
   select(listItem: WithIdAndType) {
     const fetchUntilStable: ((selection: WithIdAndType) => IPromise<Class|Predicate>) = item => {
