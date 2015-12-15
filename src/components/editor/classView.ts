@@ -2,6 +2,7 @@ import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import IPromise = angular.IPromise;
 import ILogService = angular.ILogService;
+import * as _ from 'lodash';
 import { ModelController } from '../model/modelController';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
@@ -54,7 +55,9 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   addProperty() {
-    this.searchPredicateModal.openForProperty(this.model)
+    const existingPredicates = new Set<Uri>(_.map(this.class.properties, property => property.predicateId));
+
+    this.searchPredicateModal.openForProperty(this.model, existingPredicates)
       .then(predicate => this.classService.newProperty(predicate.id, this.editableInEdit.properties.length))
       .then(property => {
         this.editableInEdit.addProperty(property);

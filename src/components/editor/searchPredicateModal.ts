@@ -35,8 +35,8 @@ export class SearchPredicateModal {
     return this.openModal(model, type, excludedPredicates, false);
   }
 
-  openForProperty(model: Model): IPromise<Predicate> {
-    return this.openModal(model, null, new Set<Uri>(), false);
+  openForProperty(model: Model, excludedPredicates: Set<Uri>): IPromise<Predicate> {
+    return this.openModal(model, null, excludedPredicates, false);
   }
 
   openWithOnlySelection(model: Model, type: Type, excludedPredicates: Set<Uri> = new Set<Uri>()): IPromise<Predicate> {
