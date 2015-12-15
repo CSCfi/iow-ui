@@ -12,7 +12,6 @@ import './href';
 import './idInput';
 import './localizedInput';
 import './modelLanguageChooser';
-import './namespaceInput';
 import './nonEditable';
 import './restrictDuplicates';
 import './stateSelect';

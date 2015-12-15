@@ -517,6 +517,10 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
+#: components/form/errorMessages.html:14
+msgid "Prefix error"
+msgstr ""
+
 #: translations/misc.html:53
 msgid "Range"
 msgstr ""

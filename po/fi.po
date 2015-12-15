@@ -530,6 +530,10 @@ msgstr "Assosiaatio"
 msgid "Prefix"
 msgstr "Etuliite"
 
+#: components/form/errorMessages.html:14
+msgid "Prefix error"
+msgstr "Etuliite saa sisältää vain pieniä kirjaimia"
+
 #: translations/misc.html:53
 msgid "Range"
 msgstr "Arvoalue"

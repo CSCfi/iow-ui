@@ -18,6 +18,24 @@ export function isValidLabelLength(label: string): boolean {
   return !label || label.length <= 40;
 }
 
+export function isValidPrefixLength(prefix: string): boolean {
+  return !prefix || prefix.length <= 8;
+}
+
+export function isValidPrefix(prefix: string): boolean {
+  return !prefix || !!prefix.match(/^[a-z]+$/);
+}
+
+export function isValidNamespace(str: string): boolean {
+  return !str || str.endsWith('#') || str.endsWith('/');
+}
+
+const URL_REGEXP = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+
+export function isValidUrl(url: string): boolean {
+  return !url || URL_REGEXP.test(url);
+}
+
 interface StringInputAttributes extends IAttributes {
   stringInput: string;
 }
@@ -29,8 +47,18 @@ mod.directive('stringInput', () => {
     link($scope: IScope, element: JQuery, attributes: StringInputAttributes, ngModel: INgModelController) {
       ngModel.$validators['string'] = isStringValid;
 
-      if (attributes.stringInput === 'label') {
-        ngModel.$validators['length'] = isValidLabelLength;
+      switch (attributes.stringInput) {
+        case 'label':
+          ngModel.$validators['length'] = isValidLabelLength;
+          break;
+        case 'prefix':
+          ngModel.$validators['prefix'] = isValidPrefix;
+          ngModel.$validators['length'] = isValidPrefixLength;
+          break;
+        case 'namespace':
+          ngModel.$validators['namespace'] = isValidNamespace;
+          ngModel.$validators['url'] = isValidUrl;
+          break;
       }
     }
   }

@@ -15,11 +15,11 @@
     </editable>
 
     <editable title="Namespace" disable="!require.modifiable">
-      <input type="text" class="form-control" ng-disabled="modelViewController.isRequireInUse(require)" required namespace-input ng-model="require.namespace" />
+      <input type="text" class="form-control" ng-disabled="modelViewController.isRequireInUse(require)" required string-input="namespace" ng-model="require.namespace" />
     </editable>
 
     <editable title="Prefix" disable="!require.modifiable">
-      <input type="text" class="form-control" required ng-model="require.prefix" />
+      <input type="text" class="form-control" required string-input="prefix" ng-model="require.prefix" />
     </editable>
   </uib-accordion-group>
 </uib-accordion>
