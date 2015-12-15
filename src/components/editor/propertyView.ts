@@ -3,7 +3,8 @@ import ILocaleService = angular.ILocaleService;
 import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
-import { Property, Predicate, Model, states } from '../../services/entities';
+import * as _ from 'lodash';
+import { Class, Property, Predicate, Model, Localizable, states } from '../../services/entities';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
 import { ModelCache } from '../../services/modelCache';
@@ -15,6 +16,7 @@ mod.directive('propertyView', ($location: ILocationService, $timeout: ITimeoutSe
   return {
     scope: {
       property: '=',
+      class: '=',
       model: '='
     },
     restrict: 'E',
@@ -51,10 +53,12 @@ interface PropertyViewScope extends IScope {
 export class PropertyViewController {
 
   property: Property;
+  class: Class;
   model: Model;
   predicate: Predicate;
   isOpen: boolean;
   scroll: () => void;
+  otherPropertyLabels: Localizable[];
 
   /* @ngInject */
   constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService, private modelCache: ModelCache) {
@@ -68,6 +72,14 @@ export class PropertyViewController {
           });
         }
       }
+    });
+
+    $scope.$watchCollection(() => this.class.properties, properties => {
+      this.otherPropertyLabels =
+        _.chain(properties)
+        .filter(property => property !== this.property)
+        .map(property => property.label)
+        .value();
     });
   }
 
