@@ -2,9 +2,8 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import IQService = angular.IQService;
-import { pascalCase, camelCase } from 'change-case';
 import { ValidatorService } from '../../services/validatorService';
-import { Group, Model, Class, Predicate } from '../../services/entities';
+import { Group, Model, Class, Predicate, Type } from '../../services/entities';
 import { splitCurie } from '../../services/utils';
 import { isStringValid, isValidLabelLength } from './stringInput';
 
@@ -20,15 +19,19 @@ function curieValue(curie: string, predicate: (value: string) => boolean) {
   return true;
 }
 
+interface IdInputAttributes extends IAttributes {
+  idInput: Type;
+}
+
 mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => {
   'ngInject';
   return {
     scope: {
-      old: '=',
+      old: '='
     },
     restrict: 'A',
     require: 'ngModel',
-    link($scope: IdInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
+    link($scope: IdInputScope, element: JQuery, attributes: IdInputAttributes, modelController: INgModelController) {
       let prefix = '';
 
       const updateOnBlur = { updateOn: 'blur' };
@@ -54,10 +57,14 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
       modelController.$asyncValidators['existingId'] = (modelValue: string) => {
         if ($scope.old.unsaved || $scope.old.curie !== modelValue) {
           const expanded = $scope.old.expandCurie(modelValue);
-          return $q.all([
-              validatorService.idDoesNotExist(expanded.uri),
-              validatorService.idDoesNotExist(expanded.withValue(camelCase(expanded.value)).uri)
-            ]);
+
+          if (attributes.idInput === 'class') {
+            return validatorService.classDoesNotExist(expanded);
+          } else if (attributes.idInput === 'predicate') {
+            return validatorService.predicateDoesNotExist(expanded);
+          } else {
+            throw new Error('Unknown type: ' + attributes.idInput);
+          }
         } else {
           return $q.when(true);
         }
