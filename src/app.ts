@@ -15,6 +15,7 @@ import { LanguageService } from './services/languageService';
 import { FrontPageController } from './components/frontPageController';
 import { ModelController } from './components/model/modelController';
 import { GroupController } from './components/group/groupController';
+import { config } from './config';
 
 import * as jQuery from 'jquery';
 window.jQuery = jQuery;
@@ -70,12 +71,20 @@ angular.module('iow-ui', [
   userService.updateLogin().then(() => $rootScope.applicationInitialized = true);
   $rootScope.showFooter = () => $location.path() === '/';
   gettextCatalog.debug = true;
+  $rootScope.production = config.production;
 })
 .controller('AppCtrl', function mainAppCtrl() {
 
+})
+.directive('googleAnalytics', () => {
+  return {
+    restrict: 'E',
+    template: require('./googleAnalytics.html')
+  }
 });
 
 interface RootScope extends IRootScopeService {
   applicationInitialized: boolean;
   showFooter: () => boolean;
+  production: boolean;
 }

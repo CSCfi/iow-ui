@@ -26,6 +26,7 @@ var ngAnnotate = require('gulp-ng-annotate');
 var _ = require('lodash');
 var nodeResolve = require('resolve');
 var gulpif = require('gulp-if');
+var envify = require('envify/custom');
 
 gulp.task('tsd', function (callback) {
   tsd({
@@ -127,6 +128,10 @@ function compileAppJs(watch) {
   });
 
   pipeline.plugin('tsify');
+
+  pipeline.transform(envify({
+    NODE_ENV: process.env.NODE_ENV || 'development'
+  }));
 
   function rebundle() {
     var b = pipeline.bundle()
