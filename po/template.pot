@@ -97,7 +97,7 @@ msgstr ""
 msgid "Attribute list"
 msgstr ""
 
-#: components/footer.html:9
+#: components/footer.html:13
 msgid "Backend"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgstr ""
 msgid "data fi"
 msgstr ""
 
-#: components/footer.html:10
+#: components/footer.html:14
 msgid "Database"
 msgstr ""
 
@@ -354,7 +354,7 @@ msgstr ""
 msgid "Front page"
 msgstr ""
 
-#: components/footer.html:8
+#: components/footer.html:12
 msgid "Frontend"
 msgstr ""
 
@@ -410,6 +410,10 @@ msgstr ""
 msgid "Invalid url error"
 msgstr ""
 
+#: index.html:16
+msgid "IOW"
+msgstr ""
+
 #: translations/misc.html:55
 msgid "Is defined by"
 msgstr ""
@@ -422,7 +426,7 @@ msgstr ""
 msgid "Length error"
 msgstr ""
 
-#: components/footer.html:11
+#: components/footer.html:15
 msgid "licensed under the"
 msgstr ""
 
@@ -634,7 +638,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: components/footer.html:6
+#: components/footer.html:11
 msgid "Source code"
 msgstr ""
 

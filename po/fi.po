@@ -101,7 +101,7 @@ msgstr "Attribuutin nimi"
 msgid "Attribute list"
 msgstr "Attribuutit"
 
-#: components/footer.html:9
+#: components/footer.html:13
 msgid "Backend"
 msgstr "Taustajärjestelmä"
 
@@ -227,7 +227,7 @@ msgstr "Sisältö englanniksi"
 msgid "data fi"
 msgstr "Sisältö suomeksi"
 
-#: components/footer.html:10
+#: components/footer.html:14
 msgid "Database"
 msgstr "Tietokanta"
 
@@ -361,7 +361,7 @@ msgstr "Seuraavat asiat riippuvat poistettavasta"
 msgid "Front page"
 msgstr "Etusivu"
 
-#: components/footer.html:8
+#: components/footer.html:12
 msgid "Frontend"
 msgstr "Käyttöliittymä"
 
@@ -423,6 +423,10 @@ msgstr "Nimiavaruuden täytyy päättyä ‘#’ tai ‘/‘ -merkkeihin"
 msgid "Invalid url error"
 msgstr "Syöte ei ole URL"
 
+#: index.html:16
+msgid "IOW"
+msgstr "Yhteentoimivuuden kuvaukset"
+
 #: translations/misc.html:55
 msgid "Is defined by"
 msgstr "Kirjasto"
@@ -435,7 +439,7 @@ msgstr "Nimi"
 msgid "Length error"
 msgstr "Syöte on liian pitkä"
 
-#: components/footer.html:11
+#: components/footer.html:15
 msgid "licensed under the"
 msgstr "lisenssillä"
 
@@ -648,7 +652,7 @@ msgstr "Hae sanastoja"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/footer.html:6
+#: components/footer.html:11
 msgid "Source code"
 msgstr "Lähdekoodi"
 
