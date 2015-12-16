@@ -55,9 +55,18 @@ class EditableController {
   item: DisplayItem;
 
   /* @ngInject */
-  constructor(private displayItemFactory: DisplayItemFactory) {
+  constructor($scope: IScope, private displayItemFactory: DisplayItemFactory) {
     const value: () => Value = () => this.ngModelController && this.ngModelController.$modelValue;
     this.item = displayItemFactory.create(value, (value: string) => this.link, this.valueAsLocalizationKey);
+
+    // TODO: prevent hidden and non-editable fields participating validation with some more obvious mechanism
+    $scope.$watchCollection(() => Object.keys(this.ngModelController.$error), keys => {
+      if (!this.isEditing()) {
+        for (const key of keys) {
+          this.ngModelController.$setValidity(key, true);
+        }
+      }
+    });
   }
 
   get required(): boolean {
