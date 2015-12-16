@@ -3,7 +3,7 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { Localizable } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
-import { isStringValid, isValidLabelLength } from './stringInput';
+import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './stringInput';
 
 export const mod = angular.module('iow.components.form');
 
@@ -27,7 +27,7 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
   return {
     restrict: 'A',
     require: 'ngModel',
-    link($scope: IScope, element: JQuery, attributes: LocalizedInputAttributes, modelController: INgModelController) {
+    link($scope: IScope, element: JQuery, attributes: LocalizedInputAttributes, ngModel: INgModelController) {
       let localized: Localizable;
 
       function setPlaceholder() {
@@ -46,7 +46,7 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
         element.val(val);
       });
 
-      modelController.$parsers.push(viewValue => {
+      ngModel.$parsers.push(viewValue => {
         localized = Object.assign(localized, {
           [languageService.modelLanguage]: viewValue
         });
@@ -58,7 +58,7 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
         return localized;
       });
 
-      modelController.$formatters.push(modelValue => {
+      ngModel.$formatters.push(modelValue => {
         localized = modelValue || {};
         const val = localized[languageService.modelLanguage];
         if (!val) {
@@ -67,21 +67,27 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
         return val;
       });
 
-      if (attributes.localizedInput === 'required' || attributes.localizedInput === 'label') {
-        modelController.$validators['requiredLocalized'] = modelValue => {
-          return !!languageService.translate(modelValue);
-        };
+      function hasLocalization(value: Localizable) {
+        return !!languageService.translate(value);
       }
 
-      if (attributes.localizedInput === 'label') {
-        modelController.$validators['length'] = modelValue => {
-          return anyLocalization(modelValue, isValidLabelLength);
-        };
-      }
-
-      modelController.$validators['string'] = modelValue => {
+      ngModel.$validators['string'] = modelValue => {
         return anyLocalization(modelValue, isStringValid);
       };
+
+      switch (attributes.localizedInput) {
+        case 'required':
+          ngModel.$validators['requiredLocalized'] = hasLocalization;
+          break;
+        case 'label':
+          ngModel.$validators['requiredLocalized'] = hasLocalization;
+          ngModel.$validators['length'] = modelValue => anyLocalization(modelValue, isValidLabelLength);
+          break;
+        case 'modelLabel':
+          ngModel.$validators['requiredLocalized'] = hasLocalization;
+          ngModel.$validators['length'] = modelValue => anyLocalization(modelValue, isValidModelLabelLength);
+          break;
+      }
     }
   };
 });

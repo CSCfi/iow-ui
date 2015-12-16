@@ -18,6 +18,10 @@ export function isValidLabelLength(label: string): boolean {
   return !label || label.length <= 40;
 }
 
+export function isValidModelLabelLength(label: string): boolean {
+  return !label || label.length <= 60;
+}
+
 export function isValidPrefixLength(prefix: string): boolean {
   return !prefix || prefix.length <= 8;
 }
@@ -50,6 +54,9 @@ mod.directive('stringInput', () => {
       switch (attributes.stringInput) {
         case 'label':
           ngModel.$validators['length'] = isValidLabelLength;
+          break;
+        case 'modelLabel':
+          ngModel.$validators['length'] = isValidModelLabelLength;
           break;
         case 'prefix':
           ngModel.$validators['prefix'] = isValidPrefix;
