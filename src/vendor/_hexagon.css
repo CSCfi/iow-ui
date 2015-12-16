@@ -1,0 +1,40 @@
+/* generated with http://csshexagon.com/ */
+
+.hexagon {
+  display: block;
+  float: left;
+  position: relative;
+  width: 30px;
+  height: 17.32px;
+  background-color: #3a50b8;
+  margin: 8.66px 10px 8.66px 0;
+  padding-right: 10px;
+  border-left: solid 5px #ffffff;
+  border-right: solid 5px #ffffff;
+}
+
+.hexagon:before,
+.hexagon:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 21.21px;
+  height: 21.21px;
+  -webkit-transform: scaleY(0.5774) rotate(-45deg);
+  -ms-transform: scaleY(0.5774) rotate(-45deg);
+  transform: scaleY(0.5774) rotate(-45deg);
+  background-color: inherit;
+  left: -0.6066px;
+}
+
+.hexagon:before {
+  top: -10.6066px;
+  border-top: solid 7.0711px #ffffff;
+  border-right: solid 7.0711px #ffffff;
+}
+
+.hexagon:after {
+  bottom: -10.6066px;
+  border-bottom: solid 7.0711px #ffffff;
+  border-left: solid 7.0711px #ffffff;
+}

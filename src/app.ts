@@ -10,11 +10,15 @@ import IRouteService = angular.route.IRouteService;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import 'core-js';
+import * as _ from 'lodash';
 import { UserService } from './services/userService';
 import { LanguageService } from './services/languageService';
 import { FrontPageController } from './components/frontPageController';
 import { ModelController } from './components/model/modelController';
 import { GroupController } from './components/group/groupController';
+import { Language } from './services/languageService';
+import { User } from './services/entities';
+import { LoginModal } from './components/navigation/loginModal';
 import { config } from './config';
 
 import * as jQuery from 'jquery';
@@ -26,7 +30,7 @@ require("typeahead.js");
 require('angular-gettext');
 require('checklist-model');
 
-angular.module('iow-ui', [
+const mod = angular.module('iow-ui', [
   require('angular-messages'),
   require('angular-route'),
   require('angular-ui-bootstrap'),
@@ -40,8 +44,9 @@ angular.module('iow-ui', [
   require('./components/navigation'),
   require('./components'),
   require('./services')
-])
-.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILogProvider) {
+]);
+
+mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILogProvider) {
   $logProvider.debugEnabled(false);
 
   $routeProvider
@@ -66,21 +71,6 @@ angular.module('iow-ui', [
       controllerAs: 'ctrl',
       reloadOnSearch: false
     });
-})
-.run(function onAppRun($rootScope: RootScope, $location: ILocationService, languageService: LanguageService, userService: UserService, gettextCatalog: gettextCatalog) {
-  userService.updateLogin().then(() => $rootScope.applicationInitialized = true);
-  $rootScope.showFooter = () => $location.path() === '/';
-  gettextCatalog.debug = true;
-  $rootScope.production = config.production;
-})
-.controller('AppCtrl', function mainAppCtrl() {
-
-})
-.directive('googleAnalytics', () => {
-  return {
-    restrict: 'E',
-    template: require('./googleAnalytics.html')
-  }
 });
 
 interface RootScope extends IRootScopeService {
@@ -88,3 +78,60 @@ interface RootScope extends IRootScopeService {
   showFooter: () => boolean;
   production: boolean;
 }
+
+mod.run(function onAppRun($rootScope: RootScope, $location: ILocationService, languageService: LanguageService, userService: UserService, gettextCatalog: gettextCatalog) {
+  userService.updateLogin().then(() => $rootScope.applicationInitialized = true);
+  $rootScope.showFooter = () => $location.path() === '/';
+  gettextCatalog.debug = true;
+  $rootScope.production = config.production;
+});
+
+mod.directive('googleAnalytics', () => {
+  return {
+    restrict: 'E',
+    template: require('./googleAnalytics.html')
+  }
+});
+
+class ApplicationController {
+
+  languages: {code: Language, name: string}[];
+
+  /* @ngInject */
+  constructor(private languageService: LanguageService, private userService: UserService, private loginModal: LoginModal) {
+    this.languages = _.map(languageService.availableLanguages, language => {
+      switch (language) {
+        case 'fi':
+          return {code: language, name: 'Suomeksi'};
+        case 'en':
+          return {code: language, name: 'In English'};
+        default:
+          throw new Error('Uknown language: ' + language);
+      }
+    });
+  }
+
+  get language(): Language {
+    return this.languageService.UILanguage;
+  }
+
+  set language(language: Language) {
+    this.languageService.UILanguage = language;
+    this.languageService.modelLanguage = language;
+  }
+
+  getUser(): User {
+    return this.userService.user;
+  }
+
+  logout() {
+    return this.userService.logout();
+  }
+
+  openLogin() {
+    this.loginModal.open();
+  }
+}
+
+mod.controller('AppCtrl', ApplicationController);
+

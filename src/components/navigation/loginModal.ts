@@ -4,41 +4,21 @@ import IWindowService = angular.IWindowService;
 import { User } from '../../services/entities';
 import { UserService } from '../../services/userService';
 
-export const mod = angular.module('iow.components.navigation');
-
-mod.directive('login', () => {
-  return {
-    scope: {},
-    restrict: 'E',
-    template: require('./login.html'),
-    controllerAs: 'ctrl',
-    controller: LoginController
-  };
-});
-
-class LoginController {
+export class LoginModal {
   /* @ngInject */
-  constructor(private $uibModal: IModalService, private userService: UserService) {
+  constructor(private $uibModal: IModalService) {
   }
 
-  getUser(): User {
-    return this.userService.user;
-  }
-
-  logout() {
-    return this.userService.logout();
-  }
-
-  openLogin() {
+  open() {
     this.$uibModal.open({
-      template: require('./login-modal.html'),
-      controller: ModalController,
+      template: require('./loginModal.html'),
+      controller: LoginModalController,
       controllerAs: 'ctrl'
     });
   }
 }
 
-class ModalController {
+class LoginModalController {
   /* @ngInject */
   constructor(private $window: IWindowService, private $uibModalInstance: IModalServiceInstance) {
   }

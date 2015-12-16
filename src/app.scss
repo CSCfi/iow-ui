@@ -4,6 +4,7 @@
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 @import './vendor/_bootswatch';
 @import './vendor/_typeaheadjs';
+@import './vendor/_hexagon';
 @import '../node_modules/jointjs/joint';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -12,10 +13,6 @@
 
 $selectionListWidth: 275px;
 $footer-height: 40px;
-
-.logo {
-  font-size: x-large;
-}
 
 .panel-footer {
   position: fixed;
@@ -423,18 +420,40 @@ selection-view, .main-editable-content {
   border-top: solid 1px #ddd;
 }
 
+.nav {
+  a:hover {
+    cursor: pointer;
+  }
+}
+
+.navbar-brand {
+  line-height: 35px;
+}
+
 .navbar-right {
   margin: 5px;
-}
 
-.navbar-nav li {
-  color: $navbar-default-brand-color;
-}
+  .navbar-btn {
+    margin: 0;
+    padding: 0;
+    background: transparent;
 
-.navbar-button {
-  color: $navbar-default-brand-color;
-  background: transparent;
-  border-color: transparent;
+    button.btn {
+      color: $navbar-default-brand-color;
+      background: transparent;
+      border: 0;
+      font-weight: inherit;
+      font-size: inherit;
+      padding: 12px;
+      line-height: 21px;
+    }
+
+    button.btn:hover {
+      background-color: black;
+      color: #ffffff;
+      border: 0;
+    }
+  }
 }
 
 .h2 {
