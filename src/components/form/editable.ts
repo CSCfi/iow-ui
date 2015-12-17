@@ -28,51 +28,62 @@ mod.directive('editable', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['editable', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
+    link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
       const editableController: EditableController = controllers[0];
-      const formController: EditableForm = controllers[1];
       const input = element.find('[ng-model]');
+      const ngModel = input.controller('ngModel');
+      const isEditing = () => controllers[1].editing && !editableController.disable;
+
+      // move error messages element next to input
       input.after(element.find('error-messages').detach());
-      Object.defineProperty(editableController, 'inputId', { get: () => input.attr('id') });
-      editableController.ngModelController = input.controller('ngModel');
-      editableController.isEditing = () => formController.editing && !editableController.disable;
+
+      // TODO: prevent hidden and non-editable fields participating validation with some more obvious mechanism
+      $scope.$watchCollection(() => Object.keys(ngModel.$error), keys => {
+        if (!isEditing()) {
+          for (const key of keys) {
+            ngModel.$setValidity(key, true);
+          }
+        }
+      });
+
+      editableController.isEditing = isEditing;
+      $scope.ngModel = ngModel;
+
+      Object.defineProperty(editableController, 'value', { get: () => {
+        return ngModel && ngModel.$modelValue;
+      }});
+
+      Object.defineProperty(editableController, 'inputId', { get: () => {
+        return input.attr('id');
+      }});
+
+      Object.defineProperty(editableController, 'required', { get: () => {
+        return input.attr('required') || (ngModel && 'requiredLocalized' in ngModel.$validators);
+      }});
     },
     controller: EditableController
   }
 });
 
+interface EditableScope extends IScope {
+  ngModel: INgModelController;
+}
+
 class EditableController {
 
+  value: Value;
   title: string;
   valueAsLocalizationKey: boolean;
   link: string;
   disable: boolean;
-
+  required: boolean;
   inputId: string;
   isEditing: () => boolean;
-  ngModelController: INgModelController;
 
   item: DisplayItem;
 
   /* @ngInject */
-  constructor($scope: IScope, private displayItemFactory: DisplayItemFactory) {
-    const value: () => Value = () => this.ngModelController && this.ngModelController.$modelValue;
-    this.item = displayItemFactory.create(value, (value: string) => this.link, this.valueAsLocalizationKey);
-
-    // TODO: prevent hidden and non-editable fields participating validation with some more obvious mechanism
-    $scope.$watchCollection(() => Object.keys(this.ngModelController.$error), keys => {
-      if (!this.isEditing()) {
-        for (const key of keys) {
-          this.ngModelController.$setValidity(key, true);
-        }
-      }
-    });
-  }
-
-  get required(): boolean {
-    if (this.ngModelController) {
-      const validators = this.ngModelController.$validators;
-      return 'required' in validators || 'requiredLocalized' in validators;
-    }
+  constructor(private displayItemFactory: DisplayItemFactory) {
+    this.item = displayItemFactory.create(() => this.value, (value: string) => this.link, this.valueAsLocalizationKey);
   }
 }

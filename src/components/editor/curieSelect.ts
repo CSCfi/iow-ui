@@ -18,7 +18,8 @@ mod.directive('curieSelect', () => {
       type: '@',
       model: '=',
       id: '@',
-      afterSelected: '&'
+      afterSelected: '&',
+      mandatory: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -47,6 +48,7 @@ class CurieSelectController {
   model: Model;
   id: string;
   afterSelected: ICompiledExpression;
+  mandatory: boolean;
 
   constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
   }
