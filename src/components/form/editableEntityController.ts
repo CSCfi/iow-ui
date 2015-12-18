@@ -89,7 +89,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
           this.$scope.modelController && this.$scope.modelController.selectionDeleted(editable);
           this.select(null);
         }, err => {
-          if (err !== 'cancel') {
+          if (err !== 'cancel' && err !== 'escape key press') {
             this.$log.error(err);
             this.submitError = err.data.errorMessage;
           }
