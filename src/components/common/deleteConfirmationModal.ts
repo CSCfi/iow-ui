@@ -12,7 +12,7 @@ export class DeleteConfirmationModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(entity: Entity, showUsages: boolean): IPromise<void> {
+  open(entity: Entity, showUsage: boolean): IPromise<void> {
     return this.$uibModal.open({
       template: require('./deleteConfirmationModal.html'),
       size: 'adapting',
@@ -20,7 +20,7 @@ export class DeleteConfirmationModal {
       controller: DeleteConfirmationModalController,
       resolve: {
         entity: () => entity,
-        showUsages: () => showUsages
+        showUsage: () => showUsage
       }
     }).result;
   }
@@ -31,7 +31,7 @@ class DeleteConfirmationModalController {
   usage: Usage;
 
   /* @ngInject */
-  constructor(public entity: Entity, public showUsages: boolean, usageService: UsageService) {
-    usageService.getUsages(entity.id).then(usage => this.usage = usage);
+  constructor(public entity: Entity, public showUsage: boolean, usageService: UsageService) {
+    usageService.getUsage(entity.id).then(usage => this.usage = usage);
   }
 }

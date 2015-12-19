@@ -7,7 +7,7 @@ export class UsageService {
   constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
-  getUsages(id: Uri): IPromise<Usage> {
+  getUsage(id: Uri): IPromise<Usage> {
     return this.$http.get('/api/rest/usage', {params: {id}})
       .then(response => this.entities.deserializeUsage(response.data));
   }

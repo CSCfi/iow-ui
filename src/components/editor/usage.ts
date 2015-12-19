@@ -10,29 +10,29 @@ import { ModelCache } from '../../services/modelCache';
 
 export const mod = angular.module('iow.components.editor');
 
-interface UsagesAttributes extends IAttributes {
+interface UsageAttributes extends IAttributes {
   showLinks: string;
 }
 
-mod.directive('usages', () => {
+mod.directive('usage', () => {
   return {
     restrict: 'E',
-    template: require('./usages.html'),
+    template: require('./usage.html'),
     scope: {
       usage: '='
     },
     bindToController: true,
     controllerAs: 'ctrl',
-    require: ['usages', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: UsagesAttributes, controllers: [UsagesController, EditableForm]) {
+    require: ['usage', '?^form'],
+    link($scope: IScope, element: JQuery, attributes: UsageAttributes, controllers: [UsageController, EditableForm]) {
       const form: EditableForm = controllers[1];
       $scope.$watch(attributes.showLinks, (show: boolean) => controllers[0].showLinks = show && (!form || !form.editing));
     },
-    controller: UsagesController
+    controller: UsageController
   }
 });
 
-class UsagesController {
+class UsageController {
 
   usage: Usage;
   showLinks: boolean;
