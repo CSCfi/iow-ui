@@ -69,7 +69,7 @@ msgstr "ja luo uusi"
 msgid "Are you sure that you want to cancel edit?"
 msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 
-#: components/common/deleteConfirmationModal.html:20 translations/misc.html:38
+#: components/common/deleteConfirmationModal.html:11 translations/misc.html:38
 msgid "Are you sure that you want to delete?"
 msgstr "Oletko varma, että haluat poistaa?"
 
@@ -319,7 +319,7 @@ msgstr "Muokkaa"
 msgid "Edit in progress"
 msgstr "Muokkaaminen on kesken"
 
-#: components/navigation/login-modal.html:5
+#: components/navigation/loginModal.html:5
 msgid "eDuuni information"
 msgstr ""
 "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
@@ -443,18 +443,18 @@ msgstr "Syöte on liian pitkä"
 msgid "licensed under the"
 msgstr "lisenssillä"
 
-#: components/navigation/login-modal.html:10
-#: components/navigation/login-modal.html:2 components/navigation/login.html:1
+#: components/navigation/loginModal.html:10
+#: components/navigation/loginModal.html:2 index.html:24
 msgid "Login"
 msgstr "Kirjaudu"
 
-#: components/navigation/login-modal.html:6
+#: components/navigation/loginModal.html:6
 msgid "Login information"
 msgstr ""
 "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
 "sen jälkeen takaisin palveluun."
 
-#: components/navigation/login.html:11
+#: index.html:30
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
@@ -481,6 +481,10 @@ msgstr "Nimiavaruus"
 #: translations/misc.html:24
 msgid "New model creation"
 msgstr "Uuden tietokomponenttikirjaston luonti"
+
+#: components/editor/usagePanel.html:7
+msgid "No referrers"
+msgstr "Ei viittauksia"
 
 #: components/advancedSearchModal.html:21 components/frontPage.html:35
 msgid "No search results"
@@ -558,7 +562,7 @@ msgstr "Sanasto"
 msgid "References"
 msgstr "Sanastot"
 
-#: components/navigation/login-modal.html:11
+#: components/navigation/loginModal.html:11
 msgid "Register"
 msgstr "Luo tunnukset"
 
@@ -703,6 +707,10 @@ msgstr "Tapahtui odottamaton virhe"
 #: translations/misc.html:17
 msgid "Unstable"
 msgstr "Keskeneräinen"
+
+#: components/editor/usagePanel.html:4
+msgid "Usage"
+msgstr "Viittaukset muista komponenteista"
 
 #: translations/misc.html:15
 msgid "Use"

@@ -19,6 +19,7 @@ import './propertyView';
 import './rangeSelect';
 import './selectionView';
 import './usage';
+import './usagePanel';
 
 mod.service('addConceptModal', AddConceptModal);
 mod.service('addPropertiesFromSuperClassModal', AddPropertiesFromSuperClassModal);

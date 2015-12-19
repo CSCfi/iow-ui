@@ -64,7 +64,7 @@ msgstr ""
 msgid "Are you sure that you want to cancel edit?"
 msgstr ""
 
-#: components/common/deleteConfirmationModal.html:20
+#: components/common/deleteConfirmationModal.html:11
 #: translations/misc.html:38
 msgid "Are you sure that you want to delete?"
 msgstr ""
@@ -314,7 +314,7 @@ msgstr ""
 msgid "Edit in progress"
 msgstr ""
 
-#: components/navigation/login-modal.html:5
+#: components/navigation/loginModal.html:5
 msgid "eDuuni information"
 msgstr ""
 
@@ -430,17 +430,17 @@ msgstr ""
 msgid "licensed under the"
 msgstr ""
 
-#: components/navigation/login-modal.html:10
-#: components/navigation/login-modal.html:2
-#: components/navigation/login.html:1
+#: components/navigation/loginModal.html:10
+#: components/navigation/loginModal.html:2
+#: index.html:24
 msgid "Login"
 msgstr ""
 
-#: components/navigation/login-modal.html:6
+#: components/navigation/loginModal.html:6
 msgid "Login information"
 msgstr ""
 
-#: components/navigation/login.html:11
+#: index.html:30
 msgid "Logout"
 msgstr ""
 
@@ -466,6 +466,10 @@ msgstr ""
 
 #: translations/misc.html:24
 msgid "New model creation"
+msgstr ""
+
+#: components/editor/usagePanel.html:7
+msgid "No referrers"
 msgstr ""
 
 #: components/advancedSearchModal.html:21
@@ -545,7 +549,7 @@ msgstr ""
 msgid "References"
 msgstr ""
 
-#: components/navigation/login-modal.html:11
+#: components/navigation/loginModal.html:11
 msgid "Register"
 msgstr ""
 
@@ -688,6 +692,10 @@ msgstr ""
 
 #: translations/misc.html:17
 msgid "Unstable"
+msgstr ""
+
+#: components/editor/usagePanel.html:4
+msgid "Usage"
 msgstr ""
 
 #: translations/misc.html:15

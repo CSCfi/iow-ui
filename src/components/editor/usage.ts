@@ -41,9 +41,10 @@ class UsageController {
   /* @ngInject */
   constructor($scope: IScope) {
     $scope.$watch(() => this.usage, usage => {
-      this.usage = usage;
       if (usage && usage.referrers.length > 0) {
         this.referrers = _.groupBy<Referrer>(usage.referrers, 'type');
+      } else {
+        this.referrers = {};
       }
     });
   }
