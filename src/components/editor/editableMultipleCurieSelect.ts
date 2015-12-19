@@ -55,7 +55,7 @@ class EditableMultipleCurieSelectController {
               private searchClassModal: SearchClassModal,
               modelCache: ModelCache) {
 
-    const link = (curie: string) => this.model.linkToCurie(this.type, curie, modelCache);
+    const link = (curie: string) => this.model.linkTo(this.type, curie, modelCache);
 
     $scope.$watchCollection(() => this.curies, curies => {
       this.items =_.map(curies, curie => displayItemFactory.create(() => curie, link, false, () => this.isEditing()));

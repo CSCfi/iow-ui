@@ -29,13 +29,13 @@ class PredicateFormController {
   }
 
   linkToSubProperty() {
-    return this.model.linkToCurie(this.predicate.type, this.predicate.subPropertyOf, this.modelCache);
+    return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf, this.modelCache);
   }
 
   linkToValueClass() {
     const predicate = this.predicate;
     if (predicate instanceof Association) {
-      return this.model.linkToCurie('class', predicate.valueClass, this.modelCache);
+      return this.model.linkTo('class', predicate.valueClass, this.modelCache);
     }
   }
 

@@ -18,6 +18,7 @@ import './predicateView';
 import './propertyView';
 import './rangeSelect';
 import './selectionView';
+import './usages';
 
 mod.service('addConceptModal', AddConceptModal);
 mod.service('addPropertiesFromSuperClassModal', AddPropertiesFromSuperClassModal);

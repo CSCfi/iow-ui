@@ -84,7 +84,7 @@ export class PropertyViewController {
   }
 
   linkToValueClass() {
-    return this.model.linkToCurie('class', this.property.valueClass, this.modelCache);
+    return this.model.linkTo('class', this.property.valueClass, this.modelCache);
   }
 
   openAndScrollTo() {

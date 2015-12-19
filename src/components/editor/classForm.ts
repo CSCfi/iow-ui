@@ -60,7 +60,7 @@ export class ClassFormController {
   }
 
   linkToSubclass() {
-    return this.model.linkToCurie(this.class.type, this.class.subClassOf, this.modelCache);
+    return this.model.linkTo(this.class.type, this.class.subClassOf, this.modelCache);
   }
 
   get inUnstableState(): boolean {

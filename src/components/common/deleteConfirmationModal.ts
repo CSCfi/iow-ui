@@ -5,12 +5,14 @@ import * as _ from 'lodash';
 import { UsageService } from '../../services/usageService';
 import { Attribute, Association, Class, Group, Model, Referrer, Type } from '../../services/entities';
 
+type Entity = Class|Association|Attribute|Model|Group;
+
 export class DeleteConfirmationModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(entity: Class|Association|Attribute|Model|Group, showUsages: boolean): IPromise<void> {
+  open(entity: Entity, showUsages: boolean): IPromise<void> {
     return this.$uibModal.open({
       template: require('./deleteConfirmationModal.html'),
       size: 'adapting',
@@ -24,18 +26,8 @@ export class DeleteConfirmationModal {
   }
 };
 
-export class DeleteConfirmationModalController {
-
-  referrers: Dictionary<Referrer[]>;
-
+class DeleteConfirmationModalController {
   /* @ngInject */
-  constructor(private usageService: UsageService, public entity: Class|Association|Attribute|Model|Group, showUsages: boolean) {
-    if (showUsages) {
-      usageService.getUsages(entity.id).then(usage => {
-        if (usage && usage.referrers.length > 0) {
-          this.referrers = _.groupBy<Referrer>(usage.referrers, 'type');
-        }
-      });
-    }
+  constructor(public entity: Entity, public showUsages: boolean) {
   }
 }

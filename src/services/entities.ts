@@ -77,7 +77,10 @@ export abstract class GraphNode {
     if (curie) {
       const split = splitCurie(curie);
       if (split) {
-        return new ExpandedCurie(this.context[split.prefix], split.value);
+        const namespace = this.context[split.prefix];
+        if (namespace) {
+          return new ExpandedCurie(namespace, split.value);
+        }
       }
     }
   }
@@ -85,20 +88,24 @@ export abstract class GraphNode {
   isCurieDefinedInModel(curie: string, modelCache: ModelCache) {
     const expanded = this.expandCurie(curie);
     if (expanded) {
-      return modelCache.modelIdForNamespace(expanded.namespace);
+      return !!modelCache.modelIdForNamespace(expanded.namespace);
     }
   }
 
-  linkToCurie(type: Type, curie: Curie, modelCache: ModelCache) {
-    if (curie) {
-      const expanded = this.expandCurie(curie);
+  linkTo(type: Type, id: Uri|Curie, modelCache: ModelCache) {
+    if (id) {
+      const expanded = this.expandCurie(id);
       if (expanded) {
-        const {namespace, value} = expanded;
-        const id = modelCache.modelIdForNamespace(namespace);
-        if (!type || !id) {
-          return namespace + value;
-        } else if (type && id) {
-          return selectableUrl(namespace + value, type);
+        if (!modelCache.modelIdForNamespace(expanded.namespace)) {
+          return expanded.uri;
+        } else {
+          return url(expanded.uri, type);
+        }
+      } else {
+        if (!(modelCache.modelIdForNamespace(id + '#') || modelCache.modelIdForNamespace(id + '/'))) {
+          return id;
+        } else {
+          return url(id, type);
         }
       }
     }
@@ -138,7 +145,7 @@ export abstract class AbstractGroup extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return groupUrl(this.id);
+    return url(this.id, this.type);
   }
 }
 
@@ -176,7 +183,7 @@ abstract class AbstractModel extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return modelUrl(this.id);
+    return url(this.id, this.type);
   }
 }
 
@@ -332,7 +339,7 @@ abstract class AbstractClass extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return `${this.modelIowUrl()}&${this.type}=${encodeURIComponent(this.fullId())}`;
+    return url(this.fullId(), this.type);
   }
 }
 
@@ -506,7 +513,7 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   }
 
   iowUrl(): RelativeUrl {
-    return `${this.modelIowUrl()}&${this.type}=${encodeURIComponent(this.fullId())}`;
+    return url(this.fullId(), this.type);
   }
 }
 
@@ -747,16 +754,7 @@ export class SearchResult extends GraphNode {
   }
 
   iowUrl() {
-    switch (this.type) {
-      case 'group':
-        return groupUrl(this.id);
-      case 'model':
-        return modelUrl(this.id);
-      default:
-        if (this.type) {
-          return selectableUrl(this.id, this.type);
-        }
-    }
+    return url(this.id, this.type);
   }
 }
 
@@ -789,6 +787,11 @@ export class Referrer extends GraphNode {
     this.label = graph.label;
     this.modelId = graph.isDefinedBy;
   }
+
+  iowUrl() {
+    const expanded = this.expandCurie(this.id);
+    return url(expanded ? expanded.uri : this.id, this.type);
+  }
 }
 
 function mapType(type: string): Type {
@@ -814,17 +817,24 @@ function mapType(type: string): Type {
   throw new Error('No type found for: ' + type);
 }
 
-function groupUrl(id: Uri): RelativeUrl {
-  return `/groups?urn=${encodeURIComponent(id)}`;
-}
-
-function modelUrl(id: Uri): RelativeUrl {
+export function modelUrl(id: Uri): RelativeUrl {
   return `/models?urn=${encodeURIComponent(id)}`;
 }
 
-function selectableUrl(id: Uri, type: Type): RelativeUrl {
-  const [modelId] = id.split('#');
-  return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
+export function url(id: Uri, type: Type) {
+  switch(type) {
+    case 'model':
+      return modelUrl(id);
+    case 'group':
+      return `/groups?urn=${encodeURIComponent(id)}`;
+    case 'association':
+    case 'attribute':
+    case 'class':
+      const [modelId] = id.split('#');
+      return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
+    default:
+      throw new Error('Unsupported type for url: ' + type);
+  }
 }
 
 function renameProperty(obj: any, name: string, newName: string) {

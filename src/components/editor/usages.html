@@ -1,0 +1,12 @@
+<ng-transclude></ng-transclude>
+
+<ul ng-if="ctrl.referrers">
+  <li ng-repeat="(type, referrers) in ctrl.referrers">
+    <span>{{type | translate}}</span>
+    <ul>
+      <li ng-repeat="referrer in referrers">
+        {{referrer | translateLabel}} <span ng-hide="ctrl.showLinks">({{referrer.id}})</span><a ng-show="ctrl.showLinks" ng-href="{{'#' + referrer.iowUrl()}}">({{referrer.id}})</a>
+      </li>
+    </ul>
+  </li>
+</ul>
