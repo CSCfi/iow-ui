@@ -2,10 +2,9 @@
   <modal-title translate>Confirm delete</modal-title>
   <modal-body>
 
-    <div ng-if="ctrl.showUsages">
-      <usages id="ctrl.entity.id">
-        <p><span translate>Following items are depending on the deleted</span> <span>{{'of ' + ctrl.entity.type | translate}}</span></p>
-      </usages>
+    <div ng-if="ctrl.usage.referrers.length > 0">
+      <p><span translate>Following items are depending on the deleted</span> <span>{{'of ' + ctrl.entity.type | translate}}</span></p>
+      <usages usage="ctrl.usage"></usages>
       <br />
     </div>
 

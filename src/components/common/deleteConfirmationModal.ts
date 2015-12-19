@@ -3,7 +3,7 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import { UsageService } from '../../services/usageService';
-import { Attribute, Association, Class, Group, Model, Referrer, Type } from '../../services/entities';
+import { Attribute, Association, Class, Group, Model, Usage } from '../../services/entities';
 
 type Entity = Class|Association|Attribute|Model|Group;
 
@@ -27,7 +27,11 @@ export class DeleteConfirmationModal {
 };
 
 class DeleteConfirmationModalController {
+
+  usage: Usage;
+
   /* @ngInject */
-  constructor(public entity: Entity, public showUsages: boolean) {
+  constructor(public entity: Entity, public showUsages: boolean, usageService: UsageService) {
+    usageService.getUsages(entity.id).then(usage => this.usage = usage);
   }
 }

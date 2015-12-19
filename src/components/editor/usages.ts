@@ -18,9 +18,8 @@ mod.directive('usages', () => {
   return {
     restrict: 'E',
     template: require('./usages.html'),
-    transclude: true,
     scope: {
-      id: '='
+      usage: '='
     },
     bindToController: true,
     controllerAs: 'ctrl',
@@ -35,14 +34,13 @@ mod.directive('usages', () => {
 
 class UsagesController {
 
-  id: Uri;
   usage: Usage;
   showLinks: boolean;
   referrers: Dictionary<Referrer[]>;
 
   /* @ngInject */
-  constructor(usageService: UsageService) {
-    usageService.getUsages(this.id).then(usage => {
+  constructor($scope: IScope) {
+    $scope.$watch(() => this.usage, usage => {
       this.usage = usage;
       if (usage && usage.referrers.length > 0) {
         this.referrers = _.groupBy<Referrer>(usage.referrers, 'type');
