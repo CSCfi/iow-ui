@@ -26,22 +26,8 @@ class UsagePanelController {
 
   /* @ngInject */
   constructor($scope: IScope, private usageService: UsageService) {
-    $scope.$watch(() => this.open, open => {
-      if (open && !this.usage) {
-        this.loading = true;
-        usageService.getUsage(this.id).then(usage => {
-          this.usage = usage;
-          this.loading = false;
-        });
-      }
-    });
-    $scope.$watch(() => this.id, () => {
-      if (this.open) {
-        this.updateUsage();
-      } else {
-        this.usage = null;
-      }
-    });
+    $scope.$watch(() => this.open, () => this.updateUsage());
+    $scope.$watch(() => this.id, () => this.updateUsage());
   }
 
   hasReferrers() {
@@ -49,6 +35,14 @@ class UsagePanelController {
   }
 
   private updateUsage() {
-    this.usageService.getUsage(this.id).then(usage => this.usage = usage);
+    if (this.open && (!this.usage || this.usage.id !== this.id)) {
+      this.loading = true;
+      this.usageService.getUsage(this.id).then(usage => {
+        this.usage = usage;
+        this.loading = false;
+      });
+    } else {
+      this.usage = null;
+    }
   }
 }
