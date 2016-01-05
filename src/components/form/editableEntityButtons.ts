@@ -1,6 +1,7 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
+import { EditableEntityController } from './editableEntityController';
 export const mod = angular.module('iow.components.form');
 
 mod.directive('editableEntityButtons', () => {
@@ -20,4 +21,5 @@ mod.directive('editableEntityButtons', () => {
 
 interface EditableEntityButtonsScope extends IScope {
   form: IFormController;
+  ctrl: EditableEntityController<any>;
 }
