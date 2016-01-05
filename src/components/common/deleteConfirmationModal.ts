@@ -32,6 +32,8 @@ class DeleteConfirmationModalController {
 
   /* @ngInject */
   constructor(public entity: Entity, public showUsage: boolean, usageService: UsageService) {
-    usageService.getUsage(entity.id).then(usage => this.usage = usage);
+    if (showUsage) {
+      usageService.getUsage(entity.id).then(usage => this.usage = usage);
+    }
   }
 }
