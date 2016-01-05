@@ -4,34 +4,36 @@
   </div>
 
   <form name="form" class="editable-form">
-    <div ng-if="ctrl.model" uib-collapse="!ctrl.visible" class="main-editable-content">
+    <fieldset ng-disabled="ctrl.persisting">
+      <div ng-if="ctrl.model" uib-collapse="!ctrl.visible" class="main-editable-content">
 
-      <editable-entity-buttons editable-controller="ctrl">
-        <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
-        <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
-      </editable-entity-buttons>
+        <editable-entity-buttons editable-controller="ctrl">
+          <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
+          <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
+        </editable-entity-buttons>
 
-      <div class="col-md-6">
-        <editable title="Model label">
-          <input id="modelLabel" class="form-control" type="text" localized-input="modelLabel" ng-model="ctrl.editableInEdit.label" />
-        </editable>
+        <div class="col-md-6">
+          <editable title="Model label">
+            <input id="modelLabel" class="form-control" type="text" localized-input="modelLabel" ng-model="ctrl.editableInEdit.label" />
+          </editable>
 
-        <non-editable title="Namespace" value="ctrl.editableInEdit.namespace"></non-editable>
-        <non-editable title="Prefix" value="ctrl.editableInEdit.prefix"></non-editable>
+          <non-editable title="Namespace" value="ctrl.editableInEdit.namespace"></non-editable>
+          <non-editable title="Prefix" value="ctrl.editableInEdit.prefix"></non-editable>
 
-        <editable title="Comment">
-          <textarea id="modelComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
-        </editable>
+          <editable title="Comment">
+            <textarea id="modelComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
+          </editable>
 
-        <editable title="State" value-as-localization-key="true" ng-if="!ctrl.model.unsaved">
-          <state-select id="modelState" state="ctrl.editableInEdit.state" model="ctrl.model"></state-select>
-        </editable>
+          <editable title="State" value-as-localization-key="true" ng-if="!ctrl.model.unsaved">
+            <state-select id="modelState" state="ctrl.editableInEdit.state" model="ctrl.model"></state-select>
+          </editable>
+        </div>
+
+        <div class="col-md-6">
+          <references-view references="ctrl.editableInEdit.references"></references-view>
+          <requires-view requires="ctrl.editableInEdit.requires"></requires-view>
+        </div>
       </div>
-
-      <div class="col-md-6">
-        <references-view references="ctrl.editableInEdit.references"></references-view>
-        <requires-view requires="ctrl.editableInEdit.requires"></requires-view>
-      </div>
-    </div>
+    </fieldset>
   </form>
 </div>

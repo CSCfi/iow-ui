@@ -5,37 +5,39 @@
   </div>
 
   <form name="form" class="editable-form">
-    <div class="main-editable-content">
+    <fieldset ng-disabled="ctrl.persisting">
+      <div class="main-editable-content">
 
-      <editable-entity-buttons editable-controller="ctrl">
-        <button type="button" class="btn btn-default right" ng-click="ctrl.addModel()" ng-if="ctrl.canAddModel()" translate>Add model</button>
-      </editable-entity-buttons>
+        <editable-entity-buttons editable-controller="ctrl">
+          <button type="button" class="btn btn-default right" ng-click="ctrl.addModel()" ng-if="ctrl.canAddModel()" translate>Add model</button>
+        </editable-entity-buttons>
 
-      <div class="col-md-6">
-        <editable title="Group label">
-          <input id="groupLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.editableInEdit.label" />
-        </editable>
+        <div class="col-md-6">
+          <editable title="Group label">
+            <input id="groupLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.editableInEdit.label" />
+          </editable>
 
-        <editable title="Comment">
-          <textarea id="groupComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
-        </editable>
-      </div>
+          <editable title="Comment">
+            <textarea id="groupComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
+          </editable>
+        </div>
 
-      <div class="col-md-6">
-        <div class="group-panel">
-          <div class="iow-panel-heading"><h2 translate>Models</h2></div>
-          <div class="panel-body">
-            <ul class="selectable-panel__list">
-              <li ng-repeat="model in ctrl.models"
-                  ng-click="ctrl.selectModel(model)">
-                <i ng-class="model.glyphIconClass"></i>
-                <span class="link">{{model | translateLabel}}</span>
-                <p>{{model.comment | translateValue}}</p>
-              </li>
-            </ul>
+        <div class="col-md-6">
+          <div class="group-panel">
+            <div class="iow-panel-heading"><h2 translate>Models</h2></div>
+            <div class="panel-body">
+              <ul class="selectable-panel__list">
+                <li ng-repeat="model in ctrl.models"
+                    ng-click="ctrl.selectModel(model)">
+                  <i ng-class="model.glyphIconClass"></i>
+                  <span class="link">{{model | translateLabel}}</span>
+                  <p>{{model.comment | translateValue}}</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </fieldset>
   </form>
 </div>

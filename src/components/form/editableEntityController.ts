@@ -26,6 +26,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
 
   submitError: string;
   editableInEdit: T;
+  persisting: boolean;
 
   constructor(private $scope: EditableScope, private $log: ILogService, private deleteConfirmationModal: DeleteConfirmationModal, protected userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
@@ -69,30 +70,35 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
     const editable = this.getEditable();
     const editableInEdit = this.editableInEdit;
     this.$log.info(JSON.stringify(editableInEdit.serialize(), null, 2));
-
+    this.persisting = true;
     (editable.unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable.id))
       .then(() => {
         this.$scope.modelController && this.$scope.modelController.selectionEdited(editable, editableInEdit);
         this.select(editableInEdit);
+        this.persisting = false;
       }, err => {
         this.$log.error(err);
         this.submitError = err.data.errorMessage;
+        this.persisting = false;
       });
   }
 
   removeEdited() {
     this.userService.ifStillLoggedIn(() => {
       const editable = this.getEditable();
+      this.persisting = true;
       this.deleteConfirmationModal.open(this.getEditable(), this.isNotReference())
         .then(() => this.remove(editable))
         .then(() => {
           this.$scope.modelController && this.$scope.modelController.selectionDeleted(editable);
           this.select(null);
+          this.persisting = false;
         }, err => {
           if (err !== 'cancel' && err !== 'escape key press') {
             this.$log.error(err);
             this.submitError = err.data.errorMessage;
           }
+          this.persisting = false;
         });
     });
   }

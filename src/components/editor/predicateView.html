@@ -1,9 +1,11 @@
 <form name="form" class="editable-form">
-  <div ng-if="ctrl.predicate && ctrl.model">
-    <selection-view editable-controller="ctrl" hide-visualization="true">
-      <selection-content>
-        <predicate-form predicate="ctrl.editableInEdit" old-predicate="ctrl.predicate" model="ctrl.model"></predicate-form>
-      </selection-content>
-    </selection-view>
-  </div>
+  <fieldset ng-disabled="ctrl.persisting">
+    <div ng-if="ctrl.predicate && ctrl.model">
+      <selection-view editable-controller="ctrl" hide-visualization="true">
+        <selection-content>
+          <predicate-form predicate="ctrl.editableInEdit" old-predicate="ctrl.predicate" model="ctrl.model"></predicate-form>
+        </selection-content>
+      </selection-view>
+    </div>
+  </fieldset>
 </form>

@@ -1,17 +1,19 @@
 <form name="form" class="editable-form">
-  <div ng-if="ctrl.class && ctrl.model">
-    <selection-view editable-controller="ctrl">
-      <selection-buttons>
-        <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
-      </selection-buttons>
+  <fieldset ng-disabled="ctrl.persisting">
+    <div ng-if="ctrl.class && ctrl.model">
+      <selection-view editable-controller="ctrl">
+        <selection-buttons>
+          <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
+        </selection-buttons>
 
-      <selection-content>
-        <class-form class="ctrl.editableInEdit" old-class="ctrl.class" model="ctrl.model"></class-form>
-      </selection-content>
+        <selection-content>
+          <class-form class="ctrl.editableInEdit" old-class="ctrl.class" model="ctrl.model"></class-form>
+        </selection-content>
 
-      <selection-visualization>
-        <class-visualization model="ctrl.model" class="ctrl.class"></class-visualization>
-      </selection-visualization>
-    </selection-view>
-  </div>
+        <selection-visualization>
+          <class-visualization model="ctrl.model" class="ctrl.class"></class-visualization>
+        </selection-visualization>
+      </selection-view>
+    </div>
+  </fieldset>
 </form>
