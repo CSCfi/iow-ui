@@ -17,7 +17,7 @@ msgid "Add class"
 msgstr ""
 
 #: components/group/addModelModal.html:3
-#: components/group/group.html:11
+#: components/group/group.html:12
 msgid "Add model"
 msgstr ""
 
@@ -25,16 +25,16 @@ msgstr ""
 msgid "Add properties from super class"
 msgstr ""
 
-#: components/editor/classView.html:5
+#: components/editor/classView.html:6
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:11
+#: components/model/modelView.html:12
 msgid "Add reference"
 msgstr ""
 
 #: components/model/addRequireModal.html:3
-#: components/model/modelView.html:10
+#: components/model/modelView.html:11
 msgid "Add require"
 msgstr ""
 
@@ -54,6 +54,10 @@ msgstr ""
 
 #: components/editor/searchPredicateModal.html:47
 msgid "All types"
+msgstr ""
+
+#: components/editor/searchClassModal.html:34
+msgid "Already added"
 msgstr ""
 
 #: translations/misc.html:12
@@ -452,7 +456,7 @@ msgstr ""
 msgid "Model label"
 msgstr ""
 
-#: components/group/group.html:26
+#: components/group/group.html:27
 msgid "Models"
 msgstr ""
 

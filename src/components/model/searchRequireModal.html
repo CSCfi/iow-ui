@@ -21,10 +21,13 @@
       </div>
 
       <div class="col-md-6 search-results with-button">
-        <div ng-repeat="require in ctrl.searchResults track by require.id"
-             class="search-result" ng-click="ctrl.selectRequire(require)" key-control-selection>
-          <h5>{{require | translateLabel}}</h5>
-          <p>{{require.namespace}}</p>
+        <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.require.id"
+             ng-class="['search-result', {'disabled': searchResult.disabled}]"
+             title="{{ctrl.searchResultTitle(searchResult)}}"
+             ng-click="ctrl.selectSearchResult(searchResult)"
+             key-control-selection>
+          <h5>{{searchResult.require | translateLabel}}</h5>
+          <p>{{searchResult.require.namespace}}</p>
         </div>
       </div>
     </div>

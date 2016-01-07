@@ -14,9 +14,12 @@
       </div>
 
       <div class="col-md-6 search-results">
-        <div ng-repeat="scheme in ctrl.searchResults track by scheme.id"
-             class="search-result" ng-click="ctrl.selectScheme(scheme)" key-control-selection>
-          <h5>{{scheme.title}}</h5>
+        <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.scheme.id"
+             ng-class="['search-result', {'disabled': searchResult.disabled}]"
+             title="{{ctrl.searchResultTitle(searchResult)}}"
+             ng-click="ctrl.selectSearchResult(searchResult)"
+             key-control-selection>
+          <h5>{{searchResult.scheme.title}}</h5>
         </div>
       </div>
     </div>

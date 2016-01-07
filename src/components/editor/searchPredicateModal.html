@@ -52,11 +52,14 @@
         </div>
 
         <div class="col-md-4 search-results">
-          <div ng-repeat="predicate in ctrl.searchResults track by predicate.id"
-               ng-class="['search-result', {selected: ctrl.isSelected(predicate)}]" ng-click="ctrl.selectPredicate(predicate)" key-control-selection>
-            <i ng-class="predicate.glyphIconClass"></i>
-            <h5>{{predicate | translateLabel}}</h5>
-            <p>{{predicate.model | translateLabel}}</p>
+          <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.predicate.id"
+               ng-class="['search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled}]"
+               title="{{ctrl.searchResultTitle(searchResult)}}"
+               ng-click="ctrl.selectSearchResult(searchResult)"
+               key-control-selection>
+            <i ng-class="searchResult.predicate.glyphIconClass"></i>
+            <h5>{{searchResult.predicate | translateLabel}}</h5>
+            <p>{{searchResult.predicate.model | translateLabel}}</p>
           </div>
         </div>
 

@@ -24,7 +24,7 @@ msgstr "Lisää attribuutti"
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: components/group/addModelModal.html:3 components/group/group.html:11
+#: components/group/addModelModal.html:3 components/group/group.html:12
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
@@ -32,15 +32,15 @@ msgstr "Lisää tietokomponenttikirjasto"
 msgid "Add properties from super class"
 msgstr "Lisää ominaisuudet yläluokasta"
 
-#: components/editor/classView.html:5
+#: components/editor/classView.html:6
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
-#: components/model/modelView.html:11
+#: components/model/modelView.html:12
 msgid "Add reference"
 msgstr "Lisää sanasto"
 
-#: components/model/addRequireModal.html:3 components/model/modelView.html:10
+#: components/model/addRequireModal.html:3 components/model/modelView.html:11
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
@@ -60,6 +60,10 @@ msgstr "Kaikki sanastot"
 #: components/editor/searchPredicateModal.html:47
 msgid "All types"
 msgstr "Kaikki tyypit"
+
+#: components/editor/searchClassModal.html:34
+msgid "Already added"
+msgstr "On jo lisätty"
 
 #: translations/misc.html:12
 msgid "and create new"
@@ -466,7 +470,7 @@ msgstr "Tietokomponenttikirjasto"
 msgid "Model label"
 msgstr "Tietokomponenttikirjaston nimi"
 
-#: components/group/group.html:26
+#: components/group/group.html:27
 msgid "Models"
 msgstr "Tietokomponenttikirjastot"
 

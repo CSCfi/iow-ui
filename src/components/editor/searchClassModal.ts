@@ -8,6 +8,7 @@ import { Class, ClassListItem, Concept, Model, Reference, Uri } from '../../serv
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { ModelListItem } from '../../services/entities';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 
 export class SearchClassModal {
@@ -39,14 +40,18 @@ export class SearchClassModal {
   }
 };
 
-export class SearchClassController {
+class SearchResult {
+  constructor(public klass: ClassListItem, public disabled: boolean) {}
+}
+
+class SearchClassController {
 
   private classes: ClassListItem[];
 
   close = this.$uibModalInstance.dismiss;
-  searchResults: ClassListItem[];
+  searchResults: SearchResult[];
   selectedClass: Class;
-  selectedItem: ClassListItem;
+  selectedItem: SearchResult;
   searchText: string = '';
   modelId: Uri;
   models: ModelListItem[] = [];
@@ -59,10 +64,11 @@ export class SearchClassController {
               private model: Model,
               private excludedClasses: Set<Uri>,
               public onlySelection: boolean,
-              private searchConceptModal: SearchConceptModal) {
+              private searchConceptModal: SearchConceptModal,
+              private gettextCatalog: gettextCatalog) {
 
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
-      this.classes = _.reject(allClasses, klass => excludedClasses.has(klass.id));
+      this.classes = allClasses;
       this.models = _.chain(this.classes)
         .filter(klass => this.requireFilter(klass))
         .map(klass => klass.model)
@@ -82,16 +88,25 @@ export class SearchClassController {
       .filter(klass => this.textFilter(klass))
       .filter(klass => this.modelFilter(klass))
       .sortBy(klass => this.localizedLabelAsLower(klass))
+      .map(klass => new SearchResult(klass, this.excludedClasses.has(klass.id)))
       .value();
   }
 
-  selectClass(klass: ClassListItem) {
-    this.selectedItem = klass;
-    this.classService.getClass(klass.id).then(result => this.selectedClass = result);
+  selectSearchResult(searchResult: SearchResult) {
+    if (!searchResult.disabled) {
+      this.selectedItem = searchResult;
+      this.classService.getClass(searchResult.klass.id).then(result => this.selectedClass = result);
+    }
   }
 
-  isSelected(klass: ClassListItem) {
-    return klass === this.selectedItem;
+  searchResultTitle(searchResult: SearchResult) {
+    if (searchResult.disabled) {
+      return this.gettextCatalog.getString('Already added');
+    }
+  }
+
+  isSelected(searchResult: SearchResult) {
+    return searchResult === this.selectedItem;
   }
 
   confirm() {

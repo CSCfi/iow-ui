@@ -31,10 +31,13 @@
       </div>
 
       <div class="col-md-4 search-results">
-        <div ng-repeat="class in ctrl.searchResults track by class.id"
-             ng-class="['search-result', {selected: ctrl.isSelected(class)}]" ng-click="ctrl.selectClass(class)" key-control-selection>
-          <h5>{{class | translateLabel}}</h5>
-          <p>{{class.model | translateLabel}}</p>
+        <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.klass.id"
+             ng-class="['search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled}]"
+             title="{{ctrl.searchResultTitle(searchResult)}}"
+             ng-click="ctrl.selectSearchResult(searchResult)"
+             key-control-selection>
+          <h5>{{searchResult.klass | translateLabel}}</h5>
+          <p>{{searchResult.klass.model | translateLabel}}</p>
         </div>
       </div>
 

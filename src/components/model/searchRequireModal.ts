@@ -5,7 +5,7 @@ import { LanguageService, Language } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
 import { Require, Uri } from '../../services/entities';
 import { AddRequireModal } from './addRequireModal';
-
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 export class SearchRequireModal {
   /* @ngInject */
@@ -27,9 +27,13 @@ export class SearchRequireModal {
   }
 }
 
+class SearchResult {
+  constructor(public require: Require, public disabled: boolean) {}
+}
+
 class SearchRequireController {
 
-  searchResults: Require[];
+  searchResults: SearchResult[];
   requires: Require[];
   searchText: string = '';
 
@@ -40,10 +44,11 @@ class SearchRequireController {
               private language: Language,
               private modelService: ModelService,
               private languageService: LanguageService,
-              private addRequireModal: AddRequireModal) {
+              private addRequireModal: AddRequireModal,
+              private gettextCatalog: gettextCatalog) {
 
     modelService.getAllRequires().then(result => {
-      this.requires = _.reject(result, require => excludedRequires.has(require.id));
+      this.requires = result;
       this.search();
     });
 
@@ -54,6 +59,7 @@ class SearchRequireController {
     this.searchResults = _.chain(this.requires)
       .filter(require => this.textFilter(require))
       .sortBy(require => require.namespace)
+      .map(require => new SearchResult(require, this.excludedRequires.has(require.id)))
       .value();
   }
 
@@ -67,11 +73,19 @@ class SearchRequireController {
     return !this.searchText || contains(this.languageService.translate(require.label)) || contains(require.namespace);
   }
 
-  selectRequire(require: Require) {
-    this.$uibModalInstance.close(require);
+  selectSearchResult(searchResult: SearchResult) {
+    if (!searchResult.disabled) {
+      this.$uibModalInstance.close(searchResult.require);
+    }
   }
 
-  createNew () {
+  searchResultTitle(searchResult: SearchResult) {
+    if (searchResult.disabled) {
+      return this.gettextCatalog.getString('Already added');
+    }
+  }
+
+  createNew() {
     this.addRequireModal.open(this.language)
       .then(require =>this.$uibModalInstance.close(require));
   }

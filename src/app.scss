@@ -554,6 +554,11 @@ modal-body {
         background-color: #ffffff;
       }
 
+      &.disabled {
+        background-color: #bbb;
+        cursor: not-allowed;
+      }
+
       > i {
         float: right;
         padding: 5px;
