@@ -7,6 +7,7 @@ import { Localizable, isLocalizable } from '../../services/entities';
 import { isString } from '../../services/utils';
 import { LanguageService } from '../../services/languageService';
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
+import { EditableForm } from './editableEntityController';
 
 export const mod = angular.module('iow.components.form');
 
@@ -24,7 +25,7 @@ mod.directive('nonEditable', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['nonEditable', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
+    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: [NonEditableController, EditableForm]) {
       controllers[0].isEditing = () => controllers[1].editing;
     },
     controller: NonEditableController
