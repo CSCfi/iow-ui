@@ -26,7 +26,7 @@ mod.directive('usage', () => {
     require: ['usage', '?^form'],
     link($scope: IScope, element: JQuery, attributes: UsageAttributes, controllers: [UsageController, EditableForm]) {
       const form: EditableForm = controllers[1];
-      $scope.$watch(attributes.showLinks, (show: boolean) => controllers[0].showLinks = show && (!form || !form.editing));
+      $scope.$watch(attributes.showLinks, (show: boolean) => controllers[0].showLinks = () => show && (!form || !form.editing));
     },
     controller: UsageController
   }
@@ -35,7 +35,7 @@ mod.directive('usage', () => {
 class UsageController {
 
   usage: Usage;
-  showLinks: boolean;
+  showLinks: () => boolean;
   referrers: Dictionary<Referrer[]>;
 
   /* @ngInject */
