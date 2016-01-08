@@ -8,7 +8,6 @@ import { PredicateService} from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import gettextCatalog = angular.gettext.gettextCatalog;
 
 export class SearchPredicateModal {
 
@@ -49,18 +48,13 @@ export interface SearchPredicateScope extends IScope {
   form: EditableForm;
 }
 
-class SearchResult {
-  constructor(public predicate: PredicateListItem, public disabled: boolean) {}
-}
-
 export class SearchPredicateController {
 
   private predicates: PredicateListItem[];
 
   close = this.$uibModalInstance.dismiss;
-  searchResults: SearchResult[];
+  searchResults: PredicateListItem[];
   selectedPredicate: Predicate;
-  selectedItem: SearchResult;
   searchText: string = '';
   modelId: Uri;
   models: ModelListItem[];
@@ -73,12 +67,11 @@ export class SearchPredicateController {
               private $uibModalInstance: IModalServiceInstance,
               public model: Model,
               public type: Type,
-              private excludedPredicates: Set<Uri>,
+              public excludedPredicates: Set<Uri>,
               public onlySelection: boolean,
               private predicateService: PredicateService,
               private languageService: LanguageService,
-              private searchConceptModal: SearchConceptModal,
-              private gettextCatalog: gettextCatalog) {
+              private searchConceptModal: SearchConceptModal) {
 
     predicateService.getAllPredicates().then((allPredicates: PredicateListItem[]) => {
       this.typeSelectable = !type;
@@ -110,27 +103,13 @@ export class SearchPredicateController {
       .filter(predicate => this.modelFilter(predicate))
       .filter(predicate => this.typeFilter(predicate))
       .sortBy(predicate => this.localizedLabelAsLower(predicate))
-      .map(predicate => new SearchResult(predicate, this.excludedPredicates.has(predicate.id)))
       .value();
   }
 
-  selectSearchResult(searchResult: SearchResult) {
-    if (!searchResult.disabled) {
-      this.$scope.form.editing = false;
-      this.submitError = null;
-      this.selectedItem = searchResult;
-      this.predicateService.getPredicate(searchResult.predicate.id).then(result => this.selectedPredicate = result);
-    }
-  }
-
-  searchResultTitle(searchResult: SearchResult) {
-    if (searchResult.disabled) {
-      return this.gettextCatalog.getString('Already added');
-    }
-  }
-
-  isSelected(searchResult: SearchResult) {
-    return searchResult === this.selectedItem;
+  selectItem(predicate: PredicateListItem) {
+    this.$scope.form.editing = false;
+    this.submitError = null;
+    this.predicateService.getPredicate(predicate.id).then(result => this.selectedPredicate = result);
   }
 
   usePredicate() {

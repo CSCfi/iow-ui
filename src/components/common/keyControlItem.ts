@@ -11,7 +11,17 @@ mod.directive('keyControlSelection', ($timeout: ITimeoutService) => {
   return {
     restrict: 'A',
     link($scope: IRepeatScope, element: JQuery) {
-      const itemContainer = element.parent();
+
+      function findParent() {
+        const parent = element.parent();
+        if (parent.is('search-results')) {
+          return parent.parent();
+        } else {
+          return parent;
+        }
+      }
+
+      const itemContainer = findParent();
 
       function update(selectionIndex: number) {
         if ($scope.$index === selectionIndex) {

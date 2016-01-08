@@ -14,6 +14,7 @@ import './keyControl';
 import './keyControlItem';
 import './modalTemplate';
 import './typeahead';
+import './searchResults';
 
 mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);

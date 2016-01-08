@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import { ConceptService } from '../../services/conceptService';
 import { Language } from '../../services/languageService';
 import { Uri } from '../../services/entities';
-import gettextCatalog = angular.gettext.gettextCatalog;
 
 
 export class SearchSchemeModal {
@@ -29,23 +28,18 @@ export class SearchSchemeModal {
   }
 }
 
-class SearchResult {
-  constructor(public scheme: any, public disabled: boolean) {}
-}
-
 class SearchSchemeController {
 
-  searchResults: SearchResult[];
+  searchResults: any[];
   schemes: any[];
   searchText: string = '';
 
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
-              private excludedSchemes: Set<Uri>,
+              public excludedSchemes: Set<Uri>,
               private conceptService: ConceptService,
-              private language: Language,
-              private gettextCatalog: gettextCatalog) {
+              private language: Language) {
 
     conceptService.getAllSchemes(language).then(result => {
       this.schemes = result.data.vocabularies;
@@ -59,20 +53,11 @@ class SearchSchemeController {
     this.searchResults = _.chain(this.schemes)
       .filter(scheme => this.textFilter(scheme))
       .sortBy(scheme => scheme.title)
-      .map(scheme => new SearchResult(scheme, this.excludedSchemes.has(scheme.id)))
       .value();
   }
 
-  selectSearchResult(searchResult: SearchResult) {
-    if (!searchResult.disabled) {
-      this.$uibModalInstance.close(searchResult.scheme);
-    }
-  }
-
-  searchResultTitle(searchResult: SearchResult) {
-    if (searchResult.disabled) {
-      return this.gettextCatalog.getString('Already added');
-    }
+  selectItem(scheme: any) {
+    this.$uibModalInstance.close(scheme);
   }
 
   private textFilter(scheme: any): boolean {

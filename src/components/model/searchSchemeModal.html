@@ -14,13 +14,9 @@
       </div>
 
       <div class="col-md-6 search-results">
-        <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.scheme.id"
-             ng-class="['search-result', {'disabled': searchResult.disabled}]"
-             title="{{ctrl.searchResultTitle(searchResult)}}"
-             ng-click="ctrl.selectSearchResult(searchResult)"
-             key-control-selection>
-          <h5>{{searchResult.scheme.title}}</h5>
-        </div>
+        <search-results items="ctrl.searchResults" excluded="ctrl.excludedSchemes" on-select="ctrl.selectItem(item)">
+          <h5>{{searchResult.title}}</h5>
+        </search-results>
       </div>
     </div>
   </modal-body>

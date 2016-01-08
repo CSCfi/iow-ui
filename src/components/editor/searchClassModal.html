@@ -31,14 +31,11 @@
       </div>
 
       <div class="col-md-4 search-results">
-        <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.klass.id"
-             ng-class="['search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled}]"
-             title="{{ctrl.searchResultTitle(searchResult)}}"
-             ng-click="ctrl.selectSearchResult(searchResult)"
-             key-control-selection>
-          <h5>{{searchResult.klass | translateLabel}}</h5>
-          <p>{{searchResult.klass.model | translateLabel}}</p>
-        </div>
+        <search-results items="ctrl.searchResults" excluded="ctrl.excludedClasses" on-select="ctrl.selectItem(item)">
+          <i ng-class="searchResult.glyphIconClass"></i>
+          <h5>{{searchResult | translateLabel}}</h5>
+          <p>{{searchResult.model | translateLabel}}</p>
+        </search-results>
       </div>
 
       <div class="col-md-4 search-selection">
