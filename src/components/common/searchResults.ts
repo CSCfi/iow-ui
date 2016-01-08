@@ -1,10 +1,10 @@
-import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
-import {Uri} from "../../services/entities";
+import IScope = angular.IScope;
+import ITranscludeFunction = angular.ITranscludeFunction;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import ITransitionService = angular.ui.bootstrap.ITransitionService;
-import ITranscludeFunction = angular.ITranscludeFunction;
+import { Uri } from '../../services/entities';
+
 export const mod = angular.module('iow.components.common');
 
 mod.directive('searchResults', () => {
