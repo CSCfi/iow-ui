@@ -58,6 +58,6 @@ class AddConceptController {
   };
 
   cancel() {
-    return this.$uibModalInstance.dismiss;
+    return this.$uibModalInstance.dismiss('cancel');
   }
 }
