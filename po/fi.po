@@ -61,7 +61,7 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: components/editor/searchClassModal.html:34
+#: translations/misc.html:104
 msgid "Already added"
 msgstr "On jo lisätty"
 
@@ -118,12 +118,12 @@ msgstr "Selaa"
 #: components/editor/addConceptModal.html:29
 #: components/editor/addPropertiesFromSuperClassModal.html:13
 #: components/editor/searchClassModal.html:51
-#: components/editor/searchConceptModal.html:52
-#: components/editor/searchPredicateModal.html:72
+#: components/editor/searchConceptModal.html:53
+#: components/editor/searchPredicateModal.html:71
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
-#: components/model/searchRequireModal.html:34
-#: components/model/searchSchemeModal.html:26
+#: components/model/searchRequireModal.html:33
+#: components/model/searchSchemeModal.html:25
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -143,7 +143,7 @@ msgstr "valitse attribuutti"
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/editor/editableSubjectSelect.html:11
+#: components/editor/editableSubjectSelect.html:5
 msgid "Choose subject"
 msgstr "valitse käsite"
 
@@ -165,19 +165,15 @@ msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
-#: components/editor/searchConceptModal.html:34
+#: components/editor/searchConceptModal.html:35
 msgid "Comment"
 msgstr "Määritelmä"
-
-#: components/editor/searchConceptModal.html:18
-msgid "Concept"
-msgstr "Käsite"
 
 #: components/editor/addConceptModal.html:25
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
-#: components/editor/searchConceptModal.html:47
+#: components/editor/searchConceptModal.html:48
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 
@@ -494,7 +490,7 @@ msgstr "Ei viittauksia"
 msgid "No search results"
 msgstr "Ei hakutuloksia"
 
-#: components/editor/editableSubjectSelect.html:4
+#: components/editor/subjectView.html:2
 msgid "Not defined"
 msgstr "Ei määritelty"
 
@@ -672,7 +668,7 @@ msgstr "Tila"
 msgid "String error"
 msgstr "Literaalin täytyy alkaa kirjaimella"
 
-#: components/editor/editableSubjectSelect.html:3
+#: components/editor/subjectView.html:1
 msgid "Subject"
 msgstr "Käsite"
 
@@ -790,6 +786,10 @@ msgstr ""
 msgid "What is method?"
 msgstr "Mikä on yhteentoimivuusmenetelmä?"
 
+#: translations/misc.html:105
+msgid "Write identifier"
+msgstr "Kirjoita tunniste…"
+
 #: translations/attribute.html:6
 msgid "xsd:anyURI"
 msgstr "URI"
@@ -862,6 +862,9 @@ msgstr "XML"
 #: components/editor/addPropertiesFromSuperClassModal.html:12
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Concept"
+#~ msgstr "Käsite"
 
 #~ msgid "Code licensed under the"
 #~ msgstr "lisenssi"
