@@ -1,15 +1,15 @@
 <modal-template>
   <modal-title translate>Add properties from super class</modal-title>
-  <modal-body>
 
+  <modal-body>
     <p><span translate>Do you want to add following properties from super class?</span></p>
-    <ul>
-      <li ng-repeat="property in ctrl.properties">{{property | translateLabel}}</li>
-    </ul>
+    <div class="checkbox" ng-repeat="property in ctrl.properties">
+      <label><input type="checkbox" checklist-model="ctrl.selectedProperties" checklist-value="property" /> {{property | translateLabel}}</label>
+    </div>
   </modal-body>
 
   <modal-buttons>
-    <button class="btn btn-primary" type="button" ng-click="$close(ctrl.properties)" translate>Yes</button>
+    <button class="btn btn-primary" type="button" ng-click="$close(ctrl.selectedProperties)" translate>Yes</button>
     <button class="btn btn-default" type="button" ng-click="$dismiss('cancel')" translate>Cancel</button>
   </modal-buttons>
 </modal-template>

@@ -4,6 +4,7 @@ import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import { Class, Property, Uri } from '../../services/entities';
 import { ClassService } from '../../services/classService';
+import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 
 export class AddPropertiesFromSuperClassModal {
   /* @ngInject */
@@ -27,11 +28,17 @@ export class AddPropertiesFromSuperClassModal {
 export class AddPropertiesFromSuperClassModalController {
 
   properties: Property[];
+  selectedProperties: Property[];
 
   /* @ngInject */
-  constructor(private classService: ClassService, classId: Uri, excludedPredicates: Set<Uri>) {
+  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, classId: Uri, excludedPredicates: Set<Uri>) {
     classService.getClass(classId).then(klass => {
       this.properties = _.filter(klass.properties, property => !excludedPredicates.has(property.predicateId));
+      this.selectedProperties = _.clone(this.properties);
+
+      if (this.properties.length === 0) {
+        $uibModalInstance.close(this.properties);
+      }
     });
   }
 }
