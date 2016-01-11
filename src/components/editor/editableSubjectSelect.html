@@ -1,12 +1,6 @@
 <div class="editable-wrap">
   <div ng-show="ctrl.subject || ctrl.isEditing()">
-    <label translate>Subject</label>
-    <div ng-hide="ctrl.subject" translate>Not defined</div>
-    <div class="model-view__sub">
-      <non-editable title="Id" value="ctrl.subject.id" link="ctrl.subject.id"></non-editable>
-      <non-editable title="Label" value="ctrl.subject.label"></non-editable>
-      <non-editable title="Comment" value="ctrl.subject.comment"></non-editable>
-    </div>
+    <subject-view subject="ctrl.subject"></subject-view>
     <div ng-class="{'model-view__sub': ctrl.subject}">
       <button ng-show="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectSubject()" ng-disabled="ctrl.disable" translate>Choose subject</button>
     </div>

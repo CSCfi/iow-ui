@@ -18,6 +18,7 @@ import './predicateView';
 import './propertyView';
 import './rangeSelect';
 import './selectionView';
+import './subjectView';
 import './usage';
 import './usagePanel';
 
