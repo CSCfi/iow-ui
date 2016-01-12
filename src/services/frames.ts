@@ -78,7 +78,8 @@ export function modelFrame(data: any): Frame {
     predicate,
     valueClass,
     nodeKind,
-    versionInfo
+    versionInfo,
+    homepage
   };
 
   return {
