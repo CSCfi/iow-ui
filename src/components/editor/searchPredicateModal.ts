@@ -61,6 +61,7 @@ export class SearchPredicateController {
   types: Type[];
   typeSelectable: boolean;
   submitError: string;
+  showExcluded: boolean;
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -94,6 +95,7 @@ export class SearchPredicateController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
     $scope.$watch(() => this.modelId, () => this.search());
+    $scope.$watch(() => this.showExcluded, () => this.search());
   }
 
   search() {
@@ -102,6 +104,7 @@ export class SearchPredicateController {
       .filter(predicate => this.textFilter(predicate))
       .filter(predicate => this.modelFilter(predicate))
       .filter(predicate => this.typeFilter(predicate))
+      .filter(predicate => this.excludedFilter(predicate))
       .sortBy(predicate => this.localizedLabelAsLower(predicate))
       .value();
   }
@@ -169,5 +172,9 @@ export class SearchPredicateController {
   private requireFilter(predicate: PredicateListItem): boolean {
     let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
     return _.any(modelIds, id => id === predicate.model.id);
+  }
+
+  private excludedFilter(predicate: PredicateListItem): boolean {
+    return this.showExcluded || !this.excludedPredicates.has(predicate.id);
   }
 }

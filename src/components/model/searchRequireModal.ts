@@ -31,6 +31,7 @@ class SearchRequireController {
   searchResults: Require[];
   requires: Require[];
   searchText: string = '';
+  showExcluded: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -47,11 +48,13 @@ class SearchRequireController {
     });
 
     $scope.$watch(() => this.searchText, () => this.search());
+    $scope.$watch(() => this.showExcluded, () => this.search());
   }
 
   search() {
     this.searchResults = _.chain(this.requires)
       .filter(require => this.textFilter(require))
+      .filter(require => this.excludedFilter(require))
       .sortBy(require => require.namespace)
       .value();
   }
@@ -64,6 +67,10 @@ class SearchRequireController {
     }
 
     return !this.searchText || contains(this.languageService.translate(require.label)) || contains(require.namespace);
+  }
+
+  private excludedFilter(require: Require): boolean {
+    return this.showExcluded || !this.excludedRequires.has(require.id);
   }
 
   selectItem(require: Require) {

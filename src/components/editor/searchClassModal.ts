@@ -47,6 +47,7 @@ class SearchClassController {
   searchResults: ClassListItem[];
   selectedClass: Class;
   searchText: string = '';
+  showExcluded: boolean;
   modelId: Uri;
   models: ModelListItem[] = [];
 
@@ -73,6 +74,7 @@ class SearchClassController {
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.modelId, () => this.search());
+    $scope.$watch(() => this.showExcluded, () => this.search());
   }
 
   search() {
@@ -80,6 +82,7 @@ class SearchClassController {
       .filter(klass => this.requireFilter(klass))
       .filter(klass => this.textFilter(klass))
       .filter(klass => this.modelFilter(klass))
+      .filter(klass => this.excludedFilter(klass))
       .sortBy(klass => this.localizedLabelAsLower(klass))
       .value();
   }
@@ -112,5 +115,9 @@ class SearchClassController {
   private requireFilter(klass: ClassListItem): boolean {
     let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
     return _.any(modelIds, id => id === klass.model.id);
+  }
+
+  private excludedFilter(klass: ClassListItem): boolean {
+    return this.showExcluded || !this.excludedClasses.has(klass.id);
   }
 }

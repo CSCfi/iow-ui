@@ -126,13 +126,13 @@ msgstr ""
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:29
 #: components/editor/addPropertiesFromSuperClassModal.html:13
-#: components/editor/searchClassModal.html:51
+#: components/editor/searchClassModal.html:55
 #: components/editor/searchConceptModal.html:53
-#: components/editor/searchPredicateModal.html:71
+#: components/editor/searchPredicateModal.html:75
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
-#: components/model/searchRequireModal.html:33
-#: components/model/searchSchemeModal.html:25
+#: components/model/searchRequireModal.html:37
+#: components/model/searchSchemeModal.html:29
 msgid "Cancel"
 msgstr ""
 
@@ -663,6 +663,14 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
+#: components/editor/searchClassModal.html:33
+#: components/editor/searchPredicateModal.html:54
+#: components/model/searchRequireModal.html:23
+#: components/model/searchSchemeModal.html:16
+#: translations/misc.html:108
+msgid "Show already added"
+msgstr ""
+
 #: components/footer.html:11
 msgid "Source code"
 msgstr ""
@@ -731,7 +739,7 @@ msgstr ""
 msgid "Use attribute"
 msgstr ""
 
-#: components/editor/searchClassModal.html:52
+#: components/editor/searchClassModal.html:56
 msgid "Use class"
 msgstr ""
 

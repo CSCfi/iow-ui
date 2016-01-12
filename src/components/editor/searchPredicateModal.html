@@ -1,4 +1,4 @@
-<form name="form" class="editable-form">
+<form name="form">
   <modal-template editing="false">
     <modal-title>
       <span ng-show="ctrl.typeSelectable" translate>Search attributes and associations</span>
@@ -49,6 +49,10 @@
               </select>
             </div>
           </div>
+
+          <div class="checkbox">
+            <label><input type="checkbox" ng-model="ctrl.showExcluded">{{'Show already added' | translate}}</label>
+          </div>
         </div>
 
         <div class="col-md-4 search-results">
@@ -59,7 +63,7 @@
           </search-results>
         </div>
 
-        <div class="col-md-4 search-selection">
+        <div class="col-md-4 search-selection editable-form">
           <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate" old-predicate="ctrl.selectedPredicate" model="ctrl.model"></predicate-form>
           <submit-error-panel error="ctrl.submitError"></submit-error-panel>
         </div>

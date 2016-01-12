@@ -33,6 +33,7 @@ class SearchSchemeController {
   searchResults: any[];
   schemes: any[];
   searchText: string = '';
+  showExcluded: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -47,11 +48,13 @@ class SearchSchemeController {
     });
 
     $scope.$watch(() => this.searchText, () => this.search());
+    $scope.$watch(() => this.showExcluded, () => this.search());
   }
 
   search() {
     this.searchResults = _.chain(this.schemes)
       .filter(scheme => this.textFilter(scheme))
+      .filter(scheme => this.excludedFilter(scheme))
       .sortBy(scheme => scheme.title)
       .value();
   }
@@ -62,6 +65,10 @@ class SearchSchemeController {
 
   private textFilter(scheme: any): boolean {
     return !this.searchText || (scheme.title || '').toLowerCase().includes(this.searchText.toLowerCase());
+  }
+
+  private excludedFilter(scheme: any): boolean {
+    return this.showExcluded || !this.excludedSchemes.has(scheme.id);
   }
 
   close() {
