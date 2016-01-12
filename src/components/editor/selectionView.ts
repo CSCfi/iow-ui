@@ -56,9 +56,9 @@ class SelectionViewController {
       case Show.Both:
         return 'col-md-5';
       case Show.Selection:
-        return 'col-md-1';
+        return 'hide';
       case Show.Visualization:
-        return 'col-md-11';
+        return 'col-md-12';
     }
   }
 
@@ -67,9 +67,9 @@ class SelectionViewController {
       case Show.Both:
         return 'col-md-7';
       case Show.Selection:
-        return this.hideVisualization ? 'col-md-12' : 'col-md-11';
+        return 'col-md-12';
       case Show.Visualization:
-        return 'col-md-1';
+        return 'hide';
     }
   }
 }
