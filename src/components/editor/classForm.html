@@ -1,3 +1,6 @@
+
+<h3 translate>Class information</h3>
+
 <editable title="Class label">
   <input id="classLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.class.label"/>
 </editable>
@@ -24,6 +27,8 @@
 
 <editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
 
+<h3 translate>Class properties</h3>
+
 <uib-accordion close-others="true">
   <uib-accordion-group ng-repeat="property in ctrl.class.properties  | orderBy:'index'" is-open="ctrl.propertyViews[property.id].isOpen">
     <uib-accordion-heading>
@@ -43,5 +48,7 @@
     <property-view property="property" class="ctrl.class" model="ctrl.model"></property-view>
   </uib-accordion-group>
 </uib-accordion>
+
+<h3 translate>Additional information</h3>
 
 <usage-panel id="ctrl.class.id"></usage-panel>

@@ -44,6 +44,10 @@ msgstr "Lisää sanasto"
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
+#: components/editor/classForm.html:52 components/editor/predicateForm.html:37
+msgid "Additional information"
+msgstr "Lisätiedot"
+
 #: components/advancedSearchModal.html:2 components/frontPage.html:32
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
@@ -85,6 +89,10 @@ msgstr "Pyydä käyttöoikeuksia ryhmään"
 msgid "association"
 msgstr "Assosiaatio"
 
+#: translations/misc.html:107
+msgid "Association information"
+msgstr "Assosiaation tiedot"
+
 #: translations/misc.html:75
 msgid "Association label"
 msgstr "Assosiaation nimi"
@@ -96,6 +104,10 @@ msgstr "Assosiaatiot"
 #: translations/misc.html:29
 msgid "attribute"
 msgstr "Attribuutti"
+
+#: translations/misc.html:106
+msgid "Attribute information"
+msgstr "Attribuutin tiedot"
 
 #: translations/misc.html:76
 msgid "Attribute label"
@@ -151,6 +163,10 @@ msgstr "valitse käsite"
 msgid "class"
 msgstr "Luokka"
 
+#: components/editor/classForm.html:2
+msgid "Class information"
+msgstr "Luokan tiedot"
+
 #: translations/misc.html:74
 msgid "Class label"
 msgstr "Luokan nimi"
@@ -158,6 +174,10 @@ msgstr "Luokan nimi"
 #: translations/misc.html:42
 msgid "Class list"
 msgstr "Luokat"
+
+#: components/editor/classForm.html:30
+msgid "Class properties"
+msgstr "Luokan ominaisuudet"
 
 #: components/editor/searchClassModal.html:14
 msgid "Class search info"

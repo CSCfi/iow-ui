@@ -1,3 +1,5 @@
+<h3>{{ctrl.predicate.type + ' information' | capitalize | translate}}</h3>
+
 <editable title="{{ctrl.labelName}}">
   <input id="predicateName" class="form-control" type="text" localized-input="label" ng-model="ctrl.predicate.label" />
 </editable>
@@ -31,5 +33,7 @@
 </editable>
 
 <editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.type}}" subject="ctrl.predicate.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
+
+<h3 translate>Additional information</h3>
 
 <usage-panel id="ctrl.predicate.id"></usage-panel>

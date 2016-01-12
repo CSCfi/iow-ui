@@ -1,4 +1,5 @@
 import IFilterService = angular.IFilterService;
+import * as _ from 'lodash';
 import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { LanguageService } from '../../services/languageService';
@@ -34,4 +35,10 @@ mod.filter('orderByLabel', (translateLabelFilter: IFilterService, orderByFilter:
   return (array: {label: Localizable}[]) => {
     return orderByFilter(array, translateLabelFilter);
   };
+});
+
+mod.filter('capitalize', function() {
+  return function(input: string) {
+    return _.capitalize(input);
+  }
 });

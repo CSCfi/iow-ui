@@ -38,6 +38,11 @@ msgstr ""
 msgid "Add require"
 msgstr ""
 
+#: components/editor/classForm.html:52
+#: components/editor/predicateForm.html:37
+msgid "Additional information"
+msgstr ""
+
 #: components/advancedSearchModal.html:2
 #: components/frontPage.html:32
 msgid "Advanced search"
@@ -81,6 +86,10 @@ msgstr ""
 msgid "association"
 msgstr ""
 
+#: translations/misc.html:107
+msgid "Association information"
+msgstr ""
+
 #: translations/misc.html:75
 msgid "Association label"
 msgstr ""
@@ -91,6 +100,10 @@ msgstr ""
 
 #: translations/misc.html:29
 msgid "attribute"
+msgstr ""
+
+#: translations/misc.html:106
+msgid "Attribute information"
 msgstr ""
 
 #: translations/misc.html:76
@@ -147,12 +160,20 @@ msgstr ""
 msgid "class"
 msgstr ""
 
+#: components/editor/classForm.html:2
+msgid "Class information"
+msgstr ""
+
 #: translations/misc.html:74
 msgid "Class label"
 msgstr ""
 
 #: translations/misc.html:42
 msgid "Class list"
+msgstr ""
+
+#: components/editor/classForm.html:30
+msgid "Class properties"
 msgstr ""
 
 #: components/editor/searchClassModal.html:14
