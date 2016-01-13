@@ -136,7 +136,7 @@ class SearchConceptController {
       .then((result: ConceptSuggestionCreation) => this.$q.all(
         {
           label: this.$q.when(result.label),
-          concept: this.conceptService.createConceptSuggestion(Object.assign(result.concept, {lang: this.languageService.modelLanguage}))
+          concept: this.conceptService.createConceptSuggestion(result.concept.schemeId, result.concept.label, result.concept.comment, result.concept.broaderConceptId, this.languageService.modelLanguage)
             .then(conceptId => this.conceptService.getConceptSuggestion(conceptId))
         }))
       .then((result: ConceptCreation) => {

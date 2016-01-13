@@ -39,8 +39,8 @@ export class ConceptService {
       .then(response => this.entities.deserializeConceptSuggestions(response.data));
   }
 
-  createConceptSuggestion({schemeId, label, comment, lang}): IPromise<string> {
-    return this.$http.put('/api/rest/conceptSuggestion', null, {params: {schemeID: schemeId, label: upperCaseFirst(label), comment, lang}})
+  createConceptSuggestion(schemeId: Uri, label: string, comment: string, broaderConceptId: Uri, lang: Language): IPromise<string> {
+    return this.$http.put('/api/rest/conceptSuggestion', null, {params: {schemeID: schemeId, label: upperCaseFirst(label), comment, lang, topConceptID: broaderConceptId}})
       .then((response: any) => response.data['@id']);
   }
 
