@@ -95,7 +95,7 @@ export class ConceptService {
     }
   }
 
-  createConceptDataSet(reference: Reference, limit: number, templates: Templates): Dataset {
+  createConceptDataSet(reference: Reference, limit: number, templates?: Templates): Dataset {
 
     const defaultTemplates = {
       suggestion: (data: ConceptSearchResult) =>
