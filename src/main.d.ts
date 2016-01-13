@@ -8,6 +8,7 @@ interface Window {
 declare module Twitter.Typeahead {
   interface Dataset {
     limit?: number;
+    display?: string | ((obj: any) => string);
   }
 }
 

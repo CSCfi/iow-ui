@@ -127,7 +127,7 @@ msgstr "Selaa"
 
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:29
+#: components/editor/addConceptModal.html:45
 #: components/editor/addPropertiesFromSuperClassModal.html:13
 #: components/editor/searchClassModal.html:55
 #: components/editor/searchConceptModal.html:53
@@ -189,7 +189,11 @@ msgstr ""
 msgid "Comment"
 msgstr "Määritelmä"
 
-#: components/editor/addConceptModal.html:25
+#: translations/misc.html:109
+msgid "Concept"
+msgstr "Käsite"
+
+#: components/editor/addConceptModal.html:41
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
@@ -213,7 +217,7 @@ msgstr "Luo assosiaatio ja käytä"
 msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
-#: components/editor/addConceptModal.html:30
+#: components/editor/addConceptModal.html:46
 #: components/group/addModelModal.html:23
 #: components/model/addRequireModal.html:31
 msgid "Create new"
@@ -646,6 +650,7 @@ msgstr "Hae luokkia"
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
+#: components/editor/addConceptModal.html:36
 #: components/editor/searchConceptModal.html:30
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
@@ -889,9 +894,6 @@ msgstr "XML"
 #: components/editor/addPropertiesFromSuperClassModal.html:12
 msgid "Yes"
 msgstr "Kyllä"
-
-#~ msgid "Concept"
-#~ msgstr "Käsite"
 
 #~ msgid "Code licensed under the"
 #~ msgstr "lisenssi"
