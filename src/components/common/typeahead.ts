@@ -78,7 +78,7 @@ mod.directive('iowTypeahead', ($timeout: ITimeoutService, $q: IQService, $log: I
       }
 
       function updateModel(event: any, suggestion: any) {
-        $scope.$apply(() => {
+        $scope.$applyAsync(() => {
           $q.when(selectionMapper(isNotEditable() ? suggestion : elementValue(event)))
             .then(mapped => {
               ngModel.$setViewValue(mapped);
@@ -98,11 +98,15 @@ mod.directive('iowTypeahead', ($timeout: ITimeoutService, $q: IQService, $log: I
           if (isNotEditable()) {
             disableModelChangeEvents(ngModel);
 
-            element.bind('keyup', (event) => {
-              if (elementValue(event) < options.minLength) {
-                updateModel(event, null);
-              }
+            element.bind('change', (event) => {
+              updateModel(event, null);
             });
+
+            element.bind('blur', (event) => {
+              if (!ngModel.$modelValue) {
+                element.val('');
+              }
+            })
           }
         }
 
@@ -110,7 +114,8 @@ mod.directive('iowTypeahead', ($timeout: ITimeoutService, $q: IQService, $log: I
       }
 
       function destroy() {
-        element.unbind('keyup');
+        element.unbind('change');
+        element.unbind('blur');
         element.typeahead('destroy');
         initialized = false;
       }
@@ -138,4 +143,5 @@ interface TypeaheadElement {
   focus(): JQuery;
   typeahead(methodName: 'destroy'): JQuery;
   typeahead(options: Twitter.Typeahead.Options, datasets: Twitter.Typeahead.Dataset[]): JQuery;
+  val(value: string): TypeaheadElement;
 }

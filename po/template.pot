@@ -118,13 +118,17 @@ msgstr ""
 msgid "Backend"
 msgstr ""
 
+#: translations/misc.html:110
+msgid "Broader concept"
+msgstr ""
+
 #: components/frontPage.html:47
 msgid "Browse"
 msgstr ""
 
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:29
+#: components/editor/addConceptModal.html:44
 #: components/editor/addPropertiesFromSuperClassModal.html:13
 #: components/editor/searchClassModal.html:55
 #: components/editor/searchConceptModal.html:53
@@ -184,7 +188,11 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: components/editor/addConceptModal.html:25
+#: translations/misc.html:109
+msgid "Concept"
+msgstr ""
+
+#: components/editor/addConceptModal.html:40
 msgid "Concept is suggested to scheme"
 msgstr ""
 
@@ -209,7 +217,7 @@ msgstr ""
 msgid "Create and use attribute"
 msgstr ""
 
-#: components/editor/addConceptModal.html:30
+#: components/editor/addConceptModal.html:45
 #: components/group/addModelModal.html:23
 #: components/model/addRequireModal.html:31
 msgid "Create new"
@@ -635,6 +643,7 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
+#: components/editor/addConceptModal.html:35
 #: components/editor/searchConceptModal.html:30
 msgid "Search from concept database"
 msgstr ""
