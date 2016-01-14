@@ -10,7 +10,7 @@
       </div>
       <div class="content">
         <h4>{{bullet.title | translate}}</h4>
-        <span>{{bullet.content | translate}}</span>
+        <span ng-bind-html="bullet.content | translate | trustAsHtml"></span>
       </div>
     </div>
 

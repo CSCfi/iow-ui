@@ -42,3 +42,8 @@ mod.filter('capitalize', function() {
     return _.capitalize(input);
   }
 });
+
+mod.filter('trustAsHtml', ($sce: angular.ISCEService) => {
+  'ngInject';
+  return (text: string) => $sce.trustAsHtml(text);
+});
