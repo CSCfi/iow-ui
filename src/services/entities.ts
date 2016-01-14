@@ -328,7 +328,6 @@ abstract class AbstractClass extends GraphNode implements Location {
   }
 
   abstract fullId(): Uri;
-  abstract modelIowUrl(): Url;
 
   isClass() {
     return true;
@@ -356,10 +355,6 @@ export class ClassListItem extends AbstractClass {
 
   fullId(): Uri {
     return this.id;
-  }
-
-  modelIowUrl() {
-    return this.model.iowUrl();
   }
 }
 
@@ -403,10 +398,6 @@ export class Class extends AbstractClass {
 
   removeProperty(property: Property): void {
     _.remove(this.properties, property);
-  }
-
-  modelIowUrl(): RelativeUrl {
-    return modelUrl(this.modelId);
   }
 
   clone(): Class {
@@ -489,7 +480,6 @@ abstract class AbstractPredicate extends GraphNode implements Location {
     this.comment = graph.comment;
   }
 
-  abstract modelIowUrl(): RelativeUrl;
   abstract fullId(): Uri;
 
   get rawType() {
@@ -531,10 +521,6 @@ export class PredicateListItem extends AbstractPredicate {
   fullId(): Uri {
     return this.id;
   }
-
-  modelIowUrl(): RelativeUrl {
-    return this.model.iowUrl();
-  }
 }
 
 export abstract class Predicate extends AbstractPredicate {
@@ -569,10 +555,6 @@ export abstract class Predicate extends AbstractPredicate {
     if (this.curie) {
       return this.expandCurie(this.curie).uri;
     }
-  }
-
-  modelIowUrl(): RelativeUrl {
-    return modelUrl(this.modelId);
   }
 
   serializationValues() {
