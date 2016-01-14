@@ -15,7 +15,7 @@ const modified = { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://
 const created = { '@id': 'http://purl.org/dc/terms/created', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' };
 const isDefinedBy = { '@id': 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', '@type': '@id' };
 const predicate = { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' };
-const valueClass = { '@id': 'http://www.w3.org/ns/shacl#valueClass', '@type': '@id' };
+const valueShape = { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' };
 const index = { '@id': 'http://www.w3.org/ns/shacl#index'};
 const nodeKind = { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' };
 const references = { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' };
@@ -76,7 +76,7 @@ export function modelFrame(data: any): Frame {
     subject,
     datatype,
     predicate,
-    valueClass,
+    valueShape,
     nodeKind,
     versionInfo,
     homepage
@@ -104,7 +104,7 @@ export function modelListFrame(data: any): Frame {
 
 export function propertyFrame(data: any): Frame {
   return {
-    '@context': addToContext(data['@context'], {label, range, datatype, valueClass, modified, isDefinedBy, comment, predicate, index}),
+    '@context': addToContext(data['@context'], {label, range, datatype, valueShape, modified, isDefinedBy, comment, predicate, index}),
     '@id': data['@id']
   };
 }
@@ -118,7 +118,7 @@ export function predicateListFrame(data: any): Frame {
 
 export function predicateFrame(data: any): Frame {
   return {
-    '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueClass, modified, isDefinedBy, comment, subject, versionInfo, subPropertyOf, equivalentProperty}),
+    '@context': addToContext(data['@context'], {label, prefLabel, range, datatype, valueShape, modified, isDefinedBy, comment, subject, versionInfo, subPropertyOf, equivalentProperty}),
     'isDefinedBy': {}
   };
 }
@@ -133,7 +133,7 @@ export function classFrame(data: any): Frame {
     modified,
     isDefinedBy,
     predicate,
-    valueClass,
+    valueShape,
     nodeKind,
     example,
     datatype,
@@ -196,12 +196,12 @@ export function searchResultFrame(data: any): Frame {
 
 export function classVisualizationFrame(data: any): Frame {
   return {
-    '@context': addToContext(data['@context'], {label, property, datatype, predicate, valueClass, index}),
+    '@context': addToContext(data['@context'], {label, property, datatype, predicate, valueShape, index}),
     'property': {
       'predicate': {
         '@embed': false
       },
-      'valueClass': {
+      'valueShape': {
         '@omitDefault': true,
         '@default': [],
         '@embed': false
