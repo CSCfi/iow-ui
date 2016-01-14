@@ -450,7 +450,7 @@ export class Property extends GraphNode {
     this.comment = graph.comment;
     this.example = graph.example;
     this.dataType = graph.datatype;
-    this.valueClass = graph.valueClass;
+    this.valueClass = graph.valueShape;
     this.predicateCurie = graph.predicate;
     this.index = graph['sh:index'];
   }
