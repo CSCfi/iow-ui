@@ -51,10 +51,7 @@ export class DisplayItem {
   }
 
   private formatLink() {
-    const value = this.value();
-    if (isString(value)) {
-      return this.link(value);
-    }
+    return this.link(this.displayValue);
   }
 }
 
