@@ -462,7 +462,7 @@ export class Property extends GraphNode {
       comment: Object.assign({}, this.comment),
       example: this.example,
       datatype: this.dataType,
-      valueClass: this.valueClass,
+      valueShape: this.valueClass,
       predicate: this.predicateCurie,
       'sh:index': this.index
     }
