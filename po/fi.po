@@ -786,12 +786,7 @@ msgstr "Visualisointi"
 #: translations/misc.html:71
 msgid "What can I do content"
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
-"scelerisque orci. Cras vitae lacus in tellus porta convallis. Lorem ipsum "
-"dolor sit amet, consectetur adipiscing elit. Nulla sodales eget nisi sed "
-"finibus. Vivamus euismod efficitur semper. Ut non lorem ultricies, dictum "
-"nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
-"risus consequat vel."
+"Yhteentoimivuuden välineistö on työkalu, jolla voidaan konkreettisesti hyödyntää tietoarkkitehtuurin määrityksiä operatiivisessa toiminnassa. Tietojärjestelmällä voidaan kehittää, dokumentoida ja avoimesti julkaista yhteiskäyttöiset ja uudelleen käytettävät tietokomponentit, sekä toteutuskohtaiset tietomääritykset (Soveltamisprofiilit). Välineistöllä julkaistavat tietomääritykset on hyödynnettävissä viestinvälitykseen (rajapintaratkaisut), tietokantarakenteeksi (tietovarannot) tai sovelluskehitykseen (tietojärjestelmät)."
 
 #: translations/misc.html:70
 msgid "What can I do?"
@@ -800,12 +795,7 @@ msgstr "Mitä yhteensopivuuden välineistöllä voi tehdä?"
 #: translations/misc.html:67
 msgid "What is description content"
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac "
-"scelerisque orci. Cras vitae lacus in tellus porta convallis. Lorem ipsum "
-"dolor sit amet, consectetur adipiscing elit. Nulla sodales eget nisi sed "
-"finibus. Vivamus euismod efficitur semper. Ut non lorem ultricies, dictum "
-"nunc rhoncus, pretium nunc. Cras faucibus elementum turpis, eget ornare "
-"risus consequat vel."
+"Yhteentoimivuuden kuvaukset ovat tietomäärityksiä, joiden avulla turvataan niin ihmis- kuin koneluettava semanttinen yhteentoimivuus sekä tietojärjestelmien vaatima tekninen yhteentoimivuus sähköisissä, tietointensiivisissä palveluprosesseissa. Yhteentoimivuuden kuvaukset muodostuvat sanastoissa kuvatuista käsitteistä, semantiikaltaan näihin käsitteisiin pohjautuvista yhteiskäyttöisistä tietomäärityksistä, eli tietokomponenteista sekä edelleen näiden käyttöä eri toteutuksissa tarkentavista soveltamisprofiileista."
 
 #: translations/misc.html:66
 msgid "What is description?"
