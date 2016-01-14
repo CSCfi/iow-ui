@@ -781,12 +781,16 @@ function mapType(type: string): Type {
     switch (item) {
       case 'sh:ShapeClass':
         return 'class';
+      case 'sh:Shape':
+        return 'shape';
       case 'owl:DatatypeProperty':
         return 'attribute';
       case 'owl:ObjectProperty':
         return 'association';
       case 'owl:Ontology':
         return 'model';
+      case 'dcap:DCAP':
+        return 'profile';
       case 'foaf:Group':
         return 'group';
       case 'skos:Collection': // TODO what is this?
@@ -803,10 +807,16 @@ export function modelUrl(id: Uri): RelativeUrl {
   return `/model?urn=${encodeURIComponent(id)}`;
 }
 
-export function url(id: Uri, type: Type) {
+export function profileUrl(id: Uri): RelativeUrl {
+  return `/profile?urn=${encodeURIComponent(id)}`;
+}
+
+export function url(id: Uri, type: Type, isDefinedByType?: Type) {
   switch(type) {
     case 'model':
       return modelUrl(id);
+    case 'profile':
+      return profileUrl(id);
     case 'group':
       return `/group?urn=${encodeURIComponent(id)}`;
     case 'association':
@@ -814,6 +824,9 @@ export function url(id: Uri, type: Type) {
     case 'class':
       const [modelId] = id.split('#');
       return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
+    case 'shape':
+      const [profileId] = id.split('#');
+      return `${profileUrl(profileId)}&${type}=${encodeURIComponent(id)}`;
     default:
       throw new Error('Unsupported type for url: ' + type);
   }
