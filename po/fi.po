@@ -408,7 +408,7 @@ msgstr "Piilota"
 #: translations/misc.html:71
 msgid "How content"
 msgstr ""
-"Välineistössä julkaistut tietomääritykset ovat vapaasti selailtavissa. Huomaathan, että sisällöt ovat vielä kehitysvaiheen luonnoksia. Jatkossa sisältöjä tietokomponenttikirjastoihin tuottavat eri toimialojen sisällön asiantuntijat." 
+"Välineistössä julkaistut tietomääritykset ovat vapaasti selailtavissa. Huomaathan, että sisällöt ovat vielä kehitysvaiheen luonnoksia. Jatkossa sisältöjä tietokomponenttikirjastoihin tuottavat eri kohdealueiden asiantuntijat." 
 
 #: translations/misc.html:70
 msgid "How?"
@@ -797,7 +797,7 @@ msgstr "Mitä ovat yhteentoimivuuden kuvaukset?"
 msgid "What is method content"
 msgstr ""
 "Yhteentoimivuusmenetelmän avulla voidaan kuvata tietojärjestelmissä käytettävä tietosisältö ottamatta kantaa sovellusten tekniseen toteutukseen. Yhteentoimivuusmenetelmä yhdistää tietomallien, sanastojen ja koodistojen kehittämisen yhtenäiseksi kokonaisuudeksi. Menetelmän avulla varmistetaan, että yhteisten määritysten soveltaminen on systemaattista ja säilyttää tietojen semantiikan eri toteutuksissa, ja on siten eri toimijoiden yhtenäisesti ymmärrettävissä. "
-"Menetelmä pohjautuu kansainvälisten standardien soveltamiseen, voit lukea lisää yhteentoimivuusmenetelmästä ja välineistön kehittämisestä <a href='https://confluence.csc.fi/pages/viewpage.action?pageId=51893708'>täältä</a>."
+"Menetelmä pohjautuu kansainvälisten standardien soveltamiseen, voit lukea lisää yhteentoimivuusmenetelmästä ja välineistön kehittämisestä <a href='https://confluence.csc.fi/pages/viewpage.action?pageId=51893708'>täältä.</a>"
 
 #: translations/misc.html:66
 msgid "What is method?"
