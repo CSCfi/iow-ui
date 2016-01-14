@@ -194,7 +194,7 @@ function scaleToFit(paper: joint.dia.Paper) {
 }
 
 function isAssociation(property: any) {
-  return property.valueClass;
+  return property.valueShape;
 }
 
 function createCells($scope: IScope, languageService: LanguageService, modelCache: ModelCache, graph: joint.dia.Graph, model: Model, data: any, root: Uri) {
@@ -208,7 +208,7 @@ function createCells($scope: IScope, languageService: LanguageService, modelCach
     const attributes: any[] = [];
 
     for (const property of normalizeAsArray<any>(klass.property)) {
-      if (isRootClass(klass) && isAssociation(property) && model.isCurieDefinedInModel(property.valueClass, modelCache)) {
+      if (isRootClass(klass) && isAssociation(property) && model.isCurieDefinedInModel(property.valueShape, modelCache)) {
         associations.push({klass: klass, association: property});
       } else {
         attributes.push(property);
@@ -230,7 +230,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   function getPropertyNames() {
     function propertyAsString(property: any): string {
       const name = languageService.translate(property.label);
-      const range = isAssociation(property) ? property.valueClass : property.datatype;
+      const range = isAssociation(property) ? property.valueShape : property.datatype;
       return range ? `- ${name} : ${range}` : name;
     }
 
@@ -276,7 +276,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
 
   const associationCell: any = new joint.dia.Link({
     source: { id: klass['@id'] },
-    target: { id: association.valueClass },
+    target: { id: association.valueShape },
     attrs: {
       '.marker-target': {
         d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
