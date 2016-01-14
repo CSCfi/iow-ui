@@ -53,7 +53,7 @@ export class ModelController {
     this.init(new RouteData($routeParams));
 
     $scope.$on('$locationChangeSuccess', () => {
-      if ($location.path() === '/models') {
+      if ($location.path() === '/model') {
         this.init(new RouteData($location.search()));
       }
     });
@@ -71,7 +71,7 @@ export class ModelController {
 
       // new model creation cancelled
       if (oldModel && !newModel) {
-        $location.path('/groups');
+        $location.path('/group');
         $location.search({urn: oldModel.groupId});
       }
     });

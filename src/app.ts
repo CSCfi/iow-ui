@@ -55,7 +55,7 @@ mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILo
       controller: FrontPageController,
       controllerAs: 'ctrl'
     })
-    .when('/groups', {
+    .when('/group', {
       template: require('./components/group/group.html'),
       controller: GroupController,
       controllerAs: 'ctrl',
@@ -65,7 +65,7 @@ mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILo
         }
       }
     })
-    .when('/models', {
+    .when('/model', {
       template: require('./components/model/model.html'),
       controller: ModelController,
       controllerAs: 'ctrl',

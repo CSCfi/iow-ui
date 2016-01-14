@@ -818,7 +818,7 @@ function mapType(type: string): Type {
 }
 
 export function modelUrl(id: Uri): RelativeUrl {
-  return `/models?urn=${encodeURIComponent(id)}`;
+  return `/model?urn=${encodeURIComponent(id)}`;
 }
 
 export function url(id: Uri, type: Type) {
@@ -826,7 +826,7 @@ export function url(id: Uri, type: Type) {
     case 'model':
       return modelUrl(id);
     case 'group':
-      return `/groups?urn=${encodeURIComponent(id)}`;
+      return `/group?urn=${encodeURIComponent(id)}`;
     case 'association':
     case 'attribute':
     case 'class':
