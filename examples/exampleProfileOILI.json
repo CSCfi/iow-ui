@@ -375,7 +375,9 @@
     "@id" : "http://iow.csc.fi/ap/oili",
     "hasPart" : [ "oili:OiliDokumentti", "oili:esitietojenTuontiaika", "oili:Henkilo", "oili:meta", "oili:ilmoittautumisAika", "oili:aikaleima", "oili:oiliId", "oili:Meta", "oili:onYlioppilas" ],
     "requires" : "http://iow.csc.fi/ns/jhs",
-    "rdf:type" : "dcap:DCAP",
+    "rdf:type" : {
+      "@id" : "dcap:DCAP"
+    },
     "rdfs:comment" : {
       "@language" : "fi",
       "@value" : "Oili soveltamisprofiili"
