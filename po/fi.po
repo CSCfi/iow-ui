@@ -24,7 +24,7 @@ msgstr "Lisää attribuutti"
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: components/group/addModelModal.html:3 components/group/group.html:12
+#: components/group/group.html:12
 msgid "Add model"
 msgstr "Lisää tietokomponenttikirjasto"
 
@@ -77,7 +77,7 @@ msgstr "On jo lisätty"
 msgid "and create new"
 msgstr "ja luo uusi"
 
-#: components/group/group.html:42
+#: components/group/group.html:43
 msgid "Application profiles"
 msgstr "Sovellusprofiilit"
 
@@ -529,6 +529,14 @@ msgstr "Nimiavaruus"
 #: translations/misc.html:24
 msgid "New model creation"
 msgstr "Uuden tietokomponenttikirjaston luonti"
+
+#: components/group/group.html:30
+msgid "No models yet"
+msgstr "Ei vielä yhtään tietokomponenttikirjastoa"
+
+#: components/group/group.html:45
+msgid "No profiles yet"
+msgstr "Ei vielä yhtään sovellusprofiilia"
 
 #: components/editor/usagePanel.html:7
 msgid "No referrers"

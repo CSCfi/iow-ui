@@ -16,7 +16,6 @@ msgstr ""
 msgid "Add class"
 msgstr ""
 
-#: components/group/addModelModal.html:3
 #: components/group/group.html:12
 msgid "Add model"
 msgstr ""
@@ -73,7 +72,7 @@ msgstr ""
 msgid "and create new"
 msgstr ""
 
-#: components/group/group.html:42
+#: components/group/group.html:43
 msgid "Application profiles"
 msgstr ""
 
@@ -515,6 +514,14 @@ msgstr ""
 
 #: translations/misc.html:24
 msgid "New model creation"
+msgstr ""
+
+#: components/group/group.html:30
+msgid "No models yet"
+msgstr ""
+
+#: components/group/group.html:45
+msgid "No profiles yet"
 msgstr ""
 
 #: components/editor/usagePanel.html:7
