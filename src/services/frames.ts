@@ -150,7 +150,7 @@ export function classFrame(data: any): Frame {
 
 export function classListFrame(data: any): Frame {
   return {
-    '@context': addToContext(data['@context'], {label, comment}),
+    '@context': addToContext(data['@context'], {label, comment, isDefinedBy}),
     'isDefinedBy': {}
   };
 }
