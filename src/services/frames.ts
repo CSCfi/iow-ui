@@ -98,7 +98,7 @@ export function usageFrame(data: any): Frame {
 export function modelListFrame(data: any): Frame {
   return {
     '@context': addToContext(data['@context'], {label, isPartOf, identifier}),
-    '@type': 'sd:NamedGraph'
+    'isPartOf': {}
   };
 }
 
