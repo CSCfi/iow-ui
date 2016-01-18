@@ -10,7 +10,7 @@ import { LocationService } from '../../services/locationService';
 import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
-import { glyphIconClassForType, collectIds, isDifferentUrl } from '../../services/utils';
+import { glyphIconClassForType, collectIds, isDifferentUrl, normalizeSelectionType } from '../../services/utils';
 import { Class, Attribute, Predicate, PredicateListItem, ClassListItem, Association, Model, ModelListItem, Type, Concept, ConceptSuggestion, Property, WithIdAndType, Uri, Localizable } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -175,7 +175,7 @@ export class ModelController {
       if (!this.model.unsaved) {
         const newSearch: any = {urn: this.model.id};
         if (this.selection) {
-          newSearch[this.selection.type] = this.selection.id;
+          newSearch[normalizeSelectionType(this.selection.type)] = this.selection.id;
         }
 
         const search = _.clone(this.$location.search());
@@ -297,7 +297,7 @@ export class ModelController {
 
   private fetchEntityByTypeAndId(selection: WithIdAndType): IPromise<Class|Predicate> {
     if (!this.selection || !areEqual(this.selection, selection)) {
-      return selection.type === 'class'
+      return selection.type === 'class' || selection.type === 'shape'
         ? this.classService.getClass(selection.id)
         : this.predicateService.getPredicate(selection.id);
     } else {
@@ -350,7 +350,7 @@ function areEqual(lhs: WithIdAndType, rhs: WithIdAndType): boolean {
     return false;
   }
 
-  return lhs.type === rhs.type && lhs.id === rhs.id;
+  return normalizeSelectionType(lhs.type) === normalizeSelectionType(rhs.type) && lhs.id === rhs.id;
 }
 
 class RouteData {

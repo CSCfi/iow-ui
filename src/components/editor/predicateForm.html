@@ -1,6 +1,6 @@
 <h3>{{ctrl.predicate.type + ' information' | capitalize | translate}}</h3>
 
-<editable title="{{ctrl.labelName}}">
+<editable title="{{ctrl.predicate.type + ' label' | capitalize}}">
   <input id="predicateName" class="form-control" type="text" localized-input="label" ng-model="ctrl.predicate.label" />
 </editable>
 

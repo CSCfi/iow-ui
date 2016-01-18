@@ -30,7 +30,7 @@ class AdvancedSearchController {
 
   close = this.$uibModalInstance.dismiss;
   searchResults: SearchResult[];
-  types: Type[] = ['model', 'class', 'attribute', 'association'];
+  types: Type[] = ['model', 'class', 'shape', 'attribute', 'association'];
   searchText: string = '';
   searchTypes: Type[] = _.clone(this.types);
 

@@ -58,3 +58,13 @@ function normalizeUrl(url: string): string {
 export function isDifferentUrl(lhs: string, rhs: string): boolean {
   return normalizeUrl(lhs) !== normalizeUrl(rhs);
 }
+
+export function normalizeSelectionType(type: Type) {
+  if (type === 'class' || type === 'shape') {
+    return 'class';
+  } else if (type === 'attribute' || type == 'association') {
+    return type;
+  } else {
+    throw new Error('Unsupported selection type: ' + type);
+  }
+}

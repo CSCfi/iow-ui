@@ -70,12 +70,6 @@ mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILo
       controller: ModelController,
       controllerAs: 'ctrl',
       reloadOnSearch: false
-    })
-    .when('/profile', {
-      template: require('./components/model/model.html'),
-      controller: ModelController,
-      controllerAs: 'ctrl',
-      reloadOnSearch: false
     });
 });
 

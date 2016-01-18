@@ -59,7 +59,7 @@
           <search-results items="ctrl.searchResults" excluded="ctrl.excludedPredicates" on-select="ctrl.selectItem(item)">
             <i ng-class="searchResult.glyphIconClass"></i>
             <h5>{{searchResult | translateLabel}}</h5>
-            <p>{{searchResult.model | translateLabel}}</p>
+            <p>{{searchResult.definedBy | translateLabel}}</p>
           </search-results>
         </div>
 

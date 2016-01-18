@@ -337,7 +337,7 @@ abstract class AbstractClass extends GraphNode implements Location {
   definedBy: DefinedBy;
 
   constructor(graph: any, context: any) {
-    super('class', graph, context);
+    super(mapType(graph['@type']), graph, context);
     this.label = graph.label;
     this.comment = graph.comment;
 
@@ -358,7 +358,7 @@ abstract class AbstractClass extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return url(this.fullId(), this.type, this.definedBy.type);
+    return url(this.fullId(), this.type);
   }
 }
 
@@ -800,7 +800,7 @@ export class Referrer extends GraphNode {
 
   iowUrl() {
     const expanded = this.expandCurie(this.id);
-    return url(expanded ? expanded.uri : this.id, this.type, this.definedBy && this.definedBy.type);
+    return url(expanded ? expanded.uri : this.id, this.type);
   }
 }
 
@@ -854,35 +854,19 @@ export function modelUrl(id: Uri): RelativeUrl {
   return `/model?urn=${encodeURIComponent(id)}`;
 }
 
-export function profileUrl(id: Uri): RelativeUrl {
-  return `/profile?urn=${encodeURIComponent(id)}`;
-}
-
-export function url(id: Uri, type: Type, isDefinedByType?: Type) {
+export function url(id: Uri, type: Type) {
   switch(type) {
     case 'model':
-      return modelUrl(id);
     case 'profile':
-      return profileUrl(id);
+      return modelUrl(id);
     case 'group':
       return `/group?urn=${encodeURIComponent(id)}`;
     case 'association':
     case 'attribute':
+    case 'class':
+    case 'shape':
       const [modelId] = id.split('#');
       return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
-    case 'class':
-      const [modelOrProfileId] = id.split('#');
-      switch (isDefinedByType) {
-        case 'profile':
-          return `${profileUrl(modelOrProfileId)}&${type}=${encodeURIComponent(id)}`;
-        case 'model':
-          return `${modelUrl(modelOrProfileId)}&${type}=${encodeURIComponent(id)}`;
-        default:
-          throw new Error('Unsupported defined by type for url: ' + isDefinedByType);
-      }
-    case 'shape':
-      const [profileId] = id.split('#');
-      return `${profileUrl(profileId)}&${type}=${encodeURIComponent(id)}`;
     default:
       throw new Error('Unsupported type for url: ' + type);
   }
@@ -970,7 +954,7 @@ export class EntityDeserializer {
       switch (mapType(graph['@type'])) {
         case 'association': return new Association(graph, context);
         case 'attribute': return new Attribute(graph, context);
-        default: throw new Error('Incompatible type ' + graph['@type']);
+        default: console.log(graph); throw new Error('Incompatible type ' + graph['@type']);
       }
     });
   }

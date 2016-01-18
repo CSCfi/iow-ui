@@ -39,10 +39,6 @@ class PredicateFormController {
     }
   }
 
-  get labelName(): string {
-    return _.capitalize(this.predicate.type) + ' label';
-  }
-
   get inUnstableState(): boolean {
     return this.predicate.state === states.unstable;
   }
