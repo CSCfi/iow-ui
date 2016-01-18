@@ -28,7 +28,7 @@ class PredicateFormController {
   constructor(private modelCache: ModelCache) {
   }
 
-  linkToSubProperty() {
+  linkToSuperProperty() {
     return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf, this.modelCache);
   }
 

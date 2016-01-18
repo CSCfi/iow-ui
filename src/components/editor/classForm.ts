@@ -63,7 +63,7 @@ export class ClassFormController {
       }));
   }
 
-  linkToSubclass() {
+  linkToSuperclass() {
     return this.model.linkTo(this.class.type, this.class.subClassOf, this.modelCache);
   }
 

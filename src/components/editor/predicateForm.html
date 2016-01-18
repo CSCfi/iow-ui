@@ -12,7 +12,7 @@
   <textarea id="predicateComment" class="form-control" localized-input ng-model="ctrl.predicate.comment"></textarea>
 </editable>
 
-<editable title="{{'Super' + ctrl.predicate.type}}" link="ctrl.linkToSubProperty()">
+<editable title="{{'Super' + ctrl.predicate.type}}" link="ctrl.linkToSuperproperty()">
   <curie-select id="superPredicate" type="{{ctrl.predicate.type}}" curie="ctrl.predicate.subPropertyOf" model="ctrl.model"></curie-select>
 </editable>
 

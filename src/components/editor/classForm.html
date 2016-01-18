@@ -13,7 +13,7 @@
   <textarea id="classComment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea>
 </editable>
 
-<editable title="Superclass" link="ctrl.linkToSubclass()">
+<editable title="Superclass" link="ctrl.linkToSuperclass()">
   <curie-select id="superClass" type="class" curie="ctrl.class.subClassOf" model="ctrl.model" after-selected="ctrl.addPropertiesFromSuperClass(id)"></curie-select>
 </editable>
 
