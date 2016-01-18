@@ -13,10 +13,10 @@ export function glyphIconClassForType(type: Type) {
   return [
     'glyphicon',
     {
-      'glyphicon-list-alt': type === 'class',
+      'glyphicon-list-alt': type === 'class' || type === 'shape',
       'glyphicon-tasks': type === 'attribute',
       'glyphicon-sort': type === 'association',
-      'glyphicon-book': type === 'model',
+      'glyphicon-book': type === 'model' || type === 'profile',
       'glyphicon-question-sign': !type
     }
   ];

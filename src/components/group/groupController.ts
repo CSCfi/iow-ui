@@ -18,6 +18,7 @@ export class GroupController extends EditableEntityController<Group> {
   loading: boolean = true;
   group: Group;
   models: ModelListItem[];
+  profiles: ModelListItem[];
 
   /* @ngInject */
   constructor($scope: EditableScope,
@@ -37,9 +38,10 @@ export class GroupController extends EditableEntityController<Group> {
         group: groupService.getGroup(groupId),
         models: modelService.getModelsByGroup(groupId)
       })
-      .then((result: any) => {
+      .then((result: {group: Group, models: ModelListItem[]}) => {
         this.group = result.group;
-        this.models = result.models;
+        this.models = _.filter(result.models, model => model.type === 'model');
+        this.profiles = _.filter(result.models, model => model.type === 'profile');
         locationService.atGroup(this.group);
         this.loading = false;
       });

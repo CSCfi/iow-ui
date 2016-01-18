@@ -36,6 +36,20 @@
               </ul>
             </div>
           </div>
+
+          <div class="group-panel">
+            <div class="iow-panel-heading"><h2 translate>Application profiles</h2></div>
+            <div class="panel-body">
+              <ul class="selectable-panel__list">
+                <li ng-repeat="profile in ctrl.profiles"
+                    ng-click="ctrl.selectModel(profile)">
+                  <i ng-class="profile.glyphIconClass"></i>
+                  <span class="link">{{profile | translateLabel}}</span>
+                  <p>{{profile.comment | translateValue}}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </fieldset>

@@ -191,7 +191,7 @@ abstract class AbstractModel extends GraphNode implements Location {
   label: Localizable;
 
   constructor(graph: any, context: any) {
-    super('model', graph, context);
+    super(mapType(graph['@type']), graph, context);
     this.id = graph['@id'];
     this.label = graph.label;
   }

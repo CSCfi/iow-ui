@@ -69,6 +69,10 @@ msgstr ""
 msgid "and create new"
 msgstr ""
 
+#: components/group/group.html:41
+msgid "Application profiles"
+msgstr ""
+
 #: translations/misc.html:38
 msgid "Are you sure that you want to cancel edit?"
 msgstr ""
