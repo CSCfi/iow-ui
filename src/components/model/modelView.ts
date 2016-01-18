@@ -95,7 +95,8 @@ export class ModelViewController extends EditableEntityController<Model> {
     const language = this.languageService.modelLanguage;
     const requireMap = collectIds(this.editableInEdit.requires);
     requireMap.add(this.model.id);
-    this.searchRequireModal.open(requireMap, language)
+    const allowProfiles = this.model.type === 'profile';
+    this.searchRequireModal.open(requireMap, allowProfiles, language)
       .then((require: Require) => {
         this.editableInEdit.addRequire(require);
         this.requiresView.open(require);

@@ -11,7 +11,7 @@ export class SearchRequireModal {
   constructor(private $uibModal: angular.ui.bootstrap.IModalService) {
   }
 
-  open(excludedRequires: Set<Uri>, language: Language): IPromise<Require> {
+  open(excludedRequires: Set<Uri>, allowProfiles: boolean, language: Language): IPromise<Require> {
     return this.$uibModal.open({
       template: require('./searchRequireModal.html'),
       size: 'medium',
@@ -20,7 +20,8 @@ export class SearchRequireModal {
       backdrop: false,
       resolve: {
         excludedRequires: () => excludedRequires,
-        language: () => language
+        language: () => language,
+        allowProfiles: () => allowProfiles
       }
     }).result;
   }
@@ -38,12 +39,13 @@ class SearchRequireController {
               private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
               public excludedRequires: Set<Uri>,
               private language: Language,
+              private allowProfiles: boolean,
               private modelService: ModelService,
               private languageService: LanguageService,
               private addRequireModal: AddRequireModal) {
 
     modelService.getAllRequires().then(result => {
-      this.requires = result;
+      this.requires = _.filter(result, require => allowProfiles || require.type === 'model');
       this.search();
     });
 

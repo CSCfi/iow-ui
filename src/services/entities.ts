@@ -302,7 +302,7 @@ export class Require extends GraphNode {
   modifiable: boolean;
 
   constructor(graph: any, context: any) {
-    super('require', graph, context);
+    super(graph['@type'] && mapType(graph['@type']) || 'require', graph, context);
     this.id = graph['@id'];
     this.label = graph.label;
     this._namespace = graph['dcap:preferredXMLNamespaceName'];
@@ -842,6 +842,8 @@ function mapType(type: string): Type {
         return 'group';
       case 'skos:Collection': // TODO what is this?
         return null;
+      case 'dcap:MetadataVocabulary':
+        return 'externalRequire';
       default:
       // continue
     }
