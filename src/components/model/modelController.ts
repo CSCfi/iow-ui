@@ -211,7 +211,7 @@ export class ModelController {
   private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ConceptCreation|T>, createNew: (concept: ConceptCreation) => IPromise<T>, assignToModel: (entity: T) => IPromise<any>) {
     this.userService.ifStillLoggedIn(() => {
       this.askPermissionWhenEditing(() => {
-        modal().then((result: ConceptCreation|T) => {
+        modal().then(result => {
           if (isConceptCreation(result)) {
             createNew(result)
               .then(entity => this.updateSelection(entity));
