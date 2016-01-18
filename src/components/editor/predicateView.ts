@@ -67,7 +67,7 @@ class PredicateViewController extends EditableEntityController<Association|Attri
   }
 
   isNotReference(): boolean {
-    return this.predicate.modelId === this.model.id;
+    return this.predicate.definedBy.id === this.model.id;
   }
 
   getGroup(): GroupListItem {

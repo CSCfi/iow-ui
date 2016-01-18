@@ -29,7 +29,7 @@ export class ClassService {
   createClass(klass: Class): IPromise<boolean> {
     const requestParams = {
       id: klass.id,
-      model: klass.modelId
+      model: klass.definedBy.id
     };
     return this.$http.put('/api/rest/class', klass.serialize(), {params: requestParams})
       .then(() => klass.unsaved = false);
@@ -38,7 +38,7 @@ export class ClassService {
   updateClass(klass: Class, originalId: Uri): IHttpPromise<any> {
     const requestParams: any = {
       id: klass.id,
-      model: klass.modelId
+      model: klass.definedBy.id
     };
     if (requestParams.id !== originalId) {
       requestParams.oldid = originalId;

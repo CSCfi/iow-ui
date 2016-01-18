@@ -16,6 +16,7 @@ import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal';
+import { DefinedBy } from '../../services/entities';
 
 export class ModelController {
 
@@ -108,12 +109,12 @@ export class ModelController {
   }
 
   getRequiredModels(): Set<Uri> {
-    type WithModel = { model: ModelListItem };
-    return new Set<Uri>(_.chain<WithModel>(this.associations)
+    type WithDefinedBy = { definedBy: DefinedBy };
+    return new Set<Uri>(_.chain<WithDefinedBy>(this.associations)
                          .concat(this.attributes)
                          .concat(this.classes)
-                         .filter(item => item && item.model)
-                         .map(item => item.model.id)
+                         .filter(item => item && item.definedBy)
+                         .map(item => item.definedBy.id)
                          .value());
   }
 

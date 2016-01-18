@@ -28,7 +28,7 @@ export class PredicateService {
   createPredicate(predicate: Predicate): IPromise<boolean> {
     const requestParams = {
       id: predicate.id,
-      model: predicate.modelId
+      model: predicate.definedBy.id
     };
     return this.$http.put('/api/rest/predicate', predicate.serialize(), {params: requestParams})
       .then(() => predicate.unsaved = false);
@@ -37,7 +37,7 @@ export class PredicateService {
   updatePredicate(predicate: Predicate, originalId: Uri): IHttpPromise<any> {
     const requestParams: any = {
       id: predicate.id,
-      model: predicate.modelId
+      model: predicate.definedBy.id
     };
     if (requestParams.id !== originalId) {
       requestParams.oldid = originalId;

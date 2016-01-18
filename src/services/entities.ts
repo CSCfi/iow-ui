@@ -125,6 +125,20 @@ export abstract class GraphNode {
   }
 }
 
+export class DefinedBy extends GraphNode {
+
+  id: Uri;
+  type: Type;
+  label: Localizable;
+
+  constructor(graph: any, context: any) {
+    super('definedBy', graph, context);
+    this.id = graph['@id'];
+    this.type = mapType(graph['@type']);
+    this.label = graph.label;
+  }
+}
+
 export abstract class AbstractGroup extends GraphNode implements Location {
 
   id: Uri;
@@ -320,11 +334,17 @@ abstract class AbstractClass extends GraphNode implements Location {
 
   label: Localizable;
   comment: Localizable;
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any) {
     super('class', graph, context);
     this.label = graph.label;
     this.comment = graph.comment;
+
+    // FIXME: hack
+    fixIsDefinedBy('AbstractClass', graph);
+
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context);
   }
 
   abstract fullId(): Uri;
@@ -338,19 +358,17 @@ abstract class AbstractClass extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return url(this.fullId(), this.type);
+    return url(this.fullId(), this.type, this.definedBy.type);
   }
 }
 
 export class ClassListItem extends AbstractClass {
 
   id: Uri;
-  model: ModelListItem;
 
   constructor(graph: any, context: any) {
     super(graph, context);
     this.id = graph['@id'];
-    this.model = new ModelListItem(graph.isDefinedBy, context);
   }
 
   fullId(): Uri {
@@ -361,7 +379,6 @@ export class ClassListItem extends AbstractClass {
 export class Class extends AbstractClass {
 
   curie: string;
-  modelId: Uri;
   subClassOf: Uri;
   state: State;
   properties: Property[];
@@ -372,7 +389,6 @@ export class Class extends AbstractClass {
   constructor(graph: any, context: any) {
     super(graph, context);
     this.curie = graph['@id'];
-    this.modelId = graph.isDefinedBy;
     this.subClassOf = graph.subClassOf;
     this.state = graph.versionInfo;
     this.properties = _.map(normalizeAsArray(graph.property), property => new Property(property, context));
@@ -473,11 +489,17 @@ abstract class AbstractPredicate extends GraphNode implements Location {
 
   label: Localizable;
   comment: Localizable;
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any) {
     super(mapType(graph['@type']), graph, context);
     this.label = graph.label;
     this.comment = graph.comment;
+
+    // FIXME: hack
+    fixIsDefinedBy('AbstractPredicate', graph);
+
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context);
   }
 
   abstract fullId(): Uri;
@@ -510,12 +532,10 @@ abstract class AbstractPredicate extends GraphNode implements Location {
 export class PredicateListItem extends AbstractPredicate {
 
   id: Uri;
-  model: ModelListItem;
 
   constructor(graph: any, context: any) {
     super(graph, context);
     this.id = graph['@id'];
-    this.model = new ModelListItem(graph.isDefinedBy, context);
   }
 
   fullId(): Uri {
@@ -526,7 +546,6 @@ export class PredicateListItem extends AbstractPredicate {
 export abstract class Predicate extends AbstractPredicate {
 
   curie: string;
-  modelId: Uri;
   state: State;
   subPropertyOf: Uri;
   subject: Concept;
@@ -536,7 +555,6 @@ export abstract class Predicate extends AbstractPredicate {
   constructor(graph: any, context: any) {
     super(graph, context);
     this.curie = graph['@id'];
-    this.modelId = graph.isDefinedBy;
     this.state = graph.versionInfo;
     this.subPropertyOf = graph.subPropertyOf;
     if (graph.subject) {
@@ -744,14 +762,18 @@ export class Usage extends GraphNode {
 
   id: Uri;
   label: Localizable;
-  modelId: Uri;
+  definedBy: DefinedBy;
   referrers: Referrer[];
 
   constructor(graph: any, context: any) {
     super(mapType(graph['@type']), graph, context);
     this.id = graph['@id'];
     this.label = graph.label;
-    this.modelId = graph.isDefinedBy;
+
+    // FIXME: hack
+    fixIsDefinedBy('Usage', graph);
+
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context);
     this.referrers = _.map(normalizeAsArray(graph.isReferencedBy), referrer => new Referrer(referrer, context));
   }
 }
@@ -761,18 +783,43 @@ export class Referrer extends GraphNode {
   id: Uri;
   label: Localizable;
   type: Type;
-  modelId: Uri;
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any) {
     super(mapType(graph['@type']), graph, context);
     this.id = graph['@id'];
     this.label = graph.label;
-    this.modelId = graph.isDefinedBy;
+
+    // FIXME: hack
+    fixIsDefinedBy('Referrer', graph);
+
+    if ('isDefinedBy' in graph) {
+      this.definedBy = new DefinedBy(graph.isDefinedBy, context);
+    }
   }
 
   iowUrl() {
     const expanded = this.expandCurie(this.id);
-    return url(expanded ? expanded.uri : this.id, this.type);
+    return url(expanded ? expanded.uri : this.id, this.type, this.definedBy && this.definedBy.type);
+  }
+}
+
+function fixIsDefinedBy(functionName: string, graph: any) {
+  if (typeof graph.isDefinedBy === 'string') {
+    console.log(functionName + ': is defined by is a string and it should be an object');
+    console.log(graph);
+    graph.isDefinedBy = {
+      '@id': graph.isDefinedBy,
+      '@type': 'owl:Ontology',
+      'label': {'fi': graph.isDefinedBy, 'en': graph.isDefinedBy }
+    };
+  } else if (typeof graph.isDefinedBy === 'object' && !graph.isDefinedBy['@type']) {
+    console.log(functionName + ': is defined by object is missing the type');
+    console.log(graph);
+    graph.isDefinedBy['@type'] = 'owl:Ontology';
+  } else if (!('isDefinedBy' in graph)) {
+    console.log(functionName + ': is defined by is missing');
+    console.log(graph);
   }
 }
 
@@ -821,9 +868,18 @@ export function url(id: Uri, type: Type, isDefinedByType?: Type) {
       return `/group?urn=${encodeURIComponent(id)}`;
     case 'association':
     case 'attribute':
-    case 'class':
       const [modelId] = id.split('#');
       return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
+    case 'class':
+      const [modelOrProfileId] = id.split('#');
+      switch (isDefinedByType) {
+        case 'profile':
+          return `${profileUrl(modelOrProfileId)}&${type}=${encodeURIComponent(id)}`;
+        case 'model':
+          return `${modelUrl(modelOrProfileId)}&${type}=${encodeURIComponent(id)}`;
+        default:
+          throw new Error('Unsupported defined by type for url: ' + isDefinedByType);
+      }
     case 'shape':
       const [profileId] = id.split('#');
       return `${profileUrl(profileId)}&${type}=${encodeURIComponent(id)}`;

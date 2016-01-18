@@ -8,6 +8,7 @@ import { PredicateService} from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
+import { DefinedBy } from '../../services/entities';
 
 export class SearchPredicateModal {
 
@@ -57,7 +58,7 @@ export class SearchPredicateController {
   selectedPredicate: Predicate;
   searchText: string = '';
   modelId: Uri;
-  models: ModelListItem[];
+  models: DefinedBy[];
   types: Type[];
   typeSelectable: boolean;
   submitError: string;
@@ -80,8 +81,8 @@ export class SearchPredicateController {
 
       this.models = _.chain(this.predicates)
         .filter(predicate => this.requireFilter(predicate))
-        .map(predicate => predicate.model)
-        .uniq(classModel => classModel.id)
+        .map(predicate => predicate.definedBy)
+        .uniq(definedBy => definedBy.id)
         .value();
 
       this.types = _.chain(this.predicates)
@@ -162,7 +163,7 @@ export class SearchPredicateController {
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {
-    return !this.modelId || predicate.model.id === this.modelId;
+    return !this.modelId || predicate.definedBy.id === this.modelId;
   }
 
   private typeFilter(predicate: PredicateListItem): boolean {
@@ -171,7 +172,7 @@ export class SearchPredicateController {
 
   private requireFilter(predicate: PredicateListItem): boolean {
     let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
-    return _.any(modelIds, id => id === predicate.model.id);
+    return _.any(modelIds, id => id === predicate.definedBy.id);
   }
 
   private excludedFilter(predicate: PredicateListItem): boolean {

@@ -26,7 +26,7 @@
   <curie-select id="predicateValueClass" type="class" curie="ctrl.predicate.valueClass" model="ctrl.model"></curie-select>
 </editable>
 
-<non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl()"></non-editable>
+<non-editable title="Is defined by" value="ctrl.predicate.definedBy.label" link="ctrl.predicate.iowUrl()"></non-editable>
 
 <editable title="State" value-as-localization-key="true" ng-if="!ctrl.predicate.unsaved">
   <state-select id="predicateState" state="ctrl.predicate.state" model="ctrl.model"></state-select>

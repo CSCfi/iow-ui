@@ -8,6 +8,7 @@ import { Class, ClassListItem, Concept, Model, Reference, Uri } from '../../serv
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { ModelListItem } from '../../services/entities';
+import { DefinedBy } from '../../services/entities';
 
 
 export class SearchClassModal {
@@ -49,7 +50,7 @@ class SearchClassController {
   searchText: string = '';
   showExcluded: boolean;
   modelId: Uri;
-  models: ModelListItem[] = [];
+  models: DefinedBy[] = [];
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -65,8 +66,8 @@ class SearchClassController {
       this.classes = allClasses;
       this.models = _.chain(this.classes)
         .filter(klass => this.requireFilter(klass))
-        .map(klass => klass.model)
-        .uniq(classModel => classModel.id)
+        .map(klass => klass.definedBy)
+        .uniq(definedBy => definedBy.id)
         .value();
 
       this.search();
@@ -109,12 +110,12 @@ class SearchClassController {
   }
 
   private modelFilter(klass: ClassListItem): boolean {
-    return !this.modelId || klass.model.id === this.modelId;
+    return !this.modelId || klass.definedBy.id === this.modelId;
   }
 
   private requireFilter(klass: ClassListItem): boolean {
     let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
-    return _.any(modelIds, id => id === klass.model.id);
+    return _.any(modelIds, id => id === klass.definedBy.id);
   }
 
   private excludedFilter(klass: ClassListItem): boolean {

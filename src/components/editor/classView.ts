@@ -78,7 +78,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   remove(entity: Class) {
-    return this.classService.deleteClass(entity.fullId(), this.model.id);
+    return this.classService.deleteClass(entity.id, this.model.id);
   }
 
   rights(): Rights {
@@ -97,7 +97,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   isNotReference(): boolean {
-    return this.class.modelId === this.model.id;
+    return this.class.definedBy.id === this.model.id;
   }
 
   getGroup(): GroupListItem {
