@@ -21,6 +21,10 @@ msgstr ""
 msgid "Add model"
 msgstr ""
 
+#: components/group/group.html:13
+msgid "Add profile"
+msgstr ""
+
 #: components/editor/addPropertiesFromSuperClassModal.html:2
 msgid "Add properties from super class"
 msgstr ""
@@ -69,7 +73,7 @@ msgstr ""
 msgid "and create new"
 msgstr ""
 
-#: components/group/group.html:41
+#: components/group/group.html:42
 msgid "Application profiles"
 msgstr ""
 
@@ -497,7 +501,7 @@ msgstr ""
 msgid "Model label"
 msgstr ""
 
-#: components/group/group.html:27
+#: components/group/group.html:28
 msgid "Models"
 msgstr ""
 

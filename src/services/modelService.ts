@@ -2,7 +2,7 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import { EntityDeserializer, Model, ModelListItem, Reference, Require, Uri } from './entities';
+import { EntityDeserializer, Model, ModelListItem, Reference, Require, Uri, Type } from './entities';
 import { ModelCache } from './modelCache';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
@@ -37,8 +37,27 @@ export class ModelService {
     return this.$http.delete('/api/rest/model', { params: { id } });
   }
 
-  newModel(prefix: string, label: string, groupId: Uri, lang: Language): IPromise<Model> {
-    return this.$http.get('/api/rest/modelCreator', { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
+  newModel(prefix: string, label: string, groupId: Uri, lang: Language, type: Type): IPromise<Model> {
+    function mapEndpoint() {
+      switch (type) {
+        case 'model':
+          return 'modelCreator';
+        case 'profile':
+          return 'profileCreator';
+        default:
+          throw new Error("Unsupported type: " + type);
+      }
+    }
+    return this.$http.get('/api/rest/' + mapEndpoint(), { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
+      .then(response => this.entities.deserializeModel(response.data))
+      .then((model: Model) => {
+        model.unsaved = true;
+        return model;
+      });
+  }
+
+  newProfile(prefix: string, label: string, groupId: Uri, lang: Language): IPromise<Model> {
+    return this.$http.get('/api/rest/profileCreator', { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
         model.unsaved = true;

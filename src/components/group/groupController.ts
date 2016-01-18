@@ -10,7 +10,7 @@ import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { Group, GroupListItem, ModelListItem, Uri} from '../../services/entities';
+import { Group, GroupListItem, ModelListItem, Uri, Type } from '../../services/entities';
 
 
 export class GroupController extends EditableEntityController<Group> {
@@ -51,10 +51,10 @@ export class GroupController extends EditableEntityController<Group> {
     return this.userService.isLoggedIn() && this.belongToGroup();
   }
 
-  addModel() {
-    this.addModelModal.open(this.groupId).then((result: {prefix: string, label: string}) => {
+  addModel(type: Type) {
+    this.addModelModal.open(this.groupId, type).then((result: {prefix: string, label: string}) => {
       this.$location.path('/model');
-      this.$location.search({prefix: result.prefix, label: result.label, group: this.groupId});
+      this.$location.search({prefix: result.prefix, label: result.label, group: this.groupId, type});
     });
   };
 

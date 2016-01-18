@@ -319,8 +319,8 @@ export class ModelController {
     }
   }
 
-  private updateNewModel(newModel: {prefix: string, label: string, groupId: Uri}) {
-    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, this.languageService.modelLanguage)
+  private updateNewModel(newModel: {prefix: string, label: string, groupId: Uri, type: Type}) {
+    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, this.languageService.modelLanguage, newModel.type)
       .then(model => this.updateModel(model));
   }
 
@@ -362,8 +362,8 @@ class RouteData {
   }
 
   get newModel() {
-    if (this.params.label && this.params.prefix && this.params.group) {
-      return {label: this.params.label, prefix: this.params.prefix, groupId: this.params.group};
+    if (this.params.label && this.params.prefix && this.params.group && this.params.type) {
+      return {label: this.params.label, prefix: this.params.prefix, groupId: this.params.group, type: this.params.type};
     }
   }
 

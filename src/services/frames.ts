@@ -84,7 +84,7 @@ export function modelFrame(data: any): Frame {
 
   return {
     '@context': addToContext(data['@context'], contextValues),
-    'hasPart': {}
+    'isPartOf': {}
   };
 }
 
