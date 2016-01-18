@@ -57,7 +57,7 @@ export class ClassFormController {
     let numberOfProperties = this.class.properties.length;
     const existingPredicates = new Set<Uri>(_.map(this.class.properties, property => property.predicateId));
     this.addPropertiesFromSuperClassModal.open(id, existingPredicates)
-      .then(properties => _.forEach(properties, property => {
+      .then(properties => _.forEach(properties, (property: Property) => {
         property.index = numberOfProperties++;
         this.class.addProperty(property);
       }));
