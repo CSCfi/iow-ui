@@ -193,7 +193,7 @@ export class ModelController {
 
     if (type === 'class') {
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, false, collectIds(this.classes)),
+        () => this.searchClassModal.open(this.model, false, isProfile ? new Set<Uri>() : collectIds(this.classes)),
         (concept: ConceptCreation) => this.createClass(concept),
         (klass: Class) => isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
       );
