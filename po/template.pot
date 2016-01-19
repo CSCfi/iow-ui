@@ -64,7 +64,7 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: translations/misc.html:111
+#: translations/misc.html:115
 msgid "Already added"
 msgstr ""
 
@@ -93,11 +93,15 @@ msgstr ""
 msgid "association"
 msgstr ""
 
-#: translations/misc.html:116
+#: translations/misc.html:60
+msgid "Association id"
+msgstr ""
+
+#: translations/misc.html:120
 msgid "Association information"
 msgstr ""
 
-#: translations/misc.html:82
+#: translations/misc.html:86
 msgid "Association label"
 msgstr ""
 
@@ -109,11 +113,15 @@ msgstr ""
 msgid "attribute"
 msgstr ""
 
-#: translations/misc.html:115
+#: translations/misc.html:59
+msgid "Attribute id"
+msgstr ""
+
+#: translations/misc.html:119
 msgid "Attribute information"
 msgstr ""
 
-#: translations/misc.html:83
+#: translations/misc.html:87
 msgid "Attribute label"
 msgstr ""
 
@@ -125,7 +133,7 @@ msgstr ""
 msgid "Backend"
 msgstr ""
 
-#: translations/misc.html:121
+#: translations/misc.html:125
 msgid "Broader concept"
 msgstr ""
 
@@ -151,15 +159,15 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
-#: translations/misc.html:68
+#: translations/misc.html:72
 msgid "Choose association"
 msgstr ""
 
-#: translations/misc.html:67
+#: translations/misc.html:71
 msgid "Choose attribute"
 msgstr ""
 
-#: translations/misc.html:66
+#: translations/misc.html:70
 msgid "Choose class"
 msgstr ""
 
@@ -171,11 +179,15 @@ msgstr ""
 msgid "class"
 msgstr ""
 
-#: translations/misc.html:113
+#: translations/misc.html:57
+msgid "Class id"
+msgstr ""
+
+#: translations/misc.html:117
 msgid "Class information"
 msgstr ""
 
-#: translations/misc.html:80
+#: translations/misc.html:84
 msgid "Class label"
 msgstr ""
 
@@ -183,7 +195,7 @@ msgstr ""
 msgid "Class list"
 msgstr ""
 
-#: translations/misc.html:117
+#: translations/misc.html:121
 msgid "Class properties"
 msgstr ""
 
@@ -195,7 +207,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: translations/misc.html:120
+#: translations/misc.html:124
 msgid "Concept"
 msgstr ""
 
@@ -216,11 +228,11 @@ msgstr ""
 msgid "Contact info"
 msgstr ""
 
-#: translations/misc.html:98
+#: translations/misc.html:102
 msgid "Create and use association"
 msgstr ""
 
-#: translations/misc.html:97
+#: translations/misc.html:101
 msgid "Create and use attribute"
 msgstr ""
 
@@ -370,15 +382,15 @@ msgstr ""
 msgid "en"
 msgstr ""
 
-#: translations/misc.html:102
+#: translations/misc.html:106
 msgid "Equivalent association"
 msgstr ""
 
-#: translations/misc.html:101
+#: translations/misc.html:105
 msgid "Equivalent attribute"
 msgstr ""
 
-#: translations/misc.html:100
+#: translations/misc.html:104
 msgid "Equivalent class"
 msgstr ""
 
@@ -410,7 +422,7 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-#: translations/misc.html:79
+#: translations/misc.html:83
 msgid "Group label"
 msgstr ""
 
@@ -418,11 +430,11 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: translations/misc.html:76
+#: translations/misc.html:80
 msgid "How content"
 msgstr ""
 
-#: translations/misc.html:75
+#: translations/misc.html:79
 msgid "How?"
 msgstr ""
 
@@ -430,7 +442,7 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: translations/misc.html:105
+#: translations/misc.html:109
 msgid "ID is already in use"
 msgstr ""
 
@@ -446,7 +458,7 @@ msgstr ""
 msgid "Invalid curie error"
 msgstr ""
 
-#: translations/misc.html:104
+#: translations/misc.html:108
 msgid "Invalid ID"
 msgstr ""
 
@@ -462,11 +474,11 @@ msgstr ""
 msgid "IOW"
 msgstr ""
 
-#: translations/misc.html:60
+#: translations/misc.html:64
 msgid "Is defined by"
 msgstr ""
 
-#: translations/misc.html:99
+#: translations/misc.html:103
 msgid "Label"
 msgstr ""
 
@@ -496,7 +508,7 @@ msgstr ""
 msgid "model"
 msgstr ""
 
-#: translations/misc.html:77
+#: translations/misc.html:81
 msgid "Model label"
 msgstr ""
 
@@ -504,11 +516,11 @@ msgstr ""
 msgid "Models"
 msgstr ""
 
-#: translations/misc.html:57
+#: translations/misc.html:61
 msgid "Name"
 msgstr ""
 
-#: translations/misc.html:64
+#: translations/misc.html:68
 msgid "Namespace"
 msgstr ""
 
@@ -537,7 +549,7 @@ msgstr ""
 msgid "Not defined"
 msgstr ""
 
-#: translations/misc.html:107
+#: translations/misc.html:111
 msgid "Not found"
 msgstr ""
 
@@ -545,27 +557,27 @@ msgstr ""
 msgid "not found in the concept database"
 msgstr ""
 
-#: translations/misc.html:108
+#: translations/misc.html:112
 msgid "Not removed"
 msgstr ""
 
-#: translations/misc.html:87
+#: translations/misc.html:91
 msgid "of association"
 msgstr ""
 
-#: translations/misc.html:88
+#: translations/misc.html:92
 msgid "of attribute"
 msgstr ""
 
-#: translations/misc.html:86
+#: translations/misc.html:90
 msgid "of class"
 msgstr ""
 
-#: translations/misc.html:84
+#: translations/misc.html:88
 msgid "of group"
 msgstr ""
 
-#: translations/misc.html:85
+#: translations/misc.html:89
 msgid "of model"
 msgstr ""
 
@@ -577,7 +589,7 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: translations/misc.html:65
+#: translations/misc.html:69
 msgid "Prefix"
 msgstr ""
 
@@ -589,11 +601,11 @@ msgstr ""
 msgid "profile"
 msgstr ""
 
-#: translations/misc.html:78
+#: translations/misc.html:82
 msgid "Profile label"
 msgstr ""
 
-#: translations/misc.html:58
+#: translations/misc.html:62
 msgid "Range"
 msgstr ""
 
@@ -625,11 +637,11 @@ msgstr ""
 msgid "Required localized error"
 msgstr ""
 
-#: translations/misc.html:110
+#: translations/misc.html:114
 msgid "Resource is in use"
 msgstr ""
 
-#: translations/misc.html:109
+#: translations/misc.html:113
 msgid "Resource status restricts removing"
 msgstr ""
 
@@ -641,23 +653,23 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: translations/misc.html:93
+#: translations/misc.html:97
 msgid "search association"
 msgstr ""
 
-#: translations/misc.html:92
+#: translations/misc.html:96
 msgid "Search associations"
 msgstr ""
 
-#: translations/misc.html:91
+#: translations/misc.html:95
 msgid "search attribute"
 msgstr ""
 
-#: translations/misc.html:89
+#: translations/misc.html:93
 msgid "search attribute or association"
 msgstr ""
 
-#: translations/misc.html:90
+#: translations/misc.html:94
 msgid "Search attributes"
 msgstr ""
 
@@ -707,15 +719,19 @@ msgstr ""
 msgid "shape"
 msgstr ""
 
-#: translations/misc.html:114
-msgid "Shape information"
-msgstr ""
-
-#: translations/misc.html:81
-msgid "Shape label"
+#: translations/misc.html:58
+msgid "Shape id"
 msgstr ""
 
 #: translations/misc.html:118
+msgid "Shape information"
+msgstr ""
+
+#: translations/misc.html:85
+msgid "Shape label"
+msgstr ""
+
+#: translations/misc.html:122
 msgid "Shape properties"
 msgstr ""
 
@@ -727,7 +743,7 @@ msgstr ""
 #: components/editor/searchPredicateModal.html:54
 #: components/model/searchRequireModal.html:23
 #: components/model/searchSchemeModal.html:16
-#: translations/misc.html:119
+#: translations/misc.html:123
 msgid "Show already added"
 msgstr ""
 
@@ -755,27 +771,27 @@ msgstr ""
 msgid "suggestion"
 msgstr ""
 
-#: translations/misc.html:62
+#: translations/misc.html:66
 msgid "Superassociation"
 msgstr ""
 
-#: translations/misc.html:63
+#: translations/misc.html:67
 msgid "Superattribute"
 msgstr ""
 
-#: translations/misc.html:61
+#: translations/misc.html:65
 msgid "Superclass"
 msgstr ""
 
-#: translations/misc.html:59
+#: translations/misc.html:63
 msgid "Type"
 msgstr ""
 
-#: translations/misc.html:103
+#: translations/misc.html:107
 msgid "Unauthorized"
 msgstr ""
 
-#: translations/misc.html:106
+#: translations/misc.html:110
 msgid "Unexpected error"
 msgstr ""
 
@@ -791,11 +807,11 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: translations/misc.html:96
+#: translations/misc.html:100
 msgid "Use association"
 msgstr ""
 
-#: translations/misc.html:95
+#: translations/misc.html:99
 msgid "Use attribute"
 msgstr ""
 
@@ -803,7 +819,7 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: translations/misc.html:94
+#: translations/misc.html:98
 msgid "Use selection"
 msgstr ""
 
@@ -819,31 +835,31 @@ msgstr ""
 msgid "Visualization"
 msgstr ""
 
-#: translations/misc.html:74
+#: translations/misc.html:78
 msgid "What can I do content"
 msgstr ""
 
-#: translations/misc.html:73
+#: translations/misc.html:77
 msgid "What can I do?"
 msgstr ""
 
-#: translations/misc.html:70
+#: translations/misc.html:74
 msgid "What is description content"
 msgstr ""
 
-#: translations/misc.html:69
+#: translations/misc.html:73
 msgid "What is description?"
 msgstr ""
 
-#: translations/misc.html:72
+#: translations/misc.html:76
 msgid "What is method content"
 msgstr ""
 
-#: translations/misc.html:71
+#: translations/misc.html:75
 msgid "What is method?"
 msgstr ""
 
-#: translations/misc.html:112
+#: translations/misc.html:116
 msgid "Write identifier"
 msgstr ""
 

@@ -5,7 +5,7 @@
   <input id="classLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.class.label"/>
 </editable>
 
-<editable title="Id">
+<editable title="{{ctrl.class.type + ' id' | capitalize}}">
   <input id="classId" class="form-control" type="text" required id-input="class" old="ctrl.oldClass" ng-model="ctrl.class.curie" ng-disabled="!ctrl.inUnstableState" />
 </editable>
 

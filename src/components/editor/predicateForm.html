@@ -4,7 +4,7 @@
   <input id="predicateName" class="form-control" type="text" localized-input="label" ng-model="ctrl.predicate.label" />
 </editable>
 
-<editable title="Id">
+<editable title="{{ctrl.predicate.type + ' id' | capitalize}}">
   <input id="predicateId" class="form-control" type="text" required id-input="predicate" old="ctrl.oldPredicate" ng-model="ctrl.predicate.curie" ng-disabled="!ctrl.inUnstableState" />
 </editable>
 
