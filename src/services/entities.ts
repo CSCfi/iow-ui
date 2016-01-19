@@ -376,6 +376,7 @@ export class Class extends AbstractClass {
 
   curie: string;
   subClassOf: Uri;
+  scopeClass: Uri;
   state: State;
   properties: Property[];
   subject: Concept;
@@ -386,6 +387,7 @@ export class Class extends AbstractClass {
     super(graph, context);
     this.curie = graph['@id'];
     this.subClassOf = graph.subClassOf;
+    this.scopeClass = graph.scopeClass;
     this.state = graph.versionInfo;
     this.properties = _.map(normalizeAsArray(graph.property), property => new Property(property, context));
     if (graph.subject) {
@@ -425,6 +427,7 @@ export class Class extends AbstractClass {
       label: Object.assign({}, this.label),
       comment: Object.assign({}, this.comment),
       subClassOf: this.subClassOf,
+      scopeClass: this.scopeClass,
       versionInfo: this.state,
       property: _.map(this.properties, property => property.serialize(true)),
       subject: this.subject && this.subject.serialize(true),
