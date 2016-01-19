@@ -189,9 +189,10 @@ export class ModelController {
   }
 
   public addEntity(type: Type) {
+    const showShapes = this.model.type !== 'profile';
     if (type === 'class') {
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, collectIds(this.classes)),
+        () => this.searchClassModal.open(this.model, showShapes, collectIds(this.classes)),
         (concept: ConceptCreation) => this.createClass(concept),
         (klass: Class) => this.assignClassToModel(klass)
       );

@@ -16,7 +16,7 @@ export class SearchClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, excludedClasses: Set<Uri>, onlySelection: boolean) {
+  private openModal(model: Model, showShapes: boolean, excludedClasses: Set<Uri>, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -25,18 +25,19 @@ export class SearchClassModal {
       backdrop: false,
       resolve: {
         model: () => model,
+        showShapes: () => showShapes,
         excludedClasses: () => excludedClasses,
         onlySelection: () => onlySelection
       }
     }).result;
   }
 
-  open(model: Model, excludedClasses: Set<Uri>): IPromise<ConceptCreation|Class> {
-    return this.openModal(model, excludedClasses, false);
+  open(model: Model, showShapes: boolean, excludedClasses: Set<Uri>): IPromise<ConceptCreation|Class> {
+    return this.openModal(model, showShapes, excludedClasses, false);
   }
 
   openWithOnlySelection(model: Model, excludedClasses: Set<Uri> = new Set<Uri>()): IPromise<Class> {
-    return this.openModal(model, excludedClasses, true);
+    return this.openModal(model, true, excludedClasses, true);
   }
 };
 
@@ -58,12 +59,13 @@ class SearchClassController {
               private classService: ClassService,
               private languageService: LanguageService,
               private model: Model,
+              private showShapes: boolean,
               public excludedClasses: Set<Uri>,
               public onlySelection: boolean,
               private searchConceptModal: SearchConceptModal) {
 
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
-      this.classes = allClasses;
+      this.classes = _.filter(allClasses, klass => showShapes || klass.type !== 'shape');
       this.models = _.chain(this.classes)
         .filter(klass => this.requireFilter(klass))
         .map(klass => klass.definedBy)
