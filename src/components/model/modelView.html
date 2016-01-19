@@ -12,7 +12,7 @@
           <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
         </editable-entity-buttons>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
           <editable title="{{ctrl.model.type + ' label' | capitalize}}">
             <input id="modelLabel" class="form-control" type="text" localized-input="modelLabel" ng-model="ctrl.editableInEdit.label" />
           </editable>
@@ -29,7 +29,7 @@
           </editable>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-5 col-md-offset-1">
           <references-view references="ctrl.editableInEdit.references"></references-view>
           <requires-view requires="ctrl.editableInEdit.requires"></requires-view>
         </div>
