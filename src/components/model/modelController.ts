@@ -189,18 +189,19 @@ export class ModelController {
   }
 
   public addEntity(type: Type) {
-    const showShapes = this.model.type !== 'profile';
+    const isProfile = this.model.type === 'profile';
+
     if (type === 'class') {
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, showShapes, collectIds(this.classes)),
+        () => this.searchClassModal.open(this.model, false, collectIds(this.classes)),
         (concept: ConceptCreation) => this.createClass(concept),
-        (klass: Class) => this.assignClassToModel(klass)
+        (klass: Class) => isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
       );
     } else {
       this.createOrAssignEntity(
         () => this.searchPredicateModal.open(this.model, type, this.getPredicateIds()),
         (concept: ConceptCreation) => this.createPredicate(concept),
-        (predicate: Predicate) => this.assignPredicateToModel(predicate.id)
+        (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
       );
     }
   }
@@ -209,32 +210,37 @@ export class ModelController {
     return collectIds([this.attributes, this.associations]);
   }
 
-  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ConceptCreation|T>, createNew: (concept: ConceptCreation) => IPromise<T>, assignToModel: (entity: T) => IPromise<any>) {
+  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ConceptCreation|T>, fromConcept: (concept: ConceptCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<any>) {
     this.userService.ifStillLoggedIn(() => {
       this.askPermissionWhenEditing(() => {
         modal().then(result => {
-          if (isConceptCreation(result)) {
-            createNew(result)
-              .then(entity => this.updateSelection(entity));
-          } else if (result instanceof Class || result instanceof Predicate) {
-            assignToModel(result)
-              .then(() => {
-                this.updateSelection(result);
+          (isConceptCreation(result) ? fromConcept(result) : fromEntity(result))
+            .then(entity => {
+              this.updateSelection(entity);
+              if (!entity.unsaved) {
                 this.updateSelectables();
-              });
-          }
+              }
+            });
         });
       });
     });
   }
 
   private createClass(conceptCreation: ConceptCreation) {
-    return this.classService.newClass(this.model, conceptCreation.label, conceptCreation.concept.id, this.languageService.modelLanguage)
-      .then(klass => this.updateSelection(klass));
+    return this.classService.newClass(this.model, conceptCreation.label, conceptCreation.concept.id, this.languageService.modelLanguage);
+  }
+
+  private createShape(klass: Class) {
+    this.assignMissingPredicates(klass);
+    return this.classService.newShape(klass.id, this.model, this.languageService.modelLanguage);
   }
 
   private assignClassToModel(klass: Class) {
+    this.assignMissingPredicates(klass);
+    return this.classService.assignClassToModel(klass.id, this.model.id);
+  }
 
+  private assignMissingPredicates(klass: Class) {
     var predicateIds = this.getPredicateIds();
 
     this.$q.all(
@@ -245,8 +251,6 @@ export class ModelController {
         .value()
       )
       .then(() => this.updatePredicates());
-
-    return this.classService.assignClassToModel(klass.id, this.model.id);
   }
 
   private createPredicate(conceptCreation: ConceptCreation) {

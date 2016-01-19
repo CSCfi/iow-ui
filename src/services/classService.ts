@@ -74,6 +74,18 @@ export class ClassService {
       });
   }
 
+  newShape(classId: Uri, profile: Model, lang: Language): IPromise<Class> {
+    return this.$http.get('/api/rest/shapeCreator', {params: {profileID: profile.id, classID: classId, lang}})
+      .then((response: any) => {
+        _.extend(response.data['@context'], profile.context);
+        return this.entities.deserializeClass(response.data);
+      })
+      .then((klass: Class) => {
+        klass.unsaved = true;
+        return klass;
+      });
+  }
+
   newProperty(predicateId: Uri, numberOfProperties: number): IPromise<Property> {
     return this.$q.all({
         predicate: this.predicateService.getPredicate(predicateId),
