@@ -1,7 +1,7 @@
 import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import * as frames from './frames';
-import { glyphIconClassForType, normalizeAsArray, splitCurie } from './utils';
+import {glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType} from './utils';
 import { ModelCache } from './modelCache';
 
 const jsonld: any = require('jsonld');
@@ -340,11 +340,7 @@ abstract class AbstractClass extends GraphNode implements Location {
     super(mapType(graph['@type']), graph, context);
     this.label = graph.label;
     this.comment = graph.comment;
-
-    // FIXME: hack
-    fixIsDefinedBy('AbstractClass', graph);
-
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context);
+    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractClass', graph), context);
   }
 
   abstract fullId(): Uri;
@@ -495,11 +491,7 @@ abstract class AbstractPredicate extends GraphNode implements Location {
     super(mapType(graph['@type']), graph, context);
     this.label = graph.label;
     this.comment = graph.comment;
-
-    // FIXME: hack
-    fixIsDefinedBy('AbstractPredicate', graph);
-
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context);
+    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractPredicate', graph), context);
   }
 
   abstract fullId(): Uri;
@@ -769,11 +761,7 @@ export class Usage extends GraphNode {
     super(mapType(graph['@type']), graph, context);
     this.id = graph['@id'];
     this.label = graph.label;
-
-    // FIXME: hack
-    fixIsDefinedBy('Usage', graph);
-
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context);
+    this.definedBy = new DefinedBy(fixIsDefinedBy('Usage', graph), context);
     this.referrers = _.map(normalizeAsArray(graph.isReferencedBy), referrer => new Referrer(referrer, context));
   }
 }
@@ -789,12 +777,8 @@ export class Referrer extends GraphNode {
     super(mapType(graph['@type']), graph, context);
     this.id = graph['@id'];
     this.label = graph.label;
-
-    // FIXME: hack
-    fixIsDefinedBy('Referrer', graph);
-
     if ('isDefinedBy' in graph) {
-      this.definedBy = new DefinedBy(graph.isDefinedBy, context);
+      this.definedBy = new DefinedBy(fixIsDefinedBy('Referrer', graph), context);
     }
   }
 
@@ -804,11 +788,12 @@ export class Referrer extends GraphNode {
   }
 }
 
+// TODO: when api returns coherent data get rid of this method
 function fixIsDefinedBy(functionName: string, graph: any) {
   if (typeof graph.isDefinedBy === 'string') {
     console.log(functionName + ': is defined by is a string and it should be an object');
     console.log(graph);
-    graph.isDefinedBy = {
+    return {
       '@id': graph.isDefinedBy,
       '@type': 'owl:Ontology',
       'label': {'fi': graph.isDefinedBy, 'en': graph.isDefinedBy }
@@ -816,10 +801,15 @@ function fixIsDefinedBy(functionName: string, graph: any) {
   } else if (typeof graph.isDefinedBy === 'object' && !graph.isDefinedBy['@type']) {
     console.log(functionName + ': is defined by object is missing the type');
     console.log(graph);
-    graph.isDefinedBy['@type'] = 'owl:Ontology';
+    return Object.assign(graph.isDefinedBy, {
+      '@type': 'owl:Ontology'
+    });
   } else if (!('isDefinedBy' in graph)) {
     console.log(functionName + ': is defined by is missing');
     console.log(graph);
+    return null;
+  } else {
+    return graph.isDefinedBy;
   }
 }
 
@@ -869,7 +859,7 @@ export function url(id: Uri, type: Type) {
     case 'class':
     case 'shape':
       const [modelId] = id.split('#');
-      return `${modelUrl(modelId)}&${type}=${encodeURIComponent(id)}`;
+      return `${modelUrl(modelId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id)}`;
     default:
       throw new Error('Unsupported type for url: ' + type);
   }
