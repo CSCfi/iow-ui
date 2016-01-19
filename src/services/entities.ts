@@ -824,6 +824,7 @@ function fixIsDefinedBy(functionName: string, graph: any) {
 }
 
 function mapType(type: string): Type {
+  // TODO: proper strategy of matching the type in case of an array
   for (const item of normalizeAsArray(type)) {
     switch (item) {
       case 'sh:ShapeClass':
