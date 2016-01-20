@@ -22,9 +22,7 @@ export class DisplayItem {
   get displayValue(): string {
     const value = this.value();
 
-    if (!value) {
-      return '';
-    } else if (isLocalizable(value)) {
+    if (isLocalizable(value)) {
       return this.languageService.translate(value);
     } else if (isString(value)) {
       if (this.valueAsLocalizationKey) {
@@ -34,6 +32,8 @@ export class DisplayItem {
       }
     } else if (isNumber(value)) {
       return value.toString();
+    } else if (!value) {
+      return '';
     } else {
       throw new Error('Cannot convert to display value: ' + value);
     }
