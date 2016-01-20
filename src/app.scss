@@ -457,13 +457,14 @@ selection-view, .main-editable-content {
 }
 
 .navbar-default .navbar-nav > li > a:hover {
-    background-color: transparent;
-    text-decoration: underline;
+  background-color: #303F9F;
+  text-decoration: none;
 }
 
-.navbar-right .navbar-btn button.btn:hover {
-  background-color: transparent;
-    text-decoration: underline;
+.navbar-right .navbar-btn button.btn:hover, .navbar-right .navbar-btn button.btn:focus {
+  background-color: #303F9F;
+  text-decoration: none;
+  color: white;
 }
 
 .h2 {
