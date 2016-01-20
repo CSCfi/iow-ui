@@ -516,6 +516,14 @@ msgstr ""
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
+#: translations/misc.html:128
+msgid "Max count"
+msgstr "Enimmäismäärä"
+
+#: translations/misc.html:127
+msgid "Min count"
+msgstr "Vähimmäismäärä"
+
 #: translations/misc.html:28
 msgid "model"
 msgstr "Tietokomponenttikirjasto"

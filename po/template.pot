@@ -504,6 +504,14 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
+#: translations/misc.html:128
+msgid "Max count"
+msgstr ""
+
+#: translations/misc.html:127
+msgid "Min count"
+msgstr ""
+
 #: translations/misc.html:28
 msgid "model"
 msgstr ""

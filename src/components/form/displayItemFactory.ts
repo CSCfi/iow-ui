@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { EditableForm } from './editableEntityController';
 import { LanguageService } from '../../services/languageService';
 import { Localizable, isLocalizable } from '../../services/entities';
-import { isString, isDifferentUrl, normalizeAsArray } from '../../services/utils';
+import { isString, isNumber, isDifferentUrl, normalizeAsArray } from '../../services/utils';
 
 export type Value = string|Localizable;
 
@@ -22,7 +22,9 @@ export class DisplayItem {
   get displayValue(): string {
     const value = this.value();
 
-    if (isLocalizable(value)) {
+    if (!value) {
+      return '';
+    } else if (isLocalizable(value)) {
       return this.languageService.translate(value);
     } else if (isString(value)) {
       if (this.valueAsLocalizationKey) {
@@ -30,6 +32,10 @@ export class DisplayItem {
       } else {
         return value;
       }
+    } else if (isNumber(value)) {
+      return value.toString();
+    } else {
+      throw new Error('Cannot convert to display value: ' + value);
     }
   }
 
