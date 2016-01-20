@@ -25,19 +25,25 @@
       <pre>{{ctrl.broaderConcept.id}}</pre>
 
       <editable title="Broader concept">
-        <div class="input-group input-group-md">
-          <input id="concept"
-                 type="text"
-                 class="form-control"
-                 iow-typeahead
-                 selection-mapper="ctrl.mapSelection"
-                 options="ctrl.options"
-                 datasets="ctrl.dataset"
-                 ng-model="ctrl.broaderConcept"
-                 placeholder="{{'Search from concept database' | translate}}"/>
-          <i class="glyphicon glyphicon-search form-control-feedback"></i>
-        </div>
+        <input id="concept"
+               type="text"
+               class="form-control"
+               iow-typeahead
+               selection-mapper="ctrl.mapSelection"
+               options="ctrl.options"
+               datasets="ctrl.dataset"
+               ng-model="ctrl.broaderConcept"
+               placeholder="{{'Search from concept database' | translate}}"/>
+        <i class="glyphicon glyphicon-search form-control-feedback"></i>
       </editable>
+
+      <div ng-if="ctrl.broaderConcept">
+        <label for="concept" translate>Chosen concept</label>
+        <p>{{ctrl.broaderConcept | translateLabel}}</p>
+
+        <label for="concept" translate>Comment</label>
+        <p>{{ctrl.broaderConcept.comment | translateValue}}</p>
+      </div>
 
       <p><span translate>Concept is suggested to scheme</span> {{ctrl.reference.label | translateValue}}</p>
     </modal-body>

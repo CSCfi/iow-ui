@@ -79,11 +79,11 @@ mod.directive('iowTypeahead', ($timeout: ITimeoutService, $q: IQService, $log: I
 
       function updateModel(event: any, suggestion: any) {
         $scope.$applyAsync(() => {
-          $q.when(selectionMapper(isNotEditable() ? suggestion : elementValue(event)))
+          selectionMapper(isNotEditable() ? suggestion : elementValue(event))
             .then(mapped => {
-              ngModel.$setViewValue(mapped);
-              ngModel.$commitViewValue();
-            },
+                ngModel.$setViewValue(mapped);
+                ngModel.$commitViewValue();
+              },
             err => $log.error(err));
         });
       }
@@ -94,19 +94,16 @@ mod.directive('iowTypeahead', ($timeout: ITimeoutService, $q: IQService, $log: I
         if (ngModel) {
           element.bind('typeahead:selected', updateModel);
           element.bind('typeahead:autocompleted', updateModel);
+          element.bind('blur', event => {
+            const value = (<HTMLInputElement> event.target).value;
+            if (!value || value.length < options.minLength) {
+              updateModel(event, null);
+              element.val('');
+            }
+          });
 
           if (isNotEditable()) {
             disableModelChangeEvents(ngModel);
-
-            element.bind('change', (event) => {
-              updateModel(event, null);
-            });
-
-            element.bind('blur', (event) => {
-              if (!ngModel.$modelValue) {
-                element.val('');
-              }
-            })
           }
         }
 
@@ -114,7 +111,8 @@ mod.directive('iowTypeahead', ($timeout: ITimeoutService, $q: IQService, $log: I
       }
 
       function destroy() {
-        element.unbind('change');
+        element.unbind('typeahead:selected');
+        element.unbind('typeahead:autocompleted');
         element.unbind('blur');
         element.typeahead('destroy');
         initialized = false;
@@ -130,7 +128,7 @@ interface TypeaheadOptions extends Options {
 interface TypeaheadScope extends IScope {
   options: TypeaheadOptions;
   datasets: Dataset|Dataset[];
-  selectionMapper: (selection: any) => IPromise<any>
+  selectionMapper: (selection: any) => IPromise<string>
 }
 
 interface TypeaheadAttribute extends IAttributes {
