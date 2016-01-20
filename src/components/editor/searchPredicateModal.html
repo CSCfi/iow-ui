@@ -72,11 +72,11 @@
     </modal-body>
 
     <modal-buttons>
-      <button type="button" class="btn btn-default btn-lg" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default btn-lg" ng-hide="ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate">
+      <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
+      <button type="button" class="btn btn-default" ng-hide="ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate">
         {{(!ctrl.typeSelectable ? 'Use ' + ctrl.type : 'Use selection') | translate}}
       </button>
-      <button type="button" class="btn btn-default btn-lg" ng-show="ctrl.isEditing()" ng-click="ctrl.createAndUsePredicate()" ng-disabled="form.$invalid || form.$pending">
+      <button type="button" class="btn btn-default" ng-show="ctrl.isEditing()" ng-click="ctrl.createAndUsePredicate()" ng-disabled="form.$invalid || form.$pending">
         {{('Create and use ' + ctrl.selectedPredicate.type) | translate}}
       </button>
     </modal-buttons>

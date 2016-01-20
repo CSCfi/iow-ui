@@ -416,6 +416,19 @@ selection-view, .main-editable-content {
   }
 }
 
+.modal-header i {
+  color: $gray-base;
+  cursor: pointer;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
 .bottom {
   border-top: solid 1px #ddd;
 }
