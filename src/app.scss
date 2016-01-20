@@ -22,6 +22,13 @@ $footer-height: 40px;
   font-size: small;
 }
 
+.btn-default {
+  color: #555555;
+  background-color: #f5f5f5;
+  border-color: #ddd;
+}
+
+
 .multi-input {
   border: 1px solid #ccc;
   height: auto !important;
@@ -189,7 +196,6 @@ uib-accordion .panel-group {
   .panel-title {
     a:hover {
       text-decoration: none;
-      color: $brand-primary;
     }
     a {
       text-decoration: none;
@@ -253,6 +259,8 @@ selection-view, .main-editable-content {
 
 .breadcrumb {
   margin-bottom: 0;
+  border: none;
+  font-weight: 400;
 }
 
 .component {
