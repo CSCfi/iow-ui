@@ -87,7 +87,7 @@ export class ConceptService {
     }
 
     if (!selection) {
-      return null;
+      return this.$q.when(null);
     } else if (selection instanceof ConceptSuggestion) {
       return this.$q.when(selection);
     } else if (isConceptSearchResult(selection)) {
