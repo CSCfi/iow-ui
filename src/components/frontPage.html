@@ -1,17 +1,15 @@
 <div ng-show="ctrl.groups">
 
-  <div class="col-md-4">
+  <div class="col-md-5">
 
     <h2 translate>Interoperability method</h2>
 
-    <div ng-repeat="bullet in ctrl.bullets" class="point">
-      <div class="bullet-container">
-        <div class="bullet"><span>{{$index + 1}}</span></div>
-      </div>
-      <div class="content">
+    <div ng-repeat="bullet in ctrl.bullets" class="">
+      
+      <blockquote class="">
         <h4>{{bullet.title | translate}}</h4>
         <span ng-bind-html="bullet.content | translate | trustAsHtml"></span>
-      </div>
+      </blockquote>
     </div>
 
   </div>
