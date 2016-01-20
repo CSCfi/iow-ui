@@ -103,4 +103,9 @@ export class ClassViewController extends EditableEntityController<Class> {
   getGroup(): GroupListItem {
     return this.model.group;
   }
+
+  getRemoveText(): string {
+    const text = super.getRemoveText();
+    return this.isNotReference() ? text : text + ' from this ' + this.model.type;
+  }
 }

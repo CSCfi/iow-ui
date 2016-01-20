@@ -140,8 +140,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   getRemoveText(): string {
-    const text = 'Delete ' + this.getEditable().type;
-    return this.isNotReference() ? text : text + ' from this model';
+    return 'Delete ' + this.getEditable().type;
   }
 
   canAskForRights(): boolean {
