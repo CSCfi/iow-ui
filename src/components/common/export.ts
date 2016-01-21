@@ -14,6 +14,8 @@ const exportOptions = [
   {type: 'application/rdf+xml', extension: 'rdf'}
 ];
 
+const UTF8_BOM = '\ufeff';
+
 mod.directive('export', () => {
   return {
     scope: {
@@ -52,7 +54,7 @@ class ExportController {
        });
 
        const framedData = {'@graph': entity.graph, '@context': entity.context};
-       const framedDataBlob =  new Blob([JSON.stringify(framedData, null, 2)], { type: 'application/ld+json' });
+       const framedDataBlob =  new Blob([UTF8_BOM, JSON.stringify(framedData, null, 2)], { type: 'application/ld+json;charset=utf-8' });
 
        if (this.framedUrlObject) {
          $window.URL.revokeObjectURL(this.framedUrlObject);
