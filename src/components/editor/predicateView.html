@@ -2,6 +2,9 @@
   <fieldset ng-disabled="ctrl.persisting">
     <div ng-if="ctrl.predicate && ctrl.model">
       <selection-view editable-controller="ctrl" hide-visualization="true">
+        <selection-buttons>
+          <export ng-hide="ctrl.isEditing()" entity="ctrl.predicate"></export>
+        </selection-buttons>
         <selection-content>
           <predicate-form predicate="ctrl.editableInEdit" old-predicate="ctrl.predicate" model="ctrl.model"></predicate-form>
         </selection-content>
