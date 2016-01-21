@@ -1,5 +1,6 @@
 /// <reference path="./main.d.ts" />
 
+import ICompileProvider = angular.ICompileProvider;
 import ILocationService = angular.ILocationService;
 import ILogProvider = angular.ILogProvider;
 import IProvideService = angular.auto.IProvideService;
@@ -46,8 +47,9 @@ const mod = angular.module('iow-ui', [
   require('./services')
 ]);
 
-mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILogProvider) {
+mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILogProvider, $compileProvider: ICompileProvider) {
   $logProvider.debugEnabled(false);
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);
 
   $routeProvider
     .when('/', {

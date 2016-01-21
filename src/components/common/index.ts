@@ -10,6 +10,7 @@ export = mod.name;
 
 import './accordionChevron';
 import './ajaxLoadingIndicator';
+import './export';
 import './float';
 import './keyControl';
 import './keyControlItem';

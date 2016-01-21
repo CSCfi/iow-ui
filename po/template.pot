@@ -47,7 +47,7 @@ msgid "Additional information"
 msgstr ""
 
 #: components/advancedSearchModal.html:2
-#: components/frontPage.html:32
+#: components/frontPage.html:30
 msgid "Advanced search"
 msgstr ""
 
@@ -74,6 +74,14 @@ msgstr ""
 
 #: components/group/group.html:43
 msgid "Application profiles"
+msgstr ""
+
+#: translations/misc.html:131
+msgid "application/ld+json"
+msgstr ""
+
+#: translations/misc.html:133
+msgid "application/rdf+xml"
 msgstr ""
 
 #: translations/misc.html:39
@@ -137,16 +145,16 @@ msgstr ""
 msgid "Broader concept"
 msgstr ""
 
-#: components/frontPage.html:47
+#: components/frontPage.html:45
 msgid "Browse"
 msgstr ""
 
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:46
+#: components/editor/addConceptModal.html:50
 #: components/editor/addPropertiesFromSuperClassModal.html:13
 #: components/editor/searchClassModal.html:55
-#: components/editor/searchConceptModal.html:54
+#: components/editor/searchConceptModal.html:56
 #: components/editor/searchPredicateModal.html:75
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
@@ -175,7 +183,8 @@ msgstr ""
 msgid "Choose subject"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:33
+#: components/editor/addConceptModal.html:39
+#: components/editor/searchConceptModal.html:34
 msgid "Chosen concept"
 msgstr ""
 
@@ -207,7 +216,8 @@ msgstr ""
 msgid "Class search info"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:36
+#: components/editor/addConceptModal.html:42
+#: components/editor/searchConceptModal.html:37
 msgid "Comment"
 msgstr ""
 
@@ -215,11 +225,11 @@ msgstr ""
 msgid "Concept"
 msgstr ""
 
-#: components/editor/addConceptModal.html:42
+#: components/editor/addConceptModal.html:46
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:49
+#: components/editor/searchConceptModal.html:51
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
 
@@ -240,7 +250,7 @@ msgstr ""
 msgid "Create and use attribute"
 msgstr ""
 
-#: components/editor/addConceptModal.html:47
+#: components/editor/addConceptModal.html:51
 #: components/group/addModelModal.html:23
 #: components/model/addRequireModal.html:31
 msgid "Create new"
@@ -370,6 +380,10 @@ msgstr ""
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
+#: components/common/export.html:5
+msgid "download"
+msgstr ""
+
 #: translations/misc.html:18
 msgid "Draft"
 msgstr ""
@@ -414,12 +428,20 @@ msgstr ""
 msgid "Existing id error"
 msgstr ""
 
+#: components/common/export.html:2
+msgid "Export"
+msgstr ""
+
 #: translations/misc.html:35
 msgid "fi"
 msgstr ""
 
 #: components/common/deleteConfirmationModal.html:6
 msgid "Following items are depending on the deleted"
+msgstr ""
+
+#: translations/misc.html:134
+msgid "framed ld+json"
 msgstr ""
 
 #: translations/misc.html:23
@@ -561,7 +583,7 @@ msgid "No referrers"
 msgstr ""
 
 #: components/advancedSearchModal.html:21
-#: components/frontPage.html:35
+#: components/frontPage.html:33
 msgid "No search results"
 msgstr ""
 
@@ -669,7 +691,7 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: components/frontPage.html:22
+#: components/frontPage.html:20
 msgid "Search"
 msgstr ""
 
@@ -706,11 +728,11 @@ msgid "Search classes"
 msgstr ""
 
 #: components/advancedSearchModal.html:8
-#: components/frontPage.html:25
+#: components/frontPage.html:23
 msgid "search descriptions"
 msgstr ""
 
-#: components/editor/addConceptModal.html:37
+#: components/editor/addConceptModal.html:34
 #: components/editor/searchConceptModal.html:29
 msgid "Search from concept database"
 msgstr ""
@@ -805,6 +827,10 @@ msgstr ""
 
 #: translations/misc.html:67
 msgid "Superclass"
+msgstr ""
+
+#: translations/misc.html:132
+msgid "text/turtle"
 msgstr ""
 
 #: translations/misc.html:65
