@@ -380,8 +380,8 @@ msgstr ""
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
-#: components/common/export.html:5
-msgid "download"
+#: components/common/export.html:7
+msgid "Download"
 msgstr ""
 
 #: translations/misc.html:18
@@ -631,6 +631,10 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
+#: translations/misc.html:135
+msgid "Pattern"
+msgstr ""
+
 #: translations/misc.html:72
 msgid "Prefix"
 msgstr ""
@@ -777,6 +781,7 @@ msgstr ""
 msgid "Shape properties"
 msgstr ""
 
+#: components/common/export.html:4
 #: translations/misc.html:21
 msgid "Show"
 msgstr ""

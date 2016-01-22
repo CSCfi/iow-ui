@@ -385,11 +385,7 @@ msgstr "Käytöstä poistunut"
 msgid "Do you want to add following properties from super class?"
 msgstr "Haluatko lisätä seuraavat ominaisuudet yläluokasta?"
 
-#: components/common/export.html:5
-msgid "download"
-msgstr "tallenna"
-
-#: translations/misc.html:135
+#: components/common/export.html:7
 msgid "Download"
 msgstr "tallenna"
 
@@ -646,6 +642,10 @@ msgstr "Attribuutti"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
+#: translations/misc.html:135
+msgid "Pattern"
+msgstr "Säännollinen lauseke"
+
 #: translations/misc.html:72
 msgid "Prefix"
 msgstr "Etuliite"
@@ -793,7 +793,7 @@ msgstr "Tarkennetun luokan nimi"
 msgid "Shape properties"
 msgstr "Tarkennetun luokan ominaisuudet"
 
-#: translations/misc.html:21
+#: components/common/export.html:4 translations/misc.html:21
 msgid "Show"
 msgstr "Näytä"
 
@@ -1027,6 +1027,9 @@ msgstr "XML"
 #: components/editor/addPropertiesFromSuperClassModal.html:12
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "download"
+#~ msgstr "tallenna"
 
 #~ msgid "Code licensed under the"
 #~ msgstr "lisenssi"

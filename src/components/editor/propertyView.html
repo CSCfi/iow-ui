@@ -29,13 +29,19 @@
     <curie-select id="{{ctrl.property.id + 'valueClass'}}" type="class" curie="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></curie-select>
   </editable>
 
-  <editable ng-if="ctrl.model.type === 'profile'" title="Min count">
-    <input id="{{ctrl.property.id + 'minCount'}}" class="form-control" type="number" ng-model="ctrl.property.minCount" />
-  </editable>
+  <div ng-if="ctrl.model.type === 'profile'">
+    <editable title="Min count">
+      <input id="{{ctrl.property.id + 'minCount'}}" class="form-control" type="number" ng-model="ctrl.property.minCount" />
+    </editable>
 
-  <editable ng-if="ctrl.model.type === 'profile'" title="Max count">
-    <input id="{{ctrl.property.id + 'maxCount'}}" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
-  </editable>
+    <editable title="Max count">
+      <input id="{{ctrl.property.id + 'maxCount'}}" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
+    </editable>
+
+    <editable title="Pattern">
+      <input id="{{ctrl.property.id + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
+    </editable>
+  </div>
 
   <uib-accordion>
     <uib-accordion-group is-open="predicateOpen">
