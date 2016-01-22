@@ -83,7 +83,7 @@ msgstr "Sovellusprofiilit"
 
 #: translations/misc.html:131
 msgid "application/ld+json"
-msgstr "JSON"
+msgstr "JSON-LD"
 
 #: translations/misc.html:133
 msgid "application/rdf+xml"
@@ -449,7 +449,7 @@ msgstr "Seuraavat asiat riippuvat poistettavasta"
 
 #: translations/misc.html:134
 msgid "framed ld+json"
-msgstr "UI JSON"
+msgstr "Framed JSON-LD"
 
 #: translations/misc.html:23
 msgid "Front page"

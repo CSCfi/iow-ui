@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-22 13:11+0200\n"
+"PO-Revision-Date: 2016-01-22 13:28+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: translations/misc.html:131
 msgid "application/ld+json"
-msgstr "JSON"
+msgstr "JSON-LD"
 
 #: translations/misc.html:133
 msgid "application/rdf+xml"
@@ -446,7 +446,7 @@ msgstr ""
 
 #: translations/misc.html:134
 msgid "framed ld+json"
-msgstr "UI JSON"
+msgstr "Framed JSON-LD"
 
 #: translations/misc.html:23
 msgid "Front page"
