@@ -1,8 +1,8 @@
 import IScope = angular.IScope;
-import {User, DefaultUser} from '../../services/entities';
-import { UserService } from '../../services/userService';
-import {LocationService} from "../../services/locationService";
 import ILocationService = angular.ILocationService;
+import { User, DefaultUser, Uri, url } from '../../services/entities';
+import { UserService } from '../../services/userService';
+import { LocationService } from '../../services/locationService';
 
 export class UserController {
 
@@ -19,5 +19,9 @@ export class UserController {
         $location.url('/');
       }
     });
+  }
+
+  groupUrl(id: Uri) {
+    return url(id, 'group');
   }
 }
