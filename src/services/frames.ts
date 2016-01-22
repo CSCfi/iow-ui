@@ -17,6 +17,8 @@ const isDefinedBy = { '@id': 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy',
 const predicate = { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' };
 const valueShape = { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' };
 const pattern = { '@id': 'http://www.w3.org/ns/shacl#pattern'};
+const minCount = { '@id': 'http://www.w3.org/ns/shacl#minCount'};
+const maxCount = { '@id': 'http://www.w3.org/ns/shacl#maxCount'};
 const index = { '@id': 'http://www.w3.org/ns/shacl#index'};
 const nodeKind = { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' };
 const references = { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' };
@@ -141,7 +143,10 @@ export function classFrame(data: any): Frame {
     subject,
     versionInfo,
     equivalentClass,
-	pattern
+    index,
+    minCount,
+    maxCount,
+    pattern
   };
 
   return {

@@ -461,9 +461,9 @@ export class Property extends GraphNode {
     this.dataType = graph.datatype;
     this.valueClass = graph.valueShape;
     this.predicateCurie = graph.predicate;
-    this.index = graph['sh:index'];
-    this.minCount = graph['sh:minCount'];
-    this.maxCount = graph['sh:maxCount'];
+    this.index = graph.index;
+    this.minCount = graph.minCount;
+    this.maxCount = graph.maxCount;
     this.pattern = graph.pattern;
   }
 
@@ -485,9 +485,9 @@ export class Property extends GraphNode {
       datatype: this.dataType,
       valueShape: this.valueClass,
       predicate: this.predicateCurie,
-      'sh:index': this.index,
-      'sh:minCount': this.minCount,
-      'sh:maxCount': this.maxCount,
+      index: this.index,
+      minCount: this.minCount,
+      maxCount: this.maxCount,
       pattern: this.pattern
     }
   }
