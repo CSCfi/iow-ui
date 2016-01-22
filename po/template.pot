@@ -516,6 +516,10 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
+#: translations/misc.html:135
+msgid "ld+json frame"
+msgstr ""
+
 #: components/form/errorMessages.html:13
 msgid "Length error"
 msgstr ""
@@ -631,7 +635,7 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: translations/misc.html:135
+#: translations/misc.html:136
 msgid "Pattern"
 msgstr ""
 

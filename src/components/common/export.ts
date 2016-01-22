@@ -42,44 +42,69 @@ class ExportController {
 
   framedUrlObject: string;
   framedUrlObjectRaw: string;
+  frameUrlObject: string;
+  frameUrlObjectRaw: string;
 
   /* @ngInject */
   constructor($scope: IScope, $window: IWindowService) {
-     $scope.$watch(() => this.entity, entity => {
-       const hrefBase = entity instanceof Model ? 'api/rest/exportModel' : 'api/rest/exportResource';
-       this.downloads = _.map(exportOptions, option => {
-         const href = `${hrefBase}?graph=${encodeURIComponent(entity.id)}&content-type=${encodeURIComponent(option.type)}`;
+    $scope.$watch(() => this.entity, entity => {
+      const hrefBase = entity instanceof Model ? 'api/rest/exportModel' : 'api/rest/exportResource';
+      this.downloads = _.map(exportOptions, option => {
+        const href = `${hrefBase}?graph=${encodeURIComponent(entity.id)}&content-type=${encodeURIComponent(option.type)}`;
 
-         return {
-           name: option.type,
-           filename: formatFileName(entity, option.extension),
-           href,
-           hrefRaw: href + '&raw=true'
-         }
-       });
+        return {
+          name: option.type,
+          filename: formatFileName(entity, option.extension),
+          href,
+          hrefRaw: href + '&raw=true'
+        }
+      });
 
-       const framedData = {'@graph': entity.graph, '@context': entity.context};
-       const frameDataAsString = JSON.stringify(framedData, null, 2);
-       const framedDataBlob =  new Blob([UTF8_BOM, frameDataAsString], { type: 'application/ld+json;charset=utf-8' });
-       const framedDataBlobRaw =  new Blob([UTF8_BOM, frameDataAsString], { type: 'text/plain;charset=utf-8' });
+      const framedDataAsString = JSON.stringify({'@graph': entity.graph, '@context': entity.context}, null, 2);
+      const framedDataBlob =  new Blob([UTF8_BOM, framedDataAsString], { type: 'application/ld+json;charset=utf-8' });
+      const framedDataBlobRaw =  new Blob([UTF8_BOM, framedDataAsString], { type: 'text/plain;charset=utf-8' });
 
-       if (this.framedUrlObject) {
-         $window.URL.revokeObjectURL(this.framedUrlObject);
-       }
+      if (this.framedUrlObject) {
+        $window.URL.revokeObjectURL(this.framedUrlObject);
+      }
 
-       if (this.framedUrlObjectRaw) {
-         $window.URL.revokeObjectURL(this.framedUrlObjectRaw);
-       }
+      if (this.framedUrlObjectRaw) {
+        $window.URL.revokeObjectURL(this.framedUrlObjectRaw);
+      }
 
-       this.framedUrlObject = $window.URL.createObjectURL(framedDataBlob);
-       this.framedUrlObjectRaw = $window.URL.createObjectURL(framedDataBlobRaw);
+      if (this.frameUrlObject) {
+        $window.URL.revokeObjectURL(this.frameUrlObject);
+      }
 
-       this.downloads.push({
-         name: 'framed ld+json',
-         filename: formatFileName(this.entity, 'json'),
-         href: this.framedUrlObject,
-         hrefRaw: this.framedUrlObjectRaw
-       });
-     });
+      if (this.frameUrlObjectRaw) {
+        $window.URL.revokeObjectURL(this.frameUrlObjectRaw);
+      }
+
+      this.framedUrlObject = $window.URL.createObjectURL(framedDataBlob);
+      this.framedUrlObjectRaw = $window.URL.createObjectURL(framedDataBlobRaw);
+
+      this.downloads.push({
+        name: 'framed ld+json',
+        filename: formatFileName(this.entity, 'json'),
+        href: this.framedUrlObject,
+        hrefRaw: this.framedUrlObjectRaw
+      });
+
+      if (this.entity.frame) {
+        const frameAsString = JSON.stringify(this.entity.frame, null, 2);
+        const frameBlob =  new Blob([UTF8_BOM, frameAsString], { type: 'application/json;charset=utf-8' });
+        const frameBlobRaw =  new Blob([UTF8_BOM, frameAsString], { type: 'text/plain;charset=utf-8' });
+
+        this.frameUrlObject = $window.URL.createObjectURL(frameBlob);
+        this.frameUrlObjectRaw = $window.URL.createObjectURL(frameBlobRaw);
+
+        this.downloads.push({
+          name: 'ld+json frame',
+          filename: 'frame.json',
+          href: this.framedUrlObject,
+          hrefRaw: this.frameUrlObjectRaw
+        });
+      }
+    });
   }
 }
