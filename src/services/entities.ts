@@ -21,7 +21,7 @@ export const states = {
   deprecated: 'Deprecated'
 };
 
-type EntityFactory<T extends GraphNode> = (graph: any, context: any) => T
+type EntityFactory<T extends GraphNode> = (graph: any, context: any, frame: any) => T
 
 export function isLocalizable(obj: any): obj is Localizable {
   return typeof obj === 'object';
@@ -57,7 +57,7 @@ export class ExpandedCurie {
 
 export abstract class GraphNode {
 
-  constructor(public type: Type, public graph: any, public context: any) {
+  constructor(public type: Type, public graph: any, public context: any, public frame: any) {
   }
 
   get glyphIconClass(): any {
@@ -131,8 +131,8 @@ export class DefinedBy extends GraphNode {
   type: Type;
   label: Localizable;
 
-  constructor(graph: any, context: any) {
-    super('definedBy', graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super('definedBy', graph, context, frame);
     this.id = graph['@id'];
     this.type = mapType(graph['@type']);
     this.label = graph.label;
@@ -146,8 +146,8 @@ export abstract class AbstractGroup extends GraphNode implements Location {
   comment: Localizable;
   homepage: Uri;
 
-  constructor(graph: any, context: any) {
-    super('group', graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super('group', graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
@@ -164,8 +164,8 @@ export abstract class AbstractGroup extends GraphNode implements Location {
 }
 
 export class GroupListItem extends AbstractGroup {
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
   }
 }
 
@@ -173,13 +173,13 @@ export class Group extends AbstractGroup {
 
   unsaved: boolean;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
   }
 
   clone(): Group {
     const serialization = this.serialize();
-    const result =  new Group(serialization['@graph'], serialization['@context']);
+    const result =  new Group(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
@@ -190,8 +190,8 @@ abstract class AbstractModel extends GraphNode implements Location {
   id: Uri;
   label: Localizable;
 
-  constructor(graph: any, context: any) {
-    super(mapType(graph['@type']), graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(mapType(graph['@type']), graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
   }
@@ -202,8 +202,8 @@ abstract class AbstractModel extends GraphNode implements Location {
 }
 
 export class ModelListItem extends AbstractModel {
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
   }
 }
 
@@ -218,15 +218,15 @@ export class Model extends AbstractModel {
   prefix: string;
   group: GroupListItem;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.comment = graph.comment;
     this.state = graph.versionInfo;
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
-    this.group = new GroupListItem(graph.isPartOf, context);
-    this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference, context));
-    this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context));
+    this.group = new GroupListItem(graph.isPartOf, context, frame);
+    this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference, context, frame));
+    this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context, frame));
     this.copyNamespacesFromRequires();
   }
 
@@ -258,7 +258,7 @@ export class Model extends AbstractModel {
 
   clone(): Model {
     const serialization = this.serialize();
-    const result = new Model(serialization['@graph'], serialization['@context']);
+    const result = new Model(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
@@ -284,8 +284,8 @@ export class Reference extends GraphNode {
   comment: Localizable;
   vocabularyId: string;
 
-  constructor(graph: any, context: any) {
-    super('reference', graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super('reference', graph, context, frame);
     this.vocabularyId = graph['dcterms:identifier'];
     this.id = graph['@id'];
     this.label = graph.title;
@@ -301,8 +301,8 @@ export class Require extends GraphNode {
   private _namespace: Uri;
   modifiable: boolean;
 
-  constructor(graph: any, context: any) {
-    super(graph['@type'] && mapType(graph['@type']) || 'require', graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph['@type'] && mapType(graph['@type']) || 'require', graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     this._namespace = graph['dcap:preferredXMLNamespaceName'];
@@ -336,11 +336,11 @@ abstract class AbstractClass extends GraphNode implements Location {
   comment: Localizable;
   definedBy: DefinedBy;
 
-  constructor(graph: any, context: any) {
-    super(mapType(graph['@type']), graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(mapType(graph['@type']), graph, context, frame);
     this.label = graph.label;
     this.comment = graph.comment;
-    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractClass', graph), context);
+    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractClass', graph), context, frame);
   }
 
   abstract fullId(): Uri;
@@ -362,8 +362,8 @@ export class ClassListItem extends AbstractClass {
 
   id: Uri;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.id = graph['@id'];
   }
 
@@ -383,15 +383,15 @@ export class Class extends AbstractClass {
   equivalentClasses: Curie[];
   unsaved: boolean = false;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.curie = graph['@id'];
     this.subClassOf = graph.subClassOf;
     this.scopeClass = graph.scopeClass;
     this.state = graph.versionInfo;
-    this.properties = _.map(normalizeAsArray(graph.property), property => new Property(property, context));
+    this.properties = _.map(normalizeAsArray(graph.property), property => new Property(property, context, frame));
     if (graph.subject) {
-      this.subject = new Concept(graph.subject, context);
+      this.subject = new Concept(graph.subject, context, frame);
     }
     this.equivalentClasses = normalizeAsArray<Curie>(graph.equivalentClass);
   }
@@ -416,7 +416,7 @@ export class Class extends AbstractClass {
 
   clone(): Class {
     const serialization = this.serialize();
-    const result = new Class(serialization['@graph'], serialization['@context']);
+    const result = new Class(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
@@ -451,8 +451,8 @@ export class Property extends GraphNode {
   maxCount: number;
   pattern: string;
 
-  constructor(graph: any, context: any) {
-    super('property', graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super('property', graph, context, frame);
     this.id = graph['@id'];
     this.state = graph.versionInfo;
     this.label = graph.label;
@@ -499,11 +499,11 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   comment: Localizable;
   definedBy: DefinedBy;
 
-  constructor(graph: any, context: any) {
-    super(mapType(graph['@type']), graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(mapType(graph['@type']), graph, context, frame);
     this.label = graph.label;
     this.comment = graph.comment;
-    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractPredicate', graph), context);
+    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractPredicate', graph), context, frame);
   }
 
   abstract fullId(): Uri;
@@ -537,8 +537,8 @@ export class PredicateListItem extends AbstractPredicate {
 
   id: Uri;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.id = graph['@id'];
   }
 
@@ -556,13 +556,13 @@ export abstract class Predicate extends AbstractPredicate {
   equivalentProperties: Curie[];
   unsaved: boolean = false;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.curie = graph['@id'];
     this.state = graph.versionInfo;
     this.subPropertyOf = graph.subPropertyOf;
     if (graph.subject) {
-      this.subject = new Concept(graph.subject, context);
+      this.subject = new Concept(graph.subject, context, frame);
     }
     this.equivalentProperties = normalizeAsArray<Curie>(graph.equivalentProperty);
   }
@@ -597,8 +597,8 @@ export class Association extends Predicate {
 
   valueClass: Uri;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.valueClass = graph.range;
   }
 
@@ -608,7 +608,7 @@ export class Association extends Predicate {
 
   clone(): Association {
     const serialization = this.serialize();
-    const result = new Association(serialization['@graph'], serialization['@context']);
+    const result = new Association(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
@@ -624,8 +624,8 @@ export class Attribute extends Predicate {
 
   dataType: string;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.dataType = graph.range;
   }
 
@@ -635,7 +635,7 @@ export class Attribute extends Predicate {
 
   clone(): Attribute {
     const serialization = this.serialize();
-    const result = new Attribute(serialization['@graph'], serialization['@context']);
+    const result = new Attribute(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
@@ -654,8 +654,8 @@ export class Concept extends GraphNode {
   comment: Localizable;
   inScheme: Uri[];
 
-  constructor(graph: any, context: any) {
-    super('concept', graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super('concept', graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label || graph.prefLabel;
     this.comment = graph.comment || graph['rdfs:comment'];
@@ -668,8 +668,8 @@ export class ConceptSuggestion extends Concept {
   createdAt: string;
   creator: string;
 
-  constructor(graph: any, context: any) {
-    super(graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
     this.createdAt = graph.atTime;
     this.creator = graph.wasAssociatedWith;
   }
@@ -692,8 +692,8 @@ export class DefaultUser extends GraphNode implements User {
   memberGroups: Uri[];
   name: string;
 
-  constructor(graph: any, context: any) {
-    super('user', graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super('user', graph, context, frame);
     this.createdAt = graph.created;
     this.modifiedAt = graph.modified;
     this.adminGroups = normalizeAsArray<Uri>(graph.isAdminOf);
@@ -750,8 +750,8 @@ export class SearchResult extends GraphNode {
   label: Localizable;
   comment: Localizable;
 
-  constructor(graph: any, context: any) {
-    super(mapType(graph['@type']), graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(mapType(graph['@type']), graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
@@ -769,12 +769,12 @@ export class Usage extends GraphNode {
   definedBy: DefinedBy;
   referrers: Referrer[];
 
-  constructor(graph: any, context: any) {
-    super(mapType(graph['@type']), graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(mapType(graph['@type']), graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
-    this.definedBy = new DefinedBy(fixIsDefinedBy('Usage', graph), context);
-    this.referrers = _.map(normalizeAsArray(graph.isReferencedBy), referrer => new Referrer(referrer, context));
+    this.definedBy = new DefinedBy(fixIsDefinedBy('Usage', graph), context, frame);
+    this.referrers = _.map(normalizeAsArray(graph.isReferencedBy), referrer => new Referrer(referrer, context, frame));
   }
 }
 
@@ -785,12 +785,12 @@ export class Referrer extends GraphNode {
   type: Type;
   definedBy: DefinedBy;
 
-  constructor(graph: any, context: any) {
-    super(mapType(graph['@type']), graph, context);
+  constructor(graph: any, context: any, frame: any) {
+    super(mapType(graph['@type']), graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     if ('isDefinedBy' in graph) {
-      this.definedBy = new DefinedBy(fixIsDefinedBy('Referrer', graph), context);
+      this.definedBy = new DefinedBy(fixIsDefinedBy('Referrer', graph), context, frame);
     }
   }
 
@@ -894,10 +894,11 @@ function frameData($log: angular.ILogService, data: any, frame: any): IPromise<a
 }
 
 function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: any, frame: any, entityFactory: EntityFactory<T>): IPromise<T> {
-  return frameData($log, data, frame(data))
+  const frameObject = frame(data);
+  return frameData($log, data, frameObject)
     .then(framed => {
       try {
-        return entityFactory(framed['@graph'][0], framed['@context'])
+        return entityFactory(framed['@graph'][0], framed['@context'], frameObject)
       } catch (error) {
         $log.error(error);
         throw error;
@@ -906,10 +907,11 @@ function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: any, 
 }
 
 function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: any, frame: any, entityFactory: EntityFactory<T>): IPromise<T[]> {
-  return frameData($log, data, frame(data))
+  const frameObject = frame(data);
+  return frameData($log, data, frameObject)
     .then(framed => {
       try {
-        return _.map(normalizeAsArray(framed['@graph']), element => entityFactory(element, framed['@context']))
+        return _.map(normalizeAsArray(framed['@graph']), element => entityFactory(element, framed['@context'], frameObject))
       } catch (error) {
         $log.error(error);
         throw error;
@@ -923,74 +925,75 @@ export class EntityDeserializer {
   }
 
   deserializeGroupList(data: any): IPromise<GroupListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.groupListFrame, (graph, context) => new GroupListItem(graph, context));
+    return frameAndMapArray(this.$log, data, frames.groupListFrame, (graph, context, frame) => new GroupListItem(graph, context, frame));
   }
 
   deserializeGroup(data: any): IPromise<Group> {
-    return frameAndMap(this.$log, data, frames.groupFrame, (graph, context) => new Group(graph, context));
+    return frameAndMap(this.$log, data, frames.groupFrame, (graph, context, frame) => new Group(graph, context, frame));
   }
 
   deserializeModelList(data: any): IPromise<ModelListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.modelListFrame, (graph, context) => new ModelListItem(graph, context));
+    return frameAndMapArray(this.$log, data, frames.modelListFrame, (graph, context, frame) => new ModelListItem(graph, context, frame));
   }
 
   deserializeModel(data: any): IPromise<Model> {
-    return frameAndMap(this.$log, data, frames.modelFrame, (graph, context) => new Model(graph, context));
+    return frameAndMap(this.$log, data, frames.modelFrame, (graph, context, frame) => new Model(graph, context, frame));
   }
 
   deserializeClassList(data: any): IPromise<ClassListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.classListFrame, (graph, context) => new ClassListItem(graph, context));
+    return frameAndMapArray(this.$log, data, frames.classListFrame, (graph, context, frame) => new ClassListItem(graph, context, frame));
   }
 
   deserializeClass(data: any): IPromise<Class> {
-    return frameAndMap(this.$log, data, frames.classFrame, (graph, context) => new Class(graph, context));
+    return frameAndMap(this.$log, data, frames.classFrame, (graph, context, frame) => new Class(graph, context, frame));
   }
 
   deserializeProperty(data: any): IPromise<Property> {
-    return frameAndMap(this.$log, data, frames.propertyFrame, (graph, context) => new Property(graph, context));
+    return frameAndMap(this.$log, data, frames.propertyFrame, (graph, context, frame) => new Property(graph, context, frame));
   }
 
   deserializePredicateList(data: any): IPromise<PredicateListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.predicateListFrame, (graph, context) => new PredicateListItem(graph, context));
+    return frameAndMapArray(this.$log, data, frames.predicateListFrame, (graph, context, frame) => new PredicateListItem(graph, context, frame));
   }
 
   deserializePredicate(data: any): IPromise<Predicate> {
-    return frameAndMap(this.$log, data, frames.predicateFrame, (graph, context) => {
+    return frameAndMap(this.$log, data, frames.predicateFrame, (graph, context, frame) => {
       switch (mapType(graph['@type'])) {
-        case 'association': return new Association(graph, context);
-        case 'attribute': return new Attribute(graph, context);
+        case 'association': return new Association(graph, context, frame);
+        case 'attribute': return new Attribute(graph, context, frame);
         default: console.log(graph); throw new Error('Incompatible type ' + graph['@type']);
       }
     });
   }
 
   deserializeConceptSuggestion(data: any): IPromise<ConceptSuggestion> {
-    return frameAndMap(this.$log, data, frames.conceptSuggestionFrame, (graph, context) => new ConceptSuggestion(graph, context));
+    return frameAndMap(this.$log, data, frames.conceptSuggestionFrame, (graph, context, frame) => new ConceptSuggestion(graph, context, frame));
   }
 
   deserializeConceptSuggestions(data: any): IPromise<ConceptSuggestion[]> {
-    return frameAndMapArray(this.$log, data, frames.conceptSuggestionFrame, (graph, context) => new ConceptSuggestion(graph, context));
+    return frameAndMapArray(this.$log, data, frames.conceptSuggestionFrame, (graph, context, frame) => new ConceptSuggestion(graph, context, frame));
   }
 
   deserializeConcept(data: any, id: Uri): IPromise<Concept> {
-    return frameData(this.$log, data, frames.fintoConceptFrame(data, id))
-      .then(framed => new Concept(renameProperty(framed.graph[0], 'uri', '@id'), framed['@context']));
+    const frameObject = frames.fintoConceptFrame(data, id);
+    return frameData(this.$log, data, frameObject)
+      .then(framed => new Concept(renameProperty(framed.graph[0], 'uri', '@id'), framed['@context'], frameObject));
   }
 
   deserializeRequire(data: any): IPromise<Require> {
-    return frameAndMap(this.$log, data, frames.requireFrame, (graph, context) => new Require(graph, context));
+    return frameAndMap(this.$log, data, frames.requireFrame, (graph, context, frame) => new Require(graph, context, frame));
   }
 
   deserializeRequires(data: any): IPromise<Require[]> {
-    return frameAndMapArray(this.$log, data, frames.requireFrame, (graph, context) => new Require(graph, context));
+    return frameAndMapArray(this.$log, data, frames.requireFrame, (graph, context, frame) => new Require(graph, context, frame));
   }
 
   deserializeUser(data: any): IPromise<User> {
-    return frameAndMap(this.$log, data, frames.userFrame, (graph, context) => new DefaultUser(graph, context));
+    return frameAndMap(this.$log, data, frames.userFrame, (graph, context, frame) => new DefaultUser(graph, context, frame));
   }
 
   deserializeSearch(data: any): IPromise<SearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (graph, context) => new SearchResult(graph, context))
+    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (graph, context, frame) => new SearchResult(graph, context, frame))
   }
 
   deserializeClassVisualization(data: any): IPromise<any> {
@@ -998,6 +1001,6 @@ export class EntityDeserializer {
   }
 
   deserializeUsage(data: any): IPromise<Usage> {
-    return frameAndMap(this.$log, data, frames.usageFrame, (graph, context) => graph ? new Usage(graph, context) : null);
+    return frameAndMap(this.$log, data, frames.usageFrame, (graph, context, frame) => graph ? new Usage(graph, context, frame) : null);
   }
 }

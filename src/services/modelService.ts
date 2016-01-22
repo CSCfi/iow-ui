@@ -6,6 +6,7 @@ import { EntityDeserializer, Model, ModelListItem, Reference, Require, Uri, Type
 import { ModelCache } from './modelCache';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
+import { modelFrame } from './frames'
 
 export class ModelService {
 
@@ -66,15 +67,19 @@ export class ModelService {
   }
 
   newReference(scheme: any, lang: Language, context: any): IPromise<Reference> {
-    return this.$q.when(
-      new Reference({
-        '@id': `http://www.finto.fi/${scheme.id}`,
-        '@type': 'skos:ConceptScheme',
-        'dcterms:identifier': scheme.id,
-        'title': {
-          [lang]: scheme.title
-        }
-      }, context));
+
+    const graph = {
+      '@id': `http://www.finto.fi/${scheme.id}`,
+      '@type': 'skos:ConceptScheme',
+      'dcterms:identifier': scheme.id,
+      'title': {
+        [lang]: scheme.title
+      }
+    };
+
+    const frameObject = modelFrame({ '@graph': graph, '@context': context});
+
+    return this.$q.when(new Reference(graph, context, frameObject));
   }
 
   getAllRequires(): IPromise<Require[]> {
