@@ -27,6 +27,7 @@
         <div class="btn-group navbar-btn" uib-dropdown is-open="status.isopen">
           <button class="btn btn-default navbar-btn" uib-dropdown-toggle>{{ctrl.getUser().name}} <span class="caret"></span></button>
           <ul class="dropdown-menu" role="menu">
+            <li role="menuitem"><a ng-href="#/user" translate>User details</a></li>
             <li role="menuitem"><a ng-click="ctrl.logout()" translate>Logout</a></li>
           </ul>
         </div>

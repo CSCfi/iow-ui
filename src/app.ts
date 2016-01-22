@@ -15,6 +15,7 @@ import * as _ from 'lodash';
 import { UserService } from './services/userService';
 import { LanguageService } from './services/languageService';
 import { FrontPageController } from './components/frontPageController';
+import { UserController } from './components/user/userController';
 import { ModelController } from './components/model/modelController';
 import { GroupController } from './components/group/groupController';
 import { Language } from './services/languageService';
@@ -43,6 +44,7 @@ const mod = angular.module('iow-ui', [
   require('./components/group'),
   require('./components/model'),
   require('./components/navigation'),
+  require('./components/user'),
   require('./components'),
   require('./services')
 ]);
@@ -56,6 +58,11 @@ mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILo
       template: require('./components/frontPage.html'),
       controller: FrontPageController,
       controllerAs: 'ctrl'
+    })
+    .when('/user', {
+      template: require('./components/user/user.html'),
+      controller: UserController,
+      controllerAs: 'ctrl',
     })
     .when('/group', {
       template: require('./components/group/group.html'),

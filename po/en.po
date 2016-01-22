@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-22 13:42+0200\n"
+"PO-Revision-Date: 2016-01-22 16:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -51,6 +51,10 @@ msgstr ""
 
 #: components/editor/classForm.html:56 components/editor/predicateForm.html:37
 msgid "Additional information"
+msgstr ""
+
+#: components/user/user.html:34 translations/misc.html:143
+msgid "Admin groups"
 msgstr ""
 
 #: components/advancedSearchModal.html:2 components/frontPage.html:30
@@ -276,6 +280,10 @@ msgstr ""
 msgid "Create new require"
 msgstr ""
 
+#: components/user/user.html:17 translations/misc.html:140
+msgid "Created at"
+msgstr ""
+
 #: components/footer.html:3
 msgid "CSC - IT Center for Science Ltd"
 msgstr ""
@@ -291,6 +299,10 @@ msgstr "Data in finnish"
 #: components/footer.html:14
 msgid "Database"
 msgstr ""
+
+#: translations/misc.html:137
+msgid "date format"
+msgstr "DD/MM/YYYY HH.mm"
 
 #: translations/misc.html:8
 msgid "Define concept for the association"
@@ -541,12 +553,16 @@ msgstr ""
 msgid "Login information"
 msgstr ""
 
-#: index.html:30
+#: index.html:31
 msgid "Logout"
 msgstr ""
 
 #: translations/misc.html:130
 msgid "Max count"
+msgstr ""
+
+#: components/user/user.html:27 translations/misc.html:142
+msgid "Member groups"
 msgstr ""
 
 #: translations/misc.html:129
@@ -563,6 +579,10 @@ msgstr ""
 
 #: components/group/group.html:28
 msgid "Models"
+msgstr ""
+
+#: components/user/user.html:22 translations/misc.html:141
+msgid "Modified at"
 msgstr ""
 
 #: translations/misc.html:63
@@ -879,6 +899,18 @@ msgstr ""
 
 #: translations/misc.html:101
 msgid "Use selection"
+msgstr ""
+
+#: components/user/user.html:3 index.html:30
+msgid "User details"
+msgstr ""
+
+#: components/user/user.html:7 translations/misc.html:138
+msgid "User login"
+msgstr ""
+
+#: components/user/user.html:12 translations/misc.html:139
+msgid "User name"
 msgstr ""
 
 #: translations/misc.html:14

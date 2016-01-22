@@ -1,4 +1,4 @@
-import { Location, Model, Group } from './entities';
+import { Location, Model, Group, User } from './entities';
 
 const frontPage = {localizationKey: 'Front page', iowUrl: () => '/'};
 
@@ -26,6 +26,15 @@ export class LocationService {
 
   atGroup(group: Group): void {
     this.changeLocation([group]);
+  }
+
+  atUser(): void {
+    this.changeLocation([{
+      localizationKey: 'User details',
+      iowUrl() {
+        return "/#user"
+      }
+    }]);
   }
 
   atFrontPage(): void {

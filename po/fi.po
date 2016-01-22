@@ -52,6 +52,10 @@ msgstr "Lisää nimiavaruus"
 msgid "Additional information"
 msgstr "Lisätiedot"
 
+#: components/user/user.html:34 translations/misc.html:143
+msgid "Admin groups"
+msgstr "Pääkäyttäjänä ryhmissä"
+
 #: components/advancedSearchModal.html:2 components/frontPage.html:30
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
@@ -277,6 +281,10 @@ msgstr "Luo uusi luokka"
 msgid "Create new require"
 msgstr "Luo uusi nimiavaruus"
 
+#: components/user/user.html:17 translations/misc.html:140
+msgid "Created at"
+msgstr "Luotu"
+
 #: components/footer.html:3
 msgid "CSC - IT Center for Science Ltd"
 msgstr "CSC - Tieteen tietotekniikan keskus Oy"
@@ -292,6 +300,10 @@ msgstr "Sisältö suomeksi"
 #: components/footer.html:14
 msgid "Database"
 msgstr "Tietokanta"
+
+#: translations/misc.html:137
+msgid "date format"
+msgstr "DD.MM.YYYY HH:mm"
 
 #: translations/misc.html:8
 msgid "Define concept for the association"
@@ -550,13 +562,17 @@ msgstr ""
 "Alla olevalla painikkeella ohjaudut eDuuni-palvelun kirjautumiseen. Palaa "
 "sen jälkeen takaisin palveluun."
 
-#: index.html:30
+#: index.html:31
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
 #: translations/misc.html:130
 msgid "Max count"
 msgstr "Enimmäismäärä"
+
+#: components/user/user.html:27 translations/misc.html:142
+msgid "Member groups"
+msgstr "Käyttäjänä ryhmissä"
 
 #: translations/misc.html:129
 msgid "Min count"
@@ -573,6 +589,10 @@ msgstr "Tietokomponenttikirjaston nimi"
 #: components/group/group.html:28
 msgid "Models"
 msgstr "Tietokomponenttikirjastot"
+
+#: components/user/user.html:22 translations/misc.html:141
+msgid "Modified at"
+msgstr "Muokattu"
 
 #: translations/misc.html:63
 msgid "Name"
@@ -891,6 +911,18 @@ msgstr "Käytä luokkaa"
 #: translations/misc.html:101
 msgid "Use selection"
 msgstr "Käytä valintaa"
+
+#: components/user/user.html:3 index.html:30
+msgid "User details"
+msgstr "Käyttäjätiedot"
+
+#: components/user/user.html:7 translations/misc.html:138
+msgid "User login"
+msgstr "Käyttäjätunnus"
+
+#: components/user/user.html:12 translations/misc.html:139
+msgid "User name"
+msgstr "Nimi"
 
 #: translations/misc.html:14
 msgid "Value class"

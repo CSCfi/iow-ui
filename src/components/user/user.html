@@ -1,0 +1,41 @@
+<div ng-show="ctrl.user" class="col-md-5">
+
+  <h2 translate>User details</h2>
+
+  <form>
+    <div>
+      <label translate>User login</label>
+      <div>{{ctrl.user.login}}</div>
+    </div>
+
+    <div>
+      <label translate>User name</label>
+      <div>{{ctrl.user.name}}</div>
+    </div>
+
+    <div>
+      <label translate>Created at</label>
+      <div>{{ctrl.user.createdAt | localizedDate}}</div>
+    </div>
+
+    <div ng-show="ctrl.user.modifiedAt">
+      <label translate>Modified at</label>
+      <div>{{ctrl.user.modifiedAt | localizedDate}}</div>
+    </div>
+
+    <div>
+      <label translate>Member groups</label>
+      <ul>
+        <li ng-repeat="group in ctrl.user.memberGroups">{{group}}</li>
+      </ul>
+    </div>
+
+    <div>
+      <label translate>Admin groups</label>
+      <ul>
+        <li ng-repeat="group in ctrl.user.adminGroups">{{group}}</li>
+      </ul>
+    </div>
+
+  </form>
+</div>
