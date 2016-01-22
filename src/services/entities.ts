@@ -1,10 +1,14 @@
 import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import * as frames from './frames';
-import {glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType} from './utils';
+import * as moment from 'moment';
+import Moment = moment.Moment;
+import { glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType } from './utils';
 import { ModelCache } from './modelCache';
 
 const jsonld: any = require('jsonld');
+
+const isoDateFormat = 'YYYY-MM-DDTHH:mm:ssz';
 
 export type Localizable = { [language: string]: string; }
 export type Uri = string;
@@ -665,12 +669,12 @@ export class Concept extends GraphNode {
 
 export class ConceptSuggestion extends Concept {
 
-  createdAt: string;
+  createdAt: Moment;
   creator: string;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.createdAt = graph.atTime;
+    this.createdAt = moment(graph.atTime, isoDateFormat);
     this.creator = graph.wasAssociatedWith;
   }
 }
@@ -686,19 +690,21 @@ export interface User {
 
 export class DefaultUser extends GraphNode implements User {
 
-  createdAt: string;
-  modifiedAt: string;
+  createdAt: Moment;
+  modifiedAt: Moment;
   adminGroups: Uri[];
   memberGroups: Uri[];
   name: string;
+  login: string;
 
   constructor(graph: any, context: any, frame: any) {
     super('user', graph, context, frame);
-    this.createdAt = graph.created;
-    this.modifiedAt = graph.modified;
+    this.createdAt = moment(graph.created, isoDateFormat);
+    this.modifiedAt = graph.modified && moment(graph.modified, isoDateFormat);
     this.adminGroups = normalizeAsArray<Uri>(graph.isAdminOf);
     this.memberGroups = normalizeAsArray<Uri>(graph.isPartOf);
     this.name = graph.name;
+    this.login = graph['@id'].substring('mailto:'.length);
   }
 
   isLoggedIn(): boolean {
