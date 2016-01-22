@@ -376,10 +376,7 @@
       "@value" : "Henkilön henkilötunnus"
     },
     "datatype" : "xsd:string",
-    "sh:pattern" : {
-      "@language" : "fi",
-      "@value" : "\\d{6}[+-A]\\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]"
-    },
+    "sh:pattern" : "\\d{6}[+-A]\\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]",
     "predicate" : "jhs:henkiloTunnus"
   }, {
     "@id" : "_:t7",
@@ -1168,8 +1165,7 @@
       "@type" : "@id"
     },
     "pattern" : {
-      "@id" : "http://www.w3.org/ns/shacl#pattern",
-      "@type" : "@id"
+      "@id" : "http://www.w3.org/ns/shacl#pattern"
     },
     "equivalentProperty" : {
       "@id" : "http://www.w3.org/2002/07/owl#equivalentProperty",
