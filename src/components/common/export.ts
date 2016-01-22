@@ -38,33 +38,47 @@ function formatFileName(entity: EntityType, extension: string) {
 class ExportController {
 
   entity: Model|Class|Predicate;
-  downloads: { name: string, filename: string, href: string }[];
+  downloads: { name: string, filename: string, href: string , hrefRaw: string}[];
+
   framedUrlObject: string;
+  framedUrlObjectRaw: string;
 
   /* @ngInject */
   constructor($scope: IScope, $window: IWindowService) {
      $scope.$watch(() => this.entity, entity => {
        const hrefBase = entity instanceof Model ? 'api/rest/exportModel' : 'api/rest/exportResource';
        this.downloads = _.map(exportOptions, option => {
+         const href = `${hrefBase}?graph=${encodeURIComponent(entity.id)}&content-type=${encodeURIComponent(option.type)}`;
+
          return {
            name: option.type,
            filename: formatFileName(entity, option.extension),
-           href: `${hrefBase}?graph=${encodeURIComponent(entity.id)}&content-type=${encodeURIComponent(option.type)}`
+           href,
+           hrefRaw: href + '&raw=true'
          }
        });
 
        const framedData = {'@graph': entity.graph, '@context': entity.context};
-       const framedDataBlob =  new Blob([UTF8_BOM, JSON.stringify(framedData, null, 2)], { type: 'application/ld+json;charset=utf-8' });
+       const frameDataAsString = JSON.stringify(framedData, null, 2);
+       const framedDataBlob =  new Blob([UTF8_BOM, frameDataAsString], { type: 'application/ld+json;charset=utf-8' });
+       const framedDataBlobRaw =  new Blob([UTF8_BOM, frameDataAsString], { type: 'text/plain;charset=utf-8' });
 
        if (this.framedUrlObject) {
          $window.URL.revokeObjectURL(this.framedUrlObject);
        }
+
+       if (this.framedUrlObjectRaw) {
+         $window.URL.revokeObjectURL(this.framedUrlObjectRaw);
+       }
+
        this.framedUrlObject = $window.URL.createObjectURL(framedDataBlob);
+       this.framedUrlObjectRaw = $window.URL.createObjectURL(framedDataBlobRaw);
 
        this.downloads.push({
          name: 'framed ld+json',
          filename: formatFileName(this.entity, 'json'),
-         href: this.framedUrlObject
+         href: this.framedUrlObject,
+         hrefRaw: this.framedUrlObjectRaw
        });
      });
   }
