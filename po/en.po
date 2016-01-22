@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-21 17:27+0200\n"
+"PO-Revision-Date: 2016-01-22 13:11+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -384,6 +384,10 @@ msgstr ""
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
+#: components/common/export.html:7
+msgid "Download"
+msgstr ""
+
 #: translations/misc.html:18
 msgid "Draft"
 msgstr ""
@@ -629,6 +633,10 @@ msgstr "Attribute"
 msgid "owl:ObjectProperty"
 msgstr "Association"
 
+#: translations/misc.html:135
+msgid "Pattern"
+msgstr "Regular expression"
+
 #: translations/misc.html:72
 msgid "Prefix"
 msgstr ""
@@ -774,7 +782,7 @@ msgstr ""
 msgid "Shape properties"
 msgstr ""
 
-#: translations/misc.html:21
+#: components/common/export.html:4 translations/misc.html:21
 msgid "Show"
 msgstr ""
 
