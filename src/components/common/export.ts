@@ -101,7 +101,7 @@ class ExportController {
         this.downloads.push({
           name: 'ld+json frame',
           filename: 'frame.json',
-          href: this.framedUrlObject,
+          href: this.frameUrlObject,
           hrefRaw: this.frameUrlObjectRaw
         });
       }
