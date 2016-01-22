@@ -278,6 +278,10 @@ selection-view, .main-editable-content {
     min-height: calc(100vh - 134px);
     padding-right: 40px;
 
+    .editable-wrap {
+      padding-right: 170px;
+    }
+
     .property-ordering {
       position: absolute;
       left: 50%;
