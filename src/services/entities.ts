@@ -449,6 +449,7 @@ export class Property extends GraphNode {
   index: number;
   minCount: number;
   maxCount: number;
+  pattern: string;
 
   constructor(graph: any, context: any) {
     super('property', graph, context);
@@ -463,6 +464,7 @@ export class Property extends GraphNode {
     this.index = graph['sh:index'];
     this.minCount = graph['sh:minCount'];
     this.maxCount = graph['sh:maxCount'];
+    this.pattern = graph.pattern;
   }
 
   get predicateId(): Uri {
@@ -485,7 +487,8 @@ export class Property extends GraphNode {
       predicate: this.predicateCurie,
       'sh:index': this.index,
       'sh:minCount': this.minCount,
-      'sh:maxCount': this.maxCount
+      'sh:maxCount': this.maxCount,
+      pattern: this.pattern
     }
   }
 }
