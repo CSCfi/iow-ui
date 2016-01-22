@@ -1,5 +1,7 @@
 import IFilterService = angular.IFilterService;
 import * as _ from 'lodash';
+import * as moment from 'moment';
+import Moment = moment.Moment;
 import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { LanguageService } from '../../services/languageService';
@@ -17,6 +19,7 @@ import './keyControlItem';
 import './modalTemplate';
 import './typeahead';
 import './searchResults';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);
@@ -47,4 +50,13 @@ mod.filter('capitalize', function() {
 mod.filter('trustAsHtml', ($sce: angular.ISCEService) => {
   'ngInject';
   return (text: string) => $sce.trustAsHtml(text);
+});
+
+mod.filter('localizedDate', (gettextCatalog: gettextCatalog) => {
+  'ngInject';
+  return (moment: Moment) => {
+    if (moment) {
+      return moment.format(gettextCatalog.getString('date format'));
+    }
+  }
 });
