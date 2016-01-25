@@ -45,12 +45,7 @@ export class ClassFormController {
   propertyViews: { [key: string]: PropertyViewController } = {};
 
   /* @ngInject */
-  constructor($scope: IScope, private $timeout: ITimeoutService, $location: ILocationService, private modelCache: ModelCache, private addPropertiesFromSuperClassModal: AddPropertiesFromSuperClassModal) {
-    $scope.$watchCollection(() => this.propertyViews, views => {
-      if (!_.any(views, view => view.isOpen)) {
-        $location.search('property', null);
-      }
-    });
+  constructor(private $timeout: ITimeoutService, private modelCache: ModelCache, private addPropertiesFromSuperClassModal: AddPropertiesFromSuperClassModal) {
   }
 
   addPropertiesFromSuperClass(id: Uri) {
