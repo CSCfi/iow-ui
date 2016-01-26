@@ -39,8 +39,8 @@ const isAdminOf = { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' 
 const equivalentClass = { '@id' : 'http://www.w3.org/2002/07/owl#equivalentClass', '@type' : '@id' };
 const equivalentProperty = { '@id' : 'http://www.w3.org/2002/07/owl#equivalentProperty', '@type' : '@id' };
 const constraint = { '@id': 'http://www.w3.org/ns/shacl#constraint', '@type': '@id' };
-const or = { '@id': 'http://www.w3.org/ns/shacl#or', '@type': '@id' };
-const and = { '@id': 'http://www.w3.org/ns/shacl#and', '@type': '@id' };
+const or = { '@id': 'http://www.w3.org/ns/shacl#or', '@container: '@set' };
+const and = { '@id': 'http://www.w3.org/ns/shacl#and', '@container': '@set' };
 
 type Frame = {};
 
