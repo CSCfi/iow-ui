@@ -27,6 +27,7 @@ import * as jQuery from 'jquery';
 window.jQuery = jQuery;
 import * as angular from 'angular';
 
+require('./vendor/modernizr');
 require('jquery-mousewheel')(jQuery);
 require("typeahead.js");
 require('angular-gettext');
