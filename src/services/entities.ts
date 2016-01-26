@@ -17,6 +17,7 @@ export type RelativeUrl = string;
 export type Curie = string;
 export type Type = string;
 export type State = string;
+export type ConstraintType = string;
 
 export const states = {
   unstable:'Unstable',
@@ -385,6 +386,7 @@ export class Class extends AbstractClass {
   properties: Property[];
   subject: Concept;
   equivalentClasses: Curie[];
+  constraint: Constraint;
   unsaved: boolean = false;
 
   constructor(graph: any, context: any, frame: any) {
@@ -398,6 +400,7 @@ export class Class extends AbstractClass {
       this.subject = new Concept(graph.subject, context, frame);
     }
     this.equivalentClasses = normalizeAsArray<Curie>(graph.equivalentClass);
+    this.constraint = new Constraint(graph.constraint || {}, context, frame);
   }
 
   get id() {
@@ -435,7 +438,83 @@ export class Class extends AbstractClass {
       versionInfo: this.state,
       property: _.map(this.properties, property => property.serialize(true)),
       subject: this.subject && this.subject.serialize(true),
-      equivalentClass: this.equivalentClasses.slice()
+      equivalentClass: this.equivalentClasses.slice(),
+      constraint: this.constraint.items.length > 0 ? this.constraint.serialize(true) : null
+    };
+  }
+}
+
+export class Constraint extends GraphNode {
+
+  constraint: ConstraintType;
+  items: ConstraintListItem[];
+
+  constructor(graph: any, context: any, frame: any) {
+    super('constraint', graph, context, frame);
+
+    const or = _.map(normalizeAsArray(graph.or), item => new ConstraintListItem(item, context, frame));
+    const and = _.map(normalizeAsArray(graph.and), item => new ConstraintListItem(item, context, frame));
+
+    if (or.length > 0 && and.length > 0) {
+      throw new Error('Cannot have both and and or');
+    } else if (or.length > 0) {
+      this.constraint = 'or';
+      this.items = or;
+    } else if (and.length > 0) {
+      this.constraint = 'and';
+      this.items = and;
+    } else {
+      this.constraint = 'or';
+      this.items = [];
+    }
+  }
+
+  addItem(shape: Class) {
+    const graph = {
+      '@id': shape.curie,
+      label: shape.label
+    };
+
+    this.items.push(new ConstraintListItem(graph, this.context, this.frame));
+  }
+
+  removeItem(removedItem: ConstraintListItem) {
+    console.log(removedItem);
+    _.remove(this.items, item => item === removedItem);
+  }
+
+  serializationValues() {
+    const result: any = {};
+    const items = _.map(this.items, item => item.serialize(true));
+
+    if (this.constraint === 'or') {
+      result['@type'] = 'sh:AbstractOrNodeConstraint';
+      result.or = items;
+      result.and = [];
+    } else {
+      result['@type'] = 'sh:AbstractAndNodeConstraint';
+      result.and = items;
+      result.or = [];
+    }
+
+    return result;
+  }
+}
+
+export class ConstraintListItem extends GraphNode {
+
+  shapeId: Uri;
+  label: Localizable;
+
+  constructor(graph: any, context: any, frame: any) {
+    super('constraintItem', graph, context, frame);
+    this.shapeId = graph['@id'];
+    this.label = graph.label;
+  }
+
+  serializationValues() {
+    return {
+      '@id': this.shapeId,
     }
   }
 }
