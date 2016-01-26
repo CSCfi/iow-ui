@@ -41,7 +41,7 @@ msgstr ""
 msgid "Add require"
 msgstr ""
 
-#: components/editor/classForm.html:56
+#: components/editor/classForm.html:65
 #: components/editor/predicateForm.html:37
 msgid "Additional information"
 msgstr ""
@@ -182,6 +182,10 @@ msgstr ""
 
 #: translations/misc.html:73
 msgid "Choose class"
+msgstr ""
+
+#: components/editor/editableConstraint.html:16
+msgid "Choose shape"
 msgstr ""
 
 #: components/editor/editableSubjectSelect.html:5
@@ -540,6 +544,10 @@ msgstr ""
 
 #: components/footer.html:15
 msgid "licensed under the"
+msgstr ""
+
+#: components/editor/classForm.html:61
+msgid "Logical constraints"
 msgstr ""
 
 #: components/navigation/loginModal.html:10

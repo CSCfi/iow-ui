@@ -11,6 +11,7 @@ import './classForm';
 import './classView';
 import './classVisualization';
 import './curieSelect';
+import './editableConstraint';
 import './editableMultipleCurieSelect';
 import './editableSubjectSelect';
 import './predicateForm';

@@ -48,7 +48,7 @@ msgstr "Lisää sanasto"
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
-#: components/editor/classForm.html:56 components/editor/predicateForm.html:37
+#: components/editor/classForm.html:65 components/editor/predicateForm.html:37
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -186,6 +186,10 @@ msgstr "valitse attribuutti"
 #: translations/misc.html:73
 msgid "Choose class"
 msgstr "valitse luokka"
+
+#: components/editor/editableConstraint.html:16
+msgid "Choose shape"
+msgstr "Valitse tarkennettu luokka"
 
 #: components/editor/editableSubjectSelect.html:5
 msgid "Choose subject"
@@ -550,6 +554,10 @@ msgstr "Syöte on liian pitkä"
 #: components/footer.html:15
 msgid "licensed under the"
 msgstr "lisenssillä"
+
+#: components/editor/classForm.html:61
+msgid "Logical constraints"
+msgstr "Loogiset rajoitteet"
 
 #: components/navigation/loginModal.html:10
 #: components/navigation/loginModal.html:2 index.html:24
