@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type, Uri } from '../../services/entities';
-import { SearchClassModal } from './searchClassModal';
+import { SearchClassModal, SearchClassType } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem, Value } from '../form/displayItemFactory';
 import { ModelCache } from '../../services/modelCache';
 import { normalizeSelectionType } from '../../services/utils';
@@ -70,7 +70,7 @@ class EditableMultipleCurieSelectController {
     const excluded = new Set<Uri>(_.map(this.curies, curie => this.model.expandCurie(curie).uri));
 
     const promise: IPromise<WithCurie> = normalizeSelectionType(this.type) === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, excluded)
+      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.Both, excluded)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, excluded);
 
     promise.then(withCurie => {

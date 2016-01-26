@@ -10,13 +10,16 @@ import { LanguageService } from '../../services/languageService';
 import { ModelListItem } from '../../services/entities';
 import { DefinedBy } from '../../services/entities';
 
+export enum SearchClassType {
+  Class, Shape, Both
+}
 
 export class SearchClassModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, showShapes: boolean, excludedClasses: Set<Uri>, onlySelection: boolean) {
+  private openModal(model: Model, searchClassType: SearchClassType, excludedClasses: Set<Uri>, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -25,19 +28,19 @@ export class SearchClassModal {
       backdrop: false,
       resolve: {
         model: () => model,
-        showShapes: () => showShapes,
+        searchClassType: () => searchClassType,
         excludedClasses: () => excludedClasses,
         onlySelection: () => onlySelection
       }
     }).result;
   }
 
-  open(model: Model, showShapes: boolean, excludedClasses: Set<Uri>): IPromise<ConceptCreation|Class> {
-    return this.openModal(model, showShapes, excludedClasses, false);
+  open(model: Model, searchClassType: SearchClassType, excludedClasses: Set<Uri>): IPromise<ConceptCreation|Class> {
+    return this.openModal(model, searchClassType, excludedClasses, false);
   }
 
-  openWithOnlySelection(model: Model, excludedClasses: Set<Uri> = new Set<Uri>()): IPromise<Class> {
-    return this.openModal(model, true, excludedClasses, true);
+  openWithOnlySelection(model: Model, searchClassType: SearchClassType, excludedClasses: Set<Uri> = new Set<Uri>()): IPromise<Class> {
+    return this.openModal(model, searchClassType, excludedClasses, true);
   }
 };
 
@@ -59,13 +62,16 @@ class SearchClassController {
               private classService: ClassService,
               private languageService: LanguageService,
               private model: Model,
-              private showShapes: boolean,
+              private searchClassType: SearchClassType,
               public excludedClasses: Set<Uri>,
               public onlySelection: boolean,
               private searchConceptModal: SearchConceptModal) {
 
+    const showShapes = searchClassType === SearchClassType.Both || searchClassType === SearchClassType.Shape;
+    const showClasses = searchClassType === SearchClassType.Both || searchClassType === SearchClassType.Class;
+
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
-      this.classes = _.filter(allClasses, klass => showShapes || klass.type !== 'shape');
+      this.classes = _.filter(allClasses, klass => (showShapes || klass.type !== 'shape') && (showClasses || klass.type !== 'class'));
       this.models = _.chain(this.classes)
         .filter(klass => this.requireFilter(klass))
         .map(klass => klass.definedBy)

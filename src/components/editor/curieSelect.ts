@@ -4,7 +4,7 @@ import IFormController = angular.IFormController;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
-import { SearchClassModal } from './searchClassModal';
+import { SearchClassModal, SearchClassType } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
 import { normalizeSelectionType } from '../../services/utils';
@@ -56,7 +56,7 @@ class CurieSelectController {
 
   selectCurie() {
     const promise: IPromise<WithCurie> = normalizeSelectionType(this.type) === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model)
+      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.Both)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type);
 
     promise.then(withCurie => {

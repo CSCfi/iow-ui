@@ -13,7 +13,7 @@ import { UserService } from '../../services/userService';
 import { glyphIconClassForType, collectIds, isDifferentUrl, normalizeSelectionType } from '../../services/utils';
 import { Class, Attribute, Predicate, PredicateListItem, ClassListItem, Association, Model, ModelListItem, Type, Concept, ConceptSuggestion, Property, WithIdAndType, Uri, Localizable } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
-import { SearchClassModal } from '../editor/searchClassModal';
+import { SearchClassModal, SearchClassType } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal';
 import { DefinedBy } from '../../services/entities';
@@ -193,7 +193,7 @@ export class ModelController {
 
     if (type === 'class') {
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, false, isProfile ? new Set<Uri>() : collectIds(this.classes)),
+        () => this.searchClassModal.open(this.model, SearchClassType.Class, isProfile ? new Set<Uri>() : collectIds(this.classes)),
         (concept: ConceptCreation) => this.createClass(concept),
         (klass: Class) => isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
       );
