@@ -60,50 +60,52 @@ class ExportController {
         }
       });
 
-      const framedDataAsString = JSON.stringify({'@graph': entity.graph, '@context': entity.context}, null, 2);
-      const framedDataBlob =  new Blob([UTF8_BOM, framedDataAsString], { type: 'application/ld+json;charset=utf-8' });
-      const framedDataBlobRaw =  new Blob([UTF8_BOM, framedDataAsString], { type: 'text/plain;charset=utf-8' });
+      if (Modernizr.bloburls) {
+        const framedDataAsString = JSON.stringify({'@graph': entity.graph, '@context': entity.context}, null, 2);
+        const framedDataBlob = new Blob([UTF8_BOM, framedDataAsString], {type: 'application/ld+json;charset=utf-8'});
+        const framedDataBlobRaw = new Blob([UTF8_BOM, framedDataAsString], {type: 'text/plain;charset=utf-8'});
 
-      if (this.framedUrlObject) {
-        $window.URL.revokeObjectURL(this.framedUrlObject);
-      }
+        if (this.framedUrlObject) {
+          $window.URL.revokeObjectURL(this.framedUrlObject);
+        }
 
-      if (this.framedUrlObjectRaw) {
-        $window.URL.revokeObjectURL(this.framedUrlObjectRaw);
-      }
+        if (this.framedUrlObjectRaw) {
+          $window.URL.revokeObjectURL(this.framedUrlObjectRaw);
+        }
 
-      if (this.frameUrlObject) {
-        $window.URL.revokeObjectURL(this.frameUrlObject);
-      }
+        if (this.frameUrlObject) {
+          $window.URL.revokeObjectURL(this.frameUrlObject);
+        }
 
-      if (this.frameUrlObjectRaw) {
-        $window.URL.revokeObjectURL(this.frameUrlObjectRaw);
-      }
+        if (this.frameUrlObjectRaw) {
+          $window.URL.revokeObjectURL(this.frameUrlObjectRaw);
+        }
 
-      this.framedUrlObject = $window.URL.createObjectURL(framedDataBlob);
-      this.framedUrlObjectRaw = $window.URL.createObjectURL(framedDataBlobRaw);
-
-      this.downloads.push({
-        name: 'framed ld+json',
-        filename: formatFileName(this.entity, 'json'),
-        href: this.framedUrlObject,
-        hrefRaw: this.framedUrlObjectRaw
-      });
-
-      if (this.entity.frame) {
-        const frameAsString = JSON.stringify(this.entity.frame, null, 2);
-        const frameBlob =  new Blob([UTF8_BOM, frameAsString], { type: 'application/json;charset=utf-8' });
-        const frameBlobRaw =  new Blob([UTF8_BOM, frameAsString], { type: 'text/plain;charset=utf-8' });
-
-        this.frameUrlObject = $window.URL.createObjectURL(frameBlob);
-        this.frameUrlObjectRaw = $window.URL.createObjectURL(frameBlobRaw);
+        this.framedUrlObject = $window.URL.createObjectURL(framedDataBlob);
+        this.framedUrlObjectRaw = $window.URL.createObjectURL(framedDataBlobRaw);
 
         this.downloads.push({
-          name: 'ld+json frame',
-          filename: 'frame.json',
-          href: this.frameUrlObject,
-          hrefRaw: this.frameUrlObjectRaw
+          name: 'framed ld+json',
+          filename: formatFileName(this.entity, 'json'),
+          href: this.framedUrlObject,
+          hrefRaw: this.framedUrlObjectRaw
         });
+
+        if (this.entity.frame) {
+          const frameAsString = JSON.stringify(this.entity.frame, null, 2);
+          const frameBlob = new Blob([UTF8_BOM, frameAsString], {type: 'application/json;charset=utf-8'});
+          const frameBlobRaw = new Blob([UTF8_BOM, frameAsString], {type: 'text/plain;charset=utf-8'});
+
+          this.frameUrlObject = $window.URL.createObjectURL(frameBlob);
+          this.frameUrlObjectRaw = $window.URL.createObjectURL(frameBlobRaw);
+
+          this.downloads.push({
+            name: 'ld+json frame',
+            filename: 'frame.json',
+            href: this.frameUrlObject,
+            hrefRaw: this.frameUrlObjectRaw
+          });
+        }
       }
     });
   }
