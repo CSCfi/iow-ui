@@ -31,27 +31,30 @@
 
 <editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
 
-<h4>{{ctrl.class.type + ' properties' | capitalize | translate}}</h4>
+<div ng-show="ctrl.class.properties.length > 0">
+  <h4>{{ctrl.class.type + ' properties' | capitalize | translate}}</h4>
 
-<uib-accordion close-others="true">
-  <uib-accordion-group ng-repeat="property in ctrl.class.properties  | orderBy:'index'" is-open="ctrl.propertyViews[property.id].isOpen">
-    <uib-accordion-heading>
-      <span ng-class="property.glyphIconClass"></span>
-      <span>{{property | translateLabel}}</span>
-      <accordion-chevron is-open="ctrl.propertyViews[property.id].isOpen"></accordion-chevron>
-      <div class="property-ordering" ng-show="ctrl.isEditing()">
+  <uib-accordion close-others="true">
+    <uib-accordion-group ng-repeat="property in ctrl.class.properties  | orderBy:'index'" is-open="ctrl.propertyViews[property.id].isOpen">
+      <uib-accordion-heading>
+        <span ng-class="property.glyphIconClass"></span>
+        <span>{{property | translateLabel}}</span>
+        <accordion-chevron is-open="ctrl.propertyViews[property.id].isOpen"></accordion-chevron>
+        <div class="property-ordering" ng-show="ctrl.isEditing()">
         <span ng-show="!$first"
               class="glyphicon glyphicon-chevron-up"
               ng-click="ctrl.movePropertyUp($event, property)"></span>
-        <br />
+          <br />
         <span ng-show="!$last"
               class="glyphicon glyphicon-chevron-down"
               ng-click="ctrl.movePropertyDown($event, property)"></span>
-      </div>
-    </uib-accordion-heading>
-    <property-view property="property" class="ctrl.class" model="ctrl.model"></property-view>
-  </uib-accordion-group>
-</uib-accordion>
+        </div>
+      </uib-accordion-heading>
+      <property-view property="property" class="ctrl.class" model="ctrl.model"></property-view>
+    </uib-accordion-group>
+  </uib-accordion>
+</div>
+
 
 <h4 translate>Additional information</h4>
 
