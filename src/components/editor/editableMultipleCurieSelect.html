@@ -1,5 +1,5 @@
 <div class="editable-wrap form-group">
-  <label for="{{ctrl.id}}" ng-show="ctrl.items.length > 0 || ctrl.isEditing()">{{ctrl.title | translate}}</label>
+  <label for="{{ctrl.id}}" ng-show="ctrl.title && (ctrl.items.length > 0 || ctrl.isEditing())">{{ctrl.title | translate}}</label>
 
   <span ng-if="!ctrl.isEditing()" ng-repeat="item in ctrl.items">
     <span ng-show="item.showPlain">{{item.displayValue}}<span ng-if="!$last">, </span></span>
@@ -22,7 +22,8 @@
                restrict-duplicates="ctrl.curies"
                ng-model="ctrl.curieInput"
                ng-keydown="ctrl.keyPressed($event)"
-               ng-blur="ctrl.addCurieFromInput()" />
+               ng-blur="ctrl.addCurieFromInput()"
+               ng-if="ctrl.allowInput" />
       </div>
     </error-messages>
 

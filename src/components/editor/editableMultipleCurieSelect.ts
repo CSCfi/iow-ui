@@ -21,7 +21,8 @@ mod.directive('editableMultipleCurieSelect', () => {
       type: '@',
       model: '=',
       id: '@',
-      title: '@'
+      title: '@',
+      allowInput: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
