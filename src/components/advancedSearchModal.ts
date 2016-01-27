@@ -7,6 +7,7 @@ import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { SearchResult, Type } from '../services/entities';
 import IQService = angular.IQService;
+import { containsAny } from '../services/utils';
 
 
 export class AdvancedSearchModal {
@@ -69,6 +70,6 @@ class AdvancedSearchController {
   }
 
   private typeFilter(searchResult: SearchResult) {
-    return this.searchTypes.indexOf(searchResult.type) !== -1;
+    return containsAny(searchResult.type, this.searchTypes);
   }
 }

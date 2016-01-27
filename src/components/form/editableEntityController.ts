@@ -2,18 +2,15 @@ import IFormController = angular.IFormController;
 import ILogService = angular.ILogService;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
-import * as _ from 'lodash';
 import { UserService } from '../../services/userService';
-import { ModelController } from '../model/modelController';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { Attribute, Association, Class, AbstractGroup, Group, GroupListItem, Model, Predicate, Uri } from '../../services/entities';
+import { Attribute, Association, Class, AbstractGroup, Group, Model, Uri } from '../../services/entities';
 
 export interface EditableForm extends IFormController {
   editing: boolean;
 }
 
 export interface EditableScope extends IScope {
-  modelController: ModelController;
   form: EditableForm;
 }
 
@@ -73,7 +70,6 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
     this.persisting = true;
     (editable.unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable.id))
       .then(() => {
-        this.$scope.modelController && this.$scope.modelController.selectionEdited(editable, editableInEdit);
         this.select(editableInEdit);
         this.persisting = false;
       }, err => {
@@ -90,7 +86,6 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
       this.deleteConfirmationModal.open(this.getEditable(), this.isNotReference())
         .then(() => this.remove(editable))
         .then(() => {
-          this.$scope.modelController && this.$scope.modelController.selectionDeleted(editable);
           this.select(null);
           this.persisting = false;
         }, err => {
@@ -140,7 +135,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   getRemoveText(): string {
-    return 'Delete ' + this.getEditable().type;
+    return 'Delete ' + this.getEditable().normalizedType;
   }
 
   canAskForRights(): boolean {

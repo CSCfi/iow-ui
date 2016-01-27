@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as frames from './frames';
 import * as moment from 'moment';
 import Moment = moment.Moment;
-import { glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType } from './utils';
+import { glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType, containsAny, normalizeModelType } from './utils';
 import { ModelCache } from './modelCache';
 
 const jsonld: any = require('jsonld');
@@ -62,7 +62,14 @@ export class ExpandedCurie {
 
 export abstract class GraphNode {
 
-  constructor(public type: Type, public graph: any, public context: any, public frame: any) {
+  type: Type[];
+
+  constructor(public graph: any, public context: any, public frame: any) {
+    this.type = mapGraphTypeObject(graph['@type']);
+  }
+
+  isOfType(type: Type) {
+    return containsAny(this.type, [type]);
   }
 
   get glyphIconClass(): any {
@@ -97,20 +104,22 @@ export abstract class GraphNode {
     }
   }
 
-  linkTo(type: Type, id: Uri|Curie, modelCache: ModelCache) {
+  linkTo(type:Type|Type[], id:Uri|Curie, modelCache:ModelCache) {
+    const typeArray = normalizeAsArray(type);
+
     if (id) {
       const expanded = this.expandCurie(id);
       if (expanded) {
         if (!modelCache.modelIdForNamespace(expanded.namespace)) {
           return expanded.uri;
         } else {
-          return url(expanded.uri, type);
+          return url(expanded.uri, typeArray);
         }
       } else {
         if (!(modelCache.modelIdForNamespace(id + '#') || modelCache.modelIdForNamespace(id + '/'))) {
           return id;
         } else {
-          return url(id, type);
+          return url(id, typeArray);
         }
       }
     }
@@ -133,13 +142,11 @@ export abstract class GraphNode {
 export class DefinedBy extends GraphNode {
 
   id: Uri;
-  type: Type;
   label: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
-    super('definedBy', graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
-    this.type = mapType(graph['@type']);
     this.label = graph.label;
   }
 }
@@ -150,9 +157,10 @@ export abstract class AbstractGroup extends GraphNode implements Location {
   label: Localizable;
   comment: Localizable;
   homepage: Uri;
+  normalizedType: Type = 'group';
 
   constructor(graph: any, context: any, frame: any) {
-    super('group', graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
@@ -194,11 +202,13 @@ abstract class AbstractModel extends GraphNode implements Location {
 
   id: Uri;
   label: Localizable;
+  normalizedType: Type;
 
   constructor(graph: any, context: any, frame: any) {
-    super(mapType(graph['@type']), graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
+    this.normalizedType = normalizeModelType(this.type);
   }
 
   iowUrl() {
@@ -229,6 +239,10 @@ export class Model extends AbstractModel {
     this.state = graph.versionInfo;
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
+    if (!graph.isPartOf['@type']) {
+      // TODO: Shouldn't be needed but in all cases API doesn't return it
+      graph.isPartOf['@type'] = 'foaf:Group';
+    }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference, context, frame));
     this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context, frame));
@@ -290,7 +304,7 @@ export class Reference extends GraphNode {
   vocabularyId: string;
 
   constructor(graph: any, context: any, frame: any) {
-    super('reference', graph, context, frame);
+    super(graph, context, frame);
     this.vocabularyId = graph['dcterms:identifier'];
     this.id = graph['@id'];
     this.label = graph.title;
@@ -307,7 +321,7 @@ export class Require extends GraphNode {
   modifiable: boolean;
 
   constructor(graph: any, context: any, frame: any) {
-    super(graph['@type'] && mapType(graph['@type']) || 'require', graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     this._namespace = graph['dcap:preferredXMLNamespaceName'];
@@ -340,15 +354,26 @@ abstract class AbstractClass extends GraphNode implements Location {
   label: Localizable;
   comment: Localizable;
   definedBy: DefinedBy;
+  normalizedType: Type;
 
   constructor(graph: any, context: any, frame: any) {
-    super(mapType(graph['@type']), graph, context, frame);
+    super(graph, context, frame);
     this.label = graph.label;
     this.comment = graph.comment;
     this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractClass', graph), context, frame);
+    this.normalizedType = normalizeSelectionType(this.type);
   }
 
   abstract fullId(): Uri;
+
+  matchesIdentity(obj: {type: Type, id: Uri}) {
+    const typeAndId = this.toTypeAndId();
+    return obj && typeAndId.id === obj.id && typeAndId.type === obj.type;
+  }
+
+  toTypeAndId() {
+    return {type: this.normalizedType, id: this.fullId()};
+  }
 
   isClass() {
     return true;
@@ -450,7 +475,7 @@ export class Constraint extends GraphNode {
   items: ConstraintListItem[];
 
   constructor(graph: any, context: any, frame: any) {
-    super('constraint', graph, context, frame);
+    super(graph, context, frame);
 
     const or = _.map(normalizeAsArray(graph.or), item => new ConstraintListItem(item, context, frame));
     const and = _.map(normalizeAsArray(graph.and), item => new ConstraintListItem(item, context, frame));
@@ -479,7 +504,6 @@ export class Constraint extends GraphNode {
   }
 
   removeItem(removedItem: ConstraintListItem) {
-    console.log(removedItem);
     _.remove(this.items, item => item === removedItem);
   }
 
@@ -507,7 +531,7 @@ export class ConstraintListItem extends GraphNode {
   label: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
-    super('constraintItem', graph, context, frame);
+    super(graph, context, frame);
     this.shapeId = graph['@id'];
     this.label = graph.label;
   }
@@ -535,7 +559,7 @@ export class Property extends GraphNode {
   pattern: string;
 
   constructor(graph: any, context: any, frame: any) {
-    super('property', graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.state = graph.versionInfo;
     this.label = graph.label;
@@ -555,7 +579,7 @@ export class Property extends GraphNode {
   }
 
   get glyphIconClass() {
-    return glyphIconClassForType(this.dataType ? 'attribute' : this.valueClass ? 'association' : null);
+    return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : null);
   }
 
   serializationValues() {
@@ -581,15 +605,26 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   label: Localizable;
   comment: Localizable;
   definedBy: DefinedBy;
+  normalizedType: Type;
 
   constructor(graph: any, context: any, frame: any) {
-    super(mapType(graph['@type']), graph, context, frame);
+    super(graph, context, frame);
     this.label = graph.label;
     this.comment = graph.comment;
     this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractPredicate', graph), context, frame);
+    this.normalizedType = normalizeSelectionType(this.type);
   }
 
   abstract fullId(): Uri;
+
+  matchesIdentity(obj: {type: Type, id: Uri}) {
+    const typeAndId = this.toTypeAndId();
+    return obj && typeAndId.id === obj.id && typeAndId.type === obj.type;
+  }
+
+  toTypeAndId() {
+    return {type: this.normalizedType, id: this.fullId()};
+  }
 
   get rawType() {
     return this.graph['@type'];
@@ -604,11 +639,11 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   }
 
   isAttribute() {
-    return this.type =='attribute';
+    return this.isOfType('attribute');
   }
 
   isAssociation() {
-    return this.type =='association';
+    return this.isOfType('association');
   }
 
   iowUrl(): RelativeUrl {
@@ -738,7 +773,7 @@ export class Concept extends GraphNode {
   inScheme: Uri[];
 
   constructor(graph: any, context: any, frame: any) {
-    super('concept', graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label || graph.prefLabel;
     this.comment = graph.comment || graph['rdfs:comment'];
@@ -777,7 +812,7 @@ export class DefaultUser extends GraphNode implements User {
   login: string;
 
   constructor(graph: any, context: any, frame: any) {
-    super('user', graph, context, frame);
+    super(graph, context, frame);
     this.createdAt = moment(graph.created, isoDateFormat);
     this.modifiedAt = graph.modified && moment(graph.modified, isoDateFormat);
     this.adminGroups = normalizeAsArray<Uri>(graph.isAdminOf);
@@ -836,7 +871,7 @@ export class SearchResult extends GraphNode {
   comment: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
-    super(mapType(graph['@type']), graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     this.comment = graph.comment;
@@ -855,7 +890,7 @@ export class Usage extends GraphNode {
   referrers: Referrer[];
 
   constructor(graph: any, context: any, frame: any) {
-    super(mapType(graph['@type']), graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     this.definedBy = new DefinedBy(fixIsDefinedBy('Usage', graph), context, frame);
@@ -867,11 +902,10 @@ export class Referrer extends GraphNode {
 
   id: Uri;
   label: Localizable;
-  type: Type;
   definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
-    super(mapType(graph['@type']), graph, context, frame);
+    super(graph, context, frame);
     this.id = graph['@id'];
     this.label = graph.label;
     if ('isDefinedBy' in graph) {
@@ -911,54 +945,61 @@ function fixIsDefinedBy(functionName: string, graph: any) {
 }
 
 function mapType(type: string): Type {
-  // TODO: proper strategy of matching the type in case of an array
-  for (const item of normalizeAsArray(type)) {
-    switch (item) {
-      case 'rdfs:Class':
-        return 'class';
-      case 'sh:Shape':
-        return 'shape';
-      case 'owl:DatatypeProperty':
-        return 'attribute';
-      case 'owl:ObjectProperty':
-        return 'association';
-      case 'owl:Ontology':
-        return 'model';
-      case 'dcap:DCAP':
-        return 'profile';
-      case 'foaf:Group':
-        return 'group';
-      case 'skos:Collection': // TODO what is this?
-        return null;
-      case 'dcap:MetadataVocabulary':
-        return 'externalRequire';
-      default:
+  switch (type) {
+    case 'rdfs:Class':
+      return 'class';
+    case 'sh:Shape':
+      return 'shape';
+    case 'owl:DatatypeProperty':
+      return 'attribute';
+    case 'owl:ObjectProperty':
+      return 'association';
+    case 'owl:Ontology':
+      return 'model';
+    case 'dcap:DCAP':
+      return 'profile';
+    case 'foaf:Group':
+      return 'group';
+    case 'dcap:MetadataVocabulary':
+      return 'library';
+    case 'sh:AbstractOrNodeConstraint':
+    case 'sh:AbstractAndNodeConstraint':
+      return 'constraint';
+    case 'foaf:Person':
+      return 'user';
+    case 'skos:ConceptScheme':
+      return 'concept';
+    default:
+      console.log('unknown type not mapped: ' + type);
       // continue
-    }
   }
+}
 
-  throw new Error('No type found for: ' + type);
+function mapGraphTypeObject(type: string|string[]): Type[] {
+  return _.chain(normalizeAsArray(type))
+    .map(mapType)
+    .reject(type => !type)
+    .value();
 }
 
 export function modelUrl(id: Uri): RelativeUrl {
   return `/model?urn=${encodeURIComponent(id)}`;
 }
 
-export function url(id: Uri, type: Type) {
-  switch(type) {
-    case 'model':
-    case 'profile':
-      return modelUrl(id);
-    case 'group':
-      return `/group?urn=${encodeURIComponent(id)}`;
-    case 'association':
-    case 'attribute':
-    case 'class':
-    case 'shape':
-      const [modelId] = id.split('#');
+export function url(id: Uri, type: Type[]) {
+  if (containsAny(type, ['model', 'profile'])) {
+    return modelUrl(id);
+  } else if (containsAny(type, ['group'])) {
+    return `/group?urn=${encodeURIComponent(id)}`;
+  } else if (containsAny(type, ['association', 'attribute', 'class', 'shape'])) {
+    const [modelId] = id.split('#');
+    if (type.length > 1) {
+      throw new Error('Must of single type, was: ' + type.join());
+    } else {
       return `${modelUrl(modelId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id)}`;
-    default:
-      throw new Error('Unsupported type for url: ' + type);
+    }
+  } else {
+    throw new Error('Unsupported type for url: ' + type);
   }
 }
 
@@ -1043,10 +1084,14 @@ export class EntityDeserializer {
 
   deserializePredicate(data: any): IPromise<Predicate> {
     return frameAndMap(this.$log, data, frames.predicateFrame, (graph, context, frame) => {
-      switch (mapType(graph['@type'])) {
-        case 'association': return new Association(graph, context, frame);
-        case 'attribute': return new Attribute(graph, context, frame);
-        default: console.log(graph); throw new Error('Incompatible type ' + graph['@type']);
+      const types = mapGraphTypeObject(graph['@type']);
+
+      if (containsAny(types, ['association'])) {
+        return new Association(graph, context, frame);
+      } else if (containsAny(types, ['attribute'])) {
+        return new Attribute(graph, context, frame);
+      } else {
+        throw new Error('Incompatible type: ' + types.join());
       }
     });
   }

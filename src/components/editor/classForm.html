@@ -13,11 +13,11 @@
   <textarea id="classComment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea>
 </editable>
 
-<editable ng-if="ctrl.class.type === 'class'" title="Superclass" link="ctrl.linkToSuperclass()">
+<editable ng-if="ctrl.class.isOfType('class')" title="Superclass" link="ctrl.linkToSuperclass()">
   <curie-select id="superClass" type="class" curie="ctrl.class.subClassOf" model="ctrl.model" after-selected="ctrl.addPropertiesFromSuperClass(id)"></curie-select>
 </editable>
 
-<editable ng-if="ctrl.class.type === 'shape'" title="Specialized from class" link="ctrl.linkToScopeclass()">
+<editable ng-if="ctrl.class.isOfType('shape')" title="Specialized from class" link="ctrl.linkToScopeclass()">
   <curie-select id="scopeClass" type="class" curie="ctrl.class.scopeClass" model="ctrl.model" mandatory="true"></curie-select>
 </editable>
 
@@ -55,7 +55,7 @@
   </uib-accordion>
 </div>
 
-<div ng-show="ctrl.class.type === 'shape'">
+<div ng-show="ctrl.class.isOfType('shape')">
   <h4 ng-show="ctrl.class.constraint.items.length > 0 || ctrl.isEditing()" translate>Logical constraints</h4>
   <editable-constraint constraint="ctrl.class.constraint" model="ctrl.model"></editable-constraint>
 </div>

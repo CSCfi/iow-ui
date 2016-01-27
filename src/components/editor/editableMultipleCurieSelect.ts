@@ -9,7 +9,6 @@ import { Model, Type, Uri } from '../../services/entities';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem, Value } from '../form/displayItemFactory';
 import { ModelCache } from '../../services/modelCache';
-import { normalizeSelectionType } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -69,7 +68,7 @@ class EditableMultipleCurieSelectController {
   addCurie() {
     const excluded = new Set<Uri>(_.map(this.curies, curie => this.model.expandCurie(curie).uri));
 
-    const promise: IPromise<WithCurie> = normalizeSelectionType(this.type) === 'class'
+    const promise: IPromise<WithCurie> = this.type === 'class'
       ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.Both, excluded)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, excluded);
 

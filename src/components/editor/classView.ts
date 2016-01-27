@@ -19,17 +19,13 @@ mod.directive('classView', () => {
   return {
     scope: {
       class: '=',
-      model: '='
+      model: '=',
+      modelController: '='
     },
     restrict: 'E',
     template: require('./classView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['classView', '^ngController'],
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      $scope.modelController = controllers[1];
-      $scope.modelController.registerView(controllers[0]);
-    },
     controller: ClassViewController
   }
 });
@@ -37,8 +33,10 @@ mod.directive('classView', () => {
 export class ClassViewController extends EditableEntityController<Class> {
 
   private classForm: ClassFormController;
+
   class: Class;
   model: Model;
+  modelController: ModelController;
 
   /* @ngInject */
   constructor($scope: EditableScope,
@@ -48,6 +46,7 @@ export class ClassViewController extends EditableEntityController<Class> {
               private searchPredicateModal: SearchPredicateModal,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
+    this.modelController.registerView(this);
   }
 
   registerForm(form: ClassFormController) {
@@ -70,15 +69,15 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   create(entity: Class) {
-    return this.classService.createClass(entity);
+    return this.classService.createClass(entity).then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
   }
 
   update(entity: Class, oldId: string) {
-    return this.classService.updateClass(entity, oldId);
+    return this.classService.updateClass(entity, oldId).then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
   }
 
   remove(entity: Class) {
-    return this.classService.deleteClass(entity.id, this.model.id);
+    return this.classService.deleteClass(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(this.class));
   }
 
   rights(): Rights {
@@ -106,6 +105,6 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   getRemoveText(): string {
     const text = super.getRemoveText();
-    return this.isNotReference() ? text : text + ' from this ' + this.model.type;
+    return this.isNotReference() ? text : text + ' from this ' + this.model.normalizedType;
   }
 }

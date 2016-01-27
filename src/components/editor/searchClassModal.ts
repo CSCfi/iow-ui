@@ -4,10 +4,9 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal'
-import { Class, ClassListItem, Concept, Model, Reference, Uri } from '../../services/entities';
+import { Class, ClassListItem, Model, Uri } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
-import { ModelListItem } from '../../services/entities';
 import { DefinedBy } from '../../services/entities';
 
 export enum SearchClassType {
@@ -71,7 +70,7 @@ class SearchClassController {
     const showClasses = searchClassType === SearchClassType.Both || searchClassType === SearchClassType.Class;
 
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
-      this.classes = _.filter(allClasses, klass => (showShapes || klass.type !== 'shape') && (showClasses || klass.type !== 'class'));
+      this.classes = _.filter(allClasses, klass => (showShapes || !klass.isOfType('shape')) && (showClasses || !klass.isOfType('class')));
       this.models = _.chain(this.classes)
         .filter(klass => this.requireFilter(klass))
         .map(klass => klass.definedBy)

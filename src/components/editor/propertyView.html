@@ -33,7 +33,7 @@
     <input id="{{ctrl.property.id + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
   </editable>
 
-  <div ng-if="ctrl.model.type === 'profile'">
+  <div ng-if="ctrl.model.isOfType('profile')">
     <editable title="Min count">
       <input id="{{ctrl.property.id + 'minCount'}}" class="form-control" type="number" ng-model="ctrl.property.minCount" />
     </editable>

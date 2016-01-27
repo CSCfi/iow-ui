@@ -19,20 +19,13 @@ export const mod = angular.module('iow.components.model');
 mod.directive('modelView', () => {
   return {
     scope: {
-      model: '='
+      model: '=',
+      modelController: '='
     },
     restrict: 'E',
     template: require('./modelView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['modelView', '^ngController'],
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      const modelViewController: ModelViewController = controllers[0];
-      const modelController: ModelController = controllers[1];
-      $scope.modelController = modelController;
-      modelController.registerView(modelViewController);
-      modelViewController.getRequiredModels = () => modelController.getRequiredModels();
-    },
     controller: ModelViewController
   };
 });
@@ -45,7 +38,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   visible: boolean = false;
   model: Model;
-  getRequiredModels: () => Set<Uri>;
+  modelController: ModelController;
 
   private referencesView: View<Reference>;
   private requiresView: View<Require>;
@@ -60,6 +53,8 @@ export class ModelViewController extends EditableEntityController<Model> {
               private languageService: LanguageService,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
+
+    this.modelController.registerView(this);
 
     $scope.$watch(() => this.isEditing(), editing => {
       if (editing) {
@@ -95,7 +90,7 @@ export class ModelViewController extends EditableEntityController<Model> {
     const language = this.languageService.modelLanguage;
     const requireMap = collectIds(this.editableInEdit.requires);
     requireMap.add(this.model.id);
-    const allowProfiles = this.model.type === 'profile';
+    const allowProfiles = this.model.isOfType('profile');
     this.searchRequireModal.open(requireMap, allowProfiles, language)
       .then((require: Require) => {
         this.editableInEdit.addRequire(require);
@@ -104,7 +99,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   isRequireInUse(require: Require) {
-    return this.getRequiredModels().has(require.id);
+    return this.modelController.getRequiredModels().has(require.id);
   }
 
   removeRequire(require: Require) {

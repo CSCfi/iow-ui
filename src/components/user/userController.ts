@@ -22,6 +22,6 @@ export class UserController {
   }
 
   groupUrl(id: Uri) {
-    return url(id, 'group');
+    return url(id, ['group']);
   }
 }

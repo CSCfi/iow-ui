@@ -10,8 +10,8 @@ import { LocationService } from '../../services/locationService';
 import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
-import { glyphIconClassForType, collectIds, isDifferentUrl, normalizeSelectionType } from '../../services/utils';
-import { Class, Attribute, Predicate, PredicateListItem, ClassListItem, Association, Model, ModelListItem, Type, Concept, ConceptSuggestion, Property, WithIdAndType, Uri, Localizable } from '../../services/entities';
+import { glyphIconClassForType, collectIds, isDifferentUrl } from '../../services/utils';
+import { Class, Predicate, PredicateListItem, ClassListItem, Model, Type, Property, WithIdAndType, Uri } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal, SearchClassType } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
@@ -26,9 +26,9 @@ export class ModelController {
   selectedItem: WithIdAndType;
   model: Model;
   selection: Class|Predicate;
-  classes: ClassListItem[];
-  associations: PredicateListItem[];
-  attributes: PredicateListItem[];
+  classes: ClassListItem[] = [];
+  associations: PredicateListItem[] = [];
+  attributes: PredicateListItem[] = [];
 
   tabs = [
     new Tab('class', () => this.classes, this),
@@ -122,17 +122,18 @@ export class ModelController {
     this.views.push(view);
   }
 
-  isSelected(selection: WithIdAndType) {
-    return areEqual(selection, this.selectedItem);
+  isSelected(selection: ClassListItem|PredicateListItem) {
+    return selection.matchesIdentity(this.selectedItem);
   }
 
-  private selectionQueue: WithIdAndType[] = [];
+  private selectionQueue: (ClassListItem|PredicateListItem)[] = [];
 
-  select(listItem: WithIdAndType) {
-    const fetchUntilStable: ((selection: WithIdAndType) => IPromise<Class|Predicate>) = item => {
-      return this.fetchEntityByTypeAndId(item).then((entity: any) => {
+  select(listItem: ClassListItem|PredicateListItem) {
+
+    const fetchUntilStable: ((selection: ClassListItem|PredicateListItem) => IPromise<Class|Predicate>) = item => {
+      return this.fetchEntityByTypeAndId(item.toTypeAndId()).then((entity: any) => {
         const last = this.selectionQueue[this.selectionQueue.length - 1];
-        if (areEqual(entity, last)) {
+        if (entity.matchesIdentity(last.toTypeAndId())) {
           return entity;
         } else {
           return fetchUntilStable(last);
@@ -141,7 +142,7 @@ export class ModelController {
     };
 
     this.askPermissionWhenEditing(() => {
-      this.selectedItem = listItem;
+      this.selectedItem = listItem.toTypeAndId();
       if (this.selectionQueue.length > 0) {
         this.selectionQueue.push(listItem);
       } else {
@@ -154,7 +155,7 @@ export class ModelController {
     });
   }
 
-  selectionEdited(oldSelection: WithIdAndType, newSelection: WithIdAndType) {
+  selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
     this.updateSelectables();
   }
 
@@ -162,10 +163,10 @@ export class ModelController {
     return this.model && this.userService.user.isMemberOf(this.model);
   }
 
-  selectionDeleted(selection: WithIdAndType) {
-    _.remove(this.classes, item => areEqual(item, selection));
-    _.remove(this.attributes, item => areEqual(item, selection));
-    _.remove(this.associations, item => areEqual(item, selection));
+  selectionDeleted(selection: Class|Predicate) {
+    _.remove(this.classes, item => item.matchesIdentity(selection.toTypeAndId()));
+    _.remove(this.attributes, item => item.matchesIdentity(selection.toTypeAndId()));
+    _.remove(this.associations, item => item.matchesIdentity(selection.toTypeAndId()));
   }
 
   private updateLocation() {
@@ -175,7 +176,7 @@ export class ModelController {
       if (!this.model.unsaved) {
         const newSearch: any = {urn: this.model.id};
         if (this.selection) {
-          newSearch[normalizeSelectionType(this.selection.type)] = this.selection.id;
+          newSearch[this.selection.normalizedType] = this.selection.id;
         }
 
         const search = _.clone(this.$location.search());
@@ -189,7 +190,7 @@ export class ModelController {
   }
 
   public addEntity(type: Type) {
-    const isProfile = this.model.type === 'profile';
+    const isProfile = this.model.isOfType('profile');
 
     if (type === 'class') {
       this.createOrAssignEntity(
@@ -301,8 +302,8 @@ export class ModelController {
   }
 
   private fetchEntityByTypeAndId(selection: WithIdAndType): IPromise<Class|Predicate> {
-    if (!this.selection || !areEqual(this.selection, selection)) {
-      return selection.type === 'class' || selection.type === 'shape'
+    if (!this.selection || !this.selection.matchesIdentity(selection)) {
+      return selection.type === 'class'
         ? this.classService.getClass(selection.id)
         : this.predicateService.getPredicate(selection.id);
     } else {
@@ -343,19 +344,11 @@ export class ModelController {
 
   private updatePredicates(): IPromise<PredicateListItem[]> {
     return this.predicateService.getPredicatesForModel(this.model.id).then(predicates => {
-      this.attributes = _.filter(predicates, predicate => predicate.type === 'attribute');
-      this.associations = _.filter(predicates, predicate => predicate.type === 'association');
+      this.attributes = _.filter(predicates, predicate => predicate.isOfType('attribute'));
+      this.associations = _.filter(predicates, predicate => predicate.isOfType('association'));
       return predicates;
     });
   }
-}
-
-function areEqual(lhs: WithIdAndType, rhs: WithIdAndType): boolean {
-  if ((lhs && !rhs) || (rhs && !lhs)) {
-    return false;
-  }
-
-  return normalizeSelectionType(lhs.type) === normalizeSelectionType(rhs.type) && lhs.id === rhs.id;
 }
 
 class RouteData {
@@ -389,9 +382,9 @@ class Tab {
   active: boolean;
   addNew: () => void;
 
-  constructor(public type: Type, public items: () => WithIdAndType[], modelController: ModelController) {
+  constructor(public type: Type, public items: () => ClassListItem[]|PredicateListItem[], modelController: ModelController) {
     this.addLabel = 'Add ' + type;
-    this.glyphIconClass = glyphIconClassForType(type);
+    this.glyphIconClass = glyphIconClassForType([type]);
     this.addNew = () => modelController.addEntity(type);
   }
 }

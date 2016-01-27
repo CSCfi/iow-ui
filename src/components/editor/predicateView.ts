@@ -6,6 +6,7 @@ import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { Attribute, Association, GroupListItem, Predicate, Model, Uri, states } from '../../services/entities';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
+import { ModelController } from '../model/modelController';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -14,17 +15,13 @@ mod.directive('predicateView', () => {
   return {
     scope: {
       predicate: '=',
-      model: '='
+      model: '=',
+      modelController: '='
     },
     restrict: 'E',
     template: require('./predicateView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['predicateView', '^ngController'],
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      $scope.modelController = controllers[1];
-      $scope.modelController.registerView(controllers[0]);
-    },
     controller: PredicateViewController
   };
 });
@@ -33,22 +30,24 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   predicate: Association|Attribute;
   model: Model;
+  modelController: ModelController;
 
   /* @ngInject */
   constructor($scope: EditableScope, $log: ILogService, deleteConfirmationModal: DeleteConfirmationModal, private predicateService: PredicateService, userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
+    this.modelController.registerView(this);
   }
 
   create(entity: Association|Attribute) {
-    return this.predicateService.createPredicate(entity);
+    return this.predicateService.createPredicate(entity).then(() => this.modelController.selectionEdited(this.predicate, this.editableInEdit));
   }
 
   update(entity: Association|Attribute, oldId: Uri) {
-    return this.predicateService.updatePredicate(entity, oldId);
+    return this.predicateService.updatePredicate(entity, oldId).then(() => this.modelController.selectionEdited(this.predicate, this.editableInEdit));
   }
 
   remove(entity: Association|Attribute) {
-    return this.predicateService.deletePredicate(entity.id, this.model.id);
+    return this.predicateService.deletePredicate(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(this.predicate));
   }
 
   rights(): Rights {
@@ -76,6 +75,6 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   getRemoveText(): string {
     const text = super.getRemoveText();
-    return this.isNotReference() ? text : text + ' from this ' + this.model.type;
+    return this.isNotReference() ? text : text + ' from this ' + this.model.normalizedType;
   }
 }

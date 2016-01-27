@@ -45,7 +45,7 @@ class SearchRequireController {
               private addRequireModal: AddRequireModal) {
 
     modelService.getAllRequires().then(result => {
-      this.requires = _.filter(result, require => allowProfiles || require.type === 'model');
+      this.requires = _.filter(result, require => allowProfiles || !require.isOfType('profile'));
       this.search();
     });
 

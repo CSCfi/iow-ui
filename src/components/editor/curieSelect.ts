@@ -7,7 +7,6 @@ import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
-import { normalizeSelectionType } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -55,7 +54,7 @@ class CurieSelectController {
   }
 
   selectCurie() {
-    const promise: IPromise<WithCurie> = normalizeSelectionType(this.type) === 'class'
+    const promise: IPromise<WithCurie> = this.type === 'class'
       ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.Both)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type);
 

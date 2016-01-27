@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Type, Uri } from './entities';
 
 interface WithId {
@@ -13,15 +12,26 @@ export function isNumber(str: any): str is number {
   return typeof str === 'number';
 }
 
-export function glyphIconClassForType(type: Type) {
+export function containsAny<T>(arr: T[], values: T[]): boolean {
+  for(const item of arr) {
+    for (const value of values) {
+      if (item === value) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+export function glyphIconClassForType(type: Type[]) {
   return [
     'glyphicon',
     {
-      'glyphicon-list-alt': type === 'class' || type === 'shape',
-      'glyphicon-tasks': type === 'attribute',
-      'glyphicon-sort': type === 'association',
-      'glyphicon-book': type === 'model' || type === 'profile',
-      'glyphicon-question-sign': !type
+      'glyphicon-list-alt': containsAny(type, ['class', 'shape']),
+      'glyphicon-tasks': containsAny(type, ['attribute']),
+      'glyphicon-sort': containsAny(type, ['association']),
+      'glyphicon-book': containsAny(type, ['model', 'profile']),
+      'glyphicon-question-sign': !type || type.length === 0
     }
   ];
 }
@@ -63,12 +73,22 @@ export function isDifferentUrl(lhs: string, rhs: string): boolean {
   return normalizeUrl(lhs) !== normalizeUrl(rhs);
 }
 
-export function normalizeSelectionType(type: Type) {
-  if (type === 'class' || type === 'shape') {
+export function normalizeSelectionType(types: Type[]) {
+  if (containsAny(types, ['class', 'shape'])) {
     return 'class';
-  } else if (type === 'attribute' || type == 'association') {
-    return type;
+  } else if (containsAny(types, ['attribute'])) {
+    return 'attribute';
+  } else if (containsAny(types, ['association'])) {
+    return 'association';
   } else {
-    throw new Error('Unsupported selection type: ' + type);
+    throw new Error('Unsupported selection type: ' + types.join());
+  }
+}
+
+export function normalizeModelType(types: Type[]) {
+  if (containsAny(types, ['profile'])) {
+    return 'profile';
+  } else {
+    return 'model';
   }
 }

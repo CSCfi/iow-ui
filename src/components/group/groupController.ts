@@ -40,8 +40,8 @@ export class GroupController extends EditableEntityController<Group> {
       })
       .then((result: {group: Group, models: ModelListItem[]}) => {
         this.group = result.group;
-        this.models = _.filter(result.models, model => model.type === 'model');
-        this.profiles = _.filter(result.models, model => model.type === 'profile');
+        this.models = _.filter(result.models, model => !model.isOfType('profile'));
+        this.profiles = _.filter(result.models, model => model.isOfType('profile'));
         locationService.atGroup(this.group);
         this.loading = false;
       });

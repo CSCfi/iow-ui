@@ -3,7 +3,7 @@ import IScope = angular.IScope;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
-import { Predicate, PredicateListItem, Model, ModelListItem, Type, Uri } from '../../services/entities';
+import { Predicate, PredicateListItem, Model, Type, Uri } from '../../services/entities';
 import { PredicateService} from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
@@ -86,7 +86,7 @@ export class SearchPredicateController {
         .value();
 
       this.types = _.chain(this.predicates)
-        .map(predicate => predicate.type)
+        .map(predicate => predicate.normalizedType)
         .uniq()
         .value();
 
@@ -167,7 +167,7 @@ export class SearchPredicateController {
   }
 
   private typeFilter(predicate: PredicateListItem): boolean {
-    return !this.type || predicate.type === this.type;
+    return !this.type || predicate.normalizedType === this.type;
   }
 
   private requireFilter(predicate: PredicateListItem): boolean {

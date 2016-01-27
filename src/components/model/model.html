@@ -1,6 +1,6 @@
 <div ng-hide="ctrl.firstLoading && ctrl.loading">
 
-  <model-view ng-if="ctrl.model" model="ctrl.model"></model-view>
+  <model-view ng-if="ctrl.model" model="ctrl.model" model-controller="ctrl"></model-view>
 
   <div class="bottom" ng-if="!ctrl.model.unsaved">
     <div class="model-panel--left" float="model-panel--left-placeholder">
@@ -24,8 +24,8 @@
     </div>
 
     <div class="model-panel--right">
-      <class-view ng-if="ctrl.selection.isClass()" class="ctrl.selection" model="ctrl.model"></class-view>
-      <predicate-view ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" model="ctrl.model"></predicate-view>
+      <class-view ng-if="ctrl.selection.isClass()" class="ctrl.selection" model="ctrl.model" model-controller="ctrl"></class-view>
+      <predicate-view ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" model="ctrl.model" model-controller="ctrl"></predicate-view>
     </div>
   </div>
 </div>
