@@ -48,7 +48,7 @@ msgstr "Lisää sanasto"
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
-#: components/editor/classForm.html:65 components/editor/predicateForm.html:37
+#: components/editor/classForm.html:63 components/editor/predicateForm.html:37
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -183,13 +183,9 @@ msgstr "valitse assosiaatio"
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
-#: translations/misc.html:73
+#: components/editor/editableConstraint.html:30 translations/misc.html:73
 msgid "Choose class"
 msgstr "valitse luokka"
-
-#: components/editor/editableConstraint.html:16
-msgid "Choose shape"
-msgstr "Valitse tarkennettu luokka"
 
 #: components/editor/editableSubjectSelect.html:5
 msgid "Choose subject"
@@ -250,6 +246,14 @@ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 #: components/common/deleteConfirmationModal.html:2 translations/misc.html:40
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
+
+#: components/editor/editableConstraint.html:14
+msgid "Constraint classes"
+msgstr "Loogin rajoitteen luokat"
+
+#: translations/misc.html:144
+msgid "Constraint comment"
+msgstr "Loogisen rajoitteen kuvaus"
 
 #: components/footer.html:3
 msgid "Contact info"
@@ -555,7 +559,7 @@ msgstr "Syöte on liian pitkä"
 msgid "licensed under the"
 msgstr "lisenssillä"
 
-#: components/editor/classForm.html:61
+#: components/editor/classForm.html:59
 msgid "Logical constraints"
 msgstr "Loogiset rajoitteet"
 
@@ -1071,6 +1075,9 @@ msgstr "XML"
 #: components/editor/addPropertiesFromSuperClassModal.html:12
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Choose shape"
+#~ msgstr "Valitse tarkennettu luokka"
 
 #~ msgid "download"
 #~ msgstr "tallenna"

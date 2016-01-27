@@ -1,4 +1,11 @@
+
+<editable title="Constraint comment">
+  <textarea id="constraintComment" class="form-control" localized-input ng-model="ctrl.constraint.comment"></textarea>
+</editable>
+
 <div class="editable-wrap form-group">
+
+  <label translate>Constraint classes</label>
 
   <span ng-if="!ctrl.isEditing()" ng-repeat="item in ctrl.constraint.items">
     <a ng-href="{{'#' + ctrl.linkItem(item)}}">{{item | translateLabel}}</a>
@@ -20,6 +27,6 @@
       </div>
     </div>
 
-    <button type="button" class="btn btn-default btn-sm" style="display: block" ng-click="ctrl.addItem()" translate>Choose shape</button>
+    <button type="button" class="btn btn-default btn-sm" style="display: block" ng-click="ctrl.addItem()" translate>Choose class</button>
   </div>
 </div>

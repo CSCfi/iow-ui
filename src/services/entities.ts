@@ -464,7 +464,7 @@ export class Class extends AbstractClass {
       property: _.map(this.properties, property => property.serialize(true)),
       subject: this.subject && this.subject.serialize(true),
       equivalentClass: this.equivalentClasses.slice(),
-      constraint: this.constraint.items.length > 0 ? this.constraint.serialize(true) : null
+      constraint: this.constraint.serialize(true)
     };
   }
 }
@@ -473,6 +473,7 @@ export class Constraint extends GraphNode {
 
   constraint: ConstraintType;
   items: ConstraintListItem[];
+  comment: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -492,6 +493,8 @@ export class Constraint extends GraphNode {
       this.constraint = 'or';
       this.items = [];
     }
+
+    this.comment = graph.comment;
   }
 
   addItem(shape: Class) {
@@ -508,17 +511,26 @@ export class Constraint extends GraphNode {
   }
 
   serializationValues() {
-    const result: any = {};
+    const result: any = {
+      comment: Object.assign({}, this.comment),
+    };
+
     const items = _.map(this.items, item => item.serialize(true));
 
-    if (this.constraint === 'or') {
-      result['@type'] = 'sh:AbstractOrNodeConstraint';
-      result.or = items;
-      result.and = [];
-    } else {
-      result['@type'] = 'sh:AbstractAndNodeConstraint';
-      result.and = items;
-      result.or = [];
+    switch (this.constraint) {
+      case 'or':
+        result['@type'] = 'sh:AbstractOrNodeConstraint';
+        result.or = items;
+        result.and = null;
+        break;
+      case 'and':
+        result['@type'] = 'sh:AbstractAndNodeConstraint';
+        result.and = items;
+        result.or = null;
+        break;
+      default:
+        result.and = null;
+        result.or = null;
     }
 
     return result;
