@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { ModelCache } from '../../services/modelCache';
 import { Association, Model, Predicate, states } from '../../services/entities';
 

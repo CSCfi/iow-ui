@@ -7,7 +7,6 @@ import { EditableForm } from '../form/editableEntityController';
 import { Model, Uri, Constraint, ConstraintListItem, RelativeUrl } from '../../services/entities';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
 import { ModelCache } from '../../services/modelCache';
-import { normalizeSelectionType } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
