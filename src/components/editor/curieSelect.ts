@@ -55,7 +55,7 @@ class CurieSelectController {
 
   selectCurie() {
     const promise: IPromise<WithCurie> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.Both)
+      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.All)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type);
 
     promise.then(withCurie => {

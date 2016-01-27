@@ -69,7 +69,7 @@ class EditableMultipleCurieSelectController {
     const excluded = new Set<Uri>(_.map(this.curies, curie => this.model.expandCurie(curie).uri));
 
     const promise: IPromise<WithCurie> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.Both, excluded)
+      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.All, excluded)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, excluded);
 
     promise.then(withCurie => {

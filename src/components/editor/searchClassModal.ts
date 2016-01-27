@@ -8,9 +8,10 @@ import { Class, ClassListItem, Model, Uri } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { DefinedBy } from '../../services/entities';
+import { containsAny } from '../../services/utils';
 
 export enum SearchClassType {
-  Class, Shape, Both
+  Class, Shape, All, SpecializedClass
 }
 
 export class SearchClassModal {
@@ -66,11 +67,16 @@ class SearchClassController {
               public onlySelection: boolean,
               private searchConceptModal: SearchConceptModal) {
 
-    const showShapes = searchClassType === SearchClassType.Both || searchClassType === SearchClassType.Shape;
-    const showClasses = searchClassType === SearchClassType.Both || searchClassType === SearchClassType.Class;
+    const showShapes = containsAny([SearchClassType.All, SearchClassType.Shape, SearchClassType.SpecializedClass], [searchClassType]);
+    const showClasses = containsAny([SearchClassType.All, SearchClassType.Class, SearchClassType.SpecializedClass], [searchClassType]);
 
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
-      this.classes = _.filter(allClasses, klass => (showShapes || !klass.isOfType('shape')) && (showClasses || !klass.isOfType('class')));
+
+      this.classes = _.chain(allClasses)
+        .reject(klass => !showShapes && klass.isOfType('shape'))
+        .reject(klass => !showClasses && klass.isOfType('class') || (searchClassType === SearchClassType.SpecializedClass && !klass.definedBy.isOfType('profile')))
+        .value();
+
       this.models = _.chain(this.classes)
         .filter(klass => this.requireFilter(klass))
         .map(klass => klass.definedBy)

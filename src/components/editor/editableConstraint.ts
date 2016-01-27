@@ -45,7 +45,7 @@ class EditableConstraint {
 
   addItem() {
     const excluded = new Set<Uri>(_.map(this.constraint.items, item => this.model.expandCurie(item.shapeId).uri));
-    this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.Shape, excluded).then(klass => this.constraint.addItem(klass));
+    this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.SpecializedClass, excluded).then(klass => this.constraint.addItem(klass));
   }
 
   removeItem(item: ConstraintListItem) {
