@@ -1,36 +1,14 @@
 {
   "@graph" : [ {
     "@id" : "_:t1",
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "puhelinnumero"
-    },
-    "datatype" : "xsd:string",
-    "sh:maxCount" : 1,
-    "sh:minCount" : 1,
-    "predicate" : "jhs:puhelinnumero"
-  }, {
-    "@id" : "_:t10",
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "ytunnus"
-    },
-    "datatype" : "xsd:string",
-    "sh:maxCount" : 1,
-    "sh:minCount" : 1,
-    "predicate" : "jhs:ytunnus"
-  }, {
-    "@id" : "_:t11",
+    "@type" : "sh:AbstractOrNodeConstraint",
     "rdfs:comment" : {
       "@language" : "fi",
-      "@value" : "Hakijan tai opiskelijan äidinkieli"
+      "@value" : "Rajoite joko tai"
     },
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "aidinkieli"
-    },
-    "predicate" : "jhs:aidinkieli",
-    "valueShape" : "skos:Concept"
+    "or" : {
+      "@list" : [ "oili:sEpatarkkaOsoite", "oili:sTarkkaOsoite" ]
+    }
   }, {
     "@id" : "_:t12",
     "rdfs:comment" : {
@@ -48,52 +26,28 @@
     "@id" : "_:t13",
     "rdfs:comment" : {
       "@language" : "fi",
-      "@value" : "Oili-dokumentin yksilöivä tunniste"
+      "@value" : "Hakijan tai opiskelijan sukunimi"
     },
     "rdfs:label" : {
       "@language" : "fi",
-      "@value" : "oili id"
-    },
-    "datatype" : "xsd:string",
-    "predicate" : "oili:oiliId"
-  }, {
-    "@id" : "_:t14",
-    "rdfs:comment" : {
-      "@language" : "fi",
-      "@value" : "Aika jolloin Oili-ilmoittautuminen on valmis"
-    },
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "ilmoittautumis aika"
-    },
-    "datatype" : "xsd:string",
-    "sh:minCount" : 1,
-    "predicate" : "oili:ilmoittautumisAika"
-  }, {
-    "@id" : "_:t15",
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "postinumero"
+      "@value" : "Sukunimi"
     },
     "datatype" : "xsd:string",
     "sh:maxCount" : 1,
     "sh:minCount" : 1,
-    "predicate" : "jhs:postinumero"
+    "predicate" : "jhs:sukuNimi"
   }, {
-    "@id" : "_:t18",
+    "@id" : "_:t14",
+    "@type" : "sh:AbstractAndNodeConstraint",
     "rdfs:comment" : {
       "@language" : "fi",
-      "@value" : "Oili-dokumentin viimeisin muokkausaika"
+      "@value" : "Pakollisia yhteystietoja"
     },
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "aikaleima"
-    },
-    "datatype" : "xsd:string",
-    "sh:minCount" : 1,
-    "predicate" : "oili:aikaleima"
+    "and" : {
+      "@list" : [ "oili:sYhteystiedot", "oili:sOsoite" ]
+    }
   }, {
-    "@id" : "_:t19",
+    "@id" : "_:t16",
     "rdfs:comment" : {
       "@language" : "fi",
       "@value" : "Aikaleima tietojen hakemiselle opintopolusta"
@@ -107,26 +61,7 @@
     "sh:minCount" : 1,
     "predicate" : "oili:esitietojenTuontiaika"
   }, {
-    "@id" : "_:t2",
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "Osoite tekstinä"
-    },
-    "datatype" : "xsd:string",
-    "sh:maxCount" : 1,
-    "sh:minCount" : 1,
-    "predicate" : "jhs:osoiteTeksti"
-  }, {
-    "@id" : "_:t20",
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "kadun nimi"
-    },
-    "datatype" : "xsd:string",
-    "sh:minCount" : 1,
-    "predicate" : "jhs:kadunNimi"
-  }, {
-    "@id" : "_:t21",
+    "@id" : "_:t17",
     "rdfs:comment" : {
       "@language" : "fi",
       "@value" : "Hakija tai opiskelija on ylioppilas"
@@ -138,31 +73,7 @@
     "datatype" : "xsd:boolean",
     "predicate" : "oili:onYlioppilas"
   }, {
-    "@id" : "_:t3",
-    "rdfs:comment" : {
-      "@language" : "fi",
-      "@value" : "Hakijan tai opiskelijan sukunimi"
-    },
-    "rdfs:label" : {
-      "@language" : "fi",
-      "@value" : "Sukunimi"
-    },
-    "datatype" : "xsd:string",
-    "sh:maxCount" : 1,
-    "sh:minCount" : 1,
-    "predicate" : "jhs:sukuNimi"
-  }, {
-    "@id" : "_:t4",
-    "@type" : "sh:AbstractOrNodeConstraint",
-    "rdfs:comment" : {
-      "@language" : "fi",
-      "@value" : "Rajoite joko tai"
-    },
-    "or" : {
-      "@list" : [ "oili:sEpatarkkaOsoite", "oili:sTarkkaOsoite" ]
-    }
-  }, {
-    "@id" : "_:t5",
+    "@id" : "_:t18",
     "rdfs:comment" : {
       "@language" : "fi",
       "@value" : "Oilissa syntyvät metatiedot"
@@ -176,7 +87,7 @@
     "predicate" : "oili:meta",
     "valueShape" : "oili:Meta"
   }, {
-    "@id" : "_:t6",
+    "@id" : "_:t19",
     "rdfs:comment" : {
       "@language" : "fi",
       "@value" : "Hakijan / opiskelijan henkilö- ja yhteystiedot"
@@ -188,11 +99,104 @@
     "predicate" : "jhs:henkilo",
     "valueShape" : "oili:Henkilo"
   }, {
-    "@id" : "_:t7",
-    "@type" : "sh:AbstractAndNodeConstraint",
-    "and" : {
-      "@list" : [ "oili:sYhteystiedot", "oili:sOsoite" ]
-    }
+    "@id" : "_:t2",
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "ytunnus"
+    },
+    "datatype" : "xsd:string",
+    "sh:maxCount" : 1,
+    "sh:minCount" : 1,
+    "predicate" : "jhs:ytunnus"
+  }, {
+    "@id" : "_:t20",
+    "rdfs:comment" : {
+      "@language" : "fi",
+      "@value" : "Oili-dokumentin viimeisin muokkausaika"
+    },
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "aikaleima"
+    },
+    "datatype" : "xsd:string",
+    "sh:minCount" : 1,
+    "predicate" : "oili:aikaleima"
+  }, {
+    "@id" : "_:t21",
+    "rdfs:comment" : {
+      "@language" : "fi",
+      "@value" : "Hakijan tai opiskelijan äidinkieli"
+    },
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "aidinkieli"
+    },
+    "predicate" : "jhs:aidinkieli",
+    "valueShape" : "skos:Concept"
+  }, {
+    "@id" : "_:t3",
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "postinumero"
+    },
+    "datatype" : "xsd:string",
+    "sh:maxCount" : 1,
+    "sh:minCount" : 1,
+    "predicate" : "jhs:postinumero"
+  }, {
+    "@id" : "_:t4",
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "kadun nimi"
+    },
+    "datatype" : "xsd:string",
+    "sh:minCount" : 1,
+    "predicate" : "jhs:kadunNimi"
+  }, {
+    "@id" : "_:t5",
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "Osoite tekstinä"
+    },
+    "datatype" : "xsd:string",
+    "sh:maxCount" : 1,
+    "sh:minCount" : 1,
+    "predicate" : "jhs:osoiteTeksti"
+  }, {
+    "@id" : "_:t6",
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "puhelinnumero"
+    },
+    "datatype" : "xsd:string",
+    "sh:maxCount" : 1,
+    "sh:minCount" : 1,
+    "predicate" : "jhs:puhelinnumero"
+  }, {
+    "@id" : "_:t8",
+    "rdfs:comment" : {
+      "@language" : "fi",
+      "@value" : "Oili-dokumentin yksilöivä tunniste"
+    },
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "oili id"
+    },
+    "datatype" : "xsd:string",
+    "predicate" : "oili:oiliId"
+  }, {
+    "@id" : "_:t9",
+    "rdfs:comment" : {
+      "@language" : "fi",
+      "@value" : "Aika jolloin Oili-ilmoittautuminen on valmis"
+    },
+    "rdfs:label" : {
+      "@language" : "fi",
+      "@value" : "ilmoittautumis aika"
+    },
+    "datatype" : "xsd:string",
+    "sh:minCount" : 1,
+    "predicate" : "oili:ilmoittautumisAika"
   }, {
     "@id" : "http://iow.csc.fi/ap/oili",
     "@type" : [ "dcap:DCAP", "owl:Ontology" ],
@@ -215,8 +219,8 @@
       "@language" : "fi",
       "@value" : "Henkilö"
     },
-    "constraint" : "_:t7",
-    "property" : [ "_:t3", "_:t11", "_:t21", "_:t12" ],
+    "constraint" : "_:t14",
+    "property" : [ "_:t21", "_:t13", "_:t12", "_:t17" ],
     "scopeClass" : "jhs:Henkilo"
   }, {
     "@id" : "oili:Meta",
@@ -225,7 +229,7 @@
       "@language" : "fi",
       "@value" : "Oilin metatiedot"
     },
-    "property" : [ "_:t13", "_:t18", "_:t19", "_:t14" ]
+    "property" : [ "_:t8", "_:t20", "_:t16", "_:t9" ]
   }, {
     "@id" : "oili:OiliDokumentti",
     "@type" : "rdfs:Class",
@@ -233,7 +237,7 @@
       "@language" : "fi",
       "@value" : "Oili dokumentti"
     },
-    "property" : [ "_:t5", "_:t6" ]
+    "property" : [ "_:t18", "_:t19" ]
   }, {
     "@id" : "oili:aikaleima",
     "@type" : "owl:DatatypeProperty",
@@ -285,7 +289,7 @@
       "@language" : "fi",
       "@value" : "Epätarkka osoite"
     },
-    "property" : "_:t2",
+    "property" : "_:t5",
     "scopeClass" : "jhs:Osoite"
   }, {
     "@id" : "oili:sOsoite",
@@ -294,7 +298,7 @@
       "@language" : "fi",
       "@value" : "Osoite"
     },
-    "constraint" : "_:t4",
+    "constraint" : "_:t1",
     "scopeClass" : "jhs:Osoite"
   }, {
     "@id" : "oili:sTarkkaOsoite",
@@ -303,7 +307,7 @@
       "@language" : "fi",
       "@value" : "Tarkka osoite"
     },
-    "property" : [ "_:t10", "_:t15", "_:t20" ],
+    "property" : [ "_:t2", "_:t3", "_:t4" ],
     "scopeClass" : "jhs:Osoite"
   }, {
     "@id" : "oili:sYhteystiedot",
@@ -312,7 +316,7 @@
       "@language" : "fi",
       "@value" : "Yhteystiedot"
     },
-    "property" : "_:t1",
+    "property" : "_:t6",
     "scopeClass" : "jhs:Yhteystieto"
   }, {
     "@id" : "http://iow.csc.fi/ns/jhs",
@@ -320,28 +324,36 @@
     "dcap:preferredXMLNamespacePrefix" : "jhs"
   } ],
   "@context" : {
-    "property" : {
-      "@id" : "http://www.w3.org/ns/shacl#property",
-      "@type" : "@id"
-    },
     "scopeClass" : {
       "@id" : "http://www.w3.org/ns/shacl#scopeClass",
+      "@type" : "@id"
+    },
+    "constraint" : {
+      "@id" : "http://www.w3.org/ns/shacl#constraint",
       "@type" : "@id"
     },
     "label" : {
       "@id" : "http://www.w3.org/2000/01/rdf-schema#label",
       "@type" : "@id"
     },
+    "property" : {
+      "@id" : "http://www.w3.org/ns/shacl#property",
+      "@type" : "@id"
+    },
+    "rest" : {
+      "@id" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+      "@type" : "@id"
+    },
+    "first" : {
+      "@id" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+      "@type" : "@id"
+    },
+    "range" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#range",
+      "@type" : "@id"
+    },
     "predicate" : {
       "@id" : "http://www.w3.org/ns/shacl#predicate",
-      "@type" : "@id"
-    },
-    "minCount" : {
-      "@id" : "http://www.w3.org/ns/shacl#minCount",
-      "@type" : "@id"
-    },
-    "maxCount" : {
-      "@id" : "http://www.w3.org/ns/shacl#maxCount",
       "@type" : "@id"
     },
     "datatype" : {
@@ -352,24 +364,24 @@
       "@id" : "http://www.w3.org/2000/01/rdf-schema#comment",
       "@type" : "@id"
     },
-    "constraint" : {
-      "@id" : "http://www.w3.org/ns/shacl#constraint",
+    "minCount" : {
+      "@id" : "http://www.w3.org/ns/shacl#minCount",
       "@type" : "@id"
     },
-    "and" : {
-      "@id" : "http://www.w3.org/ns/shacl#and",
+    "maxCount" : {
+      "@id" : "http://www.w3.org/ns/shacl#maxCount",
       "@type" : "@id"
     },
     "or" : {
       "@id" : "http://www.w3.org/ns/shacl#or",
       "@type" : "@id"
     },
-    "valueShape" : {
-      "@id" : "http://www.w3.org/ns/shacl#valueShape",
+    "preferredXMLNamespacePrefix" : {
+      "@id" : "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix",
       "@type" : "@id"
     },
-    "range" : {
-      "@id" : "http://www.w3.org/2000/01/rdf-schema#range",
+    "preferredXMLNamespaceName" : {
+      "@id" : "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName",
       "@type" : "@id"
     },
     "imports" : {
@@ -388,20 +400,12 @@
       "@id" : "http://purl.org/dc/terms/requires",
       "@type" : "@id"
     },
-    "rest" : {
-      "@id" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+    "and" : {
+      "@id" : "http://www.w3.org/ns/shacl#and",
       "@type" : "@id"
     },
-    "first" : {
-      "@id" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-      "@type" : "@id"
-    },
-    "preferredXMLNamespacePrefix" : {
-      "@id" : "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix",
-      "@type" : "@id"
-    },
-    "preferredXMLNamespaceName" : {
-      "@id" : "http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName",
+    "valueShape" : {
+      "@id" : "http://www.w3.org/ns/shacl#valueShape",
       "@type" : "@id"
     },
     "dcap" : "http://purl.org/ws-mmi-dc/terms/",
