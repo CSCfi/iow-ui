@@ -7,13 +7,13 @@
 
   <!-- FIXME: remove inline styles -->
   <div ng-if="ctrl.isEditing()">
-    <div class="input-group input-group-sm pull-left">
-      <select class="form-control" ng-model="ctrl.constraint.constraint" style="height: 39px; width: 60px">
+    <div class="input-group input-group-sm pull-left" style="width: 80px">
+      <select class="form-control" ng-model="ctrl.constraint.constraint" style="height: 39px">
         <option value="or">Or</option>
         <option value="and">And</option>
       </select>
     </div>
-    <div class="form-control multi-input" style="max-width: 440px">
+    <div class="form-control multi-input" style="max-width: 415px">
       <div ng-repeat="item in ctrl.constraint.items" class="added-item">
         {{item | translateLabel}}
         <div class="delete-item badge" ng-click="ctrl.removeItem(item)">&times;</div>
