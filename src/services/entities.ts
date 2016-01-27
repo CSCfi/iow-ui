@@ -478,17 +478,19 @@ export class Constraint extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
 
-    const or = _.map(normalizeAsArray(graph.or), item => new ConstraintListItem(item, context, frame));
     const and = _.map(normalizeAsArray(graph.and), item => new ConstraintListItem(item, context, frame));
+    const or = _.map(normalizeAsArray(graph.or), item => new ConstraintListItem(item, context, frame));
+    const not = _.map(normalizeAsArray(graph.not), item => new ConstraintListItem(item, context, frame));
 
-    if (or.length > 0 && and.length > 0) {
-      throw new Error('Cannot have both and and or');
+    if (and.length > 0) {
+      this.constraint = 'and';
+      this.items = and;
     } else if (or.length > 0) {
       this.constraint = 'or';
       this.items = or;
-    } else if (and.length > 0) {
-      this.constraint = 'and';
-      this.items = and;
+    } else if (not.length > 0) {
+      this.constraint = 'not';
+      this.items = not;
     } else {
       this.constraint = 'or';
       this.items = [];
@@ -511,29 +513,26 @@ export class Constraint extends GraphNode {
   }
 
   serializationValues() {
-    const result: any = {
-      comment: Object.assign({}, this.comment),
-    };
+    function mapConstraintType(constraint: ConstraintType) {
+      switch (constraint) {
+        case 'or':
+          return 'sh:AbstractOrNodeConstraint';
+        case 'and':
+          return 'sh:AbstractAndNodeConstraint';
+        case 'not':
+          return 'sh:AbstractNotNodeConstraint';
+      }
+    }
 
     const items = _.map(this.items, item => item.serialize(true));
 
-    switch (this.constraint) {
-      case 'or':
-        result['@type'] = 'sh:AbstractOrNodeConstraint';
-        result.or = items;
-        result.and = null;
-        break;
-      case 'and':
-        result['@type'] = 'sh:AbstractAndNodeConstraint';
-        result.and = items;
-        result.or = null;
-        break;
-      default:
-        result.and = null;
-        result.or = null;
-    }
-
-    return result;
+    return {
+      '@type': mapConstraintType(this.constraint),
+      comment: Object.assign({}, this.comment),
+      and: this.constraint === 'and' ? items : null,
+      or: this.constraint === 'or' ? items : null,
+      not: this.constraint === 'not' ? items : null
+    };
   }
 }
 
@@ -976,6 +975,7 @@ function mapType(type: string): Type {
       return 'library';
     case 'sh:AbstractOrNodeConstraint':
     case 'sh:AbstractAndNodeConstraint':
+    case 'sh:AbstractNotNodeConstraint':
       return 'constraint';
     case 'foaf:Person':
       return 'user';
