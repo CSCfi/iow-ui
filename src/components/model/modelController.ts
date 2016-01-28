@@ -49,7 +49,7 @@ export class ModelController {
               private searchClassModal: SearchClassModal,
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
-              private languageService: LanguageService) {
+              public languageService: LanguageService) {
 
     this.init(new RouteData($routeParams));
 
@@ -78,6 +78,24 @@ export class ModelController {
     });
 
     $scope.$watch(() => this.selection, () => this.updateLocation());
+    $scope.$watch(() => this.languageService.modelLanguage, lang => this.sortAll());
+  }
+
+  sortAll() {
+    this.sortClasses();
+    this.sortPredicates();
+  }
+
+  sortClasses() {
+    this.classes.sort(sortByLabel(this.languageService));
+    setOverlaps(this.classes);
+  }
+
+  sortPredicates() {
+    this.associations.sort(sortByLabel(this.languageService));
+    this.attributes.sort(sortByLabel(this.languageService));
+    setOverlaps(this.associations);
+    setOverlaps(this.attributes);
   }
 
   init(routeData: RouteData) {
@@ -339,14 +357,17 @@ export class ModelController {
   }
 
   private updateClasses(): IPromise<any> {
-    return this.classService.getClassesForModel(this.model.id).then(classes => this.classes = _.map(classes, klass => new SelectableItem(klass)));
+    return this.classService.getClassesForModel(this.model.id).then(classes => {
+      this.classes = _.map(classes, klass => new SelectableItem(klass, this));
+      this.sortClasses();
+    });
   }
 
   private updatePredicates(): IPromise<any> {
     return this.predicateService.getPredicatesForModel(this.model.id).then(predicates => {
-      this.attributes = _.chain(predicates).filter(predicate => predicate.isOfType('attribute')).map(attribute => new SelectableItem(attribute)).value();
-      this.associations = _.chain(predicates).filter(predicate => predicate.isOfType('association')).map(association => new SelectableItem(association)).value();
-      return predicates;
+      this.attributes = _.chain(predicates).filter(predicate => predicate.isOfType('attribute')).map(attribute => new SelectableItem(attribute, this)).value();
+      this.associations = _.chain(predicates).filter(predicate => predicate.isOfType('association')).map(association => new SelectableItem(association, this)).value();
+      this.sortPredicates();
     });
   }
 }
@@ -399,6 +420,21 @@ interface WithIdAndType {
   normalizedType: Type
 }
 
+function sortByLabel(languageService: LanguageService) {
+  return (lhs: SelectableItem, rhs: SelectableItem) => {
+    const lhsLocalization = languageService.translate(lhs.item.label);
+    const rhsLocalization = languageService.translate(rhs.item.label);
+
+    if (lhsLocalization < rhsLocalization) {
+      return -1;
+    } else if (lhsLocalization > rhsLocalization) {
+      return 1;
+    }  else {
+      return 0;
+    }
+  }
+}
+
 function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {
   if ((lhs && !rhs) || (rhs && !lhs)) {
     return false;
@@ -407,17 +443,36 @@ function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs:
   return lhs.normalizedType === rhs.normalizedType && lhs.id === rhs.id;
 }
 
+function setOverlaps(items: SelectableItem[]) {
+  let previous: SelectableItem;
+  for (const item of items) {
+    if (previous && previous.rawLabel === item.rawLabel) {
+      previous.hasOverlap = true;
+      item.hasOverlap = true;
+    } else {
+      item.hasOverlap = false;
+    }
+    previous = item;
+  }
+}
+
 class SelectableItem {
 
-  constructor(private item: ClassListItem|PredicateListItem) {
+  hasOverlap = false;
+
+  constructor(public item: ClassListItem|PredicateListItem, private modelController: ModelController) {
   }
 
   get id(): Uri {
     return this.item.id;
   }
 
-  get label(): Localizable {
-    return this.item.label;
+  get rawLabel(): string {
+    return this.modelController.languageService.translate(this.item.label);
+  }
+
+  get label(): string {
+    return this.rawLabel + (this.hasOverlap ? ` (${this.modelController.model.idToCurie(this.id)})` : '');
   }
 
   get definedBy() {
