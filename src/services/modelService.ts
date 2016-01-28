@@ -3,7 +3,6 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { EntityDeserializer, Model, ModelListItem, Reference, Require, Uri, Type } from './entities';
-import { ModelCache } from './modelCache';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames'
@@ -11,8 +10,7 @@ import { modelFrame } from './frames'
 export class ModelService {
 
   /* @ngInject */
-  constructor(private $http: IHttpService, private $q: IQService, private modelCache: ModelCache, private entities: EntityDeserializer) {
-    this.getAllRequires().then(allRequires => modelCache.updateRequires(allRequires));
+  constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
   }
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {

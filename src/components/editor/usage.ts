@@ -2,11 +2,8 @@ import Dictionary = _.Dictionary;
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
-import { UsageService } from '../../services/usageService';
-import { Usage, Referrer, Localizable, Uri, Curie, Type } from '../../services/entities';
-import { DisplayItemFactory } from '../form/displayItemFactory';
+import { Usage, Referrer } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
-import { ModelCache } from '../../services/modelCache';
 
 export const mod = angular.module('iow.components.editor');
 

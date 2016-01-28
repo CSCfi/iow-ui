@@ -8,7 +8,6 @@ import { EditableForm } from '../form/editableEntityController';
 import { Model, Type, Uri } from '../../services/entities';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem, Value } from '../form/displayItemFactory';
-import { ModelCache } from '../../services/modelCache';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -55,10 +54,9 @@ class EditableMultipleCurieSelectController {
   constructor($scope: IScope,
               displayItemFactory: DisplayItemFactory,
               private searchPredicateModal: SearchPredicateModal,
-              private searchClassModal: SearchClassModal,
-              modelCache: ModelCache) {
+              private searchClassModal: SearchClassModal) {
 
-    const link = (curie: string) => this.model.linkTo(this.type, curie, modelCache);
+    const link = (curie: string) => this.model.linkTo(this.type, curie, this.model);
 
     $scope.$watchCollection(() => this.curies, curies => {
       this.items =_.map(curies, curie => displayItemFactory.create(() => curie, link, false, () => this.isEditing()));

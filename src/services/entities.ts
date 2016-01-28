@@ -7,7 +7,6 @@ import {
   glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType, containsAny, normalizeModelType,
   splitNamespace
 } from './utils';
-import { ModelCache } from './modelCache';
 
 const jsonld: any = require('jsonld');
 
@@ -95,26 +94,19 @@ export abstract class GraphNode {
     }
   }
 
-  isCurieDefinedInModel(curie: string, modelCache: ModelCache) {
-    const expanded = this.expandCurie(curie);
-    if (expanded) {
-      return !!modelCache.modelIdForNamespace(expanded.namespace);
-    }
-  }
-
-  linkTo(type:Type|Type[], id:Uri|Curie, modelCache:ModelCache) {
+  linkTo(type:Type|Type[], id:Uri|Curie, model: Model) {
     const typeArray = normalizeAsArray(type);
 
     if (id) {
       const expanded = this.expandCurie(id);
       if (expanded) {
-        if (!modelCache.modelIdForNamespace(expanded.namespace)) {
+        if (!model.findModelPrefixForNamespace(expanded.namespace)) {
           return expanded.uri;
         } else {
           return url(expanded.uri, typeArray);
         }
       } else {
-        if (!(modelCache.modelIdForNamespace(id + '#') || modelCache.modelIdForNamespace(id + '/'))) {
+        if (!(model.findModelPrefixForNamespace((id + '#') || model.findModelPrefixForNamespace(id + '/')))) {
           return id;
         } else {
           return url(id, typeArray);
@@ -273,19 +265,26 @@ export class Model extends AbstractModel {
     });
   }
 
-  idToCurie(id: Uri): Curie {
-    const {namespace, idName} = splitNamespace(id);
+  findModelPrefixForNamespace(namespace: Uri)  {
     if (this.namespace === namespace) {
-      return this.prefix + ':' + idName;
+      return this.prefix;
     } else {
-      for (const require of this.requires) {
-        if (require.namespace === namespace) {
-          return require.prefix + ':' + idName;
-        }
+      const require =  _.find(this.requires, req => req.namespace === namespace);
+      if (require) {
+        return require.prefix;
       }
     }
+  }
 
-    throw new Error('Namespace not found for: ' + id);
+  idToCurie(id: Uri): Curie {
+    const {namespace, idName} = splitNamespace(id);
+    const prefix = this.findModelPrefixForNamespace(namespace);
+
+    if (!prefix) {
+      throw new Error('Cannot find prefix for namespace: ' + namespace);
+    }
+
+    return prefix + ':' + idName;
   }
 
   clone(): Model {

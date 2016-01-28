@@ -8,7 +8,6 @@ import { Class, Property, Predicate, Model, Localizable, states } from '../../se
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
-import { ModelCache } from '../../services/modelCache';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -67,7 +66,7 @@ export class PropertyViewController {
   anyPropertiesOpen: () => boolean;
 
   /* @ngInject */
-  constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService, private modelCache: ModelCache) {
+  constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService) {
     $scope.$watch(() => this.isOpen, open => {
       if (open) {
         $location.search('property', this.property.id);
@@ -92,7 +91,7 @@ export class PropertyViewController {
   }
 
   linkToValueClass() {
-    return this.model.linkTo('class', this.property.valueClass, this.modelCache);
+    return this.model.linkTo('class', this.property.valueClass, this.model);
   }
 
   openAndScrollTo() {

@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
 import { Class, Model, Property, Uri, states } from '../../services/entities';
-import { ModelCache } from '../../services/modelCache';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 
 export const mod = angular.module('iow.components.editor');
@@ -45,7 +44,7 @@ export class ClassFormController {
   propertyViews: { [key: string]: PropertyViewController } = {};
 
   /* @ngInject */
-  constructor(private $timeout: ITimeoutService, private modelCache: ModelCache, private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
+  constructor(private $timeout: ITimeoutService, private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
   }
 
   addPropertiesFromClass(id: Uri, classType: string) {
@@ -59,11 +58,11 @@ export class ClassFormController {
   }
 
   linkToSuperclass() {
-    return this.model.linkTo('class', this.class.subClassOf, this.modelCache);
+    return this.model.linkTo('class', this.class.subClassOf, this.model);
   }
 
   linkToScopeclass() {
-    return this.model.linkTo('class', this.class.scopeClass, this.modelCache);
+    return this.model.linkTo('class', this.class.scopeClass, this.model);
   }
 
   get inUnstableState(): boolean {

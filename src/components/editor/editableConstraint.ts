@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Uri, Constraint, ConstraintListItem, RelativeUrl } from '../../services/entities';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
-import { ModelCache } from '../../services/modelCache';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -36,11 +35,11 @@ class EditableConstraint {
   isEditing: () => boolean;
 
   /* @ngInject */
-  constructor(private searchClassModal: SearchClassModal, private modelCache: ModelCache) {
+  constructor(private searchClassModal: SearchClassModal) {
   }
 
   linkItem(item: ConstraintListItem): RelativeUrl {
-    return this.model.linkTo('class', item.shapeId, this.modelCache);
+    return this.model.linkTo('class', item.shapeId, this.model);
   }
 
   addItem() {

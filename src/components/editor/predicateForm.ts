@@ -1,4 +1,3 @@
-import { ModelCache } from '../../services/modelCache';
 import { Association, Model, Predicate, states } from '../../services/entities';
 
 export const mod = angular.module('iow.components.editor');
@@ -24,17 +23,14 @@ class PredicateFormController {
   model: Model;
   predicate: Predicate;
 
-  constructor(private modelCache: ModelCache) {
-  }
-
   linkToSuperProperty() {
-    return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf, this.modelCache);
+    return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf, this.model);
   }
 
   linkToValueClass() {
     const predicate = this.predicate;
     if (predicate instanceof Association) {
-      return this.model.linkTo('class', predicate.valueClass, this.modelCache);
+      return this.model.linkTo('class', predicate.valueClass, this.model);
     }
   }
 

@@ -4,7 +4,6 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
-import { ModelCache } from '../../services/modelCache';
 import { ClassService } from '../../services/classService';
 import { Class, Model, Uri } from '../../services/entities';
 import * as _ from 'lodash';
@@ -81,7 +80,7 @@ class ClassVisualizationController {
   private visualizationData: any;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private classService: ClassService, private languageService: LanguageService, private modelCache: ModelCache) {
+  constructor(private $scope: IScope, private classService: ClassService, private languageService: LanguageService) {
     'ngInject';
     $scope.$watch(() => this.class, () => this.refresh());
   }
@@ -103,7 +102,7 @@ class ClassVisualizationController {
   initGraph() {
     if (this.visualizationData) {
       this.graph.clear();
-      createCells(this.$scope, this.languageService, this.modelCache, this.graph, this.model, this.visualizationData, this.class.curie);
+      createCells(this.$scope, this.languageService, this.model, this.graph, this.visualizationData, this.class.curie);
       layoutGraph(this.graph);
       scaleToFit(this.paper);
     }
@@ -197,7 +196,7 @@ function isAssociation(property: any) {
   return property.valueShape;
 }
 
-function createCells($scope: IScope, languageService: LanguageService, modelCache: ModelCache, graph: joint.dia.Graph, model: Model, data: any, root: Uri) {
+function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, data: any, root: Uri) {
   function isRootClass(klass: any) {
     return klass['@id'] === root;
   }
@@ -208,7 +207,7 @@ function createCells($scope: IScope, languageService: LanguageService, modelCach
     const attributes: any[] = [];
 
     for (const property of normalizeAsArray<any>(klass.property)) {
-      if (isRootClass(klass) && isAssociation(property) && model.isCurieDefinedInModel(property.valueShape, modelCache)) {
+      if (isRootClass(klass) && isAssociation(property) && model.findModelPrefixForNamespace(model.expandCurie(property.valueShape).namespace)) {
         associations.push({klass: klass, association: property});
       } else {
         attributes.push(property);
