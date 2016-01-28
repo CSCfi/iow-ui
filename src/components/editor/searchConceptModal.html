@@ -16,18 +16,20 @@
         </div>
 
         <editable title="Concept">
-          <input id="concept"
-                 type="text"
-                 class="form-control"
-                 autofocus
-                 iow-typeahead
-                 selection-mapper="ctrl.mapSelection"
-                 options="ctrl.options"
-                 datasets="ctrl.datasets"
-                 required
-                 ng-model="ctrl.concept"
-                 placeholder="{{'Search from concept database' | translate}}"/>
-          <i class="glyphicon glyphicon-search form-control-feedback"></i>
+          <div class="input-group">
+            <input id="concept"
+                   type="text"
+                   class="form-control"
+                   autofocus
+                   iow-typeahead
+                   selection-mapper="ctrl.mapSelection"
+                   options="ctrl.options"
+                   datasets="ctrl.datasets"
+                   required
+                   ng-model="ctrl.concept"
+                   placeholder="{{'Search from concept database' | translate}}"/>
+            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+          </div>
         </editable>
 
         <div ng-if="ctrl.concept">
