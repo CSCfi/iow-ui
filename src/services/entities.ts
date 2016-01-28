@@ -3,7 +3,10 @@ import * as _ from 'lodash';
 import * as frames from './frames';
 import * as moment from 'moment';
 import Moment = moment.Moment;
-import { glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType, containsAny, normalizeModelType } from './utils';
+import {
+  glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType, containsAny, normalizeModelType,
+  splitNamespace
+} from './utils';
 import { ModelCache } from './modelCache';
 
 const jsonld: any = require('jsonld');
@@ -268,6 +271,21 @@ export class Model extends AbstractModel {
     _.forEach(this.requires, require => {
       this.context[require.prefix] = require.namespace;
     });
+  }
+
+  idToCurie(id: Uri): Curie {
+    const {namespace, idName} = splitNamespace(id);
+    if (this.namespace === namespace) {
+      return this.prefix + ':' + idName;
+    } else {
+      for (const require of this.requires) {
+        if (require.namespace === namespace) {
+          return require.prefix + ':' + idName;
+        }
+      }
+    }
+
+    throw new Error('Namespace not found for: ' + id);
   }
 
   clone(): Model {

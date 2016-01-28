@@ -65,6 +65,13 @@ export function splitCurie(curie: string): {prefix: string, value: string} {
   }
 }
 
+export function splitNamespace(curie: string): {namespace: string, idName: string} {
+  const parts = curie.split('#');
+  if (parts.length === 2) {
+    return {namespace: parts[0] + '#', idName: parts[1]};
+  }
+}
+
 function normalizeUrl(url: string): string {
   return url.replace(/:/g, '%3A').replace(/&property.*/, '');
 }
