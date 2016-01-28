@@ -7,7 +7,7 @@ import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
 import { Class, Model, Property, Uri, states } from '../../services/entities';
 import { ModelCache } from '../../services/modelCache';
-import { AddPropertiesFromSuperClassModal} from './addPropertiesFromSuperClassModal';
+import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -45,13 +45,13 @@ export class ClassFormController {
   propertyViews: { [key: string]: PropertyViewController } = {};
 
   /* @ngInject */
-  constructor(private $timeout: ITimeoutService, private modelCache: ModelCache, private addPropertiesFromSuperClassModal: AddPropertiesFromSuperClassModal) {
+  constructor(private $timeout: ITimeoutService, private modelCache: ModelCache, private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
   }
 
-  addPropertiesFromSuperClass(id: Uri) {
+  addPropertiesFromClass(id: Uri, classType: string) {
     let numberOfProperties = this.class.properties.length;
     const existingPredicates = new Set<Uri>(_.map(this.class.properties, property => property.predicateId));
-    this.addPropertiesFromSuperClassModal.open(id, existingPredicates)
+    this.addPropertiesFromClassModal.open(id, classType, existingPredicates)
       .then(properties => _.forEach(properties, (property: Property) => {
         property.index = numberOfProperties++;
         this.class.addProperty(property);

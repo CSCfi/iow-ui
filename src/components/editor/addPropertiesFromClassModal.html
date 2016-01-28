@@ -1,8 +1,8 @@
 <modal-template>
-  <modal-title translate>Add properties from super class</modal-title>
+  <modal-title>{{'Add properties from ' + ctrl.classType + ' class' | translate}}</modal-title>
 
   <modal-body>
-    <p><span translate>Do you want to add following properties from super class?</span></p>
+    <p><span>{{'Do you want to add following properties from ' + ctrl.classType + ' class?' | translate}}</span></p>
     <div class="checkbox" ng-repeat="property in ctrl.properties">
       <label><input type="checkbox" checklist-model="ctrl.selectedProperties" checklist-value="property" /> {{property | translateLabel}}</label>
     </div>

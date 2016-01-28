@@ -6,19 +6,20 @@ import { Class, Property, Uri } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 
-export class AddPropertiesFromSuperClassModal {
+export class AddPropertiesFromClassModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(classId: Uri, excludedPredicates: Set<Uri>): IPromise<Property[]> {
+  open(classId: Uri, classType: string, excludedPredicates: Set<Uri>): IPromise<Property[]> {
     return this.$uibModal.open({
-      template: require('./addPropertiesFromSuperClassModal.html'),
+      template: require('./addPropertiesFromClassModal.html'),
       size: 'adapting',
       controllerAs: 'ctrl',
       controller: AddPropertiesFromSuperClassModalController,
       resolve: {
         classId: () => classId,
+        classType: () => classType,
         excludedPredicates: () => excludedPredicates
       }
     }).result;
@@ -31,7 +32,7 @@ export class AddPropertiesFromSuperClassModalController {
   selectedProperties: Property[];
 
   /* @ngInject */
-  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, classId: Uri, excludedPredicates: Set<Uri>) {
+  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, classId: Uri, public classType: string, excludedPredicates: Set<Uri>) {
     classService.getClass(classId).then(klass => {
       this.properties = _.filter(klass.properties, property => !excludedPredicates.has(property.predicateId));
       this.selectedProperties = _.clone(this.properties);
