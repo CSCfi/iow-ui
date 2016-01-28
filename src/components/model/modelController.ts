@@ -11,7 +11,7 @@ import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { glyphIconClassForType, collectIds, isDifferentUrl } from '../../services/utils';
-import { Class, Predicate, PredicateListItem, ClassListItem, Model, Type, Property, WithIdAndType, Uri } from '../../services/entities';
+import { Class, Predicate, PredicateListItem, ClassListItem, Model, Type, Property, Uri, Localizable } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal, SearchClassType } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
@@ -26,9 +26,9 @@ export class ModelController {
   selectedItem: WithIdAndType;
   model: Model;
   selection: Class|Predicate;
-  classes: ClassListItem[] = [];
-  associations: PredicateListItem[] = [];
-  attributes: PredicateListItem[] = [];
+  classes: SelectableItem[] = [];
+  associations: SelectableItem[] = [];
+  attributes: SelectableItem[] = [];
 
   tabs = [
     new Tab('class', () => this.classes, this),
@@ -84,7 +84,7 @@ export class ModelController {
     this.loading = true;
 
     if (routeData.selected) {
-      _.find(this.tabs, tab => tab.type === routeData.selected.type).active = true;
+      _.find(this.tabs, tab => tab.type === routeData.selected.normalizedType).active = true;
     }
 
     this.selectedItem = routeData.selected;
@@ -122,18 +122,18 @@ export class ModelController {
     this.views.push(view);
   }
 
-  isSelected(selection: ClassListItem|PredicateListItem) {
+  isSelected(selection: SelectableItem) {
     return selection.matchesIdentity(this.selectedItem);
   }
 
-  private selectionQueue: (ClassListItem|PredicateListItem)[] = [];
+  private selectionQueue: SelectableItem[] = [];
 
-  select(listItem: ClassListItem|PredicateListItem) {
+  select(listItem: SelectableItem) {
 
-    const fetchUntilStable: ((selection: ClassListItem|PredicateListItem) => IPromise<Class|Predicate>) = item => {
-      return this.fetchEntityByTypeAndId(item.toTypeAndId()).then((entity: any) => {
+    const fetchUntilStable: ((selection: SelectableItem) => IPromise<Class|Predicate>) = item => {
+      return this.fetchEntityByTypeAndId(item).then((entity: Class|Predicate) => {
         const last = this.selectionQueue[this.selectionQueue.length - 1];
-        if (entity.matchesIdentity(last.toTypeAndId())) {
+        if (last.matchesIdentity(entity)) {
           return entity;
         } else {
           return fetchUntilStable(last);
@@ -142,7 +142,7 @@ export class ModelController {
     };
 
     this.askPermissionWhenEditing(() => {
-      this.selectedItem = listItem.toTypeAndId();
+      this.selectedItem = listItem;
       if (this.selectionQueue.length > 0) {
         this.selectionQueue.push(listItem);
       } else {
@@ -164,9 +164,9 @@ export class ModelController {
   }
 
   selectionDeleted(selection: Class|Predicate) {
-    _.remove(this.classes, item => item.matchesIdentity(selection.toTypeAndId()));
-    _.remove(this.attributes, item => item.matchesIdentity(selection.toTypeAndId()));
-    _.remove(this.associations, item => item.matchesIdentity(selection.toTypeAndId()));
+    _.remove(this.classes, item => matchesIdentity(item, selection));
+    _.remove(this.attributes, item => matchesIdentity(item, selection));
+    _.remove(this.associations, item => matchesIdentity(item, selection));
   }
 
   private updateLocation() {
@@ -302,8 +302,8 @@ export class ModelController {
   }
 
   private fetchEntityByTypeAndId(selection: WithIdAndType): IPromise<Class|Predicate> {
-    if (!this.selection || !this.selection.matchesIdentity(selection)) {
-      return selection.type === 'class'
+    if (!this.selection || !matchesIdentity(this.selection, selection)) {
+      return selection.normalizedType === 'class'
         ? this.classService.getClass(selection.id)
         : this.predicateService.getPredicate(selection.id);
     } else {
@@ -338,14 +338,14 @@ export class ModelController {
     return this.$q.all([this.updateClasses(), this.updatePredicates()]);
   }
 
-  private updateClasses(): IPromise<ClassListItem[]> {
-    return this.classService.getClassesForModel(this.model.id).then(classes => this.classes = classes);
+  private updateClasses(): IPromise<any> {
+    return this.classService.getClassesForModel(this.model.id).then(classes => this.classes = _.map(classes, klass => new SelectableItem(klass)));
   }
 
-  private updatePredicates(): IPromise<PredicateListItem[]> {
+  private updatePredicates(): IPromise<any> {
     return this.predicateService.getPredicatesForModel(this.model.id).then(predicates => {
-      this.attributes = _.filter(predicates, predicate => predicate.isOfType('attribute'));
-      this.associations = _.filter(predicates, predicate => predicate.isOfType('association'));
+      this.attributes = _.chain(predicates).filter(predicate => predicate.isOfType('attribute')).map(attribute => new SelectableItem(attribute)).value();
+      this.associations = _.chain(predicates).filter(predicate => predicate.isOfType('association')).map(association => new SelectableItem(association)).value();
       return predicates;
     });
   }
@@ -369,7 +369,7 @@ class RouteData {
     for (const type of ['attribute', 'class', 'association']) {
       const id: Uri = this.params[type];
       if (id) {
-        return {type, id};
+        return {normalizedType: type, id};
       }
     }
   }
@@ -382,7 +382,7 @@ class Tab {
   active: boolean;
   addNew: () => void;
 
-  constructor(public type: Type, public items: () => ClassListItem[]|PredicateListItem[], modelController: ModelController) {
+  constructor(public type: Type, public items: () => SelectableItem[], modelController: ModelController) {
     this.addLabel = 'Add ' + type;
     this.glyphIconClass = glyphIconClassForType([type]);
     this.addNew = () => modelController.addEntity(type);
@@ -392,4 +392,43 @@ class Tab {
 interface View {
   isEditing(): boolean;
   cancelEditing(): void;
+}
+
+interface WithIdAndType {
+  id: Uri,
+  normalizedType: Type
+}
+
+function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {
+  if ((lhs && !rhs) || (rhs && !lhs)) {
+    return false;
+  }
+
+  return lhs.normalizedType === rhs.normalizedType && lhs.id === rhs.id;
+}
+
+class SelectableItem {
+
+  constructor(private item: ClassListItem|PredicateListItem) {
+  }
+
+  get id(): Uri {
+    return this.item.id;
+  }
+
+  get label(): Localizable {
+    return this.item.label;
+  }
+
+  get definedBy() {
+    return this.item.definedBy;
+  }
+
+  get normalizedType() {
+    return this.item.normalizedType;
+  }
+
+  matchesIdentity(obj: SelectableItem|Class|Predicate|WithIdAndType) {
+    return matchesIdentity(this.item, obj);
+  }
 }

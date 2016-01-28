@@ -38,11 +38,6 @@ export interface Location {
   iowUrl?(): string;
 }
 
-export interface WithIdAndType {
-  id: Uri,
-  type: Type
-}
-
 export class ExpandedCurie {
   constructor(public namespace: string, public value: string) {
   }
@@ -366,15 +361,6 @@ abstract class AbstractClass extends GraphNode implements Location {
 
   abstract fullId(): Uri;
 
-  matchesIdentity(obj: {type: Type, id: Uri}) {
-    const typeAndId = this.toTypeAndId();
-    return obj && typeAndId.id === obj.id && typeAndId.type === obj.type;
-  }
-
-  toTypeAndId() {
-    return {type: this.normalizedType, id: this.fullId()};
-  }
-
   isClass() {
     return true;
   }
@@ -627,15 +613,6 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   }
 
   abstract fullId(): Uri;
-
-  matchesIdentity(obj: {type: Type, id: Uri}) {
-    const typeAndId = this.toTypeAndId();
-    return obj && typeAndId.id === obj.id && typeAndId.type === obj.type;
-  }
-
-  toTypeAndId() {
-    return {type: this.normalizedType, id: this.fullId()};
-  }
 
   get rawType() {
     return this.graph['@type'];
