@@ -29,7 +29,7 @@
     <curie-select id="{{ctrl.property.id + 'valueClass'}}" type="class" curie="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></curie-select>
   </editable>
 
-  <editable title="Pattern">
+  <editable ng-if="ctrl.predicate.isAttribute()" title="Pattern">
     <input id="{{ctrl.property.id + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
   </editable>
 
