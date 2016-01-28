@@ -15,6 +15,8 @@
           </div>
         </div>
 
+        <a ng-show="ctrl.selectedReference" ng-href="{{ctrl.selectedReference.id}}" target="_blank" translate>Browse vocabulary</a>
+
         <editable title="Concept">
           <div class="input-group">
             <input id="concept"

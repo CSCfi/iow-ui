@@ -60,6 +60,7 @@ class SearchConceptController {
   buttonTitle: string;
   labelTitle: string;
   vocabularyId: string;
+  selectedReference: Reference;
   mapSelection = this.conceptService.mapSelection.bind(this.conceptService);
 
   options = {
@@ -84,6 +85,10 @@ class SearchConceptController {
     this.defineConceptTitle = `Define concept for the ${this.newCreation ? 'new ' : ''}${this.type}`;
     this.buttonTitle = newCreation ? 'Create new' : 'Use';
     this.labelTitle = `${_.capitalize(this.type)} label`;
+
+    $scope.$watch(() => this.vocabularyId, id => {
+      this.selectedReference = _.find(references, reference => reference.vocabularyId === id);
+    });
 
     $scope.$watch(() => this.concept, (concept) => {
       this.label = concept ? languageService.translate(concept.label) : '';

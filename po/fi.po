@@ -165,12 +165,16 @@ msgstr "Laajempi käsite"
 msgid "Browse"
 msgstr "Selaa"
 
+#: components/editor/searchConceptModal.html:18
+msgid "Browse vocabulary"
+msgstr "Selaa sanastoa"
+
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:50
+#: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:13
 #: components/editor/searchClassModal.html:55
-#: components/editor/searchConceptModal.html:56
+#: components/editor/searchConceptModal.html:60
 #: components/editor/searchPredicateModal.html:75
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
@@ -199,8 +203,8 @@ msgstr "valitse luokka"
 msgid "Choose subject"
 msgstr "valitse käsite"
 
-#: components/editor/addConceptModal.html:39
-#: components/editor/searchConceptModal.html:34
+#: components/editor/addConceptModal.html:41
+#: components/editor/searchConceptModal.html:38
 msgid "Chosen concept"
 msgstr "Valittu käsite"
 
@@ -234,8 +238,8 @@ msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
-#: components/editor/addConceptModal.html:42
-#: components/editor/searchConceptModal.html:37
+#: components/editor/addConceptModal.html:44
+#: components/editor/searchConceptModal.html:41
 msgid "Comment"
 msgstr "Määritelmä"
 
@@ -243,11 +247,11 @@ msgstr "Määritelmä"
 msgid "Concept"
 msgstr "Käsite"
 
-#: components/editor/addConceptModal.html:46
+#: components/editor/addConceptModal.html:48
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
-#: components/editor/searchConceptModal.html:51
+#: components/editor/searchConceptModal.html:55
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 
@@ -275,7 +279,7 @@ msgstr "Luo assosiaatio ja käytä"
 msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
-#: components/editor/addConceptModal.html:51
+#: components/editor/addConceptModal.html:53
 #: components/group/addModelModal.html:23
 #: components/model/addRequireModal.html:31
 msgid "Create new"
@@ -807,8 +811,8 @@ msgstr "Hae luokkia"
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
-#: components/editor/addConceptModal.html:34
-#: components/editor/searchConceptModal.html:29
+#: components/editor/addConceptModal.html:35
+#: components/editor/searchConceptModal.html:32
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
 

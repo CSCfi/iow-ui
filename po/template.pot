@@ -162,12 +162,16 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
+#: components/editor/searchConceptModal.html:18
+msgid "Browse vocabulary"
+msgstr ""
+
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:50
+#: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:13
 #: components/editor/searchClassModal.html:55
-#: components/editor/searchConceptModal.html:56
+#: components/editor/searchConceptModal.html:60
 #: components/editor/searchPredicateModal.html:75
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
@@ -197,8 +201,8 @@ msgstr ""
 msgid "Choose subject"
 msgstr ""
 
-#: components/editor/addConceptModal.html:39
-#: components/editor/searchConceptModal.html:34
+#: components/editor/addConceptModal.html:41
+#: components/editor/searchConceptModal.html:38
 msgid "Chosen concept"
 msgstr ""
 
@@ -230,8 +234,8 @@ msgstr ""
 msgid "Class search info"
 msgstr ""
 
-#: components/editor/addConceptModal.html:42
-#: components/editor/searchConceptModal.html:37
+#: components/editor/addConceptModal.html:44
+#: components/editor/searchConceptModal.html:41
 msgid "Comment"
 msgstr ""
 
@@ -239,11 +243,11 @@ msgstr ""
 msgid "Concept"
 msgstr ""
 
-#: components/editor/addConceptModal.html:46
+#: components/editor/addConceptModal.html:48
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:51
+#: components/editor/searchConceptModal.html:55
 msgid "Concepts can't be searched because there are no vocabularies"
 msgstr ""
 
@@ -272,7 +276,7 @@ msgstr ""
 msgid "Create and use attribute"
 msgstr ""
 
-#: components/editor/addConceptModal.html:51
+#: components/editor/addConceptModal.html:53
 #: components/group/addModelModal.html:23
 #: components/model/addRequireModal.html:31
 msgid "Create new"
@@ -801,8 +805,8 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
-#: components/editor/addConceptModal.html:34
-#: components/editor/searchConceptModal.html:29
+#: components/editor/addConceptModal.html:35
+#: components/editor/searchConceptModal.html:32
 msgid "Search from concept database"
 msgstr ""
 
