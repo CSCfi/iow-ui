@@ -1,5 +1,7 @@
 <h4 translate>References</h4>
 
+<p ng-if="ctrl.references.length === 0" translate>No references yet</p>
+
 <uib-accordion>
   <uib-accordion-group ng-repeat="reference in ctrl.references" is-open="ctrl.opened[reference.id]">
     <uib-accordion-heading>

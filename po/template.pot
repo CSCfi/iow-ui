@@ -180,7 +180,7 @@ msgstr ""
 msgid "Choose attribute"
 msgstr ""
 
-#: components/editor/editableConstraint.html:30
+#: components/editor/editableConstraint.html:31
 #: translations/misc.html:73
 msgid "Choose class"
 msgstr ""
@@ -244,7 +244,7 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: components/editor/editableConstraint.html:14
+#: components/editor/editableConstraint.html:8
 msgid "Constraint classes"
 msgstr ""
 
@@ -379,11 +379,11 @@ msgstr ""
 msgid "Delete property"
 msgstr ""
 
-#: components/model/referencesView.html:8
+#: components/model/referencesView.html:10
 msgid "Delete reference"
 msgstr ""
 
-#: components/model/requiresView.html:9
+#: components/model/requiresView.html:11
 msgid "Delete require"
 msgstr ""
 
@@ -619,8 +619,16 @@ msgstr ""
 msgid "No profiles yet"
 msgstr ""
 
+#: components/model/referencesView.html:3
+msgid "No references yet"
+msgstr ""
+
 #: components/editor/usagePanel.html:7
 msgid "No referrers"
+msgstr ""
+
+#: components/model/requiresView.html:3
+msgid "No requires yet"
 msgstr ""
 
 #: components/advancedSearchModal.html:21
