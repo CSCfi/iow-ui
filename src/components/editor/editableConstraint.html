@@ -12,16 +12,15 @@
     <span ng-if="!$last">&nbsp;{{ctrl.constraint.constraint}}&nbsp;</span>
   </span>
 
-  <!-- FIXME: remove inline styles -->
   <div ng-if="ctrl.isEditing()">
-    <div class="input-group input-group-sm pull-left" style="width: 80px">
-      <select class="form-control" ng-model="ctrl.constraint.constraint" style="height: 39px">
+    <div class="input-group input-group-sm pull-left input-select">
+      <select class="form-control" ng-model="ctrl.constraint.constraint">
         <option value="or">Or</option>
         <option value="and">And</option>
         <option value="not">Not</option>
       </select>
     </div>
-    <div class="form-control multi-input" style="max-width: 415px">
+    <div class="form-control with-button multi-input">
       <div ng-repeat="item in ctrl.constraint.items" class="added-item">
         {{item | translateLabel}}
         <div class="delete-item badge" ng-click="ctrl.removeItem(item)">&times;</div>
