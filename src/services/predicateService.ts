@@ -62,7 +62,9 @@ export class PredicateService {
   }
 
   newPredicate(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<Predicate> {
-    return this.$http.get('/api/rest/predicateCreator', {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type, lang}})
+    const owlType = type === 'association' ? 'owl:ObjectProperty' : 'owl:DatatypeProperty';
+
+    return this.$http.get('/api/rest/predicateCreator', {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type: owlType, lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], model.context);
         return response;

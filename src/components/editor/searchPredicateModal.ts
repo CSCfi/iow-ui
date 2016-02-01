@@ -126,14 +126,12 @@ export class SearchPredicateController {
   }
 
   createNew(type: Type) {
-    const owlType = type === 'association' ? 'owl:ObjectProperty' : 'owl:DatatypeProperty';
-
     return this.searchConceptModal.openNewCreation(this.model.references, type)
       .then(result => {
         if (!this.typeSelectable) {
-          this.$uibModalInstance.close(_.extend(result, {type: owlType}));
+          this.$uibModalInstance.close(result);
         } else {
-          this.predicateService.newPredicate(this.model, result.label, result.concept.id, owlType, this.languageService.modelLanguage)
+          this.predicateService.newPredicate(this.model, result.label, result.concept.id, type, this.languageService.modelLanguage)
             .then(predicate => {
               this.selectedPredicate = predicate;
               this.$scope.form.editing = true;

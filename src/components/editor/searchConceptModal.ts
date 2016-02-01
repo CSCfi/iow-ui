@@ -14,7 +14,7 @@ import { AddConceptModal, ConceptSuggestionCreation } from './addConceptModal';
 
 const limit = 1000;
 
-export type ConceptCreation = {concept: Concept|ConceptSuggestion, label: string, type?: Type};
+export type ConceptCreation = {concept: Concept|ConceptSuggestion, label: string, type: Type};
 
 export function isConceptCreation(obj: any): obj is ConceptCreation {
   return obj.concept;
@@ -129,7 +129,7 @@ class SearchConceptController {
   }
 
   create() {
-    this.$uibModalInstance.close(this.newCreation ? {concept: this.concept, label: this.label} : this.concept);
+    this.$uibModalInstance.close(this.newCreation ? {type: this.type, concept: this.concept, label: this.label} : this.concept);
   };
 
   cancel() {
@@ -140,6 +140,7 @@ class SearchConceptController {
     this.addConceptModal.open(this.labelTitle, this.defineConceptTitle, conceptLabel, _.findWhere(this.references, {id: referenceId}))
       .then((result: ConceptSuggestionCreation) => this.$q.all(
         {
+          type: this.$q.when(this.type),
           label: this.$q.when(result.label),
           concept: this.conceptService.createConceptSuggestion(result.concept.schemeId, result.concept.label, result.concept.comment, result.concept.broaderConceptId, this.languageService.modelLanguage)
             .then(conceptId => this.conceptService.getConceptSuggestion(conceptId))
