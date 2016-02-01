@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import {
   glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType, containsAny, normalizeModelType,
-  splitNamespace
+  splitNamespace, hasLocalization
 } from './utils';
 
 const jsonld: any = require('jsonld');
@@ -38,7 +38,11 @@ export type ConstraintType = string;
 //export type ConstraintType = 'or' | 'and' | 'not';
 
 
-type EntityFactory<T extends GraphNode> = (graph: any, context: any, frame: any) => T
+interface EntityConstructor<T extends GraphNode> {
+  new(graph: any, context: any, frame: any): T;
+}
+
+type EntityFactory<T extends GraphNode> = (framedData: any) => EntityConstructor<T>;
 
 export function isLocalizable(obj: any): obj is Localizable {
   return typeof obj === 'object';
@@ -145,9 +149,9 @@ export class DefinedBy extends GraphNode {
   label: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
-    super(graph, context, frame);
+    super(fixIsDefinedBy(graph), context, frame);
     this.id = graph['@id'];
-    this.label = graph.label;
+    this.label = deserializeLocalizable(graph.label);
   }
 }
 
@@ -162,8 +166,8 @@ export abstract class AbstractGroup extends GraphNode implements Location {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = graph.label;
-    this.comment = graph.comment;
+    this.label = deserializeLocalizable(graph.label);
+    this.comment = deserializeLocalizable(graph.comment);
     this.homepage = graph.homepage;
   }
 
@@ -207,7 +211,7 @@ abstract class AbstractModel extends GraphNode implements Location {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = graph.label;
+    this.label = deserializeLocalizable(graph.label);
     this.normalizedType = normalizeModelType(this.type);
   }
 
@@ -235,7 +239,7 @@ export class Model extends AbstractModel {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.comment = graph.comment;
+    this.comment = deserializeLocalizable(graph.comment);
     this.state = graph.versionInfo;
     this.namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
@@ -244,8 +248,8 @@ export class Model extends AbstractModel {
       graph.isPartOf['@type'] = 'foaf:Group';
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
-    this.references = _.map(normalizeAsArray(graph.references), reference => new Reference(reference, context, frame));
-    this.requires = _.map(normalizeAsArray(graph.requires), require => new Require(require, context, frame));
+    this.references = deserializeEntityList(graph.references, context, frame, Reference);
+    this.requires = deserializeEntityList(graph.requires, context, frame, Require);
     this.copyNamespacesFromRequires();
   }
 
@@ -309,11 +313,11 @@ export class Model extends AbstractModel {
 
     return {
       '@id': this.id,
-      label: Object.assign({}, this.label),
-      comment: Object.assign({}, this.comment),
+      label: serializeLocalizable(this.label),
+      comment: serializeLocalizable(this.comment),
       versionInfo: this.state,
-      references: _.map(this.references, reference => reference.serialize(true)),
-      requires: _.map(this.requires, require => require.serialize(true))
+      references: serializeEntityList(this.references),
+      requires: serializeEntityList(this.requires)
     }
   }
 }
@@ -329,8 +333,8 @@ export class Reference extends GraphNode {
     super(graph, context, frame);
     this.vocabularyId = graph['dcterms:identifier'];
     this.id = graph['@id'];
-    this.label = graph.title;
-    this.comment = graph.comment;
+    this.label = deserializeLocalizable(graph.title);
+    this.comment = deserializeLocalizable(graph.comment);
   }
 }
 
@@ -345,7 +349,7 @@ export class Require extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = graph.label;
+    this.label = deserializeLocalizable(graph.label);
     this._namespace = graph['dcap:preferredXMLNamespaceName'];
     this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
     this.modifiable = graph['@type'] === 'dcap:MetadataVocabulary';
@@ -363,7 +367,7 @@ export class Require extends GraphNode {
   serializationValues() {
     return {
       '@id': this.id,
-      label: Object.assign({}, this.label),
+      label: serializeLocalizable(this.label),
       'dcap:preferredXMLNamespaceName': this.namespace,
       'dcap:preferredXMLNamespacePrefix': this.prefix
     }
@@ -380,9 +384,9 @@ abstract class AbstractClass extends GraphNode implements Location {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.label = graph.label;
-    this.comment = graph.comment;
-    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractClass', graph), context, frame);
+    this.label = deserializeLocalizable(graph.label);
+    this.comment = deserializeLocalizable(graph.comment);
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.normalizedType = normalizeSelectionType(this.type);
   }
 
@@ -433,11 +437,9 @@ export class Class extends AbstractClass {
     this.subClassOf = graph.subClassOf;
     this.scopeClass = graph.scopeClass;
     this.state = graph.versionInfo;
-    this.properties = _.map(normalizeAsArray(graph.property), property => new Property(property, context, frame));
-    if (graph.subject) {
-      this.subject = new Concept(graph.subject, context, frame);
-    }
-    this.equivalentClasses = normalizeAsArray<Curie>(graph.equivalentClass);
+    this.properties = deserializeEntityList(graph.property, context, frame, Property);
+    this.subject = deserializeOptional(graph.subject, context, frame, Concept);
+    this.equivalentClasses = deserializeList<Curie>(graph.equivalentClass);
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
   }
 
@@ -469,15 +471,15 @@ export class Class extends AbstractClass {
   serializationValues() {
     return {
       '@id': this.curie,
-      label: Object.assign({}, this.label),
-      comment: Object.assign({}, this.comment),
+      label: serializeLocalizable(this.label),
+      comment: serializeLocalizable(this.comment),
       subClassOf: this.subClassOf,
       scopeClass: this.scopeClass,
       versionInfo: this.state,
-      property: _.map(this.properties, property => property.serialize(true)),
-      subject: this.subject && this.subject.serialize(true),
-      equivalentClass: this.equivalentClasses.slice(),
-      constraint: this.constraint.serialize(true)
+      property: serializeEntityList(this.properties),
+      subject: serializeOptional(this.subject),
+      equivalentClass: serializeList(this.equivalentClasses),
+      constraint: serializeOptional(this.constraint, (constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment))
     };
   }
 }
@@ -491,9 +493,9 @@ export class Constraint extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
 
-    const and = _.map(normalizeAsArray(graph.and), item => new ConstraintListItem(item, context, frame));
-    const or = _.map(normalizeAsArray(graph.or), item => new ConstraintListItem(item, context, frame));
-    const not = _.map(normalizeAsArray(graph.not), item => new ConstraintListItem(item, context, frame));
+    const and = deserializeEntityList(graph.and, context, frame, ConstraintListItem);
+    const or = deserializeEntityList(graph.or, context, frame, ConstraintListItem);
+    const not = deserializeEntityList(graph.not, context, frame, ConstraintListItem);
 
     if (and.length > 0) {
       this.constraint = 'and';
@@ -509,7 +511,7 @@ export class Constraint extends GraphNode {
       this.items = [];
     }
 
-    this.comment = graph.comment;
+    this.comment = deserializeLocalizable(graph.comment);
   }
 
   addItem(shape: Class) {
@@ -541,10 +543,10 @@ export class Constraint extends GraphNode {
 
     return {
       '@type': mapConstraintType(this.constraint),
-      comment: Object.assign({}, this.comment),
-      and: this.constraint === 'and' ? items : null,
-      or: this.constraint === 'or' ? items : null,
-      not: this.constraint === 'not' ? items : null
+      comment: serializeLocalizable(this.comment),
+      and: this.constraint === 'and' ? serializeList(items) : null,
+      or: this.constraint === 'or' ? serializeList(items) : null,
+      not: this.constraint === 'not' ? serializeList(items) : null
     };
   }
 }
@@ -586,8 +588,8 @@ export class Property extends GraphNode {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.state = graph.versionInfo;
-    this.label = graph.label;
-    this.comment = graph.comment;
+    this.label = deserializeLocalizable(graph.label);
+    this.comment = deserializeLocalizable(graph.comment);
     this.example = graph.example;
     this.dataType = graph.datatype;
     this.valueClass = graph.valueShape;
@@ -610,8 +612,8 @@ export class Property extends GraphNode {
     return {
       '@id': this.id,
       versionInfo: this.state,
-      label: Object.assign({}, this.label),
-      comment: Object.assign({}, this.comment),
+      label: serializeLocalizable(this.label),
+      comment: serializeLocalizable(this.comment),
       example: this.example,
       datatype: this.dataType,
       valueShape: this.valueClass,
@@ -633,9 +635,9 @@ abstract class AbstractPredicate extends GraphNode implements Location {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.label = graph.label;
-    this.comment = graph.comment;
-    this.definedBy = new DefinedBy(fixIsDefinedBy('AbstractPredicate', graph), context, frame);
+    this.label = deserializeLocalizable(graph.label);
+    this.comment = deserializeLocalizable(graph.comment);
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.normalizedType = normalizeSelectionType(this.type);
   }
 
@@ -694,9 +696,7 @@ export abstract class Predicate extends AbstractPredicate {
     this.curie = graph['@id'];
     this.state = graph.versionInfo;
     this.subPropertyOf = graph.subPropertyOf;
-    if (graph.subject) {
-      this.subject = new Concept(graph.subject, context, frame);
-    }
+    this.subject = deserializeOptional(graph.subject, context, frame, Concept);
     this.equivalentProperties = normalizeAsArray<Curie>(graph.equivalentProperty);
   }
 
@@ -715,13 +715,13 @@ export abstract class Predicate extends AbstractPredicate {
   serializationValues() {
     return {
       '@id': this.curie,
-      label: Object.assign({}, this.label),
-      comment: Object.assign({}, this.comment),
+      label: serializeLocalizable(this.label),
+      comment: serializeLocalizable(this.comment),
       range: this.getRange(),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf,
-      subject: this.subject && this.subject.serialize(true),
-      equivalentProperty: this.equivalentProperties.slice()
+      subject: serializeOptional(this.subject),
+      equivalentProperty: serializeList(this.equivalentProperties)
     }
   }
 }
@@ -790,8 +790,8 @@ export class Concept extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = graph.label || graph.prefLabel;
-    this.comment = graph.comment || graph['rdfs:comment'];
+    this.label = deserializeLocalizable(graph.label || graph.prefLabel);
+    this.comment = deserializeLocalizable(graph.comment || graph['rdfs:comment']);
     this.inScheme = _.map(normalizeAsArray<any>(graph.inScheme), scheme => scheme['@id'] || scheme.uri);
   }
 }
@@ -828,8 +828,8 @@ export class DefaultUser extends GraphNode implements User {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.createdAt = moment(graph.created, isoDateFormat);
-    this.modifiedAt = graph.modified && moment(graph.modified, isoDateFormat);
+    this.createdAt = deserializeDate(graph.created);
+    this.modifiedAt = deserializeOptionalDate(graph.modified);
     this.adminGroups = normalizeAsArray<Uri>(graph.isAdminOf);
     this.memberGroups = normalizeAsArray<Uri>(graph.isPartOf);
     this.name = graph.name;
@@ -888,8 +888,8 @@ export class SearchResult extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = graph.label;
-    this.comment = graph.comment;
+    this.label = deserializeLocalizable(graph.label);
+    this.comment = deserializeLocalizable(graph.comment);
   }
 
   iowUrl() {
@@ -907,9 +907,9 @@ export class Usage extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = graph.label;
-    this.definedBy = new DefinedBy(fixIsDefinedBy('Usage', graph), context, frame);
-    this.referrers = _.map(normalizeAsArray(graph.isReferencedBy), referrer => new Referrer(referrer, context, frame));
+    this.label = deserializeLocalizable(graph.label);
+    this.definedBy = new DefinedBy(graph, context, frame);
+    this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, Referrer);
   }
 }
 
@@ -922,10 +922,8 @@ export class Referrer extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = graph.label;
-    if ('isDefinedBy' in graph) {
-      this.definedBy = new DefinedBy(fixIsDefinedBy('Referrer', graph), context, frame);
-    }
+    this.label = deserializeLocalizable(graph.label);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
   }
 
   iowUrl() {
@@ -935,28 +933,81 @@ export class Referrer extends GraphNode {
 }
 
 // TODO: when api returns coherent data get rid of this method
-function fixIsDefinedBy(functionName: string, graph: any) {
-  if (typeof graph.isDefinedBy === 'string') {
-    console.log(functionName + ': is defined by is a string and it should be an object');
+function fixIsDefinedBy(graph: any) {
+  if (typeof graph === 'string') {
+    console.log('Is defined by is a string and it should be an object');
+    console.log(new Error().stack);
     console.log(graph);
     return {
-      '@id': graph.isDefinedBy,
+      '@id': graph,
       '@type': 'owl:Ontology',
-      'label': {'fi': graph.isDefinedBy, 'en': graph.isDefinedBy }
+      'label': {'fi': graph, 'en': graph }
     };
-  } else if (typeof graph.isDefinedBy === 'object' && !graph.isDefinedBy['@type']) {
-    console.log(functionName + ': is defined by object is missing the type');
+  } else if (typeof graph === 'object' && !graph['@type']) {
+    console.log('Is defined by object is missing the type');
+    console.log(new Error().stack);
     console.log(graph);
-    return Object.assign(graph.isDefinedBy, {
+    return Object.assign(graph, {
       '@type': 'owl:Ontology'
     });
-  } else if (!('isDefinedBy' in graph)) {
-    console.log(functionName + ': is defined by is missing');
-    console.log(graph);
+  } else if (!graph) {
+    console.log(new Error().stack);
+    console.log('Is defined by is missing');
     return null;
   } else {
-    return graph.isDefinedBy;
+    return graph;
   }
+}
+
+function serializeOptional<T extends GraphNode>(entity: T, isDefined: (entity: T) => boolean = (entity: T) => !!entity) {
+  return isDefined(entity) ? entity.serialize(true) : null;
+}
+
+function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entity: EntityConstructor<T>): T {
+  if (graph) {
+    return new entity(graph, context,frame);
+  } else {
+    return null;
+  }
+}
+
+function serializeEntityList(list: GraphNode[]) {
+  if (list.length === 0) {
+    return null;
+  }
+  return _.map(list, listItem => listItem.serialize(true));
+}
+
+function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entity: EntityConstructor<T>): T[] {
+  return _.map(normalizeAsArray(list), obj => new entity(obj, context, frame));
+}
+
+function serializeList(list: string[]) {
+  if (list.length === 0) {
+    return null;
+  }
+
+  return list.slice();
+}
+
+function deserializeList<T>(list: any) {
+  return normalizeAsArray<T>(list);
+}
+
+function serializeLocalizable(localizable: Localizable) {
+  return Object.assign({}, localizable);
+}
+
+function deserializeLocalizable(localizable: any) {
+  return localizable;
+}
+
+function deserializeDate(date: any) {
+  return moment(date, isoDateFormat);
+}
+
+function deserializeOptionalDate(date: any) {
+  return date && deserializeDate(date);
 }
 
 function mapType(type: string): Type {
@@ -1040,7 +1091,13 @@ function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: any, 
   return frameData($log, data, frameObject)
     .then(framed => {
       try {
-        return entityFactory(framed['@graph'][0], framed['@context'], frameObject)
+        // TODO: flag for mandatory and throw error if set
+        if (!framed['@graph']) {
+          return null;
+        } else {
+          const entity: EntityConstructor<T> = entityFactory(framed);
+          return new entity(framed['@graph'][0], framed['@context'], frameObject);
+        }
       } catch (error) {
         $log.error(error);
         throw error;
@@ -1053,7 +1110,8 @@ function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: 
   return frameData($log, data, frameObject)
     .then(framed => {
       try {
-        return _.map(normalizeAsArray(framed['@graph']), element => entityFactory(element, framed['@context'], frameObject))
+        const entity: EntityConstructor<T> = entityFactory(framed);
+        return _.map(normalizeAsArray(framed['@graph']), element => new entity(element, framed['@context'], frameObject));
       } catch (error) {
         $log.error(error);
         throw error;
@@ -1067,57 +1125,59 @@ export class EntityDeserializer {
   }
 
   deserializeGroupList(data: any): IPromise<GroupListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.groupListFrame, (graph, context, frame) => new GroupListItem(graph, context, frame));
+    return frameAndMapArray(this.$log, data, frames.groupListFrame, (framedData) => GroupListItem);
   }
 
   deserializeGroup(data: any): IPromise<Group> {
-    return frameAndMap(this.$log, data, frames.groupFrame, (graph, context, frame) => new Group(graph, context, frame));
+    return frameAndMap(this.$log, data, frames.groupFrame, (framedData) => Group);
   }
 
   deserializeModelList(data: any): IPromise<ModelListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.modelListFrame, (graph, context, frame) => new ModelListItem(graph, context, frame));
+    return frameAndMapArray(this.$log, data, frames.modelListFrame, (framedData) => ModelListItem);
   }
 
   deserializeModel(data: any): IPromise<Model> {
-    return frameAndMap(this.$log, data, frames.modelFrame, (graph, context, frame) => new Model(graph, context, frame));
+    return frameAndMap(this.$log, data, frames.modelFrame, (framedData) => Model);
   }
 
   deserializeClassList(data: any): IPromise<ClassListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.classListFrame, (graph, context, frame) => new ClassListItem(graph, context, frame));
+    return frameAndMapArray(this.$log, data, frames.classListFrame, (framedData) => ClassListItem);
   }
 
   deserializeClass(data: any): IPromise<Class> {
-    return frameAndMap(this.$log, data, frames.classFrame, (graph, context, frame) => new Class(graph, context, frame));
+    return frameAndMap(this.$log, data, frames.classFrame, (framedData) => Class);
   }
 
   deserializeProperty(data: any): IPromise<Property> {
-    return frameAndMap(this.$log, data, frames.propertyFrame, (graph, context, frame) => new Property(graph, context, frame));
+    return frameAndMap(this.$log, data, frames.propertyFrame, (framedData) => Property);
   }
 
   deserializePredicateList(data: any): IPromise<PredicateListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.predicateListFrame, (graph, context, frame) => new PredicateListItem(graph, context, frame));
+    return frameAndMapArray(this.$log, data, frames.predicateListFrame, (framedData) => PredicateListItem);
   }
 
   deserializePredicate(data: any): IPromise<Predicate> {
-    return frameAndMap(this.$log, data, frames.predicateFrame, (graph, context, frame) => {
-      const types = mapGraphTypeObject(graph['@type']);
+    const entityFactory: EntityFactory<Predicate> = (framedData) => {
+      const types = mapGraphTypeObject(framedData['@type']);
 
       if (containsAny(types, ['association'])) {
-        return new Association(graph, context, frame);
+        return Association;
       } else if (containsAny(types, ['attribute'])) {
-        return new Attribute(graph, context, frame);
+        return Attribute;
       } else {
         throw new Error('Incompatible type: ' + types.join());
       }
-    });
+    };
+
+    return frameAndMap(this.$log, data, frames.predicateFrame, entityFactory);
   }
 
   deserializeConceptSuggestion(data: any): IPromise<ConceptSuggestion> {
-    return frameAndMap(this.$log, data, frames.conceptSuggestionFrame, (graph, context, frame) => new ConceptSuggestion(graph, context, frame));
+    return frameAndMap(this.$log, data, frames.conceptSuggestionFrame, (framedData) => ConceptSuggestion);
   }
 
   deserializeConceptSuggestions(data: any): IPromise<ConceptSuggestion[]> {
-    return frameAndMapArray(this.$log, data, frames.conceptSuggestionFrame, (graph, context, frame) => new ConceptSuggestion(graph, context, frame));
+    return frameAndMapArray(this.$log, data, frames.conceptSuggestionFrame, (framedData) => ConceptSuggestion);
   }
 
   deserializeConcept(data: any, id: Uri): IPromise<Concept> {
@@ -1127,19 +1187,19 @@ export class EntityDeserializer {
   }
 
   deserializeRequire(data: any): IPromise<Require> {
-    return frameAndMap(this.$log, data, frames.requireFrame, (graph, context, frame) => new Require(graph, context, frame));
+    return frameAndMap(this.$log, data, frames.requireFrame, (framedData) => Require);
   }
 
   deserializeRequires(data: any): IPromise<Require[]> {
-    return frameAndMapArray(this.$log, data, frames.requireFrame, (graph, context, frame) => new Require(graph, context, frame));
+    return frameAndMapArray(this.$log, data, frames.requireFrame, (framedData) => Require);
   }
 
   deserializeUser(data: any): IPromise<User> {
-    return frameAndMap(this.$log, data, frames.userFrame, (graph, context, frame) => new DefaultUser(graph, context, frame));
+    return frameAndMap(this.$log, data, frames.userFrame, (framedData) => DefaultUser);
   }
 
   deserializeSearch(data: any): IPromise<SearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (graph, context, frame) => new SearchResult(graph, context, frame))
+    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (framedData) => SearchResult)
   }
 
   deserializeClassVisualization(data: any): IPromise<any> {
@@ -1147,6 +1207,6 @@ export class EntityDeserializer {
   }
 
   deserializeUsage(data: any): IPromise<Usage> {
-    return frameAndMap(this.$log, data, frames.usageFrame, (graph, context, frame) => graph ? new Usage(graph, context, frame) : null);
+    return frameAndMap(this.$log, data, frames.usageFrame, (framedData) => Usage);
   }
 }
