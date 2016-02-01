@@ -236,6 +236,7 @@ export class Model extends AbstractModel {
   namespace: Uri;
   prefix: string;
   group: GroupListItem;
+  parts: Uri[];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -250,6 +251,7 @@ export class Model extends AbstractModel {
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.references = deserializeEntityList(graph.references, context, frame, Reference);
     this.requires = deserializeEntityList(graph.requires, context, frame, Require);
+    this.parts = deserializeList<Uri>(graph.hasPart);
     this.copyNamespacesFromRequires();
   }
 
@@ -317,7 +319,8 @@ export class Model extends AbstractModel {
       comment: serializeLocalizable(this.comment),
       versionInfo: this.state,
       references: serializeEntityList(this.references),
-      requires: serializeEntityList(this.requires)
+      requires: serializeEntityList(this.requires),
+      hasPart: serializeList(this.parts)
     }
   }
 }
@@ -539,7 +542,7 @@ export class Constraint extends GraphNode {
       }
     }
 
-    const items = _.map(this.items, item => item.serialize(true));
+    const items = serializeEntityList(this.items);
 
     return {
       '@type': mapConstraintType(this.constraint),
@@ -697,7 +700,7 @@ export abstract class Predicate extends AbstractPredicate {
     this.state = graph.versionInfo;
     this.subPropertyOf = graph.subPropertyOf;
     this.subject = deserializeOptional(graph.subject, context, frame, Concept);
-    this.equivalentProperties = normalizeAsArray<Curie>(graph.equivalentProperty);
+    this.equivalentProperties = deserializeList<Curie>(graph.equivalentProperty);
   }
 
   get id() {
@@ -792,7 +795,7 @@ export class Concept extends GraphNode {
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.label || graph.prefLabel);
     this.comment = deserializeLocalizable(graph.comment || graph['rdfs:comment']);
-    this.inScheme = _.map(normalizeAsArray<any>(graph.inScheme), scheme => scheme['@id'] || scheme.uri);
+    this.inScheme = _.map(deserializeList<any>(graph.inScheme), scheme => scheme['@id'] || scheme.uri);
   }
 }
 
@@ -830,8 +833,8 @@ export class DefaultUser extends GraphNode implements User {
     super(graph, context, frame);
     this.createdAt = deserializeDate(graph.created);
     this.modifiedAt = deserializeOptionalDate(graph.modified);
-    this.adminGroups = normalizeAsArray<Uri>(graph.isAdminOf);
-    this.memberGroups = normalizeAsArray<Uri>(graph.isPartOf);
+    this.adminGroups = deserializeList<Uri>(graph.isAdminOf);
+    this.memberGroups = deserializeList<Uri>(graph.isPartOf);
     this.name = graph.name;
     this.login = graph['@id'].substring('mailto:'.length);
   }
