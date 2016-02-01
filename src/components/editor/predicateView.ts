@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Attribute, Association, GroupListItem, Predicate, Model, Uri, states } from '../../services/entities';
+import { Attribute, Association, GroupListItem, Model, Uri } from '../../services/entities';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/modelController';
 
@@ -53,7 +53,7 @@ class PredicateViewController extends EditableEntityController<Association|Attri
   rights(): Rights {
     return {
       edit: () => this.isNotReference(),
-      remove: () => this.isReference() || this.predicate.state === states.unstable
+      remove: () => this.isReference() || this.predicate.state === 'Unstable'
     };
   }
 

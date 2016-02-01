@@ -17,16 +17,26 @@ export type Uri = string;
 export type Url = string;
 export type RelativeUrl = string;
 export type Curie = string;
-export type Type = string;
+export type Type = string
+//export type Type = 'class'
+//                 | 'shape'
+//                 | 'attribute'
+//                 | 'association'
+//                 | 'model'
+//                 | 'profile'
+//                 | 'group'
+//                 | 'library'
+//                 | 'constraint'
+//                 | 'user'
+//                 | 'concept';
 export type State = string;
+//export type State = 'Unstable'
+//                  | 'Draft'
+//                  | 'Recommendation'
+//                  | 'Deprecated';
 export type ConstraintType = string;
+//export type ConstraintType = 'or' | 'and' | 'not';
 
-export const states = {
-  unstable:'Unstable',
-  draft: 'Draft',
-  recommendation: 'Recommendation',
-  deprecated: 'Deprecated'
-};
 
 type EntityFactory<T extends GraphNode> = (graph: any, context: any, frame: any) => T
 
@@ -95,7 +105,7 @@ export abstract class GraphNode {
   }
 
   linkTo(type:Type|Type[], id:Uri|Curie, model: Model) {
-    const typeArray = normalizeAsArray(type);
+    const typeArray: Type[] = normalizeAsArray<Type>(type);
 
     if (id) {
       const expanded = this.expandCurie(id);

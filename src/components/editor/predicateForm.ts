@@ -1,4 +1,4 @@
-import { Association, Model, Predicate, states } from '../../services/entities';
+import { Association, Model, Predicate } from '../../services/entities';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -35,6 +35,6 @@ class PredicateFormController {
   }
 
   get inUnstableState(): boolean {
-    return this.predicate.state === states.unstable;
+    return this.predicate.state === 'Unstable';
   }
 }

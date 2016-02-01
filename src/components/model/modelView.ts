@@ -3,9 +3,9 @@ import ILogService = angular.ILogService;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
-import { EditableEntityController, EditableScope, EditableForm, Rights } from '../form/editableEntityController';
+import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { GroupListItem, Model, Require, Reference, Uri, states } from '../../services/entities';
+import { GroupListItem, Model, Require, Reference } from '../../services/entities';
 import { ModelController } from './modelController';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
@@ -121,7 +121,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   rights(): Rights {
     return {
       edit: () => true,
-      remove: () => this.model.state === states.unstable
+      remove: () => this.model.state === 'Unstable'
     }
   }
 

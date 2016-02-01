@@ -387,7 +387,7 @@ class RouteData {
   }
 
   get selected() {
-    for (const type of ['attribute', 'class', 'association']) {
+    for (const type of <Type[]> ['attribute', 'class', 'association']) {
       const id: Uri = this.params[type];
       if (id) {
         return {normalizedType: type, id};

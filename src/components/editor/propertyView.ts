@@ -4,7 +4,7 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import * as _ from 'lodash';
-import { Class, Property, Predicate, Model, Localizable, states } from '../../services/entities';
+import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
@@ -100,6 +100,6 @@ export class PropertyViewController {
   }
 
   get inUnstableState(): boolean {
-    return this.property.state === states.unstable;
+    return this.property.state === 'Unstable';
   }
 }

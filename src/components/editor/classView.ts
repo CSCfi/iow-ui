@@ -7,7 +7,7 @@ import { ModelController } from '../model/modelController';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property, Uri, states } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, Uri } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -83,7 +83,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   rights(): Rights {
     return {
       edit: () => this.isNotReference(),
-      remove: () => this.isReference() || this.class.state === states.unstable
+      remove: () => this.isReference() || this.class.state === 'Unstable'
     };
   }
 

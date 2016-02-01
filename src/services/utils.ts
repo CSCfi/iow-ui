@@ -80,7 +80,7 @@ export function isDifferentUrl(lhs: string, rhs: string): boolean {
   return normalizeUrl(lhs) !== normalizeUrl(rhs);
 }
 
-export function normalizeSelectionType(types: Type[]) {
+export function normalizeSelectionType(types: Type[]): Type {
   if (containsAny(types, ['class', 'shape'])) {
     return 'class';
   } else if (containsAny(types, ['attribute'])) {
@@ -92,7 +92,7 @@ export function normalizeSelectionType(types: Type[]) {
   }
 }
 
-export function normalizeModelType(types: Type[]) {
+export function normalizeModelType(types: Type[]): Type {
   if (containsAny(types, ['profile'])) {
     return 'profile';
   } else {

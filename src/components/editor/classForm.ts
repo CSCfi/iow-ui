@@ -5,7 +5,7 @@ import ITimeoutService = angular.ITimeoutService;
 import * as _ from 'lodash';
 import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
-import { Class, Model, Property, Uri, states } from '../../services/entities';
+import { Class, Model, Property, Uri } from '../../services/entities';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 
 export const mod = angular.module('iow.components.editor');
@@ -66,7 +66,7 @@ export class ClassFormController {
   }
 
   get inUnstableState(): boolean {
-    return this.class.state === states.unstable;
+    return this.class.state === 'Unstable';
   }
 
   registerPropertyView(propertyId: Uri, view: PropertyViewController) {
