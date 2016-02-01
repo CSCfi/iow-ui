@@ -127,7 +127,7 @@ function compileAppJs(watch) {
     pipeline.external(id);
   });
 
-  pipeline.plugin('tsify');
+  pipeline.plugin('tsify', { 'typescript': require('typescript')});
 
   pipeline.transform(envify({
     NODE_ENV: process.env.NODE_ENV || 'development',
