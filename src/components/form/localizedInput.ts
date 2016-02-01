@@ -4,6 +4,7 @@ import IScope = angular.IScope;
 import { Localizable } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './stringInput';
+import { hasLocalization } from '../../services/utils';
 
 export const mod = angular.module('iow.components.form');
 
@@ -66,10 +67,6 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
         }
         return val;
       });
-
-      function hasLocalization(value: Localizable) {
-        return !!languageService.translate(value);
-      }
 
       ngModel.$validators['string'] = modelValue => {
         return anyLocalization(modelValue, isStringValid);

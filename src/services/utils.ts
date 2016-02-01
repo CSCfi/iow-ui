@@ -1,4 +1,4 @@
-import { Type, Uri } from './entities';
+import { Type, Uri, Localizable } from './entities';
 
 interface WithId {
   id: Uri;
@@ -98,4 +98,17 @@ export function normalizeModelType(types: Type[]): Type {
   } else {
     return 'model';
   }
+}
+
+function hasValue(obj: any) {
+  for (const value of Object.values(obj)) {
+    if (!!value) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function hasLocalization(localizable: Localizable) {
+  return !!localizable && hasValue(localizable)
 }
