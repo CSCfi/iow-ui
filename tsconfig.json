@@ -5,5 +5,9 @@
     "removeComments": false,
     "sourceMap": true,
     "module": "commonjs"
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "typing"
+  ]
 }
