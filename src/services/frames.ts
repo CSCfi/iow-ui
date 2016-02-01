@@ -41,7 +41,6 @@ const equivalentProperty = { '@id' : 'http://www.w3.org/2002/07/owl#equivalentPr
 const constraint = { '@id': 'http://www.w3.org/ns/shacl#constraint', '@type': '@id' };
 const or = { '@id': 'http://www.w3.org/ns/shacl#or', '@container': '@set' };
 const and = { '@id': 'http://www.w3.org/ns/shacl#and', '@container': '@set' };
-const foaf = { '@id': 'http://xmlns.com/foaf/0.1/', '@type': '@id'};
 
 type Frame = {};
 
@@ -85,8 +84,7 @@ export function modelFrame(data: any): Frame {
     valueShape,
     nodeKind,
     versionInfo,
-    homepage,
-    foaf
+    homepage
   };
 
   return {
