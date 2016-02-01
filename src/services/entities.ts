@@ -150,8 +150,8 @@ export class DefinedBy extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(fixIsDefinedBy(graph), context, frame);
-    this.id = graph['@id'];
-    this.label = deserializeLocalizable(graph.label);
+    this.id = this.graph['@id'];
+    this.label = deserializeLocalizable(this.graph.label);
   }
 }
 
@@ -911,7 +911,7 @@ export class Usage extends GraphNode {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.label);
-    this.definedBy = new DefinedBy(graph, context, frame);
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, Referrer);
   }
 }
@@ -1095,7 +1095,7 @@ function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: any, 
     .then(framed => {
       try {
         // TODO: flag for mandatory and throw error if set
-        if (!framed['@graph']) {
+        if (framed['@graph'].length === 0) {
           return null;
         } else {
           const entity: EntityConstructor<T> = entityFactory(framed);
