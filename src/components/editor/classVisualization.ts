@@ -289,7 +289,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     },
     labels: [
       { position: 0.5, attrs: { text: { text: getName() } } },
-      { position: .1, attrs: { text: { text: formatCardinality() } } },
+      { position: .9, attrs: { text: { text: formatCardinality() } } },
     ]
   });
 
