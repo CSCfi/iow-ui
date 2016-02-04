@@ -5,7 +5,7 @@ import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
 import { ClassService } from '../../services/classService';
-import { Class, Model, Uri } from '../../services/entities';
+import { Class, Model, Uri, VisualizationClass, Property } from '../../services/entities';
 import * as _ from 'lodash';
 import { normalizeAsArray } from '../../services/utils';
 const joint = require('jointjs');
@@ -77,7 +77,7 @@ class ClassVisualizationController {
   paper: joint.dia.Paper;
   loading: boolean;
 
-  private visualizationData: any;
+  private visualizationData: VisualizationClass[];
 
   /* @ngInject */
   constructor(private $scope: IScope, private classService: ClassService, private languageService: LanguageService) {
@@ -192,22 +192,15 @@ function scaleToFit(paper: joint.dia.Paper) {
   moveOrigin(paper, 0, -25);
 }
 
-function isAssociation(property: any) {
-  return property.valueShape;
-}
+function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, classes: VisualizationClass[], root: Uri) {
 
-function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, data: any, root: Uri) {
-  function isRootClass(klass: any) {
-    return klass['@id'] === root;
-  }
+  const associations: {klass: VisualizationClass, association: Property}[] = [];
 
-  const associations: any[] = [];
+  for (const klass of normalizeAsArray(classes)) {
+    const attributes: Property[] = [];
 
-  for (const klass of normalizeAsArray<any>(data['@graph'])) {
-    const attributes: any[] = [];
-
-    for (const property of normalizeAsArray<any>(klass.property)) {
-      if (isRootClass(klass) && isAssociation(property) && model.findModelPrefixForNamespace(model.expandCurie(property.valueShape).namespace)) {
+    for (const property of klass.properties) {
+      if (klass.id === root && property.hasAssociationTarget() && model.findModelPrefixForNamespace(model.expandCurie(property.valueClass).namespace)) {
         associations.push({klass: klass, association: property});
       } else {
         attributes.push(property);
@@ -220,20 +213,20 @@ function createCells($scope: IScope, languageService: LanguageService, model: Mo
   _.forEach(associations, association => createAssociation($scope, languageService, graph, association));
 }
 
-function createClass($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, klass: any, properties: any[]) {
+function createClass($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, klass: VisualizationClass, properties: Property[]) {
 
   function getName() {
     return languageService.translate(klass.label);
   }
 
   function getPropertyNames() {
-    function propertyAsString(property: any): string {
+    function propertyAsString(property: Property): string {
       const name = languageService.translate(property.label);
-      const range = isAssociation(property) ? property.valueShape : property.datatype;
+      const range = property.hasAssociationTarget() ? property.valueClass : property.dataType;
       return range ? `- ${name} : ${range}` : name;
     }
 
-    return _.map(_.sortBy(properties, property => property['index']), propertyAsString);
+    return _.map(_.sortBy(properties, property => property.index), propertyAsString);
   }
 
   function size(propertyNames: string[]) {
@@ -246,7 +239,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   const propertyNames = getPropertyNames();
 
   const classCell: any = new joint.shapes.uml.Class({
-    id: klass['@id'],
+    id: klass.id,
     size: size(propertyNames),
     name: getName(),
     attributes: propertyNames,
@@ -267,15 +260,15 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   graph.addCell(classCell);
 }
 
-function createAssociation($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, {klass, association}) {
+function createAssociation($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, data: {klass: VisualizationClass, association: Property}) {
 
   function getName() {
-    return languageService.translate(association.label);
+    return languageService.translate(data.association.label);
   }
 
   const associationCell: any = new joint.dia.Link({
-    source: { id: klass['@id'] },
-    target: { id: association.valueShape },
+    source: { id: data.klass.id },
+    target: { id: data.association.valueClass },
     attrs: {
       '.marker-target': {
         d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'

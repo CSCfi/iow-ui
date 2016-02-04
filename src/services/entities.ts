@@ -382,14 +382,12 @@ abstract class AbstractClass extends GraphNode implements Location {
 
   label: Localizable;
   comment: Localizable;
-  definedBy: DefinedBy;
   normalizedType: Type;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.normalizedType = normalizeSelectionType(this.type);
   }
 
@@ -411,10 +409,28 @@ abstract class AbstractClass extends GraphNode implements Location {
 export class ClassListItem extends AbstractClass {
 
   id: Uri;
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
+  }
+
+  fullId(): Uri {
+    return this.id;
+  }
+}
+
+export class VisualizationClass extends AbstractClass {
+
+  id: Uri;
+  properties: Property[];
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = graph['@id'];
+    this.properties = deserializeEntityList(graph.property, context, frame, Property);
   }
 
   fullId(): Uri {
@@ -428,6 +444,7 @@ export class Class extends AbstractClass {
   subClassOf: Uri;
   scopeClass: Uri;
   state: State;
+  definedBy: DefinedBy;
   properties: Property[];
   subject: Concept;
   equivalentClasses: Curie[];
@@ -440,6 +457,7 @@ export class Class extends AbstractClass {
     this.subClassOf = graph.subClassOf;
     this.scopeClass = graph.scopeClass;
     this.state = graph.versionInfo;
+    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.properties = deserializeEntityList(graph.property, context, frame, Property);
     this.subject = deserializeOptional(graph.subject, context, frame, Concept);
     this.equivalentClasses = deserializeList<Curie>(graph.equivalentClass);
@@ -601,6 +619,10 @@ export class Property extends GraphNode {
     this.minCount = graph.minCount;
     this.maxCount = graph.maxCount;
     this.pattern = graph.pattern;
+  }
+
+  hasAssociationTarget() {
+    return !!this.valueClass;
   }
 
   get predicateId(): Uri {
@@ -1206,7 +1228,7 @@ export class EntityDeserializer {
   }
 
   deserializeClassVisualization(data: any): IPromise<any> {
-    return frameData(this.$log, data, frames.classVisualizationFrame(data));
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass)
   }
 
   deserializeUsage(data: any): IPromise<Usage> {
