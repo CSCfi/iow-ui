@@ -210,7 +210,7 @@ export function searchResultFrame(data: any): Frame {
 
 export function classVisualizationFrame(data: any): Frame {
   return {
-    '@context': addToContext(data['@context'], {label, property, datatype, predicate, valueShape, index}),
+    '@context': addToContext(data['@context'], {label, property, datatype, predicate, valueShape, index, minCount, maxCount}),
     'property': {
       'predicate': {
         '@embed': false
