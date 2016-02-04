@@ -213,6 +213,19 @@ function createCells($scope: IScope, languageService: LanguageService, model: Mo
   _.forEach(associations, association => createAssociation($scope, languageService, graph, association));
 }
 
+function formatCardinality(property: Property) {
+  const min = property.minCount;
+  const max = property.maxCount;
+
+  if (!min && !max) {
+    return '*';
+  } else if (min === max) {
+    return min.toString();
+  } else {
+    return `${min || '0'}..${max || '*'}`;
+  }
+}
+
 function createClass($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, klass: VisualizationClass, properties: Property[]) {
 
   function getName() {
@@ -223,7 +236,8 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
     function propertyAsString(property: Property): string {
       const name = languageService.translate(property.label);
       const range = property.hasAssociationTarget() ? property.valueClass : property.dataType;
-      return range ? `- ${name} : ${range}` : name;
+      const cardinality = formatCardinality(property);
+      return `- ${name} : ${range} [${cardinality}]`;
     }
 
     return _.map(_.sortBy(properties, property => property.index), propertyAsString);
@@ -266,19 +280,6 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     return languageService.translate(data.association.label);
   }
 
-  function formatCardinality() {
-    const min = data.association.minCount;
-    const max = data.association.maxCount;
-
-    if (!min && !max) {
-      return '';
-    } else if (min === max) {
-      return min.toString();
-    } else {
-      return `${min || '0'} ... ${max || '*'}`;
-    }
-  }
-
   const associationCell: any = new joint.dia.Link({
     source: { id: data.klass.id },
     target: { id: data.association.valueClass },
@@ -289,13 +290,13 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     },
     labels: [
       { position: 0.5, attrs: { text: { text: getName() } } },
-      { position: .9, attrs: { text: { text: formatCardinality() } } },
+      { position: .9, attrs: { text: { text: formatCardinality(data.association) } } },
     ]
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
     associationCell.prop('labels/0/attrs/text/text', getName());
-    associationCell.prop('labels/1/attrs/text/text', formatCardinality());
+    associationCell.prop('labels/1/attrs/text/text', formatCardinality(data.association));
   });
 
   graph.addCell(associationCell);
