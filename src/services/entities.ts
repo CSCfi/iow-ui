@@ -7,6 +7,7 @@ import {
   glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType, containsAny, normalizeModelType,
   splitNamespace, hasLocalization
 } from './utils';
+import split = require("core-js/fn/symbol/split");
 
 const jsonld: any = require('jsonld');
 
@@ -16,7 +17,7 @@ export type Localizable = { [language: string]: string; }
 export type Uri = string;
 export type Url = string;
 export type RelativeUrl = string;
-export type Curie = string;
+
 export type Type = string
 //export type Type = 'class'
 //                 | 'shape'
@@ -53,6 +54,16 @@ export interface Location {
   label?: Localizable;
   iowUrl?(): string;
 }
+
+export type Curie = string;
+//export class Curie {
+//  constructor(private ns: string, public prefix: string, public value: string) {
+//  }
+//
+//  get uri(): string {
+//    return this.ns + this.value;
+//  }
+//}
 
 export class ExpandedCurie {
   constructor(public namespace: string, public value: string) {
