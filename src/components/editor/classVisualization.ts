@@ -266,6 +266,19 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     return languageService.translate(data.association.label);
   }
 
+  function formatCardinality() {
+    const min = data.association.minCount;
+    const max = data.association.maxCount;
+
+    if (!min && !max) {
+      return '';
+    } else if (min === max) {
+      return min.toString();
+    } else {
+      return `${min || '*'} ... ${max || '*'}`;
+    }
+  }
+
   const associationCell: any = new joint.dia.Link({
     source: { id: data.klass.id },
     target: { id: data.association.valueClass },
@@ -275,19 +288,14 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
       }
     },
     labels: [
-      {
-        position: 0.5,
-        attrs: {
-          text: {
-            text: getName()
-          }
-        }
-      }
+      { position: 0.5, attrs: { text: { text: getName() } } },
+      { position: .1, attrs: { text: { text: formatCardinality() } } },
     ]
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
     associationCell.prop('labels/0/attrs/text/text', getName());
+    associationCell.prop('labels/1/attrs/text/text', formatCardinality());
   });
 
   graph.addCell(associationCell);
