@@ -102,7 +102,8 @@ class ClassVisualizationController {
   initGraph() {
     if (this.visualizationData) {
       this.graph.clear();
-      createCells(this.$scope, this.languageService, this.model, this.graph, this.visualizationData, this.class.curie);
+      const showCardinality = this.model.isOfType('profile');
+      createCells(this.$scope, this.languageService, this.model, this.graph, this.visualizationData, this.class.curie, showCardinality);
       layoutGraph(this.graph);
       scaleToFit(this.paper);
     }
@@ -192,7 +193,7 @@ function scaleToFit(paper: joint.dia.Paper) {
   moveOrigin(paper, 0, -25);
 }
 
-function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, classes: VisualizationClass[], root: Uri) {
+function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, classes: VisualizationClass[], root: Uri, showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
 
@@ -207,10 +208,10 @@ function createCells($scope: IScope, languageService: LanguageService, model: Mo
       }
     }
 
-    createClass($scope, languageService, graph, klass, attributes);
+    createClass($scope, languageService, graph, klass, attributes, showCardinality);
   }
 
-  _.forEach(associations, association => createAssociation($scope, languageService, graph, association));
+  _.forEach(associations, association => createAssociation($scope, languageService, graph, association, showCardinality));
 }
 
 function formatCardinality(property: Property) {
@@ -226,7 +227,7 @@ function formatCardinality(property: Property) {
   }
 }
 
-function createClass($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, klass: VisualizationClass, properties: Property[]) {
+function createClass($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, klass: VisualizationClass, properties: Property[], showCardinality: boolean) {
 
   function getName() {
     return languageService.translate(klass.label);
@@ -237,7 +238,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
       const name = languageService.translate(property.label);
       const range = property.hasAssociationTarget() ? property.valueClass : property.dataType;
       const cardinality = formatCardinality(property);
-      return `- ${name} : ${range} [${cardinality}]`;
+      return `- ${name} : ${range}` + (showCardinality ? `[${cardinality}]` : '');
     }
 
     return _.map(_.sortBy(properties, property => property.index), propertyAsString);
@@ -274,7 +275,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   graph.addCell(classCell);
 }
 
-function createAssociation($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, data: {klass: VisualizationClass, association: Property}) {
+function createAssociation($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, data: {klass: VisualizationClass, association: Property}, showCardinality: boolean) {
 
   function getName() {
     return languageService.translate(data.association.label);
@@ -290,13 +291,15 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     },
     labels: [
       { position: 0.5, attrs: { text: { text: getName() } } },
-      { position: .9, attrs: { text: { text: formatCardinality(data.association) } } },
+      { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(data.association) : ''} } },
     ]
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
     associationCell.prop('labels/0/attrs/text/text', getName());
-    associationCell.prop('labels/1/attrs/text/text', formatCardinality(data.association));
+    if (showCardinality) {
+      associationCell.prop('labels/1/attrs/text/text', formatCardinality(data.association));
+    }
   });
 
   graph.addCell(associationCell);
