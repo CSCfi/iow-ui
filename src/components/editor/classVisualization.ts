@@ -275,7 +275,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     } else if (min === max) {
       return min.toString();
     } else {
-      return `${min || '*'} ... ${max || '*'}`;
+      return `${min || '0'} ... ${max || '*'}`;
     }
   }
 
