@@ -1161,7 +1161,7 @@ export class EntityDeserializer {
 
   deserializePredicate(data: any): IPromise<Predicate> {
     const entityFactory: EntityFactory<Predicate> = (framedData) => {
-      const types = mapGraphTypeObject(framedData['@type']);
+      const types = mapGraphTypeObject(framedData['@graph'][0]['@type']);
 
       if (containsAny(types, ['association'])) {
         return Association;
