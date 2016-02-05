@@ -23,8 +23,6 @@ const coreContext = {
   isPartOf: { '@id': 'http://purl.org/dc/terms/isPartOf', '@type': '@id' },
   isReferencedBy: { '@id': 'http://purl.org/dc/terms/isReferencedBy', '@type': '@id' },
   label: { '@id': 'http://www.w3.org/2000/01/rdf-schema#label', '@container': '@language' },
-  maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
-  minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
   modified: { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
   name: { '@id': 'http://xmlns.com/foaf/0.1/name'},
   nodeKind: { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' },
@@ -45,6 +43,8 @@ const coreContext = {
   valueShape: { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' },
   versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' }
 };
+
+const abstract = { '@id': 'http://www.w3.org/ns/shacl#abstract'};
 
 function frame(data: any, context: {}, frame?: {}) {
   return Object.assign({ '@context': Object.assign({}, data['@context'], coreContext, context) }, frame);
@@ -83,7 +83,7 @@ export function predicateFrame(data: any): Frame {
 }
 
 export function classFrame(data: any): Frame {
-  return frame(data, {}, { isDefinedBy: {} });
+  return frame(data, {abstract}, { isDefinedBy: {} });
 }
 
 export function classListFrame(data: any): Frame {
