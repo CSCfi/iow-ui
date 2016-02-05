@@ -24,7 +24,6 @@ const coreContext = {
   isReferencedBy: { '@id': 'http://purl.org/dc/terms/isReferencedBy', '@type': '@id' },
   label: { '@id': 'http://www.w3.org/2000/01/rdf-schema#label', '@container': '@language' },
   modified: { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
-  name: { '@id': 'http://xmlns.com/foaf/0.1/name'},
   nodeKind: { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' },
   or: { '@id': 'http://www.w3.org/ns/shacl#or', '@container': '@set' },
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
@@ -109,15 +108,18 @@ export function fintoConceptFrame(data: any, id: Uri): Frame {
 }
 
 export function userFrame(data: any): Frame {
-  return frame(data, {}, { name: {} });
+  const context = {
+    name: { '@id': 'http://xmlns.com/foaf/0.1/name'}
+  };
+  return frame(data, context, { name: {} });
 }
 
 export function requireFrame(data: any): Frame {
-  return frame(data, {}, { name: {} });
+  return frame(data, {});
 }
 
 export function searchResultFrame(data: any): Frame {
-  return frame(data, {}, { name: {} });
+  return frame(data, {});
 }
 
 export function classVisualizationFrame(data: any): Frame {
