@@ -1469,7 +1469,7 @@
     "range" : "edu:Ajanjakso"
   }, {
     "@id" : "http://iow.csc.fi/ns/jhs",
-    "dct:title" : {
+    "dcterms:title" : {
       "@language" : "fi",
       "@value" : "Julkishallinnon tietokomponentit"
     },
@@ -1496,8 +1496,8 @@
   }, {
     "@id" : "http://www.yso.fi/onto/koko/",
     "@type" : "skos:ConceptScheme",
-    "dct:identifier" : "koko",
-    "dct:title" : {
+    "dcterms:identifier" : "koko",
+    "dcterms:title" : {
       "@language" : "fi",
       "@value" : "KOKO-ontologia"
     }
@@ -1520,8 +1520,8 @@
   }, {
     "@id" : "http://www.yso.fi/onto/yso/",
     "@type" : "skos:ConceptScheme",
-    "dct:identifier" : "yso",
-    "dct:title" : {
+    "dcterms:identifier" : "yso",
+    "dcterms:title" : {
       "@language" : "fi",
       "@value" : "YSO - Yleinen suomalainen ontologia"
     }
@@ -1632,7 +1632,7 @@
     "rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
     "iow" : "http://iow.csc.fi/ns/meta#",
     "mlo" : "http://purl.org/net/mlo#",
-    "dct" : "http://purl.org/dc/terms/",
+    "dcterms" : "http://purl.org/dc/terms/",
     "jhs" : "http://iow.csc.fi/ns/jhs#",
     "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "sh" : "http://www.w3.org/ns/shacl#",
