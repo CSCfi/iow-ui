@@ -44,7 +44,11 @@ const coreContext = {
   versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' }
 };
 
-const abstract = { '@id': 'http://www.w3.org/ns/shacl#abstract'};
+const classContext = {
+  abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'},
+  maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
+  minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'}
+};
 
 function frame(data: any, context: {}, frame?: {}) {
   return Object.assign({ '@context': Object.assign({}, data['@context'], coreContext, context) }, frame);
@@ -83,7 +87,7 @@ export function predicateFrame(data: any): Frame {
 }
 
 export function classFrame(data: any): Frame {
-  return frame(data, {abstract}, { isDefinedBy: {} });
+  return frame(data, classContext, { isDefinedBy: {} });
 }
 
 export function classListFrame(data: any): Frame {
@@ -117,7 +121,7 @@ export function searchResultFrame(data: any): Frame {
 }
 
 export function classVisualizationFrame(data: any): Frame {
-  return frame(data, {}, {
+  return frame(data, classContext, {
     property: {
       predicate: {
         '@embed': false
