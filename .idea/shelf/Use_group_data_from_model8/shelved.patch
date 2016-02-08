@@ -1,0 +1,19 @@
+Index: src/components/editor/classForm.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/editor/classForm.html	(revision 7e25aa5f07b2a453155b311a1086caa8db43269a)
++++ src/components/editor/classForm.html	
+@@ -10,10 +10,7 @@
+   <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea>
+ </editable>
+ 
+-<editable title="Superclass"
+-          name="Superclass"
+-          link="ctrl.linkToSubclass()"
+-          external-link="ctrl.linkToExternalSubclass()">
++<editable title="Superclass" name="Superclass" link="ctrl.linkToSubclass()">
+   <class-select name="Superclass" curie="ctrl.class.subClassOf" model="ctrl.model"></class-select>
+ </editable>
+ 

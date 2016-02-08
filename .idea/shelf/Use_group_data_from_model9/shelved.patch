@@ -1,0 +1,35 @@
+Index: src/components/editor/predicateForm.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/editor/predicateForm.html	(revision 7e25aa5f07b2a453155b311a1086caa8db43269a)
++++ src/components/editor/predicateForm.html	
+@@ -10,24 +10,15 @@
+   <textarea name="Comment" class="form-control" localized-input ng-model="ctrl.predicate.comment"></textarea>
+ </editable>
+ 
+-<editable title="{{'Super' + ctrl.predicate.type}}"
+-          link="ctrl.linkToSubProperty()"
+-          external-link="ctrl.linkToExternalSubProperty()"
+-          name="Superproperty">
++<editable title="{{'Super' + ctrl.predicate.type}}" link="ctrl.linkToSubProperty()" name="Superproperty">
+   <predicate-select name="Superproperty" type="ctrl.predicate.type" curie="ctrl.predicate.subPropertyOf" model="ctrl.model"></predicate-select>
+ </editable>
+ 
+-<editable ng-if="ctrl.predicate.isAttribute()"
+-          title="Range"
+-          name="Range">
++<editable ng-if="ctrl.predicate.isAttribute()" title="Range" name="Range">
+   <range-select range="ctrl.predicate.range"></range-select>
+ </editable>
+ 
+-<editable ng-if="ctrl.predicate.isAssociation()"
+-          title="Value class"
+-          name="Value class"
+-          link="ctrl.linkToValueClass()"
+-          external-link="ctrl.linkToExternalValueClass()">
++<editable ng-if="ctrl.predicate.isAssociation()" title="Value class"  name="Value class" link="ctrl.linkToValueClass()">
+   <class-select name="Value class" curie="ctrl.predicate.range" model="ctrl.model"></class-select>
+ </editable>
+ 
