@@ -13,6 +13,7 @@ const jsonld: any = require('jsonld');
 
 const isoDateFormat = 'YYYY-MM-DDTHH:mm:ssz';
 
+export type EditableEntity = Class|Association|Attribute|Model|Group;
 export type Localizable = { [language: string]: string; }
 export type Uri = string;
 export type Url = string;
