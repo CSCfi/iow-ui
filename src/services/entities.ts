@@ -2,11 +2,17 @@ import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import * as frames from './frames';
 import * as moment from 'moment';
-import Moment = moment.Moment;
 import {
-  glyphIconClassForType, normalizeAsArray, splitCurie, normalizeSelectionType, containsAny, normalizeModelType,
-  splitNamespace, hasLocalization
+  glyphIconClassForType,
+  normalizeAsArray,
+  splitCurie,
+  normalizeSelectionType,
+  containsAny,
+  normalizeModelType,
+  splitNamespace,
+  hasLocalization
 } from './utils';
+import Moment = moment.Moment;
 import split = require("core-js/fn/symbol/split");
 
 const jsonld: any = require('jsonld');
@@ -945,7 +951,7 @@ export class Usage extends GraphNode {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.label);
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
     this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, Referrer);
   }
 }
