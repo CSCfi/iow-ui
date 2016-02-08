@@ -3,11 +3,10 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
-import { SearchConceptModal, ConceptCreation } from './searchConceptModal'
-import { Class, ClassListItem, Model, Uri } from '../../services/entities';
+import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
+import { Class, ClassListItem, Model, Uri, DefinedBy } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
-import { DefinedBy } from '../../services/entities';
 import { containsAny } from '../../services/utils';
 
 export enum SearchClassType {
@@ -19,7 +18,7 @@ export class SearchClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, searchClassType: SearchClassType, excludedClasses: Set<Uri>, onlySelection: boolean) {
+  private openModal(model: Model, searchClassType: SearchClassType, excludedClasses: Map<Uri, string>, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -35,11 +34,11 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, searchClassType: SearchClassType, excludedClasses: Set<Uri>): IPromise<ConceptCreation|Class> {
+  open(model: Model, searchClassType: SearchClassType, excludedClasses: Map<Uri, string>): IPromise<ConceptCreation|Class> {
     return this.openModal(model, searchClassType, excludedClasses, false);
   }
 
-  openWithOnlySelection(model: Model, searchClassType: SearchClassType, excludedClasses: Set<Uri> = new Set<Uri>()): IPromise<Class> {
+  openWithOnlySelection(model: Model, searchClassType: SearchClassType, excludedClasses: Map<Uri, string> = new Map<Uri, string>()): IPromise<Class> {
     return this.openModal(model, searchClassType, excludedClasses, true);
   }
 };

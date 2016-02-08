@@ -3,12 +3,11 @@ import IScope = angular.IScope;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
-import { Predicate, PredicateListItem, Model, Type, Uri } from '../../services/entities';
-import { PredicateService} from '../../services/predicateService';
+import { Predicate, PredicateListItem, Model, Type, Uri, DefinedBy } from '../../services/entities';
+import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import { DefinedBy } from '../../services/entities';
 
 export class SearchPredicateModal {
 
@@ -16,7 +15,7 @@ export class SearchPredicateModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, type: Type, excludedPredicates: Set<Uri>, onlySelection: boolean) {
+  private openModal(model: Model, type: Type, excludedPredicates: Map<Uri, string>, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
@@ -32,15 +31,15 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  open(model: Model, type: Type, excludedPredicates: Set<Uri>): IPromise<ConceptCreation|Predicate> {
+  open(model: Model, type: Type, excludedPredicates: Map<Uri, string>): IPromise<ConceptCreation|Predicate> {
     return this.openModal(model, type, excludedPredicates, false);
   }
 
-  openForProperty(model: Model, excludedPredicates: Set<Uri>): IPromise<Predicate> {
+  openForProperty(model: Model, excludedPredicates: Map<Uri, string>): IPromise<Predicate> {
     return this.openModal(model, null, excludedPredicates, false);
   }
 
-  openWithOnlySelection(model: Model, type: Type, excludedPredicates: Set<Uri> = new Set<Uri>()): IPromise<Predicate> {
+  openWithOnlySelection(model: Model, type: Type, excludedPredicates: Map<Uri, string> = new Map<Uri, string>()): IPromise<Predicate> {
     return this.openModal(model, type, excludedPredicates, true);
   }
 };
@@ -69,7 +68,7 @@ export class SearchPredicateController {
               private $uibModalInstance: IModalServiceInstance,
               public model: Model,
               public type: Type,
-              public excludedPredicates: Set<Uri>,
+              public excludedPredicates: Map<Uri, string>,
               public onlySelection: boolean,
               private predicateService: PredicateService,
               private languageService: LanguageService,

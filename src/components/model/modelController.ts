@@ -1,9 +1,4 @@
 import * as _ from 'lodash';
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
-import ILocationService = angular.ILocationService;
-import IRouteParamsService = angular.route.IRouteParamsService;
-import IQService = angular.IQService;
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { LocationService } from '../../services/locationService';
@@ -11,12 +6,26 @@ import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { glyphIconClassForType, collectIds, isDifferentUrl } from '../../services/utils';
-import { Class, Predicate, PredicateListItem, ClassListItem, Model, Type, Property, Uri, Localizable } from '../../services/entities';
+import {
+  Class,
+  Predicate,
+  PredicateListItem,
+  ClassListItem,
+  Model,
+  Type,
+  Property,
+  Uri,
+  DefinedBy
+} from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal, SearchClassType } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal';
-import { DefinedBy } from '../../services/entities';
+import IPromise = angular.IPromise;
+import IScope = angular.IScope;
+import ILocationService = angular.ILocationService;
+import IRouteParamsService = angular.route.IRouteParamsService;
+import IQService = angular.IQService;
 
 export class ModelController {
 
@@ -214,7 +223,7 @@ export class ModelController {
 
     if (type === 'class') {
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, SearchClassType.Class, isProfile ? new Set<Uri>() : collectIds(this.classes)),
+        () => this.searchClassModal.open(this.model, SearchClassType.Class, isProfile ? new Map<Uri, string>() : collectIds(this.classes, 'Already added')),
         (concept: ConceptCreation) => this.createClass(concept),
         (klass: Class) => isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
       );
@@ -227,8 +236,8 @@ export class ModelController {
     }
   }
 
-  private getPredicateIds(): Set<Uri> {
-    return collectIds([this.attributes, this.associations]);
+  private getPredicateIds(): Map<Uri, string> {
+    return collectIds([this.attributes, this.associations], 'Already added');
   }
 
   private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ConceptCreation|T>, fromConcept: (concept: ConceptCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<any>) {

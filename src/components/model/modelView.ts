@@ -73,7 +73,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addReference() {
     const language = this.languageService.modelLanguage;
-    const vocabularyMap = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId);
+    const vocabularyMap = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId, 'Already added');
     this.searchSchemeModal.open(vocabularyMap, language)
       .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
       .then((reference: Reference) => {
@@ -88,8 +88,8 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addRequire() {
     const language = this.languageService.modelLanguage;
-    const requireMap = collectIds(this.editableInEdit.requires);
-    requireMap.add(this.model.id);
+    const requireMap = collectIds(this.editableInEdit.requires, 'Already added');
+    requireMap.set(this.model.id, 'Already added');
     const allowProfiles = this.model.isOfType('profile');
     this.searchRequireModal.open(requireMap, allowProfiles, language)
       .then((require: Require) => {

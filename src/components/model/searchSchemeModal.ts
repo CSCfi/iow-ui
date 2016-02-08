@@ -13,7 +13,7 @@ export class SearchSchemeModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(excludedSchemes: Set<Uri>, language: Language): IPromise<any> {
+  open(excludedSchemes: Map<Uri, string>, language: Language): IPromise<any> {
     return this.$uibModal.open({
       template: require('./searchSchemeModal.html'),
       size: 'medium',
@@ -38,7 +38,7 @@ class SearchSchemeController {
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
-              public excludedSchemes: Set<Uri>,
+              public excludedSchemes: Map<Uri, string>,
               private conceptService: ConceptService,
               private language: Language) {
 

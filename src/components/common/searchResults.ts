@@ -43,21 +43,28 @@ interface WithId {
 }
 
 class SearchResult<T extends WithId> {
-  constructor(public item: T, public disabled: boolean) {
+
+  disabled: boolean;
+
+  constructor(public item: T, public disabledReason: string) {
+    this.disabled = !!disabledReason;
   }
 }
 
 class SearchResultsController<T extends WithId> {
 
   items: T[];
-  excluded: Set<Uri>;
+  excluded: Map<Uri, String>;
   searchResults: SearchResult<T>[];
   selected: SearchResult<T>;
   onSelect: angular.ICompiledExpression;
 
   constructor($scope: IScope, private gettextCatalog: gettextCatalog) {
     $scope.$watchCollection(() => this.items, items => {
-      this.searchResults = _.map(items, item => new SearchResult(item, this.excluded.has(item.id)));
+      this.searchResults = _.map(items, item => {
+        const disabledReason = this.excluded.get(item.id);
+        return new SearchResult(item, disabledReason)
+      });
     });
   }
 
@@ -74,7 +81,7 @@ class SearchResultsController<T extends WithId> {
 
   searchResultTitle(searchResult: SearchResult<T>) {
     if (searchResult.disabled) {
-      return this.gettextCatalog.getString('Already added');
+      return this.gettextCatalog.getString(searchResult.disabledReason);
     }
   }
 }

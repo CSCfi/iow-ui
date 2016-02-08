@@ -40,19 +40,21 @@ export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : obj ? [obj] : [];
 }
 
-export function collectIds(items: WithId[]|WithId[][]): Set<Uri> {
-  return collectProperties<WithId, Uri>(items, item => item.id);
+
+
+export function collectIds(items: WithId[]|WithId[][], reason: string): Map<Uri, string> {
+  return collectProperties<WithId, Uri>(items, item => item.id, reason);
 }
 
-export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult): Set<TResult> {
-  const result = new Set<TResult>();
+export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult, reason: string): Map<TResult, string> {
+  const result = new Map<TResult, string>();
   for (const item of items) {
     if (Array.isArray(item)) {
       for (const innerItem of item) {
-        result.add(propertyExtractor(innerItem));
+        result.set(propertyExtractor(innerItem), reason);
       }
     } else {
-      result.add(propertyExtractor(item));
+      result.set(propertyExtractor(item), reason);
     }
   }
   return result;

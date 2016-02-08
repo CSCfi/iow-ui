@@ -11,7 +11,7 @@ export class SearchRequireModal {
   constructor(private $uibModal: angular.ui.bootstrap.IModalService) {
   }
 
-  open(excludedRequires: Set<Uri>, allowProfiles: boolean, language: Language): IPromise<Require> {
+  open(excludedRequires: Map<Uri, string>, allowProfiles: boolean, language: Language): IPromise<Require> {
     return this.$uibModal.open({
       template: require('./searchRequireModal.html'),
       size: 'medium',
@@ -37,7 +37,7 @@ class SearchRequireController {
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
-              public excludedRequires: Set<Uri>,
+              public excludedRequires: Map<Uri, string>,
               private language: Language,
               private allowProfiles: boolean,
               private modelService: ModelService,
