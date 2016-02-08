@@ -352,7 +352,7 @@ export class Reference extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.vocabularyId = graph['dcterms:identifier'];
+    this.vocabularyId = graph['identifier'];
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.title);
     this.comment = deserializeLocalizable(graph.comment);
