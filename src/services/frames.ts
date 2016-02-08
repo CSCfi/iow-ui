@@ -43,11 +43,14 @@ const coreContext = {
   versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' }
 };
 
-const classContext = {
-  abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'},
+const propertyContext = {
   maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
   minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'}
 };
+
+const classContext = Object.assign({}, propertyContext, {
+  abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'}
+});
 
 function frame(data: any, context: {}, frame?: {}) {
   return Object.assign({ '@context': Object.assign({}, data['@context'], coreContext, context) }, frame);
@@ -74,7 +77,7 @@ export function modelListFrame(data: any): Frame {
 }
 
 export function propertyFrame(data: any): Frame {
-  return frame(data, {}, { '@id': data['@id'] });
+  return frame(data, propertyContext, { '@id': data['@id'] });
 }
 
 export function predicateListFrame(data: any): Frame {
