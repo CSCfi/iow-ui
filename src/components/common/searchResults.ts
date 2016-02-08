@@ -54,7 +54,7 @@ class SearchResult<T extends WithId> {
 class SearchResultsController<T extends WithId> {
 
   items: T[];
-  excluded: Map<Uri, String>;
+  excluded: Map<Uri, string>;
   searchResults: SearchResult<T>[];
   selected: SearchResult<T>;
   onSelect: angular.ICompiledExpression;
@@ -63,7 +63,7 @@ class SearchResultsController<T extends WithId> {
     $scope.$watchCollection(() => this.items, items => {
       this.searchResults = _.map(items, item => {
         const disabledReason = this.excluded.get(item.id);
-        return new SearchResult(item, disabledReason)
+        return new SearchResult(item, disabledReason);
       });
     });
   }

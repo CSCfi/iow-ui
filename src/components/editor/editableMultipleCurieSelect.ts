@@ -7,7 +7,7 @@ import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type, Uri } from '../../services/entities';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
-import { DisplayItemFactory, DisplayItem, Value } from '../form/displayItemFactory';
+import { DisplayItemFactory, DisplayItem } from '../form/displayItemFactory';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -64,7 +64,11 @@ class EditableMultipleCurieSelectController {
   }
 
   addCurie() {
-    const excluded = new Set<Uri>(_.map(this.curies, curie => this.model.expandCurie(curie).uri));
+    const excluded = new Map<Uri, string>();
+
+    for(const curie of this.curies) {
+      excluded.set(this.model.expandCurie(curie).uri, 'Already added');
+    }
 
     const promise: IPromise<WithCurie> = this.type === 'class'
       ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.All, excluded)
