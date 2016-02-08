@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/CSC-IT-Center-for-Science/iow-ui#readme",
   "dependencies": {
-    "angular": "1.5.0-rc.0",
+    "angular": "1.5.0",
     "angular-gettext": "^2.1.2",
     "angular-messages": "1.4.8",
     "angular-route": "1.4.7",

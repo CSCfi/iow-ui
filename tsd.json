@@ -9,16 +9,16 @@
       "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
     },
     "angularjs/angular.d.ts": {
-      "commit": "36c6ce86fb64bafb28ec95dc78c6b98228b45c8d"
+      "commit": "17ef40452039d19e06dc2a3815ea898c505860fa"
     },
     "jquery/jquery.d.ts": {
       "commit": "36c6ce86fb64bafb28ec95dc78c6b98228b45c8d"
     },
     "angularjs/angular-route.d.ts": {
-      "commit": "36c6ce86fb64bafb28ec95dc78c6b98228b45c8d"
+      "commit": "17ef40452039d19e06dc2a3815ea898c505860fa"
     },
     "angular-ui-bootstrap/angular-ui-bootstrap.d.ts": {
-      "commit": "36c6ce86fb64bafb28ec95dc78c6b98228b45c8d"
+      "commit": "17ef40452039d19e06dc2a3815ea898c505860fa"
     },
     "core-js/core-js.d.ts": {
       "commit": "36c6ce86fb64bafb28ec95dc78c6b98228b45c8d"
