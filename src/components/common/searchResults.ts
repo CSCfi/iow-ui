@@ -13,7 +13,7 @@ mod.directive('searchResults', () => {
     bindToController: true,
     scope: {
       items: '=',
-      excluded: '=',
+      exclude: '=',
       onSelect: '&'
     },
     controllerAs: 'ctrl',
@@ -54,7 +54,7 @@ class SearchResult<T extends WithId> {
 class SearchResultsController<T extends WithId> {
 
   items: T[];
-  excluded: Map<Uri, string>;
+  exclude: (item: T) => string;
   searchResults: SearchResult<T>[];
   selected: SearchResult<T>;
   onSelect: angular.ICompiledExpression;
@@ -62,7 +62,7 @@ class SearchResultsController<T extends WithId> {
   constructor($scope: IScope, private gettextCatalog: gettextCatalog) {
     $scope.$watchCollection(() => this.items, items => {
       this.searchResults = _.map(items, item => {
-        const disabledReason = this.excluded.get(item.id);
+        const disabledReason = this.exclude(item);
         return new SearchResult(item, disabledReason);
       });
     });

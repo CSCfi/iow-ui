@@ -1,7 +1,11 @@
-import { Type, Uri, Localizable } from './entities';
+import { Type, Uri, Localizable, Model, DefinedBy } from './entities';
 
 interface WithId {
   id: Uri;
+}
+
+interface WithDefinedBy {
+  definedBy: DefinedBy;
 }
 
 export function isString(str: any): str is string {
@@ -40,21 +44,50 @@ export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : obj ? [obj] : [];
 }
 
-
-
-export function collectIds(items: WithId[]|WithId[][], reason: string): Map<Uri, string> {
-  return collectProperties<WithId, Uri>(items, item => item.id, reason);
+export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
+  return (item: T) => {
+    for (const exclude of excludes) {
+      const result = exclude(item);
+      if (result) {
+        return result;
+      }
+    }
+  }
 }
 
-export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult, reason: string): Map<TResult, string> {
-  const result = new Map<TResult, string>();
+export function createDefinedByExclusion(model: Model) {
+
+  const modelIds = collectIds(model.requires);
+  modelIds.add(model.id);
+
+  return (item: WithDefinedBy) => {
+    if (!modelIds.has(item.definedBy.id)) {
+      return 'Not required by model';
+    }
+  };
+}
+
+export function createExistsExclusion(itemIds: Set<Uri>) {
+  return (item: WithId) => {
+    if (itemIds.has(item.id)) {
+      return 'Already added';
+    }
+  };
+}
+
+export function collectIds(items: WithId[]|WithId[][]): Set<Uri> {
+  return collectProperties<WithId, Uri>(items, item => item.id);
+}
+
+export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult): Set<TResult> {
+  const result = new Set<TResult>();
   for (const item of items) {
     if (Array.isArray(item)) {
       for (const innerItem of item) {
-        result.set(propertyExtractor(innerItem), reason);
+        result.add(propertyExtractor(innerItem));
       }
     } else {
-      result.set(propertyExtractor(item), reason);
+      result.add(propertyExtractor(item));
     }
   }
   return result;

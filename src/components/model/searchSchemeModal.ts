@@ -5,7 +5,6 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { ConceptService } from '../../services/conceptService';
 import { Language } from '../../services/languageService';
-import { Uri } from '../../services/entities';
 
 
 export class SearchSchemeModal {
@@ -13,7 +12,7 @@ export class SearchSchemeModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(excludedSchemes: Map<Uri, string>, language: Language): IPromise<any> {
+  open(exclude: (scheme: any) => string, language: Language): IPromise<any> {
     return this.$uibModal.open({
       template: require('./searchSchemeModal.html'),
       size: 'medium',
@@ -21,7 +20,7 @@ export class SearchSchemeModal {
       controllerAs: 'ctrl',
       backdrop: false,
       resolve: {
-        excludedSchemes: () => excludedSchemes,
+        exclude: () => exclude,
         language: () => language
       }
     }).result;
@@ -38,7 +37,7 @@ class SearchSchemeController {
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
-              public excludedSchemes: Map<Uri, string>,
+              public exclude: (scheme: any) => string,
               private conceptService: ConceptService,
               private language: Language) {
 
@@ -68,7 +67,7 @@ class SearchSchemeController {
   }
 
   private excludedFilter(scheme: any): boolean {
-    return this.showExcluded || !this.excludedSchemes.has(scheme.id);
+    return this.showExcluded || !this.exclude(scheme);
   }
 
   close() {

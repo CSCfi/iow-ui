@@ -8,6 +8,7 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
+import { createDefinedByExclusion, combineExclusions } from '../../services/utils';
 
 export class SearchPredicateModal {
 
@@ -15,7 +16,7 @@ export class SearchPredicateModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, type: Type, excludedPredicates: Map<Uri, string>, onlySelection: boolean) {
+  private openModal(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
@@ -25,22 +26,22 @@ export class SearchPredicateModal {
       resolve: {
         model: () => model,
         type: () => type,
-        excludedPredicates: () => excludedPredicates,
+        exclude: () => combineExclusions(exclude, createDefinedByExclusion(model)),
         onlySelection: () => onlySelection
       }
     }).result;
   }
 
-  open(model: Model, type: Type, excludedPredicates: Map<Uri, string>): IPromise<ConceptCreation|Predicate> {
-    return this.openModal(model, type, excludedPredicates, false);
+  open(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string): IPromise<ConceptCreation|Predicate> {
+    return this.openModal(model, type, exclude, false);
   }
 
-  openForProperty(model: Model, excludedPredicates: Map<Uri, string>): IPromise<Predicate> {
-    return this.openModal(model, null, excludedPredicates, false);
+  openForProperty(model: Model, exclude: (predicate: PredicateListItem) => string): IPromise<Predicate> {
+    return this.openModal(model, null, exclude, false);
   }
 
-  openWithOnlySelection(model: Model, type: Type, excludedPredicates: Map<Uri, string> = new Map<Uri, string>()): IPromise<Predicate> {
-    return this.openModal(model, type, excludedPredicates, true);
+  openWithOnlySelection(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = (item: PredicateListItem) => null): IPromise<Predicate> {
+    return this.openModal(model, type, exclude, true);
   }
 };
 
@@ -68,7 +69,7 @@ export class SearchPredicateController {
               private $uibModalInstance: IModalServiceInstance,
               public model: Model,
               public type: Type,
-              public excludedPredicates: Map<Uri, string>,
+              public exclude: (predicate: PredicateListItem) => string,
               public onlySelection: boolean,
               private predicateService: PredicateService,
               private languageService: LanguageService,
@@ -79,7 +80,6 @@ export class SearchPredicateController {
       this.predicates = allPredicates;
 
       this.models = _.chain(this.predicates)
-        .filter(predicate => this.requireFilter(predicate))
         .map(predicate => predicate.definedBy)
         .uniq(definedBy => definedBy.id)
         .value();
@@ -100,7 +100,6 @@ export class SearchPredicateController {
 
   search() {
     this.searchResults = _.chain(this.predicates)
-      .filter(predicate => this.requireFilter(predicate))
       .filter(predicate => this.textFilter(predicate))
       .filter(predicate => this.modelFilter(predicate))
       .filter(predicate => this.typeFilter(predicate))
@@ -167,12 +166,7 @@ export class SearchPredicateController {
     return !this.type || predicate.normalizedType === this.type;
   }
 
-  private requireFilter(predicate: PredicateListItem): boolean {
-    let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
-    return _.any(modelIds, id => id === predicate.definedBy.id);
-  }
-
   private excludedFilter(predicate: PredicateListItem): boolean {
-    return this.showExcluded || !this.excludedPredicates.has(predicate.id);
+    return this.showExcluded || !this.exclude(predicate);
   }
 }

@@ -51,12 +51,12 @@
           </div>
 
           <div class="checkbox">
-            <label><input type="checkbox" ng-model="ctrl.showExcluded">{{'Show already added' | translate}}</label>
+            <label><input type="checkbox" ng-model="ctrl.showExcluded">{{'Show excluded' | translate}}</label>
           </div>
         </div>
 
         <div class="col-md-4 search-results">
-          <search-results items="ctrl.searchResults" excluded="ctrl.excludedPredicates" on-select="ctrl.selectItem(item)">
+          <search-results items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
             <i ng-class="searchResult.glyphIconClass"></i>
             <h5>{{searchResult | translateLabel}}</h5>
             <p>{{searchResult.definedBy | translateLabel}}</p>

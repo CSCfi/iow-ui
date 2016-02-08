@@ -7,7 +7,7 @@ import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { Class, ClassListItem, Model, Uri, DefinedBy } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
-import { containsAny } from '../../services/utils';
+import { containsAny, combineExclusions, createDefinedByExclusion } from '../../services/utils';
 
 export enum SearchClassType {
   Class, Shape, All, SpecializedClass
@@ -18,7 +18,7 @@ export class SearchClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, searchClassType: SearchClassType, excludedClasses: Map<Uri, string>, onlySelection: boolean) {
+  private openModal(model: Model, searchClassType: SearchClassType, exclude: (klass: ClassListItem) => string, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -28,18 +28,18 @@ export class SearchClassModal {
       resolve: {
         model: () => model,
         searchClassType: () => searchClassType,
-        excludedClasses: () => excludedClasses,
+        exclude: () => combineExclusions(exclude, createDefinedByExclusion(model)),
         onlySelection: () => onlySelection
       }
     }).result;
   }
 
-  open(model: Model, searchClassType: SearchClassType, excludedClasses: Map<Uri, string>): IPromise<ConceptCreation|Class> {
-    return this.openModal(model, searchClassType, excludedClasses, false);
+  open(model: Model, searchClassType: SearchClassType, exclude: (klass: ClassListItem) => string): IPromise<ConceptCreation|Class> {
+    return this.openModal(model, searchClassType, exclude, false);
   }
 
-  openWithOnlySelection(model: Model, searchClassType: SearchClassType, excludedClasses: Map<Uri, string> = new Map<Uri, string>()): IPromise<Class> {
-    return this.openModal(model, searchClassType, excludedClasses, true);
+  openWithOnlySelection(model: Model, searchClassType: SearchClassType, exclude: (klass: ClassListItem) => string = (item: ClassListItem) => null): IPromise<Class> {
+    return this.openModal(model, searchClassType, exclude, true);
   }
 };
 
@@ -62,7 +62,7 @@ class SearchClassController {
               private languageService: LanguageService,
               private model: Model,
               private searchClassType: SearchClassType,
-              public excludedClasses: Set<Uri>,
+              public exclude: (klass: ClassListItem) => string,
               public onlySelection: boolean,
               private searchConceptModal: SearchConceptModal) {
 
@@ -77,7 +77,6 @@ class SearchClassController {
         .value();
 
       this.models = _.chain(this.classes)
-        .filter(klass => this.requireFilter(klass))
         .map(klass => klass.definedBy)
         .uniq(definedBy => definedBy.id)
         .value();
@@ -92,7 +91,6 @@ class SearchClassController {
 
   search() {
     this.searchResults = _.chain(this.classes)
-      .filter(klass => this.requireFilter(klass))
       .filter(klass => this.textFilter(klass))
       .filter(klass => this.modelFilter(klass))
       .filter(klass => this.excludedFilter(klass))
@@ -125,12 +123,7 @@ class SearchClassController {
     return !this.modelId || klass.definedBy.id === this.modelId;
   }
 
-  private requireFilter(klass: ClassListItem): boolean {
-    let modelIds = _.chain(this.model.requires).map(require => require.id).concat(this.model.id).value();
-    return _.any(modelIds, id => id === klass.definedBy.id);
-  }
-
   private excludedFilter(klass: ClassListItem): boolean {
-    return this.showExcluded || !this.excludedClasses.has(klass.id);
+    return this.showExcluded || !this.exclude(klass);
   }
 }

@@ -5,9 +5,10 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type, Uri } from '../../services/entities';
+import { Model, Type } from '../../services/entities';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem } from '../form/displayItemFactory';
+import { createExistsExclusion, collectProperties } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -64,15 +65,11 @@ class EditableMultipleCurieSelectController {
   }
 
   addCurie() {
-    const excluded = new Map<Uri, string>();
-
-    for(const curie of this.curies) {
-      excluded.set(this.model.expandCurie(curie).uri, 'Already added');
-    }
+    const existing = collectProperties(this.curies, curie => this.model.expandCurie(curie).uri);
 
     const promise: IPromise<WithCurie> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.All, excluded)
-      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, excluded);
+      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.All, createExistsExclusion(existing))
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createExistsExclusion(existing));
 
     promise.then(withCurie => {
       this.curies.push(withCurie.curie);

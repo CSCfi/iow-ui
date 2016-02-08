@@ -10,7 +10,7 @@ import { Class, GroupListItem, Model, Property } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { collectProperties } from '../../services/utils';
+import { collectProperties, createExistsExclusion } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -54,9 +54,9 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   addProperty() {
-    const existingPredicates = collectProperties(this.class.properties, property => property.predicateId, 'Already added');
+    const existingPredicates = collectProperties(this.class.properties, property => property.predicateId);
 
-    this.searchPredicateModal.openForProperty(this.model, existingPredicates)
+    this.searchPredicateModal.openForProperty(this.model, createExistsExclusion(existingPredicates))
       .then(predicate => this.classService.newProperty(predicate.id, this.editableInEdit.properties.length))
       .then(property => {
         this.editableInEdit.addProperty(property);

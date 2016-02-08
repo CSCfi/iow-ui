@@ -5,7 +5,7 @@ import { LocationService } from '../../services/locationService';
 import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
-import { glyphIconClassForType, collectIds, isDifferentUrl } from '../../services/utils';
+import { glyphIconClassForType, collectIds, isDifferentUrl, createExistsExclusion } from '../../services/utils';
 import {
   Class,
   Predicate,
@@ -222,22 +222,23 @@ export class ModelController {
     const isProfile = this.model.isOfType('profile');
 
     if (type === 'class') {
+      const exclude = this.model.isOfType('profile')
+        ? (klass: ClassListItem) => <string> null
+        : createExistsExclusion(collectIds(this.classes));
+
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, SearchClassType.Class, isProfile ? new Map<Uri, string>() : collectIds(this.classes, 'Already added')),
+        () => this.searchClassModal.open(this.model, SearchClassType.Class, exclude),
         (concept: ConceptCreation) => this.createClass(concept),
         (klass: Class) => isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
       );
     } else {
+      const exclude = createExistsExclusion(collectIds([this.attributes, this.associations]));
       this.createOrAssignEntity(
-        () => this.searchPredicateModal.open(this.model, type, this.getPredicateIds()),
+        () => this.searchPredicateModal.open(this.model, type, exclude),
         (concept: ConceptCreation) => this.createPredicate(concept),
         (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
       );
     }
-  }
-
-  private getPredicateIds(): Map<Uri, string> {
-    return collectIds([this.attributes, this.associations], 'Already added');
   }
 
   private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ConceptCreation|T>, fromConcept: (concept: ConceptCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<any>) {
@@ -271,7 +272,7 @@ export class ModelController {
   }
 
   private assignMissingPredicates(klass: Class) {
-    var predicateIds = this.getPredicateIds();
+    const predicateIds = collectIds([this.attributes, this.associations]);
 
     this.$q.all(
       _.chain(klass.properties)

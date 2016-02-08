@@ -3,7 +3,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { LanguageService, Language } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
-import { Require, Uri } from '../../services/entities';
+import { Require } from '../../services/entities';
 import { AddRequireModal } from './addRequireModal';
 
 export class SearchRequireModal {
@@ -11,7 +11,7 @@ export class SearchRequireModal {
   constructor(private $uibModal: angular.ui.bootstrap.IModalService) {
   }
 
-  open(excludedRequires: Map<Uri, string>, allowProfiles: boolean, language: Language): IPromise<Require> {
+  open(exclude: (require: Require) => string, language: Language): IPromise<Require> {
     return this.$uibModal.open({
       template: require('./searchRequireModal.html'),
       size: 'medium',
@@ -19,9 +19,8 @@ export class SearchRequireModal {
       controllerAs: 'ctrl',
       backdrop: false,
       resolve: {
-        excludedRequires: () => excludedRequires,
-        language: () => language,
-        allowProfiles: () => allowProfiles
+        exclude: () => exclude,
+        language: () => language
       }
     }).result;
   }
@@ -37,15 +36,14 @@ class SearchRequireController {
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
-              public excludedRequires: Map<Uri, string>,
+              public  exclude: (require: Require) => string,
               private language: Language,
-              private allowProfiles: boolean,
               private modelService: ModelService,
               private languageService: LanguageService,
               private addRequireModal: AddRequireModal) {
 
     modelService.getAllRequires().then(result => {
-      this.requires = _.filter(result, require => allowProfiles || !require.isOfType('profile'));
+      this.requires = result;
       this.search();
     });
 
@@ -72,7 +70,7 @@ class SearchRequireController {
   }
 
   private excludedFilter(require: Require): boolean {
-    return this.showExcluded || !this.excludedRequires.has(require.id);
+    return this.showExcluded || !this.exclude(require);
   }
 
   selectItem(require: Require) {

@@ -51,6 +51,7 @@ msgstr ""
 
 #: components/editor/classForm.html:63
 #: components/editor/predicateForm.html:37
+#: components/model/modelView.html:37
 msgid "Additional information"
 msgstr ""
 
@@ -184,6 +185,10 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
+#: translations/misc.html:150
+msgid "Cannot require profile"
+msgstr ""
+
 #: translations/misc.html:75
 msgid "Choose association"
 msgstr ""
@@ -192,7 +197,7 @@ msgstr ""
 msgid "Choose attribute"
 msgstr ""
 
-#: components/editor/editableConstraint.html:31
+#: components/editor/editableConstraint.html:30
 #: translations/misc.html:73
 msgid "Choose class"
 msgstr ""
@@ -672,6 +677,10 @@ msgstr ""
 msgid "Not removed"
 msgstr ""
 
+#: translations/misc.html:149
+msgid "Not required by model"
+msgstr ""
+
 #: translations/misc.html:94
 msgid "of association"
 msgstr ""
@@ -860,7 +869,7 @@ msgstr ""
 #: components/model/searchRequireModal.html:23
 #: components/model/searchSchemeModal.html:16
 #: translations/misc.html:126
-msgid "Show already added"
+msgid "Show excluded"
 msgstr ""
 
 #: components/footer.html:11

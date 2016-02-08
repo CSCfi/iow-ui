@@ -3,8 +3,9 @@ import IFormController = angular.IFormController;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Uri, Constraint, ConstraintListItem, RelativeUrl } from '../../services/entities';
+import { Model, Constraint, ConstraintListItem, RelativeUrl } from '../../services/entities';
 import { SearchClassModal, SearchClassType } from './searchClassModal';
+import { collectProperties, createExistsExclusion } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -42,13 +43,8 @@ class EditableConstraint {
   }
 
   addItem() {
-    const excluded = new Map<Uri, string>();
-
-    for(const item of this.constraint.items) {
-      excluded.set(this.model.expandCurie(item.shapeId).uri, 'Already added');
-    }
-
-    this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.SpecializedClass, excluded).then(klass => this.constraint.addItem(klass));
+    const existing = collectProperties(this.constraint.items, item => this.model.expandCurie(item.shapeId).uri);
+    this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.SpecializedClass, createExistsExclusion(existing)).then(klass => this.constraint.addItem(klass));
   }
 
   removeItem(item: ConstraintListItem) {

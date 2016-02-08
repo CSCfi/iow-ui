@@ -20,12 +20,12 @@
         </div>
 
         <div class="checkbox">
-          <label><input type="checkbox" ng-model="ctrl.showExcluded">{{'Show already added' | translate}}</label>
+          <label><input type="checkbox" ng-model="ctrl.showExcluded">{{'Show excluded' | translate}}</label>
         </div>
       </div>
 
       <div class="col-md-6 search-results with-button">
-        <search-results items="ctrl.searchResults" excluded="ctrl.excludedRequires" on-select="ctrl.selectItem(item)">
+        <search-results items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
           <h5>{{searchResult | translateLabel}}</h5>
           <p>{{searchResult.namespace}}</p>
         </search-results>

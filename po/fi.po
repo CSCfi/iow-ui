@@ -57,6 +57,7 @@ msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
 #: components/editor/classForm.html:63 components/editor/predicateForm.html:37
+#: components/model/modelView.html:37
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -187,6 +188,10 @@ msgstr "Peruuta"
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
+#: translations/misc.html:150
+msgid "Cannot require profile"
+msgstr "Sovellusprofiili ei voi olla nimiavaruutena"
+
 #: translations/misc.html:75
 msgid "Choose association"
 msgstr "valitse assosiaatio"
@@ -195,7 +200,7 @@ msgstr "valitse assosiaatio"
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
-#: components/editor/editableConstraint.html:31 translations/misc.html:73
+#: components/editor/editableConstraint.html:30 translations/misc.html:73
 msgid "Choose class"
 msgstr "valitse luokka"
 
@@ -679,6 +684,10 @@ msgstr "ei löydy sanastosta"
 msgid "Not removed"
 msgstr "Ei saatu poistettua"
 
+#: translations/misc.html:149
+msgid "Not required by model"
+msgstr "Ei ole lisätty nimiavaruudeksi"
+
 #: translations/misc.html:94
 msgid "of association"
 msgstr "assosiaatiosta"
@@ -866,8 +875,8 @@ msgstr "Näytä"
 #: components/editor/searchPredicateModal.html:54
 #: components/model/searchRequireModal.html:23
 #: components/model/searchSchemeModal.html:16 translations/misc.html:126
-msgid "Show already added"
-msgstr "Näytä jo lisätyt"
+msgid "Show excluded"
+msgstr "Näytä myös ne, joita ei voi lisätä"
 
 #: components/footer.html:11
 msgid "Source code"
@@ -1104,6 +1113,9 @@ msgstr "XML"
 #: components/editor/addPropertiesFromClassModal.html:12
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Show already added"
+#~ msgstr "Näytä jo lisätyt"
 
 #~ msgid "Choose shape"
 #~ msgstr "Valitse tarkennettu luokka"

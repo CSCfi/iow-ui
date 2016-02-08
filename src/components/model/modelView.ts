@@ -5,11 +5,11 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { GroupListItem, Model, Require, Reference } from '../../services/entities';
+import { GroupListItem, Model, Require, Reference, Uri } from '../../services/entities';
 import { ModelController } from './modelController';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { collectIds, collectProperties } from '../../services/utils';
+import { collectIds, collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
 import { SearchSchemeModal } from './searchSchemeModal';
 import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -73,8 +73,9 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addReference() {
     const language = this.languageService.modelLanguage;
-    const vocabularyMap = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId, 'Already added');
-    this.searchSchemeModal.open(vocabularyMap, language)
+    const vocabularies: Set<Uri> = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId);
+    const exclude = createExistsExclusion(vocabularies);
+    this.searchSchemeModal.open(exclude, language)
       .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
       .then((reference: Reference) => {
         this.editableInEdit.addReference(reference);
@@ -88,10 +89,14 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addRequire() {
     const language = this.languageService.modelLanguage;
-    const requireMap = collectIds(this.editableInEdit.requires, 'Already added');
-    requireMap.set(this.model.id, 'Already added');
+    const requires = collectIds(this.editableInEdit.requires);
+    requires.add(this.model.id);
+    const existsExclude = createExistsExclusion(requires);
+    const profileExclude = (require: Require) => (!allowProfiles && require.isOfType('profile')) ? 'Cannot require profile' : null;
+    const exclude = combineExclusions(existsExclude, profileExclude);
+
     const allowProfiles = this.model.isOfType('profile');
-    this.searchRequireModal.open(requireMap, allowProfiles, language)
+    this.searchRequireModal.open(exclude, language)
       .then((require: Require) => {
         this.editableInEdit.addRequire(require);
         this.requiresView.open(require);
