@@ -13,7 +13,8 @@ import {
   createDefinedByExclusion,
   combineExclusions,
   createClassTypeExclusion,
-  SearchClassType
+  SearchClassType,
+  isModalCancel
 } from '../../services/utils';
 import {
   Class,
@@ -30,6 +31,7 @@ import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal';
+import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
@@ -69,6 +71,7 @@ export class ModelController {
               private searchClassModal: SearchClassModal,
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
+              private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               public languageService: LanguageService) {
 
     this.selectableComparison = languageService.localizableComparison((item: SelectableItem) => item.item.label);
@@ -237,12 +240,19 @@ export class ModelController {
     const predicateExistsExclusion = createExistsExclusion(collectIds([this.attributes, this.associations]));
     const classTypeExclusion = createClassTypeExclusion(SearchClassType.Class);
 
-    const classExclusion = isProfile
-      ? combineExclusions<ClassListItem>(classTypeExclusion, definedExclusion)
-      : combineExclusions<ClassListItem>(classExistsExclusion, classTypeExclusion, definedExclusion);
+    const classExclusion = (klass: ClassListItem) => {
+      if (isProfile) {
+        return classTypeExclusion(klass) || definedExclusion(klass);
+      } else {
+        if (klass.isSpecializedClass() && !klass.isOfType('shape')) {
+          return <string> null;
+        } else {
+          return classExistsExclusion(klass) || classTypeExclusion(klass) || definedExclusion(klass);
+        }
+      }
+    };
 
     const predicateExclusion = combineExclusions<PredicateListItem>(predicateExistsExclusion, definedExclusion);
-
 
     if (type === 'class') {
       this.createOrAssignEntity(
@@ -251,8 +261,13 @@ export class ModelController {
         (klass: Class) => {
           if (isProfile) {
             return this.createShape(klass);
+          } else {
+            if (klass.isSpecializedClass()) {
+              return this.generalizeClass(klass);
+            } else {
+              return this.assignClassToModel(klass).then(() => klass);
+            }
           }
-          isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
         }
       );
     } else {
@@ -282,6 +297,23 @@ export class ModelController {
 
   private createClass(conceptCreation: ConceptCreation) {
     return this.classService.newClass(this.model, conceptCreation.label, conceptCreation.concept.id, this.languageService.modelLanguage);
+  }
+
+  private generalizeClass(klass: Class) {
+    const exclude = (property: Property) => {
+      const namespace = property.expandCurie(property.predicateCurie).namespace;
+      return !this.model.findModelPrefixForNamespace(namespace);
+    };
+    return this.addPropertiesFromClassModal.open(klass, 'profile', exclude)
+      .then(properties => {
+        const generalized = klass.generalize(this.model, properties);
+        this.assignMissingPredicates(generalized);
+        return generalized;
+      }, err => {
+        if (isModalCancel(err)) {
+          return klass.generalize(this.model, []);
+        }
+      });
   }
 
   private createShape(klass: Class) {

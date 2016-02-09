@@ -48,14 +48,10 @@ export class ClassFormController {
   }
 
   addPropertiesFromClass(id: Uri, classType: string) {
-    let numberOfProperties = this.class.properties.length;
     const existingPredicates = new Set<Uri>(_.map(this.class.properties, property => property.predicateId));
     const exclude = (property: Property) => existingPredicates.has(property.predicateId);
     this.addPropertiesFromClassModal.open(id, classType, exclude)
-      .then(properties => _.forEach(properties, (property: Property) => {
-        property.index = numberOfProperties++;
-        this.class.addProperty(property);
-      }));
+      .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
   }
 
   linkToSuperclass() {

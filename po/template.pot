@@ -28,6 +28,10 @@ msgstr ""
 msgid "Add properties from ' + ctrl.classType + ' class"
 msgstr ""
 
+#: translations/misc.html:147
+msgid "Add properties from profile class"
+msgstr ""
+
 #: translations/misc.html:146
 msgid "Add properties from scope class"
 msgstr ""
@@ -170,7 +174,7 @@ msgstr ""
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
-#: components/editor/addPropertiesFromClassModal.html:13
+#: components/editor/addPropertiesFromClassModal.html:16
 #: components/editor/searchClassModal.html:55
 #: components/editor/searchConceptModal.html:60
 #: components/editor/searchPredicateModal.html:75
@@ -185,7 +189,7 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
-#: translations/misc.html:150
+#: translations/misc.html:152
 msgid "Cannot require profile"
 msgstr ""
 
@@ -239,7 +243,7 @@ msgstr ""
 msgid "Class search info"
 msgstr ""
 
-#: translations/misc.html:152
+#: translations/misc.html:154
 msgid "Classes are not allowed"
 msgstr ""
 
@@ -424,11 +428,15 @@ msgstr ""
 msgid "Do you want to add following properties from ' + ctrl.classType + ' class?"
 msgstr ""
 
-#: translations/misc.html:148
+#: translations/misc.html:150
+msgid "Do you want to add following properties from profile class?"
+msgstr ""
+
+#: translations/misc.html:149
 msgid "Do you want to add following properties from scope class?"
 msgstr ""
 
-#: translations/misc.html:147
+#: translations/misc.html:148
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
@@ -502,6 +510,10 @@ msgstr ""
 
 #: components/footer.html:12
 msgid "Frontend"
+msgstr ""
+
+#: translations/misc.html:157
+msgid "Generalize class"
 msgstr ""
 
 #: translations/misc.html:27
@@ -665,7 +677,7 @@ msgstr ""
 msgid "No search results"
 msgstr ""
 
-#: translations/misc.html:153
+#: translations/misc.html:155
 msgid "Non specialized classes are not allowed"
 msgstr ""
 
@@ -685,7 +697,7 @@ msgstr ""
 msgid "Not removed"
 msgstr ""
 
-#: translations/misc.html:149
+#: translations/misc.html:151
 msgid "Not required by model"
 msgstr ""
 
@@ -867,7 +879,7 @@ msgstr ""
 msgid "Shape properties"
 msgstr ""
 
-#: translations/misc.html:151
+#: translations/misc.html:153
 msgid "Shapes are not allowed"
 msgstr ""
 
@@ -886,6 +898,10 @@ msgstr ""
 
 #: components/footer.html:11
 msgid "Source code"
+msgstr ""
+
+#: translations/misc.html:158
+msgid "Specialize class"
 msgstr ""
 
 #: translations/misc.html:68
@@ -960,7 +976,7 @@ msgstr ""
 msgid "Use attribute"
 msgstr ""
 
-#: components/editor/searchClassModal.html:56
+#: translations/misc.html:156
 msgid "Use class"
 msgstr ""
 
@@ -1092,6 +1108,6 @@ msgid "xsd:XMLLiteral"
 msgstr ""
 
 #: components/common/modalTemplate.html:15
-#: components/editor/addPropertiesFromClassModal.html:12
+#: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr ""

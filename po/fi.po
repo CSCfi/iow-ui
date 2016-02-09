@@ -36,6 +36,10 @@ msgstr "Lisää sovellusprofiili"
 msgid "Add properties from ' + ctrl.classType + ' class"
 msgstr ""
 
+#: translations/misc.html:147
+msgid "Add properties from profile class"
+msgstr "Lisää ominaisuudet nostettavaan luokkaan"
+
 #: translations/misc.html:146
 msgid "Add properties from scope class"
 msgstr "Lisää ominaisuudet tarkennettavasta luokasta"
@@ -173,7 +177,7 @@ msgstr "Selaa sanastoa"
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
-#: components/editor/addPropertiesFromClassModal.html:13
+#: components/editor/addPropertiesFromClassModal.html:16
 #: components/editor/searchClassModal.html:55
 #: components/editor/searchConceptModal.html:60
 #: components/editor/searchPredicateModal.html:75
@@ -188,7 +192,7 @@ msgstr "Peruuta"
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
-#: translations/misc.html:150
+#: translations/misc.html:152
 msgid "Cannot require profile"
 msgstr "Sovellusprofiili ei voi olla nimiavaruutena"
 
@@ -243,7 +247,7 @@ msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
-#: translations/misc.html:152
+#: translations/misc.html:154
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
@@ -427,11 +431,15 @@ msgid ""
 "Do you want to add following properties from ' + ctrl.classType + ' class?"
 msgstr ""
 
-#: translations/misc.html:148
+#: translations/misc.html:150
+msgid "Do you want to add following properties from profile class?"
+msgstr "Haluatko lisätä seuraavat ominaisuudet nostettavaan luokkaan?"
+
+#: translations/misc.html:149
 msgid "Do you want to add following properties from scope class?"
 msgstr "Haluatko lisätä seuraavat ominaisuudet tarkennettavasta luokasta?"
 
-#: translations/misc.html:147
+#: translations/misc.html:148
 msgid "Do you want to add following properties from super class?"
 msgstr "Haluatko lisätä seuraavat ominaisuudet yläluokasta?"
 
@@ -508,6 +516,10 @@ msgstr "Etusivu"
 #: components/footer.html:12
 msgid "Frontend"
 msgstr "Käyttöliittymä"
+
+#: translations/misc.html:157
+msgid "Generalize class"
+msgstr "Nosta luokka kirjastoon"
 
 #: translations/misc.html:27
 msgid "group"
@@ -672,7 +684,7 @@ msgstr "Ei nimiavaruuksia"
 msgid "No search results"
 msgstr "Ei hakutuloksia"
 
-#: translations/misc.html:153
+#: translations/misc.html:155
 msgid "Non specialized classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saavalita"
 
@@ -692,7 +704,7 @@ msgstr "ei löydy sanastosta"
 msgid "Not removed"
 msgstr "Ei saatu poistettua"
 
-#: translations/misc.html:149
+#: translations/misc.html:151
 msgid "Not required by model"
 msgstr "Ei ole lisätty nimiavaruudeksi"
 
@@ -875,7 +887,7 @@ msgstr "Tarkennetun luokan nimi"
 msgid "Shape properties"
 msgstr "Tarkennetun luokan ominaisuudet"
 
-#: translations/misc.html:151
+#: translations/misc.html:153
 msgid "Shapes are not allowed"
 msgstr "Erikoistettuja luokkia ei saa valita"
 
@@ -893,6 +905,10 @@ msgstr "Näytä myös ne, joita ei voi lisätä"
 #: components/footer.html:11
 msgid "Source code"
 msgstr "Lähdekoodi"
+
+#: translations/misc.html:158
+msgid "Specialize class"
+msgstr "Tarkenna luokka"
 
 #: translations/misc.html:68
 msgid "Specialized from class"
@@ -966,7 +982,7 @@ msgstr "Käytä assosiaatiota"
 msgid "Use attribute"
 msgstr "Käytä attribuuttia"
 
-#: components/editor/searchClassModal.html:56
+#: translations/misc.html:156
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
@@ -1122,7 +1138,7 @@ msgid "xsd:XMLLiteral"
 msgstr "XML"
 
 #: components/common/modalTemplate.html:15
-#: components/editor/addPropertiesFromClassModal.html:12
+#: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
 

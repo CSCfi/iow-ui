@@ -65,7 +65,7 @@ export class ClassViewController extends EditableEntityController<Class> {
     );
 
     this.searchPredicateModal.openForProperty(this.model, exclude)
-      .then(predicate => this.classService.newProperty(predicate.id, this.editableInEdit.properties.length))
+      .then(predicate => this.classService.newProperty(predicate.id))
       .then(property => {
         this.editableInEdit.addProperty(property);
         this.classForm.openPropertyAndScrollTo(property);
@@ -77,7 +77,16 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   create(entity: Class) {
-    return this.classService.createClass(entity).then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
+    return this.classService.createClass(entity)
+      .then(() => {
+        if (entity.generalizedFrom) {
+          // TODO handle as single transactional operation
+          entity.generalizedFrom.type = ['shape'];
+          entity.generalizedFrom.scopeClass = entity.id;
+          return this.update(entity.generalizedFrom, entity.generalizedFrom.id);
+        }
+      })
+      .then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
   }
 
   update(entity: Class, oldId: string) {

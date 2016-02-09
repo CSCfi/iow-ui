@@ -31,11 +31,9 @@ const coreContext = {
   preferredXMLNamespaceName: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName' },
   preferredXMLNamespacePrefix: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix' },
   prefLabel: { '@id': 'http://www.w3.org/2004/02/skos/core#prefLabel', '@container': '@language' },
-  property: { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' },
   range: { '@id': 'http://www.w3.org/2000/01/rdf-schema#range', '@type': '@id' },
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
   requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
-  subClassOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' },
   subject: { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' },
   subPropertyOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subPropertyOf', '@type': '@id' },
   title: { '@id': 'http://purl.org/dc/terms/title', '@container': '@language' },
@@ -49,7 +47,10 @@ const propertyContext = {
 };
 
 const classContext = Object.assign({}, propertyContext, {
-  abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'}
+  abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'},
+  property: { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' },
+  scopeClass : { '@id' : 'http://www.w3.org/ns/shacl#scopeClass', '@type' : '@id' },
+  subClassOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' }
 });
 
 function frame(data: any, context: {}, frame?: {}) {

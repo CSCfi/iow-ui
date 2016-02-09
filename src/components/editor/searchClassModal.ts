@@ -91,6 +91,16 @@ class SearchClassController {
     this.classService.getClass(klass.id).then(result => this.selectedClass = result);
   }
 
+  textForSelection() {
+    if (!this.model.isOfType('profile') && this.selectedClass && this.selectedClass.isSpecializedClass()) {
+      return 'Generalize class';
+    } else if (this.model.isOfType('profile')) {
+      return 'Specialize class';
+    } else {
+      return 'Use class';
+    }
+  }
+
   confirm() {
     this.$uibModalInstance.close(this.selectedClass);
   }

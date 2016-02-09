@@ -510,7 +510,7 @@ export class Class extends AbstractClass {
     return this.definedBy.isOfType('profile');
   }
 
-  generalize(model: Model) {
+  generalize(model: Model, properties: Property[]) {
     const {value} = splitCurie(this.curie);
     const newClass = this.clone();
     newClass.unsaved = true;
@@ -518,10 +518,17 @@ export class Class extends AbstractClass {
     newClass.curie = model.prefix + ':' + value;
     newClass.generalizedFrom = this;
     newClass.definedBy = model.asDefinedBy();
+    newClass.properties = [];
+
+    for(const property of properties) {
+      newClass.addProperty(property.clone());
+    }
+
     return newClass;
   }
 
   addProperty(property: Property): void {
+    property.index = this.properties.length;
     this.properties.push(property);
   }
 
@@ -533,12 +540,14 @@ export class Class extends AbstractClass {
     const serialization = this.serialize();
     const result = new Class(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
+    result.generalizedFrom = this.generalizedFrom;
     return result;
   }
 
   serializationValues() {
     return {
       '@id': this.curie,
+      '@type': reverseMapTypeObject(this.type),
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       subClassOf: this.subClassOf,
@@ -679,6 +688,11 @@ export class Property extends GraphNode {
 
   get glyphIconClass() {
     return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : null);
+  }
+
+  clone(): Property {
+    const serialization = this.serialize();
+    return new Property(serialization['@graph'], serialization['@context'], this.frame);
   }
 
   serializationValues() {

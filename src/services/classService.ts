@@ -2,8 +2,18 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import * as _  from 'lodash';
-import { EntityDeserializer, Attribute, Association, Class, ClassListItem, Predicate, Property, Uri, Model } from './entities';
+import * as _ from 'lodash';
+import {
+  EntityDeserializer,
+  Attribute,
+  Association,
+  Class,
+  ClassListItem,
+  Predicate,
+  Property,
+  Uri,
+  Model
+} from './entities';
 import { PredicateService } from './predicateService';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
@@ -86,7 +96,7 @@ export class ClassService {
       });
   }
 
-  newProperty(predicateId: Uri, numberOfProperties: number): IPromise<Property> {
+  newProperty(predicateId: Uri): IPromise<Property> {
     return this.$q.all({
         predicate: this.predicateService.getPredicate(predicateId),
         property: this.$http.get('/api/rest/classProperty', {params: {predicateID: predicateId}})
@@ -112,7 +122,6 @@ export class ClassService {
         }
 
         property.state = 'Unstable';
-        property.index = numberOfProperties + 1;
 
         return property;
       });
