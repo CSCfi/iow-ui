@@ -6,13 +6,14 @@ import * as _ from 'lodash';
 import { ConceptService } from '../../services/conceptService';
 import { Language } from '../../services/languageService';
 
+const noExclude = (scheme: any) => <string> null;
 
 export class SearchSchemeModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(exclude: (scheme: any) => string, language: Language): IPromise<any> {
+  open(language:Language, exclude: (scheme: any) => string = noExclude): angular.IPromise<any> {
     return this.$uibModal.open({
       template: require('./searchSchemeModal.html'),
       size: 'medium',

@@ -6,12 +6,14 @@ import { ModelService } from '../../services/modelService';
 import { Require } from '../../services/entities';
 import { AddRequireModal } from './addRequireModal';
 
+const noExclude = (require: Require) => <string> null;
+
 export class SearchRequireModal {
   /* @ngInject */
   constructor(private $uibModal: angular.ui.bootstrap.IModalService) {
   }
 
-  open(exclude: (require: Require) => string, language: Language): IPromise<Require> {
+  open(language:Language, exclude: (require: Require) => string = noExclude): angular.IPromise<Require> {
     return this.$uibModal.open({
       template: require('./searchRequireModal.html'),
       size: 'medium',

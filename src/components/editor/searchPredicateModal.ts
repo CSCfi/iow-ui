@@ -10,6 +10,8 @@ import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { createDefinedByExclusion, combineExclusions } from '../../services/utils';
 
+const noExclude = (item: PredicateListItem) => <string> null;
+
 export class SearchPredicateModal {
 
   /* @ngInject */
@@ -32,15 +34,15 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  open(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string): IPromise<ConceptCreation|Predicate> {
+  open(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<ConceptCreation|Predicate> {
     return this.openModal(model, type, exclude, false);
   }
 
-  openForProperty(model: Model, exclude: (predicate: PredicateListItem) => string): IPromise<Predicate> {
+  openForProperty(model: Model, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<Predicate> {
     return this.openModal(model, null, exclude, false);
   }
 
-  openWithOnlySelection(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = (item: PredicateListItem) => null): IPromise<Predicate> {
+  openWithOnlySelection(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<Predicate> {
     return this.openModal(model, type, exclude, true);
   }
 };

@@ -13,6 +13,8 @@ export enum SearchClassType {
   Class, Shape, All, SpecializedClass
 }
 
+const noExclude = (item: ClassListItem) => <string> null;
+
 export class SearchClassModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
@@ -34,11 +36,11 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, searchClassType: SearchClassType, exclude: (klass: ClassListItem) => string): IPromise<ConceptCreation|Class> {
+  open(model: Model, searchClassType: SearchClassType, exclude: (klass: ClassListItem) => string = noExclude): IPromise<ConceptCreation|Class> {
     return this.openModal(model, searchClassType, exclude, false);
   }
 
-  openWithOnlySelection(model: Model, searchClassType: SearchClassType, exclude: (klass: ClassListItem) => string = (item: ClassListItem) => null): IPromise<Class> {
+  openWithOnlySelection(model: Model, searchClassType: SearchClassType, exclude: (klass: ClassListItem) => string = noExclude): IPromise<Class> {
     return this.openModal(model, searchClassType, exclude, true);
   }
 };
