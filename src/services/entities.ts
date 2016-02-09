@@ -438,6 +438,10 @@ export class ClassListItem extends AbstractClass {
   fullId(): Uri {
     return this.id;
   }
+
+  isSpecializedClass() {
+    return this.definedBy.isOfType('profile');
+  }
 }
 
 export class VisualizationClass extends AbstractClass {
@@ -490,6 +494,10 @@ export class Class extends AbstractClass {
     if (this.curie) {
       return this.expandCurie(this.curie).uri;
     }
+  }
+
+  isSpecializedClass() {
+    return this.definedBy.isOfType('profile');
   }
 
   addProperty(property: Property): void {
