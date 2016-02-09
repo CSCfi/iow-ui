@@ -4,4 +4,8 @@ public
 rev-manifest.json
 typings/*
 **/.DS_Store
+
+# Idea user related configs
 .idea/workspace.xml
+.idea/tasks.xml
+.idea/shelf
