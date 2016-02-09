@@ -109,6 +109,10 @@ export abstract class GraphNode {
     return {};
   }
 
+  addNamespaceToContext(model: Model) {
+    Object.assign(this.context, {[model.prefix]: model.namespace});
+  }
+
   expandContext(data: any) {
     Object.assign(data['@context'], this.context);
     return data;
@@ -299,6 +303,10 @@ export class Model extends AbstractModel {
     });
   }
 
+  asDefinedBy() {
+    return new DefinedBy({'@id': this.id, '@type': reverseMapTypeObject(this.type), label: this.label}, this.context, this.frame);
+  }
+
   findModelPrefixForNamespace(namespace: Uri)  {
     if (this.namespace === namespace) {
       return this.prefix;
@@ -471,7 +479,9 @@ export class Class extends AbstractClass {
   subject: Concept;
   equivalentClasses: Curie[];
   constraint: Constraint;
+
   unsaved: boolean = false;
+  generalizedFrom: Class;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -500,6 +510,17 @@ export class Class extends AbstractClass {
     return this.definedBy.isOfType('profile');
   }
 
+  generalize(model: Model) {
+    const {value} = splitCurie(this.curie);
+    const newClass = this.clone();
+    newClass.unsaved = true;
+    newClass.addNamespaceToContext(model);
+    newClass.curie = model.prefix + ':' + value;
+    newClass.generalizedFrom = this;
+    newClass.definedBy = model.asDefinedBy();
+    return newClass;
+  }
+
   addProperty(property: Property): void {
     this.properties.push(property);
   }
@@ -523,6 +544,7 @@ export class Class extends AbstractClass {
       subClassOf: this.subClassOf,
       scopeClass: this.scopeClass,
       versionInfo: this.state,
+      isDefinedBy: this.definedBy.serialize(true),
       property: serializeEntityList(this.properties),
       subject: serializeOptional(this.subject),
       equivalentClass: serializeList(this.equivalentClasses),
@@ -1093,9 +1115,40 @@ function mapType(type: string): Type {
   }
 }
 
+function reverseMapType(type: string): Type {
+  switch (type) {
+    case 'class':
+      return 'rdfs:Class';
+    case 'shape':
+      return 'sh:Shape';
+    case 'attribute':
+      return 'owl:DatatypeProperty';
+    case 'association':
+      return 'owl:ObjectProperty';
+    case 'model':
+      return 'owl:Ontology';
+    case 'profile':
+      return 'dcap:DCAP';
+    case 'group':
+      return 'foaf:Group';
+    case 'library':
+      return 'dcap:MetadataVocabulary';
+    default:
+      console.log('unknown type not mapped: ' + type);
+    // continue
+  }
+}
+
 function mapGraphTypeObject(type: string|string[]): Type[] {
   return _.chain(normalizeAsArray(type))
     .map(mapType)
+    .reject(type => !type)
+    .value();
+}
+
+function reverseMapTypeObject(type: Type[]): string[] {
+  return _.chain(normalizeAsArray(type))
+    .map(reverseMapType)
     .reject(type => !type)
     .value();
 }
