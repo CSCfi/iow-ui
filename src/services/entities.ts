@@ -260,8 +260,8 @@ export class Model extends AbstractModel {
     super(graph, context, frame);
     this.comment = deserializeLocalizable(graph.comment);
     this.state = graph.versionInfo;
-    this.namespace = graph['dcap:preferredXMLNamespaceName'];
-    this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
+    this.namespace = graph['preferredXMLNamespaceName'];
+    this.prefix = graph['preferredXMLNamespacePrefix'];
     if (!graph.isPartOf['@type']) {
       // TODO: Shouldn't be needed but in all cases API doesn't return it
       graph.isPartOf['@type'] = 'foaf:Group';
@@ -371,8 +371,8 @@ export class Require extends GraphNode {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.label);
-    this._namespace = graph['dcap:preferredXMLNamespaceName'];
-    this.prefix = graph['dcap:preferredXMLNamespacePrefix'];
+    this._namespace = graph['preferredXMLNamespaceName'];
+    this.prefix = graph['preferredXMLNamespacePrefix'];
     this.modifiable = graph['@type'] === 'dcap:MetadataVocabulary';
   }
 
@@ -389,8 +389,8 @@ export class Require extends GraphNode {
     return {
       '@id': this.id,
       label: serializeLocalizable(this.label),
-      'dcap:preferredXMLNamespaceName': this.namespace,
-      'dcap:preferredXMLNamespacePrefix': this.prefix
+      'preferredXMLNamespaceName': this.namespace,
+      'preferredXMLNamespacePrefix': this.prefix
     }
   }
 }
