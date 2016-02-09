@@ -11,6 +11,10 @@
   display: none !important;
 }
 
+input[type=checkbox][disabled] + span {
+  text-decoration: line-through;
+}
+
 $selectionListWidth: 275px;
 $footer-height: 50px;
 
