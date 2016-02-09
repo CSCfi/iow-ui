@@ -5,7 +5,7 @@ import IQService = angular.IQService;
 import { EntityDeserializer, Model, ModelListItem, Reference, Require, Uri, Type } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
-import { modelFrame } from './frames'
+import { modelFrame } from './frames';
 
 export class ModelService {
 
@@ -69,7 +69,7 @@ export class ModelService {
     const graph = {
       '@id': `http://www.finto.fi/${scheme.id}`,
       '@type': 'skos:ConceptScheme',
-      'dcterms:identifier': scheme.id,
+      'identifier': scheme.id,
       'title': {
         [lang]: scheme.title
       }
