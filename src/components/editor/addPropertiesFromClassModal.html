@@ -4,7 +4,10 @@
   <modal-body>
     <p><span>{{'Do you want to add following properties from ' + ctrl.classType + ' class?' | translate}}</span></p>
     <div class="checkbox" ng-repeat="property in ctrl.properties">
-      <label><input type="checkbox" checklist-model="ctrl.selectedProperties" checklist-value="property" /> {{property | translateLabel}}</label>
+      <label>
+        <input ng-disabled="ctrl.isExcluded(property)" type="checkbox" checklist-model="ctrl.selectedProperties" checklist-value="property" />
+        <span ng-class="strike">{{property | translateLabel}}</span>
+      </label>
     </div>
   </modal-body>
 
