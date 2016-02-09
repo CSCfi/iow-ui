@@ -5,6 +5,7 @@ import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { Attribute, Association, Class, AbstractGroup, Group, Model, Uri } from '../../services/entities';
+import { isModalCancel } from '../../services/utils';
 
 export interface EditableForm extends IFormController {
   editing: boolean;
@@ -89,7 +90,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
           this.select(null);
           this.persisting = false;
         }, err => {
-          if (err !== 'cancel' && err !== 'escape key press') {
+          if (!isModalCancel(err)) {
             this.$log.error(err);
             this.submitError = err.data.errorMessage;
           }

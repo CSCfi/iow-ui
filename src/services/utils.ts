@@ -115,6 +115,10 @@ export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtracto
   return result;
 }
 
+export function isModalCancel(err: any) {
+  return err === 'cancel' || err === 'escape key press';
+}
+
 export function splitCurie(curie: string): {prefix: string, value: string} {
   const parts = curie.split(':');
   if (parts.length === 2) {
