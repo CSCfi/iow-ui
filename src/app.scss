@@ -415,6 +415,10 @@ selection-view, .main-editable-content {
   }
 }
 
+.glyphicon-user, .glyphicon-retweet {
+  margin-right: 15px;
+}
+
 .model-header {
   @extend .main-header;
   cursor: pointer;
