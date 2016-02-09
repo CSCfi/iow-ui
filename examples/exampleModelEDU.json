@@ -1469,7 +1469,7 @@
     "range" : "edu:Ajanjakso"
   }, {
     "@id" : "http://iow.csc.fi/ns/jhs",
-    "dcterms:title" : {
+    "rdfs:label" : {
       "@language" : "fi",
       "@value" : "Julkishallinnon tietokomponentit"
     },
