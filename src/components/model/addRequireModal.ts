@@ -16,7 +16,7 @@ export class AddRequireModal {
       size: 'small',
       controller: AddRequireController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         language: () => language
       }

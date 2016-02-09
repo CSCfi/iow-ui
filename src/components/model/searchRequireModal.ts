@@ -17,7 +17,7 @@ export class SearchRequireModal {
       size: 'medium',
       controller: SearchRequireController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         exclude: () => exclude,
         language: () => language

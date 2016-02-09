@@ -22,7 +22,7 @@ export class SearchPredicateModal {
       size: 'large',
       controller: SearchPredicateController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         model: () => model,
         type: () => type,

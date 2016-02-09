@@ -32,7 +32,7 @@ export class SearchConceptModal {
       size: 'small',
       controller: SearchConceptController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         references: () => references,
         type: () => type,

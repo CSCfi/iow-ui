@@ -15,7 +15,7 @@ export class AddModelModal {
       size: 'small',
       controller: AddModelController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         groupId: () => groupId,
         type: () => type
