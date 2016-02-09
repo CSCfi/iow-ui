@@ -4,9 +4,10 @@ import IFormController = angular.IFormController;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
-import { SearchClassModal, SearchClassType } from './searchClassModal';
+import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
+import { createDefinedByExclusion } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -55,8 +56,8 @@ class CurieSelectController {
 
   selectCurie() {
     const promise: IPromise<WithCurie> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.All)
-      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type);
+      ? this.searchClassModal.openWithOnlySelection(this.model, createDefinedByExclusion(this.model))
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createDefinedByExclusion(this.model));
 
     promise.then(withCurie => {
       this.curie = withCurie.curie;

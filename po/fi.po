@@ -243,6 +243,10 @@ msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
+#: translations/misc.html:152
+msgid "Classes are not allowed"
+msgstr "Erikoistamattomia luokkia ei saa valita"
+
 #: components/editor/addConceptModal.html:44
 #: components/editor/searchConceptModal.html:41
 msgid "Comment"
@@ -668,6 +672,10 @@ msgstr "Ei nimiavaruuksia"
 msgid "No search results"
 msgstr "Ei hakutuloksia"
 
+#: translations/misc.html:153
+msgid "Non specialized classes are not allowed"
+msgstr "Erikoistamattomia luokkia ei saavalita"
+
 #: components/editor/subjectView.html:2
 msgid "Not defined"
 msgstr "Ei määritelty"
@@ -866,6 +874,10 @@ msgstr "Tarkennetun luokan nimi"
 #: translations/misc.html:125
 msgid "Shape properties"
 msgstr "Tarkennetun luokan ominaisuudet"
+
+#: translations/misc.html:151
+msgid "Shapes are not allowed"
+msgstr "Erikoistettuja luokkia ei saa valita"
 
 #: components/common/export.html:4 translations/misc.html:21
 msgid "Show"

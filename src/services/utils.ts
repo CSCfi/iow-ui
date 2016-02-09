@@ -1,4 +1,8 @@
-import { Type, Uri, Localizable, Model, DefinedBy } from './entities';
+import { Type, Uri, Localizable, Model, DefinedBy, ClassListItem } from './entities';
+
+export enum SearchClassType {
+  Class, Shape, SpecializedClass
+}
 
 interface WithId {
   id: Uri;
@@ -71,6 +75,24 @@ export function createExistsExclusion(itemIds: Set<Uri>) {
   return (item: WithId) => {
     if (itemIds.has(item.id)) {
       return 'Already added';
+    }
+  };
+}
+
+export function createClassTypeExclusion(searchClassType: SearchClassType) {
+
+  const showShapes = containsAny([SearchClassType.Shape, SearchClassType.SpecializedClass], [searchClassType]);
+  const showClasses = containsAny([SearchClassType.Class, SearchClassType.SpecializedClass], [searchClassType]);
+
+  return (klass: ClassListItem) => {
+    if (!showShapes && klass.isOfType('shape')) {
+      return 'Shapes are not allowed';
+    } else if (!showClasses && !klass.isOfType('shape')) {
+      return 'Classes are not allowed';
+    } else if (searchClassType == SearchClassType.SpecializedClass && !klass.isSpecializedClass()) {
+      return 'Non specialized classes are not allowed';
+    } else {
+      return <string> null;
     }
   };
 }

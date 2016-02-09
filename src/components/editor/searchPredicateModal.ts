@@ -8,7 +8,6 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import { createDefinedByExclusion, combineExclusions } from '../../services/utils';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -28,7 +27,7 @@ export class SearchPredicateModal {
       resolve: {
         model: () => model,
         type: () => type,
-        exclude: () => combineExclusions(exclude, createDefinedByExclusion(model)),
+        exclude: () => exclude,
         onlySelection: () => onlySelection
       }
     }).result;

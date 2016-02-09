@@ -5,10 +5,16 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type } from '../../services/entities';
-import { SearchClassModal, SearchClassType } from './searchClassModal';
+import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
+import { SearchClassModal } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem } from '../form/displayItemFactory';
-import { createExistsExclusion, collectProperties } from '../../services/utils';
+import {
+  createExistsExclusion,
+  collectProperties,
+  combineExclusions,
+  createDefinedByExclusion
+} from '../../services/utils';
+import create = require("core-js/fn/object/create");
 
 export const mod = angular.module('iow.components.editor');
 
@@ -65,11 +71,14 @@ class EditableMultipleCurieSelectController {
   }
 
   addCurie() {
-    const existing = collectProperties(this.curies, curie => this.model.expandCurie(curie).uri);
+    const existsExclusion = createExistsExclusion(collectProperties(this.curies, curie => this.model.expandCurie(curie).uri));
+    const definedExclusion = createDefinedByExclusion(this.model);
+    const classExclusion = combineExclusions<ClassListItem>(existsExclusion, definedExclusion);
+    const predicateExclusion = combineExclusions<PredicateListItem>(existsExclusion, definedExclusion);
 
     const promise: IPromise<WithCurie> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, SearchClassType.All, createExistsExclusion(existing))
-      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createExistsExclusion(existing));
+      ? this.searchClassModal.openWithOnlySelection(this.model, classExclusion)
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, predicateExclusion);
 
     promise.then(withCurie => {
       this.curies.push(withCurie.curie);

@@ -5,7 +5,16 @@ import { LocationService } from '../../services/locationService';
 import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
-import { glyphIconClassForType, collectIds, isDifferentUrl, createExistsExclusion } from '../../services/utils';
+import {
+  glyphIconClassForType,
+  collectIds,
+  isDifferentUrl,
+  createExistsExclusion,
+  createDefinedByExclusion,
+  combineExclusions,
+  createClassTypeExclusion,
+  SearchClassType
+} from '../../services/utils';
 import {
   Class,
   Predicate,
@@ -18,7 +27,7 @@ import {
   DefinedBy
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
-import { SearchClassModal, SearchClassType } from '../editor/searchClassModal';
+import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal';
 import IPromise = angular.IPromise;
@@ -223,21 +232,32 @@ export class ModelController {
 
   public addEntity(type: Type) {
     const isProfile = this.model.isOfType('profile');
+    const definedExclusion = createDefinedByExclusion(this.model);
+    const classExistsExclusion = createExistsExclusion(collectIds(this.classes));
+    const predicateExistsExclusion = createExistsExclusion(collectIds([this.attributes, this.associations]));
+    const classTypeExclusion = createClassTypeExclusion(SearchClassType.Class);
+
+    const classExclusion = isProfile
+      ? combineExclusions<ClassListItem>(classTypeExclusion, definedExclusion)
+      : combineExclusions<ClassListItem>(classExistsExclusion, classTypeExclusion, definedExclusion);
+
+    const predicateExclusion = combineExclusions<PredicateListItem>(predicateExistsExclusion, definedExclusion);
+
 
     if (type === 'class') {
-      const exclude = this.model.isOfType('profile')
-        ? (klass: ClassListItem) => <string> null
-        : createExistsExclusion(collectIds(this.classes));
-
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, SearchClassType.Class, exclude),
+        () => this.searchClassModal.open(this.model, classExclusion),
         (concept: ConceptCreation) => this.createClass(concept),
-        (klass: Class) => isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
+        (klass: Class) => {
+          if (isProfile) {
+            return this.createShape(klass);
+          }
+          isProfile ? this.createShape(klass) : this.assignClassToModel(klass).then(() => klass)
+        }
       );
     } else {
-      const exclude = createExistsExclusion(collectIds([this.attributes, this.associations]));
       this.createOrAssignEntity(
-        () => this.searchPredicateModal.open(this.model, type, exclude),
+        () => this.searchPredicateModal.open(this.model, type, predicateExclusion),
         (concept: ConceptCreation) => this.createPredicate(concept),
         (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
       );

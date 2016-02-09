@@ -6,11 +6,16 @@ import { ModelController } from '../model/modelController';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, PredicateListItem } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { collectProperties, createExistsExclusion } from '../../services/utils';
+import {
+  collectProperties,
+  createExistsExclusion,
+  combineExclusions,
+  createDefinedByExclusion
+} from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -54,9 +59,12 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   addProperty() {
-    const existingPredicates = collectProperties(this.class.properties, property => property.predicateId);
+    const exclude = combineExclusions<PredicateListItem>(
+      createExistsExclusion(collectProperties(this.class.properties, property => property.predicateId)),
+      createDefinedByExclusion(this.model)
+    );
 
-    this.searchPredicateModal.openForProperty(this.model, createExistsExclusion(existingPredicates))
+    this.searchPredicateModal.openForProperty(this.model, exclude)
       .then(predicate => this.classService.newProperty(predicate.id, this.editableInEdit.properties.length))
       .then(property => {
         this.editableInEdit.addProperty(property);
