@@ -18,7 +18,7 @@ export class SearchSchemeModal {
       size: 'medium',
       controller: SearchSchemeController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         exclude: () => exclude,
         language: () => language

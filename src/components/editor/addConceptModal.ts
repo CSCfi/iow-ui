@@ -19,7 +19,7 @@ export class AddConceptModal {
       size: 'small',
       controller: AddConceptController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         labelTitle: () => labelTitle,
         defineConceptTitle: () => defineConceptTitle,

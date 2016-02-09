@@ -24,7 +24,7 @@ export class SearchClassModal {
       size: 'large',
       controller: SearchClassController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: true,
       resolve: {
         model: () => model,
         searchClassType: () => searchClassType,
