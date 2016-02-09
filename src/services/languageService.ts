@@ -1,4 +1,4 @@
-import * as _  from 'lodash';
+import * as _ from 'lodash';
 import { Localizable } from './entities';
 
 const languages: Language[] = ['fi', 'en'];
@@ -53,5 +53,20 @@ export class LanguageService {
     }
 
     return localized(this.modelLanguage, false) || _.find(_.map(languages, lang => localized(lang, true)), _.identity) || '';
+  }
+
+  localizableComparison<T>(localizableExtractor: (item: T) => Localizable) {
+    return (lhs: T, rhs: T) => {
+      const lhsLocalization = this.translate(localizableExtractor(lhs));
+      const rhsLocalization = this.translate(localizableExtractor(rhs));
+
+      if (lhsLocalization < rhsLocalization) {
+        return -1;
+      } else if (lhsLocalization > rhsLocalization) {
+        return 1;
+      }  else {
+        return 0;
+      }
+    }
   }
 }

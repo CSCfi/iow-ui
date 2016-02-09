@@ -39,6 +39,8 @@ export class ModelController {
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
 
+  private selectableComparison: (lhs: SelectableItem, rhs: SelectableItem) => number;
+
   tabs = [
     new Tab('class', () => this.classes, this),
     new Tab('attribute', () => this.attributes, this),
@@ -60,6 +62,7 @@ export class ModelController {
               private confirmationModal: ConfirmationModal,
               public languageService: LanguageService) {
 
+    this.selectableComparison = languageService.localizableComparison((item: SelectableItem) => item.item.label);
     this.init(new RouteData($routeParams));
 
     $scope.$on('$locationChangeSuccess', () => {
@@ -96,13 +99,13 @@ export class ModelController {
   }
 
   sortClasses() {
-    this.classes.sort(sortByLabel(this.languageService));
+    this.classes.sort(this.selectableComparison);
     setOverlaps(this.classes);
   }
 
   sortPredicates() {
-    this.associations.sort(sortByLabel(this.languageService));
-    this.attributes.sort(sortByLabel(this.languageService));
+    this.associations.sort(this.selectableComparison);
+    this.attributes.sort(this.selectableComparison);
     setOverlaps(this.associations);
     setOverlaps(this.attributes);
   }
@@ -434,21 +437,6 @@ interface View {
 interface WithIdAndType {
   id: Uri,
   normalizedType: Type
-}
-
-function sortByLabel(languageService: LanguageService) {
-  return (lhs: SelectableItem, rhs: SelectableItem) => {
-    const lhsLocalization = languageService.translate(lhs.item.label);
-    const rhsLocalization = languageService.translate(rhs.item.label);
-
-    if (lhsLocalization < rhsLocalization) {
-      return -1;
-    } else if (lhsLocalization > rhsLocalization) {
-      return 1;
-    }  else {
-      return 0;
-    }
-  }
 }
 
 function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {
