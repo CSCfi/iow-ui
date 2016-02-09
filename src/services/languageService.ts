@@ -9,6 +9,7 @@ export type Language = string;
 export class LanguageService {
 
   modelLanguage: Language = defaultLanguage;
+  labelComparison = this.localizableComparison((item: {label: Localizable}) => item.label);
 
   constructor(private gettextCatalog: any) {
     'ngInject';

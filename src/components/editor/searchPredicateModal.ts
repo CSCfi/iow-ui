@@ -82,6 +82,7 @@ export class SearchPredicateController {
       this.models = _.chain(this.predicates)
         .map(predicate => predicate.definedBy)
         .uniq(definedBy => definedBy.id)
+        .sort(languageService.labelComparison)
         .value();
 
       this.types = _.chain(this.predicates)

@@ -79,6 +79,7 @@ class SearchClassController {
       this.models = _.chain(this.classes)
         .map(klass => klass.definedBy)
         .uniq(definedBy => definedBy.id)
+        .sort(languageService.labelComparison)
         .value();
 
       this.search();
