@@ -1,8 +1,7 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import * as _ from 'lodash';
-import { ExpandedCurie, Uri } from './entities';
+import { ExpandedCurie } from './entities';
 import { pascalCase, camelCase } from 'change-case';
 
 export class ValidatorService {
