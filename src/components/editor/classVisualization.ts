@@ -238,7 +238,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
       const name = languageService.translate(property.label);
       const range = property.hasAssociationTarget() ? property.valueClass : property.dataType;
       const cardinality = formatCardinality(property);
-      return `- ${name} : ${range}` + (showCardinality ? `[${cardinality}]` : '');
+      return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
     }
 
     return _.map(_.sortBy(properties, property => property.index), propertyAsString);
