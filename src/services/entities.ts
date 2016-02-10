@@ -1033,7 +1033,7 @@ export class Activity extends GraphNode {
   createdAt: Moment;
   lastModifiedBy: UserLogin;
   versions: Map<Uri, Entity>;
-  latestVersion: Entity;
+  latestVersion: Uri;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1041,7 +1041,11 @@ export class Activity extends GraphNode {
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
     this.versions = indexById(deserializeEntityList(graph.generated, context, frame, Entity));
-    this.latestVersion = new Entity(graph.used, context, frame);
+    this.latestVersion = graph.used;
+  }
+
+  get latest(): Entity {
+    return this.versions.get(this.latestVersion);
   }
 }
 
@@ -1050,14 +1054,18 @@ export class Entity extends GraphNode {
   id: Uri;
   createdAt: Moment;
   createdBy: UserLogin;
-  previousVersion: Entity;
+  previousVersion: Uri;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.createdAt = deserializeDate(graph.generatedAtTime);
     this.createdBy = deserializeUserLogin(graph.wasAttributedTo);
-    this.previousVersion = deserializeOptional(graph.wasRevisionOf, context, frame, Entity);
+    this.previousVersion = graph.wasRevisionOf;
+  }
+
+  getPrevious(activity: Activity): Entity {
+    return this.previousVersion && activity.versions.get(this.previousVersion);
   }
 }
 
