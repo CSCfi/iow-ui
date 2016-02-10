@@ -6,6 +6,11 @@ import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { HistoryModal } from './historyModal';
 import { LanguageService } from '../../services/languageService';
 import { Localizable } from '../../services/entities';
+import Moment = moment.Moment;
+
+const mod = angular.module('iow.components.common', []);
+export = mod.name;
+
 import './accordionChevron';
 import './ajaxLoadingIndicator';
 import './export';
@@ -16,10 +21,6 @@ import './keyControlItem';
 import './modalTemplate';
 import './typeahead';
 import './searchResults';
-import Moment = moment.Moment;
-
-const mod = angular.module('iow.components.common', []);
-export = mod.name;
 
 mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);
