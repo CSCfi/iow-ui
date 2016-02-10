@@ -2,11 +2,10 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import * as _  from 'lodash';
-import { EntityDeserializer, Predicate, PredicateListItem, Uri, Model, Type } from './entities';
+import * as _ from 'lodash';
+import { EntityDeserializer, Predicate, PredicateListItem, Uri, Model, Type, Attribute } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
-import {Attribute} from "./entities";
 
 export class PredicateService {
   /* @ngInject */
@@ -25,16 +24,19 @@ export class PredicateService {
     return this.$http.get('/api/rest/predicate', {params: {model: modelId}}).then(response => this.entities.deserializePredicateList(response.data));
   }
 
-  createPredicate(predicate: Predicate): IPromise<boolean> {
+  createPredicate(predicate: Predicate): IPromise<any> {
     const requestParams = {
       id: predicate.id,
       model: predicate.definedBy.id
     };
-    return this.$http.put('/api/rest/predicate', predicate.serialize(), {params: requestParams})
-      .then(() => predicate.unsaved = false);
+    return this.$http.put<{ identifier: Uri }>('/api/rest/predicate', predicate.serialize(), {params: requestParams})
+      .then(response => {
+        predicate.unsaved = false
+        predicate.version = response.data.identifier;
+      });
   }
 
-  updatePredicate(predicate: Predicate, originalId: Uri): IHttpPromise<any> {
+  updatePredicate(predicate: Predicate, originalId: Uri): IPromise<any> {
     const requestParams: any = {
       id: predicate.id,
       model: predicate.definedBy.id
@@ -42,7 +44,10 @@ export class PredicateService {
     if (requestParams.id !== originalId) {
       requestParams.oldid = originalId;
     }
-    return this.$http.post('/api/rest/predicate', predicate.serialize(), {params: requestParams});
+    return this.$http.post<{ identifier: Uri }>('/api/rest/predicate', predicate.serialize(), {params: requestParams})
+      .then(response => {
+        predicate.version = response.data.identifier;
+      });
   }
 
   deletePredicate(id: Uri, modelId: Uri): IHttpPromise<any> {

@@ -23,13 +23,19 @@ export class ModelService {
       .then(response => this.entities.deserializeModel(response.data));
   }
 
-  createModel(model: Model): IPromise<boolean> {
-    return this.$http.put('/api/rest/model', model.serialize(), { params: { id: model.id, group: model.group.id } })
-      .then(() => model.unsaved = false);
+  createModel(model: Model): IPromise<any> {
+    return this.$http.put<{ identifier: Uri }>('/api/rest/model', model.serialize(), { params: { id: model.id, group: model.group.id } })
+      .then(response => {
+        model.unsaved = false;
+        model.version = response.data.identifier;
+      });
   }
 
-  updateModel(model: Model): IHttpPromise<any> {
-    return this.$http.post('/api/rest/model', model.serialize(), { params: { id: model.id } });
+  updateModel(model: Model): IPromise<any> {
+    return this.$http.post<{ identifier: Uri }>('/api/rest/model', model.serialize(), { params: { id: model.id } })
+      .then(response => {
+        model.version = response.data.identifier;
+      })
   }
 
   deleteModel(id: Uri): IHttpPromise<any> {

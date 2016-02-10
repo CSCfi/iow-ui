@@ -36,16 +36,19 @@ export class ClassService {
     return this.$http.get('/api/rest/class', {params: {model: modelId}}).then(response => this.entities.deserializeClassList(response.data));
   }
 
-  createClass(klass: Class): IPromise<boolean> {
+  createClass(klass: Class): IPromise<any> {
     const requestParams = {
       id: klass.id,
       model: klass.definedBy.id
     };
-    return this.$http.put('/api/rest/class', klass.serialize(), {params: requestParams})
-      .then(() => klass.unsaved = false);
+    return this.$http.put<{ identifier: Uri }>('/api/rest/class', klass.serialize(), {params: requestParams})
+      .then(response => {
+        klass.unsaved = false;
+        klass.version = response.data.identifier;
+      });
   }
 
-  updateClass(klass: Class, originalId: Uri): IHttpPromise<any> {
+  updateClass(klass: Class, originalId: Uri): IPromise<any> {
     const requestParams: any = {
       id: klass.id,
       model: klass.definedBy.id
@@ -53,7 +56,10 @@ export class ClassService {
     if (requestParams.id !== originalId) {
       requestParams.oldid = originalId;
     }
-    return this.$http.post('/api/rest/class', klass.serialize(), {params: requestParams});
+    return this.$http.post<{ identifier: Uri }>('/api/rest/class', klass.serialize(), {params: requestParams})
+      .then(response => {
+        klass.version = response.data.identifier;
+      })
   }
 
   deleteClass(id: Uri, modelId: Uri): IHttpPromise<any> {

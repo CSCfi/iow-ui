@@ -25,6 +25,7 @@ export type Uri = string;
 export type Url = string;
 export type RelativeUrl = string;
 
+
 export type Type = string
 //export type Type = 'class'
 //                 | 'shape'
@@ -259,6 +260,7 @@ export class Model extends AbstractModel {
   prefix: string;
   group: GroupListItem;
   parts: Uri[];
+  version: Uri;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -274,6 +276,7 @@ export class Model extends AbstractModel {
     this.references = deserializeEntityList(graph.references, context, frame, Reference);
     this.requires = deserializeEntityList(graph.requires, context, frame, Require);
     this.parts = deserializeList<Uri>(graph.hasPart);
+    this.version = graph.identifier;
     this.copyNamespacesFromRequires();
   }
 
@@ -346,7 +349,8 @@ export class Model extends AbstractModel {
       versionInfo: this.state,
       references: serializeEntityList(this.references),
       requires: serializeEntityList(this.requires),
-      hasPart: serializeList(this.parts)
+      hasPart: serializeList(this.parts),
+      identifier: this.version
     }
   }
 }
@@ -360,7 +364,7 @@ export class Reference extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.vocabularyId = graph['identifier'];
+    this.vocabularyId = graph['version'];
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.title);
     this.comment = deserializeLocalizable(graph.comment);
@@ -479,6 +483,7 @@ export class Class extends AbstractClass {
   subject: Concept;
   equivalentClasses: Curie[];
   constraint: Constraint;
+  version: Uri;
 
   unsaved: boolean = false;
   generalizedFrom: Class;
@@ -494,6 +499,7 @@ export class Class extends AbstractClass {
     this.subject = deserializeOptional(graph.subject, context, frame, Concept);
     this.equivalentClasses = deserializeList<Curie>(graph.equivalentClass);
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
+    this.version = graph.identifier;
   }
 
   get id() {
@@ -557,7 +563,8 @@ export class Class extends AbstractClass {
       property: serializeEntityList(this.properties),
       subject: serializeOptional(this.subject),
       equivalentClass: serializeList(this.equivalentClasses),
-      constraint: serializeOptional(this.constraint, (constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment))
+      constraint: serializeOptional(this.constraint, (constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment)),
+      identifier: this.version
     };
   }
 }
@@ -777,6 +784,7 @@ export abstract class Predicate extends AbstractPredicate {
   subject: Concept;
   equivalentProperties: Curie[];
   unsaved: boolean = false;
+  version: Uri;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -785,6 +793,7 @@ export abstract class Predicate extends AbstractPredicate {
     this.subPropertyOf = graph.subPropertyOf;
     this.subject = deserializeOptional(graph.subject, context, frame, Concept);
     this.equivalentProperties = deserializeList<Curie>(graph.equivalentProperty);
+    this.version = graph.identifier;
   }
 
   get id() {
@@ -808,7 +817,8 @@ export abstract class Predicate extends AbstractPredicate {
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf,
       subject: serializeOptional(this.subject),
-      equivalentProperty: serializeList(this.equivalentProperties)
+      equivalentProperty: serializeList(this.equivalentProperties),
+      identifier: this.version
     }
   }
 }
