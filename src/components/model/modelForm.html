@@ -1,0 +1,27 @@
+<div class="col-md-5">
+
+  <h4>{{ctrl.model.normalizedType + ' information' | capitalize | translate}}</h4>
+
+  <editable title="{{ctrl.model.normalizedType + ' label' | capitalize}}">
+    <input id="modelLabel" class="form-control" type="text" localized-input="modelLabel" ng-model="ctrl.model.label" />
+  </editable>
+
+  <non-editable title="Namespace" value="ctrl.model.namespace"></non-editable>
+  <non-editable title="Prefix" value="ctrl.model.prefix"></non-editable>
+
+  <editable title="Comment">
+    <textarea id="modelComment" class="form-control" localized-input ng-model="ctrl.model.comment"></textarea>
+  </editable>
+
+  <editable title="State" value-as-localization-key="true" ng-if="!ctrl.model.unsaved">
+    <state-select id="modelState" state="ctrl.model.state" model="ctrl.model"></state-select>
+  </editable>
+</div>
+
+<div class="col-md-5 col-md-offset-1">
+  <references-view references="ctrl.model.references"></references-view>
+  <requires-view requires="ctrl.model.requires"></requires-view>
+
+  <h4 translate>Additional information</h4>
+  <usage-panel entity="ctrl.model"></usage-panel>
+</div>

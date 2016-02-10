@@ -16,10 +16,12 @@ mod.directive('referencesView', () => {
     template: require('./referencesView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['referencesView', '^modelView'],
-    link($scope: ReferencesViewScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      $scope.modelViewController = controllers[1];
-      $scope.modelViewController.registerReferencesView(controllers[0]);
+    require: ['referencesView', '?^modelView'],
+    link($scope: ReferencesViewScope, element: JQuery, attributes: IAttributes, controllers: [ReferencesViewController, ModelViewController]) {
+      if (controllers[1]) {
+        $scope.modelViewController = controllers[1];
+        $scope.modelViewController.registerReferencesView(controllers[0]);
+      }
     },
     controller: ReferencesViewController
   };

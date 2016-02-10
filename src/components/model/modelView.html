@@ -13,30 +13,7 @@
           <export ng-hide="ctrl.isEditing()" entity="ctrl.model"></export>
         </editable-entity-buttons>
 
-        <div class="col-md-5">
-          <editable title="{{ctrl.model.normalizedType + ' label' | capitalize}}">
-            <input id="modelLabel" class="form-control" type="text" localized-input="modelLabel" ng-model="ctrl.editableInEdit.label" />
-          </editable>
-
-          <non-editable title="Namespace" value="ctrl.editableInEdit.namespace"></non-editable>
-          <non-editable title="Prefix" value="ctrl.editableInEdit.prefix"></non-editable>
-
-          <editable title="Comment">
-            <textarea id="modelComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
-          </editable>
-
-          <editable title="State" value-as-localization-key="true" ng-if="!ctrl.model.unsaved">
-            <state-select id="modelState" state="ctrl.editableInEdit.state" model="ctrl.model"></state-select>
-          </editable>
-        </div>
-
-        <div class="col-md-5 col-md-offset-1">
-          <references-view references="ctrl.editableInEdit.references"></references-view>
-          <requires-view requires="ctrl.editableInEdit.requires"></requires-view>
-
-          <h4 translate>Additional information</h4>
-          <usage-panel entity="ctrl.model"></usage-panel>
-        </div>
+        <model-form model="ctrl.editableInEdit"></model-form>
       </div>
     </fieldset>
   </form>
