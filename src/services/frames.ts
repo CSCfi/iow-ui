@@ -53,6 +53,16 @@ const classContext = Object.assign({}, propertyContext, {
   subClassOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' }
 });
 
+const versionContext = {
+  prov: "http://www.w3.org/ns/prov#",
+  wasAttributedTo: { '@id': 'http://www.w3.org/ns/prov#wasAttributedTo', '@type': '@id' },
+  wasRevisionOf : { '@id' : 'http://www.w3.org/ns/prov#wasRevisionOf',  '@type' : '@id' },
+  generatedAtTime: { '@id': 'http://www.w3.org/ns/prov#generatedAtTime', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
+  startedAtTime: { '@id': 'http://www.w3.org/ns/prov#startedAtTime', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
+  generated: { '@id': 'http://www.w3.org/ns/prov#generated', '@type': '@id' },
+  used: { '@id': 'http://www.w3.org/ns/prov#used', '@type': '@id' }
+};
+
 function frame(data: any, context: {}, frame?: {}) {
   return Object.assign({ '@context': Object.assign({}, data['@context'], coreContext, context) }, frame);
 }
@@ -137,6 +147,14 @@ export function classVisualizationFrame(data: any): Frame {
         '@default': [],
         '@embed': false
       }
+    }
+  });
+}
+
+export function versionFrame(data: any): Frame {
+  return frame(data, versionContext, {
+    generated: {
+      "@embed": "@always"
     }
   });
 }

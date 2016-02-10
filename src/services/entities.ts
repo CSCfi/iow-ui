@@ -24,6 +24,7 @@ export type Localizable = { [language: string]: string; }
 export type Uri = string;
 export type Url = string;
 export type RelativeUrl = string;
+export type UserLogin = string;
 
 
 export type Type = string
@@ -921,16 +922,16 @@ export class DefaultUser extends GraphNode implements User {
   adminGroups: Uri[];
   memberGroups: Uri[];
   name: string;
-  login: string;
+  login: UserLogin;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.createdAt = deserializeDate(graph.created);
+    this.createdAt = deserializeDate(graph.createdAt);
     this.modifiedAt = deserializeOptionalDate(graph.modified);
     this.adminGroups = deserializeList<Uri>(graph.isAdminOf);
     this.memberGroups = deserializeList<Uri>(graph.isPartOf);
     this.name = graph.name;
-    this.login = graph['@id'].substring('mailto:'.length);
+    this.login = deserializeUserLogin(graph['@id']);
   }
 
   isLoggedIn(): boolean {
@@ -1029,6 +1030,40 @@ export class Referrer extends GraphNode {
   }
 }
 
+export class Activity extends GraphNode {
+
+  id: Uri;
+  createdAt: Moment;
+  lastModifiedBy: UserLogin;
+  versions: Map<Uri, Entity>;
+  latestVersion: Entity;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = graph['@id'];
+    this.createdAt = deserializeDate(graph.startedAtTime);
+    this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
+    this.versions = indexById(deserializeEntityList(graph.generated, context, frame, Entity));
+    this.latestVersion = new Entity(graph.used, context, frame);
+  }
+}
+
+export class Entity extends GraphNode {
+
+  id: Uri;
+  created: Moment;
+  creator: UserLogin;
+  previousVersion: Entity;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = graph['@id'];
+    this.created = deserializeDate(graph.generatedAtTime);
+    this.creator = deserializeUserLogin(graph.wasAttributedTo);
+    this.previousVersion = deserializeOptional(graph.wasRevisionOf, context, frame, Entity);
+  }
+}
+
 // TODO: when api returns coherent data get rid of this method
 function fixIsDefinedBy(graph: any) {
   if (typeof graph === 'string') {
@@ -1054,6 +1089,10 @@ function fixIsDefinedBy(graph: any) {
   } else {
     return graph;
   }
+}
+
+function indexById<T extends {id: Uri}>(items: T[]): Map<Uri, T> {
+  return new Map<Uri, T>(items.map<[Uri, T]>(item => [item.id, item]));
 }
 
 function serializeOptional<T extends GraphNode>(entity: T, isDefined: (entity: T) => boolean = (entity: T) => !!entity) {
@@ -1107,6 +1146,10 @@ function deserializeOptionalDate(date: any) {
   return date && deserializeDate(date);
 }
 
+function deserializeUserLogin(userName: string): UserLogin {
+  return userName.substring('mailto:'.length);
+}
+
 function mapType(type: string): Type {
   switch (type) {
     case 'rdfs:Class':
@@ -1133,6 +1176,10 @@ function mapType(type: string): Type {
       return 'user';
     case 'skos:ConceptScheme':
       return 'concept';
+    case 'prov:Entity':
+      return 'entity';
+    case 'prov:Activity':
+      return 'activity';
     default:
       console.log('unknown type not mapped: ' + type);
       // continue
@@ -1336,5 +1383,9 @@ export class EntityDeserializer {
 
   deserializeUsage(data: any): IPromise<Usage> {
     return frameAndMap(this.$log, data, frames.usageFrame, (framedData) => Usage);
+  }
+
+  deserializeVersion(data: any): IPromise<Activity> {
+    return frameAndMap(this.$log, data, frames.versionFrame, (framedData) => Activity);
   }
 }
