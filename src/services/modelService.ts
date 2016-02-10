@@ -55,15 +55,6 @@ export class ModelService {
       });
   }
 
-  newProfile(prefix: string, label: string, groupId: Uri, lang: Language): IPromise<Model> {
-    return this.$http.get('/api/rest/profileCreator', { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
-      .then(response => this.entities.deserializeModel(response.data))
-      .then((model: Model) => {
-        model.unsaved = true;
-        return model;
-      });
-  }
-
   newReference(scheme: any, lang: Language, context: any): IPromise<Reference> {
 
     const graph = {
