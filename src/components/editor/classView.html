@@ -5,6 +5,7 @@
         <selection-buttons>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.class"></export>
+          <history model="ctrl.model" resource="ctrl.class" ng-hide="ctrl.isEditing()"></history>
         </selection-buttons>
 
         <selection-content>

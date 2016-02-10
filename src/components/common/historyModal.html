@@ -1,0 +1,38 @@
+<modal-template>
+
+  <modal-title translate>Historical versions</modal-title>
+
+  <modal-body>
+
+    <div class="version-panel--left">
+      <ul class="panel__list">
+        <li ng-repeat="version in ctrl.versions"
+            ng-class="{'model-panel__selection': ctrl.isSelected(version)}"
+            ng-click="ctrl.select(version)">
+          {{version.createdAt | localizedDate}} - {{version.createdBy}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="version-panel--right">
+      <form class="editable-form">
+        <div ng-if="ctrl.selection">
+          <div float="top-actions-placeholder">
+            <div class="top-actions">
+              <model-language-chooser></model-language-chooser>
+              <export entity="ctrl.selection"></export>
+            </div>
+          </div>
+          <model-form ng-if="ctrl.selection.isOfType('model')" model="ctrl.selection"></model-form>
+          <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model"></class-form>
+          <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" old-predicate="ctrl.selection" model="ctrl.model"></predicate-form>
+        </div>
+      </form>
+    </div>
+  </modal-body>
+
+  <modal-buttons>
+    <button class="btn btn-primary" type="button" ng-click="$dismiss('cancel')" translate>Close</button>
+  </modal-buttons>
+
+</modal-template>

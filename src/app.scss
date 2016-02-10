@@ -16,6 +16,7 @@ input[type=checkbox][disabled] + span {
 }
 
 $selectionListWidth: 275px;
+$versionListWidth: 400px;
 $footer-height: 50px;
 
 .btn-group.right .dropdown-menu {
@@ -109,6 +110,45 @@ ul.errors {
 }
 
 
+// TODO redundancy with model-panel--left
+.version-panel--left {
+  width: $versionListWidth;
+  float: left;
+  border-right: solid 1px #ddd;
+
+  ul.nav {
+    margin-right: 0;
+    padding: 9px 0;
+  }
+
+  .panel__list {
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+
+    li {
+      cursor: pointer;
+      padding: 5px 0 5px 10px;
+      font-size: medium;
+    }
+
+    li:hover {
+      color: $brand-primary;
+      background-color: $list-group-hover-bg;
+    }
+  }
+}
+
+.version-panel--right {
+  float: right;
+  width: calc(100% - #{$versionListWidth});
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding: 0 20px 20px 20px;
+
+  .col-md-1, .col-md-5, .col-md-7, .col-md-11, .col-md-12 {
+    padding: 0 0 0 10px;
+  }
+}
 
 .model-panel--left-placeholder {
   float: left;

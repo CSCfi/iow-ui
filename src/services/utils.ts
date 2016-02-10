@@ -157,7 +157,7 @@ export function normalizeModelType(types: Type[]): Type {
   if (containsAny(types, ['profile'])) {
     return 'profile';
   } else {
-    return 'model';
+    return 'library';
   }
 }
 
