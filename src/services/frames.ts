@@ -153,8 +153,14 @@ export function classVisualizationFrame(data: any): Frame {
 
 export function versionFrame(data: any): Frame {
   return frame(data, versionContext, {
-    generated: {
-      "@embed": "@always"
+    "generated":{
+      "wasAttributedTo":{},
+      "wasRevisionOf":{
+        "@omitDefault":true,
+        "@default":[],
+        "@embed":false
+      }
     }
   });
+
 }
