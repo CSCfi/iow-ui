@@ -22,6 +22,7 @@ class PredicateFormController {
 
   model: Model;
   predicate: Predicate;
+  oldPredicate: Predicate;
 
   linkToSuperProperty() {
     return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf, this.model);

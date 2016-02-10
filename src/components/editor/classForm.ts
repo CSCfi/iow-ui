@@ -38,6 +38,7 @@ mod.directive('classForm', () => {
 export class ClassFormController {
 
   class: Class;
+  oldClass: Class;
   model: Model;
   isEditing: () => boolean;
 
