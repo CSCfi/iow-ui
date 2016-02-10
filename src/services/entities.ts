@@ -260,7 +260,6 @@ export class Model extends AbstractModel {
   namespace: Uri;
   prefix: string;
   group: GroupListItem;
-  parts: Uri[];
   version: Uri;
 
   constructor(graph: any, context: any, frame: any) {
@@ -276,7 +275,6 @@ export class Model extends AbstractModel {
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.references = deserializeEntityList(graph.references, context, frame, Reference);
     this.requires = deserializeEntityList(graph.requires, context, frame, Require);
-    this.parts = deserializeList<Uri>(graph.hasPart);
     this.version = graph.identifier;
     this.copyNamespacesFromRequires();
   }
@@ -350,7 +348,6 @@ export class Model extends AbstractModel {
       versionInfo: this.state,
       references: serializeEntityList(this.references),
       requires: serializeEntityList(this.requires),
-      hasPart: serializeList(this.parts),
       identifier: this.version
     }
   }
