@@ -10,7 +10,7 @@ import { SearchService } from './searchService';
 import { UsageService } from './usageService';
 import { UserService } from './userService';
 import { ValidatorService } from './validatorService';
-import { VersionService } from './versionService';
+import { HistoryService } from './historyService';
 
 const mod = angular.module('iow.services', []);
 export = mod.name;
@@ -27,4 +27,4 @@ mod.service('searchService', SearchService);
 mod.service('usageService', UsageService);
 mod.service('userService', UserService);
 mod.service('validatorService', ValidatorService);
-mod.service('versionService', VersionService);
+mod.service('historyService', HistoryService);
