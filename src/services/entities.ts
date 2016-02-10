@@ -1048,15 +1048,15 @@ export class Activity extends GraphNode {
 export class Entity extends GraphNode {
 
   id: Uri;
-  created: Moment;
-  creator: UserLogin;
+  createdAt: Moment;
+  createdBy: UserLogin;
   previousVersion: Entity;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.created = deserializeDate(graph.generatedAtTime);
-    this.creator = deserializeUserLogin(graph.wasAttributedTo);
+    this.createdAt = deserializeDate(graph.generatedAtTime);
+    this.createdBy = deserializeUserLogin(graph.wasAttributedTo);
     this.previousVersion = deserializeOptional(graph.wasRevisionOf, context, frame, Entity);
   }
 }
