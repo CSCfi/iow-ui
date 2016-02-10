@@ -160,6 +160,9 @@ export function versionFrame(data: any): Frame {
         "@default":[],
         "@embed":false
       }
+    },
+    "used":{
+    "@embed":"@never"
     }
   });
 
