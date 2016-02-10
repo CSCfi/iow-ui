@@ -1032,20 +1032,27 @@ export class Activity extends GraphNode {
   id: Uri;
   createdAt: Moment;
   lastModifiedBy: UserLogin;
-  versions: Map<Uri, Entity>;
+  versions: Entity[];
   latestVersion: Uri;
+  private versionIndex: Map<Uri, number>;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
-    this.versions = indexById(deserializeEntityList(graph.generated, context, frame, Entity));
+    this.versions = deserializeEntityList(graph.generated, context, frame, Entity);
+    this.versionIndex = indexById(this.versions);
     this.latestVersion = graph.used;
   }
 
+  getVersion(version: Uri): Entity {
+    const index = this.versionIndex.get(version);
+    return index && this.versions[index];
+  }
+
   get latest(): Entity {
-    return this.versions.get(this.latestVersion);
+    return this.getVersion(this.latestVersion);
   }
 }
 
@@ -1065,7 +1072,7 @@ export class Entity extends GraphNode {
   }
 
   getPrevious(activity: Activity): Entity {
-    return this.previousVersion && activity.versions.get(this.previousVersion);
+    return this.previousVersion && activity.getVersion(this.previousVersion);
   }
 }
 
@@ -1096,8 +1103,8 @@ function fixIsDefinedBy(graph: any) {
   }
 }
 
-function indexById<T extends {id: Uri}>(items: T[]): Map<Uri, T> {
-  return new Map<Uri, T>(items.map<[Uri, T]>(item => [item.id, item]));
+function indexById<T extends {id: Uri}>(items: T[]): Map<Uri, number> {
+  return new Map(items.map<[Uri, number]>((item: T, index: number) => [item.id, index]));
 }
 
 function serializeOptional<T extends GraphNode>(entity: T, isDefined: (entity: T) => boolean = (entity: T) => !!entity) {
