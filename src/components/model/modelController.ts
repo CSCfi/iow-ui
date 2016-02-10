@@ -199,7 +199,6 @@ export class ModelController {
 
   selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
     this.updateSelectables();
-    this.refreshModel();
   }
 
   canEdit(): boolean {
@@ -210,7 +209,6 @@ export class ModelController {
     _.remove(this.classes, item => matchesIdentity(item, selection));
     _.remove(this.attributes, item => matchesIdentity(item, selection));
     _.remove(this.associations, item => matchesIdentity(item, selection));
-    this.refreshModel();
   }
 
   private updateLocation() {
@@ -323,7 +321,7 @@ export class ModelController {
 
   private assignClassToModel(klass: Class) {
     this.assignMissingPredicates(klass);
-    return this.classService.assignClassToModel(klass.id, this.model.id).then(() => this.refreshModel());
+    return this.classService.assignClassToModel(klass.id, this.model.id);
   }
 
   private assignMissingPredicates(klass: Class) {
@@ -344,7 +342,7 @@ export class ModelController {
   }
 
   private assignPredicateToModel(id: Uri) {
-    return this.predicateService.assignPredicateToModel(id, this.model.id).then(() => this.refreshModel());
+    return this.predicateService.assignPredicateToModel(id, this.model.id);
   }
 
   private findEditingViews() {
@@ -398,10 +396,6 @@ export class ModelController {
 
   private updateSelection(selection: Class|Predicate) {
     return this.$q.when(this.selection = selection);
-  }
-
-  private refreshModel() {
-    return this.modelService.getModelByUrn(this.model.id).then(model => this.updateModel(model))
   }
 
   private updateModelById(modelId: Uri) {
