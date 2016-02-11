@@ -126,7 +126,7 @@ export class ModelController {
     this.loading = true;
 
     if (routeData.selected) {
-      _.find(this.tabs, tab => tab.type === routeData.selected.normalizedType).active = true;
+      _.find(this.tabs, tab => tab.type === routeData.selected.selectionType).active = true;
     }
 
     this.selectedItem = routeData.selected;
@@ -386,7 +386,7 @@ export class ModelController {
 
   private fetchEntityByTypeAndId(selection: WithIdAndType): IPromise<Class|Predicate> {
     if (!this.selection || !matchesIdentity(this.selection, selection)) {
-      return selection.normalizedType === 'class'
+      return selection.selectionType === 'class'
         ? this.classService.getClass(selection.id)
         : this.predicateService.getPredicate(selection.id);
     } else {
@@ -455,7 +455,7 @@ class RouteData {
     for (const type of <Type[]> ['attribute', 'class', 'association']) {
       const id: Uri = this.params[type];
       if (id) {
-        return {normalizedType: type, id};
+        return {selectionType: type, id};
       }
     }
   }
@@ -482,7 +482,7 @@ interface View {
 
 interface WithIdAndType {
   id: Uri,
-  normalizedType: Type
+  selectionType: Type
 }
 
 function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {
@@ -490,7 +490,7 @@ function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs:
     return false;
   }
 
-  return lhs.normalizedType === rhs.normalizedType && lhs.id === rhs.id;
+  return lhs.selectionType === rhs.selectionType && lhs.id === rhs.id;
 }
 
 function setOverlaps(items: SelectableItem[]) {
@@ -529,8 +529,8 @@ class SelectableItem {
     return this.item.definedBy;
   }
 
-  get normalizedType() {
-    return this.item.normalizedType;
+  get selectionType() {
+    return this.item.selectionType;
   }
 
   matchesIdentity(obj: SelectableItem|Class|Predicate|WithIdAndType) {

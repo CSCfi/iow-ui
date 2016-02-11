@@ -39,7 +39,7 @@ class UsageController {
   constructor($scope: IScope) {
     $scope.$watch(() => this.usage, usage => {
       if (usage && usage.referrers.length > 0) {
-        this.referrers = _.groupBy<Referrer>(usage.referrers, 'type');
+        this.referrers = _.groupBy<Referrer>(usage.referrers, 'normalizedType');
       } else {
         this.referrers = {};
       }

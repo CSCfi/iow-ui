@@ -1,11 +1,11 @@
 
-<h4>{{ctrl.class.type + ' information' | capitalize | translate}}</h4>
+<h4>{{ctrl.class.normalizedType + ' information' | capitalize | translate}}</h4>
 
-<editable title="{{ctrl.class.type + ' label' | capitalize}}">
+<editable title="{{ctrl.class.normalizedType + ' label' | capitalize}}">
   <input id="classLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.class.label"/>
 </editable>
 
-<editable title="{{ctrl.class.type + ' id' | capitalize}}">
+<editable title="{{ctrl.class.normalizedType + ' id' | capitalize}}">
   <input id="classId" class="form-control" type="text" required id-input="class" old="ctrl.oldClass" ng-model="ctrl.class.curie" ng-disabled="!ctrl.inUnstableState" />
 </editable>
 
@@ -32,7 +32,7 @@
 <editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
 
 <div ng-show="ctrl.class.properties.length > 0">
-  <h4>{{ctrl.class.type + ' properties' | capitalize | translate}}</h4>
+  <h4>{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
 
   <uib-accordion close-others="true">
     <uib-accordion-group ng-repeat="property in ctrl.class.properties  | orderBy:'index'" is-open="ctrl.propertyViews[property.id].isOpen">

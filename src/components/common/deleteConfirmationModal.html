@@ -3,7 +3,7 @@
   <modal-body>
 
     <div ng-if="ctrl.usage && ctrl.usage.referrers.length > 0">
-      <p><span translate>Following items are depending on the deleted</span> <span>{{'of ' + ctrl.entity.type | translate}}</span></p>
+      <p><span translate>Following items are depending on the deleted</span> <span>{{'of ' + ctrl.entity.normalizedType | translate}}</span></p>
       <usage usage="ctrl.usage"></usage>
       <br />
     </div>

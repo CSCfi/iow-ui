@@ -1,2 +1,2 @@
 <input id="{{ctrl.id}}" type="text" class="form-control" curie-input ng-required="ctrl.mandatory" model="ctrl.model" ng-model="ctrl.curie" />
-<button ng-show="formController.editing" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectCurie()">{{('Choose ' + ctrl.type) | translate}}</button>
+<button ng-show="formController.editing" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectCurie()">{{('Choose ' + ctrl.normalizedType) | translate}}</button>

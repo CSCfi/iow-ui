@@ -1,10 +1,10 @@
 <h3>{{ctrl.predicate.type + ' information' | capitalize | translate}}</h3>
 
-<editable title="{{ctrl.predicate.type + ' label' | capitalize}}">
+<editable title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}">
   <input id="predicateName" class="form-control" type="text" localized-input="label" ng-model="ctrl.predicate.label" />
 </editable>
 
-<editable title="{{ctrl.predicate.type + ' id' | capitalize}}">
+<editable title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}">
   <input id="predicateId" class="form-control" type="text" required id-input="predicate" old="ctrl.oldPredicate" ng-model="ctrl.predicate.curie" ng-disabled="!ctrl.inUnstableState" />
 </editable>
 
@@ -32,7 +32,7 @@
   <state-select id="predicateState" state="ctrl.predicate.state" model="ctrl.model"></state-select>
 </editable>
 
-<editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.type}}" subject="ctrl.predicate.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
+<editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
 
 <h3 translate>Additional information</h3>
 

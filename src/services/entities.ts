@@ -10,7 +10,7 @@ import {
   containsAny,
   normalizeModelType,
   splitNamespace,
-  hasLocalization
+  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType
 } from './utils';
 import Moment = moment.Moment;
 import split = require("core-js/fn/symbol/split");
@@ -186,6 +186,7 @@ export abstract class AbstractGroup extends GraphNode implements Location {
   comment: Localizable;
   homepage: Uri;
   normalizedType: Type = 'group';
+  selectionType: Type = 'group';
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -231,12 +232,14 @@ abstract class AbstractModel extends GraphNode implements Location {
   id: Uri;
   label: Localizable;
   normalizedType: Type;
+  selectionType: Type;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.label);
     this.normalizedType = normalizeModelType(this.type);
+    this.selectionType = normalizeSelectionType(this.type);
   }
 
   iowUrl() {
@@ -410,13 +413,15 @@ abstract class AbstractClass extends GraphNode implements Location {
 
   label: Localizable;
   comment: Localizable;
+  selectionType: Type;
   normalizedType: Type;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
-    this.normalizedType = normalizeSelectionType(this.type);
+    this.selectionType = normalizeSelectionType(this.type);
+    this.normalizedType = normalizeClassType(this.type);
   }
 
   abstract fullId(): Uri;
@@ -724,13 +729,15 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   comment: Localizable;
   definedBy: DefinedBy;
   normalizedType: Type;
+  selectionType: Type;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
-    this.normalizedType = normalizeSelectionType(this.type);
+    this.normalizedType = normalizePredicateType(this.type);
+    this.selectionType = normalizeSelectionType(this.type);
   }
 
   abstract fullId(): Uri;
@@ -1013,12 +1020,14 @@ export class Referrer extends GraphNode {
   id: Uri;
   label: Localizable;
   definedBy: DefinedBy;
+  normalizedType: Type;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.label);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
+    this.normalizedType = normalizeReferrerType(this.type);
   }
 
   iowUrl() {
@@ -1255,13 +1264,12 @@ export function url(id: Uri, type: Type[]) {
     return modelUrl(id);
   } else if (containsAny(type, ['group'])) {
     return `/group?urn=${encodeURIComponent(id)}`;
-  } else if (containsAny(type, ['association', 'attribute', 'class', 'shape'])) {
+  } else if (containsAny(type, ['association', 'attribute'])) {
     const [modelId] = id.split('#');
-    if (type.length > 1) {
-      throw new Error('Must of single type, was: ' + type.join());
-    } else {
-      return `${modelUrl(modelId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id)}`;
-    }
+    return `${modelUrl(modelId)}&predicate=${encodeURIComponent(id)}`;
+  } else if (containsAny(type, ['class', 'shape'])) {
+    const [modelId] = id.split('#');
+    return `${modelUrl(modelId)}&class=${encodeURIComponent(id)}`;
   } else {
     throw new Error('Unsupported type for url: ' + type);
   }

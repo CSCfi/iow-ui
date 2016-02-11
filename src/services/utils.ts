@@ -21,14 +21,18 @@ export function isNumber(str: any): str is number {
 }
 
 export function containsAny<T>(arr: T[], values: T[]): boolean {
+  return !!findFirstMatching(arr, values);
+}
+
+export function findFirstMatching<T>(arr: T[], values: T[]): T {
   for(const item of arr) {
     for (const value of values) {
       if (item === value) {
-        return true;
+        return item;
       }
     }
   }
-  return false;
+  return null;
 }
 
 export function glyphIconClassForType(type: Type[]) {
@@ -148,17 +152,31 @@ export function normalizeSelectionType(types: Type[]): Type {
     return 'attribute';
   } else if (containsAny(types, ['association'])) {
     return 'association';
+  } else if (containsAny(types, ['model', 'profile', 'library'])) {
+    return 'model';
   } else {
     throw new Error('Unsupported selection type: ' + types.join());
   }
 }
 
+export function normalizeReferrerType(types: Type[]): Type {
+  return normalizePredicateType(types) || normalizeClassType(types) || normalizeModelType(types) || normalizeGroupType(types);
+}
+
+export function normalizePredicateType(types: Type[]): Type {
+  return findFirstMatching(types, ['attribute', 'association']);
+}
+
+export function normalizeClassType(types: Type[]): Type {
+  return findFirstMatching(types, ['shape', 'class']);
+}
+
 export function normalizeModelType(types: Type[]): Type {
-  if (containsAny(types, ['profile'])) {
-    return 'profile';
-  } else {
-    return 'library';
-  }
+  return findFirstMatching(types, ['profile', 'library']);
+}
+
+export function normalizeGroupType(types: Type[]): Type {
+  return findFirstMatching(types, ['group']);
 }
 
 function hasValue(obj: any) {
