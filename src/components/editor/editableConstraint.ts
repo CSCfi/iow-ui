@@ -46,7 +46,7 @@ class EditableConstraint {
   }
 
   linkItem(item: ConstraintListItem): RelativeUrl {
-    return this.model.linkTo('class', item.shapeId, this.model);
+    return this.model.linkTo('class', item.shapeId);
   }
 
   addItem() {

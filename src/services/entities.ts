@@ -132,27 +132,6 @@ export abstract class GraphNode {
     }
   }
 
-  linkTo(type:Type|Type[], id:Uri|Curie, model: Model) {
-    const typeArray: Type[] = normalizeAsArray<Type>(type);
-
-    if (id) {
-      const expanded = this.expandCurie(id);
-      if (expanded) {
-        if (!model.findModelPrefixForNamespace(expanded.namespace)) {
-          return expanded.uri;
-        } else {
-          return url(expanded.uri, typeArray);
-        }
-      } else {
-        if (!(model.findModelPrefixForNamespace((id + '#') || model.findModelPrefixForNamespace(id + '/')))) {
-          return id;
-        } else {
-          return url(id, typeArray);
-        }
-      }
-    }
-  }
-
   serialize(inline: boolean = false): any {
     const values = Object.assign(this.graph, this.serializationValues());
 
@@ -332,6 +311,27 @@ export class Model extends AbstractModel {
     }
 
     return prefix + ':' + idName;
+  }
+
+  linkTo(type:Type|Type[], id:Uri|Curie) {
+    const typeArray: Type[] = normalizeAsArray<Type>(type);
+
+    if (id) {
+      const expanded = this.expandCurie(id);
+      if (expanded) {
+        if (!this.findModelPrefixForNamespace(expanded.namespace)) {
+          return expanded.uri;
+        } else {
+          return url(expanded.uri, typeArray);
+        }
+      } else {
+        if (!(this.findModelPrefixForNamespace((id + '#') || this.findModelPrefixForNamespace(id + '/')))) {
+          return id;
+        } else {
+          return url(id, typeArray);
+        }
+      }
+    }
   }
 
   clone(): Model {

@@ -91,7 +91,7 @@ export class PropertyViewController {
   }
 
   linkToValueClass() {
-    return this.model.linkTo('class', this.property.valueClass, this.model);
+    return this.model.linkTo('class', this.property.valueClass);
   }
 
   openAndScrollTo() {

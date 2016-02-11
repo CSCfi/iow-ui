@@ -25,13 +25,13 @@ class PredicateFormController {
   oldPredicate: Predicate;
 
   linkToSuperProperty() {
-    return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf, this.model);
+    return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf);
   }
 
   linkToValueClass() {
     const predicate = this.predicate;
     if (predicate instanceof Association) {
-      return this.model.linkTo('class', predicate.valueClass, this.model);
+      return this.model.linkTo('class', predicate.valueClass);
     }
   }
 
