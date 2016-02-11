@@ -243,6 +243,7 @@ export class Model extends AbstractModel {
   prefix: string;
   group: GroupListItem;
   version: Uri;
+  rootClass: Curie;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -258,11 +259,16 @@ export class Model extends AbstractModel {
     this.references = deserializeEntityList(graph.references, context, frame, Reference);
     this.requires = deserializeEntityList(graph.requires, context, frame, Require);
     this.version = graph.identifier;
+    this.rootClass = graph.rootResource;
     this.copyNamespacesFromRequires();
   }
 
   get groupId() {
     return this.group.id;
+  }
+
+  get rootClassUri(): Uri {
+    return this.expandCurie(this.rootClass).uri;
   }
 
   addReference(reference: Reference) {
@@ -351,7 +357,8 @@ export class Model extends AbstractModel {
       versionInfo: this.state,
       references: serializeEntityList(this.references),
       requires: serializeEntityList(this.requires),
-      identifier: this.version
+      identifier: this.version,
+      rootResource: this.rootClass
     }
   }
 }

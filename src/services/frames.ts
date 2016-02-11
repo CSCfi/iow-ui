@@ -63,6 +63,10 @@ const versionContext = {
   used: { '@id': 'http://www.w3.org/ns/prov#used', '@type': '@id' }
 };
 
+const modelContext = {
+  rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' }
+};
+
 function frame(data: any, context: {}, frame?: {}) {
   return Object.assign({ '@context': Object.assign({}, data['@context'], coreContext, context) }, frame);
 }
@@ -76,15 +80,15 @@ export function groupListFrame(data: any): Frame {
 }
 
 export function modelFrame(data: any): Frame {
-  return frame(data, {}, { isPartOf: {} });
+  return frame(data, modelContext, { isPartOf: {} });
+}
+
+export function modelListFrame(data: any): Frame {
+  return frame(data, modelContext, { isPartOf: {} });
 }
 
 export function usageFrame(data: any): Frame {
   return frame(data, {}, { isReferencedBy: {} });
-}
-
-export function modelListFrame(data: any): Frame {
-  return frame(data, {}, { isPartOf: {} });
 }
 
 export function propertyFrame(data: any): Frame {
