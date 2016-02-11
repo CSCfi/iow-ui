@@ -42,41 +42,54 @@ const coreContext = {
   versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' }
 };
 
-const propertyContext = {
+const propertyContext = Object.assign({}, coreContext, {
   maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
   minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'}
-};
+});
 
-const classContext = Object.assign({}, propertyContext, {
+const classContext = Object.assign({}, coreContext, propertyContext, {
   abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'},
   property: { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' },
   scopeClass : { '@id' : 'http://www.w3.org/ns/shacl#scopeClass', '@type' : '@id' },
   subClassOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' }
 });
 
-const versionContext = {
+const versionContext = Object.assign({}, coreContext, {
   wasAttributedTo: { '@id': 'http://www.w3.org/ns/prov#wasAttributedTo', '@type': '@id' },
   wasRevisionOf : { '@id' : 'http://www.w3.org/ns/prov#wasRevisionOf',  '@type' : '@id' },
   generatedAtTime: { '@id': 'http://www.w3.org/ns/prov#generatedAtTime', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
   startedAtTime: { '@id': 'http://www.w3.org/ns/prov#startedAtTime', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
   generated: { '@id': 'http://www.w3.org/ns/prov#generated', '@type': '@id' },
   used: { '@id': 'http://www.w3.org/ns/prov#used', '@type': '@id' }
-};
+});
 
-const modelContext = {
+const groupContext = Object.assign({}, coreContext, {});
+
+const modelContext = Object.assign({}, coreContext, {
   rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' }
-};
+});
+
+const usageContext = Object.assign({}, coreContext, {});
+const predicateContext = Object.assign({}, coreContext, {});
+const conceptContext = Object.assign({}, coreContext, {});
+
+const userContext = Object.assign({}, coreContext, {
+  name: { '@id': 'http://xmlns.com/foaf/0.1/name'}
+});
+
+const requireContext = Object.assign({}, coreContext, {});
+const searchResultContext = Object.assign({}, coreContext, {});
 
 function frame(data: any, context: {}, frame?: {}) {
-  return Object.assign({ '@context': Object.assign({}, data['@context'], coreContext, context) }, frame);
+  return Object.assign({ '@context': Object.assign({}, data['@context'], context) }, frame);
 }
 
 export function groupFrame(data: any): Frame {
-  return frame(data, {});
+  return frame(data, groupContext);
 }
 
 export function groupListFrame(data: any): Frame {
-  return frame(data, {});
+  return frame(data, groupContext);
 }
 
 export function modelFrame(data: any): Frame {
@@ -88,7 +101,7 @@ export function modelListFrame(data: any): Frame {
 }
 
 export function usageFrame(data: any): Frame {
-  return frame(data, {}, { isReferencedBy: {} });
+  return frame(data, usageContext, { isReferencedBy: {} });
 }
 
 export function propertyFrame(data: any): Frame {
@@ -96,11 +109,11 @@ export function propertyFrame(data: any): Frame {
 }
 
 export function predicateListFrame(data: any): Frame {
-  return frame(data, {}, { isDefinedBy: {} });
+  return frame(data, predicateContext, { isDefinedBy: {} });
 }
 
 export function predicateFrame(data: any): Frame {
-  return frame(data, {}, { isDefinedBy: {} });
+  return frame(data, predicateContext, { isDefinedBy: {} });
 }
 
 export function classFrame(data: any): Frame {
@@ -108,36 +121,33 @@ export function classFrame(data: any): Frame {
 }
 
 export function classListFrame(data: any): Frame {
-  return frame(data, {}, { isDefinedBy: {} });
+  return frame(data, classContext, { isDefinedBy: {} });
 }
 
-export function conceptSuggestionFrame(data: any): Frame {
-  return frame(data, {}, { inScheme: {} });
+export function iowConceptFrame(data: any): Frame {
+  return frame(data, conceptContext, { inScheme: {} });
 }
 
 export function fintoConceptFrame(data: any, id: Uri): Frame {
-  /* Finto API fix */
-  const context: any = {
+
+  const context = Object.assign({}, coreContext, {
     value: null,
     lang: null
-  };
+  });
 
   return frame(data, context, { '@id': id });
 }
 
 export function userFrame(data: any): Frame {
-  const context = {
-    name: { '@id': 'http://xmlns.com/foaf/0.1/name'}
-  };
-  return frame(data, context, { name: {} });
+  return frame(data, userContext, { name: {} });
 }
 
 export function requireFrame(data: any): Frame {
-  return frame(data, {});
+  return frame(data, requireContext);
 }
 
 export function searchResultFrame(data: any): Frame {
-  return frame(data, {});
+  return frame(data, searchResultContext);
 }
 
 export function classVisualizationFrame(data: any): Frame {
@@ -166,8 +176,7 @@ export function versionFrame(data: any): Frame {
       }
     },
     "used":{
-    "@embed":"@never"
+      "@embed":"@never"
     }
   });
-
 }

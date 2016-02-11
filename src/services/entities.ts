@@ -1385,11 +1385,11 @@ export class EntityDeserializer {
   }
 
   deserializeConceptSuggestion(data: any): IPromise<ConceptSuggestion> {
-    return frameAndMap(this.$log, data, frames.conceptSuggestionFrame, (framedData) => ConceptSuggestion);
+    return frameAndMap(this.$log, data, frames.iowConceptFrame, (framedData) => ConceptSuggestion);
   }
 
   deserializeConceptSuggestions(data: any): IPromise<ConceptSuggestion[]> {
-    return frameAndMapArray(this.$log, data, frames.conceptSuggestionFrame, (framedData) => ConceptSuggestion);
+    return frameAndMapArray(this.$log, data, frames.iowConceptFrame, (framedData) => ConceptSuggestion);
   }
 
   deserializeConcept(data: any, id: Uri): IPromise<Concept> {
