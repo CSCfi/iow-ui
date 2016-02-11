@@ -21,7 +21,7 @@ export function isNumber(str: any): str is number {
 }
 
 export function containsAny<T>(arr: T[], values: T[]): boolean {
-  return !!findFirstMatching(arr, values);
+  return findFirstMatching(arr, values) !== null;
 }
 
 export function findFirstMatching<T>(arr: T[], values: T[]): T {
