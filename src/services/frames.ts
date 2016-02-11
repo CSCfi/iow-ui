@@ -8,6 +8,7 @@ const coreContext = {
   constraint: { '@id': 'http://www.w3.org/ns/shacl#constraint', '@type': '@id' },
   created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
   datatype: { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' },
+  definition: {'@id': 'http://www.w3.org/2004/02/skos/core#definition', '@container': '@language' },
   equivalentClass: { '@id' : 'http://www.w3.org/2002/07/owl#equivalentClass', '@type' : '@id' },
   equivalentProperty: { '@id' : 'http://www.w3.org/2002/07/owl#equivalentProperty', '@type' : '@id' },
   example: { '@id': 'http://www.w3.org/2004/02/skos/core#example', '@container': '@language' },
