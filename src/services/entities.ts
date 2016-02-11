@@ -1041,7 +1041,7 @@ export class Activity extends GraphNode {
     this.id = graph['@id'];
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
-    this.versions = deserializeEntityList(graph.generated, context, frame, Entity);
+    this.versions = deserializeEntityList(graph.generated, context, frame, Entity).sort((lhs, rhs) => compareDates(rhs.createdAt, lhs.createdAt));
     this.versionIndex = indexById(this.versions);
     this.latestVersion = graph.used;
   }
@@ -1100,6 +1100,16 @@ function fixIsDefinedBy(graph: any) {
     return null;
   } else {
     return graph;
+  }
+}
+
+function compareDates(lhs: Moment, rhs: Moment) {
+  if (lhs.isAfter(rhs)) {
+    return 1;
+  } else if (lhs.isBefore(rhs)) {
+    return -1;
+  } else {
+    return 0;
   }
 }
 
