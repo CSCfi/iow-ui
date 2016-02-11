@@ -6,6 +6,7 @@ import { AddRequireModal } from './addRequireModal';
 const mod = angular.module('iow.components.model', ['iow.components.editor']);
 export = mod.name;
 
+import './editableRootClass';
 import './modelForm';
 import './modelView';
 import './referencesView';

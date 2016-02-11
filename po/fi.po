@@ -61,7 +61,7 @@ msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
 #: components/editor/classForm.html:63 components/editor/predicateForm.html:37
-#: components/model/modelForm.html:25
+#: components/model/modelForm.html:27
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -174,6 +174,14 @@ msgstr "Selaa"
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
 
+#: translations/misc.html:165
+msgid "Can be selected only from this library"
+msgstr "Valinta on tehtävä tietokomponenettikirjaston luokista"
+
+#: translations/misc.html:166
+msgid "Can be selected only from this profile"
+msgstr "Valinta on tehtävä sovellusprofiilin luokista"
+
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
@@ -207,6 +215,10 @@ msgstr "valitse attribuutti"
 #: components/editor/editableConstraint.html:30 translations/misc.html:74
 msgid "Choose class"
 msgstr "valitse luokka"
+
+#: components/model/editableRootClass.html:6
+msgid "Choose root class"
+msgstr "valitse juurisolmu"
 
 #: components/editor/editableSubjectSelect.html:5
 msgid "Choose subject"
@@ -724,6 +736,10 @@ msgstr "Ei saatu poistettua"
 msgid "Not required by model"
 msgstr "Ei ole lisätty nimiavaruudeksi"
 
+#: components/model/editableRootClass.html:3
+msgid "Not selected"
+msgstr "Ei valittu"
+
 #: translations/misc.html:95
 msgid "of association"
 msgstr "assosiaatiosta"
@@ -815,6 +831,10 @@ msgstr "On jo käytössä"
 #: translations/misc.html:117
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
+
+#: components/model/editableRootClass.html:2
+msgid "Root class"
+msgstr "Juurisolmu"
 
 #: components/form/editableEntityButtons.html:4
 msgid "Save changes"
@@ -1273,9 +1293,6 @@ msgstr "Kyllä"
 
 #~ msgid "UI language"
 #~ msgstr "Käyttöliittymän kieli"
-
-#~ msgid "Not selected"
-#~ msgstr "Ei valittu"
 
 #~ msgid "Description"
 #~ msgstr "Kuvaus"

@@ -135,14 +135,15 @@ export class ModelController {
       this.updateNewModel(routeData.newModel)
         .then(() => this.loading = false);
     } else {
-      this.$q.all([
-          this.updateModelById(routeData.existingModelId).then(updated => {
-            if (updated) {
-              this.updateSelectables();
-            }
-          }),
-          this.updateSelectionByTypeAndId(routeData.selected)
-        ])
+      this.updateModelById(routeData.existingModelId).then(updated => {
+          if (updated) {
+            this.updateSelectables();
+          }
+          if (!this.selectedItem && this.model.rootClass) {
+            this.selectedItem = { id: this.model.rootClassUri, selectionType: 'class' };
+          }
+        })
+        .then(() => this.updateSelectionByTypeAndId(this.selectedItem))
         .then(() => {
           this.loading = false;
           this.firstLoading = false;

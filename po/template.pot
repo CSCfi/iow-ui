@@ -55,7 +55,7 @@ msgstr ""
 
 #: components/editor/classForm.html:63
 #: components/editor/predicateForm.html:37
-#: components/model/modelForm.html:25
+#: components/model/modelForm.html:27
 msgid "Additional information"
 msgstr ""
 
@@ -171,6 +171,14 @@ msgstr ""
 msgid "Browse vocabulary"
 msgstr ""
 
+#: translations/misc.html:165
+msgid "Can be selected only from this library"
+msgstr ""
+
+#: translations/misc.html:166
+msgid "Can be selected only from this profile"
+msgstr ""
+
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
@@ -204,6 +212,10 @@ msgstr ""
 #: components/editor/editableConstraint.html:30
 #: translations/misc.html:74
 msgid "Choose class"
+msgstr ""
+
+#: components/model/editableRootClass.html:6
+msgid "Choose root class"
 msgstr ""
 
 #: components/editor/editableSubjectSelect.html:5
@@ -719,6 +731,10 @@ msgstr ""
 msgid "Not required by model"
 msgstr ""
 
+#: components/model/editableRootClass.html:3
+msgid "Not selected"
+msgstr ""
+
 #: translations/misc.html:95
 msgid "of association"
 msgstr ""
@@ -809,6 +825,10 @@ msgstr ""
 
 #: translations/misc.html:117
 msgid "Resource status restricts removing"
+msgstr ""
+
+#: components/model/editableRootClass.html:2
+msgid "Root class"
 msgstr ""
 
 #: components/form/editableEntityButtons.html:4

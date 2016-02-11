@@ -1,0 +1,6 @@
+<div style="clear: both">
+  <label ng-show="ctrl.curie || ctrl.isEditing()" translate>Root class</label>
+  <span ng-show="ctrl.isEditing() && !ctrl.curie" translate>Not selected</span>
+  <a ng-show="ctrl.curie" ng-href="{{ctrl.href}}">{{ctrl.curie}}</a>
+</div>
+<button ng-show="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectClass()" translate>Choose root class</button>
