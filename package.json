@@ -29,7 +29,7 @@
     "bootstrap-sass": "^3.3.5",
     "change-case": "2.3.0",
     "core-js": "1.2.6",
-    "jointjs": "0.9.5",
+    "jointjs": "0.9.7",
     "jquery": "2.1.1",
     "jquery-mousewheel": "3.1.13",
     "jsonld": "0.4.2",
