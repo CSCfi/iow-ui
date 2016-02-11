@@ -490,7 +490,7 @@ export class Class extends AbstractClass {
   state: State;
   definedBy: DefinedBy;
   properties: Property[];
-  subject: Concept;
+  subject: FintoConcept|ConceptSuggestion;
   equivalentClasses: Curie[];
   constraint: Constraint;
   version: Uri;
@@ -506,7 +506,11 @@ export class Class extends AbstractClass {
     this.state = graph.versionInfo;
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.properties = deserializeEntityList(graph.property, context, frame, Property);
-    this.subject = deserializeOptional(graph.subject, context, frame, Concept);
+    if (graph.subject) {
+      this.subject = isUuidUrn(graph.subject['@id'])
+        ? new ConceptSuggestion(graph.subject, context, frame)
+        : new FintoConcept(graph.subject, context, frame);
+    }
     this.equivalentClasses = deserializeList<Curie>(graph.equivalentClass);
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
@@ -793,7 +797,7 @@ export abstract class Predicate extends AbstractPredicate {
   curie: string;
   state: State;
   subPropertyOf: Uri;
-  subject: Concept;
+  subject: FintoConcept|ConceptSuggestion;
   equivalentProperties: Curie[];
   unsaved: boolean = false;
   version: Uri;
@@ -803,7 +807,11 @@ export abstract class Predicate extends AbstractPredicate {
     this.curie = graph['@id'];
     this.state = graph.versionInfo;
     this.subPropertyOf = graph.subPropertyOf;
-    this.subject = deserializeOptional(graph.subject, context, frame, Concept);
+    if (graph.subject) {
+      this.subject = isUuidUrn(graph.subject['@id'])
+        ? new ConceptSuggestion(graph.subject, context, frame)
+        : new FintoConcept(graph.subject, context, frame);
+    }
     this.equivalentProperties = deserializeList<Curie>(graph.equivalentProperty);
     this.version = graph.identifier;
   }
@@ -889,7 +897,7 @@ export class Attribute extends Predicate {
   }
 }
 
-export class Concept extends GraphNode {
+export class FintoConcept extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -899,21 +907,29 @@ export class Concept extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = deserializeLocalizable(graph.label || graph.prefLabel);
-    this.comment = deserializeLocalizable(graph.comment || graph['rdfs:comment']);
-    this.inScheme = _.map(deserializeList<any>(graph.inScheme), scheme => scheme['@id'] || scheme.uri);
+    this.label = deserializeLocalizable(graph.prefLabel);
+    this.comment = deserializeLocalizable(graph.comment);
+    this.inScheme = _.map(deserializeList<any>(graph.inScheme), scheme => scheme.uri);
   }
 }
 
-export class ConceptSuggestion extends Concept {
+export class ConceptSuggestion extends GraphNode {
 
+  id: Uri;
+  label: Localizable;
+  comment: Localizable;
+  inScheme: Uri[];
   createdAt: Moment;
-  creator: string;
+  creator: UserLogin;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.createdAt = moment(graph.atTime, isoDateFormat);
-    this.creator = graph.wasAssociatedWith;
+    this.id = graph['@id'];
+    this.label = deserializeLocalizable(graph.label);
+    this.comment = deserializeLocalizable(graph.comment);
+    this.inScheme = _.map(deserializeList<any>(graph.inScheme), scheme => scheme['@id']);
+    this.createdAt = deserializeDate(graph.atTime);
+    this.creator = deserializeUserLogin(graph.wasAssociatedWith);
   }
 }
 
@@ -1119,6 +1135,10 @@ function fixIsDefinedBy(graph: any) {
   }
 }
 
+function isUuidUrn(s: string) {
+  return s && s.startsWith('urn:uuid');
+}
+
 function compareDates(lhs: Moment, rhs: Moment) {
   if (lhs.isAfter(rhs)) {
     return 1;
@@ -1212,6 +1232,7 @@ function mapType(type: string): Type {
       return 'constraint';
     case 'foaf:Person':
       return 'user';
+    case 'skos:Concept':
     case 'skos:ConceptScheme':
       return 'concept';
     case 'prov:Entity':
@@ -1392,10 +1413,15 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.iowConceptFrame, (framedData) => ConceptSuggestion);
   }
 
-  deserializeConcept(data: any, id: Uri): IPromise<Concept> {
+  deserializeFintoConcept(data: any, id: Uri): IPromise<FintoConcept> {
     const frameObject = frames.fintoConceptFrame(data, id);
     return frameData(this.$log, data, frameObject)
-      .then(framed => new Concept(renameProperty(framed.graph[0], 'uri', '@id'), framed['@context'], frameObject));
+      .then(framed => {
+        // FIXME: correct these in frame, problem is that this could come from classFrame, predicateFrame or fintoConceptFrame
+        renameProperty(framed.graph[0], 'uri', '@id');
+        renameProperty(framed.graph[0], 'type', '@type');
+        return new FintoConcept(framed.graph[0], framed['@context'], frameObject)
+      });
   }
 
   deserializeRequire(data: any): IPromise<Require> {

@@ -3,7 +3,7 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
-import { Concept, Reference, Uri } from '../../services/entities';
+import { Reference, Uri, FintoConcept } from '../../services/entities';
 import { ConceptService } from '../../services/conceptService';
 
 export type ConceptSuggestionCreation = {concept: {label: string, comment: string, schemeId: Uri, broaderConceptId: Uri}, label: string}
@@ -36,7 +36,7 @@ class AddConceptController {
   conceptComment: string;
 
   dataset: Dataset;
-  broaderConcept: Concept;
+  broaderConcept: FintoConcept;
   mapSelection = this.conceptService.mapSelection.bind(this.conceptService);
 
   options = {

@@ -1,7 +1,7 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { SearchConceptModal } from './searchConceptModal';
-import { Concept, ConceptSuggestion, Reference, Type } from '../../services/entities';
+import { ConceptSuggestion, Reference, Type, FintoConcept } from '../../services/entities';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -31,7 +31,7 @@ mod.directive('editableSubjectSelect', () => {
 class EditableSubjectSelectController {
 
   isEditing: () => boolean;
-  subject: Concept|ConceptSuggestion;
+  subject: FintoConcept|ConceptSuggestion;
   references: Reference[];
   type: Type;
 

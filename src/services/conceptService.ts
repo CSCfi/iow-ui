@@ -6,12 +6,12 @@ import IQService = angular.IQService;
 import Templates = Twitter.Typeahead.Templates;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { EntityDeserializer, Concept, ConceptSuggestion, Reference, Uri } from './entities';
+import { EntityDeserializer, ConceptSuggestion, Reference, Uri, FintoConcept } from './entities';
 import { LanguageService, Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 const Bloodhound = require('typeahead.js/dist/bloodhound.js');
 
-export interface ConceptSearchResult {
+export interface FintoConceptSearchResult {
   prefLabel: string;
   uri: string;
 }
@@ -44,12 +44,12 @@ export class ConceptService {
       .then((response: any) => response.data['@id']);
   }
 
-  getConcept(id: Uri): IPromise<Concept> {
+  getFintoConcept(id: Uri): IPromise<FintoConcept> {
     return this.$http.get('/api/rest/concept', {params: {uri: id}})
-      .then(response => this.entities.deserializeConcept(response.data, id));
+      .then(response => this.entities.deserializeFintoConcept(response.data, id));
   }
 
-  createEngine(vocId: string, limit: number): Bloodhound<ConceptSearchResult> {
+  createEngine(vocId: string, limit: number): Bloodhound<FintoConceptSearchResult> {
 
     function identify(obj: any) {
       return obj.uri;
@@ -59,7 +59,7 @@ export class ConceptService {
       return results.splice(0, Math.min(limit, results.length));
     }
 
-    const engine: Bloodhound<ConceptSearchResult> = new Bloodhound({
+    const engine: Bloodhound<FintoConceptSearchResult> = new Bloodhound({
       identify: identify,
       remote: {
         cache: false,
@@ -80,9 +80,9 @@ export class ConceptService {
     return engine;
   }
 
-  mapSelection(selection: ConceptSuggestion | ConceptSearchResult): IPromise<ConceptSuggestion | Concept> {
+  mapSelection(selection: ConceptSuggestion | FintoConceptSearchResult): IPromise<ConceptSuggestion | FintoConcept> {
 
-    function isConceptSearchResult(obj: any): obj is ConceptSearchResult {
+    function isFintoConceptSearchResult(obj: any): obj is FintoConceptSearchResult {
       return obj.uri;
     }
 
@@ -90,15 +90,15 @@ export class ConceptService {
       return this.$q.when(null);
     } else if (selection instanceof ConceptSuggestion) {
       return this.$q.when(selection);
-    } else if (isConceptSearchResult(selection)) {
-      return this.getConcept(selection.uri);
+    } else if (isFintoConceptSearchResult(selection)) {
+      return this.getFintoConcept(selection.uri);
     }
   }
 
   createConceptDataSet(reference: Reference, limit: number, templates?: Templates): Dataset {
 
     const defaultTemplates = {
-      suggestion: (data: ConceptSearchResult) =>
+      suggestion: (data: FintoConceptSearchResult) =>
         `
           <div>
             ${data.prefLabel}

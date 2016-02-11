@@ -9,12 +9,12 @@ import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSuggestionDataset } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Reference, Concept, ConceptSuggestion, Type, Uri } from '../../services/entities';
+import { Reference, ConceptSuggestion, Type, Uri, FintoConcept } from '../../services/entities';
 import { AddConceptModal, ConceptSuggestionCreation } from './addConceptModal';
 
 const limit = 1000;
 
-export type ConceptCreation = {concept: Concept|ConceptSuggestion, label: string, type: Type};
+export type ConceptCreation = {concept: FintoConcept|ConceptSuggestion, label: string, type: Type};
 
 export function isConceptCreation(obj: any): obj is ConceptCreation {
   return obj.concept;
@@ -41,7 +41,7 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(references: Reference[], type: Type): IPromise<Concept|ConceptSuggestion> {
+  openSelection(references: Reference[], type: Type): IPromise<FintoConcept|ConceptSuggestion> {
     return this.open(references, type, false);
   }
 
@@ -54,7 +54,7 @@ export class SearchConceptModal {
 class SearchConceptController {
 
   datasets: Dataset[];
-  concept: ConceptSuggestion | Concept;
+  concept: FintoConcept|ConceptSuggestion;
   label: string;
   defineConceptTitle: string;
   buttonTitle: string;

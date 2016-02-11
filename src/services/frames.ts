@@ -132,7 +132,8 @@ export function fintoConceptFrame(data: any, id: Uri): Frame {
 
   const context = Object.assign({}, coreContext, {
     value: null,
-    lang: null
+    lang: null,
+    comment: { '@id' : 'http://www.w3.org/2000/01/rdf-schema#comment' }
   });
 
   return frame(data, context, { '@id': id });
