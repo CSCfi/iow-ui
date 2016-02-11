@@ -1197,7 +1197,7 @@ function deserializeLocalizable(localizable: any) {
 }
 
 function deserializeDate(date: any) {
-  return moment(date, isoDateFormat);
+  return date && moment(date, isoDateFormat);
 }
 
 function deserializeOptionalDate(date: any) {
@@ -1205,7 +1205,7 @@ function deserializeOptionalDate(date: any) {
 }
 
 function deserializeUserLogin(userName: string): UserLogin {
-  return userName.substring('mailto:'.length);
+  return userName && userName.substring('mailto:'.length);
 }
 
 function mapType(type: string): Type {
