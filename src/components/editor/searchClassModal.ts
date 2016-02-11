@@ -8,14 +8,15 @@ import { Class, ClassListItem, Model, Uri, DefinedBy } from '../../services/enti
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 
-const noExclude = (item: ClassListItem) => <string> null;
+export const noExclude = (item: ClassListItem) => <string> null;
+export const defaultTextForSelection = (klass: Class) => 'Use class';
 
 export class SearchClassModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, exclude: (klass: ClassListItem) => string, onlySelection: boolean) {
+  private openModal(model: Model, exclude: (klass: ClassListItem) => string, onlySelection: boolean, textForSelection: (klass: Class) => string) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -25,17 +26,18 @@ export class SearchClassModal {
       resolve: {
         model: () => model,
         exclude: () => exclude,
-        onlySelection: () => onlySelection
+        onlySelection: () => onlySelection,
+        textForSelection: () => textForSelection,
       }
     }).result;
   }
 
-  open(model: Model, exclude: (klass: ClassListItem) => string = noExclude): IPromise<ConceptCreation|Class> {
-    return this.openModal(model, exclude, false);
+  open(model: Model, exclude: (klass: ClassListItem) => string, textForSelection: (klass: Class) => string): IPromise<ConceptCreation|Class> {
+    return this.openModal(model, exclude, false, textForSelection);
   }
 
-  openWithOnlySelection(model: Model, exclude: (klass: ClassListItem) => string = noExclude): IPromise<Class> {
-    return this.openModal(model, exclude, true);
+  openWithOnlySelection(model: Model, exclude: (klass: ClassListItem) => string, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
+    return this.openModal(model, exclude, true, textForSelection);
   }
 };
 
@@ -59,6 +61,7 @@ class SearchClassController {
               private model: Model,
               public exclude: (klass: ClassListItem) => string,
               public onlySelection: boolean,
+              private textForSelection: (klass: Class) => string,
               private searchConceptModal: SearchConceptModal) {
 
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
@@ -89,16 +92,6 @@ class SearchClassController {
 
   selectItem(klass: ClassListItem) {
     this.classService.getClass(klass.id).then(result => this.selectedClass = result);
-  }
-
-  textForSelection() {
-    if (!this.model.isOfType('profile') && this.selectedClass && this.selectedClass.isSpecializedClass()) {
-      return 'Generalize class';
-    } else if (this.model.isOfType('profile')) {
-      return 'Specialize class';
-    } else {
-      return 'Use class';
-    }
   }
 
   confirm() {

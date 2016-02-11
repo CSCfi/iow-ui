@@ -237,6 +237,12 @@ export class ModelController {
     const classExistsExclusion = createExistsExclusion(collectIds(this.classes));
     const predicateExistsExclusion = createExistsExclusion(collectIds([this.attributes, this.associations]));
     const classTypeExclusion = createClassTypeExclusion(SearchClassType.Class);
+    const textForSelection = (klass: Class) =>
+      isProfile
+        ? 'Specialize class'
+        : klass && klass.isSpecializedClass()
+          ? 'Generalize class'
+          : 'Use class';
 
     const classExclusion = (klass: ClassListItem) => {
       if (isProfile) {
@@ -254,7 +260,7 @@ export class ModelController {
 
     if (type === 'class') {
       this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, classExclusion),
+        () => this.searchClassModal.open(this.model, classExclusion, textForSelection),
         (concept: ConceptCreation) => this.createClass(concept),
         (klass: Class) => {
           if (isProfile) {

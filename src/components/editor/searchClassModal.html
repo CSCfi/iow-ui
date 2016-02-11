@@ -53,7 +53,7 @@
 
   <modal-buttons>
     <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass">{{ctrl.textForSelection() | translate}}</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass">{{ctrl.textForSelection(ctrl.selectedClass) | translate}}</button>
   </modal-buttons>
 </modal-template>
 
