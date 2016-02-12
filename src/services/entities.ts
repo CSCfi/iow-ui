@@ -155,9 +155,26 @@ export class DefinedBy extends GraphNode {
   label: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
-    super(fixIsDefinedBy(graph), context, frame);
-    this.id = this.graph['@id'];
-    this.label = deserializeLocalizable(this.graph.label);
+    super(graph, context, frame);
+
+    // FIXME: when api returns coherent data get rid of this mangling
+    if (typeof graph === 'string') {
+      reportErrorWithStack('Is defined by is a string and it should be an object', graph);
+      this.id = graph;
+      this.type = ['model'];
+      this.label = deserializeLocalizable({'fi': graph, 'en': graph });
+
+    } else if (typeof graph === 'object') {
+      this.id = graph['@id'];
+      this.label = deserializeLocalizable(graph.label);
+
+      if (typeof graph === 'object' && !graph['@type']) {
+        reportErrorWithStack('Is defined by object is missing the type', graph);
+        this.type = ['model'];
+      }
+    } else {
+      throw new Error('Unsupported is defined sub-graph');
+    }
   }
 }
 
@@ -1112,31 +1129,10 @@ export class Entity extends GraphNode {
   }
 }
 
-// TODO: when api returns coherent data get rid of this method
-function fixIsDefinedBy(graph: any) {
-  if (typeof graph === 'string') {
-    console.log('Is defined by is a string and it should be an object');
-    console.log(new Error().stack);
-    console.log(graph);
-    return {
-      '@id': graph,
-      '@type': 'owl:Ontology',
-      'label': {'fi': graph, 'en': graph }
-    };
-  } else if (typeof graph === 'object' && !graph['@type']) {
-    console.log('Is defined by object is missing the type');
-    console.log(new Error().stack);
-    console.log(graph);
-    return Object.assign(graph, {
-      '@type': 'owl:Ontology'
-    });
-  } else if (!graph) {
-    console.log(new Error().stack);
-    console.log('Is defined by is missing');
-    return null;
-  } else {
-    return graph;
-  }
+function reportErrorWithStack(error: string, graph: any) {
+  console.log(error);
+  console.log(new Error().stack);
+  console.log(graph);
 }
 
 function isUuidUrn(s: string) {
