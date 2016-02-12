@@ -1306,12 +1306,6 @@ export function url(id: Uri, type: Type[]) {
   }
 }
 
-function renameProperty(obj: any, name: string, newName: string) {
-  obj[newName] = obj[name];
-  delete obj[name];
-  return obj;
-}
-
 function frameData($log: angular.ILogService, data: any, frame: any): IPromise<any> {
   return jsonld.promises.frame(data, frame)
     .then((framed: any) => framed, (err: any) => {
