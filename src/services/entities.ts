@@ -535,7 +535,6 @@ export class Class extends AbstractClass {
     this.equivalentClasses = deserializeList<Curie>(graph.equivalentClass);
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
-    console.log(this);
   }
 
   get id() {
