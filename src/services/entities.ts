@@ -158,11 +158,12 @@ export class DefinedBy extends GraphNode {
     super(graph, context, frame);
 
     // FIXME: when api returns coherent data get rid of this mangling
-    if (typeof graph === 'string') {
+    if (typeof graph === 'string' || graph instanceof String) {
       reportErrorWithStack('Is defined by is a string and it should be an object', graph);
-      this.id = graph;
+      const str = (graph instanceof String) ? graph.valueOf() : graph;
+      this.id = str;
       this.type = ['model'];
-      this.label = deserializeLocalizable({'fi': graph, 'en': graph });
+      this.label = deserializeLocalizable({'fi': str, 'en': str });
 
     } else if (typeof graph === 'object') {
       this.id = graph['@id'];
@@ -534,6 +535,7 @@ export class Class extends AbstractClass {
     this.equivalentClasses = deserializeList<Curie>(graph.equivalentClass);
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
+    console.log(this);
   }
 
   get id() {
