@@ -1,6 +1,7 @@
 import { Uri } from './entities';
 
-type Frame = {};
+export type Frame = {};
+export type FrameFn = (data: any) => Frame;
 
 const coreContext = {
   and: { '@id': 'http://www.w3.org/ns/shacl#and', '@container': '@set' },
@@ -136,6 +137,7 @@ export function fintoConceptFrame(data: any, id: Uri): Frame {
     lang: null,
     uri: null,
     type: null,
+    graph: null,
     comment: { '@id' : 'http://www.w3.org/2000/01/rdf-schema#comment' }
   });
 

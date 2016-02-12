@@ -14,6 +14,8 @@ import {
 } from './utils';
 import Moment = moment.Moment;
 import split = require("core-js/fn/symbol/split");
+import { Frame } from './frames';
+import { FrameFn } from './frames';
 
 const jsonld: any = require('jsonld');
 
@@ -1320,8 +1322,12 @@ function frameData($log: angular.ILogService, data: any, frame: any): IPromise<a
     });
 }
 
-function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: any, frame: any, entityFactory: EntityFactory<T>): IPromise<T> {
-  const frameObject = frame(data);
+function isFrameFunction(f: Frame|FrameFn): f is FrameFn {
+  return typeof f === 'function';
+}
+
+function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: any, frame: Frame|FrameFn, entityFactory: EntityFactory<T>): IPromise<T> {
+  const frameObject = isFrameFunction(frame) ? frame(data) : frame;
   return frameData($log, data, frameObject)
     .then(framed => {
       try {
@@ -1339,8 +1345,8 @@ function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: any, 
     });
 }
 
-function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: any, frame: any, entityFactory: EntityFactory<T>): IPromise<T[]> {
-  const frameObject = frame(data);
+function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: any, frame: Frame|FrameFn, entityFactory: EntityFactory<T>): IPromise<T[]> {
+  const frameObject = isFrameFunction(frame) ? frame(data) : frame;
   return frameData($log, data, frameObject)
     .then(framed => {
       try {
@@ -1415,9 +1421,7 @@ export class EntityDeserializer {
   }
 
   deserializeFintoConcept(data: any, id: Uri): IPromise<FintoConcept> {
-    const frameObject = frames.fintoConceptFrame(data, id);
-    return frameData(this.$log, data, frameObject)
-      .then(framed => new FintoConcept(framed.graph[0], framed['@context'], frameObject));
+    return frameAndMap(this.$log, data, frames.fintoConceptFrame(data, id), (framedData) => FintoConcept);
   }
 
   deserializeRequire(data: any): IPromise<Require> {
