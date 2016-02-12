@@ -16,6 +16,7 @@ import Moment = moment.Moment;
 import split = require("core-js/fn/symbol/split");
 import { Frame } from './frames';
 import { FrameFn } from './frames';
+import { mapType, reverseMapType } from './typeMapping';
 
 const jsonld: any = require('jsonld');
 
@@ -1209,67 +1210,6 @@ function deserializeOptionalDate(date: any) {
 
 function deserializeUserLogin(userName: string): UserLogin {
   return userName && userName.substring('mailto:'.length);
-}
-
-function mapType(type: string): Type {
-  switch (type) {
-    case 'rdfs:Class':
-      return 'class';
-    case 'sh:Shape':
-      return 'shape';
-    case 'owl:DatatypeProperty':
-      return 'attribute';
-    case 'owl:ObjectProperty':
-      return 'association';
-    case 'owl:Ontology':
-      return 'model';
-    case 'dcap:DCAP':
-      return 'profile';
-    case 'foaf:Group':
-      return 'group';
-    case 'dcap:MetadataVocabulary':
-      return 'library';
-    case 'sh:AbstractOrNodeConstraint':
-    case 'sh:AbstractAndNodeConstraint':
-    case 'sh:AbstractNotNodeConstraint':
-      return 'constraint';
-    case 'foaf:Person':
-      return 'user';
-    case 'skos:Concept':
-    case 'skos:ConceptScheme':
-      return 'concept';
-    case 'prov:Entity':
-      return 'entity';
-    case 'prov:Activity':
-      return 'activity';
-    default:
-      console.log('unknown type not mapped: ' + type);
-      // continue
-  }
-}
-
-function reverseMapType(type: string): Type {
-  switch (type) {
-    case 'class':
-      return 'rdfs:Class';
-    case 'shape':
-      return 'sh:Shape';
-    case 'attribute':
-      return 'owl:DatatypeProperty';
-    case 'association':
-      return 'owl:ObjectProperty';
-    case 'model':
-      return 'owl:Ontology';
-    case 'profile':
-      return 'dcap:DCAP';
-    case 'group':
-      return 'foaf:Group';
-    case 'library':
-      return 'dcap:MetadataVocabulary';
-    default:
-      console.log('unknown type not mapped: ' + type);
-    // continue
-  }
 }
 
 function mapGraphTypeObject(type: string|string[]): Type[] {
