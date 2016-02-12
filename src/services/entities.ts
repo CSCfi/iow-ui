@@ -909,7 +909,7 @@ export class FintoConcept extends GraphNode {
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.comment || graph.definition);
-    this.inScheme = _.map(deserializeList<any>(graph.inScheme), scheme => scheme.uri);
+    this.inScheme = deserializeList<Uri>(graph.inScheme);
   }
 }
 
@@ -925,11 +925,12 @@ export class ConceptSuggestion extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = graph['@id'];
-    this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.comment);
-    this.inScheme = _.map(deserializeList<any>(graph.inScheme), scheme => scheme['@id']);
+    this.label = deserializeLocalizable(graph.prefLabel);
+    this.comment = deserializeLocalizable(graph.definition);
+    this.inScheme = deserializeList<Uri>(graph.inScheme);
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
+
   }
 }
 
@@ -1416,12 +1417,7 @@ export class EntityDeserializer {
   deserializeFintoConcept(data: any, id: Uri): IPromise<FintoConcept> {
     const frameObject = frames.fintoConceptFrame(data, id);
     return frameData(this.$log, data, frameObject)
-      .then(framed => {
-        // FIXME: correct these in frame, problem is that this could come from classFrame, predicateFrame or fintoConceptFrame
-        renameProperty(framed.graph[0], 'uri', '@id');
-        renameProperty(framed.graph[0], 'type', '@type');
-        return new FintoConcept(framed.graph[0], framed['@context'], frameObject)
-      });
+      .then(framed => new FintoConcept(framed.graph[0], framed['@context'], frameObject));
   }
 
   deserializeRequire(data: any): IPromise<Require> {

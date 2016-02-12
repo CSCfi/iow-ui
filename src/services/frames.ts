@@ -18,7 +18,7 @@ const coreContext = {
   identifier: { '@id': 'http://purl.org/dc/terms/identifier' },
   imports: { '@id': 'http://www.w3.org/2002/07/owl#imports', '@type': '@id' },
   index: { '@id': 'http://www.w3.org/ns/shacl#index' },
-  inScheme: { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme' },
+  inScheme: { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme', '@type': '@id' },
   isAdminOf: { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' },
   isDefinedBy: { '@id': 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', '@type': '@id' },
   isPartOf: { '@id': 'http://purl.org/dc/terms/isPartOf', '@type': '@id' },
@@ -134,6 +134,8 @@ export function fintoConceptFrame(data: any, id: Uri): Frame {
   const context = Object.assign({}, coreContext, {
     value: null,
     lang: null,
+    uri: null,
+    type: null,
     comment: { '@id' : 'http://www.w3.org/2000/01/rdf-schema#comment' }
   });
 
