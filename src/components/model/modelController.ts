@@ -219,7 +219,7 @@ export class ModelController {
       if (!this.model.unsaved) {
         const newSearch: any = {urn: this.model.id};
         if (this.selection) {
-          newSearch[this.selection.normalizedType] = this.selection.id;
+          newSearch[this.selection.selectionType] = this.selection.id;
         }
 
         const search = _.clone(this.$location.search());
