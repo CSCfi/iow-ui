@@ -1,6 +1,5 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import IPromise = angular.IPromise;
 import ILogService = angular.ILogService;
 import { ModelController } from '../model/modelController';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
@@ -99,7 +98,7 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   rights(): Rights {
     return {
-      edit: () => this.isNotReference(),
+      edit: () => !this.isReference(),
       remove: () => this.isReference() || this.class.state === 'Unstable'
     };
   }
@@ -112,8 +111,8 @@ export class ClassViewController extends EditableEntityController<Class> {
     this.class = editable;
   }
 
-  isNotReference(): boolean {
-    return this.class.definedBy.id === this.model.id;
+  isReference(): boolean {
+    return this.class.definedBy.id !== this.model.id;
   }
 
   getGroup(): GroupListItem {
@@ -122,6 +121,10 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   getRemoveText(): string {
     const text = super.getRemoveText();
-    return this.isNotReference() ? text : text + ' from this ' + this.model.normalizedType;
+    return !this.isReference() ? text : text + ' from this ' + this.model.normalizedType;
+  }
+
+  openDeleteConfirmationModal() {
+    return this.deleteConfirmationModal.open(this.getEditable(), this.isReference() ? this.model : null);
   }
 }

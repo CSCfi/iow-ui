@@ -33,7 +33,11 @@ class PredicateViewController extends EditableEntityController<Association|Attri
   modelController: ModelController;
 
   /* @ngInject */
-  constructor($scope: EditableScope, $log: ILogService, deleteConfirmationModal: DeleteConfirmationModal, private predicateService: PredicateService, userService: UserService) {
+  constructor($scope: EditableScope,
+              $log: ILogService,
+              deleteConfirmationModal: DeleteConfirmationModal,
+              private predicateService: PredicateService,
+              userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
     this.modelController.registerView(this);
   }
@@ -52,7 +56,7 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   rights(): Rights {
     return {
-      edit: () => this.isNotReference(),
+      edit: () => !this.isReference(),
       remove: () => this.isReference() || this.predicate.state === 'Unstable'
     };
   }
@@ -65,8 +69,8 @@ class PredicateViewController extends EditableEntityController<Association|Attri
     this.predicate = editable;
   }
 
-  isNotReference(): boolean {
-    return this.predicate.definedBy.id === this.model.id;
+  isReference(): boolean {
+    return this.predicate.definedBy.id !== this.model.id;
   }
 
   getGroup(): GroupListItem {
@@ -75,6 +79,10 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   getRemoveText(): string {
     const text = super.getRemoveText();
-    return this.isNotReference() ? text : text + ' from this ' + this.model.normalizedType;
+    return !this.isReference() ? text : text + ' from this ' + this.model.normalizedType;
+  }
+
+  openDeleteConfirmationModal() {
+    return this.deleteConfirmationModal.open(this.getEditable(), this.isReference() ? this.model : null);
   }
 }

@@ -26,7 +26,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   editableInEdit: T;
   persisting: boolean;
 
-  constructor(private $scope: EditableScope, private $log: ILogService, private deleteConfirmationModal: DeleteConfirmationModal, protected userService: UserService) {
+  constructor(private $scope: EditableScope, private $log: ILogService, protected deleteConfirmationModal: DeleteConfirmationModal, protected userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
       if (!isLoggedIn && wasLoggedIn) {
         this.cancelEditing();
@@ -43,14 +43,6 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   abstract getEditable(): T;
   abstract setEditable(editable: T): void;
   abstract getGroup(): AbstractGroup;
-
-  isNotReference(): boolean {
-    return true;
-  }
-
-  isReference(): boolean {
-    return !this.isNotReference();
-  }
 
   select(editable: T) {
     this.submitError = null;
@@ -80,11 +72,15 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
       });
   }
 
+  openDeleteConfirmationModal(): IPromise<void> {
+    return this.deleteConfirmationModal.open(this.getEditable());
+  }
+
   removeEdited() {
     this.userService.ifStillLoggedIn(() => {
       const editable = this.getEditable();
       this.persisting = true;
-      this.deleteConfirmationModal.open(this.getEditable(), this.isNotReference())
+      this.openDeleteConfirmationModal()
         .then(() => this.remove(editable))
         .then(() => {
           this.select(null);
