@@ -25,7 +25,8 @@ import {
   Type,
   Property,
   Uri,
-  DefinedBy
+  DefinedBy,
+  Curie
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -516,8 +517,10 @@ function setOverlaps(items: SelectableItem[]) {
 class SelectableItem {
 
   hasOverlap = false;
+  curie: Curie;
 
   constructor(public item: ClassListItem|PredicateListItem, private modelController: ModelController) {
+    this.curie = this.modelController.model.idToCurie(this.id);
   }
 
   get id(): Uri {
@@ -529,7 +532,7 @@ class SelectableItem {
   }
 
   get label(): string {
-    return this.rawLabel + (this.hasOverlap ? ` (${this.modelController.model.idToCurie(this.id)})` : '');
+    return this.rawLabel + (this.hasOverlap ? ` (${this.curie})` : '');
   }
 
   get definedBy() {
