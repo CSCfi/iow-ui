@@ -1,4 +1,4 @@
-
+<span ng-if="!ctrl.referrers" translate>No referrers</span>
 <ul ng-if="ctrl.referrers">
   <li ng-repeat="(type, referrers) in ctrl.referrers">
     <span>{{type | translate}}</span>
