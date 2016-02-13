@@ -1,15 +1,16 @@
 import Dictionary = _.Dictionary;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IPromise = angular.IPromise;
+import * as _ from 'lodash';
 import { UsageService } from '../../services/usageService';
-import { Usage, EditableEntity } from '../../services/entities';
+import { Usage, EditableEntity, Model, Referrer } from '../../services/entities';
 
 export class DeleteConfirmationModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(entity: EditableEntity, showUsage: boolean): IPromise<void> {
+  open(entity: EditableEntity, onlyInDefinedModel: Model = null): IPromise<void> {
     return this.$uibModal.open({
       template: require('./deleteConfirmationModal.html'),
       size: 'adapting',
@@ -17,7 +18,7 @@ export class DeleteConfirmationModal {
       controller: DeleteConfirmationModalController,
       resolve: {
         entity: () => entity,
-        showUsage: () => showUsage
+        onlyInDefinedModel: () => onlyInDefinedModel
       }
     }).result;
   }
@@ -26,11 +27,15 @@ export class DeleteConfirmationModal {
 class DeleteConfirmationModalController {
 
   usage: Usage;
+  hasReferrers: boolean;
+
+  exclude = (referrer: Referrer) => this.onlyInDefinedModel && (referrer.isOfType('model') || referrer.definedBy.id !== this.onlyInDefinedModel.id);
 
   /* @ngInject */
-  constructor(public entity: EditableEntity, public showUsage: boolean, usageService: UsageService) {
-    if (showUsage) {
-      usageService.getUsage(entity).then(usage => this.usage = usage);
-    }
+  constructor(public entity: EditableEntity, private onlyInDefinedModel: Model, usageService: UsageService) {
+    usageService.getUsage(entity).then(usage => {
+      this.usage = usage;
+      this.hasReferrers = usage && _.any(usage.referrers, referrer => !this.exclude(referrer));
+    });
   }
 }
