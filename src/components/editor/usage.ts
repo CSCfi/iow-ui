@@ -11,12 +11,15 @@ interface UsageAttributes extends IAttributes {
   showLinks: string;
 }
 
+const noExclude = (referrer: Referrer) => false;
+
 mod.directive('usage', () => {
   return {
     restrict: 'E',
     template: require('./usage.html'),
     scope: {
-      usage: '='
+      usage: '=',
+      exclude: '='
     },
     bindToController: true,
     controllerAs: 'ctrl',
@@ -32,14 +35,15 @@ mod.directive('usage', () => {
 class UsageController {
 
   usage: Usage;
+  exclude: (referrer: Referrer) => boolean;
   showLinks: () => boolean;
   referrers: Dictionary<Referrer[]>;
 
   /* @ngInject */
   constructor($scope: IScope) {
     $scope.$watch(() => this.usage, usage => {
-      if (usage && usage.referrers.length > 0) {
-        this.referrers = _.groupBy<Referrer>(usage.referrers, 'normalizedType');
+      if (usage) {
+        this.referrers = _.groupBy<Referrer>(_.reject(usage.referrers, this.exclude || noExclude), 'normalizedType');
       } else {
         this.referrers = {};
       }
