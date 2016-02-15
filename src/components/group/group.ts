@@ -48,17 +48,20 @@ class GroupController extends EditableEntityController<Group> {
               deleteConfirmationModal: DeleteConfirmationModal) {
     super($scope, $log, deleteConfirmationModal, userService);
 
-    $q.all({
-        group: groupService.getGroup(this.groupId),
-        models: modelService.getModelsByGroup(this.groupId)
-      })
-      .then((result: {group: Group, models: ModelListItem[]}) => {
-        this.group = result.group;
-        this.models = _.filter(result.models, model => !model.isOfType('profile'));
-        this.profiles = _.filter(result.models, model => model.isOfType('profile'));
-        locationService.atGroup(this.group);
-        this.loading = false;
-      });
+    $scope.$watch(() => this.groupId, groupId => {
+      this.loading = true;
+      $q.all({
+          group: groupService.getGroup(groupId),
+          models: modelService.getModelsByGroup(groupId)
+        })
+        .then((result:{group: Group, models: ModelListItem[]}) => {
+          this.group = result.group;
+          this.models = _.filter(result.models, model => !model.isOfType('profile'));
+          this.profiles = _.filter(result.models, model => model.isOfType('profile'));
+          locationService.atGroup(this.group);
+          this.loading = false;
+        });
+    })
   }
 
   canAddModel(): boolean {
