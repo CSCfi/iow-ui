@@ -50,3 +50,5 @@ mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILo
 mod.run(function onAppRun(gettextCatalog: gettextCatalog) {
   gettextCatalog.debug = true;
 });
+
+angular.bootstrap(document.body, ['iow-ui'], {strictDi: true});
