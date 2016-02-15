@@ -55,7 +55,7 @@
   </uib-accordion>
 </div>
 
-<div ng-show="ctrl.class.isOfType('shape') && (ctrl.class.constraint.items.length > 0 || ctrl.isEditing())">
+<div ng-show="ctrl.class.isOfType('shape') && (ctrl.class.constraint.isVisible() || ctrl.isEditing())">
   <h4 translate>Logical constraints</h4>
   <editable-constraint constraint="ctrl.class.constraint" model="ctrl.model"></editable-constraint>
 </div>

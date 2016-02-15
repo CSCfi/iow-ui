@@ -634,6 +634,10 @@ export class Constraint extends GraphNode {
     this.comment = deserializeLocalizable(graph.comment);
   }
 
+  isVisible() {
+    return this.items.length > 0 || this.comment;
+  }
+
   addItem(shape: Class) {
     const graph = {
       '@id': shape.curie,
@@ -664,9 +668,9 @@ export class Constraint extends GraphNode {
     return {
       '@type': mapConstraintType(this.constraint),
       comment: serializeLocalizable(this.comment),
-      and: this.constraint === 'and' ? serializeList(items) : null,
-      or: this.constraint === 'or' ? serializeList(items) : null,
-      not: this.constraint === 'not' ? serializeList(items) : null
+      and: this.constraint === 'and' ? items && serializeList(items) : null,
+      or: this.constraint === 'or' ? items && serializeList(items) : null,
+      not: this.constraint === 'not' ? items && serializeList(items) : null
     };
   }
 }
