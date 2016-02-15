@@ -18,7 +18,7 @@ registerType('model', ['owl:Ontology']);
 registerType('profile', ['dcap:DCAP']);
 registerType('group', ['foaf:Group']);
 registerType('library', ['dcap:MetadataVocabulary']);
-registerType('constraint', ['sh:AbstractOrNodeConstraint', 'sh:AbstractAndNodeConstraint', 'sh:AbstractNotNodeConstraint'])
+registerType('constraint', ['sh:AbstractOrNodeConstraint', 'sh:AbstractAndNodeConstraint', 'sh:AbstractNotNodeConstraint']);
 registerType('user', ['foaf:Person']);
 registerType('concept', ['skos:Concept', 'skos:ConceptScheme']);
 registerType('entity', ['prov:Entity']);

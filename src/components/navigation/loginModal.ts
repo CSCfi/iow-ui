@@ -1,8 +1,6 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IWindowService = angular.IWindowService;
-import { User } from '../../services/entities';
-import { UserService } from '../../services/userService';
 
 export class LoginModal {
   /* @ngInject */
