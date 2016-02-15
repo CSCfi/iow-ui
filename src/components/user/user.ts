@@ -1,10 +1,22 @@
 import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
-import { User, DefaultUser, Uri, url } from '../../services/entities';
+import { DefaultUser, Uri, url } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { LocationService } from '../../services/locationService';
 
-export class UserController {
+const mod = angular.module('iow.components.user', ['iow.services']);
+
+mod.directive('user', () => {
+  return {
+    restrict: 'E',
+    template: require('./user.html'),
+    controllerAs: 'ctrl',
+    bindToController: true,
+    controller: UserController
+  }
+});
+
+class UserController {
 
   user: DefaultUser;
 

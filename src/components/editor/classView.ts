@@ -1,7 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import ILogService = angular.ILogService;
-import { ModelController } from '../model/modelController';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
@@ -15,6 +14,7 @@ import {
   combineExclusions,
   createDefinedByExclusion
 } from '../../services/utils';
+import { ModelController } from '../model/model';
 
 export const mod = angular.module('iow.components.editor');
 

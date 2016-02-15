@@ -1,0 +1,7 @@
+<div ng-show="ctrl.applicationInitialized">
+  <navigation-bar></navigation-bar>
+  <breadcrumb></breadcrumb>
+  <div ng-class="['main', { 'with-footer': ctrl.showFooter }]" ng-view></div>
+  <footer ng-if="ctrl.showFooter"></footer>
+  <google-analytics ng-if="ctrl.production"></google-analytics>
+</div>

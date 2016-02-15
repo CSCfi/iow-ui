@@ -1,13 +1,27 @@
-import _ = require('lodash');
 import IScope = angular.IScope;
 import ILogService = angular.ILogService;
 import ILocationService = angular.ILocationService;
+import _ = require('lodash');
 import { LocationService } from '../services/locationService';
 import { GroupService } from '../services/groupService';
 import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
 import { GroupListItem, SearchResult, Url } from '../services/entities';
+
+
+const mod = angular.module('iow.components');
+
+mod.directive('frontPage', () => {
+  return {
+    restrict: 'E',
+    scope: {},
+    bindToController: true,
+    template: require('./frontPage.html'),
+    controllerAs: 'ctrl',
+    controller: FrontPageController
+  }
+});
 
 interface Bullet {
   title: string;

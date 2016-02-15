@@ -6,7 +6,7 @@ import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { Attribute, Association, GroupListItem, Model, Uri } from '../../services/entities';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelController } from '../model/modelController';
+import { ModelController } from '../model/model';
 
 export const mod = angular.module('iow.components.editor');
 

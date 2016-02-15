@@ -6,13 +6,13 @@ import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
 import { GroupListItem, Model, Require, Reference, Uri } from '../../services/entities';
-import { ModelController } from './modelController';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { collectIds, collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
 import { SearchSchemeModal } from './searchSchemeModal';
 import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
+import { ModelController } from './model';
 
 export const mod = angular.module('iow.components.model');
 

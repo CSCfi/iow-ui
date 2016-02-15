@@ -39,6 +39,18 @@ import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
 
+export const mod = angular.module('iow.components.model');
+
+mod.directive('model', () => {
+  return {
+    restrict: 'E',
+    template: require('./model.html'),
+    controllerAs: 'ctrl',
+    bindToController: true,
+    controller: ModelController
+  }
+});
+
 export class ModelController {
 
   loading = true;

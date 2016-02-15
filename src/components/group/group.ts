@@ -10,12 +10,27 @@ import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { Group, GroupListItem, ModelListItem, Uri, Type } from '../../services/entities';
+import { Group, ModelListItem, Uri, Type } from '../../services/entities';
 
+export const mod = angular.module('iow.components.group');
 
-export class GroupController extends EditableEntityController<Group> {
+mod.directive('group', () => {
+  return {
+    restrict: 'E',
+    template: require('./group.html'),
+    controllerAs: 'ctrl',
+    scope: {
+      groupId: '='
+    },
+    bindToController: true,
+    controller: GroupController
+  }
+});
+
+class GroupController extends EditableEntityController<Group> {
 
   loading: boolean = true;
+  groupId: Uri;
   group: Group;
   models: ModelListItem[];
   profiles: ModelListItem[];
@@ -26,7 +41,6 @@ export class GroupController extends EditableEntityController<Group> {
               $log: ILogService,
               private $location: ILocationService,
               private locationService: LocationService,
-              private groupId: Uri,
               private groupService: GroupService,
               private modelService: ModelService,
               userService: UserService,
@@ -35,8 +49,8 @@ export class GroupController extends EditableEntityController<Group> {
     super($scope, $log, deleteConfirmationModal, userService);
 
     $q.all({
-        group: groupService.getGroup(groupId),
-        models: modelService.getModelsByGroup(groupId)
+        group: groupService.getGroup(this.groupId),
+        models: modelService.getModelsByGroup(this.groupId)
       })
       .then((result: {group: Group, models: ModelListItem[]}) => {
         this.group = result.group;
