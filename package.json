@@ -7,7 +7,7 @@
     "start": "gulp",
     "build": "gulp build",
     "create-translations": "gulp pot",
-    "example-data": "gulp example-data",
+    "example-data": "node node_modules/ts-node/dist/bin/ts-node.js examples/loadExamples.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -67,6 +67,7 @@
     "rimraf": "^2.4.3",
     "stringify": "^3.1.0",
     "tsify": "0.13.2",
+    "ts-node": "0.5.5",
     "typescript": "1.7.5",
     "url": "^0.11.0",
     "vinyl-buffer": "^1.0.0",

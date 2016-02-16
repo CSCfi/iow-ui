@@ -1,7 +1,3 @@
-/*eslint-disable */
-
-'use strict';
-
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
@@ -13,7 +9,7 @@ var argv = require('optimist')
   })
   .argv;
 
-function reqOpts(path,type) {
+function reqOpts(path: any, type: any) {
   return {
     host: argv.host,
     port: argv.port,
@@ -25,13 +21,13 @@ function reqOpts(path,type) {
   };
 }
 
-function logger(res) {
+function logger(res: any) {
   console.log('STATUS: ' + res.statusCode);
   console.log('HEADERS: ' + JSON.stringify(res.headers));
 }
 
-function makeRequest(requestPath, fileName) {
-  var req;
+function makeRequest(requestPath: any, fileName: any) {
+  var req: any;
   if(fileName!=null) {
   req = http.request(reqOpts(requestPath,"PUT"), logger);
   req.write(fs.readFileSync(path.join(__dirname, fileName)));
