@@ -132,7 +132,8 @@ function compileAppJs(watch) {
   pipeline.transform(envify({
     NODE_ENV: process.env.NODE_ENV || 'development',
     GIT_DATE: process.env.GIT_DATE,
-    GIT_HASH: process.env.GIT_HASH
+    GIT_HASH: process.env.GIT_HASH,
+    FINTO_URL: process.env.FINTO_URL
   }));
 
   function rebundle() {

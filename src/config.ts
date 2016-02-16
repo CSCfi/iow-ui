@@ -6,16 +6,19 @@ export interface Config {
   development: boolean
   gitDate: Moment;
   gitHash: string;
+  fintoUrl: string;
 }
 
 const env = process.env.NODE_ENV;
 const gitDate = moment(process.env.GIT_DATE, 'YYYY-MM-DD HH:mm:ss ZZ');
 const gitHash = process.env.GIT_HASH;
+const fintoUrl = process.env.FINTO_URL;
 
 export const config: Config = {
   production: env === 'production',
   development: env === 'development',
   gitDate,
-  gitHash
+  gitHash,
+  fintoUrl: env === fintoUrl || 'development' ? 'http://dev.finto.fi/' : 'http://www.finto.fi/'
 };
 

@@ -2,6 +2,7 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
+import { config } from '../config';
 import { EntityDeserializer, Model, ModelListItem, Reference, Require, Uri, Type } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
@@ -64,7 +65,7 @@ export class ModelService {
   newReference(scheme: any, lang: Language, context: any): IPromise<Reference> {
 
     const graph = {
-      '@id': `http://www.finto.fi/${scheme.id}`,
+      '@id': config.fintoUrl + scheme.id,
       '@type': 'skos:ConceptScheme',
       'identifier': scheme.id,
       'title': {
