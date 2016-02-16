@@ -19,6 +19,6 @@ export const config: Config = {
   development: env === 'development',
   gitDate,
   gitHash,
-  fintoUrl: env === fintoUrl || 'development' ? 'http://dev.finto.fi/' : 'http://www.finto.fi/'
+  fintoUrl: fintoUrl || env === 'development' ? 'http://dev.finto.fi/' : 'http://www.finto.fi/'
 };
 
