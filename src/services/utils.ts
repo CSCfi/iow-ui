@@ -172,7 +172,12 @@ export function normalizeClassType(types: Type[]): Type {
 }
 
 export function normalizeModelType(types: Type[]): Type {
-  return findFirstMatching(types, ['profile', 'library']);
+  const type = findFirstMatching(types, ['profile', 'library', 'model']);
+  if (type === 'model') {
+    return 'library';
+  } else {
+    return type;
+  }
 }
 
 export function normalizeGroupType(types: Type[]): Type {
@@ -189,5 +194,5 @@ function hasValue(obj: any) {
 }
 
 export function hasLocalization(localizable: Localizable) {
-  return !!localizable && hasValue(localizable)
+  return !!localizable && hasValue(localizable);
 }
