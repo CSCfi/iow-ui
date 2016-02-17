@@ -104,19 +104,18 @@ export class ClassService {
   }
 
   newProperty(predicateId: Uri): IPromise<Property> {
-    return this.$q.all({
-        predicate: this.predicateService.getPredicate(predicateId),
-        property: this.$http.get(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateId}})
-      })
-      .then(result => {
-        const predicate = result['predicate'];
-        return this.$q.all({
-          predicate,
-          property: this.entities.deserializeProperty(predicate.expandContext(result['property'].data))
-        })})
-      .then(result => {
-        const property: Property = result['property'];
-        const predicate: Predicate = result['predicate'];
+    return this.$q.all([
+        this.predicateService.getPredicate(predicateId),
+        this.$http.get(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateId}})
+      ])
+      .then((result: [Predicate, any]) => {
+        return this.$q.all([
+          this.$q.when(result[0]),
+          this.entities.deserializeProperty(result[0].expandContext(result[1].data))
+        ])})
+      .then((result: [Predicate, Property]) => {
+        const property: Property = result[1];
+        const predicate: Predicate = result[0];
 
         if (!property.label) {
           property.label = predicate.label;
