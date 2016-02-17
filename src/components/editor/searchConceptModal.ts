@@ -7,10 +7,11 @@ import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { ConceptService, ConceptSuggestionDataset } from '../../services/conceptService';
+import { ConceptService } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
 import { Reference, ConceptSuggestion, Type, Uri, FintoConcept } from '../../services/entities';
 import { AddConceptModal, ConceptSuggestionCreation } from './addConceptModal';
+import { ConceptDatasets, ConceptSuggestionDataset } from '../../services/conceptDatasets';
 
 const limit = 1000;
 
@@ -61,7 +62,7 @@ class SearchConceptController {
   labelTitle: string;
   vocabularyId: string;
   selectedReference: Reference;
-  mapSelection = this.conceptService.mapSelection.bind(this.conceptService);
+  mapSelection = this.conceptDatasets.mapSelection.bind(this.conceptDatasets);
 
   options = {
     hint: false,
@@ -80,7 +81,8 @@ class SearchConceptController {
               public newCreation: boolean,
               public references: Reference[],
               private addConceptModal: AddConceptModal,
-              private conceptService: ConceptService) {
+              private conceptService: ConceptService,
+              private conceptDatasets: ConceptDatasets) {
 
     this.defineConceptTitle = `Define concept for the ${this.newCreation ? 'new ' : ''}${this.type}`;
     this.buttonTitle = newCreation ? 'Create new' : 'Use';
@@ -122,8 +124,8 @@ class SearchConceptController {
     $scope.$watch(() => this.vocabularyId, vocabularyId => {
       const searchReferences = vocabularyId ? [_.findWhere(references, {vocabularyId})] : references;
       this.datasets = _.flatten(_.map(searchReferences, reference => {
-        const conceptSuggestionDataset = conceptService.createConceptSuggestionDataSet(reference, limit);
-        return [conceptSuggestionDataset, conceptService.createConceptDataSet(reference, limit, createTemplates(reference, conceptSuggestionDataset))];
+        const conceptSuggestionDataset = conceptDatasets.createConceptSuggestionDataSet(reference, limit);
+        return [conceptSuggestionDataset, conceptDatasets.createConceptDataSet(reference, limit, createTemplates(reference, conceptSuggestionDataset))];
       }));
     });
   }

@@ -1,5 +1,6 @@
 import { ClassService } from './classService';
 import { ConceptService } from './conceptService';
+import { ConceptDatasets } from './conceptDatasets';
 import { EntityDeserializer } from './entities';
 import { GroupService } from './groupService';
 import { LanguageService } from './languageService';
@@ -17,6 +18,7 @@ export = mod.name;
 
 mod.service('classService', ClassService);
 mod.service('conceptService', ConceptService);
+mod.service('conceptDatasets', ConceptDatasets);
 mod.service('entities', EntityDeserializer);
 mod.service('groupService', GroupService);
 mod.service('languageService', LanguageService);

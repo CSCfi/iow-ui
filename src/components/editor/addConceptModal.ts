@@ -5,6 +5,7 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { Reference, Uri, FintoConcept } from '../../services/entities';
 import { ConceptService } from '../../services/conceptService';
+import { ConceptDatasets } from '../../services/conceptDatasets';
 
 export type ConceptSuggestionCreation = {concept: {label: string, comment: string, schemeId: Uri, broaderConceptId: Uri}, label: string}
 
@@ -37,7 +38,7 @@ class AddConceptController {
 
   dataset: Dataset;
   broaderConcept: FintoConcept;
-  mapSelection = this.conceptService.mapSelection.bind(this.conceptService);
+  mapSelection = this.conceptDatasets.mapSelection.bind(this.conceptDatasets);
 
   options = {
     hint: false,
@@ -53,9 +54,9 @@ class AddConceptController {
               public defineConceptTitle: string,
               public conceptLabel: string,
               public reference: Reference,
-              public conceptService: ConceptService) {
+              public conceptDatasets: ConceptDatasets) {
 
-    this.dataset = conceptService.createConceptDataSet(reference, 1000);
+    this.dataset = conceptDatasets.createConceptDataSet(reference, 1000);
 
     $scope.$watch(() => this.conceptLabel, label => this.label = label);
   }
