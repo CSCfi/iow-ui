@@ -17,6 +17,7 @@ import split = require("core-js/fn/symbol/split");
 import { Frame } from './frames';
 import { FrameFn } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
+import { config } from '../config';
 
 const jsonld: any = require('jsonld');
 
@@ -397,6 +398,10 @@ export class Reference extends GraphNode {
     this.id = graph['@id'];
     this.label = deserializeLocalizable(graph.title);
     this.comment = deserializeLocalizable(graph.comment);
+  }
+
+  get href() {
+    return config.fintoUrl + this.vocabularyId;
   }
 }
 
