@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-22 16:14+0200\n"
+"PO-Revision-Date: 2016-02-17 15:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -482,11 +482,11 @@ msgstr ""
 
 #: translations/misc.html:83
 msgid "How content"
-msgstr ""
+msgstr "All information descriptions can be accessed freely. Please note that the contents are still in the development stage. In the future, the content of the core vocabularies and application profiles will be jointly produce by experts associated to each subject area."
 
 #: translations/misc.html:82
 msgid "How?"
-msgstr ""
+msgstr "How can I participate?"
 
 #: translations/misc.html:58
 msgid "Id"
@@ -927,27 +927,27 @@ msgstr ""
 
 #: translations/misc.html:81
 msgid "What can I do content"
-msgstr ""
+msgstr "Interoperability workbench is a set of tools that can be used specifically to take advantage of various information architecture specifications - such as shared vocabularies or code services - in operational activities. Workbench can be used to develop, document and openly publish re-usable information components and application profiles. Published information components and application profiles can be utilized in information exchange (integration, interface, service bus) or in database and software development."
 
 #: translations/misc.html:80
 msgid "What can I do?"
-msgstr ""
+msgstr "What can the interoperability workbench do?"
 
 #: translations/misc.html:77
 msgid "What is description content"
-msgstr ""
+msgstr "Interoperability descriptions are data specifications, which provide human and machine-readable semantic interoperability of information systems, as well as the required technical interoperability of electronic, knowledge-intensive service processes. Interoperability descriptions consist of shared concepts defined in the controlled vocabulary, information components semantically based on the concepts and application profiles specifying the use of the information components in different implementations."
 
 #: translations/misc.html:76
 msgid "What is description?"
-msgstr ""
+msgstr "What are the descriptions for interoperability?"
 
 #: translations/misc.html:79
 msgid "What is method content"
-msgstr ""
+msgstr "Interoperability method is a way to describe the data content for information systems without the need to specify the technical implementation of applications. The method combines the development of controlled vocabularies, information components and codes (or codex) as a coherent entity. The method ensures that the application of common definitions is systematic and maintains the data semantics of various implementations and thus can be uniformly understood by different actors at the same time. The method is based on the Implementation of international standards. You can read more about the interoperability method and the development of the interoperability workbench <a href=\"https://confluence.csc.fi/display/korkeakoulujentietomalli/Semantic+Interoperability+Architecture\">here</a>."
 
 #: translations/misc.html:78
 msgid "What is method?"
-msgstr ""
+msgstr "What is the interoperability method?"
 
 #: translations/misc.html:119
 msgid "Write identifier"
