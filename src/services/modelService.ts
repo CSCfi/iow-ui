@@ -46,7 +46,7 @@ export class ModelService {
   newModel(prefix: string, label: string, groupId: Uri, lang: Language, type: Type): IPromise<Model> {
     function mapEndpoint() {
       switch (type) {
-        case 'model':
+        case 'library':
           return 'modelCreator';
         case 'profile':
           return 'profileCreator';
