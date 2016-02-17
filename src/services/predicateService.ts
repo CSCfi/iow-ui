@@ -7,6 +7,7 @@ import { EntityDeserializer, Predicate, PredicateListItem, Uri, Model, Type, Att
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
+import { reverseMapType } from './typeMapping';
 
 export class PredicateService {
   /* @ngInject */
@@ -32,7 +33,7 @@ export class PredicateService {
     };
     return this.$http.put<{ identifier: Uri }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
-        predicate.unsaved = false
+        predicate.unsaved = false;
         predicate.version = response.data.identifier;
       });
   }
@@ -67,10 +68,8 @@ export class PredicateService {
     return this.$http.post(config.apiEndpointWithName('predicate'), undefined, {params: requestParams});
   }
 
-  newPredicate(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<Predicate> {
-    const owlType = type === 'association' ? 'owl:ObjectProperty' : 'owl:DatatypeProperty';
-
-    return this.$http.get(config.apiEndpointWithName('predicateCreator'), {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type: owlType, lang}})
+  newPredicate<T extends Predicate>(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<T> {
+    return this.$http.get(config.apiEndpointWithName('predicateCreator'), {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type: reverseMapType(type), lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], model.context);
         return response;
