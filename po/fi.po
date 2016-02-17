@@ -267,11 +267,6 @@ msgstr "Erikoistamattomia luokkia ei saa valita"
 msgid "Close"
 msgstr "Sulje"
 
-#: components/editor/addConceptModal.html:44
-#: components/editor/searchConceptModal.html:41
-msgid "Comment"
-msgstr "Määritelmä"
-
 #: translations/misc.html:132
 msgid "Concept"
 msgstr "Käsite"
@@ -290,10 +285,10 @@ msgstr "Poistamisen hyväksyntä"
 
 #: components/editor/editableConstraint.html:8
 msgid "Constraint classes"
-msgstr "Loogin rajoitteen luokat"
+msgstr "Loogisen rajoitteen luokat"
 
 #: translations/misc.html:149
-msgid "Constraint comment"
+msgid "Constraint description"
 msgstr "Loogisen rajoitteen kuvaus"
 
 #: components/footer.html:3
@@ -378,6 +373,11 @@ msgstr "Määrittele käsite uudelle attribuutille"
 msgid "Define concept for the new class"
 msgstr "Määrittele käsite uudelle luokalle"
 
+#: components/editor/addConceptModal.html:44
+#: components/editor/searchConceptModal.html:41
+msgid "Definition"
+msgstr "Määritelmä"
+
 #: translations/misc.html:55
 msgid "Delete association"
 msgstr "Poista assosiaatio"
@@ -441,6 +441,10 @@ msgstr "Poista tarkennettu luokka tästä kirjastosta"
 #: translations/misc.html:20
 msgid "Deprecated"
 msgstr "Käytöstä poistunut"
+
+#: translations/misc.html:169
+msgid "Description"
+msgstr "Kuvaus"
 
 #: components/editor/addPropertiesFromClassModal.html:5
 msgid ""
@@ -1195,6 +1199,12 @@ msgstr "XML"
 msgid "Yes"
 msgstr "Kyllä"
 
+#~ msgid "Comment"
+#~ msgstr "Määritelmä"
+
+#~ msgid "Constraint comment"
+#~ msgstr "Loogisen rajoitteen kuvaus"
+
 #~ msgid "Model label"
 #~ msgstr "Tietokomponenttikirjaston nimi"
 
@@ -1302,9 +1312,6 @@ msgstr "Kyllä"
 
 #~ msgid "UI language"
 #~ msgstr "Käyttöliittymän kieli"
-
-#~ msgid "Description"
-#~ msgstr "Kuvaus"
 
 #~ msgid "create new property"
 #~ msgstr "ja luo uusi ominaisuus"

@@ -264,11 +264,6 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: components/editor/addConceptModal.html:44
-#: components/editor/searchConceptModal.html:41
-msgid "Comment"
-msgstr ""
-
 #: translations/misc.html:132
 msgid "Concept"
 msgstr ""
@@ -291,7 +286,7 @@ msgid "Constraint classes"
 msgstr ""
 
 #: translations/misc.html:149
-msgid "Constraint comment"
+msgid "Constraint description"
 msgstr ""
 
 #: components/footer.html:3
@@ -377,6 +372,11 @@ msgstr ""
 msgid "Define concept for the new class"
 msgstr ""
 
+#: components/editor/addConceptModal.html:44
+#: components/editor/searchConceptModal.html:41
+msgid "Definition"
+msgstr ""
+
 #: translations/misc.html:55
 msgid "Delete association"
 msgstr ""
@@ -439,6 +439,10 @@ msgstr ""
 
 #: translations/misc.html:20
 msgid "Deprecated"
+msgstr ""
+
+#: translations/misc.html:169
+msgid "Description"
 msgstr ""
 
 #: components/editor/addPropertiesFromClassModal.html:5

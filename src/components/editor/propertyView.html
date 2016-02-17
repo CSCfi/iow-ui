@@ -9,7 +9,7 @@
     <input id="{{ctrl.property.id + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" ng-model="ctrl.property.label" />
   </editable>
 
-  <editable title="Comment">
+  <editable title="Description">
     <textarea id="{{ctrl.property.id + 'comment'}}" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea>
   </editable>
 
@@ -49,7 +49,7 @@
         <span accordion-chevron is-open="predicateOpen">{{ctrl.property.predicateCurie}}</span>
       </uib-accordion-heading>
       <non-editable title="Name" value="ctrl.predicate.label"></non-editable>
-      <non-editable title="Comment" value="ctrl.predicate.comment"></non-editable>
+      <non-editable title="Description" value="ctrl.predicate.comment"></non-editable>
       <non-editable title="Type" value="ctrl.predicate.rawType"></non-editable>
       <non-editable title="Range" value="ctrl.predicate.range"></non-editable>
       <non-editable title="Is defined by" value="ctrl.predicate.modelId" link="ctrl.predicate.iowUrl()"></non-editable>
