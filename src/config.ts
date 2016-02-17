@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 
 export interface Config {
+  apiEndpoint: string;
   production: boolean
   development: boolean
   gitDate: Moment;
@@ -9,16 +10,36 @@ export interface Config {
   fintoUrl: string;
 }
 
-const env = process.env.NODE_ENV;
-const gitDate = moment(process.env.GIT_DATE, 'YYYY-MM-DD HH:mm:ss ZZ');
-const gitHash = process.env.GIT_HASH;
-const fintoUrl = process.env.FINTO_URL;
 
-export const config: Config = {
-  production: env === 'production',
-  development: env === 'development',
-  gitDate,
-  gitHash,
-  fintoUrl: fintoUrl || env === 'development' ? 'http://dev.finto.fi/' : 'http://www.finto.fi/'
-};
+class EnvironmentConfig implements Config {
 
+  apiEndpointWithName(name: string) {
+    return `${this.apiEndpoint}/${name}`;
+  }
+
+  get apiEndpoint() {
+    return process.env.API_ENDPOINT || '/api/rest';
+  }
+
+  get production() {
+    return process.env.NODE_ENV == 'production';
+  }
+
+  get development() {
+    return process.env.NODE_ENV == 'development';
+  }
+
+  get gitDate() {
+    return moment(process.env.GIT_DATE, 'YYYY-MM-DD HH:mm:ss ZZ')
+  }
+
+  get gitHash() {
+    return process.env.GIT_HASH;
+  }
+
+  get fintoUrl() {
+    return process.env.FINTO_URL || this.development ? 'http://dev.finto.fi/' : 'http://www.finto.fi/'
+  }
+}
+
+export const config = new EnvironmentConfig();

@@ -133,7 +133,8 @@ function compileAppJs(watch) {
     NODE_ENV: process.env.NODE_ENV || 'development',
     GIT_DATE: process.env.GIT_DATE,
     GIT_HASH: process.env.GIT_HASH,
-    FINTO_URL: process.env.FINTO_URL
+    FINTO_URL: process.env.FINTO_URL,
+    API_ENDPOINT: process.env.API_ENDPOINT
   }));
 
   function rebundle() {

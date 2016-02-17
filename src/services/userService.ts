@@ -2,6 +2,7 @@ import IPromise = angular.IPromise;
 import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import { EntityDeserializer, User, AnonymousUser } from './entities';
+import { config } from '../config';
 
 export class UserService {
 
@@ -12,9 +13,9 @@ export class UserService {
   }
 
   updateLogin(): IPromise<User> {
-    return this.$http.get<boolean>('/api/rest/loginstatus')
+    return this.$http.get<boolean>(config.apiEndpointWithName('loginstatus'))
       .then(statusResponse => statusResponse.data
-        ? this.$http.get('/api/rest/user').then(response => this.entities.deserializeUser(response.data))
+        ? this.$http.get(config.apiEndpointWithName('user')).then(response => this.entities.deserializeUser(response.data))
         : new AnonymousUser())
       .then(updatedUser => this.user = updatedUser);
   }
@@ -32,6 +33,6 @@ export class UserService {
   }
 
   logout(): IPromise<User> {
-    return this.$http.get('/api/rest/logout').then(() => this.user = new AnonymousUser());
+    return this.$http.get(config.apiEndpointWithName('logout')).then(() => this.user = new AnonymousUser());
   }
 }

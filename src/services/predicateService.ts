@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { EntityDeserializer, Predicate, PredicateListItem, Uri, Model, Type, Attribute } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
+import { config } from '../config';
 
 export class PredicateService {
   /* @ngInject */
@@ -13,15 +14,15 @@ export class PredicateService {
   }
 
   getPredicate(id: Uri): IPromise<Predicate> {
-    return this.$http.get('/api/rest/predicate', {params: {id}}).then(response => this.entities.deserializePredicate(response.data));
+    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {id}}).then(response => this.entities.deserializePredicate(response.data));
   }
 
   getAllPredicates(): IPromise<PredicateListItem[]> {
-    return this.$http.get('/api/rest/predicate').then(response => this.entities.deserializePredicateList(response.data));
+    return this.$http.get(config.apiEndpointWithName('predicate')).then(response => this.entities.deserializePredicateList(response.data));
   }
 
   getPredicatesForModel(modelId: Uri): IPromise<PredicateListItem[]> {
-    return this.$http.get('/api/rest/predicate', {params: {model: modelId}}).then(response => this.entities.deserializePredicateList(response.data));
+    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {model: modelId}}).then(response => this.entities.deserializePredicateList(response.data));
   }
 
   createPredicate(predicate: Predicate): IPromise<any> {
@@ -29,7 +30,7 @@ export class PredicateService {
       id: predicate.id,
       model: predicate.definedBy.id
     };
-    return this.$http.put<{ identifier: Uri }>('/api/rest/predicate', predicate.serialize(), {params: requestParams})
+    return this.$http.put<{ identifier: Uri }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
         predicate.unsaved = false
         predicate.version = response.data.identifier;
@@ -44,7 +45,7 @@ export class PredicateService {
     if (requestParams.id !== originalId) {
       requestParams.oldid = originalId;
     }
-    return this.$http.post<{ identifier: Uri }>('/api/rest/predicate', predicate.serialize(), {params: requestParams})
+    return this.$http.post<{ identifier: Uri }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
         predicate.version = response.data.identifier;
       });
@@ -55,7 +56,7 @@ export class PredicateService {
       id,
       model: modelId
     };
-    return this.$http.delete('/api/rest/predicate', {params: requestParams});
+    return this.$http.delete(config.apiEndpointWithName('predicate'), {params: requestParams});
   }
 
   assignPredicateToModel(predicateId: Uri, modelId: Uri): IHttpPromise<any> {
@@ -63,13 +64,13 @@ export class PredicateService {
       id: predicateId,
       model: modelId
     };
-    return this.$http.post('/api/rest/predicate', undefined, {params: requestParams});
+    return this.$http.post(config.apiEndpointWithName('predicate'), undefined, {params: requestParams});
   }
 
   newPredicate(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<Predicate> {
     const owlType = type === 'association' ? 'owl:ObjectProperty' : 'owl:DatatypeProperty';
 
-    return this.$http.get('/api/rest/predicateCreator', {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type: owlType, lang}})
+    return this.$http.get(config.apiEndpointWithName('predicateCreator'), {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type: owlType, lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], model.context);
         return response;

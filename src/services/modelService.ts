@@ -15,17 +15,17 @@ export class ModelService {
   }
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
-    return this.$http.get('/api/rest/model', { params: { group: groupUrn } })
+    return this.$http.get(config.apiEndpointWithName('model'), { params: { group: groupUrn } })
       .then(response => this.entities.deserializeModelList(response.data));
   }
 
   getModelByUrn(urn: Uri): IPromise<Model> {
-    return this.$http.get('/api/rest/model', { params: { id: urn } })
+    return this.$http.get(config.apiEndpointWithName('model'), { params: { id: urn } })
       .then(response => this.entities.deserializeModel(response.data));
   }
 
   createModel(model: Model): IPromise<any> {
-    return this.$http.put<{ identifier: Uri }>('/api/rest/model', model.serialize(), { params: { id: model.id, group: model.group.id } })
+    return this.$http.put<{ identifier: Uri }>(config.apiEndpointWithName('model'), model.serialize(), { params: { id: model.id, group: model.group.id } })
       .then(response => {
         model.unsaved = false;
         model.version = response.data.identifier;
@@ -33,14 +33,14 @@ export class ModelService {
   }
 
   updateModel(model: Model): IPromise<any> {
-    return this.$http.post<{ identifier: Uri }>('/api/rest/model', model.serialize(), { params: { id: model.id } })
+    return this.$http.post<{ identifier: Uri }>(config.apiEndpointWithName('model'), model.serialize(), { params: { id: model.id } })
       .then(response => {
         model.version = response.data.identifier;
       })
   }
 
   deleteModel(id: Uri): IHttpPromise<any> {
-    return this.$http.delete('/api/rest/model', { params: { id } });
+    return this.$http.delete(config.apiEndpointWithName('model'), { params: { id } });
   }
 
   newModel(prefix: string, label: string, groupId: Uri, lang: Language, type: Type): IPromise<Model> {
@@ -54,7 +54,7 @@ export class ModelService {
           throw new Error("Unsupported type: " + type);
       }
     }
-    return this.$http.get('/api/rest/' + mapEndpoint(), { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
+    return this.$http.get(config.apiEndpointWithName(mapEndpoint()), { params: {prefix, label: upperCaseFirst(label), lang, group: groupId} })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
         model.unsaved = true;
@@ -79,12 +79,12 @@ export class ModelService {
   }
 
   getAllRequires(): IPromise<Require[]> {
-    return this.$http.get('/api/rest/model')
+    return this.$http.get(config.apiEndpointWithName('model'))
       .then(response => this.entities.deserializeRequires(response.data));
   }
 
   newRequire(namespace: Uri, prefix: string, label: string, lang: Language): IPromise<Require> {
-    return this.$http.get('/api/rest/modelRequirementCreator', {params: {namespace, prefix, label, lang}})
+    return this.$http.get(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
       .then(response => this.entities.deserializeRequire(response.data));
   }
 }

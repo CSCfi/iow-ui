@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import Moment = moment.Moment;
 import { Uri, Predicate, Class, Model } from '../../services/entities';
+import { config } from '../../config';
 
 export const mod = angular.module('iow.components.common');
 
@@ -48,7 +49,7 @@ class ExportController {
   /* @ngInject */
   constructor($scope: IScope, $window: IWindowService) {
     $scope.$watch(() => this.entity, entity => {
-      const hrefBase = entity instanceof Model ? 'api/rest/exportModel' : 'api/rest/exportResource';
+      const hrefBase = entity instanceof Model ? config.apiEndpointWithName('exportModel') : config.apiEndpointWithName('exportResource');
       this.downloads = _.map(exportOptions, option => {
         const href = `${hrefBase}?graph=${encodeURIComponent(entity.id)}&content-type=${encodeURIComponent(option.type)}`;
 

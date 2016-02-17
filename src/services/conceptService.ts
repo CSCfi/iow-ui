@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { EntityDeserializer, ConceptSuggestion, Reference, Uri, FintoConcept } from './entities';
 import { LanguageService, Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
+import { config } from '../config';
 const Bloodhound = require('typeahead.js/dist/bloodhound.js');
 
 export interface FintoConceptSearchResult {
@@ -26,26 +27,26 @@ export class ConceptService {
   }
 
   getAllSchemes(lang: Language): IHttpPromise<any> {
-    return this.$http.get('/api/rest/scheme', {params: {lang}});
+    return this.$http.get(config.apiEndpointWithName('scheme'), {params: {lang}});
   }
 
   getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion> {
-    return this.$http.get('/api/rest/conceptSuggestion', {params: {conceptID: id}})
+    return this.$http.get(config.apiEndpointWithName('conceptSuggestion'), {params: {conceptID: id}})
       .then(response => this.entities.deserializeConceptSuggestion(response.data));
   }
 
   getConceptSuggestions(schemeId: Uri): IPromise<ConceptSuggestion[]> {
-    return this.$http.get('/api/rest/conceptSuggestion', {params: {schemeID: schemeId}})
+    return this.$http.get(config.apiEndpointWithName('conceptSuggestion'), {params: {schemeID: schemeId}})
       .then(response => this.entities.deserializeConceptSuggestions(response.data));
   }
 
   createConceptSuggestion(schemeId: Uri, label: string, comment: string, broaderConceptId: Uri, lang: Language): IPromise<string> {
-    return this.$http.put('/api/rest/conceptSuggestion', null, {params: {schemeID: schemeId, label: upperCaseFirst(label), comment, lang, topConceptID: broaderConceptId}})
+    return this.$http.put(config.apiEndpointWithName('conceptSuggestion'), null, {params: {schemeID: schemeId, label: upperCaseFirst(label), comment, lang, topConceptID: broaderConceptId}})
       .then((response: any) => response.data['@id']);
   }
 
   getFintoConcept(id: Uri): IPromise<FintoConcept> {
-    return this.$http.get('/api/rest/concept', {params: {uri: id}})
+    return this.$http.get(config.apiEndpointWithName('concept'), {params: {uri: id}})
       .then(response => this.entities.deserializeFintoConcept(response.data, id));
   }
 
@@ -63,7 +64,7 @@ export class ConceptService {
       identify: identify,
       remote: {
         cache: false,
-        url: `/api/rest/conceptSearch?term=%QUERY&lang=${this.languageService.modelLanguage}&vocid=${vocId}`,
+        url: `${config.apiEndpoint}/conceptSearch?term=%QUERY&lang=${this.languageService.modelLanguage}&vocid=${vocId}`,
         wildcard: '%QUERY',
         transform: (response: any) => _.uniq(limitResults(response.results), identify)
       },

@@ -3,6 +3,7 @@ import IPromise = angular.IPromise;
 import * as _  from 'lodash';
 import { normalizeAsArray } from './utils';
 import { EntityDeserializer, Group, GroupListItem, Uri } from './entities';
+import { config } from '../config';
 
 export class GroupService {
 
@@ -11,13 +12,13 @@ export class GroupService {
   }
 
   getAllGroups(): IPromise<GroupListItem[]> {
-    return this.$http.get('/api/rest/groups')
+    return this.$http.get(config.apiEndpointWithName('groups'))
       .then(response => this.entities.deserializeGroupList(response.data));
   }
 
   getGroup(groupId: Uri): IPromise<Group> {
     // TODO proper API
-    return this.$http.get('/api/rest/groups')
+    return this.$http.get(config.apiEndpointWithName('groups'))
       .then((response: any) => {
         return {
           '@context': response.data['@context'],
