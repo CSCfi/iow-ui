@@ -35,7 +35,7 @@ export class ConceptDatasets {
       identify: identify,
       remote: {
         cache: false,
-        url: `${config.apiEndpoint}/conceptSearch?term=%QUERY&lang=${this.languageService.modelLanguage}&vocid=${vocId}`,
+        url: config.apiEndpointWithName(`conceptSearch?term=%QUERY&lang=${this.languageService.modelLanguage}&vocid=${vocId}`),
         wildcard: '%QUERY',
         transform: (response: any) => _.uniq(limitResults(response.results), identify)
       },

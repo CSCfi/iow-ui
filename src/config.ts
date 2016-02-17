@@ -14,11 +14,11 @@ export interface Config {
 class EnvironmentConfig implements Config {
 
   apiEndpointWithName(name: string) {
-    return `${this.apiEndpoint}/${name}`;
+    return `${this.apiEndpoint}/rest/${name}`;
   }
 
   get apiEndpoint() {
-    return process.env.API_ENDPOINT || '/api/rest';
+    return process.env.API_ENDPOINT || '/api';
   }
 
   get production() {
