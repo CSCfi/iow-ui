@@ -11,6 +11,7 @@ import { PredicateService } from '../src/services/predicateService';
 import { UserService } from '../src/services/userService';
 import { config } from '../src/config';
 import { ConceptService } from '../src/services/conceptService';
+import { splitCurie } from '../src/services/utils';
 
 var http = require('http');
 var fs = require('fs');
@@ -131,6 +132,7 @@ export interface ModelDetails extends EntityDetails {
 }
 
 export interface ClassDetails extends EntityDetails {
+  id?: string,
   subClassOf?: Curie|(() => IPromise<Class>);
   conceptId?: Uri;
   equivalentClasses?: (Curie|(() => IPromise<Class>))[];
@@ -138,11 +140,13 @@ export interface ClassDetails extends EntityDetails {
 }
 
 export interface ShapeDetails extends EntityDetails {
+  id?: string,
   equivalentClasses?: (Curie|(() => IPromise<Class>))[];
   properties?: [(() => IPromise<Predicate>), PropertyDetails][]
 }
 
 export interface PredicateDetails extends EntityDetails {
+  id?: string,
   subPropertyOf?: Curie|(() => IPromise<Predicate>);
   conceptId?: Uri;
   equivalentProperties?: (Curie|(() => IPromise<Predicate>))[];
@@ -170,6 +174,13 @@ function setDetails(entity: { label: Localizable, comment: Localizable, state: S
   entity.comment = details.comment;
   if (details.state) {
     entity.state = details.state;
+  }
+}
+
+function setId(entity: { curie: Curie }, details: { id?: string }) {
+  if (details.id) {
+    const {prefix, value} = splitCurie(entity.curie);
+    entity.curie = prefix + ':' + details.id;
   }
 }
 
@@ -242,6 +253,7 @@ export function specializeClass(modelPromise: IPromise<Model>, classPromise: IPr
       return classService.newShape(klass.id, model, 'fi')
         .then(shape => {
           setDetails(shape, details);
+          setId(shape, details);
 
           const promises: IPromise<any>[] = [];
 
@@ -268,6 +280,7 @@ export function createClass(modelPromise: IPromise<Model>, details: ClassDetails
     .then(model => classService.newClass(model, details.label['fi'], details.conceptId || asiaConceptId, 'fi'))
     .then(klass => {
       setDetails(klass, details);
+      setId(klass, details);
 
       const promises: IPromise<any>[] = [];
 
@@ -305,6 +318,7 @@ export function createPredicate<T extends Predicate>(modelPromise: IPromise<Mode
     .then(model => predicateService.newPredicate(model, details.label['fi'], details.conceptId || asiaConceptId, type, 'fi'))
     .then((predicate: T) => {
       setDetails(predicate, details);
+      setId(predicate, details);
 
       const promises: IPromise<any>[] = [];
 

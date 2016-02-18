@@ -42,6 +42,7 @@ namespace Jhs {
     });
 
     export const koodi = createAssociation(model, {
+      id: 'koodi',
       label: { fi: 'Viittaus koodistossa rajattuun luokitukseen' },
       valueClass: 'skos:Concept'
     });
