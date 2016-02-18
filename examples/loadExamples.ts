@@ -266,39 +266,39 @@ namespace Jhs {
       subClassOf: aikavali,
       properties: [
         {
-          predicate: () => Jhs.Attributes.alkamisaika,
+          predicate: Jhs.Attributes.alkamisaika,
           label: { fi: 'Ajanjakson alkamisaika' }
         },
         {
-          predicate: () => Jhs.Attributes.alkamisvuosi,
+          predicate: Jhs.Attributes.alkamisvuosi,
           label: { fi: 'Ajanjakson alkamisvuosi' }
         },
         {
-          predicate: () => Jhs.Attributes.alkamiskuukausi,
+          predicate: Jhs.Attributes.alkamiskuukausi,
           label: { fi: 'Ajanjakson alkamiskuukausi' }
         },
         {
-          predicate: () => Jhs.Attributes.alkamispvm,
+          predicate: Jhs.Attributes.alkamispvm,
           label: { fi: 'Ajanjakson alkamispäivämäärä' }
         },
         {
-          predicate: () => Jhs.Attributes.alkamishetki,
+          predicate: Jhs.Attributes.alkamishetki,
           label: { fi: 'Ajanjakson alkamishetki' }
         },
         {
-          predicate: () => Jhs.Attributes.paattymishetki,
+          predicate: Jhs.Attributes.paattymishetki,
           label: { fi: 'Ajanjakson päättymishetki' }
         },
         {
-          predicate: () => Jhs.Attributes.paattymisaika,
+          predicate: Jhs.Attributes.paattymisaika,
           label: { fi: 'Ajanjakson päättymisaika' }
         },
         {
-          predicate: () => Jhs.Attributes.paattymispaivamaara,
+          predicate: Jhs.Attributes.paattymispaivamaara,
           label: { fi: 'Ajanjakson päättymispäivämäärä' }
         },
         {
-          predicate: () => Jhs.Attributes.nimi,
+          predicate: Jhs.Attributes.nimi,
           label: { fi: 'Ajanjaksolle määritelty nimi' }
         },
       ]
@@ -309,38 +309,38 @@ namespace Jhs {
       comment: { fi : 'Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä.' },
       properties: [
         {
-          predicate: () => Jhs.Attributes.korvaavuussuhdeTeksti,
+          predicate: Jhs.Attributes.korvaavuussuhdeTeksti,
           label:   { fi: 'Asian korvaavuussuhde' },
           comment: { fi: 'Edellisen asian voimassaolo on esimerkiksi päättynyt, minkä johdosta aiempi asia on jouduttu korvaamaan uudella.' }
         },
         {
-          predicate: () => Jhs.Attributes.tehtavakoodi,
+          predicate: Jhs.Attributes.tehtavakoodi,
           label:   { fi: 'Asian tehtäväkoodi' },
           comment: { fi: 'Julkisen hallinnon yhteisen tai organisaation oman tehtäväluokituksen mukainen tehtävä.' }
         },
         {
-          predicate: () => Jhs.Attributes.aiheteksti,
+          predicate: Jhs.Attributes.aiheteksti,
           label:   { fi: 'Asian aiheteksti' },
           comment: { fi: 'Asiaan liittyvä aihe, ilmiö tai teema. Aiheella voidaan luokitella asioita erilaisiin kokonaisuuksiin tai ryhmiin. Hyödynnetään esimerkiksi raportointi- ja hakunäkymien rakentamisessa tietojärjestelmissä.' }
         },
         {
-          predicate: () => Jhs.Attributes.asiatunnus,
+          predicate: Jhs.Attributes.asiatunnus,
           label:   { fi: 'Asiatunnus' },
           comment: { fi: 'Asiatunnus voidaan muodostaa organisaatiokohtaisesti tai organisaatioiden välillä yhteisesti sovitulla tavalla' }
         },
         {
-          predicate: () => Jhs.Attributes.nimeke,
+          predicate: Jhs.Attributes.nimeke,
           label:   { fi: 'Nimeke' },
           comment: { fi: 'Asian nimitys' }
         },
         {
-          predicate: () => Jhs.Attributes.asiasana,
+          predicate: Jhs.Attributes.asiasana,
           label:   { fi: 'Asian asiasana',
             en: 'Keyword' },
           comment: { fi: 'Asian sisältöä kuvaileva tieto' }
         },
         {
-          predicate: () => Jhs.Attributes.viittaussuhdeteksti,
+          predicate: Jhs.Attributes.viittaussuhdeteksti,
           label:   { fi: 'Asian viittaussuhde' },
           comment: { fi: 'Viittaussuhdetta voi käyttää esim. osoittamaan eri asiatunnuksella esiintyviä hakemuksia, jotka ratkaistaan samalla päätöksellä.' }
         }
