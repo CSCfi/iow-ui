@@ -160,20 +160,13 @@ export class DefinedBy extends GraphNode {
 
     // FIXME: when api returns coherent data get rid of this mangling
     if (typeof graph === 'string' || graph instanceof String) {
-      reportErrorWithStack('Is defined by is a string and it should be an object', graph);
       const str = (graph instanceof String) ? graph.valueOf() : graph;
       this.id = str;
-      this.type = ['model'];
       this.label = deserializeLocalizable({'fi': str, 'en': str });
 
     } else if (typeof graph === 'object') {
       this.id = graph['@id'];
       this.label = deserializeLocalizable(graph.label);
-
-      if (typeof graph === 'object' && !graph['@type']) {
-        reportErrorWithStack('Is defined by object is missing the type', graph);
-        this.type = ['model'];
-      }
     } else {
       throw new Error('Unsupported is defined sub-graph');
     }
