@@ -158,6 +158,7 @@ export interface ClassDetails extends EntityDetails {
 }
 
 export interface ShapeDetails extends EntityDetails {
+  class: Resolvable<Class>;
   id?: string,
   equivalentClasses?: CurieResolvable<Class>[];
   properties?: PropertyDetails[]
@@ -264,8 +265,8 @@ export function assignClass(modelPromise: IPromise<Model>, classPromise: IPromis
     .then(nop, reportFailure);
 }
 
-export function specializeClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class>, details: ShapeDetails): IPromise<Class> {
-  return q.all([modelPromise, classPromise])
+export function specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
+  return q.all([modelPromise, asPromise(details.class)])
     .then(result => {
       const model = <Model> result[0];
       const klass = <Class> result[1];

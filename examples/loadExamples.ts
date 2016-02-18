@@ -408,7 +408,8 @@ namespace Oili {
   }
 
   export namespace Classes {
-    const yhteystiedot = specializeClass(model, Jhs.Classes.yhteystieto, {
+    const yhteystiedot = specializeClass(model, {
+      class: Jhs.Classes.yhteystieto,
       label: { fi: 'Yhteystiedot' }
     });
   }
