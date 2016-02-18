@@ -336,7 +336,7 @@ namespace Jhs {
         {
           predicate: Jhs.Attributes.asiasana,
           label:   { fi: 'Asian asiasana',
-            en: 'Keyword' },
+                     en: 'Keyword' },
           comment: { fi: 'Asian sisältöä kuvaileva tieto' }
         },
         {
