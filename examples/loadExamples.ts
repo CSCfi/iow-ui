@@ -1,14 +1,16 @@
 import IPromise = angular.IPromise;
+import * as _ from 'lodash';
 import { httpService } from './requestToAngularHttpService';
 import {
   EntityDeserializer, Localizable, Uri, Type, Model, Predicate, Attribute,
-  Association, Class, Property
+  Association, Class, Property, State, Curie
 } from '../src/services/entities';
 import { ModelService } from '../src/services/modelService';
 import { ClassService } from '../src/services/classService';
 import { PredicateService } from '../src/services/predicateService';
 import { UserService } from '../src/services/userService';
 import { config } from '../src/config';
+import { ConceptService } from '../src/services/conceptService';
 
 var http = require('http');
 var fs = require('fs');
@@ -40,6 +42,7 @@ const modelService = new ModelService(httpService, q, entityDeserializer);
 const predicateService = new PredicateService(httpService, entityDeserializer);
 const classService = new ClassService(httpService, q, predicateService, entityDeserializer);
 const userService = new UserService(httpService, entityDeserializer);
+const conceptService = new ConceptService(httpService, q, entityDeserializer);
 
 function makeRawRequest(requestPath: any, fileName: string): Promise<any> {
   function logger(res: any) {
@@ -75,46 +78,96 @@ const asiaConceptId = 'http://jhsmeta.fi/skos/J392';
 
 const loggedIn = ensureLoggedIn();
 const groupsDone = loggedIn.then(() => makeRawRequest('/api/rest/groups', 'exampleGroups.json'));
+const schemesPromise = conceptService.getAllSchemes('fi').then(result => result.data.vocabularies);
 
 function ensureLoggedIn(): IPromise<any> {
   return userService.updateLogin()
     .then<any>(user => !user.isLoggedIn() ? httpService.get(config.apiEndpoint + '/login').then(() => userService.updateLogin()) : q.when());
 }
 
-function nop(response: any) {
+function nop<T>(response: any) {
+  return response;
 }
 
+function reportFailure<T>(err: any) {
+  console.log('========');
+  console.log('=FAILED=');
+  console.log('========');
+  console.log(err);
+  console.log('========');
+  throw new Error(err);
+}
 
 function isPromise<T>(obj:any): obj is IPromise<T> {
   return !!(obj && obj.then);
 }
 
+function asCuriePromise<T extends {curie: Curie}>(link: Uri|(() => IPromise<T>)): IPromise<Curie> {
+  if (typeof link === 'function') {
+    const promise = link();
+    if (isPromise<T>(promise)) {
+      return promise.then(withCurie => withCurie.curie);
+    } else {
+      throw new Error('Must be promise');
+    }
+  } else if (typeof link === 'string') {
+    return q.when(link);
+  } else {
+    return q.when(null);
+  }
+}
+
 interface EntityDetails {
   label: Localizable;
   comment?: Localizable;
+  state?: State;
+}
+
+interface ModelDetails extends EntityDetails {
+  references?: string[];
+  requires?: (() => IPromise<Model>)[]
 }
 
 interface ClassDetails extends EntityDetails {
-  properties?: [IPromise<Predicate>, EntityDetails][]
+  subClassOf?: Curie|(() => IPromise<Class>);
+  scopeClass?: Curie|(() => IPromise<Class>);
+  conceptId?: Uri;
+  equivalentClasses?: (Curie|(() => IPromise<Class>))[];
+  properties?: [(() => IPromise<Predicate>), PropertyDetails][]
 }
 
-interface AttributeDetails extends EntityDetails {
+interface PredicateDetails extends EntityDetails {
+  subPropertyOf?: Curie|(() => IPromise<Predicate>);
+  conceptId?: Uri;
+  equivalentProperties?: (Curie|(() => IPromise<Predicate>))[];
+}
+
+interface AttributeDetails extends PredicateDetails {
   dataType?: string;
 }
 
-interface AssociationDetails extends EntityDetails {
+interface AssociationDetails extends PredicateDetails {
   valueClass?: Uri|(() => IPromise<Class>);
 }
 
 interface PropertyDetails extends EntityDetails {
+  example?: string;
+  dataType?: string;
+  valueClass?: Uri|(() => IPromise<Class>);
+  minCount?: number;
+  maxCount?: number;
+  pattern?: string;
 }
 
-function setDetails(entity: { label: Localizable, comment: Localizable }, details: EntityDetails) {
+function setDetails(entity: { label: Localizable, comment: Localizable, state: State }, details: EntityDetails) {
   entity.label = details.label;
   entity.comment = details.comment;
+  if (details.state) {
+    entity.state = details.state;
+  }
 }
 
-function createModel(prefix: string, groupId: Uri, type: Type, details: EntityDetails): IPromise<Model> {
+function createModel(prefix: string, groupId: Uri, type: Type, details: ModelDetails): IPromise<Model> {
 
   const modelIdNamespace = 'http://iow.csc.fi/' + (type === 'library' ? 'ns'  : 'ap') + '/';
 
@@ -124,43 +177,95 @@ function createModel(prefix: string, groupId: Uri, type: Type, details: EntityDe
     .then(() => modelService.newModel(prefix, details.label['fi'], groupId, 'fi', type))
     .then(model => {
       setDetails(model, details);
-      return modelService.createModel(model).then(() => model);
-    });
+
+      const promises: IPromise<any>[] = [];
+
+      for (var reference of details.references || []) {
+        promises.push(
+          schemesPromise.then((schemes: any) => {
+              const scheme = _.find(schemes, (scheme: any) => scheme.id === reference);
+              if (!scheme) {
+                console.log(schemes);
+                throw new Error('Reference not found: ' + reference);
+              }
+              return scheme;
+            })
+            .then(scheme => modelService.newReference(scheme, 'fi', model.context))
+            .then(referenceEntity => model.addReference(referenceEntity))
+        );
+      }
+
+      for (const require of details.requires || []) {
+        promises.push(
+          require()
+            .then(requiredModel => modelService.newRequire(requiredModel.namespace, requiredModel.prefix, requiredModel.label['fi'], 'fi'))
+            .then(require => model.addRequire(require))
+        );
+      }
+
+      return q.all(promises)
+        .then(() => modelService.createModel(model))
+        .then(() => model);
+    })
+    .then(nop, reportFailure);
 }
 
-function createLibrary(prefix: string, groupId: Uri, details: EntityDetails): IPromise<Model> {
+function createLibrary(prefix: string, groupId: Uri, details: ModelDetails): IPromise<Model> {
   return createModel(prefix, groupId, 'library', details);
 }
 
-function createProfile(prefix: string, groupId: Uri, details: EntityDetails): IPromise<Model> {
+function createProfile(prefix: string, groupId: Uri, details: ModelDetails): IPromise<Model> {
   return createModel(prefix, groupId, 'profile', details);
 }
 
 function createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPromise<Class> {
   return modelPromise
-    .then(model => classService.newClass(model, details.label['fi'], asiaConceptId, 'fi'))
+    .then(model => classService.newClass(model, details.label['fi'], details.conceptId || asiaConceptId, 'fi'))
     .then(klass => {
       setDetails(klass, details);
 
-      const propertyPromises: IPromise<any>[] = [];
+      const promises: IPromise<any>[] = [];
 
-        for (const [predicatePromise, propertyDetails] of details.properties || []) {
-          propertyPromises.push(createProperty(predicatePromise, propertyDetails).then(property => {
-            klass.addProperty(property);
-          }));
-        }
+      for (const [predicatePromiseFn, propertyDetails] of details.properties || []) {
+        promises.push(createProperty(predicatePromiseFn(), propertyDetails).then(property => {
+          klass.addProperty(property);
+        }));
+      }
 
-        return q.all(propertyPromises)
-          .then(() => classService.createClass(klass)).then(() => klass);
+      promises.push(asCuriePromise(details.subClassOf).then(curie => klass.subClassOf = curie));
+      promises.push(asCuriePromise(details.scopeClass).then(curie => klass.scopeClass = curie));
+
+      for (const equivalentClass of details.equivalentClasses || []) {
+        promises.push(asCuriePromise(equivalentClass).then(curie => klass.equivalentClasses.push(curie)));
+      }
+
+      return q.all(promises)
+        .then(() => classService.createClass(klass))
+        .then(() => klass)
+        .then(nop, reportFailure);
     });
 }
 
-function createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: EntityDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
+function createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
   return modelPromise
-    .then(model => predicateService.newPredicate(model, details.label['fi'], asiaConceptId, type, 'fi'))
+    .then(model => predicateService.newPredicate(model, details.label['fi'], details.conceptId || asiaConceptId, type, 'fi'))
     .then((predicate: T) => {
       setDetails(predicate, details);
-      return mangler(predicate).then(() => predicateService.createPredicate(predicate).then(() => predicate));
+
+      const promises: IPromise<any>[] = [];
+
+      promises.push(asCuriePromise(details.subPropertyOf).then(curie => predicate.subPropertyOf = curie));
+
+      for (const equivalentProperty of details.equivalentProperties || []) {
+        promises.push(asCuriePromise(equivalentProperty).then(curie => predicate.equivalentProperties.push(curie)));
+      }
+
+      promises.push(mangler(predicate));
+
+      return q.all(promises)
+        .then(() => predicateService.createPredicate(predicate))
+        .then(() => predicate)
+        .then(nop, reportFailure);
     });
 }
 
@@ -173,21 +278,8 @@ function createAttribute(modelPromise: IPromise<Model>, details: AttributeDetail
 
 function createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
   return createPredicate<Association>(modelPromise, 'association', details, association => {
-    const valueClass = details.valueClass;
-
-    if (typeof valueClass === 'function') {
-      const vc = valueClass();
-      if (isPromise<Class>(vc)) {
-        return vc.then(klass => {
-          association.valueClass = klass.curie;
-        });
-      } else {
-        throw new Error('Must be promise');
-      }
-    } else if (typeof valueClass === 'string') {
-      association.valueClass = valueClass;
-    }
-    return q.when();
+      return asCuriePromise(details.valueClass)
+        .then(curie => association.valueClass = curie);
   });
 }
 
@@ -196,15 +288,29 @@ function createProperty(predicatePromise: IPromise<Predicate>, details: Property
     .then(p => classService.newProperty(p.id))
     .then(p => {
       setDetails(p, details);
-      return p;
-    });
+
+      const valueClassPromise = asCuriePromise(details.valueClass).then(curie => p.valueClass = curie);
+
+      if (details.dataType) {
+        p.dataType = details.dataType;
+      }
+
+      p.example = details.example;
+      p.minCount = details.minCount;
+      p.maxCount = details.maxCount;
+      p.pattern = details.pattern;
+
+      return valueClassPromise.then(() => p);
+    })
+    .then(nop, reportFailure);
 }
 
 namespace Jhs {
 
   export const model = createLibrary('jhs', jhsGroupId, {
     label:   { fi: 'Julkishallinnon tietokomponentit' },
-    comment: { fi: 'Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti käytössä olevat tietosisällöt' }
+    comment: { fi: 'Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti käytössä olevat tietosisällöt' },
+    references: ['eos']
   });
 
   export namespace Associations {
@@ -443,8 +549,8 @@ namespace Jhs {
       { label:   { fi: 'Aikaväli' },
         comment: { fi: 'Ajankohdista muodostuva ajallinen jatkumo' },
         properties: [
-          [Jhs.Attributes.alkamishetki, { label: { fi: 'Aikavälin alkamishetki' } }],
-          [Jhs.Attributes.paattymishetki, { label: { fi: 'Aikavälin päättymishetki' } }]
+          [() => Jhs.Attributes.alkamishetki, { label: { fi: 'Aikavälin alkamishetki' } }],
+          [() => Jhs.Attributes.paattymishetki, { label: { fi: 'Aikavälin päättymishetki' } }]
         ]});
 
     export const ajanjakso = createClass(model, {
@@ -485,7 +591,8 @@ namespace Edu {
     label:   { fi: 'Opiskelun, opetuksen ja koulutuksen tietokomponentit',
                en: 'Core Vocabulary of Education' },
     comment: { fi: 'Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit',
-               en: 'Common core data model of teaching, learning and education' }
+               en: 'Common core data model of teaching, learning and education' },
+    requires: [() => Jhs.model]
   });
 }
 
@@ -493,6 +600,7 @@ namespace Oili {
 
   export const model = createProfile('oili', ktkGroupId, {
     label:   { fi: 'Opiskelijaksi ilmoittautuminen esimerkkiprofiili' },
-    comment: { fi: 'Esimerkki profiilin ominaisuuksista OILI casella' }
+    comment: { fi: 'Esimerkki profiilin ominaisuuksista OILI casella' },
+    requires: [() => Jhs.model, () => Edu.model]
   });
 }
