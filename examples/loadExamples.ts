@@ -5,9 +5,8 @@ import {
 
 namespace Jhs {
 
-  export const model = createLibrary({
+  export const model = createLibrary(jhsGroupId, {
     prefix: 'jhs',
-    groupId: jhsGroupId,
     label:   { fi: 'Julkishallinnon tietokomponentit' },
     comment: { fi: 'Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti käytössä olevat tietosisällöt' },
     references: ['eos']
@@ -372,9 +371,8 @@ namespace Jhs {
 
 namespace Edu {
 
-  export const model = createLibrary({
+  export const model = createLibrary(ktkGroupId, {
     prefix: 'edu',
-    groupId: ktkGroupId,
     label:   { fi: 'Opiskelun, opetuksen ja koulutuksen tietokomponentit',
                en: 'Core Vocabulary of Education' },
     comment: { fi: 'Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit',
@@ -396,9 +394,8 @@ namespace Edu {
 
 namespace Oili {
 
-  export const model = createProfile({
+  export const model = createProfile(ktkGroupId, {
     prefix: 'oili',
-    groupId: ktkGroupId,
     label:   { fi: 'Opiskelijaksi ilmoittautuminen esimerkkiprofiili' },
     comment: { fi: 'Esimerkki profiilin ominaisuuksista OILI casella' },
     requires: [() => Jhs.model, () => Edu.model]

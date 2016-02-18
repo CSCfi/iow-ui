@@ -126,7 +126,6 @@ export interface EntityDetails {
 
 export interface ModelDetails extends EntityDetails {
   prefix: string,
-  groupId: Uri
   references?: string[];
   requires?: (() => IPromise<Model>)[]
 }
@@ -185,14 +184,14 @@ function setId(entity: { curie: Curie }, details: { id?: string }) {
   }
 }
 
-export function createModel(type: Type, details: ModelDetails): IPromise<Model> {
+export function createModel(type: Type, groupId: Uri, details: ModelDetails): IPromise<Model> {
 
   const modelIdNamespace = 'http://iow.csc.fi/' + (type === 'library' ? 'ns'  : 'ap') + '/';
 
   return groupsDone
     .then(() => modelService.deleteModel(modelIdNamespace + details.prefix))
     .then(nop, nop)
-    .then(() => modelService.newModel(details.prefix, details.label['fi'], details.groupId, 'fi', type))
+    .then(() => modelService.newModel(details.prefix, details.label['fi'], groupId, 'fi', type))
     .then(model => {
       setDetails(model, details);
 
@@ -228,12 +227,12 @@ export function createModel(type: Type, details: ModelDetails): IPromise<Model> 
     .then(nop, reportFailure);
 }
 
-export function createLibrary(details: ModelDetails): IPromise<Model> {
-  return createModel('library', details);
+export function createLibrary(groupId: Uri, details: ModelDetails): IPromise<Model> {
+  return createModel('library', groupId, details);
 }
 
-export function createProfile(details: ModelDetails): IPromise<Model> {
-  return createModel('profile', details);
+export function createProfile(groupId: Uri, details: ModelDetails): IPromise<Model> {
+  return createModel('profile', groupId, details);
 }
 
 export function assignClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class>): IPromise<Class> {
