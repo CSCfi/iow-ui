@@ -373,7 +373,7 @@ export function createAssociation(modelPromise: IPromise<Model>, details: Associ
 export function createProperty(details: PropertyDetails): IPromise<Property> {
   return asPromise(details.predicate)
     .then(p => classService.newProperty(p.id))
-    .then(p => {
+    .then((p: Property) => {
       setDetails(p, details);
 
       const valueClassPromise = asCuriePromise(details.valueClass).then(curie => p.valueClass = curie);
