@@ -72,14 +72,11 @@ function makeRequest<T>(method: string, url: string, config: angular.IRequestSho
     }
 
     const callback = (err: any, resp: any, body: any) => {
-
-      console.log(options.method + ': ' + options.url);
-
       _.remove(pendingRequests, requestConfig);
       if (err) {
         rejectAndReport(err);
       } else {
-        console.log(resp.statusCode + ": " + hstd(resp.statusCode));
+        console.log(options.method + ': ' + options.url + ' -> ' + resp.statusCode + ": " + hstd(resp.statusCode));
         if (resp.statusCode < 200 || resp.statusCode >= 300) {
           rejectAndReport(body);
         } else {
