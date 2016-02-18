@@ -103,20 +103,39 @@ function isPromise<T>(obj:any): obj is IPromise<T> {
   return !!(obj && obj.then);
 }
 
-function asCuriePromise<T extends {curie: Curie}>(link: Uri|(() => IPromise<T>)): IPromise<Curie> {
-  if (typeof link === 'function') {
-    const promise = link();
+function isPromiseProvider<T>(obj:any): obj is (() => IPromise<T>) {
+  return typeof obj === 'function';
+}
+
+function asCuriePromise<T extends { curie: Curie }>(resolvable: CurieResolvable<T>): IPromise<Curie> {
+  if (isPromiseProvider(resolvable)) {
+    const promise = resolvable();
     if (isPromise<T>(promise)) {
       return promise.then(withCurie => withCurie.curie);
     } else {
       throw new Error('Must be promise');
     }
-  } else if (typeof link === 'string') {
-    return q.when(link);
+  } else if (isPromise(resolvable)) {
+    return resolvable.then(withCurie => withCurie.curie);
+  } else if (typeof resolvable === 'string') {
+    return q.when(resolvable);
   } else {
     return q.when(null);
   }
 }
+
+function asPromise<T>(resolvable: Resolvable<T>): IPromise<T> {
+  if (isPromiseProvider<T>(resolvable)) {
+    return resolvable();
+  } else if (isPromise<T>(resolvable)) {
+    return resolvable;
+  } else {
+    throw new Error('Not resolvable: ' + resolvable);
+  }
+}
+
+type Resolvable<T> = IPromise<T>|(() => IPromise<T>);
+type CurieResolvable<T extends { curie: Curie }> = Curie|IPromise<T>|(() => IPromise<T>);
 
 export interface EntityDetails {
   label: Localizable;
@@ -127,28 +146,28 @@ export interface EntityDetails {
 export interface ModelDetails extends EntityDetails {
   prefix: string,
   references?: string[];
-  requires?: (() => IPromise<Model>)[]
+  requires?: Resolvable<Model>[]
 }
 
 export interface ClassDetails extends EntityDetails {
   id?: string,
-  subClassOf?: Curie|(() => IPromise<Class>);
+  subClassOf?: CurieResolvable<Class>;
   conceptId?: Uri;
-  equivalentClasses?: (Curie|(() => IPromise<Class>))[];
+  equivalentClasses?: CurieResolvable<Class>[];
   properties?: PropertyDetails[]
 }
 
 export interface ShapeDetails extends EntityDetails {
   id?: string,
-  equivalentClasses?: (Curie|(() => IPromise<Class>))[];
+  equivalentClasses?: CurieResolvable<Class>[];
   properties?: PropertyDetails[]
 }
 
 export interface PredicateDetails extends EntityDetails {
   id?: string,
-  subPropertyOf?: Curie|(() => IPromise<Predicate>);
+  subPropertyOf?: CurieResolvable<Predicate>;
   conceptId?: Uri;
-  equivalentProperties?: (Curie|(() => IPromise<Predicate>))[];
+  equivalentProperties?: CurieResolvable<Predicate>[];
 }
 
 export interface AttributeDetails extends PredicateDetails {
@@ -156,14 +175,14 @@ export interface AttributeDetails extends PredicateDetails {
 }
 
 export interface AssociationDetails extends PredicateDetails {
-  valueClass?: Uri|(() => IPromise<Class>);
+  valueClass?: CurieResolvable<Class>;
 }
 
 export interface PropertyDetails extends EntityDetails {
-  predicate: () => IPromise<Predicate>;
+  predicate: Resolvable<Predicate>;
   example?: string;
   dataType?: string;
-  valueClass?: Uri|(() => IPromise<Class>);
+  valueClass?: CurieResolvable<Class>;
   minCount?: number;
   maxCount?: number;
   pattern?: string;
@@ -214,7 +233,7 @@ export function createModel(type: Type, groupId: Uri, details: ModelDetails): IP
 
       for (const require of details.requires || []) {
         promises.push(
-          require()
+          asPromise(require)
             .then(requiredModel => modelService.newRequire(requiredModel.namespace, requiredModel.prefix, requiredModel.label['fi'], 'fi'))
             .then(require => model.addRequire(require))
         );
@@ -352,7 +371,7 @@ export function createAssociation(modelPromise: IPromise<Model>, details: Associ
 }
 
 export function createProperty(details: PropertyDetails): IPromise<Property> {
-  return details.predicate()
+  return asPromise(details.predicate)
     .then(p => classService.newProperty(p.id))
     .then(p => {
       setDetails(p, details);

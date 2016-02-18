@@ -250,11 +250,11 @@ namespace Jhs {
       comment: { fi: 'Ajankohdista muodostuva ajallinen jatkumo' },
       properties: [
         {
-          predicate: () => Jhs.Attributes.alkamishetki,
+          predicate: Jhs.Attributes.alkamishetki,
           label: { fi: 'Aikavälin alkamishetki' }
         },
         {
-          predicate: () => Jhs.Attributes.paattymishetki,
+          predicate: Jhs.Attributes.paattymishetki,
           label: { fi: 'Aikavälin päättymishetki' }
         }
       ]
@@ -263,7 +263,7 @@ namespace Jhs {
     export const ajanjakso = createClass(model, {
       label: { fi: 'Ajanjakso' },
       comment: { fi: 'Nimetty aikaväli, joka voidaan määritellä eri tarkkuudella'  },
-      subClassOf: () => aikavali,
+      subClassOf: aikavali,
       properties: [
         {
           predicate: () => Jhs.Attributes.alkamisaika,
@@ -377,7 +377,7 @@ namespace Edu {
                en: 'Core Vocabulary of Education' },
     comment: { fi: 'Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit',
                en: 'Common core data model of teaching, learning and education' },
-    requires: [() => Jhs.model]
+    requires: [Jhs.model]
   });
 
   export namespace Attributes {
@@ -398,7 +398,7 @@ namespace Oili {
     prefix: 'oili',
     label:   { fi: 'Opiskelijaksi ilmoittautuminen esimerkkiprofiili' },
     comment: { fi: 'Esimerkki profiilin ominaisuuksista OILI casella' },
-    requires: [() => Jhs.model, () => Edu.model]
+    requires: [Jhs.model, Edu.model]
   });
 
   export namespace Attributes {
