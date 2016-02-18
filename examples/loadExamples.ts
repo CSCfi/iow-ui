@@ -84,6 +84,11 @@ function ensureLoggedIn(): IPromise<any> {
 function nop(response: any) {
 }
 
+
+function isPromise<T>(obj:any): obj is IPromise<T> {
+  return !!(obj && obj.then);
+}
+
 interface EntityDetails {
   label: Localizable;
   comment?: Localizable;
@@ -91,6 +96,17 @@ interface EntityDetails {
 
 interface ClassDetails extends EntityDetails {
   properties?: [IPromise<Predicate>, EntityDetails][]
+}
+
+interface AttributeDetails extends EntityDetails {
+  dataType?: string;
+}
+
+interface AssociationDetails extends EntityDetails {
+  valueClass?: Uri|(() => IPromise<Class>);
+}
+
+interface PropertyDetails extends EntityDetails {
 }
 
 function setDetails(entity: { label: Localizable, comment: Localizable }, details: EntityDetails) {
@@ -139,38 +155,49 @@ function createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPro
     });
 }
 
-function createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: EntityDetails): IPromise<T> {
+function createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: EntityDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
   return modelPromise
     .then(model => predicateService.newPredicate(model, details.label['fi'], asiaConceptId, type, 'fi'))
-    .then(predicate => {
+    .then((predicate: T) => {
       setDetails(predicate, details);
-      return predicateService.createPredicate(predicate).then(() => predicate);
+      return mangler(predicate).then(() => predicateService.createPredicate(predicate).then(() => predicate));
     });
 }
 
-function createAttribute(modelPromise: IPromise<Model>, dataType: string, details: EntityDetails): IPromise<Attribute> {
-  return createPredicate<Attribute>(modelPromise, 'attribute', details)
-    .then(attribute => {
-      attribute.dataType = dataType;
-      return attribute;
-    })
+function createAttribute(modelPromise: IPromise<Model>, details: AttributeDetails): IPromise<Attribute> {
+  return createPredicate<Attribute>(modelPromise, 'attribute', details, attribute => {
+    attribute.dataType = details.dataType;
+    return q.when();
+  });
 }
 
-function createAssociation(modelPromise: IPromise<Model>, valueClass: Uri, details: EntityDetails): IPromise<Association> {
-  return createPredicate<Association>(modelPromise, 'association', details)
-    .then(association => {
+function createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
+  return createPredicate<Association>(modelPromise, 'association', details, association => {
+    const valueClass = details.valueClass;
+
+    if (typeof valueClass === 'function') {
+      const vc = valueClass();
+      if (isPromise<Class>(vc)) {
+        return vc.then(klass => {
+          association.valueClass = klass.curie;
+        });
+      } else {
+        throw new Error('Must be promise');
+      }
+    } else if (typeof valueClass === 'string') {
       association.valueClass = valueClass;
-      return association;
-    })
+    }
+    return q.when();
+  });
 }
 
-function createProperty(predicatePromise: IPromise<Predicate>, details: EntityDetails): IPromise<Property> {
+function createProperty(predicatePromise: IPromise<Predicate>, details: PropertyDetails): IPromise<Property> {
   return predicatePromise
     .then(p => classService.newProperty(p.id))
     .then(p => {
       setDetails(p, details);
       return p;
-    })
+    });
 }
 
 namespace Jhs {
@@ -182,59 +209,232 @@ namespace Jhs {
 
   export namespace Associations {
 
-    export const aidinkieli = createAssociation(model, null, { label: { fi: 'Äidinkieli' } });
-    export const ammatti = createAssociation(model, null, { label: { fi: 'Ammatti' } });
-    export const viittausAsiaan = createAssociation(model, null, { label: { fi: 'Viittaus asiaan' } });
-    export const asianosainen = createAssociation(model, null, { label: { fi: 'Asianosainen' } });
-    export const henkilo = createAssociation(model, 'jhs:Henkilö', { label: { fi: 'Henkilö' } });
-    export const kansalaisuus = createAssociation(model, 'skos:Concept', { label: { fi: 'Kansalaisuus' } });
-    export const koodi = createAssociation(model, 'skos:Concept', { label: { fi: 'Viittaus koodistossa rajattuun luokitukseen' } });
-    export const organisaatio = createAssociation(model, null, { label: { fi: 'Organisaatio' } });
-    export const osoite = createAssociation(model, null, { label: { fi: 'Osoite' } });
-    export const siviilisaaty = createAssociation(model, null, { label: { fi: 'Siviilisääty' } });
-    export const viittaussuhde = createAssociation(model, null, { label: { fi: 'Viittaussuhde' } });
-    export const yhteystiedot = createAssociation(model, null, { label: { fi: 'Yhteystiedot' } });
+    export const aidinkieli = createAssociation(model, {
+      label: { fi: 'Äidinkieli' }
+    });
+
+    export const ammatti = createAssociation(model, {
+      label: { fi: 'Ammatti' }
+    });
+
+    export const viittausAsiaan = createAssociation(model, {
+      label: { fi: 'Viittaus asiaan' }
+    });
+
+    export const asianosainen = createAssociation(model, {
+      label: { fi: 'Asianosainen' }
+    });
+
+    export const henkilo = createAssociation(model, {
+      label: { fi: 'Henkilö' },
+      valueClass: () => Jhs.Classes.henkilo
+    });
+
+    export const kansalaisuus = createAssociation(model, {
+      label: { fi: 'Kansalaisuus' },
+      valueClass: 'skos:Concept'
+    });
+
+    export const koodi = createAssociation(model, {
+      label: { fi: 'Viittaus koodistossa rajattuun luokitukseen' },
+      valueClass: 'skos:Concept'
+    });
+
+    export const organisaatio = createAssociation(model, {
+      label: { fi: 'Organisaatio' }
+    });
+
+    export const osoite = createAssociation(model, {
+      label: { fi: 'Osoite' }
+    });
+
+    export const siviilisaaty = createAssociation(model, {
+      label: { fi: 'Siviilisääty' }
+    });
+
+    export const viittaussuhde = createAssociation(model, {
+      label: { fi: 'Viittaussuhde' }
+    });
+
+    export const yhteystiedot = createAssociation(model, {
+      label: { fi: 'Yhteystiedot' }
+    });
   }
 
   export namespace Attributes {
 
-    export const alkamisaika = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Alkamisaika' } });
-    export const alkamishetki = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Alkamishetki' } });
-    export const alkamiskuukausi = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Alkamiskuukausi' } });
-    export const alkamispaiva = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Alkamispäivä' } });
-    export const alkamispvm = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Alkamispäivämäärä' } });
-    export const alkamisvuosi = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Alkamisvuosi' } });
-    export const paattymishetki = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Päättymishetki' } });
-    export const paattymisaika = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Päättymisaika' } });
-    export const paattymiskuukausi = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Päättymiskuukausi' } });
-    export const paattymispaiva = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Päättymispäivä' } });
-    export const paattymispaivamaara = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Päättymispäivämäärä' } });
-    export const paattymisvuosi = createAttribute(model, 'xsd:dateTime', { label: { fi: 'Päättymisvuosi' } });
-    export const aiheteksti = createAttribute(model, null, { label: { fi: 'Aiheteksti' } });
-    export const asiatunnus = createAttribute(model, null, { label: { fi: 'Asiatunnus' } });
-    export const asiasana = createAttribute(model, 'xsd:string', { label: { fi: 'Asiasana' } });
-    export const etunimi = createAttribute(model, 'xsd:string', { label: { fi: 'Etunimi' } });
-    export const henkilotunnus = createAttribute(model, 'xsd:string', { label: { fi: 'Henkilotunnus' } });
-    export const jakokirjain = createAttribute(model, 'xsd:string', { label: { fi: 'Jakokirjain' } });
-    export const kadunnimi = createAttribute(model, 'xsd:string', { label: { fi: 'Kadunnimi' } });
-    export const kirjainosa = createAttribute(model, null, { label: { fi: 'Kirjainosa' } });
-    export const korvaavuussuhdeTeksti = createAttribute(model, null, { label: { fi: 'Korvaavuussuhde teksti' } });
-    export const kuvausteksti = createAttribute(model, 'xsd:string', { label: { fi: 'Kuvausteksti' } });
-    export const nimeke = createAttribute(model, 'xsd:string', { label: { fi: 'Nimeke' } });
-    export const nimi = createAttribute(model, 'xsd:string', { label: { fi: 'Nimi' } });
-    export const numero = createAttribute(model, 'xsd:integer', { label: { fi: 'Numero' } });
-    export const osoiteNumero = createAttribute(model, 'xsd:integer', { label: { fi: 'Osoite numero' } });
-    export const osoiteTeksti = createAttribute(model, 'xsd:string', { label: { fi: 'Osoiteteksti' } });
-    export const postilokero = createAttribute(model, 'xsd:string', { label: { fi: 'Postilokeron osoiteteksti' } });
-    export const puhelinnumero = createAttribute(model, null, { label: { fi: 'Puhelinnumero' } });
-    export const selite = createAttribute(model, null, { label: { fi: 'Selite' } });
-    export const sukunimi = createAttribute(model, null, { label: { fi: 'Sukunimi' } });
-    export const tehtavakoodi = createAttribute(model, null, { label: { fi: 'Tehtäväkoodi' } });
-    export const tunniste = createAttribute(model, null, { label: { fi: 'Tunniste' } });
-    export const tunnus = createAttribute(model, null, { label: { fi: 'Tunnus' } });
-    export const tyyppi = createAttribute(model, null, { label: { fi: 'Tyyppi' } });
-    export const viittaussuhdeteksti = createAttribute(model, null, { label: { fi: 'Viittaussuhdeteksti' } });
-    export const ytunnus = createAttribute(model, 'xsd:string', { label: { fi: 'Y-tunnus' } });
+    export const alkamisaika = createAttribute(model, {
+      label: { fi: 'Alkamisaika' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const alkamishetki = createAttribute(model, {
+      label: { fi: 'Alkamishetki' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const alkamiskuukausi = createAttribute(model, {
+      label: { fi: 'Alkamiskuukausi' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const alkamispaiva = createAttribute(model, {
+      label: { fi: 'Alkamispäivä' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const alkamispvm = createAttribute(model, {
+      label: { fi: 'Alkamispäivämäärä' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const alkamisvuosi = createAttribute(model, {
+      label: { fi: 'Alkamisvuosi' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const paattymishetki = createAttribute(model, {
+      label: { fi: 'Päättymishetki' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const paattymisaika = createAttribute(model, {
+      label: { fi: 'Päättymisaika' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const paattymiskuukausi = createAttribute(model, {
+      label: { fi: 'Päättymiskuukausi' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const paattymispaiva = createAttribute(model, {
+      label: { fi: 'Päättymispäivä' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const paattymispaivamaara = createAttribute(model, {
+      label: { fi: 'Päättymispäivämäärä' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const paattymisvuosi = createAttribute(model, {
+      label: { fi: 'Päättymisvuosi' },
+      dataType: 'xsd:dateTime'
+    });
+
+    export const aiheteksti = createAttribute(model, {
+      label: { fi: 'Aiheteksti' }
+    });
+
+    export const asiatunnus = createAttribute(model, {
+      label: { fi: 'Asiatunnus' }
+    });
+
+    export const asiasana = createAttribute(model, {
+      label: { fi: 'Asiasana' },
+      dataType: 'xsd:string'
+    });
+
+    export const etunimi = createAttribute(model, {
+      label: { fi: 'Etunimi' },
+      dataType: 'xsd:string'
+    });
+
+    export const henkilotunnus = createAttribute(model, {
+      label: { fi: 'Henkilotunnus' },
+      dataType: 'xsd:string'
+    });
+
+    export const jakokirjain = createAttribute(model, {
+      label: { fi: 'Jakokirjain' },
+      dataType: 'xsd:string'
+    });
+
+    export const kadunnimi = createAttribute(model, {
+      label: { fi: 'Kadunnimi' },
+      dataType: 'xsd:string'
+    });
+
+    export const kirjainosa = createAttribute(model, {
+      label: { fi: 'Kirjainosa' }
+    });
+
+    export const korvaavuussuhdeTeksti = createAttribute(model, {
+      label: { fi: 'Korvaavuussuhde teksti' }
+    });
+
+    export const kuvausteksti = createAttribute(model, {
+      label: { fi: 'Kuvausteksti' },
+      dataType: 'xsd:string'
+    });
+
+    export const nimeke = createAttribute(model, {
+      label: { fi: 'Nimeke' },
+      dataType: 'xsd:string'
+    });
+
+    export const nimi = createAttribute(model, {
+      label: { fi: 'Nimi' },
+      dataType: 'xsd:string'
+    });
+
+    export const numero = createAttribute(model, {
+      label: { fi: 'Numero' },
+      dataType: 'xsd:integer'
+    });
+
+    export const osoiteNumero = createAttribute(model, {
+      label: { fi: 'Osoite numero' },
+      dataType: 'xsd:integer'
+    });
+
+    export const osoiteTeksti = createAttribute(model, {
+      label: { fi: 'Osoiteteksti' },
+      dataType: 'xsd:string'
+    });
+
+    export const postilokero = createAttribute(model, {
+      label: { fi: 'Postilokeron osoiteteksti' },
+      dataType: 'xsd:string'
+    });
+
+    export const puhelinnumero = createAttribute(model, {
+      label: { fi: 'Puhelinnumero' }
+    });
+
+    export const selite = createAttribute(model, {
+      label: { fi: 'Selite' }
+    });
+
+    export const sukunimi = createAttribute(model, {
+      label: { fi: 'Sukunimi' }
+    });
+
+    export const tehtavakoodi = createAttribute(model, {
+      label: { fi: 'Tehtäväkoodi' }
+    });
+
+    export const tunniste = createAttribute(model, {
+      label: { fi: 'Tunniste' }
+    });
+
+    export const tunnus = createAttribute(model, {
+      label: { fi: 'Tunnus' }
+    });
+
+    export const tyyppi = createAttribute(model, {
+      label: { fi: 'Tyyppi' }
+    });
+
+    export const viittaussuhdeteksti = createAttribute(model, {
+      label: { fi: 'Viittaussuhdeteksti' }
+    });
+
+    export const ytunnus = createAttribute(model, {
+      label: { fi: 'Y-tunnus' },
+      dataType: 'xsd:string'
+    });
   }
 
   export namespace Classes {
@@ -247,13 +447,35 @@ namespace Jhs {
           [Jhs.Attributes.paattymishetki, { label: { fi: 'Aikavälin päättymishetki' } }]
         ]});
 
-    export const ajanjakso = createClass(model, { label: { fi: 'Ajanjakso' }, comment: { fi: 'Nimetty aikaväli, joka voidaan määritellä eri tarkkuudella'  } });
-    export const asia = createClass(model, { label: { fi: 'Asia' }, comment: { fi : 'Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä.'  } });
-    export const asiakirja = createClass(model, { label: { fi: 'Asiakirja'  } });
-    export const henkilo = createClass(model, { label: { fi: 'Henkilö'  } });
-    export const organisaatio = createClass(model, { label: { fi: 'Organisaatio'  } });
-    export const osoite = createClass(model, { label: { fi: 'Osoite'  } });
-    export const yhteystieto = createClass(model, { label: { fi: 'Yhteystieto'  } });
+    export const ajanjakso = createClass(model, {
+      label: { fi: 'Ajanjakso' },
+      comment: { fi: 'Nimetty aikaväli, joka voidaan määritellä eri tarkkuudella'  }
+    });
+
+    export const asia = createClass(model, {
+      label: { fi: 'Asia' },
+      comment: { fi : 'Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä.'  }
+    });
+
+    export const asiakirja = createClass(model, {
+      label: { fi: 'Asiakirja'  }
+
+    });
+    export const henkilo = createClass(model, {
+      label: { fi: 'Henkilö'  }
+    });
+
+    export const organisaatio = createClass(model, {
+      label: { fi: 'Organisaatio'  }
+    });
+
+    export const osoite = createClass(model, {
+      label: { fi: 'Osoite'  }
+    });
+
+    export const yhteystieto = createClass(model, {
+      label: { fi: 'Yhteystieto'  }
+    });
   }
 }
 
