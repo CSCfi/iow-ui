@@ -731,7 +731,7 @@ export class Property extends GraphNode {
   }
 
   get glyphIconClass() {
-    return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : null);
+    return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : []);
   }
 
   clone(): Property {
