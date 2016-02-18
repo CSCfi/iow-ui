@@ -136,13 +136,13 @@ export interface ClassDetails extends EntityDetails {
   subClassOf?: Curie|(() => IPromise<Class>);
   conceptId?: Uri;
   equivalentClasses?: (Curie|(() => IPromise<Class>))[];
-  properties?: [(() => IPromise<Predicate>), PropertyDetails][]
+  properties?: PropertyDetails[]
 }
 
 export interface ShapeDetails extends EntityDetails {
   id?: string,
   equivalentClasses?: (Curie|(() => IPromise<Class>))[];
-  properties?: [(() => IPromise<Predicate>), PropertyDetails][]
+  properties?: PropertyDetails[]
 }
 
 export interface PredicateDetails extends EntityDetails {
@@ -161,6 +161,7 @@ export interface AssociationDetails extends PredicateDetails {
 }
 
 export interface PropertyDetails extends EntityDetails {
+  predicate: () => IPromise<Predicate>;
   example?: string;
   dataType?: string;
   valueClass?: Uri|(() => IPromise<Class>);
@@ -257,8 +258,8 @@ export function specializeClass(modelPromise: IPromise<Model>, classPromise: IPr
 
           const promises: IPromise<any>[] = [];
 
-          for (const [predicatePromiseFn, propertyDetails] of details.properties || []) {
-            promises.push(createProperty(predicatePromiseFn(), propertyDetails).then(property => {
+          for (const property of details.properties || []) {
+            promises.push(createProperty(property).then(property => {
               shape.addProperty(property);
             }));
           }
@@ -284,8 +285,8 @@ export function createClass(modelPromise: IPromise<Model>, details: ClassDetails
 
       const promises: IPromise<any>[] = [];
 
-      for (const [predicatePromiseFn, propertyDetails] of details.properties || []) {
-        promises.push(createProperty(predicatePromiseFn(), propertyDetails).then(property => {
+      for (const property of details.properties || []) {
+        promises.push(createProperty(property).then(property => {
           klass.addProperty(property);
         }));
       }
@@ -351,8 +352,8 @@ export function createAssociation(modelPromise: IPromise<Model>, details: Associ
   });
 }
 
-export function createProperty(predicatePromise: IPromise<Predicate>, details: PropertyDetails): IPromise<Property> {
-  return predicatePromise
+export function createProperty(details: PropertyDetails): IPromise<Property> {
+  return details.predicate()
     .then(p => classService.newProperty(p.id))
     .then(p => {
       setDetails(p, details);
