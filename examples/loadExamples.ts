@@ -218,6 +218,15 @@ function createProfile(prefix: string, groupId: Uri, details: ModelDetails): IPr
   return createModel(prefix, groupId, 'profile', details);
 }
 
+function assignClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class>): IPromise<Class> {
+  return q.all([modelPromise, classPromise])
+    .then(result => {
+      const model = <Model> result[0];
+      const klass = <Class> result[1];
+      return classService.assignClassToModel(klass.id, model.id).then(() => klass)
+    });
+}
+
 function createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPromise<Class> {
   return modelPromise
     .then(model => classService.newClass(model, details.label['fi'], details.conceptId || asiaConceptId, 'fi'))
@@ -243,6 +252,15 @@ function createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPro
         .then(() => classService.createClass(klass))
         .then(() => klass)
         .then(nop, reportFailure);
+    });
+}
+
+function assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromise<Predicate>): IPromise<Predicate> {
+  return q.all([modelPromise, predicatePromise])
+    .then(result => {
+      const model = <Model> result[0];
+      const predicate = <Predicate> result[1];
+      return predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate)
     });
 }
 
@@ -594,6 +612,17 @@ namespace Edu {
                en: 'Common core data model of teaching, learning and education' },
     requires: [() => Jhs.model]
   });
+
+  export namespace Attributes {
+    const kuvausTeksti = assignPredicate(model, Jhs.Attributes.kuvausteksti);
+  }
+
+  export namespace Associations {
+  }
+
+  export namespace Classes {
+    const organisaatio = assignClass(model, Jhs.Classes.organisaatio);
+  }
 }
 
 namespace Oili {
@@ -603,4 +632,13 @@ namespace Oili {
     comment: { fi: 'Esimerkki profiilin ominaisuuksista OILI casella' },
     requires: [() => Jhs.model, () => Edu.model]
   });
+
+  export namespace Attributes {
+  }
+
+  export namespace Associations {
+  }
+
+  export namespace Classes {
+  }
 }
