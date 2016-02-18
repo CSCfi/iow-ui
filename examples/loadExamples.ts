@@ -130,8 +130,12 @@ interface ModelDetails extends EntityDetails {
 
 interface ClassDetails extends EntityDetails {
   subClassOf?: Curie|(() => IPromise<Class>);
-  scopeClass?: Curie|(() => IPromise<Class>);
   conceptId?: Uri;
+  equivalentClasses?: (Curie|(() => IPromise<Class>))[];
+  properties?: [(() => IPromise<Predicate>), PropertyDetails][]
+}
+
+interface ShapeDetails extends EntityDetails {
   equivalentClasses?: (Curie|(() => IPromise<Class>))[];
   properties?: [(() => IPromise<Predicate>), PropertyDetails][]
 }
@@ -224,6 +228,36 @@ function assignClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class
       const model = <Model> result[0];
       const klass = <Class> result[1];
       return classService.assignClassToModel(klass.id, model.id).then(() => klass)
+    })
+    .then(nop, reportFailure);
+}
+
+function specializeClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class>, details: ShapeDetails): IPromise<Class> {
+  return q.all([modelPromise, classPromise])
+    .then(result => {
+      const model = <Model> result[0];
+      const klass = <Class> result[1];
+      return classService.newShape(klass.id, model, 'fi')
+        .then(shape => {
+          setDetails(shape, details);
+
+          const promises: IPromise<any>[] = [];
+
+          for (const [predicatePromiseFn, propertyDetails] of details.properties || []) {
+            promises.push(createProperty(predicatePromiseFn(), propertyDetails).then(property => {
+              shape.addProperty(property);
+            }));
+          }
+
+          for (const equivalentClass of details.equivalentClasses || []) {
+            promises.push(asCuriePromise(equivalentClass).then(curie => shape.equivalentClasses.push(curie)));
+          }
+
+          return q.all(promises)
+            .then(() => classService.createClass(shape))
+            .then(() => shape)
+            .then(nop, reportFailure);
+        })
     });
 }
 
@@ -242,7 +276,6 @@ function createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPro
       }
 
       promises.push(asCuriePromise(details.subClassOf).then(curie => klass.subClassOf = curie));
-      promises.push(asCuriePromise(details.scopeClass).then(curie => klass.scopeClass = curie));
 
       for (const equivalentClass of details.equivalentClasses || []) {
         promises.push(asCuriePromise(equivalentClass).then(curie => klass.equivalentClasses.push(curie)));
@@ -261,7 +294,8 @@ function assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromi
       const model = <Model> result[0];
       const predicate = <Predicate> result[1];
       return predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate)
-    });
+    })
+    .then(nop, reportFailure);
 }
 
 function createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
@@ -640,5 +674,8 @@ namespace Oili {
   }
 
   export namespace Classes {
+    const yhteystiedot = specializeClass(model, Jhs.Classes.yhteystieto, {
+      label: { fi: 'Yhteystiedot' }
+    });
   }
 }
