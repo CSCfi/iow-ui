@@ -304,6 +304,46 @@ namespace Jhs {
       ]
     });
 
+    export const henkilo = createClass(model, {
+      label: { fi: 'Henkilö'  },
+      equivalentClasses: ['schema:Person', 'foaf:Person'],
+      properties: [
+        {
+          predicate: Jhs.Associations.aidinkieli,
+          label: { fi: 'Henkilön äidinkieli' },
+          valueClass: 'skos:Concept'
+        },
+        {
+          predicate: Jhs.Attributes.etunimi,
+          label: { fi: 'Henkilön etunimi' }
+        },
+        {
+          predicate: Jhs.Attributes.sukunimi,
+          label: { fi: 'Henkilön sukunimi' }
+        },
+        {
+          predicate: Jhs.Associations.ammatti,
+          label: { fi: 'Ammatti' },
+          valueClass: 'skos:Concept'
+        },
+        {
+          predicate: Jhs.Attributes.henkilotunnus,
+          label: { fi: 'Henkilön henkilötunnus' },
+          pattern: '\\d{6}[+-A]\\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]'
+        },
+        {
+          predicate: Jhs.Associations.siviilisaaty,
+          label: { fi: 'Henkilön siviilisääty' },
+          valueClass: 'skos:Concept'
+        },
+        {
+          predicate: Jhs.Associations.kansalaisuus,
+          label: { fi: 'Henkilön kansalaisuus' },
+          valueClass: 'skos:Concept'
+        }
+      ]
+    });
+
     export const asia = createClass(model, {
       label: { fi: 'Asia' },
       comment: { fi : 'Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä.' },
@@ -343,28 +383,108 @@ namespace Jhs {
           predicate: Jhs.Attributes.viittaussuhdeteksti,
           label:   { fi: 'Asian viittaussuhde' },
           comment: { fi: 'Viittaussuhdetta voi käyttää esim. osoittamaan eri asiatunnuksella esiintyviä hakemuksia, jotka ratkaistaan samalla päätöksellä.' }
+        },
+        {
+          predicate: Jhs.Associations.asianosainen,
+          label:   { fi: 'Asianosainen' },
+          comment: { fi: 'Asian asianosaiset' },
+          valueClass: Jhs.Classes.henkilo
         }
       ]
     });
 
     export const asiakirja = createClass(model, {
-      label: { fi: 'Asiakirja'  }
-    });
-
-    export const henkilo = createClass(model, {
-      label: { fi: 'Henkilö'  }
-    });
-
-    export const organisaatio = createClass(model, {
-      label: { fi: 'Organisaatio'  }
-    });
-
-    export const osoite = createClass(model, {
-      label: { fi: 'Osoite'  }
+      label: { fi: 'Asiakirja'  },
+      equivalentClasses: ['foaf:Document'],
+      properties: [
+        {
+          predicate: Jhs.Associations.viittausAsiaan,
+          label: { fi: 'Viittaus asiakirjassa käsiteltävään asiaan' },
+          valueClass: Jhs.Classes.asia
+        },
+        {
+          predicate: Jhs.Attributes.asiatunnus,
+          label: { fi: 'Asian tunnus' }
+        },
+        {
+          predicate: Jhs.Attributes.nimeke,
+          label: { fi: 'Asian nimeke' }
+        }
+      ]
     });
 
     export const yhteystieto = createClass(model, {
-      label: { fi: 'Yhteystieto'  }
+      label: { fi: 'Yhteystieto'  },
+      properties: [
+        {
+          predicate: Jhs.Attributes.puhelinnumero,
+          label: { fi: 'Puhelinnumero' },
+          comment: { fi: 'Yhteystiedoissa mainittu puhelinnumero' }
+        },
+        {
+          predicate: Jhs.Associations.osoite,
+          label: { fi: 'Osoite' },
+          comment: { fi: 'Yhteystiedoissa mainittu osoite' },
+          valueClass: Jhs.Classes.osoite
+        }
+      ]
+    });
+
+    export const organisaatio = createClass(model, {
+      label: { fi: 'Organisaatio'  },
+      equivalentClasses: ['foaf:Organisaatio'],
+      properties: [
+        {
+          predicate: Jhs.Attributes.nimi,
+          label: { fi: 'Organisaation nimi' }
+        },
+        {
+          predicate: Jhs.Attributes.ytunnus,
+          label: { fi: 'Y-tunnus' },
+          comment: { fi: 'Organisaation yritys tai yhteisötunnus' }
+        },
+        {
+          predicate: Jhs.Associations.yhteystiedot,
+          label: { fi: 'Yhteystieto' },
+          valueClass: Jhs.Classes.yhteystieto
+        },
+        {
+          predicate: Jhs.Attributes.tyyppi,
+          label: { fi: 'Organisaatiomuoto' },
+          comment: { fi: 'Organisaatiomuodon kuvaava tyyppi' },
+          valueClass: 'skos:Concept'
+        }
+      ]
+    });
+
+    export const osoite = createClass(model, {
+      label: { fi: 'Osoite'  },
+      properties: [
+        {
+          predicate: Jhs.Attributes.postilokero,
+          label: { fi: 'Postilokero-osoite' }
+        },
+        {
+          predicate: Jhs.Attributes.osoiteNumero,
+          label: { fi: 'Osoitenumero' }
+        },
+        {
+          predicate: Jhs.Attributes.numero,
+          label: { fi: 'Huoneistotunnuksen numero-osa' }
+        },
+        {
+          predicate: Jhs.Attributes.kirjainosa,
+          label: { fi: 'Huoneistotunnuksen kirjainosa' }
+        },
+        {
+          predicate: Jhs.Attributes.jakokirjain,
+          label: { fi: 'Huoneistotunnuksen jakokirjain' }
+        },
+        {
+          predicate: Jhs.Attributes.kadunnimi,
+          label: { fi: 'Osoitteen kadunnimi' }
+        }
+      ]
     });
   }
 }
