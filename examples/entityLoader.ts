@@ -99,6 +99,21 @@ function reportFailure<T>(err: any) {
   throw new Error(err);
 }
 
+function assertPropertyValueExists(obj: any, property: string) {
+  if (obj.hasOwnProperty(property)) {
+    return assertExists(obj[property], ' property: ' + property);
+  }
+
+  return obj[property];
+}
+
+function assertExists<T>(obj: T, msg: string): T {
+  if (obj === null || obj === undefined) {
+    reportFailure('Null or undefined: ' + msg);
+  }
+  return obj;
+}
+
 function isPromise<T>(obj:any): obj is IPromise<T> {
   return !!(obj && obj.then);
 }
@@ -234,7 +249,7 @@ export function createModel(type: Type, groupId: Uri, details: ModelDetails): IP
 
       for (const require of details.requires || []) {
         promises.push(
-          asPromise(require)
+          asPromise(assertExists(require, 'require for ' + model.label['fi']))
             .then(requiredModel => modelService.newRequire(requiredModel.namespace, requiredModel.prefix, requiredModel.label['fi'], 'fi'))
             .then(require => model.addRequire(require))
         );
@@ -266,7 +281,7 @@ export function assignClass(modelPromise: IPromise<Model>, classPromise: IPromis
 }
 
 export function specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
-  return q.all([modelPromise, asPromise(details.class)])
+  return q.all([modelPromise, asPromise(assertExists(details.class, 'class to specialize for ' + details.label['fi']))])
     .then(result => {
       const model = <Model> result[0];
       const klass = <Class> result[1];
@@ -284,7 +299,7 @@ export function specializeClass(modelPromise: IPromise<Model>, details: ShapeDet
           }
 
           for (const equivalentClass of details.equivalentClasses || []) {
-            promises.push(asCuriePromise(equivalentClass).then(curie => shape.equivalentClasses.push(curie)));
+            promises.push(asCuriePromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(curie => shape.equivalentClasses.push(curie)));
           }
 
           return q.all(promises)
@@ -305,15 +320,14 @@ export function createClass(modelPromise: IPromise<Model>, details: ClassDetails
       const promises: IPromise<any>[] = [];
 
       for (const property of details.properties || []) {
-        promises.push(createProperty(property).then(property => {
-          klass.addProperty(property);
-        }));
+        promises.push(createProperty(property).then(property => klass.addProperty(property)));
       }
 
+      assertPropertyValueExists(details, 'subClassOf for ' + details.label['fi']);
       promises.push(asCuriePromise(details.subClassOf).then(curie => klass.subClassOf = curie));
 
       for (const equivalentClass of details.equivalentClasses || []) {
-        promises.push(asCuriePromise(equivalentClass).then(curie => klass.equivalentClasses.push(curie)));
+        promises.push(asCuriePromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(curie => klass.equivalentClasses.push(curie)));
       }
 
       return q.all(promises)
@@ -342,10 +356,11 @@ export function createPredicate<T extends Predicate>(modelPromise: IPromise<Mode
 
       const promises: IPromise<any>[] = [];
 
+      assertPropertyValueExists(details, 'subPropertyOf for ' + details.label['fi]']);
       promises.push(asCuriePromise(details.subPropertyOf).then(curie => predicate.subPropertyOf = curie));
 
       for (const equivalentProperty of details.equivalentProperties || []) {
-        promises.push(asCuriePromise(equivalentProperty).then(curie => predicate.equivalentProperties.push(curie)));
+        promises.push(asCuriePromise(assertExists(equivalentProperty, 'equivalent property for ' + details.label['fi'])).then(curie => predicate.equivalentProperties.push(curie)));
       }
 
       promises.push(mangler(predicate));
@@ -366,17 +381,18 @@ export function createAttribute(modelPromise: IPromise<Model>, details: Attribut
 
 export function createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
   return createPredicate<Association>(modelPromise, 'association', details, association => {
+    assertPropertyValueExists(details, 'valueClass for association ' + details.label['fi']);
     return asCuriePromise(details.valueClass)
       .then(curie => association.valueClass = curie);
   });
 }
 
 export function createProperty(details: PropertyDetails): IPromise<Property> {
-  return asPromise(details.predicate)
+  return asPromise(assertExists(details.predicate, 'predicate'))
     .then(p => classService.newProperty(p.id))
     .then((p: Property) => {
       setDetails(p, details);
-
+      assertPropertyValueExists(details, 'valueClass for property ' + details.label['fi']);
       const valueClassPromise = asCuriePromise(details.valueClass).then(curie => p.valueClass = curie);
 
       if (details.dataType) {
