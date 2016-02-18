@@ -1243,7 +1243,7 @@ export function url(id: Uri, type: Type[]) {
     return `/group?urn=${encodeURIComponent(id)}`;
   } else if (containsAny(type, ['association', 'attribute'])) {
     const [modelId] = id.split('#');
-    return `${modelUrl(modelId)}&predicate=${encodeURIComponent(id)}`;
+    return `${modelUrl(modelId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id)}`;
   } else if (containsAny(type, ['class', 'shape'])) {
     const [modelId] = id.split('#');
     return `${modelUrl(modelId)}&class=${encodeURIComponent(id)}`;
