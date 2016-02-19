@@ -12,6 +12,8 @@ import { UsageService } from './usageService';
 import { UserService } from './userService';
 import { ValidatorService } from './validatorService';
 import { HistoryService } from './historyService';
+import { EntityLoaderService } from './entityLoader';
+import { ResetService } from './resetService';
 
 const mod = angular.module('iow.services', []);
 export = mod.name;
@@ -30,3 +32,5 @@ mod.service('usageService', UsageService);
 mod.service('userService', UserService);
 mod.service('validatorService', ValidatorService);
 mod.service('historyService', HistoryService);
+mod.service('resetService', ResetService);
+mod.service('entityLoaderService', EntityLoaderService);

@@ -1,11 +1,38 @@
-import {
-  jhsGroupId, createLibrary, createAssociation, createAttribute, assignClass,
-  assignPredicate, ktkGroupId, createProfile, specializeClass, createClass
-} from './entityLoader';
+import { EntityLoader, jhsGroupId, ktkGroupId } from '../src/services/entityLoader';
+import { EntityDeserializer } from '../src/services/entities';
+import { httpService } from './requestToAngularHttpService';
+import { PredicateService } from '../src/services/predicateService';
+import { ModelService } from '../src/services/modelService';
+import { ClassService } from '../src/services/classService';
+import { UserService } from '../src/services/userService';
+import { ConceptService } from '../src/services/conceptService';
+import { ResetService } from '../src/services/resetService';
+
+const argv = require('optimist')
+  .default({
+    host: 'localhost',
+    port: 8084
+  })
+  .argv;
+
+process.env['API_ENDPOINT'] = `http://${argv.host}:${argv.port}/api`;
+
+const logFn: angular.ILogCall = (...args: any[]) => console.log(args);
+const log: angular.ILogService = { debug: logFn, error: logFn, info: logFn, log: logFn, warn: logFn };
+const q = <angular.IQService> require('q');
+const entityDeserializer = new EntityDeserializer(log);
+const modelService = new ModelService(httpService, q, entityDeserializer);
+const predicateService = new PredicateService(httpService, entityDeserializer);
+const classService = new ClassService(httpService, q, predicateService, entityDeserializer);
+const userService = new UserService(httpService, q, entityDeserializer);
+const conceptService = new ConceptService(httpService, q, entityDeserializer);
+const resetService = new ResetService(httpService);
+
+const loader = new EntityLoader(q, modelService, predicateService, classService, userService, conceptService, resetService, true);
 
 namespace Jhs {
 
-  export const model = createLibrary(jhsGroupId, {
+  export const model = loader.createLibrary(jhsGroupId, {
     prefix: 'jhs',
     label:   { fi: 'Julkishallinnon tietokomponentit' },
     comment: { fi: 'Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti käytössä olevat tietosisällöt' },
@@ -14,230 +41,230 @@ namespace Jhs {
 
   export namespace Associations {
 
-    export const aidinkieli = createAssociation(model, {
+    export const aidinkieli = loader.createAssociation(model, {
       label: { fi: 'Äidinkieli' }
     });
 
-    export const ammatti = createAssociation(model, {
+    export const ammatti = loader.createAssociation(model, {
       label: { fi: 'Ammatti' }
     });
 
-    export const viittausAsiaan = createAssociation(model, {
+    export const viittausAsiaan = loader.createAssociation(model, {
       label: { fi: 'Viittaus asiaan' }
     });
 
-    export const asianosainen = createAssociation(model, {
+    export const asianosainen = loader.createAssociation(model, {
       label: { fi: 'Asianosainen' }
     });
 
-    export const henkilo = createAssociation(model, {
+    export const henkilo = loader.createAssociation(model, {
       label: { fi: 'Henkilö' },
       valueClass: () => Jhs.Classes.henkilo
     });
 
-    export const kansalaisuus = createAssociation(model, {
+    export const kansalaisuus = loader.createAssociation(model, {
       label: { fi: 'Kansalaisuus' },
       valueClass: 'skos:Concept'
     });
 
-    export const koodi = createAssociation(model, {
+    export const koodi = loader.createAssociation(model, {
       id: 'koodi',
       label: { fi: 'Viittaus koodistossa rajattuun luokitukseen' },
       valueClass: 'skos:Concept'
     });
 
-    export const organisaatio = createAssociation(model, {
+    export const organisaatio = loader.createAssociation(model, {
       label: { fi: 'Organisaatio' }
     });
 
-    export const osoite = createAssociation(model, {
+    export const osoite = loader.createAssociation(model, {
       label: { fi: 'Osoite' }
     });
 
-    export const siviilisaaty = createAssociation(model, {
+    export const siviilisaaty = loader.createAssociation(model, {
       label: { fi: 'Siviilisääty' }
     });
 
-    export const viittaussuhde = createAssociation(model, {
+    export const viittaussuhde = loader.createAssociation(model, {
       label: { fi: 'Viittaussuhde' }
     });
 
-    export const yhteystiedot = createAssociation(model, {
+    export const yhteystiedot = loader.createAssociation(model, {
       label: { fi: 'Yhteystiedot' }
     });
   }
 
   export namespace Attributes {
 
-    export const alkamisaika = createAttribute(model, {
+    export const alkamisaika = loader.createAttribute(model, {
       label: { fi: 'Alkamisaika' },
       dataType: 'xsd:dateTime'
     });
 
-    export const alkamishetki = createAttribute(model, {
+    export const alkamishetki = loader.createAttribute(model, {
       label: { fi: 'Alkamishetki' },
       dataType: 'xsd:dateTime'
     });
 
-    export const alkamiskuukausi = createAttribute(model, {
+    export const alkamiskuukausi = loader.createAttribute(model, {
       label: { fi: 'Alkamiskuukausi' },
       dataType: 'xsd:dateTime'
     });
 
-    export const alkamispaiva = createAttribute(model, {
+    export const alkamispaiva = loader.createAttribute(model, {
       label: { fi: 'Alkamispäivä' },
       dataType: 'xsd:dateTime'
     });
 
-    export const alkamispvm = createAttribute(model, {
+    export const alkamispvm = loader.createAttribute(model, {
       label: { fi: 'Alkamispäivämäärä' },
       dataType: 'xsd:dateTime'
     });
 
-    export const alkamisvuosi = createAttribute(model, {
+    export const alkamisvuosi = loader.createAttribute(model, {
       label: { fi: 'Alkamisvuosi' },
       dataType: 'xsd:dateTime'
     });
 
-    export const paattymishetki = createAttribute(model, {
+    export const paattymishetki = loader.createAttribute(model, {
       label: { fi: 'Päättymishetki' },
       dataType: 'xsd:dateTime'
     });
 
-    export const paattymisaika = createAttribute(model, {
+    export const paattymisaika = loader.createAttribute(model, {
       label: { fi: 'Päättymisaika' },
       dataType: 'xsd:dateTime'
     });
 
-    export const paattymiskuukausi = createAttribute(model, {
+    export const paattymiskuukausi = loader.createAttribute(model, {
       label: { fi: 'Päättymiskuukausi' },
       dataType: 'xsd:dateTime'
     });
 
-    export const paattymispaiva = createAttribute(model, {
+    export const paattymispaiva = loader.createAttribute(model, {
       label: { fi: 'Päättymispäivä' },
       dataType: 'xsd:dateTime'
     });
 
-    export const paattymispaivamaara = createAttribute(model, {
+    export const paattymispaivamaara = loader.createAttribute(model, {
       label: { fi: 'Päättymispäivämäärä' },
       dataType: 'xsd:dateTime'
     });
 
-    export const paattymisvuosi = createAttribute(model, {
+    export const paattymisvuosi = loader.createAttribute(model, {
       label: { fi: 'Päättymisvuosi' },
       dataType: 'xsd:dateTime'
     });
 
-    export const aiheteksti = createAttribute(model, {
+    export const aiheteksti = loader.createAttribute(model, {
       label: { fi: 'Aiheteksti' }
     });
 
-    export const asiatunnus = createAttribute(model, {
+    export const asiatunnus = loader.createAttribute(model, {
       label: { fi: 'Asiatunnus' }
     });
 
-    export const asiasana = createAttribute(model, {
+    export const asiasana = loader.createAttribute(model, {
       label: { fi: 'Asiasana' },
       dataType: 'xsd:string'
     });
 
-    export const etunimi = createAttribute(model, {
+    export const etunimi = loader.createAttribute(model, {
       label: { fi: 'Etunimi' },
       dataType: 'xsd:string'
     });
 
-    export const henkilotunnus = createAttribute(model, {
+    export const henkilotunnus = loader.createAttribute(model, {
       label: { fi: 'Henkilotunnus' },
       dataType: 'xsd:string'
     });
 
-    export const jakokirjain = createAttribute(model, {
+    export const jakokirjain = loader.createAttribute(model, {
       label: { fi: 'Jakokirjain' },
       dataType: 'xsd:string'
     });
 
-    export const kadunnimi = createAttribute(model, {
+    export const kadunnimi = loader.createAttribute(model, {
       label: { fi: 'Kadunnimi' },
       dataType: 'xsd:string'
     });
 
-    export const kirjainosa = createAttribute(model, {
+    export const kirjainosa = loader.createAttribute(model, {
       label: { fi: 'Kirjainosa' }
     });
 
-    export const korvaavuussuhdeTeksti = createAttribute(model, {
+    export const korvaavuussuhdeTeksti = loader.createAttribute(model, {
       label: { fi: 'Korvaavuussuhde teksti' }
     });
 
-    export const kuvausteksti = createAttribute(model, {
+    export const kuvausteksti = loader.createAttribute(model, {
       label: { fi: 'Kuvausteksti' },
       dataType: 'xsd:string'
     });
 
-    export const nimeke = createAttribute(model, {
+    export const nimeke = loader.createAttribute(model, {
       label: { fi: 'Nimeke' },
       dataType: 'xsd:string'
     });
 
-    export const nimi = createAttribute(model, {
+    export const nimi = loader.createAttribute(model, {
       label: { fi: 'Nimi' },
       dataType: 'xsd:string'
     });
 
-    export const numero = createAttribute(model, {
+    export const numero = loader.createAttribute(model, {
       label: { fi: 'Numero' },
       dataType: 'xsd:integer'
     });
 
-    export const osoiteNumero = createAttribute(model, {
+    export const osoiteNumero = loader.createAttribute(model, {
       label: { fi: 'Osoite numero' },
       dataType: 'xsd:integer'
     });
 
-    export const osoiteTeksti = createAttribute(model, {
+    export const osoiteTeksti = loader.createAttribute(model, {
       label: { fi: 'Osoiteteksti' },
       dataType: 'xsd:string'
     });
 
-    export const postilokero = createAttribute(model, {
+    export const postilokero = loader.createAttribute(model, {
       label: { fi: 'Postilokeron osoiteteksti' },
       dataType: 'xsd:string'
     });
 
-    export const puhelinnumero = createAttribute(model, {
+    export const puhelinnumero = loader.createAttribute(model, {
       label: { fi: 'Puhelinnumero' }
     });
 
-    export const selite = createAttribute(model, {
+    export const selite = loader.createAttribute(model, {
       label: { fi: 'Selite' }
     });
 
-    export const sukunimi = createAttribute(model, {
+    export const sukunimi = loader.createAttribute(model, {
       label: { fi: 'Sukunimi' }
     });
 
-    export const tehtavakoodi = createAttribute(model, {
+    export const tehtavakoodi = loader.createAttribute(model, {
       label: { fi: 'Tehtäväkoodi' }
     });
 
-    export const tunniste = createAttribute(model, {
+    export const tunniste = loader.createAttribute(model, {
       label: { fi: 'Tunniste' }
     });
 
-    export const tunnus = createAttribute(model, {
+    export const tunnus = loader.createAttribute(model, {
       label: { fi: 'Tunnus' }
     });
 
-    export const tyyppi = createAttribute(model, {
+    export const tyyppi = loader.createAttribute(model, {
       label: { fi: 'Tyyppi' }
     });
 
-    export const viittaussuhdeteksti = createAttribute(model, {
+    export const viittaussuhdeteksti = loader.createAttribute(model, {
       label: { fi: 'Viittaussuhdeteksti' }
     });
 
-    export const ytunnus = createAttribute(model, {
+    export const ytunnus = loader.createAttribute(model, {
       label: { fi: 'Y-tunnus' },
       dataType: 'xsd:string'
     });
@@ -245,7 +272,7 @@ namespace Jhs {
 
   export namespace Classes {
 
-    export const aikavali = createClass(model, {
+    export const aikavali = loader.createClass(model, {
       label:   { fi: 'Aikaväli' },
       comment: { fi: 'Ajankohdista muodostuva ajallinen jatkumo' },
       properties: [
@@ -260,7 +287,7 @@ namespace Jhs {
       ]
     });
 
-    export const ajanjakso = createClass(model, {
+    export const ajanjakso = loader.createClass(model, {
       label: { fi: 'Ajanjakso' },
       comment: { fi: 'Nimetty aikaväli, joka voidaan määritellä eri tarkkuudella'  },
       subClassOf: aikavali,
@@ -304,7 +331,7 @@ namespace Jhs {
       ]
     });
 
-    export const henkilo = createClass(model, {
+    export const henkilo = loader.createClass(model, {
       label: { fi: 'Henkilö'  },
       concept: {
         label: 'Henkilön käsite',
@@ -348,7 +375,7 @@ namespace Jhs {
       ]
     });
 
-    export const asia = createClass(model, {
+    export const asia = loader.createClass(model, {
       label: { fi: 'Asia' },
       comment: { fi : 'Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä.' },
       properties: [
@@ -397,7 +424,7 @@ namespace Jhs {
       ]
     });
 
-    export const asiakirja = createClass(model, {
+    export const asiakirja = loader.createClass(model, {
       label: { fi: 'Asiakirja'  },
       equivalentClasses: ['foaf:Document'],
       properties: [
@@ -417,7 +444,7 @@ namespace Jhs {
       ]
     });
 
-    export const yhteystieto = createClass(model, {
+    export const yhteystieto = loader.createClass(model, {
       label: { fi: 'Yhteystieto'  },
       properties: [
         {
@@ -434,7 +461,7 @@ namespace Jhs {
       ]
     });
 
-    export const organisaatio = createClass(model, {
+    export const organisaatio = loader.createClass(model, {
       label: { fi: 'Organisaatio'  },
       equivalentClasses: ['foaf:Organisaatio'],
       properties: [
@@ -461,7 +488,7 @@ namespace Jhs {
       ]
     });
 
-    export const osoite = createClass(model, {
+    export const osoite = loader.createClass(model, {
       label: { fi: 'Osoite'  },
       properties: [
         {
@@ -495,7 +522,7 @@ namespace Jhs {
 
 namespace Edu {
 
-  export const model = createLibrary(ktkGroupId, {
+  export const model = loader.createLibrary(ktkGroupId, {
     prefix: 'edu',
     label:   { fi: 'Opiskelun, opetuksen ja koulutuksen tietokomponentit',
                en: 'Core Vocabulary of Education' },
@@ -505,20 +532,20 @@ namespace Edu {
   });
 
   export namespace Attributes {
-    const kuvausTeksti = assignPredicate(model, Jhs.Attributes.kuvausteksti);
+    const kuvausTeksti = loader.assignPredicate(model, Jhs.Attributes.kuvausteksti);
   }
 
   export namespace Associations {
   }
 
   export namespace Classes {
-    const organisaatio = assignClass(model, Jhs.Classes.organisaatio);
+    const organisaatio = loader.assignClass(model, Jhs.Classes.organisaatio);
   }
 }
 
 namespace Oili {
 
-  export const model = createProfile(ktkGroupId, {
+  export const model = loader.createProfile(ktkGroupId, {
     prefix: 'oili',
     label:   { fi: 'Opiskelijaksi ilmoittautuminen esimerkkiprofiili' },
     comment: { fi: 'Esimerkki profiilin ominaisuuksista OILI casella' },
@@ -532,7 +559,7 @@ namespace Oili {
   }
 
   export namespace Classes {
-    const yhteystiedot = specializeClass(model, {
+    const yhteystiedot = loader.specializeClass(model, {
       class: Jhs.Classes.yhteystieto,
       label: { fi: 'Yhteystiedot' }
     });
