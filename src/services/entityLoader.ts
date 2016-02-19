@@ -108,6 +108,7 @@ export class EntityLoader {
   private reset: IPromise<any>;
   private loggedIn: IPromise<any>;
   private schemes: IPromise<any>;
+  private entities: IPromise<any>[] = [];
 
   constructor(private $q: IQService,
               private modelService: ModelService,
@@ -123,14 +124,21 @@ export class EntityLoader {
     this.schemes = this.reset.then(() => this.conceptService.getAllSchemes('fi')).then(result => result.data.vocabularies);
   }
 
+  result(successCallback: () => void, errorCallback: (err: any) => void) {
+    this.$q.all(this.entities).then(successCallback, errorCallback);
+  }
+
   createConceptSuggestion(details: ConceptSuggestionDetails): IPromise<ConceptSuggestion> {
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() => this.conceptService.createConceptSuggestion("http://www.finto.fi/jhsmeta", details.label, details.comment, null, 'fi'))
       .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
+
+    this.entities.push(result);
+    return result;
   }
 
   private createModel(type: Type, groupId: Uri, details: ModelDetails): IPromise<Model> {
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() => this.modelService.newModel(details.prefix, details.label['fi'], groupId, 'fi', type))
       .then(model => {
         setDetails(model, details);
@@ -162,8 +170,10 @@ export class EntityLoader {
         return this.$q.all(promises)
           .then(() => this.modelService.createModel(model))
           .then(() => model);
-      })
-      .then(nop, reportFailure);
+      });
+
+    this.entities.push(result);
+    return result;
   }
 
   createLibrary(groupId: Uri, details: ModelDetails): IPromise<Model> {
@@ -175,14 +185,16 @@ export class EntityLoader {
   }
 
   assignClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class>): IPromise<Class> {
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() => this.$q.all([modelPromise, classPromise]))
-      .then(([model, klass]: [Model, Class]) => this.classService.assignClassToModel(klass.id, model.id).then(() => klass))
-      .then(nop, reportFailure);
+      .then(([model, klass]: [Model, Class]) => this.classService.assignClassToModel(klass.id, model.id).then(() => klass));
+
+    this.entities.push(result);
+    return result;
   }
 
   specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, asPromise(assertExists(details.class, 'class to specialize for ' + details.label['fi']))]))
       .then(([model, klass]: [Model, Class]) => {
         return this.classService.newShape(klass.id, model, 'fi')
@@ -205,9 +217,11 @@ export class EntityLoader {
             return this.$q.all(promises)
               .then(() => this.classService.createClass(shape))
               .then(() => shape)
-              .then(nop, reportFailure);
           })
       });
+
+    this.entities.push(result);
+    return result;
   }
 
   createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPromise<Class> {
@@ -217,7 +231,7 @@ export class EntityLoader {
       ? this.createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
       : this.$q.when(concept || asiaConceptId);
 
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, conceptIdPromise]))
       .then(([model, conceptId]: [Model, Uri]) => this.classService.newClass(model, details.label['fi'], conceptId || asiaConceptId, 'fi'))
       .then((klass: Class) => {
@@ -240,15 +254,19 @@ export class EntityLoader {
         return this.$q.all(promises)
           .then(() => this.classService.createClass(klass))
           .then(() => klass)
-          .then(nop, reportFailure);
       });
+
+    this.entities.push(result);
+    return result;
   }
 
   assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromise<Predicate>): IPromise<Predicate> {
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, predicatePromise]))
-      .then(([model, predicate]: [Model, Predicate]) => this.predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate))
-      .then(nop, reportFailure);
+      .then(([model, predicate]: [Model, Predicate]) => this.predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate));
+
+    this.entities.push(result);
+    return result;
   }
 
   createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
@@ -258,7 +276,7 @@ export class EntityLoader {
       ? this.createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
       : this.$q.when(concept || asiaConceptId);
 
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, conceptIdPromise]))
       .then(([model, conceptId]: [Model, Uri]) => this.predicateService.newPredicate(model, details.label['fi'], conceptId || asiaConceptId, type, 'fi'))
       .then((predicate: T) => {
@@ -278,9 +296,11 @@ export class EntityLoader {
 
         return this.$q.all(promises)
           .then(() => this.predicateService.createPredicate(predicate))
-          .then(() => predicate)
-          .then(nop, reportFailure);
+          .then(() => predicate);
       });
+
+    this.entities.push(result);
+    return result;
   }
 
   createAttribute(modelPromise: IPromise<Model>, details: AttributeDetails): IPromise<Attribute> {
@@ -299,7 +319,7 @@ export class EntityLoader {
   }
 
   createProperty(details: PropertyDetails): IPromise<Property> {
-    return this.loggedIn
+    const result = this.loggedIn
       .then(() =>  asPromise(assertExists(details.predicate, 'predicate')))
       .then(p => this.classService.newProperty(p.id))
       .then((p: Property) => {
@@ -317,8 +337,10 @@ export class EntityLoader {
         p.pattern = details.pattern;
 
         return valueClassPromise.then(() => p);
-      })
-      .then(nop, reportFailure);
+      });
+
+    this.entities.push(result);
+    return result;
   }
 }
 
@@ -337,19 +359,6 @@ function setId(entity: { curie: Curie }, details: { id?: string }) {
   }
 }
 
-function nop<T>(response: any) {
-  return response;
-}
-
-function reportFailure<T>(err: any) {
-  console.log('========');
-  console.log('=FAILED=');
-  console.log('========');
-  console.log(err);
-  console.log('========');
-  throw new Error(err);
-}
-
 function assertPropertyValueExists(obj: any, property: string) {
   if (obj.hasOwnProperty(property)) {
     return assertExists(obj[property], ' property: ' + property);
@@ -360,7 +369,7 @@ function assertPropertyValueExists(obj: any, property: string) {
 
 function assertExists<T>(obj: T, msg: string): T {
   if (obj === null || obj === undefined) {
-    reportFailure('Null or undefined: ' + msg);
+    throw new Error('Null or undefined: ' + msg);
   }
   return obj;
 }
