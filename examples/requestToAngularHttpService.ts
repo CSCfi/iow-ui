@@ -37,7 +37,8 @@ function makeUrl(url: string, params?: any) {
   } else {
     const parts: string[] = [];
     for (const key of Object.keys(params)) {
-      parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
+      const value = params[key];
+      parts.push(`${encodeURIComponent(key)}=${!value ? 'undefined' : encodeURIComponent(params[key])}`);
     }
     return `${url}?${parts.join('&')}`;
   }

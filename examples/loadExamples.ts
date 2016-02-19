@@ -306,6 +306,10 @@ namespace Jhs {
 
     export const henkilo = createClass(model, {
       label: { fi: 'Henkilö'  },
+      concept: {
+        label: 'Henkilön käsite',
+        comment: 'Henkilön määritelmä'
+      },
       equivalentClasses: ['schema:Person', 'foaf:Person'],
       properties: [
         {

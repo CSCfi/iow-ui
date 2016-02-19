@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { httpService } from './requestToAngularHttpService';
 import {
   EntityDeserializer, Localizable, Uri, Type, Model, Predicate, Attribute,
-  Association, Class, Property, State, Curie
+  Association, Class, Property, State, Curie, ConceptSuggestion
 } from '../src/services/entities';
 import { ModelService } from '../src/services/modelService';
 import { ClassService } from '../src/services/classService';
@@ -122,6 +122,10 @@ function isPromiseProvider<T>(obj:any): obj is (() => IPromise<T>) {
   return typeof obj === 'function';
 }
 
+function isConceptSuggestion(obj: any): obj is ConceptSuggestionDetails {
+  return typeof obj === 'object';
+}
+
 function asCuriePromise<T extends { curie: Curie }>(resolvable: CurieResolvable<T>): IPromise<Curie> {
   if (isPromiseProvider(resolvable)) {
     const promise = resolvable();
@@ -167,7 +171,7 @@ export interface ModelDetails extends EntityDetails {
 export interface ClassDetails extends EntityDetails {
   id?: string,
   subClassOf?: CurieResolvable<Class>;
-  conceptId?: Uri;
+  concept?: Uri|ConceptSuggestionDetails;
   equivalentClasses?: CurieResolvable<Class>[];
   properties?: PropertyDetails[]
 }
@@ -182,7 +186,7 @@ export interface ShapeDetails extends EntityDetails {
 export interface PredicateDetails extends EntityDetails {
   id?: string,
   subPropertyOf?: CurieResolvable<Predicate>;
-  conceptId?: Uri;
+  concept?: Uri|ConceptSuggestionDetails;
   equivalentProperties?: CurieResolvable<Predicate>[];
 }
 
@@ -204,6 +208,11 @@ export interface PropertyDetails extends EntityDetails {
   pattern?: string;
 }
 
+export interface ConceptSuggestionDetails {
+  label: string;
+  comment: string;
+}
+
 function setDetails(entity: { label: Localizable, comment: Localizable, state: State }, details: EntityDetails) {
   entity.label = details.label;
   entity.comment = details.comment;
@@ -217,6 +226,12 @@ function setId(entity: { curie: Curie }, details: { id?: string }) {
     const {prefix, value} = splitCurie(entity.curie);
     entity.curie = prefix + ':' + details.id;
   }
+}
+
+export function createConceptSuggestion(details: ConceptSuggestionDetails): IPromise<ConceptSuggestion> {
+  return ensureLoggedIn()
+    .then(() => conceptService.createConceptSuggestion("http://www.finto.fi/jhsmeta", details.label, details.comment, null, 'fi'))
+    .then(conceptId => conceptService.getConceptSuggestion(conceptId));
 }
 
 export function createModel(type: Type, groupId: Uri, details: ModelDetails): IPromise<Model> {
@@ -272,19 +287,13 @@ export function createProfile(groupId: Uri, details: ModelDetails): IPromise<Mod
 
 export function assignClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class>): IPromise<Class> {
   return q.all([modelPromise, classPromise])
-    .then(result => {
-      const model = <Model> result[0];
-      const klass = <Class> result[1];
-      return classService.assignClassToModel(klass.id, model.id).then(() => klass)
-    })
+    .then(([model, klass]: [Model, Class]) => classService.assignClassToModel(klass.id, model.id).then(() => klass))
     .then(nop, reportFailure);
 }
 
 export function specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
   return q.all([modelPromise, asPromise(assertExists(details.class, 'class to specialize for ' + details.label['fi']))])
-    .then(result => {
-      const model = <Model> result[0];
-      const klass = <Class> result[1];
+    .then(([model, klass]: [Model, Class]) => {
       return classService.newShape(klass.id, model, 'fi')
         .then(shape => {
           setDetails(shape, details);
@@ -311,8 +320,14 @@ export function specializeClass(modelPromise: IPromise<Model>, details: ShapeDet
 }
 
 export function createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPromise<Class> {
-  return modelPromise
-    .then(model => classService.newClass(model, details.label['fi'], details.conceptId || asiaConceptId, 'fi'))
+
+  const concept = details.concept;
+  const conceptIdPromise = isConceptSuggestion(concept)
+    ? createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
+    : q.when(concept || asiaConceptId);
+
+  return q.all([modelPromise, conceptIdPromise])
+    .then(([model, conceptId]: [Model, Uri]) => classService.newClass(model, details.label['fi'], conceptId || asiaConceptId, 'fi'))
     .then(klass => {
       setDetails(klass, details);
       setId(klass, details);
@@ -339,17 +354,19 @@ export function createClass(modelPromise: IPromise<Model>, details: ClassDetails
 
 export function assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromise<Predicate>): IPromise<Predicate> {
   return q.all([modelPromise, predicatePromise])
-    .then(result => {
-      const model = <Model> result[0];
-      const predicate = <Predicate> result[1];
-      return predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate)
-    })
+    .then(([model, predicate]: [Model, Predicate]) => predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate))
     .then(nop, reportFailure);
 }
 
 export function createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
-  return modelPromise
-    .then(model => predicateService.newPredicate(model, details.label['fi'], details.conceptId || asiaConceptId, type, 'fi'))
+
+  const concept = details.concept;
+  const conceptIdPromise = isConceptSuggestion(concept)
+    ? createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
+    : q.when(concept || asiaConceptId);
+
+  return q.all([modelPromise, conceptIdPromise])
+    .then(([model, conceptId]: [Model, Uri]) => predicateService.newPredicate(model, details.label['fi'], conceptId || asiaConceptId, type, 'fi'))
     .then((predicate: T) => {
       setDetails(predicate, details);
       setId(predicate, details);
