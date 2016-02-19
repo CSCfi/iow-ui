@@ -4,7 +4,7 @@ export type Frame = {};
 export type FrameFn = (data: any) => Frame;
 
 const coreContext = {
-  and: { '@id': 'http://www.w3.org/ns/shacl#and', '@container': '@set' },
+  and: { '@id': 'http://www.w3.org/ns/shacl#and', '@container': '@list' },
   comment: { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' },
   constraint: { '@id': 'http://www.w3.org/ns/shacl#constraint', '@type': '@id' },
   created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
@@ -27,7 +27,7 @@ const coreContext = {
   label: { '@id': 'http://www.w3.org/2000/01/rdf-schema#label', '@container': '@language' },
   modified: { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
   nodeKind: { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' },
-  or: { '@id': 'http://www.w3.org/ns/shacl#or', '@container': '@set' },
+  or: { '@id': 'http://www.w3.org/ns/shacl#or', '@container': '@list' },
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
   predicate: { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' },
   preferredXMLNamespaceName: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName' },
