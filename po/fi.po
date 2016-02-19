@@ -561,8 +561,7 @@ msgstr "Historialliset versiot"
 msgid "How content"
 msgstr ""
 "Välineistössä julkaistut tietomääritykset ovat vapaasti selailtavissa. "
-"Huomaathan, että sisällöt ovat vielä kehitysvaiheen luonnoksia. Jatkossa "
-"sisältöjä tietokomponenttikirjastoihin tuottavat eri kohdealueiden "
+"Sisältöjä tietokomponenttikirjastoihin tuottavat eri kohdealueiden "
 "asiantuntijat."
 
 #: translations/misc.html:83
