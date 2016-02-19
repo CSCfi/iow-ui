@@ -11,6 +11,7 @@ import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { Group, ModelListItem, Uri, Type } from '../../services/entities';
+import { MaintenanceModal } from '../maintenance';
 
 export const mod = angular.module('iow.components.group');
 
@@ -45,7 +46,8 @@ class GroupController extends EditableEntityController<Group> {
               private modelService: ModelService,
               userService: UserService,
               private addModelModal: AddModelModal,
-              deleteConfirmationModal: DeleteConfirmationModal) {
+              deleteConfirmationModal: DeleteConfirmationModal,
+              maintenanceModal: MaintenanceModal) {
     super($scope, $log, deleteConfirmationModal, userService);
 
     $scope.$watch(() => this.groupId, groupId => {
@@ -60,6 +62,8 @@ class GroupController extends EditableEntityController<Group> {
           this.profiles = _.filter(result.models, model => model.isOfType('profile'));
           locationService.atGroup(this.group);
           this.loading = false;
+        }, err => {
+          maintenanceModal.open(err);
         });
     })
   }

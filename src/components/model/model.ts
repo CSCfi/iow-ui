@@ -39,6 +39,7 @@ import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
 import { config } from '../../config';
+import { MaintenanceModal } from '../maintenance';
 
 export const mod = angular.module('iow.components.model');
 
@@ -86,6 +87,7 @@ export class ModelController {
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal,
+              private maintenanceModal: MaintenanceModal,
               public languageService: LanguageService) {
 
     this.selectableComparison = languageService.localizableComparison((item: SelectableItem) => item.item.label);
@@ -423,7 +425,7 @@ export class ModelController {
     if (!this.model || this.model.id !== modelId) {
       return this.modelService.getModelByUrn(modelId)
         .then(model => this.updateModel(model))
-        .then(model => true);
+        .then(model => true, err => this.maintenanceModal.open(err));
     } else {
       return this.$q.when(false);
     }

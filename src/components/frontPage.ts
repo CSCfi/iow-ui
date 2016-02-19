@@ -8,6 +8,7 @@ import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
 import { GroupListItem, SearchResult, Url } from '../services/entities';
+import { MaintenanceModal } from './maintenance';
 
 
 const mod = angular.module('iow.components');
@@ -49,13 +50,14 @@ export class FrontPageController {
               private groupService: GroupService,
               private searchService: SearchService,
               private languageService: LanguageService,
-              private advancedSearchModal: AdvancedSearchModal) {
+              private advancedSearchModal: AdvancedSearchModal,
+              private maintenanceModal: MaintenanceModal) {
 
     locationService.atFrontPage();
 
     groupService.getAllGroups().then(groups => {
       this.groups = groups;
-    }, error => $log.error(error));
+    }, error => maintenanceModal.open(error));
 
     $scope.$watch(() => this.searchText, text => this.search(text));
   }
