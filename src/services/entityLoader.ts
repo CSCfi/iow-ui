@@ -13,7 +13,8 @@ import {
   Property,
   State,
   Curie,
-  ConceptSuggestion
+  ConceptSuggestion,
+  ConstraintType
 } from './entities';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
@@ -42,19 +43,27 @@ export interface ModelDetails extends EntityDetails {
   requires?: Resolvable<Model>[]
 }
 
+export interface ConstraintDetails {
+  type: ConstraintType;
+  comment: Localizable;
+  shapes: Resolvable<Class>[];
+}
+
 export interface ClassDetails extends EntityDetails {
   id?: string,
   subClassOf?: CurieResolvable<Class>;
   concept?: Uri|ConceptSuggestionDetails;
   equivalentClasses?: CurieResolvable<Class>[];
-  properties?: PropertyDetails[]
+  properties?: PropertyDetails[];
+  constraint?: ConstraintDetails;
 }
 
 export interface ShapeDetails extends EntityDetails {
   class: Resolvable<Class>;
   id?: string,
   equivalentClasses?: CurieResolvable<Class>[];
-  properties?: PropertyDetails[]
+  properties?: PropertyDetails[];
+  constraint?: ConstraintDetails;
 }
 
 export interface PredicateDetails extends EntityDetails {
@@ -214,6 +223,15 @@ export class EntityLoader {
               promises.push(asCuriePromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(curie => shape.equivalentClasses.push(curie)));
             }
 
+            if (details.constraint) {
+              shape.constraint.constraint = details.constraint.type;
+              shape.constraint.comment = details.constraint.comment;
+
+              for (const constraintShape of details.constraint.shapes) {
+                promises.push(asPromise(assertExists(constraintShape, 'constraint item for ' + details.label['fi'])).then(item => shape.constraint.addItem(item)));
+              }
+            }
+
             return this.$q.all(promises)
               .then(() => this.classService.createClass(shape))
               .then(() => shape)
@@ -249,6 +267,15 @@ export class EntityLoader {
 
         for (const equivalentClass of details.equivalentClasses || []) {
           promises.push(asCuriePromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(curie => klass.equivalentClasses.push(curie)));
+        }
+
+        if (details.constraint) {
+          klass.constraint.constraint = details.constraint.type;
+          klass.constraint.comment = details.constraint.comment;
+
+          for (const constraintShape of details.constraint.shapes) {
+            promises.push(asPromise(assertExists(constraintShape, 'constraint item for ' + details.label['fi'])).then(item => klass.constraint.addItem(item)));
+          }
         }
 
         return this.$q.all(promises)
