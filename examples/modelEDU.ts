@@ -5,9 +5,9 @@ import * as Jhs from './modelJHS';
 export const model = loader.createLibrary(ktkGroupId, {
   prefix: 'edu',
   label:   { fi: 'Opiskelun, opetuksen ja koulutuksen tietokomponentit',
-    en: 'Core Vocabulary of Education' },
+             en: 'Core Vocabulary of Education' },
   comment: { fi: 'Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit',
-    en: 'Common core data model of teaching, learning and education' },
+             en: 'Common core data model of teaching, learning and education' },
   requires: [Jhs.model]
 });
 
