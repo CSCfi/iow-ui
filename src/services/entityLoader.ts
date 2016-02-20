@@ -352,7 +352,11 @@ export class EntityLoader {
       .then((p: Property) => {
         setDetails(p, details);
         assertPropertyValueExists(details, 'valueClass for property ' + details.label['fi']);
-        const valueClassPromise = asCuriePromise(details.valueClass).then(curie => p.valueClass = curie);
+        const valueClassPromise = asCuriePromise(details.valueClass).then(curie => {
+          if (curie) {
+            p.valueClass = curie;
+          }
+        });
 
         if (details.dataType) {
           p.dataType = details.dataType;
