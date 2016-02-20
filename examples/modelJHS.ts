@@ -201,6 +201,11 @@ export namespace Attributes {
     dataType: 'xsd:string'
   });
 
+  export const postinumero = loader.createAttribute(model, {
+    label: { fi: 'Postinumero' },
+    dataType: 'xsd:string'
+  });
+
   export const puhelinnumero = loader.createAttribute(model, {
     label: { fi: 'Puhelinnumero' }
   });
