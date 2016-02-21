@@ -37,10 +37,16 @@ export interface EntityDetails {
   state?: State;
 }
 
+export interface ExternalRequireDetails {
+  prefix: string;
+  namespace: Uri;
+  label: string;
+}
+
 export interface ModelDetails extends EntityDetails {
   prefix: string,
   references?: string[];
-  requires?: Resolvable<Model>[]
+  requires?: (Resolvable<Model>|ExternalRequireDetails)[]
 }
 
 export interface ConstraintDetails {
@@ -173,11 +179,20 @@ export class EntityLoader {
         }
 
         for (const require of details.requires || []) {
-          promises.push(
-            asPromise(assertExists(require, 'require for ' + model.label['fi']))
-              .then(requiredModel => this.modelService.newRequire(requiredModel.namespace, requiredModel.prefix, requiredModel.label['fi'], 'fi'))
-              .then(require => model.addRequire(require))
-          );
+
+          if (isCurieResolvable(require)) {
+            promises.push(
+              asPromise(assertExists(require, 'require for ' + model.label['fi']))
+                .then(requiredModel => this.modelService.newRequire(requiredModel.namespace, requiredModel.prefix, requiredModel.label['fi'], 'fi'))
+                .then(newRequire => model.addRequire(newRequire))
+            );
+          } else if (isExternalRequire(require)) {
+            promises.push(this.modelService.newRequire(require.namespace, require.prefix, require.label, 'fi')
+              .then(newRequire => model.addRequire(newRequire))
+            );
+          } else {
+            throw new Error('Unknown require: ' + require);
+          }
         }
 
         return this.$q.all(promises)
@@ -429,6 +444,14 @@ function isPromiseProvider<T>(obj:any): obj is (() => IPromise<T>) {
 
 function isConceptSuggestion(obj: any): obj is ConceptSuggestionDetails {
   return typeof obj === 'object';
+}
+
+function isExternalRequire(obj: any): obj is ExternalRequireDetails {
+  return !!obj.label && !!obj.namespace && !!obj.prefix;
+}
+
+function isCurieResolvable<T>(obj: any): obj is CurieResolvable<T> {
+  return isPromiseProvider(obj) || isPromise(obj);
 }
 
 function asCuriePromise<T extends { curie: Curie }>(resolvable: CurieResolvable<T>): IPromise<Curie> {
