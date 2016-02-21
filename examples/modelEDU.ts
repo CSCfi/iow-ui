@@ -15,7 +15,24 @@ export const model = loader.createLibrary(ktkGroupId, {
              en: 'Core Vocabulary of Education' },
   comment: { fi: 'Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit',
              en: 'Common core data model of teaching, learning and education' },
-  requires: [Jhs.model]
+  requires: [
+    Jhs.model,
+    {
+      prefix: 'mlo',
+      namespace: 'http://purl.org/net/mlo#',
+      label: 'Metadata for learning opportunities'
+    },
+    {
+      prefix: 'mlr-5',
+      namespace: 'http://standards.iso.org/iso-iec/19788/-5/v0200#',
+      label: 'Metadata for Learning Resources Part 5'
+    },
+    {
+      prefix: 'foaf',
+      namespace: 'http://xmlns.com/foaf/0.1/',
+      label: 'Friend of a friend vocabulary'
+    }
+  ]
 });
 
 export namespace Attributes {
