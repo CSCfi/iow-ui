@@ -133,6 +133,10 @@ export class EntityLoader {
     this.schemes = this.reset.then(() => this.conceptService.getAllSchemes('fi')).then(result => result.data.vocabularies);
   }
 
+  addAction(action: IPromise<any>, details: any) {
+    this.entities.push(action.then(identity, failWithDetails(details)));
+  }
+
   result(successCallback: () => void, errorCallback: (err: any) => void) {
     this.$q.all(this.entities).then(successCallback, errorCallback);
   }
@@ -142,7 +146,7 @@ export class EntityLoader {
       .then(() => this.conceptService.createConceptSuggestion("http://www.finto.fi/jhsmeta", details.label, details.comment, null, 'fi'))
       .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
-    this.entities.push(result);
+    this.addAction(result, details);
     return result;
   }
 
@@ -181,7 +185,7 @@ export class EntityLoader {
           .then(() => model);
       });
 
-    this.entities.push(result);
+    this.addAction(result, details);
     return result;
   }
 
@@ -198,7 +202,7 @@ export class EntityLoader {
       .then(() => this.$q.all([modelPromise, classPromise]))
       .then(([model, klass]: [Model, Class]) => this.classService.assignClassToModel(klass.id, model.id).then(() => klass));
 
-    this.entities.push(result);
+    this.addAction(result, 'assign class');
     return result;
   }
 
@@ -238,7 +242,7 @@ export class EntityLoader {
           })
       });
 
-    this.entities.push(result);
+    this.addAction(result, details);
     return result;
   }
 
@@ -283,7 +287,7 @@ export class EntityLoader {
           .then(() => klass)
       });
 
-    this.entities.push(result);
+    this.addAction(result, details);
     return result;
   }
 
@@ -292,7 +296,7 @@ export class EntityLoader {
       .then(() =>  this.$q.all([modelPromise, predicatePromise]))
       .then(([model, predicate]: [Model, Predicate]) => this.predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate));
 
-    this.entities.push(result);
+    this.addAction(result, 'assign predicate');
     return result;
   }
 
@@ -326,7 +330,7 @@ export class EntityLoader {
           .then(() => predicate);
       });
 
-    this.entities.push(result);
+    this.addAction(result, details);
     return result;
   }
 
@@ -370,8 +374,18 @@ export class EntityLoader {
         return valueClassPromise.then(() => p);
       });
 
-    this.entities.push(result);
+    this.addAction(result, details);
     return result;
+  }
+}
+
+function identity<T>(obj: T): T {
+  return obj;
+}
+
+function failWithDetails(details: any): (err: any) => void {
+  return (error: any) => {
+    return Promise.reject({ error, details });
   }
 }
 
