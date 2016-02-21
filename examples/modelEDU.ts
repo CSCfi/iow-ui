@@ -255,13 +255,13 @@ export namespace Associations {
   });
 
   export const voimassaoloaika = loader.createAssociation(model, {
-    label: { fi: 'Voimassaolo' },
+    label:   { fi: 'Voimassaolo' },
     comment: { fi: 'Voimassaolo aika' },
     valueClass: () => Classes.ajanjakso
   });
 
   export const valintatapa = loader.createAssociation(model, {
-    label: { fi: 'Valintatapa' },
+    label:   { fi: 'Valintatapa' },
     comment: { fi: 'Valintatapa' },
     valueClass: () => Classes.valintatapa
   });
@@ -298,10 +298,10 @@ export namespace Classes {
       {
         predicate: Attributes.alkamisaika,
         label:   { en: 'Starting time of the period',
-          fi: 'Ajanjakson alkamisaika'
+                   fi: 'Ajanjakson alkamisaika'
         },
         comment: { en: 'Point in time when the period starts',
-          fi: 'Ajankohta jolloin ajanjakso katsotaan alkaneeksi'
+                   fi: 'Ajankohta jolloin ajanjakso katsotaan alkaneeksi'
         }
       },
       {
@@ -824,12 +824,12 @@ export namespace Classes {
     properties: [
       {
         predicate: Jhs.Attributes.sukunimi,
-        label: { fi: 'Sukunimi' },
+        label:   { fi: 'Sukunimi' },
         comment: { fi: 'Opiskelijan sukunimi' }
       },
       {
         predicate: Jhs.Attributes.etunimi,
-        label: { fi: 'Etunimi'},
+        label:   { fi: 'Etunimi'},
         comment: { fi: 'Opiskelijan etunimi' }
       }
     ]
