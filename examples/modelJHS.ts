@@ -350,7 +350,7 @@ export namespace Classes {
   });
 
   export const asia = loader.createClass(model, {
-    label: { fi: 'Asia' },
+    label:   { fi: 'Asia' },
     comment: { fi : 'Tehtävän yksittäinen instanssi, joka käsitellään prosessin mukaisessa menettelyssä.' },
     properties: [
       {
@@ -381,7 +381,7 @@ export namespace Classes {
       {
         predicate: Attributes.asiasana,
         label:   { fi: 'Asian asiasana',
-          en: 'Keyword' },
+                   en: 'Keyword' },
         comment: { fi: 'Asian sisältöä kuvaileva tieto' }
       },
       {
@@ -423,12 +423,12 @@ export namespace Classes {
     properties: [
       {
         predicate: Attributes.puhelinnumero,
-        label: { fi: 'Puhelinnumero' },
+        label:   { fi: 'Puhelinnumero' },
         comment: { fi: 'Yhteystiedoissa mainittu puhelinnumero' }
       },
       {
         predicate: Associations.osoite,
-        label: { fi: 'Osoite' },
+        label:   { fi: 'Osoite' },
         comment: { fi: 'Yhteystiedoissa mainittu osoite' },
         valueClass: Classes.osoite
       }
@@ -445,17 +445,17 @@ export namespace Classes {
       },
       {
         predicate: Attributes.ytunnus,
-        label: { fi: 'Y-tunnus' },
+        label:   { fi: 'Y-tunnus' },
         comment: { fi: 'Organisaation yritys tai yhteisötunnus' }
       },
       {
         predicate: Associations.yhteystiedot,
-        label: { fi: 'Yhteystieto' },
+        label:   { fi: 'Yhteystieto' },
         valueClass: Classes.yhteystieto
       },
       {
         predicate: Attributes.tyyppi,
-        label: { fi: 'Organisaatiomuoto' },
+        label:   { fi: 'Organisaatiomuoto' },
         comment: { fi: 'Organisaatiomuodon kuvaava tyyppi' },
         valueClass: 'skos:Concept'
       }
