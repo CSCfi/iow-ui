@@ -8,6 +8,7 @@ import { Class, Property, Predicate, Model, Localizable } from '../../services/e
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
+import { normalizeModelType } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -24,7 +25,7 @@ mod.directive('propertyView', ($location: ILocationService, $timeout: ITimeoutSe
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['propertyView', '^classForm', '?^classView'],
-    link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes, 
+    link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes,
          [thisController, classFormController, classViewController]: [PropertyViewController, ClassFormController, ClassViewController]) {
       $scope.editableController = classViewController;
 
@@ -89,6 +90,10 @@ export class PropertyViewController {
         .map(property => property.label)
         .value();
     });
+  }
+
+  get definedByTitle() {
+    return this.predicate && normalizeModelType(this.predicate.definedBy.type);
   }
 
   linkToValueClass() {

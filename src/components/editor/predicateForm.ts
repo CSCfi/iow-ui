@@ -1,4 +1,5 @@
 import { Association, Model, Predicate } from '../../services/entities';
+import { normalizeModelType } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -24,6 +25,10 @@ class PredicateFormController {
   predicate: Predicate;
   oldPredicate: Predicate;
 
+  get definedByTitle() {
+    return normalizeModelType(this.predicate.definedBy.type);
+  }
+  
   linkToSuperProperty() {
     return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf);
   }

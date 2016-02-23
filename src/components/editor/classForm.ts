@@ -7,6 +7,7 @@ import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
 import { Class, Model, Property, Uri } from '../../services/entities';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
+import { normalizeModelType } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -51,6 +52,10 @@ export class ClassFormController {
     const exclude = (property: Property) => existingPredicates.has(property.predicate.uri);
     this.addPropertiesFromClassModal.open(id, classType, exclude)
       .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
+  }
+
+  get definedByTitle() {
+    return normalizeModelType(this.class.definedBy.type);
   }
 
   linkToSuperclass() {
