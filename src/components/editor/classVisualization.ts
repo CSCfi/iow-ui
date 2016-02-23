@@ -103,7 +103,7 @@ class ClassVisualizationController {
     if (this.visualizationData) {
       this.graph.clear();
       const showCardinality = this.model.isOfType('profile');
-      createCells(this.$scope, this.languageService, this.model, this.graph, this.visualizationData, this.class.id, showCardinality);
+      createCells(this.$scope, this.languageService, this.graph, this.visualizationData, this.class.id, showCardinality);
       layoutGraph(this.graph);
       scaleToFit(this.paper);
     }
@@ -193,15 +193,24 @@ function scaleToFit(paper: joint.dia.Paper) {
   moveOrigin(paper, 0, -25);
 }
 
-function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, classes: VisualizationClass[], root: Uri, showCardinality: boolean) {
+function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], root: Uri, showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
+
+  function classesContain(id: Uri) {
+    for (const klass of classes) {
+      if (klass.id.equals(id)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   for (const klass of normalizeAsArray(classes)) {
     const attributes: Property[] = [];
 
     for (const property of klass.properties) {
-      if (klass.id.equals(root) && property.hasAssociationTarget() && model.findModelPrefixForNamespace(property.valueClass.namespace)) {
+      if (klass.id.equals(root) && property.hasAssociationTarget() && classesContain(property.valueClass)) {
         associations.push({klass: klass, association: property});
       } else {
         attributes.push(property);
