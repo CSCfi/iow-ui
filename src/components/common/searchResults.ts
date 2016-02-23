@@ -73,10 +73,8 @@ class SearchResultsController<T extends WithId> {
   }
 
   selectSearchResult(searchResult: SearchResult<T>) {
-    if (!searchResult.disabled) {
-      this.selected = searchResult;
-      this.onSelect({item: searchResult.item});
-    }
+    this.selected = searchResult;
+    this.onSelect({item: searchResult.item});
   }
 
   searchResultTitle(searchResult: SearchResult<T>) {

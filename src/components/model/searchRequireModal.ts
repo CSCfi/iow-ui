@@ -76,7 +76,9 @@ class SearchRequireController {
   }
 
   selectItem(require: Require) {
-    this.$uibModalInstance.close(require);
+    if (!this.exclude(require)) {
+      this.$uibModalInstance.close(require); 
+    }
   }
 
   createNew() {

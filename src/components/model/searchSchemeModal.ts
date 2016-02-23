@@ -60,7 +60,9 @@ class SearchSchemeController {
   }
 
   selectItem(scheme: any) {
-    this.$uibModalInstance.close(scheme);
+    if (!this.exclude(scheme)) {
+      this.$uibModalInstance.close(scheme);
+    }
   }
 
   private textFilter(scheme: any): boolean {

@@ -53,6 +53,7 @@ class SearchClassController {
   showProfiles: boolean;
   modelId: Uri;
   models: DefinedBy[] = [];
+  cannotConfirm: string;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -94,6 +95,7 @@ class SearchClassController {
   }
 
   selectItem(klass: ClassListItem) {
+    this.cannotConfirm = this.exclude(klass);
     this.classService.getClass(klass.id).then(result => this.selectedClass = result);
   }
 

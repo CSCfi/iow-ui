@@ -64,6 +64,7 @@ export class SearchPredicateController {
   typeSelectable: boolean;
   submitError: string;
   showExcluded: boolean;
+  cannotConfirm: string;
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -113,6 +114,7 @@ export class SearchPredicateController {
   selectItem(predicate: PredicateListItem) {
     this.$scope.form.editing = false;
     this.submitError = null;
+    this.cannotConfirm = this.exclude(predicate);
     this.predicateService.getPredicate(predicate.id).then(result => this.selectedPredicate = result);
   }
 
@@ -133,6 +135,7 @@ export class SearchPredicateController {
         } else {
           this.predicateService.newPredicate(this.model, result.label, result.concept.id, type, this.languageService.modelLanguage)
             .then(predicate => {
+              this.cannotConfirm = null;
               this.selectedPredicate = predicate;
               this.$scope.form.editing = true;
             });

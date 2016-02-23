@@ -56,8 +56,12 @@
   </modal-body>
 
   <modal-buttons>
+    <div class="alert alert-danger" style="display: inline; margin-right: 10px;" role="alert" ng-show="ctrl.cannotConfirm">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span>{{ctrl.cannotConfirm | translate}}</span>
+    </div>
     <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass">{{ctrl.textForSelection(ctrl.selectedClass) | translate}}</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass || ctrl.cannotConfirm">{{ctrl.textForSelection(ctrl.selectedClass) | translate}}</button>
   </modal-buttons>
 </modal-template>
 
