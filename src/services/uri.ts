@@ -16,15 +16,11 @@ export class Uri {
     return this.isFullUrl() || this.isCurieUrl();
   }
 
-  canCompact() {
-    return this.isCurieUrl() || !!this.findPrefixForNamespace(this.value);
-  }
-
   get curie() {
     if (this.isUrn()) {
       throw new Error('URN can not be converted to curie: ' + this.value);
     } else if (this.isFullUrl()) {
-      const prefix = this.findPrefixForNamespace(this.value);
+      const prefix = this.findResolvablePrefix();
 
       if (prefix) {
         return prefix + ':' + this.name;
@@ -72,42 +68,24 @@ export class Uri {
         throw new Error('Cannot resolve namespace: ' + this.value);
       }
     } else if (this.isCurieUrl()) {
-      const {prefix} = splitCurie(this.value);
-      const ns = this.context[prefix];
-      if (!ns) {
-        throw new Error('Namespace does not contain prefix: ' + prefix);
+      const prefix = this.findResolvablePrefix();
+
+      if (prefix) {
+        return this.context[prefix];
       } else {
-        return ns;
+        throw new Error('Namespace does not contain prefix: ' + prefix);
       }
     } else {
       throw new Error('Cannot resolve namespace for unknown value: ' + this.value);
     }
   }
 
-  get prefix() {
-    if (this.isUrn()) {
-      throw new Error('URN can not be converted to prefix: ' + this.value);
-    } else if (this.isFullUrl()) {
-      const prefix = this.findPrefixForNamespace(this.value);
-
-      if (prefix) {
-        return prefix;
-      } else {
-        throw new Error('Cannot resolve prefix: ' + this.value);
-      }
-    } else if (this.isCurieUrl()) {
-      return splitCurie(this.value).prefix;
-    } else {
-      throw new Error('Cannot resolve prefix for unknown value: ' + this.value);
-    }
-  }
-
   get compact() {
-    return this.canCompact() ? this.curie : this.uri;
+    return this.hasResolvablePrefix() ? this.curie : this.uri;
   }
 
   get uri() {
-    if (this.isCurieUrl() && this.hasPrefixForNamespace()) {
+    if (this.hasResolvablePrefix()) {
       return this.namespace + this.name;
     } else {
       return this.value;
@@ -146,16 +124,8 @@ export class Uri {
     return !this.equals(other);
   }
 
-  hasPrefixForNamespace() {
-    if (this.isUrn()) {
-      return false;
-    } else if (this.isFullUrl()) {
-      return !!this.findPrefixForNamespace(this.value);
-    } else if (this.isCurieUrl()) {
-      return !!this.context[splitCurie(this.value).prefix];
-    } else {
-      return false;
-    }
+  hasResolvablePrefix() {
+    return !!this.findResolvablePrefix();
   }
 
   addKnownModelsToContext(model: Model) {
@@ -175,19 +145,29 @@ export class Uri {
     return split && !!this.context[split.prefix];
   }
 
-  private findPrefixForNamespace(ns: string) {
-    const namespaceSplit = splitNamespace(ns);
+  private findResolvablePrefix() {
+    if (this.isUrn()) {
+      return null;
+    } else if (this.isFullUrl()) {
+      const ns = splitNamespace(this.value);
 
-    if (namespaceSplit) {
-      for (const prefix of Object.keys(this.context)) {
-        const value = this.context[prefix];
-        if (namespaceSplit.namespaceId + namespaceSplit.separator === value) {
-          return prefix;
+      if (ns) {
+        for (const prefix of Object.keys(this.context)) {
+          const value = this.context[prefix];
+          if (ns && ns.namespaceId + ns.separator === value) {
+            return prefix;
+          }
         }
       }
-    }
 
-    return null;
+      return null;
+
+    } else if (this.isCurieUrl()) {
+      const split = splitCurie(this.value);
+      return split && !!this.context[split.prefix] && split.prefix;
+    } else {
+      return null;
+    }
   }
 }
 
