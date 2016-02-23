@@ -26,7 +26,7 @@
   </editable>
 
   <editable ng-if="ctrl.predicate.isAssociation()" title="Value class" link="ctrl.linkToValueClass()">
-    <curie-select id="{{ctrl.property.id + 'valueClass'}}" type="class" curie="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></curie-select>
+    <uri-select id="{{ctrl.property.id + 'valueClass'}}" type="class" curie="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></uri-select>
   </editable>
 
   <editable ng-if="ctrl.predicate.isAttribute()" title="Pattern">

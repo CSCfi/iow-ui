@@ -11,8 +11,7 @@ import { createDefinedByExclusion } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
-// TODO rename
-mod.directive('curieSelect', () => {
+mod.directive('uriSelect', () => {
   'ngInject';
   return {
     scope: {
@@ -26,7 +25,7 @@ mod.directive('curieSelect', () => {
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: require('./curieSelect.html'),
+    template: require('./uriSelect.html'),
     require: '?^form',
     link($scope: EditableScope, element: JQuery, attributes: IAttributes, formController: EditableForm) {
       $scope.formController = formController;
@@ -55,7 +54,7 @@ class CurieSelectController {
   constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
   }
 
-  selectCurie() {
+  selectUri() {
     const promise: IPromise<WithId> = this.type === 'class'
       ? this.searchClassModal.openWithOnlySelection(this.model, createDefinedByExclusion(this.model))
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createDefinedByExclusion(this.model));
