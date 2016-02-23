@@ -35,11 +35,11 @@
 
   <div ng-if="ctrl.model.isOfType('profile')">
     <editable title="Min count">
-      <input id="{{ctrl.property.id + 'minCount'}}" class="form-control" type="number" ng-model="ctrl.property.minCount" />
+      <input id="{{ctrl.property.id + 'minCount'}}" min-input max="ctrl.property.maxCount" class="form-control" type="number" ng-model="ctrl.property.minCount" />
     </editable>
 
     <editable title="Max count">
-      <input id="{{ctrl.property.id + 'maxCount'}}" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
+      <input id="{{ctrl.property.id + 'maxCount'}}" max-input min="ctrl.property.minCount" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
     </editable>
   </div>
 

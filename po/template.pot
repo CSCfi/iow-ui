@@ -537,6 +537,10 @@ msgstr ""
 msgid "Generalize class"
 msgstr ""
 
+#: components/form/errorMessages.html:15
+msgid "Greater than max error"
+msgstr ""
+
 #: translations/misc.html:27
 msgid "group"
 msgstr ""
@@ -618,6 +622,10 @@ msgstr ""
 msgid "Length error"
 msgstr ""
 
+#: components/form/errorMessages.html:16
+msgid "Less than min error"
+msgstr ""
+
 #: translations/misc.html:29
 msgid "library"
 msgstr ""
@@ -694,6 +702,10 @@ msgstr ""
 
 #: translations/misc.html:72
 msgid "Namespace"
+msgstr ""
+
+#: components/form/errorMessages.html:14
+msgid "Negative error"
 msgstr ""
 
 #: translations/misc.html:24

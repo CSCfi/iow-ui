@@ -541,6 +541,10 @@ msgstr "Käyttöliittymä"
 msgid "Generalize class"
 msgstr "Nosta luokka kirjastoon"
 
+#: components/form/errorMessages.html:15
+msgid "Greater than max error"
+msgstr "Ei saa olla suurempi kuin maksimi"
+
 #: translations/misc.html:27
 msgid "group"
 msgstr "Ryhmä"
@@ -624,6 +628,10 @@ msgstr "JSON-LD Frame"
 msgid "Length error"
 msgstr "Syöte on liian pitkä"
 
+#: components/form/errorMessages.html:16
+msgid "Less than min error"
+msgstr "Ei saa olla pienempi kuin minimi"
+
 #: translations/misc.html:29
 msgid "library"
 msgstr "Tietokomponenttikirjasto"
@@ -701,6 +709,10 @@ msgstr "Nimi"
 #: translations/misc.html:72
 msgid "Namespace"
 msgstr "Nimiavaruus"
+
+#: components/form/errorMessages.html:14
+msgid "Negative error"
+msgstr "Ei saa olla negatiivinen"
 
 #: translations/misc.html:24
 msgid "New model creation"

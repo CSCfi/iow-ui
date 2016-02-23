@@ -17,5 +17,7 @@ import './restrictDuplicates';
 import './stateSelect';
 import './submitErrorPanel';
 import './valueSelect';
+import './maxInput';
+import './minInput';
 
 mod.service('displayItemFactory', DisplayItemFactory);
