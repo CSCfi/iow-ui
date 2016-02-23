@@ -337,7 +337,7 @@ export class ModelController {
 
   private createShape(klass: Class) {
     this.assignMissingPredicates(klass);
-    return this.classService.newShape(klass.id, this.model, this.languageService.modelLanguage);
+    return this.classService.newShape(klass, this.model, this.languageService.modelLanguage);
   }
 
   private assignClassToModel(klass: Class) {

@@ -93,15 +93,17 @@ export class ClassService {
       });
   }
 
-  newShape(classId: Uri, profile: Model, lang: Language): IPromise<Class> {
-    return this.$http.get(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: classId.uri, lang}})
+  newShape(klass: Class, profile: Model, lang: Language): IPromise<Class> {
+    return this.$http.get(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klass.id.uri, lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], profile.context);
         return this.entities.deserializeClass(response.data);
       })
-      .then((klass: Class) => {
-        klass.unsaved = true;
-        return klass;
+      .then((shape: Class) => {
+        shape.definedBy = profile.asDefinedBy();
+        shape.subject = klass.subject;
+        shape.unsaved = true;
+        return shape;
       });
   }
 

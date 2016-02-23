@@ -226,7 +226,7 @@ export class EntityLoader {
     const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, asPromise(assertExists(details.class, 'class to specialize for ' + details.label['fi']))]))
       .then(([model, klass]: [Model, Class]) => {
-        return this.classService.newShape(klass.id, model, 'fi')
+        return this.classService.newShape(klass, model, 'fi')
           .then(shape => {
             setDetails(shape, details);
             setId(shape, details);
