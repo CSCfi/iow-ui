@@ -90,7 +90,7 @@ msgstr ""
 msgid "and create new"
 msgstr ""
 
-#: components/group/group.html:43
+#: components/group/group.html:45
 msgid "Application profiles"
 msgstr ""
 
@@ -574,6 +574,10 @@ msgstr ""
 msgid "Imported requires"
 msgstr ""
 
+#: translations/misc.html:172
+msgid "Internal group page"
+msgstr ""
+
 #: components/frontPage.html:5
 msgid "Interoperability method"
 msgstr ""
@@ -675,7 +679,7 @@ msgstr ""
 msgid "model"
 msgstr ""
 
-#: components/group/group.html:28
+#: components/group/group.html:30
 msgid "Models"
 msgstr ""
 
@@ -696,11 +700,11 @@ msgstr ""
 msgid "New model creation"
 msgstr ""
 
-#: components/group/group.html:30
+#: components/group/group.html:32
 msgid "No models yet"
 msgstr ""
 
-#: components/group/group.html:45
+#: components/group/group.html:47
 msgid "No profiles yet"
 msgstr ""
 
