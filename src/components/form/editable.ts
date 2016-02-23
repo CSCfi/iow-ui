@@ -4,12 +4,7 @@ import IFormController = angular.IFormController;
 import INgModelController = angular.INgModelController;
 import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import * as _ from 'lodash';
-import { LanguageService } from '../../services/languageService';
-import { EditableForm } from './editableEntityController';
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
-import { Localizable, isLocalizable } from '../../services/entities';
-import { isString } from '../../services/utils';
 
 export const mod = angular.module('iow.components.form');
 
