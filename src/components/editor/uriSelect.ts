@@ -30,7 +30,7 @@ mod.directive('uriSelect', () => {
     link($scope: EditableScope, element: JQuery, attributes: IAttributes, formController: EditableForm) {
       $scope.formController = formController;
     },
-    controller: CurieSelectController
+    controller: UriSelectController
   };
 });
 
@@ -42,7 +42,7 @@ interface WithId {
   id: Uri;
 }
 
-class CurieSelectController {
+class UriSelectController {
 
   curie: Uri;
   type: Type;
