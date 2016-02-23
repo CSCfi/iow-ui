@@ -38,11 +38,7 @@ class EditableRootClassController {
   get href() {
     return '#' + this.model.linkTo('class', this.model.rootClass);
   }
-
-  get curie() {
-    return this.model.rootClass;
-  }
-
+  
   selectClass() {
 
     const exclude = (klass: ClassListItem) => {

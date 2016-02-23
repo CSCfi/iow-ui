@@ -319,7 +319,7 @@ export class Model extends AbstractModel {
       references: serializeEntityList(this.references),
       requires: serializeEntityList(this.requires),
       identifier: this.version,
-      rootResource: this.rootClass
+      rootResource: this.rootClass.uri
     }
   }
 }
