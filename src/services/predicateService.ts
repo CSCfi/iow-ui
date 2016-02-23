@@ -3,7 +3,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _ from 'lodash';
-import { EntityDeserializer, Predicate, PredicateListItem, Uri, Model, Type, Attribute } from './entities';
+import { EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, Urn, Uri } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -14,8 +14,8 @@ export class PredicateService {
   constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
-  getPredicate(id: Uri): IPromise<Predicate> {
-    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {id}}).then(response => this.entities.deserializePredicate(response.data));
+  getPredicate(id: Uri|Urn): IPromise<Predicate> {
+    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {id: id.toString()}}).then(response => this.entities.deserializePredicate(response.data));
   }
 
   getAllPredicates(): IPromise<PredicateListItem[]> {
@@ -23,15 +23,15 @@ export class PredicateService {
   }
 
   getPredicatesForModel(modelId: Uri): IPromise<PredicateListItem[]> {
-    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {model: modelId}}).then(response => this.entities.deserializePredicateList(response.data));
+    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {model: modelId.uri}}).then(response => this.entities.deserializePredicateList(response.data));
   }
 
   createPredicate(predicate: Predicate): IPromise<any> {
     const requestParams = {
-      id: predicate.id,
-      model: predicate.definedBy.id
+      id: predicate.id.uri,
+      model: predicate.definedBy.id.uri
     };
-    return this.$http.put<{ identifier: Uri }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
+    return this.$http.put<{ identifier: Urn }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
         predicate.unsaved = false;
         predicate.version = response.data.identifier;
@@ -40,13 +40,13 @@ export class PredicateService {
 
   updatePredicate(predicate: Predicate, originalId: Uri): IPromise<any> {
     const requestParams: any = {
-      id: predicate.id,
-      model: predicate.definedBy.id
+      id: predicate.id.uri,
+      model: predicate.definedBy.id.uri
     };
-    if (requestParams.id !== originalId) {
-      requestParams.oldid = originalId;
+    if (predicate.id.notEquals(originalId)) {
+      requestParams.oldid = originalId.uri;
     }
-    return this.$http.post<{ identifier: Uri }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
+    return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
         predicate.version = response.data.identifier;
       });
@@ -54,22 +54,28 @@ export class PredicateService {
 
   deletePredicate(id: Uri, modelId: Uri): IHttpPromise<any> {
     const requestParams = {
-      id,
-      model: modelId
+      id: id.uri,
+      model: modelId.uri
     };
     return this.$http.delete(config.apiEndpointWithName('predicate'), {params: requestParams});
   }
 
   assignPredicateToModel(predicateId: Uri, modelId: Uri): IHttpPromise<any> {
     const requestParams = {
-      id: predicateId,
-      model: modelId
+      id: predicateId.uri,
+      model: modelId.uri
     };
     return this.$http.post(config.apiEndpointWithName('predicate'), undefined, {params: requestParams});
   }
 
   newPredicate<T extends Predicate>(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<T> {
-    return this.$http.get(config.apiEndpointWithName('predicateCreator'), {params: {modelID: model.id, predicateLabel: upperCaseFirst(predicateLabel), conceptID, type: reverseMapType(type), lang}})
+    return this.$http.get(config.apiEndpointWithName('predicateCreator'), {
+      params: {
+        modelID: model.id.uri,
+        predicateLabel: upperCaseFirst(predicateLabel),
+        conceptID: conceptID.uri,
+        type: reverseMapType(type), lang
+      }})
       .then((response: any) => {
         _.extend(response.data['@context'], model.context);
         return response;

@@ -52,7 +52,7 @@ class EditableConstraint {
   addItem() {
     const exclude = combineExclusions<ClassListItem>(
       createClassTypeExclusion(SearchClassType.SpecializedClass),
-      createExistsExclusion(collectProperties(this.constraint.items, item => this.model.expandCurie(item.shapeId).uri)),
+      createExistsExclusion(collectProperties(this.constraint.items, item => item.shapeId.uri)),
       createDefinedByExclusion(this.model)
     );
 

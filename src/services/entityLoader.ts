@@ -3,7 +3,6 @@ import IQService = angular.IQService;
 import * as _ from 'lodash';
 import {
   Localizable,
-  Uri,
   Type,
   Model,
   Predicate,
@@ -12,24 +11,26 @@ import {
   Class,
   Property,
   State,
-  Curie,
   ConceptSuggestion,
-  ConstraintType
+  ConstraintType,
+  Url
 } from './entities';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
 import { PredicateService } from './predicateService';
 import { UserService } from './userService';
-import { splitCurie } from './utils';
+import { identity } from './utils';
 import { ConceptService } from './conceptService';
 import { ResetService } from './resetService';
+import { Uri } from './uri';
 
-export const asiaConceptId = 'http://jhsmeta.fi/skos/J392';
-export const ktkGroupId = 'https://tt.eduuni.fi/sites/csc-iow#KTK';
-export const jhsGroupId = 'https://tt.eduuni.fi/sites/csc-iow#JHS';
+export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392');
+export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK');
+export const jhsGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#JHS');
+export const jhsMetaId = new Uri('http://www.finto.fi/jhsmeta');
 
 export type Resolvable<T> = IPromise<T>|(() => IPromise<T>);
-export type CurieResolvable<T extends { curie: Curie }> = Curie|IPromise<T>|(() => IPromise<T>);
+export type UriResolvable<T extends { id: Uri }> = Url|IPromise<T>|(() => IPromise<T>);
 
 export interface EntityDetails {
   label: Localizable;
@@ -39,7 +40,7 @@ export interface EntityDetails {
 
 export interface ExternalRequireDetails {
   prefix: string;
-  namespace: Uri;
+  namespace: Url;
   label: string;
 }
 
@@ -57,9 +58,9 @@ export interface ConstraintDetails {
 
 export interface ClassDetails extends EntityDetails {
   id?: string,
-  subClassOf?: CurieResolvable<Class>;
-  concept?: Uri|ConceptSuggestionDetails;
-  equivalentClasses?: CurieResolvable<Class>[];
+  subClassOf?: UriResolvable<Class>;
+  concept?: Url|ConceptSuggestionDetails;
+  equivalentClasses?: UriResolvable<Class>[];
   properties?: PropertyDetails[];
   constraint?: ConstraintDetails;
 }
@@ -67,16 +68,16 @@ export interface ClassDetails extends EntityDetails {
 export interface ShapeDetails extends EntityDetails {
   class: Resolvable<Class>;
   id?: string,
-  equivalentClasses?: CurieResolvable<Class>[];
+  equivalentClasses?: UriResolvable<Class>[];
   properties?: PropertyDetails[];
   constraint?: ConstraintDetails;
 }
 
 export interface PredicateDetails extends EntityDetails {
   id?: string,
-  subPropertyOf?: CurieResolvable<Predicate>;
-  concept?: Uri|ConceptSuggestionDetails;
-  equivalentProperties?: CurieResolvable<Predicate>[];
+  subPropertyOf?: UriResolvable<Predicate>;
+  concept?: string|ConceptSuggestionDetails;
+  equivalentProperties?: UriResolvable<Predicate>[];
 }
 
 export interface AttributeDetails extends PredicateDetails {
@@ -84,14 +85,14 @@ export interface AttributeDetails extends PredicateDetails {
 }
 
 export interface AssociationDetails extends PredicateDetails {
-  valueClass?: CurieResolvable<Class>;
+  valueClass?: UriResolvable<Class>;
 }
 
 export interface PropertyDetails extends EntityDetails {
   predicate: Resolvable<Predicate>;
   example?: string;
   dataType?: string;
-  valueClass?: CurieResolvable<Class>;
+  valueClass?: UriResolvable<Class>;
   minCount?: number;
   maxCount?: number;
   pattern?: string;
@@ -149,7 +150,7 @@ export class EntityLoader {
 
   createConceptSuggestion(details: ConceptSuggestionDetails): IPromise<ConceptSuggestion> {
     const result = this.loggedIn
-      .then(() => this.conceptService.createConceptSuggestion("http://www.finto.fi/jhsmeta", details.label, details.comment, null, 'fi'))
+      .then(() => this.conceptService.createConceptSuggestion(jhsMetaId, details.label, details.comment, null, 'fi'))
       .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
     this.addAction(result, details);
@@ -180,7 +181,7 @@ export class EntityLoader {
 
         for (const require of details.requires || []) {
 
-          if (isCurieResolvable(require)) {
+          if (isUriResolvable(require)) {
             promises.push(
               asPromise(assertExists(require, 'require for ' + model.label['fi']))
                 .then(requiredModel => this.modelService.newRequire(requiredModel.namespace, requiredModel.prefix, requiredModel.label['fi'], 'fi'))
@@ -239,7 +240,7 @@ export class EntityLoader {
             }
 
             for (const equivalentClass of details.equivalentClasses || []) {
-              promises.push(asCuriePromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(curie => shape.equivalentClasses.push(curie)));
+              promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(id => shape.equivalentClasses.push(id)));
             }
 
             if (details.constraint) {
@@ -266,11 +267,11 @@ export class EntityLoader {
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
       ? this.createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
-      : this.$q.when(concept || asiaConceptId);
+      : concept ? this.$q.when(new Uri(<string> concept)) : this.$q.when(asiaConceptId);
 
     const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, conceptIdPromise]))
-      .then(([model, conceptId]: [Model, Uri]) => this.classService.newClass(model, details.label['fi'], conceptId || asiaConceptId, 'fi'))
+      .then(([model, conceptId]: [Model, Uri]) => this.classService.newClass(model, details.label['fi'], conceptId, 'fi'))
       .then((klass: Class) => {
         setDetails(klass, details);
         setId(klass, details);
@@ -282,10 +283,10 @@ export class EntityLoader {
         }
 
         assertPropertyValueExists(details, 'subClassOf for ' + details.label['fi']);
-        promises.push(asCuriePromise(details.subClassOf).then(curie => klass.subClassOf = curie));
+        promises.push(asUriPromise(details.subClassOf).then(uri => klass.subClassOf = uri));
 
         for (const equivalentClass of details.equivalentClasses || []) {
-          promises.push(asCuriePromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(curie => klass.equivalentClasses.push(curie)));
+          promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(uri => klass.equivalentClasses.push(uri)));
         }
 
         if (details.constraint) {
@@ -320,11 +321,11 @@ export class EntityLoader {
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
       ? this.createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
-      : this.$q.when(concept || asiaConceptId);
+      : concept ? this.$q.when(new Uri(<string> concept)) : this.$q.when(asiaConceptId);
 
     const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, conceptIdPromise]))
-      .then(([model, conceptId]: [Model, Uri]) => this.predicateService.newPredicate(model, details.label['fi'], conceptId || asiaConceptId, type, 'fi'))
+      .then(([model, conceptId]: [Model, Uri]) => this.predicateService.newPredicate(model, details.label['fi'], conceptId, type, 'fi'))
       .then((predicate: T) => {
         setDetails(predicate, details);
         setId(predicate, details);
@@ -332,10 +333,10 @@ export class EntityLoader {
         const promises: IPromise<any>[] = [];
 
         assertPropertyValueExists(details, 'subPropertyOf for ' + details.label['fi]']);
-        promises.push(asCuriePromise(details.subPropertyOf).then(curie => predicate.subPropertyOf = curie));
+        promises.push(asUriPromise(details.subPropertyOf).then(uri => predicate.subPropertyOf = uri));
 
         for (const equivalentProperty of details.equivalentProperties || []) {
-          promises.push(asCuriePromise(assertExists(equivalentProperty, 'equivalent property for ' + details.label['fi'])).then(curie => predicate.equivalentProperties.push(curie)));
+          promises.push(asUriPromise(assertExists(equivalentProperty, 'equivalent property for ' + details.label['fi'])).then(uri => predicate.equivalentProperties.push(uri)));
         }
 
         promises.push(mangler(predicate));
@@ -358,9 +359,9 @@ export class EntityLoader {
 
   createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
     return this.createPredicate<Association>(modelPromise, 'association', details, association => {
-      assertPropertyValueExists(details, 'valueClass for association ' + details.label['fi']);
-      return asCuriePromise(details.valueClass)
-        .then(curie => association.valueClass = curie);
+      assertPropertyValueExists(details, 'valueClass');
+      return asUriPromise(details.valueClass)
+        .then(uri => association.valueClass = uri);
     });
   }
 
@@ -370,10 +371,10 @@ export class EntityLoader {
       .then(p => this.classService.newProperty(p.id))
       .then((p: Property) => {
         setDetails(p, details);
-        assertPropertyValueExists(details, 'valueClass for property ' + details.label['fi']);
-        const valueClassPromise = asCuriePromise(details.valueClass).then(curie => {
-          if (curie) {
-            p.valueClass = curie;
+        assertPropertyValueExists(details, 'valueClass');
+        const valueClassPromise = asUriPromise(details.valueClass).then(id => {
+          if (id) {
+            p.valueClass = id;
           }
         });
 
@@ -394,10 +395,6 @@ export class EntityLoader {
   }
 }
 
-function identity<T>(obj: T): T {
-  return obj;
-}
-
 function failWithDetails(details: any): (err: any) => void {
   return (error: any) => {
     return Promise.reject({ error, details });
@@ -412,10 +409,9 @@ function setDetails(entity: { label: Localizable, comment: Localizable, state: S
   }
 }
 
-function setId(entity: { curie: Curie }, details: { id?: string }) {
+function setId(entity: { id: Uri }, details: { id?: string }) {
   if (details.id) {
-    const {prefix} = splitCurie(entity.curie);
-    entity.curie = prefix + ':' + details.id;
+    entity.id = entity.id.withName(details.id);
   }
 }
 
@@ -450,24 +446,24 @@ function isExternalRequire(obj: any): obj is ExternalRequireDetails {
   return !!obj.label && !!obj.namespace && !!obj.prefix;
 }
 
-function isCurieResolvable<T>(obj: any): obj is CurieResolvable<T> {
+function isUriResolvable<T>(obj: any): obj is UriResolvable<T> {
   return isPromiseProvider(obj) || isPromise(obj);
 }
 
-function asCuriePromise<T extends { curie: Curie }>(resolvable: CurieResolvable<T>): IPromise<Curie> {
+function asUriPromise<T extends { id: Uri }>(resolvable: UriResolvable<T>): IPromise<Uri> {
   if (isPromiseProvider(resolvable)) {
     const promise = resolvable();
     if (isPromise<T>(promise)) {
-      return promise.then(withCurie => withCurie.curie);
+      return promise.then(withId => withId.id);
     } else {
       throw new Error('Must be promise');
     }
   } else if (isPromise(resolvable)) {
-    return resolvable.then(withCurie => withCurie.curie);
+    return resolvable.then(withId => withId.id);
   } else if (typeof resolvable === 'string') {
-    return <IPromise<Curie>> Promise.resolve(resolvable);
+    return <IPromise<Uri>> Promise.resolve(new Uri(resolvable));
   } else {
-    return <IPromise<Curie>> Promise.resolve(null);
+    return <IPromise<Uri>> Promise.resolve(null);
   }
 }
 

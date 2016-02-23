@@ -35,7 +35,7 @@ class UsagePanelController {
   }
 
   private updateUsage() {
-    if (this.open && (!this.usage || this.usage.id !== this.entity.id)) {
+    if (this.open && (!this.usage || this.usage.id.notEquals(this.entity.id))) {
       this.loading = true;
       this.usageService.getUsage(this.entity).then(usage => {
         this.usage = usage;

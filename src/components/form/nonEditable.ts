@@ -3,9 +3,6 @@ import IFormController = angular.IFormController;
 import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Localizable, isLocalizable } from '../../services/entities';
-import { isString } from '../../services/utils';
-import { LanguageService } from '../../services/languageService';
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
 
@@ -44,6 +41,6 @@ class NonEditableController {
 
   /* @ngInject */
   constructor(displayItemFactory: DisplayItemFactory) {
-    this.item = displayItemFactory.create(() => this.value, (value: string) => this.link, this.valueAsLocalizationKey, () => this.isEditing())
+    this.item = displayItemFactory.create(() => this.value, (value) => this.link, this.valueAsLocalizationKey, () => this.isEditing())
   }
 }

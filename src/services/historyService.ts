@@ -10,7 +10,7 @@ export class HistoryService {
   }
 
   getHistory(id: Uri): IPromise<Activity> {
-    return this.$http.get(config.apiEndpointWithName('history'), {params: {id}})
+    return this.$http.get(config.apiEndpointWithName('history'), {params: {id: id.uri}})
       .then(response => this.entities.deserializeVersion(response.data));
   }
 }

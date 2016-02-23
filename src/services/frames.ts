@@ -1,4 +1,4 @@
-import { Uri } from './entities';
+import { Url } from './entities';
 
 export type Frame = {};
 export type FrameFn = (data: any) => Frame;
@@ -130,7 +130,7 @@ export function iowConceptFrame(data: any): Frame {
   return frame(data, conceptContext, { inScheme: {} });
 }
 
-export function fintoConceptFrame(data: any, id: Uri): Frame {
+export function fintoConceptFrame(data: any, id: Url): Frame {
 
   const context = Object.assign({}, coreContext, {
     value: null,

@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { EditableForm } from '../form/editableEntityController';
-import { Curie, Model, ClassListItem } from '../../services/entities';
+import { Model, ClassListItem } from '../../services/entities';
 import { SearchClassModal } from '../editor/searchClassModal';
 
 export const mod = angular.module('iow.components.model');
@@ -46,11 +46,11 @@ class EditableRootClassController {
   selectClass() {
 
     const exclude = (klass: ClassListItem) => {
-      if (klass.definedBy.id !== this.model.id) {
+      if (klass.definedBy.id.notEquals(this.model.id)) {
         return 'Can be selected only from this ' + this.model.normalizedType;
       }
     };
 
-    this.searchClassModal.openWithOnlySelection(this.model, exclude).then(klass => this.model.rootClass = klass.curie);
+    this.searchClassModal.openWithOnlySelection(this.model, exclude).then(klass => this.model.rootClass = klass.id);
   }
 }

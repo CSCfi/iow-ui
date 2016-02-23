@@ -25,8 +25,7 @@ import {
   Type,
   Property,
   Uri,
-  DefinedBy,
-  Curie
+  DefinedBy
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -113,7 +112,7 @@ export class ModelController {
       // new model creation cancelled
       if (oldModel && !newModel) {
         $location.path('/group');
-        $location.search({urn: oldModel.groupId});
+        $location.search({urn: oldModel.groupId.uri});
       }
     });
 
@@ -156,7 +155,7 @@ export class ModelController {
             this.updateSelectables();
           }
           if (!this.selectedItem && this.model.rootClass) {
-            this.selectedItem = { id: this.model.rootClassUri, selectionType: 'class' };
+            this.selectedItem = { id: this.model.rootClass, selectionType: 'class' };
           }
         })
         .then(() => this.updateSelectionByTypeAndId(this.selectedItem))
@@ -233,9 +232,9 @@ export class ModelController {
       this.locationService.atModel(this.model, this.selection);
 
       if (!this.model.unsaved) {
-        const newSearch: any = {urn: this.model.id};
+        const newSearch: any = {urn: this.model.id.uri};
         if (this.selection) {
-          newSearch[this.selection.selectionType] = this.selection.id;
+          newSearch[this.selection.selectionType] = this.selection.id.uri;
         }
 
         const search = _.clone(this.$location.search());
@@ -322,8 +321,7 @@ export class ModelController {
 
   private generalizeClass(klass: Class) {
     const exclude = (property: Property) => {
-      const namespace = property.expandCurie(property.predicateCurie).namespace;
-      return !this.model.findModelPrefixForNamespace(namespace);
+      return !this.model.findModelPrefixForNamespace(property.predicate.namespace);
     };
     return this.addPropertiesFromClassModal.open(klass, 'profile', exclude)
       .then(properties => {
@@ -352,8 +350,8 @@ export class ModelController {
 
     this.$q.all(
       _.chain(klass.properties)
-        .map((property: Property) => property.predicateId)
-        .filter((predicateId: Uri) => !predicateIds.has(predicateId))
+        .map((property: Property) => property.predicate)
+        .filter((predicateId: Uri) => !predicateIds.has(predicateId.uri))
         .map((predicateId: Uri) => this.assignPredicateToModel(predicateId))
         .value()
       )
@@ -422,7 +420,7 @@ export class ModelController {
   }
 
   private updateModelById(modelId: Uri) {
-    if (!this.model || this.model.id !== modelId) {
+    if (!this.model || this.model.id.notEquals(modelId)) {
       return this.modelService.getModelByUrn(modelId)
         .then(model => this.updateModel(model))
         .then(model => true, err => this.maintenanceModal.open(err));
@@ -445,18 +443,35 @@ export class ModelController {
   }
 
   private updateClasses(): IPromise<any> {
-    return this.classService.getClassesForModel(this.model.id).then(classes => {
-      this.classes = _.map(classes, klass => new SelectableItem(klass, this));
-      this.sortClasses();
-    });
+    return this.classService.getClassesForModel(this.model.id)
+      .then(classes => {
+        _.each(classes, klass => klass.id.addKnownModelsToContext(this.model));
+        return classes;
+      })
+      .then(classes => {
+        this.classes = _.map(classes, klass => new SelectableItem(klass, this));
+        this.sortClasses();
+      });
   }
 
   private updatePredicates(): IPromise<any> {
-    return this.predicateService.getPredicatesForModel(this.model.id).then(predicates => {
-      this.attributes = _.chain(predicates).filter(predicate => predicate.isOfType('attribute')).map(attribute => new SelectableItem(attribute, this)).value();
-      this.associations = _.chain(predicates).filter(predicate => predicate.isOfType('association')).map(association => new SelectableItem(association, this)).value();
-      this.sortPredicates();
-    });
+    return this.predicateService.getPredicatesForModel(this.model.id)
+      .then(predicates => {
+        _.each(predicates, predicate => predicate.id.addKnownModelsToContext(this.model));
+        return predicates;
+      })
+      .then(predicates => {
+        this.attributes = _.chain(predicates)
+          .filter(predicate => predicate.isOfType('attribute'))
+          .map(attribute => new SelectableItem(attribute, this))
+          .value();
+
+        this.associations = _.chain(predicates)
+          .filter(predicate => predicate.isOfType('association'))
+          .map(association => new SelectableItem(association, this))
+          .value();
+        this.sortPredicates();
+      });
   }
 }
 
@@ -476,9 +491,9 @@ class RouteData {
 
   get selected() {
     for (const type of <Type[]> ['attribute', 'class', 'association']) {
-      const id: Uri = this.params[type];
+      const id: string = this.params[type];
       if (id) {
-        return {selectionType: type, id};
+        return {selectionType: type, id: new Uri(id)};
       }
     }
   }
@@ -513,7 +528,7 @@ function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs:
     return false;
   }
 
-  return lhs.selectionType === rhs.selectionType && lhs.id === rhs.id;
+  return lhs.selectionType === rhs.selectionType && lhs.id.equals(rhs.id);
 }
 
 function setOverlaps(items: SelectableItem[]) {
@@ -532,10 +547,8 @@ function setOverlaps(items: SelectableItem[]) {
 class SelectableItem {
 
   hasOverlap = false;
-  curie: Curie;
 
   constructor(public item: ClassListItem|PredicateListItem, private modelController: ModelController) {
-    this.curie = this.modelController.model.idToCurie(this.id);
   }
 
   get id(): Uri {
@@ -547,7 +560,7 @@ class SelectableItem {
   }
 
   get label(): string {
-    return this.rawLabel + (this.hasOverlap ? ` (${this.curie})` : '');
+    return this.rawLabel + (this.hasOverlap ? ` (${this.id.compact})` : '');
   }
 
   get definedBy() {

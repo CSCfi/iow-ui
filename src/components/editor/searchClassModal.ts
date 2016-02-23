@@ -69,7 +69,7 @@ class SearchClassController {
       this.classes = allClasses;
       this.models = _.chain(this.classes)
         .map(klass => klass.definedBy)
-        .uniq(definedBy => definedBy.id)
+        .uniq(definedBy => definedBy.id.uri)
         .sort(languageService.labelComparison)
         .value();
 
@@ -112,7 +112,7 @@ class SearchClassController {
   }
 
   private modelFilter(klass: ClassListItem): boolean {
-    return !this.modelId || klass.definedBy.id === this.modelId;
+    return !this.modelId || klass.definedBy.id.equals(this.modelId);
   }
 
   private excludedFilter(klass: ClassListItem): boolean {

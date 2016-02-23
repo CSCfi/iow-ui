@@ -1,7 +1,7 @@
 <div class="editable-wrap">
   <div ng-show="ctrl.subject || ctrl.isEditing()">
     <subject-view subject="ctrl.subject"></subject-view>
-    <div ng-class="{'model-view__sub': ctrl.subject}">
+    <div ng-class="{'model-view__sub': !!ctrl.subject}">
       <button ng-show="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectSubject()" ng-disabled="ctrl.disable" translate>Choose subject</button>
     </div>
   </div>

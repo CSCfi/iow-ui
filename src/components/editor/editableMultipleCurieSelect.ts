@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
+import { Model, Type, ClassListItem, PredicateListItem, Uri } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem } from '../form/displayItemFactory';
 import {
@@ -18,6 +18,7 @@ import create = require("core-js/fn/object/create");
 
 export const mod = angular.module('iow.components.editor');
 
+// TODO rename
 mod.directive('editableMultipleCurieSelect', () => {
   'ngInject';
   return {
@@ -41,18 +42,19 @@ mod.directive('editableMultipleCurieSelect', () => {
   };
 });
 
-interface WithCurie {
-  curie: string;
+interface WithId {
+  id: Uri;
 }
 
+// TODO: rename
 class EditableMultipleCurieSelectController {
 
-  curies: string[];
+  curies: Uri[];
   type: Type;
   model: Model;
   id: string;
   isEditing: () => boolean;
-  curieInput: string;
+  curieInput: Uri;
   title: string;
 
   items: DisplayItem[];
@@ -63,7 +65,7 @@ class EditableMultipleCurieSelectController {
               private searchPredicateModal: SearchPredicateModal,
               private searchClassModal: SearchClassModal) {
 
-    const link = (curie: string) => this.model.linkTo(this.type, curie);
+    const link = (uri: Uri) => this.model.linkTo(this.type, uri);
 
     $scope.$watchCollection(() => this.curies, curies => {
       this.items =_.map(curies, curie => displayItemFactory.create(() => curie, link, false, () => this.isEditing()));
@@ -71,17 +73,17 @@ class EditableMultipleCurieSelectController {
   }
 
   addCurie() {
-    const existsExclusion = createExistsExclusion(collectProperties(this.curies, curie => this.model.expandCurie(curie).uri));
+    const existsExclusion = createExistsExclusion(collectProperties(this.curies, curie => curie.uri));
     const definedExclusion = createDefinedByExclusion(this.model);
     const classExclusion = combineExclusions<ClassListItem>(existsExclusion, definedExclusion);
     const predicateExclusion = combineExclusions<PredicateListItem>(existsExclusion, definedExclusion);
 
-    const promise: IPromise<WithCurie> = this.type === 'class'
+    const promise: IPromise<WithId> = this.type === 'class'
       ? this.searchClassModal.openWithOnlySelection(this.model, classExclusion)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, predicateExclusion);
 
-    promise.then(withCurie => {
-      this.curies.push(withCurie.curie);
+    promise.then(withId => {
+      this.curies.push(withId.id);
     });
   }
 
@@ -100,8 +102,10 @@ class EditableMultipleCurieSelectController {
 
   addCurieFromInput() {
     if (this.curieInput) {
-      this.curies.push(this.curieInput);
-      this.curieInput = '';
+      if (!_.find(this.curies, curie => curie.equals(this.curieInput))) {
+        this.curies.push(this.curieInput);
+      }
+      this.curieInput = null;
     }
   }
 }

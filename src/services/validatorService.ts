@@ -1,7 +1,7 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import { ExpandedCurie } from './entities';
+import { Uri } from './entities';
 import { pascalCase, camelCase } from 'change-case';
 import { config } from '../config';
 
@@ -10,13 +10,13 @@ export class ValidatorService {
   constructor(private $q: IQService, private $http: IHttpService) {
   }
 
-  classDoesNotExist(expanded: ExpandedCurie): IPromise<any> {
-    const id = expanded.withValue(pascalCase(expanded.value)).uri;
-    return this.$http.get(config.apiEndpointWithName('class'), {params: {id}}).then(result => this.$q.reject('exists'), err => true);
+  classDoesNotExist(id: Uri): IPromise<any> {
+    const pascalId = id.withName(pascalCase(id.name));
+    return this.$http.get(config.apiEndpointWithName('class'), {params: {id: pascalId.uri}}).then(result => this.$q.reject('exists'), err => true);
   }
 
-  predicateDoesNotExist(expanded: ExpandedCurie): IPromise<any> {
-    const id = expanded.withValue(camelCase(expanded.value)).uri;
-    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {id}}).then(result => this.$q.reject('exists'), err => true);
+  predicateDoesNotExist(id: Uri): IPromise<any> {
+    const camelId = id.withName(camelCase(id.name));
+    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {id: camelId.uri}}).then(result => this.$q.reject('exists'), err => true);
   }
 }

@@ -1,20 +1,18 @@
 import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import * as _ from 'lodash';
-import { EditableForm } from './editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { Localizable, isLocalizable } from '../../services/entities';
-import { isString, isNumber, isDifferentUrl, normalizeAsArray } from '../../services/utils';
+import { Localizable, isLocalizable, Uri } from '../../services/entities';
+import { isString, isNumber, isDifferentUrl } from '../../services/utils';
 
-export type Value = string|Localizable;
+export type Value = string|Localizable|number|Uri;
 
 export class DisplayItem {
   constructor(private $location: ILocationService,
               private languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
               public value: () => Value,
-              private link: (value: string) => string,
+              private link: (value: Value) => string,
               private hideLinks: () => boolean,
               private valueAsLocalizationKey: boolean) {
   }
@@ -22,7 +20,9 @@ export class DisplayItem {
   get displayValue(): string {
     const value = this.value();
 
-    if (isLocalizable(value)) {
+    if (value instanceof Uri) {
+      return value.compact;
+    }  else if (isLocalizable(value)) {
       return this.languageService.translate(value);
     } else if (isString(value)) {
       if (this.valueAsLocalizationKey) {
@@ -57,7 +57,7 @@ export class DisplayItem {
   }
 
   private formatLink() {
-    return this.link(this.displayValue);
+    return this.link(this.value());
   }
 }
 
@@ -66,7 +66,7 @@ export class DisplayItemFactory {
   constructor(private $location: ILocationService, private languageService: LanguageService, private gettextCatalog: gettextCatalog) {
   }
 
-  create(value: () => Value, link: (value: string) => string, valueAsLocalizationKey: boolean, hideLinks: () => boolean = () => false) {
+  create(value: () => Value, link: (value: Value) => string, valueAsLocalizationKey: boolean, hideLinks: () => boolean = () => false) {
     return new DisplayItem(this.$location, this.languageService, this.gettextCatalog, value, link, hideLinks, valueAsLocalizationKey);
   }
 }

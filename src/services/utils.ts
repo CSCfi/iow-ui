@@ -1,11 +1,11 @@
-import { Type, Uri, Localizable, Model, DefinedBy, ClassListItem } from './entities';
+import { Type, Localizable, Model, DefinedBy, ClassListItem, Uri } from './entities';
 
 export enum SearchClassType {
   Class, Shape, SpecializedClass
 }
 
 interface WithId {
-  id: Uri;
+  id: Uri|string;
 }
 
 interface WithDefinedBy {
@@ -25,14 +25,18 @@ export function containsAny<T>(arr: T[], values: T[]): boolean {
 }
 
 export function findFirstMatching<T>(arr: T[], values: T[]): T {
-  for(const item of arr) {
-    for (const value of values) {
+  for (const value of values) {
+    for(const item of arr) {
       if (item === value) {
         return item;
       }
     }
   }
   return null;
+}
+
+export function identity<T>(obj: T): T {
+  return obj;
 }
 
 export function glyphIconClassForType(type: Type[]) {
@@ -66,18 +70,18 @@ export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
 export function createDefinedByExclusion(model: Model) {
 
   const modelIds = collectIds(model.requires);
-  modelIds.add(model.id);
+  modelIds.add(model.id.uri);
 
   return (item: WithDefinedBy) => {
-    if (!modelIds.has(item.definedBy.id)) {
+    if (!modelIds.has(item.definedBy.id.uri)) {
       return 'Not required by model';
     }
   };
 }
 
-export function createExistsExclusion(itemIds: Set<Uri>) {
+export function createExistsExclusion(itemIds: Set<string>) {
   return (item: WithId) => {
-    if (itemIds.has(item.id)) {
+    if (itemIds.has(item.id.toString())) {
       return 'Already added';
     }
   };
@@ -101,8 +105,10 @@ export function createClassTypeExclusion(searchClassType: SearchClassType) {
   };
 }
 
-export function collectIds(items: WithId[]|WithId[][]): Set<Uri> {
-  return collectProperties<WithId, Uri>(items, item => item.id);
+export function collectIds(items: WithId[]|WithId[][]): Set<string> {
+  return collectProperties<WithId, string>(items, item => {
+    return item.id.toString();
+  });
 }
 
 export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult): Set<TResult> {
@@ -121,20 +127,6 @@ export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtracto
 
 export function isModalCancel(err: any) {
   return err === 'cancel' || err === 'escape key press';
-}
-
-export function splitCurie(curie: string): {prefix: string, value: string} {
-  const parts = curie.split(':');
-  if (parts.length === 2) {
-    return {prefix: parts[0], value: parts[1]};
-  }
-}
-
-export function splitNamespace(curie: string): {namespace: string, idName: string} {
-  const parts = curie.split('#');
-  if (parts.length === 2) {
-    return {namespace: parts[0] + '#', idName: parts[1]};
-  }
 }
 
 function normalizeUrl(url: string): string {

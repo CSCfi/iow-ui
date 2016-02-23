@@ -6,11 +6,12 @@ import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type } from '../../services/entities';
+import { Model, Type, Uri } from '../../services/entities';
 import { createDefinedByExclusion } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
+// TODO rename
 mod.directive('curieSelect', () => {
   'ngInject';
   return {
@@ -38,13 +39,13 @@ interface EditableScope extends IScope {
   formController: EditableForm;
 }
 
-interface WithCurie {
-  curie: string;
+interface WithId {
+  id: Uri;
 }
 
 class CurieSelectController {
 
-  curie: string;
+  curie: Uri;
   type: Type;
   model: Model;
   id: string;
@@ -55,13 +56,13 @@ class CurieSelectController {
   }
 
   selectCurie() {
-    const promise: IPromise<WithCurie> = this.type === 'class'
+    const promise: IPromise<WithId> = this.type === 'class'
       ? this.searchClassModal.openWithOnlySelection(this.model, createDefinedByExclusion(this.model))
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createDefinedByExclusion(this.model));
 
-    promise.then(withCurie => {
-      this.curie = withCurie.curie;
-      this.afterSelected({id: this.model.expandCurie(withCurie.curie).uri});
+    promise.then(withId => {
+      this.curie = withId.id;
+      this.afterSelected({id: withId.id});
     });
   }
 }

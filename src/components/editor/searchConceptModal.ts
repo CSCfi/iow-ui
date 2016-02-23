@@ -104,7 +104,7 @@ class SearchConceptController {
               <div class="empty-message">
                 '${search.query}' ${gettextCatalog.getString('not found in the concept database')}
                   <p>
-                    <a onClick="angular.element(jQuery('#conceptForm').parents('[uib-modal-window]')).scope().ctrl.addConcept('${search.query}', '${reference.id}')">
+                    <a onClick="angular.element(jQuery('#conceptForm').parents('[uib-modal-window]')).scope().ctrl.addConcept('${search.query}', '${reference.vocabularyId}')">
                       + ${gettextCatalog.getString('suggest')} '${search.query}' ${gettextCatalog.getString('and create new')}
                     </a>
                   </p>
@@ -138,8 +138,8 @@ class SearchConceptController {
     this.$uibModalInstance.dismiss();
   };
 
-  addConcept(conceptLabel: string, referenceId: Uri) {
-    this.addConceptModal.open(this.labelTitle, this.defineConceptTitle, conceptLabel, _.findWhere(this.references, {id: referenceId}))
+  addConcept(conceptLabel: string, vocabularyId: string) {
+    this.addConceptModal.open(this.labelTitle, this.defineConceptTitle, conceptLabel, _.findWhere(this.references, {vocabularyId}))
       .then((result: ConceptSuggestionCreation) => this.$q.all(
         {
           type: this.$q.when(this.type),

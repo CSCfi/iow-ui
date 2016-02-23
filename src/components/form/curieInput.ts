@@ -1,14 +1,13 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
-import { pascalCase, camelCase } from 'change-case';
-import { ValidatorService } from '../../services/validatorService';
-import { Group, Model, Class, Predicate } from '../../services/entities';
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
+import { Model, Uri } from '../../services/entities';
 
 export const mod = angular.module('iow.components.form');
 
+// TODO rename
 mod.directive('curieInput', (gettextCatalog: gettextCatalog) => {
   'ngInject';
   return {
@@ -23,21 +22,20 @@ mod.directive('curieInput', (gettextCatalog: gettextCatalog) => {
         element.attr('placeholder', gettextCatalog.getString('Write identifier'));
       }
 
-      modelController.$parsers.push(viewValue => {
-        return viewValue === '' ? null : viewValue;
+      modelController.$parsers.push((viewValue: string) => {
+        return viewValue === '' ? null : new Uri(viewValue, $scope.model.context);
       });
 
-      modelController.$formatters.push(value => {
-        return !value ? '' : value;
-      });
-
-      modelController.$validators['curie'] = (modelValue: string) => {
-        if (modelValue) {
-          const expanded = $scope.model.expandCurie(modelValue);
-          return !!(expanded && expanded.namespace);
+      modelController.$formatters.push((value: Uri) => {
+        if (!value) {
+          return '';
         } else {
-          return true;
+          return value.compact;
         }
+      });
+
+      modelController.$validators['curie'] = (modelValue: Uri, viewValue: string) => {
+        return !viewValue || new Uri(viewValue, $scope.model.context).hasPrefixForNamespace();
       }
     }
   };

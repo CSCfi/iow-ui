@@ -49,8 +49,8 @@ export class ClassFormController {
   }
 
   addPropertiesFromClass(id: Uri, classType: string) {
-    const existingPredicates = new Set<Uri>(_.map(this.class.properties, property => property.predicateId));
-    const exclude = (property: Property) => existingPredicates.has(property.predicateId);
+    const existingPredicates = new Set<string>(_.map(this.class.properties, property => property.predicate.uri));
+    const exclude = (property: Property) => existingPredicates.has(property.predicate.uri);
     this.addPropertiesFromClassModal.open(id, classType, exclude)
       .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
   }
@@ -68,13 +68,13 @@ export class ClassFormController {
   }
 
   registerPropertyView(propertyId: Uri, view: PropertyViewController) {
-    this.propertyViews[propertyId] = view;
+    this.propertyViews[propertyId.uri] = view;
   }
 
   openPropertyAndScrollTo(property: Property) {
     this.$timeout(() => {
       // wait for possible new view to appear
-      this.propertyViews[property.id].openAndScrollTo();
+      this.propertyViews[property.id.uri].openAndScrollTo();
     });
   };
 

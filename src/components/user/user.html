@@ -26,14 +26,14 @@
     <div>
       <label translate>Member groups</label>
       <ul>
-        <li ng-repeat="group in ctrl.user.memberGroups"><a ng-href="{{'#' + ctrl.groupUrl(group)}}">{{group}}</a></li>
+        <li ng-repeat="group in ctrl.user.memberGroups"><a ng-href="{{'#' + ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
       </ul>
     </div>
 
     <div>
       <label translate>Admin groups</label>
       <ul>
-        <li ng-repeat="group in ctrl.user.adminGroups"><a ng-href="{{'#' + ctrl.groupUrl(group)}}">{{group}}</a></li>
+        <li ng-repeat="group in ctrl.user.adminGroups"><a ng-href="{{'#' + ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
       </ul>
     </div>
 

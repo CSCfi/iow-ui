@@ -36,6 +36,6 @@ class ReferencesViewController {
   opened: {[key: string]: boolean} = {};
 
   open(reference: Reference) {
-    this.opened[reference.id] = true;
+    this.opened[reference.id.uri] = true;
   }
 }

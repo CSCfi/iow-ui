@@ -103,7 +103,7 @@ class ClassVisualizationController {
     if (this.visualizationData) {
       this.graph.clear();
       const showCardinality = this.model.isOfType('profile');
-      createCells(this.$scope, this.languageService, this.model, this.graph, this.visualizationData, this.class.curie, showCardinality);
+      createCells(this.$scope, this.languageService, this.model, this.graph, this.visualizationData, this.class.id, showCardinality);
       layoutGraph(this.graph);
       scaleToFit(this.paper);
     }
@@ -201,7 +201,7 @@ function createCells($scope: IScope, languageService: LanguageService, model: Mo
     const attributes: Property[] = [];
 
     for (const property of klass.properties) {
-      if (klass.id === root && property.hasAssociationTarget() && model.findModelPrefixForNamespace(model.expandCurie(property.valueClass).namespace)) {
+      if (klass.id.equals(root) && property.hasAssociationTarget() && model.findModelPrefixForNamespace(property.valueClass.namespace)) {
         associations.push({klass: klass, association: property});
       } else {
         attributes.push(property);
@@ -236,7 +236,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   function getPropertyNames() {
     function propertyAsString(property: Property): string {
       const name = languageService.translate(property.label);
-      const range = property.hasAssociationTarget() ? property.valueClass : property.dataType;
+      const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
       const cardinality = formatCardinality(property);
       return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
     }
@@ -254,7 +254,7 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   const propertyNames = getPropertyNames();
 
   const classCell: any = new joint.shapes.uml.Class({
-    id: klass.id,
+    id: klass.id.uri,
     size: size(propertyNames),
     name: getName(),
     attributes: propertyNames,
@@ -282,8 +282,8 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
   }
 
   const associationCell: any = new joint.dia.Link({
-    source: { id: data.klass.id },
-    target: { id: data.association.valueClass },
+    source: { id: data.klass.id.uri },
+    target: { id: data.association.valueClass.uri },
     attrs: {
       '.marker-target': {
         d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'

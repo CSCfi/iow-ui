@@ -73,7 +73,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addReference() {
     const language = this.languageService.modelLanguage;
-    const vocabularies: Set<Uri> = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId);
+    const vocabularies = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId);
     const exclude = createExistsExclusion(vocabularies);
     this.searchSchemeModal.open(language, exclude)
       .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
@@ -90,7 +90,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   addRequire() {
     const language = this.languageService.modelLanguage;
     const requires = collectIds(this.editableInEdit.requires);
-    requires.add(this.model.id);
+    requires.add(this.model.id.uri);
     const existsExclude = createExistsExclusion(requires);
     const profileExclude = (require: Require) => (!allowProfiles && require.isOfType('profile')) ? 'Cannot require profile' : null;
     const exclude = combineExclusions(existsExclude, profileExclude);
@@ -115,7 +115,7 @@ export class ModelViewController extends EditableEntityController<Model> {
     return this.modelService.createModel(model);
   }
 
-  update(model: Model, oldId: string) {
+  update(model: Model, oldId: Uri) {
     return this.modelService.updateModel(model);
   }
 

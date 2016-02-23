@@ -1,7 +1,7 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
-import { Model, Predicate, Class, Entity, Uri } from '../../services/entities';
+import { Model, Predicate, Class, Entity, Uri, Urn } from '../../services/entities';
 import { containsAny } from '../../services/utils';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
@@ -55,7 +55,7 @@ class HistoryModalController {
     this.fetchResourceAtVersion(entity.id).then(resource => this.selection = resource);
   }
 
-  private fetchResourceAtVersion(versionId: Uri): IPromise<Class|Predicate|Model> {
+  private fetchResourceAtVersion(versionId: Urn): IPromise<Class|Predicate|Model> {
     if (containsAny(this.resource.type, ['class', 'shape'])) {
       return this.classService.getClass(versionId);
     } else if (containsAny(this.resource.type, ['attribute', 'association'])) {

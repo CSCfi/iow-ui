@@ -33,7 +33,7 @@ mod.directive('export', () => {
 type EntityType = Model|Class|Predicate;
 
 function formatFileName(entity: EntityType, extension: string) {
-  return `${entity.id.substr('http://'.length)}-${moment().format('YYYY-MM-DD')}.${extension}`;
+  return `${entity.id.uri.substr('http://'.length)}-${moment().format('YYYY-MM-DD')}.${extension}`;
 }
 
 class ExportController {
@@ -51,7 +51,7 @@ class ExportController {
     $scope.$watch(() => this.entity, entity => {
       const hrefBase = entity instanceof Model ? config.apiEndpointWithName('exportModel') : config.apiEndpointWithName('exportResource');
       this.downloads = _.map(exportOptions, option => {
-        const href = `${hrefBase}?graph=${encodeURIComponent(entity.id)}&content-type=${encodeURIComponent(option.type)}`;
+        const href = `${hrefBase}?graph=${encodeURIComponent(entity.id.uri)}&content-type=${encodeURIComponent(option.type)}`;
 
         return {
           name: option.type,

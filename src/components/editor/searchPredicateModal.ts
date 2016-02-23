@@ -82,7 +82,7 @@ export class SearchPredicateController {
 
       this.models = _.chain(this.predicates)
         .map(predicate => predicate.definedBy)
-        .uniq(definedBy => definedBy.id)
+        .uniq(definedBy => definedBy.id.uri)
         .sort(languageService.labelComparison)
         .value();
 
@@ -161,7 +161,7 @@ export class SearchPredicateController {
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {
-    return !this.modelId || predicate.definedBy.id === this.modelId;
+    return !this.modelId || predicate.definedBy.id.equals(this.modelId);
   }
 
   private typeFilter(predicate: PredicateListItem): boolean {

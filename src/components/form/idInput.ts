@@ -3,21 +3,10 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import IQService = angular.IQService;
 import { ValidatorService } from '../../services/validatorService';
-import { Group, Model, Class, Predicate, Type } from '../../services/entities';
-import { splitCurie } from '../../services/utils';
+import { Class, Predicate, Type, Uri } from '../../services/entities';
 import { isStringValid, isValidLabelLength } from './stringInput';
 
 export const mod = angular.module('iow.components.form');
-
-function curieValue(curie: string, predicate: (value: string) => boolean) {
-  if (curie) {
-    const split = splitCurie(curie);
-    if (split) {
-      return predicate(split.value);
-    }
-  }
-  return true;
-}
 
 interface IdInputAttributes extends IAttributes {
   idInput: Type;
@@ -32,7 +21,7 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
     restrict: 'A',
     require: 'ngModel',
     link($scope: IdInputScope, element: JQuery, attributes: IdInputAttributes, modelController: INgModelController) {
-      let prefix = '';
+      let previous: Uri = null;
 
       const updateOnBlur = { updateOn: 'blur' };
 
@@ -42,26 +31,24 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
         modelController.$options = updateOnBlur;
       }
 
-      modelController.$parsers.push(value => {
-        return prefix ? (prefix + ':' + value) : value;
+      modelController.$parsers.push((value: string) => {
+        // doesn't handle scenario without initial Uri
+        return previous ? previous.withName(value) : null;
       });
 
-      modelController.$formatters.push(value => {
-        const split = splitCurie(value);
-        if (split) {
-          prefix = split.prefix;
-          return split.value;
+      modelController.$formatters.push((value: Uri) => {
+        if (value) {
+          previous = value;
+          return value.name;
         }
       });
 
-      modelController.$asyncValidators['existingId'] = (modelValue: string) => {
-        if ($scope.old.unsaved || $scope.old.curie !== modelValue) {
-          const expanded = $scope.old.expandCurie(modelValue);
-
+      modelController.$asyncValidators['existingId'] = (modelValue: Uri) => {
+        if ($scope.old.unsaved || $scope.old.id.notEquals(modelValue)) {
           if (attributes.idInput === 'class') {
-            return validatorService.classDoesNotExist(expanded);
+            return validatorService.classDoesNotExist(modelValue);
           } else if (attributes.idInput === 'predicate') {
-            return validatorService.predicateDoesNotExist(expanded);
+            return validatorService.predicateDoesNotExist(modelValue);
           } else {
             throw new Error('Unknown type: ' + attributes.idInput);
           }
@@ -71,11 +58,11 @@ mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => 
       };
 
       modelController.$validators['string'] = value => {
-        return curieValue(value, isStringValid);
+        return value && isStringValid(value.name);
       };
 
       modelController.$validators['length'] = value => {
-        return curieValue(value, isValidLabelLength);
+        return value && isValidLabelLength(value.name);
       };
     }
   };

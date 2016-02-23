@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
-import { DefaultUser, Uri, url } from '../../services/entities';
+import { DefaultUser, Uri, internalUrl } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { LocationService } from '../../services/locationService';
 
@@ -34,6 +34,6 @@ class UserController {
   }
 
   groupUrl(id: Uri) {
-    return url(id, ['group']);
+    return internalUrl(id, ['group']);
   }
 }

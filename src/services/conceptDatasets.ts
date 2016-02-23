@@ -4,7 +4,7 @@ import Dataset = Twitter.Typeahead.Dataset;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { Reference, ConceptSuggestion, FintoConcept } from './entities';
+import { Reference, ConceptSuggestion, FintoConcept, Uri } from './entities';
 import { ConceptService, FintoConceptSearchResult } from './conceptService';
 import { LanguageService } from './languageService';
 import { config } from '../config';
@@ -63,7 +63,7 @@ export class ConceptDatasets {
     } else if (selection instanceof ConceptSuggestion) {
       return this.$q.when(selection);
     } else if (isFintoConceptSearchResult(selection)) {
-      return this.conceptService.getFintoConcept(selection.uri);
+      return this.conceptService.getFintoConcept(new Uri(selection.uri));
     }
   }
 

@@ -40,7 +40,7 @@ mod.directive('propertyView', ($location: ILocationService, $timeout: ITimeoutSe
         return _.any(controllers[1].propertyViews, view => view.isOpen);
       };
 
-      if ($location.search().property === controllers[0].property.id) {
+      if ($location.search().property === controllers[0].property.id.uri) {
         controllers[0].openAndScrollTo();
       }
 
@@ -69,10 +69,10 @@ export class PropertyViewController {
   constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService) {
     $scope.$watch(() => this.isOpen, open => {
       if (open) {
-        $location.search('property', this.property.id);
+        $location.search('property', this.property.id.uri);
 
         if (!this.predicate) {
-          predicateService.getPredicate(this.property.predicateId).then(predicate => {
+          predicateService.getPredicate(this.property.predicate).then(predicate => {
             this.predicate = predicate;
           });
         }

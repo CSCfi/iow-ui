@@ -5,12 +5,10 @@ import * as moment from 'moment';
 import {
   glyphIconClassForType,
   normalizeAsArray,
-  splitCurie,
   normalizeSelectionType,
   containsAny,
   normalizeModelType,
-  splitNamespace,
-  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType
+  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity
 } from './utils';
 import Moment = moment.Moment;
 import split = require("core-js/fn/symbol/split");
@@ -18,6 +16,8 @@ import { Frame } from './frames';
 import { FrameFn } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
+import { Uri } from './uri';
+export { Uri } from './uri';
 
 const jsonld: any = require('jsonld');
 
@@ -25,11 +25,10 @@ const isoDateFormat = 'YYYY-MM-DDTHH:mm:ssz';
 
 export type EditableEntity = Class|Association|Attribute|Model|Group;
 export type Localizable = { [language: string]: string; }
-export type Uri = string;
 export type Url = string;
+export type Urn = string;
 export type RelativeUrl = string;
 export type UserLogin = string;
-
 
 export type Type = string
 //export type Type = 'class'
@@ -68,33 +67,6 @@ export interface Location {
   iowUrl?(): string;
 }
 
-export type Curie = string;
-//export class Curie {
-//  constructor(private ns: string, public prefix: string, public value: string) {
-//  }
-//
-//  get uri(): string {
-//    return this.ns + this.value;
-//  }
-//}
-
-export class ExpandedCurie {
-  constructor(public namespace: string, public value: string) {
-  }
-
-  isDefined(): boolean {
-    return !!this.namespace;
-  }
-
-  get uri(): Uri {
-    return this.namespace + this.value;
-  }
-
-  withValue(value: string) {
-    return new ExpandedCurie(this.namespace, value);
-  }
-}
-
 export abstract class GraphNode {
 
   type: Type[];
@@ -115,25 +87,12 @@ export abstract class GraphNode {
     return {};
   }
 
-  addNamespaceToContext(model: Model) {
-    Object.assign(this.context, {[model.prefix]: model.namespace});
+  addKnownModelsToContext(model: Model) {
+    model.expandContextWithKnownModels(this.context);
   }
 
-  expandContext(data: any) {
-    Object.assign(data['@context'], this.context);
-    return data;
-  }
-
-  expandCurie(curie: Curie) {
-    if (curie) {
-      const split = splitCurie(curie);
-      if (split) {
-        const namespace = this.context[split.prefix];
-        if (namespace) {
-          return new ExpandedCurie(namespace, split.value);
-        }
-      }
-    }
+  expandContext(context: any) {
+    Object.assign(context, this.context);
   }
 
   serialize(inline: boolean = false): any {
@@ -161,11 +120,11 @@ export class DefinedBy extends GraphNode {
     // FIXME: when api returns coherent data get rid of this mangling
     if (typeof graph === 'string' || graph instanceof String) {
       const str = (graph instanceof String) ? graph.valueOf() : graph;
-      this.id = str;
+      this.id = new Uri(str, context);
       this.label = deserializeLocalizable({'fi': str, 'en': str });
 
     } else if (typeof graph === 'object') {
-      this.id = graph['@id'];
+      this.id = new Uri(graph['@id'], context);
       this.label = deserializeLocalizable(graph.label);
     } else {
       throw new Error('Unsupported is defined sub-graph');
@@ -178,13 +137,13 @@ export abstract class AbstractGroup extends GraphNode implements Location {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  homepage: Uri;
+  homepage: Url;
   normalizedType: Type = 'group';
   selectionType: Type = 'group';
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.homepage = graph.homepage;
@@ -195,7 +154,7 @@ export abstract class AbstractGroup extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return url(this.id, this.type);
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -230,14 +189,14 @@ abstract class AbstractModel extends GraphNode implements Location {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.normalizedType = normalizeModelType(this.type);
     this.selectionType = normalizeSelectionType(this.type);
   }
 
   iowUrl() {
-    return url(this.id, this.type);
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -254,11 +213,11 @@ export class Model extends AbstractModel {
   references: Reference[];
   requires: Require[];
   unsaved: boolean = false;
-  namespace: Uri;
+  namespace: Url;
   prefix: string;
   group: GroupListItem;
-  version: Uri;
-  rootClass: Curie;
+  version: Urn;
+  rootClass: Uri;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -274,16 +233,14 @@ export class Model extends AbstractModel {
     this.references = deserializeEntityList(graph.references, context, frame, Reference);
     this.requires = deserializeEntityList(graph.requires, context, frame, Require);
     this.version = graph.identifier;
-    this.rootClass = graph.rootResource;
-    this.copyNamespacesFromRequires();
+    if (graph.rootResource) {
+      this.rootClass = new Uri(graph.rootResource, context);
+    }
+    this.expandContextWithKnownModels(this.context);
   }
 
   get groupId() {
     return this.group.id;
-  }
-
-  get rootClassUri(): Uri {
-    return this.expandCurie(this.rootClass).uri;
   }
 
   addReference(reference: Reference) {
@@ -302,55 +259,44 @@ export class Model extends AbstractModel {
     _.remove(this.requires, require);
   }
 
-  copyNamespacesFromRequires() {
-    _.forEach(this.requires, require => {
-      this.context[require.prefix] = require.namespace;
-    });
+  expandContextWithKnownModels(context: any) {
+    Object.assign(context, this.knownModels());
   }
 
   asDefinedBy() {
-    return new DefinedBy({'@id': this.id, '@type': reverseMapTypeObject(this.type), label: this.label}, this.context, this.frame);
+    return new DefinedBy({'@id': this.id.uri, '@type': reverseMapTypeObject(this.type), label: this.label}, this.context, this.frame);
   }
 
-  findModelPrefixForNamespace(namespace: Uri)  {
-    if (this.namespace === namespace) {
-      return this.prefix;
-    } else {
-      const require =  _.find(this.requires, req => req.namespace === namespace);
-      if (require) {
-        return require.prefix;
+  findModelPrefixForNamespace(namespace: Url)  {
+    const knownModels = this.knownModels();
+    for (const prefix of Object.keys(knownModels)) {
+      if (namespace === knownModels[prefix]) {
+        return prefix;
       }
     }
   }
 
-  idToCurie(id: Uri): Curie {
-    const {namespace, idName} = splitNamespace(id);
-    const prefix = this.findModelPrefixForNamespace(namespace);
+  knownModels() {
+    const result: {[prefix: string]: string} = {};
 
-    if (!prefix) {
-      throw new Error('Cannot find prefix for namespace: ' + namespace);
+    result[this.prefix] = this.namespace;
+
+    for (const require of this.requires) {
+      if (!require.modifiable) {
+        result[require.prefix] = require.namespace;
+      }
     }
 
-    return prefix + ':' + idName;
+    return result;
   }
 
-  linkTo(type:Type|Type[], id:Uri|Curie) {
+  linkTo(type: Type|Type[], id: Uri) {
     const typeArray: Type[] = normalizeAsArray<Type>(type);
 
     if (id) {
-      const expanded = this.expandCurie(id);
-      if (expanded) {
-        if (!this.findModelPrefixForNamespace(expanded.namespace)) {
-          return expanded.uri;
-        } else {
-          return url(expanded.uri, typeArray);
-        }
-      } else {
-        if (!(this.findModelPrefixForNamespace((id + '#') || this.findModelPrefixForNamespace(id + '/')))) {
-          return id;
-        } else {
-          return url(id, typeArray);
-        }
+      if (!id.isUrn()) {
+        const isExternalUri = !this.findModelPrefixForNamespace(id.namespace);
+        return isExternalUri ? id.url : internalUrl(id, typeArray);
       }
     }
   }
@@ -363,10 +309,10 @@ export class Model extends AbstractModel {
   }
 
   serializationValues(): any {
-    this.copyNamespacesFromRequires();
+    this.expandContextWithKnownModels(this.context);
 
     return {
-      '@id': this.id,
+      '@id': this.id.uri,
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       versionInfo: this.state,
@@ -388,7 +334,7 @@ export class Reference extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.vocabularyId = graph.identifier;
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id']);
     this.label = deserializeLocalizable(graph.title);
     this.comment = deserializeLocalizable(graph.comment);
   }
@@ -402,31 +348,40 @@ export class Require extends GraphNode {
 
   id: Uri;
   label: Localizable;
-  prefix: string;
-  private _namespace: Uri;
+  private _prefix: string;
+  private _namespace: Url;
   modifiable: boolean;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this._namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
     this.modifiable = graph['@type'] === 'dcap:MetadataVocabulary';
   }
 
+  get prefix() {
+    return this._prefix;
+  }
+
+  set prefix(prefix) {
+    this._prefix = prefix;
+    this.id = new Uri(this.id.uri, { [prefix]: this.namespace });
+  }
+
   get namespace() {
     return this._namespace;
   }
 
-  set namespace(value) {
-    this._namespace = value;
-    this.id = _.trimRight(value, '#/');
+  set namespace(ns) {
+    this._namespace = ns;
+    this.id = new Uri(_.trimRight(ns, '#/'), { [this.prefix]: ns });
   }
 
   serializationValues() {
     return {
-      '@id': this.id,
+      '@id': this.id.uri,
       label: serializeLocalizable(this.label),
       'preferredXMLNamespaceName': this.namespace,
       'preferredXMLNamespacePrefix': this.prefix
@@ -437,6 +392,7 @@ export class Require extends GraphNode {
 
 abstract class AbstractClass extends GraphNode implements Location {
 
+  id: Uri;
   label: Localizable;
   comment: Localizable;
   selectionType: Type;
@@ -444,13 +400,12 @@ abstract class AbstractClass extends GraphNode implements Location {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.selectionType = normalizeSelectionType(this.type);
     this.normalizedType = normalizeClassType(this.type);
   }
-
-  abstract fullId(): Uri;
 
   isClass() {
     return true;
@@ -461,23 +416,17 @@ abstract class AbstractClass extends GraphNode implements Location {
   }
 
   iowUrl() {
-    return url(this.fullId(), this.type);
+    return internalUrl(this.id, this.type);
   }
 }
 
 export class ClassListItem extends AbstractClass {
 
-  id: Uri;
   definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
-  }
-
-  fullId(): Uri {
-    return this.id;
   }
 
   isSpecializedClass() {
@@ -487,41 +436,37 @@ export class ClassListItem extends AbstractClass {
 
 export class VisualizationClass extends AbstractClass {
 
-  id: Uri;
   properties: Property[];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
     this.properties = deserializeEntityList(graph.property, context, frame, Property);
-  }
-
-  fullId(): Uri {
-    return this.id;
   }
 }
 
 export class Class extends AbstractClass {
 
-  curie: string;
   subClassOf: Uri;
   scopeClass: Uri;
   state: State;
   definedBy: DefinedBy;
   properties: Property[];
   subject: FintoConcept|ConceptSuggestion;
-  equivalentClasses: Curie[];
+  equivalentClasses: Uri[];
   constraint: Constraint;
-  version: Uri;
+  version: Urn;
 
   unsaved: boolean = false;
   generalizedFrom: Class;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.curie = graph['@id'];
-    this.subClassOf = graph.subClassOf;
-    this.scopeClass = graph.scopeClass;
+    if (graph.subClassOf) {
+      this.subClassOf = new Uri(graph.subClassOf, context);
+    }
+    if (graph.scopeClass) {
+      this.scopeClass = new Uri(graph.scopeClass, context);
+    }
     this.state = graph.versionInfo;
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.properties = deserializeEntityList(graph.property, context, frame, Property);
@@ -530,19 +475,9 @@ export class Class extends AbstractClass {
         ? new ConceptSuggestion(graph.subject, context, frame)
         : new FintoConcept(graph.subject, context, frame);
     }
-    this.equivalentClasses = deserializeList<Curie>(graph.equivalentClass);
+    this.equivalentClasses = deserializeList(graph.equivalentClass, equivalentClass => new Uri(equivalentClass, context));
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
-  }
-
-  get id() {
-    return this.fullId();
-  }
-
-  fullId(): Uri {
-    if (this.curie) {
-      return this.expandCurie(this.curie).uri;
-    }
   }
 
   isSpecializedClass() {
@@ -550,11 +485,10 @@ export class Class extends AbstractClass {
   }
 
   generalize(model: Model, properties: Property[]) {
-    const {value} = splitCurie(this.curie);
     const newClass = this.clone();
     newClass.unsaved = true;
-    newClass.addNamespaceToContext(model);
-    newClass.curie = model.prefix + ':' + value;
+    newClass.addKnownModelsToContext(model);
+    newClass.id = model.id.withName(this.id.name);
     newClass.generalizedFrom = this;
     newClass.definedBy = model.asDefinedBy();
     newClass.properties = [];
@@ -585,17 +519,17 @@ export class Class extends AbstractClass {
 
   serializationValues() {
     return {
-      '@id': this.curie,
+      '@id': this.id.uri,
       '@type': reverseMapTypeObject(this.type),
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
-      subClassOf: this.subClassOf,
-      scopeClass: this.scopeClass,
+      subClassOf: this.subClassOf && this.subClassOf.uri,
+      scopeClass: this.scopeClass && this.scopeClass.uri,
       versionInfo: this.state,
       isDefinedBy: this.definedBy.serialize(true),
       property: serializeEntityList(this.properties),
       subject: serializeOptional(this.subject),
-      equivalentClass: serializeList(this.equivalentClasses),
+      equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
       constraint: serializeOptional(this.constraint, (constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment)),
       identifier: this.version
     };
@@ -638,7 +572,7 @@ export class Constraint extends GraphNode {
 
   addItem(shape: Class) {
     const graph = {
-      '@id': shape.curie,
+      '@id': shape.id.uri,
       label: shape.label
     };
 
@@ -680,13 +614,13 @@ export class ConstraintListItem extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.shapeId = graph['@id'];
+    this.shapeId = new Uri(graph['@id'], context);
     this.label = graph.label;
   }
 
   serializationValues() {
     return {
-      '@id': this.shapeId,
+      '@id': this.shapeId.uri
     }
   }
 }
@@ -700,7 +634,7 @@ export class Property extends GraphNode {
   example: string;
   dataType: string;
   valueClass: Uri;
-  predicateCurie: string;
+  predicate: Uri;
   index: number;
   minCount: number;
   maxCount: number;
@@ -708,14 +642,16 @@ export class Property extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.state = graph.versionInfo;
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.example = graph.example;
     this.dataType = graph.datatype;
-    this.valueClass = graph.valueShape;
-    this.predicateCurie = graph.predicate;
+    if (graph.valueShape) {
+      this.valueClass = new Uri(graph.valueShape, context);
+    }
+    this.predicate = new Uri(graph.predicate, context);
     this.index = graph.index;
     this.minCount = graph.minCount;
     this.maxCount = graph.maxCount;
@@ -724,10 +660,6 @@ export class Property extends GraphNode {
 
   hasAssociationTarget() {
     return !!this.valueClass;
-  }
-
-  get predicateId(): Uri {
-    return this.expandCurie(this.predicateCurie).uri;
   }
 
   get glyphIconClass() {
@@ -741,14 +673,14 @@ export class Property extends GraphNode {
 
   serializationValues() {
     return {
-      '@id': this.id,
+      '@id': this.id.uri,
       versionInfo: this.state,
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       example: this.example,
       datatype: this.dataType,
-      valueShape: this.valueClass,
-      predicate: this.predicateCurie,
+      valueShape: this.valueClass && this.valueClass.uri,
+      predicate: this.predicate.uri,
       index: this.index,
       minCount: this.minCount,
       maxCount: this.maxCount,
@@ -759,6 +691,7 @@ export class Property extends GraphNode {
 
 abstract class AbstractPredicate extends GraphNode implements Location {
 
+  id: Uri;
   label: Localizable;
   comment: Localizable;
   definedBy: DefinedBy;
@@ -767,14 +700,13 @@ abstract class AbstractPredicate extends GraphNode implements Location {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.normalizedType = normalizePredicateType(this.type);
     this.selectionType = normalizeSelectionType(this.type);
   }
-
-  abstract fullId(): Uri;
 
   get rawType() {
     return this.graph['@type'];
@@ -797,70 +729,53 @@ abstract class AbstractPredicate extends GraphNode implements Location {
   }
 
   iowUrl(): RelativeUrl {
-    return url(this.fullId(), this.type);
+    return internalUrl(this.id, this.type);
   }
 }
 
 export class PredicateListItem extends AbstractPredicate {
 
-  id: Uri;
-
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
-  }
-
-  fullId(): Uri {
-    return this.id;
   }
 }
 
 export abstract class Predicate extends AbstractPredicate {
 
-  curie: string;
   state: State;
   subPropertyOf: Uri;
   subject: FintoConcept|ConceptSuggestion;
-  equivalentProperties: Curie[];
+  equivalentProperties: Uri[];
   unsaved: boolean = false;
-  version: Uri;
+  version: Urn;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.curie = graph['@id'];
     this.state = graph.versionInfo;
-    this.subPropertyOf = graph.subPropertyOf;
+    if (graph.subPropertyOf) {
+      this.subPropertyOf = new Uri(graph.subPropertyOf, context);
+    }
     if (graph.subject) {
       this.subject = isUuidUrn(graph.subject['@id'])
         ? new ConceptSuggestion(graph.subject, context, frame)
         : new FintoConcept(graph.subject, context, frame);
     }
-    this.equivalentProperties = deserializeList<Curie>(graph.equivalentProperty);
+    this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
     this.version = graph.identifier;
-  }
-
-  get id() {
-    return this.fullId();
   }
 
   abstract getRange(): any;
 
-  fullId() {
-    if (this.curie) {
-      return this.expandCurie(this.curie).uri;
-    }
-  }
-
   serializationValues() {
     return {
-      '@id': this.curie,
+      '@id': this.id.uri,
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       range: this.getRange(),
       versionInfo: this.state,
-      subPropertyOf: this.subPropertyOf,
+      subPropertyOf: this.subPropertyOf && this.subPropertyOf.uri,
       subject: serializeOptional(this.subject),
-      equivalentProperty: serializeList(this.equivalentProperties),
+      equivalentProperty: serializeList(this.equivalentProperties, equivalentProperty => equivalentProperty.uri),
       identifier: this.version
     }
   }
@@ -872,7 +787,9 @@ export class Association extends Predicate {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.valueClass = graph.range;
+    if (graph.range) {
+      this.valueClass = new Uri(graph.range, context);
+    }
   }
 
   getRange() {
@@ -888,7 +805,7 @@ export class Association extends Predicate {
 
   serializationValues() {
     return Object.assign(super.serializationValues(), {
-      range: this.valueClass
+      range: this.valueClass && this.valueClass.uri
     });
   }
 }
@@ -925,14 +842,14 @@ export class FintoConcept extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: Uri[];
+  inScheme: Url[];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.comment || graph.definition);
-    this.inScheme = deserializeList<Uri>(graph.inScheme);
+    this.inScheme = deserializeList<Url>(graph.inScheme);
   }
 }
 
@@ -941,16 +858,16 @@ export class ConceptSuggestion extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: Uri[];
+  inScheme: Url[];
   createdAt: Moment;
   creator: UserLogin;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
-    this.inScheme = deserializeList<Uri>(graph.inScheme);
+    this.inScheme = deserializeList<Url>(graph.inScheme);
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
 
@@ -979,8 +896,8 @@ export class DefaultUser extends GraphNode implements User {
     super(graph, context, frame);
     this.createdAt = deserializeDate(graph.createdAt);
     this.modifiedAt = deserializeOptionalDate(graph.modified);
-    this.adminGroups = deserializeList<Uri>(graph.isAdminOf);
-    this.memberGroups = deserializeList<Uri>(graph.isPartOf);
+    this.adminGroups = deserializeList<Uri>(graph.isAdminOf, admin => new Uri(admin, context));
+    this.memberGroups = deserializeList<Uri>(graph.isPartOf, part => new Uri(part, context));
     this.name = graph.name;
     this.login = deserializeUserLogin(graph['@id']);
   }
@@ -994,7 +911,7 @@ export class DefaultUser extends GraphNode implements User {
   }
 
   isMemberOfGroup(id: Uri) {
-    return !!_.find(this.memberGroups, v => v === id);
+    return !!_.find(this.memberGroups, v => v.equals(id));
   }
 
   isAdminOf(entity: Model|AbstractGroup) {
@@ -1002,7 +919,7 @@ export class DefaultUser extends GraphNode implements User {
   }
 
   isAdminOfGroup(id: Uri) {
-    return !!_.find(this.adminGroups, v => v === id);
+    return !!_.find(this.adminGroups, v => v.equals(id));
   }
 }
 
@@ -1036,13 +953,13 @@ export class SearchResult extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
   }
 
   iowUrl() {
-    return url(this.id, this.type);
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -1055,7 +972,7 @@ export class Usage extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
     this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, Referrer);
@@ -1071,15 +988,14 @@ export class Referrer extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
     this.normalizedType = normalizeReferrerType(this.type);
   }
 
   iowUrl() {
-    const expanded = this.expandCurie(this.id);
-    return url(expanded ? expanded.uri : this.id, this.type);
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -1089,12 +1005,12 @@ export class Activity extends GraphNode {
   createdAt: Moment;
   lastModifiedBy: UserLogin;
   versions: Entity[];
-  latestVersion: Uri;
-  private versionIndex: Map<Uri, number>;
+  latestVersion: Urn;
+  private versionIndex: Map<Urn, number>;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
+    this.id = new Uri(graph['@id'], context);
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
     this.versions = deserializeEntityList(graph.generated, context, frame, Entity).sort((lhs, rhs) => compareDates(rhs.createdAt, lhs.createdAt));
@@ -1102,7 +1018,7 @@ export class Activity extends GraphNode {
     this.latestVersion = graph.used;
   }
 
-  getVersion(version: Uri): Entity {
+  getVersion(version: Urn): Entity {
     const index = this.versionIndex.get(version);
     return index && this.versions[index];
   }
@@ -1114,10 +1030,10 @@ export class Activity extends GraphNode {
 
 export class Entity extends GraphNode {
 
-  id: Uri;
+  id: Urn;
   createdAt: Moment;
   createdBy: UserLogin;
-  previousVersion: Uri;
+  previousVersion: Urn;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1152,8 +1068,8 @@ function compareDates(lhs: Moment, rhs: Moment) {
   }
 }
 
-function indexById<T extends {id: Uri}>(items: T[]): Map<Uri, number> {
-  return new Map(items.map<[Uri, number]>((item: T, index: number) => [item.id, index]));
+function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
+  return new Map(items.map<[Urn, number]>((item: T, index: number) => [item.id, index]));
 }
 
 function serializeOptional<T extends GraphNode>(entity: T, isDefined: (entity: T) => boolean = (entity: T) => !!entity) {
@@ -1179,16 +1095,16 @@ function deserializeEntityList<T extends GraphNode>(list: any, context: any, fra
   return _.map(normalizeAsArray(list), obj => new entity(obj, context, frame));
 }
 
-function serializeList(list: string[]) {
+function serializeList<T>(list: any[], mapper: (obj: any) => T = identity) {
   if (list.length === 0) {
     return null;
   }
 
-  return list.slice();
+  return _.map(list, mapper);
 }
 
-function deserializeList<T>(list: any) {
-  return normalizeAsArray<T>(list);
+function deserializeList<T>(list: any, mapper: (obj: any) => T = identity) {
+  return _.map(normalizeAsArray<T>(list), mapper);
 }
 
 function serializeLocalizable(localizable: Localizable) {
@@ -1225,23 +1141,23 @@ function reverseMapTypeObject(type: Type[]): string[] {
     .value();
 }
 
-export function modelUrl(id: Uri): RelativeUrl {
+function modelUrl(id: string): RelativeUrl {
   return `/model?urn=${encodeURIComponent(id)}`;
 }
 
-export function url(id: Uri, type: Type[]) {
-  if (containsAny(type, ['model', 'profile'])) {
-    return modelUrl(id);
-  } else if (containsAny(type, ['group'])) {
-    return `/group?urn=${encodeURIComponent(id)}`;
-  } else if (containsAny(type, ['association', 'attribute'])) {
-    const [modelId] = id.split('#');
-    return `${modelUrl(modelId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id)}`;
-  } else if (containsAny(type, ['class', 'shape'])) {
-    const [modelId] = id.split('#');
-    return `${modelUrl(modelId)}&class=${encodeURIComponent(id)}`;
-  } else {
-    throw new Error('Unsupported type for url: ' + type);
+export function internalUrl(id: Uri, type: Type[]) {
+  if (id) {
+    if (containsAny(type, ['model', 'profile'])) {
+      return modelUrl(id.uri);
+    } else if (containsAny(type, ['group'])) {
+      return `/group?urn=${encodeURIComponent(id.uri)}`;
+    } else if (containsAny(type, ['association', 'attribute'])) {
+      return `${modelUrl(id.namespaceId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id.uri)}`;
+    } else if (containsAny(type, ['class', 'shape'])) {
+      return `${modelUrl(id.namespaceId)}&class=${encodeURIComponent(id.uri)}`;
+    } else {
+      throw new Error('Unsupported type for url: ' + type);
+    }
   }
 }
 
@@ -1353,7 +1269,7 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.iowConceptFrame, (framedData) => ConceptSuggestion);
   }
 
-  deserializeFintoConcept(data: any, id: Uri): IPromise<FintoConcept> {
+  deserializeFintoConcept(data: any, id: Url): IPromise<FintoConcept> {
     return frameAndMap(this.$log, data, frames.fintoConceptFrame(data, id), (framedData) => FintoConcept);
   }
 

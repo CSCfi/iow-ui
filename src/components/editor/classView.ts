@@ -4,7 +4,7 @@ import ILogService = angular.ILogService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property, PredicateListItem } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, PredicateListItem, Uri } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -59,7 +59,7 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   addProperty() {
     const exclude = combineExclusions<PredicateListItem>(
-      createExistsExclusion(collectProperties(this.class.properties, property => property.predicateId)),
+      createExistsExclusion(collectProperties(this.class.properties, property => property.predicate.uri)),
       createDefinedByExclusion(this.model)
     );
 
@@ -88,7 +88,7 @@ export class ClassViewController extends EditableEntityController<Class> {
       .then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
   }
 
-  update(entity: Class, oldId: string) {
+  update(entity: Class, oldId: Uri) {
     return this.classService.updateClass(entity, oldId).then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
   }
 
@@ -112,7 +112,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   isReference(): boolean {
-    return this.class.definedBy.id !== this.model.id;
+    return this.class.definedBy.id.notEquals(this.model.id);
   }
 
   getGroup(): GroupListItem {
