@@ -393,7 +393,7 @@ export namespace Classes {
         predicate: Associations.asianosainen,
         label:   { fi: 'Asianosainen' },
         comment: { fi: 'Asian asianosaiset' },
-        valueClass: Classes.henkilo
+        valueClass: henkilo
       }
     ]
   });
@@ -405,7 +405,7 @@ export namespace Classes {
       {
         predicate: Associations.viittausAsiaan,
         label: { fi: 'Viittaus asiakirjassa käsiteltävään asiaan' },
-        valueClass: Classes.asia
+        valueClass: asia
       },
       {
         predicate: Attributes.asiatunnus,
@@ -414,50 +414,6 @@ export namespace Classes {
       {
         predicate: Attributes.nimeke,
         label: { fi: 'Asian nimeke' }
-      }
-    ]
-  });
-
-  export const yhteystieto = loader.createClass(model, {
-    label: { fi: 'Yhteystieto'  },
-    properties: [
-      {
-        predicate: Attributes.puhelinnumero,
-        label:   { fi: 'Puhelinnumero' },
-        comment: { fi: 'Yhteystiedoissa mainittu puhelinnumero' }
-      },
-      {
-        predicate: Associations.osoite,
-        label:   { fi: 'Osoite' },
-        comment: { fi: 'Yhteystiedoissa mainittu osoite' },
-        valueClass: Classes.osoite
-      }
-    ]
-  });
-
-  export const organisaatio = loader.createClass(model, {
-    label: { fi: 'Organisaatio'  },
-    equivalentClasses: ['foaf:Organisaatio'],
-    properties: [
-      {
-        predicate: Attributes.nimi,
-        label: { fi: 'Organisaation nimi' }
-      },
-      {
-        predicate: Attributes.ytunnus,
-        label:   { fi: 'Y-tunnus' },
-        comment: { fi: 'Organisaation yritys tai yhteisötunnus' }
-      },
-      {
-        predicate: Associations.yhteystiedot,
-        label:   { fi: 'Yhteystieto' },
-        valueClass: Classes.yhteystieto
-      },
-      {
-        predicate: Attributes.tyyppi,
-        label:   { fi: 'Organisaatiomuoto' },
-        comment: { fi: 'Organisaatiomuodon kuvaava tyyppi' },
-        valueClass: 'skos:Concept'
       }
     ]
   });
@@ -488,6 +444,50 @@ export namespace Classes {
       {
         predicate: Attributes.kadunnimi,
         label: { fi: 'Osoitteen kadunnimi' }
+      }
+    ]
+  });
+
+  export const yhteystieto = loader.createClass(model, {
+    label: { fi: 'Yhteystieto'  },
+    properties: [
+      {
+        predicate: Attributes.puhelinnumero,
+        label:   { fi: 'Puhelinnumero' },
+        comment: { fi: 'Yhteystiedoissa mainittu puhelinnumero' }
+      },
+      {
+        predicate: Associations.osoite,
+        label:   { fi: 'Osoite' },
+        comment: { fi: 'Yhteystiedoissa mainittu osoite' },
+        valueClass: osoite
+      }
+    ]
+  });
+
+  export const organisaatio = loader.createClass(model, {
+    label: { fi: 'Organisaatio'  },
+    equivalentClasses: ['foaf:Organisaatio'],
+    properties: [
+      {
+        predicate: Attributes.nimi,
+        label: { fi: 'Organisaation nimi' }
+      },
+      {
+        predicate: Attributes.ytunnus,
+        label:   { fi: 'Y-tunnus' },
+        comment: { fi: 'Organisaation yritys tai yhteisötunnus' }
+      },
+      {
+        predicate: Associations.yhteystiedot,
+        label:   { fi: 'Yhteystieto' },
+        valueClass: yhteystieto
+      },
+      {
+        predicate: Attributes.tyyppi,
+        label:   { fi: 'Organisaatiomuoto' },
+        comment: { fi: 'Organisaatiomuodon kuvaava tyyppi' },
+        valueClass: 'skos:Concept'
       }
     ]
   });
