@@ -87,6 +87,7 @@ export class ClassService {
         return this.entities.deserializeClass(response.data);
       })
       .then((klass: Class) => {
+        klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
         return klass;
       });

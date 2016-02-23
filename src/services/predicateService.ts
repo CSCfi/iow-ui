@@ -82,6 +82,7 @@ export class PredicateService {
       })
       .then(response => this.entities.deserializePredicate(response.data))
       .then((predicate: Predicate) => {
+        predicate.definedBy = model.asDefinedBy();
         if (predicate instanceof Attribute && !predicate.dataType) {
           predicate.dataType = 'xsd:string';
         }
