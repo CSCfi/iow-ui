@@ -4,7 +4,7 @@ const mod = angular.module('iow.components.form', ['iow.services']);
 export = mod.name;
 
 import './bootstrapInput';
-import './curieInput';
+import './uriInput';
 import './editable';
 import './editableEntityButtons';
 import './errorMessages';

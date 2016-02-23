@@ -469,7 +469,7 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: components/form/errorMessages.html:11
+#: components/form/errorMessages.html:10
 msgid "Duplicate error"
 msgstr ""
 
@@ -505,7 +505,7 @@ msgstr ""
 msgid "Example"
 msgstr ""
 
-#: components/form/errorMessages.html:8
+#: components/form/errorMessages.html:7
 msgid "Existing id error"
 msgstr ""
 
@@ -578,19 +578,19 @@ msgstr ""
 msgid "Interoperability method"
 msgstr ""
 
-#: components/form/errorMessages.html:7
-msgid "Invalid curie error"
-msgstr ""
-
 #: translations/misc.html:114
 msgid "Invalid ID"
 msgstr ""
 
-#: components/form/errorMessages.html:6
+#: components/form/errorMessages.html:5
 msgid "Invalid namespace error"
 msgstr ""
 
-#: components/form/errorMessages.html:5
+#: components/form/errorMessages.html:6
+msgid "Invalid uri error"
+msgstr ""
+
+#: components/form/errorMessages.html:4
 msgid "Invalid url error"
 msgstr ""
 
@@ -610,7 +610,7 @@ msgstr ""
 msgid "ld+json frame"
 msgstr ""
 
-#: components/form/errorMessages.html:13
+#: components/form/errorMessages.html:12
 msgid "Length error"
 msgstr ""
 
@@ -794,7 +794,7 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: components/form/errorMessages.html:14
+#: components/form/errorMessages.html:13
 msgid "Prefix error"
 msgstr ""
 
@@ -834,11 +834,11 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: components/form/errorMessages.html:9
+#: components/form/errorMessages.html:8
 msgid "Required error"
 msgstr ""
 
-#: components/form/errorMessages.html:10
+#: components/form/errorMessages.html:9
 msgid "Required localized error"
 msgstr ""
 
@@ -981,7 +981,7 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: components/form/errorMessages.html:12
+#: components/form/errorMessages.html:11
 msgid "String error"
 msgstr ""
 

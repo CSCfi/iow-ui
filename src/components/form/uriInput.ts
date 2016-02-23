@@ -7,8 +7,7 @@ import { Model, Uri } from '../../services/entities';
 
 export const mod = angular.module('iow.components.form');
 
-// TODO rename
-mod.directive('curieInput', (gettextCatalog: gettextCatalog) => {
+mod.directive('uriInput', (gettextCatalog: gettextCatalog) => {
   'ngInject';
   return {
     scope: {
@@ -16,7 +15,7 @@ mod.directive('curieInput', (gettextCatalog: gettextCatalog) => {
     },
     restrict: 'A',
     require: 'ngModel',
-    link($scope: CurieInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
+    link($scope: UriInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
 
       if (!attributes['placeholder']) {
         element.attr('placeholder', gettextCatalog.getString('Write identifier'));
@@ -34,13 +33,13 @@ mod.directive('curieInput', (gettextCatalog: gettextCatalog) => {
         }
       });
 
-      modelController.$validators['curie'] = (modelValue: Uri, viewValue: string) => {
+      modelController.$validators['uri'] = (modelValue: Uri, viewValue: string) => {
         return !viewValue || new Uri(viewValue, $scope.model.context).hasPrefixForNamespace();
       }
     }
   };
 });
 
-interface CurieInputScope extends IScope {
+interface UriInputScope extends IScope {
   model: Model;
 }
