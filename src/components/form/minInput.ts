@@ -15,6 +15,9 @@ mod.directive('minInput', () => {
     restrict: 'A',
     require: 'ngModel',
     link($scope: MinInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
+
+      $scope.$watch(() => $scope.max, () => modelController.$validate());
+
       modelController.$validators['negative'] = (value: number) => {
         return !isDefined(value) || value >= 0;
       };
