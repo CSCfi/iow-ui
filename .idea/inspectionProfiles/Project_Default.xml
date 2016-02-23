@@ -6,7 +6,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="43">
+          <list size="44">
             <item index="0" class="java.lang.String" itemvalue="onbeforesave" />
             <item index="1" class="java.lang.String" itemvalue="onaftersave" />
             <item index="2" class="java.lang.String" itemvalue="submit" />
@@ -50,6 +50,7 @@
             <item index="40" class="java.lang.String" itemvalue="on-export" />
             <item index="41" class="java.lang.String" itemvalue="only-in-defined-model" />
             <item index="42" class="java.lang.String" itemvalue="uris" />
+            <item index="43" class="java.lang.String" itemvalue="uri" />
           </list>
         </value>
       </option>

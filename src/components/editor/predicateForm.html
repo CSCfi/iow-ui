@@ -13,7 +13,7 @@
 </editable>
 
 <editable title="{{'Super' + ctrl.predicate.normalizedType}}" link="ctrl.linkToSuperproperty()">
-  <uri-select id="superPredicate" type="{{ctrl.predicate.normalizedType}}" curie="ctrl.predicate.subPropertyOf" model="ctrl.model"></uri-select>
+  <uri-select id="superPredicate" type="{{ctrl.predicate.normalizedType}}" uri="ctrl.predicate.subPropertyOf" model="ctrl.model"></uri-select>
 </editable>
 
 <editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" uris="ctrl.predicate.equivalentProperties" model="ctrl.model" title="{{'Equivalent ' + ctrl.predicate.type}}" allow-input="true"></editable-multiple-uri-select>
@@ -23,7 +23,7 @@
 </editable>
 
 <editable ng-if="ctrl.predicate.isAssociation()" title="Value class" name="Value class" link="ctrl.linkToValueClass()">
-  <uri-select id="predicateValueClass" type="class" curie="ctrl.predicate.valueClass" model="ctrl.model"></uri-select>
+  <uri-select id="predicateValueClass" type="class" uri="ctrl.predicate.valueClass" model="ctrl.model"></uri-select>
 </editable>
 
 <non-editable title="Is defined by" value="ctrl.predicate.definedBy.label" link="ctrl.predicate.iowUrl()"></non-editable>

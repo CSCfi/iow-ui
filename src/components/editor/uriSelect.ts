@@ -15,7 +15,7 @@ mod.directive('uriSelect', () => {
   'ngInject';
   return {
     scope: {
-      curie: '=',
+      uri: '=',
       type: '@',
       model: '=',
       id: '@',
@@ -44,7 +44,7 @@ interface WithId {
 
 class UriSelectController {
 
-  curie: Uri;
+  uri: Uri;
   type: Type;
   model: Model;
   id: string;
@@ -60,7 +60,7 @@ class UriSelectController {
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createDefinedByExclusion(this.model));
 
     promise.then(withId => {
-      this.curie = withId.id;
+      this.uri = withId.id;
       this.afterSelected({id: withId.id});
     });
   }
