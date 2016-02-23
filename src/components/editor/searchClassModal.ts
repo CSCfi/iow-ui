@@ -50,6 +50,7 @@ class SearchClassController {
   selectedClass: Class;
   searchText: string = '';
   showExcluded: boolean;
+  showProfiles: boolean;
   modelId: Uri;
   models: DefinedBy[] = [];
 
@@ -58,7 +59,7 @@ class SearchClassController {
               private $uibModalInstance: IModalServiceInstance,
               private classService: ClassService,
               private languageService: LanguageService,
-              private model: Model,
+              public model: Model,
               public exclude: (klass: ClassListItem) => string,
               public onlySelection: boolean,
               private textForSelection: (klass: Class) => string,
@@ -79,6 +80,7 @@ class SearchClassController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.modelId, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
+    $scope.$watch(() => this.showProfiles, () => this.search());
   }
 
   search() {
@@ -86,6 +88,7 @@ class SearchClassController {
       .filter(klass => this.textFilter(klass))
       .filter(klass => this.modelFilter(klass))
       .filter(klass => this.excludedFilter(klass))
+      .filter(klass => this.showProfilesFilter(klass))
       .sortBy(klass => this.localizedLabelAsLower(klass))
       .value();
   }
@@ -117,5 +120,9 @@ class SearchClassController {
 
   private excludedFilter(klass: ClassListItem): boolean {
     return this.showExcluded || !this.exclude(klass);
+  }
+
+  private showProfilesFilter(klass: ClassListItem): boolean {
+    return this.showProfiles || !klass.definedBy.isOfType('profile');
   }
 }

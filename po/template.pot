@@ -183,7 +183,7 @@ msgstr ""
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:55
+#: components/editor/searchClassModal.html:59
 #: components/editor/searchConceptModal.html:60
 #: components/editor/searchPredicateModal.html:75
 #: components/group/addModelModal.html:22
@@ -967,6 +967,10 @@ msgstr ""
 #: components/common/export.html:4
 #: translations/misc.html:21
 msgid "Show"
+msgstr ""
+
+#: components/editor/searchClassModal.html:37
+msgid "Show classes defined in profiles"
 msgstr ""
 
 #: components/editor/searchClassModal.html:33
