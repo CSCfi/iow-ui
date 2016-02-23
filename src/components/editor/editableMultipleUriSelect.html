@@ -21,7 +21,7 @@
                restrict-duplicates="ctrl.uris"
                ng-model="ctrl.uriInput"
                ng-keydown="ctrl.keyPressed($event)"
-               ng-blur="ctrl.addCurieFromInput()"
+               ng-blur="ctrl.addAddFromInput()"
                ng-show="ctrl.allowInput" />
       </div>
     <error-messages ng-model-controller="uriInputController"></error-messages>
