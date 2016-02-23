@@ -23,7 +23,7 @@ mod.directive('minInput', () => {
       };
 
       modelController.$validators['greaterThanMax'] = (value: number) => {
-        return isDefined(value) || isDefined($scope.max) || value <= $scope.max;
+        return !isDefined(value) || !isDefined($scope.max) || value <= $scope.max;
       };
     }
   };
