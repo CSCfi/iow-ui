@@ -2,6 +2,7 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
+import { Uri } from '../../services/uri';
 
 export const mod = angular.module('iow.components.form');
 
@@ -31,7 +32,11 @@ mod.directive('restrictDuplicates', () => {
         if ('localizedInput' in attributes) {
           return _.intersection(Object.values(value), _.flatten(_.map(valuesToCheckAgainst, v => Object.values(v)))).length === 0;
         } else {
-          return valuesToCheckAgainst.indexOf(value) === -1;
+          if (value instanceof Uri) {
+            return !_.find(valuesToCheckAgainst, valueToCheckAgainst => valueToCheckAgainst.equals(value));
+          } else {
+            return valuesToCheckAgainst.indexOf(value) === -1;
+          }
         }
       };
     },
