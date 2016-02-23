@@ -12,6 +12,10 @@ interface WithDefinedBy {
   definedBy: DefinedBy;
 }
 
+export function isDefined(obj: any): boolean {
+  return obj !== null && obj !== undefined;
+}
+
 export function isString(str: any): str is string {
   return typeof str === 'string';
 }
