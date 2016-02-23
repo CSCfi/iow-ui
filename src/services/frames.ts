@@ -158,6 +158,7 @@ export function searchResultFrame(data: any): Frame {
 
 export function classVisualizationFrame(data: any): Frame {
   return frame(data, classContext, {
+    '@type': ['rdfs:Class', 'sh:Shape'],
     property: {
       predicate: {
         '@embed': false
