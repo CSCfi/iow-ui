@@ -24,9 +24,8 @@ mod.directive('usage', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['usage', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: UsageAttributes, controllers: [UsageController, EditableForm]) {
-      const form: EditableForm = controllers[1];
-      $scope.$watch(attributes.showLinks, (show: boolean) => controllers[0].showLinks = () => show && (!form || !form.editing));
+    link($scope: IScope, element: JQuery, attributes: UsageAttributes, [thisController, formController]: [UsageController, EditableForm]) {
+      $scope.$watch(attributes.showLinks, (show: boolean) => thisController.showLinks = () => show && (!formController || !formController.editing));
     },
     controller: UsageController
   }

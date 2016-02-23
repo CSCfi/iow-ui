@@ -14,16 +14,14 @@ mod.directive('restrictDuplicates', () => {
   return {
     restrict: 'A',
     require: ['restrictDuplicates', 'ngModel'],
-    link($scope: IScope, element: JQuery, attributes: RestrictDupicatesAttributes, controllers: [RestrictDuplicatesController, INgModelController]) {
-      const restrictDuplicatesController = controllers[0];
-      const ngModel = controllers[1];
-
+    link($scope: IScope, element: JQuery, attributes: RestrictDupicatesAttributes, [thisController, ngModel]: [RestrictDuplicatesController, INgModelController]) {
+      
       $scope.$watch(attributes.restrictDuplicates, (values: any[]) => {
-        restrictDuplicatesController.valuesToCheckAgainst = values;
+        thisController.valuesToCheckAgainst = values;
       });
 
       ngModel.$validators['duplicate'] = value => {
-        const valuesToCheckAgainst = restrictDuplicatesController.valuesToCheckAgainst;
+        const valuesToCheckAgainst = thisController.valuesToCheckAgainst;
 
         if (!valuesToCheckAgainst) {
           return true;

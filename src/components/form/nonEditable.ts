@@ -22,8 +22,8 @@ mod.directive('nonEditable', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['nonEditable', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: [NonEditableController, EditableForm]) {
-      controllers[0].isEditing = () => controllers[1].editing;
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [NonEditableController, EditableForm]) {
+      thisController.isEditing = () => formController.editing;
     },
     controller: NonEditableController
   };

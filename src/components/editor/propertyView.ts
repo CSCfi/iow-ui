@@ -24,27 +24,28 @@ mod.directive('propertyView', ($location: ILocationService, $timeout: ITimeoutSe
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['propertyView', '^classForm', '?^classView'],
-    link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes, controllers: [PropertyViewController, ClassFormController, ClassViewController]) {
-      $scope.editableController = controllers[2];
+    link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes, 
+         [thisController, classFormController, classViewController]: [PropertyViewController, ClassFormController, ClassViewController]) {
+      $scope.editableController = classViewController;
 
-      controllers[0].scroll = () => {
+      thisController.scroll = () => {
         const scrollTop = element.offset().top;
         if (scrollTop === 0) {
-          $timeout(controllers[0].scroll, 100);
+          $timeout(thisController.scroll, 100);
         } else {
           jQuery('html, body').animate({scrollTop}, 'slow');
         }
       };
 
-      controllers[0].anyPropertiesOpen = () => {
-        return _.any(controllers[1].propertyViews, view => view.isOpen);
+      thisController.anyPropertiesOpen = () => {
+        return _.any(classFormController.propertyViews, view => view.isOpen);
       };
 
-      if ($location.search().property === controllers[0].property.id.uri) {
-        controllers[0].openAndScrollTo();
+      if ($location.search().property === thisController.property.id.uri) {
+        thisController.openAndScrollTo();
       }
 
-      controllers[1].registerPropertyView(controllers[0].property.id, controllers[0]);
+      classFormController.registerPropertyView(thisController.property.id, thisController);
     },
     controller: PropertyViewController
   }

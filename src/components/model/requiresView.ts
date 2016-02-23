@@ -15,10 +15,10 @@ mod.directive('requiresView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['requiresView', '?^modelView'],
-    link($scope: RequiresViewScope, element: JQuery, attributes: IAttributes, controllers: [RequiresViewController, ModelViewController]) {
-      if (controllers[1]) {
-        $scope.modelViewController = controllers[1];
-        $scope.modelViewController.registerRequiresView(controllers[0]);
+    link($scope: RequiresViewScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [RequiresViewController, ModelViewController]) {
+      if (modelViewController) {
+        $scope.modelViewController = modelViewController;
+        $scope.modelViewController.registerRequiresView(thisController);
       }
     },
     controller: RequiresViewController

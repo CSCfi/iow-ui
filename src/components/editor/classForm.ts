@@ -23,9 +23,7 @@ mod.directive('classForm', () => {
     require: ['classForm', '?^classView'],
     controllerAs: 'ctrl',
     bindToController: true,
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      const classFormController: ClassFormController = controllers[0];
-      const classViewController: ClassViewController = controllers[1];
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [classFormController, classViewController]: [ClassFormController, ClassViewController]) {
       if (classViewController) {
         classViewController.registerForm(classFormController);
         classFormController.isEditing = () => classViewController.isEditing();

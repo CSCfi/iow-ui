@@ -2,6 +2,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { SearchConceptModal } from './searchConceptModal';
 import { ConceptSuggestion, Reference, Type, FintoConcept } from '../../services/entities';
+import { EditableForm } from '../form/editableEntityController';
 
 export const mod = angular.module('iow.components.editor');
 
@@ -20,9 +21,8 @@ mod.directive('editableSubjectSelect', () => {
     bindToController: true,
     template: require('./editableSubjectSelect.html'),
     require: ['editableSubjectSelect', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      const editableSubjectSelectController = controllers[0];
-      editableSubjectSelectController.isEditing = () => controllers[1].editing;
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableSubjectSelectController, EditableForm]) {
+      thisController.isEditing = () => formController.editing;
     },
     controller: EditableSubjectSelectController
   }

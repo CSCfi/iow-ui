@@ -115,10 +115,7 @@ export class ClassService {
           this.$q.when(predicate),
           this.entities.deserializeProperty(propertyResult.data)
         ])})
-      .then((result: [Predicate, Property]) => {
-        const property: Property = result[1];
-        const predicate: Predicate = result[0];
-
+      .then(([predicate, property]: [Predicate, Property]) => {
         if (!property.label) {
           property.label = predicate.label;
         }

@@ -5,6 +5,7 @@ import INgModelController = angular.INgModelController;
 import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
+import { EditableForm } from './editableEntityController';
 
 export const mod = angular.module('iow.components.form');
 
@@ -23,11 +24,10 @@ mod.directive('editable', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['editable', '?^form'],
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, controllers: any[]) {
-      const editableController: EditableController = controllers[0];
+    link($scope: EditableScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableController, EditableForm]) {
       const input = element.find('[ng-model]');
       const ngModel = input.controller('ngModel');
-      const isEditing = () => controllers[1].editing && !editableController.disable;
+      const isEditing = () => formController.editing && !thisController.disable;
 
       // move error messages element next to input
       input.after(element.find('error-messages').detach());
@@ -41,18 +41,18 @@ mod.directive('editable', () => {
         }
       });
 
-      editableController.isEditing = isEditing;
+      thisController.isEditing = isEditing;
       $scope.ngModel = ngModel;
 
-      Object.defineProperty(editableController, 'value', { get: () => {
+      Object.defineProperty(thisController, 'value', { get: () => {
         return ngModel && ngModel.$modelValue;
       }});
 
-      Object.defineProperty(editableController, 'inputId', { get: () => {
+      Object.defineProperty(thisController, 'inputId', { get: () => {
         return input.attr('id');
       }});
 
-      Object.defineProperty(editableController, 'required', { get: () => {
+      Object.defineProperty(thisController, 'required', { get: () => {
         return input.attr('required') || (ngModel && 'requiredLocalized' in ngModel.$validators);
       }});
     },

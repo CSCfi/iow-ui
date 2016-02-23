@@ -28,8 +28,8 @@ mod.directive('editableConstraint', () => {
     bindToController: true,
     template: require('./editableConstraint.html'),
     require: ['editableConstraint', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: [EditableConstraint, EditableForm]) {
-      controllers[0].isEditing = () => controllers[1].editing;
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableConstraint, EditableForm]) {
+      thisController.isEditing = () => formController.editing;
     },
     controller: EditableConstraint
   };

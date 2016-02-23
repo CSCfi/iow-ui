@@ -18,9 +18,8 @@ mod.directive('editableRootClass', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['editableRootClass', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: [EditableRootClassController, EditableForm]) {
-      const editableSubjectSelectController = controllers[0];
-      editableSubjectSelectController.isEditing = () => controllers[1].editing;
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableRootClassController, EditableForm]) {
+      thisController.isEditing = () => formController.editing;
     },
     controller: EditableRootClassController
   };
@@ -38,7 +37,7 @@ class EditableRootClassController {
   get href() {
     return '#' + this.model.linkTo('class', this.model.rootClass);
   }
-  
+
   selectClass() {
 
     const exclude = (klass: ClassListItem) => {
