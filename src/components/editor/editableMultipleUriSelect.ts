@@ -1,5 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
+import INgModelController = angular.INgModelController;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
@@ -18,12 +19,11 @@ import create = require("core-js/fn/object/create");
 
 export const mod = angular.module('iow.components.editor');
 
-// TODO rename
-mod.directive('editableMultipleCurieSelect', () => {
+mod.directive('editableMultipleUriSelect', () => {
   'ngInject';
   return {
     scope: {
-      curies: '=',
+      uris: '=',
       type: '@',
       model: '=',
       id: '@',
@@ -33,28 +33,34 @@ mod.directive('editableMultipleCurieSelect', () => {
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: require('./editableMultipleCurieSelect.html'),
-    require: ['editableMultipleCurieSelect', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controllers: [EditableMultipleCurieSelectController, EditableForm]) {
-      controllers[0].isEditing = () => controllers[1].editing;
+    template: require('./editableMultipleUriSelect.html'),
+    require: ['editableMultipleUriSelect', '?^form'],
+    link($scope: EditableMultipleUriSelectScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableMultipleUriSelectController, EditableForm]) {
+      thisController.isEditing = () => formController.editing;
+
+      const input = element.find('[ng-model]');
+      $scope.uriInputController = input.controller('ngModel');
     },
-    controller: EditableMultipleCurieSelectController
+    controller: EditableMultipleUriSelectController
   };
 });
+
+interface EditableMultipleUriSelectScope extends IScope {
+  uriInputController: INgModelController;
+}
 
 interface WithId {
   id: Uri;
 }
 
-// TODO: rename
-class EditableMultipleCurieSelectController {
+class EditableMultipleUriSelectController {
 
-  curies: Uri[];
+  uris: Uri[];
   type: Type;
   model: Model;
   id: string;
   isEditing: () => boolean;
-  curieInput: Uri;
+  uriInput: Uri;
   title: string;
 
   items: DisplayItem[];
@@ -67,13 +73,13 @@ class EditableMultipleCurieSelectController {
 
     const link = (uri: Uri) => this.model.linkTo(this.type, uri);
 
-    $scope.$watchCollection(() => this.curies, curies => {
-      this.items =_.map(curies, curie => displayItemFactory.create(() => curie, link, false, () => this.isEditing()));
+    $scope.$watchCollection(() => this.uris, uris => {
+      this.items =_.map(uris, uri => displayItemFactory.create(() => uri, link, false, () => this.isEditing()));
     });
   }
 
-  addCurie() {
-    const existsExclusion = createExistsExclusion(collectProperties(this.curies, curie => curie.uri));
+  addUri() {
+    const existsExclusion = createExistsExclusion(collectProperties(this.uris, uri => uri.uri));
     const definedExclusion = createDefinedByExclusion(this.model);
     const classExclusion = combineExclusions<ClassListItem>(existsExclusion, definedExclusion);
     const predicateExclusion = combineExclusions<PredicateListItem>(existsExclusion, definedExclusion);
@@ -83,29 +89,27 @@ class EditableMultipleCurieSelectController {
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, predicateExclusion);
 
     promise.then(withId => {
-      this.curies.push(withId.id);
+      this.uris.push(withId.id);
     });
   }
 
-  deleteCurie(item: DisplayItem) {
+  deleteUri(item: DisplayItem) {
     const value = item.value();
-    _.remove(this.curies, curie => curie === value);
+    _.remove(this.uris, uri => uri === value);
   }
 
   keyPressed(event: JQueryEventObject) {
     const enter = 13;
     if (event.keyCode === enter) {
       event.preventDefault();
-      this.addCurieFromInput();
+      this.addUriFromInput();
     }
   }
 
-  addCurieFromInput() {
-    if (this.curieInput) {
-      if (!_.find(this.curies, curie => curie.equals(this.curieInput))) {
-        this.curies.push(this.curieInput);
-      }
-      this.curieInput = null;
+  addUriFromInput() {
+    if (this.uriInput) {
+      this.uris.push(this.uriInput);
+      this.uriInput = null;
     }
   }
 }

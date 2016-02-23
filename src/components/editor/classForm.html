@@ -21,7 +21,7 @@
   <uri-select id="scopeClass" type="class" curie="ctrl.class.scopeClass" model="ctrl.model" mandatory="true" after-selected="ctrl.addPropertiesFromClass(id, 'scope')"></uri-select>
 </editable>
 
-<editable-multiple-curie-select id="equivalentClass" type="class" curies="ctrl.class.equivalentClasses" model="ctrl.model" title="{{'Equivalent class'}}" allow-input="true"></editable-multiple-curie-select>
+<editable-multiple-uri-select id="equivalentClass" type="class" uris="ctrl.class.equivalentClasses" model="ctrl.model" title="{{'Equivalent class'}}" allow-input="true"></editable-multiple-uri-select>
 
 <non-editable title="Is defined by" value="ctrl.class.definedBy.label" link="ctrl.class.iowUrl()"></non-editable>
 
