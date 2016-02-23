@@ -7,7 +7,7 @@ import { LanguageService } from '../../services/languageService';
 import { ClassService } from '../../services/classService';
 import { Class, Model, Uri, VisualizationClass, Property } from '../../services/entities';
 import * as _ from 'lodash';
-import { normalizeAsArray } from '../../services/utils';
+import { normalizeAsArray, isDefined } from '../../services/utils';
 const joint = require('jointjs');
 
 export const mod = angular.module('iow.components.editor');
@@ -227,7 +227,7 @@ function formatCardinality(property: Property) {
   const min = property.minCount;
   const max = property.maxCount;
 
-  if (!min && !max) {
+  if (!isDefined(min) && !isDefined(max)) {
     return '*';
   } else if (min === max) {
     return min.toString();
