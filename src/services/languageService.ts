@@ -4,6 +4,9 @@ import { Localizable } from './entities';
 const languages: Language[] = ['fi', 'en'];
 const defaultLanguage: Language = 'fi';
 
+const fi = require("../../po/fi.po");
+const en = require("../../po/en.po");
+
 export type Language = string;
 
 export class LanguageService {
@@ -11,14 +14,15 @@ export class LanguageService {
   modelLanguage: Language = defaultLanguage;
   labelComparison = this.localizableComparison((item: {label: Localizable}) => item.label);
 
+  /* @ngInject */
   constructor(private gettextCatalog: any) {
-    'ngInject';
+    gettextCatalog.setStrings('fi', fi);
+    gettextCatalog.setStrings('en', en);
     this.setGettextLanguage(defaultLanguage);
   }
 
   private setGettextLanguage(language: Language): void {
     this.gettextCatalog.setCurrentLanguage(language);
-    this.gettextCatalog.loadRemote(`translations/${language}.json`);
   }
 
   get UILanguage(): Language {

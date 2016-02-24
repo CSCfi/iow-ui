@@ -13,12 +13,14 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import 'core-js';
 import { routeConfig } from './routes';
 
+import './app.scss';
+
 import * as jQuery from 'jquery';
 window.jQuery = jQuery;
 import * as angular from 'angular';
 
 require('./vendor/modernizr');
-require('jquery-mousewheel')(jQuery);
+require('imports?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
 require("typeahead.js");
 require('angular-gettext');
 require('checklist-model');
