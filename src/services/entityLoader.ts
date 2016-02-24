@@ -140,10 +140,10 @@ export class EntityLoader {
     this.schemes = this.reset.then(() => this.conceptService.getAllSchemes('fi')).then(result => result.data.vocabularies);
   }
 
-  addAction<R, T extends Promise<R>>(action: T, details: any): T {
+  addAction<T>(action: IPromise<T>, details: any): IPromise<T> {
     const withDetails = action.then(identity, failWithDetails(details));
-    this.actions.push(<IPromise<any>> withDetails);
-    return action;
+    this.actions.push(withDetails);
+    return withDetails;
   }
 
   result(successCallback: () => void, errorCallback: (err: any) => void) {
