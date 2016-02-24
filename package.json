@@ -6,6 +6,7 @@
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
+    "postinstall": "node_modules/.bin/typings install",
     "create-translations": "gulp pot",
     "example-data": "node node_modules/ts-node/dist/bin/ts-node.js examples/loadExamples.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -54,7 +55,6 @@
     "gulp-sass": "^2.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-streamify": "1.0.2",
-    "gulp-tsd": "0.0.4",
     "gulp-uglify": "~1.4.2",
     "gulp-util": "~3.0.7",
     "gulp-watch": "^4.3.5",
@@ -69,9 +69,10 @@
     "resolve": "^1.1.6",
     "rimraf": "^2.4.3",
     "stringify": "^3.1.0",
-    "tsify": "0.13.2",
     "ts-node": "0.5.5",
+    "tsify": "0.13.2",
     "typescript": "1.7.5",
+    "typings": "^0.6.8",
     "url": "^0.11.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "~1.1.0",

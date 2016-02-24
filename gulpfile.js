@@ -21,19 +21,11 @@ var proxy = require('proxy-middleware');
 var gettext = require('gulp-angular-gettext');
 var buffer = require('vinyl-buffer');
 var tsify = require('tsify');
-var tsd = require('gulp-tsd');
 var ngAnnotate = require('gulp-ng-annotate');
 var _ = require('lodash');
 var nodeResolve = require('resolve');
 var gulpif = require('gulp-if');
 var envify = require('envify/custom');
-
-gulp.task('tsd', function (callback) {
-  tsd({
-    command: 'reinstall',
-    config: './tsd.json'
-  }, callback);
-});
 
 /* eslint "no-process-env":0 */
 var production = process.env.NODE_ENV === 'production';
@@ -161,7 +153,7 @@ gulp.task('build-app', function () {
   return compileAppJs(false);
 });
 
-gulp.task('scripts', ['tsd', 'build-vendor', 'build-app']);
+gulp.task('scripts', ['build-vendor', 'build-app']);
 
 gulp.task('templates', function() {
   var pipeline = gulp.src(config.templates.source)
@@ -229,7 +221,7 @@ gulp.task('server', function() {
   });
 });
 
-gulp.task('watch', ['tsd', 'build-vendor'], function() {
+gulp.task('watch', ['build-vendor'], function() {
 
   ['templates', 'styles', 'assets', 'translations'].forEach(function(watched) {
     watch(config[watched].watch, function() {
