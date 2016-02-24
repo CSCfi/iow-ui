@@ -37,7 +37,6 @@ import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
-import { config } from '../../config';
 import { MaintenanceModal } from '../maintenance';
 
 export const mod = angular.module('iow.components.model');
@@ -264,7 +263,7 @@ export class ModelController {
       if (isProfile) {
         return classTypeExclusion(klass) || definedExclusion(klass);
       } else {
-        if (config.development && klass.isSpecializedClass() && !klass.isOfType('shape')) {
+        if (klass.isSpecializedClass() && !klass.isOfType('shape')) {
           return <string> null;
         } else {
           return classExistsExclusion(klass) || classTypeExclusion(klass) || definedExclusion(klass);
