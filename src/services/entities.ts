@@ -49,8 +49,8 @@ export type State = 'Unstable'
                   | 'Recommendation'
                   | 'Deprecated';
 
-export type ConstraintType = 'or' 
-                           | 'and' 
+export type ConstraintType = 'or'
+                           | 'and'
                            | 'not';
 
 
@@ -1095,7 +1095,7 @@ function serializeEntityList(list: GraphNode[]) {
 }
 
 function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entity: EntityConstructor<T>): T[] {
-  return _.map(normalizeAsArray(list), obj => new entity(obj, context, frame));
+  return _.map<any, T>(normalizeAsArray(list), obj => new entity(obj, context, frame));
 }
 
 function serializeList<T>(list: any[], mapper: (obj: any) => T = identity) {
