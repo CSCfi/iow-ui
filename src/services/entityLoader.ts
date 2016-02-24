@@ -124,7 +124,7 @@ export class EntityLoader {
   private reset: IPromise<any>;
   private loggedIn: IPromise<any>;
   private schemes: IPromise<any>;
-  private entities: IPromise<any>[] = [];
+  private actions: IPromise<any>[] = [];
 
   constructor(private $q: IQService,
               private modelService: ModelService,
@@ -140,12 +140,14 @@ export class EntityLoader {
     this.schemes = this.reset.then(() => this.conceptService.getAllSchemes('fi')).then(result => result.data.vocabularies);
   }
 
-  addAction(action: IPromise<any>, details: any) {
-    this.entities.push(action.then(identity, failWithDetails(details)));
+  addAction<R, T extends Promise<R>>(action: T, details: any): T {
+    const withDetails = action.then(identity, failWithDetails(details));
+    this.actions.push(<IPromise<any>> withDetails);
+    return action;
   }
 
   result(successCallback: () => void, errorCallback: (err: any) => void) {
-    this.$q.all(this.entities).then(successCallback, errorCallback);
+    this.$q.all(this.actions).then(successCallback, errorCallback);
   }
 
   createConceptSuggestion(details: ConceptSuggestionDetails): IPromise<ConceptSuggestion> {
@@ -153,8 +155,7 @@ export class EntityLoader {
       .then(() => this.conceptService.createConceptSuggestion(jhsMetaId, details.label, details.comment, null, 'fi'))
       .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
-    this.addAction(result, details);
-    return result;
+    return this.addAction(result, details);
   }
 
   private createModel(type: Type, groupId: Uri, details: ModelDetails): IPromise<Model> {
@@ -201,8 +202,7 @@ export class EntityLoader {
           .then(() => model);
       });
 
-    this.addAction(result, details);
-    return result;
+    return this.addAction(result, details);
   }
 
   createLibrary(groupId: Uri, details: ModelDetails): IPromise<Model> {
@@ -218,8 +218,7 @@ export class EntityLoader {
       .then(() => this.$q.all([modelPromise, classPromise]))
       .then(([model, klass]: [Model, Class]) => this.classService.assignClassToModel(klass.id, model.id).then(() => klass));
 
-    this.addAction(result, 'assign class');
-    return result;
+    return this.addAction(result, 'assign class');
   }
 
   specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
@@ -258,8 +257,7 @@ export class EntityLoader {
           })
       });
 
-    this.addAction(result, details);
-    return result;
+    return this.addAction(result, details);
   }
 
   createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPromise<Class> {
@@ -303,8 +301,7 @@ export class EntityLoader {
           .then(() => klass)
       });
 
-    this.addAction(result, details);
-    return result;
+    return this.addAction(result, details);
   }
 
   assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromise<Predicate>): IPromise<Predicate> {
@@ -312,8 +309,7 @@ export class EntityLoader {
       .then(() =>  this.$q.all([modelPromise, predicatePromise]))
       .then(([model, predicate]: [Model, Predicate]) => this.predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate));
 
-    this.addAction(result, 'assign predicate');
-    return result;
+    return this.addAction(result, 'assign predicate');
   }
 
   createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
@@ -346,8 +342,7 @@ export class EntityLoader {
           .then(() => predicate);
       });
 
-    this.addAction(result, details);
-    return result;
+    return this.addAction(result, details);
   }
 
   createAttribute(modelPromise: IPromise<Model>, details: AttributeDetails): IPromise<Attribute> {
@@ -390,8 +385,7 @@ export class EntityLoader {
         return valueClassPromise.then(() => p);
       });
 
-    this.addAction(result, details);
-    return result;
+    return this.addAction(result, details);
   }
 }
 
