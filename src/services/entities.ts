@@ -30,25 +30,28 @@ export type Urn = string;
 export type RelativeUrl = string;
 export type UserLogin = string;
 
-export type Type = string
-//export type Type = 'class'
-//                 | 'shape'
-//                 | 'attribute'
-//                 | 'association'
-//                 | 'model'
-//                 | 'profile'
-//                 | 'group'
-//                 | 'library'
-//                 | 'constraint'
-//                 | 'user'
-//                 | 'concept';
-export type State = string;
-//export type State = 'Unstable'
-//                  | 'Draft'
-//                  | 'Recommendation'
-//                  | 'Deprecated';
-export type ConstraintType = string;
-//export type ConstraintType = 'or' | 'and' | 'not';
+export type Type = 'class'
+                 | 'shape'
+                 | 'attribute'
+                 | 'association'
+                 | 'model'
+                 | 'profile'
+                 | 'group'
+                 | 'library'
+                 | 'constraint'
+                 | 'user'
+                 | 'concept'
+                 | 'entity'
+                 | 'activity';
+
+export type State = 'Unstable'
+                  | 'Draft'
+                  | 'Recommendation'
+                  | 'Deprecated';
+
+export type ConstraintType = 'or' 
+                           | 'and' 
+                           | 'not';
 
 
 interface EntityConstructor<T extends GraphNode> {

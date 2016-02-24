@@ -141,14 +141,18 @@ export function isDifferentUrl(lhs: string, rhs: string): boolean {
   return normalizeUrl(lhs) !== normalizeUrl(rhs);
 }
 
+function asTypeArray(...types: Type[]): Type[] {
+  return types;
+}
+
 export function normalizeSelectionType(types: Type[]): Type {
-  if (containsAny(types, ['class', 'shape'])) {
+  if (containsAny(types, asTypeArray('class', 'shape'))) {
     return 'class';
-  } else if (containsAny(types, ['attribute'])) {
+  } else if (containsAny(types, asTypeArray('attribute'))) {
     return 'attribute';
-  } else if (containsAny(types, ['association'])) {
+  } else if (containsAny(types, asTypeArray('association'))) {
     return 'association';
-  } else if (containsAny(types, ['model', 'profile', 'library'])) {
+  } else if (containsAny(types, asTypeArray('model', 'profile', 'library'))) {
     return 'model';
   } else {
     throw new Error('Unsupported selection type: ' + types.join());
@@ -160,15 +164,15 @@ export function normalizeReferrerType(types: Type[]): Type {
 }
 
 export function normalizePredicateType(types: Type[]): Type {
-  return findFirstMatching(types, ['attribute', 'association']);
+  return findFirstMatching(types, asTypeArray('attribute', 'association'));
 }
 
 export function normalizeClassType(types: Type[]): Type {
-  return findFirstMatching(types, ['shape', 'class']);
+  return findFirstMatching(types, asTypeArray('shape', 'class'));
 }
 
 export function normalizeModelType(types: Type[]): Type {
-  const type = findFirstMatching(types, ['profile', 'library', 'model']);
+  const type = findFirstMatching(types, asTypeArray('profile', 'library', 'model'));
   if (type === 'model') {
     return 'library';
   } else {
@@ -177,7 +181,7 @@ export function normalizeModelType(types: Type[]): Type {
 }
 
 export function normalizeGroupType(types: Type[]): Type {
-  return findFirstMatching(types, ['group']);
+  return findFirstMatching(types, asTypeArray('group'));
 }
 
 function hasValue(obj: any) {
