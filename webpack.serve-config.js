@@ -18,7 +18,6 @@ module.exports = new WebpackConfig().extend('./webpack.common-config.js').merge(
     contentBase: './src',
     hot: true,
     inline: true,
-    historyApiFallback: true,
     proxy: {
       '/api/*': {
         target: 'http://localhost:8084/',
