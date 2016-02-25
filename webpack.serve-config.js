@@ -4,8 +4,10 @@ var WebpackConfig = require('webpack-config');
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var fastRebuild = false;
+
 module.exports = new WebpackConfig().extend('./webpack.common-config.js').merge({
-  devtool: 'eval',
+  devtool: fastRebuild ? 'cheap-module-eval-source-map' : 'source-map',
   debug: true,
   plugins: [
     new HtmlWebpackPlugin({ template: 'src/index.html' }),
