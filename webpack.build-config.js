@@ -11,7 +11,7 @@ module.exports = commonConfig.merge({
     filename: 'app.[chunkhash].js',
     publicPath: '/assets/'
   },
-  devtool: 'cheap-module-source-map',
+  devtool: 'cheap-source-map',
   plugins: [
     new HtmlWebpackPlugin({ template: 'src/index.html', filename: '../index.html' }),
     new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.[chunkhash].js", isVendorModule),
