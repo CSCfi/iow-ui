@@ -1,4 +1,5 @@
 /// <reference path="../typings/browser.d.ts" />
+/// <reference path="./vendor/webcola.d.ts" />
 
 interface Window {
   jQuery: JQueryStatic;
@@ -36,16 +37,28 @@ declare module joint {
     class Graph {
       clear(): void;
       addCell(cell: Cell): void;
+      get(name: string): Cell;
     }
 
     class Cell {
+      isLink(): boolean;
+      each(callback: (cell: Cell) => void): void;
     }
 
     class Element extends Cell {
+      id: string;
+      position(x: number, y: number): void;
+      attributes: {
+        size: { height: number, width: number };
+      };
     }
 
     class Link extends Cell {
       constructor(options: any);
+      attributes: {
+        source: { id: string };
+        target: { id: string };
+      }
     }
 
     class Paper {
