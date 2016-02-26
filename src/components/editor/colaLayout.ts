@@ -1,6 +1,5 @@
 import { Layout, Event, EventType, Link, Node } from 'webcola';
-import Cell = joint.dia.Cell;
-import IPromise = angular.IPromise;
+import { Iterable } from '../../services/utils';
 
 interface IdentifiedNode extends Node {
   id: string;
@@ -80,7 +79,7 @@ export function layout(graph: joint.dia.Graph, canvasSize: Dimensions): Promise<
   const jointElements = index(extractCells<joint.dia.Element>(graph, (cell) => !cell.isLink()));
   const jointLinks = extractCells<joint.dia.Link>(graph, (cell) => cell.isLink());
 
-  for (const element of Array.from(jointElements.values())) {
+  Iterable.forEach(jointElements.values(), element => {
     nodes.set(element.id, {
       id: element.id,
       x: 0,
@@ -88,7 +87,7 @@ export function layout(graph: joint.dia.Graph, canvasSize: Dimensions): Promise<
       width: element.attributes.size.width * coordinateRatio,
       height: element.attributes.size.height * coordinateRatio
     });
-  }
+  });
 
   for (const link of jointLinks) {
     links.push({
@@ -97,14 +96,15 @@ export function layout(graph: joint.dia.Graph, canvasSize: Dimensions): Promise<
     });
   }
 
+  function setNewPosition(node: IdentifiedNode, element: joint.dia.Element) {
+    const x = (node.x - canvasSize.width / 2) * padding;
+    const y = (node.y - canvasSize.height / 2) * padding;
+    element.position(x, y);
+  }
+
   return new Promise((resolve) => {
     const layout = new SimpleColaLayout(Array.from(nodes.values()), links, canvasSize, () => {
-      for (const node of Array.from(nodes.values())) {
-        const element = jointElements.get(node.id);
-        const x = (node.x - canvasSize.width / 2) * padding;
-        const y = (node.y - canvasSize.height / 2) * padding;
-        element.position(x, y);
-      }
+      Iterable.forEach(nodes.values(), node => setNewPosition(node, jointElements.get(node.id)));
       resolve();
     });
 
