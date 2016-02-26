@@ -49,6 +49,7 @@ declare module joint {
       id: string;
       position(x: number, y: number): void;
       attributes: {
+        position: { x: number, y: number };
         size: { height: number, width: number };
       };
     }
