@@ -35,7 +35,7 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
 
       const {graph, paper} = createGraph(element);
 
-      zoomAndPan($window, element, paper);
+      registerZoomAndPan($window, element, paper);
 
       controller.graph = graph;
       controller.paper = paper;
@@ -140,7 +140,7 @@ function scale(paper: joint.dia.Paper, scaleDiff: number) {
   paper.scale(newScale, newScale);
 }
 
-function zoomAndPan($window: IWindowService, element: JQuery, paper: joint.dia.Paper) {
+function registerZoomAndPan($window: IWindowService, element: JQuery, paper: joint.dia.Paper) {
   const window = angular.element($window);
   let drag: Coordinates;
   let mouse: Coordinates;
