@@ -35,7 +35,7 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
 
       const {graph, paper} = createGraph(element);
 
-      registerZoomAndPan($window, element, paper);
+      registerZoomAndPan($window, paper);
 
       controller.graph = graph;
       controller.paper = paper;
@@ -44,11 +44,9 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       const intervalHandle = window.setInterval(() => {
         const width = element.width();
         const height = element.height();
-        if (controller.width !== width || controller.height !== height) {
+        if (paper.options.width !== width || paper.options.height !== height) {
           paper.setDimensions(element.width(), element.height());
           layoutGraph(graph, paper);
-          controller.width = width;
-          controller.height = height;
         }
       }, 200);
 
@@ -65,8 +63,6 @@ class ClassVisualizationController {
   model: Model;
   graph: joint.dia.Graph;
   paper: joint.dia.Paper;
-  width: number;
-  height: number;
   loading: boolean;
 
   private visualizationData: VisualizationClass[];
@@ -128,9 +124,8 @@ type Coordinates = {x: number, y: number };
 
 
 function moveOrigin(paper: joint.dia.Paper, dx: number, dy: number) {
-  const viewport: any = joint.V(paper.viewport);
-  const translation: any = viewport.translate();
-  paper.setOrigin(translation.tx - dx, translation.ty - dy);
+  const oldOrigin = paper.options.origin;
+  paper.setOrigin(oldOrigin.x - dx, oldOrigin.y - dy);
 }
 
 function scale(paper: joint.dia.Paper, scaleDiff: number) {
@@ -140,14 +135,14 @@ function scale(paper: joint.dia.Paper, scaleDiff: number) {
   paper.scale(newScale, newScale);
 }
 
-function registerZoomAndPan($window: IWindowService, element: JQuery, paper: joint.dia.Paper) {
+function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
   const window = angular.element($window);
   let drag: Coordinates;
   let mouse: Coordinates;
 
   paper.on('blank:pointerdown', () => drag = mouse);
   window.mouseup(() => drag = null);
-  element.mousemove(event => {
+  window.mousemove(event => {
     mouse = {x: event.offsetX, y: event.offsetY};
     if (drag) {
       moveOrigin(paper, drag.x - mouse.x, drag.y - mouse.y);
@@ -155,7 +150,7 @@ function registerZoomAndPan($window: IWindowService, element: JQuery, paper: joi
     }
   });
 
-  element.children().mousewheel(event => {
+  jQuery(paper.$el).children().mousewheel(event => {
     scale(paper, (event.deltaY * event.deltaFactor / 500));
     event.preventDefault();
   });
