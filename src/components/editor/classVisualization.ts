@@ -120,25 +120,35 @@ function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia
   return {graph, paper};
 }
 
-type Coordinates = {x: number, y: number };
-
 
 function moveOrigin(paper: joint.dia.Paper, dx: number, dy: number) {
   const oldOrigin = paper.options.origin;
   paper.setOrigin(oldOrigin.x - dx, oldOrigin.y - dy);
 }
 
-function scale(paper: joint.dia.Paper, scaleDiff: number) {
-  const viewport: any = joint.V(paper.viewport);
+function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number) {
+  const viewport = joint.V(paper.viewport);
   const scale: number = viewport.scale().sx;
-  const newScale = Math.min(Math.max(scale + scaleDiff, 0.3), 3);
-  paper.scale(newScale, newScale);
+  const newScale = scale + scaleDiff;
+
+  if (scale !== newScale && newScale >= 0.1 && newScale <= 3) {
+    const scaleRatio = newScale / scale;
+
+    const actualX = x || paper.options.width / 2;
+    const actualY = y || paper.options.height / 2;
+
+    const tx = scaleRatio * (paper.options.origin.x - actualX) + actualX;
+    const ty = scaleRatio * (paper.options.origin.y - actualY) + actualY;
+
+    paper.setOrigin(tx, ty);
+    paper.scale(newScale, newScale);
+  }
 }
 
 function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
   const window = angular.element($window);
-  let drag: Coordinates;
-  let mouse: Coordinates;
+  let drag: {x: number, y: number};
+  let mouse: {x: number, y: number};
 
   paper.on('blank:pointerdown', () => drag = mouse);
   window.mouseup(() => drag = null);
@@ -150,9 +160,9 @@ function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
     }
   });
 
-  jQuery(paper.$el).children().mousewheel(event => {
-    scale(paper, (event.deltaY * event.deltaFactor / 500));
+  jQuery(paper.$el).mousewheel(event => {
     event.preventDefault();
+    scale(paper, (event.deltaY * event.deltaFactor / 500), event.offsetX, event.offsetY);
   });
 }
 
