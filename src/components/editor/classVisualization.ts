@@ -55,7 +55,7 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
             const height = container.height();
             if (controller.width !== width || controller.height !== height) {
               paper.setDimensions(container.width(), container.height());
-              layoutGraph(graph).then(() => scaleToFit(paper));
+              layoutGraph(graph, paper);
               controller.width = width;
               controller.height = height;
             }
@@ -106,7 +106,7 @@ class ClassVisualizationController {
       this.graph.clear();
       const showCardinality = this.model.isOfType('profile');
       createCells(this.$scope, this.languageService, this.graph, this.visualizationData, this.class.id, showCardinality);
-      layoutGraph(this.graph).then(() => scaleToFit(this.paper));
+      layoutGraph(this.graph, this.paper);
     }
   }
 
@@ -171,18 +171,19 @@ function zoomAndPan($window: IWindowService, element: JQuery, paper: joint.dia.P
   });
 }
 
-function layoutGraph(graph: joint.dia.Graph): Promise<any> {
-  return colaLayout(graph);
-}
+function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper) {
 
-function scaleToFit(paper: joint.dia.Paper) {
-  paper.scaleContentToFit({
-    padding: 45,
-    minScaleX: 0.1,
-    minScaleY: 0.1,
-    maxScaleX: 2,
-    maxScaleY: 2
-  });
+  function scaleToFit(paper: joint.dia.Paper) {
+    paper.scaleContentToFit({
+      padding: 45,
+      minScaleX: 0.1,
+      minScaleY: 0.1,
+      maxScaleX: 2,
+      maxScaleY: 2
+    });
+  }
+
+  colaLayout(graph).then(() => scaleToFit(paper));
 }
 
 function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], root: Uri, showCardinality: boolean) {
