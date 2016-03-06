@@ -65,6 +65,17 @@ declare module joint {
     class Paper {
       constructor(options: any);
 
+      svg: SVGSVGElement;
+      $el: Node;
+      options: {
+        width: number;
+        height: number;
+        origin: {
+          x: number,
+          y: number
+        }
+      };
+      clientToLocalPoint(point: {x: number, y: number}): {x: number, y: number};
       viewport: any;
       scaleContentToFit(options: any): void;
       setOrigin(x: number, y: number): void;
