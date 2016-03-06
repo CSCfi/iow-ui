@@ -7,11 +7,9 @@ interface IdentifiedNode extends Node {
   height?: number;
 }
 
-export type Dimensions = { width: number, height: number };
-
 class SimpleColaLayout extends Layout {
 
-  constructor(nodes: IdentifiedNode[], links: Link<IdentifiedNode>[], canvasSize: Dimensions, private ready: () => void) {
+  constructor(nodes: IdentifiedNode[], links: Link<IdentifiedNode>[], private ready: () => void) {
     super();
 
     this.nodes(nodes);
@@ -19,7 +17,6 @@ class SimpleColaLayout extends Layout {
 
     this.avoidOverlaps(true);
     this.handleDisconnected(true);
-    this.size([canvasSize.width, canvasSize.height]);
   }
 
   trigger(e: Event): void {
@@ -71,7 +68,7 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 const coordinateRatio = 1/8;
 const padding = 15;
 
-export function layout(graph: joint.dia.Graph, canvasSize: Dimensions): Promise<any> {
+export function layout(graph: joint.dia.Graph): Promise<any> {
 
   const nodes: Map<string, IdentifiedNode> = new Map<string, IdentifiedNode>();
   const links: Link<IdentifiedNode>[] = [];
@@ -96,15 +93,34 @@ export function layout(graph: joint.dia.Graph, canvasSize: Dimensions): Promise<
     });
   }
 
-  function setNewPosition(node: IdentifiedNode, element: joint.dia.Element) {
-    const x = (node.x - canvasSize.width / 2) * padding;
-    const y = (node.y - canvasSize.height / 2) * padding;
+  function setNewPosition(node: IdentifiedNode, element: joint.dia.Element, min: {x: number, y: number}) {
+    const x = (node.x - min.x) * padding;
+    const y = (node.y - min.y) * padding;
     element.position(x, y);
   }
 
+  function findMin(iterable: Iterable<IdentifiedNode>) {
+    const iterator = iterable[Symbol.iterator]();
+
+    let minX: number = null;
+    let minY: number = null;
+
+    for (let next = iterator.next(); next.value !== undefined; next = iterator.next()) {
+      if (!minX || next.value.x < minX) {
+        minX = next.value.x;
+      }
+      if (!minY || next.value.y < minY) {
+        minY = next.value.y;
+      }
+    }
+
+    return { x: minX, y: minY };
+  }
+
   return new Promise((resolve) => {
-    const layout = new SimpleColaLayout(Array.from(nodes.values()), links, canvasSize, () => {
-      Iterable.forEach(nodes.values(), node => setNewPosition(node, jointElements.get(node.id)));
+    const layout = new SimpleColaLayout(Array.from(nodes.values()), links, () => {
+      const min = findMin(nodes.values());
+      Iterable.forEach(nodes.values(), node => setNewPosition(node, jointElements.get(node.id), min));
       resolve();
     });
 
