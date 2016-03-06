@@ -13,7 +13,7 @@ import {
   Property,
   Model,
   Uri,
-  Urn
+  Urn, GraphData
 } from './entities';
 import { PredicateService } from './predicateService';
 import { Language } from './languageService';
@@ -27,15 +27,15 @@ export class ClassService {
   }
 
   getClass(id: Uri|Urn): IPromise<Class> {
-    return this.$http.get(config.apiEndpointWithName('class'), {params: {id: id.toString()}}).then(response => this.entities.deserializeClass(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {id: id.toString()}}).then(response => this.entities.deserializeClass(response.data));
   }
 
   getAllClasses(): IPromise<ClassListItem[]> {
-    return this.$http.get(config.apiEndpointWithName('class')).then(response => this.entities.deserializeClassList(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('class')).then(response => this.entities.deserializeClassList(response.data));
   }
 
   getClassesForModel(modelId: Uri): IPromise<ClassListItem[]> {
-    return this.$http.get(config.apiEndpointWithName('class'), {params: {model: modelId.uri}}).then(response => this.entities.deserializeClassList(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {model: modelId.uri}}).then(response => this.entities.deserializeClassList(response.data));
   }
 
   createClass(klass: Class): IPromise<any> {
@@ -81,7 +81,7 @@ export class ClassService {
   }
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
-    return this.$http.get(config.apiEndpointWithName('classCreator'), {params: {modelID: model.id.uri, classLabel: upperCaseFirst(classLabel), conceptID: conceptID.uri, lang}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('classCreator'), {params: {modelID: model.id.uri, classLabel: upperCaseFirst(classLabel), conceptID: conceptID.uri, lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], model.context);
         return this.entities.deserializeClass(response.data);
@@ -94,7 +94,7 @@ export class ClassService {
   }
 
   newShape(klass: Class, profile: Model, lang: Language): IPromise<Class> {
-    return this.$http.get(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klass.id.uri, lang}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klass.id.uri, lang}})
       .then((response: any) => {
         _.extend(response.data['@context'], profile.context);
         return this.entities.deserializeClass(response.data);
@@ -110,7 +110,7 @@ export class ClassService {
   newProperty(predicateId: Uri): IPromise<Property> {
     return this.$q.all([
         this.predicateService.getPredicate(predicateId),
-        this.$http.get(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateId.uri}})
+        this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateId.uri}})
       ])
       .then(([predicate, propertyResult]: [Predicate, any]) => {
         predicate.expandContext(propertyResult.data['@context']);
@@ -136,7 +136,7 @@ export class ClassService {
   }
 
   getVisualizationData(model: Model, classId: Uri) {
-    return this.$http.get(config.apiEndpointWithName('classVisualizer'), {params: {classID: classId.uri, modelID: model.id.uri}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('classVisualizer'), {params: {classID: classId.uri, modelID: model.id.uri}})
       .then(response => {
         model.expandContext(response.data);
         return this.entities.deserializeClassVisualization(response.data);

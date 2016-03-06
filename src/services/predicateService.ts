@@ -3,7 +3,10 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _ from 'lodash';
-import { EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, Urn, Uri } from './entities';
+import {
+  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, Urn, Uri,
+  GraphData
+} from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -15,15 +18,15 @@ export class PredicateService {
   }
 
   getPredicate(id: Uri|Urn): IPromise<Predicate> {
-    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {id: id.toString()}}).then(response => this.entities.deserializePredicate(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {id: id.toString()}}).then(response => this.entities.deserializePredicate(response.data));
   }
 
   getAllPredicates(): IPromise<PredicateListItem[]> {
-    return this.$http.get(config.apiEndpointWithName('predicate')).then(response => this.entities.deserializePredicateList(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate')).then(response => this.entities.deserializePredicateList(response.data));
   }
 
   getPredicatesForModel(modelId: Uri): IPromise<PredicateListItem[]> {
-    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {model: modelId.uri}}).then(response => this.entities.deserializePredicateList(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {model: modelId.uri}}).then(response => this.entities.deserializePredicateList(response.data));
   }
 
   createPredicate(predicate: Predicate): IPromise<any> {
@@ -69,7 +72,7 @@ export class PredicateService {
   }
 
   newPredicate<T extends Predicate>(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<T> {
-    return this.$http.get(config.apiEndpointWithName('predicateCreator'), {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('predicateCreator'), {
       params: {
         modelID: model.id.uri,
         predicateLabel: upperCaseFirst(predicateLabel),

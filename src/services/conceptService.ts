@@ -2,7 +2,7 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import { EntityDeserializer, ConceptSuggestion, FintoConcept } from './entities';
+import { EntityDeserializer, ConceptSuggestion, FintoConcept, GraphData } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -23,12 +23,12 @@ export class ConceptService {
   }
 
   getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion> {
-    return this.$http.get(config.apiEndpointWithName('conceptSuggestion'), {params: {conceptID: id.uri}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {conceptID: id.uri}})
       .then(response => this.entities.deserializeConceptSuggestion(response.data));
   }
 
   getConceptSuggestions(schemeId: Uri): IPromise<ConceptSuggestion[]> {
-    return this.$http.get(config.apiEndpointWithName('conceptSuggestion'), {params: {schemeID: schemeId.uri}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {schemeID: schemeId.uri}})
       .then(response => this.entities.deserializeConceptSuggestions(response.data));
   }
 
@@ -45,7 +45,7 @@ export class ConceptService {
   }
 
   getFintoConcept(id: Uri): IPromise<FintoConcept> {
-    return this.$http.get(config.apiEndpointWithName('concept'), {params: {uri: id.uri}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('concept'), {params: {uri: id.uri}})
       .then(response => this.entities.deserializeFintoConcept(response.data, id.uri));
   }
 }

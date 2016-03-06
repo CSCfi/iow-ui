@@ -1,6 +1,6 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
-import { Activity, Uri, EntityDeserializer } from './entities';
+import { Activity, Uri, EntityDeserializer, GraphData } from './entities';
 import { config } from '../config';
 
 export class HistoryService {
@@ -10,7 +10,7 @@ export class HistoryService {
   }
 
   getHistory(id: Uri): IPromise<Activity> {
-    return this.$http.get(config.apiEndpointWithName('history'), {params: {id: id.uri}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('history'), {params: {id: id.uri}})
       .then(response => this.entities.deserializeVersion(response.data));
   }
 }

@@ -1,6 +1,6 @@
 import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
-import { EntityDeserializer, SearchResult } from './entities';
+import { EntityDeserializer, SearchResult, GraphData } from './entities';
 import { Language } from './languageService';
 import { config } from '../config';
 
@@ -11,12 +11,12 @@ export class SearchService {
   }
 
   search(graph: string, search: string, language: Language): IPromise<SearchResult[]> {
-    return this.$http.get(config.apiEndpointWithName('search'), {params: {graph, search, lang: language}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('search'), {params: {graph, search, lang: language}})
       .then(response => this.entities.deserializeSearch(response.data));
   }
 
   searchAnything(search: string, language: Language): IPromise<SearchResult[]> {
-    return this.$http.get(config.apiEndpointWithName('search'), {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('search'), {
         params: {
           graph: 'default',
           search,

@@ -3,7 +3,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { config } from '../config';
-import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, Urn } from './entities';
+import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, Urn, GraphData } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -16,12 +16,12 @@ export class ModelService {
   }
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
-    return this.$http.get(config.apiEndpointWithName('model'), { params: { group: groupUrn.uri } })
+    return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { group: groupUrn.uri } })
       .then(response => this.entities.deserializeModelList(response.data));
   }
 
   getModelByUrn(urn: Uri|Urn): IPromise<Model> {
-    return this.$http.get(config.apiEndpointWithName('model'), { params: { id: urn.toString() } })
+    return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { id: urn.toString() } })
       .then(response => this.entities.deserializeModel(response.data));
   }
 
@@ -55,7 +55,7 @@ export class ModelService {
           throw new Error("Unsupported type: " + type);
       }
     }
-    return this.$http.get(config.apiEndpointWithName(mapEndpoint()), { params: {prefix, label: upperCaseFirst(label), lang, group: groupId.uri} })
+    return this.$http.get<GraphData>(config.apiEndpointWithName(mapEndpoint()), { params: {prefix, label: upperCaseFirst(label), lang, group: groupId.uri} })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
         model.unsaved = true;
@@ -80,12 +80,12 @@ export class ModelService {
   }
 
   getAllRequires(): IPromise<Require[]> {
-    return this.$http.get(config.apiEndpointWithName('model'))
+    return this.$http.get<GraphData>(config.apiEndpointWithName('model'))
       .then(response => this.entities.deserializeRequires(response.data));
   }
 
   newRequire(namespace: string, prefix: string, label: string, lang: Language): IPromise<Require> {
-    return this.$http.get(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
+    return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
       .then(response => this.entities.deserializeRequire(response.data));
   }
 }
