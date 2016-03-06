@@ -33,7 +33,7 @@
         <span class="glyphicon glyphicon-resize-small pull-right collapsable" ng-hide="ctrl.show === 1" ng-click="ctrl.shrinkVisualization()"></span>
       </h3>
     </div>
-    <div class="visualization-container" ng-hide="ctrl.show === 0">
+    <div ng-hide="ctrl.show === 0">
       <div ng-transclude="visualization"></div>
     </div>
   </div>

@@ -30,40 +30,30 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
     controllerAs: 'ctrl',
     require: 'classVisualization',
     link($scope: IScope, element: JQuery, attributes: IAttributes, controller: ClassVisualizationController) {
-      const container = element.closest('.visualization-container');
 
-      function isNotInitialized() {
-        return container.width() === 100 || container.width() === 0 || container.height() === 100 || container.height() === 0;
-      }
+      element.addClass('visualization-container');
 
-      (function init() {
-        if (isNotInitialized()) {
-          $timeout(init, 100);
-        } else {
-          const {graph, paper} = createGraph(element, container.width(), container.height());
+      const {graph, paper} = createGraph(element);
 
-          zoomAndPan($window, element, paper);
+      zoomAndPan($window, element, paper);
 
-          controller.graph = graph;
-          controller.paper = paper;
-          controller.width = container.width();
-          controller.height = container.height();
-          controller.initGraph();
+      controller.graph = graph;
+      controller.paper = paper;
+      controller.initGraph();
 
-          const intervalHandle = window.setInterval(() => {
-            const width = container.width();
-            const height = container.height();
-            if (controller.width !== width || controller.height !== height) {
-              paper.setDimensions(container.width(), container.height());
-              layoutGraph(graph, paper);
-              controller.width = width;
-              controller.height = height;
-            }
-          }, 200);
-
-          $scope.$on('$destroy', () => window.clearInterval(intervalHandle));
+      const intervalHandle = window.setInterval(() => {
+        const width = element.width();
+        const height = element.height();
+        if (controller.width !== width || controller.height !== height) {
+          paper.setDimensions(element.width(), element.height());
+          layoutGraph(graph, paper);
+          controller.width = width;
+          controller.height = height;
         }
-      })();
+      }, 200);
+
+      $scope.$on('$destroy', () => window.clearInterval(intervalHandle));
+
     },
     controller: ClassVisualizationController
   };
@@ -121,13 +111,13 @@ class ClassVisualizationController {
   }
 }
 
-function createGraph(element: JQuery, width: number, height: number): {graph: joint.dia.Graph, paper: joint.dia.Paper} {
+function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia.Paper} {
 
   const graph = new joint.dia.Graph;
   const paper = new joint.dia.Paper({
     el: element,
-    width,
-    height,
+    width: element.width(),
+    height: element.height(),
     model: graph
   });
 
