@@ -2,7 +2,6 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import * as _ from 'lodash';
 import {
   EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, Urn, Uri,
   GraphData
@@ -11,14 +10,17 @@ import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { reverseMapType } from './typeMapping';
+import { expandContextWithKnownModels } from './utils';
 
 export class PredicateService {
   /* @ngInject */
   constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
-  getPredicate(id: Uri|Urn): IPromise<Predicate> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {id: id.toString()}}).then(response => this.entities.deserializePredicate(response.data));
+  getPredicate(id: Uri|Urn, model?: Model): IPromise<Predicate> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {id: id.toString()}})
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializePredicate(response.data));
   }
 
   getAllPredicates(): IPromise<PredicateListItem[]> {
@@ -79,10 +81,7 @@ export class PredicateService {
         conceptID: conceptID.uri,
         type: reverseMapType(type), lang
       }})
-      .then((response: any) => {
-        _.extend(response.data['@context'], model.context);
-        return response;
-      })
+      .then(expandContextWithKnownModels(model))
       .then(response => this.entities.deserializePredicate(response.data))
       .then((predicate: Predicate) => {
         predicate.definedBy = model.asDefinedBy();

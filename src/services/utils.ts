@@ -1,4 +1,4 @@
-import { Type, Localizable, Model, DefinedBy, ClassListItem, Uri } from './entities';
+import { Type, Localizable, Model, DefinedBy, ClassListItem, Uri, GraphData } from './entities';
 
 export namespace Iterable {
   export function forEach<T>(iterable: Iterable<T>, callback: (item: T) => void): void {
@@ -6,6 +6,15 @@ export namespace Iterable {
     for (let next = iterator.next(); next.value !== undefined; next = iterator.next()) {
       callback(next.value);
     }
+  }
+}
+
+export function expandContextWithKnownModels(model?: Model): (response: angular.IHttpPromiseCallbackArg<GraphData>) => angular.IHttpPromiseCallbackArg<GraphData> {
+  return (response: angular.IHttpPromiseCallbackArg<GraphData>) => {
+    if (model) {
+      model.expandContextWithKnownModels(response.data['@context']);
+    }
+    return response;
   }
 }
 

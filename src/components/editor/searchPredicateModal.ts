@@ -115,7 +115,7 @@ export class SearchPredicateController {
     this.$scope.form.editing = false;
     this.submitError = null;
     this.cannotConfirm = this.exclude(predicate);
-    this.predicateService.getPredicate(predicate.id).then(result => this.selectedPredicate = result);
+    this.predicateService.getPredicate(predicate.id, this.model).then(result => this.selectedPredicate = result);
   }
 
   usePredicate() {

@@ -407,8 +407,8 @@ export class ModelController {
   private fetchEntityByTypeAndId(selection: WithIdAndType): IPromise<Class|Predicate> {
     if (!this.selection || !matchesIdentity(this.selection, selection)) {
       return selection.selectionType === 'class'
-        ? this.classService.getClass(selection.id)
-        : this.predicateService.getPredicate(selection.id);
+        ? this.classService.getClass(selection.id, this.model)
+        : this.predicateService.getPredicate(selection.id, this.model);
     } else {
       return this.$q.when(this.selection);
     }

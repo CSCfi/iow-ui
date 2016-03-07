@@ -2,7 +2,6 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import * as _ from 'lodash';
 import {
   EntityDeserializer,
   Attribute,
@@ -19,6 +18,7 @@ import { PredicateService } from './predicateService';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
+import { expandContextWithKnownModels } from './utils';
 
 export class ClassService {
 
@@ -26,8 +26,10 @@ export class ClassService {
   constructor(private $http: IHttpService, private $q: IQService, private predicateService: PredicateService, private entities: EntityDeserializer) {
   }
 
-  getClass(id: Uri|Urn): IPromise<Class> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {id: id.toString()}}).then(response => this.entities.deserializeClass(response.data));
+  getClass(id: Uri|Urn, model?: Model): IPromise<Class> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {id: id.toString()}})
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializeClass(response.data));
   }
 
   getAllClasses(): IPromise<ClassListItem[]> {
@@ -82,10 +84,8 @@ export class ClassService {
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('classCreator'), {params: {modelID: model.id.uri, classLabel: upperCaseFirst(classLabel), conceptID: conceptID.uri, lang}})
-      .then((response: any) => {
-        _.extend(response.data['@context'], model.context);
-        return this.entities.deserializeClass(response.data);
-      })
+      .then(expandContextWithKnownModels(model))
+      .then((response: any) => this.entities.deserializeClass(response.data))
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
@@ -95,10 +95,8 @@ export class ClassService {
 
   newShape(klass: Class, profile: Model, lang: Language): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klass.id.uri, lang}})
-      .then((response: any) => {
-        _.extend(response.data['@context'], profile.context);
-        return this.entities.deserializeClass(response.data);
-      })
+      .then(expandContextWithKnownModels(profile))
+      .then((response: any) => this.entities.deserializeClass(response.data))
       .then((shape: Class) => {
         shape.definedBy = profile.asDefinedBy();
         shape.subject = klass.subject;

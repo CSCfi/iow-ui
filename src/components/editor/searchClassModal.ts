@@ -96,7 +96,7 @@ class SearchClassController {
 
   selectItem(klass: ClassListItem) {
     this.cannotConfirm = this.exclude(klass);
-    this.classService.getClass(klass.id).then(result => this.selectedClass = result);
+    this.classService.getClass(klass.id, this.model).then(result => this.selectedClass = result);
   }
 
   confirm() {
