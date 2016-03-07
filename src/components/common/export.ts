@@ -4,7 +4,7 @@ import IWindowService = angular.IWindowService;
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import Moment = moment.Moment;
-import { Uri, Predicate, Class, Model } from '../../services/entities';
+import { Predicate, Class, Model } from '../../services/entities';
 import { config } from '../../config';
 
 export const mod = angular.module('iow.components.common');
@@ -12,7 +12,9 @@ export const mod = angular.module('iow.components.common');
 const exportOptions = [
   {type: 'application/ld+json', extension: 'json'},
   {type: 'text/turtle', extension: 'ttl'},
-  {type: 'application/rdf+xml', extension: 'rdf'}
+  {type: 'application/rdf+xml', extension: 'rdf'},
+  {type: 'application/schema+json', extension: 'json'},
+  {type: 'text/ld+json+context', extension: 'json'}
 ];
 
 const UTF8_BOM = '\ufeff';
@@ -85,13 +87,6 @@ class ExportController {
         this.framedUrlObject = $window.URL.createObjectURL(framedDataBlob);
         this.framedUrlObjectRaw = $window.URL.createObjectURL(framedDataBlobRaw);
 
-        this.downloads.push({
-          name: 'framed ld+json',
-          filename: formatFileName(this.entity, 'json'),
-          href: this.framedUrlObject,
-          hrefRaw: this.framedUrlObjectRaw
-        });
-
         if (this.entity.frame) {
           const frameAsString = JSON.stringify(this.entity.frame, null, 2);
           const frameBlob = new Blob([UTF8_BOM, frameAsString], {type: 'application/json;charset=utf-8'});
@@ -107,6 +102,13 @@ class ExportController {
             hrefRaw: this.frameUrlObjectRaw
           });
         }
+
+        this.downloads.push({
+          name: 'framed ld+json',
+          filename: formatFileName(this.entity, 'json'),
+          href: this.framedUrlObject,
+          hrefRaw: this.framedUrlObjectRaw
+        });
       }
     });
   }
