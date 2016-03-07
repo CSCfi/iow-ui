@@ -16,9 +16,7 @@ const attributeValues = [
   'xsd:time',
   'xsd:gYear',
   'xsd:gMonth',
-  'xsd:gDay',
-  'xsd:HTML',
-  'xsd:XMLLiteral'
+  'xsd:gDay'
 ];
 
 
