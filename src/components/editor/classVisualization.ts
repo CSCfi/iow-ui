@@ -47,7 +47,7 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       const intervalHandle = window.setInterval(() => {
         const xd = paper.options.width - element.width();
         const yd = paper.options.height - element.height();
-        
+
         if (xd || yd) {
           paper.setDimensions(element.width(), element.height());
           moveOrigin(paper, xd / 2, yd / 2);
@@ -152,9 +152,13 @@ function moveOrigin(paper: joint.dia.Paper, dx: number, dy: number) {
   paper.setOrigin(oldOrigin.x - dx, oldOrigin.y - dy);
 }
 
-function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number) {
+function getScale(paper: joint.dia.Paper) {
   const viewport = joint.V(paper.viewport);
-  const scale: number = viewport.scale().sx;
+  return viewport.scale().sx;
+}
+
+function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number) {
+  const scale = getScale(paper);
   const newScale = scale + scaleDiff;
 
   if (scale !== newScale && newScale >= 0.1 && newScale <= 3) {
