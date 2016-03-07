@@ -23,8 +23,8 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       model: '='
     },
     template: `<div>
-                <div class="zoom zoom-in" ng-click="ctrl.zoomIn($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
-                <div class="zoom zoom-out" ng-click="ctrl.zoomOut($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
+                <div class="zoom zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
+                <div class="zoom zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
                 <div class="zoom zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
                 <div class="zoom zoom-fit" ng-click="ctrl.fitToAllContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
                 <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
@@ -69,6 +69,9 @@ class ClassVisualizationController {
   paper: joint.dia.Paper;
   loading: boolean;
 
+  zoomInHandle: number;
+  zoomOutHandle: number;
+
   private visualizationData: VisualizationClass[];
 
   /* @ngInject */
@@ -102,12 +105,24 @@ class ClassVisualizationController {
 
   zoomIn(event: JQueryEventObject) {
     event.stopPropagation();
-    scale(this.paper, 0.1);
+    this.zoomInHandle = window.setInterval(() => {
+      scale(this.paper, 0.01);
+    }, 10);
+  }
+
+  zoomInEnded(event: JQueryEventObject) {
+    window.clearInterval(this.zoomInHandle);
   }
 
   zoomOut(event: JQueryEventObject) {
     event.stopPropagation();
-    scale(this.paper, -0.1);
+    this.zoomOutHandle = window.setInterval(() => {
+      scale(this.paper, -0.01);
+    }, 10);
+  }
+
+  zoomOutEnded(event: JQueryEventObject) {
+    window.clearInterval(this.zoomOutHandle);
   }
 
   centerToSelectedClass(event: JQueryEventObject) {
