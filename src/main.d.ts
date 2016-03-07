@@ -1,5 +1,6 @@
 /// <reference path="../typings/browser.d.ts" />
 /// <reference path="./vendor/webcola.d.ts" />
+/// <reference path="./vendor/jointjs.d.ts" />
 
 interface Window {
   jQuery: JQueryStatic;
@@ -28,72 +29,4 @@ interface MousewheelEvent extends JQueryEventObject {
 interface JQuery {
   mousewheel(handler: (eventObject: MousewheelEvent) => any): JQuery;
   controller(name: string): any;
-}
-
-declare module joint {
-
-  module dia {
-
-    class Graph {
-      clear(): void;
-      addCell(cell: Cell): void;
-      get(name: string): Cell;
-    }
-
-    class Cell {
-      isLink(): boolean;
-      each(callback: (cell: Cell) => void): void;
-    }
-
-    class Element extends Cell {
-      id: string;
-      position(x: number, y: number): void;
-      attributes: {
-        position: { x: number, y: number };
-        size: { height: number, width: number };
-      };
-    }
-
-    class Link extends Cell {
-      constructor(options: any);
-      attributes: {
-        source: { id: string };
-        target: { id: string };
-      }
-    }
-
-    class Paper {
-      constructor(options: any);
-
-      svg: SVGSVGElement;
-      $el: Node;
-      options: {
-        width: number;
-        height: number;
-        origin: {
-          x: number,
-          y: number
-        }
-      };
-      clientToLocalPoint(point: {x: number, y: number}): {x: number, y: number};
-      viewport: any;
-      scaleContentToFit(options: any): void;
-      setOrigin(x: number, y: number): void;
-      on(event: string, callback: (event: any) => void): void;
-      scale(x: number, y: number): void;
-      setDimensions(width: number, height: number): void;
-    }
-
-    module shapes.uml {
-      class Class extends joint.dia.Element {
-        constructor(options: any);
-      }
-    }
-  }
-
-  module layout {
-    class DirectedGraph {
-      static layout(graph: joint.dia.Graph, options: any): void;
-    }
-  }
 }

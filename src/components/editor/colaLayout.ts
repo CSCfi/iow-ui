@@ -44,19 +44,6 @@ class SimpleColaLayout extends Layout {
   }
 }
 
-function extractCells<T extends joint.dia.Cell>(graph: joint.dia.Graph, filter: (cell: joint.dia.Cell) => boolean): T[] {
-
-  const result: T[] = [];
-
-  graph.get('cells').each(cell => {
-    if (filter(cell)) {
-      result.push(<T> cell);
-    }
-  });
-
-  return result;
-}
-
 function index<T extends {id: string}>(items: T[]): Map<string, T> {
   function withId(item: T): [string, T] {
     return [item.id, item];
@@ -72,9 +59,7 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
 
   const nodes: Map<string, IdentifiedNode> = new Map<string, IdentifiedNode>();
   const links: Link<IdentifiedNode>[] = [];
-
-  const jointElements = index(extractCells<joint.dia.Element>(graph, (cell) => !cell.isLink()));
-  const jointLinks = extractCells<joint.dia.Link>(graph, (cell) => cell.isLink());
+  const jointElements = index(graph.getElements());
 
   Iterable.forEach(jointElements.values(), element => {
     nodes.set(element.id, {
@@ -86,7 +71,7 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
     });
   });
 
-  for (const link of jointLinks) {
+  for (const link of graph.getLinks()) {
     links.push({
       source: nodes.get(link.attributes.source.id),
       target: nodes.get(link.attributes.target.id)
