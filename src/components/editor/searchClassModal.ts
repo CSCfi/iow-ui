@@ -66,6 +66,8 @@ class SearchClassController {
               private textForSelection: (klass: Class) => string,
               private searchConceptModal: SearchConceptModal) {
 
+    this.showProfiles = onlySelection; 
+    
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
 
       this.classes = allClasses;
