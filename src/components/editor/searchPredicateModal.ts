@@ -58,7 +58,7 @@ export class SearchPredicateController {
   searchResults: PredicateListItem[];
   selectedPredicate: Predicate;
   searchText: string = '';
-  modelId: Uri;
+  modelId: string;
   models: DefinedBy[];
   types: Type[];
   typeSelectable: boolean;
@@ -164,7 +164,7 @@ export class SearchPredicateController {
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {
-    return !this.modelId || predicate.definedBy.id.equals(this.modelId);
+    return !this.modelId || predicate.definedBy.id.uri === this.modelId;
   }
 
   private typeFilter(predicate: PredicateListItem): boolean {

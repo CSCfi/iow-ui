@@ -51,7 +51,7 @@ class SearchClassController {
   searchText: string = '';
   showExcluded: boolean;
   showProfiles: boolean;
-  modelId: Uri;
+  modelId: string;
   models: DefinedBy[] = [];
   cannotConfirm: string;
 
@@ -117,7 +117,10 @@ class SearchClassController {
   }
 
   private modelFilter(klass: ClassListItem): boolean {
-    return !this.modelId || klass.definedBy.id.equals(this.modelId);
+    console.log(klass.definedBy.id.uri);
+    console.log(this.modelId);
+    console.log(!this.modelId || klass.definedBy.id.uri === this.modelId);
+    return !this.modelId || klass.definedBy.id.uri === this.modelId;
   }
 
   private excludedFilter(klass: ClassListItem): boolean {
