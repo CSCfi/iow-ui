@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
-import { Class, Model, Uri, VisualizationClass, Property } from '../../services/entities';
+import { Class, Model, Uri, VisualizationClass, Property, Predicate } from '../../services/entities';
 import * as _ from 'lodash';
 import { normalizeAsArray, isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
@@ -19,14 +19,14 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
   return {
     restrict: 'E',
     scope: {
-      class: '=',
+      selection: '=',
       model: '='
     },
     template: `<div>
                 <div class="zoom zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
                 <div class="zoom zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
-                <div class="zoom zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
                 <div class="zoom zoom-fit" ng-click="ctrl.fitToAllContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
+                <div ng-show="ctrl.canFocus()" class="zoom zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
                 <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
                </div>`,
     bindToController: true,
@@ -62,7 +62,7 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
 
 class ClassVisualizationController {
 
-  class: Class;
+  selection: Class|Predicate;
   model: Model;
   graph: joint.dia.Graph;
   paper: joint.dia.Paper;
@@ -73,40 +73,42 @@ class ClassVisualizationController {
 
   /* @ngInject */
   constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
-    'ngInject';
-    $scope.$watch(() => this.model, () => {
-      this.refresh().then(() => {
-        if (this.class) {
-          this.centerToClass(this.class);
-        } else {
-          scaleToFit(this.paper);
-        }
-      })
-    });
 
-    $scope.$watch(() => this.class, (klass) => {
-      if (this.model && !this.loading) {
-        if (klass) {
-          this.centerToClass(klass);
-        }
+    $scope.$watch(() => this.model, () => this.refresh());
+    $scope.$watch(() => this.selection, (newSelection) => {
+      if (newSelection instanceof Class && this.model && !this.loading) {
+        this.centerToClass(newSelection);
       }
     });
   }
 
   refresh() {
-    this.loading = true;
-    return this.modelService.getVisualizationData(this.model)
-      .then(data => {
-        this.initGraph(data);
-        this.loading = false;
-      });
+    if (this.model) {
+      this.loading = true;
+      this.modelService.getVisualizationData(this.model)
+        .then(data => this.initGraph(data))
+        .then(() => {
+          const selection = this.selection;
+          if (selection instanceof Class) {
+            this.centerToClass(selection);
+          } else {
+            scaleToFit(this.paper);
+          }
+
+          this.loading = false;
+        });
+    }
   }
 
   initGraph(visualizationData: VisualizationClass[]) {
     this.graph.clear();
     const showCardinality = this.model.isOfType('profile');
     createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality);
-    layoutGraph(this.graph);
+    return layoutGraph(this.graph);
+  }
+
+  canFocus() {
+    return this.selection instanceof Class;
   }
 
   zoomIn(event: JQueryEventObject) {
@@ -139,7 +141,11 @@ class ClassVisualizationController {
 
   centerToSelectedClass(event: JQueryEventObject) {
     event.stopPropagation();
-    this.centerToClass(this.class);
+    const selection = this.selection;
+
+    if (selection instanceof Class) {
+      this.centerToClass(selection);
+    }
   }
 
   centerToClass(klass: Class) {
@@ -236,7 +242,7 @@ function scaleToFit(paper: joint.dia.Paper) {
 }
 
 function layoutGraph(graph: joint.dia.Graph) {
-  colaLayout(graph);
+  return colaLayout(graph);
 }
 
 function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {

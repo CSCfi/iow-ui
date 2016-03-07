@@ -25,7 +25,8 @@ import {
   Type,
   Property,
   Uri,
-  DefinedBy
+  DefinedBy,
+  Show
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -62,6 +63,7 @@ export class ModelController {
   classes: SelectableItem[] = [];
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
+  show: Show = Show.Both;
 
   private selectableComparison: (lhs: SelectableItem, rhs: SelectableItem) => number;
 
@@ -115,7 +117,15 @@ export class ModelController {
       }
     });
 
-    $scope.$watch(() => this.selection, () => this.updateLocation());
+    $scope.$watch(() => this.selection, (selection, oldSelection) => {
+      if (!selection) {
+        this.show = Show.Visualization;
+      } else if (!oldSelection) {
+        this.show = Show.Both;
+      }
+
+      this.updateLocation();
+    });
     $scope.$watch(() => this.languageService.modelLanguage, lang => this.sortAll());
   }
 
@@ -471,6 +481,28 @@ export class ModelController {
           .value();
         this.sortPredicates();
       });
+  }
+
+  classForSelection() {
+    switch (this.show) {
+      case Show.Both:
+        return 'col-md-7';
+      case Show.Selection:
+        return 'col-md-12';
+      case Show.Visualization:
+        return 'hide';
+    }
+  }
+
+  classForVisualization() {
+    switch (this.show) {
+      case Show.Both:
+        return 'col-md-5';
+      case Show.Selection:
+        return 'hide';
+      case Show.Visualization:
+        return 'col-md-12';
+    }
   }
 }
 

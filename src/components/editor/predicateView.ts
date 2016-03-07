@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Attribute, Association, GroupListItem, Model, Uri } from '../../services/entities';
+import { Attribute, Association, GroupListItem, Model, Uri, Show } from '../../services/entities';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/model';
 
@@ -16,7 +16,8 @@ mod.directive('predicateView', () => {
     scope: {
       predicate: '=',
       model: '=',
-      modelController: '='
+      modelController: '=',
+      show: '='
     },
     restrict: 'E',
     template: require('./predicateView.html'),
@@ -31,6 +32,7 @@ class PredicateViewController extends EditableEntityController<Association|Attri
   predicate: Association|Attribute;
   model: Model;
   modelController: ModelController;
+  show: Show;
 
   /* @ngInject */
   constructor($scope: EditableScope,

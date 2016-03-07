@@ -22,6 +22,7 @@ import './selectionView';
 import './subjectView';
 import './usage';
 import './usagePanel';
+import './visualizationView';
 
 mod.service('addConceptModal', AddConceptModal);
 mod.service('addPropertiesFromClassModal', AddPropertiesFromClassModal);

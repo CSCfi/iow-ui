@@ -4,7 +4,7 @@ import ILogService = angular.ILogService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property, PredicateListItem, Uri } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, PredicateListItem, Uri, Show } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -24,7 +24,8 @@ mod.directive('classView', () => {
     scope: {
       class: '=',
       model: '=',
-      modelController: '='
+      modelController: '=',
+      show: '='
     },
     restrict: 'E',
     template: require('./classView.html'),
@@ -41,6 +42,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   class: Class;
   model: Model;
   modelController: ModelController;
+  show: Show;
 
   /* @ngInject */
   constructor($scope: EditableScope,

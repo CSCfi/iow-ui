@@ -304,15 +304,6 @@ selection-view, .main-editable-content {
       width: calc(100% - #{$input-select});
     }
   }
-
-  .collapsable {
-    font-size: large;
-  }
-
-  .collapsable:hover {
-    color: $brand-primary;
-    cursor: pointer;
-  }
 }
 
 .editable-wrap {
@@ -344,6 +335,15 @@ selection-view, .main-editable-content {
 
 .component {
   border: solid 1px #ddd;
+
+  .collapsable {
+    font-size: large;
+  }
+
+  .collapsable:hover {
+    color: $brand-primary;
+    cursor: pointer;
+  }
 
   .selection-form {
     min-height: calc(100vh - 134px);
@@ -404,8 +404,8 @@ selection-view, .main-editable-content {
 
   .zoom-in { left: 25px; }
   .zoom-out { left: 60px; }
-  .zoom-focus { left: 95px; }
-  .zoom-fit { left: 130px; }
+  .zoom-fit { left: 95px; }
+  .zoom-focus { left: 130px; }
 
   .link-tools .tool-remove { display: none }
   .link-tools .tool-options { display: none }

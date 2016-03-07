@@ -23,6 +23,10 @@ const jsonld: any = require('jsonld');
 
 const isoDateFormat = 'YYYY-MM-DDTHH:mm:ssz';
 
+export enum Show {
+  Selection = 0, Both = 1, Visualization = 2
+}
+
 export type EditableEntity = Class|Association|Attribute|Model|Group;
 export type Localizable = { [language: string]: string; }
 export type Url = string;
