@@ -117,9 +117,6 @@ class SearchClassController {
   }
 
   private modelFilter(klass: ClassListItem): boolean {
-    console.log(klass.definedBy.id.uri);
-    console.log(this.modelId);
-    console.log(!this.modelId || klass.definedBy.id.uri === this.modelId);
     return !this.modelId || klass.definedBy.id.uri === this.modelId;
   }
 
