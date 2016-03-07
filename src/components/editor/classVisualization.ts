@@ -45,11 +45,12 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       controller.initGraph();
 
       const intervalHandle = window.setInterval(() => {
-        const width = element.width();
-        const height = element.height();
-        if (paper.options.width !== width || paper.options.height !== height) {
+        const xd = paper.options.width - element.width();
+        const yd = paper.options.height - element.height();
+        
+        if (xd || yd) {
           paper.setDimensions(element.width(), element.height());
-          layoutGraph(graph, paper);
+          moveOrigin(paper, xd / 2, yd / 2);
         }
       }, 200);
 
