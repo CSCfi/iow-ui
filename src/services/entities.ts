@@ -855,7 +855,7 @@ export class FintoConcept extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
-    this.comment = deserializeLocalizable(graph.comment || graph.definition);
+    this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeList<Url>(graph.inScheme);
   }
 }
