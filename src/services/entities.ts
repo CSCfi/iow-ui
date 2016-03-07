@@ -1300,6 +1300,10 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass)
   }
 
+  deserializeModelVisualization(data: GraphData): IPromise<any> {
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass)
+  }
+
   deserializeUsage(data: GraphData): IPromise<Usage> {
     return frameAndMap(this.$log, data, frames.usageFrame, (framedData) => Usage);
   }

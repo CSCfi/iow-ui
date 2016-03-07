@@ -8,6 +8,7 @@ import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
 import { Uri } from './uri';
+import { expandContextWithKnownModels } from './utils';
 
 export class ModelService {
 
@@ -87,5 +88,16 @@ export class ModelService {
   newRequire(namespace: string, prefix: string, label: string, lang: Language): IPromise<Require> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
       .then(response => this.entities.deserializeRequire(response.data));
+  }
+
+  getVisualizationData(model: Model) {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('exportModel'), {
+        params: {
+          graph: model.id.uri,
+          'content-type': 'application/ld+json'
+        }
+      })
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializeModelVisualization(response.data));
   }
 }

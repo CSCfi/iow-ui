@@ -168,6 +168,15 @@ export function classVisualizationFrame(data: any): Frame {
         '@default': [],
         '@embed': false
       }
+    },
+    subject: {
+      '@embed': false
+    },
+    subClassOf: {
+      '@embed': false
+    },
+    isDefinedBy: {
+      '@embed': false
     }
   });
 }
