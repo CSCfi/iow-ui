@@ -17,6 +17,7 @@ class SimpleColaLayout extends Layout {
 
     this.avoidOverlaps(true);
     this.handleDisconnected(true);
+    this.jaccardLinkLengths(35);
   }
 
   trigger(e: Event): void {
@@ -55,6 +56,14 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 const coordinateRatio = 1/8;
 const padding = 15;
 
+function hash(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+  }
+  return hash % 47;
+}
+
 export function layout(graph: joint.dia.Graph): Promise<any> {
 
   const nodes: Map<string, IdentifiedNode> = new Map<string, IdentifiedNode>();
@@ -64,8 +73,8 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
   Iterable.forEach(jointElements.values(), element => {
     nodes.set(element.id, {
       id: element.id,
-      x: element.attributes.position.x * coordinateRatio,
-      y: element.attributes.position.y * coordinateRatio,
+      x: element.attributes.position.x * coordinateRatio || hash(element.id + 'x'),
+      y: element.attributes.position.y * coordinateRatio || hash(element.id + 'y'),
       width: element.attributes.size.width * coordinateRatio,
       height: element.attributes.size.height * coordinateRatio
     });
@@ -109,6 +118,6 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
       resolve();
     });
 
-    layout.start();
+    layout.start(10, 0, 100, 0);
   });
 }
