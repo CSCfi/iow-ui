@@ -138,7 +138,7 @@ export function fintoConceptFrame(data: any, id: Url): Frame {
     uri: null,
     type: null,
     graph: null,
-    comment: { '@id' : 'http://www.w3.org/2000/01/rdf-schema#comment' }
+    comment: { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' }
   });
 
   return frame(data, context, { '@id': id });
