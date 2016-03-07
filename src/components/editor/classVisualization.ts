@@ -4,11 +4,11 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
-import { ClassService } from '../../services/classService';
 import { Class, Model, Uri, VisualizationClass, Property } from '../../services/entities';
 import * as _ from 'lodash';
 import { normalizeAsArray, isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
+import { ModelService } from '../../services/modelService';
 const joint = require('jointjs');
 
 export const mod = angular.module('iow.components.editor');
@@ -42,7 +42,6 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
 
       controller.graph = graph;
       controller.paper = paper;
-      controller.initGraph();
 
       const intervalHandle = window.setInterval(() => {
         const xd = paper.options.width - element.width();
@@ -72,35 +71,42 @@ class ClassVisualizationController {
   zoomInHandle: number;
   zoomOutHandle: number;
 
-  private visualizationData: VisualizationClass[];
-
   /* @ngInject */
-  constructor(private $scope: IScope, private classService: ClassService, private languageService: LanguageService) {
+  constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
     'ngInject';
-    $scope.$watch(() => this.class, () => this.refresh());
+    $scope.$watch(() => this.model, () => {
+      this.refresh().then(() => {
+        if (this.class) {
+          this.centerToClass(this.class);
+        } else {
+          scaleToFit(this.paper);
+        }
+      })
+    });
+
+    $scope.$watch(() => this.class, (klass) => {
+      if (this.model && !this.loading) {
+        if (klass) {
+          this.centerToClass(klass);
+        }
+      }
+    });
   }
 
   refresh() {
-    if (this.class) {
-      this.loading = true;
-      this.classService.getVisualizationData(this.model, this.class.id)
-        .then(data => {
-          this.visualizationData = data;
-          this.loading = false;
-          if (this.graph) {
-            this.initGraph();
-          }
-        });
-    }
+    this.loading = true;
+    return this.modelService.getVisualizationData(this.model)
+      .then(data => {
+        this.initGraph(data);
+        this.loading = false;
+      });
   }
 
-  initGraph() {
-    if (this.visualizationData) {
-      this.graph.clear();
-      const showCardinality = this.model.isOfType('profile');
-      createCells(this.$scope, this.languageService, this.graph, this.visualizationData, this.class.id, showCardinality);
-      layoutGraph(this.graph, this.paper);
-    }
+  initGraph(visualizationData: VisualizationClass[]) {
+    this.graph.clear();
+    const showCardinality = this.model.isOfType('profile');
+    createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality);
+    layoutGraph(this.graph);
   }
 
   zoomIn(event: JQueryEventObject) {
@@ -122,19 +128,26 @@ class ClassVisualizationController {
   }
 
   zoomOutEnded(event: JQueryEventObject) {
+    event.stopPropagation();
     window.clearInterval(this.zoomOutHandle);
   }
 
+  fitToAllContent(event: JQueryEventObject) {
+    event.stopPropagation();
+    scaleToFit(this.paper);
+  }
+
   centerToSelectedClass(event: JQueryEventObject) {
-    const cell = this.graph.getCell(this.class.id.uri);
+    event.stopPropagation();
+    this.centerToClass(this.class);
+  }
+
+  centerToClass(klass: Class) {
+    const cell = this.graph.getCell(klass.id.uri);
     if (cell.isLink()) {
       throw new Error('Cell must be an element');
     }
     this.centerToElement(<joint.dia.Element> cell);
-  }
-
-  fitToAllContent(event: JQueryEventObject) {
-    scaleToFit(this.paper);
   }
 
   centerToElement(element: joint.dia.Element) {
@@ -222,11 +235,11 @@ function scaleToFit(paper: joint.dia.Paper) {
   });
 }
 
-function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper) {
-  colaLayout(graph).then(() => scaleToFit(paper));
+function layoutGraph(graph: joint.dia.Graph) {
+  colaLayout(graph);
 }
 
-function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], root: Uri, showCardinality: boolean) {
+function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
 
@@ -243,7 +256,7 @@ function createCells($scope: IScope, languageService: LanguageService, graph: jo
     const attributes: Property[] = [];
 
     for (const property of klass.properties) {
-      if (klass.id.equals(root) && property.hasAssociationTarget() && classesContain(property.valueClass)) {
+      if (property.hasAssociationTarget() && classesContain(property.valueClass)) {
         associations.push({klass: klass, association: property});
       } else {
         attributes.push(property);
