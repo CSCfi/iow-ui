@@ -390,7 +390,7 @@ selection-view, .main-editable-content {
     width: 30px;
     height: 30px;
     margin: 0;
-    padding: 10px;
+    padding: 8px;
     top: 75px;
     background-color: rgba(231,231,231,0.9);
     border: none;
@@ -402,8 +402,10 @@ selection-view, .main-editable-content {
     cursor: pointer;
   }
 
-  .zoom-in { left: 20px; }
+  .zoom-in { left: 25px; }
   .zoom-out { left: 60px; }
+  .zoom-focus { left: 95px; }
+  .zoom-fit { left: 130px; }
 
   .link-tools .tool-remove { display: none }
   .link-tools .tool-options { display: none }

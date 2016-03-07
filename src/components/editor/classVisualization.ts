@@ -23,7 +23,10 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       model: '='
     },
     template: `<div>
-                <div class="zoom zoom-in" ng-click="ctrl.zoomIn($event)"><span>+</span></div><div class="zoom zoom-out" ng-click="ctrl.zoomOut($event)"><span>-</span></div>
+                <div class="zoom zoom-in" ng-click="ctrl.zoomIn($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
+                <div class="zoom zoom-out" ng-click="ctrl.zoomOut($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
+                <div class="zoom zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
+                <div class="zoom zoom-fit" ng-click="ctrl.fitToAllContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
                 <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
                </div>`,
     bindToController: true,
@@ -105,6 +108,28 @@ class ClassVisualizationController {
     event.stopPropagation();
     scale(this.paper, -0.1);
   }
+
+  centerToSelectedClass(event: JQueryEventObject) {
+    const cell = this.graph.getCell(this.class.id.uri);
+    if (cell.isLink()) {
+      throw new Error('Cell must be an element');
+    }
+    this.centerToElement(<joint.dia.Element> cell);
+  }
+
+  fitToAllContent(event: JQueryEventObject) {
+    scaleToFit(this.paper);
+  }
+
+  centerToElement(element: joint.dia.Element) {
+    const scale = 1;
+    const bbox = element.getBBox();
+    const x = (this.paper.options.width / 2)  - (bbox.x + bbox.width / 2) * scale;
+    const y = (this.paper.options.height / 2) - (bbox.y + bbox.height / 2) * scale;
+
+    this.paper.scale(scale);
+    this.paper.setOrigin(x, y);
+  }
 }
 
 function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia.Paper} {
@@ -166,18 +191,18 @@ function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
   });
 }
 
+
+function scaleToFit(paper: joint.dia.Paper) {
+  paper.scaleContentToFit({
+    padding: 45,
+    minScaleX: 0.1,
+    minScaleY: 0.1,
+    maxScaleX: 2,
+    maxScaleY: 2
+  });
+}
+
 function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper) {
-
-  function scaleToFit(paper: joint.dia.Paper) {
-    paper.scaleContentToFit({
-      padding: 45,
-      minScaleX: 0.1,
-      minScaleY: 0.1,
-      maxScaleX: 2,
-      maxScaleY: 2
-    });
-  }
-
   colaLayout(graph).then(() => scaleToFit(paper));
 }
 

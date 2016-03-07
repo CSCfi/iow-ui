@@ -19,6 +19,7 @@ declare module joint {
     class Graph extends Backbone.Model {
       getElements() : Element[];
       getLinks() : Link[];
+      getCell(id: string): Cell;
       getCells() : Cell[];
       getFirstCell() : Cell;
       getLastCell() : Cell;
@@ -58,6 +59,7 @@ declare module joint {
       resize(width:number, height:number):Element;
       rotate(angle:number, options : {absolute : boolean; origin: {x:number;y:number}}):Element;
       remove(): void;
+      getBBox():{ x: number; y: number; width: number; height: number; };
     }
 
     interface IDefaults {
