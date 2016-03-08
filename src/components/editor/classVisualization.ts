@@ -6,7 +6,7 @@ import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
 import { Class, Model, Uri, VisualizationClass, Property, Predicate } from '../../services/entities';
 import * as _ from 'lodash';
-import { normalizeAsArray, isDefined } from '../../services/utils';
+import { isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener } from '../contracts';
@@ -41,6 +41,13 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       const {graph, paper} = createGraph(element);
 
       registerZoomAndPan($window, paper);
+
+      paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
+        const cell = cellView.model;
+        if (cell instanceof joint.dia.Element) {
+          adjustElementLinks(graph, <joint.dia.Element> cell);
+        }
+      });
 
       controller.graph = graph;
       controller.paper = paper;
@@ -91,7 +98,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   refresh() {
     if (this.model) {
       this.loading = true;
-      this.modelService.getVisualizationData(this.model)
+      (<Promise<any>> this.modelService.getVisualizationData(this.model))
         .then(data => this.initGraph(data))
         .then(() => {
           const selection = this.selection;
@@ -269,7 +276,7 @@ function scaleToFit(paper: joint.dia.Paper) {
 }
 
 function layoutGraph(graph: joint.dia.Graph) {
-  return colaLayout(graph);
+  return colaLayout(graph).then(() => adjustGraphLinks(graph));
 }
 
 function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
@@ -370,6 +377,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
   const associationCell: any = new joint.dia.Link({
     source: { id: data.klass.id.uri },
     target: { id: data.association.valueClass.uri },
+    connector: { name: 'normal' },
     attrs: {
       '.marker-target': {
         d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
@@ -391,3 +399,57 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
   graph.addCell(associationCell);
 }
 
+
+function isSiblingLink(lhs: joint.dia.Link, rhs: joint.dia.Link) {
+  var lhsSource = lhs.get('source').id;
+  var lhsTarget = lhs.get('target').id;
+  var rhsSource = rhs.get('source').id;
+  var rhsTarget = rhs.get('target').id;
+
+  return (lhsSource === rhsSource && lhsTarget === rhsTarget) || (lhsSource === rhsTarget && lhsTarget === rhsSource);
+}
+
+function adjustGraphLinks(graph: joint.dia.Graph) {
+  for (const link of graph.getLinks()) {
+    adjustLink(graph, link);
+  }
+}
+
+function adjustElementLinks(graph: joint.dia.Graph, element: joint.dia.Element) {
+  for (const link of graph.getConnectedLinks(element)) {
+    adjustLink(graph, link);
+  }
+}
+
+function adjustLink(graph: joint.dia.Graph, link: joint.dia.Link) {
+
+  var srcId = link.get('source').id;
+  var trgId = link.get('target').id;
+
+  if (srcId && trgId) {
+
+    const siblings = _.filter(graph.getLinks(), _.partial(isSiblingLink, link));
+    const srcCenter = (<joint.dia.Element> graph.getCell(srcId)).getBBox().center();
+    const trgCenter = (<joint.dia.Element> graph.getCell(trgId)).getBBox().center();
+    const midPoint = joint.g.line(srcCenter, trgCenter).midpoint();
+    const theta = srcCenter.theta(trgCenter);
+
+    const gapBetweenSiblings = 25;
+
+    if (siblings.length === 1) {
+      link.unset('vertices');
+      link.prop('connector', { name: 'normal' });
+    } else {
+      for (let i = 0; i < siblings.length; i++) {
+        const sibling = siblings[i];
+        const offset = gapBetweenSiblings * Math.ceil((i+1) / 2);
+        const sign = i % 2 ? 1 : -1;
+        const angle = joint.g.toRad(theta + sign * 90);
+        const vertex = joint.g.point.fromPolar(offset, angle, midPoint);
+
+        sibling.prop('connector', { name: 'smooth' });
+        sibling.set('vertices', [vertex]);
+      }
+    }
+  }
+};

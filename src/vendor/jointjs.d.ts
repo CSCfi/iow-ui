@@ -46,6 +46,7 @@ declare module joint {
       clone(opt?:any):Backbone.Model;      // @todo: return can either be Cell or Cell[].
       attr(attrs:any):Cell;
       isLink(): boolean;
+      prop(path: string, value: any): void;
     }
 
     class Element extends Cell {
@@ -59,7 +60,7 @@ declare module joint {
       resize(width:number, height:number):Element;
       rotate(angle:number, options : {absolute : boolean; origin: {x:number;y:number}}):Element;
       remove(): void;
-      getBBox():{ x: number; y: number; width: number; height: number; };
+      getBBox():{ x: number; y: number; width: number; height: number; center(): {x: number, y: number, theta(point: {x: number, y:number}): number}};
     }
 
     interface IDefaults {
