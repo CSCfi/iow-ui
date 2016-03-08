@@ -45,7 +45,7 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
       paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
         const cell = cellView.model;
         if (cell instanceof joint.dia.Element) {
-          adjustElementLinks(graph, <joint.dia.Element> cell);
+          adjustElementLinks(graph, paper, <joint.dia.Element> cell);
         }
       });
 
@@ -117,7 +117,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.graph.clear();
     const showCardinality = this.model.isOfType('profile');
     createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality);
-    return layoutGraph(this.graph);
+    return layoutGraph(this.graph, this.paper);
   }
 
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
@@ -275,8 +275,8 @@ function scaleToFit(paper: joint.dia.Paper) {
   });
 }
 
-function layoutGraph(graph: joint.dia.Graph) {
-  return colaLayout(graph).then(() => adjustGraphLinks(graph));
+function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper) {
+  return colaLayout(graph).then(() => adjustGraphLinks(graph, paper));
 }
 
 function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
@@ -409,22 +409,26 @@ function isSiblingLink(lhs: joint.dia.Link, rhs: joint.dia.Link) {
   return (lhsSource === rhsSource && lhsTarget === rhsTarget) || (lhsSource === rhsTarget && lhsTarget === rhsSource);
 }
 
-function adjustGraphLinks(graph: joint.dia.Graph) {
+function isLoop(link: joint.dia.Link) {
+  return link.get('source').id === link.get('target').id;
+}
+
+function adjustGraphLinks(graph: joint.dia.Graph, paper: joint.dia.Paper) {
   for (const link of graph.getLinks()) {
-    adjustLink(graph, link);
+    adjustLink(graph, paper, link);
   }
 }
 
-function adjustElementLinks(graph: joint.dia.Graph, element: joint.dia.Element) {
-  for (const link of graph.getConnectedLinks(element)) {
-    adjustLink(graph, link);
+function adjustElementLinks(graph: joint.dia.Graph, paper: joint.dia.Paper, element: joint.dia.Element) {
+  for (const link of graph.getConnectedLinks(<joint.dia.Cell> element)) {
+    adjustLink(graph, paper, link);
   }
 }
 
-function adjustLink(graph: joint.dia.Graph, link: joint.dia.Link) {
+function adjustLink(graph: joint.dia.Graph, paper: joint.dia.Paper, link: joint.dia.Link) {
 
-  var srcId = link.get('source').id;
-  var trgId = link.get('target').id;
+  const srcId = link.get('source').id;
+  const trgId = link.get('target').id;
 
   if (srcId && trgId) {
 
@@ -436,20 +440,53 @@ function adjustLink(graph: joint.dia.Graph, link: joint.dia.Link) {
 
     const gapBetweenSiblings = 25;
 
-    if (siblings.length === 1) {
-      link.unset('vertices');
-      link.prop('connector', { name: 'normal' });
-    } else {
+    if (isLoop(link)) {
       for (let i = 0; i < siblings.length; i++) {
-        const sibling = siblings[i];
-        const offset = gapBetweenSiblings * Math.ceil((i+1) / 2);
-        const sign = i % 2 ? 1 : -1;
-        const angle = joint.g.toRad(theta + sign * 90);
-        const vertex = joint.g.point.fromPolar(offset, angle, midPoint);
+        recurseLink(paper, siblings[i], i);
+      }
+    } else {
+      if (siblings.length === 1) {
+        link.unset('vertices');
+        link.prop('connector', { name: 'normal' });
+      } else {
+        for (let i = 0; i < siblings.length; i++) {
+          const sibling = siblings[i];
+          const offset = gapBetweenSiblings * Math.ceil((i+1) / 2);
+          const sign = i % 2 ? 1 : -1;
+          const angle = joint.g.toRad(theta + sign * 90);
+          const vertex = joint.g.point.fromPolar(offset, angle, midPoint);
 
-        sibling.prop('connector', { name: 'smooth' });
-        sibling.set('vertices', [vertex]);
+          sibling.prop('connector', { name: 'smooth' });
+          sibling.set('vertices', [vertex]);
+        }
       }
     }
   }
 };
+
+function recurseLink(paper: joint.dia.Paper, link: joint.dia.Link, siblingIndex: number) {
+
+  const bbox = joint.V(paper.findViewByModel(link.get('source').id).el).bbox(false, paper.viewport);
+  const left = bbox.width / 2;
+  const top = bbox.height / 2;
+  const centre = joint.g.point(bbox.x + left, bbox.y + top);
+
+  const mod = siblingIndex % 4;
+
+  function resolveSign() {
+    if (mod === 0) return {x: 1, y: 1};
+    if (mod === 1) return {x: -1, y: 1};
+    if (mod === 2) return {x: 1, y: -1};
+    if (mod === 3) return {x: -1, y: -1};
+  }
+
+  const offset = 50;
+  const sign = resolveSign();
+  const scale = Math.floor(siblingIndex / 4) + 1;
+
+  link.set('vertices', [
+    joint.g.point(centre).offset(0, sign.y * (top + offset * scale)),
+    joint.g.point(centre).offset(sign.x * (left + offset * scale), sign.y * (top + offset * scale)),
+    joint.g.point(centre).offset(sign.x * (left + offset * scale), 0)
+  ]);
+}

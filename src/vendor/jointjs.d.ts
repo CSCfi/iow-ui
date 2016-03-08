@@ -92,7 +92,7 @@ declare module joint {
       }
     }
 
-    class Paper extends Backbone.View<Backbone.Model> {
+    class Paper extends Backbone.View<Graph> {
 
       constructor(options: any);
 
