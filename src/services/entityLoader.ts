@@ -13,7 +13,8 @@ import {
   State,
   ConceptSuggestion,
   ConstraintType,
-  Url
+  Url, 
+  Require
 } from './entities';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
@@ -185,8 +186,8 @@ export class EntityLoader {
           if (isUriResolvable(require)) {
             promises.push(
               asPromise(assertExists(require, 'require for ' + model.label['fi']))
-                .then(requiredModel => this.modelService.newRequire(requiredModel.namespace, requiredModel.prefix, requiredModel.label['fi'], 'fi'))
-                .then(newRequire => model.addRequire(newRequire))
+                .then(requiredModel => this.$q.all([this.$q.when(requiredModel), this.modelService.getAllRequires()]))
+                .then(([requiredModel, requires]: [Model, Require[]]) => model.addRequire(_.find(requires, require => require.id.equals(requiredModel.id))))
             );
           } else if (isExternalRequire(require)) {
             promises.push(this.modelService.newRequire(require.namespace, require.prefix, require.label, 'fi')
