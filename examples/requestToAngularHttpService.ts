@@ -63,7 +63,8 @@ function makeRequest<T>(method: string, url: string, config: angular.IRequestSho
       json: config.data,
       body: config.data,
       timeout: config.timeout,
-      jar: true
+      jar: true,
+      followRedirect: false
     };
 
     function rejectAndReport(err: any) {
@@ -78,7 +79,7 @@ function makeRequest<T>(method: string, url: string, config: angular.IRequestSho
         rejectAndReport(err);
       } else {
         console.log(options.method + ': ' + options.url + ' -> ' + resp.statusCode + ": " + hstd(resp.statusCode));
-        if (resp.statusCode < 200 || resp.statusCode >= 300) {
+        if (resp.statusCode < 200 || resp.statusCode >= 400) {
           rejectAndReport(body);
         } else {
           resolve({
