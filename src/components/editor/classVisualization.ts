@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { normalizeAsArray, isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService } from '../../services/modelService';
+import { ChangeNotifier, ChangeListener } from '../contracts';
 const joint = require('jointjs');
 
 export const mod = angular.module('iow.components.editor');
@@ -20,7 +21,8 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
     restrict: 'E',
     scope: {
       selection: '=',
-      model: '='
+      model: '=',
+      changeNotifier: '='
     },
     template: `<div>
                 <div class="zoom zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
@@ -60,10 +62,12 @@ mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindow
   };
 });
 
-class ClassVisualizationController {
+class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selection: Class|Predicate;
   model: Model;
+  changeNotifier: ChangeNotifier<Class|Predicate>;
+
   graph: joint.dia.Graph;
   paper: joint.dia.Paper;
   loading: boolean;
@@ -73,6 +77,8 @@ class ClassVisualizationController {
 
   /* @ngInject */
   constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
+
+    this.changeNotifier.addListener(this);
 
     $scope.$watch(() => this.model, () => this.refresh());
     $scope.$watch(() => this.selection, (newSelection) => {
@@ -105,6 +111,24 @@ class ClassVisualizationController {
     const showCardinality = this.model.isOfType('profile');
     createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality);
     return layoutGraph(this.graph);
+  }
+
+  onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
+    if (newItem instanceof Class) {
+      this.refresh();
+    }
+  }
+
+  onDelete(item: Class|Predicate) {
+    if (item instanceof Class) {
+      this.refresh();
+    }
+  }
+
+  onAssign(item: Class|Predicate) {
+    if (item instanceof Class) {
+      this.refresh();
+    }
   }
 
   canFocus() {
@@ -150,10 +174,13 @@ class ClassVisualizationController {
 
   centerToClass(klass: Class) {
     const cell = this.graph.getCell(klass.id.uri);
-    if (cell.isLink()) {
-      throw new Error('Cell must be an element');
+    if (cell) {
+      if (cell.isLink()) {
+        throw new Error('Cell must be an element');
+      } else {
+        this.centerToElement(<joint.dia.Element> cell);
+      }
     }
-    this.centerToElement(<joint.dia.Element> cell);
   }
 
   centerToElement(element: joint.dia.Element) {

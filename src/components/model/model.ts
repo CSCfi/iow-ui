@@ -38,7 +38,7 @@ import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
 import { MaintenanceModal } from '../maintenance';
-import { Show } from './../contracts';
+import { Show, ChangeNotifier, ChangeListener } from './../contracts';
 
 export const mod = angular.module('iow.components.model');
 
@@ -52,11 +52,12 @@ mod.directive('model', () => {
   }
 });
 
-export class ModelController {
+export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   loading = true;
   firstLoading = true;
   views: View[] = [];
+  changeListeners: ChangeListener<Class|Predicate>[] = [];
   selectedItem: WithIdAndType;
   model: Model;
   selection: Class|Predicate;
@@ -127,6 +128,10 @@ export class ModelController {
       this.updateLocation();
     });
     $scope.$watch(() => this.languageService.modelLanguage, lang => this.sortAll());
+  }
+
+  addListener(listener: ChangeListener<Class|Predicate>) {
+    this.changeListeners.push(listener);
   }
 
   sortAll() {
@@ -224,6 +229,10 @@ export class ModelController {
 
   selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
     this.updateSelectables();
+
+    for (const changeListener of this.changeListeners) {
+      changeListener.onEdit(newSelection, oldSelection);
+    }
   }
 
   canEdit(): boolean {
@@ -234,6 +243,10 @@ export class ModelController {
     _.remove(this.classes, item => matchesIdentity(item, selection));
     _.remove(this.attributes, item => matchesIdentity(item, selection));
     _.remove(this.associations, item => matchesIdentity(item, selection));
+
+    for (const changeListener of this.changeListeners) {
+      changeListener.onDelete(selection);
+    }
   }
 
   private updateLocation() {
@@ -317,6 +330,10 @@ export class ModelController {
               this.updateSelection(entity);
               if (!entity.unsaved) {
                 this.updateSelectables();
+                
+                for (const changeListener of this.changeListeners) {
+                  changeListener.onAssign(entity);
+                }
               }
             });
         });

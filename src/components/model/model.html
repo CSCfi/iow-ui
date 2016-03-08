@@ -26,7 +26,7 @@
     <div class="model-panel--right">
       <class-view ng-if="ctrl.selection.isClass()" class="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></class-view>
       <predicate-view ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></predicate-view>
-      <visualization-view ng-if="ctrl.model" selection="ctrl.selection" model="ctrl.model" show="ctrl.show" ng-class="ctrl.classForVisualization()" reload-notifier="ctrl"></visualization-view>
+      <visualization-view ng-if="ctrl.model" selection="ctrl.selection" model="ctrl.model" show="ctrl.show" ng-class="ctrl.classForVisualization()" change-notifier="ctrl"></visualization-view>
     </div>
   </div>
 </div>

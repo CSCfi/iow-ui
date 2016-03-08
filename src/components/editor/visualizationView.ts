@@ -12,7 +12,8 @@ mod.directive('visualizationView', () => {
     scope: {
       selection: '=',
       model: '=',
-      show: '='
+      show: '=',
+      changeNotifier: '='
     },
     restrict: 'E',
     template: require('./visualizationView.html'),
