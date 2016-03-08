@@ -440,14 +440,14 @@ selection-view, .main-editable-content {
 
   .loading-indicator {
     position: absolute;
-    width: calc(100% - 10px);
-    height: calc(100% - 64px);
+    width: 100%;
+    height: 100%;
     z-index: 1000;
     background-color: #ffffff;
 
     .uil-default-css {
       position: absolute;
-      top: 100px;
+      top: calc(50% - 100px);
       left: calc(50% - 100px);
       margin: 0 auto;
     }
