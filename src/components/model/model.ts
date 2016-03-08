@@ -25,8 +25,7 @@ import {
   Type,
   Property,
   Uri,
-  DefinedBy,
-  Show
+  DefinedBy
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -39,6 +38,7 @@ import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
 import { MaintenanceModal } from '../maintenance';
+import { Show } from './../contracts';
 
 export const mod = angular.module('iow.components.model');
 

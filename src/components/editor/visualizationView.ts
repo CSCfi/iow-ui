@@ -1,7 +1,8 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import ILogService = angular.ILogService;
-import { Class, Model, Show, Predicate } from '../../services/entities';
+import { Class, Model, Predicate } from '../../services/entities';
+import { Show } from '../contracts';
 
 export const mod = angular.module('iow.components.editor');
 

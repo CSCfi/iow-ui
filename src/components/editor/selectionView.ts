@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
-import { Show } from '../../services/entities';
+import { Show } from '../contracts';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('selectionView', () => {

@@ -16,4 +16,3 @@ import './requiresView';
 mod.service('addRequireModal', AddRequireModal);
 mod.service('searchRequireModal', SearchRequireModal);
 mod.service('searchSchemeModal', SearchSchemeModal);
-

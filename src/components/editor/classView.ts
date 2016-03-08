@@ -4,7 +4,7 @@ import ILogService = angular.ILogService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property, PredicateListItem, Uri, Show } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, PredicateListItem, Uri } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -15,6 +15,7 @@ import {
   createDefinedByExclusion
 } from '../../services/utils';
 import { ModelController } from '../model/model';
+import { Show } from '../contracts';
 
 export const mod = angular.module('iow.components.editor');
 
