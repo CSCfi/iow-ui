@@ -14,7 +14,7 @@ const exportOptions = [
   {type: 'text/turtle', extension: 'ttl'},
   {type: 'application/rdf+xml', extension: 'rdf'},
   {type: 'application/schema+json', extension: 'json'},
-  {type: 'text/ld+json+context', extension: 'json'}
+  {type: 'application/ld+json+context', extension: 'json'}
 ];
 
 const UTF8_BOM = '\ufeff';

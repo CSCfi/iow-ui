@@ -98,6 +98,10 @@ msgstr ""
 msgid "application/ld+json"
 msgstr ""
 
+#: translations/misc.html:140
+msgid "application/ld+json+context"
+msgstr ""
+
 #: translations/misc.html:139
 msgid "application/rdf+xml"
 msgstr ""
@@ -1037,10 +1041,6 @@ msgstr ""
 msgid "Superclass"
 msgstr ""
 
-#: translations/misc.html:140
-msgid "text/ld+json+context"
-msgstr ""
-
 #: translations/misc.html:138
 msgid "text/turtle"
 msgstr ""
@@ -1108,7 +1108,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: components/editor/selectionView.html:31
+#: components/editor/visualizationView.html:5
 msgid "Visualization"
 msgstr ""
 

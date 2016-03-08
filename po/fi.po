@@ -102,6 +102,10 @@ msgstr "Soveltamisprofiilit"
 msgid "application/ld+json"
 msgstr "JSON-LD"
 
+#: translations/misc.html:140
+msgid "application/ld+json+context"
+msgstr "JSON-LD Context"
+
 #: translations/misc.html:139
 msgid "application/rdf+xml"
 msgstr "RDF"
@@ -1040,10 +1044,6 @@ msgstr "Yläattribuutti"
 msgid "Superclass"
 msgstr "Yläluokka"
 
-#: translations/misc.html:140
-msgid "text/ld+json+context"
-msgstr "JSON-LD Context"
-
 #: translations/misc.html:138
 msgid "text/turtle"
 msgstr "Turtle"
@@ -1108,7 +1108,7 @@ msgstr "Kohde"
 msgid "Version"
 msgstr "Versio"
 
-#: components/editor/selectionView.html:31
+#: components/editor/visualizationView.html:5
 msgid "Visualization"
 msgstr "Visualisointi"
 
@@ -1230,6 +1230,9 @@ msgstr "Aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "text/ld+json+context"
+#~ msgstr "JSON-LD Context"
 
 #~ msgid "xsd:HTML"
 #~ msgstr "HTML"
