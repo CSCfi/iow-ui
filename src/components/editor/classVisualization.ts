@@ -275,21 +275,17 @@ function layoutGraph(graph: joint.dia.Graph) {
 function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
+  const classIds = new Set<string>();
 
-  function classesContain(id: Uri) {
-    for (const klass of classes) {
-      if (klass.id.equals(id)) {
-        return true;
-      }
-    }
-    return false;
+  for (const klass of classes) {
+    classIds.add(klass.id.uri);
   }
 
-  for (const klass of normalizeAsArray(classes)) {
+  for (const klass of classes) {
     const attributes: Property[] = [];
 
     for (const property of klass.properties) {
-      if (property.hasAssociationTarget() && classesContain(property.valueClass)) {
+      if (property.hasAssociationTarget() && classIds.has(property.valueClass.uri)) {
         associations.push({klass: klass, association: property});
       } else {
         attributes.push(property);
@@ -299,7 +295,9 @@ function createCells($scope: IScope, languageService: LanguageService, graph: jo
     createClass($scope, languageService, graph, klass, attributes, showCardinality);
   }
 
-  _.forEach(associations, association => createAssociation($scope, languageService, graph, association, showCardinality));
+  for (const association of associations) {
+    createAssociation($scope, languageService, graph, association, showCardinality)
+  }
 }
 
 function formatCardinality(property: Property) {
