@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import IQService = angular.IQService;
 import { ValidatorService } from '../../services/validatorService';
 import { Class, Predicate, Type, Uri } from '../../services/entities';
-import { isStringValid, isValidLabelLength } from './stringInput';
+import { isStringValid, isValidLabelLength } from './validators';
 
 export const mod = angular.module('iow.components.form');
 

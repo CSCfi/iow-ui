@@ -3,8 +3,8 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { Localizable } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
-import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './stringInput';
 import { hasLocalization } from '../../services/utils';
+import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
 
 export const mod = angular.module('iow.components.form');
 
