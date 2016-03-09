@@ -4,6 +4,7 @@ import INgModelController = angular.INgModelController;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Model, Uri } from '../../services/entities';
+import { isValidUri } from './validators';
 
 export const mod = angular.module('iow.components.form');
 
@@ -33,9 +34,13 @@ mod.directive('uriInput', (gettextCatalog: gettextCatalog) => {
         }
       });
 
-      modelController.$validators['id'] = (modelValue: Uri, viewValue: string) => {
-        return !viewValue || new Uri(viewValue, $scope.model.context).hasResolvablePrefix();
-      }
+      modelController.$validators['xsd:anyURI'] = value => {
+        return !value || isValidUri(value.uri);
+      };
+
+      modelController.$validators['id'] = value => {
+        return !value || value.hasResolvablePrefix();
+      };
     }
   };
 });
