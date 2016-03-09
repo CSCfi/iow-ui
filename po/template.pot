@@ -28,15 +28,15 @@ msgstr ""
 msgid "Add properties from ' + ctrl.classType + ' class"
 msgstr ""
 
-#: translations/misc.html:155
+#: translations/misc.html:154
 msgid "Add properties from profile class"
 msgstr ""
 
-#: translations/misc.html:154
+#: translations/misc.html:153
 msgid "Add properties from scope class"
 msgstr ""
 
-#: translations/misc.html:153
+#: translations/misc.html:152
 msgid "Add properties from super class"
 msgstr ""
 
@@ -60,7 +60,7 @@ msgid "Additional information"
 msgstr ""
 
 #: components/user/user.html:34
-#: translations/misc.html:151
+#: translations/misc.html:150
 msgid "Admin groups"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: translations/misc.html:122
+#: translations/misc.html:121
 msgid "Already added"
 msgstr ""
 
@@ -94,19 +94,19 @@ msgstr ""
 msgid "Application profiles"
 msgstr ""
 
-#: translations/misc.html:137
+#: translations/misc.html:136
 msgid "application/ld+json"
 msgstr ""
 
-#: translations/misc.html:140
+#: translations/misc.html:139
 msgid "application/ld+json+context"
 msgstr ""
 
-#: translations/misc.html:139
+#: translations/misc.html:138
 msgid "application/rdf+xml"
 msgstr ""
 
-#: translations/misc.html:141
+#: translations/misc.html:140
 msgid "application/schema+json"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Association id"
 msgstr ""
 
-#: translations/misc.html:129
+#: translations/misc.html:128
 msgid "Association information"
 msgstr ""
 
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Attribute id"
 msgstr ""
 
-#: translations/misc.html:128
+#: translations/misc.html:127
 msgid "Attribute information"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Backend"
 msgstr ""
 
-#: translations/misc.html:134
+#: translations/misc.html:133
 msgid "Broader concept"
 msgstr ""
 
@@ -179,11 +179,11 @@ msgstr ""
 msgid "Browse vocabulary"
 msgstr ""
 
-#: translations/misc.html:170
+#: translations/misc.html:169
 msgid "Can be selected only from this library"
 msgstr ""
 
-#: translations/misc.html:171
+#: translations/misc.html:170
 msgid "Can be selected only from this profile"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
-#: translations/misc.html:160
+#: translations/misc.html:159
 msgid "Cannot require profile"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgstr ""
 msgid "Class id"
 msgstr ""
 
-#: translations/misc.html:126
+#: translations/misc.html:125
 msgid "Class information"
 msgstr ""
 
@@ -255,7 +255,7 @@ msgstr ""
 msgid "Class list"
 msgstr ""
 
-#: translations/misc.html:130
+#: translations/misc.html:129
 msgid "Class properties"
 msgstr ""
 
@@ -263,16 +263,16 @@ msgstr ""
 msgid "Class search info"
 msgstr ""
 
-#: translations/misc.html:162
+#: translations/misc.html:161
 msgid "Classes are not allowed"
 msgstr ""
 
 #: components/common/historyModal.html:35
-#: translations/misc.html:169
+#: translations/misc.html:168
 msgid "Close"
 msgstr ""
 
-#: translations/misc.html:133
+#: translations/misc.html:132
 msgid "Concept"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Constraint classes"
 msgstr ""
 
-#: translations/misc.html:152
+#: translations/misc.html:151
 msgid "Constraint description"
 msgstr ""
 
@@ -332,7 +332,7 @@ msgid "Create new require"
 msgstr ""
 
 #: components/user/user.html:17
-#: translations/misc.html:148
+#: translations/misc.html:147
 msgid "Created at"
 msgstr ""
 
@@ -352,7 +352,7 @@ msgstr ""
 msgid "Database"
 msgstr ""
 
-#: translations/misc.html:145
+#: translations/misc.html:144
 msgid "date format"
 msgstr ""
 
@@ -449,7 +449,7 @@ msgstr ""
 msgid "Deprecated"
 msgstr ""
 
-#: translations/misc.html:172
+#: translations/misc.html:171
 msgid "Description"
 msgstr ""
 
@@ -457,15 +457,15 @@ msgstr ""
 msgid "Do you want to add following properties from ' + ctrl.classType + ' class?"
 msgstr ""
 
-#: translations/misc.html:158
+#: translations/misc.html:157
 msgid "Do you want to add following properties from profile class?"
 msgstr ""
 
-#: translations/misc.html:157
+#: translations/misc.html:156
 msgid "Do you want to add following properties from scope class?"
 msgstr ""
 
-#: translations/misc.html:156
+#: translations/misc.html:155
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
@@ -529,7 +529,7 @@ msgstr ""
 msgid "Following items are depending on the deleted"
 msgstr ""
 
-#: translations/misc.html:142
+#: translations/misc.html:141
 msgid "framed ld+json"
 msgstr ""
 
@@ -541,7 +541,7 @@ msgstr ""
 msgid "Frontend"
 msgstr ""
 
-#: translations/misc.html:165
+#: translations/misc.html:164
 msgid "Generalize class"
 msgstr ""
 
@@ -562,7 +562,7 @@ msgid "Hide"
 msgstr ""
 
 #: components/common/historyModal.html:3
-#: translations/misc.html:168
+#: translations/misc.html:167
 msgid "Historical versions"
 msgstr ""
 
@@ -578,7 +578,7 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: translations/misc.html:116
+#: translations/misc.html:115
 msgid "ID is already in use"
 msgstr ""
 
@@ -586,7 +586,7 @@ msgstr ""
 msgid "Imported requires"
 msgstr ""
 
-#: translations/misc.html:175
+#: translations/misc.html:174
 msgid "Internal group page"
 msgstr ""
 
@@ -594,16 +594,12 @@ msgstr ""
 msgid "Interoperability method"
 msgstr ""
 
-#: translations/misc.html:115
-msgid "Invalid ID"
+#: components/form/errorMessages.html:6
+msgid "Invalid id error"
 msgstr ""
 
 #: components/form/errorMessages.html:5
 msgid "Invalid namespace error"
-msgstr ""
-
-#: components/form/errorMessages.html:6
-msgid "Invalid uri error"
 msgstr ""
 
 #: components/form/errorMessages.html:4
@@ -622,7 +618,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: translations/misc.html:143
+#: translations/misc.html:142
 msgid "ld+json frame"
 msgstr ""
 
@@ -638,7 +634,7 @@ msgstr ""
 msgid "library"
 msgstr ""
 
-#: translations/misc.html:124
+#: translations/misc.html:123
 msgid "Library information"
 msgstr ""
 
@@ -669,25 +665,25 @@ msgid "Logout"
 msgstr ""
 
 #: components/maintenance.html:2
-#: translations/misc.html:173
+#: translations/misc.html:172
 msgid "Maintenance"
 msgstr ""
 
 #: components/maintenance.html:5
-#: translations/misc.html:174
+#: translations/misc.html:173
 msgid "Maintenance content"
 msgstr ""
 
-#: translations/misc.html:136
+#: translations/misc.html:135
 msgid "Max count"
 msgstr ""
 
 #: components/user/user.html:27
-#: translations/misc.html:150
+#: translations/misc.html:149
 msgid "Member groups"
 msgstr ""
 
-#: translations/misc.html:135
+#: translations/misc.html:134
 msgid "Min count"
 msgstr ""
 
@@ -700,7 +696,7 @@ msgid "Models"
 msgstr ""
 
 #: components/user/user.html:22
-#: translations/misc.html:149
+#: translations/misc.html:148
 msgid "Modified at"
 msgstr ""
 
@@ -750,7 +746,7 @@ msgstr ""
 msgid "No search results"
 msgstr ""
 
-#: translations/misc.html:163
+#: translations/misc.html:162
 msgid "Non specialized classes are not allowed"
 msgstr ""
 
@@ -758,7 +754,7 @@ msgstr ""
 msgid "Not defined"
 msgstr ""
 
-#: translations/misc.html:118
+#: translations/misc.html:117
 msgid "Not found"
 msgstr ""
 
@@ -766,11 +762,11 @@ msgstr ""
 msgid "not found in the concept database"
 msgstr ""
 
-#: translations/misc.html:119
+#: translations/misc.html:118
 msgid "Not removed"
 msgstr ""
 
-#: translations/misc.html:159
+#: translations/misc.html:158
 msgid "Not required by model"
 msgstr ""
 
@@ -814,7 +810,7 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: translations/misc.html:144
+#: translations/misc.html:143
 msgid "Pattern"
 msgstr ""
 
@@ -830,7 +826,7 @@ msgstr ""
 msgid "profile"
 msgstr ""
 
-#: translations/misc.html:125
+#: translations/misc.html:124
 msgid "Profile information"
 msgstr ""
 
@@ -870,11 +866,11 @@ msgstr ""
 msgid "Required localized error"
 msgstr ""
 
-#: translations/misc.html:121
+#: translations/misc.html:120
 msgid "Resource is in use"
 msgstr ""
 
-#: translations/misc.html:120
+#: translations/misc.html:119
 msgid "Resource status restricts removing"
 msgstr ""
 
@@ -960,7 +956,7 @@ msgstr ""
 msgid "Shape id"
 msgstr ""
 
-#: translations/misc.html:127
+#: translations/misc.html:126
 msgid "Shape information"
 msgstr ""
 
@@ -968,11 +964,11 @@ msgstr ""
 msgid "Shape label"
 msgstr ""
 
-#: translations/misc.html:131
+#: translations/misc.html:130
 msgid "Shape properties"
 msgstr ""
 
-#: translations/misc.html:161
+#: translations/misc.html:160
 msgid "Shapes are not allowed"
 msgstr ""
 
@@ -989,11 +985,11 @@ msgstr ""
 #: components/editor/searchPredicateModal.html:54
 #: components/model/searchRequireModal.html:23
 #: components/model/searchSchemeModal.html:16
-#: translations/misc.html:132
+#: translations/misc.html:131
 msgid "Show excluded"
 msgstr ""
 
-#: translations/misc.html:167
+#: translations/misc.html:166
 msgid "Show history"
 msgstr ""
 
@@ -1001,7 +997,7 @@ msgstr ""
 msgid "Source code"
 msgstr ""
 
-#: translations/misc.html:166
+#: translations/misc.html:165
 msgid "Specialize class"
 msgstr ""
 
@@ -1041,7 +1037,7 @@ msgstr ""
 msgid "Superclass"
 msgstr ""
 
-#: translations/misc.html:138
+#: translations/misc.html:137
 msgid "text/turtle"
 msgstr ""
 
@@ -1053,7 +1049,7 @@ msgstr ""
 msgid "Unauthorized"
 msgstr ""
 
-#: translations/misc.html:117
+#: translations/misc.html:116
 msgid "Unexpected error"
 msgstr ""
 
@@ -1077,7 +1073,7 @@ msgstr ""
 msgid "Use attribute"
 msgstr ""
 
-#: translations/misc.html:164
+#: translations/misc.html:163
 msgid "Use class"
 msgstr ""
 
@@ -1091,12 +1087,12 @@ msgid "User details"
 msgstr ""
 
 #: components/user/user.html:7
-#: translations/misc.html:146
+#: translations/misc.html:145
 msgid "User login"
 msgstr ""
 
 #: components/user/user.html:12
-#: translations/misc.html:147
+#: translations/misc.html:146
 msgid "User name"
 msgstr ""
 
@@ -1136,7 +1132,7 @@ msgstr ""
 msgid "What is method?"
 msgstr ""
 
-#: translations/misc.html:123
+#: translations/misc.html:122
 msgid "Write identifier"
 msgstr ""
 

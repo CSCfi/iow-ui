@@ -33,7 +33,7 @@ mod.directive('uriInput', (gettextCatalog: gettextCatalog) => {
         }
       });
 
-      modelController.$validators['uri'] = (modelValue: Uri, viewValue: string) => {
+      modelController.$validators['id'] = (modelValue: Uri, viewValue: string) => {
         return !viewValue || new Uri(viewValue, $scope.model.context).hasResolvablePrefix();
       }
     }
