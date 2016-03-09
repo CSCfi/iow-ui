@@ -1,24 +1,6 @@
+import { dataTypes } from '../common/dataTypes';
+
 export const mod = angular.module('iow.components.editor');
-
-const attributeValues = [
-  'xsd:string',
-  'rdf:langString',
-  'xsd:anyURI',
-  'xsd:boolean',
-  'xsd:decimal',
-  'xsd:double',
-  'xsd:float',
-  'xsd:integer',
-  'xsd:long',
-  'xsd:int',
-  'xsd:date',
-  'xsd:dateTime',
-  'xsd:time',
-  'xsd:gYear',
-  'xsd:gMonth',
-  'xsd:gDay'
-];
-
 
 mod.directive('rangeSelect', () => {
   'ngInject';
@@ -32,7 +14,7 @@ mod.directive('rangeSelect', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {
-      this.ranges = attributeValues;
+      this.ranges = dataTypes;
     }
   };
 });
