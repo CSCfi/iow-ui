@@ -11,7 +11,6 @@ import {
   hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity
 } from './utils';
 import Moment = moment.Moment;
-import split = require("core-js/fn/symbol/split");
 import { Frame } from './frames';
 import { FrameFn } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
@@ -663,6 +662,14 @@ export class Property extends GraphNode {
     this.minCount = graph.minCount;
     this.maxCount = graph.maxCount;
     this.pattern = graph.pattern;
+  }
+
+  get inputType() {
+    if (this.dataType) {
+      return this.dataType;
+    } else {
+      return 'xsd:anyURI';
+    }
   }
 
   hasAssociationTarget() {
