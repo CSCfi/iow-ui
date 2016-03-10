@@ -2,9 +2,10 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { DataType } from '../common/dataTypes';
-import { isValidUri } from './validators';
-import * as moment from 'moment';
-import Moment = moment.Moment;
+import {
+  isValidUri, isValidTime, isValidDateTime, isValidDate, isValidNumber, isValidDecimal,
+  isValidBoolean, isValidYear, isValidMonth, isValidDay
+} from './validators';
 
 export const mod = angular.module('iow.components.form');
 
@@ -34,24 +35,6 @@ mod.directive('datatypeInput', () => {
   }
 });
 
-function inValues(input: string, ...values: string[]) {
-  for (const value of values) {
-    if (input === value) {
-      return true;
-    }
-  }
-  return false;
-}
-
-const decimalRegex = /^\d+\.?\d*$/;
-const numberRegex = /^\d+$/;
-const dateFormat = 'YYYY-MM-DD';
-const timeFormat = 'HH:mm:ss';
-const dateTimeFormat = 'YYYY-MM-DD H:mm:ss';
-const yearFormat = 'YYYY';
-const monthFormat = 'MM';
-const dayFormat = 'DD';
-
 function resolveValidator(dataType: DataType) {
   switch (dataType) {
     case 'xsd:string':
@@ -60,27 +43,27 @@ function resolveValidator(dataType: DataType) {
     case 'xsd:anyURI':
       return isValidUri;
     case 'xsd:boolean':
-      return (input: string) => inValues('true', 'false');
+      return isValidBoolean;
     case 'xsd:decimal':
     case 'xsd:double':
     case 'xsd:float':
-      return (input: string) => !input || decimalRegex.test(input);
+      return isValidDecimal;
     case 'xsd:integer':
     case 'xsd:long':
     case 'xsd:int':
-      return (input: string) => !input || numberRegex.test(input);
+      return isValidNumber;
     case 'xsd:date':
-         return (input: string) => !input || moment(input, dateFormat, true).isValid();
+      return isValidDate;
     case 'xsd:dateTime':
-      return (input: string) => !input || moment(input, dateTimeFormat, true).isValid();
+      return isValidDateTime;
     case 'xsd:time':
-      return (input: string) => !input || moment(input, timeFormat, true).isValid();
+      return isValidTime;
     case 'xsd:gYear':
-      return (input: string) => !input || moment(input, yearFormat, true).isValid();
+      return isValidYear;
     case 'xsd:gMonth':
-      return (input: string) => !input || moment(input, monthFormat, true).isValid();
+      return isValidMonth;
     case 'xsd:gDay':
-      return (input: string) => !input || moment(input, dayFormat, true).isValid();
+      return isValidDay;
     default:
       throw new Error('Unsupported data type');
   }
