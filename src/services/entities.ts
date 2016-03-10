@@ -242,7 +242,7 @@ export class Model extends AbstractModel {
     if (graph.rootResource) {
       this.rootClass = new Uri(graph.rootResource, context);
     }
-    this.expandContextWithKnownModels(this.context);
+    this.copyNamespacesFromRequires();
   }
 
   get groupId() {
@@ -263,6 +263,20 @@ export class Model extends AbstractModel {
 
   removeRequire(require: Require) {
     _.remove(this.requires, require);
+  }
+
+  private copyNamespacesFromRequires() {
+    for (const require of this.requires) {
+      this.context[require.prefix] = require.namespace;
+
+      // if overriding existing namespace remove previous prefix
+      for (const key of Object.keys(this.context)) {
+        const value = this.context[key];
+        if (value === require.namespace) {
+          delete this.context[key];
+        }
+      }
+    }
   }
 
   expandContextWithKnownModels(context: any) {
@@ -315,7 +329,7 @@ export class Model extends AbstractModel {
   }
 
   serializationValues(): any {
-    this.expandContextWithKnownModels(this.context);
+    this.copyNamespacesFromRequires();
 
     return {
       '@id': this.id.uri,
