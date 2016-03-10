@@ -16,6 +16,7 @@ module.exports = new WebpackConfig().extend('./webpack.common-config.js').merge(
     new webpack.NoErrorsPlugin()
   ],
   devServer: {
+    host: '0.0.0.0',
     port: 9001,
     contentBase: './src',
     hot: true,
