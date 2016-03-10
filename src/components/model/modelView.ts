@@ -8,7 +8,7 @@ import { LanguageService } from '../../services/languageService';
 import { GroupListItem, Model, Require, Reference, Uri } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { collectIds, collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
+import { collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
 import { SearchSchemeModal } from './searchSchemeModal';
 import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -89,8 +89,8 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addRequire() {
     const language = this.languageService.modelLanguage;
-    const namespaces = this.editableInEdit.getNamespaces();
-    const prefixes = this.editableInEdit.getPrefixes();
+    const namespaces = this.editableInEdit.getNamespaceNames();
+    const prefixes = this.editableInEdit.getPrefixNames();
 
     const existsExclude = (require: Require) => {
       if (namespaces.has(require.namespace) || prefixes.has(require.prefix)) {

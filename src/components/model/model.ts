@@ -347,7 +347,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private generalizeClass(klass: Class) {
     const exclude = (property: Property) => {
-      return !this.model.findModelPrefixForNamespace(property.predicate.namespace);
+      return !this.model.isKnownModelNamespace(property.predicate.namespace);
     };
     return this.addPropertiesFromClassModal.open(klass, 'profile', exclude)
       .then(properties => {

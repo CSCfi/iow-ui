@@ -265,44 +265,63 @@ export class Model extends AbstractModel {
     _.remove(this.requires, require);
   }
 
-  getNamespaces(exclude?: Require): Set<string> {
-    const namespaces = new Set<string>();
+  getNamespaceNames(exclude?: Require): Set<string> {
+    const namespaceNames = new Set<string>();
+
+    for (const namespace of this.getNamespaces()) {
+      if (!exclude || exclude.namespace !== namespace.url) {
+        namespaceNames.add(namespace.url);
+      }
+    }
+
+    return namespaceNames;
+  }
+
+  getPrefixNames(exclude?: Require): Set<string> {
+    const prefixNames = new Set<string>();
+
+    for (const namespace of this.getNamespaces()) {
+      if (!exclude || exclude.prefix !== namespace.prefix) {
+        prefixNames.add(namespace.prefix);
+      }
+    }
+
+    return prefixNames;
+  }
+
+  getNamespaces() {
+    const namespaces: Namespace[] = [];
+    const nonTechnicalNamespacePrefixes = new Set<string>();
 
     for (const require of this.requires) {
-      if (require !== exclude) {
-        namespaces.add(require.namespace);
-      }
+      namespaces.push(new Namespace(require.prefix, require.namespace, require.modifiable ? NamespaceType.EXTERNAL : NamespaceType.LIBRARY));
+      nonTechnicalNamespacePrefixes.add(require.prefix);
     }
 
-    for (const value of Object.values(this.context)) {
-      if (typeof value === 'string') {
-        namespaces.add(value);
+    for (const prefix of Object.keys(this.context)) {
+      if (!nonTechnicalNamespacePrefixes.has(prefix)) {
+        const value = this.context[prefix];
+        if (typeof value === 'string') {
+          namespaces.push(new Namespace(prefix, value, NamespaceType.TECHNICAL));
+        }
       }
-    }
-
-    if (exclude) {
-      namespaces.delete(exclude.namespace);
     }
 
     return namespaces;
   }
 
-  getPrefixes(exclude?: Require): Set<string> {
-    const prefixes = new Set<string>();
+  getNamespacesOfType(...namespaceTypes: NamespaceType[]) {
+    const result: {[prefix: string]: string} = {};
 
-    for (const require of this.requires) {
-      prefixes.add(require.prefix);
+    result[this.prefix] = this.namespace;
+
+    for (const namespace of this.getNamespaces()) {
+      if (_.contains(namespaceTypes, namespace.type)) {
+        result[namespace.prefix] = namespace.url;
+      }
     }
 
-    for (const prefix of Object.keys(this.context)) {
-      prefixes.add(prefix);
-    }
-
-    if (exclude) {
-      prefixes.delete(exclude.prefix);
-    }
-    
-    return prefixes;
+    return result;
   }
 
   private copyNamespacesFromRequires() {
@@ -320,44 +339,26 @@ export class Model extends AbstractModel {
   }
 
   expandContextWithKnownModels(context: any) {
-    Object.assign(context, this.knownModels());
+    Object.assign(context, this.getNamespacesOfType(NamespaceType.LIBRARY));
   }
 
   asDefinedBy() {
     return new DefinedBy({'@id': this.id.uri, '@type': reverseMapTypeObject(this.type), label: this.label}, this.context, this.frame);
   }
 
-  findModelPrefixForNamespace(namespace: Url)  {
-    const knownModels = this.knownModels();
-    for (const prefix of Object.keys(knownModels)) {
-      if (namespace === knownModels[prefix]) {
-        return prefix;
+  isKnownModelNamespace(namespace: Url)  {
+    for (const knownNamespace of this.getNamespaces()) {
+      if (knownNamespace.type === NamespaceType.LIBRARY && namespace === knownNamespace.url) {
+        return true;
       }
     }
-  }
-
-  knownModels() {
-    const result: {[prefix: string]: string} = {};
-
-    result[this.prefix] = this.namespace;
-
-    for (const require of this.requires) {
-      if (!require.modifiable) {
-        result[require.prefix] = require.namespace;
-      }
-    }
-
-    return result;
   }
 
   linkTo(type: Type|Type[], id: Uri) {
     const typeArray: Type[] = normalizeAsArray<Type>(type);
 
-    if (id) {
-      if (!id.isUrn()) {
-        const isExternalUri = !this.findModelPrefixForNamespace(id.namespace);
-        return isExternalUri ? id.url : internalUrl(id, typeArray);
-      }
+    if (id && !id.isUrn()) {
+      return this.isKnownModelNamespace(id.namespace) ? internalUrl(id, typeArray) : id.url;
     }
   }
 
@@ -381,6 +382,15 @@ export class Model extends AbstractModel {
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri
     }
+  }
+}
+
+export enum NamespaceType {
+  TECHNICAL, LIBRARY, EXTERNAL
+}
+
+export class Namespace {
+  constructor(public prefix: string, public url: string, public type: NamespaceType) {
   }
 }
 
