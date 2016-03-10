@@ -3,6 +3,7 @@ import { DisplayItemFactory } from './displayItemFactory';
 const mod = angular.module('iow.components.form', ['iow.services']);
 export = mod.name;
 
+import './stringInput';
 import './dataTypeInput';
 import './bootstrapInput';
 import './uriInput';
