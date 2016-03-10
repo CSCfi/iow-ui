@@ -3,7 +3,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { LanguageService, Language } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
-import { Require } from '../../services/entities';
+import { Require, Model } from '../../services/entities';
 import { AddRequireModal } from './addRequireModal';
 
 const noExclude = (require: Require) => <string> null;
@@ -13,7 +13,7 @@ export class SearchRequireModal {
   constructor(private $uibModal: angular.ui.bootstrap.IModalService) {
   }
 
-  open(language:Language, exclude: (require: Require) => string = noExclude): angular.IPromise<Require> {
+  open(model: Model, language: Language, exclude: (require: Require) => string = noExclude): angular.IPromise<Require> {
     return this.$uibModal.open({
       template: require('./searchRequireModal.html'),
       size: 'medium',
@@ -21,6 +21,7 @@ export class SearchRequireModal {
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
+        model: () => model,
         exclude: () => exclude,
         language: () => language
       }
@@ -39,6 +40,7 @@ class SearchRequireController {
   constructor($scope: IScope,
               private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
               public  exclude: (require: Require) => string,
+              private model: Model,
               private language: Language,
               private modelService: ModelService,
               private languageService: LanguageService,
@@ -77,12 +79,12 @@ class SearchRequireController {
 
   selectItem(require: Require) {
     if (!this.exclude(require)) {
-      this.$uibModalInstance.close(require); 
+      this.$uibModalInstance.close(require);
     }
   }
 
   createNew() {
-    this.addRequireModal.open(this.language)
+    this.addRequireModal.open(this.model, this.language)
       .then(require =>this.$uibModalInstance.close(require));
   }
 

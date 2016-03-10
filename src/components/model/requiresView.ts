@@ -1,14 +1,14 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { Require } from '../../services/entities';
+import { Require, Model } from '../../services/entities';
 
 export const mod = angular.module('iow.components.model');
 
 mod.directive('requiresView', () => {
   return {
     scope: {
-      requires: '='
+      model: '='
     },
     restrict: 'E',
     template: require('./requiresView.html'),
@@ -30,10 +30,10 @@ interface RequiresViewScope extends IScope {
 }
 
 class RequiresViewController {
-  requires: Require[];
+  model: Model;
   opened: {[key: number]: boolean} = {};
 
   open(require: Require) {
-    this.opened[this.requires.indexOf(require)] = true;
+    this.opened[this.model.requires.indexOf(require)] = true;
   }
 }

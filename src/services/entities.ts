@@ -265,6 +265,46 @@ export class Model extends AbstractModel {
     _.remove(this.requires, require);
   }
 
+  getNamespaces(exclude?: Require): Set<string> {
+    const namespaces = new Set<string>();
+
+    for (const require of this.requires) {
+      if (require !== exclude) {
+        namespaces.add(require.namespace);
+      }
+    }
+
+    for (const value of Object.values(this.context)) {
+      if (typeof value === 'string') {
+        namespaces.add(value);
+      }
+    }
+
+    if (exclude) {
+      namespaces.delete(exclude.namespace);
+    }
+
+    return namespaces;
+  }
+
+  getPrefixes(exclude?: Require): Set<string> {
+    const prefixes = new Set<string>();
+
+    for (const require of this.requires) {
+      prefixes.add(require.prefix);
+    }
+
+    for (const prefix of Object.keys(this.context)) {
+      prefixes.add(prefix);
+    }
+
+    if (exclude) {
+      prefixes.delete(exclude.prefix);
+    }
+    
+    return prefixes;
+  }
+
   private copyNamespacesFromRequires() {
     for (const require of this.requires) {
       this.context[require.prefix] = require.namespace;

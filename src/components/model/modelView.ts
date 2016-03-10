@@ -89,14 +89,20 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addRequire() {
     const language = this.languageService.modelLanguage;
-    const requires = collectIds(this.editableInEdit.requires);
-    requires.add(this.model.id.uri);
-    const existsExclude = createExistsExclusion(requires);
+    const namespaces = this.editableInEdit.getNamespaces();
+    const prefixes = this.editableInEdit.getPrefixes();
+
+    const existsExclude = (require: Require) => {
+      if (namespaces.has(require.namespace) || prefixes.has(require.prefix)) {
+        return 'Already added';
+      }
+    };
+
     const profileExclude = (require: Require) => (!allowProfiles && require.isOfType('profile')) ? 'Cannot require profile' : null;
     const exclude = combineExclusions(existsExclude, profileExclude);
 
-    const allowProfiles = this.model.isOfType('profile');
-    this.searchRequireModal.open(language, exclude)
+    const allowProfiles = this.editableInEdit.isOfType('profile');
+    this.searchRequireModal.open(this.editableInEdit, language, exclude)
       .then((require: Require) => {
         this.editableInEdit.addRequire(require);
         this.requiresView.open(require);

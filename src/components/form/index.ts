@@ -4,6 +4,8 @@ const mod = angular.module('iow.components.form', ['iow.services']);
 export = mod.name;
 
 import './stringInput';
+import './prefixInput';
+import './namespaceInput';
 import './dataTypeInput';
 import './bootstrapInput';
 import './uriInput';

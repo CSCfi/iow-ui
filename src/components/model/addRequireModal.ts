@@ -3,14 +3,14 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import { ModelService } from '../../services/modelService';
 import { Language } from '../../services/languageService';
-import { Require } from '../../services/entities';
+import { Require, Model } from '../../services/entities';
 
 export class AddRequireModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(language: Language): IPromise<Require> {
+  open(model: Model, language: Language): IPromise<Require> {
     return this.$uibModal.open({
       template: require('./addRequireModal.html'),
       size: 'small',
@@ -18,6 +18,7 @@ export class AddRequireModal {
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
+        model: () => model,
         language: () => language
       }
     }).result;
@@ -32,7 +33,7 @@ class AddRequireController {
   submitError: string;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, private language: Language, private modelService: ModelService) {
+  constructor(private $uibModalInstance: IModalServiceInstance, public model: Model, private language: Language, private modelService: ModelService) {
   }
 
   create() {

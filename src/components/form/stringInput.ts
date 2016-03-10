@@ -1,10 +1,7 @@
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
-import {
-  isStringValid, isValidLabelLength, isValidModelLabelLength, isValidPrefix,
-  isValidPrefixLength, isValidNamespace, isValidUrl
-} from './validators';
+import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
 
 export const mod = angular.module('iow.components.form');
 
@@ -26,14 +23,6 @@ mod.directive('stringInput', () => {
             break;
           case 'modelLabel':
             ngModel.$validators['length'] = isValidModelLabelLength;
-            break;
-          case 'prefix':
-            ngModel.$validators['prefix'] = isValidPrefix;
-            ngModel.$validators['length'] = isValidPrefixLength;
-            break;
-          case 'namespace':
-            ngModel.$validators['namespace'] = isValidNamespace;
-            ngModel.$validators['url'] = isValidUrl;
             break;
           default:
             throw new Error('Unsupported input type');
