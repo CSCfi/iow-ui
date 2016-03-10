@@ -293,8 +293,11 @@ export class Model extends AbstractModel {
     const namespaces: Namespace[] = [];
     const nonTechnicalNamespacePrefixes = new Set<string>();
 
+    namespaces.push(new Namespace(this.prefix, this.namespace, NamespaceType.MODEL));
+    nonTechnicalNamespacePrefixes.add(this.prefix);
+
     for (const require of this.requires) {
-      namespaces.push(new Namespace(require.prefix, require.namespace, require.modifiable ? NamespaceType.EXTERNAL : NamespaceType.LIBRARY));
+      namespaces.push(new Namespace(require.prefix, require.namespace, require.modifiable ? NamespaceType.EXTERNAL : NamespaceType.MODEL));
       nonTechnicalNamespacePrefixes.add(require.prefix);
     }
 
@@ -312,8 +315,6 @@ export class Model extends AbstractModel {
 
   getNamespacesOfType(...namespaceTypes: NamespaceType[]) {
     const result: {[prefix: string]: string} = {};
-
-    result[this.prefix] = this.namespace;
 
     for (const namespace of this.getNamespaces()) {
       if (_.contains(namespaceTypes, namespace.type)) {
@@ -339,7 +340,7 @@ export class Model extends AbstractModel {
   }
 
   expandContextWithKnownModels(context: any) {
-    Object.assign(context, this.getNamespacesOfType(NamespaceType.LIBRARY));
+    Object.assign(context, this.getNamespacesOfType(NamespaceType.MODEL));
   }
 
   asDefinedBy() {
@@ -348,7 +349,7 @@ export class Model extends AbstractModel {
 
   isKnownModelNamespace(namespace: Url)  {
     for (const knownNamespace of this.getNamespaces()) {
-      if (knownNamespace.type === NamespaceType.LIBRARY && namespace === knownNamespace.url) {
+      if (knownNamespace.type === NamespaceType.MODEL && namespace === knownNamespace.url) {
         return true;
       }
     }
@@ -386,7 +387,7 @@ export class Model extends AbstractModel {
 }
 
 export enum NamespaceType {
-  TECHNICAL, LIBRARY, EXTERNAL
+  TECHNICAL, MODEL, EXTERNAL
 }
 
 export class Namespace {
