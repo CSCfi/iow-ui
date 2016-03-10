@@ -21,7 +21,9 @@ mod.directive('datatypeInput', () => {
       }
 
       function initialize(dataType: DataType) {
-        ngModel.$validators = { [dataType]: resolveValidator(dataType) };
+        const validator = resolveValidator(dataType);
+        attributes.$set('placeholder', validator.format);
+        ngModel.$validators = { [dataType]: validator };
         ngModel.$error = {};
         ngModel.$validate();
       }
