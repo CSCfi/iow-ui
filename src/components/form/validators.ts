@@ -1,6 +1,12 @@
 import * as moment from 'moment';
 import Moment = moment.Moment;
+import { DataType } from '../common/dataTypes';
 const URI = require('uri-js');
+
+export interface ValidatorWithFormat {
+  (input: string): boolean;
+  format?: string;
+}
 
 export function isStringValid(value: string): boolean {
   return !value || !!value.match(/^[a-zåäö]/i);
@@ -44,56 +50,86 @@ export function isValidUri(uri: string): boolean {
   }
 }
 
-function inValues(input: string, ...values: string[]) {
-  for (const value of values) {
-    if (input === value) {
-      return true;
-    }
+export const isValidBoolean = createInValuesValidator('true', 'false');
+export const isValidDecimal = createRegexValidator(/^[0-9]+\.?[0-9]*$/);
+export const isValidNumber = createRegexValidator(/^[0-9]+$/);
+export const isValidDate = createMomentValidator('YYYY-MM-DD');
+export const isValidDateTime = createMomentValidator('YYYY-MM-DD H:mm:ss');
+export const isValidTime = createMomentValidator('H:mm:ss');
+export const isValidYear = createMomentValidator('YYYY');
+export const isValidMonth = createMomentValidator('MM');
+export const isValidDay = createMomentValidator('DD');
+
+export function resolveValidator(dataType: DataType): ValidatorWithFormat {
+  switch (dataType) {
+    case 'xsd:string':
+    case 'rdf:langString':
+      return (input: string) => true;
+    case 'xsd:anyURI':
+      return isValidUri;
+    case 'xsd:boolean':
+      return isValidBoolean;
+    case 'xsd:decimal':
+    case 'xsd:double':
+    case 'xsd:float':
+      return isValidDecimal;
+    case 'xsd:integer':
+    case 'xsd:long':
+    case 'xsd:int':
+      return isValidNumber;
+    case 'xsd:date':
+      return isValidDate;
+    case 'xsd:dateTime':
+      return isValidDateTime;
+    case 'xsd:time':
+      return isValidTime;
+    case 'xsd:gYear':
+      return isValidYear;
+    case 'xsd:gMonth':
+      return isValidMonth;
+    case 'xsd:gDay':
+      return isValidDay;
+    default:
+      throw new Error('Unsupported data type');
   }
-  return false;
 }
 
-export const decimalRegex = /^\d+\.?\d*$/;
-export const numberRegex = /^\d+$/;
-export const dateFormat = 'YYYY-MM-DD';
-export const timeFormat = 'HH:mm:ss';
-export const dateTimeFormat = 'YYYY-MM-DD H:mm:ss';
-export const yearFormat = 'YYYY';
-export const monthFormat = 'MM';
-export const dayFormat = 'DD';
+function createInValuesValidator(...values: string[]) {
 
-export function isValidBoolean(input: string) {
-  return !input || inValues('true', 'false');
+  function inValues(input: string, values: string[]) {
+    for (const value of values) {
+      if (input === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const validator: ValidatorWithFormat = (input: string) => {
+    return !input || inValues(input, values);
+  };
+  validator.format = values.join('/');
+  return validator;
 }
 
-export function isValidDecimal(input: string) {
-  return !input || decimalRegex.test(input);
+function createRegexValidator(regex: RegExp) {
+
+  function unescapedString(regex: RegExp) {
+    const regexStr = regex.toString();
+    return regexStr.substr(1, regexStr.length-2).replace('^', '').replace('$', '');
+  }
+
+  const validator: ValidatorWithFormat = (input: string) => {
+    return !input || regex.test(input);
+  };
+  validator.format = unescapedString(regex);
+  return validator;
 }
 
-export function isValidNumber(input: string) {
-  return !input || numberRegex.test(input);
-}
-
-export function isValidDate(input: string) {
-  return !input || moment(input, dateFormat, true).isValid();
-}
-
-export function isValidDateTime(input: string) {
-  return !input || moment(input, dateTimeFormat, true).isValid()
-}
-
-export function isValidTime(input: string) {
-  return !input || moment(input, timeFormat, true).isValid()
-}
-
-export function isValidYear(input: string) {
-  return !input || moment(input, yearFormat, true).isValid()
-}
-
-export function isValidMonth(input: string) {
-  return !input || moment(input, monthFormat, true).isValid()
-}
-
-export function isValidDay(input: string) {
-  return !input || moment(input, dayFormat, true).isValid()
+function createMomentValidator(format: string) {
+  const validator: ValidatorWithFormat = (input: string) => {
+    return !input || moment(input, format, true).isValid();
+  };
+  validator.format = format;
+  return validator;
 }
