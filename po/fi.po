@@ -182,11 +182,11 @@ msgstr "Selaa"
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
 
-#: translations/misc.html:169
+#: translations/misc.html:168
 msgid "Can be selected only from this library"
 msgstr "Valinta on tehtävä tietokomponenettikirjaston luokista"
 
-#: translations/misc.html:170
+#: translations/misc.html:169
 msgid "Can be selected only from this profile"
 msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 
@@ -271,7 +271,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
-#: components/common/historyModal.html:35 translations/misc.html:168
+#: components/common/historyModal.html:35 translations/misc.html:167
 msgid "Close"
 msgstr "Sulje"
 
@@ -450,7 +450,7 @@ msgstr "Poista tarkennettu luokka tästä kirjastosta"
 msgid "Deprecated"
 msgstr "Käytöstä poistunut"
 
-#: translations/misc.html:171
+#: translations/misc.html:170
 msgid "Description"
 msgstr "Kuvaus"
 
@@ -545,10 +545,6 @@ msgstr "Etusivu"
 msgid "Frontend"
 msgstr "Käyttöliittymä"
 
-#: translations/misc.html:164
-msgid "Generalize class"
-msgstr "Nosta luokka kirjastoon"
-
 #: components/form/errorMessages.html:15
 msgid "Greater than max error"
 msgstr "Ei saa olla suurempi kuin maksimi"
@@ -565,7 +561,7 @@ msgstr "Ryhmän nimi"
 msgid "Hide"
 msgstr "Piilota"
 
-#: components/common/historyModal.html:3 translations/misc.html:167
+#: components/common/historyModal.html:3 translations/misc.html:166
 msgid "Historical versions"
 msgstr "Historialliset versiot"
 
@@ -592,7 +588,7 @@ msgstr "Tunniste on jo käytössä"
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
 
-#: translations/misc.html:174
+#: translations/misc.html:173
 msgid "Internal group page"
 msgstr "Ryhmän sisäiset sivut"
 
@@ -672,11 +668,11 @@ msgstr ""
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
-#: components/maintenance.html:2 translations/misc.html:172
+#: components/maintenance.html:2 translations/misc.html:171
 msgid "Maintenance"
 msgstr "Huoltokatko"
 
-#: components/maintenance.html:5 translations/misc.html:173
+#: components/maintenance.html:5 translations/misc.html:172
 msgid "Maintenance content"
 msgstr ""
 "Järjestelmä on valitettavasti toistaiseksi poissa käytöstä huoltokatkon "
@@ -996,7 +992,7 @@ msgstr "Näytä profiileissa määritellyt luokat"
 msgid "Show excluded"
 msgstr "Näytä myös ne, joita ei voi lisätä"
 
-#: translations/misc.html:166
+#: translations/misc.html:165
 msgid "Show history"
 msgstr "Näytä historia"
 
@@ -1004,7 +1000,7 @@ msgstr "Näytä historia"
 msgid "Source code"
 msgstr "Lähdekoodi"
 
-#: translations/misc.html:165
+#: translations/misc.html:164
 msgid "Specialize class"
 msgstr "Tarkenna luokka"
 
@@ -1294,6 +1290,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Generalize class"
+#~ msgstr "Nosta luokka kirjastoon"
 
 #~ msgid "Invalid uri error"
 #~ msgstr "Syöte ei ole URI"

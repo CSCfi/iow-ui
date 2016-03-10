@@ -80,14 +80,6 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   create(entity: Class) {
     return this.classService.createClass(entity)
-      .then(() => {
-        if (entity.generalizedFrom) {
-          // TODO handle as single transactional operation
-          entity.generalizedFrom.type = ['shape'];
-          entity.generalizedFrom.scopeClass = entity.id;
-          return this.update(entity.generalizedFrom, entity.generalizedFrom.id);
-        }
-      })
       .then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
   }
 

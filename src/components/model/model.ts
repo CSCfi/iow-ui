@@ -275,22 +275,13 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     const classExistsExclusion = createExistsExclusion(collectIds(this.classes));
     const predicateExistsExclusion = createExistsExclusion(collectIds([this.attributes, this.associations]));
     const classTypeExclusion = createClassTypeExclusion(SearchClassType.Class);
-    const textForSelection = (klass: Class) =>
-      isProfile
-        ? 'Specialize class'
-        : klass && klass.isSpecializedClass()
-          ? 'Generalize class'
-          : 'Use class';
+    const textForSelection = (klass: Class) => isProfile ? 'Specialize class' : 'Use class';
 
     const classExclusion = (klass: ClassListItem) => {
       if (isProfile) {
         return classTypeExclusion(klass) || definedExclusion(klass);
       } else {
-        if (klass.isSpecializedClass() && !klass.isOfType('shape')) {
-          return <string> null;
-        } else {
-          return classExistsExclusion(klass) || classTypeExclusion(klass) || definedExclusion(klass);
-        }
+        return classExistsExclusion(klass) || classTypeExclusion(klass) || definedExclusion(klass);
       }
     };
 
@@ -304,11 +295,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
           if (isProfile) {
             return this.createShape(klass);
           } else {
-            if (klass.isSpecializedClass()) {
-              return this.generalizeClass(klass);
-            } else {
-              return this.assignClassToModel(klass).then(() => klass);
-            }
+            return this.assignClassToModel(klass).then(() => klass);
           }
         }
       );
@@ -343,22 +330,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private createClass(conceptCreation: ConceptCreation) {
     return this.classService.newClass(this.model, conceptCreation.label, conceptCreation.concept.id, this.languageService.modelLanguage);
-  }
-
-  private generalizeClass(klass: Class) {
-    const exclude = (property: Property) => {
-      return !this.model.isKnownModelNamespace(property.predicate.namespace);
-    };
-    return this.addPropertiesFromClassModal.open(klass, 'profile', exclude)
-      .then(properties => {
-        const generalized = klass.generalize(this.model, properties);
-        this.assignMissingPredicates(generalized);
-        return generalized;
-      }, err => {
-        if (isModalCancel(err)) {
-          return klass.generalize(this.model, []);
-        }
-      });
   }
 
   private createShape(klass: Class) {

@@ -528,7 +528,6 @@ export class Class extends AbstractClass {
   version: Urn;
 
   unsaved: boolean = false;
-  generalizedFrom: Class;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -555,22 +554,6 @@ export class Class extends AbstractClass {
     return this.definedBy.isOfType('profile');
   }
 
-  generalize(model: Model, properties: Property[]) {
-    const newClass = this.clone();
-    newClass.unsaved = true;
-    newClass.addKnownModelsToContext(model);
-    newClass.id = model.id.withName(this.id.name);
-    newClass.generalizedFrom = this;
-    newClass.definedBy = model.asDefinedBy();
-    newClass.properties = [];
-
-    for(const property of properties) {
-      newClass.addProperty(property.clone());
-    }
-
-    return newClass;
-  }
-
   addProperty(property: Property): void {
     property.index = this.properties.length;
     this.properties.push(property);
@@ -584,7 +567,6 @@ export class Class extends AbstractClass {
     const serialization = this.serialize();
     const result = new Class(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
-    result.generalizedFrom = this.generalizedFrom;
     return result;
   }
 
