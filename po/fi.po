@@ -479,7 +479,7 @@ msgstr "tallenna"
 msgid "Draft"
 msgstr "Luonnos"
 
-#: components/form/errorMessages.html:14
+#: components/form/errorMessages.html:10
 msgid "Duplicate error"
 msgstr "Syöte on jo lisätty"
 
@@ -517,7 +517,7 @@ msgstr "Vastaavat luokat"
 msgid "Example"
 msgstr "Esimerkki"
 
-#: components/form/errorMessages.html:11
+#: components/form/errorMessages.html:7
 msgid "Existing id error"
 msgstr "Tunniste on jo käytössä"
 
@@ -549,7 +549,7 @@ msgstr "Käyttöliittymä"
 msgid "Generalize class"
 msgstr "Nosta luokka kirjastoon"
 
-#: components/form/errorMessages.html:19
+#: components/form/errorMessages.html:15
 msgid "Greater than max error"
 msgstr "Ei saa olla suurempi kuin maksimi"
 
@@ -600,19 +600,15 @@ msgstr "Ryhmän sisäiset sivut"
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
-#: components/form/errorMessages.html:10
+#: components/form/errorMessages.html:6
 msgid "Invalid id error"
 msgstr "Virheellinen tunniste"
 
-#: components/form/errorMessages.html:9
+#: components/form/errorMessages.html:5
 msgid "Invalid namespace error"
 msgstr "Nimiavaruuden täytyy päättyä ‘#’ tai ‘/‘ -merkkeihin"
 
-#: components/form/errorMessages.html:7
-msgid "Invalid uri error"
-msgstr "Syöte ei ole URI"
-
-#: components/form/errorMessages.html:8
+#: components/form/errorMessages.html:4
 msgid "Invalid url error"
 msgstr "Syöte ei ole URL"
 
@@ -632,11 +628,11 @@ msgstr "Nimi"
 msgid "ld+json frame"
 msgstr "JSON-LD Frame"
 
-#: components/form/errorMessages.html:16
+#: components/form/errorMessages.html:12
 msgid "Length error"
 msgstr "Syöte on liian pitkä"
 
-#: components/form/errorMessages.html:20
+#: components/form/errorMessages.html:16
 msgid "Less than min error"
 msgstr "Ei saa olla pienempi kuin minimi"
 
@@ -714,11 +710,11 @@ msgstr "Muokattu"
 msgid "Name"
 msgstr "Nimi"
 
-#: translations/misc.html:73
+#: components/model/requiresView.html:37 translations/misc.html:73
 msgid "Namespace"
 msgstr "Nimiavaruus"
 
-#: components/form/errorMessages.html:18
+#: components/form/errorMessages.html:14
 msgid "Negative error"
 msgstr "Ei saa olla negatiivinen"
 
@@ -822,11 +818,11 @@ msgstr "Assosiaatio"
 msgid "Pattern"
 msgstr "Säännollinen lauseke"
 
-#: translations/misc.html:74
+#: components/model/requiresView.html:36 translations/misc.html:74
 msgid "Prefix"
 msgstr "Etuliite"
 
-#: components/form/errorMessages.html:17
+#: components/form/errorMessages.html:13
 msgid "Prefix error"
 msgstr "Etuliite saa sisältää vain pieniä kirjaimia"
 
@@ -846,13 +842,13 @@ msgstr "Soveltamisprofiilin nimi"
 msgid "Range"
 msgstr "Arvoalue"
 
-#: translations/attribute.html:5
+#: translations/attribute.html:6
 msgid "rdf:langString"
 msgstr "Kieliversioitu teksti"
 
-#: components/form/errorMessages.html:23
+#: translations/attribute.html:7
 msgid "rdf:langString error"
-msgstr ""
+msgstr "Virheellinen kieliversioitu teksti"
 
 #: translations/misc.html:19
 msgid "Recommendation"
@@ -870,11 +866,11 @@ msgstr "Sanastot"
 msgid "Register"
 msgstr "Luo tunnukset"
 
-#: components/form/errorMessages.html:12
+#: components/form/errorMessages.html:8
 msgid "Required error"
 msgstr "Pakollinen kenttä"
 
-#: components/form/errorMessages.html:13
+#: components/form/errorMessages.html:9
 msgid "Required localized error"
 msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 
@@ -1020,7 +1016,7 @@ msgstr "Tarkennettu luokasta"
 msgid "State"
 msgstr "Tila"
 
-#: components/form/errorMessages.html:15
+#: components/form/errorMessages.html:11
 msgid "String error"
 msgstr "Literaalin täytyy alkaa kirjaimella"
 
@@ -1047,6 +1043,10 @@ msgstr "Yläattribuutti"
 #: translations/misc.html:69
 msgid "Superclass"
 msgstr "Yläluokka"
+
+#: components/model/requiresView.html:30
+msgid "Technical namespaces"
+msgstr "Tekniset nimiavaruudet"
 
 #: translations/misc.html:137
 msgid "text/turtle"
@@ -1170,107 +1170,107 @@ msgstr "Mikä on yhteentoimivuusmenetelmä?"
 msgid "Write identifier"
 msgstr "Kirjoita tunniste…"
 
-#: translations/attribute.html:6
+#: translations/attribute.html:8
 msgid "xsd:anyURI"
 msgstr "URI"
 
-#: components/form/errorMessages.html:24
+#: translations/attribute.html:9
 msgid "xsd:anyURI error"
 msgstr "Virheellinen URI"
 
-#: translations/attribute.html:7
+#: translations/attribute.html:10
 msgid "xsd:boolean"
 msgstr "Kytkin"
 
-#: components/form/errorMessages.html:25
+#: translations/attribute.html:11
 msgid "xsd:boolean error"
 msgstr "Virheellinen kykin"
 
-#: translations/attribute.html:14
+#: translations/attribute.html:24
 msgid "xsd:date"
 msgstr "Päivämäärä"
 
-#: components/form/errorMessages.html:32
+#: translations/attribute.html:25
 msgid "xsd:date error"
 msgstr "Virheellinen päivämäärä"
 
-#: translations/attribute.html:15
+#: translations/attribute.html:26
 msgid "xsd:dateTime"
 msgstr "Ajanhetki"
 
-#: components/form/errorMessages.html:33
+#: translations/attribute.html:27
 msgid "xsd:dateTime error"
 msgstr "Virheellinen ajanhetki"
 
-#: translations/attribute.html:8
+#: translations/attribute.html:12
 msgid "xsd:decimal"
 msgstr "Desimaali"
 
-#: components/form/errorMessages.html:26
+#: translations/attribute.html:13
 msgid "xsd:decimal error"
 msgstr "Virheellinen desimaali"
 
-#: translations/attribute.html:9
+#: translations/attribute.html:14
 msgid "xsd:double"
 msgstr "Desimaali (64bit)"
 
-#: components/form/errorMessages.html:27
+#: translations/attribute.html:15
 msgid "xsd:double error"
 msgstr "Virheellinen desimaali"
 
-#: translations/attribute.html:10
+#: translations/attribute.html:16
 msgid "xsd:float"
 msgstr "Desimaali (32bit)"
 
-#: components/form/errorMessages.html:28
+#: translations/attribute.html:17
 msgid "xsd:float error"
 msgstr "Virheellinen desimaali"
 
-#: translations/attribute.html:19
+#: translations/attribute.html:34
 msgid "xsd:gDay"
 msgstr "Päivämäärä"
 
-#: components/form/errorMessages.html:37
+#: translations/attribute.html:35
 msgid "xsd:gDay error"
 msgstr "Virheellinen päivämäärä"
 
-#: translations/attribute.html:18
+#: translations/attribute.html:32
 msgid "xsd:gMonth"
 msgstr "Kuukausi"
 
-#: components/form/errorMessages.html:36
+#: translations/attribute.html:33
 msgid "xsd:gMonth error"
 msgstr "Virheellinen kuukausi"
 
-#: translations/attribute.html:17
+#: translations/attribute.html:30
 msgid "xsd:gYear"
 msgstr "Vuosi"
 
-#: components/form/errorMessages.html:35
+#: translations/attribute.html:31
 msgid "xsd:gYear error"
 msgstr "Virheellinen vuosi"
 
-#: translations/attribute.html:13
+#: translations/attribute.html:22
 msgid "xsd:int"
 msgstr "Kokonaisluku (32bit)"
 
-#: components/form/errorMessages.html:31
+#: translations/attribute.html:23
 msgid "xsd:int error"
 msgstr "Virheellinen kokonaisluku"
 
-#: translations/attribute.html:11
+#: translations/attribute.html:18
 msgid "xsd:integer"
 msgstr "Kokonaisluku"
 
-#: components/form/errorMessages.html:29
+#: translations/attribute.html:19
 msgid "xsd:integer error"
 msgstr "Virheellinen kokonaisluku"
 
-#: translations/attribute.html:12
+#: translations/attribute.html:20
 msgid "xsd:long"
 msgstr "Kokonaisluku (64bit)"
 
-#: components/form/errorMessages.html:30
+#: translations/attribute.html:21
 msgid "xsd:long error"
 msgstr "Virheellinen kokonaisluku"
 
@@ -1278,15 +1278,15 @@ msgstr "Virheellinen kokonaisluku"
 msgid "xsd:string"
 msgstr "Teksti"
 
-#: components/form/errorMessages.html:22
+#: translations/attribute.html:5
 msgid "xsd:string error"
 msgstr "Virheellinen teksti"
 
-#: translations/attribute.html:16
+#: translations/attribute.html:28
 msgid "xsd:time"
 msgstr "Aika"
 
-#: components/form/errorMessages.html:34
+#: translations/attribute.html:29
 msgid "xsd:time error"
 msgstr "Virheellinen aika"
 
@@ -1294,6 +1294,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Invalid uri error"
+#~ msgstr "Syöte ei ole URI"
 
 #~ msgid "Invalid ID"
 #~ msgstr "Virheellinen tunniste"
