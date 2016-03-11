@@ -298,7 +298,7 @@ export class Model extends AbstractModel {
     nonTechnicalNamespacePrefixes.add(this.prefix);
 
     for (const require of this.requires) {
-      namespaces.push(new Namespace(require.prefix, require.namespace, require.modifiable ? NamespaceType.EXTERNAL : NamespaceType.MODEL));
+      namespaces.push(new Namespace(require.prefix, require.namespace, require.external ? NamespaceType.EXTERNAL : NamespaceType.MODEL));
       nonTechnicalNamespacePrefixes.add(require.prefix);
     }
 
@@ -422,7 +422,7 @@ export class Require extends GraphNode {
   label: Localizable;
   private _prefix: string;
   private _namespace: Url;
-  modifiable: boolean;
+  external: boolean;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -430,7 +430,11 @@ export class Require extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this._namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
-    this.modifiable = this.isOfType('resource');
+    this.external = this.isOfType('resource');
+  }
+  
+  get modifiable() {
+    return this.external;
   }
 
   get prefix() {
