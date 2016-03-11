@@ -23,6 +23,7 @@ registerType('user', ['foaf:Person']);
 registerType('concept', ['skos:Concept', 'skos:ConceptScheme']);
 registerType('entity', ['prov:Entity']);
 registerType('activity', ['prov:Activity']);
+registerType('resource', ['rdfs:Resource']);
 
 export function mapType(type: string): Type {
   const result = toType.get(type);

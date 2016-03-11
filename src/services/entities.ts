@@ -41,7 +41,8 @@ export type Type = 'class'
                  | 'user'
                  | 'concept'
                  | 'entity'
-                 | 'activity';
+                 | 'activity'
+                 | 'resource';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -429,7 +430,7 @@ export class Require extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this._namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
-    this.modifiable = graph['@type'] === 'dcap:MetadataVocabulary';
+    this.modifiable = this.isOfType('resource');
   }
 
   get prefix() {
