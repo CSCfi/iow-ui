@@ -10,7 +10,7 @@ import IRouteProvider = angular.route.IRouteProvider;
 import IRouteService = angular.route.IRouteService;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import 'core-js';
+import './shim';
 import { routeConfig } from './routes';
 
 import './app.scss';
