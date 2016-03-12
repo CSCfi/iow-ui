@@ -445,7 +445,7 @@ selection-view, .main-editable-content {
     z-index: 1000;
     background-color: #ffffff;
 
-    .uil-default-css {
+    .uil-default-css, img {
       position: absolute;
       top: calc(50% - 100px);
       left: calc(50% - 100px);

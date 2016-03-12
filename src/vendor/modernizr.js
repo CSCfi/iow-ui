@@ -1,6 +1,6 @@
 /*!
  * modernizr v3.3.1
- * Build http://modernizr.com/download?-bloburls-setclasses-dontmin
+ * Build http://modernizr.com/download?-bloburls-cssanimations-es5-setclasses-dontmin
  *
  * Copyright (c)
  *  Faruk Ates
@@ -228,6 +228,290 @@
   }
 
   ;
+  /*!
+   {
+   "name": "ES5 Array",
+   "property": "es5array",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }],
+   "polyfills": ["es5shim"],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser implements ECMAScript 5 Array per specification.
+   */
+
+  Modernizr.addTest('es5array', function() {
+    return !!(Array.prototype &&
+    Array.prototype.every &&
+    Array.prototype.filter &&
+    Array.prototype.forEach &&
+    Array.prototype.indexOf &&
+    Array.prototype.lastIndexOf &&
+    Array.prototype.map &&
+    Array.prototype.some &&
+    Array.prototype.reduce &&
+    Array.prototype.reduceRight &&
+    Array.isArray);
+  });
+
+  /*!
+   {
+   "name": "ES5 Date",
+   "property": "es5date",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }],
+   "polyfills": ["es5shim"],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser implements ECMAScript 5 Date per specification.
+   */
+
+  Modernizr.addTest('es5date', function() {
+    var isoDate = '2013-04-12T06:06:37.307Z',
+      canParseISODate = false;
+    try {
+      canParseISODate = !!Date.parse(isoDate);
+    } catch (e) {
+      // no ISO date parsing yet
+    }
+    return !!(Date.now &&
+    Date.prototype &&
+    Date.prototype.toISOString &&
+    Date.prototype.toJSON &&
+    canParseISODate);
+  });
+
+  /*!
+   {
+   "name": "ES5 Function",
+   "property": "es5function",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }],
+   "polyfills": ["es5shim"],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser implements ECMAScript 5 Function per specification.
+   */
+
+  Modernizr.addTest('es5function', function() {
+    return !!(Function.prototype && Function.prototype.bind);
+  });
+
+  /*!
+   {
+   "name": "ES5 Object",
+   "property": "es5object",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }],
+   "polyfills": ["es5shim", "es5sham"],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser implements ECMAScript 5 Object per specification.
+   */
+
+  Modernizr.addTest('es5object', function() {
+    return !!(Object.keys &&
+    Object.create &&
+    Object.getPrototypeOf &&
+    Object.getOwnPropertyNames &&
+    Object.isSealed &&
+    Object.isFrozen &&
+    Object.isExtensible &&
+    Object.getOwnPropertyDescriptor &&
+    Object.defineProperty &&
+    Object.defineProperties &&
+    Object.seal &&
+    Object.freeze &&
+    Object.preventExtensions);
+  });
+
+  /*!
+   {
+   "name": "ES5 Strict Mode",
+   "property": "strictmode",
+   "caniuse": "sctrict-mode",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }],
+   "authors": ["@kangax"],
+   "tags": ["es5"],
+   "builderAliases": ["es5_strictmode"]
+   }
+   !*/
+  /* DOC
+   Check if browser implements ECMAScript 5 Object strict mode.
+   */
+
+  Modernizr.addTest('strictmode', (function() {'use strict'; return !this; })());
+
+  /*!
+   {
+   "name": "ES5 String",
+   "property": "es5string",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }],
+   "polyfills": ["es5shim"],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser implements ECMAScript 5 String per specification.
+   */
+
+  Modernizr.addTest('es5string', function() {
+    return !!(String.prototype && String.prototype.trim);
+  });
+
+  /*!
+   {
+   "name": "JSON",
+   "property": "json",
+   "caniuse": "json",
+   "notes": [{
+   "name": "MDN documentation",
+   "href": "https://developer.mozilla.org/en-US/docs/Glossary/JSON"
+   }],
+   "polyfills": ["json2"]
+   }
+   !*/
+  /* DOC
+   Detects native support for JSON handling functions.
+   */
+
+  // this will also succeed if you've loaded the JSON2.js polyfill ahead of time
+  //   ... but that should be obvious. :)
+
+  Modernizr.addTest('json', 'JSON' in window && 'parse' in JSON && 'stringify' in JSON);
+
+  /*!
+   {
+   "name": "ES5 Syntax",
+   "property": "es5syntax",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }, {
+   "name": "original implementation of detect code",
+   "href": "http://kangax.github.io/es5-compat-table/"
+   }],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "warnings": ["This detect uses `eval()`, so CSP may be a problem."],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser accepts ECMAScript 5 syntax.
+   */
+
+  Modernizr.addTest('es5syntax', function() {
+    var value, obj, stringAccess, getter, setter, reservedWords, zeroWidthChars;
+    try {
+      // Property access on strings
+      stringAccess = eval('"foobar"[3] === "b"');
+      // Getter in property initializer
+      getter = eval('({ get x(){ return 1 } }).x === 1');
+      eval('({ set x(v){ value = v; } }).x = 1');
+      // Setter in property initializer
+      setter = value === 1;
+      // Reserved words as property names
+      eval('obj = ({ if: 1 })');
+      reservedWords = obj['if'] === 1;
+      // Zero-width characters in identifiers
+      zeroWidthChars = eval('_\u200c\u200d = true');
+
+      return stringAccess && getter && setter && reservedWords && zeroWidthChars;
+    } catch (ignore) {
+      return false;
+    }
+  });
+
+  /*!
+   {
+   "name": "ES5 Immutable Undefined",
+   "property": "es5undefined",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }, {
+   "name": "original implementation of detect code",
+   "href": "http://kangax.github.io/es5-compat-table/"
+   }],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser prevents assignment to global `undefined` per ECMAScript 5.
+   */
+
+  Modernizr.addTest('es5undefined', function() {
+    var result, originalUndefined;
+    try {
+      originalUndefined = window.undefined;
+      window.undefined = 12345;
+      result = typeof window.undefined === 'undefined';
+      window.undefined = originalUndefined;
+    } catch (e) {
+      return false;
+    }
+    return result;
+  });
+
+  /*!
+   {
+   "name": "ES5",
+   "property": "es5",
+   "notes": [{
+   "name": "ECMAScript 5.1 Language Specification",
+   "href": "http://www.ecma-international.org/ecma-262/5.1/"
+   }],
+   "polyfills": ["es5shim", "es5sham"],
+   "authors": ["Ron Waldon (@jokeyrhyme)"],
+   "tags": ["es5"]
+   }
+   !*/
+  /* DOC
+   Check if browser implements everything as specified in ECMAScript 5.
+   */
+
+  Modernizr.addTest('es5', function() {
+    return !!(
+      Modernizr.es5array &&
+      Modernizr.es5date &&
+      Modernizr.es5function &&
+      Modernizr.es5object &&
+      Modernizr.strictmode &&
+      Modernizr.es5string &&
+      Modernizr.json &&
+      Modernizr.es5syntax &&
+      Modernizr.es5undefined
+    );
+  });
+
 
   /**
    * cssToDOM takes a kebab-case string and converts it to camelCase
@@ -772,6 +1056,69 @@
   // Modernizr.testAllProps('boxSizing')
   ModernizrProto.testAllProps = testPropsAll;
 
+
+
+  /**
+   * testAllProps determines whether a given CSS property is supported in the browser
+   *
+   * @memberof Modernizr
+   * @name Modernizr.testAllProps
+   * @optionName Modernizr.testAllProps()
+   * @optionProp testAllProps
+   * @access public
+   * @function testAllProps
+   * @param {string} prop - String naming the property to test (either camelCase or kebab-case)
+   * @param {string} [value] - String of the value to test
+   * @param {boolean} [skipValueTest=false] - Whether to skip testing that the value is supported when using non-native detection
+   * @example
+   *
+   * testAllProps determines whether a given CSS property, in some prefixed form,
+   * is supported by the browser.
+   *
+   * ```js
+   * testAllProps('boxSizing')  // true
+   * ```
+   *
+   * It can optionally be given a CSS value in string form to test if a property
+   * value is valid
+   *
+   * ```js
+   * testAllProps('display', 'block') // true
+   * testAllProps('display', 'penguin') // false
+   * ```
+   *
+   * A boolean can be passed as a third parameter to skip the value check when
+   * native detection (@supports) isn't available.
+   *
+   * ```js
+   * testAllProps('shapeOutside', 'content-box', true);
+   * ```
+   */
+
+  function testAllProps(prop, value, skipValueTest) {
+    return testPropsAll(prop, undefined, undefined, value, skipValueTest);
+  }
+  ModernizrProto.testAllProps = testAllProps;
+
+  /*!
+   {
+   "name": "CSS Animations",
+   "property": "cssanimations",
+   "caniuse": "css-animation",
+   "polyfills": ["transformie", "csssandpaper"],
+   "tags": ["css"],
+   "warnings": ["Android < 4 will pass this test, but can only animate a single property at a time"],
+   "notes": [{
+   "name" : "Article: 'Dispelling the Android CSS animation myths'",
+   "href": "https://goo.gl/OGw5Gm"
+   }]
+   }
+   !*/
+  /* DOC
+   Detects whether or not elements can be animated using CSS
+   */
+
+  Modernizr.addTest('cssanimations', testAllProps('animationName', 'a', true));
 
 
   /**
