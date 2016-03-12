@@ -83,7 +83,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   zoomOutHandle: number;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
+  constructor(private $scope: IScope, private $timeout: ITimeoutService, private modelService: ModelService, private languageService: LanguageService) {
 
     this.changeNotifier.addListener(this);
 
@@ -98,18 +98,21 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   refresh() {
     if (this.model) {
       this.loading = true;
-      (<Promise<any>> this.modelService.getVisualizationData(this.model))
-        .then(data => this.initGraph(data))
-        .then(() => {
-          const selection = this.selection;
-          if (selection instanceof Class) {
-            this.centerToClass(selection);
-          } else {
-            scaleToFit(this.paper);
-          }
+      // HACK: IE9 SVG rendering caused "unexpected call to method or property access " without this timeout hack
+      this.$timeout(() => {
+        (<Promise<any>> this.modelService.getVisualizationData(this.model))
+          .then(data => this.initGraph(data))
+          .then(() => {
+            const selection = this.selection;
+            if (selection instanceof Class) {
+              this.centerToClass(selection);
+            } else {
+              scaleToFit(this.paper);
+            }
 
-          this.loading = false;
-        });
+            this.loading = false;
+          });
+      }, 0);
     }
   }
 
@@ -206,8 +209,8 @@ function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia
   const graph = new joint.dia.Graph;
   const paper = new joint.dia.Paper({
     el: element,
-    width: element.width(),
-    height: element.height(),
+    width: element.width() || 100,
+    height: element.height() || 100,
     model: graph
   });
 
