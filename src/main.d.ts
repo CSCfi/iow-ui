@@ -2,6 +2,11 @@
 /// <reference path="./vendor/webcola.d.ts" />
 /// <reference path="./vendor/jointjs.d.ts" />
 
+interface NodeRequire {
+  // Webpack require extension
+  ensure(modules: string[], cb: (require: NodeRequire) => void): void
+}
+
 interface Window {
   jQuery: JQueryStatic;
   encodeURIComponent: any;

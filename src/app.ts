@@ -13,7 +13,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import './shim';
 import { routeConfig } from './routes';
 
-import './app.scss';
+import './styles/app.scss';
 
 import * as jQuery from 'jquery';
 window.jQuery = jQuery;
@@ -44,13 +44,15 @@ const mod = angular.module('iow-ui', [
 
 mod.config(routeConfig);
 
-mod.config(function mainConfig($routeProvider: IRouteProvider, $logProvider: ILogProvider, $compileProvider: ICompileProvider) {
+mod.config(($routeProvider: IRouteProvider, $logProvider: ILogProvider, $compileProvider: ICompileProvider) => {
   $logProvider.debugEnabled(false);
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);
 });
 
-mod.run(function onAppRun(gettextCatalog: gettextCatalog) {
-  gettextCatalog.debug = true;
+mod.run((gettextCatalog: gettextCatalog) => gettextCatalog.debug = true);
+
+export const done = new Promise((resolve) => {
+  mod.run(() => resolve(true));
 });
 
 angular.bootstrap(document.body, ['iow-ui'], {strictDi: true});

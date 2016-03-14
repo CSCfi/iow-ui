@@ -20,12 +20,12 @@ $brand-danger:          #F04124;
 $navbar-margin-bottom:  0 !default;
 $navbar-default-bg:     $brand-primary !default;
 
-@import './vendor/_variables';
-@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
-@import './vendor/_bootswatch';
-@import './vendor/_typeaheadjs';
-@import './vendor/_hexagon';
-@import '../node_modules/jointjs/joint';
+@import '../vendor/variables';
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+@import '../vendor/bootswatch';
+@import '../vendor/_typeaheadjs.css';
+@import '../vendor/_hexagon.css';
+@import '../../node_modules/jointjs/joint.css';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;

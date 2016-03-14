@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var WebpackConfig = require('webpack-config');
 
 module.exports = new WebpackConfig().merge({
-  entry: "./src/app.ts",
+  entry: "./src/init.ts",
   output: {
     path: path.join(__dirname, 'public/assets'),
     filename: "app.js"
@@ -25,7 +25,8 @@ module.exports = new WebpackConfig().merge({
       { test: /\.eot(\?.+)?$/,    loader: "file-loader" },
       { test: /\.svg(\?.+)?$/,    loader: "file-loader" },
       { test: /\.html/,           loader: 'raw' },
-      { test: /\.po$/,            loader: 'json!po?format=mf' }
+      { test: /\.po$/,            loader: 'json!po?format=mf' },
+      { test: /\.png$/,           loader: "url-loader?mimetype=image/png" }
     ]
   },
 
