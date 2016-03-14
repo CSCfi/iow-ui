@@ -1177,8 +1177,17 @@ function serializeLocalizable(localizable: Localizable) {
   return Object.assign({}, localizable);
 }
 
-function deserializeLocalizable(localizable: any) {
-  return localizable;
+function deserializeLocalizable(localizable: Localizable) {
+  const result: Localizable = {};
+
+  if (localizable) {
+    for (const lang of Object.keys(localizable)) {
+      const value = localizable[lang];
+      result[lang] = Array.isArray(value) ? Array.join(value, ' ') : value;
+    }
+  }
+
+  return result;
 }
 
 function deserializeDate(date: any) {
