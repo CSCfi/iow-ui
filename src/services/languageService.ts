@@ -42,8 +42,7 @@ export class LanguageService {
       let localization = data[lang];
 
       if (Array.isArray(localization)) {
-        // TODO array of localizations
-        localization = localization[0];
+        localization = Array.join(localization, ' ');
       }
 
       if (!localization) {
