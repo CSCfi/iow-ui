@@ -10,7 +10,7 @@ mod.directive('rangeSelect', () => {
       id: '@'
     },
     restrict: 'E',
-    template: '<value-select id="{{ctrl.id}}" values="ctrl.ranges" value="ctrl.range"></value-select>',
+    template: '<localized-select id="{{ctrl.id}}" values="ctrl.ranges" value="ctrl.range"></localized-select>',
     controllerAs: 'ctrl',
     bindToController: true,
     controller() {

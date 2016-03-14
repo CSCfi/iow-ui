@@ -20,7 +20,7 @@ import './nonEditable';
 import './restrictDuplicates';
 import './stateSelect';
 import './submitErrorPanel';
-import './valueSelect';
+import './localizedSelect';
 import './maxInput';
 import './minInput';
 

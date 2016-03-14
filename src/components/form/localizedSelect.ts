@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 
 export const mod = angular.module('iow.components.form');
 
-mod.directive('valueSelect', () => {
+mod.directive('localizedSelect', () => {
   'ngInject';
   return {
     scope: {

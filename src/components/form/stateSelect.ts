@@ -16,7 +16,7 @@ mod.directive('stateSelect', () => {
       id: '@'
     },
     restrict: 'E',
-    template: '<value-select id="{{ctrl.id}}" values="ctrl.getStates()" value="ctrl.state"></value-select>',
+    template: '<localized-select id="{{ctrl.id}}" values="ctrl.getStates()" value="ctrl.state"></localized-select>',
     controllerAs: 'ctrl',
     bindToController: true,
     controller(userService: UserService) {
