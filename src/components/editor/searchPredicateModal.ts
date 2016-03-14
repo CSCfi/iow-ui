@@ -58,7 +58,7 @@ export class SearchPredicateController {
   searchResults: PredicateListItem[];
   selectedPredicate: Predicate;
   searchText: string = '';
-  modelId: string;
+  showModel: DefinedBy;
   models: DefinedBy[];
   types: Type[];
   typeSelectable: boolean;
@@ -97,7 +97,7 @@ export class SearchPredicateController {
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
-    $scope.$watch(() => this.modelId, () => this.search());
+    $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
   }
 
@@ -164,7 +164,7 @@ export class SearchPredicateController {
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {
-    return !this.modelId || predicate.definedBy.id.uri === this.modelId;
+    return !this.showModel || predicate.definedBy.id.equals(this.showModel.id);
   }
 
   private typeFilter(predicate: PredicateListItem): boolean {

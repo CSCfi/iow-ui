@@ -3,7 +3,10 @@ import IFormController = angular.IFormController;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Constraint, ConstraintListItem, RelativeUrl, ClassListItem } from '../../services/entities';
+import {
+  Model, Constraint, ConstraintListItem, RelativeUrl, ClassListItem,
+  ConstraintType
+} from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import {
   collectProperties,
@@ -40,7 +43,8 @@ class EditableConstraint {
   constraint: Constraint;
   model: Model;
   isEditing: () => boolean;
-
+  types: ConstraintType[] = ['or', 'and', 'not'];
+  
   /* @ngInject */
   constructor(private searchClassModal: SearchClassModal) {
   }

@@ -8,9 +8,9 @@
         <label for="reference" translate>Reference</label>
         <div class="input-group input-group-lg">
           <div class="selectContainer">
-            <select id="reference" class="form-control" ng-model="ctrl.vocabularyId">
+            <select id="reference" class="form-control" ng-model="ctrl.vocabularyId"
+                    ng-options="reference.vocabularyId as reference | translateLabel for reference in ctrl.references">
               <option value="" translate>All references</option>
-              <option ng-repeat="reference in ctrl.references" value="{{reference.vocabularyId}}">{{reference.label | translateValue}}</option>
             </select>
           </div>
         </div>

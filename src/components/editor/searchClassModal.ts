@@ -51,7 +51,7 @@ class SearchClassController {
   searchText: string = '';
   showExcluded: boolean;
   showProfiles: boolean;
-  modelId: string;
+  showModel: DefinedBy;
   models: DefinedBy[] = [];
   cannotConfirm: string;
 
@@ -66,8 +66,8 @@ class SearchClassController {
               private textForSelection: (klass: Class) => string,
               private searchConceptModal: SearchConceptModal) {
 
-    this.showProfiles = onlySelection; 
-    
+    this.showProfiles = onlySelection;
+
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
 
       this.classes = allClasses;
@@ -81,7 +81,7 @@ class SearchClassController {
     });
 
     $scope.$watch(() => this.searchText, () => this.search());
-    $scope.$watch(() => this.modelId, () => this.search());
+    $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
     $scope.$watch(() => this.showProfiles, () => this.search());
   }
@@ -119,7 +119,7 @@ class SearchClassController {
   }
 
   private modelFilter(klass: ClassListItem): boolean {
-    return !this.modelId || klass.definedBy.id.uri === this.modelId;
+    return !this.showModel || klass.definedBy.id.equals(this.showModel.id);
   }
 
   private excludedFilter(klass: ClassListItem): boolean {

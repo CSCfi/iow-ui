@@ -22,9 +22,8 @@
 
         <div class="input-group input-group-lg">
           <div class="selectContainer">
-            <select class="form-control" ng-model="ctrl.modelId">
+            <select class="form-control" ng-model="ctrl.showModel" ng-options="model | translateLabel for model in ctrl.models">
               <option value="" translate>All models</option>
-              <option ng-repeat="model in ctrl.models" value="{{model.id.uri}}">{{model | translateLabel}}</option>
             </select>
           </div>
         </div>

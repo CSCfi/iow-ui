@@ -14,11 +14,7 @@
 
   <div ng-if="ctrl.isEditing()">
     <div class="input-group input-group-sm pull-left input-select">
-      <select class="form-control" ng-model="ctrl.constraint.constraint">
-        <option value="or">Or</option>
-        <option value="and">And</option>
-        <option value="not">Not</option>
-      </select>
+      <select class="form-control" ng-model="ctrl.constraint.constraint" ng-options="type | capitalize for type in ctrl.types"></select>
     </div>
     <div class="form-control with-button multi-input">
       <div ng-repeat="item in ctrl.constraint.items" class="added-item">
