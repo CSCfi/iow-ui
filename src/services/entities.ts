@@ -1177,13 +1177,13 @@ function serializeLocalizable(localizable: Localizable) {
   return Object.assign({}, localizable);
 }
 
-function deserializeLocalizable(localizable: Localizable) {
+function deserializeLocalizable(localizable: any) {
   const result: Localizable = {};
 
   if (localizable) {
     for (const lang of Object.keys(localizable)) {
       const value = localizable[lang];
-      result[lang] = Array.isArray(value) ? Array.join(value, ' ') : value;
+      result[lang] = Array.isArray(value) ? value.join(' ') : value;
     }
   }
 
