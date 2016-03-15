@@ -2,6 +2,7 @@
   <dictionary name="mortti">
     <words>
       <w>autocompleted</w>
+      <w>chainable</w>
       <w>collapsable</w>
       <w>ctrls</w>
       <w>dataset</w>
