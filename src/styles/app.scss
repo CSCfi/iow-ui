@@ -39,6 +39,11 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
+.modal.fade {
+  // IE11 autofocus fix by removing slide animation
+  transition:opacity .3s linear;
+}
+
 .btn-group.right .dropdown-menu {
   right: 0;
   left: auto;
