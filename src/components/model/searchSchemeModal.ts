@@ -5,6 +5,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { ConceptService } from '../../services/conceptService';
 import { Language } from '../../services/languageService';
+import { comparingBoolean, comparingString } from '../../services/comparators';
 
 const noExclude = (scheme: any) => <string> null;
 
@@ -33,7 +34,6 @@ class SearchSchemeController {
   searchResults: any[];
   schemes: any[];
   searchText: string = '';
-  showExcluded: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -50,13 +50,22 @@ class SearchSchemeController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
   }
+  
+  get showExcluded() {
+    return !!this.searchText;
+  }
 
   search() {
-    this.searchResults = _.chain(this.schemes)
-      .filter(scheme => this.textFilter(scheme))
-      .filter(scheme => this.excludedFilter(scheme))
-      .sortBy(scheme => scheme.title)
-      .value();
+    if (this.schemes) {
+      this.searchResults = this.schemes.filter(scheme =>
+        this.textFilter(scheme) &&
+        this.excludedFilter(scheme)
+      );
+
+      this.searchResults.sort(
+        comparingBoolean((scheme: any) => !!this.exclude(scheme))
+          .andThen(comparingString((scheme: any) => scheme.title)));
+    }
   }
 
   selectItem(scheme: any) {

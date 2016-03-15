@@ -8,6 +8,7 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
+import { comparingString, comparingBoolean, reversed } from '../../services/comparators';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -63,7 +64,6 @@ export class SearchPredicateController {
   types: Type[];
   typeSelectable: boolean;
   submitError: string;
-  showExcluded: boolean;
   cannotConfirm: string;
 
   /* @ngInject */
@@ -101,14 +101,23 @@ export class SearchPredicateController {
     $scope.$watch(() => this.showExcluded, () => this.search());
   }
 
+  get showExcluded() {
+    return !!this.searchText;
+  }
+
   search() {
-    this.searchResults = _.chain(this.predicates)
-      .filter(predicate => this.textFilter(predicate))
-      .filter(predicate => this.modelFilter(predicate))
-      .filter(predicate => this.typeFilter(predicate))
-      .filter(predicate => this.excludedFilter(predicate))
-      .sortBy(predicate => this.localizedLabelAsLower(predicate))
-      .value();
+    if (this.predicates) {
+      this.searchResults = this.predicates.filter(predicate =>
+        this.textFilter(predicate) &&
+        this.modelFilter(predicate) &&
+        this.typeFilter(predicate) &&
+        this.excludedFilter(predicate)
+      );
+
+      this.searchResults.sort(
+        comparingBoolean((item: PredicateListItem) => !!this.exclude(item))
+          .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
+    }
   }
 
   selectItem(predicate: PredicateListItem) {

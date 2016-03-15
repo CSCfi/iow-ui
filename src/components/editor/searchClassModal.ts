@@ -7,6 +7,7 @@ import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { Class, ClassListItem, Model, Uri, DefinedBy } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
+import { comparingBoolean, comparingString } from '../../services/comparators';
 
 export const noExclude = (item: ClassListItem) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';
@@ -49,7 +50,6 @@ class SearchClassController {
   searchResults: ClassListItem[];
   selectedClass: Class;
   searchText: string = '';
-  showExcluded: boolean;
   showProfiles: boolean;
   showModel: DefinedBy;
   models: DefinedBy[] = [];
@@ -82,18 +82,26 @@ class SearchClassController {
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
-    $scope.$watch(() => this.showExcluded, () => this.search());
     $scope.$watch(() => this.showProfiles, () => this.search());
   }
 
+  get showExcluded() {
+    return !!this.searchText;
+  }
+
   search() {
-    this.searchResults = _.chain(this.classes)
-      .filter(klass => this.textFilter(klass))
-      .filter(klass => this.modelFilter(klass))
-      .filter(klass => this.excludedFilter(klass))
-      .filter(klass => this.showProfilesFilter(klass))
-      .sortBy(klass => this.localizedLabelAsLower(klass))
-      .value();
+    if (this.classes) {
+      this.searchResults = this.classes.filter(klass =>
+        this.textFilter(klass) &&
+        this.modelFilter(klass) &&
+        this.excludedFilter(klass) &&
+        this.showProfilesFilter(klass)
+      );
+
+      this.searchResults.sort(
+        comparingBoolean((item: ClassListItem) => !!this.exclude(item))
+          .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
+    }
   }
 
   selectItem(klass: ClassListItem) {
