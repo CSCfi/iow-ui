@@ -9,6 +9,7 @@ import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, reversed } from '../../services/comparators';
+import { ConfirmationModal } from '../common/confirmationModal';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -75,7 +76,8 @@ export class SearchPredicateController {
               public onlySelection: boolean,
               private predicateService: PredicateService,
               private languageService: LanguageService,
-              private searchConceptModal: SearchConceptModal) {
+              private searchConceptModal: SearchConceptModal,
+              private confirmationModal: ConfirmationModal) {
 
     predicateService.getAllPredicates().then((allPredicates: PredicateListItem[]) => {
       this.typeSelectable = !type;
@@ -121,10 +123,21 @@ export class SearchPredicateController {
   }
 
   selectItem(predicate: PredicateListItem) {
-    this.$scope.form.editing = false;
-    this.submitError = null;
-    this.cannotConfirm = this.exclude(predicate);
-    this.predicateService.getPredicate(predicate.id, this.model).then(result => this.selectedPredicate = result);
+
+    const that = this;
+
+    function doSelection() {
+      that.$scope.form.editing = false;
+      that.submitError = null;
+      that.cannotConfirm = that.exclude(predicate);
+      that.predicateService.getPredicate(predicate.id, that.model).then(result => that.selectedPredicate = result);
+    }
+
+    if (this.$scope.form.editing) {
+      this.confirmationModal.openEditInProgress().then(doSelection);
+    } else {
+      doSelection();
+    }
   }
 
   usePredicate() {
