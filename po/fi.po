@@ -12,6 +12,10 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: components/editor/propertyView.html:46
+msgid "{{'Reusable predicate' | translate}}"
+msgstr ""
+
 #: translations/misc.html:55
 msgid "Add association"
 msgstr "Lisää assosiaatio"
@@ -78,11 +82,11 @@ msgstr "Tarkennettu haku"
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
-#: components/editor/searchConceptModal.html:12
+#: components/editor/searchConceptModal.html:13
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/editor/searchPredicateModal.html:47
+#: components/editor/searchPredicateModal.html:46
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -194,13 +198,13 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:63
+#: components/editor/searchClassModal.html:58
 #: components/editor/searchConceptModal.html:60
-#: components/editor/searchPredicateModal.html:79
+#: components/editor/searchPredicateModal.html:73
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
-#: components/model/searchRequireModal.html:37
-#: components/model/searchSchemeModal.html:29
+#: components/model/searchRequireModal.html:33
+#: components/model/searchSchemeModal.html:25
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -220,7 +224,7 @@ msgstr "valitse assosiaatio"
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
-#: components/editor/editableConstraint.html:30 translations/misc.html:75
+#: components/editor/editableConstraint.html:26 translations/misc.html:75
 msgid "Choose class"
 msgstr "valitse luokka"
 
@@ -434,7 +438,7 @@ msgstr "Poista ominaisuus"
 msgid "Delete reference"
 msgstr "Poista sanasto"
 
-#: components/model/requiresView.html:11
+#: components/model/requiresView.html:9
 msgid "Delete require"
 msgstr "Poista nimiavaruus"
 
@@ -706,7 +710,7 @@ msgstr "Muokattu"
 msgid "Name"
 msgstr "Nimi"
 
-#: components/model/requiresView.html:37 translations/misc.html:73
+#: components/model/requiresView.html:35 translations/misc.html:73
 msgid "Namespace"
 msgstr "Nimiavaruus"
 
@@ -737,10 +741,6 @@ msgstr "Ei sanastoja"
 #: components/editor/usage.html:1 components/editor/usagePanel.html:7
 msgid "No referrers"
 msgstr "Ei viittauksia"
-
-#: components/model/requiresView.html:3
-msgid "No requires yet"
-msgstr "Ei nimiavaruuksia"
 
 #: components/advancedSearchModal.html:21 components/frontPage.html:33
 msgid "No search results"
@@ -814,7 +814,7 @@ msgstr "Assosiaatio"
 msgid "Pattern"
 msgstr "Säännollinen lauseke"
 
-#: components/model/requiresView.html:36 translations/misc.html:74
+#: components/model/requiresView.html:34 translations/misc.html:74
 msgid "Prefix"
 msgstr "Etuliite"
 
@@ -877,6 +877,10 @@ msgstr "On jo käytössä"
 #: translations/misc.html:119
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
+
+#: components/editor/propertyView.html:46
+msgid "Reusable predicate"
+msgstr "Uudelleenkäytettävä ominaisuus"
 
 #: components/model/editableRootClass.html:2
 msgid "Root class"
@@ -981,14 +985,11 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/editor/searchClassModal.html:37
+#: components/editor/searchClassModal.html:32
 msgid "Show classes defined in profiles"
 msgstr "Näytä profiileissa määritellyt luokat"
 
-#: components/editor/searchClassModal.html:33
-#: components/editor/searchPredicateModal.html:54
-#: components/model/searchRequireModal.html:23
-#: components/model/searchSchemeModal.html:16 translations/misc.html:131
+#: translations/misc.html:131
 msgid "Show excluded"
 msgstr "Näytä myös ne, joita ei voi lisätä"
 
@@ -1040,7 +1041,7 @@ msgstr "Yläattribuutti"
 msgid "Superclass"
 msgstr "Yläluokka"
 
-#: components/model/requiresView.html:30
+#: components/model/requiresView.html:28
 msgid "Technical namespaces"
 msgstr "Tekniset nimiavaruudet"
 
@@ -1290,6 +1291,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "No requires yet"
+#~ msgstr "Ei nimiavaruuksia"
 
 #~ msgid "Generalize class"
 #~ msgstr "Nosta luokka kirjastoon"

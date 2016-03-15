@@ -4,6 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: components/editor/propertyView.html:46
+msgid "{{'Reusable predicate' | translate}}"
+msgstr ""
+
 #: translations/misc.html:55
 msgid "Add association"
 msgstr ""
@@ -74,11 +78,11 @@ msgstr ""
 msgid "All models"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:12
+#: components/editor/searchConceptModal.html:13
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:47
+#: components/editor/searchPredicateModal.html:46
 msgid "All types"
 msgstr ""
 
@@ -191,13 +195,13 @@ msgstr ""
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:63
+#: components/editor/searchClassModal.html:58
 #: components/editor/searchConceptModal.html:60
-#: components/editor/searchPredicateModal.html:79
+#: components/editor/searchPredicateModal.html:73
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
-#: components/model/searchRequireModal.html:37
-#: components/model/searchSchemeModal.html:29
+#: components/model/searchRequireModal.html:33
+#: components/model/searchSchemeModal.html:25
 msgid "Cancel"
 msgstr ""
 
@@ -217,7 +221,7 @@ msgstr ""
 msgid "Choose attribute"
 msgstr ""
 
-#: components/editor/editableConstraint.html:30
+#: components/editor/editableConstraint.html:26
 #: translations/misc.html:75
 msgid "Choose class"
 msgstr ""
@@ -433,7 +437,7 @@ msgstr ""
 msgid "Delete reference"
 msgstr ""
 
-#: components/model/requiresView.html:11
+#: components/model/requiresView.html:9
 msgid "Delete require"
 msgstr ""
 
@@ -700,7 +704,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: components/model/requiresView.html:37
+#: components/model/requiresView.html:35
 #: translations/misc.html:73
 msgid "Namespace"
 msgstr ""
@@ -732,10 +736,6 @@ msgstr ""
 #: components/editor/usage.html:1
 #: components/editor/usagePanel.html:7
 msgid "No referrers"
-msgstr ""
-
-#: components/model/requiresView.html:3
-msgid "No requires yet"
 msgstr ""
 
 #: components/advancedSearchModal.html:21
@@ -811,7 +811,7 @@ msgstr ""
 msgid "Pattern"
 msgstr ""
 
-#: components/model/requiresView.html:36
+#: components/model/requiresView.html:34
 #: translations/misc.html:74
 msgid "Prefix"
 msgstr ""
@@ -874,6 +874,10 @@ msgstr ""
 
 #: translations/misc.html:119
 msgid "Resource status restricts removing"
+msgstr ""
+
+#: components/editor/propertyView.html:46
+msgid "Reusable predicate"
 msgstr ""
 
 #: components/model/editableRootClass.html:2
@@ -979,14 +983,10 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: components/editor/searchClassModal.html:37
+#: components/editor/searchClassModal.html:32
 msgid "Show classes defined in profiles"
 msgstr ""
 
-#: components/editor/searchClassModal.html:33
-#: components/editor/searchPredicateModal.html:54
-#: components/model/searchRequireModal.html:23
-#: components/model/searchSchemeModal.html:16
 #: translations/misc.html:131
 msgid "Show excluded"
 msgstr ""
@@ -1039,7 +1039,7 @@ msgstr ""
 msgid "Superclass"
 msgstr ""
 
-#: components/model/requiresView.html:30
+#: components/model/requiresView.html:28
 msgid "Technical namespaces"
 msgstr ""
 
