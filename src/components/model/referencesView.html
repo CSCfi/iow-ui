@@ -7,7 +7,7 @@
     <uib-accordion-heading>
       <span accordion-chevron is-open="ctrl.opened[reference.id]">{{reference | translateLabel}}</span>
     </uib-accordion-heading>
-    <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeReference(reference)" translate>Delete reference</button>
+    <button ng-show="modelViewController.canModify() && !reference.isLocal()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeReference(reference)" translate>Delete reference</button>
     <non-editable title="Id" value="reference.vocabularyId"></non-editable>
   </uib-accordion-group>
 </uib-accordion>
