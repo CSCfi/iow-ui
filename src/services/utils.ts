@@ -1,5 +1,27 @@
 import { Type, Localizable, Model, DefinedBy, ClassListItem, Uri, GraphData } from './entities';
 
+export function allLocalizations(predicate: (localized: string) => boolean, localizable: Localizable) {
+  if (localizable) {
+    for (let localized of Object.values(localizable)) {
+      if (!predicate(localized)) {
+        return false;
+      }
+    }
+  }
+  return true;  
+}
+
+export function anyLocalization(predicate: (localized: string) => boolean, localizable: Localizable) {
+  if (localizable) {
+    for (let localized of Object.values(localizable)) {
+      if (predicate(localized)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 export namespace Iterable {
   export function forEach<T>(iterable: Iterable<T>, callback: (item: T) => void): void {
     const iterator = iterable[Symbol.iterator]();

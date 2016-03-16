@@ -3,24 +3,13 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { Localizable } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
-import { hasLocalization } from '../../services/utils';
+import { hasLocalization, allLocalizations } from '../../services/utils';
 import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
 
 export const mod = angular.module('iow.components.form');
 
 interface LocalizedInputAttributes extends IAttributes {
   localizedInput: string;
-}
-
-function anyLocalization(localizable: Localizable, predicate: (localized: string) => boolean) {
-  if (localizable) {
-    for (let localized of Object.values(localizable)) {
-      if (!predicate(localized)) {
-        return false;
-      }
-    }
-  }
-  return true;
 }
 
 mod.directive('localizedInput', (languageService: LanguageService) => {
@@ -69,7 +58,7 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
       });
 
       ngModel.$validators['string'] = modelValue => {
-        return anyLocalization(modelValue, isStringValid);
+        return allLocalizations(isStringValid, modelValue);
       };
 
       switch (attributes.localizedInput) {
@@ -78,11 +67,11 @@ mod.directive('localizedInput', (languageService: LanguageService) => {
           break;
         case 'label':
           ngModel.$validators['requiredLocalized'] = hasLocalization;
-          ngModel.$validators['length'] = modelValue => anyLocalization(modelValue, isValidLabelLength);
+          ngModel.$validators['length'] = modelValue => allLocalizations(isValidLabelLength, modelValue);
           break;
         case 'modelLabel':
           ngModel.$validators['requiredLocalized'] = hasLocalization;
-          ngModel.$validators['length'] = modelValue => anyLocalization(modelValue, isValidModelLabelLength);
+          ngModel.$validators['length'] = modelValue => allLocalizations(isValidModelLabelLength, modelValue);
           break;
       }
     }
