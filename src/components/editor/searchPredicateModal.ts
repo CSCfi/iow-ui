@@ -57,7 +57,7 @@ export class SearchPredicateController {
   private predicates: PredicateListItem[];
 
   close = this.$uibModalInstance.dismiss;
-  searchResults: PredicateListItem[];
+  searchResults: PredicateListItem[] = [];
   selectedPredicate: Predicate;
   searchText: string = '';
   showModel: DefinedBy;
@@ -170,11 +170,11 @@ export class SearchPredicateController {
   }
 
   isAttributeAddable(): boolean {
-    return this.typeSelectable || this.type === 'attribute';
+    return this.searchText && (this.typeSelectable || this.type === 'attribute');
   }
 
   isAssociationAddable(): boolean {
-    return this.typeSelectable || this.type === 'association';
+    return this.searchText && (this.typeSelectable || this.type === 'association');
   }
 
   private localizedLabelAsLower(predicate: PredicateListItem): string {

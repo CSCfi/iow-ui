@@ -3,11 +3,6 @@
 
   <modal-body>
 
-    <button ng-if="!ctrl.onlySelection" type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNewClass()">
-      <span class="glyphicon glyphicon-plus"></span>
-      {{'Create new class' | translate}}
-    </button>
-
     <div class="row">
 
       <div class="col-md-4">
@@ -34,9 +29,12 @@
       </div>
 
       <div class="col-md-4 search-results">
+        <div class="search-result add-new" ng-show="ctrl.canAddNew()" ng-click="ctrl.createNewClass()">
+          <h5>{{'Create new class' | translate}} '{{ctrl.searchText}}' <i class="glyphicon glyphicon-plus"></i></h5>
+        </div>
+
         <search-results items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
-          <i ng-class="searchResult.glyphIconClass"></i>
-          <h5>{{searchResult | translateLabel}}</h5>
+          <h5>{{searchResult | translateLabel}} <i ng-class="searchResult.glyphIconClass"></i></h5>
           <p>{{searchResult.definedBy | translateLabel}}</p>
         </search-results>
       </div>

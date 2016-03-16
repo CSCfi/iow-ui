@@ -4,7 +4,7 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
-import { Class, ClassListItem, Model, Uri, DefinedBy } from '../../services/entities';
+import { Class, ClassListItem, Model, DefinedBy } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
@@ -47,7 +47,7 @@ class SearchClassController {
   private classes: ClassListItem[];
 
   close = this.$uibModalInstance.dismiss;
-  searchResults: ClassListItem[];
+  searchResults: ClassListItem[] = [];
   selectedClass: Class;
   searchText: string = '';
   showProfiles: boolean;
@@ -102,6 +102,10 @@ class SearchClassController {
         comparingBoolean((item: ClassListItem) => !!this.exclude(item))
           .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
     }
+  }
+
+  canAddNew() {
+    return !this.onlySelection && this.searchText;
   }
 
   selectItem(klass: ClassListItem) {

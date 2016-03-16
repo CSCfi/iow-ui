@@ -681,6 +681,12 @@ modal-body {
       border: 1px solid #ddd;
       margin-bottom: 10px;
       padding-left: 10px;
+      box-shadow: 2px 2px 2px #ddd;
+
+      &.add-new {
+        border: 1px solid #000;
+        box-shadow: 2px 2px 2px #888888;
+      }
 
       &.selected, &.selection {
         background-color: #ffffff;
@@ -694,6 +700,7 @@ modal-body {
       i {
         float: right;
         padding: 5px;
+        line-height: 5px;
       }
     }
   }
