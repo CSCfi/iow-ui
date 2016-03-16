@@ -42,7 +42,8 @@ export type Type = 'class'
                  | 'concept'
                  | 'entity'
                  | 'activity'
-                 | 'resource';
+                 | 'resource'
+                 | 'collection';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -411,6 +412,10 @@ export class Reference extends GraphNode {
     this.comment = deserializeLocalizable(graph.comment);
   }
 
+  isLocal() {
+    return this.isOfType('collection');
+  }
+
   get href() {
     return config.fintoUrl + this.vocabularyId;
   }
@@ -432,7 +437,7 @@ export class Require extends GraphNode {
     this.prefix = graph['preferredXMLNamespacePrefix'];
     this.external = this.isOfType('resource');
   }
-  
+
   get modifiable() {
     return this.external;
   }
