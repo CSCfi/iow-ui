@@ -1,3 +1,4 @@
+import 'core-js';
 import './modelJHS';
 import './modelEDU';
 import './modelOILI';
