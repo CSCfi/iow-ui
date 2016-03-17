@@ -62,7 +62,7 @@ class SearchResultsController<T extends WithId> {
   constructor($scope: IScope, private gettextCatalog: gettextCatalog) {
     $scope.$watchCollection(() => this.items, items => {
       this.searchResults = _.map(items, item => {
-        const disabledReason = this.exclude(item);
+        const disabledReason = this.exclude && this.exclude(item);
         return new SearchResult(item, disabledReason);
       });
     });
