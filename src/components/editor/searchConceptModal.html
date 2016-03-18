@@ -27,15 +27,15 @@
             </div>
           </div>
 
-          <a ng-show="ctrl.selectedReference" ng-href="{{ctrl.selectedReference.href}}" target="_blank" translate>Browse vocabulary</a>
+          <a ng-show="ctrl.selectedReference && !ctrl.selectedReference.isLocal()" ng-href="{{ctrl.selectedReference.href}}" target="_blank" translate>Browse vocabulary</a>
         </div>
 
         <div class="col-md-4 search-results">
           <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
-              <h5>{{searchResult | translateLabel}} <span ng-show="searchResults.suggestion">({{'suggestion' | translate}})</span></h5>
-              <p>{{searchResult.reference | translateLabel}}</p>
+            <h5>{{searchResult | translateLabel}} <span ng-show="searchResults.suggestion">({{'suggestion' | translate}})</span></h5>
+            <p>{{searchResult.reference | translateLabel}}</p>
           </search-results>
         </div>
 
