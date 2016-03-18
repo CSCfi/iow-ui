@@ -12,7 +12,6 @@ import { LanguageService } from '../../services/languageService';
 import { Reference, ConceptSuggestion, Type, FintoConcept } from '../../services/entities';
 import { comparingString, comparingBoolean } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
-import { ConfirmationModal } from '../common/confirmationModal';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
 
@@ -134,7 +133,6 @@ class SearchConceptController {
               public newEntityCreation: boolean,
               public references: Reference[],
               private conceptService: ConceptService,
-              private confirmationModal: ConfirmationModal,
               private gettextCatalog: gettextCatalog) {
 
     this.defineConceptTitle = `Define concept for the ${this.newEntityCreation ? 'new ' : ''}${this.type}`;
