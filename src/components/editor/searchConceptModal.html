@@ -42,12 +42,12 @@
         <div class="col-md-4 search-selection">
           <div ng-show="ctrl.selectedConcept">
 
-            <div ng-show="ctrl.isConcept(ctrl.selectedConcept)">
+            <div ng-if="ctrl.isConcept(ctrl.selectedConcept)">
               <non-editable title="Concept" value="ctrl.selectedConcept.label"></non-editable>
               <non-editable title="Definition" value="ctrl.selectedConcept.comment"></non-editable>
             </div>
 
-            <div ng-hide="ctrl.isConcept(ctrl.selectedConcept)">
+            <div ng-if="!ctrl.isConcept(ctrl.selectedConcept)">
               <editable title="Concept">
                 <div class="input-group input-group-md">
                   <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.concept.label" />
@@ -71,7 +71,7 @@
               <p><span translate>Concept is suggested to scheme</span> {{ctrl.selectedConcept.reference | translateLabel}}</p>
             </div>
 
-            <div ng-show="ctrl.newEntityCreation">
+            <div ng-if="ctrl.newEntityCreation">
               <editable title="{{ctrl.labelTitle}}">
                 <div class="input-group input-group-md">
                   <input id="name" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.entity.label" />
