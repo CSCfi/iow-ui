@@ -74,7 +74,7 @@ msgstr ""
 msgid "All models"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:24
+#: components/editor/searchConceptModal.html:25
 msgid "All references"
 msgstr ""
 
@@ -168,6 +168,7 @@ msgid "Backend"
 msgstr ""
 
 #: translations/misc.html:133
+#: translations/misc.html:175
 msgid "Broader concept"
 msgstr ""
 
@@ -175,7 +176,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:29
+#: components/editor/searchConceptModal.html:30
 msgid "Browse vocabulary"
 msgstr ""
 
@@ -189,11 +190,10 @@ msgstr ""
 
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:56
-#: components/editor/searchConceptModal.html:65
-#: components/editor/searchPredicateModal.html:69
+#: components/editor/searchClassModal.html:52
+#: components/editor/searchConceptModal.html:86
+#: components/editor/searchPredicateModal.html:61
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:33
@@ -217,6 +217,10 @@ msgstr ""
 msgid "Choose attribute"
 msgstr ""
 
+#: components/editor/searchConceptModal.html:64
+msgid "Choose broader concept"
+msgstr ""
+
 #: components/editor/editableConstraint.html:26
 #: translations/misc.html:75
 msgid "Choose class"
@@ -228,11 +232,6 @@ msgstr ""
 
 #: components/editor/editableSubjectSelect.html:5
 msgid "Choose subject"
-msgstr ""
-
-#: components/editor/addConceptModal.html:41
-#: components/editor/searchConceptModal.html:45
-msgid "Chosen concept"
 msgstr ""
 
 #: translations/misc.html:33
@@ -276,7 +275,7 @@ msgstr ""
 msgid "Concept"
 msgstr ""
 
-#: components/editor/addConceptModal.html:48
+#: components/editor/searchConceptModal.html:68
 msgid "Concept is suggested to scheme"
 msgstr ""
 
@@ -309,21 +308,20 @@ msgstr ""
 msgid "Create and use attribute"
 msgstr ""
 
-#: components/editor/addConceptModal.html:53
 #: components/group/addModelModal.html:23
 #: components/model/addRequireModal.html:31
 msgid "Create new"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:46
+#: translations/misc.html:180
 msgid "Create new association"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:42
+#: translations/misc.html:179
 msgid "Create new attribute"
 msgstr ""
 
-#: components/editor/searchClassModal.html:33
+#: translations/misc.html:178
 msgid "Create new class"
 msgstr ""
 
@@ -380,8 +378,7 @@ msgstr ""
 msgid "Define concept for the new class"
 msgstr ""
 
-#: components/editor/addConceptModal.html:44
-#: components/editor/searchConceptModal.html:48
+#: translations/misc.html:176
 msgid "Definition"
 msgstr ""
 
@@ -844,7 +841,7 @@ msgstr ""
 msgid "Recommendation"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:19
+#: components/editor/searchConceptModal.html:20
 msgid "Reference"
 msgstr ""
 
@@ -925,7 +922,6 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
-#: components/editor/addConceptModal.html:35
 #: components/editor/searchConceptModal.html:12
 msgid "Search from concept database"
 msgstr ""
@@ -1011,16 +1007,15 @@ msgstr ""
 msgid "String error"
 msgstr ""
 
-#: components/editor/subjectView.html:1
+#: translations/misc.html:174
 msgid "Subject"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:34
 #: translations/misc.html:10
 msgid "suggest"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:38
+#: components/editor/searchConceptModal.html:35
 #: translations/misc.html:11
 msgid "suggestion"
 msgstr ""
@@ -1045,7 +1040,7 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:34
+#: translations/misc.html:177
 msgid "to vocabulary"
 msgstr ""
 

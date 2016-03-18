@@ -78,7 +78,7 @@ msgstr "Tarkennettu haku"
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
-#: components/editor/searchConceptModal.html:24
+#: components/editor/searchConceptModal.html:25
 msgid "All references"
 msgstr "Kaikki sanastot"
 
@@ -170,7 +170,7 @@ msgstr "Attribuutit"
 msgid "Backend"
 msgstr "Taustajärjestelmä"
 
-#: translations/misc.html:133
+#: translations/misc.html:133 translations/misc.html:175
 msgid "Broader concept"
 msgstr "Laajempi käsite"
 
@@ -178,7 +178,7 @@ msgstr "Laajempi käsite"
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/editor/searchConceptModal.html:29
+#: components/editor/searchConceptModal.html:30
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
 
@@ -192,11 +192,10 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
-#: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:56
-#: components/editor/searchConceptModal.html:65
-#: components/editor/searchPredicateModal.html:69
+#: components/editor/searchClassModal.html:52
+#: components/editor/searchConceptModal.html:86
+#: components/editor/searchPredicateModal.html:61
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:33
@@ -220,6 +219,10 @@ msgstr "valitse assosiaatio"
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
+#: components/editor/searchConceptModal.html:64
+msgid "Choose broader concept"
+msgstr "valitse laajempi käsite"
+
 #: components/editor/editableConstraint.html:26 translations/misc.html:75
 msgid "Choose class"
 msgstr "valitse luokka"
@@ -231,11 +234,6 @@ msgstr "valitse juurisolmu"
 #: components/editor/editableSubjectSelect.html:5
 msgid "Choose subject"
 msgstr "valitse käsite"
-
-#: components/editor/addConceptModal.html:41
-#: components/editor/searchConceptModal.html:45
-msgid "Chosen concept"
-msgstr "Valittu käsite"
 
 #: translations/misc.html:33
 msgid "class"
@@ -279,7 +277,7 @@ msgstr "Sulje"
 msgid "Concept"
 msgstr "Käsite"
 
-#: components/editor/addConceptModal.html:48
+#: components/editor/searchConceptModal.html:68
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
@@ -313,21 +311,20 @@ msgstr "Luo assosiaatio ja käytä"
 msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
-#: components/editor/addConceptModal.html:53
 #: components/group/addModelModal.html:23
 #: components/model/addRequireModal.html:31
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: components/editor/searchPredicateModal.html:46
+#: translations/misc.html:180
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: components/editor/searchPredicateModal.html:42
+#: translations/misc.html:179
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
-#: components/editor/searchClassModal.html:33
+#: translations/misc.html:178
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
@@ -383,8 +380,7 @@ msgstr "Määrittele käsite uudelle attribuutille"
 msgid "Define concept for the new class"
 msgstr "Määrittele käsite uudelle luokalle"
 
-#: components/editor/addConceptModal.html:44
-#: components/editor/searchConceptModal.html:48
+#: translations/misc.html:176
 msgid "Definition"
 msgstr "Määritelmä"
 
@@ -848,7 +844,7 @@ msgstr "Virheellinen kieliversioitu teksti"
 msgid "Recommendation"
 msgstr "Suositus"
 
-#: components/editor/searchConceptModal.html:19
+#: components/editor/searchConceptModal.html:20
 msgid "Reference"
 msgstr "Sanasto"
 
@@ -928,7 +924,6 @@ msgstr "Hae luokkia"
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
-#: components/editor/addConceptModal.html:35
 #: components/editor/searchConceptModal.html:12
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
@@ -1015,15 +1010,15 @@ msgstr "Tila"
 msgid "String error"
 msgstr "Literaalin täytyy alkaa kirjaimella"
 
-#: components/editor/subjectView.html:1
+#: translations/misc.html:174
 msgid "Subject"
 msgstr "Käsite"
 
-#: components/editor/searchConceptModal.html:34 translations/misc.html:10
+#: translations/misc.html:10
 msgid "suggest"
 msgstr "ehdota"
 
-#: components/editor/searchConceptModal.html:38 translations/misc.html:11
+#: components/editor/searchConceptModal.html:35 translations/misc.html:11
 msgid "suggestion"
 msgstr "ehdotus"
 
@@ -1047,7 +1042,7 @@ msgstr "Tekniset nimiavaruudet"
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: components/editor/searchConceptModal.html:34
+#: translations/misc.html:177
 msgid "to vocabulary"
 msgstr "sanastoon"
 
@@ -1293,6 +1288,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Chosen concept"
+#~ msgstr "Valittu käsite"
 
 #~ msgid "Concepts can't be searched because there are no vocabularies"
 #~ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"

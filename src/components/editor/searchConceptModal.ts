@@ -133,7 +133,8 @@ class SearchConceptController {
               public newEntityCreation: boolean,
               public references: Reference[],
               private conceptService: ConceptService,
-              private gettextCatalog: gettextCatalog) {
+              private gettextCatalog: gettextCatalog,
+              private searchConceptModal: SearchConceptModal) {
 
     this.defineConceptTitle = `Define concept for the ${this.newEntityCreation ? 'new ' : ''}${this.type}`;
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type: 'Use');
@@ -216,6 +217,11 @@ class SearchConceptController {
         this.formData = createNewEntityData(this.languageService.translate(concept.label));
       });
     }
+  }
+
+  selectBroaderConcept() {
+    this.searchConceptModal.openSelection(this.activeReferences, this.type)
+      .then(concept => this.formData.concept.broaderConcept = concept);
   }
 
   canAddNew(reference: Reference) {

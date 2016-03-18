@@ -1,4 +1,4 @@
-<label translate>Subject</label>
+<label>{{(ctrl.title || 'Subject') | translate}}</label>
 <div ng-hide="ctrl.subject" translate>Not defined</div>
 <div class="model-view__sub">
   <non-editable title="Id" value="ctrl.subject.id.uri" link="ctrl.subject.id.url"></non-editable>

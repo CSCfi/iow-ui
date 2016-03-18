@@ -6,7 +6,8 @@ export const mod = angular.module('iow.components.editor');
 mod.directive('subjectView', () => {
   return {
     scope: {
-      subject: '='
+      subject: '=',
+      title: '@'
     },
     bindToController: true,
     controllerAs: 'ctrl',
@@ -18,4 +19,5 @@ mod.directive('subjectView', () => {
 
 class SubjectViewController {
   subject: FintoConcept|ConceptSuggestion;
+  title: string;
 }

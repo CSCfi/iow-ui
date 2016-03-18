@@ -58,6 +58,14 @@
                 </div>
               </editable>
 
+              <div class="editable-wrap">
+                <subject-view subject="ctrl.formData.concept.broaderConcept" title="Broader concept"></subject-view>
+                <div ng-class="{'model-view__sub': !!ctrl.formData.concept.broaderConcept}">
+                  <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
+                </div>
+              </div>
+
+              <br />
               <p><span translate>Concept is suggested to scheme</span> {{ctrl.selectedConcept.reference | translateLabel}}</p>
             </div>
 
