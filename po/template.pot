@@ -4,10 +4,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: components/editor/propertyView.html:46
-msgid "{{'Reusable predicate' | translate}}"
-msgstr ""
-
 #: translations/misc.html:55
 msgid "Add association"
 msgstr ""
@@ -73,16 +69,16 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: components/editor/searchClassModal.html:26
-#: components/editor/searchPredicateModal.html:38
+#: components/editor/searchClassModal.html:21
+#: components/editor/searchPredicateModal.html:26
 msgid "All models"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:13
+#: components/editor/searchConceptModal.html:24
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:46
+#: components/editor/searchPredicateModal.html:34
 msgid "All types"
 msgstr ""
 
@@ -179,7 +175,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:18
+#: components/editor/searchConceptModal.html:29
 msgid "Browse vocabulary"
 msgstr ""
 
@@ -195,9 +191,9 @@ msgstr ""
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:58
-#: components/editor/searchConceptModal.html:60
-#: components/editor/searchPredicateModal.html:73
+#: components/editor/searchClassModal.html:56
+#: components/editor/searchConceptModal.html:65
+#: components/editor/searchPredicateModal.html:69
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:33
@@ -235,7 +231,7 @@ msgid "Choose subject"
 msgstr ""
 
 #: components/editor/addConceptModal.html:41
-#: components/editor/searchConceptModal.html:38
+#: components/editor/searchConceptModal.html:45
 msgid "Chosen concept"
 msgstr ""
 
@@ -263,7 +259,7 @@ msgstr ""
 msgid "Class properties"
 msgstr ""
 
-#: components/editor/searchClassModal.html:14
+#: components/editor/searchClassModal.html:9
 msgid "Class search info"
 msgstr ""
 
@@ -284,8 +280,8 @@ msgstr ""
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:55
-msgid "Concepts can't be searched because there are no vocabularies"
+#: components/editor/searchConceptModal.html:10
+msgid "Concept search info"
 msgstr ""
 
 #: components/common/deleteConfirmationModal.html:2
@@ -319,15 +315,15 @@ msgstr ""
 msgid "Create new"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:13
+#: components/editor/searchPredicateModal.html:46
 msgid "Create new association"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:18
+#: components/editor/searchPredicateModal.html:42
 msgid "Create new attribute"
 msgstr ""
 
-#: components/editor/searchClassModal.html:8
+#: components/editor/searchClassModal.html:33
 msgid "Create new class"
 msgstr ""
 
@@ -385,7 +381,7 @@ msgid "Define concept for the new class"
 msgstr ""
 
 #: components/editor/addConceptModal.html:44
-#: components/editor/searchConceptModal.html:41
+#: components/editor/searchConceptModal.html:48
 msgid "Definition"
 msgstr ""
 
@@ -848,7 +844,7 @@ msgstr ""
 msgid "Recommendation"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:8
+#: components/editor/searchConceptModal.html:19
 msgid "Reference"
 msgstr ""
 
@@ -916,7 +912,7 @@ msgstr ""
 msgid "Search attributes and associations"
 msgstr ""
 
-#: components/editor/searchClassModal.html:16
+#: components/editor/searchClassModal.html:11
 msgid "search class"
 msgstr ""
 
@@ -930,11 +926,11 @@ msgid "search descriptions"
 msgstr ""
 
 #: components/editor/addConceptModal.html:35
-#: components/editor/searchConceptModal.html:32
+#: components/editor/searchConceptModal.html:12
 msgid "Search from concept database"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:25
+#: components/editor/searchPredicateModal.html:13
 msgid "Search predicate info"
 msgstr ""
 
@@ -983,7 +979,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: components/editor/searchClassModal.html:32
+#: components/editor/searchClassModal.html:27
 msgid "Show classes defined in profiles"
 msgstr ""
 
@@ -1019,10 +1015,12 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
+#: components/editor/searchConceptModal.html:34
 #: translations/misc.html:10
 msgid "suggest"
 msgstr ""
 
+#: components/editor/searchConceptModal.html:38
 #: translations/misc.html:11
 msgid "suggestion"
 msgstr ""
@@ -1045,6 +1043,10 @@ msgstr ""
 
 #: translations/misc.html:137
 msgid "text/turtle"
+msgstr ""
+
+#: components/editor/searchConceptModal.html:34
+msgid "to vocabulary"
 msgstr ""
 
 #: translations/misc.html:67

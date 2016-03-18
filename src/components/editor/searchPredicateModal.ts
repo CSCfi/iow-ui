@@ -5,11 +5,13 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
 import { Predicate, PredicateListItem, Model, Type, Uri, DefinedBy } from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
-import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
+import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, reversed } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
+import { AddNew } from '../common/searchResults';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -35,7 +37,7 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  open(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<ConceptCreation|Predicate> {
+  open(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<EntityCreation|Predicate> {
     return this.openModal(model, type, exclude, false);
   }
 
@@ -57,7 +59,7 @@ export class SearchPredicateController {
   private predicates: PredicateListItem[];
 
   close = this.$uibModalInstance.dismiss;
-  searchResults: PredicateListItem[] = [];
+  searchResults: (PredicateListItem|AddNewPredicate)[] = [];
   selectedPredicate: Predicate;
   searchText: string = '';
   showModel: DefinedBy;
@@ -77,7 +79,8 @@ export class SearchPredicateController {
               private predicateService: PredicateService,
               private languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
-              private confirmationModal: ConfirmationModal) {
+              private confirmationModal: ConfirmationModal,
+              private gettextCatalog: gettextCatalog) {
 
     predicateService.getAllPredicates().then((allPredicates: PredicateListItem[]) => {
       this.typeSelectable = !type;
@@ -100,7 +103,6 @@ export class SearchPredicateController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
-    $scope.$watch(() => this.showExcluded, () => this.search());
   }
 
   get showExcluded() {
@@ -109,28 +111,40 @@ export class SearchPredicateController {
 
   search() {
     if (this.predicates) {
-      this.searchResults = this.predicates.filter(predicate =>
+
+      const result: (PredicateListItem|AddNewPredicate)[] = [
+        new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute'),
+        new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association')
+      ];
+
+      const predicateSearchResult = this.predicates.filter(predicate =>
         this.textFilter(predicate) &&
         this.modelFilter(predicate) &&
         this.typeFilter(predicate) &&
         this.excludedFilter(predicate)
       );
 
-      this.searchResults.sort(
+      predicateSearchResult.sort(
         comparingBoolean((item: PredicateListItem) => !!this.exclude(item))
           .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
+
+      this.searchResults = result.concat(predicateSearchResult);
     }
   }
 
-  selectItem(predicate: PredicateListItem) {
+  selectItem(predicate: PredicateListItem|AddNewPredicate) {
 
     const that = this;
 
     function doSelection() {
-      that.$scope.form.editing = false;
-      that.submitError = null;
-      that.cannotConfirm = that.exclude(predicate);
-      that.predicateService.getPredicate(predicate.id, that.model).then(result => that.selectedPredicate = result);
+      if (predicate instanceof AddNewPredicate) {
+        that.createNew(predicate.type);
+      } else if (predicate instanceof PredicateListItem) {
+        that.$scope.form.editing = false;
+        that.submitError = null;
+        that.cannotConfirm = that.exclude(predicate);
+        that.predicateService.getPredicate(predicate.id, that.model).then(result => that.selectedPredicate = result);
+      }
     }
 
     if (this.$scope.form.editing) {
@@ -150,12 +164,12 @@ export class SearchPredicateController {
   }
 
   createNew(type: Type) {
-    return this.searchConceptModal.openNewCreation(this.model.references, type)
+    return this.searchConceptModal.openNewEntityCreation(this.model.references, type, this.searchText)
       .then(result => {
         if (!this.typeSelectable) {
           this.$uibModalInstance.close(result);
         } else {
-          this.predicateService.newPredicate(this.model, result.label, result.concept.id, type, this.languageService.modelLanguage)
+          this.predicateService.newPredicate(this.model, result.entity.label, result.concept.id, type, this.languageService.modelLanguage)
             .then(predicate => {
               this.cannotConfirm = null;
               this.selectedPredicate = predicate;
@@ -195,5 +209,11 @@ export class SearchPredicateController {
 
   private excludedFilter(predicate: PredicateListItem): boolean {
     return this.showExcluded || !this.exclude(predicate);
+  }
+}
+
+class AddNewPredicate extends AddNew {
+  constructor(public label: string, public show: () => boolean, public type: Type) {
+    super(label, show);
   }
 }

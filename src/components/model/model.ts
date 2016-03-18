@@ -30,7 +30,7 @@ import {
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
-import { ConceptCreation, isConceptCreation } from '../editor/searchConceptModal';
+import { EntityCreation, isEntityCreation } from '../editor/searchConceptModal';
 import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
@@ -290,7 +290,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     if (type === 'class') {
       this.createOrAssignEntity(
         () => this.searchClassModal.open(this.model, classExclusion, textForSelection),
-        (concept: ConceptCreation) => this.createClass(concept),
+        (concept: EntityCreation) => this.createClass(concept),
         (klass: Class) => {
           if (isProfile) {
             return this.createShape(klass);
@@ -302,22 +302,22 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     } else {
       this.createOrAssignEntity(
         () => this.searchPredicateModal.open(this.model, type, predicateExclusion),
-        (concept: ConceptCreation) => this.createPredicate(concept),
+        (concept: EntityCreation) => this.createPredicate(concept, type),
         (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
       );
     }
   }
 
-  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ConceptCreation|T>, fromConcept: (concept: ConceptCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<any>) {
+  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<EntityCreation|T>, fromConcept: (concept: EntityCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<any>) {
     this.userService.ifStillLoggedIn(() => {
       this.askPermissionWhenEditing(() => {
         modal().then(result => {
-          (isConceptCreation(result) ? fromConcept(result) : fromEntity(result))
+          (isEntityCreation(result) ? fromConcept(result) : fromEntity(result))
             .then(entity => {
               this.updateSelection(entity);
               if (!entity.unsaved) {
                 this.updateSelectables();
-                
+
                 for (const changeListener of this.changeListeners) {
                   changeListener.onAssign(entity);
                 }
@@ -328,8 +328,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
   }
 
-  private createClass(conceptCreation: ConceptCreation) {
-    return this.classService.newClass(this.model, conceptCreation.label, conceptCreation.concept.id, this.languageService.modelLanguage);
+  private createClass(conceptCreation: EntityCreation) {
+    return this.classService.newClass(this.model, conceptCreation.entity.label, conceptCreation.concept.id, this.languageService.modelLanguage);
   }
 
   private createShape(klass: Class) {
@@ -355,8 +355,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       .then(() => this.updatePredicates());
   }
 
-  private createPredicate(conceptCreation: ConceptCreation) {
-    return this.predicateService.newPredicate(this.model, conceptCreation.label, conceptCreation.concept.id, conceptCreation.type, this.languageService.modelLanguage)
+  private createPredicate(conceptCreation: EntityCreation, type: Type) {
+    return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.modelLanguage)
   }
 
   private assignPredicateToModel(id: Uri) {

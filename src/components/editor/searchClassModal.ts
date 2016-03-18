@@ -3,11 +3,14 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
-import { SearchConceptModal, ConceptCreation } from './searchConceptModal';
+import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { Class, ClassListItem, Model, DefinedBy } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
+import { AddNew } from '../common/searchResults';
+import gettextCatalog = angular.gettext.gettextCatalog;
+
 
 export const noExclude = (item: ClassListItem) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';
@@ -33,7 +36,7 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, exclude: (klass: ClassListItem) => string, textForSelection: (klass: Class) => string): IPromise<ConceptCreation|Class> {
+  open(model: Model, exclude: (klass: ClassListItem) => string, textForSelection: (klass: Class) => string): IPromise<EntityCreation|Class> {
     return this.openModal(model, exclude, false, textForSelection);
   }
 
@@ -47,7 +50,7 @@ class SearchClassController {
   private classes: ClassListItem[];
 
   close = this.$uibModalInstance.dismiss;
-  searchResults: ClassListItem[] = [];
+  searchResults: (ClassListItem|AddNew)[] = [];
   selectedClass: Class;
   searchText: string = '';
   showProfiles: boolean;
@@ -64,7 +67,8 @@ class SearchClassController {
               public exclude: (klass: ClassListItem) => string,
               public onlySelection: boolean,
               private textForSelection: (klass: Class) => string,
-              private searchConceptModal: SearchConceptModal) {
+              private searchConceptModal: SearchConceptModal,
+              private gettextCatalog: gettextCatalog) {
 
     this.showProfiles = onlySelection;
 
@@ -91,26 +95,35 @@ class SearchClassController {
 
   search() {
     if (this.classes) {
-      this.searchResults = this.classes.filter(klass =>
+
+      const result: (ClassListItem|AddNew)[] = [new AddNew(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this))];
+      
+      const classSearchResult = this.classes.filter(klass =>
         this.textFilter(klass) &&
         this.modelFilter(klass) &&
         this.excludedFilter(klass) &&
         this.showProfilesFilter(klass)
       );
 
-      this.searchResults.sort(
+      classSearchResult.sort(
         comparingBoolean((item: ClassListItem) => !!this.exclude(item))
           .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
+
+      this.searchResults = result.concat(classSearchResult);
     }
   }
 
   canAddNew() {
-    return !this.onlySelection && this.searchText;
+    return !this.onlySelection && !!this.searchText;
   }
 
-  selectItem(klass: ClassListItem) {
-    this.cannotConfirm = this.exclude(klass);
-    this.classService.getClass(klass.id, this.model).then(result => this.selectedClass = result);
+  selectItem(item: ClassListItem|AddNew) {
+    if (item instanceof AddNew) {
+      this.createNewClass();
+    } else if (item instanceof ClassListItem) {
+      this.cannotConfirm = this.exclude(item);
+      this.classService.getClass(item.id, this.model).then(result => this.selectedClass = result);
+    }
   }
 
   confirm() {
@@ -118,7 +131,7 @@ class SearchClassController {
   }
 
   createNewClass() {
-    return this.searchConceptModal.openNewCreation(this.model.references, 'class')
+    return this.searchConceptModal.openNewEntityCreation(this.model.references, 'class', this.searchText)
       .then(conceptCreation => this.$uibModalInstance.close(conceptCreation));
   }
 

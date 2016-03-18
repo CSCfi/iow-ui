@@ -144,6 +144,19 @@ export function fintoConceptFrame(data: any, id: Url): Frame {
   return frame(data, context, { '@id': id });
 }
 
+export function fintoConceptSearchResultsFrame(data: any): Frame {
+
+  const context = Object.assign({}, coreContext, {
+    value: null,
+    lang: null,
+    uri: null,
+    type: null,
+    graph: null,
+  });
+
+  return frame(data, context, { '@type': 'skos:Concept' });
+}
+
 export function userFrame(data: any): Frame {
   return frame(data, userContext, { name: {} });
 }

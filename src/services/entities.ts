@@ -43,7 +43,8 @@ export type Type = 'class'
                  | 'entity'
                  | 'activity'
                  | 'resource'
-                 | 'collection';
+                 | 'collection'
+                 | 'scheme';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -924,6 +925,17 @@ export class FintoConcept extends GraphNode {
   }
 }
 
+export class FintoConceptSearchResult extends GraphNode {
+  id: Uri;
+  label: Localizable;
+  
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = new Uri(graph['@id'], context);
+    this.label = deserializeLocalizable(graph.prefLabel);
+  }
+}
+
 export class ConceptSuggestion extends GraphNode {
 
   id: Uri;
@@ -941,7 +953,6 @@ export class ConceptSuggestion extends GraphNode {
     this.inScheme = deserializeList<Url>(graph.inScheme);
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
-
   }
 }
 
@@ -1351,6 +1362,10 @@ export class EntityDeserializer {
 
   deserializeFintoConcept(data: GraphData, id: Url): IPromise<FintoConcept> {
     return frameAndMap(this.$log, data, frames.fintoConceptFrame(data, id), (framedData) => FintoConcept);
+  }
+
+  deserializeFintoConceptSearchResults(data: GraphData): IPromise<FintoConceptSearchResult[]> {
+    return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame(data), (framedData) => FintoConceptSearchResult);
   }
 
   deserializeRequire(data: GraphData): IPromise<Require> {

@@ -1,8 +1,13 @@
-<div ng-repeat="searchResult in ctrl.searchResults track by searchResult.item.id"
-     ng-class="['search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled}]"
-     title="{{ctrl.searchResultTitle(searchResult)}}"
-     ng-click="ctrl.selectSearchResult(searchResult)"
+<div ng-repeat="searchResult in ctrl.searchResults"
+     ng-class="['search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled, 'add-new': searchResult.isAddNew()}]"
+     title="{{ctrl.title(searchResult)}}"
+     ng-click="ctrl.selectItem(searchResult)"
+     ng-show="!searchResult.isAddNew() || searchResult.show()"
      key-control-selection>
 
-  <search-result-transclude></search-result-transclude>
+  <div ng-show="searchResult.isAddNew()">
+    <h5>{{searchResult.label}} <i class="glyphicon glyphicon-plus"></i></h5>
+  </div>
+
+  <search-result-transclude ng-hide="searchResult.isAddNew()"></search-result-transclude>
 </div>

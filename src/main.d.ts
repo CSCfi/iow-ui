@@ -12,13 +12,6 @@ interface Window {
   encodeURIComponent: any;
 }
 
-declare module Twitter.Typeahead {
-  interface Dataset {
-    limit?: number;
-    display?: string | ((obj: any) => string);
-  }
-}
-
 declare module angular {
   interface INgModelController {
     $options: any;

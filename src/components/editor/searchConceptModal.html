@@ -1,64 +1,84 @@
-<form id="conceptForm" name="conceptForm">
-  <modal-template>
+<form name="form">
+  <modal-template editing="true">
     <modal-title>{{ctrl.defineConceptTitle | translate}}</modal-title>
 
     <modal-body>
-      <div ng-show="ctrl.references.length > 0">
 
-        <label for="reference" translate>Reference</label>
-        <div class="input-group input-group-lg">
-          <div class="selectContainer">
-            <select id="reference" class="form-control" ng-model="ctrl.vocabularyId"
-                    ng-options="reference.vocabularyId as reference | translateLabel for reference in ctrl.references">
-              <option value="" translate>All references</option>
-            </select>
-          </div>
-        </div>
+      <div class="row">
 
-        <a ng-show="ctrl.selectedReference" ng-href="{{ctrl.selectedReference.href}}" target="_blank" translate>Browse vocabulary</a>
-
-        <editable title="Concept">
-          <div class="input-group">
-            <input id="concept"
-                   type="text"
-                   class="form-control"
-                   autofocus
-                   iow-typeahead
-                   selection-mapper="ctrl.mapSelection"
-                   options="ctrl.options"
-                   datasets="ctrl.datasets"
-                   required
-                   ng-model="ctrl.concept"
-                   placeholder="{{'Search from concept database' | translate}}"/>
+        <div class="col-md-4">
+          <p translate>Concept search info</p>
+          <div class="input-group input-group-lg">
+            <input autofocus type="text" class="form-control" placeholder="{{'Search from concept database' | translate}}"
+                   ng-model="ctrl.searchText"
+                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                   key-control="ctrl.searchResults"
+                   ignore-dirty />
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
-        </editable>
 
-        <div ng-if="ctrl.concept">
-          <label for="concept" translate>Chosen concept</label>
-          <p>{{ctrl.concept | translateLabel}}</p>
-
-          <label for="concept" translate>Definition</label>
-          <p>{{ctrl.concept.comment | translateValue}}</p>
-        </div>
-
-        <div ng-if="ctrl.newCreation">
-          <editable title="{{ctrl.labelTitle}}">
-            <div class="input-group input-group-md">
-              <input id="name" type="text" class="form-control" required string-input="label" ng-model="ctrl.label" />
+          <label for="reference" translate>Reference</label>
+          <div class="input-group input-group-lg">
+            <div class="selectContainer">
+              <select id="reference" class="form-control" ng-model="ctrl.selectedReference" ignore-dirty
+                      ng-options="reference | translateLabel for reference in ctrl.references">
+                <option value="" translate>All references</option>
+              </select>
             </div>
-          </editable>
-        </div>
-      </div>
+          </div>
 
-      <div ng-hide="ctrl.references.length > 0">
-        <p translate>Concepts can't be searched because there are no vocabularies</p>
+          <a ng-show="ctrl.selectedReference" ng-href="{{ctrl.selectedReference.href}}" target="_blank" translate>Browse vocabulary</a>
+        </div>
+
+        <div class="col-md-4 search-results">
+          <search-results items="ctrl.searchResults" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
+              <h5>{{searchResult | translateLabel}} <span ng-show="searchResults.suggestion">({{'suggestion' | translate}})</span></h5>
+              <p>{{searchResult.reference | translateLabel}}</p>
+          </search-results>
+        </div>
+
+        <div class="col-md-4 search-selection">
+          <div ng-show="ctrl.selectedConcept">
+
+            <div ng-show="ctrl.isConcept(ctrl.selectedConcept)">
+              <non-editable title="Concept" value="ctrl.selectedConcept.label"></non-editable>
+              <non-editable title="Definition" value="ctrl.selectedConcept.comment"></non-editable>
+            </div>
+
+            <div ng-hide="ctrl.isConcept(ctrl.selectedConcept)">
+              <editable title="Concept">
+                <div class="input-group input-group-md">
+                  <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.concept.label" />
+                </div>
+              </editable>
+
+              <editable title="Definition">
+                <div class="input-group input-group-md">
+                  <textarea id="conceptComment" class="form-control" required string-input ng-model="ctrl.formData.concept.comment"></textarea>
+                </div>
+              </editable>
+
+              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selectedConcept.reference | translateLabel}}</p>
+            </div>
+
+            <div ng-show="ctrl.newEntityCreation">
+              <editable title="{{ctrl.labelTitle}}">
+                <div class="input-group input-group-md">
+                  <input id="name" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.entity.label" />
+                </div>
+              </editable>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </modal-body>
 
     <modal-buttons>
-      <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
-      <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-show="ctrl.references.length > 0" ng-disabled="!conceptForm.$valid">{{ctrl.buttonTitle | translate}}</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedConcept">{{ctrl.buttonTitle | translate}}</button>
     </modal-buttons>
+
   </modal-template>
 </form>

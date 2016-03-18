@@ -1,7 +1,6 @@
 import { SearchConceptModal } from './searchConceptModal';
 import { SearchClassModal } from './searchClassModal';
 import { SearchPredicateModal } from './searchPredicateModal';
-import { AddConceptModal } from './addConceptModal';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 
 const mod = angular.module('iow.components.editor', ['iow.components.common', 'iow.components.form']);
@@ -24,7 +23,6 @@ import './usage';
 import './usagePanel';
 import './visualizationView';
 
-mod.service('addConceptModal', AddConceptModal);
 mod.service('addPropertiesFromClassModal', AddPropertiesFromClassModal);
 mod.service('searchClassModal', SearchClassModal);
 mod.service('searchConceptModal', SearchConceptModal);

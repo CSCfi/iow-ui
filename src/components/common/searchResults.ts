@@ -4,6 +4,8 @@ import ITranscludeFunction = angular.ITranscludeFunction;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import { Uri } from '../../services/entities';
+import IPromise = angular.IPromise;
+import { ConfirmationModal } from './confirmationModal';
 
 export const mod = angular.module('iow.components.common');
 
@@ -14,7 +16,8 @@ mod.directive('searchResults', () => {
     scope: {
       items: '=',
       exclude: '=',
-      onSelect: '&'
+      onSelect: '&',
+      editInProgress: '='
     },
     controllerAs: 'ctrl',
     transclude: true,
@@ -42,6 +45,19 @@ interface WithId {
   id: Uri;
 }
 
+export class AddNew {
+  constructor(public label: string, public show: () => boolean) {
+  }
+
+  unwrap() {
+    return this;
+  }
+
+  isAddNew() {
+    return true;
+  }
+}
+
 class SearchResult<T extends WithId> {
 
   disabled: boolean;
@@ -49,37 +65,58 @@ class SearchResult<T extends WithId> {
   constructor(public item: T, public disabledReason: string) {
     this.disabled = !!disabledReason;
   }
+
+  unwrap() {
+    return this.item;
+  }
+
+  isAddNew() {
+    return false;
+  }
 }
 
 class SearchResultsController<T extends WithId> {
 
-  items: T[];
+  items: (T|AddNew)[];
   exclude: (item: T) => string;
-  searchResults: SearchResult<T>[];
-  selected: SearchResult<T>;
+  searchResults: (SearchResult<T>|AddNew)[];
+  selected: SearchResult<T>|AddNew;
   onSelect: angular.ICompiledExpression;
+  editInProgress: () => boolean;
 
-  constructor($scope: IScope, private gettextCatalog: gettextCatalog) {
+  constructor($scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
     $scope.$watchCollection(() => this.items, items => {
       this.searchResults = _.map(items, item => {
-        const disabledReason = this.exclude && this.exclude(item);
-        return new SearchResult(item, disabledReason);
+        if (item instanceof AddNew) {
+          return item;
+        } else {
+          const disabledReason = this.exclude && this.exclude(item);
+          return new SearchResult(item, disabledReason);
+        }
       });
     });
   }
 
-  isSelected(searchResult: SearchResult<T>) {
-    return this.selected === searchResult;
+  isSelected(item: SearchResult<T>|AddNew) {
+    return this.selected === item;
   }
 
-  selectSearchResult(searchResult: SearchResult<T>) {
-    this.selected = searchResult;
-    this.onSelect({item: searchResult.item});
+  selectItem(item: SearchResult<T>|AddNew) {
+    const doSelection = () => {
+      this.selected = item;
+      this.onSelect({item: item.unwrap()});      
+    };
+
+    if (this.editInProgress && this.editInProgress()) {
+      this.confirmationModal.openEditInProgress().then(doSelection);
+    } else {
+      doSelection();
+    }
   }
 
-  searchResultTitle(searchResult: SearchResult<T>) {
-    if (searchResult.disabled) {
-      return this.gettextCatalog.getString(searchResult.disabledReason);
+  title(item: SearchResult<T>|AddNew) {
+    if (item instanceof SearchResult && item.disabled) {
+      return this.gettextCatalog.getString(item.disabledReason);
     }
   }
 }

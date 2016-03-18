@@ -8,7 +8,7 @@ export function allLocalizations(predicate: (localized: string) => boolean, loca
       }
     }
   }
-  return true;  
+  return true;
 }
 
 export function anyLocalization(predicate: (localized: string) => boolean, localizable: Localizable) {

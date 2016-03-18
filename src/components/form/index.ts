@@ -23,5 +23,6 @@ import './submitErrorPanel';
 import './localizedSelect';
 import './maxInput';
 import './minInput';
+import './ignoreDirty';
 
 mod.service('displayItemFactory', DisplayItemFactory);

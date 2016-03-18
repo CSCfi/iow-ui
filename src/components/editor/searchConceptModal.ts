@@ -7,18 +7,69 @@ import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { ConceptService } from '../../services/conceptService';
+import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Reference, ConceptSuggestion, Type, Uri, FintoConcept } from '../../services/entities';
-import { AddConceptModal, ConceptSuggestionCreation } from './addConceptModal';
-import { ConceptDatasets, ConceptSuggestionDataset } from '../../services/conceptDatasets';
+import { Reference, ConceptSuggestion, Type, FintoConcept } from '../../services/entities';
+import { comparingString, comparingBoolean } from '../../services/comparators';
+import { EditableForm } from '../form/editableEntityController';
+import { ConfirmationModal } from '../common/confirmationModal';
+import { AddNew } from '../common/searchResults';
+import { Uri } from '../../services/uri';
 
 const limit = 1000;
 
-export type ConceptCreation = {concept: FintoConcept|ConceptSuggestion, label: string, type: Type};
+type Concept = FintoConcept|ConceptSuggestion;
 
-export function isConceptCreation(obj: any): obj is ConceptCreation {
+export interface NewEntityData {
+  label: string
+};
+
+export class EntityCreation {
+  constructor(public concept: Concept, public entity: NewEntityData) {
+  }
+}
+
+interface NewConceptData {
+  label: string;
+  comment?: string;
+  broaderConcept?: Concept;
+}
+
+interface FormData {
+  entity?: NewEntityData;
+  concept?: NewConceptData;
+}
+
+class ConceptCreation {
+  constructor(public reference: Reference) {
+  }
+}
+
+function createNewEntityData(label?: string): FormData {
+  return {
+    entity: {
+      label
+    }
+  }
+}
+
+function createNewConceptData(label?: string): FormData {
+  return {
+    entity: {
+      label
+    },
+    concept: {
+      label
+    }
+  }
+}
+
+export function isEntityCreation(obj: any): obj is EntityCreation {
   return obj.concept;
+}
+
+function isConcept(obj: Concept|ConceptCreation): obj is Concept {
+  return obj instanceof FintoConcept || obj instanceof ConceptSuggestion;
 }
 
 export class SearchConceptModal {
@@ -27,130 +78,200 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(references: Reference[], type: Type, newCreation: boolean) {
+  private open(references: Reference[], type: Type, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
-      size: 'small',
+      size: 'large',
       controller: SearchConceptController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
         references: () => references,
         type: () => type,
-        newCreation: () => newCreation
+        newEntityCreation: () => newEntityCreation,
+        initialSearch: () => initialSearch
       }
     }).result;
   }
 
-  openSelection(references: Reference[], type: Type): IPromise<FintoConcept|ConceptSuggestion> {
-    return this.open(references, type, false);
+  openSelection(references: Reference[], type: Type): IPromise<Concept> {
+    return this.open(references, type, false, '');
   }
 
-  openNewCreation(references: Reference[], type: Type): IPromise<ConceptCreation> {
-    return this.open(references, type, true);
+  openNewEntityCreation(references: Reference[], type: Type, initialSearch: string): IPromise<EntityCreation> {
+    return this.open(references, type, true, initialSearch);
   }
 };
 
+export interface SearchPredicateScope extends IScope {
+  form: EditableForm;
+}
 
 class SearchConceptController {
 
-  datasets: Dataset[];
-  concept: FintoConcept|ConceptSuggestion;
-  label: string;
+  close = this.$uibModalInstance.dismiss;
+  queryResults: ConceptSearchResult[];
+  searchResults: (ConceptSearchResult|AddNewConcept)[];
+  selectedConcept: Concept|ConceptCreation;
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
-  vocabularyId: string;
   selectedReference: Reference;
-  mapSelection = this.conceptDatasets.mapSelection.bind(this.conceptDatasets);
+  searchText: string = '';
+  submitError: string;
+  isConcept = isConcept;
+  editInProgress = () => this.$scope.form.$dirty;
 
-  options = {
-    hint: false,
-    highlight: true,
-    minLength: 3,
-    editable: false
-  };
+  formData: FormData = { entity: { label: ''}, concept: { label: ''}};
 
   /* @ngInject */
-  constructor(private $scope: IScope,
+  constructor(private $scope: SearchPredicateScope,
               private $uibModalInstance: IModalServiceInstance,
               private $q: IQService,
               private languageService: LanguageService,
-              private gettextCatalog: gettextCatalog,
               public type: Type,
-              public newCreation: boolean,
+              initialSearch: string,
+              public newEntityCreation: boolean,
               public references: Reference[],
-              private addConceptModal: AddConceptModal,
               private conceptService: ConceptService,
-              private conceptDatasets: ConceptDatasets) {
+              private confirmationModal: ConfirmationModal,
+              private gettextCatalog: gettextCatalog) {
 
-    this.defineConceptTitle = `Define concept for the ${this.newCreation ? 'new ' : ''}${this.type}`;
-    this.buttonTitle = newCreation ? 'Create new' : 'Use';
+    this.defineConceptTitle = `Define concept for the ${this.newEntityCreation ? 'new ' : ''}${this.type}`;
+    this.buttonTitle = (newEntityCreation ? 'Create new ' + type: 'Use');
     this.labelTitle = `${_.capitalize(this.type)} label`;
+    this.searchText = initialSearch;
 
-    $scope.$watch(() => this.vocabularyId, id => {
-      this.selectedReference = _.find(references, reference => reference.vocabularyId === id);
-    });
-
-    $scope.$watch(() => this.concept, (concept) => {
-      this.label = concept ? languageService.translate(concept.label) : '';
-    });
-
-    function createTemplates(reference: Reference, conceptSuggestionDataset: ConceptSuggestionDataset): Templates {
-      return {
-        empty: (search: {query: string}) => {
-          if (!conceptSuggestionDataset.suggestionsContain(search.query)) {
-            return `
-              <div class="empty-message">
-                '${search.query}' ${gettextCatalog.getString('not found in the concept database')}
-                  <p>
-                    <a onClick="angular.element(jQuery('#conceptForm').parents('[uib-modal-window]')).scope().ctrl.addConcept('${search.query}', '${reference.vocabularyId}')">
-                      + ${gettextCatalog.getString('suggest')} '${search.query}' ${gettextCatalog.getString('and create new')}
-                    </a>
-                  </p>
-              </div>`;
-          }
-        },
-        suggestion: (data) =>
-          `
-          <div>
-            ${data.prefLabel}
-            <p class="details">${data.uri}</p>
-          </div>
-          `
-      };
-    }
-
-    $scope.$watch(() => this.vocabularyId, vocabularyId => {
-      const searchReferences = vocabularyId ? [_.findWhere(references, {vocabularyId})] : references;
-      this.datasets = _.flatten(_.map(searchReferences, reference => {
-        const conceptSuggestionDataset = conceptDatasets.createConceptSuggestionDataSet(reference, limit);
-        return [conceptSuggestionDataset, conceptDatasets.createConceptDataSet(reference, limit, createTemplates(reference, conceptSuggestionDataset))];
-      }));
+    $scope.$watch(() => this.searchText, text => this.query(text).then(() => this.search()));
+    $scope.$watch(() => this.selectedReference, () => this.query(this.searchText).then(() => this.search()));
+    $scope.$watch(() => this.formData.concept && this.formData.concept.label, label => {
+      if (label) {
+        this.formData.entity.label = label;
+      }
     });
   }
 
-  create() {
-    this.$uibModalInstance.close(this.newCreation ? {type: this.type, concept: this.concept, label: this.label} : this.concept);
-  };
+  get activeReferences() {
+    return this.selectedReference ? [this.selectedReference] : this.references;
+  }
 
-  cancel() {
-    this.$uibModalInstance.dismiss();
-  };
+  query(searchText: string): IPromise<any> {
+    const language = this.languageService.modelLanguage;
 
-  addConcept(conceptLabel: string, vocabularyId: string) {
-    this.addConceptModal.open(this.labelTitle, this.defineConceptTitle, conceptLabel, _.findWhere(this.references, {vocabularyId}))
-      .then((result: ConceptSuggestionCreation) => this.$q.all(
-        {
-          type: this.$q.when(this.type),
-          label: this.$q.when(result.label),
-          concept: this.conceptService.createConceptSuggestion(result.concept.schemeId, result.concept.label, result.concept.comment, result.concept.broaderConceptId, this.languageService.modelLanguage)
-            .then(conceptId => this.conceptService.getConceptSuggestion(conceptId))
-        }))
-      .then((result: ConceptCreation) => {
-        this.$uibModalInstance.close(this.newCreation ? result : result.concept);
+    if (searchText && searchText.length >= 3) {
+      return this.$q.all(_.flatten(_.map(this.activeReferences, reference => this.conceptService.searchConcepts(reference, language, searchText))))
+        .then((results: ConceptSearchResult[][]) => this.queryResults = _.take(_.flatten(results), limit));
+    } else {
+      return this.$q.when(this.queryResults = []);
+    }
+  }
+
+  search() {
+
+    if (this.queryResults) {
+
+      const result: (ConceptSearchResult|AddNewConcept)[] = _.map(this.activeReferences, reference => {
+          const suggestText = `${this.gettextCatalog.getString('suggest')} '${this.searchText}'`;
+          const toVocabularyText = `${this.gettextCatalog.getString('to vocabulary')} ${this.languageService.translate(reference.label)}`;
+          return new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew(reference), reference);
+        });
+
+      const conceptSearchResult = this.queryResults.filter(concept =>
+        this.showReferenceFilter(concept)
+      );
+
+      conceptSearchResult.sort(
+          comparingString(this.localizedLabelAsLower.bind(this))
+            .andThen(comparingBoolean((item: ConceptSearchResult) => item.suggestion)));
+
+      this.searchResults = result.concat(conceptSearchResult);
+
+    } else {
+      this.searchResults = [];
+    }
+  }
+
+  private localizedLabelAsLower(concept: ConceptSearchResult): string {
+    return this.languageService.translate(concept.label).toLowerCase();
+  }
+
+  private showReferenceFilter(concept: ConceptSearchResult) {
+    return !!_.find(this.activeReferences, reference => concept.reference.id.equals(reference.id));
+  }
+
+  selectItem(item: ConceptSearchResult|AddNewConcept) {
+
+    this.submitError = null;
+    this.$scope.form.$setPristine();
+
+    if (item instanceof AddNewConcept) {
+      this.selectedConcept = new ConceptCreation(item.reference);
+      this.formData = createNewConceptData(this.searchText);
+    } else {
+      const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
+      const conceptPromise: IPromise<FintoConcept|ConceptSuggestion> = conceptSearchResult.suggestion
+        ? this.conceptService.getConceptSuggestion(conceptSearchResult.id)
+        : this.conceptService.getFintoConcept(conceptSearchResult.id);
+
+      conceptPromise.then(concept => {
+        this.selectedConcept = concept;
+        this.formData = createNewEntityData(this.languageService.translate(concept.label));
       });
-  };
+    }
+  }
+
+  canAddNew(reference: Reference) {
+    if (!this.searchText) {
+      return false;
+    }
+
+    for (const concept of this.queryResults) {
+      const exactMatch = this.localizedLabelAsLower(concept) === this.searchText.toLowerCase();
+      if (exactMatch && concept.reference.id.equals(reference.id)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  confirm() {
+    this.$uibModalInstance.close(this.resolveResult());
+  }
+
+  private resolveResult(): IPromise<Concept|EntityCreation> {
+
+    function extractId(entity: {id: Uri}) {
+      return entity && entity.id;
+    }
+
+    const selection = this.selectedConcept;
+    const language = this.languageService.modelLanguage;
+
+    if (selection instanceof ConceptCreation) {
+      const conceptData = this.formData.concept;
+      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.reference.id, conceptData.label, conceptData.comment, extractId(conceptData.broaderConcept), language)
+        .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
+
+      if (this.newEntityCreation) {
+        return conceptSuggestion.then(cs => new EntityCreation(cs, this.formData.entity));
+      } else {
+        return conceptSuggestion;
+      }
+    } else if (isConcept(selection)) {
+      if (this.newEntityCreation) {
+        return this.$q.when(new EntityCreation(selection, this.formData.entity));
+      } else {
+        return this.$q.when(selection);
+      }
+    } else {
+      throw new Error('Unsupported selection ' + selection);
+    }
+  }
 }
 
-
+class AddNewConcept extends AddNew {
+  constructor(public label: string, public show: () => boolean, public reference: Reference) {
+    super(label, show);
+  }
+}

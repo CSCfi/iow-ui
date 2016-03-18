@@ -38,18 +38,10 @@
         </div>
 
         <div class="col-md-4 search-results">
-          <div class="search-result add-new" ng-show="ctrl.isAttributeAddable()" ng-click="ctrl.createNew('attribute')">
-            <h5>{{'Create new attribute' | translate}} '{{ctrl.searchText}}' <i class="glyphicon glyphicon-plus"></i></h5>
-          </div>
-
-          <div class="search-result add-new" ng-show="ctrl.isAssociationAddable()" ng-click="ctrl.createNew('association')">
-            <h5>{{'Create new association' | translate}} '{{ctrl.searchText}}' <i class="glyphicon glyphicon-plus"></i></h5>
-          </div>
-
           <search-results items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
-            <i ng-class="searchResult.glyphIconClass"></i>
-            <h5>{{searchResult | translateLabel}}</h5>
-            <p>{{searchResult.definedBy | translateLabel}}</p>
+              <i ng-class="searchResult.glyphIconClass"></i>
+              <h5>{{searchResult | translateLabel}}</h5>
+              <p>{{searchResult.definedBy | translateLabel}}</p>
           </search-results>
         </div>
 

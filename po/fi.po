@@ -12,10 +12,6 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: components/editor/propertyView.html:46
-msgid "{{'Reusable predicate' | translate}}"
-msgstr ""
-
 #: translations/misc.html:55
 msgid "Add association"
 msgstr "Lisää assosiaatio"
@@ -77,16 +73,16 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/editor/searchClassModal.html:26
-#: components/editor/searchPredicateModal.html:38
+#: components/editor/searchClassModal.html:21
+#: components/editor/searchPredicateModal.html:26
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
-#: components/editor/searchConceptModal.html:13
+#: components/editor/searchConceptModal.html:24
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/editor/searchPredicateModal.html:46
+#: components/editor/searchPredicateModal.html:34
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -182,7 +178,7 @@ msgstr "Laajempi käsite"
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/editor/searchConceptModal.html:18
+#: components/editor/searchConceptModal.html:29
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
 
@@ -198,9 +194,9 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/common/modalTemplate.html:16
 #: components/editor/addConceptModal.html:52
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:58
-#: components/editor/searchConceptModal.html:60
-#: components/editor/searchPredicateModal.html:73
+#: components/editor/searchClassModal.html:56
+#: components/editor/searchConceptModal.html:65
+#: components/editor/searchPredicateModal.html:69
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:33
@@ -237,7 +233,7 @@ msgid "Choose subject"
 msgstr "valitse käsite"
 
 #: components/editor/addConceptModal.html:41
-#: components/editor/searchConceptModal.html:38
+#: components/editor/searchConceptModal.html:45
 msgid "Chosen concept"
 msgstr "Valittu käsite"
 
@@ -265,7 +261,7 @@ msgstr "Luokat"
 msgid "Class properties"
 msgstr "Luokan ominaisuudet"
 
-#: components/editor/searchClassModal.html:14
+#: components/editor/searchClassModal.html:9
 msgid "Class search info"
 msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
@@ -287,9 +283,11 @@ msgstr "Käsite"
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
-#: components/editor/searchConceptModal.html:55
-msgid "Concepts can't be searched because there are no vocabularies"
-msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
+#: components/editor/searchConceptModal.html:10
+msgid "Concept search info"
+msgstr ""
+"Hae ensin tarvitsemaasi käsitettä sanastoista. Jos et löydä tarpeisiisi "
+"sopivaa, voit luoda uuden käsite-ehdotuksen."
 
 #: components/common/deleteConfirmationModal.html:2 translations/misc.html:42
 msgid "Confirm delete"
@@ -321,15 +319,15 @@ msgstr "Luo attribuutti ja käytä"
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: components/editor/searchPredicateModal.html:13
+#: components/editor/searchPredicateModal.html:46
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: components/editor/searchPredicateModal.html:18
+#: components/editor/searchPredicateModal.html:42
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
-#: components/editor/searchClassModal.html:8
+#: components/editor/searchClassModal.html:33
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
@@ -386,7 +384,7 @@ msgid "Define concept for the new class"
 msgstr "Määrittele käsite uudelle luokalle"
 
 #: components/editor/addConceptModal.html:44
-#: components/editor/searchConceptModal.html:41
+#: components/editor/searchConceptModal.html:48
 msgid "Definition"
 msgstr "Määritelmä"
 
@@ -850,7 +848,7 @@ msgstr "Virheellinen kieliversioitu teksti"
 msgid "Recommendation"
 msgstr "Suositus"
 
-#: components/editor/searchConceptModal.html:8
+#: components/editor/searchConceptModal.html:19
 msgid "Reference"
 msgstr "Sanasto"
 
@@ -918,7 +916,7 @@ msgstr "Hae attribuutteja"
 msgid "Search attributes and associations"
 msgstr "Hae attribuutteja ja assosiaatitoita"
 
-#: components/editor/searchClassModal.html:16
+#: components/editor/searchClassModal.html:11
 msgid "search class"
 msgstr "Hae luokkaa…"
 
@@ -931,11 +929,11 @@ msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
 #: components/editor/addConceptModal.html:35
-#: components/editor/searchConceptModal.html:32
+#: components/editor/searchConceptModal.html:12
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
 
-#: components/editor/searchPredicateModal.html:25
+#: components/editor/searchPredicateModal.html:13
 msgid "Search predicate info"
 msgstr ""
 "Hae ensin tarvitsemaasi attribuuttia tai assosiaatiota yhteentoimivuuden "
@@ -985,7 +983,7 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/editor/searchClassModal.html:32
+#: components/editor/searchClassModal.html:27
 msgid "Show classes defined in profiles"
 msgstr "Näytä profiileissa määritellyt luokat"
 
@@ -1021,11 +1019,11 @@ msgstr "Literaalin täytyy alkaa kirjaimella"
 msgid "Subject"
 msgstr "Käsite"
 
-#: translations/misc.html:10
+#: components/editor/searchConceptModal.html:34 translations/misc.html:10
 msgid "suggest"
 msgstr "ehdota"
 
-#: translations/misc.html:11
+#: components/editor/searchConceptModal.html:38 translations/misc.html:11
 msgid "suggestion"
 msgstr "ehdotus"
 
@@ -1048,6 +1046,10 @@ msgstr "Tekniset nimiavaruudet"
 #: translations/misc.html:137
 msgid "text/turtle"
 msgstr "Turtle"
+
+#: components/editor/searchConceptModal.html:34
+msgid "to vocabulary"
+msgstr "sanastoon"
 
 #: translations/misc.html:67
 msgid "Type"
@@ -1291,6 +1293,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Concepts can't be searched because there are no vocabularies"
+#~ msgstr "Käsitteitä ei voida hakea koska sanastoja ei ole määritelty"
 
 #~ msgid "No requires yet"
 #~ msgstr "Ei nimiavaruuksia"

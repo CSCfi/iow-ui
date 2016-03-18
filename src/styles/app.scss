@@ -688,8 +688,12 @@ modal-body {
         box-shadow: 2px 2px 2px #888888;
       }
 
-      &.selected, &.selection {
+      &.selected {
         background-color: #ffffff;
+      }
+
+      &.selection {
+        border-color: $brand-primary;
       }
 
       &.disabled {
