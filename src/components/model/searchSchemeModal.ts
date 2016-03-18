@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { ConceptService } from '../../services/conceptService';
 import { Language } from '../../services/languageService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
+import { isDefined } from '../../services/utils';
 
 const noExclude = (scheme: any) => <string> null;
 
@@ -34,6 +35,7 @@ class SearchSchemeController {
   searchResults: any[];
   schemes: any[];
   searchText: string = '';
+  loadingResults: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -42,6 +44,8 @@ class SearchSchemeController {
               private conceptService: ConceptService,
               private language: Language) {
 
+    this.loadingResults = true;
+    
     conceptService.getAllSchemes(language).then(result => {
       this.schemes = result.data.vocabularies;
       this.search();
@@ -66,6 +70,8 @@ class SearchSchemeController {
         comparingBoolean((scheme: any) => !!this.exclude(scheme))
           .andThen(comparingString((scheme: any) => scheme.title)));
     }
+    
+    this.loadingResults = !isDefined(this.schemes);
   }
 
   selectItem(scheme: any) {

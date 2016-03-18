@@ -11,6 +11,7 @@ import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, reversed } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
+import { isDefined } from '../../services/utils';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -68,6 +69,7 @@ export class SearchPredicateController {
   typeSelectable: boolean;
   submitError: string;
   cannotConfirm: string;
+  loadingResults: boolean;
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -80,6 +82,8 @@ export class SearchPredicateController {
               private languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
               private gettextCatalog: gettextCatalog) {
+
+    this.loadingResults = true;
 
     predicateService.getAllPredicates().then((allPredicates: PredicateListItem[]) => {
       this.typeSelectable = !type;
@@ -129,6 +133,8 @@ export class SearchPredicateController {
 
       this.searchResults = result.concat(predicateSearchResult);
     }
+
+    this.loadingResults = !isDefined(this.predicates);
   }
 
   selectItem(predicate: PredicateListItem|AddNewPredicate) {

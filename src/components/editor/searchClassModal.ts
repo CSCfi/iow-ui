@@ -10,6 +10,7 @@ import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
+import { isDefined } from '../../services/utils';
 
 
 export const noExclude = (item: ClassListItem) => <string> null;
@@ -57,6 +58,7 @@ class SearchClassController {
   showModel: DefinedBy;
   models: DefinedBy[] = [];
   cannotConfirm: string;
+  loadingResults: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -71,7 +73,8 @@ class SearchClassController {
               private gettextCatalog: gettextCatalog) {
 
     this.showProfiles = onlySelection;
-
+    this.loadingResults = true;
+    
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
 
       this.classes = allClasses;
@@ -97,7 +100,7 @@ class SearchClassController {
     if (this.classes) {
 
       const result: (ClassListItem|AddNew)[] = [new AddNew(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this))];
-      
+
       const classSearchResult = this.classes.filter(klass =>
         this.textFilter(klass) &&
         this.modelFilter(klass) &&
@@ -111,6 +114,8 @@ class SearchClassController {
 
       this.searchResults = result.concat(classSearchResult);
     }
+
+    this.loadingResults = !isDefined(this.classes);
   }
 
   canAddNew() {

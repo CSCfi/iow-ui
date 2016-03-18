@@ -29,7 +29,9 @@
       </div>
 
       <div class="col-md-4 search-results">
-        <search-results items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
+        <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
+
+        <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
           <h5>{{searchResult | translateLabel}} <i ng-class="searchResult.glyphIconClass"></i></h5>
           <p>{{searchResult.definedBy | translateLabel}}</p>
         </search-results>

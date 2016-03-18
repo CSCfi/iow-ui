@@ -6,6 +6,7 @@ import { ModelService } from '../../services/modelService';
 import { Require, Model } from '../../services/entities';
 import { AddRequireModal } from './addRequireModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
+import { isDefined } from '../../services/utils';
 
 const noExclude = (require: Require) => <string> null;
 
@@ -35,6 +36,7 @@ class SearchRequireController {
   searchResults: Require[];
   requires: Require[];
   searchText: string = '';
+  loadingResults: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -45,6 +47,8 @@ class SearchRequireController {
               private modelService: ModelService,
               private languageService: LanguageService,
               private addRequireModal: AddRequireModal) {
+
+    this.loadingResults = true;
 
     modelService.getAllRequires().then(result => {
       this.requires = result;
@@ -69,14 +73,15 @@ class SearchRequireController {
       this.searchResults.sort(
         comparingBoolean((item: Require) => !!this.exclude(item))
           .andThen(comparingString((item: Require) => item.namespace)));
+
+      this.searchResults = _.chain(this.requires)
+        .filter(require => this.textFilter(require))
+        .filter(require => this.excludedFilter(require))
+        .sortBy(require => require.namespace)
+        .value();
+
+      this.loadingResults = !isDefined(this.requires);
     }
-
-
-    this.searchResults = _.chain(this.requires)
-      .filter(require => this.textFilter(require))
-      .filter(require => this.excludedFilter(require))
-      .sortBy(require => require.namespace)
-      .value();
   }
 
   textFilter(require: Require) {

@@ -442,20 +442,20 @@ selection-view, .main-editable-content {
     fill: #4b4a67;
     stroke: #4b4a67;
   }
+}
 
-  .loading-indicator {
+ajax-loading-indicator {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+
+  .uil-default-css, img {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    background-color: #ffffff;
-
-    .uil-default-css, img {
-      position: absolute;
-      top: calc(50% - 100px);
-      left: calc(50% - 100px);
-      margin: 0 auto;
-    }
+    top: calc(50% - 100px);
+    left: calc(50% - 100px);
+    margin: 0 auto;
   }
 }
 
@@ -693,6 +693,7 @@ modal-body {
       }
 
       &.selection {
+        box-shadow: 2px 2px 2px $brand-primary;
         border-color: $brand-primary;
       }
 

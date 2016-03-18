@@ -14,6 +14,7 @@ import { comparingString, comparingBoolean } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
+import { isDefined } from '../../services/utils';
 
 const limit = 1000;
 
@@ -120,6 +121,7 @@ class SearchConceptController {
   submitError: string;
   isConcept = isConcept;
   editInProgress = () => this.$scope.form.$dirty;
+  loadingResults: boolean;
 
   formData: FormData = { entity: { label: ''}, concept: { label: ''}};
 
@@ -140,6 +142,7 @@ class SearchConceptController {
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type: 'Use');
     this.labelTitle = `${_.capitalize(this.type)} label`;
     this.searchText = initialSearch;
+    this.loadingResults = true;
 
     $scope.$watch(() => this.searchText, text => this.query(text).then(() => this.search()));
     $scope.$watch(() => this.selectedReference, () => this.query(this.searchText).then(() => this.search()));
@@ -155,6 +158,7 @@ class SearchConceptController {
   }
 
   query(searchText: string): IPromise<any> {
+    this.loadingResults = true;
     const language = this.languageService.modelLanguage;
 
     if (searchText && searchText.length >= 3) {
@@ -166,7 +170,6 @@ class SearchConceptController {
   }
 
   search() {
-
     if (this.queryResults) {
 
       const result: (ConceptSearchResult|AddNewConcept)[] = _.map(this.activeReferences, reference => {
@@ -184,10 +187,11 @@ class SearchConceptController {
             .andThen(comparingBoolean((item: ConceptSearchResult) => item.suggestion)));
 
       this.searchResults = result.concat(conceptSearchResult);
-
     } else {
       this.searchResults = [];
     }
+    
+    this.loadingResults = !isDefined(this.queryResults);
   }
 
   private localizedLabelAsLower(concept: ConceptSearchResult): string {
