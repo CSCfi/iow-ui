@@ -26,7 +26,8 @@ module.exports = new WebpackConfig().merge({
       { test: /\.svg(\?.+)?$/,    loader: "file-loader" },
       { test: /\.html/,           loader: 'raw' },
       { test: /\.po$/,            loader: 'json!po?format=mf' },
-      { test: /\.png$/,           loader: "url-loader?mimetype=image/png" }
+      { test: /\.png$/,           loader: "url-loader?mimetype=image/png" },
+      { test: /\.gif$/,           loader: "url-loader?mimetype=image/gif" }
     ]
   },
 

@@ -13,6 +13,7 @@ export = mod.name;
 
 import './accordionChevron';
 import './ajaxLoadingIndicator';
+import './ajaxLoadingIndicatorSmall';
 import './export';
 import './float';
 import './history';

@@ -4,6 +4,6 @@ mod.directive('ajaxLoadingIndicator', () => {
   return {
     template: Modernizr.cssanimations
       ? `${require('./ajaxLoadingIndicator.html')}`
-      : `<img src="${require('./ajaxloadingindicator.svg')}" />`
+      : `<img src="${require('./../../assets/ajaxloadingindicator.svg')}" />`
   };
 });

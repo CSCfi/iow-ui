@@ -16,7 +16,7 @@
             <li ng-repeat="item in tab.items()"
                 ng-class="{'model-panel__selection': ctrl.isSelected(item)}"
                 ng-click="ctrl.select(item)">
-              {{item.label}}
+              {{item.label}} <ajax-loading-indicator-small ng-if="ctrl.isLoading(item)"></ajax-loading-indicator-small>
             </li>
           </ul>
         </uib-tab>

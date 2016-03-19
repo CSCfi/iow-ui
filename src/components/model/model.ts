@@ -156,9 +156,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     if (routeData.selected) {
       _.find(this.tabs, tab => tab.type === routeData.selected.selectionType).active = true;
+      this.select(routeData.selected);
     }
-
-    this.selectedItem = routeData.selected;
 
     if (routeData.newModel) {
       this.updateNewModel(routeData.newModel)
@@ -169,7 +168,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
             this.updateSelectables();
           }
           if (!this.selectedItem && this.model.rootClass) {
-            this.selectedItem = { id: this.model.rootClass, selectionType: 'class' };
+            this.select({ id: this.model.rootClass, selectionType: 'class' });
           }
         })
         .then(() => this.updateSelectionByTypeAndId(this.selectedItem))
@@ -198,14 +197,20 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     return selection.matchesIdentity(this.selectedItem);
   }
 
-  private selectionQueue: SelectableItem[] = [];
+  private selectionQueue: WithIdAndType[] = [];
 
-  select(listItem: SelectableItem) {
+  isLoading(listItem: SelectableItem) {
+    return _.find(this.selectionQueue, item => item === listItem);
+  }
 
-    const fetchUntilStable: ((selection: SelectableItem) => IPromise<Class|Predicate>) = item => {
-      return this.fetchEntityByTypeAndId(item).then((entity: Class|Predicate) => {
-        const last = this.selectionQueue[this.selectionQueue.length - 1];
-        if (last.matchesIdentity(entity)) {
+  select(listItem: WithIdAndType) {
+
+    const that = this;
+
+    function fetchUntilStable(item: WithIdAndType): IPromise<Class|Predicate> {
+      return that.fetchEntityByTypeAndId(item).then((entity: Class|Predicate) => {
+        const last = that.selectionQueue[that.selectionQueue.length - 1];
+        if (matchesIdentity(last, entity)) {
           return entity;
         } else {
           return fetchUntilStable(last);
