@@ -25,7 +25,7 @@ const modelService = new ModelService(httpService, q, entityDeserializer);
 const predicateService = new PredicateService(httpService, entityDeserializer);
 const classService = new ClassService(httpService, q, predicateService, entityDeserializer);
 const userService = new UserService(httpService, q, entityDeserializer);
-const conceptService = new ConceptService(httpService, q, entityDeserializer);
+const conceptService = new ConceptService(httpService, entityDeserializer);
 const resetService = new ResetService(httpService);
 
 export const loader = new EntityLoader(q, modelService, predicateService, classService, userService, conceptService, resetService, true);
