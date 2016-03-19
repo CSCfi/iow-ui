@@ -21,7 +21,6 @@ import * as angular from 'angular';
 
 require('./vendor/modernizr');
 require('imports?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
-require("typeahead.js");
 require('angular-gettext');
 require('checklist-model');
 
