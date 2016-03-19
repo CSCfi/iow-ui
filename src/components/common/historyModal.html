@@ -10,6 +10,7 @@
             ng-class="{'model-panel__selection': ctrl.isSelected(version)}"
             ng-click="ctrl.select(version)">
           {{version.createdAt | localizedDate}} - {{version.createdBy}}
+          <ajax-loading-indicator-small ng-if="ctrl.isLoading(version)"></ajax-loading-indicator-small>
         </li>
       </ul>
     </div>

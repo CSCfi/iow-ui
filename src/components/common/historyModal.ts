@@ -32,6 +32,7 @@ class HistoryModalController {
   versions: Entity[];
   selectedItem: Entity;
   selection: Class|Predicate|Model;
+  loading: boolean;
 
   /* @ngInject */
   constructor(private historyService: HistoryService,
@@ -46,13 +47,21 @@ class HistoryModalController {
     });
   }
 
+  isLoading(item: Entity) {
+    return item === this.selectedItem && this.loading;
+  }
+
   isSelected(item: Entity) {
     return this.selectedItem == item;
   }
 
   select(entity: Entity) {
     this.selectedItem = entity;
-    this.fetchResourceAtVersion(entity.id).then(resource => this.selection = resource);
+    this.loading = true;
+    this.fetchResourceAtVersion(entity.id).then(resource => {
+      this.selection = resource;
+      this.loading = false;
+    });
   }
 
   private fetchResourceAtVersion(versionId: Urn): IPromise<Class|Predicate|Model> {
