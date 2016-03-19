@@ -923,6 +923,10 @@ export class FintoConcept extends GraphNode {
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeList<Url>(graph.inScheme);
   }
+  
+  get suggestion() {
+    return false;
+  }
 }
 
 export class FintoConceptSearchResult extends GraphNode {
@@ -953,6 +957,10 @@ export class ConceptSuggestion extends GraphNode {
     this.inScheme = deserializeList<Url>(graph.inScheme);
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
+  }
+
+  get suggestion() {
+    return true;
   }
 }
 
