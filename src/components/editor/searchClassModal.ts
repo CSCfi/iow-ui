@@ -52,13 +52,14 @@ class SearchClassController {
 
   close = this.$uibModalInstance.dismiss;
   searchResults: (ClassListItem|AddNew)[] = [];
-  selectedClass: Class;
+  selection: Class;
   searchText: string = '';
   showProfiles: boolean;
   showModel: DefinedBy;
   models: DefinedBy[] = [];
   cannotConfirm: string;
   loadingResults: boolean;
+  selectedItem: ClassListItem|AddNew;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -74,7 +75,7 @@ class SearchClassController {
 
     this.showProfiles = onlySelection;
     this.loadingResults = true;
-    
+
     classService.getAllClasses().then((allClasses: ClassListItem[]) => {
 
       this.classes = allClasses;
@@ -123,16 +124,25 @@ class SearchClassController {
   }
 
   selectItem(item: ClassListItem|AddNew) {
+    this.selectedItem = item;
     if (item instanceof AddNew) {
       this.createNewClass();
     } else if (item instanceof ClassListItem) {
       this.cannotConfirm = this.exclude(item);
-      this.classService.getClass(item.id, this.model).then(result => this.selectedClass = result);
+      this.classService.getClass(item.id, this.model).then(result => this.selection = result);
+    }
+  }
+
+  loadingSelection(item: ClassListItem|AddNew) {
+    if (item instanceof ClassListItem) {
+      return item === this.selectedItem && (!this.selection || !item.id.equals(this.selection.id));
+    } else {
+      return false;
     }
   }
 
   confirm() {
-    this.$uibModalInstance.close(this.selectedClass);
+    this.$uibModalInstance.close(this.selection);
   }
 
   createNewClass() {

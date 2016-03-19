@@ -61,7 +61,7 @@ export class SearchPredicateController {
   editInProgress = () => this.$scope.form.editing;
   close = this.$uibModalInstance.dismiss;
   searchResults: (PredicateListItem|AddNewPredicate)[] = [];
-  selectedPredicate: Predicate;
+  selection: Predicate;
   searchText: string = '';
   showModel: DefinedBy;
   models: DefinedBy[];
@@ -70,6 +70,7 @@ export class SearchPredicateController {
   submitError: string;
   cannotConfirm: string;
   loadingResults: boolean;
+  selectedItem: PredicateListItem|AddNewPredicate;
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -137,23 +138,32 @@ export class SearchPredicateController {
     this.loadingResults = !isDefined(this.predicates);
   }
 
-  selectItem(predicate: PredicateListItem|AddNewPredicate) {
-    if (predicate instanceof AddNewPredicate) {
-      this.createNew(predicate.type);
-    } else if (predicate instanceof PredicateListItem) {
+  selectItem(item: PredicateListItem|AddNewPredicate) {
+    this.selectedItem = item;
+    if (item instanceof AddNewPredicate) {
+      this.createNew(item.type);
+    } else if (item instanceof PredicateListItem) {
       this.$scope.form.editing = false;
       this.submitError = null;
-      this.cannotConfirm = this.exclude(predicate);
-      this.predicateService.getPredicate(predicate.id, this.model).then(result => this.selectedPredicate = result);
+      this.cannotConfirm = this.exclude(item);
+      this.predicateService.getPredicate(item.id, this.model).then(result => this.selection = result);
+    }
+  }
+
+  loadingSelection(item: PredicateListItem|AddNew) {
+    if (item instanceof PredicateListItem) {
+      return item === this.selectedItem && (!this.selection || !item.id.equals(this.selection.id));
+    } else {
+      return false;
     }
   }
 
   usePredicate() {
-    this.$uibModalInstance.close(this.selectedPredicate);
+    this.$uibModalInstance.close(this.selection);
   }
 
   createAndUsePredicate() {
-    return this.predicateService.createPredicate(this.selectedPredicate)
+    return this.predicateService.createPredicate(this.selection)
       .then(() => this.usePredicate(), err => this.submitError = err.data.errorMessage);
   }
 
@@ -166,7 +176,7 @@ export class SearchPredicateController {
           this.predicateService.newPredicate(this.model, result.entity.label, result.concept.id, type, this.languageService.modelLanguage)
             .then(predicate => {
               this.cannotConfirm = null;
-              this.selectedPredicate = predicate;
+              this.selection = predicate;
               this.$scope.form.editing = true;
             });
         }

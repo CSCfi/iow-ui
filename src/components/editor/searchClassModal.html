@@ -33,13 +33,13 @@
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
           <h5>{{searchResult | translateLabel}} <i ng-class="searchResult.glyphIconClass"></i></h5>
-          <p>{{searchResult.definedBy | translateLabel}}</p>
+          <p>{{searchResult.definedBy | translateLabel}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
         </search-results>
       </div>
 
       <div class="col-md-4 search-selection">
         <form class="editable-form">
-          <class-form ng-if="ctrl.selectedClass" class="ctrl.selectedClass" old-class="ctrl.selectedClass" model="ctrl.model"></class-form>
+          <class-form ng-if="ctrl.selection" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model"></class-form>
         </form>
       </div>
 
@@ -52,7 +52,7 @@
       <span>{{ctrl.cannotConfirm | translate}}</span>
     </div>
     <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedClass || ctrl.cannotConfirm">{{ctrl.textForSelection(ctrl.selectedClass) | translate}}</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm">{{ctrl.textForSelection(ctrl.selection) | translate}}</button>
   </modal-buttons>
 </modal-template>
 

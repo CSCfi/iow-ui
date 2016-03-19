@@ -41,14 +41,13 @@
           <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
-            <i ng-class="searchResult.glyphIconClass"></i>
-            <h5>{{searchResult | translateLabel}}</h5>
-            <p>{{searchResult.definedBy | translateLabel}}</p>
+            <h5>{{searchResult | translateLabel}} <i ng-class="searchResult.glyphIconClass"></i></h5>
+            <p>{{searchResult.definedBy | translateLabel}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
           </search-results>
         </div>
 
         <div class="col-md-4 search-selection editable-form">
-          <predicate-form ng-if="ctrl.selectedPredicate" predicate="ctrl.selectedPredicate" old-predicate="ctrl.selectedPredicate" model="ctrl.model"></predicate-form>
+          <predicate-form ng-if="ctrl.selection" predicate="ctrl.selection" old-predicate="ctrl.selection" model="ctrl.model"></predicate-form>
           <submit-error-panel error="ctrl.submitError"></submit-error-panel>
         </div>
 
@@ -61,11 +60,11 @@
         <span>{{ctrl.cannotConfirm | translate}}</span>
       </div>
       <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default" ng-hide="ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selectedPredicate || ctrl.cannotConfirm">
+      <button type="button" class="btn btn-default" ng-hide="ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm">
         {{(!ctrl.typeSelectable ? 'Use ' + ctrl.type : 'Use selection') | translate}}
       </button>
       <button type="button" class="btn btn-default" ng-show="ctrl.isEditing()" ng-click="ctrl.createAndUsePredicate()" ng-disabled="form.$invalid || form.$pending">
-        {{('Create and use ' + ctrl.selectedPredicate.type) | translate}}
+        {{('Create and use ' + ctrl.selection.type) | translate}}
       </button>
     </modal-buttons>
   </modal-template>

@@ -112,7 +112,7 @@ class SearchConceptController {
   close = this.$uibModalInstance.dismiss;
   queryResults: ConceptSearchResult[];
   searchResults: (ConceptSearchResult|AddNewConcept)[];
-  selectedConcept: Concept|ConceptCreation;
+  selection: Concept|ConceptCreation;
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
@@ -122,6 +122,7 @@ class SearchConceptController {
   isConcept = isConcept;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
+  selectedItem: ConceptSearchResult|AddNewConcept;
 
   formData: FormData = { entity: { label: ''}, concept: { label: ''}};
 
@@ -190,7 +191,7 @@ class SearchConceptController {
     } else {
       this.searchResults = [];
     }
-    
+
     this.loadingResults = !isDefined(this.queryResults);
   }
 
@@ -204,11 +205,12 @@ class SearchConceptController {
 
   selectItem(item: ConceptSearchResult|AddNewConcept) {
 
+    this.selectedItem = item;
     this.submitError = null;
     this.$scope.form.$setPristine();
 
     if (item instanceof AddNewConcept) {
-      this.selectedConcept = new ConceptCreation(item.reference);
+      this.selection = new ConceptCreation(item.reference);
       this.formData = createNewConceptData(this.searchText);
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
@@ -217,9 +219,23 @@ class SearchConceptController {
         : this.conceptService.getFintoConcept(conceptSearchResult.id);
 
       conceptPromise.then(concept => {
-        this.selectedConcept = concept;
+        this.selection = concept;
         this.formData = createNewEntityData(this.languageService.translate(concept.label));
       });
+    }
+  }
+
+  loadingSelection(item: ConceptSearchResult|AddNew) {
+    if (item instanceof AddNew || item !== this.selectedItem) {
+      return false;
+    } else {
+      if (!this.selection) {
+        return true;
+      } else {
+        const searchResult = <ConceptSearchResult> item;
+        const selection = this.selection;
+        return isConcept(selection) && !searchResult.id.equals(selection.id);
+      }
     }
   }
 
@@ -253,7 +269,7 @@ class SearchConceptController {
       return entity && entity.id;
     }
 
-    const selection = this.selectedConcept;
+    const selection = this.selection;
     const language = this.languageService.modelLanguage;
 
     if (selection instanceof ConceptCreation) {

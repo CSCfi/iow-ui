@@ -35,19 +35,19 @@
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
             <h5>{{searchResult | translateLabel}} <span ng-show="searchResults.suggestion">({{'suggestion' | translate}})</span></h5>
-            <p>{{searchResult.reference | translateLabel}}</p>
+            <p>{{searchResult.reference | translateLabel}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
           </search-results>
         </div>
 
         <div class="col-md-4 search-selection">
-          <div ng-show="ctrl.selectedConcept">
+          <div ng-show="ctrl.selection">
 
-            <div ng-if="ctrl.isConcept(ctrl.selectedConcept)">
-              <non-editable title="Concept" value="ctrl.selectedConcept.label"></non-editable>
-              <non-editable title="Definition" value="ctrl.selectedConcept.comment"></non-editable>
+            <div ng-if="ctrl.isConcept(ctrl.selection)">
+              <non-editable title="Concept" value="ctrl.selection.label"></non-editable>
+              <non-editable title="Definition" value="ctrl.selection.comment"></non-editable>
             </div>
 
-            <div ng-if="!ctrl.isConcept(ctrl.selectedConcept)">
+            <div ng-if="!ctrl.isConcept(ctrl.selection)">
               <editable title="Concept">
                 <div class="input-group input-group-md">
                   <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.concept.label" />
@@ -68,7 +68,7 @@
               </div>
 
               <br />
-              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selectedConcept.reference | translateLabel}}</p>
+              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selection.reference | translateLabel}}</p>
             </div>
 
             <div ng-if="ctrl.newEntityCreation">
@@ -87,7 +87,7 @@
 
     <modal-buttons>
       <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selectedConcept || form.$invalid || form.$pending">{{ctrl.buttonTitle | translate}}</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || form.$invalid || form.$pending">{{ctrl.buttonTitle | translate}}</button>
     </modal-buttons>
 
   </modal-template>
