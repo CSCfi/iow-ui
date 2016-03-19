@@ -7,6 +7,7 @@ import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
 import { ModelService } from '../../services/modelService';
 import { HistoryService } from '../../services/historyService';
+import { UserService } from '../../services/userService';
 
 export class HistoryModal {
   /* @ngInject */
@@ -32,6 +33,7 @@ class HistoryModalController {
   versions: Entity[];
   selectedItem: Entity;
   selection: Class|Predicate|Model;
+  showAuthor: boolean;
   loading: boolean;
 
   /* @ngInject */
@@ -39,8 +41,11 @@ class HistoryModalController {
               private classService: ClassService,
               private predicateService: PredicateService,
               private modelService: ModelService,
+              private userService: UserService,
               public model: Model,
               public resource: Class|Predicate|Model) {
+
+    this.showAuthor = userService.isLoggedIn();
 
     historyService.getHistory(resource.id).then(activity => {
       this.versions = activity.versions;
