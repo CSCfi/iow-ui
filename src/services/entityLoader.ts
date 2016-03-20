@@ -13,7 +13,7 @@ import {
   State,
   ConceptSuggestion,
   ConstraintType,
-  Url, 
+  Url,
   Require
 } from './entities';
 import { ModelService } from './modelService';
@@ -46,9 +46,9 @@ export interface ExternalRequireDetails {
 }
 
 export interface ModelDetails extends EntityDetails {
-  prefix: string,
+  prefix: string;
   references?: string[];
-  requires?: (Resolvable<Model>|ExternalRequireDetails)[]
+  requires?: (Resolvable<Model>|ExternalRequireDetails)[];
 }
 
 export interface ConstraintDetails {
@@ -58,7 +58,7 @@ export interface ConstraintDetails {
 }
 
 export interface ClassDetails extends EntityDetails {
-  id?: string,
+  id?: string;
   subClassOf?: UriResolvable<Class>;
   concept?: Url|ConceptSuggestionDetails;
   equivalentClasses?: UriResolvable<Class>[];
@@ -68,14 +68,14 @@ export interface ClassDetails extends EntityDetails {
 
 export interface ShapeDetails extends EntityDetails {
   class: Resolvable<Class>;
-  id?: string,
+  id?: string;
   equivalentClasses?: UriResolvable<Class>[];
   properties?: PropertyDetails[];
   constraint?: ConstraintDetails;
 }
 
 export interface PredicateDetails extends EntityDetails {
-  id?: string,
+  id?: string;
   subPropertyOf?: UriResolvable<Predicate>;
   concept?: string|ConceptSuggestionDetails;
   equivalentProperties?: UriResolvable<Predicate>[];
@@ -167,7 +167,7 @@ export class EntityLoader {
 
         const promises: IPromise<any>[] = [];
 
-        for (var reference of details.references || []) {
+        for (const reference of details.references || []) {
           promises.push(
             this.schemes.then((schemes: any) => {
                 const scheme = _.find(schemes, (scheme: any) => scheme.id === reference);
@@ -254,8 +254,8 @@ export class EntityLoader {
 
             return this.$q.all(promises)
               .then(() => this.classService.createClass(shape))
-              .then(() => shape)
-          })
+              .then(() => shape);
+          });
       });
 
     return this.addAction(result, details);
@@ -299,7 +299,7 @@ export class EntityLoader {
 
         return this.$q.all(promises)
           .then(() => this.classService.createClass(klass))
-          .then(() => klass)
+          .then(() => klass);
       });
 
     return this.addAction(result, details);
@@ -393,7 +393,7 @@ export class EntityLoader {
 function failWithDetails(details: any): (err: any) => void {
   return (error: any) => {
     return Promise.reject({ error, details });
-  }
+  };
 }
 
 function setDetails(entity: { label: Localizable, comment: Localizable, state: State }, details: EntityDetails) {
@@ -425,11 +425,11 @@ function assertExists<T>(obj: T, msg: string): T {
   return obj;
 }
 
-function isPromise<T>(obj:any): obj is IPromise<T> {
+function isPromise<T>(obj: any): obj is IPromise<T> {
   return !!(obj && obj.then);
 }
 
-function isPromiseProvider<T>(obj:any): obj is (() => IPromise<T>) {
+function isPromiseProvider<T>(obj: any): obj is (() => IPromise<T>) {
   return typeof obj === 'function';
 }
 

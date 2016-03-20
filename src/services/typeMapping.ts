@@ -39,7 +39,7 @@ export function reverseMapType(type: Type): string {
   const result = fromType.get(type);
   if (!result) {
     console.log('Unknown type not mapped: ' + type);
-  } else if (result.length != 1) {
+  } else if (result.length !== 1) {
     throw new Error(`Cannot map '${type}' because is not bijection: '${result}'`);
   }
 

@@ -21,7 +21,7 @@ const limit = 1000;
 type Concept = FintoConcept|ConceptSuggestion;
 
 export interface NewEntityData {
-  label: string
+  label: string;
 };
 
 export class EntityCreation {
@@ -50,7 +50,7 @@ function createNewEntityData(label?: string): FormData {
     entity: {
       label
     }
-  }
+  };
 }
 
 function createNewConceptData(label?: string): FormData {
@@ -61,7 +61,7 @@ function createNewConceptData(label?: string): FormData {
     concept: {
       label
     }
-  }
+  };
 }
 
 export function isEntityCreation(obj: any): obj is EntityCreation {
@@ -140,7 +140,7 @@ class SearchConceptController {
               private searchConceptModal: SearchConceptModal) {
 
     this.defineConceptTitle = `Define concept for the ${this.newEntityCreation ? 'new ' : ''}${this.type}`;
-    this.buttonTitle = (newEntityCreation ? 'Create new ' + type: 'Use');
+    this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
     this.labelTitle = `${_.capitalize(this.type)} label`;
     this.searchText = initialSearch;
     this.loadingResults = true;

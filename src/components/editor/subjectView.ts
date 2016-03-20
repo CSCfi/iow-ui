@@ -14,7 +14,7 @@ mod.directive('subjectView', () => {
     restrict: 'E',
     controller: SubjectViewController,
     template: require('./subjectView.html')
-  }
+  };
 });
 
 class SubjectViewController {

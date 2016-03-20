@@ -20,7 +20,7 @@ mod.directive('prefixInput', () => {
       ngModel.$validators['existingId'] = (prefix: string) => {
         const model = $scope.model;
         return !model || !model.getPrefixNames($scope.activeRequire).has(prefix);
-      }
+      };
     }
   };
 });

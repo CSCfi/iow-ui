@@ -63,7 +63,7 @@ export class ClassService {
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('class'), klass.serialize(), {params: requestParams})
       .then(response => {
         klass.version = response.data.identifier;
-      })
+      });
   }
 
   deleteClass(id: Uri, modelId: Uri): IHttpPromise<any> {
@@ -115,7 +115,8 @@ export class ClassService {
         return this.$q.all([
           this.$q.when(predicate),
           this.entities.deserializeProperty(propertyResult.data)
-        ])})
+        ]);
+      })
       .then(([predicate, property]: [Predicate, Property]) => {
         if (!property.label) {
           property.label = predicate.label;

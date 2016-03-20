@@ -36,7 +36,7 @@ export class ConceptService {
         label: result.label,
         suggestion: result instanceof ConceptSuggestion,
         reference: reference
-      }
+      };
     }
 
     const conceptSuggestions = this.searchConceptSuggestions(searchText, language, reference.id)
@@ -60,16 +60,16 @@ export class ConceptService {
   }
 
   private searchConceptSuggestions(query: string, lang: Language, schemeId: Uri): IPromise<ConceptSuggestion[]> {
-    function suggestionContains(suggestion: ConceptSuggestion, query: string): boolean {
+    function suggestionContains(suggestion: ConceptSuggestion): boolean {
       const localization = suggestion.label[lang] || '';
       return localization.toLowerCase().includes(query.toLowerCase());
     }
 
-    function matchingSuggestions(suggestions: ConceptSuggestion[], query: string): ConceptSuggestion[] {
-      return _.filter(suggestions, suggestion => suggestionContains(suggestion, query));
+    function matchingSuggestions(suggestions: ConceptSuggestion[]): ConceptSuggestion[] {
+      return _.filter(suggestions, suggestion => suggestionContains(suggestion));
     }
 
-    return this.getConceptSuggestions(schemeId).then(suggestions => matchingSuggestions(suggestions, query));
+    return this.getConceptSuggestions(schemeId).then(suggestions => matchingSuggestions(suggestions));
   }
 
   getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion> {

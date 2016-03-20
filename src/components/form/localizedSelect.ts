@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 export const mod = angular.module('iow.components.form');
 
 mod.directive('localizedSelect', () => {
-  'ngInject';
   return {
     scope: {
       value: '=',
@@ -18,14 +17,21 @@ mod.directive('localizedSelect', () => {
                </select>`,
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope: IScope, gettextCatalog: gettextCatalog) {
-      'ngInject';
-
-      function localize(text: string) {
-        return {localization: text && `${gettextCatalog.getString(text)} (${text})`, value: text};
-      }
-
-      $scope.$watch(() => this.values, values => this.localizedValues = _.map(values, localize));
-    }
+    controller: LocalizedSelectController
   };
 });
+
+class LocalizedSelectController {
+
+  values: string[];
+  localizedValues: {localization: string, value: string}[];
+
+  /* @ngInject */
+  constructor($scope: IScope, gettextCatalog: gettextCatalog) {
+    function localize(text: string) {
+      return {localization: text && `${gettextCatalog.getString(text)} (${text})`, value: text};
+    }
+
+    $scope.$watch(() => this.values, values => this.localizedValues = _.map(values, localize));
+  }
+}

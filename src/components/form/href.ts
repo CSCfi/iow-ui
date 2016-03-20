@@ -1,6 +1,5 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import * as _ from 'lodash';
 import ITimeoutService = angular.ITimeoutService;
 
 export const mod = angular.module('iow.components.form');
@@ -16,5 +15,5 @@ mod.directive('ngHref', ($timeout: ITimeoutService) => {
         }
       });
     }
-  }
+  };
 });

@@ -12,7 +12,7 @@ mod.directive('application', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     controller: ApplicationController
-  }
+  };
 });
 
 class ApplicationController {

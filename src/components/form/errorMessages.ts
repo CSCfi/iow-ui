@@ -25,7 +25,7 @@ mod.directive('errorMessages', () => {
         $scope.ngModelController = ngModelController;
       });
     }
-  }
+  };
 });
 
 interface ErrorMessagesAttributes extends IAttributes {

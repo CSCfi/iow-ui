@@ -10,14 +10,14 @@ export const mod = angular.module('iow.components.form');
 mod.directive('maxInput', () => {
   return {
     scope: {
-      min: '=',
+      min: '='
     },
     restrict: 'A',
     require: 'ngModel',
     link($scope: MaxInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
-      
+
       $scope.$watch(() => $scope.min, () => modelController.$validate());
-      
+
       modelController.$validators['negative'] = (value: number) => {
         return !isDefined(value) || value >= 0;
       };

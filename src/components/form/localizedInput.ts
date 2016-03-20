@@ -12,8 +12,7 @@ interface LocalizedInputAttributes extends IAttributes {
   localizedInput: string;
 }
 
-mod.directive('localizedInput', (languageService: LanguageService) => {
-  'ngInject';
+mod.directive('localizedInput', /* @ngInject */ (languageService: LanguageService) => {
   return {
     restrict: 'A',
     require: 'ngModel',

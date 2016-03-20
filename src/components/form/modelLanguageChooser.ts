@@ -4,7 +4,6 @@ import { LanguageService, Language } from '../../services/languageService';
 export const mod = angular.module('iow.components.form');
 
 mod.directive('modelLanguageChooser', () => {
-  'ngInject';
   return {
     scope: {
     },

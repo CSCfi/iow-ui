@@ -4,7 +4,6 @@ import { normalizeModelType } from '../../services/utils';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('predicateForm', () => {
-  'ngInject';
   return {
     scope: {
       predicate: '=',
@@ -28,7 +27,7 @@ class PredicateFormController {
   get definedByTitle() {
     return normalizeModelType(this.predicate.definedBy.type);
   }
-  
+
   linkToSuperProperty() {
     return this.model.linkTo(this.predicate.type, this.predicate.subPropertyOf);
   }

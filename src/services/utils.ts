@@ -37,7 +37,7 @@ export function expandContextWithKnownModels(model?: Model): (response: angular.
       model.expandContextWithKnownModels(response.data['@context']);
     }
     return response;
-  }
+  };
 }
 
 export enum SearchClassType {
@@ -70,7 +70,7 @@ export function containsAny<T>(arr: T[], values: T[]): boolean {
 
 export function findFirstMatching<T>(arr: T[], values: T[]): T {
   for (const value of values) {
-    for(const item of arr) {
+    for (const item of arr) {
       if (item === value) {
         return item;
       }
@@ -108,7 +108,7 @@ export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
         return result;
       }
     }
-  }
+  };
 }
 
 export function createDefinedByExclusion(model: Model) {
@@ -141,7 +141,7 @@ export function createClassTypeExclusion(searchClassType: SearchClassType) {
       return 'Shapes are not allowed';
     } else if (!showClasses && !klass.isOfType('shape')) {
       return 'Classes are not allowed';
-    } else if (searchClassType == SearchClassType.SpecializedClass && !klass.isSpecializedClass()) {
+    } else if (searchClassType === SearchClassType.SpecializedClass && !klass.isSpecializedClass()) {
       return 'Non specialized classes are not allowed';
     } else {
       return <string> null;

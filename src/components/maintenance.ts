@@ -14,7 +14,7 @@ export class MaintenanceModal {
     return this.$uibModal.open({
       template: require('./maintenance.html'),
       size: 'large',
-      backdrop: false,
+      backdrop: false
     }).result;
   }
 }

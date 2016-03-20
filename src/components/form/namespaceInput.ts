@@ -20,7 +20,7 @@ mod.directive('namespaceInput', () => {
       ngModel.$validators['existingId'] = (ns: string) => {
         const model = $scope.model;
         return !model || !model.getNamespaceNames($scope.activeRequire).has(ns);
-      }
+      };
     }
   };
 });

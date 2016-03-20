@@ -12,7 +12,6 @@ import { createDefinedByExclusion } from '../../services/utils';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('uriSelect', () => {
-  'ngInject';
   return {
     scope: {
       uri: '=',

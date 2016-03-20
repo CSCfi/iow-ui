@@ -106,7 +106,7 @@ class SearchRequireController {
 
   createNew() {
     this.addRequireModal.open(this.model, this.language)
-      .then(require =>this.$uibModalInstance.close(require));
+      .then(require => this.$uibModalInstance.close(require));
   }
 
   close() {

@@ -2,7 +2,6 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
-import * as _ from 'lodash';
 import { ConceptService } from '../../services/conceptService';
 import { Language } from '../../services/languageService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
@@ -15,7 +14,7 @@ export class SearchSchemeModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(language:Language, exclude: (scheme: any) => string = noExclude): angular.IPromise<any> {
+  open(language: Language, exclude: (scheme: any) => string = noExclude): angular.IPromise<any> {
     return this.$uibModal.open({
       template: require('./searchSchemeModal.html'),
       size: 'medium',
@@ -45,7 +44,7 @@ class SearchSchemeController {
               private language: Language) {
 
     this.loadingResults = true;
-    
+
     conceptService.getAllSchemes(language).then(result => {
       this.schemes = result.data.vocabularies;
       this.search();
@@ -54,7 +53,7 @@ class SearchSchemeController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
   }
-  
+
   get showExcluded() {
     return !!this.searchText;
   }
@@ -70,7 +69,7 @@ class SearchSchemeController {
         comparingBoolean((scheme: any) => !!this.exclude(scheme))
           .andThen(comparingString((scheme: any) => scheme.title)));
     }
-    
+
     this.loadingResults = !isDefined(this.schemes);
   }
 

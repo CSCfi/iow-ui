@@ -12,8 +12,7 @@ interface IdInputAttributes extends IAttributes {
   idInput: Type;
 }
 
-mod.directive('idInput', ($q: IQService, validatorService: ValidatorService) => {
-  'ngInject';
+mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: ValidatorService) => {
   return {
     scope: {
       old: '='

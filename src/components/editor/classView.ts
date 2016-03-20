@@ -20,7 +20,6 @@ import { Show } from '../contracts';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('classView', () => {
-  'ngInject';
   return {
     scope: {
       class: '=',
@@ -33,7 +32,7 @@ mod.directive('classView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller: ClassViewController
-  }
+  };
 });
 
 export class ClassViewController extends EditableEntityController<Class> {

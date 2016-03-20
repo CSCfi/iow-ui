@@ -57,7 +57,7 @@ class HistoryModalController {
   }
 
   isSelected(item: Entity) {
-    return this.selectedItem == item;
+    return this.selectedItem === item;
   }
 
   select(entity: Entity) {

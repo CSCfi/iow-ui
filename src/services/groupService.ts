@@ -25,6 +25,6 @@ export class GroupService {
           '@graph': _.find(normalizeAsArray(response.data['@graph']), (group: any) => new Uri(group['@id']).equals(groupId))
         };
       })
-      .then(data => this.entities.deserializeGroup(data))
+      .then(data => this.entities.deserializeGroup(data));
   }
 }

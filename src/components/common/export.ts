@@ -29,7 +29,7 @@ mod.directive('export', () => {
     template: require('./export.html'),
     controllerAs: 'ctrl',
     controller: ExportController
-  }
+  };
 });
 
 type EntityType = Model|Class|Predicate;
@@ -60,7 +60,7 @@ class ExportController {
           filename: formatFileName(entity, option.extension),
           href,
           hrefRaw: href + '&raw=true'
-        }
+        };
       });
 
       if (Modernizr.bloburls) {

@@ -9,7 +9,6 @@ import { EditableForm } from './editableEntityController';
 export const mod = angular.module('iow.components.form');
 
 mod.directive('nonEditable', () => {
-  'ngInject';
   return {
     scope: {
       title: '@',
@@ -41,6 +40,6 @@ class NonEditableController {
 
   /* @ngInject */
   constructor(displayItemFactory: DisplayItemFactory) {
-    this.item = displayItemFactory.create(() => this.value, (value) => this.link, this.valueAsLocalizationKey, () => this.isEditing())
+    this.item = displayItemFactory.create(() => this.value, (value) => this.link, this.valueAsLocalizationKey, () => this.isEditing());
   }
 }

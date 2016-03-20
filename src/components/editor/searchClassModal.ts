@@ -32,7 +32,7 @@ export class SearchClassModal {
         model: () => model,
         exclude: () => exclude,
         onlySelection: () => onlySelection,
-        textForSelection: () => textForSelection,
+        textForSelection: () => textForSelection
       }
     }).result;
   }

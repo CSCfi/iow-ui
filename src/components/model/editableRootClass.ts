@@ -7,8 +7,6 @@ import { SearchClassModal } from '../editor/searchClassModal';
 export const mod = angular.module('iow.components.model');
 
 mod.directive('editableRootClass', () => {
-  'ngInject';
-
   return {
     scope: {
       model: '='

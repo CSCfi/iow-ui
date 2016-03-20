@@ -26,18 +26,15 @@ mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);
 mod.service('historyModal', HistoryModal);
 
-mod.filter('translateValue', (languageService: LanguageService) => {
-  'ngInject';
+mod.filter('translateValue', /* @ngInject */ (languageService: LanguageService) => {
   return (input: Localizable) => input ? languageService.translate(input) : '';
 });
 
-mod.filter('translateLabel', (translateValueFilter: any) => {
-  'ngInject';
+mod.filter('translateLabel', /* @ngInject */ (translateValueFilter: any) => {
   return (input: {label: Localizable}) => input ? translateValueFilter(input.label) : '';
 });
 
-mod.filter('orderByLabel', (translateLabelFilter: IFilterService, orderByFilter: any) => {
-  'ngInject';
+mod.filter('orderByLabel', /* @ngInject */ (translateLabelFilter: IFilterService, orderByFilter: any) => {
   return (array: {label: Localizable}[]) => {
     return orderByFilter(array, translateLabelFilter);
   };
@@ -46,19 +43,17 @@ mod.filter('orderByLabel', (translateLabelFilter: IFilterService, orderByFilter:
 mod.filter('capitalize', function() {
   return function(input: string) {
     return _.capitalize(input);
-  }
+  };
 });
 
-mod.filter('trustAsHtml', ($sce: angular.ISCEService) => {
-  'ngInject';
+mod.filter('trustAsHtml', /* @ngInject */ ($sce: angular.ISCEService) => {
   return (text: string) => $sce.trustAsHtml(text);
 });
 
-mod.filter('localizedDate', (gettextCatalog: gettextCatalog) => {
-  'ngInject';
+mod.filter('localizedDate', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
   return (moment: Moment) => {
     if (moment) {
       return moment.format(gettextCatalog.getString('date format'));
     }
-  }
+  };
 });

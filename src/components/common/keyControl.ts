@@ -4,7 +4,6 @@ import IScope = angular.IScope;
 export const mod = angular.module('iow.components.common');
 
 mod.directive('keyControl', () => {
-  'ngInject';
   return {
     restrict: 'A',
     controllerAs: 'keyControl',
@@ -14,7 +13,7 @@ mod.directive('keyControl', () => {
       $scope.$watch(element.attr('key-control') + '.length', (items: number) => controller.onItemsChange(items || 0));
     },
     controller: KeyControlController
-  }
+  };
 });
 
 const arrowDown = 40;
@@ -53,7 +52,7 @@ export class KeyControlController {
   }
 
   private moveSelection(offset: number) {
-    this.setSelection(Math.max(Math.min(this.selectionIndex + offset, this.itemCount-1), -1));
+    this.setSelection(Math.max(Math.min(this.selectionIndex + offset, this.itemCount - 1), -1));
   }
 
   private setSelection(index: number) {

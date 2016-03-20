@@ -185,7 +185,7 @@ function splitNamespace(id: string): {namespaceId: string, name: string, separat
   } else {
     const lastSlash = id.lastIndexOf('/');
     if (lastSlash) {
-      return {namespaceId: id.substr(0, lastSlash), name: id.substr(lastSlash+1, id.length-1), separator: '/'};
+      return {namespaceId: id.substr(0, lastSlash), name: id.substr(lastSlash + 1, id.length - 1), separator: '/'};
     } else {
       return null;
     }

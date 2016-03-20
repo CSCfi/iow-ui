@@ -14,7 +14,7 @@ mod.directive('usagePanel', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     controller: UsagePanelController
-  }
+  };
 });
 
 class UsagePanelController {

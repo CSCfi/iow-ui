@@ -28,7 +28,7 @@ mod.directive('usage', () => {
       $scope.$watch(attributes.showLinks, (show: boolean) => thisController.showLinks = () => show && (!formController || !formController.editing));
     },
     controller: UsageController
-  }
+  };
 });
 
 class UsageController {

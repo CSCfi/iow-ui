@@ -4,5 +4,5 @@ mod.directive('googleAnalytics', () => {
   return {
     restrict: 'E',
     template: require('./googleAnalytics.html')
-  }
+  };
 });

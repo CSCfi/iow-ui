@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
-import { Class, Model, Uri, VisualizationClass, Property, Predicate } from '../../services/entities';
+import { Class, Model, VisualizationClass, Property, Predicate } from '../../services/entities';
 import * as _ from 'lodash';
 import { isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
@@ -14,9 +14,7 @@ const joint = require('jointjs');
 
 export const mod = angular.module('iow.components.editor');
 
-mod.directive('classVisualization', ($timeout: ITimeoutService, $window: IWindowService) => {
-  'ngInject';
-
+mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
   return {
     restrict: 'E',
     scope: {
@@ -306,7 +304,7 @@ function createCells($scope: IScope, languageService: LanguageService, graph: jo
   }
 
   for (const association of associations) {
-    createAssociation($scope, languageService, graph, association, showCardinality)
+    createAssociation($scope, languageService, graph, association, showCardinality);
   }
 }
 
@@ -362,10 +360,10 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
-    const propertyNames = getPropertyNames();
+    const newPropertyNames = getPropertyNames();
     classCell.prop('name', getName());
-    classCell.prop('attributes', propertyNames);
-    classCell.prop('size', size(propertyNames));
+    classCell.prop('attributes', newPropertyNames);
+    classCell.prop('size', size(newPropertyNames));
   });
 
   graph.addCell(classCell);
@@ -388,7 +386,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     },
     labels: [
       { position: 0.5, attrs: { text: { text: getName() } } },
-      { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(data.association) : ''} } },
+      { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(data.association) : ''} } }
     ]
   });
 
@@ -404,10 +402,10 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
 
 
 function isSiblingLink(lhs: joint.dia.Link, rhs: joint.dia.Link) {
-  var lhsSource = lhs.get('source').id;
-  var lhsTarget = lhs.get('target').id;
-  var rhsSource = rhs.get('source').id;
-  var rhsTarget = rhs.get('target').id;
+  const lhsSource = lhs.get('source').id;
+  const lhsTarget = lhs.get('target').id;
+  const rhsSource = rhs.get('source').id;
+  const rhsTarget = rhs.get('target').id;
 
   return (lhsSource === rhsSource && lhsTarget === rhsTarget) || (lhsSource === rhsTarget && lhsTarget === rhsSource);
 }
@@ -454,7 +452,7 @@ function adjustLink(graph: joint.dia.Graph, paper: joint.dia.Paper, link: joint.
       } else {
         for (let i = 0; i < siblings.length; i++) {
           const sibling = siblings[i];
-          const offset = gapBetweenSiblings * Math.ceil((i+1) / 2);
+          const offset = gapBetweenSiblings * Math.ceil((i + 1) / 2);
           const sign = i % 2 ? 1 : -1;
           const angle = joint.g.toRad(theta + sign * 90);
           const vertex = joint.g.point.fromPolar(offset, angle, midPoint);
@@ -474,13 +472,13 @@ function recurseLink(paper: joint.dia.Paper, link: joint.dia.Link, siblingIndex:
   const top = bbox.height / 2;
   const centre = joint.g.point(bbox.x + left, bbox.y + top);
 
-  const mod = siblingIndex % 4;
+  const position = siblingIndex % 4;
 
   function resolveSign() {
-    if (mod === 0) return {x: 1, y: 1};
-    if (mod === 1) return {x: -1, y: 1};
-    if (mod === 2) return {x: 1, y: -1};
-    if (mod === 3) return {x: -1, y: -1};
+    if (position === 0) return {x: 1, y: 1};
+    if (position === 1) return {x: -1, y: 1};
+    if (position === 2) return {x: 1, y: -1};
+    if (position === 3) return {x: -1, y: -1};
   }
 
   const offset = 50;

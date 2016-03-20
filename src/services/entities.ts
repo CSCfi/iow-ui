@@ -385,7 +385,7 @@ export class Model extends AbstractModel {
       requires: serializeEntityList(this.requires),
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri
-    }
+    };
   }
 }
 
@@ -467,7 +467,7 @@ export class Require extends GraphNode {
       label: serializeLocalizable(this.label),
       'preferredXMLNamespaceName': this.namespace,
       'preferredXMLNamespacePrefix': this.prefix
-    }
+    };
   }
 }
 
@@ -685,7 +685,7 @@ export class ConstraintListItem extends GraphNode {
   serializationValues() {
     return {
       '@id': this.shapeId.uri
-    }
+    };
   }
 }
 
@@ -757,7 +757,7 @@ export class Property extends GraphNode {
       minCount: this.minCount,
       maxCount: this.maxCount,
       pattern: this.pattern
-    }
+    };
   }
 }
 
@@ -849,7 +849,7 @@ export abstract class Predicate extends AbstractPredicate {
       subject: serializeOptional(this.subject),
       equivalentProperty: serializeList(this.equivalentProperties, equivalentProperty => equivalentProperty.uri),
       identifier: this.version
-    }
+    };
   }
 }
 
@@ -923,7 +923,7 @@ export class FintoConcept extends GraphNode {
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeList<Url>(graph.inScheme);
   }
-  
+
   get suggestion() {
     return false;
   }
@@ -932,7 +932,7 @@ export class FintoConcept extends GraphNode {
 export class FintoConceptSearchResult extends GraphNode {
   id: Uri;
   label: Localizable;
-  
+
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
@@ -1162,13 +1162,13 @@ function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
   return new Map(items.map<[Urn, number]>((item: T, index: number) => [item.id, index]));
 }
 
-function serializeOptional<T extends GraphNode>(entity: T, isDefined: (entity: T) => boolean = (entity: T) => !!entity) {
+function serializeOptional<T extends GraphNode>(entity: T, isDefined: (entity: T) => boolean = (e: T) => !!e) {
   return isDefined(entity) ? entity.serialize(true) : null;
 }
 
 function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entity: EntityConstructor<T>): T {
   if (graph) {
-    return new entity(graph, context,frame);
+    return new entity(graph, context, frame);
   } else {
     return null;
   }
@@ -1226,15 +1226,15 @@ function deserializeUserLogin(userName: string): UserLogin {
   return userName && userName.substring('mailto:'.length);
 }
 
-function mapGraphTypeObject(type: string|string[]): Type[] {
-  return _.chain(normalizeAsArray(type))
+function mapGraphTypeObject(types: string|string[]): Type[] {
+  return _.chain(normalizeAsArray(types))
     .map(mapType)
     .reject(type => !type)
     .value();
 }
 
-function reverseMapTypeObject(type: Type[]): string[] {
-  return _.chain(normalizeAsArray(type))
+function reverseMapTypeObject(types: Type[]): string[] {
+  return _.chain(normalizeAsArray(types))
     .map(reverseMapType)
     .reject(type => !type)
     .value();
@@ -1389,15 +1389,15 @@ export class EntityDeserializer {
   }
 
   deserializeSearch(data: GraphData): IPromise<SearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (framedData) => SearchResult)
+    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (framedData) => SearchResult);
   }
 
   deserializeClassVisualization(data: GraphData): IPromise<any> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass)
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass);
   }
 
   deserializeModelVisualization(data: GraphData): IPromise<any> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass)
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass);
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {

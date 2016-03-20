@@ -5,8 +5,6 @@ import { Model } from '../../services/entities';
 export const mod = angular.module('iow.components.model');
 
 mod.directive('modelForm', () => {
-  'ngInject';
-
   return {
     scope: {
       model: '='

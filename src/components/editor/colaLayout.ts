@@ -34,7 +34,7 @@ class SimpleColaLayout extends Layout {
   }
 
   kick() {
-    while(!this.tick()) {}
+    while (!this.tick()) {}
   }
 
   drag() {
@@ -53,7 +53,7 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 }
 
 
-const coordinateRatio = 1/8;
+const coordinateRatio = 1 / 8;
 const padding = 15;
 
 function hash(str: string) {

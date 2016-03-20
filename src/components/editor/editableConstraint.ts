@@ -20,11 +20,10 @@ import {
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('editableConstraint', () => {
-  'ngInject';
   return {
     scope: {
       constraint: '=',
-      model: '=',
+      model: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -44,7 +43,7 @@ class EditableConstraint {
   model: Model;
   isEditing: () => boolean;
   types: ConstraintType[] = ['or', 'and', 'not'];
-  
+
   /* @ngInject */
   constructor(private searchClassModal: SearchClassModal) {
   }

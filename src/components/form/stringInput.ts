@@ -29,5 +29,5 @@ mod.directive('stringInput', () => {
         }
       }
     }
-  }
+  };
 });

@@ -4,7 +4,6 @@ import { Model, Predicate, Class } from '../../services/entities';
 export const mod = angular.module('iow.components.common');
 
 mod.directive('history', () => {
-  'ngInject';
   return {
     restrict: 'E',
     scope: {
@@ -15,7 +14,7 @@ mod.directive('history', () => {
     controllerAs: 'ctrl',
     template: `<button type="button" class="btn btn-default right" ng-click="ctrl.openHistory()" translate>Show history</button>`,
     controller: HistoryController
-  }
+  };
 });
 
 class HistoryController {

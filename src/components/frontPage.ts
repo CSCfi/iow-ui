@@ -21,7 +21,7 @@ mod.directive('frontPage', () => {
     template: require('./frontPage.html'),
     controllerAs: 'ctrl',
     controller: FrontPageController
-  }
+  };
 });
 
 interface Bullet {

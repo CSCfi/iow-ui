@@ -12,7 +12,6 @@ import { Show } from '../contracts';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('predicateView', () => {
-  'ngInject';
   return {
     scope: {
       predicate: '=',

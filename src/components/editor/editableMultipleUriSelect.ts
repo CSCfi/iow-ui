@@ -20,7 +20,6 @@ import create = require("core-js/fn/object/create");
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('editableMultipleUriSelect', () => {
-  'ngInject';
   return {
     scope: {
       uris: '=',
@@ -74,7 +73,7 @@ class EditableMultipleUriSelectController {
     const link = (uri: Uri) => this.model.linkTo(this.type, uri);
 
     $scope.$watchCollection(() => this.uris, uris => {
-      this.items =_.map(uris, uri => displayItemFactory.create(() => uri, link, false, () => this.isEditing()));
+      this.items = _.map(uris, uri => displayItemFactory.create(() => uri, link, false, () => this.isEditing()));
     });
   }
 

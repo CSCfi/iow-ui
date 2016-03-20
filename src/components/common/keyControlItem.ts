@@ -49,7 +49,7 @@ mod.directive('keyControlSelection', ($timeout: ITimeoutService) => {
           // do outside of digest cycle
           $timeout(() => element.click());
         }
-      })
+      });
     }
   };
 });

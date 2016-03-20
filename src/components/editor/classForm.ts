@@ -12,7 +12,6 @@ import { normalizeModelType } from '../../services/utils';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('classForm', () => {
-  'ngInject';
   return {
     scope: {
       class: '=',
@@ -31,7 +30,7 @@ mod.directive('classForm', () => {
       }
     },
     controller: ClassFormController
-  }
+  };
 });
 
 export class ClassFormController {

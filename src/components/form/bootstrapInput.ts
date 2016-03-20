@@ -1,7 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import INgModelController = angular.INgModelController;
-import * as _ from 'lodash';
 
 export const mod = angular.module('iow.components.form');
 
@@ -26,5 +25,5 @@ mod.directive('input', () => {
         $scope.$watch(() => modelController.$dirty, () => setClasses(modelController.$invalid));
       }
     }
-  }
+  };
 });

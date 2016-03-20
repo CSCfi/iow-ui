@@ -8,7 +8,6 @@ const userStates: State[] = ['Unstable', 'Draft'];
 const adminStates: State[] = userStates.concat(['Recommendation', 'Deprecated']);
 
 mod.directive('stateSelect', () => {
-  'ngInject';
   return {
     scope: {
       state: '=',

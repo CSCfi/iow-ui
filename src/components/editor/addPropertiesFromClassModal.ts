@@ -34,7 +34,7 @@ export class AddPropertiesFromClassModalController {
   selectedProperties: Property[];
 
   /* @ngInject */
-  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, klass: Uri|Class, public classType: string, private exclude: (property:Property) => boolean) {
+  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, klass: Uri|Class, public classType: string, private exclude: (property: Property) => boolean) {
 
     const init = (fetchedClass: Class) => {
       this.properties = fetchedClass.properties;

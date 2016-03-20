@@ -10,7 +10,6 @@ import { EditableForm } from './editableEntityController';
 export const mod = angular.module('iow.components.form');
 
 mod.directive('editable', () => {
-  'ngInject';
   return {
     scope: {
       title: '@',
@@ -57,7 +56,7 @@ mod.directive('editable', () => {
       }});
     },
     controller: EditableController
-  }
+  };
 });
 
 interface EditableScope extends IScope {

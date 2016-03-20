@@ -49,7 +49,7 @@ mod.directive('model', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller: ModelController
-  }
+  };
 });
 
 export class ModelController implements ChangeNotifier<Class|Predicate> {
@@ -361,7 +361,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private createPredicate(conceptCreation: EntityCreation, type: Type) {
-    return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.modelLanguage)
+    return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.modelLanguage);
   }
 
   private assignPredicateToModel(id: Uri) {
@@ -545,8 +545,8 @@ interface View {
 }
 
 interface WithIdAndType {
-  id: Uri,
-  selectionType: Type
+  id: Uri;
+  selectionType: Type;
 }
 
 function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {

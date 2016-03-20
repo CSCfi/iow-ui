@@ -25,7 +25,7 @@ mod.directive('group', () => {
     },
     bindToController: true,
     controller: GroupController
-  }
+  };
 });
 
 class GroupController extends EditableEntityController<Group> {
@@ -56,7 +56,7 @@ class GroupController extends EditableEntityController<Group> {
           group: groupService.getGroup(groupId),
           models: modelService.getModelsByGroup(groupId)
         })
-        .then((result:{group: Group, models: ModelListItem[]}) => {
+        .then((result: {group: Group, models: ModelListItem[]}) => {
           this.group = result.group;
           this.models = _.filter(result.models, model => !model.isOfType('profile'));
           this.profiles = _.filter(result.models, model => model.isOfType('profile'));
@@ -65,7 +65,7 @@ class GroupController extends EditableEntityController<Group> {
         }, err => {
           maintenanceModal.open(err);
         });
-    })
+    });
   }
 
   canAddModel(): boolean {

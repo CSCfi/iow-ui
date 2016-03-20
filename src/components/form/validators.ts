@@ -96,7 +96,7 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat {
 
 function createInValuesValidator(...values: string[]) {
 
-  function inValues(input: string, values: string[]) {
+  function inValues(input: string) {
     for (const value of values) {
       if (input === value) {
         return true;
@@ -106,7 +106,7 @@ function createInValuesValidator(...values: string[]) {
   }
 
   const validator: ValidatorWithFormat = (input: string) => {
-    return !input || inValues(input, values);
+    return !input || inValues(input);
   };
   validator.format = values.join('/');
   return validator;
@@ -114,15 +114,15 @@ function createInValuesValidator(...values: string[]) {
 
 function createRegexValidator(regex: RegExp) {
 
-  function unescapedString(regex: RegExp) {
+  function unescapedString() {
     const regexStr = regex.toString();
-    return regexStr.substr(1, regexStr.length-2).replace('^', '').replace('$', '');
+    return regexStr.substr(1, regexStr.length - 2).replace('^', '').replace('$', '');
   }
 
   const validator: ValidatorWithFormat = (input: string) => {
     return !input || regex.test(input);
   };
-  validator.format = unescapedString(regex);
+  validator.format = unescapedString();
   return validator;
 }
 

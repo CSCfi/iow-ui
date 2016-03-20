@@ -8,11 +8,10 @@ import { isValidUri } from './validators';
 
 export const mod = angular.module('iow.components.form');
 
-mod.directive('uriInput', (gettextCatalog: gettextCatalog) => {
-  'ngInject';
+mod.directive('uriInput', /* @ngInjedt */ (gettextCatalog: gettextCatalog) => {
   return {
     scope: {
-      model: '=',
+      model: '='
     },
     restrict: 'A',
     require: 'ngModel',

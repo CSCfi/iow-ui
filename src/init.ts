@@ -16,7 +16,7 @@ function loadingScreen() {
   } else {
     return {
       finish() {}
-    }
+    };
   }
 }
 

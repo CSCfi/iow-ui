@@ -1,7 +1,7 @@
 import { isDefined } from './utils';
 
 export interface Comparator<T> {
-  (lhs: T, rhs: T): number
+  (lhs: T, rhs: T): number;
 }
 
 export interface ChainableComparator<T> extends Comparator<T> {

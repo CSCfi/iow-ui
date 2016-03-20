@@ -31,5 +31,5 @@ mod.directive('datatypeInput', () => {
       initialize(attributes.datatypeInput);
       $scope.$watch<DataType>(() => attributes.datatypeInput, initialize);
     }
-  }
+  };
 });

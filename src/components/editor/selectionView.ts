@@ -4,7 +4,6 @@ import { Show } from '../contracts';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('selectionView', () => {
-  'ngInject';
   return {
     scope: {
       show: '=',
@@ -23,7 +22,7 @@ mod.directive('selectionView', () => {
 });
 
 class SelectionViewController {
-  
+
   show: Show;
 
   /* @ngInject */

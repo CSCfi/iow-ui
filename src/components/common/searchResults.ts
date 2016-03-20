@@ -23,7 +23,7 @@ mod.directive('searchResults', () => {
     transclude: true,
     template: require('./searchResults.html'),
     controller: SearchResultsController
-  }
+  };
 });
 
 mod.directive('searchResultTransclude', () => {
@@ -34,7 +34,7 @@ mod.directive('searchResultTransclude', () => {
         element.append(clone);
       });
     }
-  }
+  };
 });
 
 interface SearchResultScope extends IScope {
@@ -104,7 +104,7 @@ class SearchResultsController<T extends WithId> {
   selectItem(item: SearchResult<T>|AddNew) {
     const doSelection = () => {
       this.selected = item;
-      this.onSelect({item: item.unwrap()});      
+      this.onSelect({item: item.unwrap()});
     };
 
     if (this.editInProgress && this.editInProgress()) {

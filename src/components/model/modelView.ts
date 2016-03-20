@@ -133,7 +133,7 @@ export class ModelViewController extends EditableEntityController<Model> {
     return {
       edit: () => true,
       remove: () => this.model.state === 'Unstable'
-    }
+    };
   }
 
   getEditable(): Model {

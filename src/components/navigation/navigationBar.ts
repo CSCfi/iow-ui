@@ -14,7 +14,7 @@ mod.directive('navigationBar', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     controller: NavigationController
-  }
+  };
 });
 
 class NavigationController {

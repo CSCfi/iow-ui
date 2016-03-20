@@ -7,7 +7,6 @@ import { Show } from '../contracts';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('visualizationView', () => {
-  'ngInject';
   return {
     scope: {
       selection: '=',
@@ -20,7 +19,7 @@ mod.directive('visualizationView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller: VisualizationViewController
-  }
+  };
 });
 
 export class VisualizationViewController {

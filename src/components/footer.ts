@@ -11,5 +11,5 @@ mod.directive('footer', () => {
       this.gitHash = config.gitHash;
       this.gitDate = config.gitDate;
     }
-  }
+  };
 });

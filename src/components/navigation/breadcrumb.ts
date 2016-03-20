@@ -1,5 +1,6 @@
 import IScope = angular.IScope;
 import { LocationService } from '../../services/locationService';
+import { Location } from '../../services/entities';
 
 export const mod = angular.module('iow.components.navigation');
 
@@ -10,11 +11,18 @@ mod.directive('breadcrumb', () => {
     template: require('./breadcrumb.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller($scope: IScope, locationService: LocationService) {
-      'ngInject';
-      $scope.$watch(() => locationService.location, location => {
-        this.location = location;
-      });
-    }
+    controller: BreadcrumbController
   };
 });
+
+class BreadcrumbController {
+
+  location: Location;
+
+  /* @ngInject */
+  constructor($scope: IScope, locationService: LocationService) {
+    $scope.$watch(() => locationService.location, location => {
+      this.location = location;
+    });
+  }
+}

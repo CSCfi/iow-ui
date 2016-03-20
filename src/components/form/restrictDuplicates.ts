@@ -15,7 +15,7 @@ mod.directive('restrictDuplicates', () => {
     restrict: 'A',
     require: ['restrictDuplicates', 'ngModel'],
     link($scope: IScope, element: JQuery, attributes: RestrictDupicatesAttributes, [thisController, ngModel]: [RestrictDuplicatesController, INgModelController]) {
-      
+
       $scope.$watch(attributes.restrictDuplicates, (values: any[]) => {
         thisController.valuesToCheckAgainst = values;
       });

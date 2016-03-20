@@ -12,8 +12,7 @@ import { normalizeModelType } from '../../services/utils';
 
 export const mod = angular.module('iow.components.editor');
 
-mod.directive('propertyView', ($location: ILocationService, $timeout: ITimeoutService) => {
-  'ngInject';
+mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $timeout: ITimeoutService) => {
   return {
     scope: {
       property: '=',
@@ -49,7 +48,7 @@ mod.directive('propertyView', ($location: ILocationService, $timeout: ITimeoutSe
       classFormController.registerPropertyView(thisController.property.id, thisController);
     },
     controller: PropertyViewController
-  }
+  };
 });
 
 interface PropertyViewScope extends IScope {

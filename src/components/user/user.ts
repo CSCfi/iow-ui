@@ -13,7 +13,7 @@ mod.directive('user', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     controller: UserController
-  }
+  };
 });
 
 class UserController {

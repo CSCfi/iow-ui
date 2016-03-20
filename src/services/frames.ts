@@ -151,7 +151,7 @@ export function fintoConceptSearchResultsFrame(data: any): Frame {
     lang: null,
     uri: null,
     type: null,
-    graph: null,
+    graph: null
   });
 
   return frame(data, context, { '@type': 'skos:Concept' });
@@ -196,16 +196,16 @@ export function classVisualizationFrame(data: any): Frame {
 
 export function versionFrame(data: any): Frame {
   return frame(data, versionContext, {
-    "generated":{
-      "wasAttributedTo":{},
-      "wasRevisionOf":{
-        "@omitDefault":true,
-        "@default":[],
-        "@embed":false
+    'generated': {
+      'wasAttributedTo': {},
+      'wasRevisionOf': {
+        '@omitDefault': true,
+        '@default': [],
+        '@embed': false
       }
     },
-    "used":{
-      "@embed":"@never"
+    'used': {
+      '@embed': '@never'
     }
   });
 }

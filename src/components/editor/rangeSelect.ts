@@ -3,7 +3,6 @@ import { dataTypes } from '../common/dataTypes';
 export const mod = angular.module('iow.components.editor');
 
 mod.directive('rangeSelect', () => {
-  'ngInject';
   return {
     scope: {
       range: '=',

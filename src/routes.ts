@@ -3,15 +3,14 @@ import IRouteService = angular.route.IRouteService;
 import IScope = angular.IScope;
 import { Uri } from './services/uri';
 
+/* @ngInject */
 export function routeConfig($routeProvider: IRouteProvider) {
-  'ngInject';
-
   $routeProvider
     .when('/', {
-      template: '<front-page></front-page>',
+      template: '<front-page></front-page>'
     })
     .when('/user', {
-      template: '<user></user>',
+      template: '<user></user>'
     })
     .when('/group', {
       template: '<group group-id="groupId"></group>',

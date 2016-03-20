@@ -10,7 +10,7 @@ export const mod = angular.module('iow.components.form');
 mod.directive('minInput', () => {
   return {
     scope: {
-      max: '=',
+      max: '='
     },
     restrict: 'A',
     require: 'ngModel',

@@ -71,6 +71,6 @@ export class LanguageService {
       }  else {
         return 0;
       }
-    }
+    };
   }
 }

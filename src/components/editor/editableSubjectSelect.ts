@@ -8,13 +8,12 @@ export const mod = angular.module('iow.components.editor');
 
 
 mod.directive('editableSubjectSelect', () => {
-  'ngInject';
   return {
     scope: {
       subject: '=',
       references: '=',
       type: '@',
-      disable: '=',
+      disable: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -25,7 +24,7 @@ mod.directive('editableSubjectSelect', () => {
       thisController.isEditing = () => formController.editing;
     },
     controller: EditableSubjectSelectController
-  }
+  };
 });
 
 class EditableSubjectSelectController {

@@ -38,7 +38,7 @@ export class ModelService {
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('model'), model.serialize(), { params: { id: model.id.uri } })
       .then(response => {
         model.version = response.data.identifier;
-      })
+      });
   }
 
   deleteModel(id: Uri): IHttpPromise<any> {
