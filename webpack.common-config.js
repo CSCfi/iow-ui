@@ -15,6 +15,9 @@ module.exports = new WebpackConfig().merge({
   },
 
   module: {
+    preLoaders: [
+      { test: /\.ts$/,            loader: "tslint" }
+    ],
     loaders: [
       { test: /\.css$/,           loader: "style!css" },
       { test: /\.scss$/,          loader: "style!css!sass" },
@@ -29,6 +32,10 @@ module.exports = new WebpackConfig().merge({
       { test: /\.png$/,           loader: "url-loader?mimetype=image/png" },
       { test: /\.gif$/,           loader: "url-loader?mimetype=image/gif" }
     ]
+  },
+
+  tslint: {
+    configuration: require('./tslint.json')
   },
 
   plugins: [
