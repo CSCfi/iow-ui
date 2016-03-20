@@ -36,6 +36,8 @@ class PredicateFormController {
     const predicate = this.predicate;
     if (predicate instanceof Association) {
       return this.model.linkTo('class', predicate.valueClass);
+    } else {
+      return '';
     }
   }
 

@@ -175,6 +175,8 @@ function splitCurie(curie: string): {prefix: string, name: string} {
   const parts = curie.split(':');
   if (parts.length === 2) {
     return {prefix: parts[0], name: parts[1]};
+  } else {
+    return null;
   }
 }
 

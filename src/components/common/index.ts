@@ -54,6 +54,8 @@ mod.filter('localizedDate', /* @ngInject */ (gettextCatalog: gettextCatalog) => 
   return (moment: Moment) => {
     if (moment) {
       return moment.format(gettextCatalog.getString('date format'));
+    } else {
+      return null;
     }
   };
 });

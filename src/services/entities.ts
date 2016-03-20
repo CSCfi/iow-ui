@@ -356,6 +356,7 @@ export class Model extends AbstractModel {
         return true;
       }
     }
+    return false;
   }
 
   linkTo(type: Type|Type[], id: Uri) {
@@ -363,6 +364,8 @@ export class Model extends AbstractModel {
 
     if (id && !id.isUrn()) {
       return this.isKnownModelNamespace(id.namespace) ? internalUrl(id, typeArray) : id.url;
+    } else {
+      return null;
     }
   }
 
@@ -656,6 +659,8 @@ export class Constraint extends GraphNode {
           return 'sh:AbstractAndNodeConstraint';
         case 'not':
           return 'sh:AbstractNotNodeConstraint';
+        default:
+          throw new Error('Unsupported constraint: ' + constraint);
       }
     }
 
@@ -1257,6 +1262,8 @@ export function internalUrl(id: Uri, type: Type[]) {
     } else {
       throw new Error('Unsupported type for url: ' + type);
     }
+  } else {
+    return null;
   }
 }
 

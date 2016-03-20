@@ -5,7 +5,8 @@
     "removeComments": false,
     "sourceMap": true,
     "module": "commonjs",
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true
   },
   "exclude": [
     "node_modules",

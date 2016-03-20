@@ -108,6 +108,7 @@ export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
         return result;
       }
     }
+    return null;
   };
 }
 
@@ -119,6 +120,8 @@ export function createDefinedByExclusion(model: Model) {
   return (item: WithDefinedBy) => {
     if (!modelIds.has(item.definedBy.id.uri)) {
       return 'Not required by model';
+    } else {
+      return null;
     }
   };
 }
@@ -127,6 +130,8 @@ export function createExistsExclusion(itemIds: Set<string>) {
   return (item: WithId) => {
     if (itemIds.has(item.id.toString())) {
       return 'Already added';
+    } else {
+      return null;
     }
   };
 }

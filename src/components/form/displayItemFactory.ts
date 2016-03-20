@@ -44,6 +44,8 @@ export class DisplayItem {
     if (link) {
       const external = !link.startsWith('/');
       return external ? link : '#' + link;
+    } else {
+      return '';
     }
   }
 

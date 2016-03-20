@@ -95,6 +95,8 @@ export class ModelViewController extends EditableEntityController<Model> {
     const existsExclude = (require: Require) => {
       if (namespaces.has(require.namespace) || prefixes.has(require.prefix)) {
         return 'Already added';
+      } else {
+        return null;
       }
     };
 

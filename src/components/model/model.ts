@@ -484,6 +484,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         return 'col-md-12';
       case Show.Visualization:
         return 'hide';
+      default:
+        throw new Error('Unsupported show: ' + this.show);
     }
   }
 
@@ -495,6 +497,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         return 'hide';
       case Show.Visualization:
         return 'col-md-12';
+      default:
+        throw new Error('Unsupported show: ' + this.show);
     }
   }
 }
@@ -512,6 +516,8 @@ class RouteData {
   get newModel() {
     if (this.params.label && this.params.prefix && this.params.group && this.params.type) {
       return {label: this.params.label, prefix: this.params.prefix, groupId: this.params.group, type: this.params.type};
+    } else {
+      return null;
     }
   }
 
@@ -522,6 +528,7 @@ class RouteData {
         return {selectionType: type, id: new Uri(id)};
       }
     }
+    return null;
   }
 }
 

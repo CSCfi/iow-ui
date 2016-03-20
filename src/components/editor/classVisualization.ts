@@ -475,10 +475,18 @@ function recurseLink(paper: joint.dia.Paper, link: joint.dia.Link, siblingIndex:
   const position = siblingIndex % 4;
 
   function resolveSign() {
-    if (position === 0) return {x: 1, y: 1};
-    if (position === 1) return {x: -1, y: 1};
-    if (position === 2) return {x: 1, y: -1};
-    if (position === 3) return {x: -1, y: -1};
+    switch (position) {
+      case 0:
+        return { x: 1,  y: 1};
+      case 1:
+        return { x: -1, y: 1};
+      case 2:
+        return { x: 1,  y: -1};
+      case 3:
+        return { x: -1, y: -1};
+      default:
+        throw new Error('Unsupported position: ' + position);
+    }
   }
 
   const offset = 50;

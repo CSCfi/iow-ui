@@ -39,6 +39,8 @@ mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: Valid
         if (value) {
           previous = value;
           return value.name;
+        } else {
+          return undefined;
         }
       });
 

@@ -117,6 +117,8 @@ class SearchResultsController<T extends WithId> {
   title(item: SearchResult<T>|AddNew) {
     if (item instanceof SearchResult && item.disabled) {
       return this.gettextCatalog.getString(item.disabledReason);
+    } else {
+      return null;
     }
   }
 }

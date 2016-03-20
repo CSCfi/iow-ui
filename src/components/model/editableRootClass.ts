@@ -41,6 +41,8 @@ class EditableRootClassController {
     const exclude = (klass: ClassListItem) => {
       if (klass.definedBy.id.notEquals(this.model.id)) {
         return 'Can be selected only from this ' + this.model.normalizedType;
+      } else {
+        return null;
       }
     };
 
