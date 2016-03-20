@@ -4,7 +4,8 @@
     "noImplicitAny": true,
     "removeComments": false,
     "sourceMap": true,
-    "module": "commonjs"
+    "module": "commonjs",
+    "noFallthroughCasesInSwitch": true
   },
   "exclude": [
     "node_modules",
