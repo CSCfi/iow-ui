@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { Uri } from '../../services/uri';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 interface RestrictDupicatesAttributes extends IAttributes {
   restrictDuplicates: string;

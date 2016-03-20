@@ -4,7 +4,7 @@ import INgModelController = angular.INgModelController;
 import { Model, Require } from '../../services/entities';
 import { isValidNamespace, isValidUrl } from './validators';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('namespaceInput', () => {
   return {

@@ -9,7 +9,7 @@ import { EditableForm } from '../form/editableEntityController';
 import { Model, Type, Uri } from '../../services/entities';
 import { createDefinedByExclusion } from '../../services/utils';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('uriSelect', () => {
   return {

@@ -1,15 +1,14 @@
 import IFilterService = angular.IFilterService;
 import gettextCatalog = angular.gettext.gettextCatalog;
+import Moment = moment.Moment;
 import * as _ from 'lodash';
 import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { HistoryModal } from './historyModal';
 import { LanguageService } from '../../services/languageService';
 import { Localizable } from '../../services/entities';
-import Moment = moment.Moment;
-
-const mod = angular.module('iow.components.common', []);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 import './accordionChevron';
 import './ajaxLoadingIndicator';

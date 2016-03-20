@@ -1,7 +1,7 @@
 import IScope = angular.IScope;
 import { LanguageService, Language } from '../../services/languageService';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('modelLanguageChooser', () => {
   return {

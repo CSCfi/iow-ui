@@ -2,7 +2,7 @@ import IScope = angular.IScope;
 import { LocationService } from '../../services/locationService';
 import { Location } from '../../services/entities';
 
-export const mod = angular.module('iow.components.navigation');
+import { module as mod }  from './module';
 
 mod.directive('breadcrumb', () => {
   return {

@@ -1,7 +1,7 @@
 import { LoginModal } from './loginModal';
 
-const mod = angular.module('iow.components.navigation', ['iow.services']);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 import './breadcrumb';
 import './navigationBar';

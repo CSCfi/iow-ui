@@ -6,8 +6,7 @@ import * as _ from 'lodash';
 import { Uri } from '../../services/entities';
 import IPromise = angular.IPromise;
 import { ConfirmationModal } from './confirmationModal';
-
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 mod.directive('searchResults', () => {
   return {

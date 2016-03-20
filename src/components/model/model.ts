@@ -40,7 +40,7 @@ import IQService = angular.IQService;
 import { MaintenanceModal } from '../maintenance';
 import { Show, ChangeNotifier, ChangeListener } from './../contracts';
 
-export const mod = angular.module('iow.components.model');
+import { module as mod }  from './module';
 
 mod.directive('model', () => {
   return {

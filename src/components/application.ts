@@ -3,7 +3,7 @@ import ILocationService = angular.ILocationService;
 import { UserService } from '../services/userService';
 import { config } from '../config';
 
-const mod = angular.module('iow.components');
+import { module as mod }  from './module';
 
 mod.directive('application', () => {
   return {

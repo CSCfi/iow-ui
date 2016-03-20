@@ -3,7 +3,7 @@ import IRepeatScope = angular.IRepeatScope;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 const selectionClass = 'selection';
 

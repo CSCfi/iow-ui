@@ -1,8 +1,8 @@
 import { AdvancedSearchModal } from './advancedSearchModal';
 import { MaintenanceModal } from './maintenance';
 
-const mod = angular.module('iow.components', ['iow.services']);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 import './application';
 import './frontPage';

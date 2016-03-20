@@ -4,7 +4,7 @@ import { DefaultUser, Uri, internalUrl } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { LocationService } from '../../services/locationService';
 
-const mod = angular.module('iow.components.user', ['iow.services']);
+import { module as mod }  from './module';
 
 mod.directive('user', () => {
   return {

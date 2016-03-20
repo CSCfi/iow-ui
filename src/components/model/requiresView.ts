@@ -3,7 +3,7 @@ import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
 import { Require, Model, NamespaceType } from '../../services/entities';
 
-export const mod = angular.module('iow.components.model');
+import { module as mod }  from './module';
 
 mod.directive('requiresView', () => {
   return {

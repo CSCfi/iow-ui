@@ -6,7 +6,7 @@ import { LanguageService } from '../../services/languageService';
 import { hasLocalization, allLocalizations } from '../../services/utils';
 import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 interface LocalizedInputAttributes extends IAttributes {
   localizedInput: string;

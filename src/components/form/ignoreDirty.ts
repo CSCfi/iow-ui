@@ -4,7 +4,7 @@ import INgModelController = angular.INgModelController;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('ignoreDirty', () => {
   return {

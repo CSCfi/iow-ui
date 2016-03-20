@@ -2,7 +2,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
 import { EditableEntityController } from './editableEntityController';
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('editableEntityButtons', () => {
   return {

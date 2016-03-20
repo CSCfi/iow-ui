@@ -1,7 +1,7 @@
 import { Association, Model, Predicate } from '../../services/entities';
 import { normalizeModelType } from '../../services/utils';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('predicateForm', () => {
   return {

@@ -2,7 +2,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('localizedSelect', () => {
   return {

@@ -2,8 +2,7 @@ import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
 import IScope = angular.IScope;
 import { EditableForm } from '../form/editableEntityController';
-
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 interface ModalTemplateAttributes extends IAttributes {
   'default': string;

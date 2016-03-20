@@ -7,7 +7,7 @@ import Moment = moment.Moment;
 import { Predicate, Class, Model } from '../../services/entities';
 import { config } from '../../config';
 
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 const exportOptions = [
   {type: 'application/ld+json', extension: 'json'},

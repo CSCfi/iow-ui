@@ -3,8 +3,7 @@ import { Language, LanguageService } from '../../services/languageService';
 import { UserService } from '../../services/userService';
 import { User } from '../../services/entities';
 import { LoginModal } from './loginModal';
-
-const mod = angular.module('iow.components.navigation');
+import { module as mod }  from './module';
 
 mod.directive('navigationBar', () => {
   return {

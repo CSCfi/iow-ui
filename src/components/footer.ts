@@ -1,6 +1,5 @@
 import { config } from '../config';
-
-const mod = angular.module('iow.components');
+import { module as mod }  from './module';
 
 mod.directive('footer', () => {
   return {

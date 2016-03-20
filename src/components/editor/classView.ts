@@ -17,7 +17,7 @@ import {
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('classView', () => {
   return {

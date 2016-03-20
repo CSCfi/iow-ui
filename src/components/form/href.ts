@@ -2,7 +2,7 @@ import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('ngHref', ($timeout: ITimeoutService) => {
   return {

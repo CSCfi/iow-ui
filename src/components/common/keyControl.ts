@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 mod.directive('keyControl', () => {
   return {

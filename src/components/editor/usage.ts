@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { Usage, Referrer } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 interface UsageAttributes extends IAttributes {
   showLinks: string;

@@ -9,7 +9,7 @@ import { Class, Model, Property, Uri } from '../../services/entities';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { normalizeModelType } from '../../services/utils';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('classForm', () => {
   return {

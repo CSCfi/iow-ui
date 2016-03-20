@@ -6,7 +6,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { Model, Uri } from '../../services/entities';
 import { isValidUri } from './validators';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('uriInput', /* @ngInjedt */ (gettextCatalog: gettextCatalog) => {
   return {

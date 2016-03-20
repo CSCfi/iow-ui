@@ -11,7 +11,7 @@ import { GroupListItem, SearchResult, Url } from '../services/entities';
 import { MaintenanceModal } from './maintenance';
 
 
-const mod = angular.module('iow.components');
+import { module as mod }  from './module';
 
 mod.directive('frontPage', () => {
   return {

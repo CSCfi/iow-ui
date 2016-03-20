@@ -3,7 +3,7 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 interface StringInputAttributes extends IAttributes {
   stringInput: string;

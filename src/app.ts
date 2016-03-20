@@ -11,13 +11,21 @@ import IRouteService = angular.route.IRouteService;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import './shim';
-import { routeConfig } from './routes';
-
-import './styles/app.scss';
-
 import * as jQuery from 'jquery';
 window.jQuery = jQuery;
 import * as angular from 'angular';
+import { routeConfig } from './routes';
+import commonModule from './components/common';
+import editorModule from './components/editor';
+import formModule from './components/form';
+import groupModule from './components/group';
+import modelModule from './components/model';
+import navigationModule from './components/navigation';
+import userModule from './components/user';
+import componentsModule from './components';
+import servicesModule from './services';
+
+import './styles/app.scss';
 
 require('./vendor/modernizr');
 require('imports?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
@@ -30,15 +38,15 @@ const mod = angular.module('iow-ui', [
   require('angular-ui-bootstrap'),
   'gettext',
   'checklist-model',
-  require('./components/common'),
-  require('./components/editor'),
-  require('./components/form'),
-  require('./components/group'),
-  require('./components/model'),
-  require('./components/navigation'),
-  require('./components/user'),
-  require('./components'),
-  require('./services')
+  commonModule,
+  editorModule,
+  formModule,
+  groupModule,
+  modelModule,
+  navigationModule,
+  userModule,
+  componentsModule,
+  servicesModule
 ]);
 
 mod.config(routeConfig);

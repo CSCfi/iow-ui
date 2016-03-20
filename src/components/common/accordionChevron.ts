@@ -1,4 +1,4 @@
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 mod.directive('accordionChevron', () => {
   return {

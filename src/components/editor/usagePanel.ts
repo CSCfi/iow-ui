@@ -2,7 +2,7 @@ import IScope = angular.IScope;
 import { UsageService } from '../../services/usageService';
 import { Usage, EditableEntity } from '../../services/entities';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('usagePanel', () => {
   return {

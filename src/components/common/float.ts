@@ -4,7 +4,7 @@ import IWindowService = angular.IWindowService;
 import ITimeoutService = angular.ITimeoutService;
 import * as _ from 'lodash';
 
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 interface FloatAttributes extends IAttributes {
   float: string;

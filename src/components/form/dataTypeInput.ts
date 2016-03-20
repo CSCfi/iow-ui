@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import { DataType } from '../common/dataTypes';
 import { resolveValidator } from './validators';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 interface DataTypeInputAttributes extends IAttributes {
   datatypeInput: DataType;

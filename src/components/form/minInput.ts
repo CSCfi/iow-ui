@@ -5,7 +5,7 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { isDefined } from '../../services/utils';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('minInput', () => {
   return {

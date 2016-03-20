@@ -4,7 +4,7 @@ import ILogService = angular.ILogService;
 import { Class, Model, Predicate } from '../../services/entities';
 import { Show } from '../contracts';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('visualizationView', () => {
   return {

@@ -5,7 +5,7 @@ import INgModelController = angular.INgModelController;
 import ITimeoutService = angular.ITimeoutService;
 import { resolveValidator } from './validators';
 import { dataTypes } from '../common/dataTypes';
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 type Error = { key: string, message: string, format?: string };
 const errors: Error[] = [];

@@ -10,7 +10,7 @@ import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
 import { normalizeModelType } from '../../services/utils';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $timeout: ITimeoutService) => {
   return {

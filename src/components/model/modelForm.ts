@@ -1,8 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { Model } from '../../services/entities';
-
-export const mod = angular.module('iow.components.model');
+import { module as mod }  from './module';
 
 mod.directive('modelForm', () => {
   return {

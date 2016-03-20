@@ -6,7 +6,7 @@ import { ValidatorService } from '../../services/validatorService';
 import { Class, Predicate, Type, Uri } from '../../services/entities';
 import { isStringValid, isValidLabelLength } from './validators';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 interface IdInputAttributes extends IAttributes {
   idInput: Type;

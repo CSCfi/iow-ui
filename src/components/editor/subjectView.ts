@@ -1,7 +1,5 @@
-
-import { FintoConcept, ConceptSuggestion } from "../../services/entities";
-
-export const mod = angular.module('iow.components.editor');
+import { FintoConcept, ConceptSuggestion } from '../../services/entities';
+import { module as mod }  from './module';
 
 mod.directive('subjectView', () => {
   return {

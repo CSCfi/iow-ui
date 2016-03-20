@@ -10,9 +10,8 @@ import { isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener } from '../contracts';
+import { module as mod }  from './module';
 const joint = require('jointjs');
-
-export const mod = angular.module('iow.components.editor');
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
   return {

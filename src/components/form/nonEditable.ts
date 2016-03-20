@@ -6,7 +6,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('nonEditable', () => {
   return {

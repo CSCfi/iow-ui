@@ -3,8 +3,8 @@ import { SearchRequireModal } from './searchRequireModal';
 import { SearchSchemeModal } from './searchSchemeModal';
 import { AddRequireModal } from './addRequireModal';
 
-const mod = angular.module('iow.components.model', ['iow.components.editor']);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 import './editableRootClass';
 import './model';

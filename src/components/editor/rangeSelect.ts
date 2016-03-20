@@ -1,6 +1,6 @@
 import { dataTypes } from '../common/dataTypes';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 mod.directive('rangeSelect', () => {
   return {

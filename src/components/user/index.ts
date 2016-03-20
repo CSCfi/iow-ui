@@ -1,4 +1,4 @@
-const mod = angular.module('iow.components.user', ['iow.services']);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 import './user';

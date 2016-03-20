@@ -4,7 +4,7 @@ import INgModelController = angular.INgModelController;
 import { Model, Require } from '../../services/entities';
 import { isValidPrefixLength, isValidPrefix } from './validators';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('prefixInput', () => {
   return {

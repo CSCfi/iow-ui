@@ -13,7 +13,7 @@ import { UserService } from '../../services/userService';
 import { Group, ModelListItem, Uri, Type } from '../../services/entities';
 import { MaintenanceModal } from '../maintenance';
 
-export const mod = angular.module('iow.components.group');
+import { module as mod }  from './module';
 
 mod.directive('group', () => {
   return {

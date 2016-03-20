@@ -14,7 +14,7 @@ import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from './model';
 
-export const mod = angular.module('iow.components.model');
+import { module as mod }  from './module';
 
 mod.directive('modelView', () => {
   return {

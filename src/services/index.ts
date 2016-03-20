@@ -14,8 +14,8 @@ import { HistoryService } from './historyService';
 import { EntityLoaderService } from './entityLoader';
 import { ResetService } from './resetService';
 
-const mod = angular.module('iow.services', []);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 mod.service('classService', ClassService);
 mod.service('conceptService', ConceptService);

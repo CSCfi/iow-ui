@@ -15,9 +15,8 @@ import {
   combineExclusions,
   createDefinedByExclusion
 } from '../../services/utils';
+import { module as mod }  from './module';
 import create = require("core-js/fn/object/create");
-
-export const mod = angular.module('iow.components.editor');
 
 mod.directive('editableMultipleUriSelect', () => {
   return {

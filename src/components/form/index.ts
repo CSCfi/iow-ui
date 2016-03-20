@@ -1,7 +1,7 @@
 import { DisplayItemFactory } from './displayItemFactory';
 
-const mod = angular.module('iow.components.form', ['iow.services']);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 import './stringInput';
 import './prefixInput';

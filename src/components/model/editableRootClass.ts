@@ -4,7 +4,7 @@ import { EditableForm } from '../form/editableEntityController';
 import { Model, ClassListItem } from '../../services/entities';
 import { SearchClassModal } from '../editor/searchClassModal';
 
-export const mod = angular.module('iow.components.model');
+import { module as mod }  from './module';
 
 mod.directive('editableRootClass', () => {
   return {

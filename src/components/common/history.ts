@@ -1,7 +1,7 @@
 import IScope = angular.IScope;
 import { HistoryModal } from './historyModal';
 import { Model, Predicate, Class } from '../../services/entities';
-export const mod = angular.module('iow.components.common');
+import { module as mod }  from './module';
 
 mod.directive('history', () => {
   return {

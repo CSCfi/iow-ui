@@ -2,7 +2,7 @@ import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { State } from '../../services/entities';
 
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 const userStates: State[] = ['Unstable', 'Draft'];
 const adminStates: State[] = userStates.concat(['Recommendation', 'Deprecated']);

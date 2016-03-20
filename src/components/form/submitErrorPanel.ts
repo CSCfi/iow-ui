@@ -1,4 +1,4 @@
-export const mod = angular.module('iow.components.form');
+import { module as mod }  from './module';
 
 mod.directive('submitErrorPanel', () => {
   return {

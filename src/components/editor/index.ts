@@ -2,9 +2,8 @@ import { SearchConceptModal } from './searchConceptModal';
 import { SearchClassModal } from './searchClassModal';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
-
-const mod = angular.module('iow.components.editor', ['iow.components.common', 'iow.components.form']);
-export = mod.name;
+import { module as mod }  from './module';
+export default mod.name;
 
 import './classForm';
 import './classView';

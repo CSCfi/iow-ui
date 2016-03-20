@@ -4,7 +4,7 @@ import { SearchConceptModal } from './searchConceptModal';
 import { ConceptSuggestion, Reference, Type, FintoConcept } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 
-export const mod = angular.module('iow.components.editor');
+import { module as mod }  from './module';
 
 
 mod.directive('editableSubjectSelect', () => {
