@@ -950,6 +950,10 @@ msgstr ""
 msgid "Search schemes"
 msgstr ""
 
+#: translations/misc.html:182
+msgid "Self reference not allowed"
+msgstr ""
+
 #: translations/misc.html:31
 msgid "shape"
 msgstr ""

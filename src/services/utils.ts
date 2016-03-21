@@ -112,6 +112,42 @@ export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
   };
 }
 
+interface WithIdAndType {
+  id: Uri;
+  type: Type[];
+}
+
+function arraysAreEqual<T>(lhs: T[], rhs: T[]) {
+
+  function rhsContains(item: T) {
+    for (const r of rhs) {
+      if (r === item) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  for (const l of lhs) {
+    if (rhsContains(l)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export function createSelfExclusion(self: WithIdAndType) {
+  return (item: WithIdAndType) => {
+    if (arraysAreEqual(self.type, item.type) && self.id.equals(item.id)) {
+      return 'Self reference not allowed';
+    } else {
+      return null;
+    }
+  };
+}
+
 export function createDefinedByExclusion(model: Model) {
 
   const modelIds = collectIds(model.requires);

@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import { EditableForm } from '../form/editableEntityController';
 import {
   Model, Constraint, ConstraintListItem, RelativeUrl, ClassListItem,
-  ConstraintType
+  ConstraintType, Class
 } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import {
@@ -14,7 +14,7 @@ import {
   createDefinedByExclusion,
   combineExclusions,
   createClassTypeExclusion,
-  SearchClassType
+  SearchClassType, createSelfExclusion
 } from '../../services/utils';
 
 import { module as mod }  from './module';
@@ -23,7 +23,8 @@ mod.directive('editableConstraint', () => {
   return {
     scope: {
       constraint: '=',
-      model: '='
+      model: '=',
+      class: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -41,6 +42,7 @@ class EditableConstraint {
 
   constraint: Constraint;
   model: Model;
+  class: Class;
   isEditing: () => boolean;
   types: ConstraintType[] = ['or', 'and', 'not'];
 
@@ -56,7 +58,8 @@ class EditableConstraint {
     const exclude = combineExclusions<ClassListItem>(
       createClassTypeExclusion(SearchClassType.SpecializedClass),
       createExistsExclusion(collectProperties(this.constraint.items, item => item.shapeId.uri)),
-      createDefinedByExclusion(this.model)
+      createDefinedByExclusion(this.model),
+      createSelfExclusion(this.class)
     );
 
     this.searchClassModal.openWithOnlySelection(this.model, exclude).then(klass => this.constraint.addItem(klass));

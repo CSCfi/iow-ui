@@ -954,6 +954,10 @@ msgstr "Hae sanastoa…"
 msgid "Search schemes"
 msgstr "Hae sanastoja"
 
+#: translations/misc.html:182
+msgid "Self reference not allowed"
+msgstr "Viittaus itseensä ei ole sallittu"
+
 #: translations/misc.html:31
 msgid "shape"
 msgstr "Tarkennettu luokka"
