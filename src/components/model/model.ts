@@ -13,8 +13,7 @@ import {
   createDefinedByExclusion,
   combineExclusions,
   createClassTypeExclusion,
-  SearchClassType,
-  isModalCancel
+  SearchClassType
 } from '../../services/utils';
 import {
   Class,
@@ -156,8 +155,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     if (routeData.selected) {
       _.find(this.tabs, tab => tab.type === routeData.selected.selectionType).active = true;
-      this.select(routeData.selected);
     }
+    this.select(routeData.selected);
 
     if (routeData.newModel) {
       this.updateNewModel(routeData.newModel)
@@ -218,18 +217,22 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       });
     };
 
-    this.askPermissionWhenEditing(() => {
-      this.selectedItem = listItem;
-      if (this.selectionQueue.length > 0) {
-        this.selectionQueue.push(listItem);
-      } else {
-        this.selectionQueue.push(listItem);
-        fetchUntilStable(listItem).then((selection: Class|Predicate) => {
-          this.selectionQueue = [];
-          this.updateSelection(selection);
-        });
-      }
-    });
+    if (listItem) {
+      this.askPermissionWhenEditing(() => {
+        this.selectedItem = listItem;
+        if (this.selectionQueue.length > 0) {
+          this.selectionQueue.push(listItem);
+        } else {
+          this.selectionQueue.push(listItem);
+          fetchUntilStable(listItem).then((selection: Class|Predicate) => {
+            this.selectionQueue = [];
+            this.updateSelection(selection);
+          });
+        }
+      });
+    } else {
+      this.selectedItem = null;
+    }
   }
 
   selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
