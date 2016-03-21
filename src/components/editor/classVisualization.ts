@@ -38,7 +38,7 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
       const {graph, paper} = createGraph(element);
 
       registerZoomAndPan($window, paper);
-      registerHighlightElementUnderCursor(paper);
+      registerHighlightElementUnderCursor(graph, paper);
 
       paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
         const cell = cellView.model;
@@ -70,6 +70,8 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
 const zIndexAssociation = 5;
 const zIndexClass = 10;
 const zIndexHover = 15;
+const defaultAssociationColor = 'black';
+const hoverAssociationColor = 'red';
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
@@ -248,14 +250,25 @@ function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number
   }
 }
 
-function registerHighlightElementUnderCursor(paper: joint.dia.Paper) {
+function registerHighlightElementUnderCursor(graph: joint.dia.Graph, paper: joint.dia.Paper) {
   paper.on('cell:mouseover', (cellView: joint.dia.CellView) => {
     const cell: joint.dia.Cell = cellView.model;
-    cell.prop('z', zIndexHover);
+    if (cell instanceof joint.dia.Element) {
+      for (const link of graph.getConnectedLinks(cell)) {
+        link.prop('z', zIndexHover);
+        link.prop('attrs/.connection/stroke', hoverAssociationColor);
+      }
+    }
   });
+
   paper.on('cell:mouseout', (cellView: joint.dia.CellView) => {
     const cell: joint.dia.Cell = cellView.model;
-    cell.prop('z', cell instanceof Element ? zIndexClass : zIndexAssociation);
+    if (cell instanceof joint.dia.Element) {
+      for (const link of graph.getConnectedLinks(cell)) {
+        link.prop('z', zIndexAssociation);
+        link.prop('attrs/.connection/stroke', defaultAssociationColor);
+      }
+    }
   });
 }
 
@@ -422,6 +435,9 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     attrs: {
       '.marker-target': {
         d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
+      },
+      '.connection': {
+        stroke: defaultAssociationColor
       }
     },
     labels: [
