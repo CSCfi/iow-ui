@@ -10,9 +10,12 @@ interface NodeRequire {
 interface Window {
   jQuery: JQueryStatic;
   encodeURIComponent: any;
+  requestAnimFrame(callback: FrameRequestCallback): number;
+  webkitRequestAnimationFrame(callback: FrameRequestCallback): number;
+  mozRequestAnimationFrame(callback: FrameRequestCallback): number;
 }
 
-declare module angular {
+declare namespace angular {
   interface INgModelController {
     $options: any;
   }

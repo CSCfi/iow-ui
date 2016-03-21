@@ -12,3 +12,9 @@ if (SVGElement.prototype.getElementsByClassName === undefined) {
     return this.querySelectorAll('.' + className);
   };
 }
+
+window.requestAnimFrame =
+  window.requestAnimationFrame
+  || window.webkitRequestAnimationFrame
+  || window.mozRequestAnimationFrame
+  || ((callback: FrameRequestCallback) => window.setTimeout(callback, 1000 / 60));
