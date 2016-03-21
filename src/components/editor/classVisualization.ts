@@ -38,7 +38,6 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
       const {graph, paper} = createGraph(element);
 
       registerZoomAndPan($window, paper);
-      registerHighlightElementUnderCursor(graph, paper);
 
       paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
         const cell = cellView.model;
@@ -248,28 +247,6 @@ function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number
     paper.setOrigin(tx, ty);
     paper.scale(newScale, newScale);
   }
-}
-
-function registerHighlightElementUnderCursor(graph: joint.dia.Graph, paper: joint.dia.Paper) {
-  paper.on('cell:mouseover', (cellView: joint.dia.CellView) => {
-    const cell: joint.dia.Cell = cellView.model;
-    if (cell instanceof joint.dia.Element) {
-      for (const link of graph.getConnectedLinks(cell)) {
-        link.prop('z', zIndexHover);
-        link.prop('attrs/.connection/stroke', hoverAssociationColor);
-      }
-    }
-  });
-
-  paper.on('cell:mouseout', (cellView: joint.dia.CellView) => {
-    const cell: joint.dia.Cell = cellView.model;
-    if (cell instanceof joint.dia.Element) {
-      for (const link of graph.getConnectedLinks(cell)) {
-        link.prop('z', zIndexAssociation);
-        link.prop('attrs/.connection/stroke', defaultAssociationColor);
-      }
-    }
-  });
 }
 
 function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
