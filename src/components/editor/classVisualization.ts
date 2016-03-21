@@ -121,8 +121,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   initGraph(visualizationData: VisualizationClass[]) {
     this.graph.clear();
     const showCardinality = this.model.isOfType('profile');
-    createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality);
-    return layoutGraph(this.graph, this.paper);
+    return createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality)
+      .then(() => layoutGraph(this.graph, this.paper));
   }
 
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
@@ -295,6 +295,24 @@ function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper) {
   return colaLayout(graph).then(() => adjustGraphLinks(graph, paper));
 }
 
+function forEachInBackground<T>(items: T[], callback: (item: T) => void): Promise<boolean> {
+  return new Promise<boolean>(resolve => {
+    function forItemAtIndex(index: number) {
+      window.requestAnimFrame(() => {
+        if (index < items.length) {
+          const item = items[index];
+          callback(item);
+          forItemAtIndex(++index);
+        } else {
+          resolve(true);
+        }
+      });
+    }
+
+    forItemAtIndex(0);
+  });
+}
+
 function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
@@ -304,23 +322,29 @@ function createCells($scope: IScope, languageService: LanguageService, graph: jo
     classIds.add(klass.id.uri);
   }
 
-  for (const klass of classes) {
-    const attributes: Property[] = [];
+  const addClasses = () => {
+    return forEachInBackground(classes, klass => {
+      const attributes: Property[] = [];
 
-    for (const property of klass.properties) {
-      if (property.hasAssociationTarget() && classIds.has(property.valueClass.uri)) {
-        associations.push({klass: klass, association: property});
-      } else {
-        attributes.push(property);
+      for (const property of klass.properties) {
+        if (property.hasAssociationTarget() && classIds.has(property.valueClass.uri)) {
+          associations.push({klass: klass, association: property});
+        } else {
+          attributes.push(property);
+        }
       }
-    }
 
-    createClass($scope, languageService, graph, klass, attributes, showCardinality);
-  }
+      createClass($scope, languageService, graph, klass, attributes, showCardinality);
+    });
+  };
 
-  for (const association of associations) {
-    createAssociation($scope, languageService, graph, association, showCardinality);
-  }
+  const addAssociations = () => {
+    return forEachInBackground(associations, association => {
+      createAssociation($scope, languageService, graph, association, showCardinality);
+    });
+  };
+
+  return addClasses().then(() => addAssociations());
 }
 
 function formatCardinality(property: Property) {
