@@ -38,6 +38,7 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
       const {graph, paper} = createGraph(element);
 
       registerZoomAndPan($window, paper);
+      registerHighlightElementUnderCursor(paper);
 
       paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
         const cell = cellView.model;
@@ -65,6 +66,10 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
     controller: ClassVisualizationController
   };
 });
+
+const zIndexAssociation = 5;
+const zIndexClass = 10;
+const zIndexHover = 15;
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
@@ -243,6 +248,17 @@ function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number
   }
 }
 
+function registerHighlightElementUnderCursor(paper: joint.dia.Paper) {
+  paper.on('cell:mouseover', (cellView: joint.dia.CellView) => {
+    const cell: joint.dia.Cell = cellView.model;
+    cell.prop('z', zIndexHover);
+  });
+  paper.on('cell:mouseout', (cellView: joint.dia.CellView) => {
+    const cell: joint.dia.Cell = cellView.model;
+    cell.prop('z', cell instanceof Element ? zIndexClass : zIndexAssociation);
+  });
+}
+
 function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
   const window = angular.element($window);
   let drag: {x: number, y: number};
@@ -355,7 +371,8 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
       '.uml-class-name-text': {
         'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
       }
-    }
+    },
+    z: zIndexClass
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
@@ -386,7 +403,8 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     labels: [
       { position: 0.5, attrs: { text: { text: getName() } } },
       { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(data.association) : ''} } }
-    ]
+    ],
+    z: zIndexAssociation
   });
 
   $scope.$watch(() => languageService.modelLanguage, () => {
