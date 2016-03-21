@@ -93,8 +93,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     this.selectableComparison = languageService.localizableComparison((item: SelectableItem) => item.item.label);
     this.init(new RouteData($routeParams));
 
-    $scope.$on('$locationChangeSuccess', () => {
-      if ($location.path() === '/model') {
+    $scope.$on('$locationChangeSuccess', (event: any, next: any, current: any) => {
+      if ($location.path() === '/model' && isDifferentUrl(next, current)) {
         this.init(new RouteData($location.search()));
       }
     });
