@@ -8,7 +8,7 @@ import {
   normalizeSelectionType,
   containsAny,
   normalizeModelType,
-  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity
+  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity, anyLocalization
 } from './utils';
 import Moment = moment.Moment;
 import { Frame } from './frames';
@@ -634,7 +634,7 @@ export class Constraint extends GraphNode {
   }
 
   isVisible() {
-    return this.items.length > 0 || this.comment;
+    return this.items.length > 0 || hasLocalization(this.comment);
   }
 
   addItem(shape: Class) {
