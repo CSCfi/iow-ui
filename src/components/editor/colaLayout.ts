@@ -9,6 +9,8 @@ interface IdentifiedNode extends Node {
 
 class SimpleColaLayout extends Layout {
 
+  tickCount = 0;
+
   constructor(nodes: IdentifiedNode[], links: Link<IdentifiedNode>[], private ready: () => void) {
     super();
 
@@ -18,6 +20,7 @@ class SimpleColaLayout extends Layout {
     this.avoidOverlaps(true);
     this.handleDisconnected(true);
     this.jaccardLinkLengths(35);
+    this.convergenceThreshold(0.001);
   }
 
   trigger(e: Event): void {
@@ -34,7 +37,12 @@ class SimpleColaLayout extends Layout {
   }
 
   kick() {
-    while (!this.tick()) {}
+    window.setTimeout(() => {
+      this.tickCount++;
+      if (!this.tick()) {
+        this.kick();
+      }
+    }, 0);
   }
 
   drag() {
@@ -115,9 +123,9 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
     const layout = new SimpleColaLayout(Array.from(nodes.values()), links, () => {
       const min = findMin(nodes.values());
       Iterable.forEach(nodes.values(), node => setNewPosition(node, jointElements.get(node.id), min));
-      resolve();
+      resolve(layout.tickCount);
     });
 
-    layout.start(10, 0, 100, 0);
+    layout.start(5, 5, 5, 0);
   });
 }
