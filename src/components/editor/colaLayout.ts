@@ -19,7 +19,7 @@ class SimpleColaLayout extends Layout {
 
     this.avoidOverlaps(true);
     this.handleDisconnected(true);
-    this.jaccardLinkLengths(35);
+    this.jaccardLinkLengths(27);
     this.convergenceThreshold(0.01);
   }
 
