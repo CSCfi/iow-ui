@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { GroupListItem, Model, Require, Reference, Uri } from '../../services/entities';
+import { GroupListItem, Model, Require, Reference, Uri, NamespaceType } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
@@ -89,11 +89,17 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addRequire() {
     const language = this.languageService.modelLanguage;
-    const namespaces = this.editableInEdit.getNamespaceNames();
-    const prefixes = this.editableInEdit.getPrefixNames();
+    const namespaces = this.editableInEdit.getNamespacesOfType(NamespaceType.MODEL, NamespaceType.EXTERNAL);
+    const namespaceNames = new Set<string>();
+    const namespacePrefixes = new Set<string>();
+
+    for (const prefix of Object.keys(namespaces)) {
+      namespaceNames.add(namespaces[prefix]);
+      namespacePrefixes.add(prefix);
+    }
 
     const existsExclude = (require: Require) => {
-      if (namespaces.has(require.namespace) || prefixes.has(require.prefix)) {
+      if (namespaceNames.has(require.namespace) || namespacePrefixes.has(require.prefix)) {
         return 'Already added';
       } else {
         return null;
