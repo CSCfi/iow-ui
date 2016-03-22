@@ -8,7 +8,7 @@ import { isValidUri } from './validators';
 
 import { module as mod }  from './module';
 
-mod.directive('uriInput', /* @ngInjedt */ (gettextCatalog: gettextCatalog) => {
+mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
   return {
     scope: {
       model: '='
