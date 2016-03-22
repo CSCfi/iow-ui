@@ -330,15 +330,14 @@ export class Model extends AbstractModel {
 
   private copyNamespacesFromRequires() {
     for (const require of this.requires) {
-      this.context[require.prefix] = require.namespace;
-
       // if overriding existing namespace remove previous prefix
-      for (const key of Object.keys(this.context)) {
-        const value = this.context[key];
+      for (const prefix of Object.keys(this.context)) {
+        const value = this.context[prefix];
         if (value === require.namespace) {
-          delete this.context[key];
+          delete this.context[prefix];
         }
       }
+      this.context[require.prefix] = require.namespace;
     }
   }
 
