@@ -30,7 +30,6 @@ import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { EntityCreation, isEntityCreation } from '../editor/searchConceptModal';
-import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
@@ -53,8 +52,7 @@ mod.directive('model', () => {
 
 export class ModelController implements ChangeNotifier<Class|Predicate> {
 
-  loading = true;
-  firstLoading = true;
+  loading: boolean;
   views: View[] = [];
   changeListeners: ChangeListener<Class|Predicate>[] = [];
   selectedItem: WithIdAndType;
@@ -86,7 +84,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private searchClassModal: SearchClassModal,
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
-              private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               private maintenanceModal: MaintenanceModal,
               public languageService: LanguageService) {
 
@@ -108,7 +105,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
 
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
-      this.updateLocation();
+      if (!matchesIdentity(newModel, oldModel)) {
+        this.updateLocation();
+      }
 
       // new model creation cancelled
       if (oldModel && !newModel) {
@@ -118,13 +117,15 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
 
     $scope.$watch(() => this.selection, (selection, oldSelection) => {
+      if (!matchesIdentity(selection, oldSelection)) {
+        this.updateLocation();
+      }
+
       if (!selection) {
         this.show = Show.Visualization;
       } else if (!oldSelection) {
         this.show = Show.Both;
       }
-
-      this.updateLocation();
     });
     $scope.$watch(() => this.languageService.modelLanguage, lang => this.sortAll());
   }
@@ -151,31 +152,32 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   init(routeData: RouteData) {
-    this.loading = true;
-
-    if (routeData.selected) {
-      _.find(this.tabs, tab => tab.type === routeData.selected.selectionType).active = true;
-    }
-    this.select(routeData.selected);
+    const loadingPromises: IPromise<any>[] = [];
 
     if (routeData.newModel) {
-      this.updateNewModel(routeData.newModel)
-        .then(() => this.loading = false);
+      loadingPromises.push(this.updateNewModel(routeData.newModel));
     } else {
-      this.updateModelById(routeData.existingModelId).then(updated => {
-          if (updated) {
-            this.updateSelectables();
-          }
-          if (!this.selectedItem && this.model.rootClass) {
-            this.select({ id: this.model.rootClass, selectionType: 'class' });
-          }
-        })
-        .then(() => this.updateSelectionByTypeAndId(this.selectedItem))
-        .then(() => {
-          this.loading = false;
-          this.firstLoading = false;
-        });
+      if (!this.model || this.model.id.notEquals(routeData.existingModelId)) {
+        this.loading = true;
+        loadingPromises.push(
+          this.updateModelById(routeData.existingModelId)
+            .then(updated => {
+              const afterModelPromises = [this.selectRouteOrDefault(routeData)];
+              if (updated) {
+                afterModelPromises.push(this.updateSelectables());
+              }
+              return this.$q.all(afterModelPromises);
+            })
+        );
+      } else {
+        loadingPromises.push(this.selectRouteOrDefault(routeData));
+      }
     }
+
+    this.$q.all(loadingPromises).then(() => {
+      this.loading = false;
+      this.updateLocation();
+    });
   }
 
   getRequiredModels(): Set<Uri> {
@@ -401,7 +403,27 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
   }
 
+  private selectRouteOrDefault(routeData: RouteData): IPromise<any> {
+
+    function rootClassSelection(model: Model): WithIdAndType {
+      return (model && model.rootClass) ? { id: model.rootClass, selectionType: 'class' } : null;
+    }
+
+    if (routeData.selected) {
+      _.find(this.tabs, tab => tab.type === routeData.selected.selectionType).active = true;
+    }
+
+    const selection = routeData.selected || rootClassSelection(this.model);
+
+    if (!matchesIdentity(this.selection, selection)) {
+      return this.updateSelectionByTypeAndId(selection);
+    } else {
+      return this.$q.resolve();
+    }
+  }
+
   private updateSelectionByTypeAndId(selection: WithIdAndType) {
+    this.selectedItem = selection;
     if (selection) {
       return this.fetchEntityByTypeAndId(selection)
         .then(entity => this.updateSelection(entity), err => this.updateSelection(null));
@@ -560,11 +582,13 @@ interface WithIdAndType {
 }
 
 function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {
-  if ((lhs && !rhs) || (rhs && !lhs)) {
+  if (!lhs && !rhs) {
+    return true;
+  }  else if ((lhs && !rhs) || (rhs && !lhs)) {
     return false;
+  } else {
+    return lhs.selectionType === rhs.selectionType && lhs.id.equals(rhs.id);
   }
-
-  return lhs.selectionType === rhs.selectionType && lhs.id.equals(rhs.id);
 }
 
 function setOverlaps(items: SelectableItem[]) {

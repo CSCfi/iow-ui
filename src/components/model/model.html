@@ -1,4 +1,5 @@
-<div ng-hide="ctrl.firstLoading && ctrl.loading">
+<div ng-show="ctrl.loading"><ajax-loading-indicator></ajax-loading-indicator></div>
+<div ng-hide="ctrl.loading">
 
   <model-view ng-if="ctrl.model" model="ctrl.model" model-controller="ctrl"></model-view>
 
