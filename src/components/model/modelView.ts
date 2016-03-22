@@ -89,21 +89,27 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addRequire() {
     const language = this.languageService.modelLanguage;
-    const namespaces = this.editableInEdit.getNamespacesOfType(NamespaceType.MODEL, NamespaceType.EXTERNAL);
-    const namespaceNames = new Set<string>();
-    const namespacePrefixes = new Set<string>();
-
-    for (const prefix of Object.keys(namespaces)) {
-      namespaceNames.add(namespaces[prefix]);
-      namespacePrefixes.add(prefix);
-    }
+    const alreadyAddedText = 'Already added';
 
     const existsExclude = (require: Require) => {
-      if (namespaceNames.has(require.namespace) || namespacePrefixes.has(require.prefix)) {
-        return 'Already added';
-      } else {
-        return null;
+      for (const ns of this.editableInEdit.getNamespaces()) {
+        switch (ns.type) {
+          case NamespaceType.EXTERNAL:
+          case NamespaceType.MODEL:
+            if (ns.prefix === require.prefix || ns.url === require.namespace) {
+              return alreadyAddedText;
+            }
+            break;
+          case NamespaceType.TECHNICAL:
+            if ((ns.prefix === require.prefix && ns.url !== require.namespace)
+              || (ns.prefix !== require.prefix && ns.url === require.namespace)) {
+              return alreadyAddedText;
+            }
+            break;
+
+        }
       }
+      return null;
     };
 
     const profileExclude = (require: Require) => (!allowProfiles && require.isOfType('profile')) ? 'Cannot require profile' : null;
