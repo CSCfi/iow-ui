@@ -207,7 +207,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   centerToElement(element: joint.dia.Element) {
-    const scale = 0.5;
+    const scale = 0.8;
     const bbox = element.getBBox();
     const x = (this.paper.options.width / 2) - (bbox.x + bbox.width / 2) * scale;
     const y = (this.paper.options.height / 2) - (bbox.y + bbox.height / 2) * scale;
@@ -226,7 +226,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     function resetCells() {
       for (const cell of that.graph.getCells()) {
         joint.V(that.paper.findViewByModel(cell).el).removeClass(selectedClass);
-        
+
         if (!infiniteFocus) {
           joint.V(that.paper.findViewByModel(cell).el).addClass(backgroundClass);
         } else {
@@ -254,7 +254,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (!infiniteFocus) {
       applyFocus(element, this.selectionFocus);
     }
-    
+
     if (element) {
       joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
