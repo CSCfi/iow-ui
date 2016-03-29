@@ -456,8 +456,15 @@ selection-view, .main-editable-content {
     stroke-width: 1px;
   }
 
-  .element.uml.Class.background {
-    display: none;
+  .element.uml.Class {
+    &.background {
+      display: none;
+    }
+    &.selected {
+      .uml-class-name-rect {
+        fill: #B53F51;
+      }
+    }
   }
 
   .link.background {

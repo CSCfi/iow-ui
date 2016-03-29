@@ -219,11 +219,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   focus() {
     const that = this;
     const backgroundClass = 'background';
+    const selectedClass = 'selected';
     const element = this.getClassElement(this.selection);
     const infiniteFocus = this.selectionFocus > 3 || !element;
 
     function resetCells() {
       for (const cell of that.graph.getCells()) {
+        joint.V(that.paper.findViewByModel(cell).el).removeClass(selectedClass);
+        
         if (!infiniteFocus) {
           joint.V(that.paper.findViewByModel(cell).el).addClass(backgroundClass);
         } else {
@@ -250,6 +253,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     if (!infiniteFocus) {
       applyFocus(element, this.selectionFocus);
+    }
+    
+    if (element) {
+      joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
 
     scaleToFit(this.paper);
