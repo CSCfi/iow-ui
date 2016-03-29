@@ -192,18 +192,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   centerToSelectedClass(event: JQueryEventObject) {
     event.stopPropagation();
-    const selection = this.selection;
-
-    if (selection instanceof Class) {
-      this.centerToClass(selection);
-    }
-  }
-
-  centerToClass(klass: Class) {
-    const element = this.getClassElement(klass);
-    if (element) {
-      this.centerToElement(element);
-    }
+    this.centerToElement(this.getClassElement(this.selection));
   }
 
   centerToElement(element: joint.dia.Element) {
