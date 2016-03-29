@@ -185,14 +185,23 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     window.clearInterval(this.zoomOutHandle);
   }
 
-  fitToAllContent(event: JQueryEventObject) {
-    event.stopPropagation();
+  fitToAllContent(event?: JQueryEventObject) {
+    if (event) {
+      event.stopPropagation();
+    }
     scaleToFit(this.paper);
   }
 
-  centerToSelectedClass(event: JQueryEventObject) {
-    event.stopPropagation();
-    this.centerToElement(this.getClassElement(this.selection));
+  centerToSelectedClass(event?: JQueryEventObject) {
+    if (event) {
+      event.stopPropagation();
+    }
+
+    const element = this.getClassElement(this.selection);
+
+    if (element) {
+      this.centerToElement(element);
+    }
   }
 
   centerToElement(element: joint.dia.Element) {
@@ -205,32 +214,37 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.paper.setOrigin(x, y);
   }
 
+  private isInfiniteFocus() {
+    return !this.selection || this.selectionFocus > 3;
+  }
+
   focus() {
     const that = this;
     const backgroundClass = 'background';
     const selectedClass = 'selected';
-    const element = this.getClassElement(this.selection);
-    const infiniteFocus = this.selectionFocus > 3 || !element;
 
-    function resetCells() {
+    function resetFocusOnAllCells() {
       for (const cell of that.graph.getCells()) {
-        joint.V(that.paper.findViewByModel(cell).el).removeClass(selectedClass);
+        const jqueryElement = joint.V(that.paper.findViewByModel(cell).el);
 
-        if (!infiniteFocus) {
-          joint.V(that.paper.findViewByModel(cell).el).addClass(backgroundClass);
+        jqueryElement.removeClass(selectedClass);
+
+        if (that.isInfiniteFocus()) {
+          jqueryElement.removeClass(backgroundClass);
         } else {
-          joint.V(that.paper.findViewByModel(cell).el).removeClass(backgroundClass);
+          jqueryElement.addClass(backgroundClass);
         }
       }
     }
 
     function applyFocus(e: joint.dia.Element, depth: number) {
-      if (!infiniteFocus && depth > 0) {
+      if (depth > 0) {
         joint.V(that.paper.findViewByModel(e).el).removeClass(backgroundClass);
 
         for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e)) {
           joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
         }
+
         for (const klass of that.graph.getNeighbors(e)) {
           joint.V(that.paper.findViewByModel(klass).el).removeClass(backgroundClass);
           applyFocus(klass, depth - 1);
@@ -238,17 +252,18 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    resetCells();
-
-    if (!infiniteFocus) {
-      applyFocus(element, this.selectionFocus);
-    }
+    resetFocusOnAllCells();
+    const element = this.getClassElement(this.selection);
 
     if (element) {
+      if (!this.isInfiniteFocus()) {
+        applyFocus(element, this.selectionFocus);
+      }
+
       joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
 
-    scaleToFit(this.paper);
+    this.fitToAllContent();
   }
 
   private getClassElement(classOrPredicate: Class|Predicate): joint.dia.Element {
