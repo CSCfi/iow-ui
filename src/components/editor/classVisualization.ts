@@ -22,10 +22,15 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
       changeNotifier: '='
     },
     template: `<div>
-                <div class="zoom zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
-                <div class="zoom zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
-                <div class="zoom zoom-fit" ng-click="ctrl.fitToAllContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
-                <div ng-show="ctrl.canFocus()" class="zoom zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
+                <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
+                <div class="button zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
+                <div class="button zoom-fit" ng-click="ctrl.fitToAllContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
+                <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
+                <div ng-show="ctrl.canFocus()" class="selection-focus">
+                  <div class="button focus-in" ng-click="ctrl.focusIn($event)"><i class="glyphicon glyphicon-eye-open"></i></div>
+                  <div class="button focus-indicator">{{ctrl.renderSelectionFocus()}}</div>
+                  <div class="button focus-out" ng-click="ctrl.focusOut($event)"><i class="glyphicon glyphicon-eye-close"></i></div>
+                </div>
                 <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
                </div>`,
     bindToController: true,
@@ -68,13 +73,13 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
 
 const zIndexAssociation = 5;
 const zIndexClass = 10;
-const zIndexHover = 15;
 const defaultAssociationColor = 'black';
-const hoverAssociationColor = 'red';
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selection: Class|Predicate;
+  selectionFocus: number = 1;
+
   model: Model;
   changeNotifier: ChangeNotifier<Class|Predicate>;
 
@@ -91,11 +96,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.changeNotifier.addListener(this);
 
     $scope.$watch(() => this.model, () => this.refresh());
-    $scope.$watch(() => this.selection, (newSelection) => {
-      if (newSelection instanceof Class && this.model && !this.loading) {
-        this.centerToClass(newSelection);
-      }
-    });
+    $scope.$watch(() => this.selection, newSelection => this.focus());
+    $scope.$watch(() => this.selectionFocus, focus => this.focus());
   }
 
   refresh() {
@@ -105,17 +107,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       this.$timeout(() => {
         (<Promise<any>> this.modelService.getVisualizationData(this.model))
           .then(data => this.initGraph(data))
-          .then(() => {
-            const selection = this.selection;
-            if (selection instanceof Class) {
-              this.centerToClass(selection);
-            } else {
-              scaleToFit(this.paper);
-            }
-
-            this.loading = false;
-          });
-      }, 0);
+          .then(() => this.loading = false);
+      });
     }
   }
 
@@ -123,7 +116,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.graph.clear();
     const showCardinality = this.model.isOfType('profile');
     return createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality)
-      .then(() => layoutGraph(this.graph, this.paper));
+      .then(() => layoutGraph(this.graph, this.paper))
+      .then(() => this.focus());
   }
 
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
@@ -146,6 +140,26 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   canFocus() {
     return this.selection instanceof Class;
+  }
+
+  renderSelectionFocus() {
+    if (this.selectionFocus > 3) {
+      return '*';
+    } else {
+      return this.selectionFocus.toString();
+    }
+  }
+
+  focusIn(event: JQueryEventObject) {
+    if (this.selectionFocus < 4) {
+      this.selectionFocus++;
+    }
+  }
+
+  focusOut(event: JQueryEventObject) {
+    if (this.selectionFocus > 1) {
+      this.selectionFocus--;
+    }
   }
 
   zoomIn(event: JQueryEventObject) {
@@ -186,24 +200,76 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   centerToClass(klass: Class) {
-    const cell = this.graph.getCell(klass.id.uri);
-    if (cell) {
-      if (cell.isLink()) {
-        throw new Error('Cell must be an element');
-      } else {
-        this.centerToElement(<joint.dia.Element> cell);
-      }
+    const element = this.getClassElement(klass);
+    if (element) {
+      this.centerToElement(element);
     }
   }
 
   centerToElement(element: joint.dia.Element) {
-    const scale = 1;
+    const scale = 0.5;
     const bbox = element.getBBox();
-    const x = (this.paper.options.width / 2)  - (bbox.x + bbox.width / 2) * scale;
+    const x = (this.paper.options.width / 2) - (bbox.x + bbox.width / 2) * scale;
     const y = (this.paper.options.height / 2) - (bbox.y + bbox.height / 2) * scale;
 
     this.paper.scale(scale);
     this.paper.setOrigin(x, y);
+  }
+
+  focus() {
+    const that = this;
+    const backgroundClass = 'background';
+    const element = this.getClassElement(this.selection);
+    const infiniteFocus = this.selectionFocus > 3 || !element;
+
+    function resetCells() {
+      for (const cell of that.graph.getCells()) {
+        if (!infiniteFocus) {
+          joint.V(that.paper.findViewByModel(cell).el).addClass(backgroundClass);
+        } else {
+          joint.V(that.paper.findViewByModel(cell).el).removeClass(backgroundClass);
+        }
+      }
+    }
+
+    function applyFocus(e: joint.dia.Element, depth: number) {
+      if (!infiniteFocus && depth > 0) {
+        joint.V(that.paper.findViewByModel(e).el).removeClass(backgroundClass);
+
+        for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e)) {
+          joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
+        }
+        for (const klass of that.graph.getNeighbors(e)) {
+          joint.V(that.paper.findViewByModel(klass).el).removeClass(backgroundClass);
+          applyFocus(klass, depth - 1);
+        }
+      }
+    }
+
+    resetCells();
+
+    if (!infiniteFocus) {
+      applyFocus(element, this.selectionFocus);
+    }
+
+    scaleToFit(this.paper);
+  }
+
+  private getClassElement(classOrPredicate: Class|Predicate): joint.dia.Element {
+    if (classOrPredicate instanceof Class) {
+      const cell = this.graph.getCell(classOrPredicate.id.uri);
+      if (cell) {
+        if (cell.isLink()) {
+          throw new Error('Cell must be an element');
+        } else {
+          return <joint.dia.Element> cell;
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 }
 
@@ -274,8 +340,8 @@ function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
 function scaleToFit(paper: joint.dia.Paper) {
   paper.scaleContentToFit({
     padding: 45,
-    minScaleX: 0.1,
-    minScaleY: 0.1,
+    minScaleX: 0.05,
+    minScaleY: 0.05,
     maxScaleX: 2,
     maxScaleY: 2
   });

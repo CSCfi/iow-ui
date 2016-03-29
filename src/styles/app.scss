@@ -20,6 +20,7 @@ $brand-danger:          #F04124;
 $navbar-margin-bottom:  0 !default;
 $navbar-default-bg:     $brand-primary !default;
 
+@import './mixin';
 @import '../vendor/variables';
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../vendor/bootswatch';
@@ -389,8 +390,9 @@ selection-view, .main-editable-content {
   width: 100%;
   height: calc(100vh - 85px);
   overflow: hidden;
+  $enabledColor: #bbb;
 
-  .zoom {
+  .button {
     position: absolute;
     width: 30px;
     height: 30px;
@@ -402,8 +404,8 @@ selection-view, .main-editable-content {
     line-height: 0.6;
   }
 
-  .zoom:hover {
-    background-color: #ddd;
+  .button:hover {
+    background-color: $enabledColor;
     cursor: pointer;
   }
 
@@ -411,6 +413,22 @@ selection-view, .main-editable-content {
   .zoom-out { left: 60px; }
   .zoom-fit { left: 95px; }
   .zoom-focus { left: 130px; }
+  .focus-in { left: 165px; }
+  .focus-indicator {
+    @include no-select;
+    left: 195px;
+    text-align: center;
+    line-height: 0.8;
+    &:hover {
+      background-color: rgba(231,231,231,0.9);
+      cursor: default;
+    }
+  }
+  .focus-out { left: 225px; }
+
+  .enabled {
+    background-color: $enabledColor;
+  }
 
   .link-tools .tool-remove { display: none }
   .link-tools .tool-options { display: none }
@@ -436,6 +454,18 @@ selection-view, .main-editable-content {
     fill: #f5f5f5;
     stroke: #ddd;
     stroke-width: 1px;
+  }
+
+  .element.uml.Class.background {
+    display: none;
+  }
+
+  .link.background {
+    display: none;
+
+    path {
+      stroke: #ddd;
+    }
   }
 }
 

@@ -30,6 +30,7 @@ declare module joint {
       toJSON() : Object;
       clear() : void;
       getConnectedLinks(cell:Cell, opt?:any):Link[];
+      getNeighbors(element:Element, opt?:any):Element[];
       disconnectLinks(cell:Cell) : void;
       removeLinks(cell:Cell) : void;
       findModelsFromPoint(point:{x : number; y: number}):Element[];
