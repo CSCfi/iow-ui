@@ -255,14 +255,17 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     function applyFocus(e: joint.dia.Element, depth: number, visited: Set<joint.dia.Element>) {
-      if (that.isInfiniteFocus() || depth <= that.selectionFocus) {
+
+      const options = { outbound: true, inbound: depth === 1 && that.selectionFocus > 1 };
+
+      if (that.isInfiniteFocus() || depth === 1 || depth < that.selectionFocus) {
         joint.V(that.paper.findViewByModel(e).el).removeClass(backgroundClass);
 
-        for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, {outbound: true})) {
+        for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, options)) {
           joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
         }
 
-        for (const klass of that.graph.getNeighbors(e, {outbound: true})) {
+        for (const klass of that.graph.getNeighbors(e, options)) {
           if (!visited.has(klass)) {
             visited.add(klass);
             joint.V(that.paper.findViewByModel(klass).el).removeClass(backgroundClass);
