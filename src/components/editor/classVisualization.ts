@@ -23,14 +23,14 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
       changeNotifier: '='
     },
     template: `<div>
-                <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
                 <div class="button zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
+                <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
                 <div class="button zoom-fit" ng-click="ctrl.fitToAllContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
                 <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
                 <div ng-show="ctrl.canFocus()" class="selection-focus">
-                  <div class="button focus-in" ng-click="ctrl.focusIn($event)"><i class="glyphicon glyphicon-eye-open"></i></div>
+                  <div class="button focus-in" ng-click="ctrl.focusOut($event)"><i class="glyphicon glyphicon-menu-left"></i></div>
                   <div class="button focus-indicator">{{ctrl.renderSelectionFocus()}}</div>
-                  <div class="button focus-out" ng-click="ctrl.focusOut($event)"><i class="glyphicon glyphicon-eye-close"></i></div>
+                  <div class="button focus-out" ng-click="ctrl.focusIn($event)"><i class="glyphicon glyphicon-menu-right"></i></div>
                 </div>
                 <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
                </div>`,

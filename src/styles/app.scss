@@ -409,8 +409,8 @@ selection-view, .main-editable-content {
     cursor: pointer;
   }
 
-  .zoom-in { left: 25px; }
-  .zoom-out { left: 60px; }
+  .zoom-out { left: 25px; }
+  .zoom-in { left: 60px; }
   .zoom-fit { left: 95px; }
   .zoom-focus { left: 130px; }
   .focus-in { left: 165px; }
@@ -418,7 +418,7 @@ selection-view, .main-editable-content {
     @include no-select;
     left: 195px;
     text-align: center;
-    line-height: 0.8;
+    line-height: 1;
     &:hover {
       background-color: rgba(231,231,231,0.9);
       cursor: default;
