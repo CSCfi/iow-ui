@@ -171,7 +171,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   private isInfiniteFocus() {
-    return !this.selection || this.selectionFocus >= infiniteFocusLevel;
+    return !this.isSelectionClass() || this.selectionFocus >= infiniteFocusLevel;
+  }
+
+  private isSelectionClass() {
+    return this.selection instanceof Class;
   }
 
   zoomIn(event: JQueryEventObject) {
@@ -242,7 +246,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
         jqueryElement.removeClass(selectedClass);
 
-        if (that.selection) {
+        if (that.isSelectionClass()) {
           jqueryElement.addClass(backgroundClass);
         } else {
           jqueryElement.removeClass(backgroundClass);
@@ -251,7 +255,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     function applyFocus(e: joint.dia.Element, depth: number, visited: Set<joint.dia.Element>) {
-      if (!isDefined(depth) || depth > 0) {
+      if (that.isInfiniteFocus() || depth <= that.selectionFocus) {
         joint.V(that.paper.findViewByModel(e).el).removeClass(backgroundClass);
 
         for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, {outbound: true})) {
@@ -262,8 +266,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
           if (!visited.has(klass)) {
             visited.add(klass);
             joint.V(that.paper.findViewByModel(klass).el).removeClass(backgroundClass);
-            const newDepth = isDefined(depth) ? depth - 1 : null;
-            applyFocus(klass, newDepth, visited);
+            applyFocus(klass, depth + 1, visited);
           }
         }
       }
@@ -273,8 +276,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const element = this.getClassElement(this.selection);
 
     if (element) {
-      const focus = this.isInfiniteFocus() ? null : this.selectionFocus;
-      applyFocus(element, focus, new Set<joint.dia.Element>());
+      applyFocus(element, 1, new Set<joint.dia.Element>());
       joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
 
