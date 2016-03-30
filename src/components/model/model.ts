@@ -127,7 +127,13 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         this.show = Show.Both;
       }
     });
+
     $scope.$watch(() => this.languageService.modelLanguage, lang => this.sortAll());
+    $scope.$watch(() => this.show, show => {
+      for (const changeListener of this.changeListeners) {
+        changeListener.onResize(show);
+      }
+    });
   }
 
   addListener(listener: ChangeListener<Class|Predicate>) {

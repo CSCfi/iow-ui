@@ -9,9 +9,10 @@ import * as _ from 'lodash';
 import { isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService } from '../../services/modelService';
-import { ChangeNotifier, ChangeListener } from '../contracts';
+import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import { module as mod }  from './module';
 const joint = require('jointjs');
+
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
   return {
@@ -61,6 +62,7 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
         if (xd || yd) {
           paper.setDimensions(element.width(), element.height());
           moveOrigin(paper, xd / 2, yd / 2);
+          controller.dimensionChangeInProgress = false;
         }
       }, 200);
 
@@ -73,7 +75,6 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
 
 const zIndexAssociation = 5;
 const zIndexClass = 10;
-const defaultAssociationColor = 'black';
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
@@ -89,6 +90,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   zoomInHandle: number;
   zoomOutHandle: number;
+
+  dimensionChangeInProgress: boolean = true;
 
   /* @ngInject */
   constructor(private $scope: IScope, private $timeout: ITimeoutService, private modelService: ModelService, private languageService: LanguageService) {
@@ -136,6 +139,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (item instanceof Class) {
       this.refresh();
     }
+  }
+
+  onResize(show: Show) {
+    this.dimensionChangeInProgress = true;
   }
 
   canFocus() {
@@ -189,7 +196,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (event) {
       event.stopPropagation();
     }
-    scaleToFit(this.paper);
+
+    if (this.dimensionChangeInProgress) {
+      setTimeout(() => this.fitToAllContent(), 200);
+    } else {
+      scaleToFit(this.paper);
+    }
   }
 
   centerToSelectedClass(event?: JQueryEventObject) {
@@ -291,7 +303,9 @@ function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia
     el: element,
     width: element.width() || 100,
     height: element.height() || 100,
-    model: graph
+    model: graph,
+    linkPinning: false,
+    async: true
   });
 
   return {graph, paper};
@@ -489,9 +503,6 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     attrs: {
       '.marker-target': {
         d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
-      },
-      '.connection': {
-        stroke: defaultAssociationColor
       }
     },
     labels: [
