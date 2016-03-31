@@ -81,7 +81,7 @@ export class ModelService {
   }
 
   getAllRequires(): IPromise<Require[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('model'))
+    return this.$http.get<GraphData>(config.apiEndpointWithName('listNamespaces'))
       .then(response => this.entities.deserializeRequires(response.data));
   }
 
