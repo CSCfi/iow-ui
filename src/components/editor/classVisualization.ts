@@ -25,7 +25,7 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
     template: `<div>
                 <div class="button zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="glyphicon glyphicon-zoom-out"></i></div>
                 <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="glyphicon glyphicon-zoom-in"></i></div>
-                <div class="button zoom-fit" ng-click="ctrl.fitToAllContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
+                <div class="button zoom-fit" ng-click="ctrl.fitToContent($event)"><i class="glyphicon glyphicon-fullscreen"></i></div>
                 <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="glyphicon glyphicon-screenshot"></i></div>
                 <div ng-show="ctrl.canFocus()" class="selection-focus">
                   <div class="button focus-in" ng-click="ctrl.focusOut($event)"><i class="glyphicon glyphicon-menu-left"></i></div>
@@ -76,6 +76,10 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
 const zIndexAssociation = 5;
 const zIndexClass = 10;
 const infiniteFocusLevel = 5;
+const backgroundClass = 'background';
+const selectedClass = 'selected';
+const minScale = 0.02;
+const maxScale = 3;
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
@@ -201,15 +205,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     window.clearInterval(this.zoomOutHandle);
   }
 
-  fitToAllContent(event?: JQueryEventObject) {
+  fitToContent(event?: JQueryEventObject, onlyVisible: boolean = false) {
     if (event) {
       event.stopPropagation();
     }
 
     if (this.dimensionChangeInProgress) {
-      setTimeout(() => this.fitToAllContent(), 200);
+      setTimeout(() => this.fitToContent(event, onlyVisible), 200);
     } else {
-      scaleToFit(this.paper);
+      scaleToFit(this.paper, this.graph, onlyVisible);
     }
   }
 
@@ -237,8 +241,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   focus() {
     const that = this;
-    const backgroundClass = 'background';
-    const selectedClass = 'selected';
 
     function resetFocusOnAllCells() {
       for (const cell of that.graph.getCells()) {
@@ -283,7 +285,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
 
-    this.fitToAllContent();
+    this.fitToContent(null, true);
   }
 
   private getClassElement(classOrPredicate: Class|Predicate): joint.dia.Element {
@@ -312,8 +314,7 @@ function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia
     width: element.width() || 100,
     height: element.height() || 100,
     model: graph,
-    linkPinning: false,
-    async: true
+    linkPinning: false
   });
 
   return {graph, paper};
@@ -334,7 +335,7 @@ function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number
   const scale = getScale(paper);
   const newScale = scale + scaleDiff;
 
-  if (scale !== newScale && newScale >= 0.1 && newScale <= 3) {
+  if (scale !== newScale && newScale >= minScale && newScale <= maxScale) {
     const scaleRatio = newScale / scale;
 
     const actualX = x || paper.options.width / 2;
@@ -370,14 +371,54 @@ function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
 }
 
 
-function scaleToFit(paper: joint.dia.Paper) {
-  paper.scaleContentToFit({
-    padding: 45,
-    minScaleX: 0.05,
-    minScaleY: 0.05,
-    maxScaleX: 2,
-    maxScaleY: 2
+function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
+
+  const scale = getScale(paper);
+  const padding = 45;
+
+  function getContentBBox(elements: joint.dia.Element[]) {
+
+    if (elements.length === 0) {
+      return paper.getContentBBox();
+    }
+
+    let minX = Number.MAX_VALUE;
+    let minY = Number.MAX_VALUE;
+    let maxX = Number.MIN_VALUE;
+    let maxY = Number.MIN_VALUE;
+
+    for (const element of elements) {
+      const bbox = paper.findViewByModel(element).getBBox();
+      minX = Math.min(minX, (bbox.x));
+      minY = Math.min(minY, (bbox.y));
+      maxX = Math.max(maxX, (bbox.x + bbox.width));
+      maxY = Math.max(maxY, (bbox.y + bbox.height));
+    }
+
+    return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+  }
+
+  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), element => {
+    return !joint.V(paper.findViewByModel(element).el).hasClass(backgroundClass);
   });
+
+  const contentBBox = getContentBBox(visibleElements);
+  const fittingBBox = {
+    x: paper.options.origin.x + padding,
+    y: paper.options.origin.y + padding,
+    width: paper.options.width - padding * 2,
+    height: paper.options.height - padding * 2
+  };
+
+  const newScale = Math.min(fittingBBox.width / contentBBox.width * scale, fittingBBox.height / contentBBox.height * scale);
+
+  paper.scale(Math.max(Math.min(newScale, maxScale), minScale));
+  const contentBBoxAfterScaling = getContentBBox(visibleElements);
+
+  const newOx = fittingBBox.x - contentBBoxAfterScaling.x;
+  const newOy = fittingBBox.y - contentBBoxAfterScaling.y;
+
+  paper.setOrigin(newOx, newOy);
 }
 
 function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper) {
@@ -488,11 +529,13 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
     z: zIndexClass
   });
 
-  $scope.$watch(() => languageService.modelLanguage, () => {
-    const newPropertyNames = getPropertyNames();
-    classCell.prop('name', getName());
-    classCell.prop('attributes', newPropertyNames);
-    classCell.prop('size', size(newPropertyNames));
+  $scope.$watch(() => languageService.modelLanguage, (lang, oldLang) => {
+    if (oldLang && (lang !== oldLang)) {
+      const newPropertyNames = getPropertyNames();
+      classCell.prop('name', getName());
+      classCell.prop('attributes', newPropertyNames);
+      classCell.prop('size', size(newPropertyNames));
+    }
   });
 
   graph.addCell(classCell);
@@ -520,10 +563,12 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     z: zIndexAssociation
   });
 
-  $scope.$watch(() => languageService.modelLanguage, () => {
-    associationCell.prop('labels/0/attrs/text/text', getName());
-    if (showCardinality) {
-      associationCell.prop('labels/1/attrs/text/text', formatCardinality(data.association));
+  $scope.$watch(() => languageService.modelLanguage, (lang, oldLang) => {
+    if (oldLang && (lang !== oldLang)) {
+      associationCell.prop('labels/0/attrs/text/text', getName());
+      if (showCardinality) {
+        associationCell.prop('labels/1/attrs/text/text', formatCardinality(data.association));
+      }
     }
   });
 

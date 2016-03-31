@@ -458,7 +458,7 @@ selection-view, .main-editable-content {
 
   .element.uml.Class {
     &.background {
-      display: none;
+      fill-opacity: 0.3;
     }
     &.selected {
       .uml-class-name-rect {
@@ -468,7 +468,7 @@ selection-view, .main-editable-content {
   }
 
   .link.background {
-    display: none;
+    fill-opacity: 0.3;
 
     path {
       stroke: #ddd;

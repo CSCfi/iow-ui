@@ -112,6 +112,7 @@ declare module joint {
       findViewsFromPoint(p:{ x: number; y: number; }):CellView[];
       findViewsInArea(r:{ x: number; y: number; width: number; height: number; }):CellView[];
       fitToContent(opt?:any): void;
+      getContentBBox(): { x: number; y: number; width: number; height: number; center(): {x: number, y: number, theta(point: {x: number, y:number}): number}};
     }
 
     class ElementView extends CellView {
