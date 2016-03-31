@@ -73,9 +73,23 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
   };
 });
 
+
+enum FocusLevel {
+  DEPTH1 = 1,
+  DEPTH2 = 2,
+  DEPTH3 = 3,
+  INFINITE_DEPTH = 4,
+  ALL = 5
+}
+
+enum Direction {
+  INCOMING,
+  OUTGOING,
+  BOTH
+}
+
 const zIndexAssociation = 5;
 const zIndexClass = 10;
-const infiniteFocusLevel = 5;
 const backgroundClass = 'background';
 const selectedClass = 'selected';
 const minScale = 0.02;
@@ -84,7 +98,7 @@ const maxScale = 3;
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selection: Class|Predicate;
-  selectionFocus: number = 1;
+  selectionFocus: FocusLevel = FocusLevel.DEPTH1;
 
   model: Model;
   changeNotifier: ChangeNotifier<Class|Predicate>;
@@ -155,27 +169,26 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   renderSelectionFocus() {
-    if (this.isInfiniteFocus()) {
-      return '*';
-    } else {
-      return this.selectionFocus.toString();
+    switch (this.selectionFocus) {
+      case FocusLevel.ALL:
+        return '**';
+      case FocusLevel.INFINITE_DEPTH:
+        return '*';
+      default:
+        return (<number> this.selectionFocus).toString();
     }
   }
 
   focusIn(event: JQueryEventObject) {
-    if (this.selectionFocus < infiniteFocusLevel) {
+    if (this.selectionFocus < FocusLevel.ALL) {
       this.selectionFocus++;
     }
   }
 
   focusOut(event: JQueryEventObject) {
-    if (this.selectionFocus > 1) {
+    if (this.selectionFocus > FocusLevel.DEPTH1) {
       this.selectionFocus--;
     }
-  }
-
-  private isInfiniteFocus() {
-    return !this.isSelectionClass() || this.selectionFocus >= infiniteFocusLevel;
   }
 
   private isSelectionClass() {
@@ -248,7 +261,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
         jqueryElement.removeClass(selectedClass);
 
-        if (that.isSelectionClass()) {
+        if (that.isSelectionClass() && that.selectionFocus !== FocusLevel.ALL) {
           jqueryElement.addClass(backgroundClass);
         } else {
           jqueryElement.removeClass(backgroundClass);
@@ -256,23 +269,45 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    function applyFocus(e: joint.dia.Element, depth: number, visited: Set<joint.dia.Element>) {
+    function applyFocus(e: joint.dia.Element, direction: Direction, depth: number, visitedOutgoing: Set<joint.dia.Element>, visitedIncoming: Set<joint.dia.Element>) {
 
-      const options = { outbound: true, inbound: depth === 1 && that.selectionFocus > 1 };
+      if (that.selectionFocus === FocusLevel.ALL) {
+        return;
+      }
 
-      if (that.isInfiniteFocus() || depth === 1 || depth < that.selectionFocus) {
-        joint.V(that.paper.findViewByModel(e).el).removeClass(backgroundClass);
+      const optionsOutgoing = { outbound: true, inbound: false };
+      const optionsIncoming = { outbound: false, inbound: true };
 
-        for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, options)) {
-          joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
+      joint.V(that.paper.findViewByModel(e).el).removeClass(backgroundClass);
+
+      if (that.selectionFocus === FocusLevel.INFINITE_DEPTH || depth <= that.selectionFocus) {
+
+        if (direction === Direction.INCOMING || direction === Direction.BOTH) {
+
+            for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, optionsIncoming)) {
+              joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
+            }
+
+            for (const klass of that.graph.getNeighbors(e, optionsIncoming)) {
+              if (!visitedIncoming.has(klass)) {
+                visitedIncoming.add(klass);
+                applyFocus(klass, Direction.INCOMING, depth + 1, visitedOutgoing, visitedIncoming);
+              }
+            }
         }
 
-        for (const klass of that.graph.getNeighbors(e, options)) {
-          if (!visited.has(klass)) {
-            visited.add(klass);
-            joint.V(that.paper.findViewByModel(klass).el).removeClass(backgroundClass);
-            applyFocus(klass, depth + 1, visited);
-          }
+        if (direction === Direction.OUTGOING || direction === Direction.BOTH) {
+
+            for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, optionsOutgoing)) {
+              joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
+            }
+
+            for (const klass of that.graph.getNeighbors(e, optionsOutgoing)) {
+              if (!visitedOutgoing.has(klass)) {
+                visitedOutgoing.add(klass);
+                applyFocus(klass, Direction.OUTGOING, depth + 1, visitedOutgoing, visitedIncoming);
+              }
+            }
         }
       }
     }
@@ -281,7 +316,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const element = this.getClassElement(this.selection);
 
     if (element) {
-      applyFocus(element, 1, new Set<joint.dia.Element>());
+      applyFocus(element, Direction.BOTH, 1, new Set<joint.dia.Element>(), new Set<joint.dia.Element>());
       joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
 
