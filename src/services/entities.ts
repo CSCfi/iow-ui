@@ -44,7 +44,8 @@ export type Type = 'class'
                  | 'activity'
                  | 'resource'
                  | 'collection'
-                 | 'scheme';
+                 | 'scheme'
+                 | 'standard';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -431,6 +432,7 @@ export class Require extends GraphNode {
   private _prefix: string;
   private _namespace: Url;
   external: boolean;
+  technical: boolean;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -439,10 +441,19 @@ export class Require extends GraphNode {
     this._namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
     this.external = this.isOfType('resource');
+    this.technical = this.isOfType('standard');
   }
 
-  get modifiable() {
+  get prefixModifiable() {
     return this.external;
+  }
+
+  get namespaceModifiable() {
+    return this.external;
+  }
+
+  get labelModifiable() {
+    return this.external || this.technical;
   }
 
   get prefix() {

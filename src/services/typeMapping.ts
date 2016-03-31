@@ -26,6 +26,7 @@ registerType('entity', ['prov:Entity']);
 registerType('activity', ['prov:Activity']);
 registerType('resource', ['rdfs:Resource']);
 registerType('collection', ['skos:Collection']);
+registerType('standard', ['dcterms:Standard']);
 
 export function mapType(type: string): Type {
   const result = toType.get(type);
