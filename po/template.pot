@@ -196,7 +196,7 @@ msgstr ""
 #: components/editor/searchPredicateModal.html:62
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
-#: components/model/searchRequireModal.html:35
+#: components/model/searchRequireModal.html:39
 #: components/model/searchSchemeModal.html:27
 msgid "Cancel"
 msgstr ""
@@ -993,6 +993,10 @@ msgstr ""
 
 #: translations/misc.html:166
 msgid "Show history"
+msgstr ""
+
+#: components/model/searchRequireModal.html:23
+msgid "Show technical namespaces"
 msgstr ""
 
 #: components/footer.html:11

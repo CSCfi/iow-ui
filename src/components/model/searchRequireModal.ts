@@ -36,6 +36,7 @@ class SearchRequireController {
   searchResults: Require[];
   requires: Require[];
   searchText: string = '';
+  showTechnical: boolean;
   loadingResults: boolean;
 
   /* @ngInject */
@@ -56,7 +57,7 @@ class SearchRequireController {
     });
 
     $scope.$watch(() => this.searchText, () => this.search());
-    $scope.$watch(() => this.showExcluded, () => this.search());
+    $scope.$watch(() => this.showTechnical, () => this.search());
   }
 
   get showExcluded() {
@@ -67,18 +68,13 @@ class SearchRequireController {
     if (this.requires) {
       this.searchResults = this.requires.filter(require =>
         this.textFilter(require) &&
-        this.excludedFilter(require)
+        this.excludedFilter(require) &&
+        this.showTechnicalFilter(require)
       );
 
       this.searchResults.sort(
         comparingBoolean((item: Require) => !!this.exclude(item))
           .andThen(comparingString((item: Require) => item.namespace)));
-
-      this.searchResults = _.chain(this.requires)
-        .filter(require => this.textFilter(require))
-        .filter(require => this.excludedFilter(require))
-        .sortBy(require => require.namespace)
-        .value();
 
       this.loadingResults = !isDefined(this.requires);
     }
@@ -96,6 +92,10 @@ class SearchRequireController {
 
   private excludedFilter(require: Require): boolean {
     return this.showExcluded || !this.exclude(require);
+  }
+
+  private showTechnicalFilter(require: Require): boolean {
+    return this.showTechnical || !require.technical;
   }
 
   selectItem(require: Require) {

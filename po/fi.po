@@ -198,7 +198,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/editor/searchPredicateModal.html:62
 #: components/group/addModelModal.html:22
 #: components/model/addRequireModal.html:30
-#: components/model/searchRequireModal.html:35
+#: components/model/searchRequireModal.html:39
 #: components/model/searchSchemeModal.html:27
 msgid "Cancel"
 msgstr "Peruuta"
@@ -997,6 +997,10 @@ msgstr "Näytä myös ne, joita ei voi lisätä"
 #: translations/misc.html:166
 msgid "Show history"
 msgstr "Näytä historia"
+
+#: components/model/searchRequireModal.html:23
+msgid "Show technical namespaces"
+msgstr "Näytä tekniset nimiavaruudet"
 
 #: components/footer.html:11
 msgid "Source code"
