@@ -119,7 +119,7 @@ export function predicateFrame(data: any): Frame {
 }
 
 export function classFrame(data: any): Frame {
-  return frame(data, classContext, { '@type': ['rdfs:Class'] });
+  return frame(data, classContext, { '@type': ['rdfs:Class', 'sh:Shape'] });
 }
 
 export function classListFrame(data: any): Frame {
