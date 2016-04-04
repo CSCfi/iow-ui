@@ -877,8 +877,8 @@ msgid "Recommendation"
 msgstr "Suositus"
 
 #: components/editor/searchConceptModal.html:20
-msgid "Reference"
-msgstr "Sanasto"
+msgid "Reference filter"
+msgstr "Rajaa käsitehakua"
 
 #: components/model/referencesView.html:1
 msgid "References"
@@ -1328,6 +1328,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Reference"
+#~ msgstr "Sanasto"
 
 #~ msgid "Create new external class"
 #~ msgstr "Luo uusi tarkennettu luokka viittaamalla ulkoiseen tunnisteeseen"

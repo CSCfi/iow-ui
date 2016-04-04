@@ -874,7 +874,7 @@ msgid "Recommendation"
 msgstr ""
 
 #: components/editor/searchConceptModal.html:20
-msgid "Reference"
+msgid "Reference filter"
 msgstr ""
 
 #: components/model/referencesView.html:1
