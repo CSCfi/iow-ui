@@ -1,4 +1,5 @@
 import { isDefined } from './utils';
+import Moment = moment.Moment;
 
 export interface Comparator<T> {
   (lhs: T, rhs: T): number;
@@ -30,6 +31,18 @@ export function compareBooleans(l: boolean, r: boolean): number {
   return compare(l, r, (lhs, rhs) => lhs === rhs ? 0 : lhs === true ? 1 : -1);
 }
 
+function compareDates(l: Moment, r: Moment): number {
+  return compare(l, r, (lhs, rhs) => {
+    if (lhs.isAfter(rhs)) {
+      return 1;
+    } else if (lhs.isBefore(rhs)) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+}
+
 export function reversed<T>(comparator: Comparator<T>): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => comparator(rhs, lhs));
 }
@@ -44,6 +57,10 @@ export function comparingNumber<T>(extractor: (item: T) => number): ChainableCom
 
 export function comparingBoolean<T>(extractor: (item: T) => boolean): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => compareBooleans(extractor(lhs), extractor(rhs)));
+}
+
+export function comparingDates<T>(extractor: (item: T) => Moment): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => compareDates(extractor(lhs), extractor(rhs)));
 }
 
 export function makeChainable<T>(comparator: Comparator<T>): ChainableComparator<T> {

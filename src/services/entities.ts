@@ -17,6 +17,7 @@ import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
 import { Uri } from './uri';
 export { Uri } from './uri';
+import { comparingDates } from './comparators';
 
 const jsonld: any = require('jsonld');
 
@@ -1121,7 +1122,7 @@ export class Activity extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
-    this.versions = deserializeEntityList(graph.generated, context, frame, Entity).sort((lhs, rhs) => compareDates(rhs.createdAt, lhs.createdAt));
+    this.versions = deserializeEntityList(graph.generated, context, frame, Entity).sort(comparingDates<Entity>(entity => entity.createdAt));
     this.versionIndex = indexById(this.versions);
     this.latestVersion = graph.used;
   }
@@ -1164,16 +1165,6 @@ function reportErrorWithStack(error: string, graph: any) {
 
 function isUuidUrn(s: string) {
   return s && s.startsWith('urn:uuid');
-}
-
-function compareDates(lhs: Moment, rhs: Moment) {
-  if (lhs.isAfter(rhs)) {
-    return 1;
-  } else if (lhs.isBefore(rhs)) {
-    return -1;
-  } else {
-    return 0;
-  }
 }
 
 function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
