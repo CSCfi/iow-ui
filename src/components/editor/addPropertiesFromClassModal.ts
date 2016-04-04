@@ -2,9 +2,10 @@ import Dictionary = _.Dictionary;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IPromise = angular.IPromise;
 import * as _ from 'lodash';
-import { Class, Property, Uri } from '../../services/entities';
-import { ClassService } from '../../services/classService';
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import { Class, Property } from '../../services/entities';
+import { ClassService } from '../../services/classService';
+import { Uri } from '../../services/uri';
 
 const noExclude = (property: Property) => false;
 

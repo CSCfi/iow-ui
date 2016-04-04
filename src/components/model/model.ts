@@ -23,7 +23,6 @@ import {
   Model,
   Type,
   Property,
-  Uri,
   DefinedBy
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
@@ -37,6 +36,7 @@ import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
 import { MaintenanceModal } from '../maintenance';
 import { Show, ChangeNotifier, ChangeListener } from './../contracts';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 

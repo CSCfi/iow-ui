@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { GroupListItem, Model, Require, Reference, Uri, NamespaceType } from '../../services/entities';
+import { GroupListItem, Model, Require, Reference, NamespaceType } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
@@ -13,6 +13,7 @@ import { SearchSchemeModal } from './searchSchemeModal';
 import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from './model';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 

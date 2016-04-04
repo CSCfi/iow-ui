@@ -1,5 +1,9 @@
 import { Model } from './entities';
 
+export type Url = string;
+export type Urn = string;
+export type RelativeUrl = string;
+
 export class Uri {
 
   constructor(public value: string, private context: any = {}) {

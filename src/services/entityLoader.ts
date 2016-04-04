@@ -13,7 +13,6 @@ import {
   State,
   ConceptSuggestion,
   ConstraintType,
-  Url,
   Require
 } from './entities';
 import { ModelService } from './modelService';
@@ -23,7 +22,7 @@ import { UserService } from './userService';
 import { identity } from './utils';
 import { ConceptService } from './conceptService';
 import { ResetService } from './resetService';
-import { Uri } from './uri';
+import { Uri, Url } from './uri';
 
 export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392');
 export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK');

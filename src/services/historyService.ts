@@ -1,7 +1,8 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
-import { Activity, Uri, EntityDeserializer, GraphData } from './entities';
+import { Activity, EntityDeserializer, GraphData } from './entities';
 import { config } from '../config';
+import { Uri } from './uri';
 
 export class HistoryService {
 

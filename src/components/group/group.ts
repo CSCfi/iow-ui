@@ -10,9 +10,9 @@ import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { Group, ModelListItem, Uri, Type } from '../../services/entities';
+import { Group, ModelListItem, Type } from '../../services/entities';
 import { MaintenanceModal } from '../maintenance';
-
+import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 
 mod.directive('group', () => {

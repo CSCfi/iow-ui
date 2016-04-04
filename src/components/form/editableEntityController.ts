@@ -4,8 +4,9 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { Attribute, Association, Class, AbstractGroup, Group, Model, Uri } from '../../services/entities';
+import { Attribute, Association, Class, AbstractGroup, Group, Model } from '../../services/entities';
 import { isModalCancel } from '../../services/utils';
+import { Uri } from '../../services/uri';
 
 export interface EditableForm extends IFormController {
   editing: boolean;

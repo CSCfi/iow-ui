@@ -8,15 +8,14 @@ import {
   normalizeSelectionType,
   containsAny,
   normalizeModelType,
-  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity, anyLocalization
+  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity
 } from './utils';
 import Moment = moment.Moment;
 import { Frame } from './frames';
 import { FrameFn } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
-import { Uri } from './uri';
-export { Uri } from './uri';
+import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDates } from './comparators';
 
 const jsonld: any = require('jsonld');
@@ -25,9 +24,6 @@ const isoDateFormat = 'YYYY-MM-DDTHH:mm:ssz';
 
 export type EditableEntity = Class|Association|Attribute|Model|Group;
 export type Localizable = { [language: string]: string; }
-export type Url = string;
-export type Urn = string;
-export type RelativeUrl = string;
 export type UserLogin = string;
 
 export type Type = 'class'

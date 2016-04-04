@@ -2,15 +2,15 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { Predicate, PredicateListItem, Model, Type, Uri, DefinedBy } from '../../services/entities';
+import { Predicate, PredicateListItem, Model, Type, DefinedBy } from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import { comparingString, comparingBoolean, reversed } from '../../services/comparators';
+import { comparingString, comparingBoolean } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { isDefined } from '../../services/utils';
 
 const noExclude = (item: PredicateListItem) => <string> null;

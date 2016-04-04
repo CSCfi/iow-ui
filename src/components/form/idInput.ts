@@ -3,8 +3,9 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import IQService = angular.IQService;
 import { ValidatorService } from '../../services/validatorService';
-import { Class, Predicate, Type, Uri } from '../../services/entities';
+import { Class, Predicate, Type } from '../../services/entities';
 import { isStringValid, isValidLabelLength } from './validators';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 

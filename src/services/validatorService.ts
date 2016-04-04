@@ -1,7 +1,7 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
-import { Uri } from './entities';
+import { Uri } from './uri';
 import { pascalCase, camelCase } from 'change-case';
 import { config } from '../config';
 

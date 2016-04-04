@@ -6,7 +6,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type, ClassListItem, PredicateListItem, Uri } from '../../services/entities';
+import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import { DisplayItemFactory, DisplayItem } from '../form/displayItemFactory';
 import {
@@ -15,8 +15,9 @@ import {
   combineExclusions,
   createDefinedByExclusion
 } from '../../services/utils';
+import { Uri } from '../../services/uri';
+
 import { module as mod }  from './module';
-import create = require("core-js/fn/object/create");
 
 mod.directive('editableMultipleUriSelect', () => {
   return {

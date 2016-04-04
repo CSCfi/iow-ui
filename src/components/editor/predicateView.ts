@@ -4,10 +4,11 @@ import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Attribute, Association, GroupListItem, Model, Uri } from '../../services/entities';
+import { Attribute, Association, GroupListItem, Model } from '../../services/entities';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 

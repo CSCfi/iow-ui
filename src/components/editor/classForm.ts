@@ -5,9 +5,10 @@ import ITimeoutService = angular.ITimeoutService;
 import * as _ from 'lodash';
 import { ClassViewController } from './classView';
 import { PropertyViewController } from './propertyView';
-import { Class, Model, Property, Uri } from '../../services/entities';
+import { Class, Model, Property } from '../../services/entities';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { normalizeModelType } from '../../services/utils';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 

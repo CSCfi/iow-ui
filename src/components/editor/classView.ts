@@ -4,7 +4,7 @@ import ILogService = angular.ILogService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property, PredicateListItem, Uri } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, PredicateListItem } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -16,6 +16,7 @@ import {
 } from '../../services/utils';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 

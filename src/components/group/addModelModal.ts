@@ -2,7 +2,8 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import { ModelService } from '../../services/modelService';
-import { Uri, Type } from '../../services/entities';
+import { Type } from '../../services/entities';
+import { Uri } from '../../services/uri';
 
 export class AddModelModal {
   /* @ngInject */

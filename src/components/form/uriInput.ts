@@ -3,8 +3,9 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Model, Uri } from '../../services/entities';
+import { Model } from '../../services/entities';
 import { isValidUri } from './validators';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 

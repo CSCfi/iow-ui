@@ -3,9 +3,9 @@ import IScope = angular.IScope;
 import ITranscludeFunction = angular.ITranscludeFunction;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { Uri } from '../../services/entities';
 import IPromise = angular.IPromise;
 import { ConfirmationModal } from './confirmationModal';
+import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 
 mod.directive('searchResults', () => {

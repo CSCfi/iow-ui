@@ -1,4 +1,4 @@
-import { Url } from './entities';
+import { Url } from './uri';
 
 export type Frame = {};
 export type FrameFn = (data: any) => Frame;

@@ -3,14 +3,14 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import {
-  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, Urn, Uri,
-  GraphData
+  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData
 } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { reverseMapType } from './typeMapping';
 import { expandContextWithKnownModels } from './utils';
+import { Urn, Uri } from './uri';
 
 export class PredicateService {
   /* @ngInject */

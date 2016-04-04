@@ -2,8 +2,9 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import * as _  from 'lodash';
 import { normalizeAsArray } from './utils';
-import { EntityDeserializer, Group, GroupListItem, Uri, GraphData } from './entities';
+import { EntityDeserializer, Group, GroupListItem, GraphData } from './entities';
 import { config } from '../config';
+import { Uri } from './uri';
 
 export class GroupService {
 

@@ -7,9 +7,9 @@ import { GroupService } from '../services/groupService';
 import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
-import { GroupListItem, SearchResult, Url } from '../services/entities';
+import { GroupListItem, SearchResult } from '../services/entities';
 import { MaintenanceModal } from './maintenance';
-
+import { Url } from '../services/uri';
 
 import { module as mod }  from './module';
 

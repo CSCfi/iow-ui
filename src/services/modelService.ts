@@ -3,11 +3,11 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { config } from '../config';
-import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, Urn, GraphData } from './entities';
+import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, GraphData } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
-import { Uri } from './uri';
+import { Uri, Urn } from './uri';
 import { expandContextWithKnownModels } from './utils';
 
 export class ModelService {

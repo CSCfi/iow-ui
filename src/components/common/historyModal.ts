@@ -1,13 +1,14 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
-import { Model, Predicate, Class, Entity, Uri, Urn } from '../../services/entities';
+import { Model, Predicate, Class, Entity } from '../../services/entities';
 import { containsAny } from '../../services/utils';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
 import { ModelService } from '../../services/modelService';
 import { HistoryService } from '../../services/historyService';
 import { UserService } from '../../services/userService';
+import { Urn } from '../../services/uri';
 
 export class HistoryModal {
   /* @ngInject */

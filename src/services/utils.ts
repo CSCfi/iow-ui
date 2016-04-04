@@ -1,4 +1,5 @@
-import { Type, Localizable, Model, DefinedBy, ClassListItem, Uri, GraphData } from './entities';
+import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from './entities';
+import { Uri } from './uri';
 
 export function allLocalizations(predicate: (localized: string) => boolean, localizable: Localizable) {
   if (localizable) {

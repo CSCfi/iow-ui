@@ -11,14 +11,14 @@ import {
   Predicate,
   Property,
   Model,
-  Uri,
-  Urn, GraphData
+  GraphData
 } from './entities';
 import { PredicateService } from './predicateService';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { expandContextWithKnownModels } from './utils';
+import { Uri, Urn } from './uri';
 
 export class ClassService {
 

@@ -4,7 +4,7 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { EditableForm } from '../form/editableEntityController';
 import {
-  Model, Constraint, ConstraintListItem, RelativeUrl, ClassListItem,
+  Model, Constraint, ConstraintListItem, ClassListItem,
   ConstraintType, Class
 } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
@@ -16,6 +16,7 @@ import {
   createClassTypeExclusion,
   SearchClassType, createSelfExclusion
 } from '../../services/utils';
+import { RelativeUrl } from '../../services/uri';
 
 import { module as mod }  from './module';
 

@@ -2,8 +2,9 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
-import { Localizable, isLocalizable, Uri } from '../../services/entities';
+import { Localizable, isLocalizable } from '../../services/entities';
 import { isString, isNumber, isDifferentUrl } from '../../services/utils';
+import { Uri } from '../../services/uri';
 
 export type Value = string|Localizable|number|Uri;
 

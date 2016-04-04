@@ -6,8 +6,9 @@ import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type, Uri } from '../../services/entities';
+import { Model, Type } from '../../services/entities';
 import { createDefinedByExclusion } from '../../services/utils';
+import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 
