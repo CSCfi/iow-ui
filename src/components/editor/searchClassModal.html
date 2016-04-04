@@ -1,6 +1,9 @@
 <form name="form">
   <modal-template editing="false">
-    <modal-title translate>Search classes</modal-title>
+    <modal-title>
+      <span ng-show="ctrl.onlySelection" translate>Select class</span>
+      <span ng-hide="ctrl.onlySelection" translate>Add class</span>
+    </modal-title>
 
     <modal-body>
 
@@ -16,6 +19,7 @@
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
 
+          <label translate>Filter results</label>
           <div class="input-group input-group-lg">
             <div class="selectContainer">
               <select class="form-control" ng-model="ctrl.showModel" ng-options="model | translateLabel for model in ctrl.models">
