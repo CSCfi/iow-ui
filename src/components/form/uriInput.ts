@@ -37,8 +37,12 @@ mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
         return !value || isValidUri(value.uri);
       };
 
-      modelController.$validators['id'] = value => {
-        return !value || value.hasResolvablePrefix();
+      modelController.$validators['unknownNS'] = value => {
+        return !value || !isValidUri(value.uri) || value.hasResolvablePrefix();
+      };
+
+      modelController.$validators['idNameRequired'] = value => {
+        return !value || !isValidUri(value.uri) || !value.hasResolvablePrefix() || value.name.length > 0;
       };
     }
   };

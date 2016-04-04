@@ -308,7 +308,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         () => this.searchClassModal.open(this.model, classExclusion, textForSelection),
         (concept: EntityCreation) => this.createClass(concept),
         (klass: Class) => {
-          if (isProfile) {
+          if (klass.unsaved) {
+            return this.$q.when(klass);
+          } else if (isProfile) {
             return this.createShape(klass);
           } else {
             return this.assignClassToModel(klass).then(() => klass);
@@ -324,7 +326,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
   }
 
-  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<EntityCreation|T>, fromConcept: (concept: EntityCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<any>) {
+  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<EntityCreation|T>, fromConcept: (concept: EntityCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<T>) {
     this.userService.ifStillLoggedIn(() => {
       this.askPermissionWhenEditing(() => {
         modal().then(result => {

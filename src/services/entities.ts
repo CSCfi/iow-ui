@@ -562,7 +562,10 @@ export class Class extends AbstractClass {
       this.scopeClass = new Uri(graph.scopeClass, context);
     }
     this.state = graph.versionInfo;
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
+    // TODO: remove this if when externalClass API is fixed to return it
+    if (graph.isDefinedBy) {
+      this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
+    }
     this.properties = deserializeEntityList(graph.property, context, frame, Property);
     if (graph.subject) {
       this.subject = isUuidUrn(graph.subject['@id'])

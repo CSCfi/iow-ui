@@ -11,6 +11,8 @@ import { comparingBoolean, comparingString } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { isDefined } from '../../services/utils';
+import { Uri } from '../../services/uri';
+import { EditableForm } from '../form/editableEntityController';
 
 
 export const noExclude = (item: ClassListItem) => <string> null;
@@ -46,23 +48,44 @@ export class SearchClassModal {
   }
 };
 
+interface FormData {
+  externalUri: Uri;
+  className: string;
+}
+
+function createFormData(className: string): FormData {
+  return {
+    externalUri: null,
+    className: _.capitalize(className)
+  };
+}
+
+function isFormData(item: Class|FormData): item is FormData {
+  return !(item instanceof Class);
+}
+
+export interface SearchClassScope extends IScope {
+  form: EditableForm;
+}
+
 class SearchClassController {
 
   private classes: ClassListItem[];
 
   close = this.$uibModalInstance.dismiss;
-  searchResults: (ClassListItem|AddNew)[] = [];
-  selection: Class;
+  searchResults: (ClassListItem|AddNewClass)[] = [];
+  selection: Class|FormData;
   searchText: string = '';
   showProfiles: boolean;
   showModel: DefinedBy;
   models: DefinedBy[] = [];
   cannotConfirm: string;
   loadingResults: boolean;
-  selectedItem: ClassListItem|AddNew;
+  selectedItem: ClassListItem|AddNewClass;
+  submitError: string;
 
   /* @ngInject */
-  constructor($scope: IScope,
+  constructor(private $scope: SearchClassScope,
               private $uibModalInstance: IModalServiceInstance,
               private classService: ClassService,
               private languageService: LanguageService,
@@ -97,10 +120,17 @@ class SearchClassController {
     return !!this.searchText;
   }
 
+  isSelectionFormData(): boolean {
+    return isFormData(this.selection);
+  }
+
   search() {
     if (this.classes) {
 
-      const result: (ClassListItem|AddNew)[] = [new AddNew(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this))];
+      const result: (ClassListItem|AddNewClass)[] = [
+        new AddNewClass(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this), false),
+        new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} '${this.searchText}' ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
+      ];
 
       const classSearchResult = this.classes.filter(klass =>
         this.textFilter(klass) &&
@@ -123,26 +153,52 @@ class SearchClassController {
     return !this.onlySelection && !!this.searchText;
   }
 
-  selectItem(item: ClassListItem|AddNew) {
+  selectItem(item: ClassListItem|AddNewClass) {
     this.selectedItem = item;
-    if (item instanceof AddNew) {
-      this.createNewClass();
+    this.selection = null;
+    this.submitError = null;
+    this.$scope.form.editing = false;
+    this.$scope.form.$setPristine();
+
+    if (item instanceof AddNewClass) {
+      if (item.external) {
+        this.$scope.form.editing = true;
+        this.selection = createFormData(this.searchText);
+      } else {
+        this.createNewClass();
+      }
     } else if (item instanceof ClassListItem) {
       this.cannotConfirm = this.exclude(item);
       this.classService.getClass(item.id, this.model).then(result => this.selection = result);
     }
   }
 
-  loadingSelection(item: ClassListItem|AddNew) {
-    if (item instanceof ClassListItem) {
-      return item === this.selectedItem && (!this.selection || !item.id.equals(this.selection.id));
+  loadingSelection(item: ClassListItem|AddNewClass) {
+    const selection = this.selection;
+    if (item instanceof ClassListItem && selection instanceof Class) {
+      return item === this.selectedItem && (!this.selection || !item.id.equals(selection.id));
     } else {
       return false;
     }
   }
 
   confirm() {
-    this.$uibModalInstance.close(this.selection);
+    const selection = this.selection;
+
+    if (selection instanceof Class) {
+      this.$uibModalInstance.close(this.selection);
+    } else if (isFormData(selection)) {
+      this.classService.newExternalClass(this.model, selection.externalUri, selection.className, this.languageService.modelLanguage)
+        .then(klass => {
+          if (klass) {
+            this.$uibModalInstance.close(klass);
+          } else {
+            this.submitError = 'External class not found';
+          }
+        }, err => this.submitError = err.data.errorMessage);
+    } else {
+      throw new Error('Unsupported selection: ' + selection);
+    }
   }
 
   createNewClass() {
@@ -168,5 +224,11 @@ class SearchClassController {
 
   private showProfilesFilter(klass: ClassListItem): boolean {
     return this.showProfiles || !klass.definedBy.isOfType('profile');
+  }
+}
+
+class AddNewClass extends AddNew {
+  constructor(public label: string, public show: () => boolean, public external: boolean) {
+    super(label, show);
   }
 }

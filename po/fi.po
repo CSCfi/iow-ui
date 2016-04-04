@@ -73,7 +73,7 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/editor/searchClassModal.html:21
+#: components/editor/searchClassModal.html:22
 #: components/editor/searchPredicateModal.html:26
 msgid "All models"
 msgstr "Kaikki kirjastot"
@@ -182,6 +182,10 @@ msgstr "Selaa"
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
 
+#: translations/misc.html:181
+msgid "by referencing external uri"
+msgstr "viittaamalla ulkoiseen tunnisteeseen"
+
 #: translations/misc.html:169
 msgid "Can be selected only from this library"
 msgstr "Valinta on tehtävä tietokomponenettikirjaston luokista"
@@ -193,7 +197,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:54
+#: components/editor/searchClassModal.html:68
 #: components/editor/searchConceptModal.html:91
 #: components/editor/searchPredicateModal.html:62
 #: components/group/addModelModal.html:22
@@ -259,7 +263,7 @@ msgstr "Luokat"
 msgid "Class properties"
 msgstr "Luokan ominaisuudet"
 
-#: components/editor/searchClassModal.html:9
+#: components/editor/searchClassModal.html:10
 msgid "Class search info"
 msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
@@ -320,11 +324,11 @@ msgstr "Luo attribuutti ja käytä"
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: translations/misc.html:181
+#: translations/misc.html:184
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: translations/misc.html:180
+#: translations/misc.html:183
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
@@ -335,6 +339,10 @@ msgstr "Luo uusi luokka"
 #: components/model/searchRequireModal.html:8
 msgid "Create new require"
 msgstr "Luo uusi nimiavaruus"
+
+#: translations/misc.html:180
+msgid "Create new shape"
+msgstr "Luo uusi tarkennettu luokka"
 
 #: components/user/user.html:17 translations/misc.html:148
 msgid "Created at"
@@ -527,6 +535,14 @@ msgstr "Tunniste on jo käytössä"
 msgid "Export"
 msgstr "Lataa"
 
+#: translations/misc.html:187
+msgid "External class not found"
+msgstr "Ulkoista luokkaa ei löydy"
+
+#: translations/misc.html:182
+msgid "External URI"
+msgstr "Ulkoinen tunniste"
+
 #: translations/misc.html:37
 msgid "fi"
 msgstr "Suomeksi"
@@ -586,6 +602,10 @@ msgstr "Tunniste"
 msgid "ID is already in use"
 msgstr "Tunniste on jo käytössä"
 
+#: components/form/errorMessages.html:18
+msgid "Id name is required"
+msgstr "Tunniste puuttuu nimiavaruuden sisältä"
+
 #: components/model/requiresView.html:1
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
@@ -597,6 +617,10 @@ msgstr "Ryhmän sisäiset sivut"
 #: components/frontPage.html:5
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
+
+#: translations/misc.html:186
+msgid "Invalid ID"
+msgstr "Virheellinen tunniste"
 
 #: components/form/errorMessages.html:6
 msgid "Invalid id error"
@@ -711,6 +735,10 @@ msgstr "Nimi"
 #: components/model/requiresView.html:35 translations/misc.html:73
 msgid "Namespace"
 msgstr "Nimiavaruus"
+
+#: components/form/errorMessages.html:17
+msgid "Namespace is not required"
+msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
 
 #: components/form/errorMessages.html:14
 msgid "Negative error"
@@ -916,11 +944,11 @@ msgstr "Hae attribuutteja"
 msgid "Search attributes and associations"
 msgstr "Hae attribuutteja ja assosiaatitoita"
 
-#: components/editor/searchClassModal.html:11
+#: components/editor/searchClassModal.html:12
 msgid "search class"
 msgstr "Hae luokkaa…"
 
-#: components/editor/searchClassModal.html:2
+#: components/editor/searchClassModal.html:3
 msgid "Search classes"
 msgstr "Hae luokkia"
 
@@ -954,7 +982,7 @@ msgstr "Hae sanastoa…"
 msgid "Search schemes"
 msgstr "Hae sanastoja"
 
-#: translations/misc.html:182
+#: translations/misc.html:185
 msgid "Self reference not allowed"
 msgstr "Viittaus itseensä ei ole sallittu"
 
@@ -986,7 +1014,7 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/editor/searchClassModal.html:27
+#: components/editor/searchClassModal.html:28
 msgid "Show classes defined in profiles"
 msgstr "Näytä profiileissa määritellyt luokat"
 
@@ -1301,6 +1329,9 @@ msgstr "Virheellinen aika"
 msgid "Yes"
 msgstr "Kyllä"
 
+#~ msgid "Create new external class"
+#~ msgstr "Luo uusi tarkennettu luokka viittaamalla ulkoiseen tunnisteeseen"
+
 #~ msgid "Chosen concept"
 #~ msgstr "Valittu käsite"
 
@@ -1315,9 +1346,6 @@ msgstr "Kyllä"
 
 #~ msgid "Invalid uri error"
 #~ msgstr "Syöte ei ole URI"
-
-#~ msgid "Invalid ID"
-#~ msgstr "Virheellinen tunniste"
 
 #~ msgid "text/ld+json+context"
 #~ msgstr "JSON-LD Context"

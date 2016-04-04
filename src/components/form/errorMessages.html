@@ -14,6 +14,8 @@
     <li ng-message="negative">{{'Negative error' | translate}}</li>
     <li ng-message="greaterThanMax">{{'Greater than max error' | translate}}</li>
     <li ng-message="lessThanMin">{{'Less than min error' | translate}}</li>
+    <li ng-message="unknownNS">{{'Namespace is not required' | translate}}</li>
+    <li ng-message="idNameRequired">{{'Id name is required' | translate}}</li>
 
     <li ng-message-exp="error.key" ng-repeat="error in dynamicErrors">{{error.message | translate}} {{error.format}}</li>
   </ul>
