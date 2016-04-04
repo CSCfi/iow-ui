@@ -277,6 +277,10 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
+#: components/model/editableRootClass.html:7
+msgid "Clear selection"
+msgstr ""
+
 #: components/common/historyModal.html:36
 #: translations/misc.html:170
 msgid "Close"

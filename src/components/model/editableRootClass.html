@@ -4,3 +4,4 @@
   <a ng-if="ctrl.model.rootClass" ng-href="{{ctrl.href}}">{{ctrl.model.rootClass.compact}}</a>
 </div>
 <button ng-show="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectClass()" translate>Choose root class</button>
+<button ng-show="ctrl.isEditing() && ctrl.model.rootClass" type="button" class="btn btn-default btn-sm" ng-click="ctrl.removeClass()" translate>Clear selection</button>

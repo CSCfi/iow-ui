@@ -48,4 +48,8 @@ class EditableRootClassController {
 
     this.searchClassModal.openWithOnlySelection(this.model, exclude).then(klass => this.model.rootClass = klass.id);
   }
+
+  removeClass() {
+    this.model.rootClass = null;
+  }
 }

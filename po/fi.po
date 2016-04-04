@@ -277,6 +277,10 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
+#: components/model/editableRootClass.html:7
+msgid "Clear selection"
+msgstr "poista valinta"
+
 #: components/common/historyModal.html:36 translations/misc.html:170
 msgid "Close"
 msgstr "Sulje"
