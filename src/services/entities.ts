@@ -569,7 +569,7 @@ export class Class extends AbstractClass {
     }
     this.properties = deserializeEntityList(graph.property, context, frame, Property);
     if (graph.subject) {
-      this.subject = isUuidUrn(graph.subject['@id'])
+      this.subject = new Uri(graph.subject['@id']).isUrn()
         ? new ConceptSuggestion(graph.subject, context, frame)
         : new FintoConcept(graph.subject, context, frame);
     }
@@ -847,7 +847,7 @@ export abstract class Predicate extends AbstractPredicate {
       this.subPropertyOf = new Uri(graph.subPropertyOf, context);
     }
     if (graph.subject) {
-      this.subject = isUuidUrn(graph.subject['@id'])
+      this.subject = new Uri(graph.subject['@id']).isUrn()
         ? new ConceptSuggestion(graph.subject, context, frame)
         : new FintoConcept(graph.subject, context, frame);
     }
@@ -1161,10 +1161,6 @@ function reportErrorWithStack(error: string, graph: any) {
   console.log(error);
   console.log(new Error().stack);
   console.log(graph);
-}
-
-function isUuidUrn(s: string) {
-  return s && s.startsWith('urn:uuid');
 }
 
 function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
