@@ -86,6 +86,10 @@ $footer-height: 50px;
     border-radius: 2px;
     border: 1px solid #ddd;
 
+    &.has-error {
+      border-color: $state-danger-text;
+    }
+
     .delete-item {
       display: inline-block;
       cursor: pointer;
@@ -116,6 +120,7 @@ $footer-height: 50px;
 ul.errors {
   border-left: 5px solid $state-danger-text;
   padding-left: 15px;
+  margin-bottom: 0;
 
   li {
     list-style-type: none;

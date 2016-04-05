@@ -1,0 +1,27 @@
+<div class="editable-wrap form-group">
+  <label for="{{ctrl.id}}" ng-show="ctrl.title && (ctrl.ngModel.length > 0 || ctrl.isEditing())">{{ctrl.title | translate}}</label>
+
+  <span ng-show="!ctrl.isEditing()" ng-repeat="value in ctrl.ngModel">
+    <span>{{value}}<span ng-if="!$last">, </span></span>
+  </span>
+
+  <div ng-show="ctrl.isEditing()">
+    <div class="form-control multi-input">
+      <div ng-repeat="value in ctrl.ngModel" ng-class="['added-item', { 'has-error': !ctrl.isValid(value)}]">
+        {{value}}
+        <div class="delete-item badge" ng-click="ctrl.deleteValue(value)">&times;</div>
+      </div>
+
+      <input name="valueInput"
+             id="{{ctrl.id}}"
+             datatype-input="{{ctrl.inputType}}"
+             type="text"
+             restrict-duplicates="ctrl.ngModel"
+             ng-model="ctrl.input"
+             ng-keydown="ctrl.keyPressed($event)"
+             ng-blur="ctrl.addValueFromInput()" />
+    </div>
+
+    <error-messages ng-model-controller="ngModelControllers"></error-messages>
+  </div>
+</div>

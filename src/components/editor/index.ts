@@ -11,6 +11,7 @@ import './classVisualization';
 import './uriSelect';
 import './editableConstraint';
 import './editableMultipleUriSelect';
+import './editableMultipleDataTypeInput';
 import './editableSubjectSelect';
 import './predicateForm';
 import './predicateView';
