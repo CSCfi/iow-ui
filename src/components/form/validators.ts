@@ -28,6 +28,8 @@ export function isValidPrefix(prefix: string): boolean {
   return !prefix || !!prefix.match(/^[a-z]+$/);
 }
 
+export const isValidIdentifier = createRegexValidator(/^[a-zA-Z][a-zA-Z0-9]*$/);
+
 export function isValidNamespace(str: string): boolean {
   return !str || str.endsWith('#') || str.endsWith('/');
 }

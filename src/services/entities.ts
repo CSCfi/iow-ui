@@ -706,7 +706,8 @@ export class ConstraintListItem extends GraphNode {
 
 export class Property extends GraphNode {
 
-  id: Uri;
+  internalId: Uri;
+  externalId: string;
   state: State;
   label: Localizable;
   comment: Localizable;
@@ -721,7 +722,8 @@ export class Property extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = new Uri(graph['@id'], context);
+    this.internalId = new Uri(graph['@id'], context);
+    this.externalId = graph['identifier'];
     this.state = graph.versionInfo;
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
@@ -760,7 +762,8 @@ export class Property extends GraphNode {
 
   serializationValues() {
     return {
-      '@id': this.id.uri,
+      '@id': this.internalId.uri,
+      identifier: this.externalId,
       versionInfo: this.state,
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),

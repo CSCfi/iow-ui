@@ -77,7 +77,7 @@ export class ClassFormController {
   openPropertyAndScrollTo(property: Property) {
     this.$timeout(() => {
       // wait for possible new view to appear
-      this.propertyViews[property.id.uri].openAndScrollTo();
+      this.propertyViews[property.internalId.uri].openAndScrollTo();
     });
   };
 

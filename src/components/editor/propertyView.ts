@@ -41,11 +41,11 @@ mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $tim
         return _.any(classFormController.propertyViews, view => view.isOpen);
       };
 
-      if ($location.search().property === thisController.property.id.uri) {
+      if ($location.search().property === thisController.property.internalId.uri) {
         thisController.openAndScrollTo();
       }
 
-      classFormController.registerPropertyView(thisController.property.id, thisController);
+      classFormController.registerPropertyView(thisController.property.internalId, thisController);
     },
     controller: PropertyViewController
   };
@@ -64,13 +64,14 @@ export class PropertyViewController {
   isOpen: boolean;
   scroll: () => void;
   otherPropertyLabels: Localizable[];
+  otherPropertyIdentifiers: string[];
   anyPropertiesOpen: () => boolean;
 
   /* @ngInject */
   constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService) {
     $scope.$watch(() => this.isOpen, open => {
       if (open) {
-        $location.search('property', this.property.id.uri);
+        $location.search('property', this.property.internalId.uri);
 
         if (!this.predicate) {
           predicateService.getPredicate(this.property.predicate).then(predicate => {
@@ -88,6 +89,12 @@ export class PropertyViewController {
         .filter(property => property !== this.property)
         .map(property => property.label)
         .value();
+
+      this.otherPropertyIdentifiers =
+        _.chain(properties)
+          .filter(property => property !== this.property)
+          .map(property => property.externalId)
+          .value();
     });
   }
 
