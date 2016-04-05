@@ -712,6 +712,7 @@ export class Property extends GraphNode {
   label: Localizable;
   comment: Localizable;
   example: string;
+  defaultValue: string;
   dataType: string;
   valueClass: Uri;
   predicate: Uri;
@@ -730,6 +731,7 @@ export class Property extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.example = graph.example;
+    this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
     if (graph.valueShape) {
       this.valueClass = new Uri(graph.valueShape, context);
@@ -772,6 +774,7 @@ export class Property extends GraphNode {
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       example: this.example,
+      defaultValue: this.defaultValue,
       datatype: this.dataType,
       valueShape: this.valueClass && this.valueClass.uri,
       predicate: this.predicate.uri,

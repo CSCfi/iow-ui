@@ -12,7 +12,6 @@ const coreContext = {
   definition: {'@id': 'http://www.w3.org/2004/02/skos/core#definition', '@container': '@language' },
   equivalentClass: { '@id' : 'http://www.w3.org/2002/07/owl#equivalentClass', '@type' : '@id' },
   equivalentProperty: { '@id' : 'http://www.w3.org/2002/07/owl#equivalentProperty', '@type' : '@id' },
-  example: { '@id': 'http://www.w3.org/2004/02/skos/core#example' },
   foaf: 'http://xmlns.com/foaf/0.1/',
   hasPart: { '@id': 'http://purl.org/dc/terms/hasPart', '@type': '@id' },
   homepage: { '@id': 'http://xmlns.com/foaf/0.1/homepage' },
@@ -48,7 +47,9 @@ const propertyContext = Object.assign({}, coreContext, {
   maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
   minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
   maxLength: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
-  minLength: { '@id': 'http://www.w3.org/ns/shacl#minCount'}
+  minLength: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
+  example: { '@id': 'http://www.w3.org/2004/02/skos/core#example' },
+  defaultValue: { '@id': 'http://www.w3.org/2004/02/skos/core#defaultValue' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, {

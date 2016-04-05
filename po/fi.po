@@ -376,6 +376,10 @@ msgstr "Tietokanta"
 msgid "date format"
 msgstr "DD.MM.YYYY HH:mm"
 
+#: translations/misc.html:193
+msgid "Default value"
+msgstr "Oletusarvo"
+
 #: translations/misc.html:8
 msgid "Define concept for the association"
 msgstr "Määrittele käsite assosiaatiolle"
@@ -928,7 +932,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:58
+#: components/editor/propertyView.html:62
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 

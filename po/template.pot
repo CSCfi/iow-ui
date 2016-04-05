@@ -377,6 +377,10 @@ msgstr ""
 msgid "date format"
 msgstr ""
 
+#: translations/misc.html:193
+msgid "Default value"
+msgstr ""
+
 #: translations/misc.html:8
 msgid "Define concept for the association"
 msgstr ""
@@ -928,7 +932,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:58
+#: components/editor/propertyView.html:62
 msgid "Reusable predicate"
 msgstr ""
 
