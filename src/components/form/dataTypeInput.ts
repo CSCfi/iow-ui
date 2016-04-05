@@ -5,13 +5,13 @@ import { DataType } from '../common/dataTypes';
 import { resolveValidator } from './validators';
 
 import { module as mod }  from './module';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 interface DataTypeInputAttributes extends IAttributes {
   datatypeInput: DataType;
-  type: string;
 }
 
-mod.directive('datatypeInput', () => {
+mod.directive('datatypeInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
   return {
     restrict: 'EA',
     require: 'ngModel',
@@ -20,15 +20,21 @@ mod.directive('datatypeInput', () => {
         throw new Error('Data type must be defined');
       }
 
-      function initialize(dataType: DataType) {
+      function initialize(dataType: DataType, oldDataType: DataType) {
         const validator = resolveValidator(dataType);
-        attributes.$set('placeholder', validator.format);
-        ngModel.$validators = { [dataType]: validator };
+        const placeholder = gettextCatalog.getString('Input') + ' ' + gettextCatalog.getString(dataType).toLowerCase() + '...';
+        element.attr('placeholder', validator.format ? placeholder + ` (${validator.format})` : placeholder);
+
+        if (oldDataType) {
+          delete ngModel.$validators[oldDataType];
+        }
+
+        ngModel.$validators[dataType] = validator;
         ngModel.$error = {};
         ngModel.$validate();
       }
 
-      initialize(attributes.datatypeInput);
+      initialize(attributes.datatypeInput, null);
       $scope.$watch<DataType>(() => attributes.datatypeInput, initialize);
     }
   };
