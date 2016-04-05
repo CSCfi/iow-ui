@@ -3,9 +3,23 @@ import Moment = moment.Moment;
 import { DataType } from '../common/dataTypes';
 const URI = require('uri-js');
 
-export interface ValidatorWithFormat {
+export interface Validator {
   (input: string): boolean;
+}
+
+export interface ValidatorWithFormat extends Validator {
   format?: string;
+}
+
+export function arrayValidator(validator: Validator) {
+  return (input: string[]) => {
+    for (const value of input) {
+      if (!validator(value)) {
+        return false;
+      }
+    }
+    return true;
+  };
 }
 
 export function isStringValid(value: string): boolean {
