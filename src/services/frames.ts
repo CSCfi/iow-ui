@@ -46,7 +46,9 @@ const coreContext = {
 
 const propertyContext = Object.assign({}, coreContext, {
   maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
-  minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'}
+  minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
+  maxLength: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
+  minLength: { '@id': 'http://www.w3.org/ns/shacl#minCount'}
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, {

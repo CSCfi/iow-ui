@@ -718,6 +718,8 @@ export class Property extends GraphNode {
   index: number;
   minCount: number;
   maxCount: number;
+  minLength: number;
+  maxLength: number;
   pattern: string;
 
   constructor(graph: any, context: any, frame: any) {
@@ -736,6 +738,8 @@ export class Property extends GraphNode {
     this.index = graph.index;
     this.minCount = graph.minCount;
     this.maxCount = graph.maxCount;
+    this.minLength = graph.minLength;
+    this.maxLength = graph.maxLength;
     this.pattern = graph.pattern;
   }
 
@@ -774,6 +778,8 @@ export class Property extends GraphNode {
       index: this.index,
       minCount: this.minCount,
       maxCount: this.maxCount,
+      minLength: this.minLength,
+      maxLength: this.maxLength,
       pattern: this.pattern
     };
   }

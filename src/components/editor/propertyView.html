@@ -45,6 +45,14 @@
     <editable title="Max count">
       <input id="{{ctrl.property.internalId + 'maxCount'}}" max-input min="ctrl.property.minCount" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
     </editable>
+
+    <editable title="Min length">
+      <input id="{{ctrl.property.internalId + 'minLength'}}" min-input max="ctrl.property.maxLength" class="form-control" type="number" ng-model="ctrl.property.minLength" />
+    </editable>
+
+    <editable title="Max length">
+      <input id="{{ctrl.property.internalId + 'maxLength'}}" max-input min="ctrl.property.minLength" class="form-control" type="number" ng-model="ctrl.property.maxLength" />
+    </editable>
   </div>
 
   <h4 translate>Reusable predicate</h4>
