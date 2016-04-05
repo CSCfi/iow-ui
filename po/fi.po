@@ -90,6 +90,10 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
+#: translations/misc.html:194
+msgid "Allowed values"
+msgstr "Sallitut arvot"
+
 #: translations/misc.html:123
 msgid "Already added"
 msgstr "On jo lisätty"
@@ -626,6 +630,10 @@ msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
 
+#: translations/misc.html:195
+msgid "Input"
+msgstr "Kirjoita"
+
 #: translations/misc.html:178
 msgid "Internal group page"
 msgstr "Ryhmän sisäiset sivut"
@@ -932,7 +940,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:62
+#: components/editor/propertyView.html:64
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 

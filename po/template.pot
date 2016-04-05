@@ -89,6 +89,10 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
+#: translations/misc.html:194
+msgid "Allowed values"
+msgstr ""
+
 #: translations/misc.html:123
 msgid "Already added"
 msgstr ""
@@ -622,6 +626,10 @@ msgstr ""
 msgid "Imported requires"
 msgstr ""
 
+#: translations/misc.html:195
+msgid "Input"
+msgstr ""
+
 #: translations/misc.html:178
 msgid "Internal group page"
 msgstr ""
@@ -932,7 +940,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:62
+#: components/editor/propertyView.html:64
 msgid "Reusable predicate"
 msgstr ""
 

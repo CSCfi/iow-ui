@@ -52,6 +52,7 @@ export function isValidUri(uri: string): boolean {
   }
 }
 
+export const isValidString = createNopValidator();
 export const isValidBoolean = createInValuesValidator('true', 'false');
 export const isValidDecimal = createRegexValidator(/^[0-9]+\.?[0-9]*$/);
 export const isValidNumber = createRegexValidator(/^[0-9]+$/);
@@ -66,7 +67,7 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat {
   switch (dataType) {
     case 'xsd:string':
     case 'rdf:langString':
-      return (input: string) => true;
+      return isValidString;
     case 'xsd:anyURI':
       return isValidUri;
     case 'xsd:boolean':
@@ -94,6 +95,12 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat {
     default:
       throw new Error('Unsupported data type');
   }
+}
+
+function createNopValidator(format?: string) {
+  const validator: ValidatorWithFormat = (input: string) => true;
+  validator.format = format;
+  return validator;
 }
 
 function createInValuesValidator(...values: string[]) {
