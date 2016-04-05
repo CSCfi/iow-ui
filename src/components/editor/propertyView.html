@@ -57,6 +57,8 @@
     <editable title="Max length">
       <input id="{{ctrl.property.internalId + 'maxLength'}}" max-input min="ctrl.property.minLength" class="form-control" type="number" ng-model="ctrl.property.maxLength" />
     </editable>
+
+    <editable-multiple-data-type-input title="Allowed values" id="{{ctrl.property.internalId + 'allowedValues'}}" input-type="{{ctrl.property.inputType}}" ng-model="ctrl.property.in"></editable-multiple-data-type-input>
   </div>
 
   <h4 translate>Reusable predicate</h4>
