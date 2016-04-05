@@ -1,6 +1,6 @@
 
-<div ng-show="ngModelController.$dirty || ngModelController.$modelValue">
-  <ul ng-messages="ngModelController.$error" ng-messages-multiple class="errors">
+<div ng-show="isVisible()">
+  <ul ng-messages="ngModelController.$error" ng-messages-multiple class="errors" ng-repeat="ngModelController in ngModelControllers">
     <li ng-message="url">{{'Invalid url error' | translate}}</li>
     <li ng-message="namespace">{{'Invalid namespace error' | translate}}</li>
     <li ng-message="id">{{'Invalid id error' | translate}}</li>

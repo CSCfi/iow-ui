@@ -6,6 +6,7 @@ import ITimeoutService = angular.ITimeoutService;
 import { resolveValidator } from './validators';
 import { dataTypes } from '../common/dataTypes';
 import { module as mod }  from './module';
+import { normalizeAsArray } from '../../services/utils';
 
 type Error = { key: string, message: string, format?: string };
 const errors: Error[] = [];
@@ -21,9 +22,19 @@ mod.directive('errorMessages', () => {
     template: require('./errorMessages.html'),
     link($scope: ErrorMessagesScope, element: JQuery, attributes: ErrorMessagesAttributes) {
       $scope.dynamicErrors = errors;
-      $scope.$watch(attributes.ngModelController, (ngModelController: INgModelController) => {
-        $scope.ngModelController = ngModelController;
+      $scope.$watch(attributes.ngModelController, (ngModelController: INgModelController|INgModelController[]) => {
+        $scope.ngModelControllers = normalizeAsArray(ngModelController);
       });
+      $scope.isVisible = () => {
+        if ($scope.ngModelControllers) {
+          for (const ngModel of $scope.ngModelControllers) {
+            if (ngModel.$dirty || ngModel.$modelValue) {
+              return true;
+            }
+          }
+        }
+        return false;
+      };
     }
   };
 });
@@ -33,6 +44,7 @@ interface ErrorMessagesAttributes extends IAttributes {
 }
 
 interface ErrorMessagesScope extends IScope {
-  ngModelController: INgModelController;
+  ngModelControllers: INgModelController[];
   dynamicErrors: Error[];
+  isVisible(): boolean;
 }
