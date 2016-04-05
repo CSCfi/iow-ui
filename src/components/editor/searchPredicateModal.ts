@@ -11,7 +11,7 @@ import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
-import { isDefined } from '../../services/utils';
+import { isDefined, glyphIconClassForType } from '../../services/utils';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -218,6 +218,6 @@ export class SearchPredicateController {
 
 class AddNewPredicate extends AddNew {
   constructor(public label: string, public show: () => boolean, public type: Type) {
-    super(label, show);
+    super(label, show, glyphIconClassForType([type]));
   }
 }

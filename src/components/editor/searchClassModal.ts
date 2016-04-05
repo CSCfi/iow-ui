@@ -10,7 +10,7 @@ import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { isDefined } from '../../services/utils';
+import { isDefined, glyphIconClassForType } from '../../services/utils';
 import { Uri } from '../../services/uri';
 import { EditableForm } from '../form/editableEntityController';
 
@@ -229,6 +229,6 @@ class SearchClassController {
 
 class AddNewClass extends AddNew {
   constructor(public label: string, public show: () => boolean, public external: boolean) {
-    super(label, show);
+    super(label, show, glyphIconClassForType(['class']));
   }
 }

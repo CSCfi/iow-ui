@@ -44,8 +44,8 @@ interface WithId {
   id: Uri;
 }
 
-export class AddNew {
-  constructor(public label: string, public show: () => boolean) {
+export abstract class AddNew {
+  constructor(public label: string, public show: () => boolean, public glyphiconClass?: (string|{})[]) {
   }
 
   unwrap() {

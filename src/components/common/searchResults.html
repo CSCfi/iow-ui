@@ -6,7 +6,7 @@
      key-control-selection>
 
   <div ng-show="searchResult.isAddNew()">
-    <h5>{{searchResult.label}} <i class="glyphicon glyphicon-plus"></i></h5>
+    <h5>{{searchResult.label}} <i ng-show="searchResult.glyphiconClass" ng-class="searchResult.glyphiconClass"></i><i class="glyphicon glyphicon-plus pull-left"></i></h5>
   </div>
 
   <search-result-transclude ng-hide="searchResult.isAddNew()"></search-result-transclude>
