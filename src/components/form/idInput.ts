@@ -8,6 +8,7 @@ import { isStringValid, isValidLabelLength } from './validators';
 import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
+import { extendNgModelOptions } from '../../services/utils';
 
 interface IdInputAttributes extends IAttributes {
   idInput: Type;
@@ -23,13 +24,7 @@ mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: Valid
     link($scope: IdInputScope, element: JQuery, attributes: IdInputAttributes, modelController: INgModelController) {
       let previous: Uri = null;
 
-      const updateOnBlur = { updateOn: 'blur' };
-
-      if (modelController.$options) {
-        _.assign(modelController.$options, updateOnBlur);
-      } else {
-        modelController.$options = updateOnBlur;
-      }
+      extendNgModelOptions(modelController, { updateOn: 'blur' });
 
       modelController.$parsers.push((value: string) => {
         // doesn't handle scenario without initial Uri

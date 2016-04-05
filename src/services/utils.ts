@@ -1,5 +1,14 @@
+import INgModelController = angular.INgModelController;
 import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from './entities';
 import { Uri } from './uri';
+
+export function extendNgModelOptions(ngModel: INgModelController, options: any) {
+  if (ngModel.$options) {
+    Object.assign(ngModel.$options, options);
+  } else {
+    ngModel.$options = options;
+  }
+}
 
 export function allLocalizations(predicate: (localized: string) => boolean, localizable: Localizable) {
   if (localizable) {
