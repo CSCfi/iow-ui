@@ -175,8 +175,8 @@ class SearchClassController {
 
   loadingSelection(item: ClassListItem|AddNewClass) {
     const selection = this.selection;
-    if (item instanceof ClassListItem && selection instanceof Class) {
-      return item === this.selectedItem && (!this.selection || !item.id.equals(selection.id));
+    if (item instanceof ClassListItem) {
+      return item === this.selectedItem && (!selection || (selection instanceof Class && !item.id.equals(selection.id)));
     } else {
       return false;
     }
