@@ -284,16 +284,18 @@ uib-accordion .panel-group {
 }
 
 form {
-  label {
-    font-weight: bold;
-    font-size: 15px;
-    margin: 15px 0 0 0;
-    padding: 0;
-    display: block;
-  }
+  .editable-wrap {
+    label {
+      font-weight: bold;
+      font-size: 15px;
+      margin: 15px 0 0 0;
+      padding: 0;
+      display: block;
+    }
 
-  input, select, textarea {
-    width: 100%;
+    input, select, textarea {
+      width: 100%;
+    }
   }
 }
 
