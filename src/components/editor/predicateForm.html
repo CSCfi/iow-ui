@@ -1,4 +1,4 @@
-<h3>{{ctrl.predicate.normalizedType + ' information' | capitalize | translate}}</h3>
+<h4>{{ctrl.predicate.normalizedType + ' information' | capitalize | translate}}</h4>
 
 <editable title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}">
   <input id="predicateName" class="form-control" type="text" localized-input="label" ng-model="ctrl.predicate.label" />
@@ -34,6 +34,6 @@
 
 <editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
 
-<h3 translate>Additional information</h3>
+<h4 translate>Additional information</h4>
 
 <usage-panel entity="ctrl.predicate"></usage-panel>
