@@ -1,7 +1,9 @@
-<div style="clear: both">
-  <label ng-show="ctrl.model.rootClass || ctrl.isEditing()" translate>Root class</label>
-  <span ng-show="ctrl.isEditing() && !ctrl.model.rootClass" translate>Not selected</span>
-  <a ng-if="ctrl.model.rootClass" ng-href="{{ctrl.href}}">{{ctrl.model.rootClass.compact}}</a>
+<div class="editable-wrap">
+  <div style="clear: both">
+    <label ng-show="ctrl.model.rootClass || ctrl.isEditing()" translate>Root class</label>
+    <span ng-show="ctrl.isEditing() && !ctrl.model.rootClass" translate>Not selected</span>
+    <a ng-if="ctrl.model.rootClass" ng-href="{{ctrl.href}}">{{ctrl.model.rootClass.compact}}</a>
+  </div>
+  <button ng-show="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectClass()" translate>Choose root class</button>
+  <button ng-show="ctrl.isEditing() && ctrl.model.rootClass" type="button" class="btn btn-default btn-sm" ng-click="ctrl.removeClass()" translate>Clear selection</button>
 </div>
-<button ng-show="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectClass()" translate>Choose root class</button>
-<button ng-show="ctrl.isEditing() && ctrl.model.rootClass" type="button" class="btn btn-default btn-sm" ng-click="ctrl.removeClass()" translate>Clear selection</button>
