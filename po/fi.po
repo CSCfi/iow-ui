@@ -567,6 +567,10 @@ msgstr "Suomeksi"
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
+#: translations/misc.html:196
+msgid "Fixed value"
+msgstr "Pakollinen arvo"
+
 #: components/common/deleteConfirmationModal.html:6
 msgid "Following items are depending on the deleted"
 msgstr "Seuraavat asiat riippuvat poistettavasta"
@@ -940,7 +944,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:64
+#: components/editor/propertyView.html:68
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 

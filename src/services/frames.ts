@@ -50,6 +50,7 @@ const propertyContext = Object.assign({}, coreContext, {
   maxLength: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
   minLength: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
   in: { '@id': 'http://www.w3.org/ns/shacl#in'},
+  hasValue: { '@id': 'http://www.w3.org/ns/shacl#hasValue'},
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' }
 });
 

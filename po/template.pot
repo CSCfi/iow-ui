@@ -565,6 +565,10 @@ msgstr ""
 msgid "Filter results"
 msgstr ""
 
+#: translations/misc.html:196
+msgid "Fixed value"
+msgstr ""
+
 #: components/common/deleteConfirmationModal.html:6
 msgid "Following items are depending on the deleted"
 msgstr ""
@@ -940,7 +944,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:64
+#: components/editor/propertyView.html:68
 msgid "Reusable predicate"
 msgstr ""
 

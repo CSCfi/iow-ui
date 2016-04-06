@@ -722,6 +722,7 @@ export class Property extends GraphNode {
   minLength: number;
   maxLength: number;
   in: string[];
+  hasValue: string;
   pattern: string;
 
   constructor(graph: any, context: any, frame: any) {
@@ -744,6 +745,7 @@ export class Property extends GraphNode {
     this.minLength = graph.minLength;
     this.maxLength = graph.maxLength;
     this.in = deserializeList<string>(graph.in);
+    this.hasValue = graph.hasValue;
     this.pattern = graph.pattern;
   }
 
@@ -786,6 +788,7 @@ export class Property extends GraphNode {
       minLength: this.minLength,
       maxLength: this.maxLength,
       in: serializeList(this.in),
+      hasValue: this.hasValue,
       pattern: this.pattern
     };
   }

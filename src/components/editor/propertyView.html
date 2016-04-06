@@ -38,6 +38,10 @@
       <input id="{{ctrl.property.internalId + 'default value'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.defaultValue" />
     </editable>
 
+    <editable title="Fixed value">
+      <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.hasValue" />
+    </editable>
+
     <editable-multiple-data-type-input title="Allowed values" id="{{ctrl.property.internalId + 'allowedValues'}}" input-type="{{ctrl.property.inputType}}" ng-model="ctrl.property.in"></editable-multiple-data-type-input>
 
     <editable ng-if="ctrl.predicate.isAttribute()" title="Pattern">
