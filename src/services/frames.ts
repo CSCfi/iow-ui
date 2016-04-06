@@ -17,7 +17,6 @@ const coreContext = {
   homepage: { '@id': 'http://xmlns.com/foaf/0.1/homepage' },
   identifier: { '@id': 'http://purl.org/dc/terms/identifier' },
   imports: { '@id': 'http://www.w3.org/2002/07/owl#imports', '@type': '@id' },
-  index: { '@id': 'http://www.w3.org/ns/shacl#index' },
   inScheme: { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme', '@type': '@id' },
   isAdminOf: { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' },
   isDefinedBy: { '@id': 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', '@type': '@id' },
@@ -27,7 +26,6 @@ const coreContext = {
   modified: { '@id': 'http://purl.org/dc/terms/modified', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
   nodeKind: { '@id': 'http://www.w3.org/ns/shacl#nodeKind', '@type': '@id' },
   or: { '@id': 'http://www.w3.org/ns/shacl#or', '@container': '@list' },
-  pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
   predicate: { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' },
   preferredXMLNamespaceName: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName' },
   preferredXMLNamespacePrefix: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix' },
@@ -44,13 +42,15 @@ const coreContext = {
 };
 
 const propertyContext = Object.assign({}, coreContext, {
+  index: { '@id': 'http://www.w3.org/ns/shacl#index' },
+  example: { '@id': 'http://www.w3.org/2004/02/skos/core#example' },
+  defaultValue: { '@id': 'http://www.w3.org/ns/shacl#defaultValue' },
   maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
   minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
   maxLength: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
   minLength: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
-  example: { '@id': 'http://www.w3.org/2004/02/skos/core#example' },
-  defaultValue: { '@id': 'http://www.w3.org/2004/02/skos/core#defaultValue' },
-  in: { '@id': 'http://www.w3.org/2004/02/skos/core#in' }
+  in: { '@id': 'http://www.w3.org/ns/shacl#in'},
+  pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, {
