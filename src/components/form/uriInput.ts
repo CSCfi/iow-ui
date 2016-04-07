@@ -9,6 +9,12 @@ import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 
+type UriInputType = 'required-namespace';
+
+interface UriInputAttributes extends IAttributes {
+  uriInput: UriInputType;
+}
+
 mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
   return {
     scope: {
@@ -16,7 +22,7 @@ mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
     },
     restrict: 'A',
     require: 'ngModel',
-    link($scope: UriInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
+    link($scope: UriInputScope, element: JQuery, attributes: UriInputAttributes, modelController: INgModelController) {
 
       if (!attributes['placeholder']) {
         element.attr('placeholder', gettextCatalog.getString('Write identifier'));
@@ -41,6 +47,21 @@ mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
       modelController.$validators['unknownNS'] = value => {
         return !value || !isValidUri(value.uri) || value.hasResolvablePrefix();
       };
+
+      if (attributes.uriInput === 'required-namespace') {
+        modelController.$validators['mustBeRequiredNS'] = value => {
+          function isRequiredNamespace(ns: string) {
+            for (const require of $scope.model.requires) {
+              if (ns === require.namespace) {
+                return true;
+              }
+            }
+            return false;
+          }
+
+          return !value || !isValidUri(value.uri) || !value.hasResolvablePrefix() || isRequiredNamespace(value.namespace);
+        };
+      }
 
       modelController.$validators['idNameRequired'] = value => {
         return !value || !isValidUri(value.uri) || !value.hasResolvablePrefix() || value.name.length > 0;

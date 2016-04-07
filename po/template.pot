@@ -241,7 +241,7 @@ msgstr ""
 msgid "Choose class"
 msgstr ""
 
-#: components/model/editableRootClass.html:6
+#: components/model/editableRootClass.html:7
 msgid "Choose root class"
 msgstr ""
 
@@ -281,7 +281,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
-#: components/model/editableRootClass.html:7
+#: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr ""
 
@@ -760,6 +760,10 @@ msgstr ""
 msgid "Modified at"
 msgstr ""
 
+#: components/form/errorMessages.html:19
+msgid "Must be required namespace"
+msgstr ""
+
 #: translations/misc.html:65
 msgid "Name"
 msgstr ""
@@ -767,10 +771,6 @@ msgstr ""
 #: components/model/requiresView.html:35
 #: translations/misc.html:73
 msgid "Namespace"
-msgstr ""
-
-#: components/form/errorMessages.html:17
-msgid "Namespace is not required"
 msgstr ""
 
 #: components/form/errorMessages.html:14
@@ -831,7 +831,7 @@ msgstr ""
 msgid "Not required by model"
 msgstr ""
 
-#: components/model/editableRootClass.html:3
+#: components/model/editableRootClass.html:4
 msgid "Not selected"
 msgstr ""
 
@@ -948,7 +948,7 @@ msgstr ""
 msgid "Reusable predicate"
 msgstr ""
 
-#: components/model/editableRootClass.html:2
+#: components/model/editableRootClass.html:3
 msgid "Root class"
 msgstr ""
 
@@ -1137,6 +1137,10 @@ msgstr ""
 
 #: translations/misc.html:118
 msgid "Unexpected error"
+msgstr ""
+
+#: components/form/errorMessages.html:17
+msgid "Unknown namespace"
 msgstr ""
 
 #: translations/misc.html:17

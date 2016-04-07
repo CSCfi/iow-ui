@@ -239,7 +239,7 @@ msgstr "valitse laajempi käsite"
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/model/editableRootClass.html:6
+#: components/model/editableRootClass.html:7
 msgid "Choose root class"
 msgstr "valitse juurisolmu"
 
@@ -281,7 +281,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
-#: components/model/editableRootClass.html:7
+#: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr "poista valinta"
 
@@ -764,6 +764,10 @@ msgstr "Tietokomponenttikirjastot"
 msgid "Modified at"
 msgstr "Muokattu"
 
+#: components/form/errorMessages.html:19
+msgid "Must be required namespace"
+msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
+
 #: translations/misc.html:65
 msgid "Name"
 msgstr "Nimi"
@@ -771,10 +775,6 @@ msgstr "Nimi"
 #: components/model/requiresView.html:35 translations/misc.html:73
 msgid "Namespace"
 msgstr "Nimiavaruus"
-
-#: components/form/errorMessages.html:17
-msgid "Namespace is not required"
-msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
 
 #: components/form/errorMessages.html:14
 msgid "Negative error"
@@ -832,7 +832,7 @@ msgstr "Ei saatu poistettua"
 msgid "Not required by model"
 msgstr "Ei ole lisätty nimiavaruudeksi"
 
-#: components/model/editableRootClass.html:3
+#: components/model/editableRootClass.html:4
 msgid "Not selected"
 msgstr "Ei valittu"
 
@@ -948,7 +948,7 @@ msgstr "Ei ole poistettavassa tilassa"
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
-#: components/model/editableRootClass.html:2
+#: components/model/editableRootClass.html:3
 msgid "Root class"
 msgstr "Juurisolmu"
 
@@ -1137,6 +1137,10 @@ msgstr "Ei oikeuksia"
 #: translations/misc.html:118
 msgid "Unexpected error"
 msgstr "Tapahtui odottamaton virhe"
+
+#: components/form/errorMessages.html:17
+msgid "Unknown namespace"
+msgstr "Tuntematon nimiavaruus"
 
 #: translations/misc.html:17
 msgid "Unstable"
@@ -1368,6 +1372,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Namespace is not required"
+#~ msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
 
 #~ msgid "Search associations"
 #~ msgstr "Hae assosiaatioita"
