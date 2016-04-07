@@ -1,6 +1,4 @@
 import { Association, Model, Predicate } from '../../services/entities';
-import { normalizeModelType } from '../../services/utils';
-
 import { module as mod }  from './module';
 
 mod.directive('predicateForm', () => {

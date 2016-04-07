@@ -8,8 +8,6 @@ import { Class, Property, Predicate, Model, Localizable } from '../../services/e
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
-import { normalizeModelType } from '../../services/utils';
-
 import { module as mod }  from './module';
 
 mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $timeout: ITimeoutService) => {
