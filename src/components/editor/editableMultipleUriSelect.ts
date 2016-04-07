@@ -70,7 +70,7 @@ class EditableMultipleUriSelectController {
               private searchPredicateModal: SearchPredicateModal,
               private searchClassModal: SearchClassModal) {
 
-    const link = (uri: Uri) => this.model.linkTo(this.type, uri);
+    const link = (uri: Uri) => this.model.linkTo({ type: this.type, id: uri });
 
     $scope.$watchCollection(() => this.uris, uris => {
       this.items = _.map(uris, uri => displayItemFactory.create(() => uri, link, false, () => this.isEditing()));

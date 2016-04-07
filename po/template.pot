@@ -206,7 +206,7 @@ msgstr ""
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:72
+#: components/editor/searchClassModal.html:67
 #: components/editor/searchConceptModal.html:91
 #: components/editor/searchPredicateModal.html:68
 #: components/group/addModelModal.html:22
@@ -407,6 +407,10 @@ msgstr ""
 
 #: translations/misc.html:5
 msgid "Define concept for the new class"
+msgstr ""
+
+#: translations/misc.html:197
+msgid "Defined by"
 msgstr ""
 
 #: translations/misc.html:181
@@ -811,7 +815,7 @@ msgstr ""
 msgid "Non specialized classes are not allowed"
 msgstr ""
 
-#: components/editor/subjectView.html:2
+#: components/editor/subjectView.html:3
 msgid "Not defined"
 msgstr ""
 

@@ -30,6 +30,7 @@ export type Type = 'class'
                  | 'shape'
                  | 'attribute'
                  | 'association'
+                 | 'property'
                  | 'model'
                  | 'profile'
                  | 'group'
@@ -66,12 +67,6 @@ type EntityFactory<T extends GraphNode> = (framedData: any) => EntityConstructor
 
 export function isLocalizable(obj: any): obj is Localizable {
   return typeof obj === 'object';
-}
-
-export interface Location {
-  localizationKey?: string;
-  label?: Localizable;
-  iowUrl?(): string;
 }
 
 export abstract class GraphNode {
@@ -128,7 +123,7 @@ export class DefinedBy extends GraphNode {
     if (typeof graph === 'string' || graph instanceof String) {
       const str = (graph instanceof String) ? graph.valueOf() : graph;
       this.id = new Uri(str, context);
-      this.label = deserializeLocalizable({'fi': str, 'en': str });
+      this.label = deserializeLocalizable({'fi': this.id.uri, 'en': this.id.uri });
 
     } else if (typeof graph === 'object') {
       this.id = new Uri(graph['@id'], context);
@@ -139,7 +134,7 @@ export class DefinedBy extends GraphNode {
   }
 }
 
-export abstract class AbstractGroup extends GraphNode implements Location {
+export abstract class AbstractGroup extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -187,7 +182,7 @@ export class Group extends AbstractGroup {
   }
 }
 
-abstract class AbstractModel extends GraphNode implements Location {
+abstract class AbstractModel extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -358,11 +353,16 @@ export class Model extends AbstractModel {
     return false;
   }
 
-  linkTo(type: Type|Type[], id: Uri) {
-    const typeArray: Type[] = normalizeAsArray<Type>(type);
+  linkTo(destination: Destination) {
+    if (destination) {
+      const id = destination.id;
+      const typeArray: Type[] = normalizeAsArray<Type>(destination.type);
 
-    if (id && !id.isUrn()) {
-      return this.isKnownModelNamespace(id.namespace) ? internalUrl(id, typeArray) : id.url;
+      if (id && !id.isUrn()) {
+        return this.isKnownModelNamespace(id.namespace) ? internalUrl(id, typeArray) : id.url;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -389,6 +389,11 @@ export class Model extends AbstractModel {
       rootResource: this.rootClass && this.rootClass.uri
     };
   }
+}
+
+interface Destination {
+  id: Uri;
+  type?: Type|Type[];
 }
 
 export enum NamespaceType {
@@ -497,7 +502,7 @@ export class Require extends GraphNode {
 }
 
 
-abstract class AbstractClass extends GraphNode implements Location {
+abstract class AbstractClass extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -809,7 +814,7 @@ export class Property extends GraphNode {
   }
 }
 
-abstract class AbstractPredicate extends GraphNode implements Location {
+abstract class AbstractPredicate extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -828,10 +833,6 @@ abstract class AbstractPredicate extends GraphNode implements Location {
     this.selectionType = normalizeSelectionType(this.type);
   }
 
-  get rawType() {
-    return this.graph['@type'];
-  }
-
   isClass() {
     return false;
   }
@@ -848,7 +849,7 @@ abstract class AbstractPredicate extends GraphNode implements Location {
     return this.isOfType('association');
   }
 
-  iowUrl(): RelativeUrl {
+  iowUrl() {
     return internalUrl(this.id, this.type);
   }
 }

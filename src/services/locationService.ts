@@ -1,4 +1,10 @@
-import { Location, Model, Group } from './entities';
+import { Model, Group, Localizable } from './entities';
+
+export interface Location {
+  localizationKey?: string;
+  label?: Localizable;
+  iowUrl?(): string;
+}
 
 const frontPage = {localizationKey: 'Front page', iowUrl: () => '/'};
 

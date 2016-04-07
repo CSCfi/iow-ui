@@ -74,9 +74,11 @@ export class PropertyViewController {
         $location.search('property', this.property.internalId.uri);
 
         if (!this.predicate) {
-          predicateService.getPredicate(this.property.predicate).then(predicate => {
-            this.predicate = predicate;
-          });
+          if (this.model.isKnownModelNamespace(this.property.predicate.namespace)) {
+            predicateService.getPredicate(this.property.predicate).then(predicate => this.predicate = predicate);
+          } else {
+            predicateService.getExternalPredicate(this.model, this.property.predicate).then(predicate => this.predicate = predicate);
+          }
         }
       } else if (!this.anyPropertiesOpen()) {
         $location.search('property', null);
@@ -99,11 +101,11 @@ export class PropertyViewController {
   }
 
   get definedByTitle() {
-    return this.predicate && normalizeModelType(this.predicate.definedBy.type);
+    return this.predicate && normalizeModelType(this.predicate.definedBy.type) || 'Defined by';
   }
 
   linkToValueClass() {
-    return this.model.linkTo('class', this.property.valueClass);
+    return this.model.linkTo({ type: 'class', id: this.property.valueClass });
   }
 
   openAndScrollTo() {

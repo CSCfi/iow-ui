@@ -59,11 +59,11 @@ export class ClassFormController {
   }
 
   linkToSuperclass() {
-    return this.model.linkTo('class', this.class.subClassOf);
+    return this.model.linkTo({ type: 'class', id: this.class.subClassOf });
   }
 
   linkToScopeclass() {
-    return this.model.linkTo('class', this.class.scopeClass);
+    return this.model.linkTo({ type: 'class', id: this.class.scopeClass });
   }
 
   get inUnstableState(): boolean {

@@ -14,6 +14,7 @@ registerType('class', ['rdfs:Class']);
 registerType('shape', ['sh:Shape']);
 registerType('attribute', ['owl:DatatypeProperty']);
 registerType('association', ['owl:ObjectProperty']);
+registerType('property', ['rdf:Property']);
 registerType('model', ['owl:Ontology']);
 registerType('profile', ['dcap:DCAP']);
 registerType('group', ['foaf:Group']);
