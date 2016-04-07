@@ -61,11 +61,11 @@ export function comparingBoolean<T>(extractor: (item: T) => boolean): ChainableC
   return makeChainable((lhs: T, rhs: T) => compareBooleans(extractor(lhs), extractor(rhs)));
 }
 
-export function comparingDates<T>(extractor: (item: T) => Moment): ChainableComparator<T> {
+export function comparingDate<T>(extractor: (item: T) => Moment): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => compareDates(extractor(lhs), extractor(rhs)));
 }
 
-export function comparingLocalizables<T>(language: Language, extractor: (item: T) => Localizable) {
+export function comparingLocalizable<T>(language: Language, extractor: (item: T) => Localizable) {
   return makeChainable((lhs: T, rhs: T) => compareStrings(translate(extractor(lhs), language), translate(extractor(rhs), language)));
 }
 

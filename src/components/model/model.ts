@@ -39,7 +39,7 @@ import { Show, ChangeNotifier, ChangeListener } from './../contracts';
 import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
-import { comparingLocalizables } from '../../services/comparators';
+import { comparingLocalizable } from '../../services/comparators';
 
 mod.directive('model', () => {
   return {
@@ -156,7 +156,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   get selectableItemComparator() {
-    return comparingLocalizables<SelectableItem>(this.languageService.modelLanguage, selectableItem => selectableItem.item.label);
+    return comparingLocalizable<SelectableItem>(this.languageService.modelLanguage, selectableItem => selectableItem.item.label);
   }
 
   init(routeData: RouteData) {

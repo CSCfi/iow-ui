@@ -16,7 +16,7 @@ import { FrameFn } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
-import { comparingDates } from './comparators';
+import { comparingDate } from './comparators';
 
 const jsonld: any = require('jsonld');
 
@@ -1136,7 +1136,7 @@ export class Activity extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
-    this.versions = deserializeEntityList(graph.generated, context, frame, Entity).sort(comparingDates<Entity>(entity => entity.createdAt));
+    this.versions = deserializeEntityList(graph.generated, context, frame, Entity).sort(comparingDate<Entity>(entity => entity.createdAt));
     this.versionIndex = indexById(this.versions);
     this.latestVersion = graph.used;
   }

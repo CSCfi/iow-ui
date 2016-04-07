@@ -7,7 +7,7 @@ import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { Class, ClassListItem, Model, DefinedBy } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
-import { comparingBoolean, comparingString, comparingLocalizables } from '../../services/comparators';
+import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { isDefined, glyphIconClassForType } from '../../services/utils';
@@ -105,7 +105,7 @@ class SearchClassController {
       this.models = _.chain(this.classes)
         .map(klass => klass.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizables<ClassListItem>(languageService.modelLanguage, klass => klass.label))
+        .sort(comparingLocalizable<ClassListItem>(languageService.modelLanguage, klass => klass.label))
         .value();
 
       this.search();
