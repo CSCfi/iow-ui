@@ -107,7 +107,7 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat {
     case 'xsd:gDay':
       return isValidDay;
     default:
-      throw new Error('Unsupported data type');
+      console.log('No validator for unknown data type: ' + dataType);
   }
 }
 
