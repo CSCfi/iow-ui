@@ -4,15 +4,14 @@ import { Localizable } from './entities';
 const languages: Language[] = ['fi', 'en'];
 const defaultLanguage: Language = 'fi';
 
-const fi = require("../../po/fi.po");
-const en = require("../../po/en.po");
+const fi = require('../../po/fi.po');
+const en = require('../../po/en.po');
 
 export type Language = string;
 
 export class LanguageService {
 
   modelLanguage: Language = defaultLanguage;
-  labelComparison = this.localizableComparison((item: {label: Localizable}) => item.label);
 
   /* @ngInject */
   constructor(private gettextCatalog: any) {
@@ -38,39 +37,28 @@ export class LanguageService {
   }
 
   translate(data: Localizable): string {
-    function localized(lang: Language, showLang: boolean): string {
-      let localization = data[lang];
+    return translate(data, this.modelLanguage);
+  }
+}
 
-      if (Array.isArray(localization)) {
-        localization = Array.join(localization, ' ');
-      }
+export function translate(data: Localizable, language: Language): string {
+  function localized(lang: Language, showLang: boolean): string {
+    let localization = data[lang];
 
-      if (!localization) {
-        return '';
-      } else {
-        return localization + (showLang ? ` (${lang})` : '');
-      }
+    if (Array.isArray(localization)) {
+      localization = Array.join(localization, ' ');
     }
 
-    if (!data) {
+    if (!localization) {
       return '';
+    } else {
+      return localization + (showLang ? ` (${lang})` : '');
     }
-
-    return localized(this.modelLanguage, false) || _.find(_.map(languages, lang => localized(lang, true)), _.identity) || '';
   }
 
-  localizableComparison<T>(localizableExtractor: (item: T) => Localizable) {
-    return (lhs: T, rhs: T) => {
-      const lhsLocalization = this.translate(localizableExtractor(lhs));
-      const rhsLocalization = this.translate(localizableExtractor(rhs));
-
-      if (lhsLocalization < rhsLocalization) {
-        return -1;
-      } else if (lhsLocalization > rhsLocalization) {
-        return 1;
-      }  else {
-        return 0;
-      }
-    };
+  if (!data) {
+    return '';
   }
+
+  return localized(language, false) || _.find(_.map(languages, lang => localized(lang, true)), _.identity) || '';
 }

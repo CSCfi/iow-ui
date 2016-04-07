@@ -1,5 +1,7 @@
-import { isDefined } from './utils';
 import Moment = moment.Moment;
+import { isDefined } from './utils';
+import { Localizable } from './entities';
+import { Language, translate } from './languageService';
 
 export interface Comparator<T> {
   (lhs: T, rhs: T): number;
@@ -31,7 +33,7 @@ export function compareBooleans(l: boolean, r: boolean): number {
   return compare(l, r, (lhs, rhs) => lhs === rhs ? 0 : lhs === true ? 1 : -1);
 }
 
-function compareDates(l: Moment, r: Moment): number {
+export function compareDates(l: Moment, r: Moment): number {
   return compare(l, r, (lhs, rhs) => {
     if (lhs.isAfter(rhs)) {
       return 1;
@@ -61,6 +63,10 @@ export function comparingBoolean<T>(extractor: (item: T) => boolean): ChainableC
 
 export function comparingDates<T>(extractor: (item: T) => Moment): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => compareDates(extractor(lhs), extractor(rhs)));
+}
+
+export function comparingLocalizables<T>(language: Language, extractor: (item: T) => Localizable) {
+  return makeChainable((lhs: T, rhs: T) => compareStrings(translate(extractor(lhs), language), translate(extractor(rhs), language)));
 }
 
 export function makeChainable<T>(comparator: Comparator<T>): ChainableComparator<T> {

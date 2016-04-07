@@ -39,6 +39,7 @@ import { Show, ChangeNotifier, ChangeListener } from './../contracts';
 import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
+import { comparingLocalizables } from '../../services/comparators';
 
 mod.directive('model', () => {
   return {
@@ -63,8 +64,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   attributes: SelectableItem[] = [];
   show: Show = Show.Both;
 
-  private selectableComparison: (lhs: SelectableItem, rhs: SelectableItem) => number;
-
   tabs = [
     new Tab('class', () => this.classes, this),
     new Tab('attribute', () => this.attributes, this),
@@ -87,7 +86,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private maintenanceModal: MaintenanceModal,
               public languageService: LanguageService) {
 
-    this.selectableComparison = languageService.localizableComparison((item: SelectableItem) => item.item.label);
     this.init(new RouteData($routeParams));
 
     $scope.$on('$locationChangeSuccess', (event: any, next: any, current: any) => {
@@ -146,15 +144,19 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   sortClasses() {
-    this.classes.sort(this.selectableComparison);
+    this.classes.sort(this.selectableItemComparator);
     setOverlaps(this.classes);
   }
 
   sortPredicates() {
-    this.associations.sort(this.selectableComparison);
-    this.attributes.sort(this.selectableComparison);
+    this.associations.sort(this.selectableItemComparator);
+    this.attributes.sort(this.selectableItemComparator);
     setOverlaps(this.associations);
     setOverlaps(this.attributes);
+  }
+
+  get selectableItemComparator() {
+    return comparingLocalizables<SelectableItem>(this.languageService.modelLanguage, selectableItem => selectableItem.item.label);
   }
 
   init(routeData: RouteData) {

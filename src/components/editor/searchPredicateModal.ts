@@ -9,7 +9,7 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import { comparingString, comparingBoolean } from '../../services/comparators';
+import { comparingString, comparingBoolean, comparingLocalizables } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import { isDefined, glyphIconClassForType } from '../../services/utils';
 
@@ -93,7 +93,7 @@ export class SearchPredicateController {
       this.models = _.chain(this.predicates)
         .map(predicate => predicate.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(languageService.labelComparison)
+        .sort(comparingLocalizables<PredicateListItem>(languageService.modelLanguage, predicate => predicate.label))
         .value();
 
       this.types = _.chain(this.predicates)
