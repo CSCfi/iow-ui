@@ -108,6 +108,7 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat {
       return isValidDay;
     default:
       console.log('No validator for unknown data type: ' + dataType);
+      return createNopValidator();
   }
 }
 
