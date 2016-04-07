@@ -324,7 +324,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   private getClassElement(classOrPredicate: Class|Predicate): joint.dia.Element {
-    if (classOrPredicate instanceof Class) {
+    if (classOrPredicate instanceof Class && !classOrPredicate.unsaved) {
       const cell = this.graph.getCell(classOrPredicate.id.uri);
       if (cell) {
         if (cell.isLink()) {
