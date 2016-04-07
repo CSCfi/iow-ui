@@ -105,18 +105,10 @@ export class ClassService {
       });
   }
 
-  newExternalClass(model: Model, externalId: Uri, classLabel: string, lang: Language) {
+  getExternalClass(model: Model, externalId: Uri) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.entities.deserializeClass(response.data))
-      .then((klass: Class) => {
-        if (klass) {
-          klass.definedBy = model.asDefinedBy();
-          klass.label[lang] = classLabel;
-          klass.unsaved = true;
-        }
-        return klass;
-      });
+      .then((response: any) => this.entities.deserializeClass(response.data));
   }
 
   newProperty(predicateId: Uri): IPromise<Property> {

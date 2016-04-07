@@ -188,7 +188,7 @@ class SearchClassController {
     if (selection instanceof Class) {
       this.$uibModalInstance.close(this.selection);
     } else if (isFormData(selection)) {
-      this.classService.newExternalClass(this.model, selection.externalUri, selection.className, this.languageService.modelLanguage)
+      this.classService.getExternalClass(this.model, selection.externalUri)
         .then(klass => {
           if (klass) {
             this.$uibModalInstance.close(klass);
