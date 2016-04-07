@@ -54,10 +54,6 @@ export class ClassFormController {
       .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
   }
 
-  get definedByTitle() {
-    return normalizeModelType(this.class.definedBy.type);
-  }
-
   linkToSuperclass() {
     return this.model.linkTo({ type: 'class', id: this.class.subClassOf });
   }

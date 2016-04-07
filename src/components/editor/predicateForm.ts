@@ -24,10 +24,6 @@ class PredicateFormController {
   predicate: Predicate;
   oldPredicate: Predicate;
 
-  get definedByTitle() {
-    return normalizeModelType(this.predicate.definedBy.type);
-  }
-
   linkToSuperProperty() {
     return this.model.linkTo({ type: this.predicate.type, id: this.predicate.subPropertyOf });
   }

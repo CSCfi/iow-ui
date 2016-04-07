@@ -100,10 +100,6 @@ export class PropertyViewController {
     });
   }
 
-  get definedByTitle() {
-    return this.predicate && normalizeModelType(this.predicate.definedBy.type) || 'Defined by';
-  }
-
   linkToValueClass() {
     return this.model.linkTo({ type: 'class', id: this.property.valueClass });
   }

@@ -8,6 +8,7 @@ export default mod.name;
 import './classForm';
 import './classView';
 import './classVisualization';
+import './definedBy';
 import './uriSelect';
 import './editableConstraint';
 import './editableMultipleUriSelect';

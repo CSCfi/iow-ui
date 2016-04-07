@@ -26,7 +26,7 @@
   <uri-select id="predicateValueClass" type="class" uri="ctrl.predicate.valueClass" model="ctrl.model"></uri-select>
 </editable>
 
-<non-editable title="{{ctrl.definedByTitle}}" value="ctrl.predicate.definedBy.label" link="ctrl.model.linkTo(predicate)"></non-editable>
+<defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
 
 <editable title="State" value-as-localization-key="true" ng-if="!ctrl.predicate.unsaved">
   <state-select id="predicateState" state="ctrl.predicate.state" model="ctrl.model"></state-select>

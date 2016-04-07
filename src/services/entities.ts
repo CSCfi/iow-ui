@@ -391,7 +391,7 @@ export class Model extends AbstractModel {
   }
 }
 
-interface Destination {
+export interface Destination {
   id: Uri;
   type?: Type|Type[];
 }

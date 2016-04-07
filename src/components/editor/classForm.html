@@ -23,7 +23,7 @@
 
 <editable-multiple-uri-select id="equivalentClass" type="class" uris="ctrl.class.equivalentClasses" model="ctrl.model" title="{{'Equivalent class'}}" allow-input="true"></editable-multiple-uri-select>
 
-<non-editable title="{{ctrl.definedByTitle}}" value="ctrl.class.definedBy.label" link="ctrl.model.linkTo(ctrl.class)"></non-editable>
+<defined-by entity="ctrl.class" model="ctrl.model"></defined-by>
 
 <editable title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved">
   <state-select id="classState" state="ctrl.class.state" model="ctrl.model"></state-select>
