@@ -298,8 +298,10 @@ export class Model extends AbstractModel {
     nonTechnicalNamespacePrefixes.add(this.prefix);
 
     for (const require of this.requires) {
-      namespaces.push(new Namespace(require.prefix, require.namespace, require.external ? NamespaceType.EXTERNAL : NamespaceType.MODEL));
-      nonTechnicalNamespacePrefixes.add(require.prefix);
+      namespaces.push(new Namespace(require.prefix, require.namespace, require.namespaceType));
+      if (!require.technical) {
+        nonTechnicalNamespacePrefixes.add(require.prefix);
+      }
     }
 
     for (const prefix of Object.keys(this.context)) {
@@ -428,8 +430,7 @@ export class Require extends GraphNode {
   label: Localizable;
   private _prefix: string;
   private _namespace: Url;
-  external: boolean;
-  technical: boolean;
+  namespaceType: NamespaceType;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -437,8 +438,22 @@ export class Require extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this._namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
-    this.external = this.isOfType('resource');
-    this.technical = this.isOfType('standard');
+
+    if (this.isOfType('resource')) {
+      this.namespaceType = NamespaceType.EXTERNAL;
+    } else if (this.isOfType('standard')) {
+      this.namespaceType = NamespaceType.TECHNICAL;
+    } else {
+      this.namespaceType = NamespaceType.MODEL;
+    }
+  }
+
+  get external() {
+    return this.namespaceType === NamespaceType.EXTERNAL;
+  }
+
+  get technical() {
+    return this.namespaceType === NamespaceType.TECHNICAL;
   }
 
   get prefixModifiable() {
