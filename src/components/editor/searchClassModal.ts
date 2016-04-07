@@ -50,18 +50,16 @@ export class SearchClassModal {
 
 interface FormData {
   externalUri: Uri;
-  className: string;
 }
 
-function createFormData(className: string): FormData {
+function createFormData(): FormData {
   return {
-    externalUri: null,
-    className: _.capitalize(className)
+    externalUri: null
   };
 }
 
 function isFormData(item: Class|FormData): item is FormData {
-  return !(item instanceof Class);
+  return item && !(item instanceof Class);
 }
 
 export interface SearchClassScope extends IScope {
@@ -129,7 +127,7 @@ class SearchClassController {
 
       const result: (ClassListItem|AddNewClass)[] = [
         new AddNewClass(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this), false),
-        new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} '${this.searchText}' ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
+        new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
       ];
 
       const classSearchResult = this.classes.filter(klass =>
@@ -163,7 +161,7 @@ class SearchClassController {
     if (item instanceof AddNewClass) {
       if (item.external) {
         this.$scope.form.editing = true;
-        this.selection = createFormData(this.searchText);
+        this.selection = createFormData();
       } else {
         this.createNewClass();
       }
