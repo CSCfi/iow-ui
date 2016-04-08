@@ -73,8 +73,8 @@ export class PropertyViewController {
     $scope.$watch(() => this.isOpen, open => {
       if (open) {
         $location.search('property', this.property.internalId.uri);
-        
-        if (!this.predicate === undefined) {
+
+        if (this.predicate === undefined) {
 
           const predicate = this.property.predicate;
 
