@@ -807,7 +807,12 @@ export class Property extends GraphNode {
   }
 
   get glyphIconClass() {
-    return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : []);
+    const predicate = this.predicate;
+    if (predicate instanceof Predicate) {
+      return glyphIconClassForType(predicate.type);
+    } else {
+      return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : []);
+    }
   }
 
   clone(): Property {
