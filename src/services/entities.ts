@@ -85,7 +85,7 @@ export abstract class GraphNode {
     return glyphIconClassForType(this.type);
   }
 
-  serializationValues(): {} {
+  serializationValues(clone: boolean): {} {
     return {};
   }
 
@@ -97,8 +97,8 @@ export abstract class GraphNode {
     Object.assign(context, this.context);
   }
 
-  serialize(inline: boolean = false): any {
-    const values = Object.assign(this.graph, this.serializationValues());
+  serialize(inline: boolean = false, clone: boolean = false): any {
+    const values = Object.assign(this.graph, this.serializationValues(clone));
 
     if (inline) {
       return values;
@@ -175,7 +175,7 @@ export class Group extends AbstractGroup {
   }
 
   clone(): Group {
-    const serialization = this.serialize();
+    const serialization = this.serialize(false, true);
     const result =  new Group(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
@@ -369,13 +369,13 @@ export class Model extends AbstractModel {
   }
 
   clone(): Model {
-    const serialization = this.serialize();
+    const serialization = this.serialize(false, true);
     const result = new Model(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
 
-  serializationValues(): any {
+  serializationValues(clone: boolean): {} {
     this.copyNamespacesFromRequires();
 
     return {
@@ -383,8 +383,8 @@ export class Model extends AbstractModel {
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       versionInfo: this.state,
-      references: serializeEntityList(this.references),
-      requires: serializeEntityList(this.requires),
+      references: serializeEntityList(this.references, clone),
+      requires: serializeEntityList(this.requires, clone),
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri
     };
@@ -491,7 +491,7 @@ export class Require extends GraphNode {
     this.id = new Uri(_.trimRight(ns, '#/'), { [this.prefix]: ns });
   }
 
-  serializationValues() {
+  serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
@@ -608,13 +608,13 @@ export class Class extends AbstractClass {
   }
 
   clone(): Class {
-    const serialization = this.serialize();
+    const serialization = this.serialize(false, true);
     const result = new Class(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
 
-  serializationValues() {
+  serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
       '@type': reverseMapTypeObject(this.type),
@@ -624,10 +624,10 @@ export class Class extends AbstractClass {
       scopeClass: this.scopeClass && this.scopeClass.uri,
       versionInfo: this.state,
       isDefinedBy: this.definedBy.serialize(true),
-      property: serializeEntityList(this.properties),
-      subject: serializeOptional(this.subject),
+      property: serializeEntityList(this.properties, clone),
+      subject: serializeOptional(this.subject, clone),
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
-      constraint: serializeOptional(this.constraint, (constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment)),
+      constraint: serializeOptional(this.constraint, clone, constraint => constraint.items.length > 0 || hasLocalization(constraint.comment)),
       identifier: this.version
     };
   }
@@ -680,7 +680,7 @@ export class Constraint extends GraphNode {
     _.remove(this.items, item => item === removedItem);
   }
 
-  serializationValues() {
+  serializationValues(clone: boolean): {} {
     function mapConstraintType(constraint: ConstraintType) {
       switch (constraint) {
         case 'or':
@@ -694,7 +694,7 @@ export class Constraint extends GraphNode {
       }
     }
 
-    const items = serializeEntityList(this.items);
+    const items = serializeEntityList(this.items, clone);
 
     return {
       '@type': mapConstraintType(this.constraint),
@@ -717,7 +717,7 @@ export class ConstraintListItem extends GraphNode {
     this.label = graph.label;
   }
 
-  serializationValues() {
+  serializationValues(clone: boolean): {} {
     return {
       '@id': this.shapeId.uri
     };
@@ -735,7 +735,7 @@ export class Property extends GraphNode {
   defaultValue: string;
   dataType: string;
   valueClass: Uri;
-  predicate: Uri;
+  predicate: Uri|Predicate;
   index: number;
   minCount: number;
   maxCount: number;
@@ -758,7 +758,21 @@ export class Property extends GraphNode {
     if (graph.valueShape) {
       this.valueClass = new Uri(graph.valueShape, context);
     }
-    this.predicate = new Uri(graph.predicate, context);
+
+    if (typeof graph.predicate === 'object') {
+      const types = mapGraphTypeObject(graph.predicate['@type']);
+
+      if (containsAny(types, ['association'])) {
+        this.predicate = new Association(graph.predicate, context, frame);
+      } else if (containsAny(types, ['attribute'])) {
+      this.predicate = new Attribute(graph.predicate, context, frame);
+      } else {
+        throw new Error('Incompatible predicate type: ' + types.join());
+      }
+    } else {
+      this.predicate = new Uri(graph.predicate, context);
+    }
+
     this.index = graph.index;
     this.minCount = graph.minCount;
     this.maxCount = graph.maxCount;
@@ -767,6 +781,17 @@ export class Property extends GraphNode {
     this.in = deserializeList<string>(graph.in);
     this.hasValue = graph.hasValue;
     this.pattern = graph.pattern;
+  }
+
+  get predicateId() {
+    const predicate = this.predicate;
+    if (predicate instanceof Predicate) {
+      return predicate.id;
+    } else if (predicate instanceof Uri) {
+      return predicate;
+    } else {
+      throw new Error('Unsupported predicate: ' + predicate);
+    }
   }
 
   get inputType() {
@@ -786,11 +811,24 @@ export class Property extends GraphNode {
   }
 
   clone(): Property {
-    const serialization = this.serialize();
+    const serialization = this.serialize(false, true);
     return new Property(serialization['@graph'], serialization['@context'], this.frame);
   }
 
-  serializationValues() {
+  serializationValues(clone: boolean): {} {
+
+    const predicate = this.predicate;
+
+    function serializePredicate() {
+      if (predicate instanceof Predicate) {
+        return predicate.serialize(clone);
+      } else if (predicate instanceof Uri) {
+        return predicate.uri;
+      } else {
+        throw new Error('Unsupported predicate: ' + predicate);
+      }
+    }
+
     return {
       '@id': this.internalId.uri,
       identifier: this.externalId,
@@ -801,7 +839,7 @@ export class Property extends GraphNode {
       defaultValue: this.defaultValue,
       datatype: this.dataType,
       valueShape: this.valueClass && this.valueClass.uri,
-      predicate: this.predicate.uri,
+      predicate: serializePredicate(),
       index: this.index,
       minCount: this.minCount,
       maxCount: this.maxCount,
@@ -887,7 +925,7 @@ export abstract class Predicate extends AbstractPredicate {
 
   abstract getRange(): any;
 
-  serializationValues() {
+  serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
@@ -895,7 +933,7 @@ export abstract class Predicate extends AbstractPredicate {
       range: this.getRange(),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf && this.subPropertyOf.uri,
-      subject: serializeOptional(this.subject),
+      subject: serializeOptional(this.subject, clone),
       equivalentProperty: serializeList(this.equivalentProperties, equivalentProperty => equivalentProperty.uri),
       identifier: this.version
     };
@@ -918,14 +956,14 @@ export class Association extends Predicate {
   }
 
   clone(): Association {
-    const serialization = this.serialize();
+    const serialization = this.serialize(false, true);
     const result = new Association(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
 
-  serializationValues() {
-    return Object.assign(super.serializationValues(), {
+  serializationValues(clone: boolean): {} {
+    return Object.assign(super.serializationValues(clone), {
       range: this.valueClass && this.valueClass.uri
     });
   }
@@ -945,14 +983,14 @@ export class Attribute extends Predicate {
   }
 
   clone(): Attribute {
-    const serialization = this.serialize();
+    const serialization = this.serialize(false, true);
     const result = new Attribute(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
     return result;
   }
 
-  serializationValues() {
-    return Object.assign(super.serializationValues(), {
+  serializationValues(clone: boolean): {} {
+    return Object.assign(super.serializationValues(clone), {
       range: this.dataType
     });
   }
@@ -1197,8 +1235,8 @@ function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
   return new Map(items.map<[Urn, number]>((item: T, index: number) => [item.id, index]));
 }
 
-function serializeOptional<T extends GraphNode>(entity: T, isDefined: (entity: T) => boolean = (e: T) => !!e) {
-  return isDefined(entity) ? entity.serialize(true) : null;
+function serializeOptional<T extends GraphNode>(entity: T, clone: boolean, isDefined: (entity: T) => boolean = (e: T) => !!e) {
+  return isDefined(entity) ? entity.serialize(true, clone) : null;
 }
 
 function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entity: EntityConstructor<T>): T {
@@ -1209,11 +1247,11 @@ function deserializeOptional<T extends GraphNode>(graph: any, context: any, fram
   }
 }
 
-function serializeEntityList(list: GraphNode[]) {
+function serializeEntityList(list: GraphNode[], clone: boolean) {
   if (list.length === 0) {
     return null;
   }
-  return _.map(list, listItem => listItem.serialize(true));
+  return _.map(list, listItem => listItem.serialize(true, clone));
 }
 
 function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entity: EntityConstructor<T>): T[] {

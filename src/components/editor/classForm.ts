@@ -46,8 +46,8 @@ export class ClassFormController {
   }
 
   addPropertiesFromClass(id: Uri, classType: string) {
-    const existingPredicates = new Set<string>(_.map(this.class.properties, property => property.predicate.uri));
-    const exclude = (property: Property) => existingPredicates.has(property.predicate.uri);
+    const existingPredicates = new Set<string>(_.map(this.class.properties, property => property.predicateId.uri));
+    const exclude = (property: Property) => existingPredicates.has(property.predicateId.uri);
     this.addPropertiesFromClassModal.open(id, classType, exclude)
       .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
   }

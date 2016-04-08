@@ -41,7 +41,9 @@ const coreContext = {
   versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' }
 };
 
-const propertyContext = Object.assign({}, coreContext, {
+const predicateContext = Object.assign({}, coreContext, {});
+
+const propertyContext = Object.assign({}, coreContext, predicateContext, {
   index: { '@id': 'http://www.w3.org/ns/shacl#index' },
   example: { '@id': 'http://www.w3.org/2004/02/skos/core#example' },
   defaultValue: { '@id': 'http://www.w3.org/ns/shacl#defaultValue' },
@@ -77,7 +79,6 @@ const modelContext = Object.assign({}, coreContext, {
 });
 
 const usageContext = Object.assign({}, coreContext, {});
-const predicateContext = Object.assign({}, coreContext, {});
 const conceptContext = Object.assign({}, coreContext, {});
 
 const userContext = Object.assign({}, coreContext, {
@@ -120,11 +121,15 @@ export function predicateListFrame(data: any): Frame {
 }
 
 export function predicateFrame(data: any): Frame {
-  return frame(data, predicateContext, { isDefinedBy: {} });
+  return frame(data, predicateContext, {
+    isDefinedBy: { '@embed': '@always' }
+  });
 }
 
 export function classFrame(data: any): Frame {
-  return frame(data, classContext, { '@type': ['rdfs:Class', 'sh:Shape'] });
+  return frame(data, classContext, {
+    isDefinedBy: { '@embed': '@always' }
+  });
 }
 
 export function classListFrame(data: any): Frame {

@@ -3,12 +3,15 @@ import ILocaleService = angular.ILocaleService;
 import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
+import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
 import { module as mod }  from './module';
+import { Uri } from '../../services/uri';
+import { LanguageService } from '../../services/languageService';
 
 mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $timeout: ITimeoutService) => {
   return {
@@ -66,16 +69,23 @@ export class PropertyViewController {
   anyPropertiesOpen: () => boolean;
 
   /* @ngInject */
-  constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService) {
+  constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService, private languageService: LanguageService) {
     $scope.$watch(() => this.isOpen, open => {
       if (open) {
         $location.search('property', this.property.internalId.uri);
+        
+        if (!this.predicate === undefined) {
 
-        if (!this.predicate) {
-          if (this.model.isKnownModelNamespace(this.property.predicate.namespace)) {
-            predicateService.getPredicate(this.property.predicate).then(predicate => this.predicate = predicate);
+          const predicate = this.property.predicate;
+
+          if (predicate instanceof Predicate) {
+            this.predicate = predicate;
+          } else if (predicate instanceof Uri) {
+            predicateService.getExternalPredicate(this.model, predicate).then(p => {
+              this.predicate = p ? p : null;
+            });
           } else {
-            predicateService.getExternalPredicate(this.model, this.property.predicate).then(predicate => this.predicate = predicate);
+            throw new Error('Unsupported predicate: ' + predicate);
           }
         }
       } else if (!this.anyPropertiesOpen()) {
@@ -107,5 +117,16 @@ export class PropertyViewController {
 
   get inUnstableState(): boolean {
     return this.property.state === 'Unstable';
+  }
+
+  get predicateName() {
+    const predicate = this.property.predicate;
+    if (predicate instanceof Predicate) {
+      return this.languageService.translate(predicate.label);
+    } else if (predicate instanceof Uri) {
+      return predicate.compact;
+    } else {
+      throw new Error('Unsupported predicate: ' + predicate);
+    }
   }
 }

@@ -62,7 +62,7 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   addProperty() {
     const exclude = combineExclusions<PredicateListItem>(
-      createExistsExclusion(collectProperties(this.class.properties, property => property.predicate.uri)),
+      createExistsExclusion(collectProperties(this.class.properties, property => property.predicateId.uri)),
       createDefinedByExclusion(this.model)
     );
 
