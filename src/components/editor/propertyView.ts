@@ -84,17 +84,15 @@ export class PropertyViewController {
     });
 
     $scope.$watchCollection(() => this.class.properties, properties => {
-      this.otherPropertyLabels =
-        _.chain(properties)
-        .filter(property => property !== this.property)
-        .map(property => property.label)
-        .value();
+      this.otherPropertyLabels = [];
+      this.otherPropertyIdentifiers = [];
 
-      this.otherPropertyIdentifiers =
-        _.chain(properties)
-          .filter(property => property !== this.property)
-          .map(property => property.externalId)
-          .value();
+      for (const property of properties) {
+        if (property !== this.property) {
+          this.otherPropertyLabels.push(property.label);
+          this.otherPropertyIdentifiers.push(property.externalId);
+        }
+      }
     });
   }
 
