@@ -219,7 +219,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     function fetchUntilStable(item: WithIdAndType): IPromise<Class|Predicate> {
       return that.fetchEntityByTypeAndId(item).then((entity: Class|Predicate) => {
         const last = that.selectionQueue[that.selectionQueue.length - 1];
-        if (matchesIdentity(last, entity)) {
+        if (!entity || matchesIdentity(last, entity)) {
           return entity;
         } else {
           return fetchUntilStable(last);
