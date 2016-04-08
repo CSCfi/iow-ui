@@ -8,7 +8,11 @@ export class Uri {
 
   constructor(public value: string, private context: any = {}) {
     if (!value) {
-      throw new Error("Empty uri");
+      throw new Error('Empty uri');
+    }
+    if (typeof value !== 'string') {
+      console.log(value);
+      throw new Error('Uri value must be string');
     }
   }
 

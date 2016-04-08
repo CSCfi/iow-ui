@@ -765,12 +765,14 @@ export class Property extends GraphNode {
       if (containsAny(types, ['association'])) {
         this.predicate = new Association(graph.predicate, context, frame);
       } else if (containsAny(types, ['attribute'])) {
-      this.predicate = new Attribute(graph.predicate, context, frame);
+        this.predicate = new Attribute(graph.predicate, context, frame);
       } else {
         throw new Error('Incompatible predicate type: ' + types.join());
       }
-    } else {
+    } else if (typeof graph.predicate === 'string') {
       this.predicate = new Uri(graph.predicate, context);
+    } else {
+      throw new Error('Unsupported predicate: ' + graph.predicate);
     }
 
     this.index = graph.index;
