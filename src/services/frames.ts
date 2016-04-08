@@ -128,7 +128,9 @@ export function predicateFrame(data: any): Frame {
 
 export function classFrame(data: any): Frame {
   return frame(data, classContext, {
-    isDefinedBy: { '@embed': '@always' }
+    '@type': ['rdfs:Class', 'sh:Shape'],
+    isDefinedBy: { '@embed': '@always' },
+    subject: { '@embed': '@always' }
   });
 }
 
