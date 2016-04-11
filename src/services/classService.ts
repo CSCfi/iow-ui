@@ -113,7 +113,9 @@ export class ClassService {
       .then(expandContextWithKnownModels(model))
       .then((response: any) => this.entities.deserializeClass(response.data))
       .then(klass => {
-        klass.external = true;
+        if (klass) {
+          klass.external = true;
+        }
         return klass;
       });
   }
