@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import Moment = moment.Moment;
 import { DataType } from '../common/dataTypes';
+import { Uri } from '../../services/uri';
 const URI = require('uri-js');
 
 export interface Validator {
@@ -44,24 +45,24 @@ export function isValidPrefix(prefix: string): boolean {
 
 export const isValidIdentifier = createRegexValidator(/^[a-zA-Z][a-zA-Z0-9]*$/);
 
-export function isValidNamespace(str: string): boolean {
-  return !str || str.endsWith('#') || str.endsWith('/');
+export function isValidNamespace(str: string|Uri): boolean {
+  return !str || str.toString().endsWith('#') || str.toString().endsWith('/');
 }
 
-export function isValidUrl(url: string): boolean {
+export function isValidUrl(url: string|Uri): boolean {
   if (!url) {
     return true;
   } else {
-    const parsed = URI.parse(url);
-    return !parsed.error && !!parsed.scheme && !parsed.scheme.startsWith('urn');
+    const parsed = URI.parse(url.toString());
+    return !parsed.error && !!parsed.scheme && !!parsed.host && !parsed.scheme.startsWith('urn');
   }
 }
 
-export function isValidUri(uri: string): boolean {
+export function isValidUri(uri: string|Uri): boolean {
   if (!uri) {
     return true;
   } else {
-    const parsed = URI.parse(uri);
+    const parsed = URI.parse(uri.toString());
     return !parsed.error && !!parsed.scheme;
   }
 }
