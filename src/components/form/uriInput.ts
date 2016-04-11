@@ -4,12 +4,12 @@ import INgModelController = angular.INgModelController;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Model } from '../../services/entities';
-import { isValidUri } from './validators';
+import { isValidUri, isValidUrl } from './validators';
 import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
 
-type UriInputType = 'required-namespace';
+type UriInputType = 'required-namespace' | 'free-url';
 
 interface UriInputAttributes extends IAttributes {
   uriInput: UriInputType;
@@ -40,32 +40,35 @@ mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
         }
       });
 
-      modelController.$validators['xsd:anyURI'] = value => {
-        return !value || isValidUri(value.uri);
-      };
+      modelController.$validators['xsd:anyURI'] = isValidUri;
 
-      modelController.$validators['unknownNS'] = value => {
-        return !value || !isValidUri(value.uri) || value.hasResolvablePrefix();
-      };
-
-      if (attributes.uriInput === 'required-namespace') {
-        modelController.$validators['mustBeRequiredNS'] = value => {
-          function isRequiredNamespace(ns: string) {
-            for (const require of $scope.model.requires) {
-              if (ns === require.namespace) {
-                return true;
+      if (attributes.uriInput === 'free-url') {
+        modelController.$validators['url'] = value => {
+          return !value || !isValidUri(value) || isValidUrl(value);
+        };
+      } else {
+        if (attributes.uriInput === 'required-namespace') {
+          modelController.$validators['mustBeRequiredNS'] = value => {
+            function isRequiredNamespace(ns: string) {
+              for (const require of $scope.model.requires) {
+                if (ns === require.namespace) {
+                  return true;
+                }
               }
+              return false;
             }
-            return false;
-          }
 
-          return !value || !isValidUri(value.uri) || !value.hasResolvablePrefix() || isRequiredNamespace(value.namespace);
+            return !value || !isValidUri(value) || !value.hasResolvablePrefix() || isRequiredNamespace(value.namespace);
+          };
+        }
+        modelController.$validators['unknownNS'] = value => {
+          return !value || !isValidUri(value) || value.hasResolvablePrefix();
+        };
+
+        modelController.$validators['idNameRequired'] = value => {
+          return !value || !isValidUri(value) || !value.hasResolvablePrefix() || value.name.length > 0;
         };
       }
-
-      modelController.$validators['idNameRequired'] = value => {
-        return !value || !isValidUri(value.uri) || !value.hasResolvablePrefix() || value.name.length > 0;
-      };
     }
   };
 });

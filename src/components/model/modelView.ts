@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { GroupListItem, Model, Require, Reference, NamespaceType } from '../../services/entities';
+import { GroupListItem, Model, Require, Reference, NamespaceType, Relation } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
@@ -16,6 +16,7 @@ import { ModelController } from './model';
 import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
+import { AddRelationModal } from './addRelationModal';
 
 mod.directive('modelView', () => {
   return {
@@ -43,6 +44,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   private referencesView: View<Reference>;
   private requiresView: View<Require>;
+  private relationsView: View<Relation>;
 
   /* @ngInject */
   constructor($scope: EditableScope,
@@ -51,6 +53,7 @@ export class ModelViewController extends EditableEntityController<Model> {
               deleteConfirmationModal: DeleteConfirmationModal,
               private searchSchemeModal: SearchSchemeModal,
               private searchRequireModal: SearchRequireModal,
+              private addRelationModal: AddRelationModal,
               private languageService: LanguageService,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
@@ -70,6 +73,10 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   registerRequiresView(view: View<Require>) {
     this.requiresView = view;
+  }
+
+  registerRelationsView(view: View<Relation>) {
+    this.relationsView = view;
   }
 
   addReference() {
@@ -129,7 +136,19 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   removeRequire(require: Require) {
-    return this.editableInEdit.removeRequire(require);
+    this.editableInEdit.removeRequire(require);
+  }
+
+  addRelation() {
+    this.addRelationModal.open(this.model, this.languageService.modelLanguage)
+      .then((relation: Relation) => {
+        this.editableInEdit.addRelation(relation);
+        this.relationsView.open(relation);
+      });
+  }
+
+  removeRelation(relation: Relation) {
+    this.editableInEdit.removeRelation(relation);
   }
 
   create(model: Model) {

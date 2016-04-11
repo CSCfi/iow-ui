@@ -10,6 +10,7 @@
         <editable-entity-buttons editable-controller="ctrl">
           <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
+          <button type="button" class="btn btn-default right" ng-click="ctrl.addRelation()" ng-show="ctrl.canModify()" translate>Add related resource</button>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.model"></export>
           <history model="ctrl.model" resource="ctrl.model" ng-hide="ctrl.isEditing()"></history>
         </editable-entity-buttons>

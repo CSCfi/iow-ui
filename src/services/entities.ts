@@ -214,6 +214,7 @@ export class Model extends AbstractModel {
   state: State;
   references: Reference[];
   requires: Require[];
+  relations: Relation[];
   unsaved: boolean = false;
   namespace: Url;
   prefix: string;
@@ -234,6 +235,7 @@ export class Model extends AbstractModel {
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.references = deserializeEntityList(graph.references, context, frame, Reference);
     this.requires = deserializeEntityList(graph.requires, context, frame, Require);
+    this.relations = deserializeEntityList(graph.relations, context, frame, Relation);
     this.version = graph.identifier;
     if (graph.rootResource) {
       this.rootClass = new Uri(graph.rootResource, context);
@@ -259,6 +261,14 @@ export class Model extends AbstractModel {
 
   removeRequire(require: Require) {
     _.remove(this.requires, require);
+  }
+
+  addRelation(relation: Relation) {
+    this.relations.push(relation);
+  }
+
+  removeRelation(relation: Relation) {
+    _.remove(this.relations, relation);
   }
 
   getNamespaceNames(exclude?: Require): Set<string> {
@@ -385,6 +395,7 @@ export class Model extends AbstractModel {
       versionInfo: this.state,
       references: serializeEntityList(this.references, clone),
       requires: serializeEntityList(this.requires, clone),
+      relations: serializeEntityList(this.relations, clone),
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri
     };
@@ -402,6 +413,28 @@ export enum NamespaceType {
 
 export class Namespace {
   constructor(public prefix: string, public url: string, public type: NamespaceType) {
+  }
+}
+
+export class Relation extends GraphNode {
+
+  homepage: Uri;
+  title: Localizable;
+  description: Localizable;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.homepage = graph.homepage && new Uri(graph.homepage);
+    this.title = deserializeLocalizable(graph.title);
+    this.description = deserializeLocalizable(graph.description);
+  }
+
+  serializationValues(): any {
+    return {
+      homepage: this.homepage.uri,
+      title: serializeLocalizable(this.title),
+      description: serializeLocalizable(this.description)
+    };
   }
 }
 

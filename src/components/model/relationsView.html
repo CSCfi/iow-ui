@@ -1,0 +1,34 @@
+<h4 translate>Related resources</h4>
+
+<p ng-if="ctrl.model.relations.length === 0" translate>No relations yet</p>
+
+<div ng-if="!ctrl.isEditing()">
+  <ul>
+    <li ng-repeat="relation in ctrl.model.relations">
+      <a ng-href="{{relation.homepage.uri}}" uib-tooltip="{{relation.description | translateValue}}">{{relation.title | translateValue}}</a>
+    </li>
+  </ul>
+</div>
+
+<div ng-if="ctrl.isEditing()">
+  <uib-accordion>
+    <uib-accordion-group ng-repeat="relation in ctrl.model.relations" is-open="ctrl.opened[$index]">
+      <uib-accordion-heading>
+        <span accordion-chevron is-open="ctrl.opened[$index]">{{relation.title | translateValue}}</span>
+      </uib-accordion-heading>
+      <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeRelation(relation)" translate>Delete relation</button>
+
+      <editable title="Homepage" link="relation.homepage.url">
+        <input class="form-control" type="text" uri-input="free-url" model="ctrl.model" required ng-model="relation.homepage" />
+      </editable>
+
+      <editable title="Title">
+        <input class="form-control" type="text" localized-input="label" ng-model="relation.title"/>
+      </editable>
+
+      <editable title="Description">
+        <textarea class="form-control" localized-input ng-model="relation.description"></textarea>
+      </editable>
+    </uib-accordion-group>
+  </uib-accordion>
+</div>

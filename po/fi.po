@@ -60,12 +60,16 @@ msgstr "Lisää ominaisuus"
 msgid "Add reference"
 msgstr "Lisää sanasto"
 
+#: components/model/addRelationModal.html:3 components/model/modelView.html:13
+msgid "Add related resource"
+msgstr "Lisää resurssi"
+
 #: components/model/addRequireModal.html:3 components/model/modelView.html:11
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
 #: components/editor/classForm.html:63 components/editor/predicateForm.html:37
-#: components/model/modelForm.html:27
+#: components/model/modelForm.html:28
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -209,6 +213,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/editor/searchConceptModal.html:91
 #: components/editor/searchPredicateModal.html:68
 #: components/group/addModelModal.html:22
+#: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:39
 #: components/model/searchSchemeModal.html:27
@@ -332,6 +337,7 @@ msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
 #: components/group/addModelModal.html:23
+#: components/model/addRelationModal.html:21
 #: components/model/addRequireModal.html:31
 msgid "Create new"
 msgstr "Luo uusi"
@@ -463,6 +469,10 @@ msgstr "Poista ominaisuus"
 #: components/model/referencesView.html:10
 msgid "Delete reference"
 msgstr "Poista sanasto"
+
+#: components/model/relationsView.html:10
+msgid "Delete relation"
+msgstr "Poista resurssi"
 
 #: components/model/requiresView.html:9
 msgid "Delete require"
@@ -610,6 +620,10 @@ msgstr "Piilota"
 #: components/common/historyModal.html:3 translations/misc.html:171
 msgid "Historical versions"
 msgstr "Historialliset versiot"
+
+#: translations/misc.html:198
+msgid "Homepage"
+msgstr "Linkki"
 
 #: translations/misc.html:85
 msgid "How content"
@@ -808,6 +822,10 @@ msgstr "Ei sanastoja"
 msgid "No referrers"
 msgstr "Ei viittauksia"
 
+#: components/model/relationsView.html:3
+msgid "No relations yet"
+msgstr "Ei resursseja"
+
 #: components/advancedSearchModal.html:21 components/frontPage.html:33
 msgid "No search results"
 msgstr "Ei hakutuloksia"
@@ -931,6 +949,10 @@ msgstr "Sanastot"
 #: components/navigation/loginModal.html:11
 msgid "Register"
 msgstr "Luo tunnukset"
+
+#: components/model/relationsView.html:1
+msgid "Related resources"
+msgstr "Viitatut resurssit"
 
 #: components/form/errorMessages.html:8
 msgid "Required error"
@@ -1125,6 +1147,10 @@ msgstr "Tekniset nimiavaruudet"
 #: translations/misc.html:142
 msgid "text/turtle"
 msgstr "Turtle"
+
+#: translations/misc.html:199
+msgid "Title"
+msgstr "Nimi"
 
 #: translations/misc.html:182
 msgid "to vocabulary"

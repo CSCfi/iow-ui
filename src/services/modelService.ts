@@ -3,7 +3,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { config } from '../config';
-import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, GraphData } from './entities';
+import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, GraphData, Relation } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -78,6 +78,22 @@ export class ModelService {
     const frameObject = modelFrame({ '@graph': graph, '@context': context});
 
     return this.$q.when(new Reference(graph, context, frameObject));
+  }
+
+  newRelation(title: string, description: string, homepage: Uri, lang: Language, context: any) {
+    const graph = {
+      title: {
+        [lang]: title
+      },
+      description: {
+        [lang]: description
+      },
+      homepage: homepage.url
+    };
+
+    const frameObject = modelFrame({ '@graph': graph, '@context': context});
+
+    return this.$q.when(new Relation(graph, context, frameObject));
   }
 
   getAllRequires(): IPromise<Require[]> {

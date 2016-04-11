@@ -1,0 +1,24 @@
+<form name="addModelForm">
+  <modal-template>
+    <modal-title translate>Add related resource</modal-title>
+
+    <modal-body>
+      <editable title="Homepage">
+        <input class="form-control" type="text" uri-input="free-url" model="ctrl.model" autofocus required ng-model="ctrl.homepage" />
+      </editable>
+
+      <editable title="Title">
+        <input class="form-control" type="text" string-input="label" ng-model="ctrl.title"/>
+      </editable>
+
+      <editable title="Description">
+        <textarea class="form-control" string-input ng-model="ctrl.description"></textarea>
+      </editable>
+    </modal-body>
+
+    <modal-buttons>
+      <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
+      <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!addModelForm.$valid" translate>Create new</button>
+    </modal-buttons>
+  </modal-template>
+</form>

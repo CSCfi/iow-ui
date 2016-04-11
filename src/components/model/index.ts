@@ -1,6 +1,7 @@
 
 import { SearchRequireModal } from './searchRequireModal';
 import { SearchSchemeModal } from './searchSchemeModal';
+import { AddRelationModal } from './addRelationModal';
 import { AddRequireModal } from './addRequireModal';
 
 import { module as mod }  from './module';
@@ -12,7 +13,9 @@ import './modelForm';
 import './modelView';
 import './referencesView';
 import './requiresView';
+import './relationsView';
 
+mod.service('addRelationModal', AddRelationModal);
 mod.service('addRequireModal', AddRequireModal);
 mod.service('searchRequireModal', SearchRequireModal);
 mod.service('searchSchemeModal', SearchSchemeModal);

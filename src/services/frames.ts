@@ -32,8 +32,6 @@ const coreContext = {
   prefLabel: { '@id': 'http://www.w3.org/2004/02/skos/core#prefLabel', '@container': '@language' },
   prov: "http://www.w3.org/ns/prov#",
   range: { '@id': 'http://www.w3.org/2000/01/rdf-schema#range', '@type': '@id' },
-  references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
-  requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
   subject: { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' },
   subPropertyOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subPropertyOf', '@type': '@id' },
   title: { '@id': 'http://purl.org/dc/terms/title', '@container': '@language' },
@@ -75,7 +73,11 @@ const versionContext = Object.assign({}, coreContext, {
 const groupContext = Object.assign({}, coreContext, {});
 
 const modelContext = Object.assign({}, coreContext, {
-  rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' }
+  rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' },
+  references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
+  requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
+  relations: { '@id': 'http://purl.org/dc/terms/relation', '@container': '@list' },
+  description: { '@id': 'http://purl.org/dc/terms/description', '@container': '@language' }
 });
 
 const usageContext = Object.assign({}, coreContext, {});
