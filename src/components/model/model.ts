@@ -607,7 +607,6 @@ interface WithIdAndType {
 }
 
 function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {
-  console.log('checking identity');
   if (!lhs && !rhs) {
     return true;
   }  else if ((lhs && !rhs) || (rhs && !lhs)) {
