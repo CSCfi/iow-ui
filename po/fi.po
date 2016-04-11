@@ -98,7 +98,7 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: translations/misc.html:196
+#: translations/misc.html:198
 msgid "Allowed values"
 msgstr "Sallitut arvot"
 
@@ -215,7 +215,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/editor/addPropertiesFromClassModal.html:16
 #: components/editor/searchClassModal.html:67
 #: components/editor/searchConceptModal.html:91
-#: components/editor/searchPredicateModal.html:68
+#: components/editor/searchPredicateModal.html:78
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
@@ -390,7 +390,7 @@ msgstr "Tietokanta"
 msgid "date format"
 msgstr "DD.MM.YYYY HH:mm"
 
-#: translations/misc.html:195
+#: translations/misc.html:197
 msgid "Default value"
 msgstr "Oletusarvo"
 
@@ -418,7 +418,7 @@ msgstr "Määrittele käsite uudelle attribuutille"
 msgid "Define concept for the new class"
 msgstr "Määrittele käsite uudelle luokalle"
 
-#: translations/misc.html:199
+#: translations/misc.html:201
 msgid "Defined by"
 msgstr "Määrittely"
 
@@ -577,6 +577,14 @@ msgstr "Lataa"
 msgid "External class not found"
 msgstr "Ulkoista luokkaa ei löydy"
 
+#: translations/misc.html:195
+msgid "External predicate is of wrong type"
+msgstr "Ulkoinen ominaisuus on väärää tyyppiä"
+
+#: translations/misc.html:194
+msgid "External predicate not found"
+msgstr "Ulkoista ominaisuutta ei löydy"
+
 #: translations/misc.html:188
 msgid "External URI"
 msgstr "Ulkoinen tunniste"
@@ -589,7 +597,7 @@ msgstr "Suomeksi"
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
-#: translations/misc.html:198
+#: translations/misc.html:200
 msgid "Fixed value"
 msgstr "Pakollinen arvo"
 
@@ -629,7 +637,7 @@ msgstr "Piilota"
 msgid "Historical versions"
 msgstr "Historialliset versiot"
 
-#: translations/misc.html:200
+#: translations/misc.html:202
 msgid "Homepage"
 msgstr "Linkki"
 
@@ -660,7 +668,7 @@ msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
 
-#: translations/misc.html:197
+#: translations/misc.html:199
 msgid "Input"
 msgstr "Kirjoita"
 
@@ -926,7 +934,7 @@ msgstr "Soveltamisprofiilin tiedot"
 msgid "Profile label"
 msgstr "Soveltamisprofiilin nimi"
 
-#: translations/misc.html:194
+#: translations/misc.html:196
 msgid "Property identifier"
 msgstr "Ominaisuuden tunniste"
 
@@ -1164,7 +1172,7 @@ msgstr "Tekniset nimiavaruudet"
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: translations/misc.html:201
+#: translations/misc.html:203
 msgid "Title"
 msgstr "Nimi"
 

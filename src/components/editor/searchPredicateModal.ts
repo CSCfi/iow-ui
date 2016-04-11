@@ -5,7 +5,10 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { Predicate, PredicateListItem, Model, Type, DefinedBy, NamespaceType } from '../../services/entities';
+import {
+  Predicate, PredicateListItem, Model, Type, DefinedBy, NamespaceType,
+  AbstractPredicate
+} from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
@@ -13,6 +16,7 @@ import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import { isDefined, glyphIconClassForType } from '../../services/utils';
+import { Uri } from '../../services/uri';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -22,7 +26,7 @@ export class SearchPredicateModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string, onlySelection: boolean) {
+  private openModal(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
@@ -38,18 +42,34 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  open(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<EntityCreation|Predicate> {
+  open(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<EntityCreation|Predicate> {
     return this.openModal(model, type, exclude, false);
   }
 
-  openForProperty(model: Model, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<Predicate> {
+  openForProperty(model: Model, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<Predicate> {
     return this.openModal(model, null, exclude, false);
   }
 
-  openWithOnlySelection(model: Model, type: Type, exclude: (predicate: PredicateListItem) => string = noExclude): IPromise<Predicate> {
+  openWithOnlySelection(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<Predicate> {
     return this.openModal(model, type, exclude, true);
   }
 };
+
+interface FormData {
+  externalUri: Uri;
+  type: Type;
+}
+
+function createFormData(type: Type): FormData {
+  return {
+    externalUri: null,
+    type
+  };
+}
+
+function isFormData(item: Predicate|FormData): item is FormData {
+  return item && !(item instanceof Predicate);
+}
 
 export interface SearchPredicateScope extends IScope {
   form: EditableForm;
@@ -59,10 +79,10 @@ export class SearchPredicateController {
 
   private predicates: PredicateListItem[];
 
-  editInProgress = () => this.$scope.form.editing;
+  editInProgress = () => this.$scope.form.editing && this.$scope.form.$dirty;
   close = this.$uibModalInstance.dismiss;
   searchResults: (PredicateListItem|AddNewPredicate)[] = [];
-  selection: Predicate;
+  selection: Predicate|FormData;
   searchText: string = '';
   showModel: DefinedBy;
   models: DefinedBy[];
@@ -79,7 +99,7 @@ export class SearchPredicateController {
               private $q: IQService,
               public model: Model,
               public type: Type,
-              public exclude: (predicate: PredicateListItem) => string,
+              public exclude: (predicate: AbstractPredicate) => string,
               public onlySelection: boolean,
               private predicateService: PredicateService,
               private languageService: LanguageService,
@@ -123,12 +143,18 @@ export class SearchPredicateController {
     return !!this.searchText;
   }
 
+  isSelectionFormData(): boolean {
+    return isFormData(this.selection);
+  }
+
   search() {
     if (this.predicates) {
 
       const result: (PredicateListItem|AddNewPredicate)[] = [
-        new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute'),
-        new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association')
+        new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
+        new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
+        new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAttributeAddable() && this.model.isOfType('profile'), 'attribute', true),
+        new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAssociationAddable() && this.model.isOfType('profile'), 'association', true)
       ];
 
       const predicateSearchResult = this.predicates.filter(predicate =>
@@ -150,12 +176,21 @@ export class SearchPredicateController {
 
   selectItem(item: PredicateListItem|AddNewPredicate) {
     this.selectedItem = item;
+    this.selection = null;
+    this.submitError = null;
+    this.$scope.form.editing = false;
+    this.$scope.form.$setPristine();
+
     if (item instanceof AddNewPredicate) {
-      this.createNew(item.type);
+      if (item.external) {
+        this.$scope.form.editing = true;
+        this.selection = createFormData(item.type);
+      } else {
+        this.createNew(item.type);
+      }
     } else if (item instanceof PredicateListItem) {
-      this.$scope.form.editing = false;
-      this.submitError = null;
       this.cannotConfirm = this.exclude(item);
+
       if (this.model.isNamespaceKnownAndOfType(item.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL])) {
         this.predicateService.getExternalPredicate(item.id, this.model).then(result => this.selection = result);
       } else {
@@ -165,20 +200,42 @@ export class SearchPredicateController {
   }
 
   loadingSelection(item: PredicateListItem|AddNew) {
+    const selection = this.selection;
     if (item instanceof PredicateListItem) {
-      return item === this.selectedItem && (!this.selection || !item.id.equals(this.selection.id));
+      return item === this.selectedItem && (!selection || (selection instanceof Predicate && !item.id.equals(selection.id)));
     } else {
       return false;
     }
   }
 
-  usePredicate() {
-    this.$uibModalInstance.close(this.selection);
-  }
+  confirm() {
+    const selection = this.selection;
 
-  createAndUsePredicate() {
-    return this.predicateService.createPredicate(this.selection)
-      .then(() => this.usePredicate(), err => this.submitError = err.data.errorMessage);
+    if (selection instanceof Predicate) {
+      if (selection.unsaved) {
+        this.predicateService.createPredicate(selection)
+          .then(() => this.$uibModalInstance.close(selection), err => this.submitError = err.data.errorMessage);
+      } else {
+        this.$uibModalInstance.close(selection);
+      }
+    } else if (isFormData(selection)) {
+      this.predicateService.getExternalPredicate(selection.externalUri, this.model)
+        .then(predicate => {
+          if (predicate) {
+            if (!predicate.isOfType(selection.type)) {
+              this.submitError = 'External predicate is of wrong type';
+            } else if (this.exclude(predicate)) {
+              this.submitError = this.exclude(predicate);
+            } else {
+              this.$uibModalInstance.close(predicate);
+            }
+          } else {
+            this.submitError = 'External predicate not found';
+          }
+        }, err => this.submitError = err.data.errorMessage);
+    } else {
+      throw new Error('Unsupported selection: ' + selection);
+    }
   }
 
   createNew(type: Type) {
@@ -231,7 +288,7 @@ export class SearchPredicateController {
 }
 
 class AddNewPredicate extends AddNew {
-  constructor(public label: string, public show: () => boolean, public type: Type) {
+  constructor(public label: string, public show: () => boolean, public type: Type, public external: boolean) {
     super(label, show, glyphIconClassForType([type]));
   }
 }

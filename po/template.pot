@@ -98,7 +98,7 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: translations/misc.html:196
+#: translations/misc.html:198
 msgid "Allowed values"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 #: components/editor/addPropertiesFromClassModal.html:16
 #: components/editor/searchClassModal.html:67
 #: components/editor/searchConceptModal.html:91
-#: components/editor/searchPredicateModal.html:68
+#: components/editor/searchPredicateModal.html:78
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
@@ -392,7 +392,7 @@ msgstr ""
 msgid "date format"
 msgstr ""
 
-#: translations/misc.html:195
+#: translations/misc.html:197
 msgid "Default value"
 msgstr ""
 
@@ -420,7 +420,7 @@ msgstr ""
 msgid "Define concept for the new class"
 msgstr ""
 
-#: translations/misc.html:199
+#: translations/misc.html:201
 msgid "Defined by"
 msgstr ""
 
@@ -576,6 +576,14 @@ msgstr ""
 msgid "External class not found"
 msgstr ""
 
+#: translations/misc.html:195
+msgid "External predicate is of wrong type"
+msgstr ""
+
+#: translations/misc.html:194
+msgid "External predicate not found"
+msgstr ""
+
 #: translations/misc.html:188
 msgid "External URI"
 msgstr ""
@@ -588,7 +596,7 @@ msgstr ""
 msgid "Filter results"
 msgstr ""
 
-#: translations/misc.html:198
+#: translations/misc.html:200
 msgid "Fixed value"
 msgstr ""
 
@@ -629,7 +637,7 @@ msgstr ""
 msgid "Historical versions"
 msgstr ""
 
-#: translations/misc.html:200
+#: translations/misc.html:202
 msgid "Homepage"
 msgstr ""
 
@@ -657,7 +665,7 @@ msgstr ""
 msgid "Imported requires"
 msgstr ""
 
-#: translations/misc.html:197
+#: translations/misc.html:199
 msgid "Input"
 msgstr ""
 
@@ -927,7 +935,7 @@ msgstr ""
 msgid "Profile label"
 msgstr ""
 
-#: translations/misc.html:194
+#: translations/misc.html:196
 msgid "Property identifier"
 msgstr ""
 
@@ -1166,7 +1174,7 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: translations/misc.html:201
+#: translations/misc.html:203
 msgid "Title"
 msgstr ""
 

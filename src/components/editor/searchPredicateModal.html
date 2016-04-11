@@ -53,7 +53,17 @@
         </div>
 
         <div class="col-md-4 search-selection editable-form">
-          <predicate-form ng-if="ctrl.selection" predicate="ctrl.selection" old-predicate="ctrl.selection" model="ctrl.model"></predicate-form>
+
+          <predicate-form ng-if="!ctrl.isSelectionFormData() && ctrl.selection" predicate="ctrl.selection" old-predicate="ctrl.selection" model="ctrl.model"></predicate-form>
+
+          <div ng-if="ctrl.isSelectionFormData()">
+            <editable title="External URI">
+              <div class="input-group input-group-md">
+                <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="ctrl.model" ng-model="ctrl.selection.externalUri" />
+              </div>
+            </editable>
+          </div>
+
           <submit-error-panel error="ctrl.submitError"></submit-error-panel>
         </div>
 
@@ -66,11 +76,9 @@
         <span>{{ctrl.cannotConfirm | translate}}</span>
       </div>
       <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default" ng-hide="ctrl.isEditing()" ng-click="ctrl.usePredicate()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm">
-        {{(!ctrl.typeSelectable ? 'Use ' + ctrl.type : 'Use selection') | translate}}
-      </button>
-      <button type="button" class="btn btn-default" ng-show="ctrl.isEditing()" ng-click="ctrl.createAndUsePredicate()" ng-disabled="form.$invalid || form.$pending">
-        {{('Create and use ' + ctrl.selection.type) | translate}}
+      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending">
+        {{(ctrl.selection.unsaved ? ('Create and use ' + ctrl.selection.type)
+                                  : (!ctrl.typeSelectable ? 'Use ' + ctrl.type : 'Use selection')) | translate}}
       </button>
     </modal-buttons>
   </modal-template>
