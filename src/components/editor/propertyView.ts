@@ -81,10 +81,10 @@ export class PropertyViewController {
           if (predicate instanceof Predicate) {
             this.predicate = predicate;
           } else if (predicate instanceof Uri) {
-            if (this.model.isNamespaceKnownAndOfType(predicate.namespace, [NamespaceType.MODEL])) {
-              predicateService.getPredicate(predicate).then(p => this.predicate = p);
-            } else {
+            if (this.model.isNamespaceKnownAndOfType(predicate.namespace, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL])) {
               predicateService.getExternalPredicate(this.model, predicate).then(p => this.predicate = p);
+            } else {
+              predicateService.getPredicate(predicate).then(p => this.predicate = p);
             }
           } else {
             throw new Error('Unsupported predicate: ' + predicate);
