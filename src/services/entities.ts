@@ -535,13 +535,14 @@ export class Require extends GraphNode {
 }
 
 
-abstract class AbstractClass extends GraphNode {
+export abstract class AbstractClass extends GraphNode {
 
   id: Uri;
   label: Localizable;
   comment: Localizable;
   selectionType: Type;
   normalizedType: Type;
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -550,6 +551,10 @@ abstract class AbstractClass extends GraphNode {
     this.comment = deserializeLocalizable(graph.comment);
     this.selectionType = normalizeSelectionType(this.type);
     this.normalizedType = normalizeClassType(this.type);
+    // TODO: remove this if when externalClass API is fixed to return it
+    if (graph.isDefinedBy) {
+      this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
+    }
   }
 
   isClass() {
@@ -563,19 +568,16 @@ abstract class AbstractClass extends GraphNode {
   iowUrl() {
     return internalUrl(this.id, this.type);
   }
+
+  isSpecializedClass() {
+    return this.definedBy.isOfType('profile');
+  }
 }
 
 export class ClassListItem extends AbstractClass {
 
-  definedBy: DefinedBy;
-
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
-  }
-
-  isSpecializedClass() {
-    return this.definedBy.isOfType('profile');
   }
 }
 
@@ -594,7 +596,6 @@ export class Class extends AbstractClass {
   subClassOf: Uri;
   scopeClass: Uri;
   state: State;
-  definedBy: DefinedBy;
   properties: Property[];
   subject: FintoConcept|ConceptSuggestion;
   equivalentClasses: Uri[];
@@ -613,10 +614,6 @@ export class Class extends AbstractClass {
       this.scopeClass = new Uri(graph.scopeClass, context);
     }
     this.state = graph.versionInfo;
-    // TODO: remove this if when externalClass API is fixed to return it
-    if (graph.isDefinedBy) {
-      this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
-    }
     this.properties = deserializeEntityList(graph.property, context, frame, Property);
     if (graph.subject) {
       this.subject = new Uri(graph.subject['@id']).isUrn()
@@ -626,10 +623,6 @@ export class Class extends AbstractClass {
     this.equivalentClasses = deserializeList(graph.equivalentClass, equivalentClass => new Uri(equivalentClass, context));
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
-  }
-
-  isSpecializedClass() {
-    return this.definedBy.isOfType('profile');
   }
 
   addProperty(property: Property): void {
@@ -894,7 +887,7 @@ export class Property extends GraphNode {
   }
 }
 
-abstract class AbstractPredicate extends GraphNode {
+export abstract class AbstractPredicate extends GraphNode {
 
   id: Uri;
   label: Localizable;

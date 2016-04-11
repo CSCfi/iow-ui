@@ -5,7 +5,7 @@ import IQService = angular.IQService;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
-import { Class, ClassListItem, Model, DefinedBy, NamespaceType } from '../../services/entities';
+import { Class, ClassListItem, Model, DefinedBy, NamespaceType, AbstractClass } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
@@ -16,7 +16,7 @@ import { Uri } from '../../services/uri';
 import { EditableForm } from '../form/editableEntityController';
 
 
-export const noExclude = (item: ClassListItem) => <string> null;
+export const noExclude = (item: AbstractClass) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';
 
 export class SearchClassModal {
@@ -24,7 +24,7 @@ export class SearchClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, exclude: (klass: ClassListItem) => string, onlySelection: boolean, textForSelection: (klass: Class) => string) {
+  private openModal(model: Model, exclude: (klass: AbstractClass) => string, onlySelection: boolean, textForSelection: (klass: Class) => string) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -40,11 +40,11 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, exclude: (klass: ClassListItem) => string, textForSelection: (klass: Class) => string): IPromise<EntityCreation|Class> {
+  open(model: Model, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string): IPromise<EntityCreation|Class> {
     return this.openModal(model, exclude, false, textForSelection);
   }
 
-  openWithOnlySelection(model: Model, exclude: (klass: ClassListItem) => string, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
+  openWithOnlySelection(model: Model, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
     return this.openModal(model, exclude, true, textForSelection);
   }
 };
@@ -90,7 +90,7 @@ class SearchClassController {
               private classService: ClassService,
               private languageService: LanguageService,
               public model: Model,
-              public exclude: (klass: ClassListItem) => string,
+              public exclude: (klass: AbstractClass) => string,
               public onlySelection: boolean,
               private textForSelection: (klass: Class) => string,
               private searchConceptModal: SearchConceptModal,
@@ -203,10 +203,12 @@ class SearchClassController {
     } else if (isFormData(selection)) {
       this.classService.getExternalClass(selection.externalUri, this.model)
         .then(klass => {
-          if (klass) {
-            this.$uibModalInstance.close(klass);
-          } else {
+          if (!klass) {
             this.submitError = 'External class not found';
+          } else if (this.exclude(klass)) {
+            this.submitError = this.exclude(klass);
+          } else {
+            this.$uibModalInstance.close(klass);
           }
         }, err => this.submitError = err.data.errorMessage);
     } else {
