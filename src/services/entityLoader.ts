@@ -363,7 +363,7 @@ export class EntityLoader {
   createProperty(details: PropertyDetails): IPromise<Property> {
     const result = this.loggedIn
       .then(() =>  asPromise(assertExists(details.predicate, 'predicate')))
-      .then(p => this.classService.newProperty(p.id))
+      .then(p => this.classService.newProperty(p))
       .then((p: Property) => {
         setDetails(p, details);
         assertPropertyValueExists(details, 'valueClass');

@@ -18,7 +18,7 @@ import { PredicateService } from './predicateService';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
-import { expandContextWithKnownModels } from './utils';
+import { expandContextWithKnownModels, hasLocalization } from './utils';
 import { Uri, Urn } from './uri';
 
 export class ClassService {
@@ -124,20 +124,15 @@ export class ClassService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}}).then(response => this.entities.deserializeClassList(response.data));
   }
 
-  newProperty(predicateId: Uri): IPromise<Property> {
-    return this.$q.all([
-        this.predicateService.getPredicate(predicateId),
-        this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateId.uri}})
-      ])
-      .then(([predicate, propertyResult]: [Predicate, any]) => {
+  newProperty(predicate: Predicate): IPromise<Property> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicate.id.uri}})
+      .then((propertyResult: any) => {
         predicate.expandContext(propertyResult.data['@context']);
-        return this.$q.all([
-          this.$q.when(predicate),
-          this.entities.deserializeProperty(propertyResult.data)
-        ]);
+        return this.entities.deserializeProperty(propertyResult.data);
       })
-      .then(([predicate, property]: [Predicate, Property]) => {
-        if (!property.label) {
+      .then(property => {
+
+        if (!hasLocalization(property.label)) {
           property.label = predicate.label;
         }
 

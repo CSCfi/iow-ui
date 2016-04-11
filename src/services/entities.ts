@@ -947,8 +947,10 @@ export abstract class Predicate extends AbstractPredicate {
   subPropertyOf: Uri;
   subject: FintoConcept|ConceptSuggestion;
   equivalentProperties: Uri[];
-  unsaved: boolean = false;
   version: Urn;
+
+  unsaved: boolean = false;
+  external: boolean = false;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1001,6 +1003,7 @@ export class Association extends Predicate {
     const serialization = this.serialize(false, true);
     const result = new Association(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
+    result.external = this.external;
     return result;
   }
 
@@ -1028,6 +1031,7 @@ export class Attribute extends Predicate {
     const serialization = this.serialize(false, true);
     const result = new Attribute(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
+    result.external = this.external;
     return result;
   }
 

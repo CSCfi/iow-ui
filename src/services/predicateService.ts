@@ -93,9 +93,19 @@ export class PredicateService {
       });
   }
 
-  getExternalPredicate(model: Model, externalId: Uri) {
+  getExternalPredicate(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.entities.deserializePredicate(response.data));
+      .then((response: any) => this.entities.deserializePredicate(response.data))
+      .then(predicate => {
+        if (predicate) {
+          predicate.external = true;
+        }
+        return predicate;
+      });
+  }
+
+  getExternalPredicatesForModel(model: Model) {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri}}).then(response => this.entities.deserializePredicateList(response.data));
   }
 }

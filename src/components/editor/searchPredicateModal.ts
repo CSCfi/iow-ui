@@ -1,10 +1,11 @@
 import IPromise = angular.IPromise;
+import IQService = angular.IQService;
 import IScope = angular.IScope;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { Predicate, PredicateListItem, Model, Type, DefinedBy } from '../../services/entities';
+import { Predicate, PredicateListItem, Model, Type, DefinedBy, NamespaceType } from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService } from '../../services/languageService';
@@ -75,6 +76,7 @@ export class SearchPredicateController {
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
               private $uibModalInstance: IModalServiceInstance,
+              private $q: IQService,
               public model: Model,
               public type: Type,
               public exclude: (predicate: PredicateListItem) => string,
@@ -85,24 +87,32 @@ export class SearchPredicateController {
               private gettextCatalog: gettextCatalog) {
 
     this.loadingResults = true;
+    this.typeSelectable = !type;
 
-    predicateService.getAllPredicates().then((allPredicates: PredicateListItem[]) => {
-      this.typeSelectable = !type;
-      this.predicates = allPredicates;
+    const predicatePromises: IPromise<PredicateListItem[]>[] = [];
+    predicatePromises.push(predicateService.getAllPredicates());
 
-      this.models = _.chain(this.predicates)
-        .map(predicate => predicate.definedBy)
-        .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<PredicateListItem>(languageService.modelLanguage, predicate => predicate.label))
-        .value();
+    if (model.isOfType('profile') && this.typeSelectable) {
+      predicatePromises.push(predicateService.getExternalPredicatesForModel(model));
+    }
 
-      this.types = _.chain(this.predicates)
-        .map(predicate => predicate.normalizedType)
-        .uniq()
-        .value();
+    $q.all(predicatePromises)
+      .then((predicatesLists: PredicateListItem[][]) => {
 
-      this.search();
-    });
+        this.predicates = _.flatten(predicatesLists);
+        this.models = _.chain(this.predicates)
+          .map(predicate => predicate.definedBy)
+          .uniq(definedBy => definedBy.id.uri)
+          .sort(comparingLocalizable<PredicateListItem>(languageService.modelLanguage, predicate => predicate.label))
+          .value();
+
+        this.types = _.chain(this.predicates)
+          .map(predicate => predicate.normalizedType)
+          .uniq()
+          .value();
+
+        this.search();
+      });
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
@@ -146,7 +156,11 @@ export class SearchPredicateController {
       this.$scope.form.editing = false;
       this.submitError = null;
       this.cannotConfirm = this.exclude(item);
-      this.predicateService.getPredicate(item.id, this.model).then(result => this.selection = result);
+      if (this.model.isNamespaceKnownAndOfType(item.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL])) {
+        this.predicateService.getExternalPredicate(item.id, this.model).then(result => this.selection = result);
+      } else {
+        this.predicateService.getPredicate(item.id, this.model).then(result => this.selection = result);
+      }
     }
   }
 

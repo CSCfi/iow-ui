@@ -82,7 +82,7 @@ export class PropertyViewController {
             this.predicate = predicate;
           } else if (predicate instanceof Uri) {
             if (this.model.isNamespaceKnownAndOfType(predicate.namespace, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL])) {
-              predicateService.getExternalPredicate(this.model, predicate).then(p => this.predicate = p);
+              predicateService.getExternalPredicate(predicate, this.model).then(p => this.predicate = p);
             } else {
               predicateService.getPredicate(predicate).then(p => this.predicate = p);
             }
