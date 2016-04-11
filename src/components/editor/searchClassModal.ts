@@ -1,10 +1,11 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
+import IQService = angular.IQService;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
-import { Class, ClassListItem, Model, DefinedBy } from '../../services/entities';
+import { Class, ClassListItem, Model, DefinedBy, NamespaceType } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
@@ -85,6 +86,7 @@ class SearchClassController {
   /* @ngInject */
   constructor(private $scope: SearchClassScope,
               private $uibModalInstance: IModalServiceInstance,
+              private $q: IQService,
               private classService: ClassService,
               private languageService: LanguageService,
               public model: Model,
@@ -97,17 +99,25 @@ class SearchClassController {
     this.showProfiles = onlySelection;
     this.loadingResults = true;
 
-    classService.getAllClasses().then((allClasses: ClassListItem[]) => {
+    const classPromises: IPromise<ClassListItem[]>[] = [];
+    classPromises.push(classService.getAllClasses());
 
-      this.classes = allClasses;
-      this.models = _.chain(this.classes)
-        .map(klass => klass.definedBy)
-        .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<ClassListItem>(languageService.modelLanguage, klass => klass.label))
-        .value();
+    if (model.isOfType('profile')) {
+      classPromises.push(classService.getExternalClassesForModel(model));
+    }
 
-      this.search();
-    });
+    $q.all(classPromises)
+      .then((classesLists: ClassListItem[][]) => {
+
+        this.classes = _.flatten(classesLists);
+        this.models = _.chain(this.classes)
+          .map(klass => klass.definedBy)
+          .uniq(definedBy => definedBy.id.uri)
+          .sort(comparingLocalizable<ClassListItem>(languageService.modelLanguage, klass => klass.label))
+          .value();
+
+        this.search();
+      });
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
@@ -167,7 +177,12 @@ class SearchClassController {
       }
     } else if (item instanceof ClassListItem) {
       this.cannotConfirm = this.exclude(item);
-      this.classService.getClass(item.id, this.model).then(result => this.selection = result);
+
+      if (this.model.isNamespaceKnownAndOfType(item.definedBy.id.namespace, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL])) {
+        this.classService.getExternalClass(item.id, this.model).then(result => this.selection = result);
+      } else {
+        this.classService.getClass(item.id, this.model).then(result => this.selection = result);
+      }
     }
   }
 
@@ -186,7 +201,7 @@ class SearchClassController {
     if (selection instanceof Class) {
       this.$uibModalInstance.close(this.selection);
     } else if (isFormData(selection)) {
-      this.classService.getExternalClass(this.model, selection.externalUri)
+      this.classService.getExternalClass(selection.externalUri, this.model)
         .then(klass => {
           if (klass) {
             this.$uibModalInstance.close(klass);

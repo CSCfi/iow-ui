@@ -105,10 +105,14 @@ export class ClassService {
       });
   }
 
-  getExternalClass(model: Model, externalId: Uri) {
+  getExternalClass(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
       .then((response: any) => this.entities.deserializeClass(response.data));
+  }
+
+  getExternalClassesForModel(model: Model) {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}}).then(response => this.entities.deserializeClassList(response.data));
   }
 
   newProperty(predicateId: Uri): IPromise<Property> {
