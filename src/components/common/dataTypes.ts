@@ -14,11 +14,13 @@ export type DataType = 'xsd:string'
                      | 'xsd:time'
                      | 'xsd:gYear'
                      | 'xsd:gMonth'
-                     | 'xsd:gDay';
+                     | 'xsd:gDay'
+                     | 'rdfs:Literal';
 
 export const dataTypes: DataType[] = [
   'xsd:string',
   'rdf:langString',
+  'rdfs:Literal',
   'xsd:anyURI',
   'xsd:boolean',
   'xsd:decimal',

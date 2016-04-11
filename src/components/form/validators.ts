@@ -82,6 +82,7 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat {
   switch (dataType) {
     case 'xsd:string':
     case 'rdf:langString':
+    case 'rdfs:Literal':
       return isValidString;
     case 'xsd:anyURI':
       return isValidUri;

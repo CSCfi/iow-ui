@@ -69,7 +69,7 @@ msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
 #: components/editor/classForm.html:63 components/editor/predicateForm.html:37
-#: components/model/modelForm.html:28
+#: components/model/modelForm.html:29
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -470,7 +470,7 @@ msgstr "Poista ominaisuus"
 msgid "Delete reference"
 msgstr "Poista sanasto"
 
-#: components/model/relationsView.html:10
+#: components/model/relationsView.html:19
 msgid "Delete relation"
 msgstr "Poista resurssi"
 
@@ -926,13 +926,21 @@ msgstr "Ominaisuuden tunniste"
 msgid "Range"
 msgstr "Arvoalue"
 
-#: translations/attribute.html:6
+#: translations/attribute.html:8
 msgid "rdf:langString"
 msgstr "Kieliversioitu teksti"
 
-#: translations/attribute.html:7
+#: translations/attribute.html:9
 msgid "rdf:langString error"
 msgstr "Virheellinen kieliversioitu teksti"
+
+#: translations/attribute.html:6
+msgid "rdfs:Literal"
+msgstr "Literaali"
+
+#: translations/attribute.html:7
+msgid "rdfs:Literal error"
+msgstr "Virheellinen literaali"
 
 #: translations/misc.html:19
 msgid "Recommendation"
@@ -1278,107 +1286,107 @@ msgstr "Mikä on yhteentoimivuusmenetelmä?"
 msgid "Write identifier"
 msgstr "Kirjoita tunniste…"
 
-#: translations/attribute.html:8
+#: translations/attribute.html:10
 msgid "xsd:anyURI"
 msgstr "URI"
 
-#: translations/attribute.html:9
+#: translations/attribute.html:11
 msgid "xsd:anyURI error"
 msgstr "Virheellinen URI"
 
-#: translations/attribute.html:10
+#: translations/attribute.html:12
 msgid "xsd:boolean"
 msgstr "Kytkin"
 
-#: translations/attribute.html:11
+#: translations/attribute.html:13
 msgid "xsd:boolean error"
 msgstr "Virheellinen kykin"
 
-#: translations/attribute.html:24
+#: translations/attribute.html:26
 msgid "xsd:date"
 msgstr "Päivämäärä"
 
-#: translations/attribute.html:25
+#: translations/attribute.html:27
 msgid "xsd:date error"
 msgstr "Virheellinen päivämäärä"
 
-#: translations/attribute.html:26
+#: translations/attribute.html:28
 msgid "xsd:dateTime"
 msgstr "Ajanhetki"
 
-#: translations/attribute.html:27
+#: translations/attribute.html:29
 msgid "xsd:dateTime error"
 msgstr "Virheellinen ajanhetki"
 
-#: translations/attribute.html:12
+#: translations/attribute.html:14
 msgid "xsd:decimal"
 msgstr "Desimaali"
 
-#: translations/attribute.html:13
+#: translations/attribute.html:15
 msgid "xsd:decimal error"
 msgstr "Virheellinen desimaali"
 
-#: translations/attribute.html:14
+#: translations/attribute.html:16
 msgid "xsd:double"
 msgstr "Desimaali (64bit)"
 
-#: translations/attribute.html:15
+#: translations/attribute.html:17
 msgid "xsd:double error"
 msgstr "Virheellinen desimaali"
 
-#: translations/attribute.html:16
+#: translations/attribute.html:18
 msgid "xsd:float"
 msgstr "Desimaali (32bit)"
 
-#: translations/attribute.html:17
+#: translations/attribute.html:19
 msgid "xsd:float error"
 msgstr "Virheellinen desimaali"
 
-#: translations/attribute.html:34
+#: translations/attribute.html:36
 msgid "xsd:gDay"
 msgstr "Päivämäärä"
 
-#: translations/attribute.html:35
+#: translations/attribute.html:37
 msgid "xsd:gDay error"
 msgstr "Virheellinen päivämäärä"
 
-#: translations/attribute.html:32
+#: translations/attribute.html:34
 msgid "xsd:gMonth"
 msgstr "Kuukausi"
 
-#: translations/attribute.html:33
+#: translations/attribute.html:35
 msgid "xsd:gMonth error"
 msgstr "Virheellinen kuukausi"
 
-#: translations/attribute.html:30
+#: translations/attribute.html:32
 msgid "xsd:gYear"
 msgstr "Vuosi"
 
-#: translations/attribute.html:31
+#: translations/attribute.html:33
 msgid "xsd:gYear error"
 msgstr "Virheellinen vuosi"
 
-#: translations/attribute.html:22
+#: translations/attribute.html:24
 msgid "xsd:int"
 msgstr "Kokonaisluku (32bit)"
 
-#: translations/attribute.html:23
+#: translations/attribute.html:25
 msgid "xsd:int error"
 msgstr "Virheellinen kokonaisluku"
 
-#: translations/attribute.html:18
+#: translations/attribute.html:20
 msgid "xsd:integer"
 msgstr "Kokonaisluku"
 
-#: translations/attribute.html:19
+#: translations/attribute.html:21
 msgid "xsd:integer error"
 msgstr "Virheellinen kokonaisluku"
 
-#: translations/attribute.html:20
+#: translations/attribute.html:22
 msgid "xsd:long"
 msgstr "Kokonaisluku (64bit)"
 
-#: translations/attribute.html:21
+#: translations/attribute.html:23
 msgid "xsd:long error"
 msgstr "Virheellinen kokonaisluku"
 
@@ -1390,11 +1398,11 @@ msgstr "Teksti"
 msgid "xsd:string error"
 msgstr "Virheellinen teksti"
 
-#: translations/attribute.html:28
+#: translations/attribute.html:30
 msgid "xsd:time"
 msgstr "Aika"
 
-#: translations/attribute.html:29
+#: translations/attribute.html:31
 msgid "xsd:time error"
 msgstr "Virheellinen aika"
 

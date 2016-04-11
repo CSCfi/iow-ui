@@ -67,7 +67,7 @@ msgstr ""
 
 #: components/editor/classForm.html:63
 #: components/editor/predicateForm.html:37
-#: components/model/modelForm.html:28
+#: components/model/modelForm.html:29
 msgid "Additional information"
 msgstr ""
 
@@ -472,7 +472,7 @@ msgstr ""
 msgid "Delete reference"
 msgstr ""
 
-#: components/model/relationsView.html:10
+#: components/model/relationsView.html:19
 msgid "Delete relation"
 msgstr ""
 
@@ -927,12 +927,20 @@ msgstr ""
 msgid "Range"
 msgstr ""
 
-#: translations/attribute.html:6
+#: translations/attribute.html:8
 msgid "rdf:langString"
 msgstr ""
 
-#: translations/attribute.html:7
+#: translations/attribute.html:9
 msgid "rdf:langString error"
+msgstr ""
+
+#: translations/attribute.html:6
+msgid "rdfs:Literal"
+msgstr ""
+
+#: translations/attribute.html:7
+msgid "rdfs:Literal error"
 msgstr ""
 
 #: translations/misc.html:19
@@ -1257,107 +1265,107 @@ msgstr ""
 msgid "Write identifier"
 msgstr ""
 
-#: translations/attribute.html:8
+#: translations/attribute.html:10
 msgid "xsd:anyURI"
 msgstr ""
 
-#: translations/attribute.html:9
+#: translations/attribute.html:11
 msgid "xsd:anyURI error"
 msgstr ""
 
-#: translations/attribute.html:10
+#: translations/attribute.html:12
 msgid "xsd:boolean"
 msgstr ""
 
-#: translations/attribute.html:11
+#: translations/attribute.html:13
 msgid "xsd:boolean error"
 msgstr ""
 
-#: translations/attribute.html:24
+#: translations/attribute.html:26
 msgid "xsd:date"
 msgstr ""
 
-#: translations/attribute.html:25
+#: translations/attribute.html:27
 msgid "xsd:date error"
 msgstr ""
 
-#: translations/attribute.html:26
+#: translations/attribute.html:28
 msgid "xsd:dateTime"
 msgstr ""
 
-#: translations/attribute.html:27
+#: translations/attribute.html:29
 msgid "xsd:dateTime error"
 msgstr ""
 
-#: translations/attribute.html:12
+#: translations/attribute.html:14
 msgid "xsd:decimal"
 msgstr ""
 
-#: translations/attribute.html:13
+#: translations/attribute.html:15
 msgid "xsd:decimal error"
 msgstr ""
 
-#: translations/attribute.html:14
+#: translations/attribute.html:16
 msgid "xsd:double"
 msgstr ""
 
-#: translations/attribute.html:15
+#: translations/attribute.html:17
 msgid "xsd:double error"
 msgstr ""
 
-#: translations/attribute.html:16
+#: translations/attribute.html:18
 msgid "xsd:float"
 msgstr ""
 
-#: translations/attribute.html:17
+#: translations/attribute.html:19
 msgid "xsd:float error"
 msgstr ""
 
-#: translations/attribute.html:34
+#: translations/attribute.html:36
 msgid "xsd:gDay"
 msgstr ""
 
-#: translations/attribute.html:35
+#: translations/attribute.html:37
 msgid "xsd:gDay error"
 msgstr ""
 
-#: translations/attribute.html:32
+#: translations/attribute.html:34
 msgid "xsd:gMonth"
 msgstr ""
 
-#: translations/attribute.html:33
+#: translations/attribute.html:35
 msgid "xsd:gMonth error"
 msgstr ""
 
-#: translations/attribute.html:30
+#: translations/attribute.html:32
 msgid "xsd:gYear"
 msgstr ""
 
-#: translations/attribute.html:31
+#: translations/attribute.html:33
 msgid "xsd:gYear error"
 msgstr ""
 
-#: translations/attribute.html:22
+#: translations/attribute.html:24
 msgid "xsd:int"
 msgstr ""
 
-#: translations/attribute.html:23
+#: translations/attribute.html:25
 msgid "xsd:int error"
 msgstr ""
 
-#: translations/attribute.html:18
+#: translations/attribute.html:20
 msgid "xsd:integer"
 msgstr ""
 
-#: translations/attribute.html:19
+#: translations/attribute.html:21
 msgid "xsd:integer error"
 msgstr ""
 
-#: translations/attribute.html:20
+#: translations/attribute.html:22
 msgid "xsd:long"
 msgstr ""
 
-#: translations/attribute.html:21
+#: translations/attribute.html:23
 msgid "xsd:long error"
 msgstr ""
 
@@ -1369,11 +1377,11 @@ msgstr ""
 msgid "xsd:string error"
 msgstr ""
 
-#: translations/attribute.html:28
+#: translations/attribute.html:30
 msgid "xsd:time"
 msgstr ""
 
-#: translations/attribute.html:29
+#: translations/attribute.html:31
 msgid "xsd:time error"
 msgstr ""
 
