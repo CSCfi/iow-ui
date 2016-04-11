@@ -11,7 +11,8 @@ import {
   Predicate,
   Property,
   Model,
-  GraphData
+  GraphData,
+  NamespaceType
 } from './entities';
 import { PredicateService } from './predicateService';
 import { Language } from './languageService';
@@ -89,6 +90,7 @@ export class ClassService {
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
+        klass.external = model.isNamespaceKnownAndOfType(klass.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
         return klass;
       });
   }
@@ -101,6 +103,7 @@ export class ClassService {
         shape.definedBy = profile.asDefinedBy();
         shape.subject = klass.subject;
         shape.unsaved = true;
+        shape.external = profile.isNamespaceKnownAndOfType(klass.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
         return shape;
       });
   }
@@ -108,7 +111,11 @@ export class ClassService {
   getExternalClass(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.entities.deserializeClass(response.data));
+      .then((response: any) => this.entities.deserializeClass(response.data))
+      .then(klass => {
+        klass.external = true;
+        return klass;
+      });
   }
 
   getExternalClassesForModel(model: Model) {

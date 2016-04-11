@@ -23,7 +23,8 @@ import {
   Model,
   Type,
   Property,
-  DefinedBy
+  DefinedBy,
+  NamespaceType
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -37,9 +38,9 @@ import IQService = angular.IQService;
 import { MaintenanceModal } from '../maintenance';
 import { Show, ChangeNotifier, ChangeListener } from './../contracts';
 import { Uri } from '../../services/uri';
-
-import { module as mod }  from './module';
 import { comparingLocalizable } from '../../services/comparators';
+import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
+import { module as mod }  from './module';
 
 mod.directive('model', () => {
   return {
@@ -84,6 +85,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
               private maintenanceModal: MaintenanceModal,
+              private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               public languageService: LanguageService) {
 
     this.init(new RouteData($routeParams));
@@ -354,7 +356,18 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private createShape(klass: Class) {
     this.assignMissingPredicates(klass);
-    return this.classService.newShape(klass, this.model, this.languageService.modelLanguage);
+    return this.classService.newShape(klass, this.model, this.languageService.modelLanguage)
+      .then(shape => {
+        if (shape.external) {
+          return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, 'external')]);
+        } else {
+          return this.$q.when([shape, shape.properties]);
+        }
+      })
+      .then(([shape, properties]: [Class, Property[]]) => {
+        shape.properties = properties;
+        return shape;
+      });
   }
 
   private assignClassToModel(klass: Class) {
@@ -368,6 +381,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     this.$q.all(
       _.chain(klass.properties)
         .map((property: Property) => property.predicate)
+        .filter((predicateId: Uri) => this.model.isNamespaceKnownAndOfType(predicateId.namespace, [NamespaceType.MODEL]))
         .filter((predicateId: Uri) => !predicateIds.has(predicateId.uri))
         .map((predicateId: Uri) => this.assignPredicateToModel(predicateId))
         .value()

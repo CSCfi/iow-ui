@@ -602,6 +602,7 @@ export class Class extends AbstractClass {
   version: Urn;
 
   unsaved: boolean = false;
+  external: boolean = false;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -644,6 +645,7 @@ export class Class extends AbstractClass {
     const serialization = this.serialize(false, true);
     const result = new Class(serialization['@graph'], serialization['@context'], this.frame);
     result.unsaved = this.unsaved;
+    result.external = this.external;
     return result;
   }
 
