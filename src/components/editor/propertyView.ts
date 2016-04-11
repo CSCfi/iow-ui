@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
+import { Class, Property, Predicate, Model, Localizable, NamespaceType } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
@@ -81,7 +81,7 @@ export class PropertyViewController {
           if (predicate instanceof Predicate) {
             this.predicate = predicate;
           } else if (predicate instanceof Uri) {
-            if (this.model.isKnownModelNamespace(predicate.namespace)) {
+            if (this.model.isNamespaceKnownAndOfType(predicate.namespace, [NamespaceType.MODEL])) {
               predicateService.getPredicate(predicate).then(p => this.predicate = p);
             } else {
               predicateService.getExternalPredicate(this.model, predicate).then(p => this.predicate = p);

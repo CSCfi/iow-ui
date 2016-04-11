@@ -354,9 +354,9 @@ export class Model extends AbstractModel {
     return new DefinedBy({'@id': this.id.uri, '@type': reverseMapTypeObject(this.type), label: this.label}, this.context, this.frame);
   }
 
-  isKnownModelNamespace(namespace: Url)  {
+  isNamespaceKnownAndOfType(namespace: Url, types: NamespaceType[])  {
     for (const knownNamespace of this.getNamespaces()) {
-      if (knownNamespace.type === NamespaceType.MODEL && namespace === knownNamespace.url) {
+      if (namespace === knownNamespace.url && containsAny(types, [knownNamespace.type])) {
         return true;
       }
     }
@@ -369,7 +369,7 @@ export class Model extends AbstractModel {
       const typeArray: Type[] = normalizeAsArray<Type>(destination.type);
 
       if (id && !id.isUrn()) {
-        return this.isKnownModelNamespace(id.namespace) ? internalUrl(id, typeArray) : id.url;
+        return this.isNamespaceKnownAndOfType(id.namespace, [NamespaceType.MODEL]) ? internalUrl(id, typeArray) : id.url;
       } else {
         return null;
       }
