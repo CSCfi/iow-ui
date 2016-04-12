@@ -77,7 +77,7 @@ export interface SearchPredicateScope extends IScope {
 
 export class SearchPredicateController {
 
-  private predicates: PredicateListItem[];
+  private predicates: PredicateListItem[] = [];
 
   editInProgress = () => this.$scope.form.editing && this.$scope.form.$dirty;
   close = this.$uibModalInstance.dismiss;
@@ -85,7 +85,7 @@ export class SearchPredicateController {
   selection: Predicate|FormData;
   searchText: string = '';
   showModel: DefinedBy;
-  models: DefinedBy[];
+  models: DefinedBy[] = [];
   types: Type[];
   typeSelectable: boolean;
   submitError: string;
@@ -109,30 +109,31 @@ export class SearchPredicateController {
     this.loadingResults = true;
     this.typeSelectable = !type;
 
-    const predicatePromises: IPromise<PredicateListItem[]>[] = [];
-    predicatePromises.push(predicateService.getAllPredicates());
+    const appendResults = (predicates: PredicateListItem[]) => {
+      this.predicates = this.predicates.concat(predicates);
+
+      this.models = _.chain(this.predicates)
+        .map(predicate => predicate.definedBy)
+        .uniq(definedBy => definedBy.id.uri)
+        .sort(comparingLocalizable<PredicateListItem>(languageService.modelLanguage, predicate => predicate.label))
+        .value();
+
+      this.types = _.chain(this.predicates)
+        .map(predicate => predicate.normalizedType)
+        .uniq()
+        .value();
+
+      this.search();
+
+      console.log(predicates);
+      this.loadingResults = false;
+    };
+
+    predicateService.getAllPredicates().then(appendResults);
 
     if (model.isOfType('profile') && this.typeSelectable) {
-      predicatePromises.push(predicateService.getExternalPredicatesForModel(model));
+      predicateService.getExternalPredicatesForModel(model).then(appendResults);
     }
-
-    $q.all(predicatePromises)
-      .then((predicatesLists: PredicateListItem[][]) => {
-
-        this.predicates = _.flatten(predicatesLists);
-        this.models = _.chain(this.predicates)
-          .map(predicate => predicate.definedBy)
-          .uniq(definedBy => definedBy.id.uri)
-          .sort(comparingLocalizable<PredicateListItem>(languageService.modelLanguage, predicate => predicate.label))
-          .value();
-
-        this.types = _.chain(this.predicates)
-          .map(predicate => predicate.normalizedType)
-          .uniq()
-          .value();
-
-        this.search();
-      });
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
@@ -148,30 +149,25 @@ export class SearchPredicateController {
   }
 
   search() {
-    if (this.predicates) {
+    const result: (PredicateListItem|AddNewPredicate)[] = [
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAttributeAddable() && this.model.isOfType('profile'), 'attribute', true),
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAssociationAddable() && this.model.isOfType('profile'), 'association', true)
+    ];
 
-      const result: (PredicateListItem|AddNewPredicate)[] = [
-        new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
-        new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
-        new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAttributeAddable() && this.model.isOfType('profile'), 'attribute', true),
-        new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAssociationAddable() && this.model.isOfType('profile'), 'association', true)
-      ];
+    const predicateSearchResult = this.predicates.filter(predicate =>
+      this.textFilter(predicate) &&
+      this.modelFilter(predicate) &&
+      this.typeFilter(predicate) &&
+      this.excludedFilter(predicate)
+    );
 
-      const predicateSearchResult = this.predicates.filter(predicate =>
-        this.textFilter(predicate) &&
-        this.modelFilter(predicate) &&
-        this.typeFilter(predicate) &&
-        this.excludedFilter(predicate)
-      );
+    predicateSearchResult.sort(
+      comparingBoolean((item: PredicateListItem) => !!this.exclude(item))
+        .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
 
-      predicateSearchResult.sort(
-        comparingBoolean((item: PredicateListItem) => !!this.exclude(item))
-          .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
-
-      this.searchResults = result.concat(predicateSearchResult);
-    }
-
-    this.loadingResults = !isDefined(this.predicates);
+    this.searchResults = result.concat(predicateSearchResult);
   }
 
   selectItem(item: PredicateListItem|AddNewPredicate) {

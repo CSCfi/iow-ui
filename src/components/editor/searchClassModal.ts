@@ -69,7 +69,7 @@ export interface SearchClassScope extends IScope {
 
 class SearchClassController {
 
-  private classes: ClassListItem[];
+  private classes: ClassListItem[] = [];
 
   close = this.$uibModalInstance.dismiss;
   searchResults: (ClassListItem|AddNewClass)[] = [];
@@ -99,25 +99,25 @@ class SearchClassController {
     this.showProfiles = onlySelection;
     this.loadingResults = true;
 
-    const classPromises: IPromise<ClassListItem[]>[] = [];
-    classPromises.push(classService.getAllClasses());
+    const appendResults = (classes: ClassListItem[]) => {
+      this.classes = this.classes.concat(classes);
+
+      this.models = _.chain(this.classes)
+        .map(klass => klass.definedBy)
+        .uniq(definedBy => definedBy.id.uri)
+        .sort(comparingLocalizable<ClassListItem>(languageService.modelLanguage, klass => klass.label))
+        .value();
+
+      this.search();
+
+      this.loadingResults = false;
+    };
+
+    classService.getAllClasses().then(appendResults);
 
     if (model.isOfType('profile')) {
-      classPromises.push(classService.getExternalClassesForModel(model));
+      classService.getExternalClassesForModel(model).then(appendResults);
     }
-
-    $q.all(classPromises)
-      .then((classesLists: ClassListItem[][]) => {
-
-        this.classes = _.flatten(classesLists);
-        this.models = _.chain(this.classes)
-          .map(klass => klass.definedBy)
-          .uniq(definedBy => definedBy.id.uri)
-          .sort(comparingLocalizable<ClassListItem>(languageService.modelLanguage, klass => klass.label))
-          .value();
-
-        this.search();
-      });
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
@@ -133,28 +133,23 @@ class SearchClassController {
   }
 
   search() {
-    if (this.classes) {
+    const result: (ClassListItem|AddNewClass)[] = [
+      new AddNewClass(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this), false),
+      new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
+    ];
 
-      const result: (ClassListItem|AddNewClass)[] = [
-        new AddNewClass(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this), false),
-        new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
-      ];
+    const classSearchResult = this.classes.filter(klass =>
+      this.textFilter(klass) &&
+      this.modelFilter(klass) &&
+      this.excludedFilter(klass) &&
+      this.showProfilesFilter(klass)
+    );
 
-      const classSearchResult = this.classes.filter(klass =>
-        this.textFilter(klass) &&
-        this.modelFilter(klass) &&
-        this.excludedFilter(klass) &&
-        this.showProfilesFilter(klass)
-      );
+    classSearchResult.sort(
+      comparingBoolean((item: ClassListItem) => !!this.exclude(item))
+        .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
 
-      classSearchResult.sort(
-        comparingBoolean((item: ClassListItem) => !!this.exclude(item))
-          .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
-
-      this.searchResults = result.concat(classSearchResult);
-    }
-
-    this.loadingResults = !isDefined(this.classes);
+    this.searchResults = result.concat(classSearchResult);
   }
 
   canAddNew() {
