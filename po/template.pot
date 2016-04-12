@@ -85,8 +85,8 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: components/editor/searchClassModal.html:26
-#: components/editor/searchPredicateModal.html:32
+#: components/editor/searchClassModal.html:27
+#: components/editor/searchPredicateModal.html:33
 msgid "All models"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:40
+#: components/editor/searchPredicateModal.html:41
 msgid "All types"
 msgstr ""
 
@@ -215,9 +215,9 @@ msgstr ""
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:67
+#: components/editor/searchClassModal.html:68
 #: components/editor/searchConceptModal.html:91
-#: components/editor/searchPredicateModal.html:78
+#: components/editor/searchPredicateModal.html:79
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
@@ -283,8 +283,12 @@ msgstr ""
 msgid "Class properties"
 msgstr ""
 
-#: components/editor/searchClassModal.html:13
+#: components/editor/searchClassModal.html:14
 msgid "Class search info"
+msgstr ""
+
+#: components/editor/searchClassModal.html:13
+msgid "Class search or create info"
 msgstr ""
 
 #: translations/misc.html:168
@@ -592,7 +596,7 @@ msgstr ""
 msgid "fi"
 msgstr ""
 
-#: components/editor/searchClassModal.html:22
+#: components/editor/searchClassModal.html:23
 msgid "Filter results"
 msgstr ""
 
@@ -1023,7 +1027,7 @@ msgstr ""
 msgid "search attribute or association"
 msgstr ""
 
-#: components/editor/searchClassModal.html:15
+#: components/editor/searchClassModal.html:16
 msgid "search class"
 msgstr ""
 
@@ -1034,6 +1038,10 @@ msgstr ""
 
 #: components/editor/searchConceptModal.html:12
 msgid "Search from concept database"
+msgstr ""
+
+#: components/editor/searchPredicateModal.html:20
+msgid "Search or create predicate info"
 msgstr ""
 
 #: components/editor/searchPredicateModal.html:19
@@ -1105,7 +1113,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: components/editor/searchClassModal.html:32
+#: components/editor/searchClassModal.html:33
 msgid "Show classes defined in profiles"
 msgstr ""
 

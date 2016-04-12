@@ -85,8 +85,8 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/editor/searchClassModal.html:26
-#: components/editor/searchPredicateModal.html:32
+#: components/editor/searchClassModal.html:27
+#: components/editor/searchPredicateModal.html:33
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
@@ -94,7 +94,7 @@ msgstr "Kaikki kirjastot"
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/editor/searchPredicateModal.html:40
+#: components/editor/searchPredicateModal.html:41
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -213,9 +213,9 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/advancedSearchModal.html:33
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:16
-#: components/editor/searchClassModal.html:67
+#: components/editor/searchClassModal.html:68
 #: components/editor/searchConceptModal.html:91
-#: components/editor/searchPredicateModal.html:78
+#: components/editor/searchPredicateModal.html:79
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
@@ -280,8 +280,12 @@ msgstr "Luokat"
 msgid "Class properties"
 msgstr "Luokan ominaisuudet"
 
-#: components/editor/searchClassModal.html:13
+#: components/editor/searchClassModal.html:14
 msgid "Class search info"
+msgstr "Hae tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista."
+
+#: components/editor/searchClassModal.html:13
+msgid "Class search or create info"
 msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
@@ -593,7 +597,7 @@ msgstr "Ulkoinen tunniste"
 msgid "fi"
 msgstr "Suomeksi"
 
-#: components/editor/searchClassModal.html:22
+#: components/editor/searchClassModal.html:23
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
@@ -1022,7 +1026,7 @@ msgstr "Hae attribuuttia…"
 msgid "search attribute or association"
 msgstr "Hae attribuuttia tai assosiaatiota…"
 
-#: components/editor/searchClassModal.html:15
+#: components/editor/searchClassModal.html:16
 msgid "search class"
 msgstr "Hae luokkaa…"
 
@@ -1034,11 +1038,17 @@ msgstr "Etsi yhteensopivuuden kuvauksista..."
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
 
-#: components/editor/searchPredicateModal.html:19
-msgid "Search predicate info"
+#: components/editor/searchPredicateModal.html:20
+msgid "Search or create predicate info"
 msgstr ""
 "Hae ensin tarvitsemaasi attribuuttia tai assosiaatiota yhteentoimivuuden "
 "kuvauksista. Jos et löydä tarpeisiisi sopivaa, voit luoda uuden ominaisuuden."
+
+#: components/editor/searchPredicateModal.html:19
+msgid "Search predicate info"
+msgstr ""
+"Hae tarvitsemaasi attribuuttia tai assosiaatiota yhteentoimivuuden "
+"kuvauksista."
 
 #: components/model/searchRequireModal.html:15
 msgid "search require"
@@ -1104,7 +1114,7 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/editor/searchClassModal.html:32
+#: components/editor/searchClassModal.html:33
 msgid "Show classes defined in profiles"
 msgstr "Näytä profiileissa määritellyt luokat"
 
