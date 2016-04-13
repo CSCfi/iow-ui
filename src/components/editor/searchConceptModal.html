@@ -40,7 +40,7 @@
         </div>
 
         <div class="col-md-4 search-selection">
-          <div ng-show="ctrl.selection">
+          <div ng-if="ctrl.selection">
 
             <div ng-if="ctrl.isConcept(ctrl.selection)">
               <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept label" value="ctrl.selection.label"></non-editable>

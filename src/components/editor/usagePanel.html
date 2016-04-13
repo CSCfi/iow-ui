@@ -3,7 +3,9 @@
     <uib-accordion-heading>
       <span accordion-chevron is-open="ctrl.open">{{'Usage' | translate}}</span>
     </uib-accordion-heading>
-    <usage ng-show="ctrl.hasReferrers()" usage="ctrl.usage" show-links="true"></usage>
-    <p ng-hide="ctrl.loading || ctrl.hasReferrers()" translate>No referrers</p>
+    <div ng-if="ctrl.open">
+      <usage ng-show="ctrl.hasReferrers()" usage="ctrl.usage" show-links="true"></usage>
+      <p ng-hide="ctrl.loading || ctrl.hasReferrers()" translate>No referrers</p>
+    </div>
   </uib-accordion-group>
 </uib-accordion>

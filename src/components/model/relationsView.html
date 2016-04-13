@@ -16,19 +16,21 @@
       <uib-accordion-heading>
         <span accordion-chevron is-open="ctrl.opened[$index]">{{relation.title | translateValue}}</span>
       </uib-accordion-heading>
-      <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeRelation(relation)" translate>Delete relation</button>
+      <div ng-if="ctrl.opened[$index]">
+        <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeRelation(relation)" translate>Delete relation</button>
 
-      <editable data-title="Homepage" link="relation.homepage.url">
-        <input class="form-control" type="text" uri-input="free-url" model="ctrl.model" required ng-model="relation.homepage" />
-      </editable>
+        <editable data-title="Homepage" link="relation.homepage.url">
+          <input class="form-control" type="text" uri-input="free-url" model="ctrl.model" required ng-model="relation.homepage" />
+        </editable>
 
-      <editable data-title="Title">
-        <input class="form-control" type="text" localized-input="label" ng-model="relation.title"/>
-      </editable>
+        <editable data-title="Title">
+          <input class="form-control" type="text" localized-input="label" ng-model="relation.title"/>
+        </editable>
 
-      <editable data-title="Description">
-        <textarea class="form-control" localized-input ng-model="relation.description"></textarea>
-      </editable>
+        <editable data-title="Description">
+          <textarea class="form-control" localized-input ng-model="relation.description"></textarea>
+        </editable>
+      </div>
     </uib-accordion-group>
   </uib-accordion>
 </div>

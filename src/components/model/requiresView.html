@@ -6,21 +6,23 @@
       <span accordion-chevron is-open="ctrl.opened[$index]">{{require | translateLabel}}</span>
     </uib-accordion-heading>
 
-    <button ng-show="modelViewController.canModify()"
-            ng-disabled="modelViewController.isRequireInUse(require)" type="button" class="btn btn-default pull-right"
-            ng-click="modelViewController.removeRequire(require)" translate>Delete require</button>
+    <div ng-if="ctrl.opened[$index]">
+      <button ng-show="modelViewController.canModify()"
+              ng-disabled="modelViewController.isRequireInUse(require)" type="button" class="btn btn-default pull-right"
+              ng-click="modelViewController.removeRequire(require)" translate>Delete require</button>
 
-    <editable data-title="Require label" disable="!require.labelModifiable">
-      <input type="text" class="form-control" localized-input="modelLabel" ng-model="require.label" />
-    </editable>
+      <editable data-title="Require label" disable="!require.labelModifiable">
+        <input type="text" class="form-control" localized-input="modelLabel" ng-model="require.label" />
+      </editable>
 
-    <editable data-title="Namespace" disable="!require.namespaceModifiable">
-      <input type="text" class="form-control" ng-disabled="modelViewController.isRequireInUse(require)" required namespace-input model="ctrl.model" active-require="require" ng-model="require.namespace" />
-    </editable>
+      <editable data-title="Namespace" disable="!require.namespaceModifiable">
+        <input type="text" class="form-control" ng-disabled="modelViewController.isRequireInUse(require)" required namespace-input model="ctrl.model" active-require="require" ng-model="require.namespace" />
+      </editable>
 
-    <editable data-title="Prefix" disable="!require.prefixModifiable">
-      <input type="text" class="form-control" required prefix-input model="ctrl.model" active-require="require" ng-model="require.prefix" />
-    </editable>
+      <editable data-title="Prefix" disable="!require.prefixModifiable">
+        <input type="text" class="form-control" required prefix-input model="ctrl.model" active-require="require" ng-model="require.prefix" />
+      </editable>
+    </div>
   </uib-accordion-group>
 
   <uib-accordion-group is-open="technicalOpen">
@@ -28,7 +30,7 @@
       <span accordion-chevron is-open="technicalOpen">{{'Technical namespaces' | translate}}</span>
     </uib-accordion-heading>
 
-    <table class="table table-hover">
+    <table ng-if="technicalOpen" class="table table-hover">
       <thead>
       <tr>
         <th translate>Prefix</th>

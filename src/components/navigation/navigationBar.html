@@ -7,10 +7,10 @@
     <li ng-repeat="language in ctrl.languages">
       <a ng-click="ctrl.language = language.code">{{language.name}}</a>
     </li>
-    <li ng-hide="ctrl.getUser().isLoggedIn()">
+    <li ng-if="!ctrl.getUser().isLoggedIn()">
       <a ng-click="ctrl.openLogin()" translate>Login</a>
     </li>
-    <li ng-show="ctrl.getUser().isLoggedIn()">
+    <li ng-if="ctrl.getUser().isLoggedIn()">
       <div class="btn-group navbar-btn" uib-dropdown is-open="status.isopen">
         <button class="btn btn-default navbar-btn" uib-dropdown-toggle>{{ctrl.getUser().name}} <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
