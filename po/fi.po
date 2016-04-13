@@ -66,7 +66,7 @@ msgstr "Lisää sanasto"
 
 #: components/model/addRelationModal.html:3 components/model/modelView.html:13
 msgid "Add related resource"
-msgstr "Lisää resurssi"
+msgstr "Lisää linkki"
 
 #: components/model/addRequireModal.html:3 components/model/modelView.html:11
 msgid "Add require"
@@ -972,7 +972,7 @@ msgstr "Ei viittauksia"
 
 #: components/model/relationsView.html:3
 msgid "No relations yet"
-msgstr "Ei resursseja"
+msgstr "Ei linkkejä"
 
 #: components/advancedSearchModal.html:21 components/frontPage.html:33
 msgid "No search results"
@@ -1144,7 +1144,7 @@ msgstr "Luo tunnukset"
 
 #: components/model/relationsView.html:1
 msgid "Related resources"
-msgstr "Viitatut resurssit"
+msgstr "Linkit"
 
 #: components/form/errorMessages.html:8
 msgid "Required error"
