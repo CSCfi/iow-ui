@@ -83,7 +83,7 @@ class SearchResultsController<T extends WithId> {
   onSelect: angular.ICompiledExpression;
   editInProgress: () => boolean;
 
-  constructor($scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
+  constructor(private $scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
     $scope.$watchCollection(() => this.items, items => {
       this.searchResults = _.map(items, item => {
         if (item instanceof AddNew) {
@@ -94,6 +94,16 @@ class SearchResultsController<T extends WithId> {
         }
       });
     });
+  }
+
+  trackingFn(item: SearchResult<T>|AddNew) {
+    if (item instanceof SearchResult) {
+      return item.item.id.value;
+    } else if (item instanceof AddNew) {
+      return item.label;
+    } else {
+      throw new Error('Unsupported item type: ' + item);
+    }
   }
 
   isSelected(item: SearchResult<T>|AddNew) {

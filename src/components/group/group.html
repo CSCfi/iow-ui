@@ -31,7 +31,7 @@
             <div class="panel-body">
               <span ng-if="ctrl.models.length === 0" translate>No models yet</span>
               <ul ng-if="ctrl.models.length > 0" class="selectable-panel__list">
-                <li ng-repeat="model in ctrl.models"
+                <li ng-repeat="model in ctrl.models track by model.id.value"
                     ng-click="ctrl.selectModel(model)">
                   <i ng-class="model.glyphIconClass"></i>
                   <span class="link">{{model | translateLabel}}</span>
@@ -46,7 +46,7 @@
             <div class="panel-body">
               <span ng-if="ctrl.profiles.length === 0" translate>No profiles yet</span>
               <ul ng-if="ctrl.profiles.length > 0" class="selectable-panel__list">
-                <li ng-repeat="profile in ctrl.profiles"
+                <li ng-repeat="profile in ctrl.profiles track by profile.id.value"
                     ng-click="ctrl.selectModel(profile)">
                   <i ng-class="profile.glyphIconClass"></i>
                   <span class="link">{{profile | translateLabel}}</span>

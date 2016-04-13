@@ -1,7 +1,7 @@
 <h4 translate>Imported requires</h4>
 
 <uib-accordion>
-  <uib-accordion-group ng-repeat="require in ctrl.model.requires" is-open="ctrl.opened[$index]">
+  <uib-accordion-group ng-repeat="require in ctrl.model.requires track by require.id.value" is-open="ctrl.opened[$index]">
     <uib-accordion-heading>
       <span accordion-chevron is-open="ctrl.opened[$index]">{{require | translateLabel}}</span>
     </uib-accordion-heading>

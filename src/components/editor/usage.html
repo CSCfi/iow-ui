@@ -1,9 +1,9 @@
 <span ng-if="!ctrl.referrers" translate>No referrers</span>
 <ul ng-if="ctrl.referrers">
-  <li ng-repeat="(type, referrers) in ctrl.referrers">
+  <li ng-repeat="(type, referrers) in ctrl.referrers track by $index">
     <span>{{type | translate}}</span>
     <ul>
-      <li ng-repeat="referrer in referrers">
+      <li ng-repeat="referrer in referrers track by referrer.id.value">
         {{referrer | translateLabel}} <span ng-hide="ctrl.showLinks()">({{referrer.id.compact}})</span><a ng-show="ctrl.showLinks()" ng-href="{{'#' + referrer.iowUrl()}}">({{referrer.id.compact}})</a>
       </li>
     </ul>

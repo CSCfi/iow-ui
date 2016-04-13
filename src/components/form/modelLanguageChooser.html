@@ -3,6 +3,6 @@
     {{'data ' + ctrl.language | translate}} <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-    <li role="menuitem" ng-repeat="language in ctrl.languages"><a ng-click="ctrl.language = language">{{language | translate}}</a></li>
+    <li role="menuitem" ng-repeat="language in ctrl.languages track by language"><a ng-click="ctrl.language = language">{{language | translate}}</a></li>
   </ul>
 </div>

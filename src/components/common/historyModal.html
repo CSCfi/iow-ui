@@ -6,7 +6,7 @@
 
     <div class="version-panel--left">
       <ul class="panel__list">
-        <li ng-repeat="version in ctrl.versions"
+        <li ng-repeat="version in ctrl.versions track by version.id.value"
             ng-class="{'model-panel__selection': ctrl.isSelected(version)}"
             ng-click="ctrl.select(version)">
           {{version.createdAt | localizedDate}} <span ng-if="ctrl.showAuthor">- {{version.createdBy}}</span>
