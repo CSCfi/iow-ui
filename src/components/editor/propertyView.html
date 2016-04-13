@@ -57,11 +57,11 @@
     </editable>
 
     <editable data-title="Min count">
-      <input id="{{ctrl.property.internalId + 'minCount'}}" min-input max="ctrl.property.maxCount" class="form-control" type="number" ng-model="ctrl.property.minCount" />
+      <input id="{{ctrl.property.internalId + 'minCount'}}" placeholder="0" min-input max="ctrl.property.maxCount" class="form-control" type="number" ng-model="ctrl.property.minCount" />
     </editable>
 
     <editable data-title="Max count">
-      <input id="{{ctrl.property.internalId + 'maxCount'}}" max-input min="ctrl.property.minCount" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
+      <input id="{{ctrl.property.internalId + 'maxCount'}}" placeholder="*" max-input min="ctrl.property.minCount" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
     </editable>
   </div>
 
