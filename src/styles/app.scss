@@ -489,8 +489,8 @@ selection-view, .main-editable-content {
 
 ajax-loading-indicator {
   position: absolute;
-  width: 99%;
-  height: 100%;
+  width: calc(100% - 30px);
+  height: calc(100% - 30px);
   z-index: 1000;
   background-color: #ffffff;
 
