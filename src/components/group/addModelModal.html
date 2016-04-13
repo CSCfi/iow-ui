@@ -9,7 +9,7 @@
       </div>
     </editable>
 
-    <editable data-title="{{ctrl.type + ' label'}}">
+    <editable data-title="{{ctrl.type + ' label' | capitalize}}">
       <div class="input-group input-group-md">
         <input id="name" type="text" class="form-control" required string-input="modelLabel" ng-model="ctrl.label" />
       </div>
