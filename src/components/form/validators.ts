@@ -39,10 +39,7 @@ export function isValidPrefixLength(prefix: string): boolean {
   return !prefix || prefix.length <= 8;
 }
 
-export function isValidPrefix(prefix: string): boolean {
-  return !prefix || !!prefix.match(/^[a-z]+$/);
-}
-
+export const isValidPrefix = createRegexValidator(/^[a-z][a-z0-9]*$/);
 export const isValidIdentifier = createRegexValidator(/^[a-zA-Z][a-zA-Z0-9]*$/);
 
 export function isValidNamespace(str: string|Uri): boolean {
