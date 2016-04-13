@@ -18,4 +18,14 @@ mod.directive('subjectView', () => {
 class SubjectViewController {
   subject: FintoConcept|ConceptSuggestion;
   title: string;
+  
+  get subjectTitle() {
+    if (this.title) {
+      return this.title;
+    } else if (!this.subject) {
+      return 'Concept';
+    } else {
+      return this.subject.suggestion ? 'Concept suggestion' : 'Concept';
+    }
+  }
 }

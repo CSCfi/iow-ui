@@ -1,11 +1,11 @@
 
-<editable data-title="Constraint description">
+<editable data-title="Description">
   <textarea id="constraintComment" class="form-control" localized-input ng-model="ctrl.constraint.comment"></textarea>
 </editable>
 
 <div class="editable-wrap form-group">
 
-  <label translate>Constraint classes</label>
+  <editable-label data-title="'Constraint classes'"></editable-label>
 
   <span ng-if="!ctrl.isEditing()" ng-repeat="item in ctrl.constraint.items">
     <a ng-href="{{'#' + ctrl.linkItem(item)}}">{{item | translateLabel}}</a>

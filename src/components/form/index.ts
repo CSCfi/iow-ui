@@ -10,6 +10,7 @@ import './dataTypeInput';
 import './bootstrapInput';
 import './uriInput';
 import './editable';
+import './editableLabel';
 import './editableEntityButtons';
 import './errorMessages';
 import './href';

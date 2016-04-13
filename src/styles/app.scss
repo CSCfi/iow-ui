@@ -40,6 +40,10 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
+.glyphicon.info {
+  color: $brand-info;
+}
+
 .modal.fade {
   // IE11 autofocus fix by removing slide animation
   transition:opacity .3s linear;

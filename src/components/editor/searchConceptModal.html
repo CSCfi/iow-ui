@@ -43,9 +43,9 @@
           <div ng-show="ctrl.selection">
 
             <div ng-if="ctrl.isConcept(ctrl.selection)">
-              <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept" value="ctrl.selection.label"></non-editable>
-              <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion" value="ctrl.selection.label"></non-editable>
-              <non-editable data-title="Id" value="ctrl.selection.id"></non-editable>
+              <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept label" value="ctrl.selection.label"></non-editable>
+              <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion label" value="ctrl.selection.label"></non-editable>
+              <non-editable data-title="Concept id" value="ctrl.selection.id"></non-editable>
               <non-editable data-title="Definition" value="ctrl.selection.comment"></non-editable>
             </div>
 
@@ -62,11 +62,9 @@
                 </div>
               </editable>
 
-              <div class="editable-wrap">
-                <subject-view subject="ctrl.formData.concept.broaderConcept" data-title="Broader concept"></subject-view>
-                <div ng-class="{'model-view__sub': !!ctrl.formData.concept.broaderConcept}">
-                  <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
-                </div>
+              <subject-view subject="ctrl.formData.concept.broaderConcept" data-title="Broader concept"></subject-view>
+              <div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.formData.concept.broaderConcept}]">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
               </div>
 
               <br />

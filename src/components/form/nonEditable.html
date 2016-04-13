@@ -1,5 +1,5 @@
 <div ng-if="ctrl.item.displayValue" class="editable-wrap">
-  <label>{{ctrl.title | translate}}</label>
+  <editable-label data-title="ctrl.title"></editable-label>
   <a ng-if="ctrl.item.showLink" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
   <div ng-if="ctrl.item.showPlain">{{ctrl.item.displayValue}}</div>
 </div>

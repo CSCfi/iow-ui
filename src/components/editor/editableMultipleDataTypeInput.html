@@ -1,5 +1,5 @@
 <div class="editable-wrap form-group">
-  <label for="{{ctrl.id}}" ng-show="ctrl.title && (ctrl.ngModel.length > 0 || ctrl.isEditing())">{{ctrl.title | translate}}</label>
+  <editable-label input-id="ctrl.id" ng-show="ctrl.title && (ctrl.ngModel.length > 0 || ctrl.isEditing())" data-title="ctrl.title"></editable-label>
 
   <span ng-show="!ctrl.isEditing()" ng-repeat="value in ctrl.ngModel">
     <span>{{value}}<span ng-if="!$last">, </span></span>

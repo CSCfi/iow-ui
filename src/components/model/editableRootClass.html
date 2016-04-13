@@ -1,6 +1,6 @@
 <div class="editable-wrap">
   <div style="clear: both">
-    <label ng-show="ctrl.model.rootClass || ctrl.isEditing()" translate>Root class</label>
+    <editable-label ng-show="ctrl.model.rootClass || ctrl.isEditing()" data-title="'Root class'"></editable-label>
     <span ng-show="ctrl.isEditing() && !ctrl.model.rootClass" translate>Not selected</span>
     <a ng-if="ctrl.model.rootClass" ng-href="{{ctrl.href}}">{{ctrl.model.rootClass.compact}}</a>
   </div>
