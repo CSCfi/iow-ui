@@ -43,27 +43,27 @@
           <div ng-show="ctrl.selection">
 
             <div ng-if="ctrl.isConcept(ctrl.selection)">
-              <non-editable ng-if="!ctrl.selection.suggestion" title="Concept" value="ctrl.selection.label"></non-editable>
-              <non-editable ng-if="ctrl.selection.suggestion" title="Concept suggestion" value="ctrl.selection.label"></non-editable>
-              <non-editable title="Id" value="ctrl.selection.id"></non-editable>
-              <non-editable title="Definition" value="ctrl.selection.comment"></non-editable>
+              <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept" value="ctrl.selection.label"></non-editable>
+              <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion" value="ctrl.selection.label"></non-editable>
+              <non-editable data-title="Id" value="ctrl.selection.id"></non-editable>
+              <non-editable data-title="Definition" value="ctrl.selection.comment"></non-editable>
             </div>
 
             <div ng-if="!ctrl.isConcept(ctrl.selection)">
-              <editable title="Concept">
+              <editable data-title="Concept label">
                 <div class="input-group input-group-md">
                   <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.concept.label" />
                 </div>
               </editable>
 
-              <editable title="Definition">
+              <editable data-title="Definition">
                 <div class="input-group input-group-md">
                   <textarea id="conceptComment" class="form-control" required string-input ng-model="ctrl.formData.concept.comment"></textarea>
                 </div>
               </editable>
 
               <div class="editable-wrap">
-                <subject-view subject="ctrl.formData.concept.broaderConcept" title="Broader concept"></subject-view>
+                <subject-view subject="ctrl.formData.concept.broaderConcept" data-title="Broader concept"></subject-view>
                 <div ng-class="{'model-view__sub': !!ctrl.formData.concept.broaderConcept}">
                   <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
                 </div>
@@ -74,7 +74,7 @@
             </div>
 
             <div ng-if="ctrl.newEntityCreation">
-              <editable title="{{ctrl.labelTitle}}">
+              <editable data-title="{{ctrl.labelTitle}}">
                 <div class="input-group input-group-md">
                   <input id="name" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.entity.label" />
                 </div>

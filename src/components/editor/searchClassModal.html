@@ -47,7 +47,7 @@
           <class-form ng-if="!ctrl.isSelectionFormData() && ctrl.selection" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model"></class-form>
 
           <div ng-if="ctrl.isSelectionFormData()">
-            <editable title="External URI">
+            <editable data-title="External URI">
               <div class="input-group input-group-md">
                 <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="ctrl.model" ng-model="ctrl.selection.externalUri" />
               </div>

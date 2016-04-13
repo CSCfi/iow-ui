@@ -98,7 +98,7 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: translations/misc.html:198
+#: translations/misc.html:200
 msgid "Allowed values"
 msgstr "Sallitut arvot"
 
@@ -306,9 +306,17 @@ msgstr "Sulje"
 msgid "Concept"
 msgstr "Käsite"
 
+#: translations/misc.html:208
+msgid "Concept id"
+msgstr "Käsitteen tunniste"
+
 #: components/editor/searchConceptModal.html:73
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
+
+#: translations/misc.html:209
+msgid "Concept label"
+msgstr "Käsitteen nimi"
 
 #: components/editor/searchConceptModal.html:10
 msgid "Concept search info"
@@ -394,7 +402,7 @@ msgstr "Tietokanta"
 msgid "date format"
 msgstr "DD.MM.YYYY HH:mm"
 
-#: translations/misc.html:197
+#: translations/misc.html:199
 msgid "Default value"
 msgstr "Oletusarvo"
 
@@ -422,9 +430,17 @@ msgstr "Määrittele käsite uudelle attribuutille"
 msgid "Define concept for the new class"
 msgstr "Määrittele käsite uudelle luokalle"
 
-#: translations/misc.html:201
+#: translations/misc.html:203
 msgid "Defined by"
 msgstr "Määrittely"
+
+#: translations/misc.html:204
+msgid "Defined by library"
+msgstr "Määritelty tietokomponenttikirjastossa"
+
+#: translations/misc.html:205
+msgid "Defined by profile"
+msgstr "Määritelty soveltamisprofiilissa"
 
 #: translations/misc.html:183
 msgid "Definition"
@@ -601,7 +617,7 @@ msgstr "Suomeksi"
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
-#: translations/misc.html:200
+#: translations/misc.html:202
 msgid "Fixed value"
 msgstr "Pakollinen arvo"
 
@@ -641,7 +657,7 @@ msgstr "Piilota"
 msgid "Historical versions"
 msgstr "Historialliset versiot"
 
-#: translations/misc.html:202
+#: translations/misc.html:206
 msgid "Homepage"
 msgstr "Linkki"
 
@@ -672,7 +688,7 @@ msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
 
-#: translations/misc.html:199
+#: translations/misc.html:201
 msgid "Input"
 msgstr "Kirjoita"
 
@@ -918,6 +934,10 @@ msgstr "Assosiaatio"
 msgid "Pattern"
 msgstr "Säännollinen lauseke"
 
+#: translations/misc.html:198
+msgid "Predicate type"
+msgstr "Ominaisuuden tyyppi"
+
 #: components/model/requiresView.html:34 translations/misc.html:74
 msgid "Prefix"
 msgstr "Etuliite"
@@ -939,8 +959,12 @@ msgid "Profile label"
 msgstr "Soveltamisprofiilin nimi"
 
 #: translations/misc.html:196
-msgid "Property identifier"
+msgid "Property id"
 msgstr "Ominaisuuden tunniste"
+
+#: translations/misc.html:197
+msgid "Property label"
+msgstr "Ominaisuuden nimi"
 
 #: translations/misc.html:66
 msgid "Range"
@@ -1182,7 +1206,7 @@ msgstr "Tekniset nimiavaruudet"
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: translations/misc.html:203
+#: translations/misc.html:207
 msgid "Title"
 msgstr "Nimi"
 
@@ -1257,6 +1281,10 @@ msgstr "Versio"
 #: components/editor/visualizationView.html:5
 msgid "Visualization"
 msgstr "Visualisointi"
+
+#: translations/misc.html:210
+msgid "Vocabulary id"
+msgstr "Sanaston tunniste"
 
 #: translations/misc.html:83
 msgid "What can I do content"
@@ -1436,6 +1464,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:15
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Property identifier"
+#~ msgstr "Ominaisuuden tunniste"
 
 #~ msgid "Namespace is not required"
 #~ msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"

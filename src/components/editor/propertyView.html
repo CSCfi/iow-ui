@@ -5,62 +5,62 @@
           ng-disabled="!ctrl.inUnstableState"
           ng-click="editableController.removeProperty(ctrl.property)" translate>Delete property</button>
 
-  <editable title="Property identifier">
+  <editable data-title="Property id">
     <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
   </editable>
 
-  <editable title="Name">
+  <editable data-title="Property label">
     <input id="{{ctrl.property.internalId + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" ng-model="ctrl.property.label" />
   </editable>
 
-  <editable title="Description">
+  <editable data-title="Description">
     <textarea id="{{ctrl.property.internalId + 'comment'}}" class="form-control" localized-input ng-model="ctrl.property.comment"></textarea>
   </editable>
 
-  <editable title="State" value-as-localization-key="true">
+  <editable data-title="State" value-as-localization-key="true">
     <state-select id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></state-select>
   </editable>
 
-  <editable ng-if="ctrl.predicate.isAttribute()" title="Range">
+  <editable ng-if="ctrl.predicate.isAttribute()" data-title="Range">
     <range-select id="{{ctrl.property.internalId + 'range'}}" range="ctrl.property.dataType"></range-select>
   </editable>
 
-  <editable ng-if="ctrl.predicate.isAssociation()" title="Value class" link="ctrl.linkToValueClass()">
+  <editable ng-if="ctrl.predicate.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()">
     <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></uri-select>
   </editable>
 
-  <editable title="Example">
+  <editable data-title="Example">
     <input id="{{ctrl.property.internalId + 'example attribute'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.example" />
   </editable>
 
   <div ng-if="ctrl.model.isOfType('profile')">
-    <editable title="Default value">
+    <editable data-title="Default value">
       <input id="{{ctrl.property.internalId + 'default value'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.defaultValue" />
     </editable>
 
-    <editable title="Fixed value">
+    <editable data-title="Fixed value">
       <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.hasValue" />
     </editable>
 
-    <editable-multiple-data-type-input title="Allowed values" id="{{ctrl.property.internalId + 'allowedValues'}}" input-type="{{ctrl.property.inputType}}" ng-model="ctrl.property.in"></editable-multiple-data-type-input>
+    <editable-multiple-data-type-input data-title="Allowed values" id="{{ctrl.property.internalId + 'allowedValues'}}" input-type="{{ctrl.property.inputType}}" ng-model="ctrl.property.in"></editable-multiple-data-type-input>
 
-    <editable ng-if="ctrl.predicate.isAttribute()" title="Pattern">
+    <editable ng-if="ctrl.predicate.isAttribute()" data-title="Pattern">
       <input id="{{ctrl.property.internalId + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
     </editable>
 
-    <editable title="Min length">
+    <editable data-title="Min length">
       <input id="{{ctrl.property.internalId + 'minLength'}}" min-input max="ctrl.property.maxLength" class="form-control" type="number" ng-model="ctrl.property.minLength" />
     </editable>
 
-    <editable title="Max length">
+    <editable data-title="Max length">
       <input id="{{ctrl.property.internalId + 'maxLength'}}" max-input min="ctrl.property.minLength" class="form-control" type="number" ng-model="ctrl.property.maxLength" />
     </editable>
 
-    <editable title="Min count">
+    <editable data-title="Min count">
       <input id="{{ctrl.property.internalId + 'minCount'}}" min-input max="ctrl.property.maxCount" class="form-control" type="number" ng-model="ctrl.property.minCount" />
     </editable>
 
-    <editable title="Max count">
+    <editable data-title="Max count">
       <input id="{{ctrl.property.internalId + 'maxCount'}}" max-input min="ctrl.property.minCount" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
     </editable>
   </div>
@@ -72,11 +72,11 @@
       <uib-accordion-heading>
         <span accordion-chevron is-open="predicateOpen">{{ctrl.predicateName}}</span>
       </uib-accordion-heading>
-      <non-editable title="Id" value="ctrl.predicate.id"></non-editable>
-      <non-editable title="Name" value="ctrl.predicate.label"></non-editable>
-      <non-editable title="Description" value="ctrl.predicate.comment"></non-editable>
-      <non-editable title="Type" value="ctrl.predicate.normalizedType" value-as-localization-key="true"></non-editable>
-      <non-editable title="Range" value="ctrl.predicate.range"></non-editable>
+      <non-editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" value="ctrl.predicate.id"></non-editable>
+      <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label"></non-editable>
+      <non-editable data-title="Description" value="ctrl.predicate.comment"></non-editable>
+      <non-editable data-title="Predicate type" value="ctrl.predicate.normalizedType" value-as-localization-key="true"></non-editable>
+      <non-editable data-title="Range" value="ctrl.predicate.range"></non-editable>
       <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
       <subject-view subject="ctrl.predicate.subject"></subject-view>
     </uib-accordion-group>

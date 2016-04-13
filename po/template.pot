@@ -98,7 +98,7 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: translations/misc.html:198
+#: translations/misc.html:200
 msgid "Allowed values"
 msgstr ""
 
@@ -308,8 +308,16 @@ msgstr ""
 msgid "Concept"
 msgstr ""
 
+#: translations/misc.html:208
+msgid "Concept id"
+msgstr ""
+
 #: components/editor/searchConceptModal.html:73
 msgid "Concept is suggested to scheme"
+msgstr ""
+
+#: translations/misc.html:209
+msgid "Concept label"
 msgstr ""
 
 #: components/editor/searchConceptModal.html:10
@@ -396,7 +404,7 @@ msgstr ""
 msgid "date format"
 msgstr ""
 
-#: translations/misc.html:197
+#: translations/misc.html:199
 msgid "Default value"
 msgstr ""
 
@@ -424,8 +432,16 @@ msgstr ""
 msgid "Define concept for the new class"
 msgstr ""
 
-#: translations/misc.html:201
+#: translations/misc.html:203
 msgid "Defined by"
+msgstr ""
+
+#: translations/misc.html:204
+msgid "Defined by library"
+msgstr ""
+
+#: translations/misc.html:205
+msgid "Defined by profile"
 msgstr ""
 
 #: translations/misc.html:183
@@ -600,7 +616,7 @@ msgstr ""
 msgid "Filter results"
 msgstr ""
 
-#: translations/misc.html:200
+#: translations/misc.html:202
 msgid "Fixed value"
 msgstr ""
 
@@ -641,7 +657,7 @@ msgstr ""
 msgid "Historical versions"
 msgstr ""
 
-#: translations/misc.html:202
+#: translations/misc.html:206
 msgid "Homepage"
 msgstr ""
 
@@ -669,7 +685,7 @@ msgstr ""
 msgid "Imported requires"
 msgstr ""
 
-#: translations/misc.html:199
+#: translations/misc.html:201
 msgid "Input"
 msgstr ""
 
@@ -918,6 +934,10 @@ msgstr ""
 msgid "Pattern"
 msgstr ""
 
+#: translations/misc.html:198
+msgid "Predicate type"
+msgstr ""
+
 #: components/model/requiresView.html:34
 #: translations/misc.html:74
 msgid "Prefix"
@@ -940,7 +960,11 @@ msgid "Profile label"
 msgstr ""
 
 #: translations/misc.html:196
-msgid "Property identifier"
+msgid "Property id"
+msgstr ""
+
+#: translations/misc.html:197
+msgid "Property label"
 msgstr ""
 
 #: translations/misc.html:66
@@ -1182,7 +1206,7 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: translations/misc.html:203
+#: translations/misc.html:207
 msgid "Title"
 msgstr ""
 
@@ -1259,6 +1283,10 @@ msgstr ""
 
 #: components/editor/visualizationView.html:5
 msgid "Visualization"
+msgstr ""
+
+#: translations/misc.html:210
+msgid "Vocabulary id"
 msgstr ""
 
 #: translations/misc.html:83

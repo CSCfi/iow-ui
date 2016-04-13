@@ -1,31 +1,31 @@
 
 <h4>{{ctrl.class.normalizedType + ' information' | capitalize | translate}}</h4>
 
-<editable title="{{ctrl.class.normalizedType + ' label' | capitalize}}">
+<editable data-title="{{ctrl.class.normalizedType + ' label' | capitalize}}">
   <input id="classLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.class.label"/>
 </editable>
 
-<editable title="{{ctrl.class.normalizedType + ' id' | capitalize}}">
+<editable data-title="{{ctrl.class.normalizedType + ' id' | capitalize}}">
   <input id="classId" class="form-control" type="text" required id-input="class" old="ctrl.oldClass" ng-model="ctrl.class.id" ng-disabled="!ctrl.inUnstableState" />
 </editable>
 
-<editable title="Description">
+<editable data-title="Description">
   <textarea id="classComment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea>
 </editable>
 
-<editable ng-if="ctrl.class.isOfType('class')" title="Superclass" link="ctrl.linkToSuperclass()">
+<editable ng-if="ctrl.class.isOfType('class')" data-title="Superclass" link="ctrl.linkToSuperclass()">
   <uri-select id="superClass" type="class" uri="ctrl.class.subClassOf" model="ctrl.model" after-selected="ctrl.addPropertiesFromClass(id, 'super')"></uri-select>
 </editable>
 
-<editable ng-if="ctrl.class.isOfType('shape')" title="Specialized from class" link="ctrl.linkToScopeclass()">
+<editable ng-if="ctrl.class.isOfType('shape')" data-title="Specialized from class" link="ctrl.linkToScopeclass()">
   <uri-select id="scopeClass" type="class" uri="ctrl.class.scopeClass" model="ctrl.model" mandatory="true" after-selected="ctrl.addPropertiesFromClass(id, 'scope')"></uri-select>
 </editable>
 
-<editable-multiple-uri-select id="equivalentClass" type="class" uris="ctrl.class.equivalentClasses" model="ctrl.model" title="{{'Equivalent class'}}" allow-input="true"></editable-multiple-uri-select>
+<editable-multiple-uri-select id="equivalentClass" type="class" uris="ctrl.class.equivalentClasses" model="ctrl.model" data-title="{{'Equivalent class'}}" allow-input="true"></editable-multiple-uri-select>
 
 <defined-by entity="ctrl.class" model="ctrl.model"></defined-by>
 
-<editable title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved">
+<editable data-title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved">
   <state-select id="classState" state="ctrl.class.state" model="ctrl.model"></state-select>
 </editable>
 

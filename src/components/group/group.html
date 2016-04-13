@@ -14,15 +14,15 @@
         </editable-entity-buttons>
 
         <div class="col-md-5">
-          <editable title="Group label">
+          <editable data-title="Group label">
             <input id="groupLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.editableInEdit.label" />
           </editable>
 
-          <editable title="Description">
+          <editable data-title="Description">
             <textarea id="groupComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
           </editable>
 
-          <non-editable title="Internal group page" value="ctrl.group.homepage" link="ctrl.group.homepage"></non-editable>
+          <non-editable data-title="Internal group page" value="ctrl.group.homepage" link="ctrl.group.homepage"></non-editable>
         </div>
 
         <div class="col-md-5 col-md-offset-1">

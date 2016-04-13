@@ -1,34 +1,34 @@
 <h4>{{ctrl.predicate.normalizedType + ' information' | capitalize | translate}}</h4>
 
-<editable title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}">
+<editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}">
   <input id="predicateName" class="form-control" type="text" localized-input="label" ng-model="ctrl.predicate.label" />
 </editable>
 
-<editable title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}">
+<editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}">
   <input id="predicateId" class="form-control" type="text" required id-input="predicate" old="ctrl.oldPredicate" ng-model="ctrl.predicate.id" ng-disabled="!ctrl.inUnstableState" />
 </editable>
 
-<editable title="Description">
+<editable data-title="Description">
   <textarea id="predicateComment" class="form-control" localized-input ng-model="ctrl.predicate.comment"></textarea>
 </editable>
 
-<editable title="{{'Super' + ctrl.predicate.normalizedType}}" link="ctrl.linkToSuperproperty()">
+<editable data-title="{{'Super' + ctrl.predicate.normalizedType}}" link="ctrl.linkToSuperproperty()">
   <uri-select id="superPredicate" type="{{ctrl.predicate.normalizedType}}" uri="ctrl.predicate.subPropertyOf" model="ctrl.model"></uri-select>
 </editable>
 
-<editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" uris="ctrl.predicate.equivalentProperties" model="ctrl.model" title="{{'Equivalent ' + ctrl.predicate.type}}" allow-input="true"></editable-multiple-uri-select>
+<editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" uris="ctrl.predicate.equivalentProperties" model="ctrl.model" data-title="{{'Equivalent ' + ctrl.predicate.normalizedType}}" allow-input="true"></editable-multiple-uri-select>
 
-<editable ng-if="ctrl.predicate.isAttribute()" title="Range" name="Range">
+<editable ng-if="ctrl.predicate.isAttribute()" data-title="Range" name="Range">
   <range-select id="predicateRange" range="ctrl.predicate.dataType"></range-select>
 </editable>
 
-<editable ng-if="ctrl.predicate.isAssociation()" title="Value class" name="Value class" link="ctrl.linkToValueClass()">
+<editable ng-if="ctrl.predicate.isAssociation()" data-title="Value class" name="Value class" link="ctrl.linkToValueClass()">
   <uri-select id="predicateValueClass" type="class" uri="ctrl.predicate.valueClass" model="ctrl.model"></uri-select>
 </editable>
 
 <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
 
-<editable title="State" value-as-localization-key="true" ng-if="!ctrl.predicate.unsaved">
+<editable data-title="State" value-as-localization-key="true" ng-if="!ctrl.predicate.unsaved">
   <state-select id="predicateState" state="ctrl.predicate.state" model="ctrl.model"></state-select>
 </editable>
 

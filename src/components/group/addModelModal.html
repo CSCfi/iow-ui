@@ -3,13 +3,13 @@
   <modal-title>{{'Add ' + ctrl.type | translate}}</modal-title>
 
   <modal-body>
-    <editable title="Prefix">
+    <editable data-title="Prefix">
       <div class="input-group input-group-md">
         <input id="prefix" type="text" class="form-control" autofocus required prefix-input ng-model="ctrl.prefix" />
       </div>
     </editable>
 
-    <editable title="Label">
+    <editable data-title="{{ctrl.type + ' label'}}">
       <div class="input-group input-group-md">
         <input id="name" type="text" class="form-control" required string-input="modelLabel" ng-model="ctrl.label" />
       </div>

@@ -26,6 +26,6 @@ class DefinedByController {
   model: Model;
 
   get definedByTitle() {
-    return this.entity && normalizeModelType(this.entity.definedBy.type) || 'Defined by';
+    return 'Defined by' + (this.entity ? ' ' + normalizeModelType(this.entity.definedBy.type) : '');
   }
 }

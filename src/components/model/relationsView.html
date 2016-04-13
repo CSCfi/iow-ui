@@ -18,15 +18,15 @@
       </uib-accordion-heading>
       <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeRelation(relation)" translate>Delete relation</button>
 
-      <editable title="Homepage" link="relation.homepage.url">
+      <editable data-title="Homepage" link="relation.homepage.url">
         <input class="form-control" type="text" uri-input="free-url" model="ctrl.model" required ng-model="relation.homepage" />
       </editable>
 
-      <editable title="Title">
+      <editable data-title="Title">
         <input class="form-control" type="text" localized-input="label" ng-model="relation.title"/>
       </editable>
 
-      <editable title="Description">
+      <editable data-title="Description">
         <textarea class="form-control" localized-input ng-model="relation.description"></textarea>
       </editable>
     </uib-accordion-group>

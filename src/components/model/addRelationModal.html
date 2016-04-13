@@ -3,15 +3,15 @@
     <modal-title translate>Add related resource</modal-title>
 
     <modal-body>
-      <editable title="Homepage">
+      <editable data-title="Homepage">
         <input class="form-control" type="text" uri-input="free-url" model="ctrl.model" autofocus required ng-model="ctrl.homepage" />
       </editable>
 
-      <editable title="Title">
+      <editable data-title="Title">
         <input class="form-control" type="text" string-input="label" ng-model="ctrl.title"/>
       </editable>
 
-      <editable title="Description">
+      <editable data-title="Description">
         <textarea class="form-control" string-input ng-model="ctrl.description"></textarea>
       </editable>
     </modal-body>
