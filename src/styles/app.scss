@@ -487,10 +487,18 @@ selection-view, .main-editable-content {
   }
 }
 
+visualization-view ajax-loading-indicator {
+  width: calc(100% - 12px);
+}
+
+.search-results ajax-loading-indicator {
+  width: calc(100% - 30px);
+}
+
 ajax-loading-indicator {
   position: absolute;
-  width: calc(100% - 30px);
-  height: calc(100% - 30px);
+  width: 100%;
+  height: 100%;
   z-index: 1000;
   background-color: #ffffff;
 
