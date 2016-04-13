@@ -107,7 +107,7 @@ export function glyphIconClassForType(type: Type[]) {
 }
 
 export function normalizeAsArray<T>(obj: T|T[]): T[] {
-  return Array.isArray(obj) ? obj : obj ? [obj] : [];
+  return Array.isArray(obj) ? obj : isDefined(obj) ? [obj] : [];
 }
 
 export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
