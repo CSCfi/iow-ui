@@ -18,7 +18,7 @@ mod.directive('subjectView', () => {
 class SubjectViewController {
   subject: FintoConcept|ConceptSuggestion;
   title: string;
-  
+
   get subjectTitle() {
     if (this.title) {
       return this.title;
