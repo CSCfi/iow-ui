@@ -138,8 +138,8 @@ export class SearchPredicateController {
     const result: (PredicateListItem|AddNewPredicate)[] = [
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
-      new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), 'attribute', true),
-      new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), 'association', true)
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAttributeAddable() && this.canAddExternal(), 'attribute', true),
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAssociationAddable() && this.canAddExternal(), 'association', true)
     ];
 
     const predicateSearchResult = this.predicates.filter(predicate =>
