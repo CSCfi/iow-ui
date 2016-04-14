@@ -27,7 +27,7 @@ mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $tim
     require: ['propertyView', '^classForm', '?^classView'],
     link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes,
          [thisController, classFormController, classViewController]: [PropertyViewController, ClassFormController, ClassViewController]) {
-      
+
       $scope.editableController = classViewController;
       thisController.isEditing = () => classViewController.isEditing();
 
