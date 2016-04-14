@@ -299,7 +299,7 @@ form {
     }
 
     .glyphicon {
-      z-index: -1;
+      position: inherit;
     }
 
     input, select, textarea {
