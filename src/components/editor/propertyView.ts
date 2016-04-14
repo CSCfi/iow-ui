@@ -72,10 +72,12 @@ export class PropertyViewController {
   isEditing: () => boolean;
 
   /* @ngInject */
-  constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService, private languageService: LanguageService) {
+  constructor($scope: PropertyViewScope, $location: ILocationService, predicateService: PredicateService, private languageService: LanguageService) {
     $scope.$watch(() => this.isOpen, open => {
       if (open) {
-        $location.search('property', this.property.internalId.uri);
+        if ($scope.editableController) {
+          $location.search('property', this.property.internalId.uri);
+        }
 
         if (this.predicate === undefined) {
 
@@ -94,7 +96,9 @@ export class PropertyViewController {
           }
         }
       } else if (!this.anyPropertiesOpen()) {
-        $location.search('property', null);
+        if ($scope.editableController) {
+          $location.search('property', null);
+        }
       }
     });
 
