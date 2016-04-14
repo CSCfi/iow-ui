@@ -97,14 +97,14 @@ export class ClassService {
       });
   }
 
-  newShape(klassId: Uri, profile: Model, lang: Language): IPromise<Class> {
+  newShape(klassId: Uri, profile: Model, external: boolean, lang: Language): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klassId.uri, lang}})
       .then(expandContextWithKnownModels(profile))
       .then((response: any) => this.entities.deserializeClass(response.data))
       .then((shape: Class) => {
         shape.definedBy = profile.asDefinedBy();
         shape.unsaved = true;
-        shape.external = profile.isNamespaceKnownAndOfType(shape.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
+        shape.external = external;
 
         for (const property of shape.properties) {
           property.state = 'Unstable';
