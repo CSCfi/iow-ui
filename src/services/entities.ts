@@ -785,6 +785,7 @@ export class Property extends GraphNode {
   in: string[];
   hasValue: string;
   pattern: string;
+  predicateType: Uri;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -796,6 +797,11 @@ export class Property extends GraphNode {
     this.example = graph.example;
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
+
+    if(graph.type) {
+      this.predicateType = new Uri(graph.type, context);
+    }
+
     if (graph.valueShape) {
       this.valueClass = new Uri(graph.valueShape, context);
     }
