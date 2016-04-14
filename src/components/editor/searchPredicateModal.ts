@@ -41,11 +41,11 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  open(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<EntityCreation|Predicate> {
+  open(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<ExternalEntity|EntityCreation|Predicate> {
     return this.openModal(model, type, exclude, false);
   }
 
-  openForProperty(model: Model, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<Predicate> {
+  openForProperty(model: Model, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<ExternalEntity|Predicate> {
     return this.openModal(model, null, exclude, false);
   }
 
@@ -197,7 +197,7 @@ export class SearchPredicateController {
         this.$uibModalInstance.close(selection);
       }
     } else if (selection instanceof ExternalEntity) {
-      this.predicateService.getExternalPredicate(selection.uri, this.model)
+      this.predicateService.newPredicateFromExternal(selection.id, selection.type, this.model)
         .then(predicate => {
           if (predicate) {
             if (!predicate.isOfType(selection.type)) {
@@ -205,10 +205,8 @@ export class SearchPredicateController {
             } else if (this.exclude(predicate)) {
               this.submitError = this.exclude(predicate);
             } else {
-              this.$uibModalInstance.close(predicate);
+              this.$uibModalInstance.close(selection);
             }
-          } else {
-            this.submitError = 'External predicate not found';
           }
         }, err => this.submitError = err.data.errorMessage);
     } else {

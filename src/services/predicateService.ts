@@ -3,7 +3,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import {
-  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData
+  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association
 } from './entities';
 import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
@@ -90,6 +90,28 @@ export class PredicateService {
         }
         predicate.unsaved = true;
         return predicate;
+      });
+  }
+
+  newPredicateFromExternal(externalId: Uri, type: Type, model: Model) {
+    return this.getExternalPredicate(externalId, model)
+      .then(predicate => {
+        if (!predicate) {
+          const graph = {
+            '@id': externalId.uri,
+            '@type': reverseMapType(type),
+            isDefinedBy: model.namespaceAsDefinedBy(externalId.namespace).serialize(true, false)
+          };
+          if (type === 'association') {
+            return new Association(graph, model.context, model.frame);
+          } else if (type === 'attribute') {
+            return new Attribute(graph, model.context, model.frame);
+          } else {
+            throw new Error('Unsupported predicate type: ' + type);
+          }
+        } else {
+          return predicate;
+        }
       });
   }
 

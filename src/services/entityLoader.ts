@@ -225,7 +225,7 @@ export class EntityLoader {
     const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, asPromise(assertExists(details.class, 'class to specialize for ' + details.label['fi']))]))
       .then(([model, klass]: [Model, Class]) => {
-        return this.classService.newShape(klass, model, 'fi')
+        return this.classService.newShape(klass.id, model, 'fi')
           .then(shape => {
             setDetails(shape, details);
             setId(shape, details);
@@ -233,7 +233,7 @@ export class EntityLoader {
             const promises: IPromise<any>[] = [];
 
             for (const property of details.properties || []) {
-              promises.push(this.createProperty(property).then(property => {
+              promises.push(this.createProperty(modelPromise, property).then(property => {
                 shape.addProperty(property);
               }));
             }
@@ -277,7 +277,7 @@ export class EntityLoader {
         const promises: IPromise<any>[] = [];
 
         for (const property of details.properties || []) {
-          promises.push(this.createProperty(property).then(property => klass.addProperty(property)));
+          promises.push(this.createProperty(modelPromise, property).then(property => klass.addProperty(property)));
         }
 
         assertPropertyValueExists(details, 'subClassOf for ' + details.label['fi']);
@@ -360,10 +360,10 @@ export class EntityLoader {
     });
   }
 
-  createProperty(details: PropertyDetails): IPromise<Property> {
+  createProperty(modelPromise: IPromise<Model>, details: PropertyDetails): IPromise<Property> {
     const result = this.loggedIn
-      .then(() =>  asPromise(assertExists(details.predicate, 'predicate')))
-      .then(p => this.classService.newProperty(p))
+      .then(() => this.$q.all([modelPromise, asPromise(assertExists(details.predicate, 'predicate'))]))
+      .then(([model, p]: [Model, Predicate]) => this.classService.newProperty(p, model))
       .then((p: Property) => {
         setDetails(p, details);
         assertPropertyValueExists(details, 'valueClass');

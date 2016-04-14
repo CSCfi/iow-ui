@@ -24,7 +24,10 @@ import {
   Type,
   Property,
   DefinedBy,
-  NamespaceType
+  NamespaceType,
+  ExternalEntity,
+  AbstractClass,
+  AbstractPredicate
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -291,51 +294,69 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   public addEntity(type: Type) {
     const isProfile = this.model.isOfType('profile');
-    const definedExclusion = createDefinedByExclusion(this.model);
-    const classExistsExclusion = createExistsExclusion(collectIds(this.classes));
-    const predicateExistsExclusion = createExistsExclusion(collectIds([this.attributes, this.associations]));
-    const classTypeExclusion = createClassTypeExclusion(SearchClassType.Class);
-    const textForSelection = (klass: Class) => isProfile ? 'Specialize class' : 'Use class';
-
-    const classExclusion = (klass: ClassListItem) => {
-      if (isProfile) {
-        return classTypeExclusion(klass) || definedExclusion(klass);
-      } else {
-        return classExistsExclusion(klass) || classTypeExclusion(klass) || definedExclusion(klass);
-      }
-    };
-
-    const predicateExclusion = combineExclusions<PredicateListItem>(predicateExistsExclusion, definedExclusion);
+    const classExclusion = combineExclusions<AbstractClass>(createClassTypeExclusion(SearchClassType.Class), createDefinedByExclusion(this.model));
+    const predicateExclusion = combineExclusions<AbstractPredicate>(createExistsExclusion(collectIds([this.attributes, this.associations])), createDefinedByExclusion(this.model));
 
     if (type === 'class') {
-      this.createOrAssignEntity(
-        () => this.searchClassModal.open(this.model, classExclusion, textForSelection),
-        (concept: EntityCreation) => this.createClass(concept),
-        (klass: Class) => {
-          if (klass.unsaved) {
-            return this.$q.when(klass);
-          } else if (isProfile) {
-            return this.createShape(klass);
-          } else {
-            return this.assignClassToModel(klass).then(() => klass);
-          }
-        }
-      );
+      if (isProfile) {
+        return this.addClass(classExclusion);
+      } else {
+        return this.addClass(combineExclusions<AbstractClass>(classExclusion, createExistsExclusion(collectIds(this.classes))));
+      }
     } else {
-      this.createOrAssignEntity(
-        () => this.searchPredicateModal.open(this.model, type, predicateExclusion),
-        (concept: EntityCreation) => this.createPredicate(concept, type),
-        (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
-      );
+      this.addPredicate(type, predicateExclusion);
     }
   }
 
-  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<EntityCreation|T>, fromConcept: (concept: EntityCreation) => IPromise<T>, fromEntity: (entity: T) => IPromise<T>) {
+  private addClass(exclusion: (klass: AbstractClass) => string) {
+
+    const isProfile = this.model.isOfType('profile');
+    const textForSelection = (klass: Class) => isProfile ? 'Specialize class' : 'Use class';
+
+    this.createOrAssignEntity(
+      () => this.searchClassModal.open(this.model, exclusion, textForSelection),
+      (external: ExternalEntity) => this.classService.newShape(external.id, this.model, this.languageService.modelLanguage),
+      (concept: EntityCreation) => this.createClass(concept),
+      (klass: Class) => {
+        if (klass.unsaved) {
+          return this.$q.when(klass);
+        } else if (isProfile) {
+          return this.createShape(klass.id);
+        } else {
+          return this.assignClassToModel(klass).then(() => klass);
+        }
+      }
+    );
+  }
+
+  private addPredicate(type: Type, exclusion: (predicate: AbstractPredicate) => string) {
+    this.createOrAssignEntity(
+      () => this.searchPredicateModal.open(this.model, type, exclusion),
+      (external: ExternalEntity) => this.$q.reject('Unsupported operation'),
+      (concept: EntityCreation) => this.createPredicate(concept, type),
+      (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
+    );
+  }
+
+  private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ExternalEntity|EntityCreation|T>,
+                                                          fromExternalEntity: (external: ExternalEntity) => IPromise<T>,
+                                                          fromConcept: (concept: EntityCreation) => IPromise<T>,
+                                                          fromEntity: (entity: T) => IPromise<T>) {
     this.userService.ifStillLoggedIn(() => {
       this.askPermissionWhenEditing(() => {
         modal().then(result => {
-          (isEntityCreation(result) ? fromConcept(result) : fromEntity(result))
-            .then(entity => {
+
+          const mapEntity = () => {
+            if (isEntityCreation(result)) {
+              return fromConcept(result);
+            } else if (result instanceof ExternalEntity) {
+              return fromExternalEntity(result);
+            } else {
+              return fromEntity(<T> result);
+            }
+          };
+
+          mapEntity().then(entity => {
               this.updateSelection(entity);
               if (!entity.unsaved) {
                 this.updateSelectables();
@@ -354,9 +375,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     return this.classService.newClass(this.model, conceptCreation.entity.label, conceptCreation.concept.id, this.languageService.modelLanguage);
   }
 
-  private createShape(klass: Class) {
-    this.assignMissingPredicates(klass);
-    return this.classService.newShape(klass, this.model, this.languageService.modelLanguage)
+  private createShape(classId: Uri) {
+
+    return this.classService.newShape(classId, this.model, this.languageService.modelLanguage)
       .then(shape => {
         if (shape.external) {
           return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, 'external')]);
@@ -366,6 +387,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       })
       .then(([shape, properties]: [Class, Property[]]) => {
         shape.properties = properties;
+        // TODO: assigning predicates should be done later on when shape is being persisted
+        this.assignMissingPredicates(shape);
         return shape;
       });
   }

@@ -40,7 +40,7 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string): IPromise<EntityCreation|Class> {
+  open(model: Model, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string): IPromise<ExternalEntity|EntityCreation|Class> {
     return this.openModal(model, exclude, false, textForSelection);
   }
 
@@ -181,14 +181,14 @@ class SearchClassController {
     if (selection instanceof Class) {
       this.$uibModalInstance.close(this.selection);
     } else if (selection instanceof ExternalEntity) {
-      this.classService.getExternalClass(selection.uri, this.model)
+      this.classService.newClassFromExternal(selection.id, this.model)
         .then(klass => {
-          if (!klass) {
-            this.submitError = 'External class not found';
-          } else if (this.exclude(klass)) {
-            this.submitError = this.exclude(klass);
-          } else {
-            this.$uibModalInstance.close(klass);
+          if (klass) {
+            if (this.exclude(klass)) {
+              this.submitError = this.exclude(klass);
+            } else {
+              this.$uibModalInstance.close(selection);
+            }
           }
         }, err => this.submitError = err.data.errorMessage);
     } else {

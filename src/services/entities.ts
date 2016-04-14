@@ -70,7 +70,7 @@ export function isLocalizable(obj: any): obj is Localizable {
 }
 
 export class ExternalEntity {
-  constructor(public type: Type, public uri?: Uri) {
+  constructor(public type: Type, public id?: Uri) {
   }
 }
 
@@ -124,7 +124,6 @@ export class DefinedBy extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
 
-    // FIXME: when api returns coherent data get rid of this mangling
     if (typeof graph === 'string' || graph instanceof String) {
       const str = (graph instanceof String) ? graph.valueOf() : graph;
       this.id = new Uri(str, context);
@@ -357,6 +356,15 @@ export class Model extends AbstractModel {
 
   asDefinedBy() {
     return new DefinedBy({'@id': this.id.uri, '@type': reverseMapTypeObject(this.type), label: this.label}, this.context, this.frame);
+  }
+
+  namespaceAsDefinedBy(ns: Url) {
+    for (const require of this.requires) {
+      if (ns === require.namespace) {
+        return new DefinedBy({'@id': ns, '@type': reverseMapTypeObject(require.type)}, this.context, this.frame);
+      }
+    }
+    throw new Error('Namespace not found: ' + ns);
   }
 
   isNamespaceKnownAndOfType(namespace: Url, types: NamespaceType[])  {
@@ -1463,7 +1471,7 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.predicateListFrame, (framedData) => PredicateListItem);
   }
 
-  deserializePredicate(data: GraphData): IPromise<Predicate> {
+  deserializePredicate(data: GraphData): IPromise<Attribute|Association> {
     const entityFactory: EntityFactory<Predicate> = (framedData) => {
       const types = mapGraphTypeObject(framedData['@graph'][0]['@type']);
 

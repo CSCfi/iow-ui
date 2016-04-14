@@ -12,7 +12,8 @@ import {
   Property,
   Model,
   GraphData,
-  NamespaceType
+  NamespaceType,
+  ExternalEntity
 } from './entities';
 import { PredicateService } from './predicateService';
 import { Language } from './languageService';
@@ -20,6 +21,7 @@ import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { expandContextWithKnownModels, hasLocalization } from './utils';
 import { Uri, Urn } from './uri';
+import { reverseMapType } from './typeMapping';
 
 export class ClassService {
 
@@ -95,16 +97,31 @@ export class ClassService {
       });
   }
 
-  newShape(klass: Class, profile: Model, lang: Language): IPromise<Class> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klass.id.uri, lang}})
+  newShape(klassId: Uri, profile: Model, lang: Language): IPromise<Class> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klassId.uri, lang}})
       .then(expandContextWithKnownModels(profile))
       .then((response: any) => this.entities.deserializeClass(response.data))
       .then((shape: Class) => {
         shape.definedBy = profile.asDefinedBy();
-        shape.subject = klass.subject;
         shape.unsaved = true;
-        shape.external = profile.isNamespaceKnownAndOfType(klass.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
+        shape.external = profile.isNamespaceKnownAndOfType(shape.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
         return shape;
+      });
+  }
+
+  newClassFromExternal(externalId: Uri, model: Model) {
+    return this.getExternalClass(externalId, model)
+      .then(klass => {
+        if (!klass) {
+          const graph = {
+            '@id': externalId.uri,
+            '@type': reverseMapType('class'),
+            isDefinedBy: model.namespaceAsDefinedBy(externalId.namespace).serialize(true, false)
+          };
+          return new Class(graph, model.context, model.frame);
+        } else {
+          return klass;
+        }
       });
   }
 
@@ -124,15 +141,19 @@ export class ClassService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}}).then(response => this.entities.deserializeClassList(response.data));
   }
 
-  newProperty(predicate: Predicate): IPromise<Property> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicate.id.uri}})
-      .then((propertyResult: any) => {
-        predicate.expandContext(propertyResult.data['@context']);
-        return this.entities.deserializeProperty(propertyResult.data);
-      })
-      .then(property => {
+  newProperty(predicateOrExternal: Predicate|ExternalEntity, model: Model): IPromise<Property> {
 
-        if (!hasLocalization(property.label)) {
+    const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.predicateService.getExternalPredicate(predicateOrExternal.id, model) : this.$q.when(<Predicate> predicateOrExternal);
+
+    return this.$q.all([
+      predicatePromise,
+      this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateOrExternal.id.uri}})
+        .then(expandContextWithKnownModels(model))
+        .then((response: any) => this.entities.deserializeProperty(response.data))
+    ])
+      .then(([predicate, property]: [Predicate, Property]) => {
+
+        if (predicate && !hasLocalization(property.label)) {
           property.label = predicate.label;
         }
 
