@@ -5,16 +5,16 @@ import IQService = angular.IQService;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
-import { Class, ClassListItem, Model, DefinedBy, NamespaceType, AbstractClass } from '../../services/entities';
+import {
+  Class, ClassListItem, Model, DefinedBy, NamespaceType, AbstractClass, ExternalEntity
+} from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { isDefined, glyphIconClassForType } from '../../services/utils';
-import { Uri } from '../../services/uri';
+import { glyphIconClassForType } from '../../services/utils';
 import { EditableForm } from '../form/editableEntityController';
-
 
 export const noExclude = (item: AbstractClass) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';
@@ -49,20 +49,6 @@ export class SearchClassModal {
   }
 };
 
-interface FormData {
-  externalUri: Uri;
-}
-
-function createFormData(): FormData {
-  return {
-    externalUri: null
-  };
-}
-
-function isFormData(item: Class|FormData): item is FormData {
-  return item && !(item instanceof Class);
-}
-
 export interface SearchClassScope extends IScope {
   form: EditableForm;
 }
@@ -73,7 +59,7 @@ class SearchClassController {
 
   close = this.$uibModalInstance.dismiss;
   searchResults: (ClassListItem|AddNewClass)[] = [];
-  selection: Class|FormData;
+  selection: Class|ExternalEntity;
   searchText: string = '';
   showProfiles: boolean;
   showModel: DefinedBy;
@@ -86,7 +72,6 @@ class SearchClassController {
   /* @ngInject */
   constructor(private $scope: SearchClassScope,
               private $uibModalInstance: IModalServiceInstance,
-              private $q: IQService,
               private classService: ClassService,
               private languageService: LanguageService,
               public model: Model,
@@ -129,7 +114,7 @@ class SearchClassController {
   }
 
   isSelectionFormData(): boolean {
-    return isFormData(this.selection);
+    return this.selection instanceof ExternalEntity;
   }
 
   search() {
@@ -166,7 +151,7 @@ class SearchClassController {
     if (item instanceof AddNewClass) {
       if (item.external) {
         this.$scope.form.editing = true;
-        this.selection = createFormData();
+        this.selection = new ExternalEntity('class');
       } else {
         this.createNewClass();
       }
@@ -195,8 +180,8 @@ class SearchClassController {
 
     if (selection instanceof Class) {
       this.$uibModalInstance.close(this.selection);
-    } else if (isFormData(selection)) {
-      this.classService.getExternalClass(selection.externalUri, this.model)
+    } else if (selection instanceof ExternalEntity) {
+      this.classService.getExternalClass(selection.uri, this.model)
         .then(klass => {
           if (!klass) {
             this.submitError = 'External class not found';

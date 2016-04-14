@@ -7,7 +7,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import {
   Predicate, PredicateListItem, Model, Type, DefinedBy, NamespaceType,
-  AbstractPredicate
+  AbstractPredicate, ExternalEntity
 } from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
@@ -15,8 +15,7 @@ import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
-import { isDefined, glyphIconClassForType } from '../../services/utils';
-import { Uri } from '../../services/uri';
+import { glyphIconClassForType } from '../../services/utils';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -55,22 +54,6 @@ export class SearchPredicateModal {
   }
 };
 
-interface FormData {
-  externalUri: Uri;
-  type: Type;
-}
-
-function createFormData(type: Type): FormData {
-  return {
-    externalUri: null,
-    type
-  };
-}
-
-function isFormData(item: Predicate|FormData): item is FormData {
-  return item && !(item instanceof Predicate);
-}
-
 export interface SearchPredicateScope extends IScope {
   form: EditableForm;
 }
@@ -82,7 +65,7 @@ export class SearchPredicateController {
   editInProgress = () => this.$scope.form.editing && this.$scope.form.$dirty;
   close = this.$uibModalInstance.dismiss;
   searchResults: (PredicateListItem|AddNewPredicate)[] = [];
-  selection: Predicate|FormData;
+  selection: Predicate|ExternalEntity;
   searchText: string = '';
   showModel: DefinedBy;
   models: DefinedBy[] = [];
@@ -125,7 +108,6 @@ export class SearchPredicateController {
 
       this.search();
 
-      console.log(predicates);
       this.loadingResults = false;
     };
 
@@ -145,7 +127,7 @@ export class SearchPredicateController {
   }
 
   isSelectionFormData(): boolean {
-    return isFormData(this.selection);
+    return this.selection instanceof ExternalEntity;
   }
 
   search() {
@@ -180,7 +162,7 @@ export class SearchPredicateController {
     if (item instanceof AddNewPredicate) {
       if (item.external) {
         this.$scope.form.editing = true;
-        this.selection = createFormData(item.type);
+        this.selection = new ExternalEntity(item.type);
       } else {
         this.createNew(item.type);
       }
@@ -214,8 +196,8 @@ export class SearchPredicateController {
       } else {
         this.$uibModalInstance.close(selection);
       }
-    } else if (isFormData(selection)) {
-      this.predicateService.getExternalPredicate(selection.externalUri, this.model)
+    } else if (selection instanceof ExternalEntity) {
+      this.predicateService.getExternalPredicate(selection.uri, this.model)
         .then(predicate => {
           if (predicate) {
             if (!predicate.isOfType(selection.type)) {
