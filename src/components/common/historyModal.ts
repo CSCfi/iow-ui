@@ -9,6 +9,7 @@ import { ModelService } from '../../services/modelService';
 import { HistoryService } from '../../services/historyService';
 import { UserService } from '../../services/userService';
 import { Urn } from '../../services/uri';
+import { comparingDate, reversed } from '../../services/comparators';
 
 export class HistoryModal {
   /* @ngInject */
@@ -49,7 +50,7 @@ class HistoryModalController {
     this.showAuthor = userService.isLoggedIn();
 
     historyService.getHistory(resource.id).then(activity => {
-      this.versions = activity.versions;
+      this.versions = activity.versions.sort(reversed(comparingDate<Entity>(version => version.createdAt)));
     });
   }
 
