@@ -10,13 +10,16 @@ export class ValidatorService {
   constructor(private $q: IQService, private $http: IHttpService) {
   }
 
-  classDoesNotExist(id: Uri): IPromise<any> {
-    const pascalId = id.withName(pascalCase(id.name));
-    return this.$http.get(config.apiEndpointWithName('class'), {params: {id: pascalId.uri}}).then(result => this.$q.reject('exists'), err => true);
+  classDoesNotExist(id: Uri): IPromise<boolean> {
+    return this.idDoesNotExist(id.withName(pascalCase(id.name)));
   }
 
-  predicateDoesNotExist(id: Uri): IPromise<any> {
-    const camelId = id.withName(camelCase(id.name));
-    return this.$http.get(config.apiEndpointWithName('predicate'), {params: {id: camelId.uri}}).then(result => this.$q.reject('exists'), err => true);
+  predicateDoesNotExist(id: Uri): IPromise<boolean> {
+    return this.idDoesNotExist(id.withName(camelCase(id.name)));
+  }
+
+  private idDoesNotExist(id: Uri): IPromise<boolean> {
+    return this.$http.get(config.apiEndpointWithName('freeID'), {params: {id: id.uri}})
+      .then(result => result.data ? true : this.$q.reject('exists'), err => true);
   }
 }
