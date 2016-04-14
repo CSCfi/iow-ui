@@ -29,7 +29,7 @@ mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $tim
          [thisController, classFormController, classViewController]: [PropertyViewController, ClassFormController, ClassViewController]) {
 
       $scope.editableController = classViewController;
-      thisController.isEditing = () => classViewController.isEditing();
+      thisController.isEditing = () => classViewController && classViewController.isEditing();
 
       thisController.scroll = () => {
         const scrollTop = element.offset().top;
