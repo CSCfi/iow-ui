@@ -5,7 +5,7 @@
     <span>{{value}}<span ng-if="!$last">, </span></span>
   </span>
 
-  <div ng-if="ctrl.isEditing()">
+  <div ng-show="ctrl.isEditing()">
     <div class="form-control multi-input">
       <div ng-repeat="value in ctrl.ngModel" ng-class="['added-item', { 'has-error': !ctrl.isValid(value)}]">
         {{value}}
