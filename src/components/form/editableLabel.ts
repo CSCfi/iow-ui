@@ -17,8 +17,8 @@ mod.directive('editableLabel', () => {
     },
     restrict: 'E',
     template: `<label>{{ctrl.title | translate}} 
-                  <span ng-show="ctrl.required && ctrl.isEditing()" style="color: red">*</span>
-                  <span ng-show="ctrl.infoText && !ctrl.isEditing()" class="glyphicon glyphicon-info-sign info" uib-tooltip="{{ctrl.infoText}}"></span>
+                  <span ng-show="ctrl.infoText" class="glyphicon glyphicon-info-sign info" uib-tooltip="{{ctrl.infoText}}"></span>
+                  <span ng-show="ctrl.required && ctrl.isEditing()" class="glyphicon glyphicon-asterisk" style="color: red; font-size: small" uib-tooltip="{{'Required' | translate}}"></span>
                </label>`,
     bindToController: true,
     controllerAs: 'ctrl',

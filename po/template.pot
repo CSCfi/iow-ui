@@ -235,7 +235,7 @@ msgstr ""
 msgid "Can be selected only from this profile"
 msgstr ""
 
-#: components/advancedSearchModal.html:33
+#: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:16
 #: components/editor/searchClassModal.html:68
@@ -559,15 +559,15 @@ msgstr ""
 msgid "Delete property"
 msgstr ""
 
-#: components/model/referencesView.html:10
+#: components/model/referencesView.html:11
 msgid "Delete reference"
 msgstr ""
 
-#: components/model/relationsView.html:19
+#: components/model/relationsView.html:20
 msgid "Delete relation"
 msgstr ""
 
-#: components/model/requiresView.html:9
+#: components/model/requiresView.html:10
 msgid "Delete require"
 msgstr ""
 
@@ -936,7 +936,7 @@ msgstr ""
 msgid "Must be required namespace"
 msgstr ""
 
-#: components/model/requiresView.html:35
+#: components/model/requiresView.html:37
 #: translations/titles.html:43
 msgid "Namespace"
 msgstr ""
@@ -970,7 +970,7 @@ msgid "No references yet"
 msgstr ""
 
 #: components/editor/usage.html:1
-#: components/editor/usagePanel.html:7
+#: components/editor/usagePanel.html:8
 msgid "No referrers"
 msgstr ""
 
@@ -1063,7 +1063,7 @@ msgstr ""
 msgid "Predicate type info"
 msgstr ""
 
-#: components/model/requiresView.html:34
+#: components/model/requiresView.html:36
 #: translations/titles.html:44
 msgid "Prefix"
 msgstr ""
@@ -1375,7 +1375,7 @@ msgstr ""
 msgid "Superclass info"
 msgstr ""
 
-#: components/model/requiresView.html:28
+#: components/model/requiresView.html:30
 msgid "Technical namespaces"
 msgstr ""
 
