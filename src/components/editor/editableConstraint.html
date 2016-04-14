@@ -1,28 +1,38 @@
 
-<editable data-title="Description">
-  <textarea id="constraintComment" class="form-control" localized-input ng-model="ctrl.constraint.comment"></textarea>
-</editable>
+<uib-accordion>
+  <uib-accordion-group is-open="ctrl.open">
+    <uib-accordion-heading>
+      <span accordion-chevron is-open="ctrl.open">{{'Logical constraints' | translate}}</span>
+    </uib-accordion-heading>
+    <div ng-if="ctrl.open">
+      <editable data-title="Description">
+        <textarea id="constraintComment" class="form-control" localized-input ng-model="ctrl.constraint.comment"></textarea>
+      </editable>
 
-<div class="editable-wrap form-group">
+      <div class="editable-wrap form-group">
 
-  <editable-label data-title="'Constraint classes'"></editable-label>
+        <editable-label data-title="'Constraint classes'"></editable-label>
 
-  <span ng-if="!ctrl.isEditing()" ng-repeat="item in ctrl.constraint.items">
-    <a ng-href="{{'#' + ctrl.linkItem(item)}}">{{item | translateLabel}}</a>
-    <span ng-if="!$last">&nbsp;{{ctrl.constraint.constraint}}&nbsp;</span>
-  </span>
+        <span ng-if="!ctrl.isEditing()" ng-repeat="item in ctrl.constraint.items">
+          <a ng-href="{{'#' + ctrl.linkItem(item)}}">{{item | translateLabel}}</a>
+          <span ng-if="!$last">&nbsp;{{ctrl.constraint.constraint}}&nbsp;</span>
+        </span>
 
-  <div ng-if="ctrl.isEditing()">
-    <div class="input-group input-group-sm pull-left input-select">
-      <select class="form-control" ng-model="ctrl.constraint.constraint" ng-options="type | capitalize for type in ctrl.types"></select>
-    </div>
-    <div class="form-control with-button multi-input">
-      <div ng-repeat="item in ctrl.constraint.items" class="added-item">
-        {{item | translateLabel}}
-        <div class="delete-item badge" ng-click="ctrl.removeItem(item)">&times;</div>
+        <div ng-if="ctrl.isEditing()">
+          <div class="input-group input-group-sm pull-left input-select">
+            <select class="form-control" ng-model="ctrl.constraint.constraint" ng-options="type | capitalize for type in ctrl.types"></select>
+          </div>
+          <div class="form-control with-button multi-input">
+            <div ng-repeat="item in ctrl.constraint.items" class="added-item">
+              {{item | translateLabel}}
+              <div class="delete-item badge" ng-click="ctrl.removeItem(item)">&times;</div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-default btn-sm" style="display: block" ng-click="ctrl.addItem()" translate>Choose class</button>
+        </div>
       </div>
-    </div>
 
-    <button type="button" class="btn btn-default btn-sm" style="display: block" ng-click="ctrl.addItem()" translate>Choose class</button>
-  </div>
-</div>
+    </div>
+  </uib-accordion-group>
+</uib-accordion>

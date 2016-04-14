@@ -55,11 +55,10 @@
   </uib-accordion>
 </div>
 
+<h4 translate>Additional information</h4>
+
 <div ng-show="ctrl.model.isOfType('profile') && (ctrl.class.constraint.isVisible() || ctrl.isEditing())">
-  <h4 translate>Logical constraints</h4>
   <editable-constraint constraint="ctrl.class.constraint" model="ctrl.model" class="ctrl.class"></editable-constraint>
 </div>
-
-<h4 translate>Additional information</h4>
 
 <usage-panel entity="ctrl.class"></usage-panel>
