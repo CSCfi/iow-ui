@@ -45,7 +45,7 @@ mod.directive('editable', () => {
 
       Object.defineProperty(thisController, 'value', { get: () => ngModel && ngModel.$modelValue });
       Object.defineProperty(thisController, 'inputId', { get: () => input.attr('id') });
-      Object.defineProperty(thisController, 'required', { get: () => input.attr('required') || (ngModel && 'requiredLocalized' in ngModel.$validators) });
+      Object.defineProperty(thisController, 'required', { get: () => !thisController.disable && (input.attr('required') || (ngModel && 'requiredLocalized' in ngModel.$validators)) });
     },
     controller: EditableController
   };
