@@ -3,9 +3,9 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ConceptService } from '../../services/conceptService';
-import { Language } from '../../services/languageService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { isDefined } from '../../services/utils';
+import { Language } from '../contracts';
 
 const noExclude = (scheme: any) => <string> null;
 

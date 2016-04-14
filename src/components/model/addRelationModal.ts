@@ -3,8 +3,8 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import { ModelService } from '../../services/modelService';
 import { Relation, Model } from '../../services/entities';
-import { Language } from '../../services/languageService';
 import { Uri } from '../../services/uri';
+import { Language } from '../contracts';
 
 export class AddRelationModal {
   /* @ngInject */

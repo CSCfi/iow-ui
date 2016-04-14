@@ -5,12 +5,12 @@ import IQService = angular.IQService;
 import {
   EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association
 } from './entities';
-import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { reverseMapType } from './typeMapping';
 import { expandContextWithKnownModels } from './utils';
 import { Urn, Uri } from './uri';
+import { Language } from '../components/contracts';
 
 export class PredicateService {
   /* @ngInject */

@@ -1,12 +1,12 @@
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
-import * as _ from 'lodash';
-import { LanguageService, Language } from '../../services/languageService';
+import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
 import { Require, Model } from '../../services/entities';
 import { AddRequireModal } from './addRequireModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { isDefined } from '../../services/utils';
+import { Language } from '../contracts';
 
 const noExclude = (require: Require) => <string> null;
 

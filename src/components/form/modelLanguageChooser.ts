@@ -1,7 +1,8 @@
 import IScope = angular.IScope;
-import { LanguageService, Language } from '../../services/languageService';
+import { LanguageService } from '../../services/languageService';
 
 import { module as mod }  from './module';
+import { Language } from '../contracts';
 
 mod.directive('modelLanguageChooser', () => {
   return {

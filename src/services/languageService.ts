@@ -1,13 +1,11 @@
-import * as _ from 'lodash';
 import { Localizable } from './entities';
+import { Language } from '../components/contracts';
+import { availableLanguages, translate } from './utils';
 
-const languages: Language[] = ['fi', 'en'];
 const defaultLanguage: Language = 'fi';
 
 const fi = require('../../po/fi.po');
 const en = require('../../po/en.po');
-
-export type Language = string;
 
 export class LanguageService {
 
@@ -33,32 +31,10 @@ export class LanguageService {
   }
 
   get availableLanguages() {
-    return languages;
+    return availableLanguages;
   }
 
   translate(data: Localizable): string {
     return translate(data, this.modelLanguage);
   }
-}
-
-export function translate(data: Localizable, language: Language): string {
-  function localized(lang: Language, showLang: boolean): string {
-    let localization = data[lang];
-
-    if (Array.isArray(localization)) {
-      localization = Array.join(localization, ' ');
-    }
-
-    if (!localization) {
-      return '';
-    } else {
-      return localization + (showLang ? ` (${lang})` : '');
-    }
-  }
-
-  if (!data) {
-    return '';
-  }
-
-  return localized(language, false) || _.find(_.map(languages, lang => localized(lang, true)), _.identity) || '';
 }

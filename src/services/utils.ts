@@ -1,6 +1,33 @@
 import INgModelController = angular.INgModelController;
 import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from './entities';
 import { Uri } from './uri';
+import { Language } from '../components/contracts';
+
+
+export const availableLanguages: Language[] = ['fi', 'en'];
+
+export function translate(data: Localizable, language: Language): string {
+  function localized(lang: Language, showLang: boolean): string {
+    let localization = data[lang];
+
+    if (Array.isArray(localization)) {
+      localization = Array.join(localization, ' ');
+    }
+
+    if (!localization) {
+      return '';
+    } else {
+      return localization + (showLang ? ` (${lang})` : '');
+    }
+  }
+
+  if (!data) {
+    return '';
+  }
+
+  return localized(language, false) || _.find(_.map(availableLanguages, lang => localized(lang, true)), _.identity) || '';
+}
+
 
 export function extendNgModelOptions(ngModel: INgModelController, options: any) {
   if (ngModel.$options) {

@@ -7,10 +7,10 @@ import {
   EntityDeserializer, ConceptSuggestion, FintoConcept, GraphData, FintoConceptSearchResult,
   Reference, Localizable
 } from './entities';
-import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { Uri } from './uri';
+import { Language } from '../components/contracts';
 
 export interface ConceptSearchResult {
   id: Uri;

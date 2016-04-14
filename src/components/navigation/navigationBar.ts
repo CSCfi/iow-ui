@@ -1,9 +1,10 @@
 import * as _ from 'lodash';
-import { Language, LanguageService } from '../../services/languageService';
+import { LanguageService } from '../../services/languageService';
 import { UserService } from '../../services/userService';
 import { User } from '../../services/entities';
 import { LoginModal } from './loginModal';
 import { module as mod }  from './module';
+import { Language } from '../contracts';
 
 mod.directive('navigationBar', () => {
   return {

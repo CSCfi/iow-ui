@@ -16,12 +16,12 @@ import {
   ExternalEntity
 } from './entities';
 import { PredicateService } from './predicateService';
-import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { expandContextWithKnownModels, hasLocalization } from './utils';
 import { Uri, Urn } from './uri';
 import { reverseMapType } from './typeMapping';
+import { Language } from '../components/contracts';
 
 export class ClassService {
 

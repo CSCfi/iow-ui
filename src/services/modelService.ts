@@ -4,11 +4,11 @@ import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { config } from '../config';
 import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, GraphData, Relation } from './entities';
-import { Language } from './languageService';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
 import { Uri, Urn } from './uri';
 import { expandContextWithKnownModels } from './utils';
+import { Language } from '../components/contracts';
 
 export class ModelService {
 

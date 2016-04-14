@@ -12,3 +12,5 @@ export interface ChangeListener<T> {
 export interface ChangeNotifier<T> {
   addListener(listener: ChangeListener<T>): void;
 }
+
+export type Language = string;
