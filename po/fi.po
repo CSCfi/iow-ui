@@ -104,7 +104,7 @@ msgstr "Sallitut arvot"
 
 #: translations/titles.html:47
 msgid "Allowed values info"
-msgstr ""
+msgstr "Lista ominaisuudelle sallituista arvoista"
 
 #: translations/misc.html:94
 msgid "Already added"
@@ -156,7 +156,7 @@ msgstr "Assosiaation tunniste"
 
 #: translations/titles.html:7
 msgid "Association id info"
-msgstr ""
+msgstr "Assosiaation yksilöivä curie tunniste"
 
 #: translations/misc.html:101
 msgid "Association information"
@@ -168,7 +168,7 @@ msgstr "Assosiaation nimi"
 
 #: translations/titles.html:17
 msgid "Association label info"
-msgstr ""
+msgstr "Assosiaation ihmisluettava nimi"
 
 #: translations/misc.html:56
 msgid "Association list"
@@ -184,7 +184,7 @@ msgstr "Attribuutin tunniste"
 
 #: translations/titles.html:6
 msgid "Attribute id info"
-msgstr ""
+msgstr "Attribuutin yksilöivä curie tunniste"
 
 #: translations/misc.html:100
 msgid "Attribute information"
@@ -196,7 +196,7 @@ msgstr "Attribuutin nimi"
 
 #: translations/titles.html:18
 msgid "Attribute label info"
-msgstr ""
+msgstr "Attribuutin ihmisluettava nimi"
 
 #: translations/misc.html:51
 msgid "Attribute list"
@@ -212,7 +212,7 @@ msgstr "Laajempi käsite"
 
 #: translations/titles.html:39
 msgid "Broader concept info"
-msgstr ""
+msgstr "Käsitteeseen liittyvä yläkäsite"
 
 #: components/frontPage.html:45
 msgid "Browse"
@@ -290,7 +290,7 @@ msgstr "Luokan tunniste"
 
 #: translations/titles.html:4
 msgid "Class id info"
-msgstr ""
+msgstr "Luokan yksilöivä curie tunniste"
 
 #: translations/misc.html:98
 msgid "Class information"
@@ -302,7 +302,7 @@ msgstr "Luokan nimi"
 
 #: translations/titles.html:15
 msgid "Class label info"
-msgstr ""
+msgstr "Luokan ihmisluettava nimi"
 
 #: translations/misc.html:46
 msgid "Class list"
@@ -344,7 +344,7 @@ msgstr "Käsitteen tunniste"
 
 #: translations/titles.html:9
 msgid "Concept id info"
-msgstr ""
+msgstr "Käsitteen yksilöivä uri tunniste"
 
 #: components/editor/searchConceptModal.html:73
 msgid "Concept is suggested to scheme"
@@ -356,7 +356,7 @@ msgstr "Käsitteen nimi"
 
 #: translations/titles.html:20
 msgid "Concept label info"
-msgstr ""
+msgstr "Käsitteen suositeltava termi"
 
 #: components/editor/searchConceptModal.html:10
 msgid "Concept search info"
@@ -374,7 +374,7 @@ msgstr ""
 
 #: translations/titles.html:21
 msgid "Concept suggestion label info"
-msgstr ""
+msgstr "Ehdotettu termi käsitteelle"
 
 #: components/common/deleteConfirmationModal.html:2 translations/misc.html:39
 msgid "Confirm delete"
@@ -452,7 +452,7 @@ msgstr "Oletusarvo"
 
 #: translations/titles.html:46
 msgid "Default value info"
-msgstr ""
+msgstr "Oletusarvo, joka annetaan ominaisuudelle jos muuta arvoa ei ole määritelty"
 
 #: translations/misc.html:8
 msgid "Define concept for the association"
@@ -488,11 +488,11 @@ msgstr ""
 
 #: translations/titles.html:25
 msgid "Defined by library"
-msgstr "Määritelty tietokomponenttikirjastossa"
+msgstr "Tietokomponenttikirjasto"
 
 #: translations/titles.html:25
 msgid "Defined by library info"
-msgstr ""
+msgstr "Viite tietokomponenttikirjastoon jossa resurssi on määritelty"
 
 #: translations/titles.html:26
 msgid "Defined by profile"
@@ -500,7 +500,7 @@ msgstr "Määritelty soveltamisprofiilissa"
 
 #: translations/titles.html:26
 msgid "Defined by profile info"
-msgstr ""
+msgstr "Viite soveltamisprofiiliin jossa resurssin käyttö on määritelty"
 
 #: translations/titles.html:1
 msgid "Definition"
@@ -508,7 +508,7 @@ msgstr "Määritelmä"
 
 #: translations/titles.html:1
 msgid "Definition info"
-msgstr ""
+msgstr "Käsitteen määritelmä"
 
 #: translations/misc.html:53
 msgid "Delete association"
@@ -584,7 +584,7 @@ msgstr "Kuvaus"
 
 #: translations/titles.html:2
 msgid "Description info"
-msgstr ""
+msgstr "Tietosisällön kuvaus"
 
 #: components/editor/addPropertiesFromClassModal.html:5
 msgid ""
@@ -643,7 +643,7 @@ msgstr "Vastaavat assosiaatiot"
 
 #: translations/titles.html:38
 msgid "Equivalent association info"
-msgstr ""
+msgstr "Lista muualla määritellyistä assosiaatioista joilla on vastaava semanttinen merkitys"
 
 #: translations/titles.html:37
 msgid "Equivalent attribute"
@@ -651,7 +651,7 @@ msgstr "Vastaavat ominaisuudet"
 
 #: translations/titles.html:37
 msgid "Equivalent attribute info"
-msgstr ""
+msgstr "Lista muualla määritellyistä attribuuteista joilla on vastaava semanttinen merkitys"
 
 #: translations/titles.html:36
 msgid "Equivalent class"
@@ -659,7 +659,7 @@ msgstr "Vastaavat luokat"
 
 #: translations/titles.html:36
 msgid "Equivalent class info"
-msgstr ""
+msgstr "Lista muualla määritellyistä luokista joilla on vastaava semanttinen merkitys"
 
 #: translations/titles.html:32
 msgid "Example"
@@ -667,7 +667,7 @@ msgstr "Esimerkki"
 
 #: translations/titles.html:32
 msgid "Example info"
-msgstr ""
+msgstr "Esimerkkiarvo ominaisuudelle"
 
 #: components/form/errorMessages.html:7
 msgid "Existing id error"
@@ -695,7 +695,7 @@ msgstr "Ulkoinen tunniste"
 
 #: translations/titles.html:58
 msgid "External URI info"
-msgstr ""
+msgstr "Viite ulkoiseen URI tunnisteeseen"
 
 #: translations/misc.html:34
 msgid "fi"
@@ -711,7 +711,7 @@ msgstr "Pakollinen arvo"
 
 #: translations/titles.html:48
 msgid "Fixed value info"
-msgstr ""
+msgstr "Ennaltamääritelty pakollinen arvo joka täytyy löytyä datasta"
 
 #: components/common/deleteConfirmationModal.html:6
 msgid "Following items are depending on the deleted"
@@ -743,7 +743,7 @@ msgstr "Ryhmän nimi"
 
 #: translations/titles.html:14
 msgid "Group label info"
-msgstr ""
+msgstr "Kohdealueen ryhmän nimi"
 
 #: translations/misc.html:19
 msgid "Hide"
@@ -759,7 +759,7 @@ msgstr "Linkki"
 
 #: translations/titles.html:56
 msgid "Homepage info"
-msgstr ""
+msgstr "Linkki sivustoon tai sovellukseen joissa tietosisältöjä on hyödynnetty"
 
 #: translations/misc.html:67
 msgid "How content"
@@ -794,7 +794,7 @@ msgstr "Ryhmän sisäiset sivut"
 
 #: translations/titles.html:41
 msgid "Internal group page info"
-msgstr ""
+msgstr "Kohdealueen ryhmän sisäiset sivut"
 
 #: components/frontPage.html:5
 msgid "Interoperability method"
@@ -846,7 +846,7 @@ msgstr "Tietokomponenttikirjaston nimi"
 
 #: translations/titles.html:12
 msgid "Library label info"
-msgstr ""
+msgstr "Tietokomponenttikirjaston ihmisluettava nimi"
 
 #: components/footer.html:15
 msgid "licensed under the"
@@ -888,7 +888,7 @@ msgstr "Enimmäismäärä"
 
 #: translations/titles.html:51
 msgid "Max count info"
-msgstr ""
+msgstr "Sallittujen arvojen enimmäismäärä"
 
 #: translations/titles.html:53 translations/titles.html:54
 msgid "Max length"
@@ -896,7 +896,7 @@ msgstr "Enimmäispituus"
 
 #: translations/titles.html:53 translations/titles.html:54
 msgid "Max length info"
-msgstr ""
+msgstr "Sallitun arvon enimmäispituus"
 
 #: components/user/user.html:27 translations/misc.html:119
 msgid "Member groups"
@@ -908,7 +908,7 @@ msgstr "Vähimmäismäärä"
 
 #: translations/titles.html:50
 msgid "Min count info"
-msgstr ""
+msgstr "Sallittujen arvojen minimimäärä"
 
 #: translations/titles.html:52
 msgid "Min length"
@@ -916,7 +916,7 @@ msgstr "Vähimmäispituus"
 
 #: translations/titles.html:52
 msgid "Min length info"
-msgstr ""
+msgstr "Sallitun arvon minimipituus"
 
 #: translations/misc.html:26
 msgid "model"
@@ -940,7 +940,7 @@ msgstr "Nimiavaruus"
 
 #: translations/titles.html:43
 msgid "Namespace info"
-msgstr ""
+msgstr "Nimiavaruus jota käytetään resurssien yksilöintiin ja resolvointiin"
 
 #: components/form/errorMessages.html:14
 msgid "Negative error"
@@ -1048,7 +1048,7 @@ msgstr "Säännollinen lauseke"
 
 #: translations/titles.html:49
 msgid "Pattern info"
-msgstr ""
+msgstr "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
 #: translations/titles.html:34
 msgid "Predicate type"
@@ -1056,7 +1056,7 @@ msgstr "Ominaisuuden tyyppi"
 
 #: translations/titles.html:34
 msgid "Predicate type info"
-msgstr ""
+msgstr "Ominaisuus voi olla joko Attribuutti tai Assosiaatio"
 
 #: components/model/requiresView.html:34 translations/titles.html:44
 msgid "Prefix"
@@ -1068,7 +1068,7 @@ msgstr "Etuliite saa sisältää vain pieniä kirjaimia"
 
 #: translations/titles.html:44
 msgid "Prefix info"
-msgstr ""
+msgstr "Etuliitettä käytetään nimiavaruuden ja helpommin luettavien curie tunnisteiden muodostamiseen"
 
 #: translations/misc.html:29
 msgid "profile"
@@ -1084,7 +1084,7 @@ msgstr "Soveltamisprofiilin nimi"
 
 #: translations/titles.html:13
 msgid "Profile label info"
-msgstr ""
+msgstr "Soveltamisprofiilin ihmisluettava nimi"
 
 #: translations/titles.html:8
 msgid "Property id"
@@ -1092,7 +1092,7 @@ msgstr "Ominaisuuden tunniste"
 
 #: translations/titles.html:8
 msgid "Property id info"
-msgstr ""
+msgstr "Ominaisuuden yksilöivä tunniste"
 
 #: translations/titles.html:19
 msgid "Property label"
@@ -1100,7 +1100,7 @@ msgstr "Ominaisuuden nimi"
 
 #: translations/titles.html:19
 msgid "Property label info"
-msgstr ""
+msgstr "Ominaisuuden ihmisluettava nimi"
 
 #: translations/titles.html:30
 msgid "Range"
@@ -1108,7 +1108,7 @@ msgstr "Arvoalue"
 
 #: translations/titles.html:30
 msgid "Range info"
-msgstr ""
+msgstr "Ominaisuuden arvoalue"
 
 #: translations/attribute.html:8
 msgid "rdf:langString"
@@ -1260,7 +1260,7 @@ msgstr "Tarkennetun luokan tunniste"
 
 #: translations/titles.html:5
 msgid "Shape id info"
-msgstr ""
+msgstr "Tarkennetun luokan tunniste"
 
 #: translations/misc.html:99
 msgid "Shape information"
@@ -1272,7 +1272,7 @@ msgstr "Tarkennetun luokan nimi"
 
 #: translations/titles.html:16
 msgid "Shape label info"
-msgstr ""
+msgstr "Tarkannetun luokan ihmisluettava nimi"
 
 #: translations/misc.html:103
 msgid "Shape properties"
@@ -1316,7 +1316,7 @@ msgstr "Tarkennettu luokasta"
 
 #: translations/titles.html:31
 msgid "Specialized from class info"
-msgstr ""
+msgstr "Luokka jota soveltamisprofiilissa on tarkennettu"
 
 #: translations/titles.html:23
 msgid "State"
@@ -1324,7 +1324,7 @@ msgstr "Tila"
 
 #: translations/titles.html:23
 msgid "State info"
-msgstr ""
+msgstr "Hallintamalliin liittyvä resurssin tila"
 
 #: components/form/errorMessages.html:11
 msgid "String error"
@@ -1348,7 +1348,7 @@ msgstr "Yläassosiaatio"
 
 #: translations/titles.html:28
 msgid "Superassociation info"
-msgstr ""
+msgstr "Yleistettävissä oleva assosiaatio, joka on semantiikaltaan laajempi"
 
 #: translations/titles.html:29
 msgid "Superattribute"
@@ -1356,7 +1356,7 @@ msgstr "Yläattribuutti"
 
 #: translations/titles.html:29
 msgid "Superattribute info"
-msgstr ""
+msgstr "Yleistettävissä oleva attribuutti, joka on semantiikaltaan laajempi"
 
 #: translations/titles.html:27
 msgid "Superclass"
@@ -1364,7 +1364,7 @@ msgstr "Yläluokka"
 
 #: translations/titles.html:27
 msgid "Superclass info"
-msgstr ""
+msgstr "Yleistettävissä oleva luokka, joka on semantiikaltaan laajempi"
 
 #: components/model/requiresView.html:28
 msgid "Technical namespaces"
@@ -1380,7 +1380,7 @@ msgstr "Nimi"
 
 #: translations/titles.html:57
 msgid "Title info"
-msgstr ""
+msgstr "Ihmisluettava nimi"
 
 #: translations/misc.html:144
 msgid "to vocabulary"
@@ -1444,7 +1444,7 @@ msgstr "Kohde"
 
 #: translations/titles.html:33
 msgid "Value class info"
-msgstr ""
+msgstr "Viite luokkaan joka toimii assosiaation kohteena"
 
 #: components/footer.html:7
 msgid "Version"
@@ -1460,7 +1460,7 @@ msgstr "Sanaston tunniste"
 
 #: translations/titles.html:10
 msgid "Vocabulary id info"
-msgstr ""
+msgstr "Sanaston lyhyt tunniste"
 
 #: translations/misc.html:65
 msgid "What can I do content"
