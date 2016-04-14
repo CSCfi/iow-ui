@@ -1044,7 +1044,7 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: components/editor/propertyView.html:28
+#: components/editor/propertyView.html:29
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1064,6 +1064,10 @@ msgstr "Säännollinen lauseke"
 msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
+
+#: components/editor/propertyView.html:112
+msgid "Predicate information not found"
+msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
 #: translations/titles.html:35
 msgid "Predicate type"
@@ -1191,7 +1195,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:88
+#: components/editor/propertyView.html:96
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 

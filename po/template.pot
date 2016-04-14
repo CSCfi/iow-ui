@@ -1039,7 +1039,7 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: components/editor/propertyView.html:28
+#: components/editor/propertyView.html:29
 msgid "Optional metadata"
 msgstr ""
 
@@ -1057,6 +1057,10 @@ msgstr ""
 
 #: translations/titles.html:50
 msgid "Pattern info"
+msgstr ""
+
+#: components/editor/propertyView.html:112
+msgid "Predicate information not found"
 msgstr ""
 
 #: translations/titles.html:35
@@ -1184,7 +1188,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:88
+#: components/editor/propertyView.html:96
 msgid "Reusable predicate"
 msgstr ""
 

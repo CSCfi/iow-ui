@@ -100,13 +100,16 @@
       <uib-accordion-heading>
         <span accordion-chevron is-open="predicateOpen">{{ctrl.predicateName}}</span>
       </uib-accordion-heading>
-      <non-editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" value="ctrl.predicate.id"></non-editable>
-      <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label"></non-editable>
-      <non-editable data-title="Description" value="ctrl.predicate.comment"></non-editable>
-      <non-editable data-title="Predicate type" value="ctrl.predicate.normalizedType" value-as-localization-key="true"></non-editable>
-      <non-editable data-title="Range" value="ctrl.predicate.range"></non-editable>
-      <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
-      <subject-view subject="ctrl.predicate.subject"></subject-view>
+      <div ng-if="ctrl.predicate">
+        <non-editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" value="ctrl.predicate.id"></non-editable>
+        <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label"></non-editable>
+        <non-editable data-title="Description" value="ctrl.predicate.comment"></non-editable>
+        <non-editable data-title="Predicate type" value="ctrl.predicate.normalizedType" value-as-localization-key="true"></non-editable>
+        <non-editable data-title="Range" value="ctrl.predicate.range"></non-editable>
+        <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
+        <subject-view subject="ctrl.predicate.subject"></subject-view>
+      </div>
+      <div ng-if="!ctrl.predicate" translate>Predicate information not found</div>
     </uib-accordion-group>
   </uib-accordion>
 </div>
