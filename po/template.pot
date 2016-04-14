@@ -1039,6 +1039,10 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
+#: components/editor/propertyView.html:32
+msgid "Optional metadata"
+msgstr ""
+
 #: translations/type.html:4
 msgid "owl:DatatypeProperty"
 msgstr ""
@@ -1152,6 +1156,10 @@ msgstr ""
 msgid "Related resources"
 msgstr ""
 
+#: translations/misc.html:156
+msgid "Required"
+msgstr ""
+
 #: components/form/errorMessages.html:8
 msgid "Required error"
 msgstr ""
@@ -1168,7 +1176,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:68
+#: components/editor/propertyView.html:70
 msgid "Reusable predicate"
 msgstr ""
 

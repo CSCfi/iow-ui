@@ -1044,6 +1044,10 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
+#: components/editor/propertyView.html:32
+msgid "Optional metadata"
+msgstr "Valinnaiset metatiedot"
+
 #: translations/type.html:4
 msgid "owl:DatatypeProperty"
 msgstr "Attribuutti"
@@ -1179,7 +1183,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:68
+#: components/editor/propertyView.html:70
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 

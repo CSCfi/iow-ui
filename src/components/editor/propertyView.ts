@@ -27,7 +27,9 @@ mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $tim
     require: ['propertyView', '^classForm', '?^classView'],
     link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes,
          [thisController, classFormController, classViewController]: [PropertyViewController, ClassFormController, ClassViewController]) {
+      
       $scope.editableController = classViewController;
+      thisController.isEditing = () => classViewController.isEditing();
 
       thisController.scroll = () => {
         const scrollTop = element.offset().top;
@@ -67,6 +69,7 @@ export class PropertyViewController {
   otherPropertyLabels: Localizable[];
   otherPropertyIdentifiers: string[];
   anyPropertiesOpen: () => boolean;
+  isEditing: () => boolean;
 
   /* @ngInject */
   constructor($scope: IScope, $location: ILocationService, predicateService: PredicateService, private languageService: LanguageService) {

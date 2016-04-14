@@ -5,10 +5,6 @@
           ng-disabled="!ctrl.inUnstableState"
           ng-click="editableController.removeProperty(ctrl.property)" translate>Delete property</button>
 
-  <editable data-title="Property id">
-    <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
-  </editable>
-
   <editable data-title="Property label">
     <input id="{{ctrl.property.internalId + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" ng-model="ctrl.property.label" />
   </editable>
@@ -27,6 +23,24 @@
 
   <editable ng-if="ctrl.predicate.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()">
     <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></uri-select>
+  </editable>
+
+  <h4 translate
+    ng-show="ctrl.isEditing()
+           || ctrl.property.externalId
+           || ctrl.property.example
+           || ctrl.property.in.length > 0
+           || ctrl.property.defaultValue
+           || ctrl.property.hasValue
+           || ctrl.property.pattern
+           || ctrl.property.minLength
+           || ctrl.property.maxLength
+           || ctrl.property.minCount
+           || ctrl.property.maxCount
+    ">Optional metadata</h4>
+
+  <editable data-title="Property id">
+    <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
   </editable>
 
   <editable data-title="Example">
