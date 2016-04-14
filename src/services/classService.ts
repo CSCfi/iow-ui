@@ -105,6 +105,11 @@ export class ClassService {
         shape.definedBy = profile.asDefinedBy();
         shape.unsaved = true;
         shape.external = profile.isNamespaceKnownAndOfType(shape.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
+
+        for (const property of shape.properties) {
+          property.state = 'Unstable';
+        }
+
         return shape;
       });
   }
