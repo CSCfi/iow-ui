@@ -21,8 +21,7 @@
         <div ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</div>
         <div ng-repeat="searchResult in ctrl.searchResults track by searchResult.id"
              class="search-result" ng-click="ctrl.selectSearchResult(searchResult)" key-control-selection>
-          <i ng-class="searchResult.glyphIconClass"></i>
-          <h5>{{searchResult | translateLabel}}</h5>
+          <div><i ng-class="searchResult.glyphIconClass"></i><h5>{{searchResult | translateLabel}}</h5></div>
           <p>{{searchResult.comment | translateValue}}</p>
         </div>
       </div>
