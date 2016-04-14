@@ -2,7 +2,7 @@
   <editable-label data-title="ctrl.title" input-id="ctrl.inputId" ng-show="ctrl.item.displayValue || ctrl.isEditing()" required="ctrl.required"></editable-label>
   <div ng-show="ctrl.isEditing()" ng-transclude></div>
 
-  <div ng-if="!ctrl.isEditing()">
+  <div ng-if="!ctrl.isEditing()" class="content">
     <a ng-if="ctrl.item.showLink" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
     <span ng-if="ctrl.item.showPlain" >{{ctrl.item.displayValue}}</span>
   </div>
