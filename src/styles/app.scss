@@ -335,16 +335,33 @@ $input-select: 80px;
   .col-md-6 { padding-right: 0; }
 }
 
-.editable-wrap .content {
-  padding-right: 170px;
+.editable-wrap {
+
+  .content {
+    padding-right: 170px;
+  }
+
+  .form-control {
+    max-width: $input-max-width;
+
+    &.with-button {
+      max-width: calc(#{$input-max-width} - #{$input-select});
+      width: calc(100% - #{$input-select});
+    }
+  }
 }
 
-.form-control {
-  max-width: $input-max-width;
+modal-body {
+  .editable-wrap {
 
-  &.with-button {
-    max-width: calc(#{$input-max-width} - #{$input-select});
-    width: calc(100% - #{$input-select});
+    .form-control {
+      max-width: inherit;
+
+      &.with-button {
+        max-width: calc(100% - #{$input-select});
+        width: calc(100% - #{$input-select});
+      }
+    }
   }
 }
 
