@@ -798,7 +798,7 @@ export class Property extends GraphNode {
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
 
-    if(graph.type) {
+    if (graph.type) {
       this.predicateType = new Uri(graph.type, context);
     }
 

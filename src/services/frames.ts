@@ -52,7 +52,7 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, {
   in: { '@id': 'http://www.w3.org/ns/shacl#in'},
   hasValue: { '@id': 'http://www.w3.org/ns/shacl#hasValue'},
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
-  type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' },
+  type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, {
