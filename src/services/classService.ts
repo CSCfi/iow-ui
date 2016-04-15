@@ -152,7 +152,7 @@ export class ClassService {
 
     return this.$q.all([
       predicatePromise,
-      this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateOrExternal.id.uri}})
+      this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateOrExternal.id.uri, type: reverseMapType(predicateOrExternal.normalizedType)}})
         .then(expandContextWithKnownModels(model))
         .then((response: any) => this.entities.deserializeProperty(response.data))
     ])

@@ -72,6 +72,10 @@ export function isLocalizable(obj: any): obj is Localizable {
 export class ExternalEntity {
   constructor(public type: Type, public id?: Uri) {
   }
+
+  get normalizedType() {
+    return this.type;
+  }
 }
 
 export abstract class GraphNode {
