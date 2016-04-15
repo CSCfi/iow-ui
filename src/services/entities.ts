@@ -859,17 +859,22 @@ export class Property extends GraphNode {
     return !!this.valueClass;
   }
 
-  get glyphIconClass() {
+  get normalizedPredicateType(): Type {
     if (this.predicateType) {
-      return glyphIconClassForType([this.predicateType]);
+      return this.predicateType;
     } else {
       const predicate = this.predicate;
       if (predicate instanceof Predicate) {
-        return glyphIconClassForType(predicate.type);
+        return predicate.normalizedType;
       } else {
-        return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : []);
+        return this.dataType ? 'attribute' : this.valueClass ? 'association' : null;
       }
     }
+  }
+
+  get glyphIconClass() {
+    const type = this.normalizedPredicateType;
+    return glyphIconClassForType(type ? [type] : []);
   }
 
   clone(): Property {
