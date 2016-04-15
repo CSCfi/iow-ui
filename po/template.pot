@@ -223,7 +223,7 @@ msgstr ""
 msgid "Browse vocabulary"
 msgstr ""
 
-#: translations/misc.html:147
+#: translations/misc.html:150
 msgid "by referencing external uri"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr ""
 #: components/editor/addPropertiesFromClassModal.html:16
 #: components/editor/searchClassModal.html:68
 #: components/editor/searchConceptModal.html:89
-#: components/editor/searchPredicateModal.html:79
+#: components/editor/searchPredicateModal.html:85
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
@@ -416,6 +416,10 @@ msgstr ""
 
 #: translations/misc.html:145
 msgid "Create new class"
+msgstr ""
+
+#: translations/misc.html:147
+msgid "Create new predicate"
 msgstr ""
 
 #: components/model/searchRequireModal.html:8
@@ -679,15 +683,15 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: translations/misc.html:152
+#: translations/misc.html:153
 msgid "External class not found"
 msgstr ""
 
-#: translations/misc.html:154
+#: translations/misc.html:155
 msgid "External predicate is of wrong type"
 msgstr ""
 
-#: translations/misc.html:153
+#: translations/misc.html:154
 msgid "External predicate not found"
 msgstr ""
 
@@ -784,7 +788,7 @@ msgstr ""
 msgid "Imported requires"
 msgstr ""
 
-#: translations/misc.html:155
+#: translations/misc.html:156
 msgid "Input"
 msgstr ""
 
@@ -800,7 +804,7 @@ msgstr ""
 msgid "Interoperability method"
 msgstr ""
 
-#: translations/misc.html:151
+#: translations/misc.html:152
 msgid "Invalid ID"
 msgstr ""
 
@@ -1168,7 +1172,7 @@ msgstr ""
 msgid "Require label info"
 msgstr ""
 
-#: translations/misc.html:156
+#: translations/misc.html:157
 msgid "Required"
 msgstr ""
 
@@ -1273,7 +1277,7 @@ msgstr ""
 msgid "Select class"
 msgstr ""
 
-#: translations/misc.html:150
+#: translations/misc.html:151
 msgid "Self reference not allowed"
 msgstr ""
 

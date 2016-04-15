@@ -138,8 +138,7 @@ export class SearchPredicateController {
     const result: (PredicateListItem|AddNewPredicate)[] = [
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
-      new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAttributeAddable() && this.canAddExternal(), 'attribute', true),
-      new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.isAssociationAddable() && this.canAddExternal(), 'association', true)
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal() && (this.isAttributeAddable() || this.isAssociationAddable()), null, true)
     ];
 
     const predicateSearchResult = this.predicates.filter(predicate =>
@@ -166,7 +165,7 @@ export class SearchPredicateController {
     if (item instanceof AddNewPredicate) {
       if (item.external) {
         this.$scope.form.editing = true;
-        this.selection = new ExternalEntity(item.type);
+        this.selection = new ExternalEntity(this.type || 'attribute');
       } else {
         this.createNew(item.type);
       }

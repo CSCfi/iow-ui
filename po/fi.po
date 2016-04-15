@@ -222,7 +222,7 @@ msgstr "Selaa"
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
 
-#: translations/misc.html:147
+#: translations/misc.html:150
 msgid "by referencing external uri"
 msgstr "viittaamalla ulkoiseen tunnisteeseen"
 
@@ -239,7 +239,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/editor/addPropertiesFromClassModal.html:16
 #: components/editor/searchClassModal.html:68
 #: components/editor/searchConceptModal.html:89
-#: components/editor/searchPredicateModal.html:79
+#: components/editor/searchPredicateModal.html:85
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
@@ -417,6 +417,10 @@ msgstr "Lisää uusi attribuutti"
 #: translations/misc.html:145
 msgid "Create new class"
 msgstr "Luo uusi luokka"
+
+#: translations/misc.html:147
+msgid "Create new predicate"
+msgstr "Luo uusi ominaisuus"
 
 #: components/model/searchRequireModal.html:8
 msgid "Create new require"
@@ -687,15 +691,15 @@ msgstr "Tunniste on jo käytössä"
 msgid "Export"
 msgstr "Lataa"
 
-#: translations/misc.html:152
+#: translations/misc.html:153
 msgid "External class not found"
 msgstr "Ulkoista luokkaa ei löydy"
 
-#: translations/misc.html:154
+#: translations/misc.html:155
 msgid "External predicate is of wrong type"
 msgstr "Ulkoinen ominaisuus on väärää tyyppiä"
 
-#: translations/misc.html:153
+#: translations/misc.html:154
 msgid "External predicate not found"
 msgstr "Ulkoista ominaisuutta ei löydy"
 
@@ -794,7 +798,7 @@ msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
 
-#: translations/misc.html:155
+#: translations/misc.html:156
 msgid "Input"
 msgstr "Kirjoita"
 
@@ -810,7 +814,7 @@ msgstr "Kohdealueen ryhmän sisäiset sivut"
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
-#: translations/misc.html:151
+#: translations/misc.html:152
 msgid "Invalid ID"
 msgstr "Virheellinen tunniste"
 
@@ -1175,7 +1179,7 @@ msgstr "Nimiavaruuden nimi"
 msgid "Require label info"
 msgstr ""
 
-#: translations/misc.html:156
+#: translations/misc.html:157
 msgid "Required"
 msgstr "Pakollinen kenttä"
 
@@ -1283,7 +1287,7 @@ msgstr "Valitse attribuutti tai assosiaatio"
 msgid "Select class"
 msgstr "Valitse luokka"
 
-#: translations/misc.html:150
+#: translations/misc.html:151
 msgid "Self reference not allowed"
 msgstr "Viittaus itseensä ei ole sallittu"
 

@@ -63,6 +63,12 @@
                 <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="ctrl.model" ng-model="ctrl.selection.id" />
               </div>
             </editable>
+
+            <editable data-title="Predicate type" ng-show="ctrl.typeSelectable">
+              <div class="selectContainer">
+                <select class="form-control" ng-model="ctrl.selection.type" ng-options="type | translate for type in ctrl.types"></select>
+              </div>
+            </editable>
           </div>
 
           <submit-error-panel error="ctrl.submitError"></submit-error-panel>
