@@ -327,12 +327,11 @@ $input-select: 80px;
   width: $input-select;
 }
 
-.row.range-input {
-  @include clearfix;
-  margin: -15px;
-  width: 100%;
-  max-width: calc(#{$input-max-width} + 15px);
-  .col-md-6 { padding-right: 0; }
+editable.range-input {
+  float: left;
+  width: 50%;
+  max-width: calc(#{$input-max-width} / 2 + 7.5px);
+  padding-right: 15px;
 }
 
 .editable-wrap {

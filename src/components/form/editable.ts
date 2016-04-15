@@ -1,3 +1,4 @@
+import IAnimateProvider = angular.IAnimateProvider;
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import IFormController = angular.IFormController;
@@ -6,10 +7,12 @@ import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
-
 import { module as mod }  from './module';
 
-mod.directive('editable', () => {
+const NG_HIDE_CLASS = 'ng-hide';
+const NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
+
+mod.directive('editable', /* @ngInject */ ($animate: any) => {
   return {
     scope: {
       title: '@',
@@ -24,6 +27,13 @@ mod.directive('editable', () => {
     controllerAs: 'ctrl',
     require: ['editable', '?^form'],
     link($scope: EditableScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableController, EditableForm]) {
+
+      $scope.$watch(() => thisController.item.displayValue || thisController.isEditing(), show => {
+        $animate[show ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, {
+          tempClasses: NG_HIDE_IN_PROGRESS_CLASS
+        });
+      });
+
       const input = element.find('[ng-model]');
       const ngModel = input.controller('ngModel');
       const isEditing = () => formController.editing && !thisController.disable;
