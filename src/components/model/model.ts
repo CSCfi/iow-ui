@@ -108,7 +108,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
 
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
-      if (!matchesIdentity(newModel, oldModel) || (oldModel.unsaved && newModel && !newModel.unsaved)) {
+      if (!matchesIdentity(newModel, oldModel) || (oldModel && oldModel.unsaved && newModel && !newModel.unsaved)) {
         this.updateLocation();
       }
 
