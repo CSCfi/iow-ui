@@ -789,7 +789,7 @@ export class Property extends GraphNode {
   in: string[];
   hasValue: string;
   pattern: string;
-  predicateType: Uri;
+  predicateType: Type;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -803,7 +803,7 @@ export class Property extends GraphNode {
     this.dataType = graph.datatype;
 
     if (graph.type) {
-      this.predicateType = new Uri(graph.type, context);
+      this.predicateType = mapType(graph.type);
     }
 
     if (graph.valueShape) {
@@ -860,11 +860,15 @@ export class Property extends GraphNode {
   }
 
   get glyphIconClass() {
-    const predicate = this.predicate;
-    if (predicate instanceof Predicate) {
-      return glyphIconClassForType(predicate.type);
+    if (this.predicateType) {
+      return glyphIconClassForType([this.predicateType]);
     } else {
-      return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : []);
+      const predicate = this.predicate;
+      if (predicate instanceof Predicate) {
+        return glyphIconClassForType(predicate.type);
+      } else {
+        return glyphIconClassForType(this.dataType ? ['attribute'] : this.valueClass ? ['association'] : []);
+      }
     }
   }
 
