@@ -27,6 +27,7 @@ mod.directive('editableMultipleDataTypeInput', () => {
       thisController.isEditing = () => formController.editing;
 
       $scope.ngModelControllers = [element.find('input').controller('ngModel'), ngModel];
+
       $scope.$watch(() => thisController.inputType, () => ngModel.$validate());
       $scope.$watchCollection(() => thisController.ngModel, () => ngModel.$validate());
 
@@ -37,10 +38,10 @@ mod.directive('editableMultipleDataTypeInput', () => {
 
         if (oldDataType) {
           delete ngModel.$validators[oldDataType];
+          ngModel.$setValidity(oldDataType, true);
         }
 
         ngModel.$validators[dataType] = arrayValidator(validator);
-        ngModel.$error = {};
         ngModel.$validate();
       });
     },
