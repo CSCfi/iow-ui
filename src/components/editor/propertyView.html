@@ -17,11 +17,11 @@
     <state-select id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></state-select>
   </editable>
 
-  <editable ng-if="ctrl.predicate.isAttribute()" data-title="Range">
+  <editable ng-if="ctrl.property.normalizedPredicateType === 'attribute' || ctrl.predicate.isAttribute()" data-title="Range">
     <range-select id="{{ctrl.property.internalId + 'range'}}" range="ctrl.property.dataType"></range-select>
   </editable>
 
-  <editable ng-if="ctrl.predicate.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()">
+  <editable ng-if="ctrl.property.normalizedPredicateType === 'association' || ctrl.predicate.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()">
     <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></uri-select>
   </editable>
 
@@ -59,7 +59,7 @@
         <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.hasValue" />
       </editable>
 
-      <editable ng-if="ctrl.predicate.isAttribute()" data-title="Pattern">
+      <editable ng-if="ctrl.normalizedPredicateType === 'attribute' || ctrl.predicate.isAttribute()" data-title="Pattern">
         <input id="{{ctrl.property.internalId + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
       </editable>
 
