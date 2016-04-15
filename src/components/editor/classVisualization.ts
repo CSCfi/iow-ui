@@ -414,36 +414,36 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
     }
   }
 
+  function getContentBBox(elements: joint.dia.Element[]) {
+
+    if (elements.length === 0) {
+      return paper.getContentBBox();
+    }
+
+    let minX = Number.MAX_VALUE;
+    let minY = Number.MAX_VALUE;
+    let maxX = Number.MIN_VALUE;
+    let maxY = Number.MIN_VALUE;
+
+    for (const element of elements) {
+      const bbox = paper.findViewByModel(element).getBBox();
+      minX = Math.min(minX, (bbox.x));
+      minY = Math.min(minY, (bbox.y));
+      maxX = Math.max(maxX, (bbox.x + bbox.width));
+      maxY = Math.max(maxY, (bbox.y + bbox.height));
+    }
+
+    return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+  }
+
+  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), element => {
+    return !joint.V(paper.findViewByModel(element).el).hasClass(backgroundClass);
+  });
+
   // TODO: figure out why the algorithm needs to be run twice to get expected results
   times(2, () => {
     const scale = getScale(paper);
     const padding = 45;
-
-    function getContentBBox(elements: joint.dia.Element[]) {
-
-      if (elements.length === 0) {
-        return paper.getContentBBox();
-      }
-
-      let minX = Number.MAX_VALUE;
-      let minY = Number.MAX_VALUE;
-      let maxX = Number.MIN_VALUE;
-      let maxY = Number.MIN_VALUE;
-
-      for (const element of elements) {
-        const bbox = paper.findViewByModel(element).getBBox();
-        minX = Math.min(minX, (bbox.x));
-        minY = Math.min(minY, (bbox.y));
-        maxX = Math.max(maxX, (bbox.x + bbox.width));
-        maxY = Math.max(maxY, (bbox.y + bbox.height));
-      }
-
-      return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
-    }
-
-    const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), element => {
-      return !joint.V(paper.findViewByModel(element).el).hasClass(backgroundClass);
-    });
 
     const contentBBox = getContentBBox(visibleElements);
     const fittingBBox = {
