@@ -98,11 +98,11 @@ msgstr "Kaikki sanastot"
 msgid "All types"
 msgstr "Kaikki tyypit"
 
-#: translations/titles.html:48
+#: translations/titles.html:49
 msgid "Allowed values"
 msgstr "Sallitut arvot"
 
-#: translations/titles.html:48
+#: translations/titles.html:49
 msgid "Allowed values info"
 msgstr "Lista ominaisuudelle sallituista arvoista"
 
@@ -264,7 +264,7 @@ msgstr "valitse assosiaatio"
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
-#: components/editor/searchConceptModal.html:67
+#: components/editor/searchConceptModal.html:75
 msgid "Choose broader concept"
 msgstr "valitse laajempi käsite"
 
@@ -346,7 +346,7 @@ msgstr "Käsitteen tunniste"
 msgid "Concept id info"
 msgstr "Käsitteen yksilöivä uri tunniste"
 
-#: components/editor/searchConceptModal.html:71
+#: components/editor/searchConceptModal.html:79
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
@@ -380,11 +380,11 @@ msgstr "Ehdotettu termi käsitteelle"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: translations/titles.html:61
+#: translations/titles.html:62
 msgid "Constraint classes"
 msgstr "Loogisen rajoitteen luokat"
 
-#: translations/titles.html:61
+#: translations/titles.html:62
 msgid "Constraint classes info"
 msgstr ""
 
@@ -454,11 +454,11 @@ msgstr "Tietokanta"
 msgid "date format"
 msgstr "DD.MM.YYYY HH:mm"
 
-#: translations/titles.html:47
+#: translations/titles.html:48
 msgid "Default value"
 msgstr "Oletusarvo"
 
-#: translations/titles.html:47
+#: translations/titles.html:48
 msgid "Default value info"
 msgstr ""
 "Oletusarvo, joka annetaan ominaisuudelle jos muuta arvoa ei ole määritelty"
@@ -703,11 +703,11 @@ msgstr "Ulkoinen ominaisuus on väärää tyyppiä"
 msgid "External predicate not found"
 msgstr "Ulkoista ominaisuutta ei löydy"
 
-#: translations/titles.html:59
+#: translations/titles.html:60
 msgid "External URI"
 msgstr "Ulkoinen tunniste"
 
-#: translations/titles.html:59
+#: translations/titles.html:60
 msgid "External URI info"
 msgstr "Viite ulkoiseen URI tunnisteeseen"
 
@@ -719,11 +719,11 @@ msgstr "Suomeksi"
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
-#: translations/titles.html:49
+#: translations/titles.html:50
 msgid "Fixed value"
 msgstr "Pakollinen arvo"
 
-#: translations/titles.html:49
+#: translations/titles.html:50
 msgid "Fixed value info"
 msgstr "Ennaltamääritelty pakollinen arvo joka täytyy löytyä datasta"
 
@@ -767,11 +767,11 @@ msgstr "Piilota"
 msgid "Historical versions"
 msgstr "Historialliset versiot"
 
-#: translations/titles.html:57
+#: translations/titles.html:58
 msgid "Homepage"
 msgstr "Linkki"
 
-#: translations/titles.html:57
+#: translations/titles.html:58
 msgid "Homepage info"
 msgstr "Linkki sivustoon tai sovellukseen joissa tietosisältöjä on hyödynnetty"
 
@@ -809,6 +809,10 @@ msgstr "Ryhmän sisäiset sivut"
 #: translations/titles.html:42
 msgid "Internal group page info"
 msgstr "Kohdealueen ryhmän sisäiset sivut"
+
+#: components/editor/searchConceptModal.html:57
+msgid "Internal vocabulary"
+msgstr ""
 
 #: components/frontPage.html:5
 msgid "Interoperability method"
@@ -896,19 +900,19 @@ msgstr ""
 "Järjestelmä on valitettavasti toistaiseksi poissa käytöstä huoltokatkon "
 "takia."
 
-#: translations/titles.html:52
+#: translations/titles.html:53
 msgid "Max count"
 msgstr "Enimmäismäärä"
 
-#: translations/titles.html:52
+#: translations/titles.html:53
 msgid "Max count info"
 msgstr "Sallittujen arvojen enimmäismäärä"
 
-#: translations/titles.html:54 translations/titles.html:55
+#: translations/titles.html:55 translations/titles.html:56
 msgid "Max length"
 msgstr "Enimmäispituus"
 
-#: translations/titles.html:54 translations/titles.html:55
+#: translations/titles.html:55 translations/titles.html:56
 msgid "Max length info"
 msgstr "Sallitun arvon enimmäispituus"
 
@@ -916,19 +920,19 @@ msgstr "Sallitun arvon enimmäispituus"
 msgid "Member groups"
 msgstr "Käyttäjänä ryhmissä"
 
-#: translations/titles.html:51
+#: translations/titles.html:52
 msgid "Min count"
 msgstr "Vähimmäismäärä"
 
-#: translations/titles.html:51
+#: translations/titles.html:52
 msgid "Min count info"
 msgstr "Sallittujen arvojen minimimäärä"
 
-#: translations/titles.html:53
+#: translations/titles.html:54
 msgid "Min length"
 msgstr "Vähimmäispituus"
 
-#: translations/titles.html:53
+#: translations/titles.html:54
 msgid "Min length info"
 msgstr "Sallitun arvon minimipituus"
 
@@ -948,11 +952,11 @@ msgstr "Muokattu"
 msgid "Must be required namespace"
 msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
 
-#: components/model/requiresView.html:37 translations/titles.html:44
+#: components/model/requiresView.html:37 translations/titles.html:45
 msgid "Namespace"
 msgstr "Nimiavaruus"
 
-#: translations/titles.html:44
+#: translations/titles.html:45
 msgid "Namespace info"
 msgstr "Nimiavaruus jota käytetään resurssien yksilöintiin ja resolvointiin"
 
@@ -1048,7 +1052,7 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: components/editor/propertyView.html:29
+#: components/editor/propertyView.html:28
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1060,16 +1064,16 @@ msgstr "Attribuutti"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
-#: translations/titles.html:50
+#: translations/titles.html:51
 msgid "Pattern"
 msgstr "Säännollinen lauseke"
 
-#: translations/titles.html:50
+#: translations/titles.html:51
 msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
-#: components/editor/propertyView.html:112
+#: components/editor/propertyView.html:100
 msgid "Predicate information not found"
 msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
@@ -1081,7 +1085,7 @@ msgstr "Ominaisuuden tyyppi"
 msgid "Predicate type info"
 msgstr "Ominaisuus voi olla joko Attribuutti tai Assosiaatio"
 
-#: components/model/requiresView.html:36 translations/titles.html:45
+#: components/model/requiresView.html:36 translations/titles.html:46
 msgid "Prefix"
 msgstr "Etuliite"
 
@@ -1089,7 +1093,7 @@ msgstr "Etuliite"
 msgid "Prefix error"
 msgstr "Etuliite saa sisältää vain pieniä kirjaimia"
 
-#: translations/titles.html:45
+#: translations/titles.html:46
 msgid "Prefix info"
 msgstr ""
 "Etuliitettä käytetään nimiavaruuden ja helpommin luettavien curie "
@@ -1199,15 +1203,15 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:96
+#: components/editor/propertyView.html:84
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
-#: translations/titles.html:62
+#: translations/titles.html:63
 msgid "Root class"
 msgstr "Juurisolmu"
 
-#: translations/titles.html:62
+#: translations/titles.html:63
 msgid "Root class info"
 msgstr ""
 
@@ -1415,11 +1419,11 @@ msgstr "Tekniset nimiavaruudet"
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: translations/titles.html:58
+#: translations/titles.html:59
 msgid "Title"
 msgstr "Nimi"
 
-#: translations/titles.html:58
+#: translations/titles.html:59
 msgid "Title info"
 msgstr "Ihmisluettava nimi"
 
@@ -1495,6 +1499,10 @@ msgstr "Versio"
 msgid "Visualization"
 msgstr "Visualisointi"
 
+#: translations/titles.html:44
+msgid "Vocabulary"
+msgstr "Sanasto"
+
 #: translations/titles.html:10
 msgid "Vocabulary id"
 msgstr "Sanaston tunniste"
@@ -1502,6 +1510,10 @@ msgstr "Sanaston tunniste"
 #: translations/titles.html:10
 msgid "Vocabulary id info"
 msgstr "Sanaston lyhyt tunniste"
+
+#: translations/titles.html:44
+msgid "Vocabulary info"
+msgstr ""
 
 #: translations/misc.html:65
 msgid "What can I do content"

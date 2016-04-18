@@ -10,7 +10,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
 import { Reference, ConceptSuggestion, Type, FintoConcept } from '../../services/entities';
-import { comparingString, comparingBoolean } from '../../services/comparators';
+import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
@@ -33,7 +33,7 @@ class NewConceptData {
   comment: string;
   broaderConcept: Concept;
 
-  constructor(public reference: Reference, public label: string) {
+  constructor(public label: string, public reference: Reference) {
   }
 }
 
@@ -95,6 +95,8 @@ class SearchConceptController {
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: ConceptSearchResult|AddNewConcept;
+  references: Reference[];
+  selectableReferences: Reference[];
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -104,7 +106,7 @@ class SearchConceptController {
               public type: Type,
               initialSearch: string,
               public newEntityCreation: boolean,
-              public references: Reference[],
+              references: Reference[],
               private conceptService: ConceptService,
               private gettextCatalog: gettextCatalog,
               private searchConceptModal: SearchConceptModal) {
@@ -113,10 +115,32 @@ class SearchConceptController {
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
     this.labelTitle = `${_.capitalize(this.type)} label`;
     this.searchText = initialSearch;
+    this.references = references.slice();
+    this.references.sort(this.referenceComparator);
     this.loadingResults = true;
 
     $scope.$watch(() => this.searchText, text => this.query(text).then(() => this.search()));
     $scope.$watch(() => this.selectedReference, () => this.query(this.searchText).then(() => this.search()));
+    $scope.$watch(() => this.queryResults, results => {
+      if (results) {
+        this.selectableReferences = _.filter(references, reference => {
+          for (const concept of results) {
+            const exactMatch = this.localizedLabelAsLower(concept) === this.searchText.toLowerCase();
+            if (exactMatch && concept.reference.id.equals(reference.id)) {
+              return false;
+            }
+          }
+          return true;
+        });
+
+        this.selectableReferences.sort(this.referenceComparator);
+      }
+    });
+  }
+
+  get referenceComparator() {
+    return comparingBoolean<Reference>(reference => !reference.isLocal())
+      .andThen(comparingLocalizable<Reference>(this.languageService.UILanguage, reference => reference.label));
   }
 
   isSelectionConcept() {
@@ -146,11 +170,9 @@ class SearchConceptController {
   search() {
     if (this.queryResults) {
 
-      const result: (ConceptSearchResult|AddNewConcept)[] = _.map(this.activeReferences, reference => {
-          const suggestText = `${this.gettextCatalog.getString('suggest')} '${this.searchText}'`;
-          const toVocabularyText = `${this.gettextCatalog.getString('to vocabulary')} ${this.languageService.translate(reference.label)}`;
-          return new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew(reference), reference);
-        });
+      const suggestText = `${this.gettextCatalog.getString('suggest')} '${this.searchText}'`;
+      const toVocabularyText = `${this.gettextCatalog.getString('to vocabulary')}`;
+      const result: (ConceptSearchResult|AddNewConcept)[] = [new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew())];
 
       const conceptSearchResult = this.queryResults.filter(concept =>
         this.showReferenceFilter(concept)
@@ -183,7 +205,7 @@ class SearchConceptController {
     this.$scope.form.$setPristine();
 
     if (item instanceof AddNewConcept) {
-      this.selection = new NewConceptData(item.reference, this.searchText);
+      this.selection = new NewConceptData(this.searchText, this.resolveInitialReference());
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
       const conceptPromise: IPromise<FintoConcept|ConceptSuggestion> = conceptSearchResult.suggestion
@@ -218,19 +240,18 @@ class SearchConceptController {
     }
   }
 
-  canAddNew(reference: Reference) {
-    if (!this.searchText) {
-      return false;
-    }
-
-    for (const concept of this.queryResults) {
-      const exactMatch = this.localizedLabelAsLower(concept) === this.searchText.toLowerCase();
-      if (exactMatch && concept.reference.id.equals(reference.id)) {
-        return false;
+  resolveInitialReference() {
+    for (const reference of this.selectableReferences) {
+      if (reference.isLocal()) {
+        return reference;
       }
     }
 
-    return true;
+    return this.selectableReferences[0];
+  }
+
+  canAddNew() {
+    return !!this.searchText && this.selectableReferences.length > 0;
   }
 
   confirm() {
@@ -273,7 +294,7 @@ class SearchConceptController {
 }
 
 class AddNewConcept extends AddNew {
-  constructor(public label: string, public show: () => boolean, public reference: Reference) {
+  constructor(public label: string, public show: () => boolean) {
     super(label, show);
   }
 }
