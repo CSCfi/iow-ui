@@ -39,11 +39,7 @@ export class AddPropertiesFromClassModalController {
 
     const init = (fetchedClass: Class) => {
       this.properties = fetchedClass.properties;
-      this.selectedProperties = _.reject(this.properties, property => exclude(property));
-
-      if (this.selectedProperties.length === 0) {
-        $uibModalInstance.close(this.selectedProperties);
-      }
+      this.selectAll();
     };
 
     if (klass instanceof Class) {
@@ -56,5 +52,13 @@ export class AddPropertiesFromClassModalController {
 
   isExcluded(property: Property) {
     return this.exclude(property);
+  }
+
+  selectAll() {
+    this.selectedProperties = _.reject(this.properties, property => this.exclude(property));
+  }
+
+  deselectAll() {
+    this.selectedProperties = [];
   }
 }

@@ -9,6 +9,8 @@
         <span ng-class="strike">{{property | translateLabel}}</span>
       </label>
     </div>
+    <button class="btn btn-default btn-xs" ng-click="ctrl.selectAll()" translate>Select all</button>
+    <button class="btn btn-default btn-xs" ng-click="ctrl.deselectAll()" translate>Deselect all</button>
   </modal-body>
 
   <modal-buttons>

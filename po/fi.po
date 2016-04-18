@@ -236,9 +236,9 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 
 #: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
-#: components/editor/addPropertiesFromClassModal.html:16
+#: components/editor/addPropertiesFromClassModal.html:18
 #: components/editor/searchClassModal.html:68
-#: components/editor/searchConceptModal.html:89
+#: components/editor/searchConceptModal.html:88
 #: components/editor/searchPredicateModal.html:85
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
@@ -264,7 +264,7 @@ msgstr "valitse assosiaatio"
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
-#: components/editor/searchConceptModal.html:75
+#: components/editor/searchConceptModal.html:74
 msgid "Choose broader concept"
 msgstr "valitse laajempi käsite"
 
@@ -346,7 +346,7 @@ msgstr "Käsitteen tunniste"
 msgid "Concept id info"
 msgstr "Käsitteen yksilöivä uri tunniste"
 
-#: components/editor/searchConceptModal.html:79
+#: components/editor/searchConceptModal.html:78
 msgid "Concept is suggested to scheme"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
@@ -595,6 +595,10 @@ msgstr "Kuvaus"
 msgid "Description info"
 msgstr "Tietosisällön kuvaus"
 
+#: components/editor/addPropertiesFromClassModal.html:13
+msgid "Deselect all"
+msgstr "Poista kaikki valinnat"
+
 #: components/editor/addPropertiesFromClassModal.html:5
 msgid ""
 "Do you want to add following properties from ' + ctrl.classType + ' class?"
@@ -809,10 +813,6 @@ msgstr "Ryhmän sisäiset sivut"
 #: translations/titles.html:42
 msgid "Internal group page info"
 msgstr "Kohdealueen ryhmän sisäiset sivut"
-
-#: components/editor/searchConceptModal.html:57
-msgid "Internal vocabulary"
-msgstr ""
 
 #: components/frontPage.html:5
 msgid "Interoperability method"
@@ -1275,6 +1275,10 @@ msgstr "Hae sanastoa…"
 msgid "Search schemes"
 msgstr "Hae sanastoja"
 
+#: components/editor/addPropertiesFromClassModal.html:12
+msgid "Select all"
+msgstr "Valitse kaikki"
+
 #: translations/misc.html:80
 msgid "Select association"
 msgstr "Valitse assosiaatio"
@@ -1690,7 +1694,7 @@ msgid "xsd:time error"
 msgstr "Virheellinen aika"
 
 #: components/common/modalTemplate.html:15
-#: components/editor/addPropertiesFromClassModal.html:15
+#: components/editor/addPropertiesFromClassModal.html:17
 msgid "Yes"
 msgstr "Kyllä"
 
