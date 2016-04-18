@@ -1,6 +1,7 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IWindowService = angular.IWindowService;
+import ILocationService = angular.ILocationService;
 
 export class LoginModal {
   /* @ngInject */
@@ -18,13 +19,13 @@ export class LoginModal {
 
 class LoginModalController {
   /* @ngInject */
-  constructor(private $window: IWindowService, private $uibModalInstance: IModalServiceInstance) {
+  constructor(private $location: ILocationService, private $window: IWindowService, private $uibModalInstance: IModalServiceInstance) {
   }
 
   close = this.$uibModalInstance.dismiss;
 
   login() {
-    this.$window.location.href = '/api/login';
+    this.$window.location.href = `/api/login?target=${encodeURIComponent(this.$location.absUrl())}`;
   }
 
   register() {
