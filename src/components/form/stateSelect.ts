@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
-import { State } from '../../services/entities';
+import { State, Model } from '../../services/entities';
 
 import { module as mod }  from './module';
 
@@ -18,8 +18,21 @@ mod.directive('stateSelect', () => {
     template: '<localized-select id="{{ctrl.id}}" values="ctrl.getStates()" value="ctrl.state"></localized-select>',
     controllerAs: 'ctrl',
     bindToController: true,
-    controller(userService: UserService) {
-      this.getStates = () => userService.user.isAdminOf(this.model) ? adminStates : userStates;
-    }
+    controller: StateSelectController
   };
 });
+
+class StateSelectController {
+
+  model: Model;
+  state: State;
+  id: string;
+
+  /* @ngInject */
+  constructor(private userService: UserService) {
+  }
+
+  getStates() {
+    return this.userService.user.isAdminOf(this.model) ? adminStates : userStates;
+  }
+}
