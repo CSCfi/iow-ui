@@ -41,7 +41,7 @@ interface SearchResultScope extends IScope {
 }
 
 interface WithId {
-  id: Uri;
+  id: Uri|string;
 }
 
 export abstract class AddNew {
@@ -98,7 +98,7 @@ class SearchResultsController<T extends WithId> {
 
   trackingFn(item: SearchResult<T>|AddNew) {
     if (item instanceof SearchResult) {
-      return item.item.id.value;
+      return item.item.id.toString();
     } else if (item instanceof AddNew) {
       return item.label;
     } else {
