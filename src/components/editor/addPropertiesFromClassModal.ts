@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import { Class, Property } from '../../services/entities';
 import { ClassService } from '../../services/classService';
-import { Uri } from '../../services/uri';
 
 const noExclude = (property: Property) => false;
 
@@ -14,7 +13,7 @@ export class AddPropertiesFromClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(klass: Uri|Class, classType: string, exclude: (property: Property) => boolean = noExclude): IPromise<Property[]> {
+  open(klass: Class, classType: string, exclude: (property: Property) => boolean = noExclude): IPromise<Property[]> {
     return this.$uibModal.open({
       template: require('./addPropertiesFromClassModal.html'),
       size: 'adapting',
@@ -35,19 +34,9 @@ export class AddPropertiesFromClassModalController {
   selectedProperties: Property[];
 
   /* @ngInject */
-  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, klass: Uri|Class, public classType: string, private exclude: (property: Property) => boolean) {
-
-    const init = (fetchedClass: Class) => {
-      this.properties = fetchedClass.properties;
+  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, klass: Class, public classType: string, private exclude: (property: Property) => boolean) {
+      this.properties = klass.properties;
       this.selectAll();
-    };
-
-    if (klass instanceof Class) {
-      init(klass);
-    } else {
-      const classId: Uri = <Uri> klass;
-      classService.getClass(classId).then(fetchedClass => init(fetchedClass));
-    }
   }
 
   isExcluded(property: Property) {
