@@ -370,7 +370,7 @@ msgstr "Käsite-ehdotus"
 
 #: translations/titles.html:21
 msgid "Concept suggestion label"
-msgstr ""
+msgstr "Käsite-ehdotuksen nimi"
 
 #: translations/titles.html:21
 msgid "Concept suggestion label info"
