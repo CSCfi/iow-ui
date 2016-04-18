@@ -12,6 +12,10 @@ import { module as mod }  from './module';
 const NG_HIDE_CLASS = 'ng-hide';
 const NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
 
+interface EditableAttributes extends IAttributes {
+  autofocus: void;
+}
+
 mod.directive('editable', /* @ngInject */ ($animate: any) => {
   return {
     scope: {
@@ -26,7 +30,7 @@ mod.directive('editable', /* @ngInject */ ($animate: any) => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['editable', '?^form'],
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableController, EditableForm]) {
+    link($scope: EditableScope, element: JQuery, attributes: EditableAttributes, [thisController, formController]: [EditableController, EditableForm]) {
 
       $scope.$watch(() => thisController.item.displayValue || thisController.isEditing(), show => {
         $animate[show ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, {
@@ -40,6 +44,14 @@ mod.directive('editable', /* @ngInject */ ($animate: any) => {
 
       // move error messages element next to input
       input.after(element.find('error-messages').detach());
+
+      if (attributes.hasOwnProperty('autofocus')) {
+        $scope.$watch(() => isEditing(), (currentEditing, previousEditing) => {
+          if (currentEditing && !previousEditing) {
+            setTimeout(() => input.focus(), 0);
+          }
+        });
+      }
 
       // TODO: prevent hidden and non-editable fields participating validation with some more obvious mechanism
       $scope.$watchCollection(() => Object.keys(ngModel.$error), keys => {
