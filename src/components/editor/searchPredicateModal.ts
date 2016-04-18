@@ -157,7 +157,6 @@ export class SearchPredicateController {
 
   selectItem(item: PredicateListItem|AddNewPredicate) {
     this.selectedItem = item;
-    this.selection = null;
     this.submitError = null;
     this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
@@ -177,6 +176,8 @@ export class SearchPredicateController {
       } else {
         this.predicateService.getPredicate(item.id, this.model).then(result => this.selection = result);
       }
+    } else {
+      throw new Error('Unsupported item: ' + item);
     }
   }
 

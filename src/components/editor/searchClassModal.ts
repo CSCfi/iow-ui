@@ -145,7 +145,6 @@ class SearchClassController {
 
   selectItem(item: ClassListItem|AddNewClass) {
     this.selectedItem = item;
-    this.selection = null;
     this.submitError = null;
     this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
@@ -165,6 +164,8 @@ class SearchClassController {
       } else {
         this.classService.getClass(item.id, this.model).then(result => this.selection = result);
       }
+    } else {
+      throw new Error('Unsupported item: ' + item);
     }
   }
 
