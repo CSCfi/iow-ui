@@ -51,7 +51,21 @@ class UriSelectController {
   afterSelected: ICompiledExpression;
   mandatory: boolean;
 
-  constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
+  private change: Uri;
+
+  constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
+    $scope.$watch(() => this.uri, (current, previous) => {
+      if (!!current && !current.equals(previous)) {
+        this.change = current;
+      }
+    });
+  }
+
+  handleChange() {
+    if (this.change) {
+      this.afterSelected({id: this.change});
+      this.change = null;
+    }
   }
 
   selectUri() {

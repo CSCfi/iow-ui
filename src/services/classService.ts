@@ -181,4 +181,9 @@ export class ClassService {
         return this.entities.deserializeClassVisualization(response.data);
       });
   }
+
+  getInternalOrExternalClass(id: Uri, model: Model) {
+    const external = model.isNamespaceKnownAndOfType(id.namespace, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
+    return external ? this.getExternalClass(id, model) : this.getClass(id, model);
+  }
 }
