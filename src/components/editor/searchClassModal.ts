@@ -104,6 +104,8 @@ class SearchClassController {
       classService.getExternalClassesForModel(model).then(appendResults);
     }
 
+    classService.getClassesForModel(model.id);
+
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showProfiles, () => this.search());

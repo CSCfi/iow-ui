@@ -29,47 +29,12 @@ export class EntityCreation {
   }
 }
 
-interface NewConceptData {
-  label: string;
-  comment?: string;
-  broaderConcept?: Concept;
-}
+class NewConceptData {
+  comment: string;
+  broaderConcept: Concept;
 
-interface FormData {
-  entity?: NewEntityData;
-  concept?: NewConceptData;
-}
-
-class ConceptCreation {
-  constructor(public reference: Reference) {
+  constructor(public reference: Reference, public label: string) {
   }
-}
-
-function createNewEntityData(label?: string): FormData {
-  return {
-    entity: {
-      label
-    }
-  };
-}
-
-function createNewConceptData(label?: string): FormData {
-  return {
-    entity: {
-      label
-    },
-    concept: {
-      label
-    }
-  };
-}
-
-export function isEntityCreation(obj: any): obj is EntityCreation {
-  return obj.concept;
-}
-
-function isConcept(obj: Concept|ConceptCreation): obj is Concept {
-  return obj instanceof FintoConcept || obj instanceof ConceptSuggestion;
 }
 
 export class SearchConceptModal {
@@ -107,24 +72,29 @@ export interface SearchPredicateScope extends IScope {
   form: EditableForm;
 }
 
+function isConcept(obj: Concept|NewConceptData): obj is Concept {
+  return obj instanceof FintoConcept || obj instanceof ConceptSuggestion;
+}
+
+function isNewConceptData(obj: Concept|NewConceptData): obj is NewConceptData {
+  return obj instanceof NewConceptData;
+}
+
 class SearchConceptController {
 
   close = this.$uibModalInstance.dismiss;
   queryResults: ConceptSearchResult[];
   searchResults: (ConceptSearchResult|AddNewConcept)[];
-  selection: Concept|ConceptCreation;
+  selection: Concept|NewConceptData;
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
   selectedReference: Reference;
   searchText: string = '';
   submitError: string;
-  isConcept = isConcept;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: ConceptSearchResult|AddNewConcept;
-
-  formData: FormData = { entity: { label: ''}, concept: { label: ''}};
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -147,11 +117,14 @@ class SearchConceptController {
 
     $scope.$watch(() => this.searchText, text => this.query(text).then(() => this.search()));
     $scope.$watch(() => this.selectedReference, () => this.query(this.searchText).then(() => this.search()));
-    $scope.$watch(() => this.formData.concept && this.formData.concept.label, label => {
-      if (label) {
-        this.formData.entity.label = label;
-      }
-    });
+  }
+
+  isSelectionConcept() {
+    return isConcept(this.selection);
+  }
+
+  isSelectionNewConceptData() {
+    return isNewConceptData(this.selection);
   }
 
   get activeReferences() {
@@ -210,18 +183,14 @@ class SearchConceptController {
     this.$scope.form.$setPristine();
 
     if (item instanceof AddNewConcept) {
-      this.selection = new ConceptCreation(item.reference);
-      this.formData = createNewConceptData(this.searchText);
+      this.selection = new NewConceptData(item.reference, this.searchText);
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
       const conceptPromise: IPromise<FintoConcept|ConceptSuggestion> = conceptSearchResult.suggestion
         ? this.conceptService.getConceptSuggestion(conceptSearchResult.id)
         : this.conceptService.getFintoConcept(conceptSearchResult.id);
 
-      conceptPromise.then(concept => {
-        this.selection = concept;
-        this.formData = createNewEntityData(this.languageService.translate(concept.label));
-      });
+      conceptPromise.then(concept => this.selection = concept);
     }
   }
 
@@ -240,8 +209,13 @@ class SearchConceptController {
   }
 
   selectBroaderConcept() {
-    this.searchConceptModal.openSelection(this.activeReferences, this.type)
-      .then(concept => this.formData.concept.broaderConcept = concept);
+    const selection = this.selection;
+    if (isNewConceptData(selection)) {
+      this.searchConceptModal.openSelection(this.activeReferences, this.type)
+        .then(concept => selection.broaderConcept = concept);
+    } else {
+      throw new Error('Selection must be new concept data: ' + selection);
+    }
   }
 
   canAddNew(reference: Reference) {
@@ -269,22 +243,26 @@ class SearchConceptController {
       return entity && entity.id;
     }
 
+    function newEntity(concept: Concept) {
+      return { label: concept.label[language] };
+    }
+
     const selection = this.selection;
     const language = this.languageService.modelLanguage;
 
-    if (selection instanceof ConceptCreation) {
-      const conceptData = this.formData.concept;
-      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.reference.id, conceptData.label, conceptData.comment, extractId(conceptData.broaderConcept), language)
+    if (isNewConceptData(selection)) {
+
+      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.reference.id, selection.label, selection.comment, extractId(selection.broaderConcept), language)
         .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
       if (this.newEntityCreation) {
-        return conceptSuggestion.then(cs => new EntityCreation(cs, this.formData.entity));
+        return conceptSuggestion.then(cs => new EntityCreation(cs, newEntity(cs)));
       } else {
         return conceptSuggestion;
       }
     } else if (isConcept(selection)) {
       if (this.newEntityCreation) {
-        return this.$q.when(new EntityCreation(selection, this.formData.entity));
+        return this.$q.when(new EntityCreation(selection, newEntity(selection)));
       } else {
         return this.$q.when(selection);
       }

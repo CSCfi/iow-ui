@@ -32,7 +32,7 @@ import {
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
-import { EntityCreation, isEntityCreation } from '../editor/searchConceptModal';
+import { EntityCreation } from '../editor/searchConceptModal';
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
@@ -353,7 +353,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         modal().then(result => {
 
           const mapEntity = () => {
-            if (isEntityCreation(result)) {
+            if (result instanceof EntityCreation) {
               return fromConcept(result);
             } else if (result instanceof ExternalEntity) {
               return fromExternalEntity(result);

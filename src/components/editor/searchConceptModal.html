@@ -42,28 +42,28 @@
         <div class="col-md-4 search-selection">
           <div ng-if="ctrl.selection">
 
-            <div ng-if="ctrl.isConcept(ctrl.selection)">
+            <div ng-if="ctrl.isSelectionConcept()">
               <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept label" value="ctrl.selection.label"></non-editable>
               <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion label" value="ctrl.selection.label"></non-editable>
               <non-editable data-title="Concept id" value="ctrl.selection.id"></non-editable>
               <non-editable data-title="Definition" value="ctrl.selection.comment"></non-editable>
             </div>
 
-            <div ng-if="!ctrl.isConcept(ctrl.selection)">
+            <div ng-if="ctrl.isSelectionNewConceptData()">
               <editable data-title="Concept label">
                 <div class="input-group input-group-md">
-                  <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.formData.concept.label" />
+                  <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.selection.label" />
                 </div>
               </editable>
 
               <editable data-title="Definition">
                 <div class="input-group input-group-md">
-                  <textarea id="conceptComment" class="form-control" required string-input ng-model="ctrl.formData.concept.comment"></textarea>
+                  <textarea id="conceptComment" class="form-control" required string-input ng-model="ctrl.selection.comment"></textarea>
                 </div>
               </editable>
 
-              <subject-view subject="ctrl.formData.concept.broaderConcept" data-title="Broader concept"></subject-view>
-              <div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.formData.concept.broaderConcept}]">
+              <subject-view subject="ctrl.selection.broaderConcept" data-title="Broader concept"></subject-view>
+              <div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.selection.broaderConcept}]">
                 <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
               </div>
 
