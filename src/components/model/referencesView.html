@@ -3,7 +3,7 @@
 <p ng-if="ctrl.references.length === 0" translate>No references yet</p>
 
 <uib-accordion>
-  <uib-accordion-group ng-repeat="reference in ctrl.references track by reference.id.value" is-open="ctrl.opened[reference.id]">
+  <uib-accordion-group ng-repeat="reference in ctrl.references | orderBy: ctrl.referenceComparator track by reference.id.value" is-open="ctrl.opened[reference.id]">
     <uib-accordion-heading>
       <span accordion-chevron is-open="ctrl.opened[reference.id]">{{reference | translateLabel}}</span>
     </uib-accordion-heading>

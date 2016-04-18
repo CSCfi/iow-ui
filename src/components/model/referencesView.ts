@@ -2,7 +2,7 @@ import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
 import { Reference } from '../../services/entities';
-
+import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
 
 mod.directive('referencesView', () => {
@@ -32,6 +32,11 @@ interface ReferencesViewScope extends IScope {
 class ReferencesViewController {
   references: Reference[];
   opened: {[key: string]: boolean} = {};
+  referenceComparator = (reference: Reference) => '' + (reference.isLocal() ? '0' : '1') + this.languageService.translate(reference.label);
+
+  /* @ngInject */
+  constructor(private languageService: LanguageService) {
+  }
 
   open(reference: Reference) {
     this.opened[reference.id.uri] = true;
