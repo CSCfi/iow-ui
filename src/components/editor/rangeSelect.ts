@@ -1,5 +1,4 @@
-import { dataTypes } from '../common/dataTypes';
-
+import { dataTypes, DataType } from '../common/dataTypes';
 import { module as mod }  from './module';
 
 mod.directive('rangeSelect', () => {
@@ -12,8 +11,11 @@ mod.directive('rangeSelect', () => {
     template: '<localized-select id="{{ctrl.id}}" values="ctrl.ranges" value="ctrl.range"></localized-select>',
     controllerAs: 'ctrl',
     bindToController: true,
-    controller() {
-      this.ranges = dataTypes;
-    }
+    controller: RangeSelectController
   };
 });
+
+class RangeSelectController {
+  range: DataType;
+  ranges: DataType[] = dataTypes;
+}
