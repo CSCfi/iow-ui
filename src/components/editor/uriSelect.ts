@@ -11,6 +11,7 @@ import { createDefinedByExclusion } from '../../services/utils';
 import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
+import IQService = angular.IQService;
 
 mod.directive('uriSelect', () => {
   return {
@@ -53,7 +54,7 @@ class UriSelectController {
 
   private change: Uri;
 
-  constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
+  constructor($scope: IScope, private $q: IQService, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
     $scope.$watch(() => this.uri, (current, previous) => {
       if (!!current && !current.equals(previous)) {
         this.change = current;

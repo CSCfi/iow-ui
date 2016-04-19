@@ -30,7 +30,7 @@ export class ClassService {
   constructor(private $http: IHttpService, private $q: IQService, private predicateService: PredicateService, private entities: EntityDeserializer) {
   }
 
-  getClass(id: Uri|Urn, model?: Model): IPromise<Class> {
+  getClass(id: Uri|Urn, model: Model): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {id: id.toString()}})
       .then(expandContextWithKnownModels(model))
       .then(response => this.entities.deserializeClass(response.data));

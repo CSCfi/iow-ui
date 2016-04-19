@@ -73,7 +73,7 @@ class HistoryModalController {
 
   private fetchResourceAtVersion(versionId: Urn): IPromise<Class|Predicate|Model> {
     if (containsAny(this.resource.type, ['class', 'shape'])) {
-      return this.classService.getClass(versionId);
+      return this.classService.getClass(versionId, this.model);
     } else if (containsAny(this.resource.type, ['attribute', 'association'])) {
       return this.predicateService.getPredicate(versionId);
     } else if (containsAny(this.resource.type, ['model', 'profile', 'library'])) {
