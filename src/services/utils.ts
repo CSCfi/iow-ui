@@ -280,7 +280,7 @@ export function normalizeReferrerType(types: Type[]): Type {
 }
 
 export function normalizePredicateType(types: Type[]): Type {
-  return findFirstMatching<Type>(types, ['attribute', 'association']);
+  return findFirstMatching<Type>(types, ['attribute', 'association', 'property']);
 }
 
 export function normalizeClassType(types: Type[]): Type {
