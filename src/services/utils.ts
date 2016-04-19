@@ -128,7 +128,7 @@ export function glyphIconClassForType(type: Type[]) {
       'glyphicon-tasks': containsAny(type, ['attribute']),
       'glyphicon-sort': containsAny(type, ['association']),
       'glyphicon-book': containsAny(type, ['model', 'profile']),
-      'glyphicon-question-sign': !type || type.length === 0
+      'glyphicon-question-sign': !type || type.length === 0 || containsAny(type, ['property'])
     }
   ];
 }
