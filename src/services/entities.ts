@@ -966,7 +966,7 @@ export class PredicateListItem extends AbstractPredicate {
   }
 }
 
-export abstract class Predicate extends AbstractPredicate {
+export class Predicate extends AbstractPredicate {
 
   state: State;
   subPropertyOf: Uri;
@@ -992,14 +992,11 @@ export abstract class Predicate extends AbstractPredicate {
     this.version = graph.identifier;
   }
 
-  abstract getRange(): any;
-
   serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
-      range: this.getRange(),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf && this.subPropertyOf.uri,
       subject: serializeOptional(this.subject, clone),
@@ -1018,10 +1015,6 @@ export class Association extends Predicate {
     if (graph.range) {
       this.valueClass = new Uri(graph.range, context);
     }
-  }
-
-  getRange() {
-    return this.valueClass;
   }
 
   clone(): Association {
@@ -1046,10 +1039,6 @@ export class Attribute extends Predicate {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.dataType = graph.range;
-  }
-
-  getRange() {
-    return this.dataType;
   }
 
   clone(): Attribute {
@@ -1490,7 +1479,7 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.predicateListFrame, (framedData) => PredicateListItem);
   }
 
-  deserializePredicate(data: GraphData): IPromise<Attribute|Association> {
+  deserializePredicate(data: GraphData): IPromise<Attribute|Association|Predicate> {
     const entityFactory: EntityFactory<Predicate> = (framedData) => {
       const types = mapGraphTypeObject(framedData['@graph'][0]['@type']);
 
@@ -1498,6 +1487,8 @@ export class EntityDeserializer {
         return Association;
       } else if (containsAny(types, ['attribute'])) {
         return Attribute;
+      } else if (containsAny(types, ['property'])) {
+        return Predicate;
       } else {
         throw new Error('Incompatible type: ' + types.join());
       }
