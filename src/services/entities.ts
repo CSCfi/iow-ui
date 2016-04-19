@@ -268,6 +268,9 @@ export class Model extends AbstractModel {
   }
 
   removeRequire(require: Require) {
+    if (require.namespaceType === NamespaceType.EXTERNAL) {
+      delete this.context[require.prefix];
+    }
     _.remove(this.requires, require);
   }
 
