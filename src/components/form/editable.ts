@@ -46,8 +46,8 @@ mod.directive('editable', /* @ngInject */ ($animate: any) => {
       input.after(element.find('error-messages').detach());
 
       if (attributes.hasOwnProperty('autofocus')) {
-        $scope.$watch(() => isEditing(), (currentEditing, previousEditing) => {
-          if (currentEditing && !previousEditing) {
+        $scope.$watch(() => isEditing(), (currentEditing) => {
+          if (currentEditing) {
             setTimeout(() => input.focus(), 0);
           }
         });
