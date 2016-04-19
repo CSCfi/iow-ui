@@ -149,10 +149,11 @@ export class ClassService {
   newProperty(predicateOrExternal: Predicate|ExternalEntity, model: Model): IPromise<Property> {
 
     const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.predicateService.getExternalPredicate(predicateOrExternal.id, model) : this.$q.when(<Predicate> predicateOrExternal);
+    const type = predicateOrExternal.normalizedType;
 
     return this.$q.all([
       predicatePromise,
-      this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateOrExternal.id.uri, type: reverseMapType(predicateOrExternal.normalizedType)}})
+      this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateOrExternal.id.uri, type: reverseMapType(type)}})
         .then(expandContextWithKnownModels(model))
         .then((response: any) => this.entities.deserializeProperty(response.data))
     ])
@@ -162,10 +163,16 @@ export class ClassService {
           property.label = predicate.label;
         }
 
-        if (predicate instanceof Attribute && !property.dataType) {
-          property.dataType = predicate.dataType || 'xsd:string';
-        } else if (predicate instanceof Association && !property.valueClass) {
-          property.valueClass = predicate.valueClass;
+        if (type === 'attribute' && !property.dataType) {
+          if (predicate instanceof Attribute) {
+            property.dataType = predicate.dataType;
+          } else {
+            property.dataType = 'xsd:string';
+          }
+        } else if (type === 'assocation' && !property.valueClass) {
+          if (predicate instanceof Association) {
+            property.valueClass = predicate && predicate.valueClass;
+          }
         }
 
         property.state = 'Unstable';
