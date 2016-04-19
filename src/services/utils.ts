@@ -268,6 +268,8 @@ export function normalizeSelectionType(types: Type[]): Type {
     return 'association';
   } else if (containsAny(types, ['model', 'profile', 'library'])) {
     return 'model';
+  } else if (containsAny(types, ['property'])) {
+    return null;
   } else {
     throw new Error('Unsupported selection type: ' + types.join());
   }
