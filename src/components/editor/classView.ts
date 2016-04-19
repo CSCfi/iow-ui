@@ -4,7 +4,7 @@ import ILogService = angular.ILogService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property, PredicateListItem } from '../../services/entities';
+import { Class, GroupListItem, Model, Property, PredicateListItem, Predicate } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -19,6 +19,8 @@ import { Show } from '../contracts';
 import { Uri } from '../../services/uri';
 
 import { module as mod }  from './module';
+import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
+import IQService = angular.IQService;
 
 mod.directive('classView', () => {
   return {
@@ -51,6 +53,7 @@ export class ClassViewController extends EditableEntityController<Class> {
               deleteConfirmationModal: DeleteConfirmationModal,
               private classService: ClassService,
               private searchPredicateModal: SearchPredicateModal,
+              private choosePredicateTypeModal: ChoosePredicateTypeModal,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
     this.modelController.registerView(this);
@@ -67,7 +70,16 @@ export class ClassViewController extends EditableEntityController<Class> {
     );
 
     this.searchPredicateModal.openForProperty(this.model, exclude)
-      .then(result => this.classService.newProperty(result, this.model))
+      .then(result => {
+        if (result instanceof Predicate && result.normalizedType === 'property') {
+          return this.choosePredicateTypeModal.open()
+            .then(type => {
+              return this.classService.newProperty(result, type, this.model);
+            });
+        } else {
+          return this.classService.newProperty(result, result.normalizedType, this.model);
+        }
+      })
       .then(property => {
         this.editableInEdit.addProperty(property);
         this.classForm.openPropertyAndScrollTo(property);

@@ -257,6 +257,10 @@ msgstr ""
 msgid "Cannot require profile"
 msgstr ""
 
+#: components/editor/choosePredicateTypeModal.html:13
+msgid "Choose"
+msgstr ""
+
 #: translations/misc.html:60
 msgid "Choose association"
 msgstr ""
@@ -485,6 +489,10 @@ msgstr ""
 
 #: translations/misc.html:5
 msgid "Define concept for the new class"
+msgstr ""
+
+#: components/editor/choosePredicateTypeModal.html:2
+msgid "Define type for class property"
 msgstr ""
 
 #: translations/titles.html:25

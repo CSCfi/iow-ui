@@ -13,7 +13,8 @@ import {
   Model,
   GraphData,
   NamespaceType,
-  ExternalEntity
+  ExternalEntity,
+  Type
 } from './entities';
 import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';
@@ -146,10 +147,9 @@ export class ClassService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}}).then(response => this.entities.deserializeClassList(response.data));
   }
 
-  newProperty(predicateOrExternal: Predicate|ExternalEntity, model: Model): IPromise<Property> {
+  newProperty(predicateOrExternal: Predicate|ExternalEntity, type: Type, model: Model): IPromise<Property> {
 
     const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.predicateService.getExternalPredicate(predicateOrExternal.id, model) : this.$q.when(<Predicate> predicateOrExternal);
-    const type = predicateOrExternal.normalizedType;
 
     return this.$q.all([
       predicatePromise,

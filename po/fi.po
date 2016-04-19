@@ -256,6 +256,10 @@ msgstr "Peruuta muokkaus"
 msgid "Cannot require profile"
 msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 
+#: components/editor/choosePredicateTypeModal.html:13
+msgid "Choose"
+msgstr "valitse"
+
 #: translations/misc.html:60
 msgid "Choose association"
 msgstr "valitse assosiaatio"
@@ -486,6 +490,10 @@ msgstr "Määrittele käsite uudelle attribuutille"
 #: translations/misc.html:5
 msgid "Define concept for the new class"
 msgstr "Määrittele käsite uudelle luokalle"
+
+#: components/editor/choosePredicateTypeModal.html:2
+msgid "Define type for class property"
+msgstr "Määrittele luokan ominaisuuden tyyppi"
 
 #: translations/titles.html:25
 msgid "Defined by"

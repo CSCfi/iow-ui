@@ -363,7 +363,7 @@ export class EntityLoader {
   createProperty(modelPromise: IPromise<Model>, details: PropertyDetails): IPromise<Property> {
     const result = this.loggedIn
       .then(() => this.$q.all([modelPromise, asPromise(assertExists(details.predicate, 'predicate'))]))
-      .then(([model, p]: [Model, Predicate]) => this.classService.newProperty(p, model))
+      .then(([model, p]: [Model, Predicate]) => this.classService.newProperty(p, p.normalizedType, model))
       .then((p: Property) => {
         setDetails(p, details);
         assertPropertyValueExists(details, 'valueClass');

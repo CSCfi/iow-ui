@@ -1,0 +1,15 @@
+<modal-template>
+  <modal-title translate>Define type for class property</modal-title>
+
+  <modal-body>
+    <div class="input-group input-group-lg">
+      <div class="selectContainer">
+        <select class="form-control" ng-model="ctrl.type" ng-options="type | translate for type in ['attribute', 'association']"></select>
+      </div>
+    </div>
+  </modal-body>
+
+  <modal-buttons>
+    <button class="btn btn-primary" type="button" ng-click="$close(ctrl.type)" translate>Choose</button>
+  </modal-buttons>
+</modal-template>
