@@ -358,7 +358,7 @@ export class Model extends AbstractModel {
   }
 
   expandContextWithKnownModels(context: any) {
-    Object.assign(context, this.getNamespacesOfType(NamespaceType.MODEL));
+    Object.assign(context, this.getNamespacesOfType(NamespaceType.MODEL, NamespaceType.EXTERNAL));
   }
 
   asDefinedBy() {
