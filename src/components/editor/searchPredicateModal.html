@@ -58,7 +58,7 @@
           <predicate-form ng-if="!ctrl.isSelectionFormData() && ctrl.selection" predicate="ctrl.selection" old-predicate="ctrl.selection" model="ctrl.model"></predicate-form>
 
           <div ng-if="ctrl.isSelectionFormData()">
-            <editable data-title="External URI">
+            <editable data-title="External URI" autofocus>
               <div class="input-group input-group-md">
                 <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="ctrl.model" ng-model="ctrl.selection.id" />
               </div>

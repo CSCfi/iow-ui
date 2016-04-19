@@ -51,7 +51,7 @@
 
             <div ng-if="ctrl.isSelectionNewConceptData()">
 
-              <editable title="Vocabulary">
+              <editable title="Vocabulary" autofocus>
                 <select id="referenceSelection" class="form-control" required ng-model="ctrl.selection.reference"
                         ng-options="reference | translateLabel for reference in ctrl.selectableReferences">
                 </select>
