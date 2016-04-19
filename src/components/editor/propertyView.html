@@ -5,7 +5,7 @@
           ng-disabled="!ctrl.inUnstableState"
           ng-click="editableController.removeProperty(ctrl.property)" translate>Delete property</button>
 
-  <editable data-title="Property label">
+  <editable data-title="Class property label">
     <input id="{{ctrl.property.internalId + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" ng-model="ctrl.property.label" />
   </editable>
 
@@ -39,7 +39,7 @@
            || ctrl.property.maxCount
     ">Optional metadata</h4>
 
-  <editable data-title="Property id">
+  <editable data-title="Class property id">
     <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
   </editable>
 
