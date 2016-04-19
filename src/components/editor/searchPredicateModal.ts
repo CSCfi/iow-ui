@@ -130,8 +130,12 @@ export class SearchPredicateController {
     return !!this.searchText;
   }
 
-  isSelectionFormData(): boolean {
+  isSelectionExternalEntity(): boolean {
     return this.selection instanceof ExternalEntity;
+  }
+
+  isSelectionPredicate(): boolean {
+    return this.selection instanceof Predicate;
   }
 
   search() {
