@@ -146,6 +146,14 @@ msgstr "Oletko varma, että haluat poistaa?"
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
+#: translations/misc.html:161
+msgid "Assigned to this library"
+msgstr "Tähän kirjastoon kytketyt"
+
+#: translations/misc.html:160
+msgid "Assigned to this profile"
+msgstr "Tähän profiiliin kytketyt"
+
 #: translations/misc.html:32
 msgid "association"
 msgstr "Assosiaatio"

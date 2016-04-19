@@ -23,7 +23,11 @@
           <label translate>Filter results</label>
           <div class="input-group input-group-lg">
             <div class="selectContainer">
-              <select class="form-control" ng-model="ctrl.showModel" ng-options="model | translateLabel for model in ctrl.models">
+              <select class="form-control" ng-model="ctrl.showModel"
+                      ng-options="ctrl.isThisModel(model)
+                                    ? ('Assigned to this ' + ctrl.model.normalizedType | translate)
+                                    : (model | translateLabel)
+                                    for model in ctrl.models">
                 <option value="" translate>All models</option>
               </select>
             </div>

@@ -15,7 +15,7 @@ import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
-import { glyphIconClassForType } from '../../services/utils';
+import { glyphIconClassForType, collectIds } from '../../services/utils';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -61,14 +61,15 @@ export interface SearchPredicateScope extends IScope {
 export class SearchPredicateController {
 
   private predicates: PredicateListItem[] = [];
+  private currentModelPredicateIds: Set<string> = new Set<string>();
 
   editInProgress = () => this.$scope.form.editing && this.$scope.form.$dirty;
   close = this.$uibModalInstance.dismiss;
   searchResults: (PredicateListItem|AddNewPredicate)[] = [];
   selection: Predicate|ExternalEntity;
   searchText: string = '';
-  showModel: DefinedBy;
-  models: DefinedBy[] = [];
+  showModel: DefinedBy|Model;
+  models: (DefinedBy|Model)[] = [];
   types: Type[];
   typeSelectable: boolean;
   submitError: string;
@@ -79,7 +80,6 @@ export class SearchPredicateController {
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
               private $uibModalInstance: IModalServiceInstance,
-              private $q: IQService,
               public model: Model,
               public type: Type,
               public exclude: (predicate: AbstractPredicate) => string,
@@ -92,14 +92,19 @@ export class SearchPredicateController {
     this.loadingResults = true;
     this.typeSelectable = !type;
 
+    if (onlySelection) {
+      this.showModel = model;
+    }
+
     const appendResults = (predicates: PredicateListItem[]) => {
       this.predicates = this.predicates.concat(predicates);
 
-      this.models = _.chain(this.predicates)
+      this.models = [this.model];
+      this.models = this.models.concat(_.chain(this.predicates)
         .map(predicate => predicate.definedBy)
         .uniq(definedBy => definedBy.id.uri)
         .sort(comparingLocalizable<PredicateListItem>(languageService.modelLanguage, predicate => predicate.label))
-        .value();
+        .value());
 
       this.types = _.chain(this.predicates)
         .map(predicate => predicate.normalizedType)
@@ -112,6 +117,7 @@ export class SearchPredicateController {
     };
 
     predicateService.getAllPredicates().then(appendResults);
+    predicateService.getPredicatesForModel(model.id).then(predicates => this.currentModelPredicateIds = collectIds(predicates));
 
     if (this.canAddExternal()) {
       predicateService.getExternalPredicatesForModel(model).then(appendResults);
@@ -120,6 +126,10 @@ export class SearchPredicateController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
+  }
+
+  isThisModel(item: DefinedBy|Model) {
+    return this.model === item;
   }
 
   canAddExternal() {
@@ -259,7 +269,13 @@ export class SearchPredicateController {
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {
-    return !this.showModel || predicate.definedBy.id.equals(this.showModel.id);
+    if (!this.showModel) {
+      return true;
+    } else if (this.showModel === this.model) {
+      return this.currentModelPredicateIds.has(predicate.id.uri);
+    } else {
+      return predicate.definedBy.id.equals(this.showModel.id);
+    }
   }
 
   private typeFilter(predicate: PredicateListItem): boolean {

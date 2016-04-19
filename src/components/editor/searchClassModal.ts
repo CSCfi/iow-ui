@@ -13,7 +13,7 @@ import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { glyphIconClassForType } from '../../services/utils';
+import { glyphIconClassForType, collectIds } from '../../services/utils';
 import { EditableForm } from '../form/editableEntityController';
 
 export const noExclude = (item: AbstractClass) => <string> null;
@@ -56,14 +56,15 @@ export interface SearchClassScope extends IScope {
 class SearchClassController {
 
   private classes: ClassListItem[] = [];
+  private currentModelClassIds: Set<string> = new Set<string>();
 
   close = this.$uibModalInstance.dismiss;
   searchResults: (ClassListItem|AddNewClass)[] = [];
   selection: Class|ExternalEntity;
   searchText: string = '';
   showProfiles: boolean;
-  showModel: DefinedBy;
-  models: DefinedBy[] = [];
+  showModel: DefinedBy|Model;
+  models: (DefinedBy|Model)[] = [];
   cannotConfirm: string;
   loadingResults: boolean;
   selectedItem: ClassListItem|AddNewClass;
@@ -84,14 +85,19 @@ class SearchClassController {
     this.showProfiles = onlySelection;
     this.loadingResults = true;
 
+    if (onlySelection) {
+      this.showModel = model;
+    }
+
     const appendResults = (classes: ClassListItem[]) => {
       this.classes = this.classes.concat(classes);
 
-      this.models = _.chain(this.classes)
+      this.models = [this.model];
+      this.models = this.models.concat(_.chain(this.classes)
         .map(klass => klass.definedBy)
         .uniq(definedBy => definedBy.id.uri)
         .sort(comparingLocalizable<ClassListItem>(languageService.modelLanguage, klass => klass.label))
-        .value();
+        .value());
 
       this.search();
 
@@ -99,6 +105,7 @@ class SearchClassController {
     };
 
     classService.getAllClasses().then(appendResults);
+    classService.getClassesForModel(model.id).then(classes => this.currentModelClassIds = collectIds(classes));
 
     if (model.isOfType('profile')) {
       classService.getExternalClassesForModel(model).then(appendResults);
@@ -109,6 +116,10 @@ class SearchClassController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showProfiles, () => this.search());
+  }
+
+  isThisModel(item: DefinedBy|Model) {
+    return this.model === item;
   }
 
   get showExcluded() {
@@ -213,7 +224,13 @@ class SearchClassController {
   }
 
   private modelFilter(klass: ClassListItem): boolean {
-    return !this.showModel || klass.definedBy.id.equals(this.showModel.id);
+    if (!this.showModel) {
+      return true;
+    } else if (this.showModel === this.model) {
+      return this.currentModelClassIds.has(klass.id.uri);
+    } else {
+      return klass.definedBy.id.equals(this.showModel.id);
+    }
   }
 
   private excludedFilter(klass: ClassListItem): boolean {

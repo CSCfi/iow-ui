@@ -147,6 +147,14 @@ msgstr ""
 msgid "Ask for group rights"
 msgstr ""
 
+#: translations/misc.html:161
+msgid "Assigned to this library"
+msgstr ""
+
+#: translations/misc.html:160
+msgid "Assigned to this profile"
+msgstr ""
+
 #: translations/misc.html:32
 msgid "association"
 msgstr ""
