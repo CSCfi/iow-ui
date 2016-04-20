@@ -75,8 +75,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     new Tab('association', () => this.associations, this)
   ];
 
-  private selectionQueue: WithIdAndType[] = [];
-
   /* @ngInject */
   constructor(private $scope: IScope,
               private $location: ILocationService,
@@ -215,40 +213,20 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   isLoading(listItem: SelectableItem) {
-    return _.find(this.selectionQueue, item => item === listItem);
+    return matchesIdentity(listItem, this.selectedItem) && !matchesIdentity(listItem, this.selection);
   }
 
-  select(listItem: WithIdAndType) {
+  select(item: WithIdAndType) {
+    this.askPermissionWhenEditing(() => {
+      this.selectedItem = item;
 
-    const that = this;
-
-    function fetchUntilStable(item: WithIdAndType): IPromise<Class|Predicate> {
-      return that.fetchEntityByTypeAndId(item).then((entity: Class|Predicate) => {
-        const last = that.selectionQueue[that.selectionQueue.length - 1];
-        if (!entity || matchesIdentity(last, entity)) {
-          return entity;
-        } else {
-          return fetchUntilStable(last);
-        }
-      });
-    };
-
-    if (listItem) {
-      this.askPermissionWhenEditing(() => {
-        this.selectedItem = listItem;
-        if (this.selectionQueue.length > 0) {
-          this.selectionQueue.push(listItem);
-        } else {
-          this.selectionQueue.push(listItem);
-          fetchUntilStable(listItem).then((selection: Class|Predicate) => {
-            this.selectionQueue = [];
-            this.updateSelection(selection);
-          });
-        }
-      });
-    } else {
-      this.selectedItem = null;
-    }
+      if (item) {
+        this.fetchEntityByTypeAndId(item)
+          .then(selection => this.selection = selection);
+      } else {
+        this.selection = null;
+      }
+    });
   }
 
   selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
