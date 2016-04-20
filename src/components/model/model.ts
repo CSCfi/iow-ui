@@ -75,6 +75,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     new Tab('association', () => this.associations, this)
   ];
 
+  private selectionQueue: WithIdAndType[] = [];
+
   /* @ngInject */
   constructor(private $scope: IScope,
               private $location: ILocationService,
@@ -211,8 +213,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   isSelected(selection: SelectableItem) {
     return selection.matchesIdentity(this.selectedItem);
   }
-
-  private selectionQueue: WithIdAndType[] = [];
 
   isLoading(listItem: SelectableItem) {
     return _.find(this.selectionQueue, item => item === listItem);
