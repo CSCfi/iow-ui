@@ -138,7 +138,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.graph.clear();
     const showCardinality = this.model.isOfType('profile');
     return createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality)
-      .then(() => layoutGraph(this.graph, this.paper))
+      .then(() => layoutGraph(this.graph, this.paper, !!this.model.rootClass))
       .then(() => this.focus());
   }
 
@@ -465,8 +465,20 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
   });
 }
 
-function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper) {
-  return colaLayout(graph).then(() => adjustGraphLinks(graph, paper));
+function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper, directed: boolean): Promise<any> {
+  if (directed) {
+    return new Promise((resolve) => {
+      joint.layout.DirectedGraph.layout(graph, {
+        nodeSep: 50,
+        edgeSep: 80,
+        rankDir: "TB"
+      });
+      adjustGraphLinks(graph, paper);
+      resolve();
+    });
+  } else {
+    return colaLayout(graph).then(() => adjustGraphLinks(graph, paper));
+  }
 }
 
 function forEachInBackground<T>(items: T[], callback: (item: T) => void): Promise<boolean> {
