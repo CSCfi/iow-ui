@@ -487,18 +487,24 @@ function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper, directed: b
   }
 }
 
-function forEachInBackground<T>(items: T[], callback: (item: T) => void): Promise<boolean> {
+function forEachInBackground<T>(batchSize: number, items: T[], callback: (item: T) => void): Promise<boolean> {
   return new Promise<boolean>(resolve => {
+
     function forItemAtIndex(index: number) {
-      window.requestAnimFrame(() => {
-        if (index < items.length) {
-          const item = items[index];
-          callback(item);
-          forItemAtIndex(++index);
-        } else {
-          resolve(true);
-        }
-      });
+
+      for (let i = 0; i < batchSize && index + i < items.length; i++) {
+        const item = items[index + i];
+        callback(item);
+      }
+
+      const newIndex = index + batchSize;
+
+      if (newIndex < items.length) {
+
+        joint.util.nextFrame(() => forItemAtIndex(newIndex));
+      } else {
+        resolve(true);
+      }
     }
 
     forItemAtIndex(0);
@@ -515,7 +521,7 @@ function createCells($scope: IScope, languageService: LanguageService, graph: jo
   }
 
   const addClasses = () => {
-    return forEachInBackground(classes, klass => {
+    return forEachInBackground(1, classes, klass => {
       const attributes: Property[] = [];
 
       for (const property of klass.properties) {
@@ -526,13 +532,13 @@ function createCells($scope: IScope, languageService: LanguageService, graph: jo
         }
       }
 
-      createClass($scope, languageService, graph, klass, attributes, showCardinality);
+      graph.addCell(createClass($scope, languageService, klass, attributes, showCardinality));
     });
   };
 
   const addAssociations = () => {
-    return forEachInBackground(associations, association => {
-      createAssociation($scope, languageService, graph, association, showCardinality);
+    return forEachInBackground(1, associations, association => {
+      graph.addCell(createAssociation($scope, languageService, association, showCardinality));
     });
   };
 
@@ -552,7 +558,7 @@ function formatCardinality(property: Property) {
   }
 }
 
-function createClass($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, klass: VisualizationClass, properties: Property[], showCardinality: boolean) {
+function createClass($scope: IScope, languageService: LanguageService, klass: VisualizationClass, properties: Property[], showCardinality: boolean) {
 
   function getName() {
     return languageService.translate(klass.label);
@@ -600,10 +606,10 @@ function createClass($scope: IScope, languageService: LanguageService, graph: jo
     }
   });
 
-  graph.addCell(classCell);
+  return classCell;
 }
 
-function createAssociation($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, data: {klass: VisualizationClass, association: Property}, showCardinality: boolean) {
+function createAssociation($scope: IScope, languageService: LanguageService, data: {klass: VisualizationClass, association: Property}, showCardinality: boolean) {
 
   function getName() {
     return languageService.translate(data.association.label);
@@ -634,7 +640,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, gra
     }
   });
 
-  graph.addCell(associationCell);
+  return associationCell;
 }
 
 

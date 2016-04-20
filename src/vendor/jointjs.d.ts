@@ -25,6 +25,7 @@ declare module joint {
       getLastCell() : Cell;
       addCell(cell:Cell) : void;
       addCells(cells:Cell[]) : void;
+      resetCells(cells:Cell[], options?: any) : void;
       initialize() : void;
       fromJSON(json:any) : void;
       toJSON() : Object;
@@ -169,6 +170,7 @@ declare module joint {
     function supplement(objects:any[]):any;
     function deepMixin(objects:any[]):any;
     function deepSupplement(objects:any[], defaultIndicator?:any):any;
+    function nextFrame(callback: () => void): void;
   }
 
   module layout {
