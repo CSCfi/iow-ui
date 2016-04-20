@@ -118,7 +118,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.changeNotifier.addListener(this);
 
     $scope.$watch(() => this.model, () => this.refresh());
-    $scope.$watch(() => this.selection, newSelection => this.focus());
+    $scope.$watch(() => this.selection, newSelection => {
+      if (newSelection && newSelection.id.equals(this.model.rootClass)) {
+        this.selectionFocus = FocusLevel.ALL;
+      }
+      this.focus();
+    });
     $scope.$watch(() => this.selectionFocus, focus => this.focus());
   }
 
