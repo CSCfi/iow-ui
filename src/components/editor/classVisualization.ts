@@ -474,9 +474,9 @@ function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper, directed: b
   if (directed) {
     return new Promise((resolve) => {
       joint.layout.DirectedGraph.layout(graph, {
-        nodeSep: 80,
-        edgeSep: 110,
-        rankSep: 200,
+        nodeSep: 100,
+        edgeSep: 150,
+        rankSep: 500,
         rankDir: "LR"
       });
       adjustGraphLinks(graph, paper);
