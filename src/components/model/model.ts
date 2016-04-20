@@ -68,6 +68,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   attributes: SelectableItem[] = [];
   show: Show = Show.Both;
 
+  activeTab = 0;
   tabs = [
     new Tab('class', () => this.classes, this),
     new Tab('attribute', () => this.attributes, this),
@@ -463,7 +464,12 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
 
     if (routeData.selected) {
-      _.find(this.tabs, tab => tab.type === routeData.selected.selectionType).active = true;
+      for (let i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i].type === routeData.selected.selectionType) {
+          this.activeTab = i;
+          break;
+        }
+      }
     }
 
     const selection = routeData.selected || rootClassSelection(this.model);
@@ -615,7 +621,6 @@ class Tab {
 
   addLabel: string;
   glyphIconClass: any;
-  active: boolean;
   addNew: () => void;
 
   constructor(public type: Type, public items: () => SelectableItem[], modelController: ModelController) {
