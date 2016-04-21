@@ -16,7 +16,7 @@
   <uri-select id="superPredicate" type="{{ctrl.predicate.normalizedType}}" uri="ctrl.predicate.subPropertyOf" model="ctrl.model"></uri-select>
 </editable>
 
-<editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" uris="ctrl.predicate.equivalentProperties" model="ctrl.model" data-title="{{'Equivalent ' + ctrl.predicate.normalizedType}}" allow-input="true"></editable-multiple-uri-select>
+<editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" ng-model="ctrl.predicate.equivalentProperties" model="ctrl.model" data-title="{{'Equivalent ' + ctrl.predicate.normalizedType}}"></editable-multiple-uri-select>
 
 <editable ng-if="ctrl.predicate.isAttribute()" data-title="Range" name="Range">
   <range-select id="predicateRange" range="ctrl.predicate.dataType"></range-select>

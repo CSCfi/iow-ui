@@ -1,15 +1,20 @@
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
-import IScope = angular.IScope;
-import { DataType } from '../common/dataTypes';
-import { resolveValidator } from './validators';
-
-import { module as mod }  from './module';
 import gettextCatalog = angular.gettext.gettextCatalog;
+import IScope = angular.IScope;
+import { DataType } from '../../services/dataTypes';
+import { resolveValidator } from './validators';
+import { module as mod }  from './module';
 
 interface DataTypeInputAttributes extends IAttributes {
   datatypeInput: DataType;
 }
+
+export function placeholderText(dataType: DataType, gettextCatalog: gettextCatalog) {
+  const validator = resolveValidator(dataType);
+  const placeholder = gettextCatalog.getString('Input') + ' ' + gettextCatalog.getString(dataType).toLowerCase() + '...';
+  return validator.format ? placeholder + ` (${validator.format})` : placeholder;
+};
 
 mod.directive('datatypeInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
   return {
@@ -21,16 +26,14 @@ mod.directive('datatypeInput', /* @ngInject */ (gettextCatalog: gettextCatalog) 
       }
 
       function initialize(dataType: DataType, oldDataType: DataType) {
-        const validator = resolveValidator(dataType);
-        const placeholder = gettextCatalog.getString('Input') + ' ' + gettextCatalog.getString(dataType).toLowerCase() + '...';
-        element.attr('placeholder', validator.format ? placeholder + ` (${validator.format})` : placeholder);
+        element.attr('placeholder', placeholderText(dataType, gettextCatalog));
 
         if (oldDataType) {
           delete ngModel.$validators[oldDataType];
+          ngModel.$setValidity(oldDataType, true);
         }
 
-        ngModel.$validators[dataType] = validator;
-        ngModel.$error = {};
+        ngModel.$validators[dataType] = resolveValidator(dataType);
         ngModel.$validate();
       }
 

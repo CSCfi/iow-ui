@@ -4,7 +4,7 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import ITimeoutService = angular.ITimeoutService;
 import { resolveValidator } from './validators';
-import { dataTypes } from '../common/dataTypes';
+import { dataTypes } from '../../services/dataTypes';
 import { module as mod }  from './module';
 import { normalizeAsArray } from '../../services/utils';
 

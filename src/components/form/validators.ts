@@ -1,22 +1,24 @@
 import * as moment from 'moment';
 import Moment = moment.Moment;
-import { DataType } from '../common/dataTypes';
+import { DataType } from '../../services/dataTypes';
 import { Uri } from '../../services/uri';
 const URI = require('uri-js');
 
-export interface Validator {
-  (input: string): boolean;
+export interface Validator<T> {
+  (input: T, raw?: any): boolean;
 }
 
-export interface ValidatorWithFormat extends Validator {
+export interface ValidatorWithFormat<T> extends Validator<T> {
   format?: string;
 }
 
-export function arrayValidator(validator: Validator) {
-  return (input: string[]) => {
-    for (const value of input) {
-      if (!validator(value)) {
-        return false;
+export function arrayValidator<T>(validator: Validator<T>) {
+  return (input: T[]) => {
+    if (input) {
+      for (const value of input) {
+        if (!validator(value)) {
+          return false;
+        }
       }
     }
     return true;
@@ -75,7 +77,7 @@ export const isValidYear = createMomentValidator('YYYY');
 export const isValidMonth = createMomentValidator('MM');
 export const isValidDay = createMomentValidator('DD');
 
-export function resolveValidator(dataType: DataType): ValidatorWithFormat {
+export function resolveValidator(dataType: DataType): ValidatorWithFormat<string> {
   switch (dataType) {
     case 'xsd:string':
     case 'rdf:langString':
@@ -111,8 +113,8 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat {
   }
 }
 
-function createNopValidator(format?: string) {
-  const validator: ValidatorWithFormat = (input: string) => true;
+function createNopValidator<T>(format?: string) {
+  const validator: ValidatorWithFormat<T> = (input: T) => true;
   validator.format = format;
   return validator;
 }
@@ -128,7 +130,7 @@ function createInValuesValidator(...values: string[]) {
     return false;
   }
 
-  const validator: ValidatorWithFormat = (input: string) => {
+  const validator: ValidatorWithFormat<string> = (input: string) => {
     return !input || inValues(input);
   };
   validator.format = values.join('/');
@@ -142,7 +144,7 @@ function createRegexValidator(regex: RegExp) {
     return regexStr.substr(1, regexStr.length - 2).replace('^', '').replace('$', '');
   }
 
-  const validator: ValidatorWithFormat = (input: string) => {
+  const validator: ValidatorWithFormat<string> = (input: string) => {
     return !input || regex.test(input);
   };
   validator.format = unescapedString();
@@ -150,7 +152,7 @@ function createRegexValidator(regex: RegExp) {
 }
 
 function createMomentValidator(format: string) {
-  const validator: ValidatorWithFormat = (input: string) => {
+  const validator: ValidatorWithFormat<string> = (input: string) => {
     return !input || moment(input, format, true).isValid();
   };
   validator.format = format;

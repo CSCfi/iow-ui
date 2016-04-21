@@ -12,6 +12,7 @@ import './classVisualization';
 import './definedBy';
 import './uriSelect';
 import './editableConstraint';
+import './editableMultiple';
 import './editableMultipleUriSelect';
 import './editableMultipleDataTypeInput';
 import './editableSubjectSelect';

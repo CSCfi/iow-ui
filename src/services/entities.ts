@@ -17,6 +17,7 @@ import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate } from './comparators';
+import { DataType } from './dataTypes';
 
 const jsonld: any = require('jsonld');
 
@@ -781,7 +782,7 @@ export class Property extends GraphNode {
   comment: Localizable;
   example: string;
   defaultValue: string;
-  dataType: string;
+  dataType: DataType;
   valueClass: Uri;
   predicate: Uri|Predicate;
   index: number;
@@ -850,7 +851,7 @@ export class Property extends GraphNode {
     }
   }
 
-  get inputType() {
+  get inputType(): DataType {
     if (this.dataType) {
       return this.dataType;
     } else {
@@ -1037,7 +1038,7 @@ export class Association extends Predicate {
 
 export class Attribute extends Predicate {
 
-  dataType: string;
+  dataType: DataType;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);

@@ -23,6 +23,7 @@ import { identity } from './utils';
 import { ConceptService } from './conceptService';
 import { ResetService } from './resetService';
 import { Uri, Url } from './uri';
+import { DataType } from './dataTypes';
 
 export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392');
 export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK');
@@ -81,7 +82,7 @@ export interface PredicateDetails extends EntityDetails {
 }
 
 export interface AttributeDetails extends PredicateDetails {
-  dataType?: string;
+  dataType?: DataType;
 }
 
 export interface AssociationDetails extends PredicateDetails {
@@ -91,7 +92,7 @@ export interface AssociationDetails extends PredicateDetails {
 export interface PropertyDetails extends EntityDetails {
   predicate: Resolvable<Predicate>;
   example?: string;
-  dataType?: string;
+  dataType?: DataType;
   valueClass?: UriResolvable<Class>;
   minCount?: number;
   maxCount?: number;

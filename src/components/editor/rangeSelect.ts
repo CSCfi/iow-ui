@@ -1,4 +1,4 @@
-import { dataTypes, DataType } from '../common/dataTypes';
+import { dataTypes, DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
 
 mod.directive('rangeSelect', () => {
