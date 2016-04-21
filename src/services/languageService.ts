@@ -7,15 +7,20 @@ const defaultLanguage: Language = 'fi';
 const fi = require('../../po/fi.po');
 const en = require('../../po/en.po');
 
+const modelLanguageKey = 'modelLanguage';
+const uiLanguageKey = 'UILanguage';
+
 export class LanguageService {
 
-  modelLanguage: Language = defaultLanguage;
+  private _modelLanguage: Language;
 
   /* @ngInject */
   constructor(private gettextCatalog: any) {
     gettextCatalog.setStrings('fi', fi);
     gettextCatalog.setStrings('en', en);
-    this.setGettextLanguage(defaultLanguage);
+
+    this.setGettextLanguage(window.sessionStorage.getItem(uiLanguageKey) || defaultLanguage);
+    this.modelLanguage = window.sessionStorage.getItem(modelLanguageKey) || defaultLanguage;
   }
 
   private setGettextLanguage(language: Language): void {
@@ -27,7 +32,17 @@ export class LanguageService {
   }
 
   set UILanguage(language: Language) {
+    window.sessionStorage.setItem(uiLanguageKey, language);
     this.setGettextLanguage(language);
+  }
+
+  get modelLanguage(): Language {
+    return this._modelLanguage;
+  }
+
+  set modelLanguage(language: Language) {
+    window.sessionStorage.setItem(modelLanguageKey, language);
+    this._modelLanguage = language;
   }
 
   get availableLanguages() {
