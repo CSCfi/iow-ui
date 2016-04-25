@@ -1,6 +1,6 @@
-import { Localizable } from './entities';
+import { Localizable, LanguageContext } from './entities';
 import { Language } from '../components/contracts';
-import { availableUILanguages, translate } from './utils';
+import { availableUILanguages, translate, availableLanguages } from './utils';
 
 const defaultLanguage: Language = 'fi';
 
@@ -12,7 +12,7 @@ const uiLanguageKey = 'UILanguage';
 
 export class LanguageService {
 
-  private _modelLanguage: Language;
+  private _modelLanguage: {[entityId: string]: Language} = {};
 
   /* @ngInject */
   constructor(private gettextCatalog: any) {
@@ -20,7 +20,8 @@ export class LanguageService {
     gettextCatalog.setStrings('en', en);
 
     this.setGettextLanguage(window.sessionStorage.getItem(uiLanguageKey) || defaultLanguage);
-    this.modelLanguage = window.sessionStorage.getItem(modelLanguageKey) || defaultLanguage;
+    const storedModelLanguage = window.sessionStorage.getItem(modelLanguageKey);
+    this._modelLanguage = storedModelLanguage ? JSON.parse(storedModelLanguage) : {};
   }
 
   private setGettextLanguage(language: Language): void {
@@ -36,20 +37,26 @@ export class LanguageService {
     this.setGettextLanguage(language);
   }
 
-  get modelLanguage(): Language {
-    return this._modelLanguage;
+  getModelLanguage(context?: LanguageContext): Language {
+    if (context) {
+      const key = context.id.uri;
+      const language = this._modelLanguage[key];
+      return language ? language : context.language[0];
+    } else {
+      return this.UILanguage;
+    }
   }
 
-  set modelLanguage(language: Language) {
-    window.sessionStorage.setItem(modelLanguageKey, language);
-    this._modelLanguage = language;
+  setModelLanguage(context: LanguageContext, language: Language) {
+    this._modelLanguage[context.id.uri] = language;
+    window.sessionStorage.setItem(modelLanguageKey, JSON.stringify(this._modelLanguage));
   }
 
   get availableUILanguages() {
     return availableUILanguages;
   }
 
-  translate(data: Localizable): string {
-    return translate(data, this.modelLanguage);
+  translate(data: Localizable, context?: LanguageContext): string {
+    return translate(data, this.getModelLanguage(context), context ? context.language : availableLanguages);
   }
 }

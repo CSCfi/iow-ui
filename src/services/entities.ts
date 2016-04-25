@@ -80,6 +80,11 @@ export class ExternalEntity {
   }
 }
 
+export interface LanguageContext {
+  id: Uri;
+  language: Language[];
+}
+
 export abstract class GraphNode {
 
   type: Type[];
@@ -179,6 +184,7 @@ export class GroupListItem extends AbstractGroup {
 export class Group extends AbstractGroup {
 
   unsaved: boolean;
+  language: Language[] = ['fi', 'en'];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);

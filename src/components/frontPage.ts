@@ -64,7 +64,7 @@ export class FrontPageController {
 
   search(text: string) {
     if (text) {
-      this.searchService.searchAnything(text, this.languageService.modelLanguage)
+      this.searchService.searchAnything(text, this.languageService.getModelLanguage())
         .then(results => {
           this.searchResults = results;
         });

@@ -5,7 +5,10 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { LanguageService } from '../../services/languageService';
-import { GroupListItem, Model, Require, Reference, NamespaceType, Relation } from '../../services/entities';
+import {
+  GroupListItem, Model, Require, Reference, NamespaceType, Relation,
+  LanguageContext
+} from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
@@ -79,7 +82,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   addReference() {
-    const language = this.languageService.modelLanguage;
+    const language = this.languageService.getModelLanguage(this.model);
     const vocabularies = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId);
     const exclude = createExistsExclusion(vocabularies);
     this.searchSchemeModal.open(language, exclude)
@@ -95,7 +98,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   addRequire() {
-    const language = this.languageService.modelLanguage;
+    const language = this.languageService.getModelLanguage(this.model);
     const alreadyAddedText = 'Already added';
 
     const existsExclude = (require: Require) => {
@@ -139,7 +142,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   addRelation() {
-    this.addRelationModal.open(this.model, this.languageService.modelLanguage)
+    this.addRelationModal.open(this.model, this.languageService.getModelLanguage(this.model))
       .then((relation: Relation) => {
         this.editableInEdit.addRelation(relation);
         this.relationsView.open(relation);
@@ -179,5 +182,9 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   getGroup(): GroupListItem {
     return this.model.group;
+  }
+
+  getContext(): LanguageContext {
+    return this.model;
   }
 }

@@ -4,7 +4,7 @@
 
     <div ng-if="ctrl.usage && ctrl.hasReferrers">
       <p><span translate>Following items are depending on the deleted</span> <span>{{'of ' + ctrl.entity.normalizedType | translate}}</span></p>
-      <usage usage="ctrl.usage" exclude="ctrl.exclude"></usage>
+      <usage usage="ctrl.usage" exclude="ctrl.exclude" context="ctrl.context"></usage>
       <br />
     </div>
 

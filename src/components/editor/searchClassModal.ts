@@ -96,7 +96,7 @@ class SearchClassController {
       this.models = this.models.concat(_.chain(this.classes)
         .map(klass => klass.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<ClassListItem>(languageService.modelLanguage, klass => klass.label))
+        .sort(comparingLocalizable<ClassListItem>(languageService.getModelLanguage(this.model), klass => klass.label))
         .value());
 
       this.search();
@@ -211,12 +211,12 @@ class SearchClassController {
   }
 
   createNewClass() {
-    return this.searchConceptModal.openNewEntityCreation(this.model.references, 'class', this.searchText)
+    return this.searchConceptModal.openNewEntityCreation(this.model.references, this.model, 'class', this.searchText)
       .then(conceptCreation => this.$uibModalInstance.close(conceptCreation));
   }
 
   private localizedLabelAsLower(klass: ClassListItem): string {
-    return this.languageService.translate(klass.label).toLowerCase();
+    return this.languageService.translate(klass.label, this.model).toLowerCase();
   }
 
   private textFilter(klass: ClassListItem): boolean {

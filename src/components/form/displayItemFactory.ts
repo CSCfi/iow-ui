@@ -2,7 +2,7 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
-import { Localizable, isLocalizable } from '../../services/entities';
+import { Localizable, isLocalizable, LanguageContext } from '../../services/entities';
 import { isString, isNumber, isDifferentUrl } from '../../services/utils';
 import { Uri } from '../../services/uri';
 
@@ -12,6 +12,7 @@ export class DisplayItem {
   constructor(private $location: ILocationService,
               private languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
+              private context: () => LanguageContext,
               public value: () => Value,
               private link: (value: Value) => string,
               private hideLinks: () => boolean,
@@ -24,7 +25,7 @@ export class DisplayItem {
     if (value instanceof Uri) {
       return value.compact;
     }  else if (isLocalizable(value)) {
-      return this.languageService.translate(value);
+      return this.languageService.translate(value, this.context());
     } else if (isString(value)) {
       if (this.valueAsLocalizationKey) {
         return this.gettextCatalog.getString(value);
@@ -69,7 +70,7 @@ export class DisplayItemFactory {
   constructor(private $location: ILocationService, private languageService: LanguageService, private gettextCatalog: gettextCatalog) {
   }
 
-  create(value: () => Value, link: (value: Value) => string, valueAsLocalizationKey: boolean, hideLinks: () => boolean = () => false) {
-    return new DisplayItem(this.$location, this.languageService, this.gettextCatalog, value, link, hideLinks, valueAsLocalizationKey);
+  create(context: () => LanguageContext, value: () => Value, link: (value: Value) => string, valueAsLocalizationKey: boolean, hideLinks: () => boolean = () => false) {
+    return new DisplayItem(this.$location, this.languageService, this.gettextCatalog, context, value, link, hideLinks, valueAsLocalizationKey);
   }
 }

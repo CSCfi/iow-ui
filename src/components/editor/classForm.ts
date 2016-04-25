@@ -54,7 +54,7 @@ export class ClassFormController {
         const existingPredicates = new Set<string>(_.map(this.class.properties, property => property.predicateId.uri));
         const exclude = (property: Property) => existingPredicates.has(property.predicateId.uri);
 
-        this.addPropertiesFromClassModal.open(klass, classType, exclude)
+        this.addPropertiesFromClassModal.open(klass, classType, this.model, exclude)
           .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
       }
     });

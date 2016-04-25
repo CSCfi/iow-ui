@@ -1,6 +1,6 @@
 <div>
   <div ng-if="ctrl.subject || ctrl.isEditing()">
-    <subject-view subject="ctrl.subject"></subject-view>
+    <subject-view subject="ctrl.subject" context="ctrl.context"></subject-view>
     <div ng-class="{'model-view__sub': !!ctrl.subject}">
       <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectSubject()" ng-disabled="ctrl.disable" translate>Choose subject</button>
     </div>

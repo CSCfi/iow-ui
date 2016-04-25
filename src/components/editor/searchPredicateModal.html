@@ -32,7 +32,7 @@
               <select class="form-control" ng-model="ctrl.showModel"
                       ng-options="ctrl.isThisModel(model)
                                     ? ('Assigned to this ' + ctrl.model.normalizedType | translate)
-                                    : (model | translateLabel)
+                                    : (model | translateLabel: ctrl.model)
                                     for model in ctrl.models">
                 <option value="" translate>All models</option>
               </select>
@@ -52,8 +52,8 @@
           <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
-            <div><i ng-class="searchResult.glyphIconClass"></i><h5>{{searchResult | translateLabel}}</h5></div>
-            <p>{{searchResult.definedBy | translateLabel}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
+            <div><i ng-class="searchResult.glyphIconClass"></i><h5>{{searchResult | translateLabel: ctrl.model}}</h5></div>
+            <p>{{searchResult.definedBy | translateLabel: ctrl.model}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
           </search-results>
         </div>
 
@@ -62,13 +62,13 @@
           <predicate-form ng-if="ctrl.isSelectionPredicate()" predicate="ctrl.selection" old-predicate="ctrl.selection" model="ctrl.model"></predicate-form>
 
           <div ng-if="ctrl.isSelectionExternalEntity()">
-            <editable data-title="External URI" autofocus>
+            <editable data-title="External URI" context="ctrl.model" autofocus>
               <div class="input-group input-group-md">
                 <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="ctrl.model" ng-model="ctrl.selection.id" />
               </div>
             </editable>
 
-            <editable data-title="Predicate type" ng-show="ctrl.typeSelectable">
+            <editable data-title="Predicate type" ng-show="ctrl.typeSelectable" context="ctrl.model">
               <div class="selectContainer">
                 <select class="form-control" ng-model="ctrl.selection.type" ng-options="type | translate for type in ['attribute', 'association']"></select>
               </div>

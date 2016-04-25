@@ -3,7 +3,7 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import { Class, Property } from '../../services/entities';
+import { Class, Property, LanguageContext } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 
 const noExclude = (property: Property) => false;
@@ -13,7 +13,7 @@ export class AddPropertiesFromClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(klass: Class, classType: string, exclude: (property: Property) => boolean = noExclude): IPromise<Property[]> {
+  open(klass: Class, classType: string, context: LanguageContext, exclude: (property: Property) => boolean = noExclude): IPromise<Property[]> {
     return this.$uibModal.open({
       template: require('./addPropertiesFromClassModal.html'),
       size: 'adapting',
@@ -22,6 +22,7 @@ export class AddPropertiesFromClassModal {
       resolve: {
         klass: () => klass,
         classType: () => classType,
+        context: () => context,
         exclude: () => exclude
       }
     }).result;
@@ -34,7 +35,7 @@ export class AddPropertiesFromClassModalController {
   selectedProperties: Property[];
 
   /* @ngInject */
-  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, klass: Class, public classType: string, private exclude: (property: Property) => boolean) {
+  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, klass: Class, public classType: string, private context: LanguageContext, private exclude: (property: Property) => boolean) {
       this.properties = klass.properties;
       this.selectAll();
   }

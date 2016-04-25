@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
-import { Localizable } from '../../services/entities';
+import { Localizable, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { hasLocalization, allLocalizations } from '../../services/utils';
 import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
@@ -12,22 +12,29 @@ interface LocalizedInputAttributes extends IAttributes {
   localizedInput: string;
 }
 
+interface LocalizedInputScope extends IScope {
+  context: LanguageContext;
+}
+
 mod.directive('localizedInput', /* @ngInject */ (languageService: LanguageService) => {
   return {
     restrict: 'A',
+    scope: {
+      context: '='
+    },
     require: 'ngModel',
-    link($scope: IScope, element: JQuery, attributes: LocalizedInputAttributes, ngModel: INgModelController) {
+    link($scope: LocalizedInputScope, element: JQuery, attributes: LocalizedInputAttributes, ngModel: INgModelController) {
       let localized: Localizable;
 
       function setPlaceholder() {
-        element.attr('placeholder', languageService.translate(localized));
+        element.attr('placeholder', languageService.translate(localized, $scope.context));
       }
 
       function removePlaceholder() {
         element.attr('placeholder', null);
       }
 
-      $scope.$watch(() => languageService.modelLanguage, lang => {
+      $scope.$watch(() => languageService.getModelLanguage($scope.context), lang => {
         const val = localized[lang];
         if (!val) {
           setPlaceholder();
@@ -37,7 +44,7 @@ mod.directive('localizedInput', /* @ngInject */ (languageService: LanguageServic
 
       ngModel.$parsers.push(viewValue => {
         localized = Object.assign(localized, {
-          [languageService.modelLanguage]: viewValue
+          [languageService.getModelLanguage($scope.context)]: viewValue
         });
         if (viewValue) {
           removePlaceholder();
@@ -49,7 +56,7 @@ mod.directive('localizedInput', /* @ngInject */ (languageService: LanguageServic
 
       ngModel.$formatters.push(modelValue => {
         localized = modelValue || {};
-        const val = localized[languageService.modelLanguage];
+        const val = localized[languageService.getModelLanguage($scope.context)];
         if (!val) {
           setPlaceholder();
         }

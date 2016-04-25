@@ -4,7 +4,7 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { Attribute, Association, Class, AbstractGroup, Group, Model } from '../../services/entities';
+import { Attribute, Association, Class, AbstractGroup, Group, Model, LanguageContext } from '../../services/entities';
 import { isModalCancel } from '../../services/utils';
 import { Uri } from '../../services/uri';
 
@@ -44,6 +44,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   abstract getEditable(): T;
   abstract setEditable(editable: T): void;
   abstract getGroup(): AbstractGroup;
+  abstract getContext(): LanguageContext;
 
   select(editable: T) {
     this.submitError = null;
@@ -74,7 +75,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   openDeleteConfirmationModal(): IPromise<void> {
-    return this.deleteConfirmationModal.open(this.getEditable());
+    return this.deleteConfirmationModal.open(this.getEditable(), this.getContext());
   }
 
   removeEdited() {

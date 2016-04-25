@@ -1,14 +1,14 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { Reference } from '../../services/entities';
+import { Reference, Model } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
 
 mod.directive('referencesView', () => {
   return {
     scope: {
-      references: '='
+      model: '='
     },
     restrict: 'E',
     template: require('./referencesView.html'),
@@ -30,9 +30,9 @@ interface ReferencesViewScope extends IScope {
 }
 
 class ReferencesViewController {
-  references: Reference[];
+  model: Model;
   opened: {[key: string]: boolean} = {};
-  referenceComparator = (reference: Reference) => '' + (reference.isLocal() ? '0' : '1') + this.languageService.translate(reference.label);
+  referenceComparator = (reference: Reference) => '' + (reference.isLocal() ? '0' : '1') + this.languageService.translate(reference.label, this.model);
 
   /* @ngInject */
   constructor(private languageService: LanguageService) {

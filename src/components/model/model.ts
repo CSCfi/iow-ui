@@ -132,7 +132,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       }
     });
 
-    $scope.$watch(() => this.languageService.modelLanguage, lang => this.sortAll());
+    $scope.$watch(() => this.languageService.getModelLanguage(this.model), lang => this.sortAll());
     $scope.$watch(() => this.show, show => {
       for (const changeListener of this.changeListeners) {
         changeListener.onResize(show);
@@ -162,7 +162,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   get selectableItemComparator() {
-    return comparingLocalizable<SelectableItem>(this.languageService.modelLanguage, selectableItem => selectableItem.item.label);
+    return comparingLocalizable<SelectableItem>(this.languageService.getModelLanguage(this.model), selectableItem => selectableItem.item.label);
   }
 
   init(routeData: RouteData) {
@@ -357,15 +357,15 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private createClass(conceptCreation: EntityCreation) {
-    return this.classService.newClass(this.model, conceptCreation.entity.label, conceptCreation.concept.id, this.languageService.modelLanguage);
+    return this.classService.newClass(this.model, conceptCreation.entity.label, conceptCreation.concept.id, this.languageService.getModelLanguage(this.model));
   }
 
   private createShape(classId: Uri, external: boolean) {
 
-    return this.classService.newShape(classId, this.model, external, this.languageService.modelLanguage)
+    return this.classService.newShape(classId, this.model, external, this.languageService.getModelLanguage(this.model))
       .then(shape => {
         if (shape.external && shape.properties.length > 0) {
-          return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, 'external')]);
+          return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, 'external', this.model)]);
         } else {
           return this.$q.when([shape, shape.properties]);
         }
@@ -398,7 +398,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private createPredicate(conceptCreation: EntityCreation, type: Type) {
-    return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.modelLanguage);
+    return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.getModelLanguage(this.model));
   }
 
   private assignPredicateToModel(id: Uri) {
@@ -495,7 +495,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updateNewModel(newModel: {prefix: string, label: string, groupId: Uri, type: Type}) {
-    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, this.languageService.modelLanguage, newModel.type)
+    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, this.languageService.getModelLanguage(this.model), newModel.type)
       .then(model => this.updateModel(model));
   }
 
@@ -653,7 +653,7 @@ class SelectableItem {
   }
 
   get rawLabel(): string {
-    return this.modelController.languageService.translate(this.item.label);
+    return this.modelController.languageService.translate(this.item.label, this.modelController.model);
   }
 
   get label(): string {

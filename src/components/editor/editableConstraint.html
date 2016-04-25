@@ -5,8 +5,9 @@
       <span accordion-chevron is-open="ctrl.open">{{'Logical constraints' | translate}}</span>
     </uib-accordion-heading>
     <div ng-if="ctrl.open">
-      <editable data-title="Description">
-        <textarea id="constraintComment" class="form-control" localized-input ng-model="ctrl.constraint.comment"></textarea>
+
+      <editable data-title="Description" context="ctrl.model">
+        <textarea id="constraintComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.constraint.comment"></textarea>
       </editable>
 
       <div class="editable-wrap form-group">
@@ -14,7 +15,7 @@
         <editable-label data-title="'Constraint classes'"></editable-label>
 
         <span ng-if="!ctrl.isEditing()" ng-repeat="item in ctrl.constraint.items">
-          <a ng-href="{{'#' + ctrl.linkItem(item)}}">{{item | translateLabel}}</a>
+          <a ng-href="{{'#' + ctrl.linkItem(item)}}">{{item | translateLabel: ctrl.model}}</a>
           <span ng-if="!$last">&nbsp;{{ctrl.constraint.constraint}}&nbsp;</span>
         </span>
 
@@ -24,7 +25,7 @@
           </div>
           <div class="form-control with-button multi-input">
             <div ng-repeat="item in ctrl.constraint.items" class="added-item">
-              {{item | translateLabel}}
+              {{item | translateLabel: ctrl.model}}
               <div class="delete-item badge" ng-click="ctrl.removeItem(item)">&times;</div>
             </div>
           </div>

@@ -103,7 +103,7 @@ export class SearchPredicateController {
       this.models = this.models.concat(_.chain(this.predicates)
         .map(predicate => predicate.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<PredicateListItem>(languageService.modelLanguage, predicate => predicate.label))
+        .sort(comparingLocalizable<PredicateListItem>(languageService.getModelLanguage(model), predicate => predicate.label))
         .value());
 
       this.types = _.chain(this.predicates)
@@ -233,12 +233,12 @@ export class SearchPredicateController {
   }
 
   createNew(type: Type) {
-    return this.searchConceptModal.openNewEntityCreation(this.model.references, type, this.searchText)
+    return this.searchConceptModal.openNewEntityCreation(this.model.references, this.model, type, this.searchText)
       .then(result => {
         if (!this.typeSelectable) {
           this.$uibModalInstance.close(result);
         } else {
-          this.predicateService.newPredicate(this.model, result.entity.label, result.concept.id, type, this.languageService.modelLanguage)
+          this.predicateService.newPredicate(this.model, result.entity.label, result.concept.id, type, this.languageService.getModelLanguage(this.model))
             .then(predicate => {
               this.cannotConfirm = null;
               this.selection = predicate;
@@ -261,7 +261,7 @@ export class SearchPredicateController {
   }
 
   private localizedLabelAsLower(predicate: PredicateListItem): string {
-    return this.languageService.translate(predicate.label).toLowerCase();
+    return this.languageService.translate(predicate.label, this.model).toLowerCase();
   }
 
   private textFilter(predicate: PredicateListItem): boolean {

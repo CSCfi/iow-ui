@@ -3,7 +3,7 @@
 <uib-accordion>
   <uib-accordion-group ng-repeat="require in ctrl.model.requires track by require.id.value" is-open="ctrl.opened[$index]">
     <uib-accordion-heading>
-      <span accordion-chevron is-open="ctrl.opened[$index]">{{require | translateLabel}}</span>
+      <span accordion-chevron is-open="ctrl.opened[$index]">{{require | translateLabel: ctrl.model}}</span>
     </uib-accordion-heading>
 
     <div ng-if="ctrl.opened[$index]">
@@ -11,15 +11,15 @@
               ng-disabled="modelViewController.isRequireInUse(require)" type="button" class="btn btn-default pull-right"
               ng-click="modelViewController.removeRequire(require)" translate>Delete require</button>
 
-      <editable data-title="Require label" disable="!require.labelModifiable">
-        <input type="text" class="form-control" localized-input="modelLabel" ng-model="require.label" />
+      <editable data-title="Require label" disable="!require.labelModifiable" context="ctrl.model">
+        <input type="text" class="form-control" localized-input="modelLabel" context="ctrl.model"  ng-model="require.label" />
       </editable>
 
-      <editable data-title="Namespace" disable="!require.namespaceModifiable">
+      <editable data-title="Namespace" disable="!require.namespaceModifiable" context="ctrl.model">
         <input type="text" class="form-control" ng-disabled="modelViewController.isRequireInUse(require)" required namespace-input model="ctrl.model" active-require="require" ng-model="require.namespace" />
       </editable>
 
-      <editable data-title="Prefix" disable="!require.prefixModifiable">
+      <editable data-title="Prefix" disable="!require.prefixModifiable" context="ctrl.model">
         <input type="text" class="form-control" required prefix-input model="ctrl.model" active-require="require" ng-model="require.prefix" />
       </editable>
     </div>

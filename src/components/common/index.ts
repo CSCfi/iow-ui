@@ -6,7 +6,7 @@ import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { HistoryModal } from './historyModal';
 import { LanguageService } from '../../services/languageService';
-import { Localizable } from '../../services/entities';
+import { Localizable, Model, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 export default mod.name;
 
@@ -26,17 +26,11 @@ mod.service('deleteConfirmationModal', DeleteConfirmationModal);
 mod.service('historyModal', HistoryModal);
 
 mod.filter('translateValue', /* @ngInject */ (languageService: LanguageService) => {
-  return (input: Localizable) => input ? languageService.translate(input) : '';
+  return (input: Localizable, context?: LanguageContext) => input ? languageService.translate(input, context) : '';
 });
 
 mod.filter('translateLabel', /* @ngInject */ (translateValueFilter: any) => {
-  return (input: {label: Localizable}) => input ? translateValueFilter(input.label) : '';
-});
-
-mod.filter('orderByLabel', /* @ngInject */ (translateLabelFilter: IFilterService, orderByFilter: any) => {
-  return (array: {label: Localizable}[]) => {
-    return orderByFilter(array, translateLabelFilter);
-  };
+  return (input: { label: Localizable }, context?: LanguageContext) => input ? translateValueFilter(input.label, context) : '';
 });
 
 mod.filter('capitalize', function() {

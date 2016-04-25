@@ -10,11 +10,10 @@ import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { Group, ModelListItem, Type } from '../../services/entities';
+import { Group, ModelListItem, Type, LanguageContext } from '../../services/entities';
 import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
-import { Language } from '../contracts';
 
 mod.directive('group', () => {
   return {
@@ -36,7 +35,6 @@ class GroupController extends EditableEntityController<Group> {
   group: Group;
   models: ModelListItem[];
   profiles: ModelListItem[];
-  languages: Language[] = ['fi', 'en'];
 
   /* @ngInject */
   constructor($scope: EditableScope,
@@ -118,6 +116,10 @@ class GroupController extends EditableEntityController<Group> {
   }
 
   getGroup(): Group {
+    return this.group;
+  }
+
+  getContext(): LanguageContext {
     return this.group;
   }
 }

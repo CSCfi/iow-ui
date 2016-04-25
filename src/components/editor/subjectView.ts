@@ -1,11 +1,12 @@
-import { FintoConcept, ConceptSuggestion } from '../../services/entities';
+import { FintoConcept, ConceptSuggestion, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 
 mod.directive('subjectView', () => {
   return {
     scope: {
       subject: '=',
-      title: '@'
+      title: '@',
+      context: '='
     },
     bindToController: true,
     controllerAs: 'ctrl',
@@ -18,6 +19,7 @@ mod.directive('subjectView', () => {
 class SubjectViewController {
   subject: FintoConcept|ConceptSuggestion;
   title: string;
+  context: LanguageContext;
 
   get subjectTitle() {
     if (this.title) {

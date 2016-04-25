@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
-import { Class, Model, VisualizationClass, Property, Predicate } from '../../services/entities';
+import { Class, Model, VisualizationClass, Property, Predicate, LanguageContext } from '../../services/entities';
 import * as _ from 'lodash';
 import { isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
@@ -142,7 +142,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   initGraph(visualizationData: VisualizationClass[]) {
     this.graph.clear();
     const showCardinality = this.model.isOfType('profile');
-    return createCells(this.$scope, this.languageService, this.graph, visualizationData, showCardinality)
+    return createCells(this.$scope, this.languageService, this.model, this.graph, visualizationData, showCardinality)
       .then(() => layoutGraph(this.graph, this.paper, !!this.model.rootClass))
       .then(() => this.focus());
   }
@@ -511,7 +511,7 @@ function forEachInBackground<T>(batchSize: number, items: T[], callback: (item: 
   });
 }
 
-function createCells($scope: IScope, languageService: LanguageService, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
+function createCells($scope: IScope, languageService: LanguageService, context: LanguageContext, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
   const classIds = new Set<string>();
@@ -532,13 +532,13 @@ function createCells($scope: IScope, languageService: LanguageService, graph: jo
         }
       }
 
-      graph.addCell(createClass($scope, languageService, klass, attributes, showCardinality));
+      graph.addCell(createClass($scope, languageService, context, klass, attributes, showCardinality));
     });
   };
 
   const addAssociations = () => {
     return forEachInBackground(1, associations, association => {
-      graph.addCell(createAssociation($scope, languageService, association, showCardinality));
+      graph.addCell(createAssociation($scope, languageService, context, association, showCardinality));
     });
   };
 
@@ -558,15 +558,15 @@ function formatCardinality(property: Property) {
   }
 }
 
-function createClass($scope: IScope, languageService: LanguageService, klass: VisualizationClass, properties: Property[], showCardinality: boolean) {
+function createClass($scope: IScope, languageService: LanguageService, context: LanguageContext, klass: VisualizationClass, properties: Property[], showCardinality: boolean) {
 
   function getName() {
-    return languageService.translate(klass.label);
+    return languageService.translate(klass.label, context);
   }
 
   function getPropertyNames() {
     function propertyAsString(property: Property): string {
-      const name = languageService.translate(property.label);
+      const name = languageService.translate(property.label, context);
       const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
       const cardinality = formatCardinality(property);
       return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
@@ -597,7 +597,7 @@ function createClass($scope: IScope, languageService: LanguageService, klass: Vi
     z: zIndexClass
   });
 
-  $scope.$watch(() => languageService.modelLanguage, (lang, oldLang) => {
+  $scope.$watch(() => languageService.getModelLanguage(context), (lang, oldLang) => {
     if (oldLang && (lang !== oldLang)) {
       const newPropertyNames = getPropertyNames();
       classCell.prop('name', getName());
@@ -609,10 +609,10 @@ function createClass($scope: IScope, languageService: LanguageService, klass: Vi
   return classCell;
 }
 
-function createAssociation($scope: IScope, languageService: LanguageService, data: {klass: VisualizationClass, association: Property}, showCardinality: boolean) {
+function createAssociation($scope: IScope, languageService: LanguageService, context: LanguageContext, data: {klass: VisualizationClass, association: Property}, showCardinality: boolean) {
 
   function getName() {
-    return languageService.translate(data.association.label);
+    return languageService.translate(data.association.label, context);
   }
 
   const associationCell: any = new joint.dia.Link({
@@ -631,7 +631,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, dat
     z: zIndexAssociation
   });
 
-  $scope.$watch(() => languageService.modelLanguage, (lang, oldLang) => {
+  $scope.$watch(() => languageService.getModelLanguage(context), (lang, oldLang) => {
     if (oldLang && (lang !== oldLang)) {
       associationCell.prop('labels/0/attrs/text/text', getName());
       if (showCardinality) {

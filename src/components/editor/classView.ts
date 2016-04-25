@@ -5,7 +5,10 @@ import ILogService = angular.ILogService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, Property, PredicateListItem, Predicate } from '../../services/entities';
+import {
+  Class, GroupListItem, Model, Property, PredicateListItem, Predicate,
+  LanguageContext
+} from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -132,5 +135,9 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   openDeleteConfirmationModal() {
     return this.deleteConfirmationModal.open(this.getEditable(), this.isReference() ? this.model : null);
+  }
+
+  getContext(): LanguageContext {
+    return this.model;
   }
 }

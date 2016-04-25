@@ -9,7 +9,7 @@ mod.directive('editableEntityButtons', () => {
     restrict: 'E',
     scope: {
       ctrl: '=editableController',
-      languages: '='
+      context: '='
     },
     require: '^form',
     template: require('./editableEntityButtons.html'),

@@ -1,23 +1,23 @@
 
 <h4>{{ctrl.class.normalizedType + ' information' | capitalize | translate}}</h4>
 
-<editable data-title="{{ctrl.class.normalizedType + ' label' | capitalize}}" autofocus>
-  <input id="classLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.class.label"/>
+<editable data-title="{{ctrl.class.normalizedType + ' label' | capitalize}}" context="ctrl.model" autofocus>
+  <input id="classLabel" class="form-control" type="text" localized-input="label" context="ctrl.model" ng-model="ctrl.class.label"/>
 </editable>
 
-<editable data-title="{{ctrl.class.normalizedType + ' id' | capitalize}}">
+<editable data-title="{{ctrl.class.normalizedType + ' id' | capitalize}}" context="ctrl.model">
   <input id="classId" class="form-control" type="text" required id-input="class" old="ctrl.oldClass" ng-model="ctrl.class.id" ng-disabled="!ctrl.inUnstableState" />
 </editable>
 
-<editable data-title="Description">
-  <textarea id="classComment" class="form-control" localized-input ng-model="ctrl.class.comment"></textarea>
+<editable data-title="Description" context="ctrl.model">
+  <textarea id="classComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.class.comment"></textarea>
 </editable>
 
-<editable ng-if="ctrl.class.isOfType('class')" data-title="Superclass" link="ctrl.linkToSuperclass()">
+<editable ng-if="ctrl.class.isOfType('class')" data-title="Superclass" link="ctrl.linkToSuperclass()" context="ctrl.model">
   <uri-select id="superClass" type="class" uri="ctrl.class.subClassOf" model="ctrl.model" after-selected="ctrl.addPropertiesFromClass(id, 'super')"></uri-select>
 </editable>
 
-<editable ng-if="ctrl.class.isOfType('shape')" data-title="Specialized from class" link="ctrl.linkToScopeclass()">
+<editable ng-if="ctrl.class.isOfType('shape')" data-title="Specialized from class" link="ctrl.linkToScopeclass()" context="ctrl.model">
   <uri-select id="scopeClass" type="class" uri="ctrl.class.scopeClass" model="ctrl.model" mandatory="true" after-selected="ctrl.addPropertiesFromClass(id, 'scope')"></uri-select>
 </editable>
 
@@ -25,11 +25,11 @@
 
 <defined-by entity="ctrl.class" model="ctrl.model"></defined-by>
 
-<editable data-title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved">
+<editable data-title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved" context="ctrl.model">
   <state-select id="classState" state="ctrl.class.state" model="ctrl.model"></state-select>
 </editable>
 
-<editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" disable="!ctrl.inUnstableState"></editable-subject-select>
+<editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" context="ctrl.model" disable="!ctrl.inUnstableState"></editable-subject-select>
 
 <div ng-show="ctrl.class.properties.length > 0">
   <h4>{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
@@ -38,7 +38,7 @@
     <uib-accordion-group ng-repeat="property in ctrl.class.properties | orderBy: 'index' track by property.internalId.value" is-open="ctrl.propertyViews[property.internalId.uri].isOpen">
       <uib-accordion-heading>
         <span ng-class="property.glyphIconClass"></span>
-        <span>{{property | translateLabel}}</span>
+        <span>{{property | translateLabel: ctrl.model}}</span>
         <accordion-chevron is-open="ctrl.propertyViews[property.internalId.uri].isOpen"></accordion-chevron>
         <div class="property-ordering" ng-show="ctrl.isEditing()">
         <span ng-show="!$first"
@@ -61,4 +61,4 @@
   <editable-constraint constraint="ctrl.class.constraint" model="ctrl.model" class="ctrl.class"></editable-constraint>
 </div>
 
-<usage-panel entity="ctrl.class"></usage-panel>
+<usage-panel entity="ctrl.class" context="ctrl.model"></usage-panel>

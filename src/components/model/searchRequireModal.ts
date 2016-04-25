@@ -87,7 +87,7 @@ class SearchRequireController {
       return (text || '').toLowerCase().includes(search);
     }
 
-    return !this.searchText || contains(this.languageService.translate(require.label)) || contains(require.namespace);
+    return !this.searchText || contains(this.languageService.translate(require.label, this.model)) || contains(require.namespace);
   }
 
   private excludedFilter(require: Require): boolean {

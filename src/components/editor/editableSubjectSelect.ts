@@ -1,11 +1,9 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { SearchConceptModal } from './searchConceptModal';
-import { ConceptSuggestion, Reference, Type, FintoConcept } from '../../services/entities';
+import { ConceptSuggestion, Reference, Type, FintoConcept, LanguageContext } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
-
 import { module as mod }  from './module';
-
 
 mod.directive('editableSubjectSelect', () => {
   return {
@@ -13,7 +11,8 @@ mod.directive('editableSubjectSelect', () => {
       subject: '=',
       references: '=',
       type: '@',
-      disable: '='
+      disable: '=',
+      context: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -33,12 +32,13 @@ class EditableSubjectSelectController {
   subject: FintoConcept|ConceptSuggestion;
   references: Reference[];
   type: Type;
+  context: LanguageContext;
 
   /* @ngInject */
   constructor(private searchConceptModal: SearchConceptModal) {
   }
 
   selectSubject() {
-    this.searchConceptModal.openSelection(this.references, this.type).then(concept => this.subject = concept);
+    this.searchConceptModal.openSelection(this.references, this.context, this.type).then(concept => this.subject = concept);
   }
 }

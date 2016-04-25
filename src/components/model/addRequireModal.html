@@ -4,19 +4,19 @@
 
     <modal-body>
 
-      <editable data-title="Require label">
+      <editable data-title="Require label" context="ctrl.model">
         <div class="input-group input-group-md">
           <input id="label" type="text" class="form-control" autofocus required string-input="modelLabel" ng-model="ctrl.label" />
         </div>
       </editable>
 
-      <editable data-title="Namespace">
+      <editable data-title="Namespace" context="ctrl.model">
         <div class="input-group input-group-md">
           <input id="namespace" type="text" class="form-control" required namespace-input model="ctrl.model" ng-model="ctrl.namespace" />
         </div>
       </editable>
 
-      <editable data-title="Prefix">
+      <editable data-title="Prefix" context="ctrl.model">
         <div class="input-group input-group-md">
           <input id="prefix" type="text" class="form-control" required prefix-input model="ctrl.model" ng-model="ctrl.prefix" />
         </div>

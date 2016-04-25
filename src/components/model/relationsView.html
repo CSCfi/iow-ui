@@ -5,7 +5,7 @@
 <div ng-if="!ctrl.isEditing()">
   <ul>
     <li ng-repeat="relation in ctrl.model.relations">
-      <a ng-href="{{relation.homepage.uri}}" uib-tooltip="{{relation.description | translateValue}}">{{relation.title | translateValue}}</a>
+      <a ng-href="{{relation.homepage.uri}}" uib-tooltip="{{relation.description | translateValue: ctrl.model}}">{{relation.title | translateValue: ctrl.model}}</a>
     </li>
   </ul>
 </div>
@@ -14,21 +14,21 @@
   <uib-accordion>
     <uib-accordion-group ng-repeat="relation in ctrl.model.relations" is-open="ctrl.opened[$index]">
       <uib-accordion-heading>
-        <span accordion-chevron is-open="ctrl.opened[$index]">{{relation.title | translateValue}}</span>
+        <span accordion-chevron is-open="ctrl.opened[$index]">{{relation.title | translateValue: ctrl.model}}</span>
       </uib-accordion-heading>
       <div ng-if="ctrl.opened[$index]">
         <button ng-show="modelViewController.canModify()" type="button" class="btn btn-default pull-right" ng-click="modelViewController.removeRelation(relation)" translate>Delete relation</button>
 
-        <editable data-title="Homepage" link="relation.homepage.url">
+        <editable data-title="Homepage" link="relation.homepage.url" context="ctrl.model">
           <input class="form-control" type="text" uri-input="free-url" model="ctrl.model" required ng-model="relation.homepage" />
         </editable>
 
-        <editable data-title="Title">
-          <input class="form-control" type="text" localized-input="label" ng-model="relation.title"/>
+        <editable data-title="Title" context="ctrl.model">
+          <input class="form-control" type="text" localized-input="label" context="ctrl.model" ng-model="relation.title"/>
         </editable>
 
-        <editable data-title="Description">
-          <textarea class="form-control" localized-input ng-model="relation.description"></textarea>
+        <editable data-title="Description" context="ctrl.model">
+          <textarea class="form-control" localized-input context="ctrl.model" ng-model="relation.description"></textarea>
         </editable>
       </div>
     </uib-accordion-group>

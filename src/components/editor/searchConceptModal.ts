@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Reference, ConceptSuggestion, Type, FintoConcept } from '../../services/entities';
+import { Reference, ConceptSuggestion, Type, FintoConcept, LanguageContext } from '../../services/entities';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
@@ -43,7 +43,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(references: Reference[], type: Type, newEntityCreation: boolean, initialSearch: string) {
+  private open(references: Reference[], context: LanguageContext, type: Type, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -52,6 +52,7 @@ export class SearchConceptModal {
       backdrop: true,
       resolve: {
         references: () => references,
+        context: () => context,
         type: () => type,
         newEntityCreation: () => newEntityCreation,
         initialSearch: () => initialSearch
@@ -59,12 +60,12 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(references: Reference[], type: Type): IPromise<Concept> {
-    return this.open(references, type, false, '');
+  openSelection(references: Reference[], context: LanguageContext, type: Type): IPromise<Concept> {
+    return this.open(references, context, type, false, '');
   }
 
-  openNewEntityCreation(references: Reference[], type: Type, initialSearch: string): IPromise<EntityCreation> {
-    return this.open(references, type, true, initialSearch);
+  openNewEntityCreation(references: Reference[], context: LanguageContext, type: Type, initialSearch: string): IPromise<EntityCreation> {
+    return this.open(references, context, type, true, initialSearch);
   }
 };
 
@@ -107,6 +108,7 @@ class SearchConceptController {
               initialSearch: string,
               public newEntityCreation: boolean,
               references: Reference[],
+              private context: LanguageContext,
               private conceptService: ConceptService,
               private gettextCatalog: gettextCatalog,
               private searchConceptModal: SearchConceptModal) {
@@ -157,7 +159,7 @@ class SearchConceptController {
 
   query(searchText: string): IPromise<any> {
     this.loadingResults = true;
-    const language = this.languageService.modelLanguage;
+    const language = this.languageService.getModelLanguage(this.context);
 
     if (searchText && searchText.length >= 3) {
       return this.$q.all(_.flatten(_.map(this.activeReferences, reference => this.conceptService.searchConcepts(reference, language, searchText))))
@@ -191,7 +193,7 @@ class SearchConceptController {
   }
 
   private localizedLabelAsLower(concept: ConceptSearchResult): string {
-    return this.languageService.translate(concept.label).toLowerCase();
+    return this.languageService.translate(concept.label, this.context).toLowerCase();
   }
 
   private showReferenceFilter(concept: ConceptSearchResult) {
@@ -233,7 +235,7 @@ class SearchConceptController {
   selectBroaderConcept() {
     const selection = this.selection;
     if (isNewConceptData(selection)) {
-      this.searchConceptModal.openSelection(this.activeReferences, this.type)
+      this.searchConceptModal.openSelection(this.activeReferences, this.context, this.type)
         .then(concept => selection.broaderConcept = concept);
     } else {
       throw new Error('Selection must be new concept data: ' + selection);
@@ -269,7 +271,7 @@ class SearchConceptController {
     }
 
     const selection = this.selection;
-    const language = this.languageService.modelLanguage;
+    const language = this.languageService.getModelLanguage(this.context);
 
     if (isNewConceptData(selection)) {
 

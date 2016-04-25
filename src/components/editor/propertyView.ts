@@ -131,7 +131,7 @@ export class PropertyViewController {
   get predicateName() {
     const predicate = this.property.predicate;
     if (predicate instanceof Predicate) {
-      return this.languageService.translate(predicate.label);
+      return this.languageService.translate(predicate.label, this.model);
     } else if (predicate instanceof Uri) {
       return predicate.compact;
     } else {

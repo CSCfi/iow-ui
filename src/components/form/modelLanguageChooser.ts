@@ -4,11 +4,12 @@ import { LanguageService } from '../../services/languageService';
 import { Language } from '../contracts';
 import { isLocalizationDefined } from '../../services/utils';
 import { module as mod }  from './module';
+import { LanguageContext } from '../../services/entities';
 
 mod.directive('modelLanguageChooser', () => {
   return {
     scope: {
-      languages: '='
+      context: '='
     },
     restrict: 'E',
     template: require('./modelLanguageChooser.html'),
@@ -20,19 +21,21 @@ mod.directive('modelLanguageChooser', () => {
 
 class ModelLanguageChooserController {
 
-  languages: Language[];
+  context: LanguageContext;
 
   /* @ngInject */
   constructor($scope: IScope, private languageService: LanguageService, private gettextCatalog: gettextCatalog) {
-    $scope.$watchCollection(() => this.languages, languages => {
-      if (languages && languages.indexOf(languageService.modelLanguage) === -1) {
-        languageService.modelLanguage = languages[0];
+    $scope.$watchCollection(() => this.context && this.context.language, languages => {
+      if (languages && languages.indexOf(languageService.getModelLanguage(this.context)) === -1) {
+        languageService.setModelLanguage(this.context, this.context.language[0]);
       }
     });
 
-    $scope.$watch(() => languageService.UILanguage, language => {
-      if (this.languages && this.languages.indexOf(language) !== -1) {
-        this.languageService.modelLanguage = language;
+    $scope.$watch(() => languageService.UILanguage, (language, previousLanguage) => {
+      if (language !== previousLanguage) {
+        if (this.context && this.context.language.indexOf(language) !== -1) {
+          this.languageService.setModelLanguage(this.context, language);
+        }
       }
     });
   }
@@ -49,10 +52,10 @@ class ModelLanguageChooserController {
   }
 
   get language(): Language {
-    return this.languageService.modelLanguage;
+    return this.languageService.getModelLanguage(this.context);
   }
 
   set language(language: Language) {
-    this.languageService.modelLanguage = language;
+    this.languageService.setModelLanguage(this.context, language);
   }
 }

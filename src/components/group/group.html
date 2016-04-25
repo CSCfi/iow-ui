@@ -1,28 +1,28 @@
 <div ng-hide="ctrl.loading" ng-if="ctrl.group">
 
   <div class="main-header">
-    <h2>{{ctrl.group | translateLabel}}</h2>
+    <h2>{{ctrl.group | translateLabel: ctrl.group}}</h2>
   </div>
 
   <form name="form" class="editable-form">
     <fieldset ng-disabled="ctrl.persisting">
       <div class="main-editable-content">
 
-        <editable-entity-buttons languages="ctrl.languages" editable-controller="ctrl">
+        <editable-entity-buttons context="ctrl.group" editable-controller="ctrl">
           <button type="button" class="btn btn-default right" ng-click="ctrl.addModel('library')" ng-if="ctrl.canAddModel()" translate>Add library</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addModel('profile')" ng-if="ctrl.canAddModel()" translate>Add profile</button>
         </editable-entity-buttons>
 
         <div class="col-md-5">
-          <editable data-title="Group label">
-            <input id="groupLabel" class="form-control" type="text" localized-input="label" ng-model="ctrl.editableInEdit.label" />
+          <editable data-title="Group label" context="ctrl.group">
+            <input id="groupLabel" class="form-control" type="text" localized-input="label" context="ctrl.group" ng-model="ctrl.editableInEdit.label" />
           </editable>
 
-          <editable data-title="Description">
-            <textarea id="groupComment" class="form-control" localized-input ng-model="ctrl.editableInEdit.comment"></textarea>
+          <editable data-title="Description" context="ctrl.group">
+            <textarea id="groupComment" class="form-control" localized-input context="ctrl.group" ng-model="ctrl.editableInEdit.comment"></textarea>
           </editable>
 
-          <non-editable data-title="Internal group page" value="ctrl.group.homepage" link="ctrl.group.homepage"></non-editable>
+          <non-editable data-title="Internal group page" value="ctrl.group.homepage" link="ctrl.group.homepage" context="ctrl.group"></non-editable>
         </div>
 
         <div class="col-md-5 col-md-offset-1">
@@ -34,8 +34,8 @@
                 <li ng-repeat="model in ctrl.models track by model.id.value"
                     ng-click="ctrl.selectModel(model)">
                   <i ng-class="model.glyphIconClass"></i>
-                  <span class="link">{{model | translateLabel}}</span>
-                  <p>{{model.comment | translateValue}}</p>
+                  <span class="link">{{model | translateLabel: ctrl.group}}</span>
+                  <p>{{model.comment | translateValue: ctrl.group}}</p>
                 </li>
               </ul>
             </div>
@@ -49,8 +49,8 @@
                 <li ng-repeat="profile in ctrl.profiles track by profile.id.value"
                     ng-click="ctrl.selectModel(profile)">
                   <i ng-class="profile.glyphIconClass"></i>
-                  <span class="link">{{profile | translateLabel}}</span>
-                  <p>{{profile.comment | translateValue}}</p>
+                  <span class="link">{{profile | translateLabel: ctrl.group}}</span>
+                  <p>{{profile.comment | translateValue: ctrl.group}}</p>
                 </li>
               </ul>
             </div>

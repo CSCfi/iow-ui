@@ -7,7 +7,7 @@ import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { SearchResult, Type } from '../services/entities';
 import IQService = angular.IQService;
-import { containsAny } from '../services/utils';
+import { containsAny, translate } from '../services/utils';
 
 
 export class AdvancedSearchModal {
@@ -43,7 +43,7 @@ class AdvancedSearchController {
 
     $scope.$watch(() => this.searchText, text => {
       if (text) {
-        this.searchService.searchAnything(text, this.languageService.modelLanguage)
+        this.searchService.searchAnything(text, this.languageService.getModelLanguage())
         .then(results => this.apiSearchResults = results)
         .then(() => this.search());
       }

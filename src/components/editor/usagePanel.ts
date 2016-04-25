@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import { UsageService } from '../../services/usageService';
-import { Usage, EditableEntity } from '../../services/entities';
+import { Usage, EditableEntity, LanguageContext } from '../../services/entities';
 
 import { module as mod }  from './module';
 
@@ -8,7 +8,8 @@ mod.directive('usagePanel', () => {
   return {
     restrict: 'E',
     scope: {
-      entity: '='
+      entity: '=',
+      context: '='
     },
     template: require('./usagePanel.html'),
     bindToController: true,
@@ -20,6 +21,7 @@ mod.directive('usagePanel', () => {
 class UsagePanelController {
 
   entity: EditableEntity;
+  context: LanguageContext;
   usage: Usage;
   open: boolean;
   loading: boolean;

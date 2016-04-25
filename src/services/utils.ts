@@ -27,7 +27,7 @@ export function isLocalizationDefined(localizationKey: string, localized: string
   return localized.indexOf('[MISSING]') === -1 && localized !== localizationKey;
 }
 
-export function translate(data: Localizable, language: Language): string {
+export function translate(data: Localizable, language: Language, languages?: Language[]): string {
   function localized(lang: Language, showLang: boolean): string {
     let localization = data[lang];
 
@@ -46,7 +46,7 @@ export function translate(data: Localizable, language: Language): string {
     return '';
   }
 
-  return localized(language, false) || _.find(_.map(availableUILanguages, lang => localized(lang, true)), _.identity) || '';
+  return localized(language, false) || _.find(_.map(languages || availableLanguages, lang => localized(lang, true)), _.identity) || '';
 }
 
 

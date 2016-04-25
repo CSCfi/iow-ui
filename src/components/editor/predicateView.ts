@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Attribute, Association, GroupListItem, Model } from '../../services/entities';
+import { Attribute, Association, GroupListItem, Model, LanguageContext } from '../../services/entities';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
@@ -87,5 +87,9 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   openDeleteConfirmationModal() {
     return this.deleteConfirmationModal.open(this.getEditable(), this.isReference() ? this.model : null);
+  }
+
+  getContext(): LanguageContext {
+    return this.model;
   }
 }

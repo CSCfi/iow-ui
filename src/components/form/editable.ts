@@ -8,6 +8,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
 import { module as mod }  from './module';
+import { LanguageContext } from '../../services/entities';
 
 const NG_HIDE_CLASS = 'ng-hide';
 const NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
@@ -22,7 +23,8 @@ mod.directive('editable', /* @ngInject */ ($animate: any) => {
       title: '@',
       link: '=',
       valueAsLocalizationKey: '@',
-      disable: '='
+      disable: '=',
+      context: '='
     },
     restrict: 'E',
     template: require('./editable.html'),
@@ -86,12 +88,13 @@ class EditableController {
   disable: boolean;
   required: boolean;
   inputId: string;
-  isEditing: () => boolean;
+  context: LanguageContext;
 
+  isEditing: () => boolean;
   item: DisplayItem;
 
   /* @ngInject */
   constructor(private displayItemFactory: DisplayItemFactory) {
-    this.item = displayItemFactory.create(() => this.value, (value: string) => this.link, this.valueAsLocalizationKey);
+    this.item = displayItemFactory.create(() => this.context, () => this.value, (value: string) => this.link, this.valueAsLocalizationKey);
   }
 }

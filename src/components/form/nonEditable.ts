@@ -7,6 +7,7 @@ import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
 
 import { module as mod }  from './module';
+import { LanguageContext } from '../../services/entities';
 
 mod.directive('nonEditable', () => {
   return {
@@ -14,7 +15,8 @@ mod.directive('nonEditable', () => {
       title: '@',
       value: '=',
       link: '=',
-      valueAsLocalizationKey: '@'
+      valueAsLocalizationKey: '@',
+      context: '='
     },
     restrict: 'E',
     template: require('./nonEditable.html'),
@@ -34,12 +36,13 @@ class NonEditableController {
   value: Value;
   link: string;
   valueAsLocalizationKey: boolean;
-  isEditing: () => boolean;
+  context: LanguageContext;
 
+  isEditing: () => boolean;
   item: DisplayItem;
 
   /* @ngInject */
   constructor(displayItemFactory: DisplayItemFactory) {
-    this.item = displayItemFactory.create(() => this.value, (value) => this.link, this.valueAsLocalizationKey, () => this.isEditing());
+    this.item = displayItemFactory.create(() => this.context, () => this.value, (value) => this.link, this.valueAsLocalizationKey, () => this.isEditing());
   }
 }

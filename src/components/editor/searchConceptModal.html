@@ -21,7 +21,7 @@
           <div class="input-group input-group-lg">
             <div class="selectContainer">
               <select id="reference" class="form-control" ng-model="ctrl.selectedReference" ignore-dirty
-                      ng-options="reference | translateLabel for reference in ctrl.references">
+                      ng-options="reference | translateLabel: ctrl.context for reference in ctrl.references">
                 <option value="" translate>All references</option>
               </select>
             </div>
@@ -34,8 +34,8 @@
           <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
-            <h5>{{searchResult | translateLabel}} <span ng-show="searchResult.suggestion">({{'suggestion' | translate}})</span></h5>
-            <p>{{searchResult.reference | translateLabel}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
+            <h5>{{searchResult | translateLabel: ctrl.model}} <span ng-show="searchResult.suggestion">({{'suggestion' | translate}})</span></h5>
+            <p>{{searchResult.reference | translateLabel: ctrl.model}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
           </search-results>
         </div>
 
@@ -43,27 +43,27 @@
           <div ng-if="ctrl.selection">
 
             <div ng-if="ctrl.isSelectionConcept()">
-              <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept label" value="ctrl.selection.label"></non-editable>
-              <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion label" value="ctrl.selection.label"></non-editable>
-              <non-editable data-title="Concept id" value="ctrl.selection.id"></non-editable>
-              <non-editable data-title="Definition" value="ctrl.selection.comment"></non-editable>
+              <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept label" value="ctrl.selection.label" context="ctrl.context"></non-editable>
+              <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion label" value="ctrl.selection.label" context="ctrl.context"></non-editable>
+              <non-editable data-title="Concept id" value="ctrl.selection.id" context="ctrl.context"></non-editable>
+              <non-editable data-title="Definition" value="ctrl.selection.comment" context="ctrl.context"></non-editable>
             </div>
 
             <div ng-if="ctrl.isSelectionNewConceptData()">
 
-              <editable title="Vocabulary" autofocus>
+              <editable title="Vocabulary" context="ctrl.context" autofocus>
                 <select id="referenceSelection" class="form-control" required ng-model="ctrl.selection.reference"
-                        ng-options="reference | translateLabel for reference in ctrl.selectableReferences">
+                        ng-options="reference | translateLabel: ctrl.context for reference in ctrl.selectableReferences">
                 </select>
               </editable>
 
-              <editable data-title="Concept label">
+              <editable data-title="Concept label" context="ctrl.context">
                 <div class="input-group input-group-md">
                   <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.selection.label" />
                 </div>
               </editable>
 
-              <editable data-title="Definition">
+              <editable data-title="Definition" context="ctrl.context">
                 <div class="input-group input-group-md">
                   <textarea id="conceptComment" class="form-control" required string-input ng-model="ctrl.selection.comment"></textarea>
                 </div>
@@ -75,7 +75,7 @@
               </div>
 
               <br />
-              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selection.reference | translateLabel}}</p>
+              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selection.reference | translateLabel: ctrl.model}}</p>
             </div>
 
           </div>

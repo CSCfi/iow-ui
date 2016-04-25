@@ -1,13 +1,13 @@
 <div>
   <div ng-class="{'model-header': !ctrl.model.unsaved, 'main-header': ctrl.model.unsaved}" ng-click="ctrl.visible = ctrl.model.unsaved || !ctrl.visible">
-    <h2>{{ctrl.model | translateLabel}} <accordion-chevron ng-show="!ctrl.model.unsaved" no-pull="true" is-open="ctrl.visible"></accordion-chevron></h2>
+    <h2>{{ctrl.model | translateLabel: ctrl.model}} <accordion-chevron ng-show="!ctrl.model.unsaved" no-pull="true" is-open="ctrl.visible"></accordion-chevron></h2>
   </div>
 
   <form name="form" class="editable-form">
     <fieldset ng-disabled="ctrl.persisting">
       <div ng-if="ctrl.model" uib-collapse="!ctrl.visible" class="main-editable-content">
 
-        <editable-entity-buttons languages="ctrl.model.language" editable-controller="ctrl">
+        <editable-entity-buttons context="ctrl.model" editable-controller="ctrl">
           <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addRelation()" ng-show="ctrl.canModify()" translate>Add related resource</button>
