@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import { DataType } from '../../services/dataTypes';
 import { Uri } from '../../services/uri';
+import { availableLanguages } from '../../services/utils';
 const URI = require('uri-js');
 
 export interface Validator<T> {
@@ -63,6 +64,19 @@ export function isValidUri(uri: string|Uri): boolean {
   } else {
     const parsed = URI.parse(uri.toString());
     return !parsed.error && !!parsed.scheme;
+  }
+}
+
+export function isValidLanguageCode(code: string): boolean {
+  if (!code) {
+    return true;
+  } else {
+    for (const language of availableLanguages) {
+      if (language === code) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
