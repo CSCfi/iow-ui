@@ -13,10 +13,10 @@ mod.directive('modelForm', () => {
     template: require('./modelForm.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['modelForm', '^modelView'],
+    require: ['modelForm', '?^modelView'],
     controller: ModelFormController,
     link($scope: IScope, element: JQuery, attributes: IAttributes, [modelFormController, modelViewController]: [ModelFormController, ModelViewController]) {
-      modelFormController.isEditing = () => modelViewController.isEditing();
+      modelFormController.isEditing = () => modelViewController && modelViewController.isEditing();
     }
   };
 });
