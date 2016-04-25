@@ -14,9 +14,8 @@ import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from './model';
 import { Uri } from '../../services/uri';
-
-import { module as mod }  from './module';
 import { AddRelationModal } from './addRelationModal';
+import { module as mod }  from './module';
 
 mod.directive('modelView', () => {
   return {
