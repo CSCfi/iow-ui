@@ -78,7 +78,8 @@ const modelContext = Object.assign({}, coreContext, {
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
   requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
   relations: { '@id': 'http://purl.org/dc/terms/relation', '@container': '@list' },
-  description: { '@id': 'http://purl.org/dc/terms/description', '@container': '@language' }
+  description: { '@id': 'http://purl.org/dc/terms/description', '@container': '@language' },
+  language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' }
 });
 
 const usageContext = Object.assign({}, coreContext, {});

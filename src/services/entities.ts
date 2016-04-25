@@ -18,6 +18,7 @@ import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate } from './comparators';
 import { DataType } from './dataTypes';
+import { Language } from '../components/contracts';
 
 const jsonld: any = require('jsonld');
 
@@ -230,6 +231,7 @@ export class Model extends AbstractModel {
   group: GroupListItem;
   version: Urn;
   rootClass: Uri;
+  language: Language[];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -249,6 +251,7 @@ export class Model extends AbstractModel {
     if (graph.rootResource) {
       this.rootClass = new Uri(graph.rootResource, context);
     }
+    this.language = deserializeList<Language>(graph.language || ['fi', 'en']);
     this.copyNamespacesFromRequires();
   }
 
@@ -418,7 +421,8 @@ export class Model extends AbstractModel {
       requires: serializeEntityList(this.requires, clone),
       relations: serializeEntityList(this.relations, clone),
       identifier: this.version,
-      rootResource: this.rootClass && this.rootClass.uri
+      rootResource: this.rootClass && this.rootClass.uri,
+      language: serializeList(this.language)
     };
   }
 }
