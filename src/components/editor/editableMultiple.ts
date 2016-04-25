@@ -23,7 +23,8 @@ mod.directive('editableMultiple', () => {
       validators: '=',
       parser: '=',
       formatter: '=',
-      link: '='
+      link: '=',
+      required: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -46,6 +47,11 @@ mod.directive('editableMultiple', () => {
       $scope.$watch(() => thisController.formatter, formatter => inputNgModel.$formatters = normalizeAsArray(formatter));
       $scope.$watch(() => thisController.placeholder, placeholder => inputElement.attr('placeholder', placeholder));
       $scope.$watch(() => thisController.validators, (validators, oldValidators) => {
+
+        if (thisController.required) {
+          ngModel.$validators['required'] = (value: any[]) => value && value.length > 0;
+        }
+
         if (oldValidators) {
           for (const validator of Object.keys(oldValidators)) {
             delete ngModel.$validators[validator];
@@ -85,6 +91,7 @@ export class EditableMultipleController<T> {
   parser: IModelParser|IModelParser[];
   formatter: IModelFormatter|IModelFormatter[];
   link: (item: T) => string;
+  required: boolean;
 
   isEditing: () => boolean;
   input: T;
