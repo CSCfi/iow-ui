@@ -1,7 +1,7 @@
 <form name="form" class="editable-form">
   <fieldset ng-disabled="ctrl.persisting">
     <div ng-if="ctrl.class && ctrl.model">
-      <selection-view editable-controller="ctrl" show="ctrl.show">
+      <selection-view model="ctrl.model" editable-controller="ctrl" show="ctrl.show">
         <selection-buttons>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.canModify()" translate>Add property</button>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.class"></export>

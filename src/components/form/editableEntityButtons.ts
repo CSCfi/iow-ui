@@ -8,7 +8,8 @@ mod.directive('editableEntityButtons', () => {
   return {
     restrict: 'E',
     scope: {
-      ctrl: '=editableController'
+      ctrl: '=editableController',
+      languages: '='
     },
     require: '^form',
     template: require('./editableEntityButtons.html'),

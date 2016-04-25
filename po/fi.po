@@ -12,11 +12,11 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: translations/misc.html:53 translations/misc.html:80
+#: translations/misc.html:56 translations/misc.html:83
 msgid "Add association"
 msgstr "Lisää assosiaatio"
 
-#: translations/misc.html:48 translations/misc.html:77
+#: translations/misc.html:51 translations/misc.html:80
 msgid "Add attribute"
 msgstr "Lisää attribuutti"
 
@@ -24,7 +24,7 @@ msgstr "Lisää attribuutti"
 msgid "Add attribute or association"
 msgstr "Lisää attribuutti tai assosiaatio"
 
-#: components/editor/searchClassModal.html:5 translations/misc.html:42
+#: components/editor/searchClassModal.html:5 translations/misc.html:45
 msgid "Add class"
 msgstr "Lisää luokka"
 
@@ -40,19 +40,19 @@ msgstr "Lisää soveltamisprofiili"
 msgid "Add properties from ' + ctrl.classType + ' class"
 msgstr ""
 
-#: translations/misc.html:126
+#: translations/misc.html:129
 msgid "Add properties from external class"
 msgstr "Lisää ominaisuudet ulkoisesta luokasta"
 
-#: translations/misc.html:125
+#: translations/misc.html:128
 msgid "Add properties from profile class"
 msgstr "Lisää ominaisuudet nostettavaan luokkaan"
 
-#: translations/misc.html:124
+#: translations/misc.html:127
 msgid "Add properties from scope class"
 msgstr "Lisää ominaisuudet tarkennettavasta luokasta"
 
-#: translations/misc.html:123
+#: translations/misc.html:126
 msgid "Add properties from super class"
 msgstr "Lisää ominaisuudet yläluokasta"
 
@@ -73,11 +73,11 @@ msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
 #: components/editor/classForm.html:58 components/editor/predicateForm.html:37
-#: components/model/modelForm.html:29
+#: components/model/modelForm.html:31
 msgid "Additional information"
 msgstr "Lisätiedot"
 
-#: components/user/user.html:34 translations/misc.html:122
+#: components/user/user.html:34 translations/misc.html:125
 msgid "Admin groups"
 msgstr "Pääkäyttäjänä ryhmissä"
 
@@ -85,8 +85,8 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/editor/searchClassModal.html:27
-#: components/editor/searchPredicateModal.html:33
+#: components/editor/searchClassModal.html:31
+#: components/editor/searchPredicateModal.html:37
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
@@ -94,7 +94,7 @@ msgstr "Kaikki kirjastot"
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/editor/searchPredicateModal.html:41
+#: components/editor/searchPredicateModal.html:45
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -106,7 +106,7 @@ msgstr "Sallitut arvot"
 msgid "Allowed values info"
 msgstr "Lista ominaisuudelle sallituista arvoista"
 
-#: translations/misc.html:95
+#: translations/misc.html:98
 msgid "Already added"
 msgstr "On jo lisätty"
 
@@ -118,27 +118,27 @@ msgstr "ja luo uusi"
 msgid "Application profiles"
 msgstr "Soveltamisprofiilit"
 
-#: translations/misc.html:109
+#: translations/misc.html:112
 msgid "application/ld+json"
 msgstr "JSON-LD"
 
-#: translations/misc.html:112
+#: translations/misc.html:115
 msgid "application/ld+json+context"
 msgstr "JSON-LD Context"
 
-#: translations/misc.html:111
+#: translations/misc.html:114
 msgid "application/rdf+xml"
 msgstr "RDF"
 
-#: translations/misc.html:113
+#: translations/misc.html:116
 msgid "application/schema+json"
 msgstr "JSON Schema"
 
-#: translations/misc.html:39
+#: translations/misc.html:42
 msgid "Are you sure that you want to cancel edit?"
 msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 
-#: components/common/deleteConfirmationModal.html:11 translations/misc.html:41
+#: components/common/deleteConfirmationModal.html:11 translations/misc.html:44
 msgid "Are you sure that you want to delete?"
 msgstr "Oletko varma, että haluat poistaa?"
 
@@ -146,11 +146,11 @@ msgstr "Oletko varma, että haluat poistaa?"
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
-#: translations/misc.html:161
+#: translations/misc.html:164
 msgid "Assigned to this library"
 msgstr "Tähän kirjastoon kytketyt"
 
-#: translations/misc.html:160
+#: translations/misc.html:163
 msgid "Assigned to this profile"
 msgstr "Tähän profiiliin kytketyt"
 
@@ -166,7 +166,7 @@ msgstr "Assosiaation tunniste"
 msgid "Association id info"
 msgstr "Assosiaation yksilöivä curie tunniste"
 
-#: translations/misc.html:102
+#: translations/misc.html:105
 msgid "Association information"
 msgstr "Assosiaation tiedot"
 
@@ -178,7 +178,7 @@ msgstr "Assosiaation nimi"
 msgid "Association label info"
 msgstr "Assosiaation ihmisluettava nimi"
 
-#: translations/misc.html:57
+#: translations/misc.html:60
 msgid "Association list"
 msgstr "Assosiaatiot"
 
@@ -194,7 +194,7 @@ msgstr "Attribuutin tunniste"
 msgid "Attribute id info"
 msgstr "Attribuutin yksilöivä curie tunniste"
 
-#: translations/misc.html:101
+#: translations/misc.html:104
 msgid "Attribute information"
 msgstr "Attribuutin tiedot"
 
@@ -206,7 +206,7 @@ msgstr "Attribuutin nimi"
 msgid "Attribute label info"
 msgstr "Attribuutin ihmisluettava nimi"
 
-#: translations/misc.html:52
+#: translations/misc.html:55
 msgid "Attribute list"
 msgstr "Attribuutit"
 
@@ -230,24 +230,24 @@ msgstr "Selaa"
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
 
-#: translations/misc.html:152
+#: translations/misc.html:155
 msgid "by referencing external uri"
 msgstr "viittaamalla ulkoiseen tunnisteeseen"
 
-#: translations/misc.html:141
+#: translations/misc.html:144
 msgid "Can be selected only from this library"
 msgstr "Valinta on tehtävä tietokomponenettikirjaston luokista"
 
-#: translations/misc.html:142
+#: translations/misc.html:145
 msgid "Can be selected only from this profile"
 msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 
 #: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
-#: components/editor/searchClassModal.html:68
+#: components/editor/searchClassModal.html:72
 #: components/editor/searchConceptModal.html:88
-#: components/editor/searchPredicateModal.html:85
+#: components/editor/searchPredicateModal.html:89
 #: components/group/addModelModal.html:22
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
@@ -260,7 +260,7 @@ msgstr "Peruuta"
 msgid "Cancel edit"
 msgstr "Peruuta muokkaus"
 
-#: translations/misc.html:132
+#: translations/misc.html:135
 msgid "Cannot require profile"
 msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 
@@ -268,11 +268,11 @@ msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 msgid "Choose"
 msgstr "valitse"
 
-#: translations/misc.html:60
+#: translations/misc.html:63
 msgid "Choose association"
 msgstr "valitse assosiaatio"
 
-#: translations/misc.html:59
+#: translations/misc.html:62
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
@@ -280,7 +280,7 @@ msgstr "valitse attribuutti"
 msgid "Choose broader concept"
 msgstr "valitse laajempi käsite"
 
-#: components/editor/editableConstraint.html:32 translations/misc.html:58
+#: components/editor/editableConstraint.html:32 translations/misc.html:61
 msgid "Choose class"
 msgstr "valitse luokka"
 
@@ -304,7 +304,7 @@ msgstr "Luokan tunniste"
 msgid "Class id info"
 msgstr "Luokan yksilöivä curie tunniste"
 
-#: translations/misc.html:99
+#: translations/misc.html:102
 msgid "Class information"
 msgstr "Luokan tiedot"
 
@@ -316,11 +316,11 @@ msgstr "Luokan nimi"
 msgid "Class label info"
 msgstr "Luokan ihmisluettava nimi"
 
-#: translations/misc.html:47
+#: translations/misc.html:50
 msgid "Class list"
 msgstr "Luokat"
 
-#: translations/misc.html:104
+#: translations/misc.html:107
 msgid "Class properties"
 msgstr "Luokan ominaisuudet"
 
@@ -350,7 +350,7 @@ msgstr ""
 "Hae ensin tarvitsemaasi luokkaa yhteentoimivuuden kuvauksista. Jos et löydä "
 "tarpeisiisi sopivaa, voit luoda uuden luokan."
 
-#: translations/misc.html:134
+#: translations/misc.html:137
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
@@ -358,11 +358,11 @@ msgstr "Erikoistamattomia luokkia ei saa valita"
 msgid "Clear selection"
 msgstr "poista valinta"
 
-#: components/common/historyModal.html:36 translations/misc.html:140
+#: components/common/historyModal.html:36 translations/misc.html:143
 msgid "Close"
 msgstr "Sulje"
 
-#: translations/misc.html:107
+#: translations/misc.html:110
 msgid "Concept"
 msgstr "Käsite"
 
@@ -392,7 +392,7 @@ msgstr ""
 "Hae ensin tarvitsemaasi käsitettä sanastoista. Jos et löydä tarpeisiisi "
 "sopivaa, voit luoda uuden käsite-ehdotuksen."
 
-#: translations/misc.html:108
+#: translations/misc.html:111
 msgid "Concept suggestion"
 msgstr "Käsite-ehdotus"
 
@@ -404,15 +404,15 @@ msgstr "Käsite-ehdotuksen nimi"
 msgid "Concept suggestion label info"
 msgstr "Ehdotettu termi käsitteelle"
 
-#: components/common/deleteConfirmationModal.html:2 translations/misc.html:40
+#: components/common/deleteConfirmationModal.html:2 translations/misc.html:43
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: translations/titles.html:66
+#: translations/titles.html:67
 msgid "Constraint classes"
 msgstr "Loogisen rajoitteen luokat"
 
-#: translations/titles.html:66
+#: translations/titles.html:67
 msgid "Constraint classes info"
 msgstr ""
 
@@ -420,11 +420,11 @@ msgstr ""
 msgid "Contact info"
 msgstr "Yhteystiedot"
 
-#: translations/misc.html:87
+#: translations/misc.html:90
 msgid "Create and use association"
 msgstr "Luo assosiaatio ja käytä"
 
-#: translations/misc.html:86
+#: translations/misc.html:89
 msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
@@ -434,19 +434,19 @@ msgstr "Luo attribuutti ja käytä"
 msgid "Create new"
 msgstr "Luo uusi"
 
-#: translations/misc.html:151
+#: translations/misc.html:154
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
 
-#: translations/misc.html:150
+#: translations/misc.html:153
 msgid "Create new attribute"
 msgstr "Lisää uusi attribuutti"
 
-#: translations/misc.html:147
+#: translations/misc.html:150
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
-#: translations/misc.html:149
+#: translations/misc.html:152
 msgid "Create new predicate"
 msgstr "Luo uusi ominaisuus"
 
@@ -454,11 +454,11 @@ msgstr "Luo uusi ominaisuus"
 msgid "Create new require"
 msgstr "Luo uusi nimiavaruus"
 
-#: translations/misc.html:148
+#: translations/misc.html:151
 msgid "Create new shape"
 msgstr "Luo uusi tarkennettu luokka"
 
-#: components/user/user.html:17 translations/misc.html:119
+#: components/user/user.html:17 translations/misc.html:122
 msgid "Created at"
 msgstr "Luotu"
 
@@ -466,19 +466,31 @@ msgstr "Luotu"
 msgid "CSC - IT Center for Science Ltd"
 msgstr "CSC - Tieteen tietotekniikan keskus Oy"
 
-#: translations/misc.html:36
+#: translations/misc.html:38
 msgid "data en"
 msgstr "Sisältö englanniksi"
 
-#: translations/misc.html:34
+#: translations/misc.html:37
 msgid "data fi"
 msgstr "Sisältö suomeksi"
+
+#: translations/misc.html:36
+msgid "data language"
+msgstr "Sisällön kieli"
+
+#: translations/misc.html:40
+msgid "data ru"
+msgstr "Sisältö venäjäksi"
+
+#: translations/misc.html:39
+msgid "data sv"
+msgstr "Sisältö ruotsiksi"
 
 #: components/footer.html:14
 msgid "Database"
 msgstr "Tietokanta"
 
-#: translations/misc.html:116
+#: translations/misc.html:119
 msgid "date format"
 msgstr "DD.MM.YYYY HH:mm"
 
@@ -551,35 +563,35 @@ msgstr "Määritelmä"
 msgid "Definition info"
 msgstr "Käsitteen määritelmä"
 
-#: translations/misc.html:54
+#: translations/misc.html:57
 msgid "Delete association"
 msgstr "Poista assosiaatio"
 
-#: translations/misc.html:55
+#: translations/misc.html:58
 msgid "Delete association from this library"
 msgstr "Poista assosiaatio tästä kirjastosta"
 
-#: translations/misc.html:56
+#: translations/misc.html:59
 msgid "Delete association from this profile"
 msgstr "Poista assosiaatio tästä profiilista"
 
-#: translations/misc.html:49
+#: translations/misc.html:52
 msgid "Delete attribute"
 msgstr "Poista attribuutti"
 
-#: translations/misc.html:50
+#: translations/misc.html:53
 msgid "Delete attribute from this library"
 msgstr "Poista attribuutti tästä kirjastosta"
 
-#: translations/misc.html:51
+#: translations/misc.html:54
 msgid "Delete attribute from this profile"
 msgstr "Poista attribuutti tästä profiilista"
 
-#: translations/misc.html:43
+#: translations/misc.html:46
 msgid "Delete class"
 msgstr "Poista luokka"
 
-#: translations/misc.html:45
+#: translations/misc.html:48
 msgid "Delete class from this library"
 msgstr "Poista luokka tästä kirjastosta"
 
@@ -607,11 +619,11 @@ msgstr "Poista resurssi"
 msgid "Delete require"
 msgstr "Poista nimiavaruus"
 
-#: translations/misc.html:44
+#: translations/misc.html:47
 msgid "Delete shape"
 msgstr "Poista tarkennettu luokka"
 
-#: translations/misc.html:46
+#: translations/misc.html:49
 msgid "Delete shape from this library"
 msgstr "Poista tarkennettu luokka tästä kirjastosta"
 
@@ -636,19 +648,19 @@ msgid ""
 "Do you want to add following properties from ' + ctrl.classType + ' class?"
 msgstr ""
 
-#: translations/misc.html:130
+#: translations/misc.html:133
 msgid "Do you want to add following properties from external class?"
 msgstr "Haluatko lisätä seuraavat ominaisuudet ulkoisesta luokasta?"
 
-#: translations/misc.html:129
+#: translations/misc.html:132
 msgid "Do you want to add following properties from profile class?"
 msgstr "Haluatko lisätä seuraavat ominaisuudet nostettavaan luokkaan?"
 
-#: translations/misc.html:128
+#: translations/misc.html:131
 msgid "Do you want to add following properties from scope class?"
 msgstr "Haluatko lisätä seuraavat ominaisuudet tarkennettavasta luokasta?"
 
-#: translations/misc.html:127
+#: translations/misc.html:130
 msgid "Do you want to add following properties from super class?"
 msgstr "Haluatko lisätä seuraavat ominaisuudet yläluokasta?"
 
@@ -668,7 +680,7 @@ msgstr "Syöte on jo lisätty"
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: translations/misc.html:38
+#: translations/misc.html:41
 msgid "Edit in progress"
 msgstr "Muokkaaminen on kesken"
 
@@ -678,7 +690,7 @@ msgstr ""
 "Palveluun kirjaudutaan eDuuni-tunnuksilla. Kirjautumista vaaditaan jos "
 "haluat muokata palvelun sisältöä."
 
-#: translations/misc.html:37
+#: translations/misc.html:35
 msgid "en"
 msgstr "Englanniksi"
 
@@ -737,27 +749,27 @@ msgstr "Tunniste on jo käytössä"
 msgid "Export"
 msgstr "Lataa"
 
-#: translations/misc.html:155
+#: translations/misc.html:158
 msgid "External class not found"
 msgstr "Ulkoista luokkaa ei löydy"
 
-#: translations/misc.html:157
+#: translations/misc.html:160
 msgid "External predicate is of wrong type"
 msgstr "Ulkoinen ominaisuus on väärää tyyppiä"
 
-#: translations/misc.html:156
+#: translations/misc.html:159
 msgid "External predicate not found"
 msgstr "Ulkoista ominaisuutta ei löydy"
 
-#: translations/titles.html:64
+#: translations/titles.html:65
 msgid "External URI"
 msgstr "Ulkoinen tunniste"
 
-#: translations/titles.html:64
+#: translations/titles.html:65
 msgid "External URI info"
 msgstr "Viite ulkoiseen URI tunnisteeseen"
 
-#: translations/misc.html:35
+#: translations/misc.html:34
 msgid "fi"
 msgstr "Suomeksi"
 
@@ -777,7 +789,7 @@ msgstr "Ennaltamääritelty pakollinen arvo joka täytyy löytyä datasta"
 msgid "Following items are depending on the deleted"
 msgstr "Seuraavat asiat riippuvat poistettavasta"
 
-#: translations/misc.html:114
+#: translations/misc.html:117
 msgid "framed ld+json"
 msgstr "Framed JSON-LD"
 
@@ -809,7 +821,7 @@ msgstr "Kohdealueen ryhmän nimi"
 msgid "Hide"
 msgstr "Piilota"
 
-#: components/common/historyModal.html:3 translations/misc.html:139
+#: components/common/historyModal.html:3 translations/misc.html:142
 msgid "Historical versions"
 msgstr "Historialliset versiot"
 
@@ -821,18 +833,18 @@ msgstr "Linkki"
 msgid "Homepage info"
 msgstr "Linkki sivustoon tai sovellukseen joissa tietosisältöjä on hyödynnetty"
 
-#: translations/misc.html:68
+#: translations/misc.html:71
 msgid "How content"
 msgstr ""
 "Välineistössä julkaistut tietomääritykset ovat vapaasti selailtavissa. "
 "Sisältöjä tietokomponenttikirjastoihin tuottavat eri kohdealueiden "
 "asiantuntijat."
 
-#: translations/misc.html:67
+#: translations/misc.html:70
 msgid "How?"
 msgstr "Kuinka pääsen osallistumaan?"
 
-#: translations/misc.html:89
+#: translations/misc.html:92
 msgid "ID is already in use"
 msgstr "Tunniste on jo käytössä"
 
@@ -844,7 +856,7 @@ msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
 
-#: translations/misc.html:158
+#: translations/misc.html:161
 msgid "Input"
 msgstr "Kirjoita"
 
@@ -860,7 +872,7 @@ msgstr "Kohdealueen ryhmän sisäiset sivut"
 msgid "Interoperability method"
 msgstr "Yhteentoimivuusmenetelmä"
 
-#: translations/misc.html:154
+#: translations/misc.html:157
 msgid "Invalid ID"
 msgstr "Virheellinen tunniste"
 
@@ -880,7 +892,15 @@ msgstr "Syöte ei ole URL"
 msgid "IOW"
 msgstr "Yhteentoimivuuden kuvaukset"
 
-#: translations/misc.html:115
+#: components/form/errorMessages.html:20
+msgid "Is not valid language code"
+msgstr "Ei ole tunnettu kielikoodi"
+
+#: translations/misc.html:165
+msgid "language code"
+msgstr "kielikoodi"
+
+#: translations/misc.html:118
 msgid "ld+json frame"
 msgstr "JSON-LD Frame"
 
@@ -896,7 +916,7 @@ msgstr "Ei saa olla pienempi kuin minimi"
 msgid "library"
 msgstr "Tietokomponenttikirjasto"
 
-#: translations/misc.html:97
+#: translations/misc.html:100
 msgid "Library information"
 msgstr "Tietokomponenttikirjaston tiedot"
 
@@ -932,11 +952,11 @@ msgstr ""
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
-#: components/maintenance.html:2 translations/misc.html:143
+#: components/maintenance.html:2 translations/misc.html:146
 msgid "Maintenance"
 msgstr "Huoltokatko"
 
-#: components/maintenance.html:5 translations/misc.html:144
+#: components/maintenance.html:5 translations/misc.html:147
 msgid "Maintenance content"
 msgstr ""
 "Järjestelmä on valitettavasti toistaiseksi poissa käytöstä huoltokatkon "
@@ -958,7 +978,7 @@ msgstr "Enimmäispituus"
 msgid "Max length info"
 msgstr "Sallitun arvon enimmäispituus"
 
-#: components/user/user.html:27 translations/misc.html:121
+#: components/user/user.html:27 translations/misc.html:124
 msgid "Member groups"
 msgstr "Käyttäjänä ryhmissä"
 
@@ -982,11 +1002,19 @@ msgstr "Sallitun arvon minimipituus"
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
 
+#: translations/titles.html:63
+msgid "Model languages"
+msgstr "Tietosisällön kielet"
+
+#: translations/titles.html:63
+msgid "Model languages info"
+msgstr ""
+
 #: components/group/group.html:30
 msgid "Models"
 msgstr "Tietokomponenttikirjastot"
 
-#: components/user/user.html:22 translations/misc.html:120
+#: components/user/user.html:22 translations/misc.html:123
 msgid "Modified at"
 msgstr "Muokattu"
 
@@ -1038,7 +1066,7 @@ msgstr "Ei linkkejä"
 msgid "No search results"
 msgstr "Ei hakutuloksia"
 
-#: translations/misc.html:135
+#: translations/misc.html:138
 msgid "Non specialized classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saavalita"
 
@@ -1046,7 +1074,7 @@ msgstr "Erikoistamattomia luokkia ei saavalita"
 msgid "Not defined"
 msgstr "Ei määritelty"
 
-#: translations/misc.html:91
+#: translations/misc.html:94
 msgid "Not found"
 msgstr "Ei löydy"
 
@@ -1054,11 +1082,11 @@ msgstr "Ei löydy"
 msgid "not found in the concept database"
 msgstr "ei löydy sanastosta"
 
-#: translations/misc.html:92
+#: translations/misc.html:95
 msgid "Not removed"
 msgstr "Ei saatu poistettua"
 
-#: translations/misc.html:131
+#: translations/misc.html:134
 msgid "Not required by model"
 msgstr "Ei ole lisätty nimiavaruudeksi"
 
@@ -1066,31 +1094,31 @@ msgstr "Ei ole lisätty nimiavaruudeksi"
 msgid "Not selected"
 msgstr "Ei valittu"
 
-#: translations/misc.html:74
+#: translations/misc.html:77
 msgid "of association"
 msgstr "assosiaatiosta"
 
-#: translations/misc.html:75
+#: translations/misc.html:78
 msgid "of attribute"
 msgstr "attribuutista"
 
-#: translations/misc.html:72
+#: translations/misc.html:75
 msgid "of class"
 msgstr "luokasta"
 
-#: translations/misc.html:69
+#: translations/misc.html:72
 msgid "of group"
 msgstr "ryhmästä"
 
-#: translations/misc.html:70
+#: translations/misc.html:73
 msgid "of model"
 msgstr "tietokomponenttikirjastosta"
 
-#: translations/misc.html:71
+#: translations/misc.html:74
 msgid "of profile"
 msgstr "soveltamisprofiilista"
 
-#: translations/misc.html:73
+#: translations/misc.html:76
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
@@ -1145,7 +1173,7 @@ msgstr ""
 msgid "profile"
 msgstr "Soveltamisprofiili"
 
-#: translations/misc.html:98
+#: translations/misc.html:101
 msgid "Profile information"
 msgstr "Soveltamisprofiilin tiedot"
 
@@ -1169,7 +1197,7 @@ msgstr "Ominaisuuden tunniste"
 msgid "Property id info"
 msgstr "Ominaisuuden yksilöivä tunniste"
 
-#: translations/misc.html:103
+#: translations/misc.html:106
 msgid "Property information"
 msgstr "Ominaisuuden tiedot"
 
@@ -1233,7 +1261,7 @@ msgstr "Nimiavaruuden nimi"
 msgid "Require label info"
 msgstr ""
 
-#: translations/misc.html:159
+#: translations/misc.html:162
 msgid "Required"
 msgstr "Pakollinen kenttä"
 
@@ -1245,11 +1273,11 @@ msgstr "Pakollinen kenttä"
 msgid "Required localized error"
 msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 
-#: translations/misc.html:94
+#: translations/misc.html:97
 msgid "Resource is in use"
 msgstr "On jo käytössä"
 
-#: translations/misc.html:93
+#: translations/misc.html:96
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
@@ -1257,11 +1285,11 @@ msgstr "Ei ole poistettavassa tilassa"
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
-#: translations/titles.html:67
+#: translations/titles.html:68
 msgid "Root class"
 msgstr "Juurisolmu"
 
-#: translations/titles.html:67
+#: translations/titles.html:68
 msgid "Root class info"
 msgstr ""
 
@@ -1273,15 +1301,15 @@ msgstr "Tallenna muutokset"
 msgid "Search"
 msgstr "Etsi"
 
-#: translations/misc.html:82
+#: translations/misc.html:85
 msgid "search association"
 msgstr "Hae assosiaatiota…"
 
-#: translations/misc.html:79
+#: translations/misc.html:82
 msgid "search attribute"
 msgstr "Hae attribuuttia…"
 
-#: translations/misc.html:76
+#: translations/misc.html:79
 msgid "search attribute or association"
 msgstr "Hae attribuuttia tai assosiaatiota…"
 
@@ -1329,11 +1357,11 @@ msgstr "Hae sanastoja"
 msgid "Select all"
 msgstr "Valitse kaikki"
 
-#: translations/misc.html:81
+#: translations/misc.html:84
 msgid "Select association"
 msgstr "Valitse assosiaatio"
 
-#: translations/misc.html:78
+#: translations/misc.html:81
 msgid "Select attribute"
 msgstr "Valitse attribuutti"
 
@@ -1345,7 +1373,7 @@ msgstr "Valitse attribuutti tai assosiaatio"
 msgid "Select class"
 msgstr "Valitse luokka"
 
-#: translations/misc.html:153
+#: translations/misc.html:156
 msgid "Self reference not allowed"
 msgstr "Viittaus itseensä ei ole sallittu"
 
@@ -1361,7 +1389,7 @@ msgstr "Tarkennetun luokan tunniste"
 msgid "Shape id info"
 msgstr "Tarkennetun luokan tunniste"
 
-#: translations/misc.html:100
+#: translations/misc.html:103
 msgid "Shape information"
 msgstr "Tarkennetun luokan tiedot"
 
@@ -1373,11 +1401,11 @@ msgstr "Tarkennetun luokan nimi"
 msgid "Shape label info"
 msgstr "Tarkannetun luokan ihmisluettava nimi"
 
-#: translations/misc.html:105
+#: translations/misc.html:108
 msgid "Shape properties"
 msgstr "Tarkennetun luokan ominaisuudet"
 
-#: translations/misc.html:133
+#: translations/misc.html:136
 msgid "Shapes are not allowed"
 msgstr "Erikoistettuja luokkia ei saa valita"
 
@@ -1385,15 +1413,15 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/editor/searchClassModal.html:33
+#: components/editor/searchClassModal.html:37
 msgid "Show classes defined in profiles"
 msgstr "Näytä profiileissa määritellyt luokat"
 
-#: translations/misc.html:106
+#: translations/misc.html:109
 msgid "Show excluded"
 msgstr "Näytä myös ne, joita ei voi lisätä"
 
-#: translations/misc.html:138
+#: translations/misc.html:141
 msgid "Show history"
 msgstr "Näytä historia"
 
@@ -1405,7 +1433,7 @@ msgstr "Näytä tekniset nimiavaruudet"
 msgid "Source code"
 msgstr "Lähdekoodi"
 
-#: translations/misc.html:137
+#: translations/misc.html:140
 msgid "Specialize class"
 msgstr "Tarkenna luokka"
 
@@ -1429,7 +1457,7 @@ msgstr "Hallintamalliin liittyvä resurssin tila"
 msgid "String error"
 msgstr "Literaalin täytyy alkaa kirjaimella"
 
-#: translations/misc.html:145
+#: translations/misc.html:148
 msgid "Subject"
 msgstr "Käsite"
 
@@ -1477,27 +1505,27 @@ msgstr "Yleistettävissä oleva ominaisuus, joka on semantiikaltaan laajempi"
 msgid "Technical namespaces"
 msgstr "Tekniset nimiavaruudet"
 
-#: translations/misc.html:110
+#: translations/misc.html:113
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: translations/titles.html:63
+#: translations/titles.html:64
 msgid "Title"
 msgstr "Nimi"
 
-#: translations/titles.html:63
+#: translations/titles.html:64
 msgid "Title info"
 msgstr "Ihmisluettava nimi"
 
-#: translations/misc.html:146
+#: translations/misc.html:149
 msgid "to vocabulary"
 msgstr "sanastoon"
 
-#: translations/misc.html:88
+#: translations/misc.html:91
 msgid "Unauthorized"
 msgstr "Ei oikeuksia"
 
-#: translations/misc.html:90
+#: translations/misc.html:93
 msgid "Unexpected error"
 msgstr "Tapahtui odottamaton virhe"
 
@@ -1517,19 +1545,19 @@ msgstr "Viittaukset muista komponenteista"
 msgid "Use"
 msgstr "Käytä"
 
-#: translations/misc.html:85
+#: translations/misc.html:88
 msgid "Use association"
 msgstr "Käytä assosiaatiota"
 
-#: translations/misc.html:84
+#: translations/misc.html:87
 msgid "Use attribute"
 msgstr "Käytä attribuuttia"
 
-#: translations/misc.html:136
+#: translations/misc.html:139
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: translations/misc.html:83
+#: translations/misc.html:86
 msgid "Use selection"
 msgstr "Käytä valintaa"
 
@@ -1537,11 +1565,11 @@ msgstr "Käytä valintaa"
 msgid "User details"
 msgstr "Käyttäjätiedot"
 
-#: components/user/user.html:7 translations/misc.html:117
+#: components/user/user.html:7 translations/misc.html:120
 msgid "User login"
 msgstr "Käyttäjätunnus"
 
-#: components/user/user.html:12 translations/misc.html:118
+#: components/user/user.html:12 translations/misc.html:121
 msgid "User name"
 msgstr "Nimi"
 
@@ -1577,7 +1605,7 @@ msgstr "Sanaston lyhyt tunniste"
 msgid "Vocabulary info"
 msgstr ""
 
-#: translations/misc.html:66
+#: translations/misc.html:69
 msgid "What can I do content"
 msgstr ""
 "Yhteentoimivuuden välineistö on työkalu, jolla voidaan konkreettisesti "
@@ -1589,11 +1617,11 @@ msgstr ""
 "(rajapintaratkaisut), tietokantarakenteeksi (tietovarannot) tai "
 "sovelluskehitykseen (tietojärjestelmät)."
 
-#: translations/misc.html:65
+#: translations/misc.html:68
 msgid "What can I do?"
 msgstr "Mitä yhteensopivuuden välineistöllä voi tehdä?"
 
-#: translations/misc.html:62
+#: translations/misc.html:65
 msgid "What is description content"
 msgstr ""
 "Yhteentoimivuuden kuvaukset ovat tietomäärityksiä, joiden avulla turvataan "
@@ -1605,11 +1633,11 @@ msgstr ""
 "tietokomponenteista sekä edelleen näiden käyttöä eri toteutuksissa "
 "tarkentavista soveltamisprofiileista."
 
-#: translations/misc.html:61
+#: translations/misc.html:64
 msgid "What is description?"
 msgstr "Mitä ovat yhteentoimivuuden kuvaukset?"
 
-#: translations/misc.html:64
+#: translations/misc.html:67
 msgid "What is method content"
 msgstr ""
 "Yhteentoimivuusmenetelmän avulla voidaan kuvata tietojärjestelmissä "
@@ -1623,11 +1651,11 @@ msgstr ""
 "välineistön kehittämisestä <a href='https://confluence.csc.fi/pages/viewpage."
 "action?pageId=51893708'>täältä.</a>"
 
-#: translations/misc.html:63
+#: translations/misc.html:66
 msgid "What is method?"
 msgstr "Mikä on yhteentoimivuusmenetelmä?"
 
-#: translations/misc.html:96
+#: translations/misc.html:99
 msgid "Write identifier"
 msgstr "Kirjoita tunniste…"
 
@@ -1755,6 +1783,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:17
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "language"
+#~ msgstr "kieli"
 
 #~ msgid "Constraint description"
 #~ msgstr "Loogisen rajoitteen kuvaus"

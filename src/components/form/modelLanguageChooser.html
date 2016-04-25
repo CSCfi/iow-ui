@@ -1,8 +1,8 @@
 <div class="btn-group left" uib-dropdown is-open="status.isOpen">
   <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-    {{'data ' + ctrl.language | translate}} <span class="caret"></span>
+    {{ctrl.localizeLanguageName(ctrl.language)}} <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-    <li role="menuitem" ng-repeat="language in ctrl.languages track by language"><a ng-click="ctrl.language = language">{{language | translate}}</a></li>
+    <li role="menuitem" ng-repeat="language in ctrl.languages track by language"><a ng-click="ctrl.language = language">{{ctrl.localizeLanguageName(language)}}</a></li>
   </ul>
 </div>

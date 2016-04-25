@@ -7,6 +7,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from './editableEntityController';
 import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
+import { isLocalizationDefined } from '../../services/utils';
 
 mod.directive('editableLabel', () => {
   return {
@@ -48,8 +49,7 @@ class EditableLabelController {
     const key = this.title + ' info';
     $scope.$watch(() => languageService.UILanguage, () => {
       const infoText = gettextCatalog.getString(key);
-      const showInfo = infoText.indexOf('[MISSING]') === -1 && infoText !== key;
-      this.infoText = showInfo ? infoText : '';
+      this.infoText = isLocalizationDefined(key, infoText) ? infoText : '';
     });
   }
 }

@@ -15,6 +15,7 @@ import './editableConstraint';
 import './editableMultiple';
 import './editableMultipleUriSelect';
 import './editableMultipleDataTypeInput';
+import './editableMultipleLanguageSelect';
 import './editableSubjectSelect';
 import './predicateForm';
 import './predicateView';

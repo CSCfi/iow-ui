@@ -1,5 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
+import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import ILogService = angular.ILogService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
@@ -17,10 +18,8 @@ import {
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
 import { Uri } from '../../services/uri';
-
-import { module as mod }  from './module';
-import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import IQService = angular.IQService;
+import { module as mod }  from './module';
 
 mod.directive('classView', () => {
   return {

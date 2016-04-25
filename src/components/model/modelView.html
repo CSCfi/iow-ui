@@ -7,7 +7,7 @@
     <fieldset ng-disabled="ctrl.persisting">
       <div ng-if="ctrl.model" uib-collapse="!ctrl.visible" class="main-editable-content">
 
-        <editable-entity-buttons editable-controller="ctrl">
+        <editable-entity-buttons languages="ctrl.model.language" editable-controller="ctrl">
           <button type="button" class="btn btn-default right" ng-click="ctrl.addRequire()" ng-show="ctrl.canModify()" translate>Add require</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addReference()" ng-show="ctrl.canModify()" translate>Add reference</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addRelation()" ng-show="ctrl.canModify()" translate>Add related resource</button>

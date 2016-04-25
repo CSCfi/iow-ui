@@ -14,6 +14,7 @@ import { Group, ModelListItem, Type } from '../../services/entities';
 import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
+import { Language } from '../contracts';
 
 mod.directive('group', () => {
   return {
@@ -35,6 +36,7 @@ class GroupController extends EditableEntityController<Group> {
   group: Group;
   models: ModelListItem[];
   profiles: ModelListItem[];
+  languages: Language[] = ['fi', 'en'];
 
   /* @ngInject */
   constructor($scope: EditableScope,

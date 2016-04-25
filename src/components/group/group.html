@@ -8,7 +8,7 @@
     <fieldset ng-disabled="ctrl.persisting">
       <div class="main-editable-content">
 
-        <editable-entity-buttons editable-controller="ctrl">
+        <editable-entity-buttons languages="ctrl.languages" editable-controller="ctrl">
           <button type="button" class="btn btn-default right" ng-click="ctrl.addModel('library')" ng-if="ctrl.canAddModel()" translate>Add library</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addModel('profile')" ng-if="ctrl.canAddModel()" translate>Add profile</button>
         </editable-entity-buttons>

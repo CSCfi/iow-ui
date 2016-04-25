@@ -7,7 +7,8 @@ mod.directive('selectionView', () => {
   return {
     scope: {
       show: '=',
-      editableController: '='
+      editableController: '=',
+      model: '='
     },
     restrict: 'E',
     template: require('./selectionView.html'),
