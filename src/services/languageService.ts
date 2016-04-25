@@ -1,6 +1,6 @@
 import { Localizable } from './entities';
 import { Language } from '../components/contracts';
-import { availableLanguages, translate } from './utils';
+import { availableUILanguages, translate } from './utils';
 
 const defaultLanguage: Language = 'fi';
 
@@ -45,8 +45,8 @@ export class LanguageService {
     this._modelLanguage = language;
   }
 
-  get availableLanguages() {
-    return availableLanguages;
+  get availableUILanguages() {
+    return availableUILanguages;
   }
 
   translate(data: Localizable): string {

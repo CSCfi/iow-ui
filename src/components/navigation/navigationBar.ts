@@ -22,14 +22,14 @@ class NavigationController {
 
   /* @ngInject */
   constructor(private languageService: LanguageService, private userService: UserService, private loginModal: LoginModal) {
-    this.languages = _.map(languageService.availableLanguages, language => {
+    this.languages = _.map(languageService.availableUILanguages, language => {
       switch (language) {
         case 'fi':
           return {code: language, name: 'Suomeksi'};
         case 'en':
           return {code: language, name: 'In English'};
         default:
-          throw new Error('Uknown language: ' + language);
+          throw new Error('Unknown language: ' + language);
       }
     });
   }
@@ -40,7 +40,6 @@ class NavigationController {
 
   set language(language: Language) {
     this.languageService.UILanguage = language;
-    this.languageService.modelLanguage = language;
   }
 
   getUser(): User {
