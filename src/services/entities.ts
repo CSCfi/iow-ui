@@ -505,8 +505,8 @@ export class Require extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this._namespace = graph['preferredXMLNamespaceName'];
-    this.prefix = graph['preferredXMLNamespacePrefix'];
+    this._namespace = graph.preferredXMLNamespaceName;
+    this.prefix = graph.preferredXMLNamespacePrefix;
 
     if (this.isOfType('resource')) {
       this.namespaceType = NamespaceType.EXTERNAL;
