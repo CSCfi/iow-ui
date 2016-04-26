@@ -912,7 +912,11 @@ export class Property extends GraphNode {
 
     function serializePredicate() {
       if (predicate instanceof Predicate) {
-        return predicate.serialize(clone);
+        if (clone) {
+          return predicate.serialize(clone);
+        } else {
+          return predicate.id.uri;
+        }
       } else if (predicate instanceof Uri) {
         return predicate.uri;
       } else {
