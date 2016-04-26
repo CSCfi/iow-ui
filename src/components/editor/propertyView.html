@@ -17,11 +17,11 @@
     <state-select id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></state-select>
   </editable>
 
-  <editable ng-if="ctrl.property.normalizedPredicateType === 'attribute' || ctrl.predicate.isAttribute()" data-title="Range" context="ctrl.model">
+  <editable ng-if="ctrl.isAttribute()" data-title="Range" context="ctrl.model">
     <range-select id="{{ctrl.property.internalId + 'range'}}" range="ctrl.property.dataType"></range-select>
   </editable>
 
-  <editable ng-if="ctrl.property.normalizedPredicateType === 'association' || ctrl.predicate.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
+  <editable ng-if="ctrl.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
     <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></uri-select>
   </editable>
 
@@ -43,6 +43,8 @@
     <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
   </editable>
 
+  <editable-multiple-uri-select ng-if="ctrl.isAssociation()" id="classIn" type="class" ng-model="ctrl.property.classIn" model="ctrl.model" data-title="{{'Class type'}}"></editable-multiple-uri-select>
+
   <editable data-title="Example" context="ctrl.model">
     <input id="{{ctrl.property.internalId + 'example attribute'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.example" />
   </editable>
@@ -57,7 +59,7 @@
     <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.hasValue" />
   </editable>
 
-  <editable ng-if="ctrl.normalizedPredicateType === 'attribute' || ctrl.predicate.isAttribute()" data-title="Pattern" context="ctrl.model">
+  <editable ng-if="ctrl.isAttribute()" data-title="Pattern" context="ctrl.model">
     <input id="{{ctrl.property.internalId + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
   </editable>
 

@@ -804,6 +804,7 @@ export class Property extends GraphNode {
   hasValue: string;
   pattern: string;
   predicateType: Type;
+  classIn: Uri[];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -815,6 +816,7 @@ export class Property extends GraphNode {
     this.example = graph.example;
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
+    this.classIn = deserializeList(graph.classIn, klass => new Uri(klass, context));
 
     if (graph.type) {
       this.predicateType = mapType(graph.type);
@@ -873,6 +875,14 @@ export class Property extends GraphNode {
     return !!this.valueClass;
   }
 
+  isAssociation() {
+    return this.normalizedPredicateType === 'association';
+  }
+
+  isAttribute() {
+    return this.normalizedPredicateType === 'attribute';
+  }
+
   get normalizedPredicateType(): Type {
     if (this.predicateType) {
       return this.predicateType;
@@ -928,7 +938,8 @@ export class Property extends GraphNode {
       maxLength: this.maxLength,
       in: serializeList(this.in),
       hasValue: this.hasValue,
-      pattern: this.pattern
+      pattern: this.pattern,
+      classIn: serializeList(this.classIn, classId => classId.uri)
     };
   }
 }

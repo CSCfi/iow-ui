@@ -124,6 +124,14 @@ export class PropertyViewController {
     this.scroll();
   }
 
+  isAssociation() {
+    return this.property.isAssociation() || (this.predicate && this.predicate.isAssociation());
+  }
+
+  isAttribute() {
+    return this.property.isAttribute() || (this.predicate && this.predicate.isAttribute());
+  }
+
   get inUnstableState(): boolean {
     return this.property.state === 'Unstable';
   }

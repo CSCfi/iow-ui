@@ -281,7 +281,7 @@ msgstr ""
 msgid "Choose broader concept"
 msgstr ""
 
-#: components/editor/editableConstraint.html:32
+#: components/editor/editableConstraint.html:33
 #: translations/misc.html:61
 msgid "Choose class"
 msgstr ""
@@ -350,6 +350,14 @@ msgstr ""
 msgid "Class search or create info"
 msgstr ""
 
+#: translations/titles.html:54
+msgid "Class type"
+msgstr ""
+
+#: translations/titles.html:54
+msgid "Class type info"
+msgstr ""
+
 #: translations/misc.html:137
 msgid "Classes are not allowed"
 msgstr ""
@@ -408,11 +416,11 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/titles.html:67
+#: translations/titles.html:68
 msgid "Constraint classes"
 msgstr ""
 
-#: translations/titles.html:67
+#: translations/titles.html:68
 msgid "Constraint classes info"
 msgstr ""
 
@@ -751,11 +759,11 @@ msgstr ""
 msgid "External predicate not found"
 msgstr ""
 
-#: translations/titles.html:65
+#: translations/titles.html:66
 msgid "External URI"
 msgstr ""
 
-#: translations/titles.html:65
+#: translations/titles.html:66
 msgid "External URI info"
 msgstr ""
 
@@ -767,11 +775,11 @@ msgstr ""
 msgid "Filter results"
 msgstr ""
 
-#: translations/titles.html:54
+#: translations/titles.html:55
 msgid "Fixed value"
 msgstr ""
 
-#: translations/titles.html:54
+#: translations/titles.html:55
 msgid "Fixed value info"
 msgstr ""
 
@@ -816,11 +824,11 @@ msgstr ""
 msgid "Historical versions"
 msgstr ""
 
-#: translations/titles.html:62
+#: translations/titles.html:63
 msgid "Homepage"
 msgstr ""
 
-#: translations/titles.html:62
+#: translations/titles.html:63
 msgid "Homepage info"
 msgstr ""
 
@@ -948,21 +956,21 @@ msgstr ""
 msgid "Maintenance content"
 msgstr ""
 
-#: translations/titles.html:57
+#: translations/titles.html:58
 msgid "Max count"
 msgstr ""
 
-#: translations/titles.html:57
+#: translations/titles.html:58
 msgid "Max count info"
 msgstr ""
 
-#: translations/titles.html:59
 #: translations/titles.html:60
+#: translations/titles.html:61
 msgid "Max length"
 msgstr ""
 
-#: translations/titles.html:59
 #: translations/titles.html:60
+#: translations/titles.html:61
 msgid "Max length info"
 msgstr ""
 
@@ -971,19 +979,19 @@ msgstr ""
 msgid "Member groups"
 msgstr ""
 
-#: translations/titles.html:56
+#: translations/titles.html:57
 msgid "Min count"
 msgstr ""
 
-#: translations/titles.html:56
+#: translations/titles.html:57
 msgid "Min count info"
 msgstr ""
 
-#: translations/titles.html:58
+#: translations/titles.html:59
 msgid "Min length"
 msgstr ""
 
-#: translations/titles.html:58
+#: translations/titles.html:59
 msgid "Min length info"
 msgstr ""
 
@@ -991,11 +999,11 @@ msgstr ""
 msgid "model"
 msgstr ""
 
-#: translations/titles.html:63
+#: translations/titles.html:64
 msgid "Model languages"
 msgstr ""
 
-#: translations/titles.html:63
+#: translations/titles.html:64
 msgid "Model languages info"
 msgstr ""
 
@@ -1127,15 +1135,15 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: translations/titles.html:55
+#: translations/titles.html:56
 msgid "Pattern"
 msgstr ""
 
-#: translations/titles.html:55
+#: translations/titles.html:56
 msgid "Pattern info"
 msgstr ""
 
-#: components/editor/propertyView.html:100
+#: components/editor/propertyView.html:102
 msgid "Predicate information not found"
 msgstr ""
 
@@ -1272,15 +1280,15 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:84
+#: components/editor/propertyView.html:86
 msgid "Reusable predicate"
 msgstr ""
 
-#: translations/titles.html:68
+#: translations/titles.html:69
 msgid "Root class"
 msgstr ""
 
-#: translations/titles.html:68
+#: translations/titles.html:69
 msgid "Root class info"
 msgstr ""
 
@@ -1499,11 +1507,11 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: translations/titles.html:64
+#: translations/titles.html:65
 msgid "Title"
 msgstr ""
 
-#: translations/titles.html:64
+#: translations/titles.html:65
 msgid "Title info"
 msgstr ""
 

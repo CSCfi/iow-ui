@@ -47,7 +47,8 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, {
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
   type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' },
   valueShape: { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' },
-  predicate: { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' }
+  predicate: { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' },
+  classIn: { '@id': 'http://www.w3.org/ns/shacl#classIn', '@type': '@id' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, {
@@ -206,6 +207,9 @@ export function classVisualizationFrame(data: any): Frame {
       valueShape: {
         '@omitDefault': true,
         '@default': [],
+        '@embed': false
+      },
+      classIn: {
         '@embed': false
       }
     },
