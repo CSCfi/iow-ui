@@ -559,8 +559,8 @@ export class Require extends GraphNode {
     return {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
-      'preferredXMLNamespaceName': this.namespace,
-      'preferredXMLNamespacePrefix': this.prefix
+      preferredXMLNamespaceName: this.namespace,
+      preferredXMLNamespacePrefix: this.prefix
     };
   }
 }
