@@ -38,7 +38,7 @@ export class UserService {
    */
   login(): IPromise<any> {
       return this.updateLogin().then<any>(user => !user.isLoggedIn()
-      ? this.$http.get(config.apiEndpoint + '/login').then(() => this.updateLogin())
+      ? this.$http.get(config.apiEndpoint + '/login', { params: { target: 'http://dummy' } }).then(() => this.updateLogin())
       : this.$q.when());
   }
 
