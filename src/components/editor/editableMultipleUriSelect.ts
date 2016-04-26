@@ -31,7 +31,17 @@ mod.directive('editableMultipleUriSelect', () => {
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: require('./editableMultipleUriSelect.html'),
+    template: `<editable-multiple id="{{ctrl.id}}"
+                                  data-title="{{ctrl.title}}"
+                                  ng-model="ctrl.ngModel"
+                                  allow-input="ctrl.allowInput"
+                                  validators="ctrl.validators"
+                                  formatter="ctrl.formatter"
+                                  parser="ctrl.parser"
+                                  placeholder="ctrl.placeholder"
+                                  link="ctrl.link">
+                 <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" style="display: block" ng-click="ctrl.selectUri()">{{('Choose ' + ctrl.type) | translate}}</button>
+               </editable-multiple>`,
     require: ['editableMultipleUriSelect', '?^form'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableMultipleUriSelectController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
