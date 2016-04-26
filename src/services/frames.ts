@@ -210,6 +210,8 @@ export function classVisualizationFrame(data: any): Frame {
         '@embed': false
       },
       classIn: {
+        '@omitDefault': true,
+        '@default': [],
         '@embed': false
       }
     },
