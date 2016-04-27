@@ -49,6 +49,10 @@ export function translate(data: Localizable, language: Language, languages?: Lan
   return localized(language, false) || _.find(_.map(languages || availableLanguages, lang => localized(lang, true)), _.identity) || '';
 }
 
+export function moveElement(array: any[], fromIndex: number, toIndex: number) {
+  const value = array.splice(fromIndex, 1);
+  array.splice(toIndex <= fromIndex ? toIndex : toIndex - 1, 0, value[0]);
+}
 
 export function extendNgModelOptions(ngModel: INgModelController, options: any) {
   if (ngModel.$options) {

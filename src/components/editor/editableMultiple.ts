@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { module as mod }  from './module';
 import { arrayValidator } from '../form/validators';
-import { extendNgModelOptions, normalizeAsArray, isDefined } from '../../services/utils';
+import { extendNgModelOptions, normalizeAsArray, isDefined, moveElement } from '../../services/utils';
 
 type DropSide = 'left' | 'right';
 
@@ -188,11 +188,6 @@ export class EditableMultipleController<T> {
   drop(event: JQueryEventObject) {
     event.preventDefault();
 
-    function moveElement(array: any[], fromIndex: number, toIndex: number) {
-      const value = array.splice(fromIndex, 1);
-      array.splice(toIndex <= fromIndex ? toIndex : toIndex - 1, 0, value[0]);
-    }
-
     moveElement(this.ngModel, this.drag.fromIndex, this.drag.toIndex);
     this.drag = null;
   }
@@ -222,7 +217,7 @@ mod.directive('editableMultipleDroppable', () => {
   return {
     require: '^editableMultiple',
     link($scope: RepeaterScope, element: JQuery, attributes: EditableMultipleDroppableAttributes, editableMultiple: EditableMultipleController<any>) {
-      
+
       function index(event: JQueryEventObject) {
 
         const position = (<DragEvent> event.originalEvent).clientX;
