@@ -10,7 +10,25 @@ import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { module as mod }  from './module';
 import { arrayValidator } from '../form/validators';
-import { extendNgModelOptions, normalizeAsArray } from '../../services/utils';
+import { extendNgModelOptions, normalizeAsArray, isDefined } from '../../services/utils';
+
+type DropSide = 'left' | 'right';
+
+class Drag {
+
+  toIndex: number;
+
+  constructor(public value: any, public fromIndex: number) {
+  }
+
+  isActive(index: number) {
+    return this.canDrop(index) && this.toIndex === index;
+  }
+
+  canDrop(index: number) {
+    return index !== this.fromIndex && index !== this.fromIndex + 1;
+  }
+}
 
 mod.directive('editableMultiple', () => {
   return {
@@ -95,6 +113,7 @@ export class EditableMultipleController<T> {
 
   isEditing: () => boolean;
   input: T;
+  drag: Drag;
 
   format(value: T): string {
     let result = value;
@@ -137,4 +156,88 @@ export class EditableMultipleController<T> {
       this.input = null;
     }
   }
+
+  getDragClasses(index: number) {
+    return ['drop-target', { visible: this.drag && this.drag.canDrop(index), active: this.drag && this.drag.isActive(index) } ];
+  }
+
+  startDrag(event: JQueryEventObject, drag: Drag): void {
+
+    const dataTransfer = (<DragEvent> event.originalEvent).dataTransfer;
+
+    dataTransfer.dropEffect = 'move';
+    dataTransfer.effectAllowed = 'move';
+
+    this.drag = drag;
+  }
+
+  dragOverIndex(event: JQueryEventObject, index?: number) {
+
+    if (isDefined(index) && this.drag.canDrop(index)) {
+      event.preventDefault();
+    }
+
+    this.drag.toIndex = index;
+  }
+
+  cancelDrag(event: JQueryEventObject) {
+    this.drag = null;
+  }
+
+  drop(event: JQueryEventObject) {
+    event.preventDefault();
+
+    this.ngModel.splice(this.drag.fromIndex, 1);
+    this.ngModel.splice(this.drag.toIndex <= this.drag.fromIndex ? this.drag.toIndex : this.drag.toIndex - 1, 0, this.drag.value);
+    this.drag = null;
+  }
 }
+
+interface RepeaterScope extends IScope {
+  $index: number;
+  value: any;
+}
+
+mod.directive('editableMultipleDraggable', () => {
+  return {
+    require: '^editableMultiple',
+    link($scope: RepeaterScope, element: JQuery, attributes: IAttributes, editableMultiple: EditableMultipleController<any>) {
+      element.attr('draggable', 'true');
+      element.on('dragstart', event => $scope.$apply(() => editableMultiple.startDrag(event, new Drag($scope.value, $scope.$index))));
+      element.on('dragend', event => $scope.$apply(() => editableMultiple.cancelDrag(event)));
+    }
+  };
+});
+
+interface EditableMultipleDroppableAttributes {
+  editableMultipleDroppable: DropSide;
+}
+
+mod.directive('editableMultipleDroppable', () => {
+  return {
+    require: '^editableMultiple',
+    link($scope: RepeaterScope, element: JQuery, attributes: EditableMultipleDroppableAttributes, editableMultiple: EditableMultipleController<any>) {
+
+      function index(event: JQueryEventObject) {
+        if (attributes.editableMultipleDroppable === 'left') {
+          return $scope.$index;
+        } else if (attributes.editableMultipleDroppable === 'right') {
+          return $scope.$index + 1;
+        } else {
+
+          const position = (<DragEvent> event.originalEvent).x;
+          const center = element.offset().left + element.width() / 2;
+
+          if (position < center) {
+            return $scope.$index;
+          } else {
+            return $scope.$index + 1;
+          }
+        }
+      }
+      element.on('dragover', event => $scope.$apply(() => editableMultiple.dragOverIndex(event, index(event))));
+      element.on('dragleave', event => $scope.$apply(() => editableMultiple.dragOverIndex(event)));
+      element.on('drop', event => $scope.$apply(() => editableMultiple.drop(event)));
+    }
+  };
+});

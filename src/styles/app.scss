@@ -81,30 +81,53 @@ $footer-height: 50px;
   margin-bottom: -5px;
 
   .added-item {
-    padding: 5px 4px;
-    margin: 5px 0 0 5px;
-    line-height: 12px;
-    font-size: 12px;
-    background-color: #f5f5f5;
+
     display: inline-block;
     float: left;
-    border-radius: 2px;
-    border: 1px solid #ddd;
 
-    &.has-error {
-      border-color: $state-danger-text;
-    }
-
-    .delete-item {
+    .drop-target {
+      width: 5px;
+      margin-top: 5px;
+      height: 25px;
       display: inline-block;
-      cursor: pointer;
-      padding: 0 2px;
-      background-color: $btn-default-border;
-      margin-left: 5px;
+      float: left;
+
+
+      &.visible {
+        border: 1px dashed #000000;
+      }
+
+      &.active {
+        background-color: #000000;
+      }
     }
 
-    .delete-item:hover {
-      background-color: $btn-default-color;
+    .box {
+      padding: 5px 4px;
+      margin: 5px 0 0 0;
+      line-height: 12px;
+      font-size: 12px;
+      background-color: #f5f5f5;
+      border-radius: 2px;
+      border: 1px solid #ddd;
+      display: inline-block;
+      float: left;
+
+      &.has-error {
+        border-color: $state-danger-text;
+      }
+
+      .delete-item {
+        display: inline-block;
+        cursor: pointer;
+        padding: 0 2px;
+        background-color: $btn-default-border;
+        margin-left: 5px;
+      }
+
+      .delete-item:hover {
+        background-color: $btn-default-color;
+      }
     }
   }
 
