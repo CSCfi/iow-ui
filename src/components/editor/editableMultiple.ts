@@ -165,6 +165,7 @@ export class EditableMultipleController<T> {
 
     const dataTransfer = (<DragEvent> event.originalEvent).dataTransfer;
 
+    dataTransfer.setData('text', 'dummy');
     dataTransfer.dropEffect = 'move';
     dataTransfer.effectAllowed = 'move';
 
@@ -224,7 +225,7 @@ mod.directive('editableMultipleDroppable', () => {
       
       function index(event: JQueryEventObject) {
 
-        const position = (<DragEvent> event.originalEvent).x;
+        const position = (<DragEvent> event.originalEvent).clientX;
         const center = element.offset().left + element.width() / 2;
 
         if (attributes.editableMultipleDroppable === 'left' || position < center) {
