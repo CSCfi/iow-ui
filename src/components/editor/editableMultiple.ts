@@ -18,7 +18,7 @@ class Drag {
 
   toIndex: number;
 
-  constructor(public value: any, public fromIndex: number) {
+  constructor(public fromIndex: number) {
   }
 
   isActive(index: number) {
@@ -161,14 +161,14 @@ export class EditableMultipleController<T> {
     return ['drop-target', { visible: this.drag && this.drag.canDrop(index), active: this.drag && this.drag.isActive(index) } ];
   }
 
-  startDrag(event: JQueryEventObject, drag: Drag): void {
+  startDrag(event: JQueryEventObject, fromIndex: number): void {
 
     const dataTransfer = (<DragEvent> event.originalEvent).dataTransfer;
 
     dataTransfer.dropEffect = 'move';
     dataTransfer.effectAllowed = 'move';
 
-    this.drag = drag;
+    this.drag = new Drag(fromIndex);
   }
 
   dragOverIndex(event: JQueryEventObject, index?: number) {
@@ -187,8 +187,12 @@ export class EditableMultipleController<T> {
   drop(event: JQueryEventObject) {
     event.preventDefault();
 
-    this.ngModel.splice(this.drag.fromIndex, 1);
-    this.ngModel.splice(this.drag.toIndex <= this.drag.fromIndex ? this.drag.toIndex : this.drag.toIndex - 1, 0, this.drag.value);
+    function moveElement(array: any[], fromIndex: number, toIndex: number) {
+      const value = array.splice(fromIndex, 1);
+      array.splice(toIndex <= fromIndex ? toIndex : toIndex - 1, 0, value[0]);
+    }
+
+    moveElement(this.ngModel, this.drag.fromIndex, this.drag.toIndex);
     this.drag = null;
   }
 }
@@ -203,7 +207,7 @@ mod.directive('editableMultipleDraggable', () => {
     require: '^editableMultiple',
     link($scope: RepeaterScope, element: JQuery, attributes: IAttributes, editableMultiple: EditableMultipleController<any>) {
       element.attr('draggable', 'true');
-      element.on('dragstart', event => $scope.$apply(() => editableMultiple.startDrag(event, new Drag($scope.value, $scope.$index))));
+      element.on('dragstart', event => $scope.$apply(() => editableMultiple.startDrag(event, $scope.$index)));
       element.on('dragend', event => $scope.$apply(() => editableMultiple.cancelDrag(event)));
     }
   };
@@ -217,8 +221,7 @@ mod.directive('editableMultipleDroppable', () => {
   return {
     require: '^editableMultiple',
     link($scope: RepeaterScope, element: JQuery, attributes: EditableMultipleDroppableAttributes, editableMultiple: EditableMultipleController<any>) {
-
-
+      
       function index(event: JQueryEventObject) {
 
         const position = (<DragEvent> event.originalEvent).x;
