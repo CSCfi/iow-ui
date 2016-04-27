@@ -218,23 +218,19 @@ mod.directive('editableMultipleDroppable', () => {
     require: '^editableMultiple',
     link($scope: RepeaterScope, element: JQuery, attributes: EditableMultipleDroppableAttributes, editableMultiple: EditableMultipleController<any>) {
 
+
       function index(event: JQueryEventObject) {
-        if (attributes.editableMultipleDroppable === 'left') {
+
+        const position = (<DragEvent> event.originalEvent).x;
+        const center = element.offset().left + element.width() / 2;
+
+        if (attributes.editableMultipleDroppable === 'left' || position < center) {
           return $scope.$index;
-        } else if (attributes.editableMultipleDroppable === 'right') {
-          return $scope.$index + 1;
         } else {
-
-          const position = (<DragEvent> event.originalEvent).x;
-          const center = element.offset().left + element.width() / 2;
-
-          if (position < center) {
-            return $scope.$index;
-          } else {
-            return $scope.$index + 1;
-          }
+          return $scope.$index + 1;
         }
       }
+
       element.on('dragover', event => $scope.$apply(() => editableMultiple.dragOverIndex(event, index(event))));
       element.on('dragleave', event => $scope.$apply(() => editableMultiple.dragOverIndex(event)));
       element.on('drop', event => $scope.$apply(() => editableMultiple.drop(event)));
