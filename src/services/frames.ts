@@ -38,12 +38,12 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, {
   index: { '@id': 'http://www.w3.org/ns/shacl#index' },
   example: { '@id': 'http://www.w3.org/2004/02/skos/core#example' },
   defaultValue: { '@id': 'http://www.w3.org/ns/shacl#defaultValue' },
-  maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount'},
-  minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount'},
-  maxLength: { '@id': 'http://www.w3.org/ns/shacl#maxLength'},
-  minLength: { '@id': 'http://www.w3.org/ns/shacl#minLength'},
-  in: { '@id': 'http://www.w3.org/ns/shacl#in'},
-  hasValue: { '@id': 'http://www.w3.org/ns/shacl#hasValue'},
+  maxCount: { '@id': 'http://www.w3.org/ns/shacl#maxCount' },
+  minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount' },
+  maxLength: { '@id': 'http://www.w3.org/ns/shacl#maxLength' },
+  minLength: { '@id': 'http://www.w3.org/ns/shacl#minLength' },
+  in: { '@id': 'http://www.w3.org/ns/shacl#in' },
+  hasValue: { '@id': 'http://www.w3.org/ns/shacl#hasValue' },
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
   type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' },
   valueShape: { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' },
@@ -229,9 +229,9 @@ export function classVisualizationFrame(data: any): Frame {
 
 export function versionFrame(data: any): Frame {
   return frame(data, versionContext, {
-    'generated': {
-      'wasAttributedTo': {},
-      'wasRevisionOf': {
+    generated: {
+      wasAttributedTo: {},
+      wasRevisionOf: {
         '@omitDefault': true,
         '@default': [],
         '@embed': false
