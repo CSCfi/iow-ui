@@ -33,6 +33,7 @@ require('angular-gettext');
 require('checklist-model');
 
 const mod = angular.module('iow-ui', [
+  require('angular-animate'),
   require('angular-messages'),
   require('angular-route'),
   require('angular-ui-bootstrap'),
