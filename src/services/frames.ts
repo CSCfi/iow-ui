@@ -42,7 +42,7 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, {
   minCount: { '@id': 'http://www.w3.org/ns/shacl#minCount' },
   maxLength: { '@id': 'http://www.w3.org/ns/shacl#maxLength' },
   minLength: { '@id': 'http://www.w3.org/ns/shacl#minLength' },
-  in: { '@id': 'http://www.w3.org/ns/shacl#in' },
+  in: { '@id': 'http://www.w3.org/ns/shacl#in', '@container': '@list' },
   hasValue: { '@id': 'http://www.w3.org/ns/shacl#hasValue' },
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
   type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' },
