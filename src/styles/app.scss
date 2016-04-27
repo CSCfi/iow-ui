@@ -112,6 +112,7 @@ $footer-height: 50px;
       border: 1px solid #ddd;
       display: inline-block;
       float: left;
+      cursor: move;
 
       &.has-error {
         border-color: $state-danger-text;
