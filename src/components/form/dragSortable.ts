@@ -81,6 +81,7 @@ mod.directive('dragSortableItem', () => {
         element.toggleClass('droppable', dragReady && drag.droppable);
       }, true);
 
+      element.on('selectstart', function() { this.dragDrop(); } ); // IE9 support hack
       element.on('dragstart', event => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index)));
       element.on('dragend', event => $scope.$apply(() => dragSortable.drop()));
       element.on('dragover', event => {
