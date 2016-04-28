@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import { module as mod }  from './module';
 import IScope = angular.IScope;
-import { resetWith, moveElement, isDefined } from '../../services/utils';
+import { resetWith, moveElement } from '../../services/utils';
 import IRepeatScope = angular.IRepeatScope;
 
 interface DragSortableAttributes extends IAttributes {
@@ -31,10 +31,6 @@ class DragSortableController {
     this.drag = new Drag(fromIndex, this.dragValues);
   }
 
-  reset() {
-    resetWith(this.dragValues, this.drag.copyOfOriginal);
-  }
-
   overDroppable(index: number) {
     this.drag.droppable = true;
     if (this.canDrop(index)) {
@@ -53,7 +49,7 @@ class DragSortableController {
 
   drop() {
     if (this.drag && !this.drag.droppable) {
-      this.reset();
+      resetWith(this.dragValues, this.drag.copyOfOriginal);
     }
     this.drag = null;
   }
