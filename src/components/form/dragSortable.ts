@@ -75,7 +75,7 @@ mod.directive('dragSortableItem', () => {
 
       element.attr('draggable', 'true');
 
-      $scope.$watch(() => dragSortable.drag && dragSortable.drag, drag => {
+      $scope.$watch(() => dragSortable.drag, drag => {
         const dragReady = drag ? drag.cloneCreated : false;
         element.toggleClass('dragged', dragReady && drag.fromIndex === $scope.$index);
         element.toggleClass('droppable', dragReady && drag.droppable);
