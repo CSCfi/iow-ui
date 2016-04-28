@@ -21,6 +21,7 @@ mod.directive('dragSortable', () => {
 class DragSortableController {
 
   drag: Drag;
+  dragValuesOriginal: any[];
   dragValues: any[];
 
   startDrag(dataTransfer: DataTransfer, fromIndex: number): void {
@@ -28,7 +29,17 @@ class DragSortableController {
     dataTransfer.dropEffect = 'move';
     dataTransfer.effectAllowed = 'move';
 
-    this.drag = new Drag(fromIndex, this.dragValues);
+    this.drag = {
+      fromIndex,
+      droppable: true,
+      cloneCreated: false
+    };
+
+    this.dragValuesOriginal = this.dragValues.slice();
+  }
+
+  cloneCreated() {
+    this.drag.cloneCreated = true;
   }
 
   overDroppable(index: number) {
@@ -49,20 +60,17 @@ class DragSortableController {
 
   drop() {
     if (this.drag && !this.drag.droppable) {
-      resetWith(this.dragValues, this.drag.copyOfOriginal);
+      resetWith(this.dragValues, this.dragValuesOriginal);
     }
     this.drag = null;
+    this.dragValuesOriginal = null;
   }
 }
 
-class Drag {
-
-  droppable: boolean = true;
-  copyOfOriginal: any[];
-
-  constructor(public fromIndex: number, private originalArray: any[]) {
-    this.copyOfOriginal = originalArray.slice();
-  }
+interface Drag {
+  fromIndex: number;
+  droppable: boolean;
+  cloneCreated: boolean;
 }
 
 mod.directive('dragSortableItem', () => {
@@ -72,22 +80,19 @@ mod.directive('dragSortableItem', () => {
 
       element.attr('draggable', 'true');
 
-      $scope.$watchGroup([() => dragSortable.drag && dragSortable.drag.fromIndex, () => dragSortable.drag && dragSortable.drag.droppable], ([fromIndex, droppable]) => {
-
-        // timeout is needed so that browser drag api copies original image as shadow
-
-        if (fromIndex === $scope.$index) {
-          window.setTimeout(() => element.addClass('dragged'), 0);
+      $scope.$watch(() => dragSortable.drag && dragSortable.drag, drag => {
+        if (drag && drag.cloneCreated && drag.fromIndex === $scope.$index) {
+          element.addClass('dragged');
         } else {
           element.removeClass('dragged');
         }
 
-        if (droppable) {
-          window.setTimeout(() => element.addClass('droppable'), 0);
+        if (drag && drag.cloneCreated && drag.droppable) {
+          element.addClass('droppable');
         } else {
           element.removeClass('droppable');
         }
-      });
+      }, true);
 
       element.on('dragstart', event => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index)));
       element.on('dragend', event => $scope.$apply(() => dragSortable.drop()));
@@ -98,6 +103,7 @@ mod.directive('dragSortableItem', () => {
         }
       });
       element.on('dragleave', event => $scope.$apply(() => dragSortable.notOverDroppable()));
+      element.on('dragenter', event => $scope.$apply(() => dragSortable.cloneCreated()));
       element.on('drop', event => {
         event.preventDefault();
         $scope.$apply(() => dragSortable.drop());
