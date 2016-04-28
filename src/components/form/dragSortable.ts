@@ -1,8 +1,8 @@
 import IAttributes = angular.IAttributes;
-import { module as mod }  from './module';
+import IRepeatScope = angular.IRepeatScope;
 import IScope = angular.IScope;
 import { resetWith, moveElement } from '../../services/utils';
-import IRepeatScope = angular.IRepeatScope;
+import { module as mod }  from './module';
 
 interface DragSortableAttributes extends IAttributes {
   dragSortable: string;
@@ -29,12 +29,7 @@ class DragSortableController {
     dataTransfer.dropEffect = 'move';
     dataTransfer.effectAllowed = 'move';
 
-    this.drag = {
-      fromIndex,
-      droppable: true,
-      cloneCreated: false
-    };
-
+    this.drag = { fromIndex, droppable: true, cloneCreated: false };
     this.dragValuesOriginal = this.dragValues.slice();
   }
 
