@@ -48,11 +48,7 @@ class DragSortableController {
   }
 
   canDrop(index: number) {
-    return isDefined(index) && this.drag.fromIndex !== index;
-  }
-
-  isDragging() {
-    return !!this.drag;
+    return this.drag.fromIndex !== index;
   }
 
   drop() {
@@ -100,7 +96,7 @@ mod.directive('dragSortableItem', () => {
       element.on('dragstart', event => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index)));
       element.on('dragend', event => $scope.$apply(() => dragSortable.drop()));
       element.on('dragover', event => {
-        if (dragSortable.isDragging()) {
+        if (dragSortable.drag) {
           event.preventDefault();
           $scope.$apply(() => dragSortable.overDroppable($scope.$index));
         }
