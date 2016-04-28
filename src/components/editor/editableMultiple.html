@@ -7,16 +7,12 @@
   </span>
 
   <div ng-show="ctrl.isEditing()">
-    <div class="form-control multi-input">
-      <div ng-repeat="value in ctrl.ngModel track by $index" class="added-item">
-        <div editable-multiple-droppable="left" class="drop-target" ng-class="ctrl.getDragClasses($index)"></div>
-
-        <div class="box" ng-class="{ 'has-error': !ctrl.isValid(value)}" editable-multiple-draggable editable-multiple-droppable>
+    <div class="form-control multi-input" drag-sortable="ctrl.ngModel">
+      <div ng-repeat="value in ctrl.ngModel" class="added-item">
+        <div class="box" ng-class="{ 'has-error': !ctrl.isValid(value)}" drag-sortable-item>
           {{ctrl.format(value)}}
           <div class="delete-item badge" ng-click="ctrl.deleteValue(value)">&times;</div>
         </div>
-
-        <div ng-if="$last" editable-multiple-droppable="right" class="drop-target" ng-class="ctrl.getDragClasses($index + 1)"></div>
       </div>
 
       <input name="valueInput"

@@ -51,7 +51,14 @@ export function translate(data: Localizable, language: Language, languages?: Lan
 
 export function moveElement(array: any[], fromIndex: number, toIndex: number) {
   const value = array.splice(fromIndex, 1);
-  array.splice(toIndex <= fromIndex ? toIndex : toIndex - 1, 0, value[0]);
+  array.splice(toIndex, 0, value[0]);
+}
+
+export function resetWith<T>(array: T[], toResetWith: T[]) {
+  array.splice(0, array.length);
+  for (const item of toResetWith) {
+    array.push(item);
+  }
 }
 
 export function extendNgModelOptions(ngModel: INgModelController, options: any) {

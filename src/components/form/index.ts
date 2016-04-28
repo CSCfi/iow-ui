@@ -25,5 +25,6 @@ import './localizedSelect';
 import './maxInput';
 import './minInput';
 import './ignoreDirty';
+import './dragSortable';
 
 mod.service('displayItemFactory', DisplayItemFactory);
