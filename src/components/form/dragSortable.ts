@@ -24,12 +24,12 @@ class DragSortableController {
   dragValuesOriginal: any[];
   dragValues: any[];
 
-  startDrag(dataTransfer: DataTransfer, fromIndex: number): void {
+  startDrag(dataTransfer: DataTransfer, fromIndex: number, sourceWidth: number): void {
     dataTransfer.setData('text', '');
     dataTransfer.dropEffect = 'move';
     dataTransfer.effectAllowed = 'move';
 
-    this.drag = { fromIndex, droppable: true, cloneCreated: false };
+    this.drag = { fromIndex, droppable: true, cloneCreated: false, sourceWidth };
     this.dragValuesOriginal = this.dragValues.slice();
   }
 
@@ -37,11 +37,19 @@ class DragSortableController {
     this.drag.cloneCreated = true;
   }
 
-  overDroppable(index: number) {
-    this.drag.droppable = true;
-    if (this.canDrop(index)) {
-      moveElement(this.dragValues, this.drag.fromIndex, index);
-      this.drag.fromIndex = index;
+  overDroppable(index: number, targetWidth: number, mousePosition: number) {
+
+    const sourceWidth = this.drag.sourceWidth;
+    const toLeft = index < this.drag.fromIndex;
+    const stableDropRegion = toLeft ? mousePosition < sourceWidth : mousePosition > targetWidth - sourceWidth;
+
+    if (stableDropRegion) {
+      this.drag.droppable = true;
+      if (this.canDrop(index)) {
+
+        moveElement(this.dragValues, this.drag.fromIndex, index);
+        this.drag.fromIndex = index;
+      }
     }
   }
 
@@ -66,6 +74,7 @@ interface Drag {
   fromIndex: number;
   droppable: boolean;
   cloneCreated: boolean;
+  sourceWidth: number;
 }
 
 mod.directive('dragSortableItem', () => {
@@ -82,12 +91,16 @@ mod.directive('dragSortableItem', () => {
       }, true);
 
       element.on('selectstart', function() { this.dragDrop(); } ); // IE9 support hack
-      element.on('dragstart', event => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index)));
+      element.on('dragstart', event => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index, element.width())));
       element.on('dragend', event => $scope.$apply(() => dragSortable.drop()));
       element.on('dragover', event => {
         if (dragSortable.drag) {
           event.preventDefault();
-          $scope.$apply(() => dragSortable.overDroppable($scope.$index));
+
+          const originalEvent = (<DragEvent> event.originalEvent);
+          const mousePosition = originalEvent.clientX - element.offset().left;
+
+          $scope.$apply(() => dragSortable.overDroppable($scope.$index, element.width(), mousePosition));
         }
       });
       element.on('dragleave', event => $scope.$apply(() => dragSortable.notOverDroppable()));
