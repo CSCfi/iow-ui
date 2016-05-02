@@ -5,9 +5,10 @@ export type FrameFn = (data: any) => Frame;
 
 const inScheme = { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme', '@type': '@id' };
 const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
+const comment = { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' };
 
 const coreContext = {
-  comment: { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' },
+  comment,
   created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'http://www.w3.org/2001/XMLSchema#dateTime' },
   definition: {'@id': 'http://www.w3.org/2004/02/skos/core#definition', '@container': '@language' },
   foaf: 'http://xmlns.com/foaf/0.1/',
@@ -166,7 +167,7 @@ export function fintoConceptFrame(data: any, id: Url): Frame {
     uri: null,
     type: null,
     graph: null,
-    comment: { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' },
+    comment,
     inScheme
   });
 
