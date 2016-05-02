@@ -34,6 +34,10 @@
 
 <editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" context="ctrl.model" disable="!ctrl.inUnstableState"></editable-subject-select>
 
+<editable data-title="Editorial note" context="ctrl.model">
+  <textarea id="editorialNote" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.predicate.editorialNote"></textarea>
+</editable>
+
 <h4 translate>Additional information</h4>
 
 <usage-panel entity="ctrl.predicate" context="ctrl.model"></usage-panel>

@@ -632,6 +632,7 @@ export class Class extends AbstractClass {
   equivalentClasses: Uri[];
   constraint: Constraint;
   version: Urn;
+  editorialNote: Localizable;
 
   unsaved: boolean = false;
   external: boolean = false;
@@ -654,6 +655,7 @@ export class Class extends AbstractClass {
     this.equivalentClasses = deserializeList(graph.equivalentClass, equivalentClass => new Uri(equivalentClass, context));
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
+    this.editorialNote = deserializeLocalizable(graph.editorialNote);
   }
 
   addProperty(property: Property): void {
@@ -687,7 +689,8 @@ export class Class extends AbstractClass {
       subject: serializeOptional(this.subject, clone),
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
       constraint: serializeOptional(this.constraint, clone, constraint => constraint.items.length > 0 || hasLocalization(constraint.comment)),
-      identifier: this.version
+      identifier: this.version,
+      editorialNote: serializeLocalizable(this.editorialNote)
     };
   }
 }
@@ -805,6 +808,7 @@ export class Property extends GraphNode {
   pattern: string;
   predicateType: Type;
   classIn: Uri[];
+  editorialNote: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -850,6 +854,7 @@ export class Property extends GraphNode {
     this.in = deserializeList<string>(graph.in);
     this.hasValue = graph.hasValue;
     this.pattern = graph.pattern;
+    this.editorialNote = deserializeLocalizable(graph.editorialNote);
   }
 
   get predicateId() {
@@ -943,7 +948,8 @@ export class Property extends GraphNode {
       in: serializeList(this.in),
       hasValue: this.hasValue,
       pattern: this.pattern,
-      classIn: serializeList(this.classIn, classId => classId.uri)
+      classIn: serializeList(this.classIn, classId => classId.uri),
+      editorialNote: serializeLocalizable(this.editorialNote)
     };
   }
 }
@@ -1002,6 +1008,7 @@ export class Predicate extends AbstractPredicate {
   subject: FintoConcept|ConceptSuggestion;
   equivalentProperties: Uri[];
   version: Urn;
+  editorialNote: Localizable;
 
   unsaved: boolean = false;
   external: boolean = false;
@@ -1019,6 +1026,7 @@ export class Predicate extends AbstractPredicate {
     }
     this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
     this.version = graph.identifier;
+    this.editorialNote = deserializeLocalizable(graph.editorialNote);
   }
 
   serializationValues(clone: boolean): {} {
@@ -1030,7 +1038,8 @@ export class Predicate extends AbstractPredicate {
       subPropertyOf: this.subPropertyOf && this.subPropertyOf.uri,
       subject: serializeOptional(this.subject, clone),
       equivalentProperty: serializeList(this.equivalentProperties, equivalentProperty => equivalentProperty.uri),
-      identifier: this.version
+      identifier: this.version,
+      editorialNote: serializeLocalizable(this.editorialNote)
     };
   }
 }

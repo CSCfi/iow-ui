@@ -23,7 +23,8 @@ const coreContext = {
   prefLabel: { '@id': 'http://www.w3.org/2004/02/skos/core#prefLabel', '@container': '@language' },
   prov: "http://www.w3.org/ns/prov#",
   title: { '@id': 'http://purl.org/dc/terms/title', '@container': '@language' },
-  versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' }
+  versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' },
+  editorialNote: { '@id': 'http://www.w3.org/2004/02/skos/core#editorialNote', '@container': '@language' }
 };
 
 const predicateContext = Object.assign({}, coreContext, {

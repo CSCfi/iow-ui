@@ -31,6 +31,10 @@
 
 <editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" context="ctrl.model" disable="!ctrl.inUnstableState"></editable-subject-select>
 
+<editable data-title="Editorial note" context="ctrl.model">
+  <textarea id="editorialNote" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.class.editorialNote"></textarea>
+</editable>
+
 <div ng-show="ctrl.class.properties.length > 0">
   <h4>{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
 
