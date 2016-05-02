@@ -104,7 +104,7 @@ declare module Backbone {
     /**
      * Do not use, prefer TypeScript's extend functionality.
      **/
-    private static extend(properties: any, classProperties?: any): any;
+    static extend(properties: any, classProperties?: any): any;
 
     attributes: any;
     changed: any[];
@@ -181,7 +181,7 @@ declare module Backbone {
     /**
      * Do not use, prefer TypeScript's extend functionality.
      **/
-    private static extend(properties: any, classProperties?: any): any;
+    static extend(properties: any, classProperties?: any): any;
 
     model: new (...args:any[]) => TModel;
     models: TModel[];

@@ -354,7 +354,8 @@ function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia
     width: element.width() || 100,
     height: element.height() || 100,
     model: graph,
-    linkPinning: false
+    linkPinning: false,
+    snapLinks: false
   });
 
   return {graph, paper};
@@ -521,7 +522,7 @@ function createCells($scope: IScope, languageService: LanguageService, context: 
   }
 
   const addClasses = () => {
-    return forEachInBackground(1, classes, klass => {
+    return forEachInBackground(10, classes, klass => {
       const attributes: Property[] = [];
 
       for (const property of klass.properties) {
@@ -537,7 +538,7 @@ function createCells($scope: IScope, languageService: LanguageService, context: 
   };
 
   const addAssociations = () => {
-    return forEachInBackground(1, associations, association => {
+    return forEachInBackground(10, associations, association => {
       graph.addCell(createAssociation($scope, languageService, context, association, showCardinality));
     });
   };
@@ -557,6 +558,30 @@ function formatCardinality(property: Property) {
     return `${min || '0'}..${max || '*'}`;
   }
 }
+
+const withoutUnusedMarkupLink = joint.dia.Link.extend({
+  markup: [
+    '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
+    '<path class="marker-target" fill="black" stroke="black" d="M 0 0 0 0"/>',
+    '<path class="connection-wrap" d="M 0 0 0 0"/>',
+    '<g class="labels"/>',
+    '<g class="marker-vertices"/>'
+  ].join(''),
+
+  toolMarkup: ''
+});
+
+
+const withoutUnusedMarkupClass = joint.shapes.uml.Class.extend({
+  markup: [
+    '<g class="rotatable">',
+    '<g class="scalable">',
+    '<rect class="uml-class-name-rect"/><rect class="uml-class-attrs-rect"/>',
+    '</g>',
+    '<text class="uml-class-name-text"/><text class="uml-class-attrs-text"/>',
+    '</g>'
+  ].join('')
+});
 
 function createClass($scope: IScope, languageService: LanguageService, context: LanguageContext, klass: VisualizationClass, properties: Property[], showCardinality: boolean) {
 
@@ -584,7 +609,7 @@ function createClass($scope: IScope, languageService: LanguageService, context: 
 
   const propertyNames = getPropertyNames();
 
-  const classCell: any = new joint.shapes.uml.Class({
+  const classCell: any = new withoutUnusedMarkupClass({
     id: klass.id.uri,
     size: size(propertyNames),
     name: getName(),
@@ -615,7 +640,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, con
     return languageService.translate(data.association.label, context);
   }
 
-  const associationCell: any = new joint.dia.Link({
+  const associationCell: any = new withoutUnusedMarkupLink({
     source: { id: data.klass.id.uri },
     target: { id: data.association.valueClass.uri },
     connector: { name: 'normal' },
