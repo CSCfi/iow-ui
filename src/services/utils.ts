@@ -42,11 +42,11 @@ export function translate(data: Localizable, language: Language, languages?: Lan
     }
   }
 
-  if (!data || Object.values(data).length === 0) {
+  if (!data || Object.keys(data).length === 0) {
     return '';
   }
 
-  return localized(language, false) || _.find(_.map(languages || availableLanguages, lang => localized(lang, true)), _.identity) || Object.values(data)[0];
+  return localized(language, false) || _.find(_.map(languages || availableLanguages, lang => localized(lang, true)), _.identity) || localized(Object.keys(data)[0], true);
 }
 
 export function moveElement(array: any[], fromIndex: number, toIndex: number) {
