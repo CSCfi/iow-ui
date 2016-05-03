@@ -478,7 +478,7 @@ modal-body {
     margin: 0;
     padding: 8px 7px;
     top: 75px;
-    background-color: rgba(231,231,231,0.9);
+    background-color: $brand-accent-light;
     border: none;
     line-height: 0.6;
   }
@@ -804,7 +804,7 @@ modal-body {
       border: 1px solid $gray-light;
       margin-bottom: 10px;
       padding-left: 10px;
-      box-shadow: 2px 2px 2px #$brand-accent-dark;
+      box-shadow: 2px 2px 2px $brand-accent-dark;
 
       &.add-new {
         color: #333;
