@@ -479,12 +479,14 @@ modal-body {
     padding: 8px 7px;
     top: 75px;
     background-color: $brand-accent-light;
-    border: none;
+    border: 1px solid $brand-accent-dark;
     line-height: 0.6;
   }
 
   .button:hover {
-    background-color: $enabledColor;
+    color: #333;
+    background-color: $brand-accent-dark;
+    border: 1px solid $brand-accent-dark;
     cursor: pointer;
   }
 
