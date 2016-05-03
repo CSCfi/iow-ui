@@ -348,7 +348,7 @@ export class EntityLoader {
 
   createAttribute(modelPromise: IPromise<Model>, details: AttributeDetails): IPromise<Attribute> {
     return this.createPredicate<Attribute>(modelPromise, 'attribute', details, attribute => {
-      attribute.dataType = details.dataType;
+      attribute.dataType = details.dataType || 'xsd:string';
       return this.$q.when();
     });
   }
