@@ -815,7 +815,6 @@ modal-body {
       }
 
       &.selected {
-        color: #333;
         background-color: $brand-accent-light;
         border: 1px solid $brand-accent-dark;
       }
@@ -826,7 +825,8 @@ modal-body {
       }
 
       &.disabled {
-        background-color: $gray-light;
+        background-color: whitesmoke;
+        color: #a5a5a5;
         cursor: not-allowed;
       }
 
