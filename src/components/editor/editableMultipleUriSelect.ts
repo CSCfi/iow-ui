@@ -66,7 +66,7 @@ class EditableMultipleUriSelectController {
   parser = createParser(() => this.model);
   formatter = createFormatter();
   placeholder = placeholderText(this.gettextCatalog);
-  link = (uri: Uri) => this.model.linkTo({ type: this.type, id: uri });
+  link = (uri: Uri) => this.model.linkTo({ type: this.type, id: uri }, true);
 
   isEditing: () => boolean;
   addUri: (uri: Uri) => void;

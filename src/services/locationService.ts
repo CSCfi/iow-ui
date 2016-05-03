@@ -3,10 +3,10 @@ import { Model, Group, Localizable } from './entities';
 export interface Location {
   localizationKey?: string;
   label?: Localizable;
-  iowUrl?(): string;
+  iowUrl?(href: boolean): string;
 }
 
-const frontPage = {localizationKey: 'Front page', iowUrl: () => '/'};
+const frontPage = { localizationKey: 'Front page', iowUrl: (href: boolean) => (href ? '#' : '') + '/' };
 
 export class LocationService {
   location: Location = [frontPage];
@@ -19,7 +19,7 @@ export class LocationService {
   atModel(model: Model, selection: Location): void {
     if (model) {
       if (model.unsaved) {
-        this.changeLocation([model.group, {localizationKey: `New ${model.normalizedType} creation`}]);
+        this.changeLocation([model.group, { localizationKey: `New ${model.normalizedType} creation` }]);
       } else {
         if (selection) {
           this.changeLocation([model.group, model, selection]);

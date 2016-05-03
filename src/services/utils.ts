@@ -284,7 +284,7 @@ export function isModalCancel(err: any) {
 }
 
 function normalizeUrl(url: string): string {
-  return url.replace(/:/g, '%3A').replace(/&property.*/, '');
+  return url.replace(/^#/, '').replace(/:/g, '%3A').replace(/&property.*/, '');
 }
 
 export function isDifferentUrl(lhs: string, rhs: string): boolean {

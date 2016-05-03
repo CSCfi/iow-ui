@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
-import { DefaultUser, internalUrl } from '../../services/entities';
+import { DefaultUser, groupUrl } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { LocationService } from '../../services/locationService';
 import { module as mod }  from './module';
@@ -34,6 +34,6 @@ class UserController {
   }
 
   groupUrl(id: Uri) {
-    return internalUrl(id, ['group']);
+    return groupUrl(id.uri, true);
   }
 }

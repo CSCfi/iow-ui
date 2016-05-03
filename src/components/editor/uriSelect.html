@@ -1,2 +1,7 @@
-<input id="{{ctrl.id}}" type="text" class="form-control" uri-input ng-required="ctrl.mandatory" model="ctrl.model" ng-model="ctrl.uri" ng-blur="ctrl.handleChange()"/>
+<pre>{{ctrl.model.id.uri | json}}</pre>
+
+<!--<uri-input-autocomplete>-->
+  <input id="{{ctrl.id}}" type="text" class="form-control" uri-input ng-required="ctrl.mandatory" model="ctrl.model" ng-model="ctrl.uri" ng-blur="ctrl.handleChange()"/>
+<!--</uri-input-autocomplete>-->
+
 <button ng-if="formController.editing" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectUri()">{{('Choose ' + ctrl.type) | translate}}</button>
