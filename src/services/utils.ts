@@ -2,6 +2,7 @@ import INgModelController = angular.INgModelController;
 import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from './entities';
 import { Uri } from './uri';
 import { Language } from '../components/contracts';
+import from = require('core-js/fn/array/from');
 
 // language codes according to ISO_639-1 specification
 export const availableLanguages: Language[] =
@@ -49,9 +50,35 @@ export function translate(data: Localizable, language: Language, languages?: Lan
   return localized(language, false) || _.find(_.map(languages || availableLanguages, lang => localized(lang, true)), _.identity) || localized(Object.keys(data)[0], true);
 }
 
-export function moveElement(array: any[], fromIndex: number, toIndex: number) {
+export function moveElement<T>(array: T[], fromIndex: number, toIndex: number, indexChangedCb?: (item: T, index: number) => void) {
   const value = array.splice(fromIndex, 1);
   array.splice(toIndex, 0, value[0]);
+
+  if (indexChangedCb) {
+    indexChangedCb(array[toIndex], toIndex);
+
+    if (fromIndex < toIndex) {
+      for (let i = fromIndex; i < toIndex; i++) {
+        indexChangedCb(array[i], i);
+      }
+    } else if (fromIndex > toIndex) {
+      for (let i = toIndex + 1; i <= fromIndex; i++) {
+        indexChangedCb(array[i], i);
+      }
+    }
+  }
+}
+
+export function swapElements<T>(array: T[], index1: number, index2: number, indexChangedCb?: (item: T, index: number) => void) {
+
+  const temp = array[index1];
+  array[index1] = array[index2];
+  array[index2] = temp;
+
+  if (indexChangedCb) {
+    indexChangedCb(array[index1], index1);
+    indexChangedCb(array[index2], index2);
+  }
 }
 
 export function resetWith<T>(array: T[], toResetWith: T[]) {

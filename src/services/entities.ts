@@ -8,7 +8,8 @@ import {
   normalizeSelectionType,
   containsAny,
   normalizeModelType,
-  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity
+  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity, swapElements,
+  moveElement
 } from './utils';
 import Moment = moment.Moment;
 import { Frame } from './frames';
@@ -16,7 +17,7 @@ import { FrameFn } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
-import { comparingDate } from './comparators';
+import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
 import { Language } from '../components/contracts';
 
@@ -646,7 +647,15 @@ export class Class extends AbstractClass {
       this.scopeClass = new Uri(graph.scopeClass, context);
     }
     this.state = graph.versionInfo;
-    this.properties = deserializeEntityList(graph.property, context, frame, Property);
+
+    this.properties = deserializeEntityList(graph.property, context, frame, Property)
+      .sort(comparingNumber<Property>(property => property.index));
+
+    // normalize indices
+    for (let i = 0; i < this.properties.length; i++) {
+      this.properties[i].index = i;
+    }
+
     if (graph.subject) {
       this.subject = new Uri(graph.subject['@id']).isUrn()
         ? new ConceptSuggestion(graph.subject, context, frame)
@@ -656,6 +665,18 @@ export class Class extends AbstractClass {
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
+  }
+
+  movePropertyUp(property: Property) {
+    this.swapProperties(property.index, property.index - 1);
+  }
+
+  movePropertyDown(property: Property) {
+    this.swapProperties(property.index, property.index + 1);
+  }
+
+  private swapProperties(index1: number, index2: number) {
+    swapElements(this.properties, index1, index2, (property, index) => property.index = index);
   }
 
   addProperty(property: Property): void {

@@ -86,16 +86,12 @@ export class ClassFormController {
   movePropertyUp($event: JQueryEventObject, property: Property) {
     $event.preventDefault();
     $event.stopPropagation();
-    const previous = _.find(this.class.properties, p => p.index === property.index - 1);
-    property.index--;
-    previous.index++;
+    this.class.movePropertyUp(property);
   }
 
   movePropertyDown($event: JQueryEventObject, property: Property) {
     $event.preventDefault();
     $event.stopPropagation();
-    const next = _.find(this.class.properties, p => p.index === property.index + 1);
-    property.index++;
-    next.index--;
+    this.class.movePropertyDown(property);
   }
 }
