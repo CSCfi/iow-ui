@@ -164,15 +164,9 @@ export class ClassService {
         }
 
         if (type === 'attribute' && !property.dataType) {
-          if (predicate instanceof Attribute) {
-            property.dataType = predicate.dataType;
-          } else {
-            property.dataType = 'xsd:string';
-          }
-        } else if (type === 'assocation' && !property.valueClass) {
-          if (predicate instanceof Association) {
-            property.valueClass = predicate && predicate.valueClass;
-          }
+          property.dataType = (predicate instanceof Attribute) ? predicate.dataType : 'xsd:string';
+        } else if (type === 'assocation' && !property.valueClass && predicate instanceof Association) {
+          property.valueClass = predicate.valueClass;
         }
 
         property.state = 'Unstable';
