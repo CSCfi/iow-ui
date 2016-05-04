@@ -5,6 +5,7 @@ import IScope = angular.IScope;
 import { DataType } from '../../services/dataTypes';
 import { resolveValidator } from './validators';
 import { module as mod }  from './module';
+import { LanguageService } from '../../services/languageService';
 
 interface DataTypeInputAttributes extends IAttributes {
   datatypeInput: DataType;
@@ -16,7 +17,7 @@ export function placeholderText(dataType: DataType, gettextCatalog: gettextCatal
   return validator.format ? placeholder + ` (${validator.format})` : placeholder;
 };
 
-mod.directive('datatypeInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
+mod.directive('datatypeInput', /* @ngInject */ (languageService: LanguageService, gettextCatalog: gettextCatalog) => {
   return {
     restrict: 'EA',
     require: 'ngModel',
@@ -25,8 +26,12 @@ mod.directive('datatypeInput', /* @ngInject */ (gettextCatalog: gettextCatalog) 
         throw new Error('Data type must be defined');
       }
 
+      const setPlaceholder = () => element.attr('placeholder', placeholderText(attributes.datatypeInput, gettextCatalog));
+
+      $scope.$watch(() => languageService.UILanguage, setPlaceholder);
+
       function initialize(dataType: DataType, oldDataType: DataType) {
-        element.attr('placeholder', placeholderText(dataType, gettextCatalog));
+        setPlaceholder();
 
         if (oldDataType) {
           delete ngModel.$validators[oldDataType];

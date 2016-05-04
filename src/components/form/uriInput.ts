@@ -8,6 +8,7 @@ import { Model } from '../../services/entities';
 import { isValidUri, isValidUrl } from './validators';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
+import { LanguageService } from '../../services/languageService';
 
 type UriInputType = 'required-namespace' | 'free-url';
 
@@ -64,7 +65,7 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
   return result;
 }
 
-mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
+mod.directive('uriInput', /* @ngInject */ (languageService: LanguageService, gettextCatalog: gettextCatalog) => {
   return {
     scope: {
       model: '='
@@ -74,7 +75,9 @@ mod.directive('uriInput', /* @ngInject */ (gettextCatalog: gettextCatalog) => {
     link($scope: UriInputScope, element: JQuery, attributes: UriInputAttributes, modelController: INgModelController) {
 
       if (!attributes['placeholder']) {
-        element.attr('placeholder', placeholderText(gettextCatalog));
+        $scope.$watch(() => languageService.UILanguage, () => {
+          element.attr('placeholder', placeholderText(gettextCatalog));
+        });
       }
 
       modelController.$parsers.push(createParser(() => $scope.model));

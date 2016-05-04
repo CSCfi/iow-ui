@@ -9,6 +9,7 @@ import { module as mod }  from './module';
 import { DataType } from '../../services/dataTypes';
 import { resolveValidator } from '../form/validators';
 import { placeholderText } from '../form/dataTypeInput';
+import { LanguageService } from '../../services/languageService';
 
 mod.directive('editableMultipleDataTypeInput', () => {
   return {
@@ -37,10 +38,13 @@ class EditableMultipleDataTypeInputController {
   placeholder: string;
 
   /* @ngInject */
-  constructor($scope: IScope, gettextCatalog: gettextCatalog) {
+  constructor($scope: IScope, languageService: LanguageService, gettextCatalog: gettextCatalog) {
     $scope.$watch(() => this.inputType, type => {
       this.validators = { [type]: resolveValidator(type) };
-      this.placeholder = placeholderText(type, gettextCatalog);
+
+      $scope.$watch(() => languageService.UILanguage, () => {
+        this.placeholder = placeholderText(type, gettextCatalog);
+      });
     });
   }
 }

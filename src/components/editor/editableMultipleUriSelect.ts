@@ -17,6 +17,7 @@ import { module as mod }  from './module';
 import { createValidators, createParser, createFormatter, placeholderText } from '../form/uriInput';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
+import { LanguageService } from '../../services/languageService';
 
 mod.directive('editableMultipleUriSelect', () => {
   return {
@@ -65,16 +66,22 @@ class EditableMultipleUriSelectController {
   validators = createValidators(null, () => this.model);
   parser = createParser(() => this.model);
   formatter = createFormatter();
-  placeholder = placeholderText(this.gettextCatalog);
+  placeholder: string;
   link = (uri: Uri) => this.model.linkTo({ type: this.type, id: uri }, true);
 
   isEditing: () => boolean;
   addUri: (uri: Uri) => void;
 
   /* @ngInject */
-  constructor(private gettextCatalog: gettextCatalog,
+  constructor($scope: IScope,
+              private languageService: LanguageService,
+              private gettextCatalog: gettextCatalog,
               private searchPredicateModal: SearchPredicateModal,
               private searchClassModal: SearchClassModal) {
+
+    $scope.$watch(() => languageService.UILanguage, () => {
+      this.placeholder = placeholderText(this.gettextCatalog);
+    });
   }
 
   selectUri() {
