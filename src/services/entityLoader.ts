@@ -161,7 +161,7 @@ export class EntityLoader {
 
   private createModel(type: Type, groupId: Uri, details: ModelDetails): IPromise<Model> {
     const result = this.loggedIn
-      .then(() => this.modelService.newModel(details.prefix, details.label['fi'], groupId, 'fi', type))
+      .then(() => this.modelService.newModel(details.prefix, details.label['fi'], groupId, ['fi', 'en'], type))
       .then(model => {
         setDetails(model, details);
 

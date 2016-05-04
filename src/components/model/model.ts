@@ -39,7 +39,7 @@ import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
 import { MaintenanceModal } from '../maintenance';
-import { Show, ChangeNotifier, ChangeListener } from './../contracts';
+import { Show, ChangeNotifier, ChangeListener, Language } from './../contracts';
 import { Uri } from '../../services/uri';
 import { comparingLocalizable } from '../../services/comparators';
 import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
@@ -494,8 +494,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
   }
 
-  private updateNewModel(newModel: {prefix: string, label: string, groupId: Uri, type: Type}) {
-    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, this.languageService.getModelLanguage(this.model), newModel.type)
+  private updateNewModel(newModel: {prefix: string, label: string, groupId: Uri, language: Language[], type: Type}) {
+    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, newModel.language, newModel.type)
       .then(model => this.updateModel(model));
   }
 
@@ -577,8 +577,8 @@ class RouteData {
   }
 
   get newModel() {
-    if (this.params.label && this.params.prefix && this.params.group && this.params.type) {
-      return {label: this.params.label, prefix: this.params.prefix, groupId: this.params.group, type: this.params.type};
+    if (this.params.label && this.params.prefix && this.params.group && this.params.type && this.params.language) {
+      return {label: this.params.label, prefix: this.params.prefix, language: this.params.language, groupId: this.params.group, type: this.params.type};
     } else {
       return null;
     }

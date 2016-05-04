@@ -14,6 +14,7 @@ import { Group, ModelListItem, Type, LanguageContext } from '../../services/enti
 import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
+import { Language } from '../contracts';
 
 mod.directive('group', () => {
   return {
@@ -73,9 +74,9 @@ class GroupController extends EditableEntityController<Group> {
   }
 
   addModel(type: Type) {
-    this.addModelModal.open(this.groupId, type).then((result: {prefix: string, label: string}) => {
+    this.addModelModal.open(this.groupId, type).then((result: {prefix: string, label: string, language: Language[]}) => {
       this.$location.path('/model');
-      this.$location.search({prefix: result.prefix, label: result.label, group: this.groupId, type});
+      this.$location.search({prefix: result.prefix, label: result.label, language: result.language, group: this.groupId, type});
     });
   };
 

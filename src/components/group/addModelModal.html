@@ -9,6 +9,8 @@
       </div>
     </editable>
 
+    <editable-multiple-language-select title="Model languages" id="modelLanguage" ng-model="ctrl.language"></editable-multiple-language-select>
+
     <editable data-title="{{ctrl.type + ' label' | capitalize}}">
       <div class="input-group input-group-md">
         <input id="name" type="text" class="form-control" required string-input="modelLabel" ng-model="ctrl.label" />

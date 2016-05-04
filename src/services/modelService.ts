@@ -45,7 +45,7 @@ export class ModelService {
     return this.$http.delete(config.apiEndpointWithName('model'), { params: { id: id.uri } });
   }
 
-  newModel(prefix: string, label: string, groupId: Uri, lang: Language, type: Type): IPromise<Model> {
+  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: Type): IPromise<Model> {
     function mapEndpoint() {
       switch (type) {
         case 'library':
@@ -56,7 +56,15 @@ export class ModelService {
           throw new Error("Unsupported type: " + type);
       }
     }
-    return this.$http.get<GraphData>(config.apiEndpointWithName(mapEndpoint()), { params: {prefix, label: upperCaseFirst(label), lang, group: groupId.uri} })
+    return this.$http.get<GraphData>(config.apiEndpointWithName(mapEndpoint()), {
+      params: {
+        prefix,
+        label: upperCaseFirst(label),
+        lang: lang[0],
+        langList: lang.join(' '),
+        group: groupId.uri
+      }
+    })
       .then(response => this.entities.deserializeModel(response.data))
       .then((model: Model) => {
         model.unsaved = true;
