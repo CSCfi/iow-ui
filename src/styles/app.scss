@@ -267,7 +267,7 @@ ul.errors {
         background-color: white;
       }
     }
-  
+
   }
 
   ul.nav {
@@ -511,7 +511,7 @@ modal-body {
     text-align: center;
     line-height: 1;
     &:hover {
-      background-color: rgba(231,231,231,0.9);
+      background-color: $brand-accent-dark;
       cursor: default;
     }
   }
