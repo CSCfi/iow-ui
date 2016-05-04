@@ -9,9 +9,7 @@ import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
 import { createDefinedByExclusion } from '../../services/utils';
 import { Uri } from '../../services/uri';
-
 import { module as mod }  from './module';
-import IQService = angular.IQService;
 
 mod.directive('uriSelect', () => {
   return {
@@ -21,7 +19,8 @@ mod.directive('uriSelect', () => {
       model: '=',
       id: '@',
       afterSelected: '&',
-      mandatory: '='
+      mandatory: '=',
+      duplicate: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -51,10 +50,11 @@ class UriSelectController {
   id: string;
   afterSelected: ICompiledExpression;
   mandatory: boolean;
+  duplicate: (uri: Uri) => boolean;
 
   private change: Uri;
 
-  constructor($scope: IScope, private $q: IQService, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
+  constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
     $scope.$watch(() => this.uri, (current, previous) => {
       if (!!current && !current.equals(previous)) {
         this.change = current;

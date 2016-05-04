@@ -22,7 +22,7 @@
   </editable>
 
   <editable ng-if="ctrl.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
-    <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" model="ctrl.model"></uri-select>
+    <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" duplicate="ctrl.isConflictingValueClass" model="ctrl.model"></uri-select>
   </editable>
 
   <h4 translate

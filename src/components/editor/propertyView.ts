@@ -71,6 +71,9 @@ export class PropertyViewController {
   anyPropertiesOpen: () => boolean;
   isEditing: () => boolean;
 
+  isConflictingValueClass = (valueClass: Uri) =>
+    !!_.find(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass));
+
   /* @ngInject */
   constructor($scope: PropertyViewScope, $location: ILocationService, predicateService: PredicateService, private languageService: LanguageService) {
     $scope.$watch(() => this.isOpen, open => {

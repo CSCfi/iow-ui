@@ -67,17 +67,16 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   addProperty() {
     const exclude = combineExclusions<PredicateListItem>(
-      createExistsExclusion(collectProperties(this.editableInEdit.properties, property => property.predicateId.uri)),
+      createExistsExclusion(collectProperties(_.filter(this.editableInEdit.properties, p => p.isAttribute()), p => p.predicateId.uri)),
       createDefinedByExclusion(this.model)
     );
 
     this.searchPredicateModal.openForProperty(this.model, exclude)
       .then(result => {
         if (result instanceof Predicate && result.normalizedType === 'property') {
-          return this.choosePredicateTypeModal.open()
-            .then(type => {
-              return this.classService.newProperty(result, type, this.model);
-            });
+          return this.choosePredicateTypeModal.open().then(type => {
+            return this.classService.newProperty(result, type, this.model);
+          });
         } else {
           return this.classService.newProperty(result, result.normalizedType, this.model);
         }
