@@ -140,6 +140,14 @@ class SearchConceptController {
     });
   }
 
+  translateReference(reference: Reference) {
+    if (reference.local) {
+      return this.gettextCatalog.getString('Internal vocabulary');
+    } else {
+      return this.languageService.translate(reference.label, this.context);
+    }
+  }
+
   get referenceComparator() {
     return comparingBoolean<Reference>(reference => !reference.local)
       .andThen(comparingLocalizable<Reference>(this.languageService.UILanguage, reference => reference.label));

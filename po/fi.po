@@ -248,7 +248,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/editor/searchClassModal.html:72
 #: components/editor/searchConceptModal.html:88
 #: components/editor/searchPredicateModal.html:89
-#: components/group/addModelModal.html:22
+#: components/group/addModelModal.html:24
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:39
@@ -436,7 +436,7 @@ msgstr "Luo assosiaatio ja käytä"
 msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
-#: components/group/addModelModal.html:23
+#: components/group/addModelModal.html:25
 #: components/model/addRelationModal.html:21
 #: components/model/addRequireModal.html:31
 msgid "Create new"
@@ -883,6 +883,10 @@ msgstr "Ryhmän sisäiset sivut"
 #: translations/titles.html:47
 msgid "Internal group page info"
 msgstr "Kohdealueen ryhmän sisäiset sivut"
+
+#: translations/misc.html:166
+msgid "Internal vocabulary"
+msgstr "Sisäinen käsitteistö"
 
 #: components/frontPage.html:5
 msgid "Interoperability method"

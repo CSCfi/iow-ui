@@ -249,7 +249,7 @@ msgstr ""
 #: components/editor/searchClassModal.html:72
 #: components/editor/searchConceptModal.html:88
 #: components/editor/searchPredicateModal.html:89
-#: components/group/addModelModal.html:22
+#: components/group/addModelModal.html:24
 #: components/model/addRelationModal.html:20
 #: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:39
@@ -436,7 +436,7 @@ msgstr ""
 msgid "Create and use attribute"
 msgstr ""
 
-#: components/group/addModelModal.html:23
+#: components/group/addModelModal.html:25
 #: components/model/addRelationModal.html:21
 #: components/model/addRequireModal.html:31
 msgid "Create new"
@@ -870,6 +870,10 @@ msgstr ""
 
 #: translations/titles.html:47
 msgid "Internal group page info"
+msgstr ""
+
+#: translations/misc.html:166
+msgid "Internal vocabulary"
 msgstr ""
 
 #: components/frontPage.html:5

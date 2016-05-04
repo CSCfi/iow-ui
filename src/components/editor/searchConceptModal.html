@@ -21,7 +21,7 @@
           <div class="input-group input-group-lg">
             <div class="selectContainer">
               <select id="reference" class="form-control" ng-model="ctrl.selectedReference" ignore-dirty
-                      ng-options="reference | translateLabel: ctrl.context for reference in ctrl.references">
+                      ng-options="ctrl.translateReference(reference) for reference in ctrl.references">
                 <option value="" translate>All references</option>
               </select>
             </div>
@@ -53,7 +53,7 @@
 
               <editable title="Vocabulary" context="ctrl.context" autofocus>
                 <select id="referenceSelection" class="form-control" required ng-model="ctrl.selection.reference"
-                        ng-options="reference | translateLabel: ctrl.context for reference in ctrl.selectableReferences">
+                        ng-options="ctrl.translateReference(reference) for reference in ctrl.selectableReferences">
                 </select>
               </editable>
 
