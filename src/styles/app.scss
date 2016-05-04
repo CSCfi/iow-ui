@@ -11,7 +11,7 @@ $gray:                  #6f6f6f;
 $gray-light:            lighten($gray-base, 60%);
 $gray-lighter:          lighten($gray-base, 93.5%);
 
-$brand-primary:         #3F51B5;
+$brand-primary:         #375e97;
 $brand-success:         #43ac6a;
 $brand-info:            #5bc0de;
 $brand-warning:         #E99002;
@@ -20,8 +20,9 @@ $brand-danger:          #D32F2F;
 $navbar-margin-bottom:  0 !default;
 $navbar-default-bg:     $brand-primary !default;
 
-$brand-accent-light:    #E8EAF6;
-$brand-accent-dark:     #C5CAE9;
+$brand-accent-lighter:  #ebeff2;
+$brand-accent-light:    #7e9cad;
+$brand-accent-dark:     #375e97;
 
 @import './mixin';
 @import '../vendor/variables';
@@ -69,15 +70,15 @@ $footer-height: 50px;
 }
 
 .btn-default {
-  color: #333;
+  color: white;
   background-color: $brand-accent-light;
-  border: 1px solid $brand-accent-dark;
+  border: 1px solid $brand-accent-light;
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active {
-  color: #333;
+  color: white;
   background-color: $brand-accent-dark;
-  border: 1px solid $brand-accent-dark;
+  border: 1px solid $brand-accent-light;
 }
 
 .multi-input {
@@ -257,8 +258,16 @@ ul.errors {
 
       > a {
         padding: 10px 0 0 0;
+        background-color: $brand-accent-lighter;
       }
     }
+
+    li.active {
+      > a {
+        background-color: white;
+      }
+    }
+  
   }
 
   ul.nav {
@@ -479,12 +488,13 @@ modal-body {
     padding: 8px 7px;
     top: 75px;
     background-color: $brand-accent-light;
-    border: 1px solid $brand-accent-dark;
+    border: 1px solid $brand-accent-light;
     line-height: 0.6;
+    color: white;
   }
 
   .button:hover {
-    color: #333;
+    color: white;
     background-color: $brand-accent-dark;
     border: 1px solid $brand-accent-dark;
     cursor: pointer;
@@ -543,7 +553,7 @@ modal-body {
     }
     &.selected {
       .uml-class-name-rect {
-        fill: #B53F51;
+        fill: #c2606e;
       }
     }
   }
@@ -590,7 +600,7 @@ ajax-loading-indicator-small {
 }
 
 .component-header {
-  background-color: #f5f5f5;
+  background-color: $brand-accent-lighter;
   padding: 15px;
   border-bottom: solid 1px #ddd;
   font-size: 26px;
@@ -600,7 +610,7 @@ ajax-loading-indicator-small {
 }
 
 .main-header {
-  background-color: #f7f7f7;
+  background-color: $brand-accent-lighter;
   padding: 5px 0 5px 5px;
 
   h2 {
@@ -620,10 +630,6 @@ ajax-loading-indicator-small {
 .model-header {
   @extend .main-header;
   cursor: pointer;
-
-  h2:hover {
-    color: $brand-primary;
-  }
 }
 
 .main-editable-content {
@@ -706,12 +712,12 @@ ajax-loading-indicator-small {
 }
 
 .navbar-default .navbar-nav > li > a:hover {
-  background-color: #303F9F;
+  background-color: $brand-accent-dark;
   text-decoration: none;
 }
 
 .navbar-right .navbar-btn button.btn:hover, .navbar-right .navbar-btn button.btn:focus {
-  background-color: #303F9F;
+  background-color: $brand-accent-dark;
   text-decoration: none;
   color: white;
 }
@@ -806,16 +812,16 @@ modal-body {
       border: 1px solid $gray-light;
       margin-bottom: 10px;
       padding-left: 10px;
-      box-shadow: 2px 2px 2px $brand-accent-dark;
+      box-shadow: 2px 2px 2px $brand-accent-light;
 
       &.add-new {
-        color: #333;
+        color: white;
         background-color: $brand-accent-light;
         border: 1px solid $brand-accent-dark;
       }
 
       &.selected {
-        background-color: $brand-accent-light;
+        background-color: $brand-accent-lighter;
         border: 1px solid $brand-accent-dark;
       }
 
@@ -873,9 +879,8 @@ a.accordion-toggle {
   h2 {
     margin: 5px;
   }
-
   border: none;
-
+  background-color: $brand-accent-lighter!important;
 }
 
 .point {
