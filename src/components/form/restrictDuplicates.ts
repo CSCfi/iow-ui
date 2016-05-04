@@ -28,7 +28,7 @@ mod.directive('restrictDuplicates', () => {
       ngModel.$validators['duplicate'] = value => {
 
         if (!!thisController.duplicateCheckingFunction) {
-          return thisController.duplicateCheckingFunction(value);
+          return !thisController.duplicateCheckingFunction(value);
         } else {
           const valuesToCheckAgainst = thisController.valuesToCheckAgainst;
 
