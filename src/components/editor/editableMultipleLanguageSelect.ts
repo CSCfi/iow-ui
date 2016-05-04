@@ -25,9 +25,7 @@ mod.directive('editableMultipleLanguageSelect', () => {
                                   data-title="{{ctrl.title}}" 
                                   ng-model="ctrl.ngModel" 
                                   validators="ctrl.validators" 
-                                  placeholder="ctrl.placeholder" 
-                                  parser="ctrl.parser" 
-                                  formatter="ctrl.formatter"
+                                  placeholder="ctrl.placeholder"
                                   required="true"
               </editable-multiple>`,
     controller: EditableMultipleLanguageSelectController
@@ -40,16 +38,11 @@ class EditableMultipleLanguageSelectController {
   id: string;
   title: string;
 
-  validators: IModelValidators;
+  validators = { languageCode: isValidLanguageCode };
   placeholder: string;
-  parser: IModelParser;
-  formatter: IModelFormatter;
 
   /* @ngInject */
   constructor(gettextCatalog: gettextCatalog) {
-    this.validators = { languageCode: isValidLanguageCode };
     this.placeholder = gettextCatalog.getString('Input') + ' ' + gettextCatalog.getString('language code') + '...';
-    this.formatter = value => value;
-    this.parser = value => value;
   }
 }
