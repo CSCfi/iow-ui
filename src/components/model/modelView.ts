@@ -99,24 +99,11 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   addRequire() {
     const language = this.languageService.getModelLanguage(this.model);
-    const alreadyAddedText = 'Already added';
 
     const existsExclude = (require: Require) => {
       for (const ns of this.editableInEdit.getNamespaces()) {
-        switch (ns.type) {
-          case NamespaceType.EXTERNAL:
-          case NamespaceType.MODEL:
-            if (ns.prefix === require.prefix || ns.url === require.namespace) {
-              return alreadyAddedText;
-            }
-            break;
-          case NamespaceType.TECHNICAL:
-            if ((ns.prefix === require.prefix && ns.url !== require.namespace)
-              || (ns.prefix !== require.prefix && ns.url === require.namespace)) {
-              return alreadyAddedText;
-            }
-            break;
-
+        if (ns.type !== NamespaceType.IMPLICIT_TECHNICAL && (ns.prefix === require.prefix || ns.url === require.namespace)) {
+          return 'Already added';
         }
       }
       return null;

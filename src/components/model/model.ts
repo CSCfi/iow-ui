@@ -389,7 +389,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     this.$q.all(
       _.chain(klass.properties)
         .map((property: Property) => property.predicate)
-        .filter((predicateId: Uri) => this.model.isNamespaceKnownAndOfType(predicateId.namespace, [NamespaceType.MODEL]))
+        .filter((predicateId: Uri) => this.model.isNamespaceKnownToBeModel(predicateId.namespace))
         .filter((predicateId: Uri) => !predicateIds.has(predicateId.uri))
         .map((predicateId: Uri) => this.assignPredicateToModel(predicateId))
         .value()

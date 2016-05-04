@@ -185,7 +185,7 @@ export class SearchPredicateController {
     } else if (item instanceof PredicateListItem) {
       this.cannotConfirm = this.exclude(item);
 
-      if (this.model.isNamespaceKnownAndOfType(item.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL])) {
+      if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.url)) {
         this.predicateService.getExternalPredicate(item.id, this.model).then(result => this.selection = result);
       } else {
         this.predicateService.getPredicate(item.id, this.model).then(result => this.selection = result);

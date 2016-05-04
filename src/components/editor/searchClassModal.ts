@@ -170,7 +170,7 @@ class SearchClassController {
     } else if (item instanceof ClassListItem) {
       this.cannotConfirm = this.exclude(item);
 
-      if (this.model.isNamespaceKnownAndOfType(item.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL])) {
+      if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.url)) {
         this.classService.getExternalClass(item.id, this.model).then(result => this.selection = result);
       } else {
         this.classService.getClass(item.id, this.model).then(result => this.selection = result);

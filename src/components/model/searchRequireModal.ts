@@ -67,9 +67,9 @@ class SearchRequireController {
   search() {
     if (this.requires) {
       this.searchResults = this.requires.filter(require =>
-        this.textFilter(require) &&
-        this.excludedFilter(require) &&
-        this.showTechnicalFilter(require)
+        this.textFilter(require)
+        && this.excludedFilter(require)
+        && this.showTechnicalFilter(require)
       );
 
       this.searchResults.sort(

@@ -319,23 +319,21 @@ export class Model extends AbstractModel {
 
   getNamespaces() {
     const namespaces: Namespace[] = [];
-    const nonTechnicalNamespacePrefixes = new Set<string>();
+    const requiredNamespacePrefixes = new Set<string>();
 
     namespaces.push(new Namespace(this.prefix, this.namespace, NamespaceType.MODEL));
-    nonTechnicalNamespacePrefixes.add(this.prefix);
+    requiredNamespacePrefixes.add(this.prefix);
 
     for (const require of this.requires) {
       namespaces.push(new Namespace(require.prefix, require.namespace, require.namespaceType));
-      if (!require.technical) {
-        nonTechnicalNamespacePrefixes.add(require.prefix);
-      }
+      requiredNamespacePrefixes.add(require.prefix);
     }
 
     for (const prefix of Object.keys(this.context)) {
-      if (!nonTechnicalNamespacePrefixes.has(prefix)) {
+      if (!requiredNamespacePrefixes.has(prefix)) {
         const value = this.context[prefix];
         if (typeof value === 'string') {
-          namespaces.push(new Namespace(prefix, value, NamespaceType.TECHNICAL));
+          namespaces.push(new Namespace(prefix, value, NamespaceType.IMPLICIT_TECHNICAL));
         }
       }
     }
@@ -385,6 +383,14 @@ export class Model extends AbstractModel {
     throw new Error('Namespace not found: ' + ns);
   }
 
+  isNamespaceKnownToBeNotModel(namespace: Url) {
+    return this.isNamespaceKnownAndOfType(namespace, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL, NamespaceType.IMPLICIT_TECHNICAL]);
+  }
+
+  isNamespaceKnownToBeModel(namespace: Url) {
+    return this.isNamespaceKnownAndOfType(namespace, [NamespaceType.MODEL]);
+  }
+
   isNamespaceKnownAndOfType(namespace: Url, types: NamespaceType[])  {
     for (const knownNamespace of this.getNamespaces()) {
       if (namespace === knownNamespace.url && containsAny(types, [knownNamespace.type])) {
@@ -400,7 +406,7 @@ export class Model extends AbstractModel {
       const typeArray: Type[] = normalizeAsArray<Type>(destination.type);
 
       if (id && !id.isUrn()) {
-        return this.isNamespaceKnownAndOfType(id.namespace, [NamespaceType.MODEL]) ? internalUrl(id, typeArray, href) : id.url;
+        return this.isNamespaceKnownToBeModel(id.namespace) ? internalUrl(id, typeArray, href) : id.url;
       } else {
         return null;
       }
@@ -440,7 +446,7 @@ export interface Destination {
 }
 
 export enum NamespaceType {
-  TECHNICAL, MODEL, EXTERNAL
+  IMPLICIT_TECHNICAL, TECHNICAL, MODEL, EXTERNAL
 }
 
 export class Namespace {

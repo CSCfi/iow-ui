@@ -36,7 +36,7 @@ class RequiresViewController {
 
   /* @ngInject */
   constructor($scope: IScope) {
-    $scope.$watch(() => this.model, model => this.technicalNamespaces = model.getNamespacesOfType(NamespaceType.TECHNICAL));
+    $scope.$watch(() => this.model, model => this.technicalNamespaces = model.getNamespacesOfType(NamespaceType.IMPLICIT_TECHNICAL));
   }
 
   open(require: Require) {

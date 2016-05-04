@@ -93,7 +93,7 @@ export class ClassService {
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
-        klass.external = model.isNamespaceKnownAndOfType(klass.definedBy.id.url, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
+        klass.external = model.isNamespaceKnownToBeNotModel(klass.definedBy.id.url);
         return klass;
       });
   }
@@ -184,7 +184,6 @@ export class ClassService {
   }
 
   getInternalOrExternalClass(id: Uri, model: Model) {
-    const external = model.isNamespaceKnownAndOfType(id.namespace, [NamespaceType.EXTERNAL, NamespaceType.TECHNICAL]);
-    return external ? this.getExternalClass(id, model) : this.getClass(id, model);
+    return model.isNamespaceKnownToBeNotModel(id.namespace) ? this.getExternalClass(id, model) : this.getClass(id, model);
   }
 }
