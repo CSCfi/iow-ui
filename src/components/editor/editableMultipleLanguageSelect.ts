@@ -1,9 +1,9 @@
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
+import { createValidators, placeholderText } from '../form/languageInput';
 import { Language } from '../contracts';
 import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
-import { isValidLanguageCode } from '../form/validators';
 
 mod.directive('editableMultipleLanguageSelect', () => {
   return {
@@ -32,13 +32,13 @@ class EditableMultipleLanguageSelectController {
   id: string;
   title: string;
 
-  validators = { languageCode: isValidLanguageCode };
+  validators = createValidators();
   placeholder: string;
 
   /* @ngInject */
   constructor($scope: IScope, languageService: LanguageService, gettextCatalog: gettextCatalog) {
     $scope.$watch(() => languageService.UILanguage, () => {
-      this.placeholder = gettextCatalog.getString('Input') + ' ' + gettextCatalog.getString('language code') + '...';
+      this.placeholder = placeholderText(gettextCatalog);
     });
   }
 }

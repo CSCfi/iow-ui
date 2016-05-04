@@ -18,6 +18,7 @@ import './idInput';
 import './localizedInput';
 import './modelLanguageChooser';
 import './nonEditable';
+import './languageInput';
 import './restrictDuplicates';
 import './stateSelect';
 import './submitErrorPanel';
