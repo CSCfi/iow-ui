@@ -9,7 +9,7 @@ import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './va
 import { module as mod }  from './module';
 
 interface LocalizedInputAttributes extends IAttributes {
-  localizedInput: string;
+  localizedInput: 'required' | 'label' | 'modelLabel' | 'free';
 }
 
 interface LocalizedInputScope extends IScope {
@@ -63,9 +63,9 @@ mod.directive('localizedInput', /* @ngInject */ (languageService: LanguageServic
         return val;
       });
 
-      ngModel.$validators['string'] = modelValue => {
-        return allLocalizations(isStringValid, modelValue);
-      };
+      if (attributes.localizedInput !== 'free') {
+        ngModel.$validators['string'] = modelValue => allLocalizations(isStringValid, modelValue);
+      }
 
       switch (attributes.localizedInput) {
         case 'required':
