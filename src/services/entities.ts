@@ -491,7 +491,7 @@ export class Reference extends GraphNode {
     this.comment = deserializeLocalizable(graph.comment);
   }
 
-  isLocal() {
+  get local() {
     return this.isOfType('collection');
   }
 

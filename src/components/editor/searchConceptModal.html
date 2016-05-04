@@ -27,7 +27,7 @@
             </div>
           </div>
 
-          <a ng-show="ctrl.selectedReference && !ctrl.selectedReference.isLocal()" ng-href="{{ctrl.selectedReference.href}}" target="_blank" translate>Browse vocabulary</a>
+          <a ng-show="ctrl.selectedReference && !ctrl.selectedReference.local" ng-href="{{ctrl.selectedReference.href}}" target="_blank" translate>Browse vocabulary</a>
         </div>
 
         <div class="col-md-4 search-results">

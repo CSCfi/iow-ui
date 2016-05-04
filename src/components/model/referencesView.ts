@@ -32,7 +32,7 @@ interface ReferencesViewScope extends IScope {
 class ReferencesViewController {
   model: Model;
   opened: {[key: string]: boolean} = {};
-  referenceComparator = (reference: Reference) => '' + (reference.isLocal() ? '0' : '1') + this.languageService.translate(reference.label, this.model);
+  referenceComparator = (reference: Reference) => '' + (reference.local ? '0' : '1') + this.languageService.translate(reference.label, this.model);
 
   /* @ngInject */
   constructor(private languageService: LanguageService) {

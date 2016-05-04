@@ -141,7 +141,7 @@ class SearchConceptController {
   }
 
   get referenceComparator() {
-    return comparingBoolean<Reference>(reference => !reference.isLocal())
+    return comparingBoolean<Reference>(reference => !reference.local)
       .andThen(comparingLocalizable<Reference>(this.languageService.UILanguage, reference => reference.label));
   }
 
@@ -244,7 +244,7 @@ class SearchConceptController {
 
   resolveInitialReference() {
     for (const reference of this.selectableReferences) {
-      if (reference.isLocal()) {
+      if (reference.local) {
         return reference;
       }
     }

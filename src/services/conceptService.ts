@@ -44,7 +44,7 @@ export class ConceptService {
 
     const result = [conceptSuggestions];
 
-    if (!reference.isLocal()) {
+    if (!reference.local) {
       const concepts = this.searchFintoConcepts(searchText, language, reference.vocabularyId)
         .then(suggestions => _.map(suggestions, mapResult));
 
