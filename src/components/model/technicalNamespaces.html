@@ -3,13 +3,13 @@
 <table class="table table-hover">
   <thead>
   <tr>
-    <th translate>Prefix</th>
+    <th class="prefix" translate>Prefix</th>
     <th translate>Namespace</th>
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="ns in ctrl.namespaces | limitTo : ctrl.limit">
-    <td>{{ns.prefix}}</td>
+  <tr ng-repeat="ns in ctrl.namespaces | limitTo : ctrl.limit" class="expandable-table">
+    <td class="prefix">{{ns.prefix}}</td>
     <td>{{ns.url}}</td>
   </tr>
   </tbody>

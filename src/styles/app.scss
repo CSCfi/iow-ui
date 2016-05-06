@@ -44,6 +44,22 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
+td.prefix, th.prefix {
+  width: 80px;
+}
+
+.expandable-table.ng-move, .expandable-table.ng-enter, .expandable-table.ng-leave {
+  transition: all linear 0.3s;
+}
+
+.expandable-table.ng-leave.ng-leave-active, .expandable-table.ng-move, .expandable-table.ng-enter {
+  opacity: 0;
+}
+
+.expandable-table.ng-leave, .expandable-table.ng-move.ng-move-active, .expandable-table.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
 table tfoot.expander {
   text-align: center;
   cursor: pointer;
