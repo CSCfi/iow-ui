@@ -26,6 +26,7 @@ import componentsModule from './components';
 import servicesModule from './services';
 
 import './styles/app.scss';
+import 'font-awesome/scss/font-awesome.scss';
 
 require('./vendor/modernizr');
 require('imports?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);

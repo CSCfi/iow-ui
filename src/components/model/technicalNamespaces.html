@@ -1,0 +1,21 @@
+<h4 translate>Technical namespaces</h4>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th translate>Prefix</th>
+    <th translate>Namespace</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="ns in ctrl.namespaces | limitTo : ctrl.limit">
+    <td>{{ns.prefix}}</td>
+    <td>{{ns.url}}</td>
+  </tr>
+  </tbody>
+  <tfoot class="expander" ng-if="ctrl.canExpand()">
+  <tr>
+    <td colspan="2" ng-click="ctrl.toggleExpand()"><i ng-class="ctrl.expanderClasses"></i></td>
+  </tr>
+  </tfoot>
+</table>

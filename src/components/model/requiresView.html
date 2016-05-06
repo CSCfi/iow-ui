@@ -24,27 +24,4 @@
       </editable>
     </div>
   </uib-accordion-group>
-
-  <uib-accordion-group is-open="technicalOpen">
-    <uib-accordion-heading>
-      <span accordion-chevron is-open="technicalOpen">{{'Technical namespaces' | translate}}</span>
-    </uib-accordion-heading>
-
-    <table ng-if="technicalOpen" class="table table-hover">
-      <thead>
-      <tr>
-        <th translate>Prefix</th>
-        <th translate>Namespace</th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="(prefix, namespace) in ctrl.technicalNamespaces">
-          <td>{{prefix}}</td>
-          <td>{{namespace}}</td>
-        </tr>
-      </tbody>
-    </table>
-
-  </uib-accordion-group>
 </uib-accordion>
-

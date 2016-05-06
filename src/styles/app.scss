@@ -44,6 +44,22 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
+table tfoot.expander {
+  text-align: center;
+  cursor: pointer;
+  font-size: medium;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+
+  td {
+    padding: 0;
+    border: 1px solid #ddd;
+    line-height: 1;
+  }
+}
+
 .glyphicon.info {
   color: $brand-primary;
   font-size: small;

@@ -1,8 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { Require, Model, NamespaceType } from '../../services/entities';
-
+import { Require, Model } from '../../services/entities';
 import { module as mod }  from './module';
 
 mod.directive('requiresView', () => {
@@ -32,12 +31,6 @@ interface RequiresViewScope extends IScope {
 class RequiresViewController {
   model: Model;
   opened: {[key: number]: boolean} = {};
-  technicalNamespaces: {[prefix: string]: string};
-
-  /* @ngInject */
-  constructor($scope: IScope) {
-    $scope.$watch(() => this.model, model => this.technicalNamespaces = model.getNamespacesOfType(NamespaceType.IMPLICIT_TECHNICAL));
-  }
 
   open(require: Require) {
     this.opened[this.model.requires.indexOf(require)] = true;

@@ -14,6 +14,7 @@ import './modelView';
 import './referencesView';
 import './requiresView';
 import './relationsView';
+import './technicalNamespaces';
 
 mod.service('addRelationModal', AddRelationModal);
 mod.service('addRequireModal', AddRequireModal);
