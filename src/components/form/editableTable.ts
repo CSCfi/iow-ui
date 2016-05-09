@@ -91,10 +91,16 @@ class EditableTableController<T> {
   orderBy = (value: T) => this.descriptor.orderBy(value);
 
   constructor($scope: IScope) {
-    $scope.$watchCollection(() => this.values, values => {
-      this.properties = this.descriptor.columnDescriptors(values);
-      this.visibleValues = values ? _.filter(values, this.filter).length : 0;
-    });
+
+    const init = () => {
+      if (this.values && this.descriptor) {
+        this.properties = this.descriptor.columnDescriptors(this.values);
+        this.visibleValues = this.values ? _.filter(this.values, this.filter).length : 0;
+      }
+    };
+
+    $scope.$watchCollection(() => this.values, init);
+    $scope.$watch(() => this.descriptor, init);
   }
 
   remove(value: T, index: number) {
