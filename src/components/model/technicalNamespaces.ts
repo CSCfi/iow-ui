@@ -37,8 +37,8 @@ class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
 
   columnDescriptors(values: Namespace[]): ColumnDescriptor<Namespace>[] {
     return [
-      new ColumnDescriptor('Prefix', (ns: Namespace) => ns.prefix, 'prefix'),
-      new ColumnDescriptor('Namespace', (ns: Namespace) => ns.url)
+      { headerName: 'Prefix', nameExtractor: ns => ns.prefix, cssClass: 'prefix' },
+      { headerName: 'Namespace', nameExtractor: ns => ns.url }
     ];
   }
 

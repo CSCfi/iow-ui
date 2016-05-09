@@ -55,9 +55,9 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
 
   columnDescriptors(requires: Require[]): ColumnDescriptor<Require>[] {
     return [
-      new ColumnDescriptor('Prefix', (require: Require) => require.prefix, 'prefix'),
-      new ColumnDescriptor('Require label', (require: Require) => this.languageService.translate(require.label, this.model)),
-      new ColumnDescriptor('Namespace', (require: Require) => require.namespace)
+      { headerName: 'Prefix', nameExtractor: require => require.prefix, cssClass: 'prefix' },
+      { headerName: 'Require label', nameExtractor: require => this.languageService.translate(require.label, this.model) },
+      { headerName: 'Namespace', nameExtractor: require => require.namespace }
     ];
   }
 

@@ -64,9 +64,10 @@ export abstract class TableDescriptor<T> {
   }
 }
 
-export class ColumnDescriptor<T> {
-  constructor(public headerName: string, public nameExtractor: (value: T) => string, public cssClass?: string) {
-  }
+export type ColumnDescriptor<T> = {
+  headerName: string,
+  nameExtractor: (value: T) => string,
+  cssClass?: string
 }
 
 const nonExpandedLimit = 2;
