@@ -12,7 +12,7 @@ import {
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { collectProperties, createExistsExclusion, combineExclusions } from '../../services/utils';
-import { SearchSchemeModal } from './searchSchemeModal';
+import { SearchReferenceModal } from './searchReferenceModal';
 import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from './model';
@@ -53,7 +53,7 @@ export class ModelViewController extends EditableEntityController<Model> {
               $log: ILogService,
               private modelService: ModelService,
               deleteConfirmationModal: DeleteConfirmationModal,
-              private searchSchemeModal: SearchSchemeModal,
+              private searchReferenceModal: SearchReferenceModal,
               private searchRequireModal: SearchRequireModal,
               private addRelationModal: AddRelationModal,
               private languageService: LanguageService,
@@ -85,7 +85,7 @@ export class ModelViewController extends EditableEntityController<Model> {
     const language = this.languageService.getModelLanguage(this.model);
     const vocabularies = collectProperties(this.editableInEdit.references, reference => reference.vocabularyId);
     const exclude = createExistsExclusion(vocabularies);
-    this.searchSchemeModal.open(language, exclude)
+    this.searchReferenceModal.open(language, exclude)
       .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
       .then((reference: Reference) => {
         this.editableInEdit.addReference(reference);

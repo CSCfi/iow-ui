@@ -9,16 +9,16 @@ import { Language } from '../contracts';
 
 const noExclude = (scheme: any) => <string> null;
 
-export class SearchSchemeModal {
+export class SearchReferenceModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
   open(language: Language, exclude: (scheme: any) => string = noExclude): angular.IPromise<any> {
     return this.$uibModal.open({
-      template: require('./searchSchemeModal.html'),
+      template: require('./searchReferenceModal.html'),
       size: 'medium',
-      controller: SearchSchemeController,
+      controller: SearchReferenceController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
@@ -29,7 +29,7 @@ export class SearchSchemeModal {
   }
 }
 
-class SearchSchemeController {
+class SearchReferenceController {
 
   searchResults: any[];
   schemes: any[];

@@ -1,6 +1,6 @@
 
 import { SearchRequireModal } from './searchRequireModal';
-import { SearchSchemeModal } from './searchSchemeModal';
+import { SearchReferenceModal } from './searchReferenceModal';
 import { AddRelationModal } from './addRelationModal';
 import { AddEditRequireModal } from './addEditRequireModal';
 
@@ -19,4 +19,4 @@ import './technicalNamespaces';
 mod.service('addRelationModal', AddRelationModal);
 mod.service('addEditRequireModal', AddEditRequireModal);
 mod.service('searchRequireModal', SearchRequireModal);
-mod.service('searchSchemeModal', SearchSchemeModal);
+mod.service('searchReferenceModal', SearchReferenceModal);
