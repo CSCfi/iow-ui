@@ -42,11 +42,15 @@ class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
     ];
   }
 
-  canEdit(value: Namespace): boolean {
+  orderBy(ns: Namespace) {
+    return ns.prefix;
+  }
+
+  canEdit(ns: Namespace): boolean {
     return false;
   }
 
-  canRemove(value: Namespace): boolean {
+  canRemove(ns: Namespace): boolean {
     return false;
   }
 }

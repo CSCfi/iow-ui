@@ -86,7 +86,7 @@ class ReferenceTableDescriptor extends TableDescriptor<Reference> {
   }
 
   orderBy(reference: Reference): any {
-    return this.languageService.translate(reference.label, this.model);
+    return reference.id;
   }
 
   filter(reference: Reference) {

@@ -90,6 +90,10 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
     ];
   }
 
+  orderBy(require: Require) {
+    return require.prefix;
+  }
+
   edit(require: Require) {
     this.addEditRequireModal.openEdit(require, this.model, this.languageService.getModelLanguage(this.model));
   }
