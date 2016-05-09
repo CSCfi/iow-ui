@@ -1,5 +1,5 @@
 <div ng-if="ctrl.isOpen">
-  <button ng-if="editableController.canModify()"
+  <button ng-if="editableController.isEditing()"
           type="button"
           class="btn btn-default pull-right"
           ng-disabled="!ctrl.inUnstableState"

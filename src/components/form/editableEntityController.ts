@@ -129,10 +129,6 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
     return !this.isEditing() && this.belongToGroup() && this.rights().edit();
   }
 
-  canModify(): boolean {
-    return this.isEditing() && this.rights().edit();
-  }
-
   getRemoveText(): string {
     return 'Delete ' + this.getEditable().normalizedType;
   }
