@@ -3,7 +3,7 @@ import IScope = angular.IScope;
 import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
 import { Require, Model } from '../../services/entities';
-import { AddRequireModal } from './addRequireModal';
+import { AddEditRequireModal } from './addEditRequireModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { isDefined } from '../../services/utils';
 import { Language } from '../contracts';
@@ -47,7 +47,7 @@ class SearchRequireController {
               private language: Language,
               private modelService: ModelService,
               private languageService: LanguageService,
-              private addRequireModal: AddRequireModal) {
+              private addEditRequireModal: AddEditRequireModal) {
 
     this.loadingResults = true;
 
@@ -105,7 +105,7 @@ class SearchRequireController {
   }
 
   createNew() {
-    this.addRequireModal.open(this.model, this.language)
+    this.addEditRequireModal.openAdd(this.model, this.language)
       .then(require => this.$uibModalInstance.close(require));
   }
 

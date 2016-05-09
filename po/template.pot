@@ -64,14 +64,13 @@ msgstr ""
 msgid "Add related resource"
 msgstr ""
 
-#: components/model/addRequireModal.html:3
 #: components/model/modelView.html:11
 msgid "Add require"
 msgstr ""
 
 #: components/editor/classForm.html:62
 #: components/editor/predicateForm.html:41
-#: components/model/modelForm.html:31
+#: components/model/modelForm.html:32
 msgid "Additional information"
 msgstr ""
 
@@ -250,8 +249,8 @@ msgstr ""
 #: components/editor/searchConceptModal.html:88
 #: components/editor/searchPredicateModal.html:89
 #: components/group/addModelModal.html:24
+#: components/model/addEditRequireModal.html:30
 #: components/model/addRelationModal.html:20
-#: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:39
 #: components/model/searchSchemeModal.html:27
 msgid "Cancel"
@@ -438,7 +437,6 @@ msgstr ""
 
 #: components/group/addModelModal.html:25
 #: components/model/addRelationModal.html:21
-#: components/model/addRequireModal.html:31
 msgid "Create new"
 msgstr ""
 
@@ -623,10 +621,6 @@ msgstr ""
 msgid "Delete relation"
 msgstr ""
 
-#: components/model/requiresView.html:10
-msgid "Delete require"
-msgstr ""
-
 #: translations/misc.html:47
 msgid "Delete shape"
 msgstr ""
@@ -689,6 +683,10 @@ msgstr ""
 
 #: translations/misc.html:41
 msgid "Edit in progress"
+msgstr ""
+
+#: translations/misc.html:168
+msgid "Edit require"
 msgstr ""
 
 #: translations/titles.html:3
@@ -856,7 +854,7 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
-#: components/model/requiresView.html:1
+#: translations/misc.html:169
 msgid "Imported requires"
 msgstr ""
 
@@ -1032,7 +1030,6 @@ msgstr ""
 msgid "Must be required namespace"
 msgstr ""
 
-#: components/model/requiresView.html:37
 #: translations/titles.html:50
 msgid "Namespace"
 msgstr ""
@@ -1081,6 +1078,10 @@ msgstr ""
 
 #: translations/misc.html:138
 msgid "Non specialized classes are not allowed"
+msgstr ""
+
+#: translations/misc.html:171
+msgid "None added"
 msgstr ""
 
 #: components/editor/subjectView.html:3
@@ -1167,7 +1168,6 @@ msgstr ""
 msgid "Predicate type info"
 msgstr ""
 
-#: components/model/requiresView.html:36
 #: translations/titles.html:51
 msgid "Prefix"
 msgstr ""
@@ -1262,6 +1262,10 @@ msgstr ""
 
 #: components/model/relationsView.html:1
 msgid "Related resources"
+msgstr ""
+
+#: translations/misc.html:167
+msgid "Remove"
 msgstr ""
 
 #: translations/titles.html:25
@@ -1511,7 +1515,7 @@ msgstr ""
 msgid "Superproperty info"
 msgstr ""
 
-#: components/model/requiresView.html:30
+#: translations/misc.html:170
 msgid "Technical namespaces"
 msgstr ""
 

@@ -68,12 +68,12 @@ msgstr "Lisää sanasto"
 msgid "Add related resource"
 msgstr "Lisää linkki"
 
-#: components/model/addRequireModal.html:3 components/model/modelView.html:11
+#: components/model/modelView.html:11
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
 #: components/editor/classForm.html:62 components/editor/predicateForm.html:41
-#: components/model/modelForm.html:31
+#: components/model/modelForm.html:32
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -249,8 +249,8 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/editor/searchConceptModal.html:88
 #: components/editor/searchPredicateModal.html:89
 #: components/group/addModelModal.html:24
+#: components/model/addEditRequireModal.html:30
 #: components/model/addRelationModal.html:20
-#: components/model/addRequireModal.html:30
 #: components/model/searchRequireModal.html:39
 #: components/model/searchSchemeModal.html:27
 msgid "Cancel"
@@ -438,7 +438,6 @@ msgstr "Luo attribuutti ja käytä"
 
 #: components/group/addModelModal.html:25
 #: components/model/addRelationModal.html:21
-#: components/model/addRequireModal.html:31
 msgid "Create new"
 msgstr "Luo uusi"
 
@@ -623,10 +622,6 @@ msgstr "Poista sanasto"
 msgid "Delete relation"
 msgstr "Poista resurssi"
 
-#: components/model/requiresView.html:10
-msgid "Delete require"
-msgstr "Poista nimiavaruus"
-
 #: translations/misc.html:47
 msgid "Delete shape"
 msgstr "Poista tarkennettu luokka"
@@ -691,6 +686,10 @@ msgstr "Muokkaa"
 #: translations/misc.html:41
 msgid "Edit in progress"
 msgstr "Muokkaaminen on kesken"
+
+#: translations/misc.html:168
+msgid "Edit require"
+msgstr "Muokkaa nimiavaruutta"
 
 #: translations/titles.html:3
 msgid "Editorial note"
@@ -868,7 +867,7 @@ msgstr "Tunniste on jo käytössä"
 msgid "Id name is required"
 msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 
-#: components/model/requiresView.html:1
+#: translations/misc.html:169
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
 
@@ -1042,7 +1041,7 @@ msgstr "Muokattu"
 msgid "Must be required namespace"
 msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
 
-#: components/model/requiresView.html:37 translations/titles.html:50
+#: translations/titles.html:50
 msgid "Namespace"
 msgstr "Nimiavaruus"
 
@@ -1089,6 +1088,10 @@ msgstr "Ei hakutuloksia"
 #: translations/misc.html:138
 msgid "Non specialized classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saavalita"
+
+#: translations/misc.html:171
+msgid "None added"
+msgstr "Ei yhtään lisätty"
 
 #: components/editor/subjectView.html:3
 msgid "Not defined"
@@ -1175,7 +1178,7 @@ msgstr "Ominaisuuden tyyppi"
 msgid "Predicate type info"
 msgstr "Ominaisuus voi olla joko Attribuutti tai Assosiaatio"
 
-#: components/model/requiresView.html:36 translations/titles.html:51
+#: translations/titles.html:51
 msgid "Prefix"
 msgstr "Etuliite"
 
@@ -1272,6 +1275,10 @@ msgstr "Luo tunnukset"
 #: components/model/relationsView.html:1
 msgid "Related resources"
 msgstr "Linkit"
+
+#: translations/misc.html:167
+msgid "Remove"
+msgstr "Poista"
 
 #: translations/titles.html:25
 msgid "Require label"
@@ -1521,7 +1528,7 @@ msgstr "Yläkäsite"
 msgid "Superproperty info"
 msgstr "Yleistettävissä oleva ominaisuus, joka on semantiikaltaan laajempi"
 
-#: components/model/requiresView.html:30
+#: translations/misc.html:170
 msgid "Technical namespaces"
 msgstr "Tekniset nimiavaruudet"
 
@@ -1803,6 +1810,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:17
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Delete require"
+#~ msgstr "Poista nimiavaruus"
 
 #~ msgid "language"
 #~ msgstr "kieli"

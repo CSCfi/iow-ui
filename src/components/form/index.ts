@@ -27,5 +27,6 @@ import './maxInput';
 import './minInput';
 import './ignoreDirty';
 import './dragSortable';
+import './editableTable';
 
 mod.service('displayItemFactory', DisplayItemFactory);

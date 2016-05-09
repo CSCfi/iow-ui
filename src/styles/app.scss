@@ -44,36 +44,69 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
-td.prefix, th.prefix {
-  width: 80px;
-}
 
-.expandable-table.ng-move, .expandable-table.ng-enter, .expandable-table.ng-leave {
-  transition: all linear 0.3s;
-}
+table.editable-table {
 
-.expandable-table.ng-leave.ng-leave-active, .expandable-table.ng-move, .expandable-table.ng-enter {
-  opacity: 0;
-}
+  tr {
+    &.collapsed {
+      visibility: collapse;
+      line-height: 0;
 
-.expandable-table.ng-leave, .expandable-table.ng-move.ng-move-active, .expandable-table.ng-enter.ng-enter-active {
-  opacity: 1;
-}
-
-table tfoot.expander {
-  text-align: center;
-  cursor: pointer;
-  font-size: medium;
-
-  &:hover {
-    background-color: #f5f5f5;
+      td {
+        padding-top: 0;
+        padding-bottom: 0;
+        border: 0;
+        line-height: 0;
+      }
+    }
   }
 
-  td {
-    padding: 0;
-    border: 1px solid #ddd;
-    line-height: 1;
+  td.prefix, th.prefix {
+    width: 80px;
   }
+
+  th.action {
+    width: 20px;
+  }
+
+  td.action {
+    width: 20px;
+
+    i {
+      visibility: hidden;
+      line-height: 0;
+    }
+
+    &.editable {
+      cursor: pointer;
+
+      i {
+        visibility: inherit;
+        line-height: inherit;
+      }
+    }
+
+    &:hover {
+      color: $brand-primary;
+    }
+  }
+
+  tfoot.expander {
+    text-align: center;
+    cursor: pointer;
+    font-size: medium;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    td {
+      padding: 0;
+      border-top: 1px solid #ddd;
+      line-height: 1;
+    }
+  }
+
 }
 
 .glyphicon.info {
