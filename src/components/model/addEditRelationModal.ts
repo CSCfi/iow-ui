@@ -6,16 +6,16 @@ import { Relation, Model } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../contracts';
 
-export class AddRelationModal {
+export class AddEditRelationModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
   open(model: Model, lang: Language): IPromise<Relation> {
     return this.$uibModal.open({
-      template: require('./addRelationModal.html'),
+      template: require('./addEditRelationModal.html'),
       size: 'small',
-      controller: AddRelationModalController,
+      controller: AddEditRelationModalController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
@@ -26,7 +26,7 @@ export class AddRelationModal {
   }
 }
 
-class AddRelationModalController {
+class AddEditRelationModalController {
 
   title: string;
   description: string;

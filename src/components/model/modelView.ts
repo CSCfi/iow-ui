@@ -17,7 +17,7 @@ import { SearchRequireModal } from './searchRequireModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from './model';
 import { Uri } from '../../services/uri';
-import { AddRelationModal } from './addRelationModal';
+import { AddEditRelationModal } from './addEditRelationModal';
 import { module as mod }  from './module';
 
 mod.directive('modelView', () => {
@@ -55,7 +55,7 @@ export class ModelViewController extends EditableEntityController<Model> {
               deleteConfirmationModal: DeleteConfirmationModal,
               private searchReferenceModal: SearchReferenceModal,
               private searchRequireModal: SearchRequireModal,
-              private addRelationModal: AddRelationModal,
+              private addEditRelationModal: AddEditRelationModal,
               private languageService: LanguageService,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
@@ -129,7 +129,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   addRelation() {
-    this.addRelationModal.open(this.model, this.languageService.getModelLanguage(this.model))
+    this.addEditRelationModal.open(this.model, this.languageService.getModelLanguage(this.model))
       .then((relation: Relation) => {
         this.editableInEdit.addRelation(relation);
         this.relationsView.open(relation);
