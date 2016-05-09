@@ -3,6 +3,7 @@ import IScope = angular.IScope;
 import IPromise = angular.IPromise;
 import { EditableForm } from './editableEntityController';
 import { module as mod }  from './module';
+import { Url } from '../../services/uri';
 
 mod.directive('editableTable', () => {
   return {
@@ -24,7 +25,10 @@ mod.directive('editableTable', () => {
       </thead>
       <tbody>
         <tr ng-repeat="value in ctrl.values | filter: ctrl.filter | orderBy: ctrl.orderBy" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index">
-          <td ng-class="property.cssClass" ng-repeat="property in ctrl.properties">{{property.nameExtractor(value)}}</td>
+          <td ng-class="property.cssClass" ng-repeat="property in ctrl.properties">
+            <span ng-if="!property.hrefExtractor(value)">{{property.nameExtractor(value)}}</span>
+            <a ng-if="property.hrefExtractor(value)" ng-href="{{property.hrefExtractor(value)}}">{{property.nameExtractor(value)}}</a>
+          </td>
           <td ng-class="[ 'action', { editable: ctrl.canRemove(value) } ]" ng-click="ctrl.remove(value, valueIndex)"><i class="fa fa-trash" uib-tooltip="{{'Remove' | translate}}"></i></td>
           <td ng-class="[ 'action', { editable: ctrl.canEdit(value) } ]" ng-click="ctrl.edit(value, valueIndex)"><i class="fa fa-pencil" uib-tooltip="{{'Edit' | translate}}"></i></td>
         </tr>
@@ -67,6 +71,7 @@ export abstract class TableDescriptor<T> {
 export type ColumnDescriptor<T> = {
   headerName: string,
   nameExtractor: (value: T) => string,
+  hrefExtractor?: (value: T) => Url,
   cssClass?: string
 }
 
