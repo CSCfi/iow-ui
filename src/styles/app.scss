@@ -44,6 +44,9 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
+[draggable=true] {
+  cursor: move;
+}
 
 table.editable-table {
 
@@ -186,7 +189,6 @@ table.editable-table {
       border: 1px solid #ddd;
       display: inline-block;
       float: left;
-      cursor: move;
 
       &.dragged.droppable {
         border-color: black;
