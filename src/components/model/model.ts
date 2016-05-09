@@ -194,13 +194,13 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
   }
 
-  getRequiredModels(): Set<Uri> {
+  getRequiredModels(): Set<string> {
     type WithDefinedBy = { definedBy: DefinedBy };
-    return new Set<Uri>(_.chain<WithDefinedBy>(this.associations)
+    return new Set<string>(_.chain<WithDefinedBy>(this.associations)
                          .concat(this.attributes)
                          .concat(this.classes)
                          .filter(item => item && item.definedBy)
-                         .map(item => item.definedBy.id)
+                         .map(item => item.definedBy.id.uri)
                          .value());
   }
 

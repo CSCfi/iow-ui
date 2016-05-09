@@ -121,7 +121,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   isRequireInUse(require: Require) {
-    return this.modelController.getRequiredModels().has(require.id);
+    return this.modelController.getRequiredModels().has(require.id.uri);
   }
 
   removeRequire(require: Require) {

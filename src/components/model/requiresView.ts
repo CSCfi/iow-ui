@@ -23,6 +23,7 @@ mod.directive('requiresView', () => {
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [RequiresViewController, ModelViewController]) {
       if (modelViewController) {
         modelViewController.registerRequiresView(thisController);
+        thisController.isRequireInUse = require => modelViewController.isRequireInUse(require);
       }
     },
     controller: RequiresViewController
@@ -33,10 +34,11 @@ class RequiresViewController {
   model: Model;
   descriptor: RequireTableDescriptor;
   expanded = false;
+  isRequireInUse: (require: Require) => boolean;
 
   constructor($scope: IScope, addEditRequireModal: AddEditRequireModal, languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
-      this.descriptor = new RequireTableDescriptor(addEditRequireModal, model, languageService);
+      this.descriptor = new RequireTableDescriptor(addEditRequireModal, model, languageService, this.isRequireInUse);
     });
   }
 
@@ -47,7 +49,7 @@ class RequiresViewController {
 
 class RequireTableDescriptor extends TableDescriptor<Require> {
 
-  constructor(private addEditRequireModal: AddEditRequireModal, private model: Model, private languageService: LanguageService) {
+  constructor(private addEditRequireModal: AddEditRequireModal, private model: Model, private languageService: LanguageService, private isRequireInUse: (require: Require) => boolean) {
     super();
   }
 
@@ -68,7 +70,7 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
   }
 
   canRemove(require: Require): boolean {
-    return true;
+    return !this.isRequireInUse(require);
   }
 
   trackBy(require: Require): any {
