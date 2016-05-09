@@ -51,7 +51,7 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
     super();
   }
 
-  columnDescriptors(values: Require[]): ColumnDescriptor<Require>[] {
+  columnDescriptors(requires: Require[]): ColumnDescriptor<Require>[] {
     return [
       new ColumnDescriptor('Prefix', (require: Require) => require.prefix, 'prefix'),
       new ColumnDescriptor('Require label', (require: Require) => this.languageService.translate(require.label, this.model)),
@@ -67,7 +67,7 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
     return require.namespaceModifiable || require.prefixModifiable || require.labelModifiable;
   }
 
-  canRemove(value: Require): boolean {
+  canRemove(require: Require): boolean {
     return true;
   }
 

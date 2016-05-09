@@ -52,19 +52,19 @@ class ReferenceTableDescriptor extends TableDescriptor<Reference> {
     super();
   }
 
-  columnDescriptors(values: Reference[]): ColumnDescriptor<Reference>[] {
+  columnDescriptors(references: Reference[]): ColumnDescriptor<Reference>[] {
     return [
       new ColumnDescriptor('Identifier', (reference: Reference) => reference.vocabularyId, 'prefix'),
       new ColumnDescriptor('Vocabulary name', (reference: Reference) => this.languageService.translate(reference.label, this.model))
     ];
   }
 
-  canEdit(require: Reference): boolean {
+  canEdit(reference: Reference): boolean {
     return false;
   }
 
-  canRemove(value: Reference): boolean {
-    return !value.local;
+  canRemove(reference: Reference): boolean {
+    return !reference.local;
   }
 
   trackBy(reference: Reference): any {
