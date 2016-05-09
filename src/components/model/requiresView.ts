@@ -31,12 +31,12 @@ mod.directive('requiresView', () => {
 
 class RequiresViewController {
   model: Model;
-  descriptor: RequirePropertyDescriptor;
+  descriptor: RequireTableDescriptor;
   expanded = false;
 
   constructor($scope: IScope, addEditRequireModal: AddEditRequireModal, languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
-      this.descriptor = new RequirePropertyDescriptor(addEditRequireModal, model, languageService);
+      this.descriptor = new RequireTableDescriptor(addEditRequireModal, model, languageService);
     });
   }
 
@@ -45,7 +45,7 @@ class RequiresViewController {
   }
 }
 
-class RequirePropertyDescriptor extends TableDescriptor<Require> {
+class RequireTableDescriptor extends TableDescriptor<Require> {
 
   constructor(private addEditRequireModal: AddEditRequireModal, private model: Model, private languageService: LanguageService) {
     super();

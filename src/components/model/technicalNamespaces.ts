@@ -23,17 +23,17 @@ mod.directive('technicalNamespaces', () => {
 class TechnicalNamespacesController {
   model: Model;
   namespaces: Namespace[];
-  descriptor: TechnicalNamespaceDescriptor;
+  descriptor: TechnicalNamespaceTableDescriptor;
   expanded = false;
 
   /* @ngInject */
   constructor($scope: IScope) {
-    this.descriptor = new TechnicalNamespaceDescriptor();
+    this.descriptor = new TechnicalNamespaceTableDescriptor();
     $scope.$watch(() => this.model, model => this.namespaces = model.getNamespaces().filter(ns => ns.type === NamespaceType.IMPLICIT_TECHNICAL));
   }
 }
 
-class TechnicalNamespaceDescriptor extends TableDescriptor<Namespace> {
+class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
 
   columnDescriptors(values: Namespace[]): ColumnDescriptor<Namespace>[] {
     return [
