@@ -63,23 +63,22 @@ table.editable-table {
       }
     }
 
-    &.dragged.droppable {
-      border-color: black;
-
-      td {
-        border-color: black;
-      }
-    }
-
     &.dragged {
-      border-collapse: separate;
-      color: $body-bg;
       background-color: $body-bg;
       border: 1px dashed $alert-warning-border;
 
       td {
+        span { color: $body-bg };
+        a { color: $body-bg };
         border-top: 1px dashed $alert-warning-border;
         border-bottom: 1px dashed $alert-warning-border;
+      }
+
+      &.droppable {
+        border-color: black;
+        td {
+          border-color: black;
+        }
       }
     }
   }
