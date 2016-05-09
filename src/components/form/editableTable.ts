@@ -15,7 +15,7 @@ mod.directive('editableTable', () => {
     restrict: 'E',
     template: `
     <p ng-if="ctrl.visibleValues === 0" translate>None added</p>
-    <table ng-if="ctrl.visibleValues > 0" class="table table-hover editable-table">
+    <table ng-if="ctrl.visibleValues > 0" class="table table-hover editable-table" drag-sortable="ctrl.values" drag-disabled="!ctrl.canSort()">
       <thead>
         <tr>
           <th ng-class="property.cssClass" ng-repeat="property in ctrl.properties">{{property.headerName | translate}}</th>
@@ -24,7 +24,7 @@ mod.directive('editableTable', () => {
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="value in ctrl.values | filter: ctrl.filter | orderBy: ctrl.orderBy" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index">
+        <tr ng-repeat="value in ctrl.values | filter: ctrl.filter | orderBy: ctrl.orderBy" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index" drag-sortable-item>
           <td ng-class="property.cssClass" ng-repeat="property in ctrl.properties">
             <span ng-if="!property.hrefExtractor(value)">{{property.nameExtractor(value)}}</span>
             <a ng-if="property.hrefExtractor(value)" ng-href="{{property.hrefExtractor(value)}}">{{property.nameExtractor(value)}}</a>
@@ -55,6 +55,10 @@ export abstract class TableDescriptor<T> {
   abstract columnDescriptors(values: T[]): ColumnDescriptor<T>[];
   abstract canEdit(value: T): boolean;
   abstract canRemove(value: T): boolean;
+
+  hasOrder(): boolean {
+    return false;
+  }
 
   edit(value: T): any {
   }
@@ -101,6 +105,10 @@ class EditableTableController<T> {
 
     $scope.$watchCollection(() => this.values, init);
     $scope.$watch(() => this.descriptor, init);
+  }
+
+  canSort() {
+    return this.descriptor && this.descriptor.hasOrder() && this.isEditing();
   }
 
   remove(value: T, index: number) {

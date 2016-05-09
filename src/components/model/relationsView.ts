@@ -69,6 +69,10 @@ class RelationTableDescriptor extends TableDescriptor<Relation> {
     ];
   }
 
+  hasOrder() {
+    return true;
+  }
+
   edit(relation: Relation) {
     this.addEditRelationModal.openEdit(relation, this.model, this.languageService.getModelLanguage(this.model));
   }
