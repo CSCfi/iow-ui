@@ -13,8 +13,8 @@ mod.directive('editableTable', () => {
     },
     restrict: 'E',
     template: `
-    <p ng-if="ctrl.values.length === 0" translate>None added</p>
-    <table ng-if="ctrl.values.length > 0" class="table table-hover editable-table">
+    <p ng-if="ctrl.visibleValues === 0" translate>None added</p>
+    <table ng-if="ctrl.visibleValues > 0" class="table table-hover editable-table">
       <thead>
         <tr>
           <th ng-class="property.cssClass" ng-repeat="property in ctrl.properties">{{property.headerName | translate}}</th>
@@ -23,7 +23,7 @@ mod.directive('editableTable', () => {
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="value in ctrl.values track by ctrl.descriptor.trackBy(value)" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index">
+        <tr ng-repeat="value in ctrl.values | filter: ctrl.filter | orderBy: ctrl.orderBy track by ctrl.descriptor.trackBy(value)" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index">
           <td ng-class="property.cssClass" ng-repeat="property in ctrl.properties">{{property.nameExtractor(value)}}</td>
           <td ng-class="[ 'action', { editable: ctrl.canRemove(value) } ]" ng-click="ctrl.remove(value, valueIndex)"><i class="fa fa-trash" uib-tooltip="{{'Remove' | translate}}"></i></td>
           <td ng-class="[ 'action', { editable: ctrl.canEdit(value) } ]" ng-click="ctrl.edit(value, valueIndex)"><i class="fa fa-pencil" uib-tooltip="{{'Edit' | translate}}"></i></td>
@@ -55,6 +55,14 @@ export abstract class TableDescriptor<T> {
 
   edit(value: T): any {
   }
+
+  filter(value: T): boolean {
+    return true;
+  }
+
+  orderBy(value: T): any {
+    return undefined;
+  }
 }
 
 export class ColumnDescriptor<T> {
@@ -67,15 +75,20 @@ const nonExpandedLimit = 2;
 class EditableTableController<T> {
 
   values: T[];
-  descriptor: TableDescriptor<T>;
-  isEditing: () => boolean;
-
-  properties: ColumnDescriptor<T>[];
   expanded: boolean;
 
+  isEditing: () => boolean;
+  properties: ColumnDescriptor<T>[];
+  descriptor: TableDescriptor<T>;
+  visibleValues: number;
+
+  filter = (value: T) => this.descriptor.filter(value);
+  orderBy = (value: T) => this.descriptor.orderBy(value);
+
   constructor($scope: IScope) {
-    $scope.$watch(() => this.values, values => {
+    $scope.$watchCollection(() => this.values, values => {
       this.properties = this.descriptor.columnDescriptors(values);
+      this.visibleValues = values ? _.filter(values, this.filter).length : 0;
     });
   }
 
@@ -108,7 +121,7 @@ class EditableTableController<T> {
   }
 
   canExpand() {
-    return this.values.length > nonExpandedLimit;
+    return this.visibleValues > nonExpandedLimit;
   }
 
   toggleExpand() {
