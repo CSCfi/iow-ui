@@ -1,6 +1,6 @@
 <form name="addModelForm">
   <modal-template>
-    <modal-title translate>Add related resource</modal-title>
+    <modal-title>{{ctrl.titleLabel | translate}}</modal-title>
 
     <modal-body>
       <editable data-title="Homepage" context="ctrl.model">
@@ -18,7 +18,7 @@
 
     <modal-buttons>
       <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
-      <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!addModelForm.$valid" translate>Create new</button>
+      <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!addModelForm.$valid">{{ctrl.confirmLabel | translate}}</button>
     </modal-buttons>
   </modal-template>
 </form>

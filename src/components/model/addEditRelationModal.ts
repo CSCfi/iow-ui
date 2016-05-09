@@ -11,7 +11,7 @@ export class AddEditRelationModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(model: Model, lang: Language): IPromise<Relation> {
+  private open(model: Model, lang: Language, relationToEdit: Relation): IPromise<Relation> {
     return this.$uibModal.open({
       template: require('./addEditRelationModal.html'),
       size: 'small',
@@ -20,9 +20,18 @@ export class AddEditRelationModal {
       backdrop: true,
       resolve: {
         model: () => model,
-        lang: () => lang
+        lang: () => lang,
+        relationToEdit: () => relationToEdit
       }
     }).result;
+  }
+
+  openAdd(model: Model, lang: Language): IPromise<Relation> {
+    return this.open(model, lang, null);
+  }
+
+  openEdit(relation: Relation, model: Model, lang: Language): IPromise<Relation> {
+    return this.open(model, lang, relation);
   }
 }
 
@@ -31,15 +40,39 @@ class AddEditRelationModalController {
   title: string;
   description: string;
   homepage: Uri;
+  edit: boolean;
 
   cancel = this.$uibModalInstance.dismiss;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model) {
+  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model, private relationToEdit: Relation) {
+    this.edit = !!relationToEdit;
+
+    if (relationToEdit) {
+      this.title = relationToEdit.title[lang];
+      this.description = relationToEdit.description[lang];
+      this.homepage = relationToEdit.homepage;
+    }
+  }
+
+  get confirmLabel() {
+    return this.edit ? 'Edit' : 'Create new';
+  }
+
+  get titleLabel() {
+    return this.edit ? 'Edit related resource' : 'Add related resource';
   }
 
   create() {
-    this.modelService.newRelation(this.title, this.description, this.homepage, this.lang, this.model.context)
-      .then(relation => this.$uibModalInstance.close(relation));
+    if (this.edit) {
+      this.relationToEdit.title[this.lang] = this.title;
+      this.relationToEdit.description[this.lang] = this.description;
+      this.relationToEdit.homepage = this.homepage;
+
+      this.$uibModalInstance.close(this.relationToEdit);
+    } else {
+      this.modelService.newRelation(this.title, this.description, this.homepage, this.lang, this.model.context)
+        .then(relation => this.$uibModalInstance.close(relation));
+    }
   }
 }

@@ -129,7 +129,7 @@ export class ModelViewController extends EditableEntityController<Model> {
   }
 
   addRelation() {
-    this.addEditRelationModal.open(this.model, this.languageService.getModelLanguage(this.model))
+    this.addEditRelationModal.openAdd(this.model, this.languageService.getModelLanguage(this.model))
       .then((relation: Relation) => {
         this.editableInEdit.addRelation(relation);
         this.relationsView.open(relation);

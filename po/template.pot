@@ -59,7 +59,6 @@ msgstr ""
 msgid "Add reference"
 msgstr ""
 
-#: components/model/addRelationModal.html:3
 #: components/model/modelView.html:13
 msgid "Add related resource"
 msgstr ""
@@ -70,7 +69,7 @@ msgstr ""
 
 #: components/editor/classForm.html:62
 #: components/editor/predicateForm.html:41
-#: components/model/modelForm.html:32
+#: components/model/modelForm.html:24
 msgid "Additional information"
 msgstr ""
 
@@ -249,8 +248,8 @@ msgstr ""
 #: components/editor/searchConceptModal.html:88
 #: components/editor/searchPredicateModal.html:89
 #: components/group/addModelModal.html:24
+#: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/addRelationModal.html:20
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:39
 msgid "Cancel"
@@ -436,7 +435,6 @@ msgid "Create and use attribute"
 msgstr ""
 
 #: components/group/addModelModal.html:25
-#: components/model/addRelationModal.html:21
 msgid "Create new"
 msgstr ""
 
@@ -613,10 +611,6 @@ msgstr ""
 msgid "Delete property"
 msgstr ""
 
-#: components/model/relationsView.html:20
-msgid "Delete relation"
-msgstr ""
-
 #: translations/misc.html:47
 msgid "Delete shape"
 msgstr ""
@@ -679,6 +673,10 @@ msgstr ""
 
 #: translations/misc.html:41
 msgid "Edit in progress"
+msgstr ""
+
+#: translations/misc.html:176
+msgid "Edit related resource"
 msgstr ""
 
 #: translations/misc.html:168
@@ -1063,10 +1061,6 @@ msgstr ""
 msgid "No referrers"
 msgstr ""
 
-#: components/model/relationsView.html:3
-msgid "No relations yet"
-msgstr ""
-
 #: components/advancedSearchModal.html:21
 #: components/frontPage.html:33
 msgid "No search results"
@@ -1256,7 +1250,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: components/model/relationsView.html:1
+#: translations/misc.html:175
 msgid "Related resources"
 msgstr ""
 
