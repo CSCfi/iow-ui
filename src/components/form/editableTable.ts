@@ -23,7 +23,7 @@ mod.directive('editableTable', () => {
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="value in ctrl.values | filter: ctrl.filter | orderBy: ctrl.orderBy track by ctrl.descriptor.trackBy(value)" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index">
+        <tr ng-repeat="value in ctrl.values | filter: ctrl.filter | orderBy: ctrl.orderBy" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index">
           <td ng-class="property.cssClass" ng-repeat="property in ctrl.properties">{{property.nameExtractor(value)}}</td>
           <td ng-class="[ 'action', { editable: ctrl.canRemove(value) } ]" ng-click="ctrl.remove(value, valueIndex)"><i class="fa fa-trash" uib-tooltip="{{'Remove' | translate}}"></i></td>
           <td ng-class="[ 'action', { editable: ctrl.canEdit(value) } ]" ng-click="ctrl.edit(value, valueIndex)"><i class="fa fa-pencil" uib-tooltip="{{'Edit' | translate}}"></i></td>
@@ -51,7 +51,6 @@ export abstract class TableDescriptor<T> {
   abstract columnDescriptors(values: T[]): ColumnDescriptor<T>[];
   abstract canEdit(value: T): boolean;
   abstract canRemove(value: T): boolean;
-  abstract trackBy(value: T): any;
 
   edit(value: T): any {
   }

@@ -49,8 +49,4 @@ class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
   canRemove(value: Namespace): boolean {
     return false;
   }
-
-  trackBy(value: Namespace): any {
-    return value.url;
-  }
 }

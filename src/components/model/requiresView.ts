@@ -72,8 +72,4 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
   canRemove(require: Require): boolean {
     return !this.isRequireInUse(require);
   }
-
-  trackBy(require: Require): any {
-    return require.id.value;
-  }
 }

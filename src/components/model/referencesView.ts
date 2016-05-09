@@ -67,10 +67,6 @@ class ReferenceTableDescriptor extends TableDescriptor<Reference> {
     return !reference.local;
   }
 
-  trackBy(reference: Reference): any {
-    return reference.id.value;
-  }
-
   orderBy(reference: Reference): any {
     return this.languageService.translate(reference.label, this.model);
   }
