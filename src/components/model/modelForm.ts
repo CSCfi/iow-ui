@@ -7,7 +7,8 @@ import { ModelViewController } from './modelView';
 mod.directive('modelForm', () => {
   return {
     scope: {
-      model: '='
+      model: '=',
+      modelController: '='
     },
     restrict: 'E',
     template: require('./modelForm.html'),

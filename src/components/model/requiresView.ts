@@ -1,55 +1,84 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import { Model, Require } from '../../services/entities';
-import { module as mod }  from './module';
+import { Model, Require, NamespaceType } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../form/editableTable';
 import { AddEditRequireModal } from './addEditRequireModal';
+import { SearchRequireModal } from './searchRequireModal';
+import { combineExclusions } from '../../services/utils';
+import { ModelController } from './model';
 import { ModelViewController } from './modelView';
+import { module as mod }  from './module';
 
 mod.directive('requiresView', () => {
   return {
     scope: {
-      model: '='
+      model: '=',
+      modelController: '='
     },
     restrict: 'E',
     template: `
-      <h4 translate>Imported requires</h4>
+      <h4>
+        <span translate>Imported requires</span>
+        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="ctrl.addRequire()" ng-show="ctrl.isEditing()">
+          <span class="glyphicon glyphicon-plus"></span>
+          <span translate>Add require</span>
+        </button>
+      </h4>
       <editable-table descriptor="ctrl.descriptor" values="ctrl.model.requires" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['requiresView', '?^modelView'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [RequiresViewController, ModelViewController]) {
-      if (modelViewController) {
-        modelViewController.registerRequiresView(thisController);
-        thisController.isRequireInUse = require => modelViewController.isRequireInUse(require);
-      }
+      thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
     controller: RequiresViewController
   };
 });
 
 class RequiresViewController {
+
   model: Model;
+  modelController: ModelController;
+  isEditing: () => boolean;
+
   descriptor: RequireTableDescriptor;
   expanded = false;
-  isRequireInUse: (require: Require) => boolean;
 
-  constructor($scope: IScope, addEditRequireModal: AddEditRequireModal, languageService: LanguageService) {
-    $scope.$watch(() => this.model, model => {
-      this.descriptor = new RequireTableDescriptor(addEditRequireModal, model, languageService, this.isRequireInUse);
+  constructor($scope: IScope, private searchRequireModal: SearchRequireModal, addEditRequireModal: AddEditRequireModal, private languageService: LanguageService) {
+    $scope.$watchGroup([() => this.model, () => this.modelController], ([model, modelController]) => {
+      this.descriptor = new RequireTableDescriptor(addEditRequireModal, model, languageService, modelController);
     });
   }
 
-  open(require: Require) {
-    this.expanded = true;
+  addRequire() {
+    const language = this.languageService.getModelLanguage(this.model);
+
+    const existsExclude = (require: Require) => {
+      for (const ns of this.model.getNamespaces()) {
+        if (ns.type !== NamespaceType.IMPLICIT_TECHNICAL && (ns.prefix === require.prefix || ns.url === require.namespace)) {
+          return 'Already added';
+        }
+      }
+      return null;
+    };
+
+    const profileExclude = (require: Require) => (!allowProfiles && require.isOfType('profile')) ? 'Cannot require profile' : null;
+    const exclude = combineExclusions(existsExclude, profileExclude);
+    const allowProfiles = this.model.isOfType('profile');
+
+    this.searchRequireModal.open(this.model, language, exclude)
+      .then((require: Require) => {
+        this.model.addRequire(require);
+        this.expanded = true;
+      });
   }
 }
 
 class RequireTableDescriptor extends TableDescriptor<Require> {
 
-  constructor(private addEditRequireModal: AddEditRequireModal, private model: Model, private languageService: LanguageService, private isRequireInUse: (require: Require) => boolean) {
+  constructor(private addEditRequireModal: AddEditRequireModal, private model: Model, private languageService: LanguageService, private modelController: ModelController) {
     super();
   }
 
@@ -70,6 +99,6 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
   }
 
   canRemove(require: Require): boolean {
-    return !this.isRequireInUse(require);
+    return !this.modelController || !this.modelController.getRequiredModels().has(require.id.uri);
   }
 }

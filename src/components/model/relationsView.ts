@@ -1,11 +1,11 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import { ModelViewController } from './modelView';
 import { Relation, Model } from '../../services/entities';
-import { module as mod }  from './module';
 import { AddEditRelationModal } from './addEditRelationModal';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
+import { ModelViewController } from './modelView';
+import { module as mod }  from './module';
 
 mod.directive('relationsView', () => {
   return {
@@ -14,34 +14,45 @@ mod.directive('relationsView', () => {
     },
     restrict: 'E',
     template: `
-      <h4 translate>Related resources</h4>
+      <h4>
+        <span translate>Related resources</span> 
+        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="ctrl.addRelation()" ng-show="ctrl.isEditing()">
+          <span class="glyphicon glyphicon-plus"></span>
+          <span translate>Add related resource</span>
+        </button>
+      </h4>
       <editable-table descriptor="ctrl.descriptor" values="ctrl.model.relations" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['relationsView', '?^modelView'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [RelationsViewController, ModelViewController]) {
-      if (modelViewController) {
-        modelViewController.registerRelationsView(thisController);
-      }
+      thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
     controller: RelationsViewController
   };
 });
 
 class RelationsViewController {
+
   model: Model;
+  isEditing: () => boolean;
+
   descriptor: RelationTableDescriptor;
   expanded = false;
 
-  constructor($scope: IScope, addEditRelationModal: AddEditRelationModal, languageService: LanguageService) {
+  constructor($scope: IScope, private addEditRelationModal: AddEditRelationModal, private languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
       this.descriptor = new RelationTableDescriptor(addEditRelationModal, model, languageService);
     });
   }
 
-  open(relation: Relation) {
-    this.expanded = true;
+  addRelation() {
+    this.addEditRelationModal.openAdd(this.model, this.languageService.getModelLanguage(this.model))
+      .then((relation: Relation) => {
+        this.model.addRelation(relation);
+        this.expanded = true;
+      });
   }
 }
 

@@ -3,8 +3,11 @@ import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
 import { Reference, Model } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
-import { module as mod }  from './module';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
+import { SearchReferenceModal } from './searchReferenceModal';
+import { ModelService } from '../../services/modelService';
+import { collectProperties, createExistsExclusion } from '../../services/utils';
+import { module as mod }  from './module';
 
 mod.directive('referencesView', () => {
   return {
@@ -13,36 +16,51 @@ mod.directive('referencesView', () => {
     },
     restrict: 'E',
     template: `
-      <h4 translate>References</h4>
+      <h4>
+        <span translate>References</span> 
+        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="ctrl.addReference()" ng-show="ctrl.isEditing()">
+          <span class="glyphicon glyphicon-plus"></span>
+          <span translate>Add reference</span>
+        </button>
+      </h4>
       <editable-table descriptor="ctrl.descriptor" values="ctrl.model.references" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['referencesView', '?^modelView'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [ReferencesViewController, ModelViewController]) {
-      if (modelViewController) {
-        modelViewController.registerReferencesView(thisController);
-      }
+      thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
     controller: ReferencesViewController
   };
 });
 
 class ReferencesViewController {
+
   model: Model;
+  isEditing: () => boolean;
 
   descriptor: ReferenceTableDescriptor;
   expanded: boolean;
 
   /* @ngInject */
-  constructor($scope: IScope, private languageService: LanguageService) {
+  constructor($scope: IScope, private searchReferenceModal: SearchReferenceModal, private modelService: ModelService, private languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
       this.descriptor = new ReferenceTableDescriptor(model, languageService);
     });
   }
 
-  open(reference: Reference) {
-    this.expanded = true;
+  addReference() {
+    const language = this.languageService.getModelLanguage(this.model);
+    const vocabularies = collectProperties(this.model.references, reference => reference.vocabularyId);
+    const exclude = createExistsExclusion(vocabularies);
+
+    this.searchReferenceModal.open(language, exclude)
+      .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
+      .then((reference: Reference) => {
+        this.model.addReference(reference);
+        this.expanded = true;
+      });
   }
 }
 
