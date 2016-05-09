@@ -6,6 +6,7 @@ import { module as mod }  from './module';
 
 interface DragSortableAttributes extends IAttributes {
   dragSortable: string;
+  dragDisabled: string;
 }
 
 mod.directive('dragSortable', () => {
@@ -14,6 +15,7 @@ mod.directive('dragSortable', () => {
     require: 'dragSortable',
     link($scope: IScope, element: JQuery, attributes: DragSortableAttributes, thisController: DragSortableController) {
       $scope.$watch(attributes.dragSortable, (values: any[]) => thisController.dragValues = values);
+      $scope.$watch(attributes.dragDisabled, (disabled: boolean) => thisController.dragDisabled = disabled);
     }
   };
 });
@@ -21,6 +23,7 @@ mod.directive('dragSortable', () => {
 class DragSortableController {
 
   drag: Drag;
+  dragDisabled: boolean;
   dragValuesOriginal: any[];
   dragValues: any[];
 
@@ -82,18 +85,10 @@ mod.directive('dragSortableItem', () => {
     require: '^dragSortable',
     link($scope: IRepeatScope, element: JQuery, attributes: IAttributes, dragSortable: DragSortableController) {
 
-      element.attr('draggable', 'true');
-
-      $scope.$watch(() => dragSortable.drag, drag => {
-        const dragReady = drag ? drag.cloneCreated : false;
-        element.toggleClass('dragged', dragReady && drag.fromIndex === $scope.$index);
-        element.toggleClass('droppable', dragReady && drag.droppable);
-      }, true);
-
-      element.on('selectstart', function() { this.dragDrop(); } ); // IE9 support hack
-      element.on('dragstart', event => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index, element.width())));
-      element.on('dragend', event => $scope.$apply(() => dragSortable.drop()));
-      element.on('dragover', event => {
+      const selectStartHandler = function() { this.dragDrop(); }; // IE9 support hack
+      const dragStartHandler = (event: JQueryMouseEventObject) => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index, element.width()));
+      const dragEndHandler = (event: JQueryMouseEventObject) => $scope.$apply(() => dragSortable.drop());
+      const dragOverHandler = (event: JQueryMouseEventObject) => {
         if (dragSortable.drag) {
           event.preventDefault();
 
@@ -102,13 +97,51 @@ mod.directive('dragSortableItem', () => {
 
           $scope.$apply(() => dragSortable.overDroppable($scope.$index, element.width(), mousePosition));
         }
-      });
-      element.on('dragleave', event => $scope.$apply(() => dragSortable.notOverDroppable()));
-      element.on('dragenter', event => $scope.$apply(() => dragSortable.cloneCreated()));
-      element.on('drop', event => {
+      };
+      const dragLeaveHandler = (event: JQueryMouseEventObject) => $scope.$apply(() => dragSortable.notOverDroppable());
+      const dragEnterHandler = (event: JQueryMouseEventObject) => $scope.$apply(() => dragSortable.cloneCreated());
+      const dropHandler = (event: JQueryMouseEventObject) => {
         event.preventDefault();
         $scope.$apply(() => dragSortable.drop());
+      };
+
+      $scope.$watch(() => dragSortable.drag, drag => {
+        const dragReady = drag ? drag.cloneCreated : false;
+        element.toggleClass('dragged', dragReady && drag.fromIndex === $scope.$index);
+        element.toggleClass('droppable', dragReady && drag.droppable);
+      }, true);
+
+      function init() {
+        element.attr('draggable', 'true');
+        element.on('selectstart', selectStartHandler);
+        element.on('dragstart', dragStartHandler);
+        element.on('dragend', dragEndHandler);
+        element.on('dragover', dragOverHandler);
+        element.on('dragleave', dragLeaveHandler);
+        element.on('dragenter', dragEnterHandler);
+        element.on('drop', dropHandler);
+      }
+
+      function release() {
+        element.attr('draggable', 'false');
+        element.off('selectstart', selectStartHandler);
+        element.off('dragstart', dragStartHandler);
+        element.off('dragend', dragEndHandler);
+        element.off('dragover', dragOverHandler);
+        element.off('dragleave', dragLeaveHandler);
+        element.off('dragenter', dragEnterHandler);
+        element.off('drop', dropHandler);
+      }
+
+      $scope.$watch(() => dragSortable.dragDisabled, disabled => {
+        if (disabled) {
+          release();
+        } else {
+          init();
+        }
       });
+
+      $scope.$on('destroy', release);
     }
   };
 });
