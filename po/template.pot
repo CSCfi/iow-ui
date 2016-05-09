@@ -251,8 +251,8 @@ msgstr ""
 #: components/group/addModelModal.html:24
 #: components/model/addEditRequireModal.html:30
 #: components/model/addRelationModal.html:20
+#: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:39
-#: components/model/searchSchemeModal.html:27
 msgid "Cancel"
 msgstr ""
 
@@ -613,10 +613,6 @@ msgstr ""
 msgid "Delete property"
 msgstr ""
 
-#: components/model/referencesView.html:11
-msgid "Delete reference"
-msgstr ""
-
 #: components/model/relationsView.html:20
 msgid "Delete relation"
 msgstr ""
@@ -854,6 +850,10 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
+#: translations/misc.html:173
+msgid "Identifier"
+msgstr ""
+
 #: translations/misc.html:169
 msgid "Imported requires"
 msgstr ""
@@ -1058,10 +1058,6 @@ msgstr ""
 msgid "No profiles yet"
 msgstr ""
 
-#: components/model/referencesView.html:3
-msgid "No references yet"
-msgstr ""
-
 #: components/editor/usage.html:1
 #: components/editor/usagePanel.html:8
 msgid "No referrers"
@@ -1252,7 +1248,7 @@ msgstr ""
 msgid "Reference filter"
 msgstr ""
 
-#: components/model/referencesView.html:1
+#: translations/misc.html:172
 msgid "References"
 msgstr ""
 
@@ -1357,11 +1353,11 @@ msgstr ""
 msgid "Search requires"
 msgstr ""
 
-#: components/model/searchSchemeModal.html:8
+#: components/model/searchReferenceModal.html:8
 msgid "search scheme"
 msgstr ""
 
-#: components/model/searchSchemeModal.html:2
+#: components/model/searchReferenceModal.html:2
 msgid "Search schemes"
 msgstr ""
 
@@ -1620,6 +1616,10 @@ msgstr ""
 
 #: translations/titles.html:49
 msgid "Vocabulary info"
+msgstr ""
+
+#: translations/misc.html:174
+msgid "Vocabulary name"
 msgstr ""
 
 #: translations/misc.html:69

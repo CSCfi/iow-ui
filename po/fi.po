@@ -251,8 +251,8 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/group/addModelModal.html:24
 #: components/model/addEditRequireModal.html:30
 #: components/model/addRelationModal.html:20
+#: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:39
-#: components/model/searchSchemeModal.html:27
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -614,10 +614,6 @@ msgstr "Poista soveltamisprofiili"
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
-#: components/model/referencesView.html:11
-msgid "Delete reference"
-msgstr "Poista sanasto"
-
 #: components/model/relationsView.html:20
 msgid "Delete relation"
 msgstr "Poista resurssi"
@@ -867,6 +863,10 @@ msgstr "Tunniste on jo käytössä"
 msgid "Id name is required"
 msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 
+#: translations/misc.html:173
+msgid "Identifier"
+msgstr "Tunniste"
+
 #: translations/misc.html:169
 msgid "Imported requires"
 msgstr "Käytetyt nimiavaruudet"
@@ -1069,10 +1069,6 @@ msgstr "Ei vielä yhtään tietokomponenttikirjastoa"
 msgid "No profiles yet"
 msgstr "Ei vielä yhtään soveltamisprofiilia"
 
-#: components/model/referencesView.html:3
-msgid "No references yet"
-msgstr "Ei sanastoja"
-
 #: components/editor/usage.html:1 components/editor/usagePanel.html:8
 msgid "No referrers"
 msgstr "Ei viittauksia"
@@ -1264,7 +1260,7 @@ msgstr "Suositus"
 msgid "Reference filter"
 msgstr "Rajaa käsitehakua"
 
-#: components/model/referencesView.html:1
+#: translations/misc.html:172
 msgid "References"
 msgstr "Sanastot"
 
@@ -1372,11 +1368,11 @@ msgstr "Hae nimiavaruutta…"
 msgid "Search requires"
 msgstr "Hae nimiavaruuksia"
 
-#: components/model/searchSchemeModal.html:8
+#: components/model/searchReferenceModal.html:8
 msgid "search scheme"
 msgstr "Hae sanastoa…"
 
-#: components/model/searchSchemeModal.html:2
+#: components/model/searchReferenceModal.html:2
 msgid "Search schemes"
 msgstr "Hae sanastoja"
 
@@ -1632,6 +1628,10 @@ msgstr "Sanaston lyhyt tunniste"
 msgid "Vocabulary info"
 msgstr ""
 
+#: translations/misc.html:174
+msgid "Vocabulary name"
+msgstr "Sanaston nimi"
+
 #: translations/misc.html:69
 msgid "What can I do content"
 msgstr ""
@@ -1811,6 +1811,12 @@ msgstr "Virheellinen aika"
 msgid "Yes"
 msgstr "Kyllä"
 
+#~ msgid "Delete reference"
+#~ msgstr "Poista sanasto"
+
+#~ msgid "No references yet"
+#~ msgstr "Ei sanastoja"
+
 #~ msgid "Delete require"
 #~ msgstr "Poista nimiavaruus"
 
@@ -1984,9 +1990,6 @@ msgstr "Kyllä"
 
 #~ msgid "IOW header"
 #~ msgstr "Otsikko tähän"
-
-#~ msgid "Identifier"
-#~ msgstr "Tunniste"
 
 #~ msgid "Associations"
 #~ msgstr "Assosiaatiot"

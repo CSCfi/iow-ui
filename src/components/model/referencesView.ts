@@ -4,6 +4,7 @@ import { ModelViewController } from './modelView';
 import { Reference, Model } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
+import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 
 mod.directive('referencesView', () => {
   return {
@@ -11,34 +12,70 @@ mod.directive('referencesView', () => {
       model: '='
     },
     restrict: 'E',
-    template: require('./referencesView.html'),
+    template: `
+      <h4 translate>References</h4>
+      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.references" expanded="ctrl.expanded"></editable-table>
+    `,
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['referencesView', '?^modelView'],
-    link($scope: ReferencesViewScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [ReferencesViewController, ModelViewController]) {
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [ReferencesViewController, ModelViewController]) {
       if (modelViewController) {
-        $scope.modelViewController = modelViewController;
-        $scope.modelViewController.registerReferencesView(thisController);
+        modelViewController.registerReferencesView(thisController);
       }
     },
     controller: ReferencesViewController
   };
 });
 
-interface ReferencesViewScope extends IScope {
-  modelViewController: ModelViewController;
-}
-
 class ReferencesViewController {
   model: Model;
-  opened: {[key: string]: boolean} = {};
-  referenceComparator = (reference: Reference) => this.languageService.translate(reference.label, this.model);
+
+  descriptor: ReferenceTableDescriptor;
+  expanded: boolean;
 
   /* @ngInject */
-  constructor(private languageService: LanguageService) {
+  constructor($scope: IScope, private languageService: LanguageService) {
+    $scope.$watch(() => this.model, model => {
+      this.descriptor = new ReferenceTableDescriptor(model, languageService);
+    });
   }
 
   open(reference: Reference) {
-    this.opened[reference.id.uri] = true;
+    this.expanded = true;
+  }
+}
+
+class ReferenceTableDescriptor extends TableDescriptor<Reference> {
+
+  constructor(private model: Model, private languageService: LanguageService) {
+    super();
+  }
+
+  columnDescriptors(values: Reference[]): ColumnDescriptor<Reference>[] {
+    return [
+      new ColumnDescriptor('Identifier', (reference: Reference) => reference.vocabularyId, 'prefix'),
+      new ColumnDescriptor('Vocabulary name', (reference: Reference) => this.languageService.translate(reference.label, this.model))
+    ];
+  }
+
+  canEdit(require: Reference): boolean {
+    return false;
+  }
+
+  canRemove(value: Reference): boolean {
+    return !value.local;
+  }
+
+  trackBy(reference: Reference): any {
+    return reference.id.value;
+  }
+
+  orderBy(reference: Reference): any {
+    return this.languageService.translate(reference.label, this.model);
+  }
+
+  filter(reference: Reference) {
+    return !reference.local;
   }
 }
