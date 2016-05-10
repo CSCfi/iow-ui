@@ -96,6 +96,14 @@ class SearchResultsController<T extends WithId> {
     });
   }
 
+  isVisible(item: SearchResult<T>|AddNew) {
+    if (item instanceof AddNew) {
+      return item.show();
+    } else {
+      return true;
+    }
+  }
+
   trackingFn(item: SearchResult<T>|AddNew) {
     if (item instanceof SearchResult) {
       return item.item.id.toString();
