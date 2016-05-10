@@ -508,7 +508,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updateClasses(): IPromise<any> {
-    return this.classService.getClassesForModel(this.model.id)
+    return this.classService.getClassesForModel(this.model)
       .then(classes => {
         _.each(classes, klass => klass.id.addKnownModelsToContext(this.model));
         return classes;
@@ -520,7 +520,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updatePredicates(): IPromise<any> {
-    return this.predicateService.getPredicatesForModel(this.model.id)
+    return this.predicateService.getPredicatesForModel(this.model)
       .then(predicates => {
         _.each(predicates, predicate => predicate.id.addKnownModelsToContext(this.model));
         return predicates;

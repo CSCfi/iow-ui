@@ -27,8 +27,10 @@ export class PredicateService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicate')).then(response => this.entities.deserializePredicateList(response.data));
   }
 
-  getPredicatesForModel(modelId: Uri): IPromise<PredicateListItem[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {model: modelId.uri}}).then(response => this.entities.deserializePredicateList(response.data));
+  getPredicatesForModel(model: Model): IPromise<PredicateListItem[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {model: model.id.uri}})
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializePredicateList(response.data));
   }
 
   createPredicate(predicate: Predicate): IPromise<any> {

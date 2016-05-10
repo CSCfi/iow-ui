@@ -40,8 +40,10 @@ export class ClassService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class')).then(response => this.entities.deserializeClassList(response.data));
   }
 
-  getClassesForModel(modelId: Uri): IPromise<ClassListItem[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {model: modelId.uri}}).then(response => this.entities.deserializeClassList(response.data));
+  getClassesForModel(model: Model): IPromise<ClassListItem[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {model: model.id.uri}})
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializeClassList(response.data));
   }
 
   createClass(klass: Class): IPromise<any> {

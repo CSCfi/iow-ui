@@ -105,7 +105,7 @@ class SearchClassController {
     };
 
     classService.getAllClasses().then(appendResults);
-    classService.getClassesForModel(model.id).then(classes => this.currentModelClassIds = collectIds(classes));
+    classService.getClassesForModel(model).then(classes => this.currentModelClassIds = collectIds(classes));
 
     if (model.isOfType('profile')) {
       classService.getExternalClassesForModel(model).then(appendResults);
