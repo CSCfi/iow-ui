@@ -6,7 +6,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import {
-  Class, ClassListItem, Model, DefinedBy, NamespaceType, AbstractClass, ExternalEntity
+  Class, ClassListItem, Model, DefinedBy, AbstractClass, ExternalEntity
 } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
@@ -110,8 +110,6 @@ class SearchClassController {
     if (model.isOfType('profile')) {
       classService.getExternalClassesForModel(model).then(appendResults);
     }
-
-    classService.getClassesForModel(model.id);
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
