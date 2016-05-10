@@ -2,7 +2,21 @@ import INgModelController = angular.INgModelController;
 import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from './entities';
 import { Uri } from './uri';
 import { Language } from '../components/contracts';
-import from = require('core-js/fn/array/from');
+
+export function scrollToElement(element: JQuery, parentContainer: JQuery) {
+
+  const itemsHeight = parentContainer.height();
+  const itemsTop = parentContainer.scrollTop();
+  const itemsBottom = itemsHeight + itemsTop;
+  const selectionOffsetTop = element.offset().top - parentContainer.offset().top + itemsTop;
+  const selectionOffsetBottom = selectionOffsetTop +  element.outerHeight();
+
+  if (selectionOffsetBottom > itemsBottom) {
+    parentContainer.animate({ scrollTop: Math.ceil(selectionOffsetBottom - itemsHeight) }, 0);
+  } else if (selectionOffsetTop < itemsTop) {
+    parentContainer.animate({ scrollTop: Math.floor(selectionOffsetTop) }, 0);
+  }
+}
 
 // language codes according to ISO_639-1 specification
 export const availableLanguages: Language[] =

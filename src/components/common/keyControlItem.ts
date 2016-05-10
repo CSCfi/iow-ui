@@ -4,6 +4,7 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 
 import { module as mod }  from './module';
+import { scrollToElement } from '../../services/utils';
 
 const selectionClass = 'selection';
 
@@ -21,23 +22,10 @@ mod.directive('keyControlSelection', ($timeout: ITimeoutService) => {
         }
       }
 
-      const itemContainer = findParent();
-
       function update(selectionIndex: number) {
         if ($scope.$index === selectionIndex) {
           element.addClass(selectionClass);
-
-          const itemsHeight = itemContainer.height();
-          const itemsTop = itemContainer.scrollTop();
-          const itemsBottom = itemsHeight + itemsTop;
-          const selectionOffsetTop = element.offset().top - itemContainer.offset().top + itemsTop;
-          const selectionOffsetBottom = selectionOffsetTop +  element.outerHeight();
-
-          if (selectionOffsetBottom > itemsBottom) {
-            itemContainer.animate({ scrollTop: Math.ceil(selectionOffsetBottom - itemsHeight) }, 0);
-          } else if (selectionOffsetTop < itemsTop) {
-            itemContainer.animate({ scrollTop: Math.floor(selectionOffsetTop) }, 0);
-          }
+          scrollToElement(element, findParent());
         } else {
           element.removeClass(selectionClass);
         }
