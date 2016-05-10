@@ -3,6 +3,16 @@ import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from '.
 import { Uri } from './uri';
 import { Language } from '../components/contracts';
 
+export const keyCodes = {
+  arrowDown: 40,
+  arrowUp: 38,
+  pageDown: 34,
+  pageUp: 33,
+  enter: 13,
+  tab: 9,
+  esc: 27
+};
+
 export function scrollToElement(element: JQuery, parentContainer: JQuery) {
 
   const itemsHeight = parentContainer.height();

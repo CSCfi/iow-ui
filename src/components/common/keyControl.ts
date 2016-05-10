@@ -2,6 +2,7 @@ import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 
 import { module as mod }  from './module';
+import { keyCodes } from '../../services/utils';
 
 mod.directive('keyControl', () => {
   return {
@@ -16,23 +17,17 @@ mod.directive('keyControl', () => {
   };
 });
 
-const arrowDown = 40;
-const arrowUp = 38;
-const pageDown = 34;
-const pageUp = 33;
-const enter = 13;
-
 export class KeyControlController {
 
   itemCount: number = 0;
   selectionIndex: number = -1;
 
   private keyEventHandlers: {[key: number]: () => void} = {
-    [arrowDown]: () => this.moveSelection(1),
-    [arrowUp]: () => this.moveSelection(-1),
-    [pageDown]: () => this.moveSelection(10),
-    [pageUp]: () => this.moveSelection(-10),
-    [enter]: () => this.selectSelection()
+    [keyCodes.arrowDown]: () => this.moveSelection(1),
+    [keyCodes.arrowUp]: () => this.moveSelection(-1),
+    [keyCodes.pageDown]: () => this.moveSelection(10),
+    [keyCodes.pageUp]: () => this.moveSelection(-10),
+    [keyCodes.enter]: () => this.selectSelection()
   };
 
   constructor(private $scope: IScope) {
