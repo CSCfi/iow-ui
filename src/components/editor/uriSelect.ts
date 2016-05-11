@@ -56,7 +56,7 @@ class UriSelectController {
 
   constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
     $scope.$watch(() => this.uri, (current, previous) => {
-      if (!!current && !current.equals(previous)) {
+      if (!current || !current.equals(previous)) {
         this.change = current;
       }
     });
