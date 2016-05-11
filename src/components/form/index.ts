@@ -3,6 +3,7 @@ import { DisplayItemFactory } from './displayItemFactory';
 import { module as mod }  from './module';
 export default mod.name;
 
+import './autocomplete';
 import './stringInput';
 import './prefixInput';
 import './namespaceInput';
