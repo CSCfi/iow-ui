@@ -9,7 +9,7 @@ import IModelFormatter = angular.IModelFormatter;
 import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { arrayValidator } from '../form/validators';
-import { extendNgModelOptions, normalizeAsArray } from '../../services/utils';
+import { extendNgModelOptions, formatWithFormatters } from '../../services/utils';
 import { module as mod }  from './module';
 
 const skipValidators = new Set<string>(['duplicate']);
@@ -104,12 +104,7 @@ export class EditableMultipleController<T> {
   isEditing: () => boolean;
 
   format(value: T): string {
-    let result = value;
-
-    for (const formatter of normalizeAsArray(this.formatter)) {
-      result = formatter(result);
-    }
-    return result.toString();
+    return formatWithFormatters(value, this.formatter);
   }
 
   isValid(value: T) {

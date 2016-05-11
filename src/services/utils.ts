@@ -1,7 +1,17 @@
 import INgModelController = angular.INgModelController;
+import IModelFormatter = angular.IModelFormatter;
 import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from './entities';
 import { Uri } from './uri';
 import { Language } from '../components/contracts';
+
+export function formatWithFormatters<T>(value: T, formatters: IModelFormatter|IModelFormatter[]): string {
+  let result = value;
+
+  for (const formatter of normalizeAsArray(formatters)) {
+    result = formatter(result);
+  }
+  return result.toString();
+}
 
 export const keyCodes = {
   arrowDown: 40,
