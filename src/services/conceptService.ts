@@ -10,7 +10,7 @@ import {
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { Uri } from './uri';
-import { Language } from '../components/contracts';
+import { Language } from '../utils/language';
 
 export interface ConceptSearchResult {
   id: Uri;

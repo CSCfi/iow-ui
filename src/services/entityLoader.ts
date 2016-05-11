@@ -19,11 +19,11 @@ import { ModelService } from './modelService';
 import { ClassService } from './classService';
 import { PredicateService } from './predicateService';
 import { UserService } from './userService';
-import { identity } from './utils';
 import { ConceptService } from './conceptService';
 import { ResetService } from './resetService';
 import { Uri, Url } from './uri';
 import { DataType } from './dataTypes';
+import { identity } from '../utils/function';
 
 export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392');
 export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK');

@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import { DataType } from '../../services/dataTypes';
 import { Uri } from '../../services/uri';
-import { availableLanguages } from '../../services/utils';
+import { availableLanguages } from '../../utils/language';
 const URI = require('uri-js');
 
 export interface Validator<T> {

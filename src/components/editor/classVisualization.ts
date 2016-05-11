@@ -6,12 +6,12 @@ import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
 import { Class, Model, VisualizationClass, Property, Predicate, LanguageContext } from '../../services/entities';
 import * as _ from 'lodash';
-import { isDefined } from '../../services/utils';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
-import { module as mod }  from './module';
+import { isDefined } from '../../utils/object';
 const joint = require('jointjs');
+import { module as mod }  from './module';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {

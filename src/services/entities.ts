@@ -2,15 +2,7 @@ import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import * as frames from './frames';
 import * as moment from 'moment';
-import {
-  glyphIconClassForType,
-  normalizeAsArray,
-  normalizeSelectionType,
-  containsAny,
-  normalizeModelType,
-  hasLocalization, normalizeClassType, normalizePredicateType, normalizeReferrerType, identity, swapElements,
-  moveElement
-} from './utils';
+
 import Moment = moment.Moment;
 import { Frame } from './frames';
 import { FrameFn } from './frames';
@@ -19,7 +11,14 @@ import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
-import { Language } from '../components/contracts';
+import { Language, hasLocalization } from '../utils/language';
+import { containsAny, normalizeAsArray, swapElements } from '../utils/array';
+import { glyphIconClassForType } from '../utils/entity';
+import {
+  normalizeModelType, normalizeSelectionType, normalizeClassType, normalizePredicateType,
+  normalizeReferrerType
+} from '../utils/type';
+import { identity } from '../utils/function';
 
 const jsonld: any = require('jsonld');
 

@@ -8,16 +8,13 @@ import {
   ConstraintType, Class
 } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
-import {
-  collectProperties,
-  createExistsExclusion,
-  createDefinedByExclusion,
-  combineExclusions,
-  createClassTypeExclusion,
-  SearchClassType, createSelfExclusion
-} from '../../services/utils';
 import { RelativeUrl } from '../../services/uri';
-
+import { SearchClassType } from '../contracts';
+import {
+  createClassTypeExclusion, createExistsExclusion, createDefinedByExclusion,
+  createSelfExclusion, combineExclusions
+} from '../../utils/exclusion';
+import { collectProperties } from '../../utils/entity';
 import { module as mod }  from './module';
 
 mod.directive('editableConstraint', () => {

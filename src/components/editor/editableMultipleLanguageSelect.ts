@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Language } from '../contracts';
+import { Language } from '../../utils/language';
 import { module as mod }  from './module';
 
 mod.directive('editableMultipleLanguageSelect', () => {

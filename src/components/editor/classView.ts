@@ -1,7 +1,8 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import ILogService = angular.ILogService;
+import IQService = angular.IQService;
+import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
@@ -12,16 +13,11 @@ import {
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import {
-  collectProperties,
-  createExistsExclusion,
-  combineExclusions,
-  createDefinedByExclusion
-} from '../../services/utils';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
 import { Uri } from '../../services/uri';
-import IQService = angular.IQService;
+import { collectProperties } from '../../utils/entity';
+import { createDefinedByExclusion, createExistsExclusion, combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';
 
 mod.directive('classView', () => {

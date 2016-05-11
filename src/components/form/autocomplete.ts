@@ -4,9 +4,9 @@ import INgModelController = angular.INgModelController;
 import IPromise = angular.IPromise;
 import IRepeatScope = angular.IRepeatScope;
 import IModelFormatter = angular.IModelFormatter;
-import {
-  scrollToElement, isDefined, keyCodes, formatWithFormatters
-} from '../../services/utils';
+import { isDefined } from '../../utils/object';
+import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
+import { formatWithFormatters, scrollToElement } from '../../utils/angular';
 import { module as mod }  from './module';
 
 mod.directive('autocomplete', ($document: JQuery) => {
@@ -100,16 +100,16 @@ export class AutocompleteController<T> {
   selectionIndex = -1;
 
   private keyEventHandlers: {[key: number]: () => void|boolean} = {
-    [keyCodes.arrowDown]: () => this.moveSelection(1),
-    [keyCodes.arrowUp]: () => this.moveSelection(-1),
-    [keyCodes.pageDown]: () => this.moveSelection(10),
-    [keyCodes.pageUp]: () => this.moveSelection(-10),
-    [keyCodes.enter]: () => this.selectSelection(),
-    [keyCodes.tab]: () => {
+    [arrowDown]: () => this.moveSelection(1),
+    [arrowUp]: () => this.moveSelection(-1),
+    [pageDown]: () => this.moveSelection(10),
+    [pageUp]: () => this.moveSelection(-10),
+    [enter]: () => this.selectSelection(),
+    [tab]: () => {
       this.selectSelection();
       return false;
     },
-    [keyCodes.esc]: () => this.clear()
+    [esc]: () => this.clear()
   };
 
   keyPressed(event: JQueryEventObject) {

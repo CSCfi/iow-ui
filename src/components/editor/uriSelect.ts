@@ -7,8 +7,8 @@ import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type } from '../../services/entities';
-import { createDefinedByExclusion } from '../../services/utils';
 import { Uri } from '../../services/uri';
+import { createDefinedByExclusion } from '../../utils/exclusion';
 import { module as mod }  from './module';
 
 mod.directive('uriSelect', () => {

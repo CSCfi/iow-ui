@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IRepeatScope = angular.IRepeatScope;
 import IScope = angular.IScope;
-import { resetWith, moveElement } from '../../services/utils';
+import { moveElement, resetWith } from '../../utils/array';
 import { module as mod }  from './module';
 
 interface DragSortableAttributes extends IAttributes {

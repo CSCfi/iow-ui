@@ -5,8 +5,8 @@ import { ModelService } from '../../services/modelService';
 import { Require, Model } from '../../services/entities';
 import { AddEditRequireModal } from './addEditRequireModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
-import { isDefined } from '../../services/utils';
-import { Language } from '../contracts';
+import { Language } from '../../utils/language';
+import { isDefined } from '../../utils/object';
 
 const noExclude = (require: Require) => <string> null;
 

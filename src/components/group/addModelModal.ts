@@ -4,7 +4,7 @@ import IPromise = angular.IPromise;
 import { ModelService } from '../../services/modelService';
 import { Type } from '../../services/entities';
 import { Uri } from '../../services/uri';
-import { Language } from '../contracts';
+import { Language } from '../../utils/language';
 
 export class AddModelModal {
   /* @ngInject */

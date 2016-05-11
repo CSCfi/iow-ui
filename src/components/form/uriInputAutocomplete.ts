@@ -8,8 +8,8 @@ import IQService = angular.IQService;
 import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
-import { createDefinedByExclusion } from '../../services/utils';
 import { module as mod }  from './module';
+import { createDefinedByExclusion } from '../../utils/exclusion';
 
 mod.directive('uriInputAutocomplete', () => {
   return {

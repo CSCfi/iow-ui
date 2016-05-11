@@ -6,16 +6,12 @@ import IScope = angular.IScope;
 import { SearchPredicateModal } from './searchPredicateModal';
 import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
-import {
-  createExistsExclusion,
-  collectProperties,
-  combineExclusions,
-  createDefinedByExclusion
-} from '../../services/utils';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
+import { collectProperties } from '../../utils/entity';
+import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
 
 mod.directive('editableMultipleUriSelect', () => {
   return {

@@ -13,8 +13,8 @@ import { LanguageService } from '../../services/languageService';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { glyphIconClassForType, collectIds } from '../../services/utils';
 import { EditableForm } from '../form/editableEntityController';
+import { collectIds, glyphIconClassForType } from '../../utils/entity';
 
 export const noExclude = (item: AbstractClass) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';

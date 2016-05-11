@@ -9,7 +9,7 @@ import IModelFormatter = angular.IModelFormatter;
 import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { arrayValidator } from '../form/validators';
-import { extendNgModelOptions, formatWithFormatters } from '../../services/utils';
+import { extendNgModelOptions, formatWithFormatters } from '../../utils/angular';
 import { module as mod }  from './module';
 
 const skipValidators = new Set<string>(['duplicate']);

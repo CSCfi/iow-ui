@@ -1,6 +1,7 @@
 import { Localizable, LanguageContext } from './entities';
-import { Language } from '../components/contracts';
-import { availableUILanguages, translate, availableLanguages } from './utils';
+import { Language, availableUILanguages, availableLanguages, translate } from '../utils/language';
+
+
 
 const defaultLanguage: Language = 'fi';
 

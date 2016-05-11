@@ -6,16 +6,6 @@ import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import {
-  glyphIconClassForType,
-  collectIds,
-  isDifferentUrl,
-  createExistsExclusion,
-  createDefinedByExclusion,
-  combineExclusions,
-  createClassTypeExclusion,
-  SearchClassType
-} from '../../services/utils';
-import {
   Class,
   Predicate,
   PredicateListItem,
@@ -24,7 +14,6 @@ import {
   Type,
   Property,
   DefinedBy,
-  NamespaceType,
   ExternalEntity,
   AbstractClass,
   AbstractPredicate
@@ -39,11 +28,18 @@ import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
 import { MaintenanceModal } from '../maintenance';
-import { Show, ChangeNotifier, ChangeListener, Language } from './../contracts';
+import { Show, ChangeNotifier, ChangeListener, SearchClassType } from './../contracts';
 import { Uri } from '../../services/uri';
 import { comparingLocalizable } from '../../services/comparators';
 import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
 import { module as mod }  from './module';
+import { isDifferentUrl } from '../../utils/angular';
+import {
+  createClassTypeExclusion, createDefinedByExclusion, combineExclusions,
+  createExistsExclusion
+} from '../../utils/exclusion';
+import { collectIds, glyphIconClassForType } from '../../utils/entity';
+import { Language } from '../../utils/language';
 
 mod.directive('model', () => {
   return {

@@ -1,5 +1,5 @@
 import { Layout, Event, EventType, Link, Node } from 'webcola';
-import { Iterable } from '../../services/utils';
+import { Iterable } from '../../utils/iterable';
 
 interface IdentifiedNode extends Node {
   id: string;

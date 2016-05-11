@@ -12,17 +12,16 @@ import {
   Property,
   Model,
   GraphData,
-  NamespaceType,
   ExternalEntity,
   Type
 } from './entities';
 import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
-import { expandContextWithKnownModels, hasLocalization } from './utils';
 import { Uri, Urn } from './uri';
 import { reverseMapType } from './typeMapping';
-import { Language } from '../components/contracts';
+import { expandContextWithKnownModels } from '../utils/entity';
+import { Language, hasLocalization } from '../utils/language';
 
 export class ClassService {
 

@@ -2,7 +2,7 @@ import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
 import { EntityDeserializer, SearchResult, GraphData } from './entities';
 import { config } from '../config';
-import { Language } from '../components/contracts';
+import { Language } from '../utils/language';
 
 export class SearchService {
 

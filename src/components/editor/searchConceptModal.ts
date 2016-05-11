@@ -14,7 +14,7 @@ import { comparingString, comparingBoolean, comparingLocalizable } from '../../s
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
-import { isDefined } from '../../services/utils';
+import { isDefined } from '../../utils/object';
 
 const limit = 1000;
 

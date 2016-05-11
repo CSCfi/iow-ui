@@ -3,9 +3,8 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { Localizable, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
-import { hasLocalization, allLocalizations } from '../../services/utils';
 import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
-
+import { allLocalizations, hasLocalization } from '../../utils/language';
 import { module as mod }  from './module';
 
 interface LocalizedInputAttributes extends IAttributes {

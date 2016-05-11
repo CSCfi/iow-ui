@@ -6,8 +6,7 @@ import * as _ from 'lodash';
 import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { SearchResult, Type } from '../services/entities';
-import IQService = angular.IQService;
-import { containsAny, translate } from '../services/utils';
+import { containsAny } from '../utils/array';
 
 
 export class AdvancedSearchModal {

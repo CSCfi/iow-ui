@@ -6,8 +6,9 @@ import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchReferenceModal } from './searchReferenceModal';
 import { ModelService } from '../../services/modelService';
-import { collectProperties, createExistsExclusion } from '../../services/utils';
 import { module as mod }  from './module';
+import { createExistsExclusion } from '../../utils/exclusion';
+import { collectProperties } from '../../utils/entity';
 
 mod.directive('referencesView', () => {
   return {

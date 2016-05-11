@@ -6,7 +6,7 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import {
-  Predicate, PredicateListItem, Model, Type, DefinedBy, NamespaceType,
+  Predicate, PredicateListItem, Model, Type, DefinedBy,
   AbstractPredicate, ExternalEntity
 } from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
@@ -15,7 +15,7 @@ import { LanguageService } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
-import { glyphIconClassForType, collectIds } from '../../services/utils';
+import { collectIds, glyphIconClassForType } from '../../utils/entity';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 

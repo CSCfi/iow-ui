@@ -5,8 +5,8 @@ import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { Attribute, Association, Class, AbstractGroup, Group, Model, LanguageContext } from '../../services/entities';
-import { isModalCancel } from '../../services/utils';
 import { Uri } from '../../services/uri';
+import { isModalCancel } from '../../utils/angular';
 
 export interface EditableForm extends IFormController {
   editing: boolean;

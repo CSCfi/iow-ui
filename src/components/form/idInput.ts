@@ -6,9 +6,9 @@ import { ValidatorService } from '../../services/validatorService';
 import { Class, Predicate, Type } from '../../services/entities';
 import { isStringValid, isValidLabelLength } from './validators';
 import { Uri } from '../../services/uri';
-
+import { extendNgModelOptions } from '../../utils/angular';
 import { module as mod }  from './module';
-import { extendNgModelOptions } from '../../services/utils';
+
 
 interface IdInputAttributes extends IAttributes {
   idInput: Type;

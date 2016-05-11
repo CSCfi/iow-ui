@@ -7,8 +7,8 @@ import { EntityDeserializer, Model, ModelListItem, Reference, Require, Type, Gra
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
 import { Uri, Urn } from './uri';
-import { expandContextWithKnownModels } from './utils';
-import { Language } from '../components/contracts';
+import { Language } from '../utils/language';
+import { expandContextWithKnownModels } from '../utils/entity';
 
 export class ModelService {
 

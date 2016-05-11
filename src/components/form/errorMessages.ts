@@ -1,12 +1,11 @@
-
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import ITimeoutService = angular.ITimeoutService;
 import { resolveValidator } from './validators';
 import { dataTypes } from '../../services/dataTypes';
+import { normalizeAsArray } from '../../utils/array';
 import { module as mod }  from './module';
-import { normalizeAsArray } from '../../services/utils';
 
 type Error = { key: string, message: string, format?: string };
 const errors: Error[] = [];

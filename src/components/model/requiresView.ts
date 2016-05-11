@@ -5,10 +5,10 @@ import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../form/editableTable';
 import { AddEditRequireModal } from './addEditRequireModal';
 import { SearchRequireModal } from './searchRequireModal';
-import { combineExclusions } from '../../services/utils';
 import { ModelController } from './model';
 import { ModelViewController } from './modelView';
 import { module as mod }  from './module';
+import { combineExclusions } from '../../utils/exclusion';
 
 mod.directive('requiresView', () => {
   return {

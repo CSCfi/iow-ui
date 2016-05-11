@@ -1,10 +1,10 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
+import IQService = angular.IQService;
 import { ModelService } from '../../services/modelService';
 import { Require, Model } from '../../services/entities';
-import { Language } from '../contracts';
-import IQService = angular.IQService;
+import { Language } from '../../utils/language';
 
 export class AddEditRequireModal {
   /* @ngInject */

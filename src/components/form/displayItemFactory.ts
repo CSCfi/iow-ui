@@ -3,8 +3,9 @@ import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
 import { Localizable, isLocalizable, LanguageContext } from '../../services/entities';
-import { isString, isNumber, isDifferentUrl } from '../../services/utils';
 import { Uri } from '../../services/uri';
+import { isString, isNumber } from '../../utils/object';
+import { isDifferentUrl } from '../../utils/angular';
 
 export type Value = string|Localizable|number|Uri;
 

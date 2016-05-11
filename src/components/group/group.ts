@@ -14,7 +14,7 @@ import { Group, ModelListItem, Type, LanguageContext } from '../../services/enti
 import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
-import { Language } from '../contracts';
+import { Language } from '../../utils/language';
 
 mod.directive('group', () => {
   return {

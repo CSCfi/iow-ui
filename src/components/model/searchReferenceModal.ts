@@ -4,8 +4,8 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ConceptService } from '../../services/conceptService';
 import { comparingBoolean, comparingString } from '../../services/comparators';
-import { isDefined } from '../../services/utils';
-import { Language } from '../contracts';
+import { Language } from '../../utils/language';
+import { isDefined } from '../../utils/object';
 
 const noExclude = (scheme: any) => <string> null;
 

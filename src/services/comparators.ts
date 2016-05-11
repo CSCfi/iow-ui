@@ -1,7 +1,7 @@
 import Moment = moment.Moment;
-import { isDefined, translate } from './utils';
 import { Localizable } from './entities';
-import { Language } from '../components/contracts';
+import { isDefined } from '../utils/object';
+import { Language, translate } from '../utils/language';
 
 export interface Comparator<T> {
   (lhs: T, rhs: T): number;

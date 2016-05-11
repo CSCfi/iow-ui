@@ -6,8 +6,8 @@ import ILocationService = angular.ILocationService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from './editableEntityController';
 import { LanguageService } from '../../services/languageService';
+import { isLocalizationDefined } from '../../utils/language';
 import { module as mod }  from './module';
-import { isLocalizationDefined } from '../../services/utils';
 
 mod.directive('editableLabel', () => {
   return {

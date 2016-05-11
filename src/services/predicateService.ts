@@ -8,9 +8,9 @@ import {
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { reverseMapType } from './typeMapping';
-import { expandContextWithKnownModels } from './utils';
 import { Urn, Uri } from './uri';
-import { Language } from '../components/contracts';
+import { expandContextWithKnownModels } from '../utils/entity';
+import { Language } from '../utils/language';
 
 export class PredicateService {
   /* @ngInject */

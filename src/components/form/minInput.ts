@@ -3,8 +3,7 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { isDefined } from '../../services/utils';
-
+import { isDefined } from '../../utils/object';
 import { module as mod }  from './module';
 
 mod.directive('minInput', () => {
