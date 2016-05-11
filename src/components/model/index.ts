@@ -3,6 +3,7 @@ import { SearchRequireModal } from './searchRequireModal';
 import { SearchReferenceModal } from './searchReferenceModal';
 import { AddEditRelationModal } from './addEditRelationModal';
 import { AddEditRequireModal } from './addEditRequireModal';
+import { SearchCodeSchemeModal } from './searchCodeSchemeModal';
 
 import { module as mod }  from './module';
 export default mod.name;
@@ -14,9 +15,11 @@ import './modelView';
 import './referencesView';
 import './requiresView';
 import './relationsView';
+import './codeSchemesView';
 import './technicalNamespaces';
 
 mod.service('addEditRelationModal', AddEditRelationModal);
 mod.service('addEditRequireModal', AddEditRequireModal);
 mod.service('searchRequireModal', SearchRequireModal);
 mod.service('searchReferenceModal', SearchReferenceModal);
+mod.service('searchCodeSchemeModal', SearchCodeSchemeModal);

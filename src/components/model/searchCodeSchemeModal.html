@@ -1,0 +1,29 @@
+<modal-template>
+  <modal-title translate>Search code schemes</modal-title>
+
+  <modal-body>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group input-group-lg">
+          <input autofocus type="text" class="form-control" placeholder="{{'search code scheme' | translate}}"
+                 ng-model="ctrl.searchText"
+                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                 key-control="ctrl.searchResults" />
+          <i class="glyphicon glyphicon-search form-control-feedback"></i>
+        </div>
+      </div>
+
+      <div class="col-md-6 search-results with-button">
+        <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
+
+        <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
+          <h5>{{searchResult.title | translateValue}}</h5>
+        </search-results>
+      </div>
+    </div>
+  </modal-body>
+
+  <modal-buttons>
+    <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
+  </modal-buttons>
+</modal-template>

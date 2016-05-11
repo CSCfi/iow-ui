@@ -23,6 +23,10 @@ msgstr ""
 msgid "Add class"
 msgstr ""
 
+#: translations/misc.html:181
+msgid "Add code scheme"
+msgstr ""
+
 #: components/group/group.html:12
 msgid "Add library"
 msgstr ""
@@ -51,19 +55,19 @@ msgstr ""
 msgid "Add properties from super class"
 msgstr ""
 
-#: components/editor/classView.html:6
+#: components/editor/classView.html:8
 msgid "Add property"
 msgstr ""
 
-#: components/model/modelView.html:12
+#: translations/misc.html:174
 msgid "Add reference"
 msgstr ""
 
-#: components/model/modelView.html:13
+#: translations/misc.html:178
 msgid "Add related resource"
 msgstr ""
 
-#: components/model/modelView.html:11
+#: translations/misc.html:170
 msgid "Add require"
 msgstr ""
 
@@ -250,6 +254,7 @@ msgstr ""
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
+#: components/model/searchCodeSchemeModal.html:27
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:39
 msgid "Cancel"
@@ -367,6 +372,14 @@ msgstr ""
 #: components/common/historyModal.html:36
 #: translations/misc.html:143
 msgid "Close"
+msgstr ""
+
+#: translations/misc.html:184
+msgid "Code scheme name"
+msgstr ""
+
+#: translations/misc.html:180
+msgid "Code schemes"
 msgstr ""
 
 #: translations/misc.html:110
@@ -675,7 +688,7 @@ msgstr ""
 msgid "Edit in progress"
 msgstr ""
 
-#: translations/misc.html:176
+#: translations/misc.html:179
 msgid "Edit related resource"
 msgstr ""
 
@@ -848,7 +861,7 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
-#: translations/misc.html:173
+#: translations/misc.html:175
 msgid "Identifier"
 msgstr ""
 
@@ -1070,7 +1083,7 @@ msgstr ""
 msgid "Non specialized classes are not allowed"
 msgstr ""
 
-#: translations/misc.html:171
+#: translations/misc.html:172
 msgid "None added"
 msgstr ""
 
@@ -1242,7 +1255,7 @@ msgstr ""
 msgid "Reference filter"
 msgstr ""
 
-#: translations/misc.html:172
+#: translations/misc.html:173
 msgid "References"
 msgstr ""
 
@@ -1250,7 +1263,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: translations/misc.html:175
+#: translations/misc.html:177
 msgid "Related resources"
 msgstr ""
 
@@ -1320,6 +1333,16 @@ msgstr ""
 
 #: components/editor/searchClassModal.html:16
 msgid "search class"
+msgstr ""
+
+#: components/model/searchCodeSchemeModal.html:8
+#: translations/misc.html:183
+msgid "search code scheme"
+msgstr ""
+
+#: components/model/searchCodeSchemeModal.html:2
+#: translations/misc.html:182
+msgid "Search code schemes"
 msgstr ""
 
 #: components/advancedSearchModal.html:8
@@ -1505,7 +1528,7 @@ msgstr ""
 msgid "Superproperty info"
 msgstr ""
 
-#: translations/misc.html:170
+#: translations/misc.html:171
 msgid "Technical namespaces"
 msgstr ""
 
@@ -1612,7 +1635,7 @@ msgstr ""
 msgid "Vocabulary info"
 msgstr ""
 
-#: translations/misc.html:174
+#: translations/misc.html:176
 msgid "Vocabulary name"
 msgstr ""
 
