@@ -6,6 +6,7 @@ export type FrameFn = (data: any) => Frame;
 const inScheme = { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme', '@type': '@id' };
 const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
 const comment = { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' };
+const description = { '@id': 'http://purl.org/dc/terms/description', '@container': '@language' };
 
 const coreContext = {
   comment,
@@ -81,12 +82,20 @@ const requireContext = Object.assign({}, coreContext, {
   preferredXMLNamespacePrefix: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix' }
 });
 
+const codeServerContext = Object.assign({}, coreContext, {
+  description
+});
+
+const codeSchemeContext = Object.assign({}, coreContext, {
+  creator: { '@id': 'http://purl.org/dc/terms/creator' }
+});
+
 const modelContext = Object.assign({}, coreContext, requireContext, {
   rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' },
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
   requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
   relations: { '@id': 'http://purl.org/dc/terms/relation', '@container': '@list' },
-  description: { '@id': 'http://purl.org/dc/terms/description', '@container': '@language' },
+  description,
   language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' }
 });
 
@@ -193,6 +202,18 @@ export function userFrame(data: any): Frame {
 
 export function requireFrame(data: any): Frame {
   return frame(data, requireContext);
+}
+
+export function codeServerFrame(data: any): Frame {
+  return frame(data, codeServerContext, {
+    identifier: {}
+  });
+}
+
+export function codeSchemeFrame(data: any): Frame {
+  return frame(data, codeSchemeContext, {
+    '@type': 'iow:FCodeScheme'
+  });
 }
 
 export function searchResultFrame(data: any): Frame {
