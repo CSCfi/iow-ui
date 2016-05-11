@@ -21,19 +21,19 @@ mod.directive('uriInputAutocomplete', ($document: JQuery) => {
     },
     bindToController: true,
     template: `
-               <ng-transclude></ng-transclude>
-               <div ng-if="ctrl.show" ng-class="{open: ctrl.show}">
-                 <ul ng-class="'dropdown-menu'" ng-show="ctrl.show" ng-style="ctrl.popupStyle">
-                   <li ng-repeat="match in ctrl.matches" 
-                       ng-class="{ active: ctrl.isSelected($index) }" 
-                       ng-mouseenter="ctrl.setSelection($index)" 
-                       ng-click="ctrl.selectSelection()" 
-                       uri-input-autocomplete-item>
-                     <a href="">{{ctrl.format(match)}}</a>
-                   </li>
-                 </ul>
-               </div>
-               `,
+      <ng-transclude></ng-transclude>
+      <div ng-if="ctrl.show" ng-class="{open: ctrl.show}">
+        <ul ng-class="'dropdown-menu'" ng-show="ctrl.show" ng-style="ctrl.popupStyle">
+          <li ng-repeat="match in ctrl.matches" 
+              ng-class="{ active: ctrl.isSelected($index) }" 
+              ng-mouseenter="ctrl.setSelection($index)" 
+              ng-click="ctrl.selectSelection()" 
+              uri-input-autocomplete-item>
+            <a href="">{{ctrl.format(match)}}</a>
+          </li>
+        </ul>
+      </div>
+    `,
     controller: UriInputAutocompleteController,
     controllerAs: 'ctrl',
     require: 'uriInputAutocomplete',
@@ -86,7 +86,7 @@ export class UriInputAutocompleteController {
 
   type: Type;
   model: Model;
-  
+
   dimensions: { left: number, top: number, width: number };
   applyValue: (value: string) => void;
 
