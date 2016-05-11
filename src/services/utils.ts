@@ -4,13 +4,13 @@ import { Type, Localizable, Model, DefinedBy, ClassListItem, GraphData } from '.
 import { Uri } from './uri';
 import { Language } from '../components/contracts';
 
-export function formatWithFormatters<T>(value: T, formatters: IModelFormatter|IModelFormatter[]): string {
+export function formatWithFormatters(value: any, formatters: IModelFormatter|IModelFormatter[]): any {
   let result = value;
 
   for (const formatter of normalizeAsArray(formatters)) {
     result = formatter(result);
   }
-  return result.toString();
+  return result;
 }
 
 export const keyCodes = {
