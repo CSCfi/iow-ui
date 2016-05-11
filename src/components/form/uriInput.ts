@@ -80,8 +80,8 @@ mod.directive('uriInput', /* @ngInject */ (languageService: LanguageService, get
         });
       }
 
-      modelController.$parsers.push(createParser(() => $scope.model));
-      modelController.$formatters.push(createFormatter());
+      modelController.$parsers = [createParser(() => $scope.model)];
+      modelController.$formatters = [createFormatter()];
 
       const validators = createValidators(attributes.uriInput, () => $scope.model);
 
