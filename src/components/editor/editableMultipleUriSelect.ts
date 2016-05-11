@@ -33,12 +33,14 @@ mod.directive('editableMultipleUriSelect', () => {
       <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" link="ctrl.link" input="ctrl.input">
 
         <input-container>
-          <input id="{{ctrl.id}}"
-                 type="text"
-                 restrict-duplicates="ctrl.ngModel"
-                 uri-input
-                 model="ctrl.model"
-                 ng-model="ctrl.input" />
+          <uri-input-autocomplete type="{{ctrl.type}}" model="ctrl.model">
+            <input id="{{ctrl.id}}"
+                   type="text"
+                   restrict-duplicates="ctrl.ngModel"
+                   uri-input
+                   model="ctrl.model"
+                   ng-model="ctrl.input" />
+          </uri-input-autocomplete>
          </input-container>
 
         <button-container>
