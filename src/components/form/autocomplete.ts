@@ -63,7 +63,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
       $scope.$on('destroy', () => {
         inputElement.off('keydown', keyDownHandler);
         inputElement.off('focus', focusHandler);
-        $document.off('clock', blurClickHandler);
+        $document.off('click', blurClickHandler);
       });
 
       $scope.$watch(() => ngModel.$viewValue, viewValue => thisController.autocomplete(viewValue));
