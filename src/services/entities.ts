@@ -45,7 +45,9 @@ export type Type = 'class'
                  | 'resource'
                  | 'collection'
                  | 'scheme'
-                 | 'standard';
+                 | 'standard'
+                 | 'codeScheme'
+                 | 'codeGroup';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -231,6 +233,7 @@ export class Model extends AbstractModel {
   references: Reference[];
   requires: Require[];
   relations: Relation[];
+  codeSchemes: CodeScheme[];
   unsaved: boolean = false;
   namespace: Url;
   prefix: string;
@@ -253,6 +256,7 @@ export class Model extends AbstractModel {
     this.references = deserializeEntityList(graph.references, context, frame, Reference);
     this.requires = deserializeEntityList(graph.requires, context, frame, Require);
     this.relations = deserializeEntityList(graph.relations, context, frame, Relation);
+    this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, CodeScheme);
     this.version = graph.identifier;
     if (graph.rootResource) {
       this.rootClass = new Uri(graph.rootResource, context);
@@ -290,6 +294,14 @@ export class Model extends AbstractModel {
 
   removeRelation(relation: Relation) {
     _.remove(this.relations, relation);
+  }
+
+  addCodeScheme(codeScheme: CodeScheme) {
+    this.codeSchemes.push(codeScheme);
+  }
+
+  removeCodeScheme(codeScheme: CodeScheme) {
+    _.remove(this.codeSchemes, codeScheme);
   }
 
   getNamespaceNames(exclude?: Require): Set<string> {
@@ -432,6 +444,7 @@ export class Model extends AbstractModel {
       references: serializeEntityList(this.references, clone),
       requires: serializeEntityList(this.requires, clone),
       relations: serializeEntityList(this.relations, clone),
+      codeLists: serializeEntityList(this.codeSchemes, clone),
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri,
       language: serializeList(this.language)
@@ -571,6 +584,48 @@ export class Require extends GraphNode {
   }
 }
 
+export class CodeServer extends GraphNode {
+  id: Uri;
+  identifier: string;
+  description: Localizable;
+  title: Localizable;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = new Uri(graph['@id']);
+    this.identifier = graph.identifier;
+    this.description = deserializeLocalizable(graph.description);
+    this.title = deserializeLocalizable(graph.title);
+  }
+}
+
+export class CodeGroup extends GraphNode {
+  id: Uri;
+  title: Localizable;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = new Uri(graph['@id']);
+    this.title = deserializeLocalizable(graph.title);
+  }
+}
+
+export class CodeScheme extends GraphNode {
+  id: Uri;
+  title: Localizable;
+  creator: string;
+  identifier: string;
+  isPartOf: CodeGroup[];
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = new Uri(graph['@id']);
+    this.title = deserializeLocalizable(graph.title);
+    this.creator = graph.creator;
+    this.identifier = graph.identifier;
+    this.isPartOf = deserializeEntityList(graph.isPartOf, context, frame, CodeGroup);
+  }
+}
 
 export abstract class AbstractClass extends GraphNode {
 
@@ -1589,6 +1644,14 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.requireFrame, (framedData) => Require);
   }
 
+  deserializeCodeServers(data: GraphData): IPromise<CodeServer[]> {
+    return frameAndMapArray(this.$log, data, frames.codeServerFrame, (framedData) => CodeServer);
+  }
+
+  deserializeCodeSchemes(data: GraphData): IPromise<CodeScheme[]> {
+    return frameAndMapArray(this.$log, data, frames.codeSchemeFrame, (framedData) => CodeScheme);
+  }
+
   deserializeUser(data: GraphData): IPromise<User> {
     return frameAndMap(this.$log, data, frames.userFrame, (framedData) => DefaultUser);
   }
@@ -1597,11 +1660,11 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.searchResultFrame, (framedData) => SearchResult);
   }
 
-  deserializeClassVisualization(data: GraphData): IPromise<any> {
+  deserializeClassVisualization(data: GraphData): IPromise<VisualizationClass[]> {
     return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass);
   }
 
-  deserializeModelVisualization(data: GraphData): IPromise<any> {
+  deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
     return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass);
   }
 

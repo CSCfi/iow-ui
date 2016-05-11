@@ -28,6 +28,8 @@ registerType('activity', ['prov:Activity']);
 registerType('resource', ['rdfs:Resource']);
 registerType('collection', ['skos:Collection']);
 registerType('standard', ['dcterms:Standard']);
+registerType('codeScheme', ['iow:FCodeScheme']);
+registerType('codeGroup', ['iow:FCodeGroup']);
 
 export function mapType(type: string): Type {
   const result = toType.get(type);
