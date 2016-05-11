@@ -14,10 +14,8 @@ import {
 } from '../../services/utils';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
-import { createValidators, createParser, createFormatter, placeholderText } from '../form/uriInput';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
-import { LanguageService } from '../../services/languageService';
 
 mod.directive('editableMultipleUriSelect', () => {
   return {
@@ -26,23 +24,29 @@ mod.directive('editableMultipleUriSelect', () => {
       type: '@',
       model: '=',
       id: '@',
-      title: '@',
-      allowInput: '='
+      title: '@'
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: `<editable-multiple id="{{ctrl.id}}"
-                                  data-title="{{ctrl.title}}"
-                                  ng-model="ctrl.ngModel"
-                                  allow-input="ctrl.allowInput"
-                                  validators="ctrl.validators"
-                                  formatter="ctrl.formatter"
-                                  parser="ctrl.parser"
-                                  placeholder="ctrl.placeholder"
-                                  link="ctrl.link">
-                 <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" style="display: block" ng-click="ctrl.selectUri()">{{('Choose ' + ctrl.type) | translate}}</button>
-               </editable-multiple>`,
+    template: `
+      <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" link="ctrl.link" input="ctrl.input">
+
+        <input-container>
+          <input id="{{ctrl.id}}"
+                 type="text"
+                 restrict-duplicates="ctrl.ngModel"
+                 uri-input
+                 model="ctrl.model"
+                 ng-model="ctrl.input" />
+         </input-container>
+
+        <button-container>
+          <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" style="display: block" ng-click="ctrl.selectUri()">{{('Choose ' + ctrl.type) | translate}}</button>
+        </button-container>
+
+      </editable-multiple>
+    `,
     require: ['editableMultipleUriSelect', '?^form'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableMultipleUriSelectController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
@@ -58,30 +62,18 @@ interface WithId {
 class EditableMultipleUriSelectController {
 
   ngModel: Uri[];
+  input: Uri;
   type: Type;
   model: Model;
   id: string;
   title: string;
-  allowInput: boolean;
-  validators = createValidators(null, () => this.model);
-  parser = createParser(() => this.model);
-  formatter = createFormatter();
-  placeholder: string;
   link = (uri: Uri) => this.model.linkTo({ type: this.type, id: uri }, true);
 
   isEditing: () => boolean;
   addUri: (uri: Uri) => void;
 
   /* @ngInject */
-  constructor($scope: IScope,
-              private languageService: LanguageService,
-              private gettextCatalog: gettextCatalog,
-              private searchPredicateModal: SearchPredicateModal,
-              private searchClassModal: SearchClassModal) {
-
-    $scope.$watch(() => languageService.UILanguage, () => {
-      this.placeholder = placeholderText(this.gettextCatalog);
-    });
+  constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
   }
 
   selectUri() {

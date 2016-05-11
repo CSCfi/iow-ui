@@ -15,18 +15,11 @@
         </div>
       </div>
 
-      <input name="valueInput"
-             id="{{ctrl.id}}"
-             type="text"
-             restrict-duplicates="ctrl.ngModel"
-             ng-model="ctrl.input"
-             ng-keydown="ctrl.keyPressed($event)"
-             ng-blur="ctrl.addValueFromInput()"
-             ng-hide="ctrl.hideInput" />
+      <ng-transclude ng-transclude-slot="input"></ng-transclude>
     </div>
 
     <error-messages ng-model-controller="ngModelControllers"></error-messages>
 
-    <ng-transclude></ng-transclude>
+    <ng-transclude ng-transclude-slot="button"></ng-transclude>
   </div>
 </div>

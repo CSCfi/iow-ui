@@ -1,8 +1,6 @@
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { createValidators, placeholderText } from '../form/languageInput';
 import { Language } from '../contracts';
-import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
 
 mod.directive('editableMultipleLanguageSelect', () => {
@@ -15,13 +13,17 @@ mod.directive('editableMultipleLanguageSelect', () => {
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: `<editable-multiple id="{{ctrl.id}}" 
-                                  data-title="{{ctrl.title}}" 
-                                  ng-model="ctrl.ngModel" 
-                                  validators="ctrl.validators" 
-                                  placeholder="ctrl.placeholder"
-                                  required="true"
-              </editable-multiple>`,
+    template: `
+      <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" required="true" input="ctrl.input">
+        <input-container>
+          <input id="{{ctrl.id}}"
+                 type="text"
+                 restrict-duplicates="ctrl.ngModel"
+                 language-input
+                 ng-model="ctrl.input" />
+        </input-container>
+      </editable-multiple>
+    `,
     controller: EditableMultipleLanguageSelectController
   };
 });
@@ -29,16 +31,7 @@ mod.directive('editableMultipleLanguageSelect', () => {
 class EditableMultipleLanguageSelectController {
 
   ngModel: Language[];
+  input: Language;
   id: string;
   title: string;
-
-  validators = createValidators();
-  placeholder: string;
-
-  /* @ngInject */
-  constructor($scope: IScope, languageService: LanguageService, gettextCatalog: gettextCatalog) {
-    $scope.$watch(() => languageService.UILanguage, () => {
-      this.placeholder = placeholderText(gettextCatalog);
-    });
-  }
 }

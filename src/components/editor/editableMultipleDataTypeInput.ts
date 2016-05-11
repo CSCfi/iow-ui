@@ -5,11 +5,8 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import IModelValidators = angular.IModelValidators;
-import { module as mod }  from './module';
 import { DataType } from '../../services/dataTypes';
-import { resolveValidator } from '../form/validators';
-import { placeholderText } from '../form/dataTypeInput';
-import { LanguageService } from '../../services/languageService';
+import { module as mod }  from './module';
 
 mod.directive('editableMultipleDataTypeInput', () => {
   return {
@@ -22,7 +19,17 @@ mod.directive('editableMultipleDataTypeInput', () => {
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: `<editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" validators="ctrl.validators" placeholder="ctrl.placeholder"></editable-multiple>`,
+    template: `
+      <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" input="ctrl.input">
+        <input-container>
+          <input id="{{ctrl.id}}"
+                 type="text"
+                 restrict-duplicates="ctrl.ngModel"
+                 datatype-input="{{ctrl.inputType}}"
+                 ng-model="ctrl.input" />
+        </input-container>
+      </editable-multiple>
+    `,
     controller: EditableMultipleDataTypeInputController
   };
 });
@@ -30,21 +37,8 @@ mod.directive('editableMultipleDataTypeInput', () => {
 class EditableMultipleDataTypeInputController {
 
   ngModel: string[];
+  input: string;
   inputType: DataType;
   id: string;
   title: string;
-
-  validators: IModelValidators;
-  placeholder: string;
-
-  /* @ngInject */
-  constructor($scope: IScope, languageService: LanguageService, gettextCatalog: gettextCatalog) {
-    $scope.$watch(() => this.inputType, type => {
-      this.validators = { [type]: resolveValidator(type) };
-
-      $scope.$watch(() => languageService.UILanguage, () => {
-        this.placeholder = placeholderText(type, gettextCatalog);
-      });
-    });
-  }
 }

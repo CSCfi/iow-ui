@@ -8,28 +8,29 @@ import IModelParser = angular.IModelParser;
 import IModelFormatter = angular.IModelFormatter;
 import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
-import { module as mod }  from './module';
 import { arrayValidator } from '../form/validators';
 import { extendNgModelOptions, normalizeAsArray } from '../../services/utils';
+import { module as mod }  from './module';
+
+const skipValidators = new Set<string>(['duplicate']);
 
 mod.directive('editableMultiple', () => {
   return {
     scope: {
       ngModel: '=',
+      input: '=',
       id: '@',
       title: '@',
-      allowInput: '=',
-      placeholder: '=',
-      validators: '=',
-      parser: '=',
-      formatter: '=',
       link: '=',
       required: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    transclude: true,
+    transclude: {
+      input: 'inputContainer',
+      button: '?buttonContainer'
+    },
     template: require('./editableMultiple.html'),
     require: ['editableMultiple', 'ngModel', '?^form'],
     link($scope: EditableMultipleScope, element: JQuery, attributes: IAttributes, [thisController, ngModel, formController]: [EditableMultipleController<any>, INgModelController, EditableForm]) {
@@ -38,40 +39,48 @@ mod.directive('editableMultiple', () => {
       const inputElement = element.find('input');
       const inputNgModel = inputElement.controller('ngModel');
 
+      const keyDownHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.keyPressed(event));
+      const blurHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.addValueFromInput());
+
+      inputElement.on('keydown', keyDownHandler);
+      inputElement.on('blur', blurHandler);
+
+      $scope.$on('destory', () => {
+        inputElement.off('keydown', keyDownHandler);
+        inputElement.off('blur', blurHandler);
+      });
+
       extendNgModelOptions(ngModel, { allowInvalid: true });
-
       $scope.ngModelControllers = [inputNgModel, ngModel];
-      $scope.$watchCollection(() => thisController.ngModel, () => ngModel.$validate());
 
-      $scope.$watch(() => thisController.parser, parser => inputNgModel.$parsers = normalizeAsArray(parser));
-      $scope.$watch(() => thisController.formatter, formatter => inputNgModel.$formatters = normalizeAsArray(formatter));
-      $scope.$watch(() => thisController.placeholder, placeholder => inputElement.attr('placeholder', placeholder));
-      $scope.$watch(() => thisController.validators, (validators, oldValidators) => {
-
-        if (thisController.required) {
-          ngModel.$validators['required'] = (value: any[]) => value && value.length > 0;
-        }
+      $scope.$watchCollection(() => inputNgModel.$formatters, formatters => thisController.formatter = formatters);
+      $scope.$watchCollection(() => Object.keys(inputNgModel.$validators), (validators, oldValidators) => {
 
         if (oldValidators) {
-          for (const validator of Object.keys(oldValidators)) {
-            delete ngModel.$validators[validator];
-            delete inputNgModel.$validators[validator];
-            ngModel.$setValidity(validator, true);
-            inputNgModel.$setValidity(validator, true);
+          for (const validator of oldValidators) {
+            if (!skipValidators.has(validator)) {
+              delete ngModel.$validators[validator];
+              ngModel.$setValidity(validator, true);
+            }
           }
         }
 
         if (validators) {
-          for (const validator of Object.keys(validators)) {
-            const instance = validators[validator];
-            ngModel.$validators[validator] = arrayValidator(instance);
-            inputNgModel.$validators[validator] = instance;
+          for (const validator of validators) {
+            if (!skipValidators.has(validator)) {
+              ngModel.$validators[validator] = arrayValidator(inputNgModel.$validators[validator]);
+            }
           }
         }
 
         ngModel.$validate();
-        inputNgModel.$validate();
       });
+
+      if (thisController.required) {
+        ngModel.$validators['required'] = (value: any[]) => value && value.length > 0;
+      }
+
+      $scope.$watchCollection(() => thisController.ngModel, () => ngModel.$validate());
     },
     controller: EditableMultipleController
   };
@@ -84,20 +93,19 @@ interface EditableMultipleScope extends IScope {
 export class EditableMultipleController<T> {
 
   ngModel: T[];
+  input: T;
   id: string;
   title: string;
-  placeholder: string;
   validators: IModelValidators;
-  parser: IModelParser|IModelParser[];
-  formatter: IModelFormatter|IModelFormatter[];
+  formatter: IModelFormatter[];
   link: (item: T) => string;
   required: boolean;
 
   isEditing: () => boolean;
-  input: T;
 
   format(value: T): string {
     let result = value;
+
     for (const formatter of normalizeAsArray(this.formatter)) {
       result = formatter(result);
     }
@@ -107,7 +115,7 @@ export class EditableMultipleController<T> {
   isValid(value: T) {
     if (this.validators) {
       for (const validator of Object.values(this.validators)) {
-        if (!validator(value)) {
+        if (!skipValidators.has(validator) && !validator(value)) {
           return false;
         }
       }
