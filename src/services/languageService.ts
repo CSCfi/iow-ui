@@ -1,8 +1,6 @@
 import { Localizable, LanguageContext } from './entities';
 import { Language, availableUILanguages, availableLanguages, translate } from '../utils/language';
 
-
-
 const defaultLanguage: Language = 'fi';
 
 const fi = require('../../po/fi.po');
@@ -59,5 +57,18 @@ export class LanguageService {
 
   translate(data: Localizable, context?: LanguageContext): string {
     return translate(data, this.getModelLanguage(context), context ? context.language : availableLanguages);
+  }
+
+  createLocalizer(context: LanguageContext) {
+    return new Localizer(this, context);
+  }
+}
+
+export class Localizer {
+  constructor(private languageService: LanguageService, private context: LanguageContext) {
+  }
+
+  translate(data: Localizable): string {
+    return this.languageService.translate(data, this.context);
   }
 }
