@@ -68,6 +68,10 @@ export class Localizer {
   constructor(private languageService: LanguageService, private context: LanguageContext) {
   }
 
+  get language(): Language {
+    return this.languageService.getModelLanguage(this.context);
+  }
+
   translate(data: Localizable): string {
     return this.languageService.translate(data, this.context);
   }
