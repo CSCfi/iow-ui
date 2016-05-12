@@ -147,4 +147,9 @@ export class ModelService {
   getAllCodeSchemes(): IPromise<CodeScheme[]> {
     return this.getCodeServers().then(servers => this.getCodeSchemesForServers(servers));
   }
+
+  getCodeValues(codeScheme: CodeScheme) {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: codeScheme.id.uri } })
+      .then(response => this.entities.deserializeCodeValues(response.data));
+  }
 }
