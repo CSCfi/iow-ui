@@ -128,7 +128,7 @@ export class ModelService {
       .then(expandContextWithKnownModels(model))
       .then(response => this.entities.deserializeModelVisualization(response.data));
   }
-  
+
   getCodeServers(): IPromise<CodeServer[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeServer'))
       .then(response => this.entities.deserializeCodeServers(response.data));
