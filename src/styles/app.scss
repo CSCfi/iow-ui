@@ -44,6 +44,29 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
+.search-filters {
+
+  height: calc(100vh - 338px);
+  margin-right: 0;
+  margin-left: 0;
+  background-color: #fff;
+  border: 1px #ddd solid;
+  box-shadow: none;
+  position: relative;
+  padding: 45px 15px 15px;
+
+  span.title {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
 [draggable=true] {
   cursor: move;
 }

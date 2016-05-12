@@ -87,6 +87,10 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
+#: components/model/searchCodeSchemeModal.html:22
+msgid "All groups"
+msgstr ""
+
 #: components/editor/searchClassModal.html:31
 #: components/editor/searchPredicateModal.html:37
 msgid "All models"
@@ -254,7 +258,7 @@ msgstr ""
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:27
+#: components/model/searchCodeSchemeModal.html:41
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:39
 msgid "Cancel"
@@ -785,6 +789,7 @@ msgid "fi"
 msgstr ""
 
 #: components/editor/searchClassModal.html:23
+#: components/model/searchCodeSchemeModal.html:16
 msgid "Filter results"
 msgstr ""
 
@@ -818,6 +823,10 @@ msgstr ""
 
 #: translations/misc.html:25
 msgid "group"
+msgstr ""
+
+#: components/model/searchCodeSchemeModal.html:18
+msgid "Group"
 msgstr ""
 
 #: translations/titles.html:16

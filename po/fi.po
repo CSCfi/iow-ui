@@ -89,6 +89,10 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
+#: components/model/searchCodeSchemeModal.html:22
+msgid "All groups"
+msgstr "Kaikki ryhmät"
+
 #: components/editor/searchClassModal.html:31
 #: components/editor/searchPredicateModal.html:37
 msgid "All models"
@@ -255,7 +259,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:27
+#: components/model/searchCodeSchemeModal.html:41
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:39
 msgid "Cancel"
@@ -797,6 +801,7 @@ msgid "fi"
 msgstr "Suomeksi"
 
 #: components/editor/searchClassModal.html:23
+#: components/model/searchCodeSchemeModal.html:16
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
@@ -830,6 +835,10 @@ msgstr "Ei saa olla suurempi kuin maksimi"
 
 #: translations/misc.html:25
 msgid "group"
+msgstr "Ryhmä"
+
+#: components/model/searchCodeSchemeModal.html:18
+msgid "Group"
 msgstr "Ryhmä"
 
 #: translations/titles.html:16

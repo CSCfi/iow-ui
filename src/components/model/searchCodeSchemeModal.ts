@@ -3,8 +3,8 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
-import { CodeScheme, Model } from '../../services/entities';
-import { comparingBoolean, comparingString } from '../../services/comparators';
+import { CodeScheme, Model, CodeGroup } from '../../services/entities';
+import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { isDefined } from '../../utils/object';
 import { Localizer, LanguageService } from '../../services/languageService';
 
@@ -34,6 +34,8 @@ export class SearchCodeSchemeModalController {
 
   searchResults: CodeScheme[];
   codeSchemes: CodeScheme[];
+  codeGroups: CodeGroup[];
+  showGroup: CodeGroup;
   searchText: string = '';
   loadingResults: boolean;
 
@@ -48,11 +50,19 @@ export class SearchCodeSchemeModalController {
 
     modelService.getAllCodeSchemes().then(result => {
       this.codeSchemes = result;
+      this.codeGroups = _.chain(this.codeSchemes)
+        .map(codeScheme => codeScheme.isPartOf)
+        .flatten()
+        .uniq(codeGroup => codeGroup.id.uri)
+        .sort(comparingLocalizable<CodeGroup>(localizer.language, codeGroup => codeGroup.title))
+        .value();
+
       this.search();
     });
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
+    $scope.$watch(() => this.showGroup, () => this.search());
   }
 
   get showExcluded() {
@@ -63,7 +73,8 @@ export class SearchCodeSchemeModalController {
     if (this.codeSchemes) {
       this.searchResults = this.codeSchemes.filter(scheme =>
         this.textFilter(scheme) &&
-        this.excludedFilter(scheme)
+        this.excludedFilter(scheme) &&
+        this.groupFilter(scheme)
       );
 
       this.searchResults.sort(
@@ -86,6 +97,10 @@ export class SearchCodeSchemeModalController {
 
   private excludedFilter(codeScheme: CodeScheme): boolean {
     return this.showExcluded || !this.exclude(codeScheme);
+  }
+
+  private groupFilter(codeScheme: CodeScheme): boolean {
+    return !this.showGroup || !!_.find(codeScheme.isPartOf, codeGroup => codeGroup.id.equals(this.showGroup.id));
   }
 
   close() {
