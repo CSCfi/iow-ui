@@ -32,7 +32,7 @@
   <state-select id="predicateState" state="ctrl.predicate.state" model="ctrl.model"></state-select>
 </editable>
 
-<editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" context="ctrl.model" disable="!ctrl.inUnstableState"></editable-subject-select>
+<editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" model="ctrl.model" disable="!ctrl.inUnstableState"></editable-subject-select>
 
 <editable data-title="Editorial note" context="ctrl.model">
   <textarea id="editorialNote" class="form-control" localized-input="free" context="ctrl.model" ng-model="ctrl.predicate.editorialNote"></textarea>

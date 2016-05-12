@@ -151,9 +151,9 @@ export class EntityLoader {
     this.$q.all(this.actions).then(successCallback, errorCallback);
   }
 
-  createConceptSuggestion(details: ConceptSuggestionDetails): IPromise<ConceptSuggestion> {
-    const result = this.loggedIn
-      .then(() => this.conceptService.createConceptSuggestion(jhsMetaId, details.label, details.comment, null, 'fi'))
+  createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<ConceptSuggestion> {
+    const result = this.$q.all([this.loggedIn, modelPromise])
+      .then(([loggedId, model]: [boolean, Model]) => this.conceptService.createConceptSuggestion(jhsMetaId, details.label, details.comment, null, 'fi', model))
       .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
     return this.addAction(result, details);
@@ -265,7 +265,7 @@ export class EntityLoader {
 
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
-      ? this.createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
+      ? this.createConceptSuggestion(concept, modelPromise).then(conceptSuggestion => conceptSuggestion.id)
       : concept ? this.$q.when(new Uri(<string> concept)) : this.$q.when(asiaConceptId);
 
     const result = this.loggedIn
@@ -317,7 +317,7 @@ export class EntityLoader {
 
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
-      ? this.createConceptSuggestion(concept).then(conceptSuggestion => conceptSuggestion.id)
+      ? this.createConceptSuggestion(concept, modelPromise).then(conceptSuggestion => conceptSuggestion.id)
       : concept ? this.$q.when(new Uri(<string> concept)) : this.$q.when(asiaConceptId);
 
     const result = this.loggedIn
