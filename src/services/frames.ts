@@ -91,6 +91,8 @@ const codeSchemeContext = Object.assign({}, coreContext, {
   description
 });
 
+const codeValueContext = Object.assign({}, coreContext, {});
+
 const modelContext = Object.assign({}, coreContext, requireContext, {
   rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' },
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
@@ -230,6 +232,10 @@ export function codeSchemeFrame(data: any): Frame {
       '@embed': '@always'
     }
   });
+}
+
+export function codeValueFrame(data: any): Frame {
+  return frame(data, codeValueContext, { '@type': 'iow:FCode' });
 }
 
 export function searchResultFrame(data: any): Frame {

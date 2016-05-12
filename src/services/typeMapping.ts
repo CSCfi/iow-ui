@@ -30,6 +30,7 @@ registerType('collection', ['skos:Collection']);
 registerType('standard', ['dcterms:Standard']);
 registerType('codeScheme', ['iow:FCodeScheme']);
 registerType('codeGroup', ['iow:FCodeGroup']);
+registerType('code', ['iow:FCode']);
 
 export function mapType(type: string): Type {
   const result = toType.get(type);

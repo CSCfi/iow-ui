@@ -47,7 +47,8 @@ export type Type = 'class'
                  | 'scheme'
                  | 'standard'
                  | 'codeScheme'
-                 | 'codeGroup';
+                 | 'codeGroup'
+                 | 'code';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -627,6 +628,20 @@ export class CodeScheme extends GraphNode {
     this.creator = graph.creator;
     this.identifier = graph.identifier;
     this.groups = deserializeEntityList(graph.isPartOf, context, frame, CodeGroup);
+  }
+}
+
+export class CodeValue extends GraphNode {
+
+  id: Uri;
+  title: Localizable;
+  identifier: string;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = new Uri(graph['@id']);
+    this.title = deserializeLocalizable(graph.title);
+    this.identifier = graph.identifier;
   }
 }
 
@@ -1653,6 +1668,10 @@ export class EntityDeserializer {
 
   deserializeCodeSchemes(data: GraphData): IPromise<CodeScheme[]> {
     return frameAndMapArray(this.$log, data, frames.codeSchemeFrame, (framedData) => CodeScheme);
+  }
+
+  deserializeCodeValues(data: GraphData): IPromise<CodeValue[]> {
+    return frameAndMapArray(this.$log, data, frames.codeValueFrame, (framedData) => CodeValue);
   }
 
   deserializeUser(data: GraphData): IPromise<User> {
