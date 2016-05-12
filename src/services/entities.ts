@@ -617,7 +617,7 @@ export class CodeScheme extends GraphNode {
   description: Localizable;
   creator: string;
   identifier: string;
-  isPartOf: CodeGroup[];
+  groups: CodeGroup[];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -626,7 +626,7 @@ export class CodeScheme extends GraphNode {
     this.description = deserializeLocalizable(graph.description);
     this.creator = graph.creator;
     this.identifier = graph.identifier;
-    this.isPartOf = deserializeEntityList(graph.isPartOf, context, frame, CodeGroup);
+    this.groups = deserializeEntityList(graph.isPartOf, context, frame, CodeGroup);
   }
 }
 

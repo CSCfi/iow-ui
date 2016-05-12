@@ -51,7 +51,7 @@ export class SearchCodeSchemeModalController {
     modelService.getAllCodeSchemes().then(result => {
       this.codeSchemes = result;
       this.codeGroups = _.chain(this.codeSchemes)
-        .map(codeScheme => codeScheme.isPartOf)
+        .map(codeScheme => codeScheme.groups)
         .flatten()
         .uniq(codeGroup => codeGroup.id.uri)
         .sort(comparingLocalizable<CodeGroup>(localizer.language, codeGroup => codeGroup.title))
@@ -100,7 +100,7 @@ export class SearchCodeSchemeModalController {
   }
 
   private groupFilter(codeScheme: CodeScheme): boolean {
-    return !this.showGroup || !!_.find(codeScheme.isPartOf, codeGroup => codeGroup.id.equals(this.showGroup.id));
+    return !this.showGroup || !!_.find(codeScheme.groups, codeGroup => codeGroup.id.equals(this.showGroup.id));
   }
 
   close() {
