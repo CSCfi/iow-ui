@@ -129,7 +129,16 @@ export function groupListFrame(data: any): Frame {
 }
 
 export function modelFrame(data: any): Frame {
-  return frame(data, modelContext, { isPartOf: {} });
+  return frame(data, modelContext, {
+    isPartOf: {},
+    codeLists: {
+      isPartOf: {
+        '@omitDefault': true,
+        '@default': [],
+        '@embed': '@always'
+      }
+    }
+  });
 }
 
 export function modelListFrame(data: any): Frame {
@@ -214,7 +223,12 @@ export function codeServerFrame(data: any): Frame {
 
 export function codeSchemeFrame(data: any): Frame {
   return frame(data, codeSchemeContext, {
-    '@type': 'iow:FCodeScheme'
+    '@type': 'iow:FCodeScheme',
+    isPartOf: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    }
   });
 }
 
