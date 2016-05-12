@@ -3,11 +3,10 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
-import { CodeScheme, Model, CodeGroup, CodeServer } from '../../services/entities';
+import { CodeScheme, Model, CodeGroup, CodeServer, CodeValue } from '../../services/entities';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { isDefined } from '../../utils/object';
 import { Localizer, LanguageService } from '../../services/languageService';
-import { model } from '../../../examples/modelOILI';
 
 const noExclude = (codeScheme: CodeScheme) => <string> null;
 
@@ -19,7 +18,7 @@ export class SearchCodeSchemeModal {
   open(model: Model, exclude: (codeScheme: CodeScheme) => string = noExclude): IPromise<CodeScheme> {
     return this.$uibModal.open({
       template: require('./searchCodeSchemeModal.html'),
-      size: 'medium',
+      size: 'large',
       controller: SearchCodeSchemeModalController,
       controllerAs: 'ctrl',
       backdrop: true,
@@ -29,6 +28,11 @@ export class SearchCodeSchemeModal {
       }
     }).result;
   }
+}
+
+type CodeSchemeSelection = {
+  scheme: CodeScheme;
+  values: CodeValue[];
 }
 
 export class SearchCodeSchemeModalController {
@@ -41,6 +45,9 @@ export class SearchCodeSchemeModalController {
   showGroup: CodeGroup;
   searchText: string = '';
   loadingResults: boolean;
+  selectedItem: CodeScheme;
+  selection: CodeSchemeSelection;
+  cannotConfirm: string;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -100,10 +107,23 @@ export class SearchCodeSchemeModalController {
     this.loadingResults = !isDefined(this.codeSchemes);
   }
 
-  selectItem(codeScheme: CodeScheme) {
-    if (!this.exclude(codeScheme)) {
-      this.$uibModalInstance.close(codeScheme);
+  selectItem(scheme: CodeScheme) {
+    this.selectedItem = scheme;
+    this.cannotConfirm = this.exclude(scheme);
+
+    if (!this.exclude(scheme)) {
+      this.modelService.getCodeValues(scheme)
+        .then(values => this.selection = { scheme, values });
     }
+  }
+
+  loadingSelection(scheme: CodeScheme) {
+    const selection = this.selection;
+    return scheme === this.selectedItem && (!selection || !scheme.id.equals(selection.scheme.id));
+  }
+
+  confirm() {
+    this.$uibModalInstance.close(this.selection.scheme);
   }
 
   private textFilter(codeScheme: CodeScheme): boolean {

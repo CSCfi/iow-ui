@@ -89,7 +89,7 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/model/searchCodeSchemeModal.html:35
+#: components/model/searchCodeSchemeModal.html:36
 msgid "All groups"
 msgstr "Kaikki ryhmät"
 
@@ -102,7 +102,7 @@ msgstr "Kaikki kirjastot"
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/model/searchCodeSchemeModal.html:24
+#: components/model/searchCodeSchemeModal.html:25
 msgid "All servers"
 msgstr "Kaikki palvelimet"
 
@@ -263,7 +263,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:56
+#: components/model/searchCodeSchemeModal.html:82
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:44
 msgid "Cancel"
@@ -391,7 +391,7 @@ msgstr "Koodiston nimi"
 msgid "Code schemes"
 msgstr "Koodistot"
 
-#: components/model/searchCodeSchemeModal.html:20
+#: components/model/searchCodeSchemeModal.html:21
 msgid "Code server"
 msgstr "Koodistopalvelin"
 
@@ -492,6 +492,14 @@ msgstr "Luo uusi tarkennettu luokka"
 #: components/user/user.html:17 translations/misc.html:122
 msgid "Created at"
 msgstr "Luotu"
+
+#: translations/titles.html:72
+msgid "Creator"
+msgstr "Luoja"
+
+#: translations/titles.html:72
+msgid "Creator info"
+msgstr ""
 
 #: components/footer.html:3
 msgid "CSC - IT Center for Science Ltd"
@@ -811,7 +819,7 @@ msgstr "Suomeksi"
 
 #: components/editor/searchClassModal.html:24
 #: components/editor/searchPredicateModal.html:31
-#: components/model/searchCodeSchemeModal.html:17
+#: components/model/searchCodeSchemeModal.html:18
 #: components/model/searchRequireModal.html:23
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
@@ -848,7 +856,7 @@ msgstr "Ei saa olla suurempi kuin maksimi"
 msgid "group"
 msgstr "Ryhmä"
 
-#: components/model/searchCodeSchemeModal.html:31
+#: components/model/searchCodeSchemeModal.html:32
 msgid "Group"
 msgstr "Ryhmä"
 
@@ -895,7 +903,7 @@ msgstr "Tunniste on jo käytössä"
 msgid "Id name is required"
 msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 
-#: translations/misc.html:175
+#: components/model/searchCodeSchemeModal.html:64 translations/misc.html:175
 msgid "Identifier"
 msgstr "Tunniste"
 
@@ -1368,11 +1376,11 @@ msgstr "Hae attribuuttia tai assosiaatiota…"
 msgid "search class"
 msgstr "Hae luokkaa…"
 
-#: components/model/searchCodeSchemeModal.html:9 translations/misc.html:183
+#: components/model/searchCodeSchemeModal.html:10 translations/misc.html:183
 msgid "search code scheme"
 msgstr "Hae koodistoa…"
 
-#: components/model/searchCodeSchemeModal.html:2 translations/misc.html:182
+#: components/model/searchCodeSchemeModal.html:3 translations/misc.html:182
 msgid "Search code schemes"
 msgstr "Hae koodistoja"
 
@@ -1568,7 +1576,7 @@ msgstr "Tekniset nimiavaruudet"
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: translations/titles.html:66
+#: components/model/searchCodeSchemeModal.html:65 translations/titles.html:66
 msgid "Title"
 msgstr "Nimi"
 

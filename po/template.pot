@@ -87,7 +87,7 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:35
+#: components/model/searchCodeSchemeModal.html:36
 msgid "All groups"
 msgstr ""
 
@@ -100,7 +100,7 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:24
+#: components/model/searchCodeSchemeModal.html:25
 msgid "All servers"
 msgstr ""
 
@@ -262,7 +262,7 @@ msgstr ""
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:56
+#: components/model/searchCodeSchemeModal.html:82
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:44
 msgid "Cancel"
@@ -390,7 +390,7 @@ msgstr ""
 msgid "Code schemes"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:20
+#: components/model/searchCodeSchemeModal.html:21
 msgid "Code server"
 msgstr ""
 
@@ -490,6 +490,14 @@ msgstr ""
 #: components/user/user.html:17
 #: translations/misc.html:122
 msgid "Created at"
+msgstr ""
+
+#: translations/titles.html:72
+msgid "Creator"
+msgstr ""
+
+#: translations/titles.html:72
+msgid "Creator info"
 msgstr ""
 
 #: components/footer.html:3
@@ -800,7 +808,7 @@ msgstr ""
 
 #: components/editor/searchClassModal.html:24
 #: components/editor/searchPredicateModal.html:31
-#: components/model/searchCodeSchemeModal.html:17
+#: components/model/searchCodeSchemeModal.html:18
 #: components/model/searchRequireModal.html:23
 msgid "Filter results"
 msgstr ""
@@ -837,7 +845,7 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:31
+#: components/model/searchCodeSchemeModal.html:32
 msgid "Group"
 msgstr ""
 
@@ -882,6 +890,7 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
+#: components/model/searchCodeSchemeModal.html:64
 #: translations/misc.html:175
 msgid "Identifier"
 msgstr ""
@@ -1357,12 +1366,12 @@ msgstr ""
 msgid "search class"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:9
+#: components/model/searchCodeSchemeModal.html:10
 #: translations/misc.html:183
 msgid "search code scheme"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:2
+#: components/model/searchCodeSchemeModal.html:3
 #: translations/misc.html:182
 msgid "Search code schemes"
 msgstr ""
@@ -1558,6 +1567,7 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
+#: components/model/searchCodeSchemeModal.html:65
 #: translations/titles.html:66
 msgid "Title"
 msgstr ""

@@ -1,58 +1,94 @@
-<modal-template>
-  <modal-title translate>Search code schemes</modal-title>
+<form>
+  <modal-template>
+    <modal-title translate>Search code schemes</modal-title>
 
-  <modal-body>
-    <div class="row">
-      <div class="col-md-6">
+    <modal-body>
+      <div class="row">
+        <div class="col-md-4">
 
-        <div class="input-group input-group-lg">
-          <input autofocus type="text" class="form-control" placeholder="{{'search code scheme' | translate}}"
-                 ng-model="ctrl.searchText"
-                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                 key-control="ctrl.searchResults" />
-          <i class="glyphicon glyphicon-search form-control-feedback"></i>
-        </div>
+          <div class="input-group input-group-lg">
+            <input autofocus type="text" class="form-control" placeholder="{{'search code scheme' | translate}}"
+                   ng-model="ctrl.searchText"
+                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                   key-control="ctrl.searchResults" />
+            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+          </div>
 
-        <div class="search-filters">
-          <span class="title" translate>Filter results</span>
+          <div class="search-filters">
+            <span class="title" translate>Filter results</span>
 
-          <div class="form-group">
-            <label for="server" translate>Code server</label>
-            <div class="input-group input-group-md">
-              <select id="server" class="form-control" ng-model="ctrl.showServer"
-                      ng-options="(codeServer.title | translateValue: ctrl.localizer.context) for codeServer in ctrl.codeServers">
-                <option value="" translate>All servers</option>
-              </select>
-              <span ng-show="ctrl.showServer.description | translateValue: ctrl.localizer.context">{{ctrl.showServer.description | translateValue: ctrl.localizer.context}}</span>
+            <div class="form-group">
+              <label for="server" translate>Code server</label>
+              <div class="input-group input-group-md">
+                <select id="server" class="form-control" ng-model="ctrl.showServer"
+                        ng-options="(codeServer.title | translateValue: ctrl.localizer.context) for codeServer in ctrl.codeServers">
+                  <option value="" translate>All servers</option>
+                </select>
+                <span ng-show="ctrl.showServer.description | translateValue: ctrl.localizer.context">{{ctrl.showServer.description | translateValue: ctrl.localizer.context}}</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="group" translate>Group</label>
+              <div class="input-group input-group-md">
+                <select id="group" class="form-control" ng-model="ctrl.showGroup"
+                        ng-options="(codeGroup.title | translateValue: ctrl.localizer.context) for codeGroup in ctrl.codeGroups">
+                  <option value="" translate>All groups</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="group" translate>Group</label>
-            <div class="input-group input-group-md">
-              <select id="group" class="form-control" ng-model="ctrl.showGroup"
-                      ng-options="(codeGroup.title | translateValue: ctrl.localizer.context) for codeGroup in ctrl.codeGroups">
-                <option value="" translate>All groups</option>
-              </select>
-            </div>
+        </div>
+
+        <div class="col-md-4 search-results">
+          <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
+
+          <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
+            <h5>{{searchResult.title | translateValue}}</h5>
+            <p>{{searchResult.description | translateValue}}</p>
+            <p><span ng-repeat="group in searchResult.groups">{{group.title | translateValue}}{{$last ? '' : ', '}}</span>
+              <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small>
+            </p>
+          </search-results>
+        </div>
+
+        <div class="col-md-4 search-selection">
+          <div ng-if="ctrl.selection">
+            <non-editable title="Identifier" value="ctrl.selection.scheme.identifier" context="ctrl.localizer.context"></non-editable>
+            <non-editable title="Code scheme name" value="ctrl.selection.scheme.title" context="ctrl.localizer.context"></non-editable>
+            <non-editable title="Description" value="ctrl.selection.scheme.description" context="ctrl.localizer.context"></non-editable>
+            <non-editable title="Creator" value="ctrl.selection.scheme.creator" context="ctrl.localizer.context"></non-editable>
+
+            <br />
+
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th translate>Identifier</th>
+                <th translate>Title</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="value in ctrl.selection.values | orderBy: 'identifier'">
+                <td>{{value.identifier}}</td>
+                <td>{{value.title | translateValue: ctrl.localizer.context}}</td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
       </div>
+    </modal-body>
 
-      <div class="col-md-6 search-results">
-        <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
-
-        <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
-          <h5>{{searchResult.title | translateValue}}</h5>
-          <p>{{searchResult.description | translateValue}}</p>
-          <p><span ng-repeat="group in searchResult.groups">{{group.title | translateValue}}{{$last ? '' : ', '}}</span></p>
-        </search-results>
+    <modal-buttons>
+      <div class="alert alert-danger" style="display: inline; margin-right: 10px;" role="alert" ng-show="ctrl.cannotConfirm">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span>{{ctrl.cannotConfirm | translate}}</span>
       </div>
-    </div>
-  </modal-body>
-
-  <modal-buttons>
-    <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-  </modal-buttons>
-</modal-template>
+      <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending" translate>Use selection</button>
+    </modal-buttons>
+  </modal-template>
+</form>
