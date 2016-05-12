@@ -65,7 +65,7 @@ export class LanguageService {
 }
 
 export class Localizer {
-  constructor(private languageService: LanguageService, private context: LanguageContext) {
+  constructor(private languageService: LanguageService, public context: LanguageContext) {
   }
 
   get language(): Language {
