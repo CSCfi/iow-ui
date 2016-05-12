@@ -611,8 +611,10 @@ export class CodeGroup extends GraphNode {
 }
 
 export class CodeScheme extends GraphNode {
+
   id: Uri;
   title: Localizable;
+  description: Localizable;
   creator: string;
   identifier: string;
   isPartOf: CodeGroup[];
@@ -621,6 +623,7 @@ export class CodeScheme extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id']);
     this.title = deserializeLocalizable(graph.title);
+    this.description = deserializeLocalizable(graph.description);
     this.creator = graph.creator;
     this.identifier = graph.identifier;
     this.isPartOf = deserializeEntityList(graph.isPartOf, context, frame, CodeGroup);

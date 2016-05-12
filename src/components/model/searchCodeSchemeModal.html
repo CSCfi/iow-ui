@@ -32,6 +32,7 @@
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
           <h5>{{searchResult.title | translateValue}}</h5>
+          <p>{{searchResult.description | translateValue}}</p>
         </search-results>
       </div>
     </div>

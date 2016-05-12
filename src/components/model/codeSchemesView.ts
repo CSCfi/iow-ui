@@ -70,7 +70,8 @@ class CodeSchemeTableDescriptor extends TableDescriptor<CodeScheme> {
   columnDescriptors(codeSchemes: CodeScheme[]): ColumnDescriptor<CodeScheme>[] {
     return [
       { headerName: 'Identifier', nameExtractor: codeScheme => codeScheme.identifier },
-      { headerName: 'Code scheme name', nameExtractor: codeScheme => this.localizer.translate(codeScheme.title) }
+      { headerName: 'Code scheme name', nameExtractor: codeScheme => this.localizer.translate(codeScheme.title) },
+      { headerName: 'Description', nameExtractor: codeScheme => this.localizer.translate(codeScheme.description) }
     ];
   }
 

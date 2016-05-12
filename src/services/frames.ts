@@ -87,7 +87,8 @@ const codeServerContext = Object.assign({}, coreContext, {
 });
 
 const codeSchemeContext = Object.assign({}, coreContext, {
-  creator: { '@id': 'http://purl.org/dc/terms/creator' }
+  creator: { '@id': 'http://purl.org/dc/terms/creator' },
+  description
 });
 
 const modelContext = Object.assign({}, coreContext, requireContext, {
