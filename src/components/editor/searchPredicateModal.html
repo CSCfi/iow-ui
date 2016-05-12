@@ -27,23 +27,29 @@
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
 
-          <div class="input-group input-group-lg">
-            <div class="selectContainer">
-              <select class="form-control" ng-model="ctrl.showModel"
-                      ng-options="ctrl.isThisModel(model)
+          <div class="search-filters">
+            <span class="title" translate>Filter results</span>
+
+            <div class="form-group">
+              <label for="model" translate>Defined by</label>
+              <div class="input-group input-group-md">
+                <select id="model" class="form-control" ng-model="ctrl.showModel"
+                        ng-options="ctrl.isThisModel(model)
                                     ? ('Assigned to this ' + ctrl.model.normalizedType | translate)
                                     : (model | translateLabel: ctrl.model)
                                     for model in ctrl.models">
-                <option value="" translate>All models</option>
-              </select>
+                  <option value="" translate>All models</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <div class="input-group input-group-lg" ng-if="ctrl.typeSelectable">
-            <div class="selectContainer">
-              <select class="form-control" ng-model="ctrl.type" ng-options="type | translate for type in ctrl.types">
-                <option value="" translate>All types</option>
-              </select>
+            <div class="form-group" ng-if="ctrl.typeSelectable">
+              <label for="type" translate>Predicate type</label>
+              <div class="input-group input-group-md">
+                  <select id="type" class="form-control" ng-model="ctrl.type" ng-options="type | translate for type in ctrl.types">
+                    <option value="" translate>All types</option>
+                  </select>
+              </div>
             </div>
           </div>
         </div>

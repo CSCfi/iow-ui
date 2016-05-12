@@ -20,21 +20,26 @@
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
 
-          <label translate>Filter results</label>
-          <div class="input-group input-group-lg">
-            <div class="selectContainer">
-              <select class="form-control" ng-model="ctrl.showModel"
-                      ng-options="ctrl.isThisModel(model)
+          <div class="search-filters">
+            <span class="title" translate>Filter results</span>
+            <div class="form-group">
+              <label for="model" translate>Defined by</label>
+              <div class="input-group input-group-md">
+                <div class="selectContainer">
+                  <select id="model" class="form-control" ng-model="ctrl.showModel"
+                          ng-options="ctrl.isThisModel(model)
                                     ? ('Assigned to this ' + ctrl.model.normalizedType | translate)
                                     : (model | translateLabel: ctrl.model)
                                     for model in ctrl.models">
-                <option value="" translate>All models</option>
-              </select>
-            </div>
-          </div>
+                    <option value="" translate>All models</option>
+                  </select>
+                </div>
+              </div>
 
-          <div class="checkbox" ng-hide="ctrl.onlySelection">
-            <label><input type="checkbox" ng-model="ctrl.showProfiles">{{'Show classes defined in profiles' | translate}}</label>
+              <div class="checkbox" ng-hide="ctrl.onlySelection">
+                <label><input type="checkbox" ng-model="ctrl.showProfiles">{{'Show classes defined in profiles' | translate}}</label>
+              </div>
+            </div>
           </div>
         </div>
 

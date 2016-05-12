@@ -33,6 +33,7 @@
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
           <h5>{{searchResult.title | translateValue}}</h5>
           <p>{{searchResult.description | translateValue}}</p>
+          <p><span ng-repeat="group in searchResult.groups">{{group.title | translateValue}}{{$last ? '' : ', '}}</span></p>
         </search-results>
       </div>
     </div>
