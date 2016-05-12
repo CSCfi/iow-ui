@@ -87,12 +87,12 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:22
+#: components/model/searchCodeSchemeModal.html:35
 msgid "All groups"
 msgstr ""
 
-#: components/editor/searchClassModal.html:31
-#: components/editor/searchPredicateModal.html:37
+#: components/editor/searchClassModal.html:34
+#: components/editor/searchPredicateModal.html:41
 msgid "All models"
 msgstr ""
 
@@ -100,7 +100,11 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:45
+#: components/model/searchCodeSchemeModal.html:24
+msgid "All servers"
+msgstr ""
+
+#: components/editor/searchPredicateModal.html:50
 msgid "All types"
 msgstr ""
 
@@ -252,15 +256,15 @@ msgstr ""
 #: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
-#: components/editor/searchClassModal.html:72
+#: components/editor/searchClassModal.html:77
 #: components/editor/searchConceptModal.html:88
-#: components/editor/searchPredicateModal.html:89
+#: components/editor/searchPredicateModal.html:95
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:41
+#: components/model/searchCodeSchemeModal.html:56
 #: components/model/searchReferenceModal.html:27
-#: components/model/searchRequireModal.html:39
+#: components/model/searchRequireModal.html:44
 msgid "Cancel"
 msgstr ""
 
@@ -384,6 +388,10 @@ msgstr ""
 
 #: translations/misc.html:180
 msgid "Code schemes"
+msgstr ""
+
+#: components/model/searchCodeSchemeModal.html:20
+msgid "Code server"
 msgstr ""
 
 #: translations/misc.html:110
@@ -552,6 +560,8 @@ msgstr ""
 msgid "Define type for class property"
 msgstr ""
 
+#: components/editor/searchClassModal.html:26
+#: components/editor/searchPredicateModal.html:34
 #: translations/titles.html:28
 msgid "Defined by"
 msgstr ""
@@ -788,8 +798,10 @@ msgstr ""
 msgid "fi"
 msgstr ""
 
-#: components/editor/searchClassModal.html:23
-#: components/model/searchCodeSchemeModal.html:16
+#: components/editor/searchClassModal.html:24
+#: components/editor/searchPredicateModal.html:31
+#: components/model/searchCodeSchemeModal.html:17
+#: components/model/searchRequireModal.html:23
 msgid "Filter results"
 msgstr ""
 
@@ -825,7 +837,7 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:18
+#: components/model/searchCodeSchemeModal.html:31
 msgid "Group"
 msgstr ""
 
@@ -1172,6 +1184,7 @@ msgstr ""
 msgid "Predicate information not found"
 msgstr ""
 
+#: components/editor/searchPredicateModal.html:47
 #: translations/titles.html:39
 msgid "Predicate type"
 msgstr ""
@@ -1344,7 +1357,7 @@ msgstr ""
 msgid "search class"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:8
+#: components/model/searchCodeSchemeModal.html:9
 #: translations/misc.html:183
 msgid "search code scheme"
 msgstr ""
@@ -1448,7 +1461,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: components/editor/searchClassModal.html:37
+#: components/editor/searchClassModal.html:40
 msgid "Show classes defined in profiles"
 msgstr ""
 
@@ -1460,7 +1473,7 @@ msgstr ""
 msgid "Show history"
 msgstr ""
 
-#: components/model/searchRequireModal.html:23
+#: components/model/searchRequireModal.html:26
 msgid "Show technical namespaces"
 msgstr ""
 

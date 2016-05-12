@@ -89,12 +89,12 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/model/searchCodeSchemeModal.html:22
+#: components/model/searchCodeSchemeModal.html:35
 msgid "All groups"
 msgstr "Kaikki ryhmät"
 
-#: components/editor/searchClassModal.html:31
-#: components/editor/searchPredicateModal.html:37
+#: components/editor/searchClassModal.html:34
+#: components/editor/searchPredicateModal.html:41
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
@@ -102,7 +102,11 @@ msgstr "Kaikki kirjastot"
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/editor/searchPredicateModal.html:45
+#: components/model/searchCodeSchemeModal.html:24
+msgid "All servers"
+msgstr "Kaikki palvelimet"
+
+#: components/editor/searchPredicateModal.html:50
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -253,15 +257,15 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
-#: components/editor/searchClassModal.html:72
+#: components/editor/searchClassModal.html:77
 #: components/editor/searchConceptModal.html:88
-#: components/editor/searchPredicateModal.html:89
+#: components/editor/searchPredicateModal.html:95
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:41
+#: components/model/searchCodeSchemeModal.html:56
 #: components/model/searchReferenceModal.html:27
-#: components/model/searchRequireModal.html:39
+#: components/model/searchRequireModal.html:44
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -386,6 +390,10 @@ msgstr "Koodiston nimi"
 #: translations/misc.html:180
 msgid "Code schemes"
 msgstr "Koodistot"
+
+#: components/model/searchCodeSchemeModal.html:20
+msgid "Code server"
+msgstr "Koodistopalvelin"
 
 #: translations/misc.html:110
 msgid "Concept"
@@ -554,7 +562,8 @@ msgstr "Määrittele käsite uudelle luokalle"
 msgid "Define type for class property"
 msgstr "Määrittele luokan ominaisuuden tyyppi"
 
-#: translations/titles.html:28
+#: components/editor/searchClassModal.html:26
+#: components/editor/searchPredicateModal.html:34 translations/titles.html:28
 msgid "Defined by"
 msgstr "Määrittely"
 
@@ -800,8 +809,10 @@ msgstr "Viite ulkoiseen URI tunnisteeseen"
 msgid "fi"
 msgstr "Suomeksi"
 
-#: components/editor/searchClassModal.html:23
-#: components/model/searchCodeSchemeModal.html:16
+#: components/editor/searchClassModal.html:24
+#: components/editor/searchPredicateModal.html:31
+#: components/model/searchCodeSchemeModal.html:17
+#: components/model/searchRequireModal.html:23
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
@@ -837,7 +848,7 @@ msgstr "Ei saa olla suurempi kuin maksimi"
 msgid "group"
 msgstr "Ryhmä"
 
-#: components/model/searchCodeSchemeModal.html:18
+#: components/model/searchCodeSchemeModal.html:31
 msgid "Group"
 msgstr "Ryhmä"
 
@@ -1183,7 +1194,7 @@ msgstr ""
 msgid "Predicate information not found"
 msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
-#: translations/titles.html:39
+#: components/editor/searchPredicateModal.html:47 translations/titles.html:39
 msgid "Predicate type"
 msgstr "Ominaisuuden tyyppi"
 
@@ -1357,7 +1368,7 @@ msgstr "Hae attribuuttia tai assosiaatiota…"
 msgid "search class"
 msgstr "Hae luokkaa…"
 
-#: components/model/searchCodeSchemeModal.html:8 translations/misc.html:183
+#: components/model/searchCodeSchemeModal.html:9 translations/misc.html:183
 msgid "search code scheme"
 msgstr "Hae koodistoa…"
 
@@ -1461,7 +1472,7 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
-#: components/editor/searchClassModal.html:37
+#: components/editor/searchClassModal.html:40
 msgid "Show classes defined in profiles"
 msgstr "Näytä profiileissa määritellyt luokat"
 
@@ -1473,7 +1484,7 @@ msgstr "Näytä myös ne, joita ei voi lisätä"
 msgid "Show history"
 msgstr "Näytä historia"
 
-#: components/model/searchRequireModal.html:23
+#: components/model/searchRequireModal.html:26
 msgid "Show technical namespaces"
 msgstr "Näytä tekniset nimiavaruudet"
 

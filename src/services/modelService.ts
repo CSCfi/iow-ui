@@ -134,14 +134,17 @@ export class ModelService {
       .then(response => this.entities.deserializeCodeServers(response.data));
   }
 
-  getCodeSchemesForServer(serverId: Uri): IPromise<CodeScheme[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: serverId.uri } })
+  getCodeSchemesForServer(server: CodeServer): IPromise<CodeScheme[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
       .then(response => this.entities.deserializeCodeSchemes(response.data));
   }
 
-  getAllCodeSchemes(): IPromise<CodeScheme[]> {
-    return this.getCodeServers()
-      .then(servers => this.$q.all(_.map(servers, server => this.getCodeSchemesForServer(server.id))))
+  getCodeSchemesForServers(servers: CodeServer[]): IPromise<CodeScheme[]> {
+    return this.$q.all(_.map(servers, server => this.getCodeSchemesForServer(server)))
       .then(schemeLists => _.flatten(schemeLists));
+  }
+
+  getAllCodeSchemes(): IPromise<CodeScheme[]> {
+    return this.getCodeServers().then(servers => this.getCodeSchemesForServers(servers));
   }
 }

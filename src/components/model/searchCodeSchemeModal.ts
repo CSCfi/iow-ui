@@ -3,10 +3,11 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
-import { CodeScheme, Model, CodeGroup } from '../../services/entities';
+import { CodeScheme, Model, CodeGroup, CodeServer } from '../../services/entities';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { isDefined } from '../../utils/object';
 import { Localizer, LanguageService } from '../../services/languageService';
+import { model } from '../../../examples/modelOILI';
 
 const noExclude = (codeScheme: CodeScheme) => <string> null;
 
@@ -33,8 +34,10 @@ export class SearchCodeSchemeModal {
 export class SearchCodeSchemeModalController {
 
   searchResults: CodeScheme[];
+  codeServers: CodeServer[];
   codeSchemes: CodeScheme[];
   codeGroups: CodeGroup[];
+  showServer: CodeServer;
   showGroup: CodeGroup;
   searchText: string = '';
   loadingResults: boolean;
@@ -48,16 +51,28 @@ export class SearchCodeSchemeModalController {
 
     this.loadingResults = true;
 
-    modelService.getAllCodeSchemes().then(result => {
-      this.codeSchemes = result;
-      this.codeGroups = _.chain(this.codeSchemes)
-        .map(codeScheme => codeScheme.groups)
-        .flatten()
-        .uniq(codeGroup => codeGroup.id.uri)
-        .sort(comparingLocalizable<CodeGroup>(localizer.language, codeGroup => codeGroup.title))
-        .value();
+    const serversPromise = modelService.getCodeServers().then(servers => this.codeServers = servers);
 
-      this.search();
+    $scope.$watch(() => this.showServer, server => {
+
+      serversPromise.then(servers => {
+        modelService.getCodeSchemesForServers(server ? [server] : servers)
+        .then(result => {
+          this.codeSchemes = result;
+          this.codeGroups = _.chain(this.codeSchemes)
+            .map(codeScheme => codeScheme.groups)
+            .flatten()
+            .uniq(codeGroup => codeGroup.id.uri)
+            .sort(comparingLocalizable<CodeGroup>(localizer.language, codeGroup => codeGroup.title))
+            .value();
+
+          if (this.showGroup && !_.find(this.codeGroups, group => group.id.equals(this.showGroup.id))) {
+            this.showGroup = null;
+          }
+
+          this.search();
+        });
+      });
     });
 
     $scope.$watch(() => this.searchText, () => this.search());
