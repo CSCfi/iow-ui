@@ -3,7 +3,7 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
-import { CodeScheme, Model, CodeGroup, CodeServer, CodeValue } from '../../services/entities';
+import { CodeScheme, Model, CodeGroup, CodeServer } from '../../services/entities';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
@@ -33,11 +33,6 @@ export class SearchCodeSchemeModal {
   }
 }
 
-type CodeSchemeSelection = {
-  scheme: CodeScheme;
-  values: CodeValue[];
-}
-
 export interface SearchCodeSchemeScope extends IScope {
   form: EditableForm;
 }
@@ -53,7 +48,7 @@ export class SearchCodeSchemeModalController {
   searchText: string = '';
   loadingResults: boolean;
   selectedItem: CodeScheme|AddNewCodeScheme;
-  selection: CodeSchemeSelection|AddNewSchemeFormData;
+  selection: CodeScheme|AddNewSchemeFormData;
   cannotConfirm: string;
   submitError: string;
 
@@ -143,9 +138,8 @@ export class SearchCodeSchemeModalController {
 
       this.cannotConfirm = this.exclude(item);
 
-      if (!this.exclude(item)) {
-        this.modelService.getCodeValues(item)
-          .then(values => this.selection = { scheme: item, values });
+      if (!this.cannotConfirm) {
+        this.selection = item;
       }
     } else {
       throw new Error('Unsupported item: ' + item);
@@ -159,14 +153,14 @@ export class SearchCodeSchemeModalController {
       this.modelService.newCodeScheme(selection.uri, selection.label, selection.description, this.localizer.language)
         .then(codeScheme => this.$uibModalInstance.close(codeScheme), err => this.submitError = err.data.errorMessage);
     } else {
-      this.$uibModalInstance.close((<CodeSchemeSelection> selection).scheme);
+      this.$uibModalInstance.close((<CodeScheme> selection));
     }
   }
 
   loadingSelection(item: CodeScheme|AddNewSchemeFormData) {
     const selection = this.selection;
     if (item instanceof CodeScheme) {
-      return item === this.selectedItem && (!selection || (!this.isSelectionFormData() && !item.id.equals((<CodeSchemeSelection> selection).scheme.id)));
+      return item === this.selectedItem && (!selection || (!this.isSelectionFormData() && !item.id.equals((<CodeScheme> selection).id)));
     } else {
       return false;
     }

@@ -16,6 +16,7 @@ import './modelView';
 import './referencesView';
 import './requiresView';
 import './relationsView';
+import './codeSchemeView';
 import './codeSchemesView';
 import './technicalNamespaces';
 

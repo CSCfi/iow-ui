@@ -1,0 +1,23 @@
+<h4 translate>Code scheme information</h4>
+
+<non-editable title="Identifier" value="ctrl.codeScheme.identifier" context="ctrl.model"></non-editable>
+<non-editable title="Code scheme name" value="ctrl.codeScheme.title" context="ctrl.model"></non-editable>
+<non-editable title="Description" value="ctrl.codeScheme.description" context="ctrl.model"></non-editable>
+<non-editable title="Creator" value="ctrl.codeScheme.creator" context="ctrl.model"></non-editable>
+
+<br />
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th translate>Identifier</th>
+    <th translate>Title</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="value in ctrl.values | orderBy: 'identifier'">
+    <td>{{value.identifier}}</td>
+    <td>{{value.title | translateValue: ctrl.model}}</td>
+  </tr>
+  </tbody>
+</table>
