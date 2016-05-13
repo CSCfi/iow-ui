@@ -9,6 +9,7 @@ import { createExistsExclusion } from '../../utils/exclusion';
 import { collectIds } from '../../utils/entity';
 import { SearchCodeSchemeModal } from './searchCodeSchemeModal';
 import { EditCodeSchemeModal } from './editCodeSchemeModal';
+import { ViewCodeSchemeModal } from './viewCodeSchemeModal';
 
 mod.directive('codeSchemesView', () => {
   return {
@@ -45,9 +46,9 @@ class CodeSchemesViewController {
   expanded: boolean;
 
   /* @ngInject */
-  constructor($scope: IScope, private searchCodeSchemeModal: SearchCodeSchemeModal, private editCodeSchemeModal: EditCodeSchemeModal, private languageService: LanguageService) {
+  constructor($scope: IScope, private searchCodeSchemeModal: SearchCodeSchemeModal, editCodeSchemeModal: EditCodeSchemeModal, viewCodeSchemeModal: ViewCodeSchemeModal, languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
-      this.descriptor = new CodeSchemeTableDescriptor(model, languageService.createLocalizer(model), editCodeSchemeModal);
+      this.descriptor = new CodeSchemeTableDescriptor(model, languageService.createLocalizer(model), editCodeSchemeModal, viewCodeSchemeModal);
     });
   }
 
@@ -64,13 +65,22 @@ class CodeSchemesViewController {
 
 class CodeSchemeTableDescriptor extends TableDescriptor<CodeScheme> {
 
-  constructor(private model: Model, private localizer: Localizer, private editCodeSchemeModal: EditCodeSchemeModal) {
+  constructor(private model: Model, private localizer: Localizer, private editCodeSchemeModal: EditCodeSchemeModal, private viewCodeSchemeModal: ViewCodeSchemeModal) {
     super();
   }
 
   columnDescriptors(codeSchemes: CodeScheme[]): ColumnDescriptor<CodeScheme>[] {
+
+    const clickHandler = (value: CodeScheme) => {
+      if (value.isExternal()) {
+        window.open(value.id.uri, '_blank');
+      } else {
+        this.viewCodeSchemeModal.open(value, this.model);
+      }
+    };
+
     return [
-      { headerName: 'Code scheme URI', nameExtractor: codeScheme => codeScheme.id.uri },
+      { headerName: 'Code scheme URI', nameExtractor: codeScheme => codeScheme.id.uri, onClick: clickHandler },
       { headerName: 'Code scheme name', nameExtractor: codeScheme => this.localizer.translate(codeScheme.title) },
       { headerName: 'Description', nameExtractor: codeScheme => this.localizer.translate(codeScheme.description) }
     ];
