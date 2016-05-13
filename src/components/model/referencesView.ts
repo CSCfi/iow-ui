@@ -19,7 +19,7 @@ mod.directive('referencesView', () => {
     template: `
       <h4>
         <span translate>References</span> 
-        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="ctrl.addReference()" ng-show="ctrl.isEditing()">
+        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addReference()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
           <span translate>Add reference</span>
         </button>

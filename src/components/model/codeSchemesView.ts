@@ -18,7 +18,7 @@ mod.directive('codeSchemesView', () => {
     template: `
       <h4>
         <span translate>Code schemes</span> 
-        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="ctrl.addCodeScheme()" ng-show="ctrl.isEditing()">
+        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addCodeScheme()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
           <span translate>Add code scheme</span>
         </button>
@@ -69,7 +69,7 @@ class CodeSchemeTableDescriptor extends TableDescriptor<CodeScheme> {
 
   columnDescriptors(codeSchemes: CodeScheme[]): ColumnDescriptor<CodeScheme>[] {
     return [
-      { headerName: 'Code scheme URI', nameExtractor: codeScheme => codeScheme.id.uri },
+      { headerName: 'Identifier', nameExtractor: codeScheme => codeScheme.identifier },
       { headerName: 'Code scheme name', nameExtractor: codeScheme => this.localizer.translate(codeScheme.title) },
       { headerName: 'Description', nameExtractor: codeScheme => this.localizer.translate(codeScheme.description) }
     ];

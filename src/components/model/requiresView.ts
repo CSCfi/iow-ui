@@ -20,7 +20,7 @@ mod.directive('requiresView', () => {
     template: `
       <h4>
         <span translate>Imported requires</span>
-        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="ctrl.addRequire()" ng-show="ctrl.isEditing()">
+        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addRequire()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
           <span translate>Add require</span>
         </button>
