@@ -506,10 +506,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   private updateClasses(): IPromise<any> {
     return this.classService.getClassesForModel(this.model)
       .then(classes => {
-        _.each(classes, klass => klass.id.addKnownModelsToContext(this.model));
-        return classes;
-      })
-      .then(classes => {
         this.classes = _.map(classes, klass => new SelectableItem(klass, this));
         this.sortClasses();
       });
@@ -517,10 +513,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private updatePredicates(): IPromise<any> {
     return this.predicateService.getPredicatesForModel(this.model)
-      .then(predicates => {
-        _.each(predicates, predicate => predicate.id.addKnownModelsToContext(this.model));
-        return predicates;
-      })
       .then(predicates => {
         this.attributes = _.chain(predicates)
           .filter(predicate => predicate.isOfType('attribute'))
