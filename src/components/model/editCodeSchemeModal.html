@@ -1,0 +1,30 @@
+<form name="editCodeSchemeForm">
+  <modal-template>
+    <modal-title translate>Edit code scheme</modal-title>
+
+    <modal-body>
+      <editable data-title="Code scheme URI" context="ctrl.model" autofocus>
+        <div class="input-group input-group-md">
+          <input id="uri" type="text" class="form-control" required uri-input="free-url" model="ctrl.model" ng-model="ctrl.id" />
+        </div>
+      </editable>
+
+      <editable data-title="Code scheme label" context="ctrl.model">
+        <div class="input-group input-group-md">
+          <input id="label" type="text" class="form-control" required string-input="label" model="ctrl.model" ng-model="ctrl.title" />
+        </div>
+      </editable>
+
+      <editable data-title="Description" context="ctrl.model">
+        <div class="input-group input-group-md">
+          <textarea id="description" class="form-control" required string-input model="ctrl.model" ng-model="ctrl.description"></textarea>
+        </div>
+      </editable>
+    </modal-body>
+
+    <modal-buttons>
+      <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
+      <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!editCodeSchemeForm.$valid" translate>Edit</button>
+    </modal-buttons>
+  </modal-template>
+</form>

@@ -4,6 +4,7 @@ import { SearchReferenceModal } from './searchReferenceModal';
 import { AddEditRelationModal } from './addEditRelationModal';
 import { AddEditRequireModal } from './addEditRequireModal';
 import { SearchCodeSchemeModal } from './searchCodeSchemeModal';
+import { EditCodeSchemeModal } from './editCodeSchemeModal';
 
 import { module as mod }  from './module';
 export default mod.name;
@@ -23,3 +24,4 @@ mod.service('addEditRequireModal', AddEditRequireModal);
 mod.service('searchRequireModal', SearchRequireModal);
 mod.service('searchReferenceModal', SearchReferenceModal);
 mod.service('searchCodeSchemeModal', SearchCodeSchemeModal);
+mod.service('editCodeSchemeModal', EditCodeSchemeModal);

@@ -262,6 +262,7 @@ msgstr ""
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
+#: components/model/editCodeSchemeModal.html:26
 #: components/model/searchCodeSchemeModal.html:112
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:44
@@ -724,7 +725,13 @@ msgid "Duplicate error"
 msgstr ""
 
 #: components/form/editableEntityButtons.html:5
+#: components/model/editCodeSchemeModal.html:27
 msgid "Edit"
+msgstr ""
+
+#: components/model/editCodeSchemeModal.html:3
+#: translations/misc.html:186
+msgid "Edit code scheme"
 msgstr ""
 
 #: translations/misc.html:41
