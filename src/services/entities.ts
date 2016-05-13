@@ -634,6 +634,15 @@ export class CodeScheme extends GraphNode {
   isExternal() {
     return this.isOfType('externalCodeScheme');
   }
+
+  serializationValues(clone: boolean): {} {
+    return {
+      '@id': this.id.uri,
+      title: serializeLocalizable(this.title),
+      description: serializeLocalizable(this.description),
+      identifier: this.identifier
+    };
+  }
 }
 
 export class CodeValue extends GraphNode {
