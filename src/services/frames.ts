@@ -227,7 +227,7 @@ export function codeServerFrame(data: any): Frame {
 
 export function codeSchemeFrame(data: any): Frame {
   return frame(data, codeSchemeContext, {
-    '@type': 'iow:FCodeScheme',
+    '@type': ['iow:FCodeScheme', 'dcam:VocabularyEncodingScheme'],
     isPartOf: {
       '@omitDefault': true,
       '@default': [],

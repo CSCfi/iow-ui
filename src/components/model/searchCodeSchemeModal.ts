@@ -5,14 +5,17 @@ import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
 import { CodeScheme, Model, CodeGroup, CodeServer, CodeValue } from '../../services/entities';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
-import { isDefined } from '../../utils/object';
 import { Localizer, LanguageService } from '../../services/languageService';
+import { AddNew } from '../common/searchResults';
+import gettextCatalog = angular.gettext.gettextCatalog;
+import { EditableForm } from '../form/editableEntityController';
+import { Uri } from '../../services/uri';
 
 const noExclude = (codeScheme: CodeScheme) => <string> null;
 
 export class SearchCodeSchemeModal {
   /* @ngInject */
-  constructor(private $uibModal: IModalService, private languageService: LanguageService) {
+  constructor(private $uibModal: IModalService) {
   }
 
   open(model: Model, exclude: (codeScheme: CodeScheme) => string = noExclude): IPromise<CodeScheme> {
@@ -23,7 +26,7 @@ export class SearchCodeSchemeModal {
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
-        localizer: () => this.languageService.createLocalizer(model),
+        model: () => model,
         exclude: () => exclude
       }
     }).result;
@@ -35,9 +38,13 @@ type CodeSchemeSelection = {
   values: CodeValue[];
 }
 
+export interface SearchCodeSchemeScope extends IScope {
+  form: EditableForm;
+}
+
 export class SearchCodeSchemeModalController {
 
-  searchResults: CodeScheme[];
+  searchResults: (CodeScheme|AddNewCodeScheme)[];
   codeServers: CodeServer[];
   codeSchemes: CodeScheme[];
   codeGroups: CodeGroup[];
@@ -45,22 +52,30 @@ export class SearchCodeSchemeModalController {
   showGroup: CodeGroup;
   searchText: string = '';
   loadingResults: boolean;
-  selectedItem: CodeScheme;
-  selection: CodeSchemeSelection;
+  selectedItem: CodeScheme|AddNewCodeScheme;
+  selection: CodeSchemeSelection|AddNewSchemeFormData;
   cannotConfirm: string;
+  submitError: string;
+
+  localizer: Localizer;
 
   /* @ngInject */
-  constructor($scope: IScope,
+  constructor(private $scope: SearchCodeSchemeScope,
               private $uibModalInstance: IModalServiceInstance,
+              public model: Model,
               private modelService: ModelService,
-              private localizer: Localizer,
+              languageService: LanguageService,
+              private gettextCatalog: gettextCatalog,
               public exclude: (codeScheme: CodeScheme) => string) {
 
+    this.localizer = languageService.createLocalizer(model);
     this.loadingResults = true;
 
     const serversPromise = modelService.getCodeServers().then(servers => this.codeServers = servers);
 
     $scope.$watch(() => this.showServer, server => {
+
+      this.loadingResults = true;
 
       serversPromise.then(servers => {
         modelService.getCodeSchemesForServers(server ? [server] : servers)
@@ -70,7 +85,7 @@ export class SearchCodeSchemeModalController {
             .map(codeScheme => codeScheme.groups)
             .flatten()
             .uniq(codeGroup => codeGroup.id.uri)
-            .sort(comparingLocalizable<CodeGroup>(localizer.language, codeGroup => codeGroup.title))
+            .sort(comparingLocalizable<CodeGroup>(this.localizer.language, codeGroup => codeGroup.title))
             .value();
 
           if (this.showGroup && !_.find(this.codeGroups, group => group.id.equals(this.showGroup.id))) {
@@ -78,6 +93,8 @@ export class SearchCodeSchemeModalController {
           }
 
           this.search();
+
+          this.loadingResults = false;
         });
       });
     });
@@ -93,37 +110,74 @@ export class SearchCodeSchemeModalController {
 
   search() {
     if (this.codeSchemes) {
-      this.searchResults = this.codeSchemes.filter(scheme =>
+
+      const result: (CodeScheme|AddNewCodeScheme)[] = [
+        new AddNewCodeScheme(`${this.gettextCatalog.getString('Create new code scheme')} '${this.searchText}'`, this.canAddNew.bind(this))
+      ];
+
+      const schemeSearchResults = this.codeSchemes.filter(scheme =>
         this.textFilter(scheme) &&
         this.excludedFilter(scheme) &&
         this.groupFilter(scheme)
       );
 
-      this.searchResults.sort(
+      schemeSearchResults.sort(
         comparingBoolean((scheme: any) => !!this.exclude(scheme))
           .andThen(comparingString((scheme: any) => scheme.title)));
-    }
 
-    this.loadingResults = !isDefined(this.codeSchemes);
-  }
-
-  selectItem(scheme: CodeScheme) {
-    this.selectedItem = scheme;
-    this.cannotConfirm = this.exclude(scheme);
-
-    if (!this.exclude(scheme)) {
-      this.modelService.getCodeValues(scheme)
-        .then(values => this.selection = { scheme, values });
+      this.searchResults = result.concat(schemeSearchResults);
     }
   }
 
-  loadingSelection(scheme: CodeScheme) {
-    const selection = this.selection;
-    return scheme === this.selectedItem && (!selection || !scheme.id.equals(selection.scheme.id));
+  selectItem(item: CodeScheme|AddNewCodeScheme) {
+    this.selectedItem = item;
+    this.submitError = null;
+    this.$scope.form.editing = false;
+    this.$scope.form.$setPristine();
+
+    if (item instanceof AddNewCodeScheme) {
+      this.$scope.form.editing = true;
+      this.selection = new AddNewSchemeFormData();
+
+    } else if (item instanceof CodeScheme) {
+
+      this.cannotConfirm = this.exclude(item);
+
+      if (!this.exclude(item)) {
+        this.modelService.getCodeValues(item)
+          .then(values => this.selection = { scheme: item, values });
+      }
+    } else {
+      throw new Error('Unsupported item: ' + item);
+    }
   }
 
   confirm() {
-    this.$uibModalInstance.close(this.selection.scheme);
+    const selection = this.selection;
+
+    if (selection instanceof AddNewSchemeFormData) {
+      this.modelService.newCodeScheme(selection.uri, selection.label, selection.description, this.localizer.language)
+        .then(codeScheme => this.$uibModalInstance.close(codeScheme), err => this.submitError = err.data.errorMessage);
+    } else {
+      this.$uibModalInstance.close((<CodeSchemeSelection> selection).scheme);
+    }
+  }
+
+  loadingSelection(item: CodeScheme|AddNewSchemeFormData) {
+    const selection = this.selection;
+    if (item instanceof CodeScheme) {
+      return item === this.selectedItem && (!selection || (!this.isSelectionFormData() && !item.id.equals((<CodeSchemeSelection> selection).scheme.id)));
+    } else {
+      return false;
+    }
+  }
+
+  isSelectionFormData(): boolean {
+    return this.selection instanceof AddNewSchemeFormData;
+  }
+
+  canAddNew() {
+    return !!this.searchText;
   }
 
   private textFilter(codeScheme: CodeScheme): boolean {
@@ -140,5 +194,17 @@ export class SearchCodeSchemeModalController {
 
   close() {
     this.$uibModalInstance.dismiss();
+  }
+}
+
+class AddNewSchemeFormData {
+  uri: Uri;
+  label: string;
+  description: string;
+}
+
+class AddNewCodeScheme extends AddNew {
+  constructor(public label: string, public show: () => boolean) {
+    super(label, show);
   }
 }

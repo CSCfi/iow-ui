@@ -108,11 +108,11 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: translations/titles.html:54
+#: translations/titles.html:56
 msgid "Allowed values"
 msgstr ""
 
-#: translations/titles.html:54
+#: translations/titles.html:56
 msgid "Allowed values info"
 msgstr ""
 
@@ -181,11 +181,11 @@ msgstr ""
 msgid "Association information"
 msgstr ""
 
-#: translations/titles.html:19
+#: translations/titles.html:20
 msgid "Association label"
 msgstr ""
 
-#: translations/titles.html:19
+#: translations/titles.html:20
 msgid "Association label info"
 msgstr ""
 
@@ -209,11 +209,11 @@ msgstr ""
 msgid "Attribute information"
 msgstr ""
 
-#: translations/titles.html:20
+#: translations/titles.html:21
 msgid "Attribute label"
 msgstr ""
 
-#: translations/titles.html:20
+#: translations/titles.html:21
 msgid "Attribute label info"
 msgstr ""
 
@@ -225,11 +225,11 @@ msgstr ""
 msgid "Backend"
 msgstr ""
 
-#: translations/titles.html:45
+#: translations/titles.html:47
 msgid "Broader concept"
 msgstr ""
 
-#: translations/titles.html:45
+#: translations/titles.html:47
 msgid "Broader concept info"
 msgstr ""
 
@@ -262,7 +262,7 @@ msgstr ""
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:82
+#: components/model/searchCodeSchemeModal.html:112
 #: components/model/searchReferenceModal.html:27
 #: components/model/searchRequireModal.html:44
 msgid "Cancel"
@@ -321,11 +321,11 @@ msgstr ""
 msgid "Class information"
 msgstr ""
 
-#: translations/titles.html:17
+#: translations/titles.html:18
 msgid "Class label"
 msgstr ""
 
-#: translations/titles.html:17
+#: translations/titles.html:18
 msgid "Class label info"
 msgstr ""
 
@@ -345,11 +345,11 @@ msgstr ""
 msgid "Class property id info"
 msgstr ""
 
-#: translations/titles.html:22
+#: translations/titles.html:23
 msgid "Class property label"
 msgstr ""
 
-#: translations/titles.html:22
+#: translations/titles.html:23
 msgid "Class property label info"
 msgstr ""
 
@@ -361,11 +361,11 @@ msgstr ""
 msgid "Class search or create info"
 msgstr ""
 
-#: translations/titles.html:55
+#: translations/titles.html:57
 msgid "Class type"
 msgstr ""
 
-#: translations/titles.html:55
+#: translations/titles.html:57
 msgid "Class type info"
 msgstr ""
 
@@ -382,8 +382,24 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: translations/titles.html:27
+msgid "Code scheme label"
+msgstr ""
+
+#: translations/titles.html:27
+msgid "Code scheme label info"
+msgstr ""
+
 #: translations/misc.html:184
 msgid "Code scheme name"
+msgstr ""
+
+#: translations/titles.html:13
+msgid "Code scheme URI"
+msgstr ""
+
+#: translations/titles.html:13
+msgid "Code scheme URI info"
 msgstr ""
 
 #: translations/misc.html:180
@@ -410,11 +426,11 @@ msgstr ""
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: translations/titles.html:23
+#: translations/titles.html:24
 msgid "Concept label"
 msgstr ""
 
-#: translations/titles.html:23
+#: translations/titles.html:24
 msgid "Concept label info"
 msgstr ""
 
@@ -426,11 +442,11 @@ msgstr ""
 msgid "Concept suggestion"
 msgstr ""
 
-#: translations/titles.html:24
+#: translations/titles.html:25
 msgid "Concept suggestion label"
 msgstr ""
 
-#: translations/titles.html:24
+#: translations/titles.html:25
 msgid "Concept suggestion label info"
 msgstr ""
 
@@ -439,11 +455,11 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Constraint classes"
 msgstr ""
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Constraint classes info"
 msgstr ""
 
@@ -460,6 +476,7 @@ msgid "Create and use attribute"
 msgstr ""
 
 #: components/group/addModelModal.html:25
+#: components/model/searchCodeSchemeModal.html:114
 msgid "Create new"
 msgstr ""
 
@@ -473,6 +490,10 @@ msgstr ""
 
 #: translations/misc.html:150
 msgid "Create new class"
+msgstr ""
+
+#: translations/misc.html:185
+msgid "Create new code scheme"
 msgstr ""
 
 #: translations/misc.html:152
@@ -492,11 +513,11 @@ msgstr ""
 msgid "Created at"
 msgstr ""
 
-#: translations/titles.html:72
+#: translations/titles.html:74
 msgid "Creator"
 msgstr ""
 
-#: translations/titles.html:72
+#: translations/titles.html:74
 msgid "Creator info"
 msgstr ""
 
@@ -532,11 +553,11 @@ msgstr ""
 msgid "date format"
 msgstr ""
 
-#: translations/titles.html:53
+#: translations/titles.html:55
 msgid "Default value"
 msgstr ""
 
-#: translations/titles.html:53
+#: translations/titles.html:55
 msgid "Default value info"
 msgstr ""
 
@@ -570,27 +591,27 @@ msgstr ""
 
 #: components/editor/searchClassModal.html:26
 #: components/editor/searchPredicateModal.html:34
-#: translations/titles.html:28
+#: translations/titles.html:30
 msgid "Defined by"
 msgstr ""
 
-#: translations/titles.html:28
+#: translations/titles.html:30
 msgid "Defined by info"
 msgstr ""
 
-#: translations/titles.html:29
+#: translations/titles.html:31
 msgid "Defined by library"
 msgstr ""
 
-#: translations/titles.html:29
+#: translations/titles.html:31
 msgid "Defined by library info"
 msgstr ""
 
-#: translations/titles.html:30
+#: translations/titles.html:32
 msgid "Defined by profile"
 msgstr ""
 
-#: translations/titles.html:30
+#: translations/titles.html:32
 msgid "Defined by profile info"
 msgstr ""
 
@@ -734,43 +755,43 @@ msgstr ""
 msgid "en"
 msgstr ""
 
-#: translations/titles.html:43
+#: translations/titles.html:45
 msgid "Equivalent association"
 msgstr ""
 
-#: translations/titles.html:43
+#: translations/titles.html:45
 msgid "Equivalent association info"
 msgstr ""
 
-#: translations/titles.html:42
+#: translations/titles.html:44
 msgid "Equivalent attribute"
 msgstr ""
 
-#: translations/titles.html:42
+#: translations/titles.html:44
 msgid "Equivalent attribute info"
 msgstr ""
 
-#: translations/titles.html:41
+#: translations/titles.html:43
 msgid "Equivalent class"
 msgstr ""
 
-#: translations/titles.html:41
+#: translations/titles.html:43
 msgid "Equivalent class info"
 msgstr ""
 
-#: translations/titles.html:44
+#: translations/titles.html:46
 msgid "Equivalent property"
 msgstr ""
 
-#: translations/titles.html:44
+#: translations/titles.html:46
 msgid "Equivalent property info"
 msgstr ""
 
-#: translations/titles.html:37
+#: translations/titles.html:39
 msgid "Example"
 msgstr ""
 
-#: translations/titles.html:37
+#: translations/titles.html:39
 msgid "Example info"
 msgstr ""
 
@@ -794,11 +815,11 @@ msgstr ""
 msgid "External predicate not found"
 msgstr ""
 
-#: translations/titles.html:67
+#: translations/titles.html:69
 msgid "External URI"
 msgstr ""
 
-#: translations/titles.html:67
+#: translations/titles.html:69
 msgid "External URI info"
 msgstr ""
 
@@ -813,11 +834,11 @@ msgstr ""
 msgid "Filter results"
 msgstr ""
 
-#: translations/titles.html:56
+#: translations/titles.html:58
 msgid "Fixed value"
 msgstr ""
 
-#: translations/titles.html:56
+#: translations/titles.html:58
 msgid "Fixed value info"
 msgstr ""
 
@@ -849,11 +870,11 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: translations/titles.html:16
+#: translations/titles.html:17
 msgid "Group label"
 msgstr ""
 
-#: translations/titles.html:16
+#: translations/titles.html:17
 msgid "Group label info"
 msgstr ""
 
@@ -866,11 +887,11 @@ msgstr ""
 msgid "Historical versions"
 msgstr ""
 
-#: translations/titles.html:64
+#: translations/titles.html:66
 msgid "Homepage"
 msgstr ""
 
-#: translations/titles.html:64
+#: translations/titles.html:66
 msgid "Homepage info"
 msgstr ""
 
@@ -890,7 +911,7 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:64
+#: components/model/searchCodeSchemeModal.html:68
 #: translations/misc.html:175
 msgid "Identifier"
 msgstr ""
@@ -903,11 +924,11 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: translations/titles.html:47
+#: translations/titles.html:49
 msgid "Internal group page"
 msgstr ""
 
-#: translations/titles.html:47
+#: translations/titles.html:49
 msgid "Internal group page info"
 msgstr ""
 
@@ -967,11 +988,11 @@ msgstr ""
 msgid "Library information"
 msgstr ""
 
-#: translations/titles.html:14
+#: translations/titles.html:15
 msgid "Library label"
 msgstr ""
 
-#: translations/titles.html:14
+#: translations/titles.html:15
 msgid "Library label info"
 msgstr ""
 
@@ -1007,21 +1028,21 @@ msgstr ""
 msgid "Maintenance content"
 msgstr ""
 
-#: translations/titles.html:59
+#: translations/titles.html:61
 msgid "Max count"
 msgstr ""
 
-#: translations/titles.html:59
+#: translations/titles.html:61
 msgid "Max count info"
 msgstr ""
 
-#: translations/titles.html:61
-#: translations/titles.html:62
+#: translations/titles.html:63
+#: translations/titles.html:64
 msgid "Max length"
 msgstr ""
 
-#: translations/titles.html:61
-#: translations/titles.html:62
+#: translations/titles.html:63
+#: translations/titles.html:64
 msgid "Max length info"
 msgstr ""
 
@@ -1030,19 +1051,19 @@ msgstr ""
 msgid "Member groups"
 msgstr ""
 
-#: translations/titles.html:58
+#: translations/titles.html:60
 msgid "Min count"
 msgstr ""
 
-#: translations/titles.html:58
+#: translations/titles.html:60
 msgid "Min count info"
 msgstr ""
 
-#: translations/titles.html:60
+#: translations/titles.html:62
 msgid "Min length"
 msgstr ""
 
-#: translations/titles.html:60
+#: translations/titles.html:62
 msgid "Min length info"
 msgstr ""
 
@@ -1050,11 +1071,11 @@ msgstr ""
 msgid "model"
 msgstr ""
 
-#: translations/titles.html:65
+#: translations/titles.html:67
 msgid "Model languages"
 msgstr ""
 
-#: translations/titles.html:65
+#: translations/titles.html:67
 msgid "Model languages info"
 msgstr ""
 
@@ -1071,11 +1092,11 @@ msgstr ""
 msgid "Must be required namespace"
 msgstr ""
 
-#: translations/titles.html:50
+#: translations/titles.html:52
 msgid "Namespace"
 msgstr ""
 
-#: translations/titles.html:50
+#: translations/titles.html:52
 msgid "Namespace info"
 msgstr ""
 
@@ -1181,11 +1202,11 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: translations/titles.html:57
+#: translations/titles.html:59
 msgid "Pattern"
 msgstr ""
 
-#: translations/titles.html:57
+#: translations/titles.html:59
 msgid "Pattern info"
 msgstr ""
 
@@ -1194,15 +1215,15 @@ msgid "Predicate information not found"
 msgstr ""
 
 #: components/editor/searchPredicateModal.html:47
-#: translations/titles.html:39
+#: translations/titles.html:41
 msgid "Predicate type"
 msgstr ""
 
-#: translations/titles.html:39
+#: translations/titles.html:41
 msgid "Predicate type info"
 msgstr ""
 
-#: translations/titles.html:51
+#: translations/titles.html:53
 msgid "Prefix"
 msgstr ""
 
@@ -1210,7 +1231,7 @@ msgstr ""
 msgid "Prefix error"
 msgstr ""
 
-#: translations/titles.html:51
+#: translations/titles.html:53
 msgid "Prefix info"
 msgstr ""
 
@@ -1222,11 +1243,11 @@ msgstr ""
 msgid "Profile information"
 msgstr ""
 
-#: translations/titles.html:15
+#: translations/titles.html:16
 msgid "Profile label"
 msgstr ""
 
-#: translations/titles.html:15
+#: translations/titles.html:16
 msgid "Profile label info"
 msgstr ""
 
@@ -1246,19 +1267,19 @@ msgstr ""
 msgid "Property information"
 msgstr ""
 
-#: translations/titles.html:21
+#: translations/titles.html:22
 msgid "Property label"
 msgstr ""
 
-#: translations/titles.html:21
+#: translations/titles.html:22
 msgid "Property label info"
 msgstr ""
 
-#: translations/titles.html:35
+#: translations/titles.html:37
 msgid "Range"
 msgstr ""
 
-#: translations/titles.html:35
+#: translations/titles.html:37
 msgid "Range info"
 msgstr ""
 
@@ -1302,11 +1323,11 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: translations/titles.html:25
+#: translations/titles.html:26
 msgid "Require label"
 msgstr ""
 
-#: translations/titles.html:25
+#: translations/titles.html:26
 msgid "Require label info"
 msgstr ""
 
@@ -1334,11 +1355,11 @@ msgstr ""
 msgid "Reusable predicate"
 msgstr ""
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Root class"
 msgstr ""
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Root class info"
 msgstr ""
 
@@ -1449,11 +1470,11 @@ msgstr ""
 msgid "Shape information"
 msgstr ""
 
-#: translations/titles.html:18
+#: translations/titles.html:19
 msgid "Shape label"
 msgstr ""
 
-#: translations/titles.html:18
+#: translations/titles.html:19
 msgid "Shape label info"
 msgstr ""
 
@@ -1494,19 +1515,19 @@ msgstr ""
 msgid "Specialize class"
 msgstr ""
 
-#: translations/titles.html:36
+#: translations/titles.html:38
 msgid "Specialized from class"
 msgstr ""
 
-#: translations/titles.html:36
+#: translations/titles.html:38
 msgid "Specialized from class info"
 msgstr ""
 
-#: translations/titles.html:27
+#: translations/titles.html:29
 msgid "State"
 msgstr ""
 
-#: translations/titles.html:27
+#: translations/titles.html:29
 msgid "State info"
 msgstr ""
 
@@ -1527,35 +1548,35 @@ msgstr ""
 msgid "suggestion"
 msgstr ""
 
-#: translations/titles.html:32
+#: translations/titles.html:34
 msgid "Superassociation"
 msgstr ""
 
-#: translations/titles.html:32
+#: translations/titles.html:34
 msgid "Superassociation info"
 msgstr ""
 
-#: translations/titles.html:33
+#: translations/titles.html:35
 msgid "Superattribute"
 msgstr ""
 
-#: translations/titles.html:33
+#: translations/titles.html:35
 msgid "Superattribute info"
 msgstr ""
 
-#: translations/titles.html:31
+#: translations/titles.html:33
 msgid "Superclass"
 msgstr ""
 
-#: translations/titles.html:31
+#: translations/titles.html:33
 msgid "Superclass info"
 msgstr ""
 
-#: translations/titles.html:34
+#: translations/titles.html:36
 msgid "Superproperty"
 msgstr ""
 
-#: translations/titles.html:34
+#: translations/titles.html:36
 msgid "Superproperty info"
 msgstr ""
 
@@ -1567,12 +1588,12 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:65
-#: translations/titles.html:66
+#: components/model/searchCodeSchemeModal.html:69
+#: translations/titles.html:68
 msgid "Title"
 msgstr ""
 
-#: translations/titles.html:66
+#: translations/titles.html:68
 msgid "Title info"
 msgstr ""
 
@@ -1616,6 +1637,7 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
+#: components/model/searchCodeSchemeModal.html:115
 #: translations/misc.html:86
 msgid "Use selection"
 msgstr ""
@@ -1635,11 +1657,11 @@ msgstr ""
 msgid "User name"
 msgstr ""
 
-#: translations/titles.html:38
+#: translations/titles.html:40
 msgid "Value class"
 msgstr ""
 
-#: translations/titles.html:38
+#: translations/titles.html:40
 msgid "Value class info"
 msgstr ""
 
@@ -1651,7 +1673,7 @@ msgstr ""
 msgid "Visualization"
 msgstr ""
 
-#: translations/titles.html:49
+#: translations/titles.html:51
 msgid "Vocabulary"
 msgstr ""
 
@@ -1663,7 +1685,7 @@ msgstr ""
 msgid "Vocabulary id info"
 msgstr ""
 
-#: translations/titles.html:49
+#: translations/titles.html:51
 msgid "Vocabulary info"
 msgstr ""
 

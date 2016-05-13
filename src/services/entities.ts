@@ -47,6 +47,7 @@ export type Type = 'class'
                  | 'scheme'
                  | 'standard'
                  | 'codeScheme'
+                 | 'externalCodeScheme'
                  | 'codeGroup'
                  | 'code';
 
@@ -628,6 +629,10 @@ export class CodeScheme extends GraphNode {
     this.creator = graph.creator;
     this.identifier = graph.identifier;
     this.groups = deserializeEntityList(graph.isPartOf, context, frame, CodeGroup);
+  }
+
+  isExternal() {
+    return this.isOfType('externalCodeScheme');
   }
 }
 
@@ -1664,6 +1669,10 @@ export class EntityDeserializer {
 
   deserializeCodeServers(data: GraphData): IPromise<CodeServer[]> {
     return frameAndMapArray(this.$log, data, frames.codeServerFrame, (framedData) => CodeServer);
+  }
+
+  deserializeCodeScheme(data: GraphData): IPromise<CodeScheme> {
+    return frameAndMap(this.$log, data, frames.codeSchemeFrame, (framedData) => CodeScheme);
   }
 
   deserializeCodeSchemes(data: GraphData): IPromise<CodeScheme[]> {

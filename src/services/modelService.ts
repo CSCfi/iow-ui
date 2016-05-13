@@ -152,4 +152,9 @@ export class ModelService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: codeScheme.id.uri } })
       .then(response => this.entities.deserializeCodeValues(response.data));
   }
+
+  newCodeScheme(uri: Uri, label: string, description: string, lang: Language): IPromise<CodeScheme> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
+      .then(response => this.entities.deserializeCodeScheme(response.data));
+  }
 }

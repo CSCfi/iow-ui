@@ -29,6 +29,7 @@ registerType('resource', ['rdfs:Resource']);
 registerType('collection', ['skos:Collection']);
 registerType('standard', ['dcterms:Standard']);
 registerType('codeScheme', ['iow:FCodeScheme']);
+registerType('externalCodeScheme', ['dcam:VocabularyEncodingScheme']);
 registerType('codeGroup', ['iow:FCodeGroup']);
 registerType('code', ['iow:FCode']);
 

@@ -1,4 +1,4 @@
-<form>
+<form name="form">
   <modal-template>
     <modal-title translate>Search code schemes</modal-title>
 
@@ -21,10 +21,10 @@
               <label for="server" translate>Code server</label>
               <div class="input-group input-group-md">
                 <select id="server" class="form-control" ng-model="ctrl.showServer"
-                        ng-options="(codeServer.title | translateValue: ctrl.localizer.context) for codeServer in ctrl.codeServers">
+                        ng-options="(codeServer.title | translateValue: ctrl.model) for codeServer in ctrl.codeServers">
                   <option value="" translate>All servers</option>
                 </select>
-                <span ng-show="ctrl.showServer.description | translateValue: ctrl.localizer.context">{{ctrl.showServer.description | translateValue: ctrl.localizer.context}}</span>
+                <span ng-show="ctrl.showServer.description | translateValue: ctrl.model">{{ctrl.showServer.description | translateValue: ctrl.model}}</span>
               </div>
             </div>
 
@@ -32,7 +32,7 @@
               <label for="group" translate>Group</label>
               <div class="input-group input-group-md">
                 <select id="group" class="form-control" ng-model="ctrl.showGroup"
-                        ng-options="(codeGroup.title | translateValue: ctrl.localizer.context) for codeGroup in ctrl.codeGroups">
+                        ng-options="(codeGroup.title | translateValue: ctrl.model) for codeGroup in ctrl.codeGroups">
                   <option value="" translate>All groups</option>
                 </select>
               </div>
@@ -54,11 +54,11 @@
         </div>
 
         <div class="col-md-4 search-selection">
-          <div ng-if="ctrl.selection">
-            <non-editable title="Identifier" value="ctrl.selection.scheme.identifier" context="ctrl.localizer.context"></non-editable>
-            <non-editable title="Code scheme name" value="ctrl.selection.scheme.title" context="ctrl.localizer.context"></non-editable>
-            <non-editable title="Description" value="ctrl.selection.scheme.description" context="ctrl.localizer.context"></non-editable>
-            <non-editable title="Creator" value="ctrl.selection.scheme.creator" context="ctrl.localizer.context"></non-editable>
+          <div ng-if="!ctrl.isSelectionFormData() && ctrl.selection">
+            <non-editable title="Identifier" value="ctrl.selection.scheme.identifier" context="ctrl.model"></non-editable>
+            <non-editable title="Code scheme name" value="ctrl.selection.scheme.title" context="ctrl.model"></non-editable>
+            <non-editable title="Description" value="ctrl.selection.scheme.description" context="ctrl.model"></non-editable>
+            <non-editable title="Creator" value="ctrl.selection.scheme.creator" context="ctrl.model"></non-editable>
 
             <br />
 
@@ -72,11 +72,33 @@
               <tbody>
               <tr ng-repeat="value in ctrl.selection.values | orderBy: 'identifier'">
                 <td>{{value.identifier}}</td>
-                <td>{{value.title | translateValue: ctrl.localizer.context}}</td>
+                <td>{{value.title | translateValue: ctrl.model}}</td>
               </tr>
               </tbody>
             </table>
           </div>
+
+          <div ng-if="ctrl.isSelectionFormData()">
+            <editable data-title="Code scheme URI" context="ctrl.model" autofocus>
+              <div class="input-group input-group-md">
+                <input id="uri" type="text" class="form-control" required uri-input="free-url" model="ctrl.model" ng-model="ctrl.selection.uri" />
+              </div>
+            </editable>
+
+            <editable data-title="Code scheme label" context="ctrl.model">
+              <div class="input-group input-group-md">
+                <input id="label" type="text" class="form-control" required string-input="label" model="ctrl.model" ng-model="ctrl.selection.label" />
+              </div>
+            </editable>
+
+            <editable data-title="Description" context="ctrl.model">
+              <div class="input-group input-group-md">
+                <textarea id="description" class="form-control" required string-input model="ctrl.model" ng-model="ctrl.selection.description"></textarea>
+              </div>
+            </editable>
+          </div>
+
+          <submit-error-panel error="ctrl.submitError"></submit-error-panel>
         </div>
 
       </div>
@@ -88,7 +110,10 @@
         <span>{{ctrl.cannotConfirm | translate}}</span>
       </div>
       <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending" translate>Use selection</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending">
+        <span ng-show="ctrl.isSelectionFormData()" translate>Create new</span>
+        <span ng-hide="ctrl.isSelectionFormData()" translate>Use selection</span>
+      </button>
     </modal-buttons>
   </modal-template>
 </form>
