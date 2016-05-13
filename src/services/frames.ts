@@ -134,6 +134,8 @@ export function modelFrame(data: any): Frame {
   return frame(data, modelContext, {
     isPartOf: {},
     codeLists: {
+      '@omitDefault': true,
+      '@default': [],
       isPartOf: {
         '@omitDefault': true,
         '@default': [],
