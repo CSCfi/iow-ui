@@ -79,6 +79,10 @@ uri-input-autocomplete {
 
 table.editable-table {
 
+  a:hover {
+    cursor: pointer;
+  }
+
   tr {
     &.collapsed {
       visibility: collapse;

@@ -26,8 +26,9 @@ mod.directive('editableTable', () => {
       <tbody>
         <tr ng-repeat="value in ctrl.values | filter: ctrl.filter | orderBy: ctrl.orderBy" ng-class="['expandable-table', {collapsed: ctrl.limit && $index >= ctrl.limit}]" ng-init="valueIndex = $index" drag-sortable-item>
           <td ng-class="property.cssClass" ng-repeat="property in ctrl.properties">
-            <span ng-if="!property.hrefExtractor(value)">{{property.nameExtractor(value)}}</span>
-            <a ng-if="property.hrefExtractor(value)" ng-href="{{property.hrefExtractor(value)}}">{{property.nameExtractor(value)}}</a>
+            <span ng-if="!property.hrefExtractor && !property.onClick">{{property.nameExtractor(value)}}</span>
+            <a ng-if="property.hrefExtractor" target="_blank" ng-href="{{property.hrefExtractor(value)}}">{{property.nameExtractor(value)}}</a>
+            <a ng-if="property.onClick" ng-click="property.onClick(value)">{{property.nameExtractor(value)}}</a>
           </td>
           <td ng-class="[ 'action', { editable: ctrl.canRemove(value) } ]" ng-click="ctrl.remove(value, valueIndex)"><i class="fa fa-trash" uib-tooltip="{{'Remove' | translate}}"></i></td>
           <td ng-class="[ 'action', { editable: ctrl.canEdit(value) } ]" ng-click="ctrl.edit(value, valueIndex)"><i class="fa fa-pencil" uib-tooltip="{{'Edit' | translate}}"></i></td>
@@ -76,6 +77,7 @@ export type ColumnDescriptor<T> = {
   headerName: string,
   nameExtractor: (value: T) => string,
   hrefExtractor?: (value: T) => Url,
+  onClick?: (value: T) => any;
   cssClass?: string
 }
 
