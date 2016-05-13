@@ -8,6 +8,7 @@ import { module as mod }  from './module';
 import { createExistsExclusion } from '../../utils/exclusion';
 import { collectIds } from '../../utils/entity';
 import { SearchCodeSchemeModal } from './searchCodeSchemeModal';
+import { EditCodeSchemeModal } from './editCodeSchemeModal';
 
 mod.directive('codeSchemesView', () => {
   return {
@@ -44,9 +45,9 @@ class CodeSchemesViewController {
   expanded: boolean;
 
   /* @ngInject */
-  constructor($scope: IScope, private searchCodeSchemeModal: SearchCodeSchemeModal, private languageService: LanguageService) {
+  constructor($scope: IScope, private searchCodeSchemeModal: SearchCodeSchemeModal, private editCodeSchemeModal: EditCodeSchemeModal, private languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
-      this.descriptor = new CodeSchemeTableDescriptor(languageService.createLocalizer(model));
+      this.descriptor = new CodeSchemeTableDescriptor(model, languageService.createLocalizer(model), editCodeSchemeModal);
     });
   }
 
@@ -63,20 +64,24 @@ class CodeSchemesViewController {
 
 class CodeSchemeTableDescriptor extends TableDescriptor<CodeScheme> {
 
-  constructor(private localizer: Localizer) {
+  constructor(private model: Model, private localizer: Localizer, private editCodeSchemeModal: EditCodeSchemeModal) {
     super();
   }
 
   columnDescriptors(codeSchemes: CodeScheme[]): ColumnDescriptor<CodeScheme>[] {
     return [
-      { headerName: 'Identifier', nameExtractor: codeScheme => codeScheme.identifier },
+      { headerName: 'Code scheme URI', nameExtractor: codeScheme => codeScheme.id.uri },
       { headerName: 'Code scheme name', nameExtractor: codeScheme => this.localizer.translate(codeScheme.title) },
       { headerName: 'Description', nameExtractor: codeScheme => this.localizer.translate(codeScheme.description) }
     ];
   }
 
   canEdit(codeScheme: CodeScheme): boolean {
-    return false;
+    return codeScheme.isExternal();
+  }
+
+  edit(value: CodeScheme): any {
+    this.editCodeSchemeModal.openEdit(value, this.model, this.localizer.language);
   }
 
   canRemove(codeScheme: CodeScheme): boolean {
