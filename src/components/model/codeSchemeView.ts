@@ -1,6 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import { Model, CodeScheme, CodeValue } from '../../services/entities';
+import { CodeScheme, CodeValue, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
 
@@ -8,7 +8,7 @@ mod.directive('codeSchemeView', () => {
   return {
     scope: {
       codeScheme: '=',
-      model: '='
+      context: '='
     },
     restrict: 'E',
     template: require('./codeSchemeView.html'),
@@ -21,7 +21,7 @@ mod.directive('codeSchemeView', () => {
 class CodeSchemeViewController {
 
   codeScheme: CodeScheme;
-  model: Model;
+  context: LanguageContext;
   values: CodeValue[];
 
   constructor($scope: IScope, modelService: ModelService) {

@@ -55,7 +55,7 @@
 
         <div class="col-md-4 search-selection">
           <div ng-if="!ctrl.isSelectionFormData() && ctrl.selection">
-            <code-scheme-view model="ctrl.model" code-scheme="ctrl.selection"></code-scheme-view>
+            <code-scheme-view context="ctrl.model" code-scheme="ctrl.selection"></code-scheme-view>
           </div>
 
           <div ng-if="ctrl.isSelectionFormData()">
