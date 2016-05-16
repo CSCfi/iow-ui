@@ -17,7 +17,7 @@
           <div class="search-filters">
             <span class="title" translate>Filter results</span>
 
-            <div class="form-group">
+            <div class="form-group" ng-if="!ctrl.codeSchemesFromModel">
               <label for="server" translate>Code server</label>
               <div class="input-group input-group-md">
                 <select id="server" class="form-control" ng-model="ctrl.showServer"

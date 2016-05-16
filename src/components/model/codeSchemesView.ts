@@ -55,7 +55,7 @@ class CodeSchemesViewController {
   addCodeScheme() {
     const exclude = createExistsExclusion(collectIds(this.model.codeSchemes));
 
-    this.searchCodeSchemeModal.open(this.model, exclude)
+    this.searchCodeSchemeModal.openSelectionForModel(this.model, exclude)
       .then(codeScheme => {
         this.model.addCodeScheme(codeScheme);
         this.expanded = true;

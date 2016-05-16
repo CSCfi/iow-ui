@@ -18,7 +18,7 @@ export class SearchCodeSchemeModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(model: Model, exclude: (codeScheme: CodeScheme) => string = noExclude): IPromise<CodeScheme> {
+  private open(model: Model, codeSchemesFromModel: boolean, exclude: (codeScheme: CodeScheme) => string = noExclude): IPromise<CodeScheme> {
     return this.$uibModal.open({
       template: require('./searchCodeSchemeModal.html'),
       size: 'large',
@@ -27,9 +27,18 @@ export class SearchCodeSchemeModal {
       backdrop: true,
       resolve: {
         model: () => model,
+        codeSchemesFromModel: () => codeSchemesFromModel,
         exclude: () => exclude
       }
     }).result;
+  }
+
+  openSelectionForModel(model: Model, exclude: (codeScheme: CodeScheme) => string = noExclude): IPromise<CodeScheme> {
+    return this.open(model, false, exclude);
+  }
+
+  openSelectionForProperty(model: Model, exclude: (codeScheme: CodeScheme) => string = noExclude) {
+    return this.open(model, true, exclude);
   }
 }
 
@@ -46,7 +55,7 @@ export class SearchCodeSchemeModalController {
   showServer: CodeServer;
   showGroup: CodeGroup;
   searchText: string = '';
-  loadingResults: boolean;
+  loadingResults = true;
   selectedItem: CodeScheme|AddNewCodeScheme;
   selection: CodeScheme|AddNewSchemeFormData;
   cannotConfirm: string;
@@ -58,41 +67,45 @@ export class SearchCodeSchemeModalController {
   constructor(private $scope: SearchCodeSchemeScope,
               private $uibModalInstance: IModalServiceInstance,
               public model: Model,
+              public codeSchemesFromModel: boolean,
               private modelService: ModelService,
               languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
               public exclude: (codeScheme: CodeScheme) => string) {
 
     this.localizer = languageService.createLocalizer(model);
-    this.loadingResults = true;
 
-    const serversPromise = modelService.getCodeServers().then(servers => this.codeServers = servers);
+    const init = (codeSchemes: CodeScheme[]) => {
+      this.codeSchemes = codeSchemes;
+      this.codeGroups = _.chain(this.codeSchemes)
+        .map(codeScheme => codeScheme.groups)
+        .flatten()
+        .uniq(codeGroup => codeGroup.id.uri)
+        .sort(comparingLocalizable<CodeGroup>(this.localizer.language, codeGroup => codeGroup.title))
+        .value();
 
-    $scope.$watch(() => this.showServer, server => {
+      if (this.showGroup && !_.find(this.codeGroups, group => group.id.equals(this.showGroup.id))) {
+        this.showGroup = null;
+      }
 
-      this.loadingResults = true;
+      this.search();
+      this.loadingResults = false;
+    };
 
-      serversPromise.then(servers => {
-        modelService.getCodeSchemesForServers(server ? [server] : servers)
-        .then(result => {
-          this.codeSchemes = result;
-          this.codeGroups = _.chain(this.codeSchemes)
-            .map(codeScheme => codeScheme.groups)
-            .flatten()
-            .uniq(codeGroup => codeGroup.id.uri)
-            .sort(comparingLocalizable<CodeGroup>(this.localizer.language, codeGroup => codeGroup.title))
-            .value();
 
-          if (this.showGroup && !_.find(this.codeGroups, group => group.id.equals(this.showGroup.id))) {
-            this.showGroup = null;
-          }
+    if (codeSchemesFromModel) {
+      init(model.codeSchemes);
+    } else {
 
-          this.search();
+      const serversPromise = modelService.getCodeServers().then(servers => this.codeServers = servers);
 
-          this.loadingResults = false;
-        });
+      $scope.$watch(() => this.showServer, server => {
+        this.loadingResults = true;
+        serversPromise
+          .then(servers => modelService.getCodeSchemesForServers(server ? [server] : servers))
+          .then(init);
       });
-    });
+    }
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
