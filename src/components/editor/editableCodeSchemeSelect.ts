@@ -36,4 +36,8 @@ class EditableCodeSchemeSelectController {
   selectCodeScheme() {
     this.searchCodeSchemeModal.openSelectionForProperty(this.model).then(codeScheme => this.codeScheme = codeScheme);
   }
+
+  removeCodeScheme() {
+    this.codeScheme = null;
+  }
 }

@@ -14,6 +14,7 @@
 
   <div ng-class="{'model-view__sub': !!ctrl.codeScheme}">
     <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectCodeScheme()" translate>Choose code scheme</button>
+    <button ng-show="ctrl.isEditing() && ctrl.codeScheme" type="button" class="btn btn-default btn-sm" ng-click="ctrl.removeCodeScheme()" translate>Clear selection</button>
   </div>
 </div>
 </div>
