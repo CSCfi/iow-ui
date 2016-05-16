@@ -23,7 +23,7 @@ export function createAsyncValidators($q: IQService, codeScheme: CodeScheme, mod
     return {
       codeValue(codeValue: string) {
 
-        if (!codeScheme || !codeValue) {
+        if (!codeScheme || codeScheme.isExternal() || !codeValue) {
           return $q.resolve();
         } else {
           return codeValues.then(values => {
