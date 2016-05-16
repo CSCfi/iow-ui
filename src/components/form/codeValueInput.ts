@@ -1,16 +1,16 @@
-import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
+import IAsyncModelValidators = angular.IAsyncModelValidators;
+import IModelValidators = angular.IModelValidators;
+import IPromise = angular.IPromise;
+import IQService = angular.IQService;
+import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import INgModelController = angular.INgModelController;
 import IModelFormatter = angular.IModelFormatter;
 import { ModelService } from '../../services/modelService';
-import { module as mod }  from './module';
 import { LanguageService } from '../../services/languageService';
-import { CodeScheme } from '../../services/entities';
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
-import IModelValidators = angular.IModelValidators;
-import IAsyncModelValidators = angular.IAsyncModelValidators;
+import { CodeScheme, CodeValue } from '../../services/entities';
+import { module as mod }  from './module';
 
 export function placeholderText(gettextCatalog: gettextCatalog) {
   return gettextCatalog.getString('Write code');
@@ -18,7 +18,7 @@ export function placeholderText(gettextCatalog: gettextCatalog) {
 
 export function createAsyncValidators($q: IQService, codeScheme: CodeScheme, modelService: ModelService): IAsyncModelValidators {
 
-    const codeValues = codeScheme ? modelService.getCodeValues(codeScheme) : $q.when([]);
+    const codeValues: IPromise<CodeValue[]> = codeScheme ? modelService.getCodeValues(codeScheme) : $q.when([]);
 
     return {
       codeValue(codeValue: string) {
