@@ -51,7 +51,8 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, {
   type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' },
   valueShape: { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' },
   predicate: { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' },
-  classIn: { '@id': 'http://www.w3.org/ns/shacl#classIn', '@type': '@id' }
+  classIn: { '@id': 'http://www.w3.org/ns/shacl#classIn', '@type': '@id' },
+  memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf', '@type': '@id' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, {
@@ -100,8 +101,7 @@ const modelContext = Object.assign({}, coreContext, requireContext, {
   relations: { '@id': 'http://purl.org/dc/terms/relation', '@container': '@list' },
   codeLists: { '@id': 'http://iow.csc.fi/ns/iow#codeLists', '@type': '@id' },
   description,
-  language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' },
-  memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf', '@type': '@id' }
+  language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' }
 });
 
 const usageContext = Object.assign({}, coreContext, {
