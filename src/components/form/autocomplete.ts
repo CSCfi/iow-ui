@@ -96,7 +96,6 @@ export class AutocompleteController<T> {
   dimensions: { left: number, top: number, width: number };
   applyValue: (value: string) => void;
 
-  data: T[];
   dataMatches: T[] = [];
 
   selectionIndex = -1;
@@ -160,24 +159,16 @@ export class AutocompleteController<T> {
 
   autocomplete(search: string) {
 
-    const process = () => {
-      const matches = _.filter(this.data, item => this.matches(search, item));
-
-      if (matches.length === 0 || (matches.length === 1 && this.formatProperty(matches[0]) === search)) {
-        this.clear();
-      } else {
-        this.setMatchesAndSelectFirst(matches);
-      }
-    };
-
     if (search) {
-      if (isDefined(this.data)) {
-        process();
-      } else {
-        this.fetchData()
-          .then(data => this.data = data)
-          .then(process);
-      }
+      this.fetchData().then(data => {
+        const matches = _.filter(data, item => this.matches(search, item));
+
+        if (matches.length === 0 || (matches.length === 1 && this.formatProperty(matches[0]) === search)) {
+          this.clear();
+        } else {
+          this.setMatchesAndSelectFirst(matches);
+        }
+      });
     } else {
       this.clear();
     }
