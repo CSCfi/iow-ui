@@ -237,6 +237,10 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
+#: components/model/codeSchemeView.html:10
+msgid "Browse code values"
+msgstr ""
+
 #: components/editor/searchConceptModal.html:30
 msgid "Browse vocabulary"
 msgstr ""
@@ -298,7 +302,7 @@ msgstr ""
 msgid "Choose class"
 msgstr ""
 
-#: components/editor/editableCodeSchemeSelect.html:16
+#: components/editor/editableCodeSchemeSelect.html:14
 #: translations/misc.html:189
 msgid "Choose code scheme"
 msgstr ""
@@ -379,6 +383,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
+#: components/editor/editableCodeSchemeSelect.html:15
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr ""
@@ -392,7 +397,6 @@ msgstr ""
 msgid "Code scheme"
 msgstr ""
 
-#: components/model/codeSchemeView.html:1
 #: translations/misc.html:107
 msgid "Code scheme information"
 msgstr ""
@@ -932,7 +936,7 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
-#: components/model/codeSchemeView.html:13
+#: components/model/codeSchemeView.html:17
 #: translations/misc.html:176
 msgid "Identifier"
 msgstr ""
@@ -979,6 +983,10 @@ msgstr ""
 
 #: components/navigation/navigationBar.html:3
 msgid "IOW"
+msgstr ""
+
+#: components/form/errorMessages.html:21
+msgid "Is not valid code value"
 msgstr ""
 
 #: components/form/errorMessages.html:20
@@ -1610,7 +1618,7 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: components/model/codeSchemeView.html:14
+#: components/model/codeSchemeView.html:18
 #: translations/titles.html:68
 msgid "Title"
 msgstr ""
@@ -1737,6 +1745,10 @@ msgstr ""
 
 #: translations/misc.html:66
 msgid "What is method?"
+msgstr ""
+
+#: translations/misc.html:190
+msgid "Write code"
 msgstr ""
 
 #: translations/misc.html:99

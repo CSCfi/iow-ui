@@ -238,6 +238,10 @@ msgstr "Käsitteeseen liittyvä yläkäsite"
 msgid "Browse"
 msgstr "Selaa"
 
+#: components/model/codeSchemeView.html:10
+msgid "Browse code values"
+msgstr "Selaa koodistoa"
+
 #: components/editor/searchConceptModal.html:30
 msgid "Browse vocabulary"
 msgstr "Selaa sanastoa"
@@ -298,7 +302,7 @@ msgstr "valitse laajempi käsite"
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/editor/editableCodeSchemeSelect.html:16
+#: components/editor/editableCodeSchemeSelect.html:14
 #: translations/misc.html:189
 msgid "Choose code scheme"
 msgstr "valitse koodisto"
@@ -381,6 +385,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
+#: components/editor/editableCodeSchemeSelect.html:15
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr "poista valinta"
@@ -393,7 +398,7 @@ msgstr "Sulje"
 msgid "Code scheme"
 msgstr "Koodisto"
 
-#: components/model/codeSchemeView.html:1 translations/misc.html:107
+#: translations/misc.html:107
 msgid "Code scheme information"
 msgstr "Koodiston tiedot"
 
@@ -943,7 +948,7 @@ msgstr "Tunniste on jo käytössä"
 msgid "Id name is required"
 msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 
-#: components/model/codeSchemeView.html:13 translations/misc.html:176
+#: components/model/codeSchemeView.html:17 translations/misc.html:176
 msgid "Identifier"
 msgstr "Tunniste"
 
@@ -990,6 +995,10 @@ msgstr "Syöte ei ole URL"
 #: components/navigation/navigationBar.html:3
 msgid "IOW"
 msgstr "Yhteentoimivuuden kuvaukset"
+
+#: components/form/errorMessages.html:21
+msgid "Is not valid code value"
+msgstr "Ei tunnettu koodiston arvo"
 
 #: components/form/errorMessages.html:20
 msgid "Is not valid language code"
@@ -1617,7 +1626,7 @@ msgstr "Tekniset nimiavaruudet"
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: components/model/codeSchemeView.html:14 translations/titles.html:68
+#: components/model/codeSchemeView.html:18 translations/titles.html:68
 msgid "Title"
 msgstr "Nimi"
 
@@ -1766,6 +1775,10 @@ msgstr ""
 #: translations/misc.html:66
 msgid "What is method?"
 msgstr "Mikä on yhteentoimivuusmenetelmä?"
+
+#: translations/misc.html:190
+msgid "Write code"
+msgstr "Kirjoita koodi…"
 
 #: translations/misc.html:99
 msgid "Write identifier"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-05-11 18:46+0300\n"
+"PO-Revision-Date: 2016-05-16 16:02+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Add class"
 msgstr ""
 
-#: translations/misc.html:181
+#: translations/misc.html:183
 msgid "Add code scheme"
 msgstr ""
 
@@ -45,19 +45,19 @@ msgstr ""
 msgid "Add properties from ' + ctrl.classType + ' class"
 msgstr ""
 
-#: translations/misc.html:129
+#: translations/misc.html:130
 msgid "Add properties from external class"
 msgstr ""
 
-#: translations/misc.html:128
+#: translations/misc.html:129
 msgid "Add properties from profile class"
 msgstr ""
 
-#: translations/misc.html:127
+#: translations/misc.html:128
 msgid "Add properties from scope class"
 msgstr ""
 
-#: translations/misc.html:126
+#: translations/misc.html:127
 msgid "Add properties from super class"
 msgstr ""
 
@@ -65,15 +65,15 @@ msgstr ""
 msgid "Add property"
 msgstr ""
 
-#: translations/misc.html:174
+#: translations/misc.html:175
 msgid "Add reference"
 msgstr ""
 
-#: translations/misc.html:178
+#: translations/misc.html:179
 msgid "Add related resource"
 msgstr ""
 
-#: translations/misc.html:170
+#: translations/misc.html:171
 msgid "Add require"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgstr ""
 msgid "Additional information"
 msgstr ""
 
-#: components/user/user.html:34 translations/misc.html:125
+#: components/user/user.html:34 translations/misc.html:126
 msgid "Admin groups"
 msgstr ""
 
@@ -90,8 +90,12 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: components/editor/searchClassModal.html:31
-#: components/editor/searchPredicateModal.html:37
+#: components/model/searchCodeSchemeModal.html:36
+msgid "All groups"
+msgstr ""
+
+#: components/editor/searchClassModal.html:34
+#: components/editor/searchPredicateModal.html:41
 msgid "All models"
 msgstr ""
 
@@ -99,15 +103,19 @@ msgstr ""
 msgid "All references"
 msgstr ""
 
-#: components/editor/searchPredicateModal.html:45
+#: components/model/searchCodeSchemeModal.html:25
+msgid "All servers"
+msgstr ""
+
+#: components/editor/searchPredicateModal.html:50
 msgid "All types"
 msgstr ""
 
-#: translations/titles.html:54
+#: translations/titles.html:56
 msgid "Allowed values"
 msgstr ""
 
-#: translations/titles.html:54
+#: translations/titles.html:56
 msgid "Allowed values info"
 msgstr "List of values that are allowed"
 
@@ -123,19 +131,19 @@ msgstr ""
 msgid "Application profiles"
 msgstr ""
 
-#: translations/misc.html:112
+#: translations/misc.html:113
 msgid "application/ld+json"
 msgstr "JSON-LD"
 
-#: translations/misc.html:115
+#: translations/misc.html:116
 msgid "application/ld+json+context"
 msgstr ""
 
-#: translations/misc.html:114
+#: translations/misc.html:115
 msgid "application/rdf+xml"
 msgstr "RDF"
 
-#: translations/misc.html:116
+#: translations/misc.html:117
 msgid "application/schema+json"
 msgstr ""
 
@@ -151,11 +159,11 @@ msgstr ""
 msgid "Ask for group rights"
 msgstr ""
 
-#: translations/misc.html:164
+#: translations/misc.html:165
 msgid "Assigned to this library"
 msgstr ""
 
-#: translations/misc.html:163
+#: translations/misc.html:164
 msgid "Assigned to this profile"
 msgstr ""
 
@@ -175,11 +183,11 @@ msgstr "CURIE that identifies the Object property"
 msgid "Association information"
 msgstr ""
 
-#: translations/titles.html:19
+#: translations/titles.html:20
 msgid "Association label"
 msgstr ""
 
-#: translations/titles.html:19
+#: translations/titles.html:20
 msgid "Association label info"
 msgstr "Name of the association"
 
@@ -203,11 +211,11 @@ msgstr "CURIE that identifies the Datatype property"
 msgid "Attribute information"
 msgstr ""
 
-#: translations/titles.html:20
+#: translations/titles.html:21
 msgid "Attribute label"
 msgstr ""
 
-#: translations/titles.html:20
+#: translations/titles.html:21
 msgid "Attribute label info"
 msgstr "Name of the attribute"
 
@@ -219,11 +227,11 @@ msgstr ""
 msgid "Backend"
 msgstr ""
 
-#: translations/titles.html:45
+#: translations/titles.html:47
 msgid "Broader concept"
 msgstr ""
 
-#: translations/titles.html:45
+#: translations/titles.html:47
 msgid "Broader concept info"
 msgstr "Related broader concept that defines some context for the concept"
 
@@ -235,30 +243,31 @@ msgstr ""
 msgid "Browse vocabulary"
 msgstr ""
 
-#: translations/misc.html:155
+#: translations/misc.html:156
 msgid "by referencing external uri"
 msgstr ""
 
-#: translations/misc.html:144
+#: translations/misc.html:145
 msgid "Can be selected only from this library"
 msgstr ""
 
-#: translations/misc.html:145
+#: translations/misc.html:146
 msgid "Can be selected only from this profile"
 msgstr ""
 
 #: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
-#: components/editor/searchClassModal.html:72
+#: components/editor/searchClassModal.html:77
 #: components/editor/searchConceptModal.html:88
-#: components/editor/searchPredicateModal.html:89
+#: components/editor/searchPredicateModal.html:95
 #: components/group/addModelModal.html:24
 #: components/model/addEditRelationModal.html:20
 #: components/model/addEditRequireModal.html:30
-#: components/model/searchCodeSchemeModal.html:27
+#: components/model/editCodeSchemeModal.html:26
+#: components/model/searchCodeSchemeModal.html:92
 #: components/model/searchReferenceModal.html:27
-#: components/model/searchRequireModal.html:39
+#: components/model/searchRequireModal.html:44
 msgid "Cancel"
 msgstr ""
 
@@ -266,7 +275,7 @@ msgstr ""
 msgid "Cancel edit"
 msgstr ""
 
-#: translations/misc.html:135
+#: translations/misc.html:136
 msgid "Cannot require profile"
 msgstr ""
 
@@ -288,6 +297,11 @@ msgstr ""
 
 #: components/editor/editableConstraint.html:33 translations/misc.html:61
 msgid "Choose class"
+msgstr ""
+
+#: components/editor/editableCodeSchemeSelect.html:16
+#: translations/misc.html:189
+msgid "Choose code scheme"
 msgstr ""
 
 #: components/model/editableRootClass.html:7
@@ -314,11 +328,11 @@ msgstr "CURIE that identifies the class"
 msgid "Class information"
 msgstr ""
 
-#: translations/titles.html:17
+#: translations/titles.html:18
 msgid "Class label"
 msgstr ""
 
-#: translations/titles.html:17
+#: translations/titles.html:18
 msgid "Class label info"
 msgstr "Name of the class"
 
@@ -326,7 +340,7 @@ msgstr "Name of the class"
 msgid "Class list"
 msgstr ""
 
-#: translations/misc.html:107
+#: translations/misc.html:108
 msgid "Class properties"
 msgstr ""
 
@@ -338,11 +352,11 @@ msgstr ""
 msgid "Class property id info"
 msgstr ""
 
-#: translations/titles.html:22
+#: translations/titles.html:23
 msgid "Class property label"
 msgstr ""
 
-#: translations/titles.html:22
+#: translations/titles.html:23
 msgid "Class property label info"
 msgstr ""
 
@@ -354,35 +368,64 @@ msgstr ""
 msgid "Class search or create info"
 msgstr ""
 
-#: translations/titles.html:55
+#: translations/titles.html:57
 msgid "Class type"
 msgstr ""
 
-#: translations/titles.html:55
+#: translations/titles.html:57
 msgid "Class type info"
 msgstr ""
 
-#: translations/misc.html:137
+#: translations/misc.html:138
 msgid "Classes are not allowed"
 msgstr ""
 
+#: components/editor/editableCodeSchemeSelect.html:17
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr ""
 
-#: components/common/historyModal.html:36 translations/misc.html:143
+#: components/common/historyModal.html:36 translations/misc.html:144
 msgid "Close"
 msgstr ""
 
-#: translations/misc.html:184
+#: translations/misc.html:181
+msgid "Code scheme"
+msgstr ""
+
+#: components/model/codeSchemeView.html:1 translations/misc.html:107
+msgid "Code scheme information"
+msgstr ""
+
+#: translations/titles.html:27
+msgid "Code scheme label"
+msgstr ""
+
+#: translations/titles.html:27
+msgid "Code scheme label info"
+msgstr ""
+
+#: translations/misc.html:186
 msgid "Code scheme name"
 msgstr ""
 
-#: translations/misc.html:180
+#: translations/titles.html:13
+msgid "Code scheme URI"
+msgstr ""
+
+#: translations/titles.html:13
+msgid "Code scheme URI info"
+msgstr ""
+
+#: translations/misc.html:182
 msgid "Code schemes"
 msgstr ""
 
-#: translations/misc.html:110
+#: components/model/searchCodeSchemeModal.html:21
+msgid "Code server"
+msgstr ""
+
+#: translations/misc.html:111
 msgid "Concept"
 msgstr ""
 
@@ -398,11 +441,11 @@ msgstr "URI of the concept"
 msgid "Concept is suggested to scheme"
 msgstr ""
 
-#: translations/titles.html:23
+#: translations/titles.html:24
 msgid "Concept label"
 msgstr ""
 
-#: translations/titles.html:23
+#: translations/titles.html:24
 msgid "Concept label info"
 msgstr "Preferred term of the concept"
 
@@ -410,15 +453,15 @@ msgstr "Preferred term of the concept"
 msgid "Concept search info"
 msgstr ""
 
-#: translations/misc.html:111
+#: translations/misc.html:112
 msgid "Concept suggestion"
 msgstr ""
 
-#: translations/titles.html:24
+#: translations/titles.html:25
 msgid "Concept suggestion label"
 msgstr ""
 
-#: translations/titles.html:24
+#: translations/titles.html:25
 msgid "Concept suggestion label info"
 msgstr "Suggested term for the concept"
 
@@ -426,11 +469,11 @@ msgstr "Suggested term for the concept"
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Constraint classes"
 msgstr "Constraint shapes"
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Constraint classes info"
 msgstr "Shapes of classes that are used to constraint allowed values"
 
@@ -447,22 +490,27 @@ msgid "Create and use attribute"
 msgstr ""
 
 #: components/group/addModelModal.html:25
+#: components/model/searchCodeSchemeModal.html:94
 msgid "Create new"
 msgstr ""
 
-#: translations/misc.html:154
+#: translations/misc.html:155
 msgid "Create new association"
 msgstr ""
 
-#: translations/misc.html:153
+#: translations/misc.html:154
 msgid "Create new attribute"
 msgstr ""
 
-#: translations/misc.html:150
+#: translations/misc.html:151
 msgid "Create new class"
 msgstr ""
 
-#: translations/misc.html:152
+#: translations/misc.html:187
+msgid "Create new code scheme"
+msgstr ""
+
+#: translations/misc.html:153
 msgid "Create new predicate"
 msgstr ""
 
@@ -470,12 +518,20 @@ msgstr ""
 msgid "Create new require"
 msgstr ""
 
-#: translations/misc.html:151
+#: translations/misc.html:152
 msgid "Create new shape"
 msgstr ""
 
-#: components/user/user.html:17 translations/misc.html:122
+#: components/user/user.html:17 translations/misc.html:123
 msgid "Created at"
+msgstr ""
+
+#: translations/titles.html:74
+msgid "Creator"
+msgstr ""
+
+#: translations/titles.html:74
+msgid "Creator info"
 msgstr ""
 
 #: components/footer.html:3
@@ -506,15 +562,15 @@ msgstr "Data in swedish"
 msgid "Database"
 msgstr ""
 
-#: translations/misc.html:119
+#: translations/misc.html:120
 msgid "date format"
 msgstr "DD/MM/YYYY HH.mm"
 
-#: translations/titles.html:53
+#: translations/titles.html:55
 msgid "Default value"
 msgstr ""
 
-#: translations/titles.html:53
+#: translations/titles.html:55
 msgid "Default value info"
 msgstr ""
 "Default value for the property that may be used if no value is manually given"
@@ -547,27 +603,28 @@ msgstr ""
 msgid "Define type for class property"
 msgstr ""
 
-#: translations/titles.html:28
+#: components/editor/searchClassModal.html:26
+#: components/editor/searchPredicateModal.html:34 translations/titles.html:30
 msgid "Defined by"
 msgstr ""
 
-#: translations/titles.html:28
+#: translations/titles.html:30
 msgid "Defined by info"
 msgstr "Reference to the model that defines the resource"
 
-#: translations/titles.html:29
+#: translations/titles.html:31
 msgid "Defined by library"
 msgstr ""
 
-#: translations/titles.html:29
+#: translations/titles.html:31
 msgid "Defined by library info"
 msgstr "Reference to the library that defines the resource"
 
-#: translations/titles.html:30
+#: translations/titles.html:32
 msgid "Defined by profile"
 msgstr ""
 
-#: translations/titles.html:30
+#: translations/titles.html:32
 msgid "Defined by profile info"
 msgstr "Reference to the application profile that defines the resource"
 
@@ -652,19 +709,19 @@ msgid ""
 "Do you want to add following properties from ' + ctrl.classType + ' class?"
 msgstr ""
 
-#: translations/misc.html:133
+#: translations/misc.html:134
 msgid "Do you want to add following properties from external class?"
 msgstr ""
 
-#: translations/misc.html:132
+#: translations/misc.html:133
 msgid "Do you want to add following properties from profile class?"
 msgstr ""
 
-#: translations/misc.html:131
+#: translations/misc.html:132
 msgid "Do you want to add following properties from scope class?"
 msgstr ""
 
-#: translations/misc.html:130
+#: translations/misc.html:131
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
@@ -681,18 +738,23 @@ msgid "Duplicate error"
 msgstr ""
 
 #: components/form/editableEntityButtons.html:5
+#: components/model/editCodeSchemeModal.html:27
 msgid "Edit"
+msgstr ""
+
+#: components/model/editCodeSchemeModal.html:3 translations/misc.html:188
+msgid "Edit code scheme"
 msgstr ""
 
 #: translations/misc.html:41
 msgid "Edit in progress"
 msgstr ""
 
-#: translations/misc.html:179
+#: translations/misc.html:180
 msgid "Edit related resource"
 msgstr ""
 
-#: translations/misc.html:168
+#: translations/misc.html:169
 msgid "Edit require"
 msgstr ""
 
@@ -712,45 +774,45 @@ msgstr ""
 msgid "en"
 msgstr "English"
 
-#: translations/titles.html:43
+#: translations/titles.html:45
 msgid "Equivalent association"
 msgstr ""
 
-#: translations/titles.html:43
+#: translations/titles.html:45
 msgid "Equivalent association info"
 msgstr ""
 "Semantically equivalent Object property that is defined in external model"
 
-#: translations/titles.html:42
+#: translations/titles.html:44
 msgid "Equivalent attribute"
 msgstr ""
 
-#: translations/titles.html:42
+#: translations/titles.html:44
 msgid "Equivalent attribute info"
 msgstr ""
 "Semantically equivalent Datatype property that is defined in external model"
 
-#: translations/titles.html:41
+#: translations/titles.html:43
 msgid "Equivalent class"
 msgstr ""
 
-#: translations/titles.html:41
+#: translations/titles.html:43
 msgid "Equivalent class info"
 msgstr "Semantically equivalent Class that is defined in external model"
 
-#: translations/titles.html:44
+#: translations/titles.html:46
 msgid "Equivalent property"
 msgstr ""
 
-#: translations/titles.html:44
+#: translations/titles.html:46
 msgid "Equivalent property info"
 msgstr ""
 
-#: translations/titles.html:37
+#: translations/titles.html:39
 msgid "Example"
 msgstr ""
 
-#: translations/titles.html:37
+#: translations/titles.html:39
 msgid "Example info"
 msgstr "Example value for the property"
 
@@ -762,23 +824,23 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: translations/misc.html:158
+#: translations/misc.html:159
 msgid "External class not found"
 msgstr ""
 
-#: translations/misc.html:160
+#: translations/misc.html:161
 msgid "External predicate is of wrong type"
 msgstr ""
 
-#: translations/misc.html:159
+#: translations/misc.html:160
 msgid "External predicate not found"
 msgstr ""
 
-#: translations/titles.html:67
+#: translations/titles.html:69
 msgid "External URI"
 msgstr ""
 
-#: translations/titles.html:67
+#: translations/titles.html:69
 msgid "External URI info"
 msgstr "URI of an external resource"
 
@@ -786,15 +848,18 @@ msgstr "URI of an external resource"
 msgid "fi"
 msgstr "Finnish"
 
-#: components/editor/searchClassModal.html:23
+#: components/editor/searchClassModal.html:24
+#: components/editor/searchPredicateModal.html:31
+#: components/model/searchCodeSchemeModal.html:18
+#: components/model/searchRequireModal.html:23
 msgid "Filter results"
 msgstr ""
 
-#: translations/titles.html:56
+#: translations/titles.html:58
 msgid "Fixed value"
 msgstr ""
 
-#: translations/titles.html:56
+#: translations/titles.html:58
 msgid "Fixed value info"
 msgstr "Fixed value for the property"
 
@@ -802,7 +867,7 @@ msgstr "Fixed value for the property"
 msgid "Following items are depending on the deleted"
 msgstr ""
 
-#: translations/misc.html:117
+#: translations/misc.html:118
 msgid "framed ld+json"
 msgstr "Framed JSON-LD"
 
@@ -822,11 +887,15 @@ msgstr ""
 msgid "group"
 msgstr "Group"
 
-#: translations/titles.html:16
+#: components/model/searchCodeSchemeModal.html:32
+msgid "Group"
+msgstr ""
+
+#: translations/titles.html:17
 msgid "Group label"
 msgstr ""
 
-#: translations/titles.html:16
+#: translations/titles.html:17
 msgid "Group label info"
 msgstr "Name of the domain group"
 
@@ -834,15 +903,15 @@ msgstr "Name of the domain group"
 msgid "Hide"
 msgstr ""
 
-#: components/common/historyModal.html:3 translations/misc.html:142
+#: components/common/historyModal.html:3 translations/misc.html:143
 msgid "Historical versions"
 msgstr ""
 
-#: translations/titles.html:64
+#: translations/titles.html:66
 msgid "Homepage"
 msgstr "Link"
 
-#: translations/titles.html:64
+#: translations/titles.html:66
 msgid "Homepage info"
 msgstr ""
 "Link to a Information or application that somehow uses the defined model"
@@ -867,29 +936,29 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
-#: translations/misc.html:175
+#: components/model/codeSchemeView.html:13 translations/misc.html:176
 msgid "Identifier"
 msgstr ""
 
-#: translations/misc.html:169
+#: translations/misc.html:170
 msgid "Imported requires"
 msgstr ""
 
-#: translations/misc.html:161
+#: translations/misc.html:162
 msgid "Input"
 msgstr ""
 
-#: translations/titles.html:47
+#: translations/titles.html:49
 msgid "Internal group page"
 msgstr ""
 
-#: translations/titles.html:47
+#: translations/titles.html:49
 msgid "Internal group page info"
 msgstr ""
 "Link to a internal group page that can be used to discuss about the defined "
 "models and resources"
 
-#: translations/misc.html:166
+#: translations/misc.html:167
 msgid "Internal vocabulary"
 msgstr ""
 
@@ -897,7 +966,7 @@ msgstr ""
 msgid "Interoperability method"
 msgstr ""
 
-#: translations/misc.html:157
+#: translations/misc.html:158
 msgid "Invalid ID"
 msgstr ""
 
@@ -917,15 +986,19 @@ msgstr ""
 msgid "IOW"
 msgstr "Interoperability descriptions"
 
+#: components/form/errorMessages.html:21
+msgid "Is not valid code value"
+msgstr ""
+
 #: components/form/errorMessages.html:20
 msgid "Is not valid language code"
 msgstr ""
 
-#: translations/misc.html:165
+#: translations/misc.html:166
 msgid "language code"
 msgstr ""
 
-#: translations/misc.html:118
+#: translations/misc.html:119
 msgid "ld+json frame"
 msgstr "JSON-LD Frame"
 
@@ -945,11 +1018,11 @@ msgstr ""
 msgid "Library information"
 msgstr "Model information"
 
-#: translations/titles.html:14
+#: translations/titles.html:15
 msgid "Library label"
 msgstr "Model label"
 
-#: translations/titles.html:14
+#: translations/titles.html:15
 msgid "Library label info"
 msgstr "Name of the model"
 
@@ -975,48 +1048,48 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: components/maintenance.html:2 translations/misc.html:146
+#: components/maintenance.html:2 translations/misc.html:147
 msgid "Maintenance"
 msgstr "Maintenance break"
 
-#: components/maintenance.html:5 translations/misc.html:147
+#: components/maintenance.html:5 translations/misc.html:148
 msgid "Maintenance content"
 msgstr ""
 "Application is unfortunately out of service because of maintenance break."
 
-#: translations/titles.html:59
+#: translations/titles.html:61
 msgid "Max count"
 msgstr ""
 
-#: translations/titles.html:59
+#: translations/titles.html:61
 msgid "Max count info"
 msgstr "Maximum cardinality of the property"
 
-#: translations/titles.html:61 translations/titles.html:62
+#: translations/titles.html:63 translations/titles.html:64
 msgid "Max length"
 msgstr ""
 
-#: translations/titles.html:61 translations/titles.html:62
+#: translations/titles.html:63 translations/titles.html:64
 msgid "Max length info"
 msgstr "Maximum length of the property value"
 
-#: components/user/user.html:27 translations/misc.html:124
+#: components/user/user.html:27 translations/misc.html:125
 msgid "Member groups"
 msgstr ""
 
-#: translations/titles.html:58
+#: translations/titles.html:60
 msgid "Min count"
 msgstr ""
 
-#: translations/titles.html:58
+#: translations/titles.html:60
 msgid "Min count info"
 msgstr "Minimum count of the properties"
 
-#: translations/titles.html:60
+#: translations/titles.html:62
 msgid "Min length"
 msgstr ""
 
-#: translations/titles.html:60
+#: translations/titles.html:62
 msgid "Min length info"
 msgstr "Minimum length of the property value"
 
@@ -1024,11 +1097,11 @@ msgstr "Minimum length of the property value"
 msgid "model"
 msgstr "Component library"
 
-#: translations/titles.html:65
+#: translations/titles.html:67
 msgid "Model languages"
 msgstr ""
 
-#: translations/titles.html:65
+#: translations/titles.html:67
 msgid "Model languages info"
 msgstr ""
 
@@ -1036,7 +1109,7 @@ msgstr ""
 msgid "Models"
 msgstr ""
 
-#: components/user/user.html:22 translations/misc.html:123
+#: components/user/user.html:22 translations/misc.html:124
 msgid "Modified at"
 msgstr ""
 
@@ -1044,11 +1117,11 @@ msgstr ""
 msgid "Must be required namespace"
 msgstr ""
 
-#: translations/titles.html:50
+#: translations/titles.html:52
 msgid "Namespace"
 msgstr ""
 
-#: translations/titles.html:50
+#: translations/titles.html:52
 msgid "Namespace info"
 msgstr "Namespaces are used to identify and resolve resources"
 
@@ -1080,14 +1153,15 @@ msgstr ""
 msgid "No search results"
 msgstr ""
 
-#: translations/misc.html:138
+#: translations/misc.html:139
 msgid "Non specialized classes are not allowed"
 msgstr ""
 
-#: translations/misc.html:172
+#: translations/misc.html:173
 msgid "None added"
 msgstr ""
 
+#: components/editor/editableCodeSchemeSelect.html:6
 #: components/editor/subjectView.html:3
 msgid "Not defined"
 msgstr ""
@@ -1104,7 +1178,7 @@ msgstr ""
 msgid "Not removed"
 msgstr ""
 
-#: translations/misc.html:134
+#: translations/misc.html:135
 msgid "Not required by model"
 msgstr ""
 
@@ -1152,27 +1226,27 @@ msgstr "Attribute"
 msgid "owl:ObjectProperty"
 msgstr "Association"
 
-#: translations/titles.html:57
+#: translations/titles.html:59
 msgid "Pattern"
 msgstr "Regular expression"
 
-#: translations/titles.html:57
+#: translations/titles.html:59
 msgid "Pattern info"
 msgstr "Regular expression that can be used to validate the property values"
 
-#: components/editor/propertyView.html:106
+#: components/editor/propertyView.html:108
 msgid "Predicate information not found"
 msgstr ""
 
-#: translations/titles.html:39
+#: components/editor/searchPredicateModal.html:47 translations/titles.html:41
 msgid "Predicate type"
 msgstr ""
 
-#: translations/titles.html:39
+#: translations/titles.html:41
 msgid "Predicate type info"
 msgstr "Predicate type can be Datatype or Object property"
 
-#: translations/titles.html:51
+#: translations/titles.html:53
 msgid "Prefix"
 msgstr ""
 
@@ -1180,7 +1254,7 @@ msgstr ""
 msgid "Prefix error"
 msgstr ""
 
-#: translations/titles.html:51
+#: translations/titles.html:53
 msgid "Prefix info"
 msgstr "Prefixes are used to form namespaces and human readable CURIE:s"
 
@@ -1192,11 +1266,11 @@ msgstr "Application profile"
 msgid "Profile information"
 msgstr ""
 
-#: translations/titles.html:15
+#: translations/titles.html:16
 msgid "Profile label"
 msgstr ""
 
-#: translations/titles.html:15
+#: translations/titles.html:16
 msgid "Profile label info"
 msgstr "Name of the application profile"
 
@@ -1216,19 +1290,19 @@ msgstr "URI that identifies the property"
 msgid "Property information"
 msgstr ""
 
-#: translations/titles.html:21
+#: translations/titles.html:22
 msgid "Property label"
 msgstr ""
 
-#: translations/titles.html:21
+#: translations/titles.html:22
 msgid "Property label info"
 msgstr "Name of the property"
 
-#: translations/titles.html:35
+#: translations/titles.html:37
 msgid "Range"
 msgstr ""
 
-#: translations/titles.html:35
+#: translations/titles.html:37
 msgid "Range info"
 msgstr "Value range of the property"
 
@@ -1256,7 +1330,7 @@ msgstr ""
 msgid "Reference filter"
 msgstr ""
 
-#: translations/misc.html:173
+#: translations/misc.html:174
 msgid "References"
 msgstr ""
 
@@ -1264,23 +1338,23 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: translations/misc.html:177
+#: translations/misc.html:178
 msgid "Related resources"
 msgstr ""
 
-#: translations/misc.html:167
+#: translations/misc.html:168
 msgid "Remove"
 msgstr ""
 
-#: translations/titles.html:25
+#: translations/titles.html:26
 msgid "Require label"
 msgstr ""
 
-#: translations/titles.html:25
+#: translations/titles.html:26
 msgid "Require label info"
 msgstr ""
 
-#: translations/misc.html:162
+#: translations/misc.html:163
 msgid "Required"
 msgstr ""
 
@@ -1300,15 +1374,15 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:90
+#: components/editor/propertyView.html:92
 msgid "Reusable predicate"
 msgstr ""
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Root class"
 msgstr ""
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Root class info"
 msgstr "Class or Shape that can be used to define root for the model"
 
@@ -1336,11 +1410,11 @@ msgstr "Search attribute or association…"
 msgid "search class"
 msgstr "Search class…"
 
-#: components/model/searchCodeSchemeModal.html:8 translations/misc.html:183
+#: components/model/searchCodeSchemeModal.html:10 translations/misc.html:185
 msgid "search code scheme"
 msgstr "Search code scheme…"
 
-#: components/model/searchCodeSchemeModal.html:2 translations/misc.html:182
+#: components/model/searchCodeSchemeModal.html:3 translations/misc.html:184
 msgid "Search code schemes"
 msgstr ""
 
@@ -1396,7 +1470,7 @@ msgstr ""
 msgid "Select class"
 msgstr ""
 
-#: translations/misc.html:156
+#: translations/misc.html:157
 msgid "Self reference not allowed"
 msgstr ""
 
@@ -1416,19 +1490,19 @@ msgstr "URI that idenfities the shape"
 msgid "Shape information"
 msgstr ""
 
-#: translations/titles.html:18
+#: translations/titles.html:19
 msgid "Shape label"
 msgstr ""
 
-#: translations/titles.html:18
+#: translations/titles.html:19
 msgid "Shape label info"
 msgstr "Name of the shape"
 
-#: translations/misc.html:108
+#: translations/misc.html:109
 msgid "Shape properties"
 msgstr ""
 
-#: translations/misc.html:136
+#: translations/misc.html:137
 msgid "Shapes are not allowed"
 msgstr ""
 
@@ -1436,19 +1510,19 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: components/editor/searchClassModal.html:37
+#: components/editor/searchClassModal.html:40
 msgid "Show classes defined in profiles"
 msgstr ""
 
-#: translations/misc.html:109
+#: translations/misc.html:110
 msgid "Show excluded"
 msgstr ""
 
-#: translations/misc.html:141
+#: translations/misc.html:142
 msgid "Show history"
 msgstr ""
 
-#: components/model/searchRequireModal.html:23
+#: components/model/searchRequireModal.html:26
 msgid "Show technical namespaces"
 msgstr ""
 
@@ -1456,23 +1530,23 @@ msgstr ""
 msgid "Source code"
 msgstr ""
 
-#: translations/misc.html:140
+#: translations/misc.html:141
 msgid "Specialize class"
 msgstr ""
 
-#: translations/titles.html:36
+#: translations/titles.html:38
 msgid "Specialized from class"
 msgstr ""
 
-#: translations/titles.html:36
+#: translations/titles.html:38
 msgid "Specialized from class info"
 msgstr "Reference to the Class of the Shape"
 
-#: translations/titles.html:27
+#: translations/titles.html:29
 msgid "State"
 msgstr "Status"
 
-#: translations/titles.html:27
+#: translations/titles.html:29
 msgid "State info"
 msgstr "Information about the stability and usability of the resource "
 
@@ -1480,7 +1554,7 @@ msgstr "Information about the stability and usability of the resource "
 msgid "String error"
 msgstr ""
 
-#: translations/misc.html:148
+#: translations/misc.html:149
 msgid "Subject"
 msgstr ""
 
@@ -1492,55 +1566,55 @@ msgstr ""
 msgid "suggestion"
 msgstr ""
 
-#: translations/titles.html:32
+#: translations/titles.html:34
 msgid "Superassociation"
 msgstr ""
 
-#: translations/titles.html:32
+#: translations/titles.html:34
 msgid "Superassociation info"
 msgstr "is subproperty of"
 
-#: translations/titles.html:33
+#: translations/titles.html:35
 msgid "Superattribute"
 msgstr ""
 
-#: translations/titles.html:33
+#: translations/titles.html:35
 msgid "Superattribute info"
 msgstr ""
 
-#: translations/titles.html:31
+#: translations/titles.html:33
 msgid "Superclass"
 msgstr ""
 
-#: translations/titles.html:31
+#: translations/titles.html:33
 msgid "Superclass info"
 msgstr "is subclass of"
 
-#: translations/titles.html:34
+#: translations/titles.html:36
 msgid "Superproperty"
 msgstr ""
 
-#: translations/titles.html:34
+#: translations/titles.html:36
 msgid "Superproperty info"
 msgstr ""
 
-#: translations/misc.html:171
+#: translations/misc.html:172
 msgid "Technical namespaces"
 msgstr ""
 
-#: translations/misc.html:113
+#: translations/misc.html:114
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: translations/titles.html:66
+#: components/model/codeSchemeView.html:14 translations/titles.html:68
 msgid "Title"
 msgstr ""
 
-#: translations/titles.html:66
+#: translations/titles.html:68
 msgid "Title info"
 msgstr "Name of the vocabulary"
 
-#: translations/misc.html:149
+#: translations/misc.html:150
 msgid "to vocabulary"
 msgstr ""
 
@@ -1576,11 +1650,11 @@ msgstr ""
 msgid "Use attribute"
 msgstr ""
 
-#: translations/misc.html:139
+#: translations/misc.html:140
 msgid "Use class"
 msgstr ""
 
-#: translations/misc.html:86
+#: components/model/searchCodeSchemeModal.html:95 translations/misc.html:86
 msgid "Use selection"
 msgstr ""
 
@@ -1588,19 +1662,19 @@ msgstr ""
 msgid "User details"
 msgstr ""
 
-#: components/user/user.html:7 translations/misc.html:120
+#: components/user/user.html:7 translations/misc.html:121
 msgid "User login"
 msgstr ""
 
-#: components/user/user.html:12 translations/misc.html:121
+#: components/user/user.html:12 translations/misc.html:122
 msgid "User name"
 msgstr ""
 
-#: translations/titles.html:38
+#: translations/titles.html:40
 msgid "Value class"
 msgstr ""
 
-#: translations/titles.html:38
+#: translations/titles.html:40
 msgid "Value class info"
 msgstr "Class or Shape that is the range of the object property"
 
@@ -1612,7 +1686,7 @@ msgstr ""
 msgid "Visualization"
 msgstr ""
 
-#: translations/titles.html:49
+#: translations/titles.html:51
 msgid "Vocabulary"
 msgstr ""
 
@@ -1624,11 +1698,11 @@ msgstr ""
 msgid "Vocabulary id info"
 msgstr "Identifier of the vocabulary"
 
-#: translations/titles.html:49
+#: translations/titles.html:51
 msgid "Vocabulary info"
 msgstr ""
 
-#: translations/misc.html:176
+#: translations/misc.html:177
 msgid "Vocabulary name"
 msgstr ""
 
@@ -1683,9 +1757,13 @@ msgstr ""
 msgid "What is method?"
 msgstr "What is the interoperability method?"
 
+#: translations/misc.html:190
+msgid "Write code"
+msgstr "Write code…"
+
 #: translations/misc.html:99
 msgid "Write identifier"
-msgstr ""
+msgstr "Write identifier…"
 
 #: translations/attribute.html:10
 msgid "xsd:anyURI"

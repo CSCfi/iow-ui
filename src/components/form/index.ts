@@ -4,6 +4,7 @@ import { module as mod }  from './module';
 export default mod.name;
 
 import './autocomplete';
+import './codeValueInput';
 import './stringInput';
 import './prefixInput';
 import './namespaceInput';
