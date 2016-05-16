@@ -919,6 +919,7 @@ export class Property extends GraphNode {
   in: string[];
   hasValue: string;
   pattern: string;
+  codeScheme: CodeScheme;
   predicateType: Type;
   classIn: Uri[];
   editorialNote: Localizable;
@@ -934,6 +935,7 @@ export class Property extends GraphNode {
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
     this.classIn = deserializeList(graph.classIn, klass => new Uri(klass, context));
+    this.codeScheme = deserializeOptional(graph.memberOf, context, frame, CodeScheme);
 
     if (graph.type) {
       this.predicateType = mapType(graph.type);
@@ -1062,6 +1064,7 @@ export class Property extends GraphNode {
       hasValue: this.hasValue,
       pattern: this.pattern,
       classIn: serializeList(this.classIn, classId => classId.uri),
+      memberOf: serializeOptional(this.codeScheme, clone),
       editorialNote: serializeLocalizable(this.editorialNote)
     };
   }

@@ -100,7 +100,8 @@ const modelContext = Object.assign({}, coreContext, requireContext, {
   relations: { '@id': 'http://purl.org/dc/terms/relation', '@container': '@list' },
   codeLists: { '@id': 'http://iow.csc.fi/ns/iow#codeLists', '@type': '@id' },
   description,
-  language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' }
+  language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' },
+  memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf', '@type': '@id' }
 });
 
 const usageContext = Object.assign({}, coreContext, {
