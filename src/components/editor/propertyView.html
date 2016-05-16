@@ -59,6 +59,8 @@
     <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="{{ctrl.property.inputType}}" ng-model="ctrl.property.hasValue" />
   </editable>
 
+  <editable-code-scheme-select model="ctrl.model" code-scheme="ctrl.property.codeScheme"></editable-code-scheme-select>
+
   <editable ng-if="ctrl.isAttribute()" data-title="Pattern" context="ctrl.model">
     <input id="{{ctrl.property.internalId + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
   </editable>
