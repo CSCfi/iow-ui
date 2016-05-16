@@ -184,7 +184,7 @@ export class SearchCodeSchemeModalController {
   }
 
   canAddNew() {
-    return !!this.searchText;
+    return !!this.searchText && !this.codeSchemesFromModel;
   }
 
   private textFilter(codeScheme: CodeScheme): boolean {
