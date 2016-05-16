@@ -16,7 +16,8 @@ mod.directive('autocomplete', ($document: JQuery) => {
     scope: {
       fetchData: '=',
       matches: '=',
-      propertyExtractor: '='
+      propertyExtractor: '=',
+      formatter: '='
     },
     bindToController: true,
     template: `
@@ -41,7 +42,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
       const inputElement = element.find('input');
       const ngModel: INgModelController = inputElement.controller('ngModel');
 
-      $scope.$watchCollection(() => ngModel.$formatters, formatters => thisController.formatter = formatters);
+      $scope.$watchCollection(() => ngModel.$formatters, formatters => thisController.inputFormatter = formatters);
 
       const keyDownHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.keyPressed(event));
       const focusHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.autocomplete(ngModel.$viewValue));
@@ -90,7 +91,8 @@ export class AutocompleteController<T> {
   matches: (search: string, item: T) => boolean;
   propertyExtractor: (item: T) => any;
 
-  formatter: IModelFormatter|IModelFormatter[];
+  formatter: (item: T) => string;
+  inputFormatter: IModelFormatter|IModelFormatter[];
   dimensions: { left: number, top: number, width: number };
   applyValue: (value: string) => void;
 
@@ -137,7 +139,15 @@ export class AutocompleteController<T> {
   }
 
   format(value: T): string {
-    return formatWithFormatters(this.extractProperty(value), this.formatter);
+    if (!this.formatter) {
+      return this.formatProperty(value);
+    } else {
+      return this.formatter(value);
+    }
+  }
+
+  formatProperty(value: T): string {
+    return formatWithFormatters(this.extractProperty(value), this.inputFormatter);
   }
 
   extractProperty(value: T): any {
@@ -153,7 +163,7 @@ export class AutocompleteController<T> {
     const process = () => {
       const matches = _.filter(this.data, item => this.matches(search, item));
 
-      if (matches.length === 0 || (matches.length === 1 && this.format(matches[0]) === search)) {
+      if (matches.length === 0 || (matches.length === 1 && this.formatProperty(matches[0]) === search)) {
         this.clear();
       } else {
         this.setMatchesAndSelectFirst(matches);
@@ -187,7 +197,7 @@ export class AutocompleteController<T> {
     const value = this.selectionIndex >= 0 ? this.dataMatches[this.selectionIndex] : null;
 
     if (value) {
-      this.applyValue(this.format(value));
+      this.applyValue(this.formatProperty(value));
     }
 
     this.clear();
