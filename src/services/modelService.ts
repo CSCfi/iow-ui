@@ -149,7 +149,7 @@ export class ModelService {
   }
 
   getCodeValues(codeScheme: CodeScheme) {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: codeScheme.id.uri } })
+    return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { cache: true, params: { uri: codeScheme.id.uri } })
       .then(response => this.entities.deserializeCodeValues(response.data));
   }
 
