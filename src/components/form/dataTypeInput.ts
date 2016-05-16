@@ -2,14 +2,14 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import IScope = angular.IScope;
+import IQService = angular.IQService;
 import { DataType } from '../../services/dataTypes';
 import { resolveValidator } from './validators';
-import { module as mod }  from './module';
 import { LanguageService } from '../../services/languageService';
-
-interface DataTypeInputAttributes extends IAttributes {
-  datatypeInput: DataType;
-}
+import { createAsyncValidators } from './codeValueInput';
+import { CodeScheme } from '../../services/entities';
+import { ModelService } from '../../services/modelService';
+import { module as mod }  from './module';
 
 export function placeholderText(dataType: DataType, gettextCatalog: gettextCatalog) {
   const validator = resolveValidator(dataType);
@@ -17,20 +17,26 @@ export function placeholderText(dataType: DataType, gettextCatalog: gettextCatal
   return validator.format ? placeholder + ` (${validator.format})` : placeholder;
 };
 
-mod.directive('datatypeInput', /* @ngInject */ (languageService: LanguageService, gettextCatalog: gettextCatalog) => {
+interface DatatypeInputScope extends IScope {
+  datatypeInput: DataType;
+  codeScheme: CodeScheme;
+}
+
+mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: ModelService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
   return {
     restrict: 'EA',
+    scope: {
+      datatypeInput: '=',
+      codeScheme: '='
+    },
     require: 'ngModel',
-    link($scope: IScope, element: JQuery, attributes: DataTypeInputAttributes, ngModel: INgModelController) {
-      if (!attributes.datatypeInput) {
-        throw new Error('Data type must be defined');
-      }
+    link($scope: DatatypeInputScope, element: JQuery, attributes: IAttributes, ngModel: INgModelController) {
 
-      const setPlaceholder = () => element.attr('placeholder', placeholderText(attributes.datatypeInput, gettextCatalog));
+      const setPlaceholder = () => element.attr('placeholder', placeholderText($scope.datatypeInput, gettextCatalog));
 
       $scope.$watch(() => languageService.UILanguage, setPlaceholder);
 
-      function initialize(dataType: DataType, oldDataType: DataType) {
+      function initializeDataType(dataType: DataType, oldDataType: DataType) {
         setPlaceholder();
 
         if (oldDataType) {
@@ -42,8 +48,13 @@ mod.directive('datatypeInput', /* @ngInject */ (languageService: LanguageService
         ngModel.$validate();
       }
 
-      initialize(attributes.datatypeInput, null);
-      $scope.$watch<DataType>(() => attributes.datatypeInput, initialize);
+      function initializeCodeScheme(codeScheme: CodeScheme) {
+        Object.assign(ngModel.$asyncValidators, createAsyncValidators($q, codeScheme, modelService));
+        ngModel.$validate();
+      }
+
+      $scope.$watch(() => $scope.datatypeInput, initializeDataType);
+      $scope.$watch(() => $scope.codeScheme, initializeCodeScheme);
     }
   };
 });
