@@ -80,8 +80,7 @@ class CodeSchemeTableDescriptor extends TableDescriptor<CodeScheme> {
     };
 
     return [
-      { headerName: 'Code scheme URI', nameExtractor: codeScheme => codeScheme.id.uri, onClick: clickHandler },
-      { headerName: 'Code scheme name', nameExtractor: codeScheme => this.localizer.translate(codeScheme.title) },
+      { headerName: 'Code scheme name', nameExtractor: codeScheme => this.localizer.translate(codeScheme.title), onClick: clickHandler },
       { headerName: 'Description', nameExtractor: codeScheme => this.localizer.translate(codeScheme.description) }
     ];
   }
