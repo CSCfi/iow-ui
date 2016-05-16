@@ -16,7 +16,7 @@ export class ViewCodeSchemeModal {
             <modal-title translate>Code scheme information</modal-title>
             
             <modal-body>
-              <code-scheme-view code-scheme="ctrl.codeScheme" context="ctrl.context" class="popup"></code-scheme-view>
+              <code-scheme-view code-scheme="ctrl.codeScheme" context="ctrl.context" class="popup" show-values="true"></code-scheme-view>
             </modal-body>
             
             <modal-buttons>
