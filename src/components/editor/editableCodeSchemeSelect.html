@@ -1,0 +1,19 @@
+<div>
+  <div ng-if="ctrl.codeScheme || ctrl.isEditing()">
+
+    <div class="editable-wrap">
+      <editable-label data-title="'Code scheme'"></editable-label>
+      <div ng-hide="ctrl.codeScheme" translate>Not defined</div>
+    </div>
+    <div class="model-view__sub">
+      <non-editable title="Identifier" value="ctrl.codeScheme.identifier" context="ctrl.model"></non-editable>
+      <non-editable title="Code scheme name" value="ctrl.codeScheme.title" context="ctrl.model"></non-editable>
+      <non-editable title="Description" value="ctrl.codeScheme.description" context="ctrl.model"></non-editable>
+    </div>
+  </div>
+
+  <div ng-class="{'model-view__sub': !!ctrl.codeScheme}">
+    <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectCodeScheme()" translate>Choose code scheme</button>
+  </div>
+</div>
+</div>

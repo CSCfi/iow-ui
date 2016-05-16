@@ -23,7 +23,7 @@ msgstr ""
 msgid "Add class"
 msgstr ""
 
-#: translations/misc.html:182
+#: translations/misc.html:183
 msgid "Add code scheme"
 msgstr ""
 
@@ -298,6 +298,11 @@ msgstr ""
 msgid "Choose class"
 msgstr ""
 
+#: components/editor/editableCodeSchemeSelect.html:16
+#: translations/misc.html:189
+msgid "Choose code scheme"
+msgstr ""
+
 #: components/model/editableRootClass.html:7
 msgid "Choose root class"
 msgstr ""
@@ -383,6 +388,10 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: translations/misc.html:181
+msgid "Code scheme"
+msgstr ""
+
 #: components/model/codeSchemeView.html:1
 #: translations/misc.html:107
 msgid "Code scheme information"
@@ -396,7 +405,7 @@ msgstr ""
 msgid "Code scheme label info"
 msgstr ""
 
-#: translations/misc.html:185
+#: translations/misc.html:186
 msgid "Code scheme name"
 msgstr ""
 
@@ -408,7 +417,7 @@ msgstr ""
 msgid "Code scheme URI info"
 msgstr ""
 
-#: translations/misc.html:181
+#: translations/misc.html:182
 msgid "Code schemes"
 msgstr ""
 
@@ -498,7 +507,7 @@ msgstr ""
 msgid "Create new class"
 msgstr ""
 
-#: translations/misc.html:186
+#: translations/misc.html:187
 msgid "Create new code scheme"
 msgstr ""
 
@@ -735,7 +744,7 @@ msgid "Edit"
 msgstr ""
 
 #: components/model/editCodeSchemeModal.html:3
-#: translations/misc.html:187
+#: translations/misc.html:188
 msgid "Edit code scheme"
 msgstr ""
 
@@ -1150,6 +1159,7 @@ msgstr ""
 msgid "None added"
 msgstr ""
 
+#: components/editor/editableCodeSchemeSelect.html:6
 #: components/editor/subjectView.html:3
 msgid "Not defined"
 msgstr ""
@@ -1222,7 +1232,7 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
-#: components/editor/propertyView.html:106
+#: components/editor/propertyView.html:108
 msgid "Predicate information not found"
 msgstr ""
 
@@ -1363,7 +1373,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:90
+#: components/editor/propertyView.html:92
 msgid "Reusable predicate"
 msgstr ""
 
@@ -1400,12 +1410,12 @@ msgid "search class"
 msgstr ""
 
 #: components/model/searchCodeSchemeModal.html:10
-#: translations/misc.html:184
+#: translations/misc.html:185
 msgid "search code scheme"
 msgstr ""
 
 #: components/model/searchCodeSchemeModal.html:3
-#: translations/misc.html:183
+#: translations/misc.html:184
 msgid "Search code schemes"
 msgstr ""
 

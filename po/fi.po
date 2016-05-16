@@ -28,7 +28,7 @@ msgstr "Lisää attribuutti tai assosiaatio"
 msgid "Add class"
 msgstr "Lisää luokka"
 
-#: translations/misc.html:182
+#: translations/misc.html:183
 msgid "Add code scheme"
 msgstr "Lisää koodisto"
 
@@ -298,6 +298,11 @@ msgstr "valitse laajempi käsite"
 msgid "Choose class"
 msgstr "valitse luokka"
 
+#: components/editor/editableCodeSchemeSelect.html:16
+#: translations/misc.html:189
+msgid "Choose code scheme"
+msgstr "valitse koodisto"
+
 #: components/model/editableRootClass.html:7
 msgid "Choose root class"
 msgstr "valitse juurisolmu"
@@ -384,6 +389,10 @@ msgstr "poista valinta"
 msgid "Close"
 msgstr "Sulje"
 
+#: translations/misc.html:181
+msgid "Code scheme"
+msgstr "Koodisto"
+
 #: components/model/codeSchemeView.html:1 translations/misc.html:107
 msgid "Code scheme information"
 msgstr "Koodiston tiedot"
@@ -396,7 +405,7 @@ msgstr "Koodiston nimi"
 msgid "Code scheme label info"
 msgstr ""
 
-#: translations/misc.html:185
+#: translations/misc.html:186
 msgid "Code scheme name"
 msgstr "Koodiston nimi"
 
@@ -408,7 +417,7 @@ msgstr "Koodiston URI"
 msgid "Code scheme URI info"
 msgstr ""
 
-#: translations/misc.html:181
+#: translations/misc.html:182
 msgid "Code schemes"
 msgstr "Koodistot"
 
@@ -499,7 +508,7 @@ msgstr "Lisää uusi attribuutti"
 msgid "Create new class"
 msgstr "Luo uusi luokka"
 
-#: translations/misc.html:186
+#: translations/misc.html:187
 msgid "Create new code scheme"
 msgstr "Luo uusi koodisto"
 
@@ -735,7 +744,7 @@ msgstr "Syöte on jo lisätty"
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: components/model/editCodeSchemeModal.html:3 translations/misc.html:187
+#: components/model/editCodeSchemeModal.html:3 translations/misc.html:188
 msgid "Edit code scheme"
 msgstr "Muokkaa koodistoa"
 
@@ -1156,6 +1165,7 @@ msgstr "Erikoistamattomia luokkia ei saavalita"
 msgid "None added"
 msgstr "Ei yhtään lisätty"
 
+#: components/editor/editableCodeSchemeSelect.html:6
 #: components/editor/subjectView.html:3
 msgid "Not defined"
 msgstr "Ei määritelty"
@@ -1229,7 +1239,7 @@ msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
-#: components/editor/propertyView.html:106
+#: components/editor/propertyView.html:108
 msgid "Predicate information not found"
 msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
@@ -1371,7 +1381,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:90
+#: components/editor/propertyView.html:92
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
@@ -1407,11 +1417,11 @@ msgstr "Hae attribuuttia tai assosiaatiota…"
 msgid "search class"
 msgstr "Hae luokkaa…"
 
-#: components/model/searchCodeSchemeModal.html:10 translations/misc.html:184
+#: components/model/searchCodeSchemeModal.html:10 translations/misc.html:185
 msgid "search code scheme"
 msgstr "Hae koodistoa…"
 
-#: components/model/searchCodeSchemeModal.html:3 translations/misc.html:183
+#: components/model/searchCodeSchemeModal.html:3 translations/misc.html:184
 msgid "Search code schemes"
 msgstr "Hae koodistoja"
 
