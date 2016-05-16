@@ -481,6 +481,10 @@ uib-accordion .panel-group {
   }
 }
 
+a {
+  cursor: pointer;
+}
+
 .editable-wrap {
   word-wrap: break-word;
 
@@ -498,10 +502,6 @@ uib-accordion .panel-group {
 
   input, select, textarea {
     width: 100%;
-  }
-
-  a {
-    cursor: pointer;
   }
 
   button {
