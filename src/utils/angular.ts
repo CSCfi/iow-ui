@@ -60,7 +60,7 @@ export class ValidationResult<T> {
   }
 }
 
-export function validateValidators<T>($q: IQService, ngModelController: INgModelController, skipValidators: Set<string>, values: T[]) {
+export function validateWithValidators<T>($q: IQService, ngModelController: INgModelController, skipValidators: Set<string>, values: T[]) {
   const result = new Map<T, boolean>();
 
   const validators = valuesExcludingKeys<Validator<T>>(ngModelController.$validators, skipValidators);

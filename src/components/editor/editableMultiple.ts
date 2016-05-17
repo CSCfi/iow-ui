@@ -11,7 +11,7 @@ import IModelFormatter = angular.IModelFormatter;
 import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { arrayValidator, arrayAsyncValidator } from '../form/validators';
-import { extendNgModelOptions, formatWithFormatters, ValidationResult, validateValidators } from '../../utils/angular';
+import { extendNgModelOptions, formatWithFormatters, ValidationResult, validateWithValidators } from '../../utils/angular';
 import { module as mod }  from './module';
 
 const skipValidators = new Set<string>(['duplicate']);
@@ -58,7 +58,7 @@ mod.directive('editableMultiple', /* @ngInject */ ($q: IQService) => {
       $scope.$watchCollection(() => inputNgModel.$formatters, formatters => thisController.formatter = formatters);
 
       function validate() {
-        validateValidators<any>($q, inputNgModel, skipValidators, ngModel.$modelValue)
+        validateWithValidators<any>($q, inputNgModel, skipValidators, ngModel.$modelValue)
           .then(validation => {
             thisController.validation = validation;
             ngModel.$validate();
