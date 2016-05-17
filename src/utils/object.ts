@@ -18,3 +18,14 @@ export function hasValue(obj: any) {
   }
   return false;
 }
+
+interface MapLike<V> {
+  [index: string]: V;
+}
+
+export function valuesExcludingKeys<V>(obj: MapLike<V>, exclude: Set<string>): V[] {
+  return _.chain(Object.entries(obj))
+    .filter(entry => !exclude.has(entry[0]))
+    .map(entry => entry[1])
+    .value();
+}

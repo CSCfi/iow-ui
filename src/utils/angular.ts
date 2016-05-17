@@ -1,6 +1,10 @@
 import INgModelController = angular.INgModelController;
 import IModelFormatter = angular.IModelFormatter;
+import IPromise = angular.IPromise;
+import IQService = angular.IQService;
+import { Validator, AsyncValidator } from '../components/form/validators';
 import { normalizeAsArray } from './array';
+import { valuesExcludingKeys } from './object';
 
 export function isModalCancel(err: any) {
   return err === 'cancel' || err === 'escape key press';
@@ -44,4 +48,39 @@ export function formatWithFormatters(value: any, formatters: IModelFormatter|IMo
     result = formatter(result);
   }
   return result;
+}
+
+export class ValidationResult<T> {
+
+  constructor(private result: Map<T, boolean>) {
+  }
+
+  isValid(value: T) {
+    return this.result.get(value);
+  }
+}
+
+export function validateValidators<T>($q: IQService, ngModelController: INgModelController, skipValidators: Set<string>, values: T[]) {
+  const result = new Map<T, boolean>();
+
+  const validators = valuesExcludingKeys<Validator<T>>(ngModelController.$validators, skipValidators);
+  const asyncValidators = valuesExcludingKeys<AsyncValidator<T>>(ngModelController.$asyncValidators, skipValidators);
+
+  const validateSync = (item: T) => !_.find(validators, validator => !validator(item));
+  const validateAsync = (item: T) => $q.all(_.map(asyncValidators, asyncValidator => asyncValidator(item)));
+
+  const asyncValidationResults: IPromise<any>[] = [];
+
+  for (const value of values) {
+    if (!validateSync(value)) {
+      result.set(value, false);
+    } else {
+      asyncValidationResults.push(validateAsync(value).then(
+        () => result.set(value, true),
+        err => result.set(value, false)
+      ));
+    }
+  }
+
+  return $q.all(asyncValidationResults).then(() => new ValidationResult(result));
 }
