@@ -14,17 +14,17 @@ mod.directive('autocomplete', ($document: JQuery) => {
     restrict: 'E',
     transclude: true,
     scope: {
-      fetchData: '=',
-      matches: '=',
-      propertyExtractor: '=',
-      formatter: '='
+      datasource: '=fetchData',
+      matcher: '=matches',
+      formatter: '=',
+      valueExtractor: '=propertyExtractor'
     },
     bindToController: true,
     template: `
       <ng-transclude></ng-transclude>
       <div ng-if="ctrl.show" ng-class="{open: ctrl.show}">
         <ul class="dropdown-menu" ng-show="ctrl.show" ng-style="ctrl.popupStyle">
-          <li ng-repeat="match in ctrl.dataMatches" 
+          <li ng-repeat="match in ctrl.autocompleteMatches" 
               ng-class="{ active: ctrl.isSelected($index) }" 
               ng-mouseenter="ctrl.setSelection($index)" 
               ng-click="ctrl.selectSelection()" 
@@ -96,18 +96,17 @@ mod.directive('autocomplete', ($document: JQuery) => {
 
 export class AutocompleteController<T> {
 
-  fetchData: () => IPromise<T[]>;
-  matches: (search: string, item: T) => boolean;
-  propertyExtractor: (item: T) => any;
-
+  datasource: () => IPromise<T[]>;
+  matcher: (search: string, item: T) => boolean;
   formatter: (item: T) => string;
+  valueExtractor: (item: T) => any;
+
   inputFormatter: IModelFormatter|IModelFormatter[];
   dimensions: { left: number, top: number, width: number };
   applyValue: (value: string) => void;
 
-  dataMatches: T[] = [];
-
-  selectionIndex = -1;
+  autocompleteMatches: T[] = [];
+  autocompleteSelectionIndex = -1;
 
   private keyEventHandlers: {[key: number]: () => void|boolean} = {
     [arrowDown]: () => this.moveSelection(1),
@@ -133,41 +132,41 @@ export class AutocompleteController<T> {
   }
 
   private moveSelection(offset: number) {
-    this.setSelection(Math.max(Math.min(this.selectionIndex + offset, this.dataMatches.length - 1), -1));
+    this.setSelection(Math.max(Math.min(this.autocompleteSelectionIndex + offset, this.autocompleteMatches.length - 1), -1));
   }
 
   private setSelection(index: number) {
-    this.selectionIndex = index;
+    this.autocompleteSelectionIndex = index;
   }
 
   isSelected(index: number) {
-    return index === this.selectionIndex;
+    return index === this.autocompleteSelectionIndex;
   }
 
   format(value: T): string {
     if (!this.formatter) {
-      return this.formatProperty(value);
+      return this.formatValue(value);
     } else {
       return this.formatter(value);
     }
   }
 
-  formatProperty(value: T): string {
-    return formatWithFormatters(this.extractProperty(value), this.inputFormatter);
+  formatValue(value: T): string {
+    return formatWithFormatters(this.extractValue(value), this.inputFormatter);
   }
 
-  extractProperty(value: T): any {
-    if (this.propertyExtractor) {
-      return this.propertyExtractor(value);
+  extractValue(value: T): any {
+    if (this.valueExtractor) {
+      return this.valueExtractor(value);
     } else {
       return value;
     }
   }
 
   autocomplete(search: string) {
-    this.fetchData().then(data => {
+    this.datasource().then(data => {
       if (search) {
-        this.setMatches(_.filter(data, item => this.matches(search, item)), true);
+        this.setMatches(_.filter(data, item => this.matcher(search, item)), true);
       } else {
         this.setMatches(data, false);
       }
@@ -179,22 +178,22 @@ export class AutocompleteController<T> {
   }
 
   setMatches(dataMatches: T[], selectFirst: boolean) {
-    this.selectionIndex = selectFirst ? 0 : -1;
-    this.dataMatches = dataMatches;
+    this.autocompleteSelectionIndex = selectFirst ? 0 : -1;
+    this.autocompleteMatches = dataMatches;
   }
 
   selectSelection() {
-    const value = this.selectionIndex >= 0 ? this.dataMatches[this.selectionIndex] : null;
+    const value = this.autocompleteSelectionIndex >= 0 ? this.autocompleteMatches[this.autocompleteSelectionIndex] : null;
 
     if (value) {
-      this.applyValue(this.formatProperty(value));
+      this.applyValue(this.formatValue(value));
     }
 
     this.clear();
   }
 
   get show() {
-    return this.dataMatches.length > 0;
+    return this.autocompleteMatches.length > 0;
   }
 
   get popupStyle() {
@@ -211,7 +210,7 @@ mod.directive('autocompleteItem', () => {
     restrict: 'A',
     require: '^autocomplete',
     link($scope: IRepeatScope, element: JQuery, attributes: IAttributes, controller: AutocompleteController<any>) {
-      $scope.$watch(() => controller.selectionIndex, index => {
+      $scope.$watch(() => controller.autocompleteSelectionIndex, index => {
         if ($scope.$index === index) {
           scrollToElement(element, element.parent());
         }
