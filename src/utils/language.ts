@@ -16,10 +16,9 @@ export const availableLanguages: Language[] =
     'mr', 'mh', 'mn', 'na', 'nv', 'nd', 'ne', 'ng', 'nb', 'nn', 'no', 'ii', 'nr',
     'oc', 'oj', 'cu', 'om', 'or', 'os', 'pa', 'pi', 'fa', 'pl', 'ps', 'pt', 'qu',
     'rm', 'rn', 'ro', 'ru', 'sa', 'sc', 'sd', 'se', 'sm', 'sg', 'sr', 'gd', 'sn',
-    'si', 'sk', 'sl', 'af', 'st', 'es', 'su', 'sw', 'ss', 'sv', 'ta', 'te', 'tg',
-    'th', 'ti', 'bo', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug',
-    'uk', 'ur', 'uz', 've', 'vi', 'vo', 'wa', 'cy', 'wo', 'fy', 'xh', 'yi', 'yo',
-    'za', 'zu' ];
+    'si', 'sk', 'sl', 'st', 'es', 'su', 'sw', 'ss', 'sv', 'ta', 'tg', 'th', 'ti',
+    'bo', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug', 'uk', 'ur',
+    'uz', 've', 'vi', 'vo', 'wa', 'cy', 'wo', 'fy', 'xh', 'yi', 'yo', 'za', 'zu' ];
 
 export const availableUILanguages: Language[] = ['fi', 'en'];
 
