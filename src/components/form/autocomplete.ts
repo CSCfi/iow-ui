@@ -67,7 +67,21 @@ mod.directive('autocomplete', ($document: JQuery) => {
         $document.off('click', blurClickHandler);
       });
 
-      $scope.$watch(() => ngModel.$viewValue, viewValue => thisController.autocomplete(viewValue));
+      let ignoreNextViewChange = false;
+
+      $scope.$watch(() => ngModel.$viewValue, viewValue => {
+        if (ignoreNextViewChange) {
+          ignoreNextViewChange = false;
+        } else {
+          thisController.autocomplete(viewValue);
+        }
+      });
+
+      thisController.applyValue = (value: string) => {
+        ignoreNextViewChange = true;
+        ngModel.$setViewValue(value);
+        ngModel.$render();
+      };
 
       $scope.$watch(() => inputElement.position().top, top => {
         thisController.dimensions = {
@@ -76,11 +90,6 @@ mod.directive('autocomplete', ($document: JQuery) => {
           width: inputElement.outerWidth()
         };
       });
-
-      thisController.applyValue = (value: string) => {
-        ngModel.$setViewValue(value);
-        ngModel.$render();
-      };
     }
   };
 });
@@ -105,9 +114,13 @@ export class AutocompleteController<T> {
     [arrowUp]: () => this.moveSelection(-1),
     [pageDown]: () => this.moveSelection(10),
     [pageUp]: () => this.moveSelection(-10),
-    [enter]: () => this.selectSelection(),
+    [enter]: () => {
+      this.selectSelection();
+      this.clear();
+    },
     [tab]: () => {
       this.selectSelection();
+      this.clear();
       return false;
     },
     [esc]: () => this.clear()
@@ -163,7 +176,7 @@ export class AutocompleteController<T> {
       this.fetchData().then(data => {
         const matches = _.filter(data, item => this.matches(search, item));
 
-        if (matches.length === 0 || (matches.length === 1 && this.formatProperty(matches[0]) === search)) {
+        if (matches.length === 0) {
           this.clear();
         } else {
           this.setMatchesAndSelectFirst(matches);
