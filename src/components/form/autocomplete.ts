@@ -151,6 +151,14 @@ export class AutocompleteController<T> {
     }
   }
 
+  match(search: string, value: T): boolean {
+    if (!this.matcher) {
+      return _.contains(this.formatValue(value).toLowerCase(), search.toLowerCase());
+    } else {
+      return this.matcher(search, value);
+    }
+  }
+
   formatValue(value: T): string {
     return formatWithFormatters(this.extractValue(value), this.inputFormatter);
   }
@@ -166,7 +174,7 @@ export class AutocompleteController<T> {
   autocomplete(search: string) {
     this.datasource().then(data => {
       if (search) {
-        this.setMatches(_.filter(data, item => this.matcher(search, item)), true);
+        this.setMatches(_.filter(data, item => this.match(search, item)), true);
       } else {
         this.setMatches(data, false);
       }
