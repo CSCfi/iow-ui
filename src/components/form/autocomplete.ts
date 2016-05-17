@@ -14,10 +14,10 @@ mod.directive('autocomplete', ($document: JQuery) => {
     restrict: 'E',
     transclude: true,
     scope: {
-      datasource: '=fetchData',
-      matcher: '=matches',
+      datasource: '=',
+      matcher: '=',
       formatter: '=',
-      valueExtractor: '=propertyExtractor'
+      valueExtractor: '='
     },
     bindToController: true,
     template: `

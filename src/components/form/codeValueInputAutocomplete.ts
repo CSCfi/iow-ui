@@ -19,7 +19,7 @@ mod.directive('codeValueInputAutocomplete', () => {
     },
     bindToController: true,
     transclude: true,
-    template: '<autocomplete fetch-data="ctrl.fetchData" matches="ctrl.matches" property-extractor="ctrl.propertyExtractor" formatter="ctrl.formatter"><ng-transclude></ng-transclude></autocomplete>',
+    template: '<autocomplete datasource="ctrl.datasource" matcher="ctrl.matcher" value-extractor="ctrl.valueExtractor" formatter="ctrl.formatter"><ng-transclude></ng-transclude></autocomplete>',
     controller: UriInputAutocompleteController,
     controllerAs: 'ctrl'
   };
@@ -35,11 +35,9 @@ export class UriInputAutocompleteController {
     this.localizer = languageService.createLocalizer(this.context);
   }
 
-  fetchData = () => this.codeScheme && !this.codeScheme.isExternal() ? this.modelService.getCodeValues(this.codeScheme) : this.$q.when([]);
+  datasource = () => this.codeScheme && !this.codeScheme.isExternal() ? this.modelService.getCodeValues(this.codeScheme) : this.$q.when([]);
 
   formatter = (codeValue: CodeValue) => `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
 
-  matches = (search: string, item: CodeScheme) => _.contains(this.formatter(item).toLowerCase(), search.toLowerCase());
-
-  propertyExtractor = (item: CodeValue) => item.identifier;
+  valueExtractor = (item: CodeValue) => item.identifier;
 }

@@ -5,6 +5,7 @@ import IPromise = angular.IPromise;
 import IRepeatScope = angular.IRepeatScope;
 import IModelFormatter = angular.IModelFormatter;
 import IQService = angular.IQService;
+import * as _ from 'lodash';
 import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
@@ -20,7 +21,7 @@ mod.directive('uriInputAutocomplete', () => {
     },
     bindToController: true,
     transclude: true,
-    template: '<autocomplete fetch-data="ctrl.fetchData" matches="ctrl.matches" property-extractor="ctrl.propertyExtractor"><ng-transclude></ng-transclude></autocomplete>',
+    template: '<autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor"><ng-transclude></ng-transclude></autocomplete>',
     controller: UriInputAutocompleteController,
     controllerAs: 'ctrl'
   };
@@ -35,7 +36,7 @@ export class UriInputAutocompleteController {
   constructor(private $q: IQService, private classService: ClassService, private predicateService: PredicateService) {
   }
 
-  fetchData = () => {
+  datasource = () => {
 
     const fetch = () => {
       switch (this.type) {
@@ -51,18 +52,12 @@ export class UriInputAutocompleteController {
     };
 
     if (!this.data) {
-      this.data = fetch();
+      const exclusion = createDefinedByExclusion(this.model);
+      this.data = fetch().then(data => _.filter(data, item => !exclusion(item)));
     }
 
     return this.data;
   };
 
-  matches = (search: string, item: ClassListItem|PredicateListItem) => {
-    const exclusion = createDefinedByExclusion(this.model);
-    return !exclusion(item) && _.contains(this.propertyExtractor(item).compact.toLowerCase(), search.toLowerCase());
-  };
-
-  propertyExtractor = (item: ClassListItem|PredicateListItem) => {
-    return item.id;
-  };
+  valueExtractor = (item: ClassListItem|PredicateListItem) => item.id;
 }
