@@ -4,7 +4,7 @@ import IScope = angular.IScope;
 import IQService = angular.IQService;
 import { ValidatorService } from '../../services/validatorService';
 import { Class, Predicate, Type } from '../../services/entities';
-import { isStringValid, isValidLabelLength } from './validators';
+import { isValidString, isValidLabelLength } from './validators';
 import { Uri } from '../../services/uri';
 import { extendNgModelOptions } from '../../utils/angular';
 import { module as mod }  from './module';
@@ -55,7 +55,7 @@ mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: Valid
       };
 
       modelController.$validators['string'] = value => {
-        return value && isStringValid(value.name);
+        return value && isValidString(value.name);
       };
 
       modelController.$validators['length'] = value => {

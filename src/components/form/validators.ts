@@ -42,9 +42,9 @@ export function arrayAsyncValidator<T>($q: IQService, asyncValidator: AsyncValid
   };
 }
 
-export function isStringValid(value: string): boolean {
-  return !value || !!value.match(/^[a-zåäö]/i);
-}
+export const isValidString = createRegexValidator(/^[a-zåäö]/i);
+export const isValidPrefix = createRegexValidator(/^[a-z][a-z0-9]*$/);
+export const isValidIdentifier = createRegexValidator(/^[a-zA-Z][a-zA-Z0-9]*$/);
 
 export function isValidLabelLength(label: string): boolean {
   return !label || label.length <= 40;
@@ -57,9 +57,6 @@ export function isValidModelLabelLength(label: string): boolean {
 export function isValidPrefixLength(prefix: string): boolean {
   return !prefix || prefix.length <= 8;
 }
-
-export const isValidPrefix = createRegexValidator(/^[a-z][a-z0-9]*$/);
-export const isValidIdentifier = createRegexValidator(/^[a-zA-Z][a-zA-Z0-9]*$/);
 
 export function isValidNamespace(str: string|Uri): boolean {
   return !str || str.toString().endsWith('#') || str.toString().endsWith('/');

@@ -3,7 +3,7 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import { Localizable, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
-import { isStringValid, isValidLabelLength, isValidModelLabelLength } from './validators';
+import { isValidString, isValidLabelLength, isValidModelLabelLength } from './validators';
 import { allLocalizations, hasLocalization } from '../../utils/language';
 import { module as mod }  from './module';
 
@@ -63,7 +63,7 @@ mod.directive('localizedInput', /* @ngInject */ (languageService: LanguageServic
       });
 
       if (attributes.localizedInput !== 'free') {
-        ngModel.$validators['string'] = modelValue => allLocalizations(isStringValid, modelValue);
+        ngModel.$validators['string'] = modelValue => allLocalizations(isValidString, modelValue);
       }
 
       switch (attributes.localizedInput) {

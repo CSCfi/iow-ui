@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
-import { isStringValid, isValidLabelLength, isValidModelLabelLength, isValidIdentifier } from './validators';
+import { isValidString, isValidLabelLength, isValidModelLabelLength, isValidIdentifier } from './validators';
 
 import { module as mod }  from './module';
 
@@ -14,7 +14,7 @@ mod.directive('stringInput', () => {
     restrict: 'A',
     require: 'ngModel',
     link($scope: IScope, element: JQuery, attributes: StringInputAttributes, ngModel: INgModelController) {
-      ngModel.$validators['string'] = isStringValid;
+      ngModel.$validators['string'] = isValidString;
 
       if (attributes.stringInput) {
         switch (attributes.stringInput) {
