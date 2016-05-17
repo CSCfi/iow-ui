@@ -80,11 +80,9 @@ code-scheme-view.popup {
   cursor: move;
 }
 
-uri-input-autocomplete {
-  .dropdown-menu {
-    max-height: 400px;
-    overflow-y: scroll;
-  }
+autocomplete .dropdown-menu {
+  max-height: 400px;
+  overflow-y: scroll;
 }
 
 table.editable-table {
