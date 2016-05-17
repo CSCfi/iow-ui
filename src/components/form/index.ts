@@ -5,6 +5,7 @@ export default mod.name;
 
 import './autocomplete';
 import './codeValueInput';
+import './codeValueInputAutocomplete';
 import './stringInput';
 import './prefixInput';
 import './namespaceInput';

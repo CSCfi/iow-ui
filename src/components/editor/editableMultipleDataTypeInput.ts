@@ -7,7 +7,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import IModelValidators = angular.IModelValidators;
 import { DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
-import { CodeScheme } from '../../services/entities';
+import { CodeScheme, LanguageContext } from '../../services/entities';
 
 mod.directive('editableMultipleDataTypeInput', () => {
   return {
@@ -16,7 +16,8 @@ mod.directive('editableMultipleDataTypeInput', () => {
       inputType: '=',
       id: '@',
       title: '@',
-      codeScheme: '='
+      codeScheme: '=',
+      context: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -24,12 +25,14 @@ mod.directive('editableMultipleDataTypeInput', () => {
     template: `
       <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" input="ctrl.input">
         <input-container>
-          <input id="{{ctrl.id}}"
-                 type="text"
-                 restrict-duplicates="ctrl.ngModel"
-                 datatype-input="ctrl.inputType"
-                 code-scheme="ctrl.codeScheme"
-                 ng-model="ctrl.input" />
+          <code-value-input-autocomplete code-scheme="ctrl.codeScheme" context="ctrl.context">
+            <input id="{{ctrl.id}}"
+                   type="text"
+                   restrict-duplicates="ctrl.ngModel"
+                   datatype-input="ctrl.inputType"
+                   code-scheme="ctrl.codeScheme"
+                   ng-model="ctrl.input" />
+          </code-value-input-autocomplete>
         </input-container>
       </editable-multiple>
     `,
@@ -45,4 +48,5 @@ class EditableMultipleDataTypeInputController {
   id: string;
   title: string;
   codeScheme: CodeScheme;
+  context: LanguageContext;
 }
