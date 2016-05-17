@@ -58,11 +58,9 @@ mod.directive('editableMultiple', /* @ngInject */ ($q: IQService) => {
       $scope.$watchCollection(() => inputNgModel.$formatters, formatters => thisController.formatter = formatters);
 
       function validate() {
+        ngModel.$validate();
         validateWithValidators<any>($q, inputNgModel, skipValidators, ngModel.$modelValue)
-          .then(validation => {
-            thisController.validation = validation;
-            ngModel.$validate();
-          });
+          .then(validation => thisController.validation = validation);
       }
 
       function resetValidators(validators: string[], oldValidators: string[]) {
