@@ -137,9 +137,6 @@ export class EditableMultipleController<T> {
   validation: ValidationResult<T>;
   isEditing: () => boolean;
 
-  constructor(private $scope: IScope, private $q: IQService) {
-  }
-
   format(value: T): string {
     return formatWithFormatters(value, this.formatter);
   }
