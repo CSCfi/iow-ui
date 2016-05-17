@@ -1,3 +1,5 @@
+import IPromise = angular.IPromise;
+import IQService = angular.IQService;
 import * as moment from 'moment';
 import Moment = moment.Moment;
 import { DataType } from '../../services/dataTypes';
@@ -7,6 +9,10 @@ const URI = require('uri-js');
 
 export interface Validator<T> {
   (input: T, raw?: any): boolean;
+}
+
+export interface AsyncValidator<T> {
+  (input: T, raw?: any): IPromise<any>;
 }
 
 export interface ValidatorWithFormat<T> extends Validator<T> {
@@ -23,6 +29,16 @@ export function arrayValidator<T>(validator: Validator<T>) {
       }
     }
     return true;
+  };
+}
+
+export function arrayAsyncValidator<T>($q: IQService, asyncValidator: AsyncValidator<T>): AsyncValidator<T[]> {
+  return (input: T[]) => {
+    if (input) {
+      return $q.all(_.map(input, value => asyncValidator(value)));
+    } else {
+      return $q.resolve();
+    }
   };
 }
 
