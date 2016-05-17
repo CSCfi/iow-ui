@@ -18,7 +18,7 @@ export function placeholderText(gettextCatalog: gettextCatalog) {
 
 export function createAsyncValidators($q: IQService, codeScheme: CodeScheme, modelService: ModelService): IAsyncModelValidators {
 
-    const codeValues: IPromise<CodeValue[]> = codeScheme ? modelService.getCodeValues(codeScheme) : $q.when([]);
+    const codeValues: IPromise<CodeValue[]> = codeScheme && !codeScheme.isExternal() ? modelService.getCodeValues(codeScheme) : $q.when([]);
 
     return {
       codeValue(codeValue: string) {
