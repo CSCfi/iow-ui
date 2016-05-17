@@ -2,19 +2,21 @@ import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
 import INgModelController = angular.INgModelController;
 import IPromise = angular.IPromise;
+import IQService = angular.IQService;
 import IScope = angular.IScope;
+import IAsyncModelValidators = angular.IAsyncModelValidators;
 import IModelValidators = angular.IModelValidators;
 import IModelParser = angular.IModelParser;
 import IModelFormatter = angular.IModelFormatter;
 import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
-import { arrayValidator } from '../form/validators';
-import { extendNgModelOptions, formatWithFormatters } from '../../utils/angular';
+import { arrayValidator, arrayAsyncValidator } from '../form/validators';
+import { extendNgModelOptions, formatWithFormatters, ValidationResult, validateValidators } from '../../utils/angular';
 import { module as mod }  from './module';
 
 const skipValidators = new Set<string>(['duplicate']);
 
-mod.directive('editableMultiple', () => {
+mod.directive('editableMultiple', /* @ngInject */ ($q: IQService) => {
   return {
     scope: {
       ngModel: '=',
@@ -54,33 +56,68 @@ mod.directive('editableMultiple', () => {
       $scope.ngModelControllers = [inputNgModel, ngModel];
 
       $scope.$watchCollection(() => inputNgModel.$formatters, formatters => thisController.formatter = formatters);
-      $scope.$watchCollection(() => Object.keys(inputNgModel.$validators), (validators, oldValidators) => {
 
-        if (oldValidators) {
-          for (const validator of oldValidators) {
-            if (!skipValidators.has(validator)) {
-              delete ngModel.$validators[validator];
-              ngModel.$setValidity(validator, true);
-            }
+      function validate() {
+        validateValidators<any>($q, inputNgModel, skipValidators, ngModel.$modelValue)
+          .then(validation => {
+            thisController.validation = validation;
+            ngModel.$validate();
+          });
+      }
+
+      function resetValidators(validators: string[], oldValidators: string[]) {
+
+        for (const validator of oldValidators) {
+          if (!skipValidators.has(validator)) {
+            delete ngModel.$validators[validator];
+            ngModel.$setValidity(validator, true);
           }
         }
 
-        if (validators) {
-          for (const validator of validators) {
-            if (!skipValidators.has(validator)) {
-              ngModel.$validators[validator] = arrayValidator(inputNgModel.$validators[validator]);
-            }
+        for (const validator of validators) {
+          if (!skipValidators.has(validator)) {
+            ngModel.$validators[validator] = arrayValidator(inputNgModel.$validators[validator]);
           }
         }
 
-        ngModel.$validate();
+        validate();
+      }
+
+      function resetAsyncValidators(asyncValidatorNames: string[], oldAsyncValidatorNames: string[]) {
+
+        for (const asyncValidator of oldAsyncValidatorNames) {
+          if (!skipValidators.has(asyncValidator)) {
+            delete ngModel.$asyncValidators[asyncValidator];
+            ngModel.$setValidity(asyncValidator, true);
+          }
+        }
+
+        for (const asyncValidator of asyncValidatorNames) {
+          if (!skipValidators.has(asyncValidator)) {
+            ngModel.$asyncValidators[asyncValidator] = arrayAsyncValidator($q, inputNgModel.$asyncValidators[asyncValidator]);
+          }
+        }
+
+        validate();
+      }
+
+      $scope.$watchCollection(() => Object.keys(inputNgModel.$validators), resetValidators);
+      $scope.$watchCollection(() => Object.values(inputNgModel.$validators), () => {
+        const validatorNames = Object.keys(inputNgModel.$validators);
+        resetValidators(validatorNames, validatorNames);
+      });
+
+      $scope.$watchCollection(() => Object.keys(inputNgModel.$asyncValidators), resetAsyncValidators);
+      $scope.$watchCollection(() => Object.values(inputNgModel.$asyncValidators), () => {
+        const asyncValidatorNames = Object.keys(inputNgModel.$asyncValidators);
+        resetAsyncValidators(asyncValidatorNames, asyncValidatorNames);
       });
 
       if (thisController.required) {
         ngModel.$validators['required'] = (value: any[]) => value && value.length > 0;
       }
 
-      $scope.$watchCollection(() => thisController.ngModel, () => ngModel.$validate());
+      $scope.$watchCollection(() => thisController.ngModel, () => validate());
     },
     controller: EditableMultipleController
   };
@@ -96,26 +133,21 @@ export class EditableMultipleController<T> {
   input: T;
   id: string;
   title: string;
-  validators: IModelValidators;
   formatter: IModelFormatter[];
   link: (item: T) => string;
   required: boolean;
-
+  validation: ValidationResult<T>;
   isEditing: () => boolean;
+
+  constructor(private $scope: IScope, private $q: IQService) {
+  }
 
   format(value: T): string {
     return formatWithFormatters(value, this.formatter);
   }
 
   isValid(value: T) {
-    if (this.validators) {
-      for (const validator of Object.values(this.validators)) {
-        if (!skipValidators.has(validator) && !validator(value)) {
-          return false;
-        }
-      }
-    }
-    return true;
+    return !this.validation || this.validation.isValid(value);
   }
 
   deleteValue(value: T) {
