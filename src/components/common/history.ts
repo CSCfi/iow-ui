@@ -12,7 +12,7 @@ mod.directive('history', () => {
     },
     bindToController: true,
     controllerAs: 'ctrl',
-    template: `<button type="button" class="btn btn-default right" ng-click="ctrl.openHistory()" translate>Show history</button>`,
+    template: `<button type="button" class="btn btn-default right" ng-click="ctrl.openHistory()" uib-tooltip="{{'Show history' | translate}}"><i class="fa fa-history"></i></button>`,
     controller: HistoryController
   };
 });
