@@ -92,6 +92,19 @@ export function isValidLanguageCode(code: string): boolean {
   }
 }
 
+export function isValidBase64(base64: string) {
+  if (!base64) {
+    return true;
+  } else {
+    try {
+      atob(base64);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+}
+
 export const isValidString = createNopValidator();
 export const isValidBoolean = createInValuesValidator('true', 'false');
 export const isValidDecimal = createRegexValidator(/^[0-9]+\.?[0-9]*$/);
@@ -102,6 +115,7 @@ export const isValidTime = createMomentValidator('H:mm:ss');
 export const isValidYear = createMomentValidator('YYYY');
 export const isValidMonth = createMomentValidator('MM');
 export const isValidDay = createMomentValidator('DD');
+export const isValidHex = createRegexValidator(/^[0-9A-Fa-f]+$/);
 
 export function resolveValidator(dataType: DataType): ValidatorWithFormat<string> {
   switch (dataType) {
@@ -133,6 +147,10 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat<string
       return isValidMonth;
     case 'xsd:gDay':
       return isValidDay;
+    case 'xsd:hexBinary':
+      return isValidHex;
+    case 'xsd:base64Binary':
+      return isValidBase64;
     default:
       console.log('No validator for unknown data type: ' + dataType);
       return createNopValidator();

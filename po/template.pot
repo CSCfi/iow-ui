@@ -1240,7 +1240,7 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
-#: components/editor/propertyView.html:108
+#: components/editor/propertyView.html:114
 msgid "Predicate information not found"
 msgstr ""
 
@@ -1381,7 +1381,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:92
+#: components/editor/propertyView.html:98
 msgid "Reusable predicate"
 msgstr ""
 
@@ -1763,6 +1763,14 @@ msgstr ""
 msgid "xsd:anyURI error"
 msgstr ""
 
+#: translations/attribute.html:40
+msgid "xsd:base64Binary"
+msgstr ""
+
+#: translations/attribute.html:41
+msgid "xsd:base64Binary error"
+msgstr ""
+
 #: translations/attribute.html:12
 msgid "xsd:boolean"
 msgstr ""
@@ -1833,6 +1841,14 @@ msgstr ""
 
 #: translations/attribute.html:33
 msgid "xsd:gYear error"
+msgstr ""
+
+#: translations/attribute.html:38
+msgid "xsd:hexBinary"
+msgstr ""
+
+#: translations/attribute.html:39
+msgid "xsd:hexBinary error"
 msgstr ""
 
 #: translations/attribute.html:24

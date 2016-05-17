@@ -15,6 +15,8 @@ export type DataType = 'xsd:string'
                      | 'xsd:gYear'
                      | 'xsd:gMonth'
                      | 'xsd:gDay'
+                     | 'xsd:hexBinary'
+                     | 'xsd:base64Binary'
                      | 'rdfs:Literal';
 
 export const dataTypes: DataType[] = [
@@ -34,5 +36,7 @@ export const dataTypes: DataType[] = [
   'xsd:time',
   'xsd:gYear',
   'xsd:gMonth',
-  'xsd:gDay'
+  'xsd:gDay',
+  'xsd:hexBinary',
+  'xsd:base64Binary'
 ];
