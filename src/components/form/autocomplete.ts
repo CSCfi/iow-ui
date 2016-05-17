@@ -78,7 +78,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
       });
 
       thisController.applyValue = (value: string) => {
-        ignoreNextViewChange = true;
+        ignoreNextViewChange = ngModel.$viewValue !== value;
         ngModel.$setViewValue(value);
         ngModel.$render();
       };
