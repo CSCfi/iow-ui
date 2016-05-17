@@ -133,8 +133,6 @@ export class AutocompleteController<T> {
       if (!isDefined(preventDefault) || preventDefault === true) {
         event.preventDefault();
       }
-    } else {
-      this.selectionIndex = -1;
     }
   }
 
@@ -171,30 +169,22 @@ export class AutocompleteController<T> {
   }
 
   autocomplete(search: string) {
-
-    if (search) {
-      this.fetchData().then(data => {
-        const matches = _.filter(data, item => this.matches(search, item));
-
-        if (matches.length === 0) {
-          this.clear();
-        } else {
-          this.setMatchesAndSelectFirst(matches);
-        }
-      });
-    } else {
-      this.clear();
-    }
+    this.fetchData().then(data => {
+      if (search) {
+        this.setMatches(_.filter(data, item => this.matches(search, item)), true);
+      } else {
+        this.setMatches(data, false);
+      }
+    });
   }
 
   clear() {
-    this.selectionIndex = -1;
-    this.dataMatches = [];
+    this.setMatches([], false);
   }
 
-  setMatchesAndSelectFirst(dataMatches: T[]) {
+  setMatches(dataMatches: T[], selectFirst: boolean) {
+    this.selectionIndex = selectFirst ? 0 : -1;
     this.dataMatches = dataMatches;
-    this.selectionIndex = 0;
   }
 
   selectSelection() {
