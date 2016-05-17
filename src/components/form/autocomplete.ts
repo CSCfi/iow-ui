@@ -114,13 +114,9 @@ export class AutocompleteController<T> {
     [arrowUp]: () => this.moveSelection(-1),
     [pageDown]: () => this.moveSelection(10),
     [pageUp]: () => this.moveSelection(-10),
-    [enter]: () => {
-      this.selectSelection();
-      this.clear();
-    },
+    [enter]: () => this.selectSelection(),
     [tab]: () => {
       this.selectSelection();
-      this.clear();
       return false;
     },
     [esc]: () => this.clear()
