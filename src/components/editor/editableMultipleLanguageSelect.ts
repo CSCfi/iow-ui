@@ -1,6 +1,7 @@
 import IScope = angular.IScope;
+import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Language } from '../../utils/language';
+import { Language, availableLanguages } from '../../utils/language';
 import { module as mod }  from './module';
 
 mod.directive('editableMultipleLanguageSelect', () => {
@@ -16,11 +17,13 @@ mod.directive('editableMultipleLanguageSelect', () => {
     template: `
       <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" required="true" input="ctrl.input">
         <input-container>
-          <input id="{{ctrl.id}}"
-                 type="text"
-                 restrict-duplicates="ctrl.ngModel"
-                 language-input
-                 ng-model="ctrl.input" />
+          <autocomplete datasource="ctrl.datasource">
+            <input id="{{ctrl.id}}"
+                   type="text"
+                   restrict-duplicates="ctrl.ngModel"
+                   language-input
+                   ng-model="ctrl.input" />
+          </autocomplete>
         </input-container>
       </editable-multiple>
     `,
@@ -34,4 +37,9 @@ class EditableMultipleLanguageSelectController {
   input: Language;
   id: string;
   title: string;
+
+  constructor(private $q: IQService) {
+  }
+
+  datasource = () => this.$q.when(availableLanguages);
 }
