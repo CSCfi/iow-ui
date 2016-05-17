@@ -35,9 +35,9 @@ export class UriInputAutocompleteController {
     this.localizer = languageService.createLocalizer(this.context);
   }
 
-  datasource = () => this.codeScheme && !this.codeScheme.isExternal() ? this.modelService.getCodeValues(this.codeScheme) : this.$q.when([]);
+  datasource = (search: string) => this.codeScheme && !this.codeScheme.isExternal() ? this.modelService.getCodeValues(this.codeScheme) : this.$q.when([]);
 
   formatter = (codeValue: CodeValue) => `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
 
-  valueExtractor = (item: CodeValue) => item.identifier;
+  valueExtractor = (codeValue: CodeValue) => codeValue.identifier;
 }

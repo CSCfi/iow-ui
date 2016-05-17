@@ -96,7 +96,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
 
 export class AutocompleteController<T> {
 
-  datasource: () => IPromise<T[]>;
+  datasource: (search: string) => IPromise<T[]>;
   matcher: (search: string, item: T) => boolean;
   formatter: (item: T) => string;
   valueExtractor: (item: T) => any;
@@ -172,7 +172,7 @@ export class AutocompleteController<T> {
   }
 
   autocomplete(search: string) {
-    this.datasource().then(data => {
+    this.datasource(search).then(data => {
       if (search) {
         this.setMatches(_.filter(data, item => this.match(search, item)), true);
       } else {

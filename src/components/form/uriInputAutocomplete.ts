@@ -36,7 +36,7 @@ export class UriInputAutocompleteController {
   constructor(private $q: IQService, private classService: ClassService, private predicateService: PredicateService) {
   }
 
-  datasource = () => {
+  datasource = (search: string) => {
 
     const fetch = () => {
       switch (this.type) {
