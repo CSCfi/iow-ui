@@ -42,7 +42,6 @@ export function arrayAsyncValidator<T>($q: IQService, asyncValidator: AsyncValid
   };
 }
 
-export const isValidString = createRegexValidator(/^[a-zåäö]/i);
 export const isValidPrefix = createRegexValidator(/^[a-z][a-z0-9]*$/);
 export const isValidIdentifier = createRegexValidator(/^[a-zA-Z][a-zA-Z0-9]*$/);
 
