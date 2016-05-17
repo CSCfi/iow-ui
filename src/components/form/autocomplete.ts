@@ -153,7 +153,7 @@ export class AutocompleteController<T> {
 
   match(search: string, value: T): boolean {
     if (!this.matcher) {
-      return _.contains(this.formatValue(value).toLowerCase(), search.toLowerCase());
+      return _.contains(this.format(value).toLowerCase(), search.toLowerCase());
     } else {
       return this.matcher(search, value);
     }
