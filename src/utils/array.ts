@@ -67,16 +67,11 @@ export function all<T>(arr: T[], predicate: (item: T) => boolean) {
 }
 
 export function contains<T>(arr: T[], value: T, equals: EqualityChecker<T> = referenceEquality): boolean {
-  for (const item of arr) {
-    if (equals(item, value)) {
-      return true;
-    }
-  }
-  return false;
+  return any(arr, (item: T) => equals(item, value));
 }
 
 export function containsAny<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): boolean {
-  return isDefined(findFirstMatching(arr, values, equals));
+  return any(arr, (item: T) => any(values, (value: T) => equals(item, value)));
 }
 
 export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): T {
