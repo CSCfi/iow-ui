@@ -10,6 +10,7 @@ import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { Uri } from '../../services/uri';
+import { any, all } from '../../utils/array';
 
 const noExclude = (codeScheme: CodeScheme) => <string> null;
 
@@ -84,7 +85,7 @@ export class SearchCodeSchemeModalController {
         .sort(comparingLocalizable<CodeGroup>(this.localizer.language, codeGroup => codeGroup.title))
         .value();
 
-      if (this.showGroup && !_.find(this.codeGroups, group => group.id.equals(this.showGroup.id))) {
+      if (this.showGroup && all(this.codeGroups, group => !group.id.equals(this.showGroup.id))) {
         this.showGroup = null;
       }
 
@@ -196,7 +197,7 @@ export class SearchCodeSchemeModalController {
   }
 
   private groupFilter(codeScheme: CodeScheme): boolean {
-    return !this.showGroup || !!_.find(codeScheme.groups, codeGroup => codeGroup.id.equals(this.showGroup.id));
+    return !this.showGroup || any(codeScheme.groups, codeGroup => codeGroup.id.equals(this.showGroup.id));
   }
 
   close() {

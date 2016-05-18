@@ -12,7 +12,7 @@ import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
 import { Language, hasLocalization } from '../utils/language';
-import { containsAny, normalizeAsArray, swapElements } from '../utils/array';
+import { containsAny, normalizeAsArray, swapElements, contains } from '../utils/array';
 import { glyphIconClassForType } from '../utils/entity';
 import {
   normalizeModelType, normalizeSelectionType, normalizeClassType, normalizePredicateType,
@@ -1302,7 +1302,7 @@ export class DefaultUser extends GraphNode implements User {
   }
 
   isMemberOfGroup(id: Uri) {
-    return !!_.find(this.memberGroups, v => v.equals(id));
+    return contains(this.memberGroups, id, (lhs, rhs) => lhs.equals(rhs));
   }
 
   isAdminOf(entity: Model|AbstractGroup) {
@@ -1310,7 +1310,7 @@ export class DefaultUser extends GraphNode implements User {
   }
 
   isAdminOfGroup(id: Uri) {
-    return !!_.find(this.adminGroups, v => v.equals(id));
+    return contains(this.adminGroups, id, (lhs, rhs) => lhs.equals(rhs));
   }
 }
 

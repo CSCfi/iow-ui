@@ -5,13 +5,14 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import { Class, Property, Predicate, Model, Localizable, NamespaceType } from '../../services/entities';
+import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
 import { PredicateService } from '../../services/predicateService';
-import { module as mod }  from './module';
 import { Uri } from '../../services/uri';
 import { LanguageService } from '../../services/languageService';
+import { any } from '../../utils/array';
+import { module as mod }  from './module';
 
 mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $timeout: ITimeoutService) => {
   return {
@@ -72,7 +73,7 @@ export class PropertyViewController {
   isEditing: () => boolean;
 
   isConflictingValueClass = (valueClass: Uri) =>
-    !!_.find(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass));
+    any(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass));
 
   /* @ngInject */
   constructor($scope: PropertyViewScope, $location: ILocationService, predicateService: PredicateService, private languageService: LanguageService) {

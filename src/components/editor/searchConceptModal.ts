@@ -15,6 +15,7 @@ import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
 import { isDefined } from '../../utils/object';
+import { any } from '../../utils/array';
 
 const limit = 1000;
 
@@ -205,7 +206,7 @@ class SearchConceptController {
   }
 
   private showReferenceFilter(concept: ConceptSearchResult) {
-    return !!_.find(this.activeReferences, reference => concept.reference.id.equals(reference.id));
+    return any(this.activeReferences, reference => concept.reference.id.equals(reference.id));
   }
 
   selectItem(item: ConceptSearchResult|AddNewConcept) {
