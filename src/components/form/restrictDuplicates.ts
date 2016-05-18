@@ -3,6 +3,7 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { Uri } from '../../services/uri';
+import { contains, containsAny, referenceEquality } from '../../utils/array';
 import { module as mod }  from './module';
 
 interface RestrictDuplicatesAttributes extends IAttributes {
@@ -37,13 +38,12 @@ mod.directive('restrictDuplicates', () => {
           }
 
           if ('localizedInput' in attributes) {
-            return _.intersection(Object.values(value), _.flatten(_.map(valuesToCheckAgainst, v => Object.values(v)))).length === 0;
+            const inputLocalizations = Object.values(value);
+            const valuesToCheckAgainstLocalizations = _.flatten(_.map(valuesToCheckAgainst, v => Object.values(v)));
+            return !containsAny(valuesToCheckAgainstLocalizations, inputLocalizations);
           } else {
-            if (value instanceof Uri) {
-              return !_.find(valuesToCheckAgainst, valueToCheckAgainst => valueToCheckAgainst.equals(value));
-            } else {
-              return valuesToCheckAgainst.indexOf(value) === -1;
-            }
+            const equals = value instanceof Uri ? (lhs: Uri, rhs: Uri) => lhs.equals(rhs) : referenceEquality;
+            return !contains(valuesToCheckAgainst, value, equals);
           }
 
         }
