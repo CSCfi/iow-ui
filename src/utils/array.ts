@@ -48,6 +48,15 @@ export function referenceEquality<T>(lhs: T, rhs: T) {
   return lhs === rhs;
 }
 
+export function contains<T>(arr: T[], value: T, equals: EqualityChecker<T> = referenceEquality): boolean {
+  for (const item of arr) {
+    if (equals(item, value)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function containsAny<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): boolean {
   return isDefined(findFirstMatching(arr, values, equals));
 }
