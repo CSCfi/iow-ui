@@ -48,6 +48,24 @@ export function referenceEquality<T>(lhs: T, rhs: T) {
   return lhs === rhs;
 }
 
+export function any<T>(arr: T[], predicate: (item: T) => boolean) {
+  for (const item of arr) {
+    if (predicate(item)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function all<T>(arr: T[], predicate: (item: T) => boolean) {
+  for (const item of arr) {
+    if (!predicate(item)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function contains<T>(arr: T[], value: T, equals: EqualityChecker<T> = referenceEquality): boolean {
   for (const item of arr) {
     if (equals(item, value)) {
