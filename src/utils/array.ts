@@ -42,14 +42,20 @@ export function resetWith<T>(array: T[], toResetWith: T[]) {
   }
 }
 
-export function containsAny<T>(arr: T[], values: T[]): boolean {
-  return findFirstMatching(arr, values) !== null;
+export type EqualityChecker<T> = (lhs: T, rhs: T) => boolean;
+
+export function referenceEquality<T>(lhs: T, rhs: T) {
+  return lhs === rhs;
 }
 
-export function findFirstMatching<T>(arr: T[], values: T[]): T {
+export function containsAny<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): boolean {
+  return isDefined(findFirstMatching(arr, values, equals));
+}
+
+export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): T {
   for (const value of values) {
     for (const item of arr) {
-      if (item === value) {
+      if (equals(item, value)) {
         return item;
       }
     }
@@ -57,12 +63,11 @@ export function findFirstMatching<T>(arr: T[], values: T[]): T {
   return null;
 }
 
-
-export function arraysAreEqual<T>(lhs: T[], rhs: T[]) {
+export function arraysAreEqual<T>(lhs: T[], rhs: T[], equals: EqualityChecker<T> = referenceEquality) {
 
   function rhsContains(item: T) {
     for (const r of rhs) {
-      if (r === item) {
+      if (equals(r, item)) {
         return true;
       }
     }
