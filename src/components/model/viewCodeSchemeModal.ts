@@ -25,7 +25,7 @@ export class ViewCodeSchemeModal {
           </modal-template>
         </form>
       `,
-      size: 'small',
+      size: 'adapting',
       controller: ViewCodeSchemeModalController,
       controllerAs: 'ctrl',
       backdrop: true,
