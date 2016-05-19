@@ -19,7 +19,7 @@ export class HistoryModal {
   open(model: Model, resource: Class|Predicate|Model): IPromise<void> {
     return this.$uibModal.open({
       template: require('./historyModal.html'),
-      size: 'large',
+      size: 'adapting-medium',
       controllerAs: 'ctrl',
       controller: HistoryModalController,
       resolve: {

@@ -828,6 +828,11 @@ ajax-loading-indicator-small {
     min-width: 30%;
     display: table;
   }
+  &.modal-adapting-medium {
+    width: auto;
+    min-width: 60%;
+    display: table;
+  }
 
   .editable-wrap .content {
     padding-right: 20px;
