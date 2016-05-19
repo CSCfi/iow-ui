@@ -44,6 +44,10 @@ $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
 
+.emphasized-text {
+  color: $brand-accent-dark;
+}
+
 code-scheme-view.popup {
 
   h4 { display: none; }
@@ -469,6 +473,13 @@ ul.errors {
 uib-accordion .panel-group {
   margin: 15px auto;
 
+  .panel {
+    .panel-heading {
+      background-color: $brand-accent-lighter;
+      padding: 8px 20px 8px 20px;
+    }
+  }
+
   .panel-title {
     a:hover {
       text-decoration: none;
@@ -477,6 +488,10 @@ uib-accordion .panel-group {
       text-decoration: none;
     }
   }
+}
+
+.accordion-icon {
+  margin-right: 10px;
 }
 
 a {
@@ -488,7 +503,7 @@ a {
 
   label {
     font-weight: bold;
-    font-size: 15px;
+    font-size: 14px;
     margin: 15px 0 0 0;
     padding: 0;
     display: block;
@@ -528,7 +543,7 @@ editable.range-input {
 .editable-wrap {
 
   .content {
-    padding-right: 170px;
+    padding-right: 10px;
   }
 
   .form-control {
@@ -556,7 +571,16 @@ modal-body {
 }
 
 .model-view__sub {
-  margin-left: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 5px;
+  &.row {
+    border-top: 1px solid $brand-accent-lighter;
+  }
+}
+
+subject-view .editable-wrap {
+  margin-left: 0px;
 }
 
 .breadcrumb {
@@ -567,7 +591,7 @@ modal-body {
 }
 
 .component {
-  border: solid 1px #ddd;
+  border-right: solid 1px #ddd;
 
   .collapsable {
     font-size: large;
@@ -581,6 +605,11 @@ modal-body {
   .selection-form {
     min-height: calc(100vh - 134px);
     padding-right: 40px;
+    max-width: 1100px;
+
+    property-view .row {
+      padding-right: 10px;
+    }
 
     .property-ordering {
       position: absolute;

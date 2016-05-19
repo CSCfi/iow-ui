@@ -1,20 +1,15 @@
 <div ng-if="ctrl.isOpen">
+<div class="row">
+  <div class="col-md-1 pull-right">
   <button ng-if="editableController.isEditing()"
           type="button"
           class="btn btn-default pull-right"
           ng-disabled="!ctrl.inUnstableState"
           ng-click="editableController.removeProperty(ctrl.property)" uib-tooltip="{{'Delete property' | translate}}"><i class="fa fa-trash"></i></button>
-
+</div>
+<div class="col-md-6">
   <editable data-title="Class property label" context="ctrl.model">
     <input id="{{ctrl.property.internalId + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" context="ctrl.model" ng-model="ctrl.property.label" />
-  </editable>
-
-  <editable data-title="Description" context="ctrl.model">
-    <textarea id="{{ctrl.property.internalId + 'comment'}}" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.property.comment"></textarea>
-  </editable>
-
-  <editable data-title="State" value-as-localization-key="true" context="ctrl.model">
-    <state-select id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></state-select>
   </editable>
 
   <editable ng-if="ctrl.isAttribute()" data-title="Range" context="ctrl.model">
@@ -24,6 +19,21 @@
   <editable ng-if="ctrl.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
     <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.inUnstableState" duplicate="ctrl.isConflictingValueClass" model="ctrl.model"></uri-select>
   </editable>
+</div>
+
+<div class="col-md-5">
+  <editable data-title="Description" context="ctrl.model">
+    <textarea id="{{ctrl.property.internalId + 'comment'}}" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.property.comment"></textarea>
+  </editable>
+
+  <editable data-title="State" value-as-localization-key="true" context="ctrl.model">
+    <state-select id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></state-select>
+  </editable>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
 
   <h4 translate
       ng-show="ctrl.isEditing()
@@ -90,10 +100,14 @@
       <input id="{{ctrl.property.internalId + 'maxCount'}}" placeholder="*" max-input min="ctrl.property.minCount" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
     </editable>
   </div>
+</div>
+<div class="col-md-6">
 
   <editable data-title="Editorial note" context="ctrl.model">
     <textarea id="editorialNote" class="form-control" localized-input="free" context="ctrl.model" ng-model="ctrl.property.editorialNote"></textarea>
   </editable>
+</div>
+</div>
 
   <h4 translate>Reusable predicate</h4>
 
@@ -103,12 +117,18 @@
         <span accordion-chevron is-open="predicateOpen">{{ctrl.predicateName}}</span>
       </uib-accordion-heading>
       <div ng-if="ctrl.predicate">
-        <non-editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" value="ctrl.predicate.id" context="ctrl.model"></non-editable>
-        <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label" context="ctrl.model"></non-editable>
-        <non-editable data-title="Description" value="ctrl.predicate.comment" context="ctrl.model"></non-editable>
-        <non-editable data-title="Predicate type" value="ctrl.predicate.normalizedType" value-as-localization-key="true" context="ctrl.model"></non-editable>
-        <non-editable data-title="Range" value="ctrl.predicate.range" context="ctrl.model"></non-editable>
-        <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
+        <div class="row">
+        <div class="col-md-6">
+          <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label" context="ctrl.model"></non-editable>
+          <non-editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" value="ctrl.predicate.id" context="ctrl.model"></non-editable>
+          <non-editable data-title="Range" value="ctrl.predicate.range" context="ctrl.model"></non-editable>
+        </div>
+        <div class="col-md-6">
+          <non-editable data-title="Description" value="ctrl.predicate.comment" context="ctrl.model"></non-editable>
+          <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
+          <non-editable data-title="Predicate type" value="ctrl.predicate.normalizedType" value-as-localization-key="true" context="ctrl.model"></non-editable>
+        </div>
+        </div>
         <subject-view subject="ctrl.predicate.subject" context="ctrl.model"></subject-view>
       </div>
       <div ng-if="!ctrl.predicate" translate>Predicate information not found</div>
