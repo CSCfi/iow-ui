@@ -498,13 +498,34 @@ a {
   cursor: pointer;
 }
 
+$input-max-width: 500px;
+$input-select: 80px;
+
+.input-select {
+  width: $input-select;
+}
+
+.range-input {
+  editable {
+    float: left;
+    width: calc(50% + 7.5px);
+    padding-right: 15px;
+  }
+
+  editable:last-child {
+    width: calc(50% - 7.5px);
+    padding-right: 0;
+  }
+}
+
 .editable-wrap {
+
   word-wrap: break-word;
+  margin-bottom: 15px;
 
   label {
     font-weight: bold;
     font-size: 14px;
-    margin: 15px 0 0 0;
     padding: 0;
     display: block;
   }
@@ -524,23 +545,6 @@ a {
   textarea {
     height: 100px;
   }
-}
-
-$input-max-width: 500px;
-$input-select: 80px;
-
-.input-select {
-  width: $input-select;
-}
-
-editable.range-input {
-  float: left;
-  width: 50%;
-  max-width: calc(#{$input-max-width} / 2 + 7.5px);
-  padding-right: 15px;
-}
-
-.editable-wrap {
 
   .content {
     padding-right: 10px;
@@ -571,6 +575,7 @@ modal-body {
 }
 
 .model-view__sub {
+  @include clearfix;
   margin-left: 0px;
   margin-right: 0px;
   margin-bottom: 5px;

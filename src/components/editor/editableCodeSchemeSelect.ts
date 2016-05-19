@@ -4,6 +4,7 @@ import { Model, CodeScheme } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 import { SearchCodeSchemeModal } from '../model/searchCodeSchemeModal';
 import { module as mod }  from './module';
+import { ViewCodeSchemeModal } from '../model/viewCodeSchemeModal';
 
 mod.directive('editableCodeSchemeSelect', () => {
   return {
@@ -30,7 +31,15 @@ class EditableCodeSchemeSelectController {
   model: Model;
 
   /* @ngInject */
-  constructor(private searchCodeSchemeModal: SearchCodeSchemeModal) {
+  constructor(private searchCodeSchemeModal: SearchCodeSchemeModal, private viewCodeSchemeModal: ViewCodeSchemeModal) {
+  }
+
+  browse() {
+    if (this.codeScheme.isExternal()) {
+      window.open(this.codeScheme.id.uri, '_blank');
+    } else {
+      this.viewCodeSchemeModal.open(this.codeScheme, this.model);
+    }
   }
 
   selectCodeScheme() {
