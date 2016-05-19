@@ -11,7 +11,9 @@
 
 <div ng-if="ctrl.showValues && !ctrl.codeScheme.isExternal()">
 
-  <table class="table table-hover">
+  <ajax-loading-indicator ng-if="!ctrl.values" class="inline"></ajax-loading-indicator>
+
+  <table ng-if="ctrl.values" class="table table-hover">
     <thead>
     <tr>
       <th translate>Identifier</th>

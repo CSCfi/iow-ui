@@ -746,6 +746,18 @@ ajax-loading-indicator {
   z-index: 1000;
   background-color: #ffffff;
 
+  &.inline {
+    position: inherit;
+
+    .uil-default-css, img {
+      position: relative;
+      display: inline-block;
+      top: inherit;
+      left: calc(50% - 100px);
+      margin: inherit;
+    }
+  }
+
   .uil-default-css, img {
     position: absolute;
     top: calc(50% - 100px);
@@ -815,6 +827,10 @@ ajax-loading-indicator-small {
     width: auto;
     min-width: 30%;
     display: table;
+
+    .editable-wrap .content {
+      padding-right: 0;
+    }
   }
 }
 
