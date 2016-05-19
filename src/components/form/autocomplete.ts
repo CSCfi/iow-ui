@@ -70,11 +70,14 @@ mod.directive('autocomplete', ($document: JQuery) => {
 
       let ignoreNextViewChange = false;
 
-      $scope.$watch(() => ngModel.$viewValue, viewValue => {
+      $scope.$watch(() => ngModel.$viewValue, (viewValue, previousViewValue) => {
         if (ignoreNextViewChange) {
           ignoreNextViewChange = false;
         } else {
-          thisController.autocomplete(viewValue);
+          // prevents initial triggering when user is not actually inputting anything
+          if (viewValue || previousViewValue) {
+            thisController.autocomplete(viewValue);
+          }
         }
       });
 
