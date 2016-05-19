@@ -17,13 +17,18 @@
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
 
-          <label for="reference" translate>Reference filter</label>
-          <div class="input-group input-group-lg">
-            <div class="selectContainer">
-              <select id="reference" class="form-control" ng-model="ctrl.selectedReference" ignore-dirty
-                      ng-options="ctrl.translateReference(reference) for reference in ctrl.references">
-                <option value="" translate>All references</option>
-              </select>
+          <div class="search-filters">
+            <span class="title" translate>Filter results</span>
+            <div class="form-group">
+              <label for="reference" translate>Reference filter</label>
+              <div class="input-group input-group-lg">
+                <div class="selectContainer">
+                  <select id="reference" class="form-control" ng-model="ctrl.selectedReference" ignore-dirty
+                          ng-options="ctrl.translateReference(reference) for reference in ctrl.references">
+                    <option value="" translate>All references</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
 
