@@ -30,7 +30,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
               class="ng-animate-disabled"
               ng-class="{ active: ctrl.isSelected($index) }" 
               ng-mouseenter="ctrl.setSelection($index)" 
-              ng-click="ctrl.selectSelection()"
+              ng-mousedown="ctrl.selectSelection(event)"
               autocomplete-item>
             <a href="">{{::ctrl.format(match)}}</a>
           </li>
@@ -191,7 +191,12 @@ export class AutocompleteController<T> {
     this.autocompleteMatches = maxMatches > 0 ?  _.take(dataMatches, maxMatches) : dataMatches;
   }
 
-  selectSelection() {
+  selectSelection(event?: JQueryEventObject) {
+
+    if (event) {
+      event.preventDefault();
+    }
+
     const value = this.autocompleteSelectionIndex >= 0 ? this.autocompleteMatches[this.autocompleteSelectionIndex] : null;
 
     if (value) {
