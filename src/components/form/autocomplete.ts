@@ -52,8 +52,6 @@ mod.directive('autocomplete', ($document: JQuery) => {
 
         if (autocomplete[0] !== element[0]) {
           $scope.$apply(() => thisController.clear());
-        } else {
-          event.preventDefault();
         }
       };
 
