@@ -1,5 +1,6 @@
 /// <reference path="./main.d.ts" />
 
+import IAnimateProvider = angular.IAnimateProvider;
 import ICompileProvider = angular.ICompileProvider;
 import ILocationService = angular.ILocationService;
 import ILogProvider = angular.ILogProvider;
@@ -53,9 +54,10 @@ const mod = angular.module('iow-ui', [
 
 mod.config(routeConfig);
 
-mod.config(($routeProvider: IRouteProvider, $logProvider: ILogProvider, $compileProvider: ICompileProvider) => {
+mod.config(($routeProvider: IRouteProvider, $logProvider: ILogProvider, $compileProvider: ICompileProvider, $animateProvider: IAnimateProvider) => {
   $logProvider.debugEnabled(false);
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);
+  $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
 });
 
 mod.run((gettextCatalog: gettextCatalog) => gettextCatalog.debug = true);

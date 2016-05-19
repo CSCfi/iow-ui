@@ -9,6 +9,8 @@ import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../uti
 import { formatWithFormatters, scrollToElement } from '../../utils/angular';
 import { module as mod }  from './module';
 
+const maxMatches = 500;
+
 mod.directive('autocomplete', ($document: JQuery) => {
   return {
     restrict: 'E',
@@ -24,12 +26,13 @@ mod.directive('autocomplete', ($document: JQuery) => {
       <ng-transclude></ng-transclude>
       <div ng-if="ctrl.show" ng-class="{open: ctrl.show}">
         <ul class="dropdown-menu" ng-show="ctrl.show" ng-style="ctrl.popupStyle">
-          <li ng-repeat="match in ctrl.autocompleteMatches" 
+          <li ng-repeat="match in ctrl.autocompleteMatches track by ctrl.formatValue(match)"
+              class="ng-animate-disabled"
               ng-class="{ active: ctrl.isSelected($index) }" 
               ng-mouseenter="ctrl.setSelection($index)" 
-              ng-click="ctrl.selectSelection()" 
+              ng-click="ctrl.selectSelection()"
               autocomplete-item>
-            <a href="">{{ctrl.format(match)}}</a>
+            <a href="">{{::ctrl.format(match)}}</a>
           </li>
         </ul>
       </div>
@@ -185,7 +188,7 @@ export class AutocompleteController<T> {
 
   setMatches(dataMatches: T[], selectFirst: boolean) {
     this.autocompleteSelectionIndex = selectFirst ? 0 : -1;
-    this.autocompleteMatches = dataMatches;
+    this.autocompleteMatches = maxMatches > 0 ?  _.take(dataMatches, maxMatches) : dataMatches;
   }
 
   selectSelection() {
