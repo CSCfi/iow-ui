@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, Reference, Require, Type, GraphData, Relation,
-  CodeScheme, CodeServer
+  CodeScheme, CodeServer, CodeValue
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -15,6 +15,8 @@ import { Language } from '../utils/language';
 import { expandContextWithKnownModels } from '../utils/entity';
 
 export class ModelService {
+
+  private codeValuesCache = new Map<string, CodeValue[]>();
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
@@ -149,8 +151,19 @@ export class ModelService {
   }
 
   getCodeValues(codeScheme: CodeScheme) {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { cache: true, params: { uri: codeScheme.id.uri } })
-      .then(response => this.entities.deserializeCodeValues(response.data));
+
+    const cached = this.codeValuesCache.get(codeScheme.id.uri);
+
+    if (cached) {
+      return this.$q.when(cached);
+    } else {
+      return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: codeScheme.id.uri } })
+        .then(response => this.entities.deserializeCodeValues(response.data))
+        .then(codeValues => {
+          this.codeValuesCache.set(codeScheme.id.uri, codeValues);
+          return codeValues;
+        });
+    }
   }
 
   newCodeScheme(uri: Uri, label: string, description: string, lang: Language): IPromise<CodeScheme> {
