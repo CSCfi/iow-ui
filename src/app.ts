@@ -57,6 +57,7 @@ mod.config(routeConfig);
 mod.config(($routeProvider: IRouteProvider, $logProvider: ILogProvider, $compileProvider: ICompileProvider, $animateProvider: IAnimateProvider) => {
   $logProvider.debugEnabled(false);
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);
+  // disable angular-animate framework when 'ng-animate-disabled' class is added to animated element
   $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
 });
 
