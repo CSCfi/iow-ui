@@ -48,24 +48,26 @@ mod.directive('autocomplete', ($document: JQuery) => {
       $scope.$watchCollection(() => ngModel.$formatters, formatters => thisController.inputFormatter = formatters);
 
       const keyDownHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.keyPressed(event));
-      const focusHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.autocomplete(ngModel.$viewValue));
+      const focusHandler = () => {
+        $document.on('click', blurClickHandler);
+        $scope.$apply(() => thisController.autocomplete(ngModel.$viewValue));
+      };
       const blurClickHandler = (event: JQueryEventObject) => {
 
         const autocomplete = angular.element(event.target).closest('autocomplete');
 
         if (autocomplete[0] !== element[0]) {
           $scope.$apply(() => thisController.clear());
+          $document.off('click', blurClickHandler);
         }
       };
 
       inputElement.on('keydown', keyDownHandler);
       inputElement.on('focus', focusHandler);
-      $document.on('click', blurClickHandler);
 
       $scope.$on('destroy', () => {
         inputElement.off('keydown', keyDownHandler);
         inputElement.off('focus', focusHandler);
-        $document.off('click', blurClickHandler);
       });
 
       let ignoreNextViewChange = false;
