@@ -34,8 +34,4 @@ class PredicateFormController {
       return '';
     }
   }
-
-  get inUnstableState(): boolean {
-    return this.predicate.state === 'Unstable';
-  }
 }

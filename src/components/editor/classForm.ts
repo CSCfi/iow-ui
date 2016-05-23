@@ -73,10 +73,6 @@ export class ClassFormController {
     return this.model.linkTo({ type: 'class', id: this.class.scopeClass }, true);
   }
 
-  get inUnstableState(): boolean {
-    return this.class.state === 'Unstable';
-  }
-
   movePropertyUp($event: JQueryEventObject, property: Property) {
     $event.preventDefault();
     $event.stopPropagation();

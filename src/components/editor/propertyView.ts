@@ -112,10 +112,6 @@ export class PropertyViewController {
     return this.property.isAttribute() || (this.predicate && this.predicate.isAttribute());
   }
 
-  get inUnstableState(): boolean {
-    return this.property.state === 'Unstable';
-  }
-
   get predicateName() {
     const predicate = this.property.predicate;
     if (predicate instanceof Predicate) {

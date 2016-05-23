@@ -7,7 +7,7 @@
     </editable>
 
     <editable data-title="{{ctrl.class.normalizedType + ' id' | capitalize}}" context="ctrl.model">
-      <input id="classId" class="form-control" type="text" required id-input="class" old="ctrl.oldClass" ng-model="ctrl.class.id" ng-disabled="!ctrl.inUnstableState" />
+      <input id="classId" class="form-control" type="text" required id-input="class" old="ctrl.oldClass" ng-model="ctrl.class.id" ng-disabled="!ctrl.class.inUnstableState" />
     </editable>
 
     <editable ng-if="ctrl.class.isOfType('class')" data-title="Superclass" link="ctrl.linkToSuperclass()" context="ctrl.model">
@@ -42,7 +42,7 @@
 <div class="row">
 
   <div class="col-md-12">
-    <editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" model="ctrl.model" disable="!ctrl.inUnstableState"></editable-subject-select>
+    <editable-subject-select references="ctrl.model.references" type="class" subject="ctrl.class.subject" model="ctrl.model" disable="!ctrl.class.inUnstableState"></editable-subject-select>
   </div>
 </div>
 

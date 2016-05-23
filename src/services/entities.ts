@@ -759,6 +759,10 @@ export class Class extends AbstractClass {
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
   }
 
+  get inUnstableState(): boolean {
+    return this.state === 'Unstable';
+  }
+
   movePropertyUp(property: Property) {
     this.swapProperties(property.index, property.index - 1);
   }
@@ -1003,6 +1007,10 @@ export class Property extends GraphNode {
     return this.normalizedPredicateType === 'attribute';
   }
 
+  get inUnstableState(): boolean {
+    return this.state === 'Unstable';
+  }
+
   get normalizedPredicateType(): Type {
     if (this.predicateType) {
       return this.predicateType;
@@ -1143,6 +1151,10 @@ export class Predicate extends AbstractPredicate {
     this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
+  }
+
+  get inUnstableState(): boolean {
+    return this.state === 'Unstable';
   }
 
   serializationValues(clone: boolean): {} {

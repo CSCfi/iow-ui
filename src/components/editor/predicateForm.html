@@ -8,7 +8,7 @@
     </editable>
 
     <editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" context="ctrl.model">
-      <input id="predicateId" class="form-control" type="text" required id-input="predicate" old="ctrl.oldPredicate" ng-model="ctrl.predicate.id" ng-disabled="!ctrl.inUnstableState" />
+      <input id="predicateId" class="form-control" type="text" required id-input="predicate" old="ctrl.oldPredicate" ng-model="ctrl.predicate.id" ng-disabled="!ctrl.predicate.inUnstableState" />
     </editable>
 
     <editable data-title="{{'Super' + ctrl.predicate.normalizedType}}" link="ctrl.linkToSuperproperty()" context="ctrl.model">
@@ -48,7 +48,7 @@
 
   <div class="col-md-12">
 
-    <editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" model="ctrl.model" disable="!ctrl.inUnstableState"></editable-subject-select>
+    <editable-subject-select references="ctrl.model.references" type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" model="ctrl.model" disable="!ctrl.predicate.inUnstableState"></editable-subject-select>
 
   </div>
 
