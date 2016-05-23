@@ -7,6 +7,7 @@ import { module as mod }  from './module';
 mod.directive('accordion', () => {
   return {
     scope: {
+      openId: '='
     },
     controllerAs: 'ctrl',
     controller: AccordionController,
@@ -22,7 +23,7 @@ mod.directive('accordion', () => {
 
 
 class AccordionController {
-  openId: any = null;
+  openId: any;
 
   isOpen(id: any) {
     return this.openId === id;
