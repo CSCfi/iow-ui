@@ -2,7 +2,6 @@
 
 <div class="row">
   <div class="col-md-6">
-
     <editable data-title="{{ctrl.class.normalizedType + ' label' | capitalize}}" context="ctrl.model" autofocus>
       <input id="classLabel" class="form-control" type="text" localized-input="label" context="ctrl.model" ng-model="ctrl.class.label"/>
     </editable>
@@ -22,7 +21,6 @@
     <editable-multiple-uri-select id="equivalentClass" type="class" ng-model="ctrl.class.equivalentClasses" model="ctrl.model" data-title="{{'Equivalent class'}}"></editable-multiple-uri-select>
 
     <defined-by entity="ctrl.class" model="ctrl.model"></defined-by>
-
   </div>
 
   <div class="col-md-6">
@@ -37,7 +35,6 @@
     <editable data-title="Editorial note" context="ctrl.model">
       <textarea id="editorialNote" class="form-control" localized-input="free" context="ctrl.model" ng-model="ctrl.class.editorialNote"></textarea>
     </editable>
-
   </div>
 
 </div>
@@ -55,25 +52,34 @@
     <div ng-show="ctrl.class.properties.length > 0">
       <h4>{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
 
-      <uib-accordion close-others="true">
-        <uib-accordion-group ng-repeat="property in ctrl.class.properties track by property.internalId.value" is-open="ctrl.propertyViews[property.internalId.uri].isOpen">
-          <uib-accordion-heading>
-            <span class="accordion-icon" ng-class="property.glyphIconClass"></span>
-            <span>{{property | translateLabel: ctrl.model}}</span>
-            <accordion-chevron is-open="ctrl.propertyViews[property.internalId.uri].isOpen"></accordion-chevron>
-            <div class="property-ordering" ng-show="ctrl.isEditing()">
-          <span ng-show="!$first"
-                class="glyphicon glyphicon-chevron-up"
-                ng-click="ctrl.movePropertyUp($event, property)"></span>
-              <br />
-          <span ng-show="!$last"
-                class="glyphicon glyphicon-chevron-down"
-                ng-click="ctrl.movePropertyDown($event, property)"></span>
+      <accordion open-id="ctrl.openPropertyId" drag-sortable="ctrl.class.properties" drag-disabled="!ctrl.isEditing()">
+        <accordion-group ng-repeat="property in ctrl.class.properties" identifier="property.internalId.value">
+          <accordion-heading>
+            <div class="panel-heading" drag-sortable-item>
+              <h4 class="panel-title">
+                <a ng-class="{collapsed: !isOpen()}">
+                  <span class="accordion-icon" ng-class="property.glyphIconClass"></span>
+                  <span>{{property | translateLabel: ctrl.model}}</span>
+                  <accordion-chevron is-open="isOpen()"></accordion-chevron>
+                  <div class="property-ordering" ng-show="ctrl.isEditing()">
+                  <span ng-show="!$first"
+                        class="glyphicon glyphicon-chevron-up"
+                        ng-click="ctrl.movePropertyUp($event, property)"></span>
+                    <br />
+                  <span ng-show="!$last"
+                        class="glyphicon glyphicon-chevron-down"
+                        ng-click="ctrl.movePropertyDown($event, property)"></span>
+                  </div>
+                </a>
+              </h4>
             </div>
-          </uib-accordion-heading>
-          <property-view property="property" class="ctrl.class" model="ctrl.model"></property-view>
-        </uib-accordion-group>
-      </uib-accordion>
+          </accordion-heading>
+
+          <accordion-body>
+            <property-view ng-if="isOpen()" property="property" class="ctrl.class" model="ctrl.model"></property-view>
+          </accordion-body>
+        </div>
+      </accordion>
     </div>
   </div>
 

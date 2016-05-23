@@ -9,7 +9,7 @@
   <div ng-show="ctrl.isEditing()">
     <div class="form-control multi-input" drag-sortable="ctrl.ngModel">
       <div ng-repeat="value in ctrl.ngModel" class="added-item">
-        <div class="box" ng-class="{ 'has-error': !ctrl.isValid(value)}" drag-sortable-item>
+        <div class="box draggable" ng-class="{ 'has-error': !ctrl.isValid(value)}" drag-sortable-item>
           {{ctrl.format(value)}}
           <div class="delete-item badge" ng-click="ctrl.deleteValue(value)">&times;</div>
         </div>

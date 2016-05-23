@@ -80,10 +80,6 @@ code-scheme-view.popup {
   }
 }
 
-[draggable=true] {
-  cursor: move;
-}
-
 autocomplete .dropdown-menu {
   max-height: 400px;
   overflow-y: scroll;
@@ -93,6 +89,10 @@ table.editable-table {
 
   a:hover {
     cursor: pointer;
+  }
+
+  [draggable=true] {
+    cursor: move;
   }
 
   tr {
@@ -228,6 +228,10 @@ model-form p {
   padding: 0;
   display: inline-block;
   margin-bottom: -5px;
+
+  [draggable=true] {
+    cursor: move;
+  }
 
   .added-item {
 
@@ -470,13 +474,14 @@ ul.errors {
   background-color: $list-group-hover-bg;
 }
 
-uib-accordion .panel-group {
+uib-accordion,accordion .panel-group {
   margin: 15px auto;
 
   .panel {
     .panel-heading {
       background-color: $brand-accent-lighter;
       padding: 8px 20px 8px 20px;
+      cursor: pointer;
     }
   }
 
@@ -486,6 +491,16 @@ uib-accordion .panel-group {
     }
     a {
       text-decoration: none;
+    }
+  }
+
+  .dragged {
+    background-color: $body-bg !important;
+    color: $body-bg;
+    border: 1px dashed $alert-warning-border;
+
+    &.droppable {
+      border-color: black;
     }
   }
 }

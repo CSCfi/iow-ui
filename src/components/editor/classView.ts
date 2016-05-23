@@ -7,7 +7,7 @@ import { EditableEntityController, EditableScope, Rights } from '../form/editabl
 import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
 import {
-  Class, GroupListItem, Model, Property, PredicateListItem, Predicate,
+  Class, GroupListItem, Model, PredicateListItem, Predicate,
   LanguageContext
 } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
@@ -44,26 +44,23 @@ export class ClassViewController extends EditableEntityController<Class> {
   model: Model;
   modelController: ModelController;
   show: Show;
+  openPropertyId: string;
 
   /* @ngInject */
   constructor($scope: EditableScope,
               $log: ILogService,
-              deleteConfirmationModal: DeleteConfirmationModal,
-              private classService: ClassService,
               private searchPredicateModal: SearchPredicateModal,
               private choosePredicateTypeModal: ChoosePredicateTypeModal,
+              deleteConfirmationModal: DeleteConfirmationModal,
+              private classService: ClassService,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
     this.modelController.registerView(this);
   }
 
-  registerForm(form: ClassFormController) {
-    this.classForm = form;
-  }
-
   addProperty() {
     const exclude = combineExclusions<PredicateListItem>(
-      createExistsExclusion(collectProperties(_.filter(this.editableInEdit.properties, p => p.isAttribute()), p => p.predicateId.uri)),
+      createExistsExclusion(collectProperties(_.filter(this.class.properties, p => p.isAttribute()), p => p.predicateId.uri)),
       createDefinedByExclusion(this.model)
     );
 
@@ -79,12 +76,8 @@ export class ClassViewController extends EditableEntityController<Class> {
       })
       .then(property => {
         this.editableInEdit.addProperty(property);
-        this.classForm.openPropertyAndScrollTo(property);
+        this.openPropertyId = property.internalId.uri;
       });
-  }
-
-  removeProperty(property: Property) {
-    this.editableInEdit.removeProperty(property);
   }
 
   create(entity: Class) {

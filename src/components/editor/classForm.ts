@@ -4,7 +4,6 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import * as _ from 'lodash';
 import { ClassViewController } from './classView';
-import { PropertyViewController } from './propertyView';
 import { Class, Model, Property } from '../../services/entities';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { Uri } from '../../services/uri';
@@ -16,7 +15,8 @@ mod.directive('classForm', () => {
     scope: {
       class: '=',
       oldClass: '=',
-      model: '='
+      model: '=',
+      openPropertyId: '='
     },
     restrict: 'E',
     template: require('./classForm.html'),
@@ -24,10 +24,7 @@ mod.directive('classForm', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     link($scope: IScope, element: JQuery, attributes: IAttributes, [classFormController, classViewController]: [ClassFormController, ClassViewController]) {
-      if (classViewController) {
-        classViewController.registerForm(classFormController);
-        classFormController.isEditing = () => classViewController.isEditing();
-      }
+      classFormController.isEditing = () => classViewController && classViewController.isEditing();
     },
     controller: ClassFormController
   };
@@ -39,11 +36,19 @@ export class ClassFormController {
   oldClass: Class;
   model: Model;
   isEditing: () => boolean;
-
-  propertyViews: { [key: string]: PropertyViewController } = {};
+  openPropertyId: string;
 
   /* @ngInject */
-  constructor(private $timeout: ITimeoutService, private classService: ClassService, private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
+  constructor(private $scope: IScope,
+              private $location: ILocationService,
+              private classService: ClassService,
+              private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
+
+    this.openPropertyId = $location.search().property;
+
+    $scope.$watch(() => this.openPropertyId, id => {
+      $location.search('property', id);
+    });
   }
 
   addPropertiesFromClass(id: Uri, classType: string) {
@@ -71,17 +76,6 @@ export class ClassFormController {
   get inUnstableState(): boolean {
     return this.class.state === 'Unstable';
   }
-
-  registerPropertyView(propertyId: Uri, view: PropertyViewController) {
-    this.propertyViews[propertyId.uri] = view;
-  }
-
-  openPropertyAndScrollTo(property: Property) {
-    this.$timeout(() => {
-      // wait for possible new view to appear
-      this.propertyViews[property.internalId.uri].openAndScrollTo();
-    });
-  };
 
   movePropertyUp($event: JQueryEventObject, property: Property) {
     $event.preventDefault();

@@ -4,7 +4,6 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import * as _ from 'lodash';
 import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
@@ -14,7 +13,7 @@ import { LanguageService } from '../../services/languageService';
 import { any } from '../../utils/array';
 import { module as mod }  from './module';
 
-mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $timeout: ITimeoutService) => {
+mod.directive('propertyView', () => {
   return {
     scope: {
       property: '=',
@@ -25,31 +24,26 @@ mod.directive('propertyView', /* @ngInject */ ($location: ILocationService, $tim
     template: require('./propertyView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['propertyView', '^classForm', '?^classView'],
+    require: ['propertyView', '^classForm'],
     link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes,
-         [thisController, classFormController, classViewController]: [PropertyViewController, ClassFormController, ClassViewController]) {
+         [thisController, classFormController]: [PropertyViewController, ClassFormController]) {
 
-      $scope.editableController = classViewController;
-      thisController.isEditing = () => classViewController && classViewController.isEditing();
+      thisController.isEditing = () => classFormController.isEditing();
 
-      thisController.scroll = () => {
+      function scrollTo() {
         const scrollTop = element.offset().top;
         if (scrollTop === 0) {
-          $timeout(thisController.scroll, 100);
+          setTimeout(scrollTo, 100);
         } else {
           jQuery('html, body').animate({scrollTop}, 'slow');
         }
-      };
-
-      thisController.anyPropertiesOpen = () => {
-        return _.any(classFormController.propertyViews, view => view.isOpen);
-      };
-
-      if ($location.search().property === thisController.property.internalId.uri) {
-        thisController.openAndScrollTo();
       }
 
-      classFormController.registerPropertyView(thisController.property.internalId, thisController);
+      $scope.$watch(() => classFormController.openPropertyId, propertyId => {
+        if (propertyId === thisController.property.internalId.uri) {
+          scrollTo();
+        }
+      });
     },
     controller: PropertyViewController
   };
@@ -65,46 +59,29 @@ export class PropertyViewController {
   class: Class;
   model: Model;
   predicate: Predicate;
-  isOpen: boolean;
-  scroll: () => void;
   otherPropertyLabels: Localizable[];
   otherPropertyIdentifiers: string[];
-  anyPropertiesOpen: () => boolean;
   isEditing: () => boolean;
 
   isConflictingValueClass = (valueClass: Uri) =>
     any(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass));
 
   /* @ngInject */
-  constructor($scope: PropertyViewScope, $location: ILocationService, predicateService: PredicateService, private languageService: LanguageService) {
-    $scope.$watch(() => this.isOpen, open => {
-      if (open) {
-        if ($scope.editableController) {
-          $location.search('property', this.property.internalId.uri);
-        }
+  constructor($scope: PropertyViewScope, predicateService: PredicateService, private languageService: LanguageService) {
 
-        if (this.predicate === undefined) {
+    const predicate = this.property.predicate;
 
-          const predicate = this.property.predicate;
-
-          if (predicate instanceof Predicate) {
-            this.predicate = predicate;
-          } else if (predicate instanceof Uri) {
-            if (this.model.isNamespaceKnownToBeNotModel(predicate.namespace)) {
-              predicateService.getExternalPredicate(predicate, this.model).then(p => this.predicate = p);
-            } else {
-              predicateService.getPredicate(predicate).then(p => this.predicate = p);
-            }
-          } else {
-            throw new Error('Unsupported predicate: ' + predicate);
-          }
-        }
-      } else if (!this.anyPropertiesOpen()) {
-        if ($scope.editableController) {
-          $location.search('property', null);
-        }
+    if (predicate instanceof Predicate) {
+      this.predicate = predicate;
+    } else if (predicate instanceof Uri) {
+      if (this.model.isNamespaceKnownToBeNotModel(predicate.namespace)) {
+        predicateService.getExternalPredicate(predicate, this.model).then(p => this.predicate = p);
+      } else {
+        predicateService.getPredicate(predicate).then(p => this.predicate = p);
       }
-    });
+    } else {
+      throw new Error('Unsupported predicate: ' + predicate);
+    }
 
     $scope.$watchCollection(() => this.class.properties, properties => {
       this.otherPropertyLabels = [];
@@ -119,13 +96,12 @@ export class PropertyViewController {
     });
   }
 
-  linkToValueClass() {
-    return this.model.linkTo({ type: 'class', id: this.property.valueClass }, true);
+  removeProperty(property: Property) {
+    this.class.removeProperty(property);
   }
 
-  openAndScrollTo() {
-    this.isOpen = true;
-    this.scroll();
+  linkToValueClass() {
+    return this.model.linkTo({ type: 'class', id: this.property.valueClass }, true);
   }
 
   isAssociation() {
