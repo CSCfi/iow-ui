@@ -521,14 +521,19 @@ $input-select: 80px;
 }
 
 .range-input {
+
+  @include clearfix;
+
   editable {
     float: left;
     width: calc(50% + 7.5px);
+    max-width: calc(#{$input-max-width} / 2 + 7.5px);
     padding-right: 15px;
   }
 
   editable:last-child {
     width: calc(50% - 7.5px);
+    max-width: calc(#{$input-max-width} / 2 - 7.5px);
     padding-right: 0;
   }
 }
