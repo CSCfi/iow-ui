@@ -6,10 +6,11 @@ import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { HistoryModal } from './historyModal';
 import { LanguageService } from '../../services/languageService';
-import { Localizable, Model, LanguageContext } from '../../services/entities';
+import { Localizable, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 export default mod.name;
 
+import './accordion';
 import './accordionChevron';
 import './ajaxLoadingIndicator';
 import './ajaxLoadingIndicatorSmall';

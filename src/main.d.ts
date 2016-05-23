@@ -19,6 +19,9 @@ declare namespace angular {
   interface INgModelController {
     $options: any;
   }
+  interface ITranscludeFunction {
+    (cloneAttachFn: ICloneAttachFunction, futureParentElement: JQuery, slotName: string): IAugmentedJQuery;
+  }
 }
 
 interface MousewheelEvent extends JQueryEventObject {
