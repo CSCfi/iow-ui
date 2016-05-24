@@ -2,9 +2,9 @@
   <editable-label data-title="ctrl.subjectTitle"></editable-label>
   <div ng-hide="ctrl.subject" translate>Not defined</div>
 </div>
-  <div class="model-view__sub row">
-    <non-editable class="col-md-4" data-title="Concept id" value="ctrl.subject.id.uri" link="ctrl.subject.id.url" context="ctrl.context"></non-editable>
-    <non-editable class="col-md-3" data-title="Concept label" value="ctrl.subject.label" context="ctrl.context"></non-editable>
-    <non-editable class="col-md-5" data-title="Definition" value="ctrl.subject.comment" context="ctrl.context"></non-editable>
-  </div>
+
+<div ng-if="ctrl.subject" class="model-view__sub row">
+  <non-editable class="col-md-4" data-title="Concept id" value="ctrl.subject.id.uri" link="ctrl.subject.id.url" context="ctrl.context"></non-editable>
+  <non-editable class="col-md-3" data-title="Concept label" value="ctrl.subject.label" context="ctrl.context"></non-editable>
+  <non-editable class="col-md-5" data-title="Definition" value="ctrl.subject.comment" context="ctrl.context"></non-editable>
 </div>
