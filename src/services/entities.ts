@@ -80,6 +80,10 @@ interface EntityConstructor<T extends GraphNode> {
   new(graph: any, context: any, frame: any): T;
 }
 
+interface EntityConstructorProvider<T extends GraphNode> {
+  (graph: any): EntityConstructor<T>;
+}
+
 type EntityFactory<T extends GraphNode> = (framedData: any) => EntityConstructor<T>;
 
 export function isLocalizable(obj: any): obj is Localizable {
@@ -258,10 +262,10 @@ export class Model extends AbstractModel {
       graph.isPartOf['@type'] = 'foaf:Group';
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
-    this.references = deserializeEntityList(graph.references, context, frame, Reference);
-    this.requires = deserializeEntityList(graph.requires, context, frame, Require);
-    this.relations = deserializeEntityList(graph.relations, context, frame, Relation);
-    this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, CodeScheme);
+    this.references = deserializeEntityList(graph.references, context, frame, () => Reference);
+    this.requires = deserializeEntityList(graph.requires, context, frame, () => Require);
+    this.relations = deserializeEntityList(graph.relations, context, frame, () => Relation);
+    this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => CodeScheme);
     this.version = graph.identifier;
     if (graph.rootResource) {
       this.rootClass = new Uri(graph.rootResource, context);
@@ -631,7 +635,7 @@ export class CodeScheme extends GraphNode {
     this.description = deserializeLocalizable(graph.description);
     this.creator = graph.creator;
     this.identifier = graph.identifier;
-    this.groups = deserializeEntityList(graph.isPartOf, context, frame, CodeGroup);
+    this.groups = deserializeEntityList(graph.isPartOf, context, frame, () => CodeGroup);
   }
 
   isExternal() {
@@ -714,7 +718,7 @@ export class VisualizationClass extends AbstractClass {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.properties = deserializeEntityList(graph.property, context, frame, Property);
+    this.properties = deserializeEntityList(graph.property, context, frame, () => Property);
   }
 }
 
@@ -743,7 +747,7 @@ export class Class extends AbstractClass {
     }
     this.state = graph.versionInfo;
 
-    this.properties = deserializeEntityList(graph.property, context, frame, Property)
+    this.properties = deserializeEntityList(graph.property, context, frame, () => Property)
       .sort(comparingNumber<Property>(property => property.index));
 
     // normalize indices
@@ -751,11 +755,7 @@ export class Class extends AbstractClass {
       this.properties[i].index = i;
     }
 
-    if (graph.subject) {
-      this.subject = ConceptSuggestion.isConceptSuggestionGraph(graph.subject)
-        ? new ConceptSuggestion(graph.subject, context, frame)
-        : new FintoConcept(graph.subject, context, frame);
-    }
+    this.subject = deserializeOptional(graph.subject, context, frame, resolveConceptConstructor);
     this.equivalentClasses = deserializeList(graph.equivalentClass, equivalentClass => new Uri(equivalentClass, context));
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
@@ -824,9 +824,9 @@ export class Constraint extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
 
-    const and = deserializeEntityList(graph.and, context, frame, ConstraintListItem);
-    const or = deserializeEntityList(graph.or, context, frame, ConstraintListItem);
-    const not = deserializeEntityList(graph.not, context, frame, ConstraintListItem);
+    const and = deserializeEntityList(graph.and, context, frame, () => ConstraintListItem);
+    const or = deserializeEntityList(graph.or, context, frame, () => ConstraintListItem);
+    const not = deserializeEntityList(graph.not, context, frame, () => ConstraintListItem);
 
     if (and.length > 0) {
       this.constraint = 'and';
@@ -942,7 +942,7 @@ export class Property extends GraphNode {
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
     this.classIn = deserializeList(graph.classIn, klass => new Uri(klass, context));
-    this.codeScheme = deserializeOptional(graph.memberOf, context, frame, CodeScheme);
+    this.codeScheme = deserializeOptional(graph.memberOf, context, frame, () => CodeScheme);
 
     if (graph.type) {
       this.predicateType = mapType(graph.type);
@@ -1146,11 +1146,7 @@ export class Predicate extends AbstractPredicate {
     if (graph.subPropertyOf) {
       this.subPropertyOf = new Uri(graph.subPropertyOf, context);
     }
-    if (graph.subject) {
-      this.subject = ConceptSuggestion.isConceptSuggestionGraph(graph.subject)
-        ? new ConceptSuggestion(graph.subject, context, frame)
-        : new FintoConcept(graph.subject, context, frame);
-    }
+    this.subject = deserializeOptional(graph.subject, context, frame, resolveConceptConstructor);
     this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
@@ -1239,7 +1235,7 @@ export class FintoConcept extends GraphNode {
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeList<Url>(graph.inScheme);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
   }
 
   get unsaved() {
@@ -1297,7 +1293,7 @@ export class ConceptSuggestion extends GraphNode {
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
     this.inScheme = deserializeList<Url>(graph.inScheme);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
   }
@@ -1312,10 +1308,6 @@ export class ConceptSuggestion extends GraphNode {
 
   get suggestion() {
     return true;
-  }
-
-  static isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
-    return contains(mapGraphTypeObject(withType), 'conceptSuggestion');
   }
 
   clone(): ConceptSuggestion {
@@ -1434,8 +1426,8 @@ export class Usage extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
-    this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, Referrer);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
+    this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, () => Referrer);
   }
 }
 
@@ -1450,7 +1442,7 @@ export class Referrer extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
     this.normalizedType = normalizeReferrerType(this.type);
   }
 
@@ -1473,7 +1465,7 @@ export class Activity extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
-    this.versions = deserializeEntityList(graph.generated, context, frame, Entity).sort(comparingDate<Entity>(entity => entity.createdAt));
+    this.versions = deserializeEntityList(graph.generated, context, frame, () => Entity).sort(comparingDate<Entity>(entity => entity.createdAt));
     this.versionIndex = indexById(this.versions);
     this.latestVersion = graph.used;
   }
@@ -1518,13 +1510,22 @@ function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
   return new Map(items.map<[Urn, number]>((item: T, index: number) => [item.id, index]));
 }
 
+function resolveConceptConstructor(graph: any) {
+  return isConceptSuggestionGraph(graph) ? ConceptSuggestion : FintoConcept;
+}
+
+function isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
+  return contains(mapGraphTypeObject(withType), 'conceptSuggestion');
+}
+
 function serializeOptional<T extends GraphNode>(entity: T, clone: boolean, isDefined: (entity: T) => boolean = (e: T) => !!e) {
   return isDefined(entity) ? entity.serialize(true, clone) : null;
 }
 
-function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entity: EntityConstructor<T>): T {
+function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entityProvider: EntityConstructorProvider<T>): T {
   if (graph) {
-    return new entity(graph, context, frame);
+    const constructor = entityProvider(graph);
+    return new constructor(graph, context, frame);
   } else {
     return null;
   }
@@ -1537,8 +1538,11 @@ function serializeEntityList(list: GraphNode[], clone: boolean) {
   return _.map(list, listItem => listItem.serialize(true, clone));
 }
 
-function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entity: EntityConstructor<T>): T[] {
-  return _.map<any, T>(normalizeAsArray(list), obj => new entity(obj, context, frame));
+function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entityProvider: EntityConstructorProvider<T>): T[] {
+  return _.map<any, T>(normalizeAsArray(list), graph => {
+    const constructor = entityProvider(graph);
+    return new constructor(graph, context, frame);
+  });
 }
 
 function serializeList<T>(list: any[], mapper: (obj: any) => T = identity) {
