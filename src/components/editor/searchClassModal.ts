@@ -96,7 +96,7 @@ class SearchClassController {
       this.models = this.models.concat(_.chain(this.classes)
         .map(klass => klass.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<ClassListItem>(languageService.getModelLanguage(this.model), klass => klass.label))
+        .sort(comparingLocalizable<DefinedBy>(languageService.getModelLanguage(this.model), definedBy => definedBy.label))
         .value());
 
       this.search();

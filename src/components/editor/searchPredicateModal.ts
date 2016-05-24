@@ -103,7 +103,7 @@ export class SearchPredicateController {
       this.models = this.models.concat(_.chain(this.predicates)
         .map(predicate => predicate.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<PredicateListItem>(languageService.getModelLanguage(model), predicate => predicate.label))
+        .sort(comparingLocalizable<DefinedBy>(languageService.getModelLanguage(model), definedBy => definedBy.label))
         .value());
 
       this.types = _.chain(this.predicates)
