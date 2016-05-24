@@ -181,7 +181,19 @@ export function classListFrame(data: any): Frame {
 }
 
 export function iowConceptFrame(data: any): Frame {
-  return frame(data, conceptContext, { inScheme: {} });
+  return frame(data, conceptContext, {
+    inScheme: {},
+    isDefinedBy: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    },
+    broaderConcept: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    }
+  });
 }
 
 export function fintoConceptFrame(data: any, id: Url): Frame {

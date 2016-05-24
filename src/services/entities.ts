@@ -1745,6 +1745,10 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame(data), (framedData) => FintoConceptSearchResult);
   }
 
+  deserializeConcepts(data: GraphData): IPromise<Concept[]> {
+    return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), resolveConceptConstructor);
+  }
+
   deserializeRequire(data: GraphData): IPromise<Require> {
     return frameAndMap(this.$log, data, frames.requireFrame, (framedData) => Require);
   }

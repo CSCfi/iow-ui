@@ -5,7 +5,7 @@ import IQService = angular.IQService;
 import * as _ from 'lodash';
 import {
   EntityDeserializer, ConceptSuggestion, FintoConcept, GraphData, FintoConceptSearchResult,
-  Reference, Localizable, Model
+  Reference, Localizable, Model, Concept
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -98,5 +98,10 @@ export class ConceptService {
   getFintoConcept(id: Uri): IPromise<FintoConcept> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('concept'), {params: {uri: id.uri}})
       .then(response => this.entities.deserializeFintoConcept(response.data, id.uri));
+  }
+
+  getConceptsForModel(model: Model): IPromise<Concept[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('modelConcepts'), {params: {model: model.id.uri}})
+      .then(response => this.entities.deserializeConcepts(response.data));
   }
 }
