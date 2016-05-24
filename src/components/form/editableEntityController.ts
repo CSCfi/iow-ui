@@ -4,7 +4,7 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { Attribute, Association, Class, Group, Model, LanguageContext } from '../../services/entities';
+import { LanguageContext, EditableEntity } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { isModalCancel } from '../../utils/angular';
 
@@ -21,7 +21,7 @@ export type Rights = {
   remove(): boolean;
 }
 
-export abstract class EditableEntityController<T extends Class|Association|Attribute|Model|Group> {
+export abstract class EditableEntityController<T extends EditableEntity> {
 
   submitError: string;
   editableInEdit: T;

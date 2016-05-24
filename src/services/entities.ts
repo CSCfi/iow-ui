@@ -24,7 +24,15 @@ const jsonld: any = require('jsonld');
 
 const isoDateFormat = 'YYYY-MM-DDTHH:mm:ssz';
 
-export type EditableEntity = Class|Association|Attribute|Model|Group;
+export interface EditableEntity {
+  id: Uri;
+  normalizedType: Type;
+  isOfType(type: Type): boolean;
+  unsaved: boolean;
+  clone<T>(): T;
+  serialize<T>(): T;
+}
+
 export type Localizable = { [language: string]: string; }
 export type UserLogin = string;
 
