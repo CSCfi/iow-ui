@@ -1231,6 +1231,7 @@ export class FintoConcept extends GraphNode {
   label: Localizable;
   comment: Localizable;
   inScheme: Url[];
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1238,10 +1239,34 @@ export class FintoConcept extends GraphNode {
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeList<Url>(graph.inScheme);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
+  }
+
+  get unsaved() {
+    return false;
+  }
+
+  get normalizedType(): Type {
+    return 'concept';
   }
 
   get suggestion() {
     return false;
+  }
+
+  clone(): FintoConcept {
+    const serialization = this.serialize(false, true);
+    return new FintoConcept(serialization['@graph'], serialization['@context'], this.frame);
+  }
+
+  serializationValues(clone: boolean): {} {
+    return {
+      '@id': this.id.uri,
+      label: serializeLocalizable(this.label),
+      comment: serializeLocalizable(this.comment),
+      inScheme: serializeList(this.inScheme),
+      isDefinedBy: serializeOptional(this.definedBy, clone)
+    };
   }
 }
 
@@ -1262,6 +1287,7 @@ export class ConceptSuggestion extends GraphNode {
   label: Localizable;
   comment: Localizable;
   inScheme: Url[];
+  definedBy: DefinedBy;
   createdAt: Moment;
   creator: UserLogin;
 
@@ -1271,8 +1297,17 @@ export class ConceptSuggestion extends GraphNode {
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
     this.inScheme = deserializeList<Url>(graph.inScheme);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, DefinedBy);
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
+  }
+
+  get unsaved() {
+    return false;
+  }
+
+  get normalizedType(): Type {
+    return 'conceptSuggestion';
   }
 
   get suggestion() {
@@ -1281,6 +1316,21 @@ export class ConceptSuggestion extends GraphNode {
 
   static isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
     return contains(mapGraphTypeObject(withType), 'conceptSuggestion');
+  }
+
+  clone(): ConceptSuggestion {
+    const serialization = this.serialize(false, true);
+    return new ConceptSuggestion(serialization['@graph'], serialization['@context'], this.frame);
+  }
+
+  serializationValues(clone: boolean): {} {
+    return {
+      '@id': this.id.uri,
+      label: serializeLocalizable(this.label),
+      comment: serializeLocalizable(this.comment),
+      inScheme: serializeList(this.inScheme),
+      isDefinedBy: serializeOptional(this.definedBy, clone)
+    };
   }
 }
 
