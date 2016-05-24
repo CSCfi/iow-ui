@@ -50,6 +50,7 @@ export type Type = 'class'
                  | 'constraint'
                  | 'user'
                  | 'concept'
+                 | 'conceptSuggestion'
                  | 'entity'
                  | 'activity'
                  | 'resource'
@@ -759,7 +760,7 @@ export class Class extends AbstractClass {
     }
 
     if (graph.subject) {
-      this.subject = new Uri(graph.subject['@id']).isUrn()
+      this.subject = ConceptSuggestion.isConceptSuggestionGraph(graph.subject)
         ? new ConceptSuggestion(graph.subject, context, frame)
         : new FintoConcept(graph.subject, context, frame);
     }
@@ -1154,7 +1155,7 @@ export class Predicate extends AbstractPredicate {
       this.subPropertyOf = new Uri(graph.subPropertyOf, context);
     }
     if (graph.subject) {
-      this.subject = new Uri(graph.subject['@id']).isUrn()
+      this.subject = ConceptSuggestion.isConceptSuggestionGraph(graph.subject)
         ? new ConceptSuggestion(graph.subject, context, frame)
         : new FintoConcept(graph.subject, context, frame);
     }
@@ -1284,6 +1285,10 @@ export class ConceptSuggestion extends GraphNode {
 
   get suggestion() {
     return true;
+  }
+
+  static isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
+    return contains(mapGraphTypeObject(withType), 'conceptSuggestion');
   }
 }
 

@@ -22,6 +22,7 @@ registerType('library', ['dcap:MetadataVocabulary']);
 registerType('constraint', ['sh:AbstractOrNodeConstraint', 'sh:AbstractAndNodeConstraint', 'sh:AbstractNotNodeConstraint']);
 registerType('user', ['foaf:Person']);
 registerType('concept', ['skos:Concept']);
+registerType('conceptSuggestion', ['iow:ConceptSuggestion']);
 registerType('scheme', ['skos:ConceptScheme']);
 registerType('entity', ['prov:Entity']);
 registerType('activity', ['prov:Activity']);
