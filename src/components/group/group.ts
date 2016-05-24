@@ -80,11 +80,6 @@ class GroupController extends EditableEntityController<Group> {
     });
   };
 
-  canAskForRights(): boolean {
-    const user = this.userService.user;
-    return this.group && user.isLoggedIn() && !user.isMemberOf(this.group);
-  }
-
   selectModel(model: ModelListItem) {
     this.$location.url(model.iowUrl(false));
   }
@@ -114,6 +109,14 @@ class GroupController extends EditableEntityController<Group> {
 
   setEditable(editable: Group) {
     this.group = editable;
+  }
+
+  canAskForRights(): boolean {
+    return this.userService.isLoggedIn() && !this.belongToGroup();
+  }
+
+  belongToGroup(): boolean {
+    return this.userService.user.isMemberOf(this.getGroup());
   }
 
   getGroup(): Group {

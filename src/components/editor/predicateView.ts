@@ -59,8 +59,8 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   rights(): Rights {
     return {
-      edit: () => !this.isReference(),
-      remove: () => this.isReference() || this.predicate.state === 'Unstable'
+      edit: () => this.belongToGroup() && !this.isReference(),
+      remove: () => this.belongToGroup() && (this.isReference() || this.predicate.state === 'Unstable')
     };
   }
 
@@ -78,6 +78,14 @@ class PredicateViewController extends EditableEntityController<Association|Attri
 
   getGroup(): GroupListItem {
     return this.model.group;
+  }
+
+  canAskForRights(): boolean {
+    return this.userService.isLoggedIn() && !this.belongToGroup();
+  }
+
+  belongToGroup(): boolean {
+    return this.userService.user.isMemberOf(this.getGroup());
   }
 
   getRemoveText(): string {

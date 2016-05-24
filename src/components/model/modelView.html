@@ -8,6 +8,7 @@
       <div ng-if="ctrl.model" uib-collapse="!ctrl.visible" class="main-editable-content">
 
         <editable-entity-buttons context="ctrl.model" editable-controller="ctrl">
+          <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.model"></export>
           <history model="ctrl.model" resource="ctrl.model" ng-hide="ctrl.isEditing()"></history>
         </editable-entity-buttons>

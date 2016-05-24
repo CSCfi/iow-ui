@@ -63,8 +63,8 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   rights(): Rights {
     return {
-      edit: () => true,
-      remove: () => this.model.state === 'Unstable'
+      edit: () => this.belongToGroup(),
+      remove: () => this.belongToGroup() && this.model.state === 'Unstable'
     };
   }
 
@@ -78,6 +78,14 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   getGroup(): GroupListItem {
     return this.model.group;
+  }
+
+  belongToGroup(): boolean {
+    return this.userService.user.isMemberOf(this.getGroup());
+  } 
+  
+  canAskForRights(): boolean {
+    return this.userService.isLoggedIn() && !this.belongToGroup();
   }
 
   getContext(): LanguageContext {

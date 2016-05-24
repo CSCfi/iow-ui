@@ -95,8 +95,8 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   rights(): Rights {
     return {
-      edit: () => !this.isReference(),
-      remove: () => this.isReference() || this.class.state === 'Unstable'
+      edit: () => this.belongToGroup() && !this.isReference(),
+      remove: () => this.belongToGroup() && (this.isReference() || this.class.state === 'Unstable')
     };
   }
 
@@ -114,6 +114,14 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   getGroup(): GroupListItem {
     return this.model.group;
+  }
+
+  canAskForRights(): boolean {
+    return this.userService.isLoggedIn() && !this.belongToGroup();
+  }
+
+  belongToGroup(): boolean {
+    return this.userService.user.isMemberOf(this.getGroup());
   }
 
   getRemoveText(): string {

@@ -4,7 +4,7 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { Attribute, Association, Class, AbstractGroup, Group, Model, LanguageContext } from '../../services/entities';
+import { Attribute, Association, Class, Group, Model, LanguageContext } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { isModalCancel } from '../../utils/angular';
 
@@ -43,7 +43,6 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   abstract rights(): Rights;
   abstract getEditable(): T;
   abstract setEditable(editable: T): void;
-  abstract getGroup(): AbstractGroup;
   abstract getContext(): LanguageContext;
 
   select(editable: T) {
@@ -99,7 +98,7 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
 
   canRemove() {
     const editable = this.getEditable();
-    return editable && !editable.unsaved && !this.isEditing() && this.belongToGroup() && this.rights().remove();
+    return editable && !editable.unsaved && !this.isEditing() && this.rights().remove();
   }
 
   cancelEditing() {
@@ -126,18 +125,10 @@ export abstract class EditableEntityController<T extends Class|Association|Attri
   }
 
   canEdit(): boolean {
-    return !this.isEditing() && this.belongToGroup() && this.rights().edit();
+    return !this.isEditing() && this.rights().edit();
   }
 
   getRemoveText(): string {
     return 'Delete ' + this.getEditable().normalizedType;
-  }
-
-  canAskForRights(): boolean {
-    return this.userService.isLoggedIn() && !this.belongToGroup();
-  }
-
-  belongToGroup(): boolean {
-    return this.userService.user.isMemberOf(this.getGroup());
   }
 }

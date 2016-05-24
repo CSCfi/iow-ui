@@ -3,6 +3,7 @@
     <div ng-if="ctrl.predicate && ctrl.model">
       <selection-view model="ctrl.model" editable-controller="ctrl" show="ctrl.show">
         <selection-buttons>
+          <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.predicate"></export>
           <history model="ctrl.model" resource="ctrl.predicate" ng-hide="ctrl.isEditing()"></history>
         </selection-buttons>

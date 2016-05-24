@@ -3,6 +3,7 @@
     <div ng-if="ctrl.class && ctrl.model">
       <selection-view model="ctrl.model" editable-controller="ctrl" show="ctrl.show">
         <selection-buttons>
+          <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.isEditing()">
             <span class="glyphicon glyphicon-plus"></span>
             <span translate>Add property</span>

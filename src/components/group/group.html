@@ -9,6 +9,7 @@
       <div class="main-editable-content">
 
         <editable-entity-buttons context="ctrl.group" editable-controller="ctrl">
+          <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addModel('library')" ng-if="ctrl.canAddModel()" translate>Add library</button>
           <button type="button" class="btn btn-default right" ng-click="ctrl.addModel('profile')" ng-if="ctrl.canAddModel()" translate>Add profile</button>
         </editable-entity-buttons>
