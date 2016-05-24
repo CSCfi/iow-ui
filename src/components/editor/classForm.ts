@@ -37,6 +37,7 @@ export class ClassFormController {
   model: Model;
   isEditing: () => boolean;
   openPropertyId: string;
+  onPropertyReorder = (property: Property, index: number) => property.index = index;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -45,10 +46,7 @@ export class ClassFormController {
               private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
 
     this.openPropertyId = $location.search().property;
-
-    $scope.$watch(() => this.openPropertyId, id => {
-      $location.search('property', id);
-    });
+    $scope.$watch(() => this.openPropertyId, id => $location.search('property', id));
   }
 
   addPropertiesFromClass(id: Uri, classType: string) {

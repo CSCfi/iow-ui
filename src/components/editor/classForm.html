@@ -52,7 +52,7 @@
     <div ng-show="ctrl.class.properties.length > 0">
       <h4>{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
 
-      <accordion open-id="ctrl.openPropertyId" drag-sortable="ctrl.class.properties" drag-disabled="!ctrl.isEditing()">
+      <accordion open-id="ctrl.openPropertyId" drag-sortable="ctrl.class.properties" drag-disabled="!ctrl.isEditing()" on-reorder="ctrl.onPropertyReorder">
         <accordion-group ng-repeat="property in ctrl.class.properties" identifier="property.internalId.value">
           <accordion-heading>
             <div class="panel-heading" drag-sortable-item>

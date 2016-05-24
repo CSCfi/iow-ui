@@ -7,25 +7,28 @@ import { module as mod }  from './module';
 interface DragSortableAttributes extends IAttributes {
   dragSortable: string;
   dragDisabled: string;
+  onReorder: string;
 }
 
 mod.directive('dragSortable', () => {
   return {
     controller: DragSortableController,
     require: 'dragSortable',
-    link($scope: IScope, element: JQuery, attributes: DragSortableAttributes, thisController: DragSortableController) {
+    link($scope: IScope, element: JQuery, attributes: DragSortableAttributes, thisController: DragSortableController<any>) {
       $scope.$watch(attributes.dragSortable, (values: any[]) => thisController.dragValues = values);
       $scope.$watch(attributes.dragDisabled, (disabled: boolean) => thisController.dragDisabled = disabled);
+      $scope.$watch(attributes.onReorder, (onReorder: (item: any, index: number) => void) => thisController.onReorder = onReorder);
     }
   };
 });
 
-class DragSortableController {
+class DragSortableController<T> {
 
   drag: Drag;
   dragDisabled: boolean;
-  dragValuesOriginal: any[];
-  dragValues: any[];
+  dragValuesOriginal: T[];
+  dragValues: T[];
+  onReorder: (item: T, index: number) => void;
 
   startDrag(dataTransfer: DataTransfer, fromIndex: number, sourceWidth: number): void {
     dataTransfer.setData('text', '');
@@ -50,7 +53,7 @@ class DragSortableController {
       this.drag.droppable = true;
       if (this.canDrop(index)) {
 
-        moveElement(this.dragValues, this.drag.fromIndex, index);
+        moveElement(this.dragValues, this.drag.fromIndex, index, this.onReorder);
         this.drag.fromIndex = index;
       }
     }
@@ -83,7 +86,7 @@ interface Drag {
 mod.directive('dragSortableItem', () => {
   return {
     require: '^dragSortable',
-    link($scope: IRepeatScope, element: JQuery, attributes: IAttributes, dragSortable: DragSortableController) {
+    link($scope: IRepeatScope, element: JQuery, attributes: IAttributes, dragSortable: DragSortableController<any>) {
 
       const selectStartHandler = function() { this.dragDrop(); }; // IE9 support hack
       const dragStartHandler = (event: JQueryMouseEventObject) => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index, element.width()));
