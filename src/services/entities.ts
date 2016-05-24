@@ -1666,8 +1666,10 @@ function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: 
   return frameData($log, data, frameObject)
     .then(framed => {
       try {
-        const entity: EntityConstructor<T> = entityFactory(framed);
-        return _.map(normalizeAsArray(framed['@graph']), element => new entity(element, framed['@context'], frameObject));
+        return _.map(normalizeAsArray(framed['@graph']), element => {
+          const entity: EntityConstructor<T> = entityFactory(element);
+          return new entity(element, framed['@context'], frameObject);
+        });
       } catch (error) {
         $log.error(error);
         throw error;
