@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Reference, ConceptSuggestion, Type, FintoConcept, Model } from '../../services/entities';
+import { Reference, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
@@ -18,8 +18,6 @@ import { isDefined } from '../../utils/object';
 import { any } from '../../utils/array';
 
 const limit = 1000;
-
-type Concept = FintoConcept|ConceptSuggestion;
 
 export interface NewEntityData {
   label: string;
@@ -219,7 +217,7 @@ class SearchConceptController {
       this.selection = new NewConceptData(this.searchText, this.resolveInitialReference());
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
-      const conceptPromise: IPromise<FintoConcept|ConceptSuggestion> = conceptSearchResult.suggestion
+      const conceptPromise: IPromise<Concept> = conceptSearchResult.suggestion
         ? this.conceptService.getConceptSuggestion(conceptSearchResult.id)
         : this.conceptService.getFintoConcept(conceptSearchResult.id);
 

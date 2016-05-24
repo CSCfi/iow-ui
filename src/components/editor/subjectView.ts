@@ -1,4 +1,4 @@
-import { FintoConcept, ConceptSuggestion, LanguageContext } from '../../services/entities';
+import { LanguageContext, Concept } from '../../services/entities';
 import { module as mod }  from './module';
 
 mod.directive('subjectView', () => {
@@ -17,7 +17,7 @@ mod.directive('subjectView', () => {
 });
 
 class SubjectViewController {
-  subject: FintoConcept|ConceptSuggestion;
+  subject: Concept;
   title: string;
   context: LanguageContext;
 

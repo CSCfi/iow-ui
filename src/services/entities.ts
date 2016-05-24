@@ -36,6 +36,8 @@ export interface EditableEntity {
 export type Localizable = { [language: string]: string; }
 export type UserLogin = string;
 
+export type Concept = FintoConcept|ConceptSuggestion;
+
 export type Type = 'class'
                  | 'shape'
                  | 'attribute'
@@ -729,7 +731,7 @@ export class Class extends AbstractClass {
   scopeClass: Uri;
   state: State;
   properties: Property[];
-  subject: FintoConcept|ConceptSuggestion;
+  subject: Concept;
   equivalentClasses: Uri[];
   constraint: Constraint;
   version: Urn;
@@ -1137,7 +1139,7 @@ export class Predicate extends AbstractPredicate {
 
   state: State;
   subPropertyOf: Uri;
-  subject: FintoConcept|ConceptSuggestion;
+  subject: Concept;
   equivalentProperties: Uri[];
   version: Urn;
   editorialNote: Localizable;

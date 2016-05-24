@@ -1,7 +1,7 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { SearchConceptModal } from './searchConceptModal';
-import { ConceptSuggestion, Reference, Type, FintoConcept, Model } from '../../services/entities';
+import { Reference, Type, Model, Concept } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 import { module as mod }  from './module';
 
@@ -29,7 +29,7 @@ mod.directive('editableSubjectSelect', () => {
 class EditableSubjectSelectController {
 
   isEditing: () => boolean;
-  subject: FintoConcept|ConceptSuggestion;
+  subject: Concept;
   references: Reference[];
   type: Type;
   model: Model;
