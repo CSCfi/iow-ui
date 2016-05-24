@@ -67,8 +67,10 @@ export abstract class EditableEntityController<T extends EditableEntity> {
         this.select(editableInEdit);
         this.persisting = false;
       }, err => {
-        this.$log.error(err);
-        this.submitError = err.data.errorMessage;
+        if (err) {
+          this.$log.error(err);
+          this.submitError = err.data.errorMessage;
+        }
         this.persisting = false;
       });
   }
