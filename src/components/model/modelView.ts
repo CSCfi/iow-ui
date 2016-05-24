@@ -82,8 +82,8 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   belongToGroup(): boolean {
     return this.userService.user.isMemberOf(this.getGroup());
-  } 
-  
+  }
+
   canAskForRights(): boolean {
     return this.userService.isLoggedIn() && !this.belongToGroup();
   }
