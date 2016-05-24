@@ -9,7 +9,6 @@ mod.directive('editableSubjectSelect', () => {
   return {
     scope: {
       subject: '=',
-      references: '=',
       type: '@',
       disable: '=',
       model: '='
@@ -39,6 +38,6 @@ class EditableSubjectSelectController {
   }
 
   selectSubject() {
-    this.searchConceptModal.openSelection(this.references, this.model, this.type).then(concept => this.subject = concept);
+    this.searchConceptModal.openSelection(this.model.references, this.model, this.type).then(concept => this.subject = concept);
   }
 }
