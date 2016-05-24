@@ -1,5 +1,3 @@
-import Dataset = Twitter.Typeahead.Dataset;
-import Templates = Twitter.Typeahead.Templates;
 import IScope = angular.IScope;
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;

@@ -9,7 +9,6 @@
     "core-js": "github:DefinitelyTyped/DefinitelyTyped/core-js/core-js.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
     "angular-gettext": "github:DefinitelyTyped/DefinitelyTyped/angular-gettext/angular-gettext.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
-    "typeahead": "github:DefinitelyTyped/DefinitelyTyped/typeahead/typeahead.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
     "change-case": "github:DefinitelyTyped/DefinitelyTyped/change-case/change-case.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
     "moment-node": "github:DefinitelyTyped/DefinitelyTyped/moment/moment-node.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
     "modernizr": "github:DefinitelyTyped/DefinitelyTyped/modernizr/modernizr.d.ts#f791d1f4763660a84d6f02117d5a70a80c5f3e49"

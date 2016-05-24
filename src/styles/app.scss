@@ -28,7 +28,6 @@ $brand-accent-dark:     #375e97;
 @import '../vendor/variables';
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../vendor/bootswatch';
-@import '../vendor/_typeaheadjs.css';
 @import '../vendor/_hexagon.css';
 @import '../../node_modules/jointjs/joint.css';
 
@@ -992,15 +991,6 @@ modal-body {
 
   textarea {
     height: 118px;
-  }
-
-  .twitter-typeahead {
-    width: 100%;
-
-    h5 {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
   }
 
   .search-selection {
