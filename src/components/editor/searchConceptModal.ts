@@ -57,7 +57,7 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(references: Reference[], model: Model, type: Type): IPromise<Concept> {
+  openSelection(references: Reference[], model: Model, type?: Type): IPromise<Concept> {
     return this.open(references, model, type, false, '');
   }
 
@@ -110,7 +110,7 @@ class SearchConceptController {
               private gettextCatalog: gettextCatalog,
               private searchConceptModal: SearchConceptModal) {
 
-    this.defineConceptTitle = `Define concept for the ${this.newEntityCreation ? 'new ' : ''}${this.type}`;
+    this.defineConceptTitle = type ? `Define concept for the ${newEntityCreation ? 'new ' : ''}${type}` : 'Search concept';
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
     this.labelTitle = `${_.capitalize(this.type)} label`;
     this.searchText = initialSearch;
@@ -240,7 +240,7 @@ class SearchConceptController {
   selectBroaderConcept() {
     const selection = this.selection;
     if (isNewConceptData(selection)) {
-      this.searchConceptModal.openSelection(this.activeReferences, this.model, this.type)
+      this.searchConceptModal.openSelection(this.activeReferences, this.model)
         .then(concept => selection.broaderConcept = concept);
     } else {
       throw new Error('Selection must be new concept data: ' + selection);
