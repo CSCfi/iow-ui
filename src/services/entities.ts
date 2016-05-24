@@ -102,7 +102,7 @@ export abstract class GraphNode {
   type: Type[];
 
   constructor(public graph: any, public context: any, public frame: any) {
-    this.type = mapGraphTypeObject(graph['@type']);
+    this.type = mapGraphTypeObject(graph);
   }
 
   isOfType(type: Type) {
@@ -958,7 +958,7 @@ export class Property extends GraphNode {
     }
 
     if (typeof graph.predicate === 'object') {
-      const types = mapGraphTypeObject(graph.predicate['@type']);
+      const types = mapGraphTypeObject(graph.predicate);
 
       if (containsAny(types, ['association'])) {
         this.predicate = new Association(graph.predicate, context, frame);
@@ -1533,8 +1533,8 @@ function deserializeUserLogin(userName: string): UserLogin {
   return userName && userName.substring('mailto:'.length);
 }
 
-function mapGraphTypeObject(types: string|string[]): Type[] {
-  return _.chain(normalizeAsArray(types))
+function mapGraphTypeObject(withType: { '@type': string|string[] }): Type[] {
+  return _.chain(normalizeAsArray(withType['@type']))
     .map(mapType)
     .reject(type => !type)
     .value();
@@ -1659,7 +1659,7 @@ export class EntityDeserializer {
 
   deserializePredicate(data: GraphData): IPromise<Attribute|Association|Predicate> {
     const entityFactory: EntityFactory<Predicate> = (framedData) => {
-      const types = mapGraphTypeObject(framedData['@graph'][0]['@type']);
+      const types = mapGraphTypeObject(framedData['@graph'][0]);
 
       if (containsAny(types, ['association'])) {
         return Association;
