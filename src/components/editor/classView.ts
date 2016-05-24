@@ -4,7 +4,6 @@ import ILogService = angular.ILogService;
 import IQService = angular.IQService;
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { ClassFormController } from './classForm';
 import { ClassService } from '../../services/classService';
 import {
   Class, GroupListItem, Model, PredicateListItem, Predicate,
@@ -37,8 +36,6 @@ mod.directive('classView', () => {
 });
 
 export class ClassViewController extends EditableEntityController<Class> {
-
-  private classForm: ClassFormController;
 
   class: Class;
   model: Model;
