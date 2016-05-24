@@ -80,10 +80,6 @@ interface EntityConstructor<T extends GraphNode> {
   new(graph: any, context: any, frame: any): T;
 }
 
-interface EntityConstructorProvider<T extends GraphNode> {
-  (graph: any): EntityConstructor<T>;
-}
-
 type EntityFactory<T extends GraphNode> = (framedData: any) => EntityConstructor<T>;
 
 export function isLocalizable(obj: any): obj is Localizable {
@@ -1528,9 +1524,9 @@ function serializeOptional<T extends GraphNode>(entity: T, clone: boolean, isDef
   return isDefined(entity) ? entity.serialize(true, clone) : null;
 }
 
-function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entityProvider: EntityConstructorProvider<T>): T {
+function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entityFactory: EntityFactory<T>): T {
   if (graph) {
-    const constructor = entityProvider(graph);
+    const constructor = entityFactory(graph);
     return new constructor(graph, context, frame);
   } else {
     return null;
@@ -1544,9 +1540,9 @@ function serializeEntityList(list: GraphNode[], clone: boolean) {
   return _.map(list, listItem => listItem.serialize(true, clone));
 }
 
-function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entityProvider: EntityConstructorProvider<T>): T[] {
+function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entityFactory: EntityFactory<T>): T[] {
   return _.map<any, T>(normalizeAsArray(list), graph => {
-    const constructor = entityProvider(graph);
+    const constructor = entityFactory(graph);
     return new constructor(graph, context, frame);
   });
 }
