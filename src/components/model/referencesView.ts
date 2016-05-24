@@ -9,6 +9,7 @@ import { ModelService } from '../../services/modelService';
 import { module as mod }  from './module';
 import { createExistsExclusion } from '../../utils/exclusion';
 import { collectProperties } from '../../utils/entity';
+import { ConceptEditorModal } from './conceptEditorModal';
 
 mod.directive('referencesView', () => {
   return {
@@ -22,6 +23,10 @@ mod.directive('referencesView', () => {
         <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addReference()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
           <span translate>Add reference</span>
+        </button>
+        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.browseConcepts()">
+          <span class="fa fa-th"></span>
+          <span translate>Browse concepts</span>
         </button>
       </h4>
       <editable-table descriptor="ctrl.descriptor" values="ctrl.model.references" expanded="ctrl.expanded"></editable-table>
@@ -45,10 +50,18 @@ class ReferencesViewController {
   expanded: boolean;
 
   /* @ngInject */
-  constructor($scope: IScope, private searchReferenceModal: SearchReferenceModal, private modelService: ModelService, private languageService: LanguageService) {
+  constructor($scope: IScope,
+              private searchReferenceModal: SearchReferenceModal,
+              private conceptEditorModal: ConceptEditorModal,
+              private modelService: ModelService,
+              private languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
       this.descriptor = new ReferenceTableDescriptor(model, languageService);
     });
+  }
+
+  browseConcepts() {
+    this.conceptEditorModal.open(this.model);
   }
 
   addReference() {

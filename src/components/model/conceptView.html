@@ -1,0 +1,10 @@
+<form name="form" class="editable-form">
+  <fieldset ng-disabled="ctrl.persisting">
+    <div ng-if="ctrl.concept && ctrl.model">
+      <editable-entity-buttons context="ctrl.model" editable-controller="ctrl">
+        <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
+      </editable-entity-buttons>
+      <concept-form concept="ctrl.concept" model="ctrl.model"></concept-form>
+    </div>
+  </fieldset>
+</form>
