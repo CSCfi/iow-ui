@@ -120,14 +120,6 @@ export abstract class GraphNode {
     return {};
   }
 
-  addKnownModelsToContext(model: Model) {
-    model.expandContextWithKnownModels(this.context);
-  }
-
-  expandContext(context: any) {
-    Object.assign(context, this.context);
-  }
-
   serialize(inline: boolean = false, clone: boolean = false): any {
     const values = Object.assign(this.graph, this.serializationValues(clone));
 

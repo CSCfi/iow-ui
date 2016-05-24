@@ -178,10 +178,8 @@ export class ClassService {
 
   getVisualizationData(model: Model, classId: Uri) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('classVisualizer'), {params: {classID: classId.uri, modelID: model.id.uri}})
-      .then(response => {
-        model.expandContext(response.data);
-        return this.entities.deserializeClassVisualization(response.data);
-      });
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializeClassVisualization(response.data));
   }
 
   getInternalOrExternalClass(id: Uri, model: Model) {
