@@ -1223,7 +1223,6 @@ export class FintoConcept extends GraphNode {
   label: Localizable;
   comment: Localizable;
   inScheme: Url[];
-  definedBy: DefinedBy;
   broaderConcept: Concept;
 
   constructor(graph: any, context: any, frame: any) {
@@ -1232,7 +1231,6 @@ export class FintoConcept extends GraphNode {
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeList<Url>(graph.inScheme);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
     this.broaderConcept = deserializeOptional(graph.broaderConcept, context, frame, resolveConceptConstructor);
   }
 
@@ -1259,7 +1257,6 @@ export class FintoConcept extends GraphNode {
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       inScheme: serializeList(this.inScheme),
-      isDefinedBy: serializeOptional(this.definedBy, clone),
       broaderConcept: serializeOptional(this.broaderConcept, clone)
     };
   }
