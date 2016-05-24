@@ -1228,6 +1228,7 @@ export class FintoConcept extends GraphNode {
   comment: Localizable;
   inScheme: Url[];
   definedBy: DefinedBy;
+  broaderConcept: Concept;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1236,6 +1237,7 @@ export class FintoConcept extends GraphNode {
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeList<Url>(graph.inScheme);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
+    this.broaderConcept = deserializeOptional(graph.broaderConcept, context, frame, resolveConceptConstructor);
   }
 
   get unsaved() {
@@ -1261,7 +1263,8 @@ export class FintoConcept extends GraphNode {
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       inScheme: serializeList(this.inScheme),
-      isDefinedBy: serializeOptional(this.definedBy, clone)
+      isDefinedBy: serializeOptional(this.definedBy, clone),
+      broaderConcept: serializeOptional(this.broaderConcept, clone)
     };
   }
 }
@@ -1284,6 +1287,7 @@ export class ConceptSuggestion extends GraphNode {
   comment: Localizable;
   inScheme: Url[];
   definedBy: DefinedBy;
+  broaderConcept: Concept;
   createdAt: Moment;
   creator: UserLogin;
 
@@ -1294,6 +1298,7 @@ export class ConceptSuggestion extends GraphNode {
     this.comment = deserializeLocalizable(graph.definition);
     this.inScheme = deserializeList<Url>(graph.inScheme);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
+    this.broaderConcept = deserializeOptional(graph.broaderConcept, context, frame, resolveConceptConstructor);
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
   }
@@ -1321,7 +1326,8 @@ export class ConceptSuggestion extends GraphNode {
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       inScheme: serializeList(this.inScheme),
-      isDefinedBy: serializeOptional(this.definedBy, clone)
+      isDefinedBy: serializeOptional(this.definedBy, clone),
+      broaderConcept: serializeOptional(this.broaderConcept, clone)
     };
   }
 }
