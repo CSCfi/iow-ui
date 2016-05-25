@@ -4,6 +4,7 @@ import {
   EntityDeserializer, Usage, GraphData, EmptyUsage, EditableEntity
 } from './entities';
 import { config } from '../config';
+import IQService = angular.IQService;
 
 export class UsageService {
   /* @ngInject */
@@ -16,6 +17,13 @@ export class UsageService {
                                               : { id:      entity.id.uri };
 
     return this.$http.get<GraphData>(config.apiEndpointWithName('usage'), {params})
-      .then(response => this.entities.deserializeUsage(response.data) || new EmptyUsage(entity));
+      .then(response => this.entities.deserializeUsage(response.data))
+      .then(usage => {
+        if (usage) {
+          return usage;
+        } else {
+          return new EmptyUsage(entity);
+        }
+      });
   }
 }
