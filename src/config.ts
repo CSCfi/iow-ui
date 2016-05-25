@@ -10,7 +10,6 @@ export interface Config {
   fintoUrl: string;
 }
 
-
 class EnvironmentConfig implements Config {
 
   apiEndpointWithName(name: string) {
@@ -38,7 +37,7 @@ class EnvironmentConfig implements Config {
   }
 
   get fintoUrl() {
-    return process.env.FINTO_URL || this.development ? 'http://dev.finto.fi/' : 'http://www.finto.fi/';
+    return process.env.FINTO_URL || 'http://dev.finto.fi/';
   }
 }
 
