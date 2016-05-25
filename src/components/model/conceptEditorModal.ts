@@ -60,7 +60,7 @@ export class ConceptEditorModalController {
       .then(concepts => {
         this.concepts = concepts;
         this.models = _.chain(concepts)
-          .filter(concept => concept instanceof ConceptSuggestion)
+          .filter(concept => concept instanceof ConceptSuggestion && !!concept.definedBy)
           .map((concept: ConceptSuggestion) => concept.definedBy)
           .uniq(definedBy => definedBy.id.uri)
           .value();
