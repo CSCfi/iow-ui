@@ -92,6 +92,15 @@ export class ConceptEditorModalController {
     this.models.sort(labelComparator);
   }
 
+  selectionEdited(concept: Concept) {
+    for (let i = 0; i < this.concepts.length; i++) {
+      if (this.concepts[i].id.equals(concept.id)) {
+        Object.assign(this.concepts[i], concept);
+        break;
+      }
+    }
+  }
+
   registerView(view: ConceptViewController) {
     this.view = view;
   }
