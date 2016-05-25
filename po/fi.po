@@ -400,7 +400,7 @@ msgid "Clear selection"
 msgstr "poista valinta"
 
 #: components/common/historyModal.html:36
-#: components/model/conceptEditorModal.html:52 translations/misc.html:148
+#: components/model/conceptEditorModal.html:53 translations/misc.html:148
 msgid "Close"
 msgstr "Sulje"
 
@@ -693,6 +693,30 @@ msgstr "Poista luokka"
 #: translations/misc.html:48
 msgid "Delete class from this library"
 msgstr "Poista luokka tästä kirjastosta"
+
+#: translations/misc.html:197
+msgid "Delete concept"
+msgstr "Poista käsite"
+
+#: translations/misc.html:198
+msgid "Delete concept from this library"
+msgstr "Poista käsite tästä kirjastosta"
+
+#: translations/misc.html:199
+msgid "Delete concept from this profile"
+msgstr "Poista käsite tästä profiilista"
+
+#: translations/misc.html:200
+msgid "Delete conceptSuggestion"
+msgstr "Poista käsite-ehdotus"
+
+#: translations/misc.html:201
+msgid "Delete conceptSuggestion from this library"
+msgstr "Poista käsite-ehdotus tästä kirjastosta"
+
+#: translations/misc.html:202
+msgid "Delete conceptSuggestion from this profile"
+msgstr "Poista käsite-ehdotus tästä profiilista"
 
 #: translations/misc.html:23
 msgid "Delete library"

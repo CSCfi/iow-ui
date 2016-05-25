@@ -81,6 +81,10 @@ export class ConceptViewController extends EditableEntityController<Concept> {
     return this.usage && all(this.usage.referrers, referrer => referrer.definedBy.id.notEquals(this.model.id));
   }
 
+  isNotInUse() {
+    return this.usage && this.usage.referrers.length === 0;
+  }
+
   rights(): Rights {
     return {
       edit: () => !this.loading && !this.isReference() && this.userService.user.isMemberOf(this.model.group),
@@ -114,7 +118,8 @@ export class ConceptViewController extends EditableEntityController<Concept> {
   }
 
   getRemoveText(): string {
-    return 'Remove concept';
+    const text = super.getRemoveText();
+    return this.isNotInUse() ? text : text + ' from this ' + this.model.normalizedType;
   }
 
   openDeleteConfirmationModal() {

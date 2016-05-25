@@ -402,7 +402,7 @@ msgid "Clear selection"
 msgstr ""
 
 #: components/common/historyModal.html:36
-#: components/model/conceptEditorModal.html:52
+#: components/model/conceptEditorModal.html:53
 #: translations/misc.html:148
 msgid "Close"
 msgstr ""
@@ -697,6 +697,30 @@ msgstr ""
 
 #: translations/misc.html:48
 msgid "Delete class from this library"
+msgstr ""
+
+#: translations/misc.html:197
+msgid "Delete concept"
+msgstr ""
+
+#: translations/misc.html:198
+msgid "Delete concept from this library"
+msgstr ""
+
+#: translations/misc.html:199
+msgid "Delete concept from this profile"
+msgstr ""
+
+#: translations/misc.html:200
+msgid "Delete conceptSuggestion"
+msgstr ""
+
+#: translations/misc.html:201
+msgid "Delete conceptSuggestion from this library"
+msgstr ""
+
+#: translations/misc.html:202
+msgid "Delete conceptSuggestion from this profile"
 msgstr ""
 
 #: translations/misc.html:23
