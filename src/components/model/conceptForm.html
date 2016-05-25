@@ -1,17 +1,30 @@
 
-<editable data-title="Concept label" context="ctrl.context">
-  <div class="input-group input-group-md">
-    <input id="conceptLabel" type="text" class="form-control" localized-input="label" ng-model="ctrl.concept.label" />
-  </div>
-</editable>
+<div class="row">
+  <div class="col-md-12">
+    <editable data-title="Concept label" context="ctrl.context">
+      <div class="input-group input-group-md">
+        <input id="conceptLabel" type="text" class="form-control" localized-input="label" ng-model="ctrl.concept.label" />
+      </div>
+    </editable>
 
-<editable data-title="Definition" context="ctrl.context">
-  <div class="input-group input-group-md">
-    <textarea id="conceptComment" class="form-control" localized-input="required" ng-model="ctrl.concept.comment"></textarea>
-  </div>
-</editable>
+    <editable data-title="Definition" context="ctrl.context">
+      <div class="input-group input-group-md">
+        <textarea id="conceptComment" class="form-control" localized-input="required" ng-model="ctrl.concept.comment"></textarea>
+      </div>
+    </editable>
 
-<subject-view subject="ctrl.concept.broaderConcept" data-title="Broader concept"></subject-view>
-<div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.concept.broaderConcept}]" ng-if="ctrl.isEditing()">
-  <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
+    <subject-view subject="ctrl.concept.broaderConcept" data-title="Broader concept"></subject-view>
+    <div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.concept.broaderConcept}]" ng-if="ctrl.isEditing()">
+      <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h4 translate>Additional information</h4>
+
+    <usage-panel entity="ctrl.concept" context="ctrl.model"></usage-panel>
+  </div>
 </div>

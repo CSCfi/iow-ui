@@ -9,7 +9,9 @@ export class UsageService {
   }
 
   getUsage(entity: EditableEntity): IPromise<Usage> {
-    const params = entity.isOfType('model') ? { model: entity.id.uri } : { id: entity.id.uri };
+    const params = entity.isOfType('model')   ? { model:   entity.id.uri }
+                 : entity.isOfType('concept') ? { concept: entity.id.uri }
+                                              : { id:      entity.id.uri };
 
     return this.$http.get<GraphData>(config.apiEndpointWithName('usage'), {params})
       .then(response => this.entities.deserializeUsage(response.data));
