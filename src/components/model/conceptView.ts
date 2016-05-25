@@ -34,6 +34,7 @@ export class ConceptViewController extends EditableEntityController<Concept> {
   model: Model;
   modelController: ConceptEditorModalController;
   usage: Usage;
+  loading: boolean = true;
 
   /* @ngInject */
   constructor($scope: EditableScope,
@@ -48,8 +49,12 @@ export class ConceptViewController extends EditableEntityController<Concept> {
     this.modelController.registerView(this);
 
     $scope.$watch(() => this.concept, concept => {
+      this.loading = true;
       if (concept) {
-        usageService.getUsage(concept).then(usage => this.usage = usage);
+        usageService.getUsage(concept).then(usage => {
+          this.usage = usage;
+          this.loading = false;
+        });
       } else {
         this.usage = null;
       }
@@ -78,8 +83,8 @@ export class ConceptViewController extends EditableEntityController<Concept> {
 
   rights(): Rights {
     return {
-      edit: () => !this.isReference() && this.userService.user.isMemberOf(this.model.group),
-      remove: () => this.isNotInUseInThisModel() && this.userService.user.isMemberOf(this.model.group)
+      edit: () => !this.loading && !this.isReference() && this.userService.user.isMemberOf(this.model.group),
+      remove: () => !this.loading && this.isNotInUseInThisModel() && this.userService.user.isMemberOf(this.model.group)
     };
   }
 
