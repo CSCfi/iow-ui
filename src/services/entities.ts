@@ -1441,7 +1441,7 @@ export class EmptyUsage implements Usage {
 
   id: Uri;
   label: Localizable;
-  referrers: Referrer[];
+  referrers: Referrer[] = [];
 
   constructor(entity: EditableEntity) {
     this.id = entity.id;
