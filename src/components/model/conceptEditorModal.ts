@@ -6,10 +6,11 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Reference } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
+import { Uri } from '../../services/uri';
 
 export class ConceptEditorModal {
 
@@ -127,6 +128,16 @@ export class ConceptEditorModalController {
   selectItem(item: Concept) {
     this.view.cancelEditing();
     this.selection = item;
+  }
+
+  nameForScheme(scheme: Reference|Uri) {
+    if (scheme instanceof Uri) {
+      return scheme.uri;
+    } else if (scheme instanceof Reference) {
+      return this.languageService.translate(scheme.label, this.model);
+    } else {
+      throw new Error('Unknown scheme type: ' + scheme);
+    }
   }
 
   close() {
