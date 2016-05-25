@@ -4,7 +4,7 @@
       <editable-entity-buttons context="ctrl.model" editable-controller="ctrl">
         <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
       </editable-entity-buttons>
-      <concept-form concept="ctrl.concept" model="ctrl.model"></concept-form>
+      <concept-form concept="ctrl.editableInEdit" model="ctrl.model"></concept-form>
     </div>
   </fieldset>
 </form>
