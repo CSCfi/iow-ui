@@ -6,7 +6,7 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
@@ -59,20 +59,27 @@ export class ConceptEditorModalController {
     conceptService.getConceptsForModel(model)
       .then(concepts => {
         this.concepts = concepts;
-
         this.models = _.chain(concepts)
           .filter(concept => concept instanceof ConceptSuggestion)
           .map((concept: ConceptSuggestion) => concept.definedBy)
           .uniq(definedBy => definedBy.id.uri)
-          .sort(comparingLocalizable<DefinedBy>(languageService.getModelLanguage(this.model), definedBy => definedBy.label))
           .value();
 
-        this.loadingResults = false;
+        this.sort();
         this.search();
+        this.loadingResults = false;
       });
 
+    $scope.$watch(() => this.languageService.getModelLanguage(this.model), lang => this.sort());
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
+  }
+
+  sort() {
+    const language = this.languageService.getModelLanguage(this.model);
+    const labelComparator = comparingLocalizable<{label: Localizable}>(language, definedBy => definedBy.label);
+    this.concepts.sort(labelComparator);
+    this.models.sort(labelComparator);
   }
 
   registerView(view: ConceptViewController) {
