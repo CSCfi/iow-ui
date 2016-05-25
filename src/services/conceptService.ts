@@ -107,8 +107,7 @@ export class ConceptService {
 
   updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any> {
     const requestParams: any = {
-      conceptID: conceptSuggestion.id.uri,
-      modelID: conceptSuggestion.definedBy.id.uri
+      conceptID: conceptSuggestion.id.uri
     };
 
     return this.$http.post<GraphData>(config.apiEndpointWithName('conceptSuggestion'), conceptSuggestion.serialize(), {params: requestParams});
