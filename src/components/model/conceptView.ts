@@ -3,12 +3,15 @@ import IScope = angular.IScope;
 import ILogService = angular.ILogService;
 import IQService = angular.IQService;
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Model, LanguageContext, Concept, GroupListItem, ConceptSuggestion } from '../../services/entities';
+import { Model, LanguageContext, Concept, GroupListItem, ConceptSuggestion, Usage } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { ConceptEditorModalController } from './conceptEditorModal';
+import { ConceptService } from '../../services/conceptService';
+import { UsageService } from '../../services/usageService';
+import { all } from '../../utils/array';
 
 mod.directive('conceptView', () => {
   return {
@@ -30,42 +33,53 @@ export class ConceptViewController extends EditableEntityController<Concept> {
   concept: Concept;
   model: Model;
   modelController: ConceptEditorModalController;
+  usage: Usage;
 
   /* @ngInject */
   constructor($scope: EditableScope,
               private $q: IQService,
               $log: ILogService,
               deleteConfirmationModal: DeleteConfirmationModal,
-              userService: UserService) {
+              userService: UserService,
+              private conceptService: ConceptService,
+              usageService: UsageService) {
     super($scope, $log, deleteConfirmationModal, userService);
 
     this.modelController.registerView(this);
+
+    $scope.$watch(() => this.concept, concept => {
+      if (concept) {
+        usageService.getUsage(concept).then(usage => this.usage = usage);
+      } else {
+        this.usage = null;
+      }
+    });
   }
 
   create(entity: Concept) {
-    // TODO
-    return this.$q.reject();
+    return this.$q.reject('Concept creation is not possible');
   }
 
   update(entity: Concept, oldId: Uri) {
-    // TODO
-    return this.$q.reject();
+    if (entity instanceof ConceptSuggestion) {
+      return this.conceptService.updateConceptSuggestion(entity);
+    } else {
+      return this.$q.reject('Entity must be instance of ConceptSuggestion');
+    }
   }
 
   remove(entity: Concept) {
-    // TODO
-    return this.$q.reject();
+    return this.conceptService.deleteConceptFromModel(entity, this.model);
   }
 
-  isNotInUse() {
-    // TODO
-    return true;
+  isNotInUseInThisModel() {
+    return this.usage && all(this.usage.referrers, referrer => referrer.definedBy.id.notEquals(this.model.id));
   }
 
   rights(): Rights {
     return {
       edit: () => !this.isReference() && this.userService.user.isMemberOf(this.model.group),
-      remove: () => this.isNotInUse() && this.userService.user.isMemberOf(this.model.group)
+      remove: () => this.isNotInUseInThisModel() && this.userService.user.isMemberOf(this.model.group)
     };
   }
 

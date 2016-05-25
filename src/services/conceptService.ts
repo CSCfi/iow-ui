@@ -104,4 +104,21 @@ export class ConceptService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelConcepts'), {params: {model: model.id.uri}})
       .then(response => this.entities.deserializeConcepts(response.data));
   }
+
+  updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any> {
+    const requestParams: any = {
+      conceptID: conceptSuggestion.id.uri,
+      modelID: conceptSuggestion.definedBy.id.uri
+    };
+
+    return this.$http.post<GraphData>(config.apiEndpointWithName('conceptSuggestion'), conceptSuggestion.serialize(), {params: requestParams});
+  }
+
+  deleteConceptFromModel(concept: Concept, model: Model): IHttpPromise<any> {
+    const requestParams = {
+      id: concept.id.uri,
+      model: model.id.uri
+    };
+    return this.$http.delete(config.apiEndpointWithName('modelConcepts'), {params: requestParams});
+  }
 }
