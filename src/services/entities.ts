@@ -1557,8 +1557,8 @@ function serializeEntityList(list: GraphNode[], clone: boolean) {
 }
 
 function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entityFactory: EntityFactory<T>): T[] {
-  return _.map<any, T>(normalizeAsArray(list), graph => {
-    const constructor = entityFactory(graph);
+  return _.map(normalizeAsArray(list), (graph: any) => {
+    const constructor: EntityConstructor<T> = entityFactory(graph);
     return new constructor(graph, context, frame);
   });
 }
