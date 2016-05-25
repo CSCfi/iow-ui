@@ -25,10 +25,10 @@ import { Uri, Url } from './uri';
 import { DataType } from './dataTypes';
 import { identity } from '../utils/function';
 
-export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392');
+export const jhsMetaId = new Uri('http://jhsmeta.fi/skos/');
+export const asiaConceptId = new Uri(jhsMetaId.uri + 'J392');
 export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK');
 export const jhsGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#JHS');
-export const jhsMetaId = new Uri('http://www.finto.fi/jhsmeta');
 
 export type Resolvable<T> = IPromise<T>|(() => IPromise<T>);
 export type UriResolvable<T extends { id: Uri }> = Url|IPromise<T>|(() => IPromise<T>);
