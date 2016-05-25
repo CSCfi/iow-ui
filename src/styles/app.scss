@@ -938,6 +938,12 @@ ajax-loading-indicator-small {
   z-index: 1000;
 }
 
+modal-body {
+  .top-actions {
+    padding: 0 0 10px 0;
+  }
+}
+
 .top-actions {
   @include clearfix;
 
