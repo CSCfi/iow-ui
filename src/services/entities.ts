@@ -26,6 +26,7 @@ const isoDateFormat = 'YYYY-MM-DDTHH:mm:ssz';
 
 export interface EditableEntity {
   id: Uri;
+  label: Localizable;
   normalizedType: Type;
   isOfType(type: Type): boolean;
   unsaved: boolean;
@@ -1414,7 +1415,13 @@ export class SearchResult extends GraphNode {
   }
 }
 
-export class Usage extends GraphNode {
+export interface Usage {
+  id: Uri;
+  label: Localizable;
+  referrers: Referrer[];
+}
+
+export class DefaultUsage extends GraphNode implements Usage {
 
   id: Uri;
   label: Localizable;
@@ -1427,6 +1434,18 @@ export class Usage extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
     this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, () => Referrer);
+  }
+}
+
+export class EmptyUsage implements Usage {
+
+  id: Uri;
+  label: Localizable;
+  referrers: Referrer[];
+
+  constructor(entity: EditableEntity) {
+    this.id = entity.id;
+    this.label = entity.label;
   }
 }
 
@@ -1790,7 +1809,7 @@ export class EntityDeserializer {
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {
-    return frameAndMap(this.$log, data, frames.usageFrame, (framedData) => Usage);
+    return frameAndMap(this.$log, data, frames.usageFrame, (framedData) => DefaultUsage);
   }
 
   deserializeVersion(data: GraphData): IPromise<Activity> {
