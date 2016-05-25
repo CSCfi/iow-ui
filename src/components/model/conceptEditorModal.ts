@@ -73,6 +73,16 @@ export class ConceptEditorModalController {
     $scope.$watch(() => this.languageService.getModelLanguage(this.model), lang => this.sort());
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
+
+    $scope.$on('modal.closing', event => {
+      if (this.editInProgress()) {
+        event.preventDefault();
+        this.confirmationModal.openEditInProgress().then(() => {
+          this.view.cancelEditing();
+          this.$uibModalInstance.close();
+        });
+      }
+    });
   }
 
   sort() {
@@ -111,10 +121,6 @@ export class ConceptEditorModalController {
   }
 
   close() {
-    if (this.editInProgress()) {
-      this.confirmationModal.openEditInProgress().then(() => this.$uibModalInstance.close());
-    } else {
-      this.$uibModalInstance.close();
-    }
+    this.$uibModalInstance.close();
   }
 }
