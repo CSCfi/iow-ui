@@ -1317,8 +1317,8 @@ export class ConceptSuggestion extends GraphNode {
   serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
-      label: serializeLocalizable(this.label),
-      comment: serializeLocalizable(this.comment),
+      prefLabel: serializeLocalizable(this.label),
+      definition: serializeLocalizable(this.comment),
       inScheme: serializeList(this.inScheme),
       isDefinedBy: serializeOptional(this.definedBy, clone),
       broaderConcept: serializeOptional(this.broaderConcept, clone)
