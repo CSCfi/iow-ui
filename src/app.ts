@@ -10,6 +10,7 @@ import IRoute = angular.route.IRoute;
 import IRouteProvider = angular.route.IRouteProvider;
 import IRouteService = angular.route.IRouteService;
 import IQService = angular.IQService;
+import ITooltipProvider = angular.ui.bootstrap.ITooltipProvider;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import './shim';
 import * as jQuery from 'jquery';
@@ -54,11 +55,20 @@ const mod = angular.module('iow-ui', [
 
 mod.config(routeConfig);
 
-mod.config(($routeProvider: IRouteProvider, $logProvider: ILogProvider, $compileProvider: ICompileProvider, $animateProvider: IAnimateProvider) => {
+mod.config(($routeProvider: IRouteProvider,
+            $logProvider: ILogProvider,
+            $compileProvider: ICompileProvider,
+            $animateProvider: IAnimateProvider,
+            $uibTooltipProvider: ITooltipProvider) => {
+
   $logProvider.debugEnabled(false);
+
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);
+
   // disable angular-animate framework when 'ng-animate-disabled' class is added to animated element
   $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
+
+  $uibTooltipProvider.options({ appendToBody: true });
 });
 
 mod.run((gettextCatalog: gettextCatalog) => gettextCatalog.debug = true);
