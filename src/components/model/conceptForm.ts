@@ -3,11 +3,10 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Model, Concept, Reference } from '../../services/entities';
+import { Model, Concept } from '../../services/entities';
 import { ConceptViewController } from './conceptView';
-import { LanguageService } from '../../services/languageService';
-import { module as mod }  from './module';
 import { SearchConceptModal } from '../editor/searchConceptModal';
+import { module as mod }  from './module';
 
 mod.directive('conceptForm', () => {
   return {
@@ -33,15 +32,7 @@ export class ConceptFormController {
   model: Model;
   isEditing: () => boolean;
 
-  constructor(private searchConceptModal: SearchConceptModal, private languageService: LanguageService, private gettextCatalog: gettextCatalog) {
-  }
-
-  translateReference(reference: Reference) {
-    if (reference.local) {
-      return this.gettextCatalog.getString('Internal vocabulary');
-    } else {
-      return this.languageService.translate(reference.label, this.model);
-    }
+  constructor(private searchConceptModal: SearchConceptModal) {
   }
 
   selectBroaderConcept() {
