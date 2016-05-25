@@ -21,6 +21,13 @@
     <div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.concept.broaderConcept}]" ng-if="ctrl.isEditing()">
       <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
     </div>
+
+    <div class="editable-wrap form-group">
+      <editable-label data-title="'Vocabulary'"></editable-label>
+      <a ng-repeat="scheme in ctrl.concept.inScheme" ng-href="{{scheme.uri}}">{{scheme.uri}}<span ng-show="!$last">, </span></a>
+    </div>
+
+    <defined-by entity="ctrl.concept" model="ctrl.model"></defined-by>
   </div>
 </div>
 
