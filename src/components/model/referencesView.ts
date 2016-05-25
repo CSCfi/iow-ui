@@ -86,7 +86,7 @@ class ReferenceTableDescriptor extends TableDescriptor<Reference> {
 
   columnDescriptors(references: Reference[]): ColumnDescriptor<Reference>[] {
     return [
-      { headerName: 'Identifier', nameExtractor: reference => reference.vocabularyId, cssClass: 'prefix', hrefExtractor: reference => reference.id.uri},
+      { headerName: 'Identifier', nameExtractor: reference => reference.vocabularyId, cssClass: 'prefix', hrefExtractor: reference => reference.href},
       { headerName: 'Vocabulary name', nameExtractor: reference => this.languageService.translate(reference.label, this.model)}
     ];
   }
