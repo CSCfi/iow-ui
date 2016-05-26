@@ -1276,7 +1276,7 @@ export class ConceptSuggestion extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: Reference;
+  inScheme: Reference|Uri;
   definedBy: DefinedBy;
   broaderConcept: Concept;
   createdAt: Moment;
@@ -1287,7 +1287,7 @@ export class ConceptSuggestion extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
-    this.inScheme = deserializeEntity(graph.inScheme, context, frame, () => Reference);
+    this.inScheme = deserializeEntityOrId(graph.inScheme, context, frame, () => Reference);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
     this.broaderConcept = deserializeOptional(graph.broaderConcept, context, frame, resolveConceptConstructor);
     this.createdAt = deserializeDate(graph.atTime);
@@ -1320,7 +1320,7 @@ export class ConceptSuggestion extends GraphNode {
       '@id': this.id.uri,
       prefLabel: serializeLocalizable(this.label),
       definition: serializeLocalizable(this.comment),
-      inScheme: this.inScheme.serialize(true, clone),
+      inScheme: serializeEntityOrId(this.inScheme, clone),
       isDefinedBy: serializeOptional(this.definedBy, clone),
       broaderConcept: serializeOptional(this.broaderConcept, clone)
     };
