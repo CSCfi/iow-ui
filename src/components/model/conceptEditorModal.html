@@ -38,7 +38,9 @@
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
           <h5>{{searchResult | translateLabel: ctrl.model}}</h5>
           <p>{{searchResult.definedBy | translateLabel: ctrl.model}}</p>
-          <p><span ng-repeat="scheme in searchResult.inScheme">{{ctrl.nameForScheme(scheme)}}<span ng-show="!$last">, </span></span></p>
+          <p ng-init="schemes = searchResult.getSchemes(ctrl.localizer)">
+            <span ng-repeat="scheme in schemes">{{scheme.name}}<span ng-show="!$last">, </span></span>
+          </p>
         </search-results>
       </div>
 

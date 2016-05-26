@@ -5,12 +5,11 @@ import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
-import { LanguageService } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Reference } from '../../services/entities';
+import { LanguageService, Localizer } from '../../services/languageService';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
-import { Uri } from '../../services/uri';
 
 export class ConceptEditorModal {
 
@@ -46,15 +45,17 @@ export class ConceptEditorModalController {
   editInProgress = () => this.view.isEditing();
 
   view: ConceptViewController;
+  localizer: Localizer;
 
   /* @ngInject */
   constructor(private $scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
-              private languageService: LanguageService,
+              languageService: LanguageService,
               private conceptService: ConceptService,
               private confirmationModal: ConfirmationModal,
               private model: Model) {
 
+    this.localizer = languageService.createLocalizer(model);
     this.loadingResults = true;
 
     conceptService.getConceptsForModel(model)
@@ -71,7 +72,7 @@ export class ConceptEditorModalController {
         this.loadingResults = false;
       });
 
-    $scope.$watch(() => this.languageService.getModelLanguage(this.model), lang => this.sort());
+    $scope.$watch(() => this.localizer.language, lang => this.sort());
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
 
@@ -87,8 +88,7 @@ export class ConceptEditorModalController {
   }
 
   sort() {
-    const language = this.languageService.getModelLanguage(this.model);
-    const labelComparator = comparingLocalizable<{label: Localizable}>(language, definedBy => definedBy.label);
+    const labelComparator = comparingLocalizable<{label: Localizable}>(this.localizer.language, definedBy => definedBy.label);
     this.concepts.sort(labelComparator);
     this.models.sort(labelComparator);
   }
@@ -122,7 +122,7 @@ export class ConceptEditorModalController {
   }
 
   private localizedLabelAsLower(concept: Concept): string {
-    return this.languageService.translate(concept.label, this.model).toLowerCase();
+    return this.localizer.translate(concept.label).toLowerCase();
   }
 
   selectItem(item: Concept) {
@@ -130,17 +130,8 @@ export class ConceptEditorModalController {
     this.selection = item;
   }
 
-  nameForScheme(scheme: Reference|Uri) {
-    if (scheme instanceof Uri) {
-      return scheme.uri;
-    } else if (scheme instanceof Reference) {
-      return this.languageService.translate(scheme.label, this.model);
-    } else {
-      throw new Error('Unknown scheme type: ' + scheme);
-    }
-  }
-
   close() {
     this.$uibModalInstance.close();
   }
 }
+

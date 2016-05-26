@@ -19,6 +19,8 @@ import {
   normalizeReferrerType
 } from '../utils/type';
 import { identity } from '../utils/function';
+// TODO entities should not depend on services
+import { Localizer } from './languageService';
 
 const jsonld: any = require('jsonld');
 
@@ -1247,6 +1249,10 @@ export class FintoConcept extends GraphNode {
     return false;
   }
 
+  getSchemes(localizer: Localizer) {
+    return _.map(this.inScheme, scheme => new SchemeNameHref(scheme, localizer));
+  }
+
   clone(): FintoConcept {
     const serialization = this.serialize(false, true);
     return new FintoConcept(serialization['@graph'], serialization['@context'], this.frame);
@@ -1269,7 +1275,7 @@ export class ConceptSuggestion extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: (Reference|Uri)[];
+  inScheme: Reference;
   definedBy: DefinedBy;
   broaderConcept: Concept;
   createdAt: Moment;
@@ -1280,7 +1286,7 @@ export class ConceptSuggestion extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
-    this.inScheme = deserializeEntityOrIdList(graph.inScheme, context, frame, () => Reference);
+    this.inScheme = deserializeEntity(graph.inScheme, context, frame, () => Reference);
     this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
     this.broaderConcept = deserializeOptional(graph.broaderConcept, context, frame, resolveConceptConstructor);
     this.createdAt = deserializeDate(graph.atTime);
@@ -1299,6 +1305,10 @@ export class ConceptSuggestion extends GraphNode {
     return true;
   }
 
+  getSchemes(localizer: Localizer) {
+    return [new SchemeNameHref(this.inScheme, localizer)];
+  }
+
   clone(): ConceptSuggestion {
     const serialization = this.serialize(false, true);
     return new ConceptSuggestion(serialization['@graph'], serialization['@context'], this.frame);
@@ -1309,10 +1319,31 @@ export class ConceptSuggestion extends GraphNode {
       '@id': this.id.uri,
       prefLabel: serializeLocalizable(this.label),
       definition: serializeLocalizable(this.comment),
-      inScheme: serializeEntityOrIdList(this.inScheme, clone),
+      inScheme: this.inScheme.serialize(true, clone),
       isDefinedBy: serializeOptional(this.definedBy, clone),
       broaderConcept: serializeOptional(this.broaderConcept, clone)
     };
+  }
+}
+
+export class SchemeNameHref {
+
+  id: Uri;
+  href: Url;
+  name: string;
+
+  constructor(scheme: Reference|Uri, localizer: Localizer) {
+    if (scheme instanceof Uri) {
+      this.id = scheme;
+      this.href = scheme.uri;
+      this.name = scheme.uri;
+    } else if (scheme instanceof Reference) {
+      this.id = scheme.id;
+      this.href = scheme.href;
+      this.name = localizer.translate(scheme.label);
+    } else {
+      throw new Error('Unknown scheme type: ' + scheme);
+    }
   }
 }
 
@@ -1518,7 +1549,7 @@ function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
   return new Map(items.map<[Urn, number]>((item: T, index: number) => [item.id, index]));
 }
 
-function resolveConceptConstructor(graph: any) {
+function resolveConceptConstructor(graph: any): EntityConstructor<Concept> {
   return isConceptSuggestionGraph(graph) ? ConceptSuggestion : FintoConcept;
 }
 
@@ -1553,26 +1584,31 @@ function serializeEntityList(list: GraphNode[], clone: boolean) {
 function serializeEntityOrIdList(list: (GraphNode|Uri)[], clone: boolean) {
   if (list.length === 0) {
     return null;
+  } else {
+    return _.map(list, item => serializeEntityOrId(item, clone));
   }
-  return _.map(list, item => {
-    if (item instanceof GraphNode) {
-      return item.serialize(true, clone);
-    } else if (item instanceof Uri) {
-      return item.uri;
-    } else {
-      throw new Error('Item must be instance of GraphNode or Uri');
-    }
-  });
+}
+
+function serializeEntityOrId(data: GraphNode|Uri, clone: boolean) {
+  if (data instanceof GraphNode) {
+    return data.serialize(true, clone);
+  } else if (data instanceof Uri) {
+    return data.uri;
+  } else {
+    throw new Error('Item must be instance of GraphNode or Uri');
+  }
 }
 
 function deserializeEntityOrIdList<T extends GraphNode>(list: any, context: any, frame: any, entityFactory: EntityFactory<T>): (T|Uri)[] {
-  return deserializeList(list, item => {
-    if (typeof item === 'object') {
-      return deserializeEntity(item, context, frame, entityFactory);
-    } else {
-      return new Uri(item, context);
-    }
-  });
+  return deserializeList(list, item => deserializeEntityOrId(item, context, frame, entityFactory));
+}
+
+function deserializeEntityOrId<T extends GraphNode>(data: any, context: any, frame: any, entityFactory: EntityFactory<T>): T|Uri {
+  if (typeof data === 'object') {
+    return deserializeEntity(data, context, frame, entityFactory);
+  } else {
+    return new Uri(data, context);
+  }
 }
 
 function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entityFactory: EntityFactory<T>): T[] {
