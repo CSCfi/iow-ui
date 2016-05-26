@@ -3,11 +3,12 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Model, Concept, SchemeNameHref } from '../../services/entities';
+import { Model, Concept, SchemeNameHref, ConceptSuggestion, Reference } from '../../services/entities';
 import { ConceptViewController } from './conceptView';
 import { SearchConceptModal } from '../editor/searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { module as mod }  from './module';
+import { Uri } from '../../services/uri';
 
 mod.directive('conceptForm', () => {
   return {
@@ -37,7 +38,23 @@ export class ConceptFormController {
 
   constructor($scope: IScope, private searchConceptModal: SearchConceptModal, private languageService: LanguageService) {
     this.localizer = languageService.createLocalizer(this.model);
+    $scope.$watch(() => this.concept, concept => {
+
+      const scheme = concept.inScheme;
+      const schemeId = scheme instanceof Reference ? scheme.id : <Uri> scheme;
+
+      for (const reference of this.model.references) {
+        if (reference.id.equals(schemeId)) {
+          concept.inScheme = reference;
+          break;
+        }
+      }
+    });
     $scope.$watch(() => this.concept.inScheme, () => this.schemes = this.concept.getSchemes());
+  }
+
+  isSchemeEditable() {
+    return this.concept instanceof ConceptSuggestion;
   }
 
   selectBroaderConcept() {

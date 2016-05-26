@@ -22,11 +22,28 @@
       <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
     </div>
 
-    <div ng-show="ctrl.schemes.length > 0" class="editable-wrap form-group">
+    <div ng-if="ctrl.schemes.length > 0 && !ctrl.isSchemeEditable()" class="editable-wrap form-group">
       <editable-label data-title="'Vocabulary'"></editable-label>
       <div ng-repeat="scheme in ctrl.schemes">
         <a ng-if="scheme.href" ng-href="{{scheme.href}}">{{scheme.getLocalizedName(ctrl.localizer)}}<span ng-show="!$last">, </span></a>
         <span ng-if="!scheme.href">{{scheme.getLocalizedName(ctrl.localizer)}}<span ng-show="!$last">, </span></span>
+      </div>
+    </div>
+
+    <div ng-if="ctrl.isSchemeEditable()">
+
+      <div class="editable-wrap form-group">
+        <editable-label data-title="'Vocabulary'" input-id="vocabulary" required="'true'"></editable-label>
+        <div ng-if="ctrl.isEditing()">
+          <select id="vocabulary" class="form-control" required ng-model="ctrl.concept.inScheme"
+                  ng-options="(reference | translateLabel: ctrl.model) for reference in ctrl.model.references | filter: !reference.local">
+          </select>
+        </div>
+
+        <div ng-if="!ctrl.isEditing()">
+          <span ng-if="ctrl.concept.inScheme.local" translate>Internal vocabulary</span>
+          <a ng-if="!ctrl.concept.inScheme.local" ng-href="{{ctrl.concept.inScheme.href}}">{{ctrl.concept.inScheme | translateLabel: ctrl.model}}</a>
+        </div>
       </div>
     </div>
 
