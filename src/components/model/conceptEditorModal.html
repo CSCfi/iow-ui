@@ -18,6 +18,7 @@
 
         <div class="search-filters">
           <span class="title" translate>Filter results</span>
+
           <div class="form-group">
             <label for="model" translate>Defined by</label>
             <div class="input-group input-group-md">
@@ -25,6 +26,18 @@
                 <select id="model" class="form-control" ng-model="ctrl.showModel"
                         ng-options="(model | translateLabel: ctrl.model) for model in ctrl.models">
                   <option value="" translate>All models</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="model" translate>Vocabulary</label>
+            <div class="input-group input-group-md">
+              <div class="selectContainer">
+                <select id="vocabulary" class="form-control" ng-model="ctrl.showReference"
+                        ng-options="(reference | translateLabel: ctrl.model) for reference in ctrl.references">
+                  <option value="" translate>All references</option>
                 </select>
               </div>
             </div>

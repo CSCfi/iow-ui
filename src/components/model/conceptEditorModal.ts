@@ -6,10 +6,11 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Reference } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
+import { any } from '../../utils/array';
 
 export class ConceptEditorModal {
 
@@ -38,7 +39,9 @@ export class ConceptEditorModalController {
   selection: Concept;
 
   models: DefinedBy[] = [];
+  references: Reference[] = [];
   showModel: DefinedBy;
+  showReference: Reference;
   searchText: string = '';
 
   loadingResults: boolean;
@@ -67,6 +70,13 @@ export class ConceptEditorModalController {
           .uniq(definedBy => definedBy.id.uri)
           .value();
 
+        this.references = _.chain(concepts)
+          .map(concept => concept.inScheme)
+          .flatten()
+          .filter(scheme => scheme instanceof Reference)
+          .uniq(scheme => scheme.id)
+          .value();
+
         this.sort();
         this.search();
         this.loadingResults = false;
@@ -75,6 +85,7 @@ export class ConceptEditorModalController {
     $scope.$watch(() => this.localizer.language, lang => this.sort());
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
+    $scope.$watch(() => this.showReference, () => this.search());
 
     $scope.$on('modal.closing', event => {
       if (this.editInProgress()) {
@@ -109,7 +120,8 @@ export class ConceptEditorModalController {
   search() {
     this.searchResults = this.concepts.filter(concept =>
       this.textFilter(concept) &&
-      this.modelFilter(concept)
+      this.modelFilter(concept) &&
+      this.referenceFilter(concept)
     );
   }
 
@@ -119,6 +131,10 @@ export class ConceptEditorModalController {
 
   private modelFilter(concept: Concept): boolean {
     return !this.showModel || concept instanceof ConceptSuggestion && concept.definedBy.id.equals(this.showModel.id);
+  }
+
+  private referenceFilter(concept: Concept): boolean {
+    return !this.showReference || any(concept.getSchemes(), scheme => scheme.id.equals(this.showReference.id));
   }
 
   private localizedLabelAsLower(concept: Concept): string {
