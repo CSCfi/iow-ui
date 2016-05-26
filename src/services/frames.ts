@@ -182,7 +182,12 @@ export function classListFrame(data: any): Frame {
 
 export function iowConceptFrame(data: any): Frame {
   return frame(data, conceptContext, {
-    inScheme: {},
+    '@type': 'skos:Concept',
+    inScheme: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    },
     isDefinedBy: {
       '@omitDefault': true,
       '@default': [],

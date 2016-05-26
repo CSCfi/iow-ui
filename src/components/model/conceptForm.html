@@ -22,7 +22,7 @@
       <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
     </div>
 
-    <div class="editable-wrap form-group">
+    <div ng-show="ctrl.schemes.length > 0" class="editable-wrap form-group">
       <editable-label data-title="'Vocabulary'"></editable-label>
       <a ng-repeat="scheme in ctrl.schemes" ng-href="{{scheme.href}}">{{scheme.name}}<span ng-show="!$last">, </span></a>
     </div>
