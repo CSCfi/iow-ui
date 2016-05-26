@@ -23,26 +23,52 @@ export const availableLanguages: Language[] =
 export const availableUILanguages: Language[] = ['fi', 'en'];
 
 
-export function translate(data: Localizable, language: Language, languages?: Language[]): string {
-  function localized(lang: Language, showLang: boolean): string {
-    let localization = data[lang];
+function localize(localizable: Localizable, lang: Language, showLang: boolean): string {
 
-    if (Array.isArray(localization)) {
-      localization = Array.join(localization, ' ');
-    }
+  let localization = localizable ? localizable[lang] : '';
 
-    if (!localization) {
-      return '';
-    } else {
-      return localization + (showLang ? ` (${lang})` : '');
-    }
+  if (Array.isArray(localization)) {
+    localization = Array.join(localization, ' ');
   }
 
-  if (!data || Object.keys(data).length === 0) {
+  if (!localization) {
+    return '';
+  } else {
+    return localization + (showLang ? ` (${lang})` : '');
+  }
+}
+
+export function translateAny(localizable: Localizable, showLanguage: boolean = false) {
+  if (!hasLocalization(localizable)) {
+    return '';
+  } else {
+    return localize(localizable, Object.keys(localizable)[0], showLanguage);
+  }
+}
+
+export function translate(data: Localizable, language: Language, supportedLanguages?: Language[]): string {
+
+  if (!hasLocalization(data)) {
     return '';
   }
 
-  return localized(language, false) || _.find(_.map(languages || availableLanguages, lang => localized(lang, true)), _.identity) || localized(Object.keys(data)[0], true);
+  const localizationForActiveLanguage = localize(data, language, false);
+
+  if (localizationForActiveLanguage) {
+    return localizationForActiveLanguage;
+  } else if (supportedLanguages) {
+
+    for (const supportedLanguage of supportedLanguages) {
+
+      const localization = localize(data, supportedLanguage, true);
+
+      if (localization) {
+        return localization;
+      }
+    }
+  }
+
+  return translateAny(data, true);
 }
 
 export function isLocalizationDefined(localizationKey: string, localized: string) {
