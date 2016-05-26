@@ -11,7 +11,7 @@ import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
-import { Language, hasLocalization, translateAny } from '../utils/language';
+import { Language, hasLocalization } from '../utils/language';
 import { containsAny, normalizeAsArray, swapElements, contains } from '../utils/array';
 import { glyphIconClassForType } from '../utils/entity';
 import {
@@ -21,6 +21,7 @@ import {
 import { identity } from '../utils/function';
 // TODO entities should not depend on services
 import { Localizer } from './languageService';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const jsonld: any = require('jsonld');
 
@@ -1249,8 +1250,8 @@ export class FintoConcept extends GraphNode {
     return false;
   }
 
-  getSchemes(localizer?: Localizer) {
-    return _.map(this.inScheme, scheme => new SchemeNameHref(scheme, localizer));
+  getSchemes() {
+    return _.map(this.inScheme, scheme => new SchemeNameHref(scheme));
   }
 
   clone(): FintoConcept {
@@ -1305,8 +1306,8 @@ export class ConceptSuggestion extends GraphNode {
     return true;
   }
 
-  getSchemes(localizer?: Localizer) {
-    return [new SchemeNameHref(this.inScheme, localizer)];
+  getSchemes() {
+    return [new SchemeNameHref(this.inScheme)];
   }
 
   clone(): ConceptSuggestion {
@@ -1330,19 +1331,37 @@ export class SchemeNameHref {
 
   id: Uri;
   href: Url;
-  name: string;
+  name: string|Localizable;
 
-  constructor(scheme: Reference|Uri, localizer?: Localizer) {
+  private static internalVocabularyName = 'Internal vocabulary';
+
+  constructor(private scheme: Reference|Uri) {
     if (scheme instanceof Uri) {
       this.id = scheme;
       this.href = scheme.uri;
       this.name = scheme.uri;
     } else if (scheme instanceof Reference) {
       this.id = scheme.id;
-      this.href = scheme.href;
-      this.name = localizer ? localizer.translate(scheme.label) : translateAny(scheme.label);
+      this.href = scheme.local ? null : scheme.href;
+      this.name = scheme.label;
     } else {
       throw new Error('Unknown scheme type: ' + scheme);
+    }
+  }
+
+  getLocalizedName(localizer: Localizer, gettextCatalog: gettextCatalog) {
+    const name = this.name;
+
+    if (isLocalizable(name)) {
+      return localizer.translate(name);
+    } else if (typeof name === 'string') {
+      if (name === SchemeNameHref.internalVocabularyName) {
+        return gettextCatalog.getString(name);
+      } else {
+        return name;
+      }
+    } else {
+      throw new Error('Unsupported name: ' + name);
     }
   }
 }

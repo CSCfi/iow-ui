@@ -6,8 +6,8 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { Model, Concept, SchemeNameHref } from '../../services/entities';
 import { ConceptViewController } from './conceptView';
 import { SearchConceptModal } from '../editor/searchConceptModal';
+import { LanguageService, Localizer } from '../../services/languageService';
 import { module as mod }  from './module';
-import { LanguageService } from '../../services/languageService';
 
 mod.directive('conceptForm', () => {
   return {
@@ -33,9 +33,11 @@ export class ConceptFormController {
   model: Model;
   isEditing: () => boolean;
   schemes: SchemeNameHref[];
+  localizer: Localizer;
 
   constructor($scope: IScope, private searchConceptModal: SearchConceptModal, private languageService: LanguageService) {
-    $scope.$watch(() => this.concept.inScheme, () => this.schemes = this.concept.getSchemes(languageService.createLocalizer(this.model)));
+    this.localizer = languageService.createLocalizer(this.model);
+    $scope.$watch(() => this.concept.inScheme, () => this.schemes = this.concept.getSchemes());
   }
 
   selectBroaderConcept() {
