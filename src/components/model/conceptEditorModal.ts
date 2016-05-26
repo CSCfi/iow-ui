@@ -55,6 +55,7 @@ export class ConceptEditorModalController {
   constructor(private $scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
               languageService: LanguageService,
+              private gettextCatalog: gettextCatalog,
               private conceptService: ConceptService,
               private confirmationModal: ConfirmationModal,
               private model: Model) {
@@ -75,6 +76,7 @@ export class ConceptEditorModalController {
           .map(concept => concept.inScheme)
           .flatten()
           .filter(scheme => scheme instanceof Reference)
+          .filter(scheme => !scheme.local)
           .uniq(scheme => scheme.id)
           .value();
 
