@@ -82,10 +82,10 @@ export class ConceptService {
       .then(response => this.entities.deserializeConceptSuggestions(response.data));
   }
 
-  createConceptSuggestion(schemeId: Uri, label: string, comment: string, broaderConceptId: Uri, lang: Language, model: Model): IPromise<Uri> {
+  createConceptSuggestion(reference: Reference, label: string, comment: string, broaderConceptId: Uri, lang: Language, model: Model): IPromise<Uri> {
     return this.$http.put(config.apiEndpointWithName('conceptSuggestion'), null, {
       params: {
-        schemeID: schemeId.uri,
+        schemeID: reference.id.uri,
         label: upperCaseFirst(label),
         comment,
         lang,

@@ -280,7 +280,7 @@ class SearchConceptController {
 
     if (isNewConceptData(selection)) {
 
-      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.reference.id, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model)
+      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.reference, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model)
         .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
       if (this.newEntityCreation) {
