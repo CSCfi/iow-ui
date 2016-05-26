@@ -6,7 +6,7 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Reference } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Reference, Type } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
@@ -42,6 +42,7 @@ export class ConceptEditorModalController {
   references: Reference[] = [];
   showModel: DefinedBy;
   showReference: Reference;
+  showConceptType: Type;
   searchText: string = '';
 
   loadingResults: boolean;
@@ -86,6 +87,7 @@ export class ConceptEditorModalController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showReference, () => this.search());
+    $scope.$watch(() => this.showConceptType, () => this.search());
 
     $scope.$on('modal.closing', event => {
       if (this.editInProgress()) {
@@ -121,7 +123,8 @@ export class ConceptEditorModalController {
     this.searchResults = this.concepts.filter(concept =>
       this.textFilter(concept) &&
       this.modelFilter(concept) &&
-      this.referenceFilter(concept)
+      this.referenceFilter(concept) &&
+      this.conceptTypeFilter(concept)
     );
   }
 
@@ -135,6 +138,12 @@ export class ConceptEditorModalController {
 
   private referenceFilter(concept: Concept): boolean {
     return !this.showReference || any(concept.getSchemes(), scheme => scheme.id.equals(this.showReference.id));
+  }
+
+  private conceptTypeFilter(concept: Concept): boolean {
+    return !this.showConceptType
+      || this.showConceptType === 'conceptSuggestion' && concept.isOfType(this.showConceptType)
+      || this.showConceptType === 'concept' && !concept.isOfType('conceptSuggestion');
   }
 
   private localizedLabelAsLower(concept: Concept): string {

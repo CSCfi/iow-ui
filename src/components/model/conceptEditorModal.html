@@ -20,18 +20,6 @@
           <span class="title" translate>Filter results</span>
 
           <div class="form-group">
-            <label for="model" translate>Defined by</label>
-            <div class="input-group input-group-md">
-              <div class="selectContainer">
-                <select id="model" class="form-control" ng-model="ctrl.showModel"
-                        ng-options="(model | translateLabel: ctrl.model) for model in ctrl.models">
-                  <option value="" translate>All models</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
             <label for="model" translate>Vocabulary</label>
             <div class="input-group input-group-md">
               <div class="selectContainer">
@@ -42,6 +30,32 @@
               </div>
             </div>
           </div>
+
+          <div class="form-group">
+            <label for="model" translate>Concept state</label>
+            <div class="input-group input-group-md">
+              <div class="selectContainer">
+                <select id="conceptType" class="form-control" ng-model="ctrl.showConceptType">
+                  <option value="" translate>All states</option>
+                  <option value="concept" translate>Recommendation</option>
+                  <option value="conceptSuggestion" translate>Suggestion</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="model" translate>Suggested in</label>
+            <div class="input-group input-group-md">
+              <div class="selectContainer">
+                <select id="model" class="form-control" ng-model="ctrl.showModel"
+                        ng-options="(model | translateLabel: ctrl.model) for model in ctrl.models">
+                  <option value="" translate>All models</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
