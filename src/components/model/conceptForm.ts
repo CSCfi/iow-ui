@@ -38,7 +38,7 @@ export class ConceptFormController {
 
   constructor($scope: IScope, private searchConceptModal: SearchConceptModal, private languageService: LanguageService) {
     this.localizer = languageService.createLocalizer(this.model);
-    $scope.$watch(() => this.concept, concept => {
+    $scope.$watch(() => this.concept, (concept: Concept) => {
 
       const scheme = concept.inScheme;
       const schemeId = scheme instanceof Reference ? scheme.id : <Uri> scheme;
