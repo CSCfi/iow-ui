@@ -11,7 +11,7 @@ import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
-import { Language, hasLocalization } from '../utils/language';
+import { Language, hasLocalization, translateAny } from '../utils/language';
 import { containsAny, normalizeAsArray, swapElements, contains } from '../utils/array';
 import { glyphIconClassForType } from '../utils/entity';
 import {
@@ -1249,7 +1249,7 @@ export class FintoConcept extends GraphNode {
     return false;
   }
 
-  getSchemes(localizer: Localizer) {
+  getSchemes(localizer?: Localizer) {
     return _.map(this.inScheme, scheme => new SchemeNameHref(scheme, localizer));
   }
 
@@ -1305,7 +1305,7 @@ export class ConceptSuggestion extends GraphNode {
     return true;
   }
 
-  getSchemes(localizer: Localizer) {
+  getSchemes(localizer?: Localizer) {
     return [new SchemeNameHref(this.inScheme, localizer)];
   }
 
@@ -1332,7 +1332,7 @@ export class SchemeNameHref {
   href: Url;
   name: string;
 
-  constructor(scheme: Reference|Uri, localizer: Localizer) {
+  constructor(scheme: Reference|Uri, localizer?: Localizer) {
     if (scheme instanceof Uri) {
       this.id = scheme;
       this.href = scheme.uri;
@@ -1340,7 +1340,7 @@ export class SchemeNameHref {
     } else if (scheme instanceof Reference) {
       this.id = scheme.id;
       this.href = scheme.href;
-      this.name = localizer.translate(scheme.label);
+      this.name = localizer ? localizer.translate(scheme.label) : translateAny(scheme.label);
     } else {
       throw new Error('Unknown scheme type: ' + scheme);
     }
