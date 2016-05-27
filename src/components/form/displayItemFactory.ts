@@ -6,8 +6,14 @@ import { Localizable, isLocalizable, LanguageContext } from '../../services/enti
 import { Uri } from '../../services/uri';
 import { isString, isNumber } from '../../utils/object';
 import { isDifferentUrl } from '../../utils/angular';
+import Moment = moment.Moment;
+import * as moment from 'moment';
 
-export type Value = string|Localizable|number|Uri;
+export type Value = string|Localizable|number|Uri|Moment;
+
+function isMoment(obj: any): obj is Moment {
+  return moment.isMoment(obj);
+}
 
 export class DisplayItem {
   constructor(private $location: ILocationService,
@@ -23,7 +29,9 @@ export class DisplayItem {
   get displayValue(): string {
     const value = this.value();
 
-    if (value instanceof Uri) {
+    if (isMoment(value)) {
+      return value.format(this.gettextCatalog.getString('date format'));
+    } else if (value instanceof Uri) {
       return value.compact;
     }  else if (isLocalizable(value)) {
       return this.languageService.translate(value, this.context());

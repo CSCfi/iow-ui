@@ -22,6 +22,16 @@
   <editable-root-class ng-if="ctrl.model.isOfType('profile')" model="ctrl.model"></editable-root-class>
 
   <h4 translate>Additional information</h4>
+
+  <div class="row">
+    <div class="col-md-6">
+      <non-editable data-title="Created at" value="ctrl.model.createdAt" context="ctrl.model"></non-editable>
+    </div>
+    <div class="col-md-6">
+      <non-editable data-title="Modified at" value="ctrl.model.modifiedAt" context="ctrl.model"></non-editable>
+    </div>
+  </div>
+
   <usage-panel entity="ctrl.model"></usage-panel>
 </div>
 

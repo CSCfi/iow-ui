@@ -31,10 +31,6 @@
     <editable data-title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved" context="ctrl.model">
       <state-select id="classState" state="ctrl.class.state" model="ctrl.model"></state-select>
     </editable>
-
-    <editable data-title="Editorial note" context="ctrl.model">
-      <textarea id="editorialNote" class="form-control" localized-input="free" context="ctrl.model" ng-model="ctrl.class.editorialNote"></textarea>
-    </editable>
   </div>
 
 </div>
@@ -85,16 +81,28 @@
 
 </div>
 
+
+<h4 translate>Additional information</h4>
+
 <div class="row">
+  <div class="col-md-6">
+    <non-editable data-title="Created at" value="ctrl.class.createdAt" context="ctrl.model"></non-editable>
 
+    <editable data-title="Editorial note" context="ctrl.model">
+      <textarea id="editorialNote" class="form-control" localized-input="free" context="ctrl.model" ng-model="ctrl.class.editorialNote"></textarea>
+    </editable>
+  </div>
+  <div class="col-md-6">
+    <non-editable data-title="Modified at" value="ctrl.class.modifiedAt" context="ctrl.model"></non-editable>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-md-12">
-    <h4 translate>Additional information</h4>
-
     <div ng-show="ctrl.model.isOfType('profile') && (ctrl.class.constraint.isVisible() || ctrl.isEditing())">
       <editable-constraint constraint="ctrl.class.constraint" model="ctrl.model" class="ctrl.class"></editable-constraint>
     </div>
 
     <usage-panel entity="ctrl.class" context="ctrl.model"></usage-panel>
   </div>
-
 </div>

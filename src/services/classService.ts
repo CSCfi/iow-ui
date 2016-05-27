@@ -2,6 +2,8 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
+import * as moment from 'moment';
+import Moment = moment.Moment;
 import {
   EntityDeserializer,
   Attribute,
@@ -54,6 +56,7 @@ export class ClassService {
       .then(response => {
         klass.unsaved = false;
         klass.version = response.data.identifier;
+        klass.createdAt = moment();
       });
   }
 
@@ -68,6 +71,7 @@ export class ClassService {
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('class'), klass.serialize(), {params: requestParams})
       .then(response => {
         klass.version = response.data.identifier;
+        klass.modifiedAt = moment();
       });
   }
 

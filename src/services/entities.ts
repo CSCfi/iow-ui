@@ -2,7 +2,6 @@ import IPromise = angular.IPromise;
 import * as _ from 'lodash';
 import * as frames from './frames';
 import * as moment from 'moment';
-
 import Moment = moment.Moment;
 import { Frame } from './frames';
 import { FrameFn } from './frames';
@@ -250,6 +249,8 @@ export class Model extends AbstractModel {
   version: Urn;
   rootClass: Uri;
   language: Language[];
+  modifiedAt: Moment;
+  createdAt: Moment;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -271,6 +272,8 @@ export class Model extends AbstractModel {
       this.rootClass = new Uri(graph.rootResource, context);
     }
     this.language = deserializeList<Language>(graph.language || ['fi', 'en']);
+    this.modifiedAt = deserializeOptionalDate(graph.modified);
+    this.createdAt = deserializeDate(graph.created);
     this.copyNamespacesFromRequires();
   }
 
@@ -456,7 +459,9 @@ export class Model extends AbstractModel {
       codeLists: serializeEntityList(this.codeSchemes, clone),
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri,
-      language: serializeList(this.language)
+      language: serializeList(this.language),
+      created: serializeDate(this.createdAt),
+      modified: serializeDate(this.modifiedAt)
     };
   }
 }
@@ -733,6 +738,8 @@ export class Class extends AbstractClass {
   constraint: Constraint;
   version: Urn;
   editorialNote: Localizable;
+  modifiedAt: Moment;
+  createdAt: Moment;
 
   unsaved: boolean = false;
   external: boolean = false;
@@ -760,6 +767,8 @@ export class Class extends AbstractClass {
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
+    this.modifiedAt = deserializeOptionalDate(graph.modified);
+    this.createdAt = deserializeDate(graph.created);
   }
 
   get inUnstableState(): boolean {
@@ -810,7 +819,9 @@ export class Class extends AbstractClass {
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
       constraint: serializeOptional(this.constraint, clone, constraint => constraint.items.length > 0 || hasLocalization(constraint.comment)),
       identifier: this.version,
-      editorialNote: serializeLocalizable(this.editorialNote)
+      editorialNote: serializeLocalizable(this.editorialNote),
+      created: serializeDate(this.createdAt),
+      modified: serializeDate(this.modifiedAt)
     };
   }
 }
@@ -1136,6 +1147,8 @@ export class Predicate extends AbstractPredicate {
   equivalentProperties: Uri[];
   version: Urn;
   editorialNote: Localizable;
+  modifiedAt: Moment;
+  createdAt: Moment;
 
   unsaved: boolean = false;
   external: boolean = false;
@@ -1150,6 +1163,8 @@ export class Predicate extends AbstractPredicate {
     this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
+    this.modifiedAt = deserializeOptionalDate(graph.modified);
+    this.createdAt = deserializeDate(graph.created);
   }
 
   get inUnstableState(): boolean {
@@ -1166,7 +1181,9 @@ export class Predicate extends AbstractPredicate {
       subject: serializeOptional(this.subject, clone),
       equivalentProperty: serializeList(this.equivalentProperties, equivalentProperty => equivalentProperty.uri),
       identifier: this.version,
-      editorialNote: serializeLocalizable(this.editorialNote)
+      editorialNote: serializeLocalizable(this.editorialNote),
+      created: serializeDate(this.createdAt),
+      modified: serializeDate(this.modifiedAt)
     };
   }
 }
@@ -1386,7 +1403,7 @@ export class DefaultUser extends GraphNode implements User {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.createdAt = deserializeDate(graph.createdAt);
+    this.createdAt = deserializeDate(graph.created);
     this.modifiedAt = deserializeOptionalDate(graph.modified);
     this.adminGroups = deserializeList<Uri>(graph.isAdminOf, admin => new Uri(admin, context));
     this.memberGroups = deserializeList<Uri>(graph.isPartOf, part => new Uri(part, context));
@@ -1661,6 +1678,10 @@ function deserializeLocalizable(localizable: any) {
   }
 
   return result;
+}
+
+function serializeDate(date: Moment) {
+  return date && date.format(isoDateFormat);
 }
 
 function deserializeDate(date: any) {

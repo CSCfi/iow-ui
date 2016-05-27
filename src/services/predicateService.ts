@@ -2,6 +2,8 @@ import IHttpPromise = angular.IHttpPromise;
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
+import * as moment from 'moment';
+import Moment = moment.Moment;
 import {
   EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association
 } from './entities';
@@ -42,6 +44,7 @@ export class PredicateService {
       .then(response => {
         predicate.unsaved = false;
         predicate.version = response.data.identifier;
+        predicate.createdAt = moment();
       });
   }
 
@@ -56,6 +59,7 @@ export class PredicateService {
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
         predicate.version = response.data.identifier;
+        predicate.modifiedAt = moment();
       });
   }
 

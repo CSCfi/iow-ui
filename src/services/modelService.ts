@@ -3,6 +3,8 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _ from 'lodash';
+import * as moment from 'moment';
+import Moment = moment.Moment;
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, Reference, Require, Type, GraphData, Relation,
@@ -37,6 +39,7 @@ export class ModelService {
       .then(response => {
         model.unsaved = false;
         model.version = response.data.identifier;
+        model.createdAt = moment();
       });
   }
 
@@ -44,6 +47,7 @@ export class ModelService {
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('model'), model.serialize(), { params: { id: model.id.uri } })
       .then(response => {
         model.version = response.data.identifier;
+        model.modifiedAt = moment();
       });
   }
 
