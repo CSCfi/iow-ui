@@ -31,7 +31,7 @@ class EditableCodeSchemeSelectController {
   model: Model;
 
   /* @ngInject */
-  constructor(private searchCodeSchemeModal: SearchReferenceDataModal, private viewReferenceDataModal: ViewReferenceDataModal) {
+  constructor(private searchReferenceDataModal: SearchReferenceDataModal, private viewReferenceDataModal: ViewReferenceDataModal) {
   }
 
   browse() {
@@ -43,7 +43,7 @@ class EditableCodeSchemeSelectController {
   }
 
   selectReferenceData() {
-    this.searchCodeSchemeModal.openSelectionForProperty(this.model).then(referenceData => this.referenceData = referenceData);
+    this.searchReferenceDataModal.openSelectionForProperty(this.model).then(referenceData => this.referenceData = referenceData);
   }
 
   removeReferenceData() {
