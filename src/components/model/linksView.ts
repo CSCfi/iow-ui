@@ -16,7 +16,7 @@ mod.directive('linksView', () => {
     template: `
       <h4>
         <span translate>Related resources</span> 
-        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addRelation()" ng-show="ctrl.isEditing()">
+        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addLink()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
           <span translate>Add related resource</span>
         </button>
