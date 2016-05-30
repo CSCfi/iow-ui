@@ -599,7 +599,7 @@ export class ImportedNamespace extends GraphNode {
   }
 }
 
-export class CodeServer extends GraphNode {
+export class ReferenceDataServer extends GraphNode {
   id: Uri;
   identifier: string;
   description: Localizable;
@@ -1876,8 +1876,8 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.requireFrame, (framedData) => ImportedNamespace);
   }
 
-  deserializeCodeServers(data: GraphData): IPromise<CodeServer[]> {
-    return frameAndMapArray(this.$log, data, frames.codeServerFrame, (framedData) => CodeServer);
+  deserializeCodeServers(data: GraphData): IPromise<ReferenceDataServer[]> {
+    return frameAndMapArray(this.$log, data, frames.codeServerFrame, (framedData) => ReferenceDataServer);
   }
 
   deserializeCodeScheme(data: GraphData): IPromise<ReferenceData> {

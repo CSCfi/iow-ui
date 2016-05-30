@@ -3,7 +3,7 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
-import { ReferenceData, Model, ReferenceDataGroup, CodeServer } from '../../services/entities';
+import { ReferenceData, Model, ReferenceDataGroup, ReferenceDataServer } from '../../services/entities';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
@@ -50,10 +50,10 @@ export interface SearchCodeSchemeScope extends IScope {
 export class SearchCodeSchemeModalController {
 
   searchResults: (ReferenceData|AddNewCodeScheme)[];
-  codeServers: CodeServer[];
+  codeServers: ReferenceDataServer[];
   codeSchemes: ReferenceData[];
   codeGroups: ReferenceDataGroup[];
-  showServer: CodeServer;
+  showServer: ReferenceDataServer;
   showGroup: ReferenceDataGroup;
   searchText: string = '';
   loadingResults = true;

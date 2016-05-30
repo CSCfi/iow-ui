@@ -8,7 +8,7 @@ import Moment = moment.Moment;
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, Vocabulary, ImportedNamespace, Type, GraphData, Link,
-  ReferenceData, CodeServer, CodeValue
+  ReferenceData, ReferenceDataServer, CodeValue
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -135,17 +135,17 @@ export class ModelService {
       .then(response => this.entities.deserializeModelVisualization(response.data));
   }
 
-  getCodeServers(): IPromise<CodeServer[]> {
+  getCodeServers(): IPromise<ReferenceDataServer[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeServer'))
       .then(response => this.entities.deserializeCodeServers(response.data));
   }
 
-  getCodeSchemesForServer(server: CodeServer): IPromise<ReferenceData[]> {
+  getCodeSchemesForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
       .then(response => this.entities.deserializeCodeSchemes(response.data));
   }
 
-  getCodeSchemesForServers(servers: CodeServer[]): IPromise<ReferenceData[]> {
+  getCodeSchemesForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
     return this.$q.all(_.map(servers, server => this.getCodeSchemesForServer(server)))
       .then(schemeLists => _.flatten(schemeLists));
   }
