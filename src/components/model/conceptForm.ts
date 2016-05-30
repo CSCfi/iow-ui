@@ -3,7 +3,7 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Model, Concept, SchemeNameHref, ConceptSuggestion, Vocabulary } from '../../services/entities';
+import { Model, Concept, VocabularyNameHref, ConceptSuggestion, Vocabulary } from '../../services/entities';
 import { ConceptViewController } from './conceptView';
 import { SearchConceptModal } from '../editor/searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -33,24 +33,26 @@ export class ConceptFormController {
   concept: Concept;
   model: Model;
   isEditing: () => boolean;
-  schemes: SchemeNameHref[];
+  vocabularyNames: VocabularyNameHref[];
   localizer: Localizer;
 
   constructor($scope: IScope, private searchConceptModal: SearchConceptModal, private languageService: LanguageService) {
     this.localizer = languageService.createLocalizer(this.model);
     $scope.$watch(() => this.concept, (concept: Concept) => {
+      if (concept instanceof ConceptSuggestion) {
+        const vocabulary = concept.vocabulary;
+        const vocabularyId = vocabulary instanceof Vocabulary ? vocabulary.id : <Uri> vocabulary;
 
-      const scheme = concept.inScheme;
-      const schemeId = scheme instanceof Vocabulary ? scheme.id : <Uri> scheme;
-
-      for (const reference of this.model.vocabularies) {
-        if (reference.id.equals(schemeId)) {
-          concept.inScheme = reference;
-          break;
+        for (const vocabulary of this.model.vocabularies) {
+          if (vocabulary.id.equals(vocabularyId)) {
+            concept.vocabulary = vocabulary;
+            break;
+          }
         }
       }
+
+      this.vocabularyNames = concept.getVocabularyNames();
     });
-    $scope.$watch(() => this.concept.inScheme, () => this.schemes = this.concept.getSchemes());
   }
 
   isSchemeEditable() {

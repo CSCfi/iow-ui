@@ -39,9 +39,9 @@ export class ConceptEditorModalController {
   selection: Concept;
 
   models: DefinedBy[] = [];
-  references: Vocabulary[] = [];
+  vocabularies: Vocabulary[] = [];
   showModel: DefinedBy;
-  showReference: Vocabulary;
+  showVocabulary: Vocabulary;
   showConceptType: Type;
   searchText: string = '';
 
@@ -72,12 +72,12 @@ export class ConceptEditorModalController {
           .uniq(definedBy => definedBy.id.uri)
           .value();
 
-        this.references = _.chain(concepts)
-          .map(concept => concept.inScheme)
+        this.vocabularies = _.chain(concepts)
+          .map(concept => concept.vocabularies)
           .flatten()
           .filter(scheme => scheme instanceof Vocabulary)
-          .filter(scheme => !scheme.local)
-          .uniq(scheme => scheme.id)
+          .filter(vocabulary => !vocabulary.local)
+          .uniq(vocabulary => vocabulary.id)
           .value();
 
         this.sort();
@@ -88,7 +88,7 @@ export class ConceptEditorModalController {
     $scope.$watch(() => this.localizer.language, lang => this.sort());
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
-    $scope.$watch(() => this.showReference, () => this.search());
+    $scope.$watch(() => this.showVocabulary, () => this.search());
     $scope.$watch(() => this.showConceptType, () => this.search());
 
     $scope.$on('modal.closing', event => {
@@ -125,7 +125,7 @@ export class ConceptEditorModalController {
     this.searchResults = this.concepts.filter(concept =>
       this.textFilter(concept) &&
       this.modelFilter(concept) &&
-      this.referenceFilter(concept) &&
+      this.vocabularyFilter(concept) &&
       this.conceptTypeFilter(concept)
     );
   }
@@ -138,8 +138,8 @@ export class ConceptEditorModalController {
     return !this.showModel || concept instanceof ConceptSuggestion && concept.definedBy.id.equals(this.showModel.id);
   }
 
-  private referenceFilter(concept: Concept): boolean {
-    return !this.showReference || any(concept.getSchemes(), scheme => scheme.id.equals(this.showReference.id));
+  private vocabularyFilter(concept: Concept): boolean {
+    return !this.showVocabulary || any(concept.getVocabularyNames(), vocabulary => vocabulary.id.equals(this.showVocabulary.id));
   }
 
   private conceptTypeFilter(concept: Concept): boolean {

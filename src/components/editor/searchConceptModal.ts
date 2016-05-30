@@ -30,7 +30,7 @@ class NewConceptData {
   comment: string;
   broaderConcept: Concept;
 
-  constructor(public label: string, public reference: Vocabulary) {
+  constructor(public label: string, public vocabulary: Vocabulary) {
   }
 }
 
@@ -40,7 +40,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(references: Vocabulary[], model: Model, type: Type, newEntityCreation: boolean, initialSearch: string) {
+  private open(vocabularies: Vocabulary[], model: Model, type: Type, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -48,7 +48,7 @@ export class SearchConceptModal {
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
-        references: () => references,
+        vocabularies: () => vocabularies,
         model: () => model,
         type: () => type,
         newEntityCreation: () => newEntityCreation,
@@ -57,12 +57,12 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(references: Vocabulary[], model: Model, type?: Type): IPromise<Concept> {
-    return this.open(references, model, type, false, '');
+  openSelection(vocabularies: Vocabulary[], model: Model, type?: Type): IPromise<Concept> {
+    return this.open(vocabularies, model, type, false, '');
   }
 
-  openNewEntityCreation(references: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
-    return this.open(references, model, type, true, initialSearch);
+  openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
+    return this.open(vocabularies, model, type, true, initialSearch);
   }
 };
 
@@ -87,14 +87,14 @@ class SearchConceptController {
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
-  selectedReference: Vocabulary;
+  selectedVocabulary: Vocabulary;
   searchText: string = '';
   submitError: string;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: ConceptSearchResult|AddNewConcept;
-  references: Vocabulary[];
-  selectableReferences: Vocabulary[];
+  vocabularies: Vocabulary[];
+  selectableVocabularies: Vocabulary[];
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -104,7 +104,7 @@ class SearchConceptController {
               public type: Type,
               initialSearch: string,
               public newEntityCreation: boolean,
-              references: Vocabulary[],
+              vocabularies: Vocabulary[],
               private model: Model,
               private conceptService: ConceptService,
               private gettextCatalog: gettextCatalog,
@@ -114,40 +114,40 @@ class SearchConceptController {
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
     this.labelTitle = `${_.capitalize(this.type)} label`;
     this.searchText = initialSearch;
-    this.references = references.slice();
-    this.references.sort(this.referenceComparator);
+    this.vocabularies = vocabularies.slice();
+    this.vocabularies.sort(this.vocabularyComparator);
     this.loadingResults = true;
 
     $scope.$watch(() => this.searchText, text => this.query(text).then(() => this.search()));
-    $scope.$watch(() => this.selectedReference, () => this.query(this.searchText).then(() => this.search()));
+    $scope.$watch(() => this.selectedVocabulary, () => this.query(this.searchText).then(() => this.search()));
     $scope.$watch(() => this.queryResults, results => {
       if (results) {
-        this.selectableReferences = _.filter(references, reference => {
+        this.selectableVocabularies = _.filter(vocabularies, vocabulary => {
           for (const concept of results) {
             const exactMatch = this.localizedLabelAsLower(concept) === this.searchText.toLowerCase();
-            if (exactMatch && concept.reference.id.equals(reference.id)) {
+            if (exactMatch && concept.vocabulary.id.equals(vocabulary.id)) {
               return false;
             }
           }
           return true;
         });
 
-        this.selectableReferences.sort(this.referenceComparator);
+        this.selectableVocabularies.sort(this.vocabularyComparator);
       }
     });
   }
 
-  translateReference(reference: Vocabulary) {
-    if (reference.local) {
+  translateVocabulary(vocabulary: Vocabulary) {
+    if (vocabulary.local) {
       return this.gettextCatalog.getString('Internal vocabulary');
     } else {
-      return this.languageService.translate(reference.label, this.model);
+      return this.languageService.translate(vocabulary.label, this.model);
     }
   }
 
-  get referenceComparator() {
-    return comparingBoolean<Vocabulary>(reference => !reference.local)
-      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, reference => reference.label));
+  get vocabularyComparator() {
+    return comparingBoolean<Vocabulary>(vocabulary => !vocabulary.local)
+      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.label));
   }
 
   isSelectionConcept() {
@@ -158,8 +158,8 @@ class SearchConceptController {
     return isNewConceptData(this.selection);
   }
 
-  get activeReferences() {
-    return this.selectedReference ? [this.selectedReference] : this.references;
+  get activeVocabularies() {
+    return this.selectedVocabulary ? [this.selectedVocabulary] : this.vocabularies;
   }
 
   query(searchText: string): IPromise<any> {
@@ -167,7 +167,7 @@ class SearchConceptController {
     const language = this.languageService.getModelLanguage(this.model);
 
     if (searchText && searchText.length >= 3) {
-      return this.$q.all(_.flatten(_.map(this.activeReferences, reference => this.conceptService.searchConcepts(reference, language, searchText))))
+      return this.$q.all(_.flatten(_.map(this.activeVocabularies, vocabulary => this.conceptService.searchConcepts(vocabulary, language, searchText))))
         .then((results: ConceptSearchResult[][]) => this.queryResults = _.take(_.flatten(results), limit));
     } else {
       return this.$q.when(this.queryResults = []);
@@ -182,7 +182,7 @@ class SearchConceptController {
       const result: (ConceptSearchResult|AddNewConcept)[] = [new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew())];
 
       const conceptSearchResult = this.queryResults.filter(concept =>
-        this.showReferenceFilter(concept)
+        this.showVocabularyFilter(concept)
       );
 
       conceptSearchResult.sort(
@@ -201,8 +201,8 @@ class SearchConceptController {
     return this.languageService.translate(concept.label, this.model).toLowerCase();
   }
 
-  private showReferenceFilter(concept: ConceptSearchResult) {
-    return any(this.activeReferences, reference => concept.reference.id.equals(reference.id));
+  private showVocabularyFilter(concept: ConceptSearchResult) {
+    return any(this.activeVocabularies, vocabualry => concept.vocabulary.id.equals(vocabualry.id));
   }
 
   selectItem(item: ConceptSearchResult|AddNewConcept) {
@@ -212,7 +212,7 @@ class SearchConceptController {
     this.$scope.form.$setPristine();
 
     if (item instanceof AddNewConcept) {
-      this.selection = new NewConceptData(this.searchText, this.resolveInitialReference());
+      this.selection = new NewConceptData(this.searchText, this.resolveInitialVocabulary());
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
       const conceptPromise: IPromise<Concept> = conceptSearchResult.suggestion
@@ -240,25 +240,25 @@ class SearchConceptController {
   selectBroaderConcept() {
     const selection = this.selection;
     if (isNewConceptData(selection)) {
-      this.searchConceptModal.openSelection(this.activeReferences, this.model)
+      this.searchConceptModal.openSelection(this.activeVocabularies, this.model)
         .then(concept => selection.broaderConcept = concept);
     } else {
       throw new Error('Selection must be new concept data: ' + selection);
     }
   }
 
-  resolveInitialReference() {
-    for (const reference of this.selectableReferences) {
-      if (reference.local) {
-        return reference;
+  resolveInitialVocabulary() {
+    for (const vocabulary of this.selectableVocabularies) {
+      if (vocabulary.local) {
+        return vocabulary;
       }
     }
 
-    return this.selectableReferences[0];
+    return this.selectableVocabularies[0];
   }
 
   canAddNew() {
-    return !!this.searchText && this.selectableReferences.length > 0;
+    return !!this.searchText && this.selectableVocabularies.length > 0;
   }
 
   confirm() {
@@ -280,7 +280,7 @@ class SearchConceptController {
 
     if (isNewConceptData(selection)) {
 
-      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.reference, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model)
+      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.vocabulary, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model)
         .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
       if (this.newEntityCreation) {

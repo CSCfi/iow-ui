@@ -20,11 +20,11 @@
           <div class="search-filters">
             <span class="title" translate>Filter results</span>
             <div class="form-group">
-              <label for="reference" translate>Reference filter</label>
+              <label for="vocabulary" translate>Reference filter</label>
               <div class="input-group input-group-lg">
                 <div class="selectContainer">
-                  <select id="reference" class="form-control" ng-model="ctrl.selectedReference" ignore-dirty
-                          ng-options="ctrl.translateReference(reference) for reference in ctrl.references">
+                  <select id="vocabulary" class="form-control" ng-model="ctrl.selectedVocabulary" ignore-dirty
+                          ng-options="ctrl.translateVocabulary(vocabulary) for vocabulary in ctrl.vocabularies">
                     <option value="" translate>All references</option>
                   </select>
                 </div>
@@ -32,7 +32,7 @@
             </div>
           </div>
 
-          <a ng-show="ctrl.selectedReference && !ctrl.selectedReference.local" ng-href="{{ctrl.selectedReference.href}}" target="_blank" translate>Browse vocabulary</a>
+          <a ng-show="ctrl.selectedVocabulary && !ctrl.selectedVocabulary.local" ng-href="{{ctrl.selectedVocabulary.href}}" target="_blank" translate>Browse vocabulary</a>
         </div>
 
         <div class="col-md-4 search-results">
@@ -40,7 +40,7 @@
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
             <h5>{{searchResult | translateLabel: ctrl.model}} <span ng-show="searchResult.suggestion">({{'suggestion' | translate}})</span></h5>
-            <p>{{searchResult.reference | translateLabel: ctrl.model}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
+            <p>{{searchResult.vocabulary | translateLabel: ctrl.model}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
           </search-results>
         </div>
 
@@ -57,8 +57,8 @@
             <div ng-if="ctrl.isSelectionNewConceptData()">
 
               <editable title="Vocabulary" context="ctrl.context" autofocus>
-                <select id="referenceSelection" class="form-control" required ng-model="ctrl.selection.reference"
-                        ng-options="ctrl.translateReference(reference) for reference in ctrl.selectableReferences">
+                <select id="vocabularySelection" class="form-control" required ng-model="ctrl.selection.vocabulary"
+                        ng-options="ctrl.translateVocabulary(vocabulary) for vocabulary in ctrl.selectableVocabularies">
                 </select>
               </editable>
 
@@ -80,7 +80,7 @@
               </div>
 
               <br />
-              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selection.reference | translateLabel: ctrl.model}}</p>
+              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selection.vocabulary | translateLabel: ctrl.model}}</p>
             </div>
 
           </div>

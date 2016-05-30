@@ -23,8 +23,8 @@
             <label for="model" translate>Vocabulary</label>
             <div class="input-group input-group-md">
               <div class="selectContainer">
-                <select id="vocabulary" class="form-control" ng-model="ctrl.showReference"
-                        ng-options="(reference | translateLabel: ctrl.model) for reference in ctrl.references">
+                <select id="vocabulary" class="form-control" ng-model="ctrl.showVocabulary"
+                        ng-options="(vocabulary | translateLabel: ctrl.model) for vocabulary in ctrl.vocabularies">
                   <option value="" translate>All references</option>
                 </select>
               </div>
@@ -65,8 +65,8 @@
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
           <h5>{{searchResult | translateLabel: ctrl.model}}</h5>
           <p>{{searchResult.definedBy | translateLabel: ctrl.model}}</p>
-          <p ng-init="schemes = searchResult.getSchemes()">
-            <span ng-repeat="scheme in schemes">{{scheme.getLocalizedName(ctrl.localizer)}}<span ng-show="!$last">, </span></span>
+          <p ng-init="vocabularyNames = searchResult.getVocabularyNames()">
+            <span ng-repeat="vocabularyName in vocabularyNames">{{vocabulary.getLocalizedName(ctrl.localizer)}}<span ng-show="!$last">, </span></span>
           </p>
         </search-results>
       </div>
