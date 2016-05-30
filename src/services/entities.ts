@@ -241,7 +241,7 @@ export class Model extends AbstractModel {
   state: State;
   references: Vocabulary[];
   requires: ImportedNamespace[];
-  relations: Relation[];
+  relations: Link[];
   codeSchemes: ReferenceData[];
   unsaved: boolean = false;
   namespace: Url;
@@ -266,7 +266,7 @@ export class Model extends AbstractModel {
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.references = deserializeEntityList(graph.references, context, frame, () => Vocabulary);
     this.requires = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
-    this.relations = deserializeEntityList(graph.relations, context, frame, () => Relation);
+    this.relations = deserializeEntityList(graph.relations, context, frame, () => Link);
     this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
     if (graph.rootResource) {
@@ -301,11 +301,11 @@ export class Model extends AbstractModel {
     _.remove(this.requires, require);
   }
 
-  addRelation(relation: Relation) {
+  addRelation(relation: Link) {
     this.relations.push(relation);
   }
 
-  removeRelation(relation: Relation) {
+  removeRelation(relation: Link) {
     _.remove(this.relations, relation);
   }
 
@@ -481,7 +481,7 @@ export class Namespace {
   }
 }
 
-export class Relation extends GraphNode {
+export class Link extends GraphNode {
 
   homepage: Uri;
   title: Localizable;

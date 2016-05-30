@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import { config } from '../config';
 import {
-  EntityDeserializer, Model, ModelListItem, Vocabulary, ImportedNamespace, Type, GraphData, Relation,
+  EntityDeserializer, Model, ModelListItem, Vocabulary, ImportedNamespace, Type, GraphData, Link,
   ReferenceData, CodeServer, CodeValue
 } from './entities';
 import { upperCaseFirst } from 'change-case';
@@ -111,7 +111,7 @@ export class ModelService {
 
     const frameObject = modelFrame({ '@graph': graph, '@context': context});
 
-    return this.$q.when(new Relation(graph, context, frameObject));
+    return this.$q.when(new Link(graph, context, frameObject));
   }
 
   getAllRequires(): IPromise<ImportedNamespace[]> {

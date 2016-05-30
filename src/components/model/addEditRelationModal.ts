@@ -2,7 +2,7 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import { ModelService } from '../../services/modelService';
-import { Relation, Model } from '../../services/entities';
+import { Link, Model } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../../utils/language';
 
@@ -11,7 +11,7 @@ export class AddEditRelationModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, lang: Language, relationToEdit: Relation): IPromise<Relation> {
+  private open(model: Model, lang: Language, relationToEdit: Link): IPromise<Link> {
     return this.$uibModal.open({
       template: require('./addEditRelationModal.html'),
       size: 'small',
@@ -26,11 +26,11 @@ export class AddEditRelationModal {
     }).result;
   }
 
-  openAdd(model: Model, lang: Language): IPromise<Relation> {
+  openAdd(model: Model, lang: Language): IPromise<Link> {
     return this.open(model, lang, null);
   }
 
-  openEdit(relation: Relation, model: Model, lang: Language): IPromise<Relation> {
+  openEdit(relation: Link, model: Model, lang: Language): IPromise<Link> {
     return this.open(model, lang, relation);
   }
 }
@@ -45,7 +45,7 @@ class AddEditRelationModalController {
   cancel = this.$uibModalInstance.dismiss;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model, private relationToEdit: Relation) {
+  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model, private relationToEdit: Link) {
     this.edit = !!relationToEdit;
 
     if (relationToEdit) {
