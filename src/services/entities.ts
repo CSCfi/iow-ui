@@ -21,6 +21,7 @@ import { identity } from '../utils/function';
 // TODO entities should not depend on services
 import { Localizer } from './languageService';
 import gettextCatalog = angular.gettext.gettextCatalog;
+import { isDefined } from '../utils/object';
 
 const jsonld: any = require('jsonld');
 
@@ -272,7 +273,7 @@ export class Model extends AbstractModel {
       this.rootClass = new Uri(graph.rootResource, context);
     }
     this.language = deserializeList<Language>(graph.language || ['fi', 'en']);
-    this.modifiedAt = deserializeOptionalDate(graph.modified);
+    this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
     this.createdAt = deserializeDate(graph.created);
     this.copyNamespacesFromRequires();
   }
@@ -762,12 +763,12 @@ export class Class extends AbstractClass {
       this.properties[i].index = i;
     }
 
-    this.subject = deserializeOptional(graph.subject, context, frame, resolveConceptConstructor);
+    this.subject = deserializeOptional(graph.subject, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.equivalentClasses = deserializeList(graph.equivalentClass, equivalentClass => new Uri(equivalentClass, context));
     this.constraint = new Constraint(graph.constraint || {}, context, frame);
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
-    this.modifiedAt = deserializeOptionalDate(graph.modified);
+    this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
     this.createdAt = deserializeDate(graph.created);
   }
 
@@ -805,6 +806,8 @@ export class Class extends AbstractClass {
   }
 
   serializationValues(clone: boolean): {} {
+    const isConstraintDefined = (constraint: Constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment);
+
     return {
       '@id': this.id.uri,
       '@type': reverseMapTypeObject(this.type),
@@ -815,9 +818,9 @@ export class Class extends AbstractClass {
       versionInfo: this.state,
       isDefinedBy: this.definedBy.serialize(true),
       property: serializeEntityList(this.properties, clone),
-      subject: serializeOptional(this.subject, clone),
+      subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
-      constraint: serializeOptional(this.constraint, clone, constraint => constraint.items.length > 0 || hasLocalization(constraint.comment)),
+      constraint: serializeOptional(this.constraint, isConstraintDefined, (data) => serializeEntity(data, clone)),
       identifier: this.version,
       editorialNote: serializeLocalizable(this.editorialNote),
       created: serializeDate(this.createdAt),
@@ -953,7 +956,7 @@ export class Property extends GraphNode {
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
     this.classIn = deserializeList(graph.classIn, klass => new Uri(klass, context));
-    this.codeScheme = deserializeOptional(graph.memberOf, context, frame, () => CodeScheme);
+    this.codeScheme = deserializeOptional(graph.memberOf, (data) => deserializeEntity(data, context, frame, () => CodeScheme));
 
     if (graph.type) {
       this.predicateType = mapType(graph.type);
@@ -1086,7 +1089,7 @@ export class Property extends GraphNode {
       hasValue: this.hasValue,
       pattern: this.pattern,
       classIn: serializeList(this.classIn, classId => classId.uri),
-      memberOf: serializeOptional(this.codeScheme, clone),
+      memberOf: serializeOptional(this.codeScheme, (data) => serializeEntity(data, clone)),
       editorialNote: serializeLocalizable(this.editorialNote)
     };
   }
@@ -1159,11 +1162,11 @@ export class Predicate extends AbstractPredicate {
     if (graph.subPropertyOf) {
       this.subPropertyOf = new Uri(graph.subPropertyOf, context);
     }
-    this.subject = deserializeOptional(graph.subject, context, frame, resolveConceptConstructor);
+    this.subject = deserializeOptional(graph.subject, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
-    this.modifiedAt = deserializeOptionalDate(graph.modified);
+    this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
     this.createdAt = deserializeDate(graph.created);
   }
 
@@ -1178,7 +1181,7 @@ export class Predicate extends AbstractPredicate {
       comment: serializeLocalizable(this.comment),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf && this.subPropertyOf.uri,
-      subject: serializeOptional(this.subject, clone),
+      subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
       equivalentProperty: serializeList(this.equivalentProperties, equivalentProperty => equivalentProperty.uri),
       identifier: this.version,
       editorialNote: serializeLocalizable(this.editorialNote),
@@ -1252,7 +1255,7 @@ export class FintoConcept extends GraphNode {
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.inScheme = deserializeEntityOrIdList(graph.inScheme, context, frame, () => Reference);
-    this.broaderConcept = deserializeOptional(graph.broaderConcept, context, frame, resolveConceptConstructor);
+    this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
 
   get unsaved() {
@@ -1305,8 +1308,8 @@ export class ConceptSuggestion extends GraphNode {
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
     this.inScheme = deserializeEntityOrId(graph.inScheme, context, frame, () => Reference);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
-    this.broaderConcept = deserializeOptional(graph.broaderConcept, context, frame, resolveConceptConstructor);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
+    this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.createdAt = deserializeDate(graph.atTime);
     this.creator = deserializeUserLogin(graph.wasAssociatedWith);
   }
@@ -1338,8 +1341,8 @@ export class ConceptSuggestion extends GraphNode {
       prefLabel: serializeLocalizable(this.label),
       definition: serializeLocalizable(this.comment),
       inScheme: serializeEntityOrId(this.inScheme, clone),
-      isDefinedBy: serializeOptional(this.definedBy, clone),
-      broaderConcept: serializeOptional(this.broaderConcept, clone)
+      isDefinedBy: serializeOptional(this.definedBy, data => serializeEntity(data, clone)),
+      broaderConcept: serializeOptional(this.broaderConcept, data => serializeEntity(data, clone))
     };
   }
 }
@@ -1404,7 +1407,7 @@ export class DefaultUser extends GraphNode implements User {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.createdAt = deserializeDate(graph.created);
-    this.modifiedAt = deserializeOptionalDate(graph.modified);
+    this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
     this.adminGroups = deserializeList<Uri>(graph.isAdminOf, admin => new Uri(admin, context));
     this.memberGroups = deserializeList<Uri>(graph.isPartOf, part => new Uri(part, context));
     this.name = graph.name;
@@ -1489,7 +1492,7 @@ export class DefaultUsage extends GraphNode implements Usage {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
     this.referrers = deserializeEntityList(graph.isReferencedBy, context, frame, () => Referrer);
   }
 }
@@ -1517,7 +1520,7 @@ export class Referrer extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.definedBy = deserializeOptional(graph.isDefinedBy, context, frame, () => DefinedBy);
+    this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
     this.normalizedType = normalizeReferrerType(this.type);
   }
 
@@ -1593,16 +1596,8 @@ function isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
   return contains(mapGraphTypeObject(withType), 'conceptSuggestion');
 }
 
-function serializeOptional<T extends GraphNode>(entity: T, clone: boolean, isDefined: (entity: T) => boolean = (e: T) => !!e) {
-  return isDefined(entity) ? entity.serialize(true, clone) : null;
-}
-
-function deserializeOptional<T extends GraphNode>(graph: any, context: any, frame: any, entityFactory: EntityFactory<T>): T {
-  if (graph) {
-    return deserializeEntity(graph, context, frame, entityFactory);
-  } else {
-    return null;
-  }
+function serializeEntity<T extends GraphNode>(entity: T, clone: boolean) {
+  return entity.serialize(true, clone);
 }
 
 function deserializeEntity<T extends GraphNode>(graph: any, context: any, frame: any, entityFactory: EntityFactory<T>): T {
@@ -1681,19 +1676,23 @@ function deserializeLocalizable(localizable: any) {
 }
 
 function serializeDate(date: Moment) {
-  return date && date.format(isoDateFormat);
+  return date.format(isoDateFormat);
 }
 
 function deserializeDate(date: any) {
-  return date && moment(date, isoDateFormat);
-}
-
-function deserializeOptionalDate(date: any) {
-  return date && deserializeDate(date);
+  return moment(date, isoDateFormat);
 }
 
 function deserializeUserLogin(userName: string): UserLogin {
   return userName && userName.substring('mailto:'.length);
+}
+
+function deserializeOptional<T>(data: any, deserializer: (data: any) => T) {
+  return isDefined(data) ? deserializer(data) : null;
+}
+
+function serializeOptional<T>(data: T, serializer: (data: T) => any, isDefinedFn: (data: T) => boolean = isDefined) {
+  return isDefinedFn(data) ? serializer(data) : null;
 }
 
 function mapGraphTypeObject(withType: { '@type': string|string[] }): Type[] {
