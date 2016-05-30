@@ -91,7 +91,7 @@ const codeServerContext = Object.assign({}, coreContext, {
   description
 });
 
-const codeSchemeContext = Object.assign({}, coreContext, {
+const referenceDataContext = Object.assign({}, coreContext, {
   creator: { '@id': 'http://purl.org/dc/terms/creator' },
   description
 });
@@ -243,8 +243,8 @@ export function codeServerFrame(data: any): Frame {
   });
 }
 
-export function codeSchemeFrame(data: any): Frame {
-  return frame(data, codeSchemeContext, {
+export function referenceDataFrame(data: any): Frame {
+  return frame(data, referenceDataContext, {
     '@type': ['iow:FCodeScheme', 'dcam:VocabularyEncodingScheme'],
     isPartOf: {
       '@omitDefault': true,

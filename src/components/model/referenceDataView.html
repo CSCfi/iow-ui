@@ -1,0 +1,30 @@
+<h4 ng-if="ctrl.title">{{ctrl.title | translate}}</h4>
+
+<non-editable title="Code scheme URI" value="ctrl.referenceData.id" context="ctrl.context"></non-editable>
+<non-editable title="Code scheme name" value="ctrl.referenceData.title" context="ctrl.context"></non-editable>
+<non-editable title="Description" value="ctrl.referenceData.description" context="ctrl.context"></non-editable>
+<non-editable title="Creator" value="ctrl.referenceData.creator" context="ctrl.context"></non-editable>
+
+<br />
+
+<a ng-if="!ctrl.showCodes || ctrl.referenceData.isExternal()" ng-click="ctrl.browse()" translate>Browse code values</a>
+
+<div ng-if="ctrl.showCodes && !ctrl.referenceData.isExternal()">
+
+  <ajax-loading-indicator ng-if="!ctrl.codes" class="inline"></ajax-loading-indicator>
+
+  <table ng-if="ctrl.codes" class="table table-hover">
+    <thead>
+    <tr>
+      <th translate>Identifier</th>
+      <th translate>Title</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="code in ctrl.codes | orderBy: 'identifier'">
+      <td>{{code.identifier}}</td>
+      <td>{{code.title | translateValue: ctrl.context}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

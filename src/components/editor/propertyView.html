@@ -65,7 +65,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <editable-code-scheme-select model="ctrl.model" code-scheme="ctrl.property.codeScheme"></editable-code-scheme-select>
+    <editable-reference-data-select model="ctrl.model" reference-data="ctrl.property.referenceData"></editable-reference-data-select>
   </div>
 </div>
 
@@ -73,22 +73,22 @@
   <div class="col-md-6">
 
     <editable data-title="Example" context="ctrl.model">
-      <code-value-input-autocomplete code-scheme="ctrl.property.codeScheme" context="ctrl.model">
-        <input id="{{ctrl.property.internalId + 'example attribute'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" code-scheme="ctrl.property.codeScheme" ng-model="ctrl.property.example" />
+      <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'example attribute'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.example" />
       </code-value-input-autocomplete>
     </editable>
 
-    <editable-multiple-data-type-input data-title="Allowed values" id="{{ctrl.property.internalId + 'allowedValues'}}" input-type="ctrl.property.inputType" ng-model="ctrl.property.in" code-scheme="ctrl.property.codeScheme" context="ctrl.model"></editable-multiple-data-type-input>
+    <editable-multiple-data-type-input data-title="Allowed values" id="{{ctrl.property.internalId + 'allowedValues'}}" input-type="ctrl.property.inputType" ng-model="ctrl.property.in" reference-data="ctrl.property.referenceData" context="ctrl.model"></editable-multiple-data-type-input>
 
     <editable data-title="Default value" context="ctrl.model">
-      <code-value-input-autocomplete code-scheme="ctrl.property.codeScheme" context="ctrl.model">
-        <input id="{{ctrl.property.internalId + 'default value'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" code-scheme="ctrl.property.codeScheme" ng-model="ctrl.property.defaultValue" />
+      <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'default value'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.defaultValue" />
       </code-value-input-autocomplete>
     </editable>
 
     <editable data-title="Fixed value" context="ctrl.model">
-      <code-value-input-autocomplete code-scheme="ctrl.property.codeScheme" context="ctrl.model">
-        <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" code-scheme="ctrl.property.codeScheme" ng-model="ctrl.property.hasValue" />
+      <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.hasValue" />
       </code-value-input-autocomplete>
     </editable>
   </div>

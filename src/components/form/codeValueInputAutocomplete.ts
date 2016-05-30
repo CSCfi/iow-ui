@@ -14,7 +14,7 @@ mod.directive('codeValueInputAutocomplete', () => {
   return {
     restrict: 'E',
     scope: {
-      codeScheme: '=',
+      referenceData: '=',
       context: '='
     },
     bindToController: true,
@@ -27,7 +27,7 @@ mod.directive('codeValueInputAutocomplete', () => {
 
 export class UriInputAutocompleteController {
 
-  codeScheme: ReferenceData;
+  referenceData: ReferenceData;
   context: LanguageContext;
   localizer: Localizer;
 
@@ -35,7 +35,7 @@ export class UriInputAutocompleteController {
     this.localizer = languageService.createLocalizer(this.context);
   }
 
-  datasource = (search: string) => this.codeScheme && !this.codeScheme.isExternal() ? this.modelService.getCodeValues(this.codeScheme) : this.$q.when([]);
+  datasource = (search: string) => this.referenceData && !this.referenceData.isExternal() ? this.modelService.getReferenceDataCodes(this.referenceData) : this.$q.when([]);
 
   formatter = (codeValue: ReferenceDataCode) => `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
 

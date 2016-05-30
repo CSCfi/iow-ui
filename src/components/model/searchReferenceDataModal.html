@@ -17,11 +17,11 @@
           <div class="search-filters">
             <span class="title" translate>Filter results</span>
 
-            <div class="form-group" ng-if="!ctrl.codeSchemesFromModel">
+            <div class="form-group" ng-if="!ctrl.referenceDatasFromModel">
               <label for="server" translate>Code server</label>
               <div class="input-group input-group-md">
                 <select id="server" class="form-control" ng-model="ctrl.showServer"
-                        ng-options="(codeServer.title | translateValue: ctrl.model) for codeServer in ctrl.codeServers">
+                        ng-options="(referenceDataServer.title | translateValue: ctrl.model) for referenceDataServer in ctrl.referenceDataServers">
                   <option value="" translate>All servers</option>
                 </select>
                 <span ng-show="ctrl.showServer.description | translateValue: ctrl.model">{{ctrl.showServer.description | translateValue: ctrl.model}}</span>
@@ -32,7 +32,7 @@
               <label for="group" translate>Group</label>
               <div class="input-group input-group-md">
                 <select id="group" class="form-control" ng-model="ctrl.showGroup"
-                        ng-options="(codeGroup.title | translateValue: ctrl.model) for codeGroup in ctrl.codeGroups">
+                        ng-options="(referenceDataGroup.title | translateValue: ctrl.model) for referenceDataGroup in ctrl.referenceDataGroups">
                   <option value="" translate>All groups</option>
                 </select>
               </div>
@@ -55,7 +55,7 @@
 
         <div class="col-md-4 search-selection">
           <div ng-if="!ctrl.isSelectionFormData() && ctrl.selection">
-            <code-scheme-view title="Code scheme information" context="ctrl.model" code-scheme="ctrl.selection" show-values="true"></code-scheme-view>
+            <reference-data-view title="Code scheme information" context="ctrl.model" reference-data="ctrl.selection" show-codes="true"></reference-data-view>
           </div>
 
           <div ng-if="ctrl.isSelectionFormData()">

@@ -3,12 +3,12 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import { ReferenceData, LanguageContext } from '../../services/entities';
 
-export class ViewCodeSchemeModal {
+export class ViewReferenceDataModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(codeScheme: ReferenceData, context: LanguageContext): IPromise<any> {
+  open(referenceData: ReferenceData, context: LanguageContext): IPromise<any> {
     return this.$uibModal.open({
       template: `
         <form>
@@ -16,7 +16,7 @@ export class ViewCodeSchemeModal {
             <modal-title translate>Code scheme information</modal-title>
             
             <modal-body>
-              <code-scheme-view code-scheme="ctrl.codeScheme" context="ctrl.context" class="popup" show-values="true"></code-scheme-view>
+              <reference-data-view reference-data="ctrl.referenceData" context="ctrl.context" class="popup" show-codes="true"></reference-data-view>
             </modal-body>
             
             <modal-buttons>
@@ -26,19 +26,20 @@ export class ViewCodeSchemeModal {
         </form>
       `,
       size: 'adapting',
-      controller: ViewCodeSchemeModalController,
+      controller: ViewReferenceDataModalController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
-        codeScheme: () => codeScheme,
+        referenceData: () => referenceData,
         context: () => context
       }
     }).result;
   }
 }
 
-export class ViewCodeSchemeModalController {
+export class ViewReferenceDataModalController {
+
   /* @ngInject */
-  constructor(public codeScheme: ReferenceData, public context: LanguageContext) {
+  constructor(public referenceData: ReferenceData, public context: LanguageContext) {
   }
 }

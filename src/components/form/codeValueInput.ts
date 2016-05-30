@@ -16,17 +16,17 @@ export function placeholderText(gettextCatalog: gettextCatalog) {
   return gettextCatalog.getString('Write code');
 }
 
-export function createAsyncValidators($q: IQService, codeScheme: ReferenceData, modelService: ModelService): IAsyncModelValidators {
+export function createAsyncValidators($q: IQService, referenceData: ReferenceData, modelService: ModelService): IAsyncModelValidators {
 
-    const codeValues: IPromise<ReferenceDataCode[]> = codeScheme && !codeScheme.isExternal() ? modelService.getCodeValues(codeScheme) : $q.when([]);
+    const codes: IPromise<ReferenceDataCode[]> = referenceData && !referenceData.isExternal() ? modelService.getReferenceDataCodes(referenceData) : $q.when([]);
 
     return {
       codeValue(codeValue: string) {
 
-        if (!codeScheme || codeScheme.isExternal() || !codeValue) {
+        if (!referenceData || referenceData.isExternal() || !codeValue) {
           return $q.resolve();
         } else {
-          return codeValues.then(values => {
+          return codes.then(values => {
             for (const value of values) {
               if (value.identifier === codeValue) {
                 return true;
@@ -42,7 +42,7 @@ export function createAsyncValidators($q: IQService, codeScheme: ReferenceData, 
 mod.directive('codeValueInput', /* @ngInject */ ($q: IQService, modelService: ModelService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
   return {
     scope: {
-      codeScheme: '='
+      referenceData: '='
     },
     restrict: 'A',
     require: 'ngModel',
@@ -54,13 +54,13 @@ mod.directive('codeValueInput', /* @ngInject */ ($q: IQService, modelService: Mo
         });
       }
 
-      $scope.$watch(() => $scope.codeScheme, codeScheme => {
-        Object.assign(modelController.$asyncValidators, createAsyncValidators($q, codeScheme, modelService));
+      $scope.$watch(() => $scope.referenceData, referenceData => {
+        Object.assign(modelController.$asyncValidators, createAsyncValidators($q, referenceData, modelService));
       });
     }
   };
 });
 
 interface CodeValueInputScope extends IScope {
-  codeScheme: ReferenceData;
+  referenceData: ReferenceData;
 }

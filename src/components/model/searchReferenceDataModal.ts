@@ -12,80 +12,80 @@ import { EditableForm } from '../form/editableEntityController';
 import { Uri } from '../../services/uri';
 import { any, all } from '../../utils/array';
 
-const noExclude = (codeScheme: ReferenceData) => <string> null;
+const noExclude = (referenceData: ReferenceData) => <string> null;
 
-export class SearchCodeSchemeModal {
+export class SearchReferenceDataModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, codeSchemesFromModel: boolean, exclude: (codeScheme: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
+  private open(model: Model, referenceDatasFromModel: boolean, exclude: (referenceData: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
     return this.$uibModal.open({
-      template: require('./searchCodeSchemeModal.html'),
+      template: require('./searchReferenceDataModal.html'),
       size: 'large',
-      controller: SearchCodeSchemeModalController,
+      controller: SearchReferenceDataModalController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
         model: () => model,
-        codeSchemesFromModel: () => codeSchemesFromModel,
+        referenceDatasFromModel: () => referenceDatasFromModel,
         exclude: () => exclude
       }
     }).result;
   }
 
-  openSelectionForModel(model: Model, exclude: (codeScheme: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
+  openSelectionForModel(model: Model, exclude: (referenceData: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
     return this.open(model, false, exclude);
   }
 
-  openSelectionForProperty(model: Model, exclude: (codeScheme: ReferenceData) => string = noExclude) {
+  openSelectionForProperty(model: Model, exclude: (referenceData: ReferenceData) => string = noExclude) {
     return this.open(model, true, exclude);
   }
 }
 
-export interface SearchCodeSchemeScope extends IScope {
+export interface SearchReferenceDataScope extends IScope {
   form: EditableForm;
 }
 
-export class SearchCodeSchemeModalController {
+export class SearchReferenceDataModalController {
 
-  searchResults: (ReferenceData|AddNewCodeScheme)[];
-  codeServers: ReferenceDataServer[];
-  codeSchemes: ReferenceData[];
-  codeGroups: ReferenceDataGroup[];
+  searchResults: (ReferenceData|AddNewReferenceData)[];
+  referenceDataServers: ReferenceDataServer[];
+  referenceDatas: ReferenceData[];
+  referenceDataGroups: ReferenceDataGroup[];
   showServer: ReferenceDataServer;
   showGroup: ReferenceDataGroup;
   searchText: string = '';
   loadingResults = true;
-  selectedItem: ReferenceData|AddNewCodeScheme;
-  selection: ReferenceData|AddNewSchemeFormData;
+  selectedItem: ReferenceData|AddNewReferenceData;
+  selection: ReferenceData|AddNewReferenceDataFormData;
   cannotConfirm: string;
   submitError: string;
 
   localizer: Localizer;
 
   /* @ngInject */
-  constructor(private $scope: SearchCodeSchemeScope,
+  constructor(private $scope: SearchReferenceDataScope,
               private $uibModalInstance: IModalServiceInstance,
               public model: Model,
-              public codeSchemesFromModel: boolean,
+              public referenceDatasFromModel: boolean,
               private modelService: ModelService,
               languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
-              public exclude: (codeScheme: ReferenceData) => string) {
+              public exclude: (referenceData: ReferenceData) => string) {
 
     this.localizer = languageService.createLocalizer(model);
 
-    const init = (codeSchemes: ReferenceData[]) => {
-      this.codeSchemes = codeSchemes;
-      this.codeGroups = _.chain(this.codeSchemes)
-        .map(codeScheme => codeScheme.groups)
+    const init = (referenceDatas: ReferenceData[]) => {
+      this.referenceDatas = referenceDatas;
+      this.referenceDataGroups = _.chain(this.referenceDatas)
+        .map(referenceData => referenceData.groups)
         .flatten()
-        .uniq(codeGroup => codeGroup.id.uri)
-        .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer.language, codeGroup => codeGroup.title))
+        .uniq(group => group.id.uri)
+        .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer.language, group => group.title))
         .value();
 
-      if (this.showGroup && all(this.codeGroups, group => !group.id.equals(this.showGroup.id))) {
+      if (this.showGroup && all(this.referenceDataGroups, group => !group.id.equals(this.showGroup.id))) {
         this.showGroup = null;
       }
 
@@ -94,16 +94,16 @@ export class SearchCodeSchemeModalController {
     };
 
 
-    if (codeSchemesFromModel) {
+    if (referenceDatasFromModel) {
       init(model.referenceDatas);
     } else {
 
-      const serversPromise = modelService.getCodeServers().then(servers => this.codeServers = servers);
+      const serversPromise = modelService.getReferenceDataServers().then(servers => this.referenceDataServers = servers);
 
       $scope.$watch(() => this.showServer, server => {
         this.loadingResults = true;
         serversPromise
-          .then(servers => modelService.getCodeSchemesForServers(server ? [server] : servers))
+          .then(servers => modelService.getReferenceDatasForServers(server ? [server] : servers))
           .then(init);
       });
     }
@@ -118,13 +118,13 @@ export class SearchCodeSchemeModalController {
   }
 
   search() {
-    if (this.codeSchemes) {
+    if (this.referenceDatas) {
 
-      const result: (ReferenceData|AddNewCodeScheme)[] = [
-        new AddNewCodeScheme(`${this.gettextCatalog.getString('Create new code scheme')} '${this.searchText}'`, this.canAddNew.bind(this))
+      const result: (ReferenceData|AddNewReferenceData)[] = [
+        new AddNewReferenceData(`${this.gettextCatalog.getString('Create new code scheme')} '${this.searchText}'`, this.canAddNew.bind(this))
       ];
 
-      const schemeSearchResults = this.codeSchemes.filter(scheme =>
+      const schemeSearchResults = this.referenceDatas.filter(scheme =>
         this.textFilter(scheme) &&
         this.excludedFilter(scheme) &&
         this.groupFilter(scheme)
@@ -138,15 +138,15 @@ export class SearchCodeSchemeModalController {
     }
   }
 
-  selectItem(item: ReferenceData|AddNewCodeScheme) {
+  selectItem(item: ReferenceData|AddNewReferenceData) {
     this.selectedItem = item;
     this.submitError = null;
     this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
 
-    if (item instanceof AddNewCodeScheme) {
+    if (item instanceof AddNewReferenceData) {
       this.$scope.form.editing = true;
-      this.selection = new AddNewSchemeFormData();
+      this.selection = new AddNewReferenceDataFormData();
 
     } else if (item instanceof ReferenceData) {
 
@@ -163,15 +163,15 @@ export class SearchCodeSchemeModalController {
   confirm() {
     const selection = this.selection;
 
-    if (selection instanceof AddNewSchemeFormData) {
-      this.modelService.newCodeScheme(selection.uri, selection.label, selection.description, this.localizer.language)
-        .then(codeScheme => this.$uibModalInstance.close(codeScheme), err => this.submitError = err.data.errorMessage);
+    if (selection instanceof AddNewReferenceDataFormData) {
+      this.modelService.newReferenceData(selection.uri, selection.label, selection.description, this.localizer.language)
+        .then(referenceData => this.$uibModalInstance.close(referenceData), err => this.submitError = err.data.errorMessage);
     } else {
       this.$uibModalInstance.close((<ReferenceData> selection));
     }
   }
 
-  loadingSelection(item: ReferenceData|AddNewSchemeFormData) {
+  loadingSelection(item: ReferenceData|AddNewReferenceDataFormData) {
     const selection = this.selection;
     if (item instanceof ReferenceData) {
       return item === this.selectedItem && (!selection || (!this.isSelectionFormData() && !item.id.equals((<ReferenceData> selection).id)));
@@ -181,23 +181,23 @@ export class SearchCodeSchemeModalController {
   }
 
   isSelectionFormData(): boolean {
-    return this.selection instanceof AddNewSchemeFormData;
+    return this.selection instanceof AddNewReferenceDataFormData;
   }
 
   canAddNew() {
-    return !!this.searchText && !this.codeSchemesFromModel;
+    return !!this.searchText && !this.referenceDatasFromModel;
   }
 
-  private textFilter(codeScheme: ReferenceData): boolean {
-    return !this.searchText || this.localizer.translate(codeScheme.title).toLowerCase().includes(this.searchText.toLowerCase());
+  private textFilter(referenceData: ReferenceData): boolean {
+    return !this.searchText || this.localizer.translate(referenceData.title).toLowerCase().includes(this.searchText.toLowerCase());
   }
 
-  private excludedFilter(codeScheme: ReferenceData): boolean {
-    return this.showExcluded || !this.exclude(codeScheme);
+  private excludedFilter(referenceData: ReferenceData): boolean {
+    return this.showExcluded || !this.exclude(referenceData);
   }
 
-  private groupFilter(codeScheme: ReferenceData): boolean {
-    return !this.showGroup || any(codeScheme.groups, codeGroup => codeGroup.id.equals(this.showGroup.id));
+  private groupFilter(referenceData: ReferenceData): boolean {
+    return !this.showGroup || any(referenceData.groups, group => group.id.equals(this.showGroup.id));
   }
 
   close() {
@@ -205,13 +205,13 @@ export class SearchCodeSchemeModalController {
   }
 }
 
-class AddNewSchemeFormData {
+class AddNewReferenceDataFormData {
   uri: Uri;
   label: string;
   description: string;
 }
 
-class AddNewCodeScheme extends AddNew {
+class AddNewReferenceData extends AddNew {
   constructor(public label: string, public show: () => boolean) {
     super(label, show);
   }

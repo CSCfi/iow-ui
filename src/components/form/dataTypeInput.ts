@@ -19,7 +19,7 @@ export function placeholderText(dataType: DataType, gettextCatalog: gettextCatal
 
 interface DatatypeInputScope extends IScope {
   datatypeInput: DataType;
-  codeScheme: ReferenceData;
+  referenceData: ReferenceData;
 }
 
 mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: ModelService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
@@ -27,7 +27,7 @@ mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: Mod
     restrict: 'EA',
     scope: {
       datatypeInput: '=',
-      codeScheme: '='
+      referenceData: '='
     },
     require: 'ngModel',
     link($scope: DatatypeInputScope, element: JQuery, attributes: IAttributes, ngModel: INgModelController) {
@@ -48,13 +48,13 @@ mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: Mod
         ngModel.$validate();
       }
 
-      function initializeCodeScheme(codeScheme: ReferenceData) {
-        Object.assign(ngModel.$asyncValidators, createAsyncValidators($q, codeScheme, modelService));
+      function initializeReferenceData(referenceData: ReferenceData) {
+        Object.assign(ngModel.$asyncValidators, createAsyncValidators($q, referenceData, modelService));
         ngModel.$validate();
       }
 
       $scope.$watch(() => $scope.datatypeInput, initializeDataType);
-      $scope.$watch(() => $scope.codeScheme, initializeCodeScheme);
+      $scope.$watch(() => $scope.referenceData, initializeReferenceData);
     }
   };
 });

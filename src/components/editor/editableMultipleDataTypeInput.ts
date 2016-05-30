@@ -16,7 +16,7 @@ mod.directive('editableMultipleDataTypeInput', () => {
       inputType: '=',
       id: '@',
       title: '@',
-      codeScheme: '=',
+      referenceData: '=',
       context: '='
     },
     restrict: 'E',
@@ -25,12 +25,12 @@ mod.directive('editableMultipleDataTypeInput', () => {
     template: `
       <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" input="ctrl.input">
         <input-container>
-          <code-value-input-autocomplete code-scheme="ctrl.codeScheme" context="ctrl.context">
+          <code-value-input-autocomplete reference-data="ctrl.referenceData" context="ctrl.context">
             <input id="{{ctrl.id}}"
                    type="text"
                    restrict-duplicates="ctrl.ngModel"
                    datatype-input="ctrl.inputType"
-                   code-scheme="ctrl.codeScheme"
+                   reference-data="ctrl.referenceData"
                    ng-model="ctrl.input" />
           </code-value-input-autocomplete>
         </input-container>
@@ -47,6 +47,6 @@ class EditableMultipleDataTypeInputController {
   inputType: DataType;
   id: string;
   title: string;
-  codeScheme: ReferenceData;
+  referenceData: ReferenceData;
   context: LanguageContext;
 }

@@ -135,7 +135,7 @@ export class ModelService {
       .then(response => this.entities.deserializeModelVisualization(response.data));
   }
 
-  getCodeServers(): IPromise<ReferenceDataServer[]> {
+  getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeServer'))
       .then(response => this.entities.deserializeCodeServers(response.data));
   }
@@ -145,32 +145,32 @@ export class ModelService {
       .then(response => this.entities.deserializeCodeSchemes(response.data));
   }
 
-  getCodeSchemesForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
+  getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
     return this.$q.all(_.map(servers, server => this.getCodeSchemesForServer(server)))
       .then(schemeLists => _.flatten(schemeLists));
   }
 
   getAllCodeSchemes(): IPromise<ReferenceData[]> {
-    return this.getCodeServers().then(servers => this.getCodeSchemesForServers(servers));
+    return this.getReferenceDataServers().then(servers => this.getReferenceDatasForServers(servers));
   }
 
-  getCodeValues(codeScheme: ReferenceData) {
+  getReferenceDataCodes(referenceData: ReferenceData) {
 
-    const cached = this.codeValuesCache.get(codeScheme.id.uri);
+    const cached = this.codeValuesCache.get(referenceData.id.uri);
 
     if (cached) {
       return this.$q.when(cached);
     } else {
-      return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: codeScheme.id.uri } })
+      return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: referenceData.id.uri } })
         .then(response => this.entities.deserializeCodeValues(response.data))
         .then(codeValues => {
-          this.codeValuesCache.set(codeScheme.id.uri, codeValues);
+          this.codeValuesCache.set(referenceData.id.uri, codeValues);
           return codeValues;
         });
     }
   }
 
-  newCodeScheme(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
+  newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
       .then(response => this.entities.deserializeCodeScheme(response.data));
   }
