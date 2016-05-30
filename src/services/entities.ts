@@ -10,7 +10,7 @@ import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
-import { Language, hasLocalization } from '../utils/language';
+import { Language, hasLocalization, createConstantLocalizable } from '../utils/language';
 import { containsAny, normalizeAsArray, swapElements, contains } from '../utils/array';
 import { glyphIconClassForType } from '../utils/entity';
 import {
@@ -149,7 +149,7 @@ export class DefinedBy extends GraphNode {
     if (typeof graph === 'string' || graph instanceof String) {
       const str = (graph instanceof String) ? graph.valueOf() : graph;
       this.id = new Uri(str, context);
-      this.label = deserializeLocalizable({'fi': this.id.uri, 'en': this.id.uri });
+      this.label = createConstantLocalizable(this.id.uri);
 
     } else if (typeof graph === 'object') {
       this.id = new Uri(graph['@id'], context);
@@ -718,13 +718,37 @@ export class ClassListItem extends AbstractClass {
   }
 }
 
-export class VisualizationClass extends AbstractClass {
+export interface VisualizationClass {
 
+  id: Uri;
+  label: Localizable;
   properties: Property[];
+  resolved: boolean;
+}
+
+export class AssociationTargetPlaceholderClass extends GraphNode implements VisualizationClass {
+
+  id: Uri;
+  label: Localizable;
+  properties: Property[];
+  resolved = true;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
+    this.id = new Uri(graph['@id'], context);
+    this.label = deserializeLocalizable(graph.label);
     this.properties = deserializeEntityList(graph.property, context, frame, () => Property);
+  }
+}
+
+export class DummyVisualizationClass implements VisualizationClass {
+
+  label: Localizable;
+  properties: Property[] = [];
+  resolved = false;
+
+  constructor(public id: Uri, model: Model) {
+    this.label = createConstantLocalizable(id.uri, model.language);
   }
 }
 
@@ -1311,7 +1335,7 @@ export class ConceptSuggestion extends GraphNode {
     this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.createdAt = deserializeDate(graph.atTime);
-    this.creator = deserializeUserLogin(graph.wasAssociatedWith);
+    this.creator = deserializeOptional(graph.wasAssociatedWith, deserializeUserLogin);
   }
 
   get unsaved() {
@@ -1877,11 +1901,11 @@ export class EntityDeserializer {
   }
 
   deserializeClassVisualization(data: GraphData): IPromise<VisualizationClass[]> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass);
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => AssociationTargetPlaceholderClass);
   }
 
   deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => VisualizationClass);
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => AssociationTargetPlaceholderClass);
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {

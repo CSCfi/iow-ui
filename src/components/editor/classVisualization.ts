@@ -4,7 +4,10 @@ import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
-import { Class, Model, VisualizationClass, Property, Predicate, LanguageContext } from '../../services/entities';
+import {
+  Class, Model, VisualizationClass, Property, Predicate, LanguageContext,
+  DummyVisualizationClass
+} from '../../services/entities';
 import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService } from '../../services/modelService';
@@ -12,6 +15,7 @@ import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import { isDefined } from '../../utils/object';
 const joint = require('jointjs');
 import { module as mod }  from './module';
+import { collectIds } from '../../utils/entity';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
@@ -512,34 +516,31 @@ function forEachInBackground<T>(batchSize: number, items: T[], callback: (item: 
   });
 }
 
-function createCells($scope: IScope, languageService: LanguageService, context: LanguageContext, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
+function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
-  const classIds = new Set<string>();
-
-  for (const klass of classes) {
-    classIds.add(klass.id.uri);
-  }
+  const classIds = collectIds(classes);
 
   const addClasses = () => {
     return forEachInBackground(10, classes, klass => {
-      const attributes: Property[] = [];
-
       for (const property of klass.properties) {
-        if (property.hasAssociationTarget() && classIds.has(property.valueClass.uri)) {
+
+        if (property.isAssociation() && property.valueClass) {
+          if (!classIds.has(property.valueClass.uri)) {
+            classIds.add(property.valueClass.uri);
+            graph.addCell(createClass($scope, languageService, model, new DummyVisualizationClass(property.valueClass, model), showCardinality));
+          }
           associations.push({klass: klass, association: property});
-        } else {
-          attributes.push(property);
         }
       }
 
-      graph.addCell(createClass($scope, languageService, context, klass, attributes, showCardinality));
+      graph.addCell(createClass($scope, languageService, model, klass, showCardinality));
     });
   };
 
   const addAssociations = () => {
     return forEachInBackground(10, associations, association => {
-      graph.addCell(createAssociation($scope, languageService, context, association, showCardinality));
+      graph.addCell(createAssociation($scope, languageService, model, association, showCardinality));
     });
   };
 
@@ -572,18 +573,19 @@ const withoutUnusedMarkupLink = joint.dia.Link.extend({
 });
 
 
-const withoutUnusedMarkupClass = joint.shapes.uml.Class.extend({
-  markup: [
-    '<g class="rotatable">',
-    '<g class="scalable">',
-    '<rect class="uml-class-name-rect"/><rect class="uml-class-attrs-rect"/>',
-    '</g>',
-    '<text class="uml-class-name-text"/><text class="uml-class-attrs-text"/>',
-    '</g>'
-  ].join('')
-});
+const classMarkup = (shadow: boolean) => {
+  return `<g class="rotatable ${shadow ? 'shadow' : ''}">
+            <g class="scalable">
+              <rect class="uml-class-name-rect"/> ${shadow ? '' : '<rect class="uml-class-attrs-rect"/>'}
+            </g>
+            <text class="uml-class-name-text"/> ${shadow ? '' : '<text class="uml-class-attrs-text"/>'}
+          </g>`;
+};
 
-function createClass($scope: IScope, languageService: LanguageService, context: LanguageContext, klass: VisualizationClass, properties: Property[], showCardinality: boolean) {
+const withoutUnusedMarkupClass = joint.shapes.uml.Class.extend({ markup: classMarkup(false) });
+const shadowClass = joint.shapes.uml.Class.extend({ markup: classMarkup(true) });
+
+function createClass($scope: IScope, languageService: LanguageService, context: LanguageContext, klass: VisualizationClass, showCardinality: boolean) {
 
   function getName() {
     return languageService.translate(klass.label, context);
@@ -597,22 +599,27 @@ function createClass($scope: IScope, languageService: LanguageService, context: 
       return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
     }
 
-    return _.map(_.sortBy(properties, property => property.index), propertyAsString);
+    const attributes = _.filter(klass.properties, property => property.isAttribute());
+    return _.map(_.sortBy(attributes, property => property.index), propertyAsString);
   }
 
-  function size(propertyNames: string[]) {
-    const width = _.max([_.max(_.map(propertyNames, name => name.length)) * 6.5, 150]);
+  function size(className: string, propertyNames: string[]) {
+    const propertyLengths = _.map(propertyNames, name => name.length);
+    const width = _.max([_.max(propertyLengths) * 6.5, className.length * 6.5, 150]);
     const height = 12 * propertyNames.length + 35;
 
     return { width, height };
   }
 
+  const className = getName();
   const propertyNames = getPropertyNames();
 
-  const classCell: any = new withoutUnusedMarkupClass({
+  const classConstructor = klass.resolved ? withoutUnusedMarkupClass : shadowClass;
+
+  const classCell: any = new classConstructor({
     id: klass.id.uri,
-    size: size(propertyNames),
-    name: getName(),
+    size: size(className, propertyNames),
+    name: className,
     attributes: propertyNames,
     attrs: {
       '.uml-class-name-text': {
@@ -625,9 +632,10 @@ function createClass($scope: IScope, languageService: LanguageService, context: 
   $scope.$watch(() => languageService.getModelLanguage(context), (lang, oldLang) => {
     if (oldLang && (lang !== oldLang)) {
       const newPropertyNames = getPropertyNames();
-      classCell.prop('name', getName());
+      const newClassName = getName();
+      classCell.prop('name', newClassName);
       classCell.prop('attributes', newPropertyNames);
-      classCell.prop('size', size(newPropertyNames));
+      classCell.prop('size', size(newClassName, newPropertyNames));
     }
   });
 

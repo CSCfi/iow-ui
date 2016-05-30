@@ -46,6 +46,16 @@ export function translateAny(localizable: Localizable, showLanguage: boolean = f
   }
 }
 
+export function createConstantLocalizable(str: string, supportedLanguages?: Language[]) {
+  const result: Localizable = {};
+
+  for (const language of supportedLanguages || availableLanguages) {
+    result[language] = str;
+  }
+
+  return result;
+}
+
 export function translate(data: Localizable, language: Language, supportedLanguages?: Language[]): string {
 
   if (!hasLocalization(data)) {

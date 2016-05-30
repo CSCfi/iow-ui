@@ -739,6 +739,11 @@ subject-view .editable-wrap {
     &.background {
       fill-opacity: 0.3;
     }
+
+    > g.shadow .uml-class-name-rect {
+      fill: $gray;
+    }
+
     &.selected {
       .uml-class-name-rect {
         fill: #c2606e;
