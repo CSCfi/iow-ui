@@ -1254,7 +1254,7 @@ export class FintoConcept extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
-    this.inScheme = deserializeEntityOrIdList(graph.inScheme, context, frame, () => Reference);
+    this.inScheme = deserializeList(graph.inScheme, (data) => deserializeEntityOrId(data, context, frame, () => Reference));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
 
@@ -1596,54 +1596,12 @@ function isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
   return contains(mapGraphTypeObject(withType), 'conceptSuggestion');
 }
 
-function serializeEntity<T extends GraphNode>(entity: T, clone: boolean) {
-  return entity.serialize(true, clone);
+function deserializeOptional<T>(data: any, deserializer: (data: any) => T) {
+  return isDefined(data) ? deserializer(data) : null;
 }
 
-function deserializeEntity<T extends GraphNode>(graph: any, context: any, frame: any, entityFactory: EntityFactory<T>): T {
-  const constructor = entityFactory(graph);
-  return new constructor(graph, context, frame);
-}
-
-function serializeEntityList(list: GraphNode[], clone: boolean) {
-  if (list.length === 0) {
-    return null;
-  }
-  return _.map(list, listItem => listItem.serialize(true, clone));
-}
-
-function serializeEntityOrIdList(list: (GraphNode|Uri)[], clone: boolean) {
-  if (list.length === 0) {
-    return null;
-  } else {
-    return _.map(list, item => serializeEntityOrId(item, clone));
-  }
-}
-
-function serializeEntityOrId(data: GraphNode|Uri, clone: boolean) {
-  if (data instanceof GraphNode) {
-    return data.serialize(true, clone);
-  } else if (data instanceof Uri) {
-    return data.uri;
-  } else {
-    throw new Error('Item must be instance of GraphNode or Uri');
-  }
-}
-
-function deserializeEntityOrIdList<T extends GraphNode>(list: any, context: any, frame: any, entityFactory: EntityFactory<T>): (T|Uri)[] {
-  return deserializeList(list, item => deserializeEntityOrId(item, context, frame, entityFactory));
-}
-
-function deserializeEntityOrId<T extends GraphNode>(data: any, context: any, frame: any, entityFactory: EntityFactory<T>): T|Uri {
-  if (typeof data === 'object') {
-    return deserializeEntity(data, context, frame, entityFactory);
-  } else {
-    return new Uri(data, context);
-  }
-}
-
-function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entityFactory: EntityFactory<T>): T[] {
-  return deserializeList<T>(list, graph => deserializeEntity(graph, context, frame, entityFactory));
+function serializeOptional<T>(data: T, serializer: (data: T) => any, isDefinedFn: (data: T) => boolean = isDefined) {
+  return isDefinedFn(data) ? serializer(data) : null;
 }
 
 function serializeList<T>(list: any[], mapper: (obj: any) => T = identity) {
@@ -1656,6 +1614,41 @@ function serializeList<T>(list: any[], mapper: (obj: any) => T = identity) {
 
 function deserializeList<T>(list: any, mapper: (obj: any) => T = identity) {
   return _.map(normalizeAsArray<T>(list), mapper);
+}
+
+function serializeEntity<T extends GraphNode>(entity: T, clone: boolean) {
+  return entity.serialize(true, clone);
+}
+
+function deserializeEntity<T extends GraphNode>(graph: any, context: any, frame: any, entityFactory: EntityFactory<T>): T {
+  const constructor = entityFactory(graph);
+  return new constructor(graph, context, frame);
+}
+
+function serializeEntityOrId(data: GraphNode|Uri, clone: boolean) {
+  if (data instanceof GraphNode) {
+    return serializeEntity(data, clone);
+  } else if (data instanceof Uri) {
+    return data.uri;
+  } else {
+    throw new Error('Item must be instance of GraphNode or Uri');
+  }
+}
+
+function deserializeEntityOrId<T extends GraphNode>(data: any, context: any, frame: any, entityFactory: EntityFactory<T>): T|Uri {
+  if (typeof data === 'object') {
+    return deserializeEntity(data, context, frame, entityFactory);
+  } else {
+    return new Uri(data, context);
+  }
+}
+
+function serializeEntityList(list: GraphNode[], clone: boolean) {
+  return serializeList(list, listItem => serializeEntity(listItem, clone));
+}
+
+function deserializeEntityList<T extends GraphNode>(list: any, context: any, frame: any, entityFactory: EntityFactory<T>): T[] {
+  return deserializeList<T>(list, graph => deserializeEntity(graph, context, frame, entityFactory));
 }
 
 function serializeLocalizable(localizable: Localizable) {
@@ -1684,15 +1677,7 @@ function deserializeDate(date: any) {
 }
 
 function deserializeUserLogin(userName: string): UserLogin {
-  return userName && userName.substring('mailto:'.length);
-}
-
-function deserializeOptional<T>(data: any, deserializer: (data: any) => T) {
-  return isDefined(data) ? deserializer(data) : null;
-}
-
-function serializeOptional<T>(data: T, serializer: (data: T) => any, isDefinedFn: (data: T) => boolean = isDefined) {
-  return isDefinedFn(data) ? serializer(data) : null;
+  return userName.substring('mailto:'.length);
 }
 
 function mapGraphTypeObject(withType: { '@type': string|string[] }): Type[] {
