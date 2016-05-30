@@ -11,7 +11,7 @@ import {
 } from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
-import { LanguageService } from '../../services/languageService';
+import { LanguageService, Localizer } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
@@ -77,6 +77,11 @@ export class SearchPredicateController {
   loadingResults: boolean;
   selectedItem: PredicateListItem|AddNewPredicate;
 
+  // undefined means not fetched, null means does not exist
+  externalPredicate: Predicate;
+
+  private localizer: Localizer;
+
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
               private $uibModalInstance: IModalServiceInstance,
@@ -85,10 +90,11 @@ export class SearchPredicateController {
               public exclude: (predicate: AbstractPredicate) => string,
               public onlySelection: boolean,
               private predicateService: PredicateService,
-              private languageService: LanguageService,
+              languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
               private gettextCatalog: gettextCatalog) {
 
+    this.localizer = languageService.createLocalizer(model);
     this.loadingResults = true;
     this.typeSelectable = !type;
 
@@ -126,6 +132,12 @@ export class SearchPredicateController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
+
+    $scope.$watch(() => this.selection && this.selection.id, selectionId => {
+      if (selectionId && this.selection instanceof ExternalEntity) {
+        predicateService.getExternalPredicate(selectionId, model).then(predicate => this.externalPredicate = predicate);
+      }
+    });
   }
 
   isThisModel(item: DefinedBy|Model) {
@@ -171,6 +183,7 @@ export class SearchPredicateController {
 
   selectItem(item: PredicateListItem|AddNewPredicate) {
     this.selectedItem = item;
+    this.externalPredicate = undefined;
     this.submitError = null;
     this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
@@ -178,7 +191,7 @@ export class SearchPredicateController {
     if (item instanceof AddNewPredicate) {
       if (item.external) {
         this.$scope.form.editing = true;
-        this.selection = new ExternalEntity(this.type || 'attribute');
+        this.selection = new ExternalEntity(this.localizer.language, this.searchText, this.type || 'attribute');
       } else {
         this.createNew(item.type);
       }
@@ -215,18 +228,20 @@ export class SearchPredicateController {
         this.$uibModalInstance.close(selection);
       }
     } else if (selection instanceof ExternalEntity) {
-      this.predicateService.newPredicateFromExternal(selection.id, selection.type, this.model)
-        .then(predicate => {
-          if (predicate) {
-            if (!predicate.isOfType(selection.type)) {
-              this.submitError = 'External predicate is of wrong type';
-            } else if (this.exclude(predicate)) {
-              this.submitError = this.exclude(predicate);
-            } else {
-              this.$uibModalInstance.close(selection);
-            }
+      if (this.externalPredicate === undefined) {
+        this.submitError = 'External predicate not fetched yet';
+      } else {
+        if (this.externalPredicate) {
+          const exclude = this.exclude(this.externalPredicate);
+          if (exclude) {
+            this.submitError = exclude;
+          } else {
+            this.$uibModalInstance.close(this.externalPredicate);
           }
-        }, err => this.submitError = err.data.errorMessage);
+        } else {
+          this.$uibModalInstance.close(selection);
+        }
+      }
     } else {
       throw new Error('Unsupported selection: ' + selection);
     }
@@ -238,7 +253,7 @@ export class SearchPredicateController {
         if (!this.typeSelectable) {
           this.$uibModalInstance.close(result);
         } else {
-          this.predicateService.newPredicate(this.model, result.entity.label, result.concept.id, type, this.languageService.getModelLanguage(this.model))
+          this.predicateService.newPredicate(this.model, result.entity.label, result.concept.id, type, this.localizer.language)
             .then(predicate => {
               this.cannotConfirm = null;
               this.selection = predicate;
@@ -261,7 +276,7 @@ export class SearchPredicateController {
   }
 
   private localizedLabelAsLower(predicate: PredicateListItem): string {
-    return this.languageService.translate(predicate.label, this.model).toLowerCase();
+    return this.localizer.translate(predicate.label).toLowerCase();
   }
 
   private textFilter(predicate: PredicateListItem): boolean {

@@ -103,14 +103,29 @@ export class ClassService {
       });
   }
 
-  newShape(klassId: Uri, profile: Model, external: boolean, lang: Language): IPromise<Class> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: klassId.uri, lang}})
-      .then(expandContextWithKnownModels(profile))
-      .then((response: any) => this.entities.deserializeClass(response.data))
-      .then((shape: Class) => {
+  newShape(classOrExternal: Class|ExternalEntity, profile: Model, external: boolean, lang: Language): IPromise<Class> {
+
+    const classPromise = (classOrExternal instanceof ExternalEntity) ? this.getExternalClass(classOrExternal.id, profile) : this.$q.when(<Class> classOrExternal);
+
+    return this.$q.all([
+      classPromise,
+      this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: classOrExternal.id.uri, lang}})
+        .then(expandContextWithKnownModels(profile))
+        .then((response: any) => this.entities.deserializeClass(response.data))
+      ])
+      .then(([klass, shape]: [Class, Class]) => {
+
         shape.definedBy = profile.asDefinedBy();
         shape.unsaved = true;
         shape.external = external;
+
+        if (!hasLocalization(shape.label)) {
+          if (klass && klass.label) {
+            shape.label = klass.label;
+          } else if (classOrExternal instanceof ExternalEntity) {
+            Object.assign(shape, { label: { [classOrExternal.language]: classOrExternal.label } } );
+          }
+        }
 
         for (const property of shape.properties) {
           property.state = 'Unstable';
@@ -164,8 +179,12 @@ export class ClassService {
     ])
       .then(([predicate, property]: [Predicate, Property]) => {
 
-        if (predicate && !hasLocalization(property.label)) {
-          property.label = predicate.label;
+        if (!hasLocalization(property.label)) {
+          if (predicate && predicate.label) {
+            property.label = predicate.label;
+          } else if (predicateOrExternal instanceof ExternalEntity) {
+            Object.assign(property, { label: { [predicateOrExternal.language]: predicateOrExternal.label } } );
+          }
         }
 
         if (type === 'attribute' && !property.dataType) {

@@ -56,11 +56,22 @@
           <class-form ng-if="!ctrl.isSelectionFormData() && ctrl.selection" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model"></class-form>
 
           <div ng-if="ctrl.isSelectionFormData()">
+
             <editable data-title="External URI" context="ctrl.model" autofocus>
               <div class="input-group input-group-md">
                 <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="ctrl.model" ng-model="ctrl.selection.id" />
               </div>
             </editable>
+
+            <div ng-if="ctrl.externalClass === null">
+              <editable data-title="Class label" context="ctrl.model">
+                <input type="text" class="form-control" string-input="label" required ng-model="ctrl.selection.label" />
+              </editable>
+            </div>
+
+            <div ng-if="ctrl.externalClass">
+              <non-editable data-title="Class label" value="ctrl.externalClass.label" context="ctrl.model"></non-editable>
+            </div>
           </div>
 
           <submit-error-panel error="ctrl.submitError"></submit-error-panel>

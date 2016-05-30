@@ -292,7 +292,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       () => this.searchClassModal.open(this.model, exclusion, textForSelection),
       (external: ExternalEntity) => {
         if (isProfile) {
-          return this.createShape(external.id, true);
+          return this.createShape(external, true);
         } else {
           return this.$q.reject('Library does not support external');
         }
@@ -302,7 +302,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         if (klass.unsaved) {
           return this.$q.when(klass);
         } else if (isProfile) {
-          return this.createShape(klass.id, klass.external);
+          return this.createShape(klass, klass.external);
         } else {
           return this.assignClassToModel(klass).then(() => klass);
         }
@@ -356,9 +356,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     return this.classService.newClass(this.model, conceptCreation.entity.label, conceptCreation.concept.id, this.languageService.getModelLanguage(this.model));
   }
 
-  private createShape(classId: Uri, external: boolean) {
+  private createShape(classOrExternal: Class|ExternalEntity, external: boolean) {
 
-    return this.classService.newShape(classId, this.model, external, this.languageService.getModelLanguage(this.model))
+    return this.classService.newShape(classOrExternal, this.model, external, this.languageService.getModelLanguage(this.model))
       .then(shape => {
         if (shape.external && shape.properties.length > 0) {
           return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, 'external', this.model)]);

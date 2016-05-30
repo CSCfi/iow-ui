@@ -9,7 +9,7 @@ import {
   Class, ClassListItem, Model, DefinedBy, AbstractClass, ExternalEntity
 } from '../../services/entities';
 import { ClassService } from '../../services/classService';
-import { LanguageService } from '../../services/languageService';
+import { LanguageService, Localizer } from '../../services/languageService';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
@@ -70,11 +70,16 @@ class SearchClassController {
   selectedItem: ClassListItem|AddNewClass;
   submitError: string;
 
+  // undefined means not fetched, null means does not exist
+  externalClass: Class;
+
+  private localizer: Localizer;
+
   /* @ngInject */
   constructor(private $scope: SearchClassScope,
               private $uibModalInstance: IModalServiceInstance,
               private classService: ClassService,
-              private languageService: LanguageService,
+              languageService: LanguageService,
               public model: Model,
               public exclude: (klass: AbstractClass) => string,
               public onlySelection: boolean,
@@ -82,6 +87,7 @@ class SearchClassController {
               private searchConceptModal: SearchConceptModal,
               private gettextCatalog: gettextCatalog) {
 
+    this.localizer = languageService.createLocalizer(model);
     this.showProfiles = onlySelection;
     this.loadingResults = true;
 
@@ -114,6 +120,12 @@ class SearchClassController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showProfiles, () => this.search());
+
+    $scope.$watch(() => this.selection && this.selection.id, selectionId => {
+      if (selectionId && this.selection instanceof ExternalEntity) {
+        classService.getExternalClass(selectionId, model).then(klass => this.externalClass = klass);
+      }
+    });
   }
 
   isThisModel(item: DefinedBy|Model) {
@@ -154,6 +166,7 @@ class SearchClassController {
 
   selectItem(item: ClassListItem|AddNewClass) {
     this.selectedItem = item;
+    this.externalClass = undefined;
     this.submitError = null;
     this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
@@ -161,7 +174,7 @@ class SearchClassController {
     if (item instanceof AddNewClass) {
       if (item.external) {
         this.$scope.form.editing = true;
-        this.selection = new ExternalEntity('class');
+        this.selection = new ExternalEntity(this.localizer.language, this.searchText, 'class');
       } else {
         this.createNewClass();
       }
@@ -193,16 +206,20 @@ class SearchClassController {
     if (selection instanceof Class) {
       this.$uibModalInstance.close(this.selection);
     } else if (selection instanceof ExternalEntity) {
-      this.classService.newClassFromExternal(selection.id, this.model)
-        .then(klass => {
-          if (klass) {
-            if (this.exclude(klass)) {
-              this.submitError = this.exclude(klass);
-            } else {
-              this.$uibModalInstance.close(selection);
-            }
+      if (this.externalClass === undefined) {
+        this.submitError = 'External class not fetched yet';
+      } else {
+        if (this.externalClass) {
+          const exclude = this.exclude(this.externalClass);
+          if (exclude) {
+            this.submitError = exclude;
+          } else {
+            this.$uibModalInstance.close(this.externalClass);
           }
-        }, err => this.submitError = err.data.errorMessage);
+        } else {
+          this.$uibModalInstance.close(selection);
+        }
+      }
     } else {
       throw new Error('Unsupported selection: ' + selection);
     }
@@ -214,7 +231,7 @@ class SearchClassController {
   }
 
   private localizedLabelAsLower(klass: ClassListItem): string {
-    return this.languageService.translate(klass.label, this.model).toLowerCase();
+    return this.localizer.translate(klass.label).toLowerCase();
   }
 
   private textFilter(klass: ClassListItem): boolean {

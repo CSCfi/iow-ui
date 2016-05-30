@@ -90,7 +90,7 @@ export function isLocalizable(obj: any): obj is Localizable {
 }
 
 export class ExternalEntity {
-  constructor(public type: Type, public id?: Uri) {
+  constructor(public language: Language, public label: string, public type: Type, public id?: Uri) {
   }
 
   get normalizedType() {

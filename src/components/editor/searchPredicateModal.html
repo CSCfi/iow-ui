@@ -70,15 +70,33 @@
           <div ng-if="ctrl.isSelectionExternalEntity()">
             <editable data-title="External URI" context="ctrl.model" autofocus>
               <div class="input-group input-group-md">
-                <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="ctrl.model" ng-model="ctrl.selection.id" />
+                <input id="externalUri"
+                       type="text"
+                       class="form-control"
+                       required
+                       uri-input="required-namespace"
+                       model="ctrl.model"
+                       ng-model="ctrl.selection.id"
+                       ng-model-options="{ debounce: 500 }" />
               </div>
             </editable>
 
-            <editable data-title="Predicate type" ng-show="ctrl.typeSelectable" context="ctrl.model">
-              <div class="selectContainer">
-                <select class="form-control" ng-model="ctrl.selection.type" ng-options="type | translate for type in ['attribute', 'association']"></select>
-              </div>
-            </editable>
+            <div ng-if="ctrl.externalPredicate === null">
+              <editable data-title="Predicate type" ng-show="ctrl.typeSelectable" context="ctrl.model">
+                <div class="selectContainer">
+                  <select class="form-control" required ng-model="ctrl.selection.type" ng-options="type | translate for type in ['attribute', 'association']"></select>
+                </div>
+              </editable>
+
+              <editable data-title="{{ctrl.selection.type + ' label' | capitalize}}" context="ctrl.model">
+                <input type="text" class="form-control" string-input="label" required ng-model="ctrl.selection.label" />
+              </editable>
+            </div>
+
+            <div ng-if="ctrl.externalPredicate">
+              <non-editable data-title="Predicate type" value="ctrl.externalPredicate.normalizedType" context="ctrl.model"></non-editable>
+              <non-editable data-title="{{ctrl.externalPredicate.normalizedType + ' label' | capitalize}}" value="ctrl.externalPredicate.label" context="ctrl.model"></non-editable>
+            </div>
           </div>
 
           <submit-error-panel error="ctrl.submitError"></submit-error-panel>
