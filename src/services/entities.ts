@@ -242,7 +242,7 @@ export class Model extends AbstractModel {
   vocabularies: Vocabulary[];
   namespaces: ImportedNamespace[];
   relations: Link[];
-  codeSchemes: ReferenceData[];
+  referenceDatas: ReferenceData[];
   unsaved: boolean = false;
   namespace: Url;
   prefix: string;
@@ -267,7 +267,7 @@ export class Model extends AbstractModel {
     this.vocabularies = deserializeEntityList(graph.vocabularies, context, frame, () => Vocabulary);
     this.namespaces = deserializeEntityList(graph.namespaces, context, frame, () => ImportedNamespace);
     this.relations = deserializeEntityList(graph.relations, context, frame, () => Link);
-    this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
+    this.referenceDatas = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
     if (graph.rootResource) {
       this.rootClass = new Uri(graph.rootResource, context);
@@ -309,12 +309,12 @@ export class Model extends AbstractModel {
     _.remove(this.relations, relation);
   }
 
-  addCodeScheme(codeScheme: ReferenceData) {
-    this.codeSchemes.push(codeScheme);
+  addReferenceData(referenceData: ReferenceData) {
+    this.referenceDatas.push(referenceData);
   }
 
-  removeCodeScheme(codeScheme: ReferenceData) {
-    _.remove(this.codeSchemes, codeScheme);
+  removeReferenceData(referenceData: ReferenceData) {
+    _.remove(this.referenceDatas, referenceData);
   }
 
   getNamespaceNames(exclude?: ImportedNamespace): Set<string> {
@@ -457,7 +457,7 @@ export class Model extends AbstractModel {
       references: serializeEntityList(this.vocabularies, clone),
       requires: serializeEntityList(this.namespaces, clone),
       relations: serializeEntityList(this.relations, clone),
-      codeLists: serializeEntityList(this.codeSchemes, clone),
+      codeLists: serializeEntityList(this.referenceDatas, clone),
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri,
       language: serializeList(this.language),

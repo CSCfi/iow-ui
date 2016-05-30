@@ -25,7 +25,7 @@ mod.directive('codeSchemesView', () => {
           <span translate>Add code scheme</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.codeSchemes" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.referenceDatas" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -53,11 +53,11 @@ class CodeSchemesViewController {
   }
 
   addCodeScheme() {
-    const exclude = createExistsExclusion(collectIds(this.model.codeSchemes));
+    const exclude = createExistsExclusion(collectIds(this.model.referenceDatas));
 
     this.searchCodeSchemeModal.openSelectionForModel(this.model, exclude)
       .then(codeScheme => {
-        this.model.addCodeScheme(codeScheme);
+        this.model.addReferenceData(codeScheme);
         this.expanded = true;
       });
   }

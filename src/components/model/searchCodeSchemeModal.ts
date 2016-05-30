@@ -95,7 +95,7 @@ export class SearchCodeSchemeModalController {
 
 
     if (codeSchemesFromModel) {
-      init(model.codeSchemes);
+      init(model.referenceDatas);
     } else {
 
       const serversPromise = modelService.getCodeServers().then(servers => this.codeServers = servers);
