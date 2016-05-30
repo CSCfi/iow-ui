@@ -240,7 +240,7 @@ export class Model extends AbstractModel {
   comment: Localizable;
   state: State;
   vocabularies: Vocabulary[];
-  requires: ImportedNamespace[];
+  namespaces: ImportedNamespace[];
   relations: Link[];
   codeSchemes: ReferenceData[];
   unsaved: boolean = false;
@@ -265,7 +265,7 @@ export class Model extends AbstractModel {
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.vocabularies = deserializeEntityList(graph.vocabularies, context, frame, () => Vocabulary);
-    this.requires = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
+    this.namespaces = deserializeEntityList(graph.namespaces, context, frame, () => ImportedNamespace);
     this.relations = deserializeEntityList(graph.relations, context, frame, () => Link);
     this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
@@ -290,15 +290,15 @@ export class Model extends AbstractModel {
     _.remove(this.vocabularies, vocabulary);
   }
 
-  addRequire(require: ImportedNamespace) {
-    this.requires.push(require);
+  addNamespace(ns: ImportedNamespace) {
+    this.namespaces.push(ns);
   }
 
-  removeRequire(require: ImportedNamespace) {
-    if (require.namespaceType !== NamespaceType.TECHNICAL) {
-      delete this.context[require.prefix];
+  removeNamespace(ns: ImportedNamespace) {
+    if (ns.namespaceType !== NamespaceType.TECHNICAL) {
+      delete this.context[ns.prefix];
     }
-    _.remove(this.requires, require);
+    _.remove(this.namespaces, ns);
   }
 
   addRelation(relation: Link) {
@@ -348,7 +348,7 @@ export class Model extends AbstractModel {
     namespaces.push(new Namespace(this.prefix, this.namespace, NamespaceType.MODEL));
     requiredNamespacePrefixes.add(this.prefix);
 
-    for (const require of this.requires) {
+    for (const require of this.namespaces) {
       namespaces.push(new Namespace(require.prefix, require.namespace, require.namespaceType));
       requiredNamespacePrefixes.add(require.prefix);
     }
@@ -378,7 +378,7 @@ export class Model extends AbstractModel {
   }
 
   private copyNamespacesFromRequires() {
-    for (const require of this.requires) {
+    for (const require of this.namespaces) {
       // if overriding existing namespace remove previous prefix
       for (const prefix of Object.keys(this.context)) {
         const value = this.context[prefix];
@@ -399,7 +399,7 @@ export class Model extends AbstractModel {
   }
 
   namespaceAsDefinedBy(ns: Url) {
-    for (const require of this.requires) {
+    for (const require of this.namespaces) {
       if (ns === require.namespace) {
         return new DefinedBy({'@id': ns, '@type': reverseMapTypeObject(require.type)}, this.context, this.frame);
       }
@@ -455,7 +455,7 @@ export class Model extends AbstractModel {
       comment: serializeLocalizable(this.comment),
       versionInfo: this.state,
       references: serializeEntityList(this.vocabularies, clone),
-      requires: serializeEntityList(this.requires, clone),
+      requires: serializeEntityList(this.namespaces, clone),
       relations: serializeEntityList(this.relations, clone),
       codeLists: serializeEntityList(this.codeSchemes, clone),
       identifier: this.version,

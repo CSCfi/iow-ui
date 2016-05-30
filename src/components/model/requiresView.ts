@@ -25,7 +25,7 @@ mod.directive('requiresView', () => {
           <span translate>Add require</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.requires" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.namespaces" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -70,7 +70,7 @@ class RequiresViewController {
 
     this.searchRequireModal.open(this.model, language, exclude)
       .then((require: ImportedNamespace) => {
-        this.model.addRequire(require);
+        this.model.addNamespace(require);
         this.expanded = true;
       });
   }

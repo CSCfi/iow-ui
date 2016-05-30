@@ -42,7 +42,7 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
     if (type === 'required-namespace') {
       result['mustBeRequiredNS'] = value => {
         function isRequiredNamespace(ns: string) {
-          for (const require of modelProvider().requires) {
+          for (const require of modelProvider().namespaces) {
             if (ns === require.namespace) {
               return true;
             }

@@ -186,11 +186,11 @@ export class EntityLoader {
             promises.push(
               asPromise(assertExists(require, 'require for ' + model.label['fi']))
                 .then(requiredModel => this.$q.all([this.$q.when(requiredModel), this.modelService.getAllRequires()]))
-                .then(([requiredModel, requires]: [Model, ImportedNamespace[]]) => model.addRequire(_.find(requires, require => require.id.equals(requiredModel.id))))
+                .then(([requiredModel, requires]: [Model, ImportedNamespace[]]) => model.addNamespace(_.find(requires, require => require.id.equals(requiredModel.id))))
             );
           } else if (isExternalRequire(require)) {
             promises.push(this.modelService.newRequire(require.namespace, require.prefix, require.label, 'fi')
-              .then(newRequire => model.addRequire(newRequire))
+              .then(newRequire => model.addNamespace(newRequire))
             );
           } else {
             throw new Error('Unknown require: ' + require);
