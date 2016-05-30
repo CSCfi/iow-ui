@@ -3,7 +3,7 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
-import { ReferenceData, Model, CodeGroup, CodeServer } from '../../services/entities';
+import { ReferenceData, Model, ReferenceDataGroup, CodeServer } from '../../services/entities';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
@@ -52,9 +52,9 @@ export class SearchCodeSchemeModalController {
   searchResults: (ReferenceData|AddNewCodeScheme)[];
   codeServers: CodeServer[];
   codeSchemes: ReferenceData[];
-  codeGroups: CodeGroup[];
+  codeGroups: ReferenceDataGroup[];
   showServer: CodeServer;
-  showGroup: CodeGroup;
+  showGroup: ReferenceDataGroup;
   searchText: string = '';
   loadingResults = true;
   selectedItem: ReferenceData|AddNewCodeScheme;
@@ -82,7 +82,7 @@ export class SearchCodeSchemeModalController {
         .map(codeScheme => codeScheme.groups)
         .flatten()
         .uniq(codeGroup => codeGroup.id.uri)
-        .sort(comparingLocalizable<CodeGroup>(this.localizer.language, codeGroup => codeGroup.title))
+        .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer.language, codeGroup => codeGroup.title))
         .value();
 
       if (this.showGroup && all(this.codeGroups, group => !group.id.equals(this.showGroup.id))) {

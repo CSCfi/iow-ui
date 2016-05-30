@@ -614,7 +614,7 @@ export class CodeServer extends GraphNode {
   }
 }
 
-export class CodeGroup extends GraphNode {
+export class ReferenceDataGroup extends GraphNode {
   id: Uri;
   title: Localizable;
 
@@ -632,7 +632,7 @@ export class ReferenceData extends GraphNode {
   description: Localizable;
   creator: string;
   identifier: string;
-  groups: CodeGroup[];
+  groups: ReferenceDataGroup[];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -641,7 +641,7 @@ export class ReferenceData extends GraphNode {
     this.description = deserializeLocalizable(graph.description);
     this.creator = graph.creator;
     this.identifier = graph.identifier;
-    this.groups = deserializeEntityList(graph.isPartOf, context, frame, () => CodeGroup);
+    this.groups = deserializeEntityList(graph.isPartOf, context, frame, () => ReferenceDataGroup);
   }
 
   isExternal() {
