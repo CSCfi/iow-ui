@@ -43,7 +43,7 @@ export class ConceptFormController {
       const scheme = concept.inScheme;
       const schemeId = scheme instanceof Vocabulary ? scheme.id : <Uri> scheme;
 
-      for (const reference of this.model.references) {
+      for (const reference of this.model.vocabularies) {
         if (reference.id.equals(schemeId)) {
           concept.inScheme = reference;
           break;
@@ -58,7 +58,7 @@ export class ConceptFormController {
   }
 
   selectBroaderConcept() {
-      this.searchConceptModal.openSelection(this.model.references, this.model)
+      this.searchConceptModal.openSelection(this.model.vocabularies, this.model)
         .then(concept => this.concept.broaderConcept = concept);
   }
 }

@@ -249,7 +249,7 @@ export class SearchPredicateController {
   }
 
   createNew(type: Type) {
-    return this.searchConceptModal.openNewEntityCreation(this.model.references, this.model, type, this.searchText)
+    return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, type, this.searchText)
       .then(result => {
         if (!this.typeSelectable) {
           this.$uibModalInstance.close(result);

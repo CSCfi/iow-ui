@@ -227,7 +227,7 @@ class SearchClassController {
   }
 
   createNewClass() {
-    return this.searchConceptModal.openNewEntityCreation(this.model.references, this.model, 'class', this.searchText)
+    return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, 'class', this.searchText)
       .then(conceptCreation => this.$uibModalInstance.close(conceptCreation));
   }
 

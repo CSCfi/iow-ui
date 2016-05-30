@@ -239,7 +239,7 @@ export class Model extends AbstractModel {
 
   comment: Localizable;
   state: State;
-  references: Vocabulary[];
+  vocabularies: Vocabulary[];
   requires: ImportedNamespace[];
   relations: Link[];
   codeSchemes: ReferenceData[];
@@ -264,7 +264,7 @@ export class Model extends AbstractModel {
       graph.isPartOf['@type'] = 'foaf:Group';
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
-    this.references = deserializeEntityList(graph.references, context, frame, () => Vocabulary);
+    this.vocabularies = deserializeEntityList(graph.vocabularies, context, frame, () => Vocabulary);
     this.requires = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
     this.relations = deserializeEntityList(graph.relations, context, frame, () => Link);
     this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
@@ -282,12 +282,12 @@ export class Model extends AbstractModel {
     return this.group.id;
   }
 
-  addReference(reference: Vocabulary) {
-    this.references.push(reference);
+  addVocabulary(vocabulary: Vocabulary) {
+    this.vocabularies.push(vocabulary);
   }
 
-  removeReference(reference: Vocabulary) {
-    _.remove(this.references, reference);
+  removeVocabulary(vocabulary: Vocabulary) {
+    _.remove(this.vocabularies, vocabulary);
   }
 
   addRequire(require: ImportedNamespace) {
@@ -454,7 +454,7 @@ export class Model extends AbstractModel {
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
       versionInfo: this.state,
-      references: serializeEntityList(this.references, clone),
+      references: serializeEntityList(this.vocabularies, clone),
       requires: serializeEntityList(this.requires, clone),
       relations: serializeEntityList(this.relations, clone),
       codeLists: serializeEntityList(this.codeSchemes, clone),

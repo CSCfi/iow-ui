@@ -36,7 +36,7 @@
         <editable-label data-title="'Vocabulary'" input-id="vocabulary" required="'true'"></editable-label>
         <div ng-if="ctrl.isEditing()">
           <select id="vocabulary" class="form-control" required ng-model="ctrl.concept.inScheme"
-                  ng-options="(reference | translateLabel: ctrl.model) for reference in ctrl.model.references | filter: !reference.local">
+                  ng-options="(vocabulary | translateLabel: ctrl.model) for vocabulary in ctrl.model.vocabularies | filter: !vocabulary.local">
           </select>
         </div>
 

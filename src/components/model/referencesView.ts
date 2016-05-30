@@ -29,7 +29,7 @@ mod.directive('referencesView', () => {
           <span translate>Browse concepts</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.references" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.vocabularies" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -66,13 +66,13 @@ class ReferencesViewController {
 
   addReference() {
     const language = this.languageService.getModelLanguage(this.model);
-    const vocabularies = collectProperties(this.model.references, reference => reference.vocabularyId);
+    const vocabularies = collectProperties(this.model.vocabularies, reference => reference.vocabularyId);
     const exclude = createExistsExclusion(vocabularies);
 
     this.searchReferenceModal.open(language, exclude)
       .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
       .then((reference: Vocabulary) => {
-        this.model.addReference(reference);
+        this.model.addVocabulary(reference);
         this.expanded = true;
       });
   }
