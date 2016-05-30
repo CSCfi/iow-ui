@@ -29,7 +29,11 @@ const coreContext = {
   editorialNote: { '@id': 'http://www.w3.org/2004/02/skos/core#editorialNote', '@container': '@language' }
 };
 
-const predicateContext = Object.assign({}, coreContext, {
+const conceptContext = Object.assign({}, coreContext, {
+  inScheme
+});
+
+const predicateContext = Object.assign({}, coreContext, conceptContext, {
   range: { '@id': 'http://www.w3.org/2000/01/rdf-schema#range', '@type': '@id' },
   subPropertyOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subPropertyOf', '@type': '@id' },
   equivalentProperty: { '@id' : 'http://www.w3.org/2002/07/owl#equivalentProperty', '@type' : '@id' },
@@ -55,7 +59,7 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, {
   memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf', '@type': '@id' }
 });
 
-const classContext = Object.assign({}, coreContext, propertyContext, {
+const classContext = Object.assign({}, coreContext, propertyContext, conceptContext, {
   abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'},
   property: { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' },
   scopeClass : { '@id' : 'http://www.w3.org/ns/shacl#scopeClass', '@type' : '@id' },
@@ -106,10 +110,6 @@ const modelContext = Object.assign({}, coreContext, requireContext, {
 
 const usageContext = Object.assign({}, coreContext, {
   isReferencedBy: { '@id': 'http://purl.org/dc/terms/isReferencedBy', '@type': '@id' }
-});
-
-const conceptContext = Object.assign({}, coreContext, {
-  inScheme
 });
 
 const userContext = Object.assign({}, coreContext, {
