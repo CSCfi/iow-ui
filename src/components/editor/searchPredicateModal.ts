@@ -135,6 +135,7 @@ export class SearchPredicateController {
 
     $scope.$watch(() => this.selection && this.selection.id, selectionId => {
       if (selectionId && this.selection instanceof ExternalEntity) {
+        this.externalPredicate = undefined;
         predicateService.getExternalPredicate(selectionId, model).then(predicate => this.externalPredicate = predicate);
       }
     });
@@ -217,6 +218,10 @@ export class SearchPredicateController {
     }
   }
 
+  isExternalPredicatePending() {
+    return this.isSelectionExternalEntity() && this.externalPredicate === undefined;
+  }
+
   confirm() {
     const selection = this.selection;
 
@@ -228,19 +233,15 @@ export class SearchPredicateController {
         this.$uibModalInstance.close(selection);
       }
     } else if (selection instanceof ExternalEntity) {
-      if (this.externalPredicate === undefined) {
-        this.submitError = 'External predicate not fetched yet';
-      } else {
-        if (this.externalPredicate) {
-          const exclude = this.exclude(this.externalPredicate);
-          if (exclude) {
-            this.submitError = exclude;
-          } else {
-            this.$uibModalInstance.close(this.externalPredicate);
-          }
+      if (this.externalPredicate) {
+        const exclude = this.exclude(this.externalPredicate);
+        if (exclude) {
+          this.submitError = exclude;
         } else {
-          this.$uibModalInstance.close(selection);
+          this.$uibModalInstance.close(this.externalPredicate);
         }
+      } else {
+        this.$uibModalInstance.close(selection);
       }
     } else {
       throw new Error('Unsupported selection: ' + selection);

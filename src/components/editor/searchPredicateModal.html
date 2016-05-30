@@ -111,7 +111,10 @@
         <span>{{ctrl.cannotConfirm | translate}}</span>
       </div>
       <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending">
+      <button type="button"
+              class="btn btn-default"
+              ng-click="ctrl.confirm()"
+              ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending || ctrl.isExternalPredicatePending()">
         {{(ctrl.selection.unsaved ? ('Create and use ' + ctrl.selection.type)
                                   : (!ctrl.typeSelectable ? 'Use ' + ctrl.type : 'Use selection')) | translate}}
       </button>

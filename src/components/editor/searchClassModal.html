@@ -53,9 +53,9 @@
         </div>
 
         <div class="col-md-4 search-selection">
-          <class-form ng-if="!ctrl.isSelectionFormData() && ctrl.selection" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model"></class-form>
+          <class-form ng-if="!ctrl.isSelectionExternalEntity() && ctrl.selection" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model"></class-form>
 
-          <div ng-if="ctrl.isSelectionFormData()">
+          <div ng-if="ctrl.isSelectionExternalEntity()">
 
             <editable data-title="External URI" context="ctrl.model" autofocus>
               <div class="input-group input-group-md">
@@ -86,7 +86,12 @@
         <span>{{ctrl.cannotConfirm | translate}}</span>
       </div>
       <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending">{{ctrl.textForSelection(ctrl.selection) | translate}}</button>
+      <button type="button"
+              class="btn btn-default"
+              ng-click="ctrl.confirm()"
+              ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending || ctrl.isExternalClassPending()">
+        {{ctrl.textForSelection(ctrl.selection) | translate}}
+      </button>
     </modal-buttons>
   </modal-template>
 </form>

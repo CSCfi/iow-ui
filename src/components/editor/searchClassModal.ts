@@ -123,6 +123,7 @@ class SearchClassController {
 
     $scope.$watch(() => this.selection && this.selection.id, selectionId => {
       if (selectionId && this.selection instanceof ExternalEntity) {
+        this.externalClass = undefined;
         classService.getExternalClass(selectionId, model).then(klass => this.externalClass = klass);
       }
     });
@@ -136,7 +137,7 @@ class SearchClassController {
     return !!this.searchText;
   }
 
-  isSelectionFormData(): boolean {
+  isSelectionExternalEntity(): boolean {
     return this.selection instanceof ExternalEntity;
   }
 
@@ -200,25 +201,25 @@ class SearchClassController {
     }
   }
 
+  isExternalClassPending() {
+    return this.isSelectionExternalEntity() && this.externalClass === undefined;
+  }
+
   confirm() {
     const selection = this.selection;
 
     if (selection instanceof Class) {
       this.$uibModalInstance.close(this.selection);
     } else if (selection instanceof ExternalEntity) {
-      if (this.externalClass === undefined) {
-        this.submitError = 'External class not fetched yet';
-      } else {
-        if (this.externalClass) {
-          const exclude = this.exclude(this.externalClass);
-          if (exclude) {
-            this.submitError = exclude;
-          } else {
-            this.$uibModalInstance.close(this.externalClass);
-          }
+      if (this.externalClass) {
+        const exclude = this.exclude(this.externalClass);
+        if (exclude) {
+          this.submitError = exclude;
         } else {
-          this.$uibModalInstance.close(selection);
+          this.$uibModalInstance.close(this.externalClass);
         }
+      } else {
+        this.$uibModalInstance.close(selection);
       }
     } else {
       throw new Error('Unsupported selection: ' + selection);
