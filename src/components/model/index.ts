@@ -1,7 +1,7 @@
 
 import { SearchRequireModal } from './searchRequireModal';
 import { SearchReferenceModal } from './searchReferenceModal';
-import { AddEditRelationModal } from './addEditRelationModal';
+import { AddEditLinkModal } from './addEditLinkModal';
 import { AddEditRequireModal } from './addEditRequireModal';
 import { SearchCodeSchemeModal } from './searchCodeSchemeModal';
 import { EditCodeSchemeModal } from './editCodeSchemeModal';
@@ -18,12 +18,12 @@ import './modelForm';
 import './modelView';
 import './referencesView';
 import './requiresView';
-import './relationsView';
+import './linksView';
 import './codeSchemeView';
 import './codeSchemesView';
 import './technicalNamespaces';
 
-mod.service('addEditRelationModal', AddEditRelationModal);
+mod.service('addEditLinkModal', AddEditLinkModal);
 mod.service('addEditRequireModal', AddEditRequireModal);
 mod.service('searchRequireModal', SearchRequireModal);
 mod.service('searchReferenceModal', SearchReferenceModal);

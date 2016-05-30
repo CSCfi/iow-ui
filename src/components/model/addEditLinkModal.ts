@@ -6,22 +6,22 @@ import { Link, Model } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../../utils/language';
 
-export class AddEditRelationModal {
+export class AddEditLinkModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, lang: Language, relationToEdit: Link): IPromise<Link> {
+  private open(model: Model, lang: Language, linkToEdit: Link): IPromise<Link> {
     return this.$uibModal.open({
-      template: require('./addEditRelationModal.html'),
+      template: require('./addEditLinkModal.html'),
       size: 'small',
-      controller: AddEditRelationModalController,
+      controller: AddEditLinkModalController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
         model: () => model,
         lang: () => lang,
-        relationToEdit: () => relationToEdit
+        linkToEdit: () => linkToEdit
       }
     }).result;
   }
@@ -30,12 +30,12 @@ export class AddEditRelationModal {
     return this.open(model, lang, null);
   }
 
-  openEdit(relation: Link, model: Model, lang: Language): IPromise<Link> {
-    return this.open(model, lang, relation);
+  openEdit(link: Link, model: Model, lang: Language): IPromise<Link> {
+    return this.open(model, lang, link);
   }
 }
 
-class AddEditRelationModalController {
+class AddEditLinkModalController {
 
   title: string;
   description: string;
@@ -45,13 +45,13 @@ class AddEditRelationModalController {
   cancel = this.$uibModalInstance.dismiss;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model, private relationToEdit: Link) {
-    this.edit = !!relationToEdit;
+  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model, private linkToEdit: Link) {
+    this.edit = !!linkToEdit;
 
-    if (relationToEdit) {
-      this.title = relationToEdit.title[lang];
-      this.description = relationToEdit.description[lang];
-      this.homepage = relationToEdit.homepage;
+    if (linkToEdit) {
+      this.title = linkToEdit.title[lang];
+      this.description = linkToEdit.description[lang];
+      this.homepage = linkToEdit.homepage;
     }
   }
 
@@ -65,14 +65,14 @@ class AddEditRelationModalController {
 
   create() {
     if (this.edit) {
-      this.relationToEdit.title[this.lang] = this.title;
-      this.relationToEdit.description[this.lang] = this.description;
-      this.relationToEdit.homepage = this.homepage;
+      this.linkToEdit.title[this.lang] = this.title;
+      this.linkToEdit.description[this.lang] = this.description;
+      this.linkToEdit.homepage = this.homepage;
 
-      this.$uibModalInstance.close(this.relationToEdit);
+      this.$uibModalInstance.close(this.linkToEdit);
     } else {
       this.modelService.newRelation(this.title, this.description, this.homepage, this.lang, this.model.context)
-        .then(relation => this.$uibModalInstance.close(relation));
+        .then(link => this.$uibModalInstance.close(link));
     }
   }
 }
