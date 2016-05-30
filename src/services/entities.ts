@@ -241,7 +241,7 @@ export class Model extends AbstractModel {
   state: State;
   vocabularies: Vocabulary[];
   namespaces: ImportedNamespace[];
-  relations: Link[];
+  links: Link[];
   referenceDatas: ReferenceData[];
   unsaved: boolean = false;
   namespace: Url;
@@ -266,7 +266,7 @@ export class Model extends AbstractModel {
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.vocabularies = deserializeEntityList(graph.vocabularies, context, frame, () => Vocabulary);
     this.namespaces = deserializeEntityList(graph.namespaces, context, frame, () => ImportedNamespace);
-    this.relations = deserializeEntityList(graph.relations, context, frame, () => Link);
+    this.links = deserializeEntityList(graph.links, context, frame, () => Link);
     this.referenceDatas = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
     if (graph.rootResource) {
@@ -301,12 +301,12 @@ export class Model extends AbstractModel {
     _.remove(this.namespaces, ns);
   }
 
-  addRelation(relation: Link) {
-    this.relations.push(relation);
+  addLink(link: Link) {
+    this.links.push(link);
   }
 
-  removeRelation(relation: Link) {
-    _.remove(this.relations, relation);
+  removeLink(link: Link) {
+    _.remove(this.links, link);
   }
 
   addReferenceData(referenceData: ReferenceData) {
@@ -456,7 +456,7 @@ export class Model extends AbstractModel {
       versionInfo: this.state,
       references: serializeEntityList(this.vocabularies, clone),
       requires: serializeEntityList(this.namespaces, clone),
-      relations: serializeEntityList(this.relations, clone),
+      relations: serializeEntityList(this.links, clone),
       codeLists: serializeEntityList(this.referenceDatas, clone),
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri,

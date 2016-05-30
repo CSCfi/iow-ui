@@ -21,7 +21,7 @@ mod.directive('relationsView', () => {
           <span translate>Add related resource</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.relations" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.links" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -50,7 +50,7 @@ class RelationsViewController {
   addRelation() {
     this.addEditRelationModal.openAdd(this.model, this.languageService.getModelLanguage(this.model))
       .then((relation: Link) => {
-        this.model.addRelation(relation);
+        this.model.addLink(relation);
         this.expanded = true;
       });
   }
