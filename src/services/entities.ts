@@ -264,9 +264,9 @@ export class Model extends AbstractModel {
       graph.isPartOf['@type'] = 'foaf:Group';
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
-    this.vocabularies = deserializeEntityList(graph.vocabularies, context, frame, () => Vocabulary);
-    this.namespaces = deserializeEntityList(graph.namespaces, context, frame, () => ImportedNamespace);
-    this.links = deserializeEntityList(graph.links, context, frame, () => Link);
+    this.vocabularies = deserializeEntityList(graph.references, context, frame, () => Vocabulary);
+    this.namespaces = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
+    this.links = deserializeEntityList(graph.relations, context, frame, () => Link);
     this.referenceDatas = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
     if (graph.rootResource) {
