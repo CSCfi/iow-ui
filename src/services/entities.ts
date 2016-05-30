@@ -239,7 +239,7 @@ export class Model extends AbstractModel {
 
   comment: Localizable;
   state: State;
-  references: Reference[];
+  references: Vocabulary[];
   requires: ImportedNamespace[];
   relations: Relation[];
   codeSchemes: CodeScheme[];
@@ -264,7 +264,7 @@ export class Model extends AbstractModel {
       graph.isPartOf['@type'] = 'foaf:Group';
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
-    this.references = deserializeEntityList(graph.references, context, frame, () => Reference);
+    this.references = deserializeEntityList(graph.references, context, frame, () => Vocabulary);
     this.requires = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
     this.relations = deserializeEntityList(graph.relations, context, frame, () => Relation);
     this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => CodeScheme);
@@ -282,11 +282,11 @@ export class Model extends AbstractModel {
     return this.group.id;
   }
 
-  addReference(reference: Reference) {
+  addReference(reference: Vocabulary) {
     this.references.push(reference);
   }
 
-  removeReference(reference: Reference) {
+  removeReference(reference: Vocabulary) {
     _.remove(this.references, reference);
   }
 
@@ -503,7 +503,7 @@ export class Relation extends GraphNode {
   }
 }
 
-export class Reference extends GraphNode {
+export class Vocabulary extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -1270,7 +1270,7 @@ export class FintoConcept extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: (Reference|Uri)[];
+  inScheme: (Vocabulary|Uri)[];
   broaderConcept: Concept;
 
   constructor(graph: any, context: any, frame: any) {
@@ -1278,7 +1278,7 @@ export class FintoConcept extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
-    this.inScheme = deserializeList(graph.inScheme, (data) => deserializeEntityOrId(data, context, frame, () => Reference));
+    this.inScheme = deserializeList(graph.inScheme, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
 
@@ -1320,7 +1320,7 @@ export class ConceptSuggestion extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: Reference|Uri;
+  inScheme: Vocabulary|Uri;
   definedBy: DefinedBy;
   broaderConcept: Concept;
   createdAt: Moment;
@@ -1331,7 +1331,7 @@ export class ConceptSuggestion extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
-    this.inScheme = deserializeEntityOrId(graph.inScheme, context, frame, () => Reference);
+    this.inScheme = deserializeEntityOrId(graph.inScheme, context, frame, () => Vocabulary);
     this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.createdAt = deserializeDate(graph.atTime);
@@ -1379,12 +1379,12 @@ export class SchemeNameHref {
 
   private static internalVocabularyName = 'Internal vocabulary';
 
-  constructor(private scheme: Reference|Uri) {
+  constructor(private scheme: Vocabulary|Uri) {
     if (scheme instanceof Uri) {
       this.id = scheme;
       this.href = scheme.uri;
       this.name = scheme.uri;
-    } else if (scheme instanceof Reference) {
+    } else if (scheme instanceof Vocabulary) {
       this.id = scheme.id;
       this.href = scheme.local ? null : scheme.href;
       this.name = scheme.label;

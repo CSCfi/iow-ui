@@ -3,7 +3,7 @@ import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Model, Concept, SchemeNameHref, ConceptSuggestion, Reference } from '../../services/entities';
+import { Model, Concept, SchemeNameHref, ConceptSuggestion, Vocabulary } from '../../services/entities';
 import { ConceptViewController } from './conceptView';
 import { SearchConceptModal } from '../editor/searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -41,7 +41,7 @@ export class ConceptFormController {
     $scope.$watch(() => this.concept, (concept: Concept) => {
 
       const scheme = concept.inScheme;
-      const schemeId = scheme instanceof Reference ? scheme.id : <Uri> scheme;
+      const schemeId = scheme instanceof Vocabulary ? scheme.id : <Uri> scheme;
 
       for (const reference of this.model.references) {
         if (reference.id.equals(schemeId)) {

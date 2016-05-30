@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { Reference, Model } from '../../services/entities';
+import { Vocabulary, Model } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchReferenceModal } from './searchReferenceModal';
@@ -71,39 +71,39 @@ class ReferencesViewController {
 
     this.searchReferenceModal.open(language, exclude)
       .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
-      .then((reference: Reference) => {
+      .then((reference: Vocabulary) => {
         this.model.addReference(reference);
         this.expanded = true;
       });
   }
 }
 
-class ReferenceTableDescriptor extends TableDescriptor<Reference> {
+class ReferenceTableDescriptor extends TableDescriptor<Vocabulary> {
 
   constructor(private model: Model, private languageService: LanguageService) {
     super();
   }
 
-  columnDescriptors(references: Reference[]): ColumnDescriptor<Reference>[] {
+  columnDescriptors(references: Vocabulary[]): ColumnDescriptor<Vocabulary>[] {
     return [
       { headerName: 'Identifier', nameExtractor: reference => reference.vocabularyId, cssClass: 'prefix', hrefExtractor: reference => reference.href},
       { headerName: 'Vocabulary name', nameExtractor: reference => this.languageService.translate(reference.label, this.model)}
     ];
   }
 
-  canEdit(reference: Reference): boolean {
+  canEdit(reference: Vocabulary): boolean {
     return false;
   }
 
-  canRemove(reference: Reference): boolean {
+  canRemove(reference: Vocabulary): boolean {
     return !reference.local;
   }
 
-  orderBy(reference: Reference): any {
+  orderBy(reference: Vocabulary): any {
     return reference.id;
   }
 
-  filter(reference: Reference) {
+  filter(reference: Vocabulary) {
     return !reference.local;
   }
 }

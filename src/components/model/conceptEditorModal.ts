@@ -6,7 +6,7 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Reference, Type } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Vocabulary, Type } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
@@ -39,9 +39,9 @@ export class ConceptEditorModalController {
   selection: Concept;
 
   models: DefinedBy[] = [];
-  references: Reference[] = [];
+  references: Vocabulary[] = [];
   showModel: DefinedBy;
-  showReference: Reference;
+  showReference: Vocabulary;
   showConceptType: Type;
   searchText: string = '';
 
@@ -75,7 +75,7 @@ export class ConceptEditorModalController {
         this.references = _.chain(concepts)
           .map(concept => concept.inScheme)
           .flatten()
-          .filter(scheme => scheme instanceof Reference)
+          .filter(scheme => scheme instanceof Vocabulary)
           .filter(scheme => !scheme.local)
           .uniq(scheme => scheme.id)
           .value();

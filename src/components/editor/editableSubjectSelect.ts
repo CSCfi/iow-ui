@@ -1,7 +1,7 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { SearchConceptModal } from './searchConceptModal';
-import { Reference, Type, Model, Concept } from '../../services/entities';
+import { Vocabulary, Type, Model, Concept } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 import { module as mod }  from './module';
 
@@ -29,7 +29,7 @@ class EditableSubjectSelectController {
 
   isEditing: () => boolean;
   subject: Concept;
-  references: Reference[];
+  references: Vocabulary[];
   type: Type;
   model: Model;
 

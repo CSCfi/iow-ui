@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Reference, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
+import { Vocabulary, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
@@ -30,7 +30,7 @@ class NewConceptData {
   comment: string;
   broaderConcept: Concept;
 
-  constructor(public label: string, public reference: Reference) {
+  constructor(public label: string, public reference: Vocabulary) {
   }
 }
 
@@ -40,7 +40,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(references: Reference[], model: Model, type: Type, newEntityCreation: boolean, initialSearch: string) {
+  private open(references: Vocabulary[], model: Model, type: Type, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -57,11 +57,11 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(references: Reference[], model: Model, type?: Type): IPromise<Concept> {
+  openSelection(references: Vocabulary[], model: Model, type?: Type): IPromise<Concept> {
     return this.open(references, model, type, false, '');
   }
 
-  openNewEntityCreation(references: Reference[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
+  openNewEntityCreation(references: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
     return this.open(references, model, type, true, initialSearch);
   }
 };
@@ -87,14 +87,14 @@ class SearchConceptController {
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
-  selectedReference: Reference;
+  selectedReference: Vocabulary;
   searchText: string = '';
   submitError: string;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: ConceptSearchResult|AddNewConcept;
-  references: Reference[];
-  selectableReferences: Reference[];
+  references: Vocabulary[];
+  selectableReferences: Vocabulary[];
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -104,7 +104,7 @@ class SearchConceptController {
               public type: Type,
               initialSearch: string,
               public newEntityCreation: boolean,
-              references: Reference[],
+              references: Vocabulary[],
               private model: Model,
               private conceptService: ConceptService,
               private gettextCatalog: gettextCatalog,
@@ -137,7 +137,7 @@ class SearchConceptController {
     });
   }
 
-  translateReference(reference: Reference) {
+  translateReference(reference: Vocabulary) {
     if (reference.local) {
       return this.gettextCatalog.getString('Internal vocabulary');
     } else {
@@ -146,8 +146,8 @@ class SearchConceptController {
   }
 
   get referenceComparator() {
-    return comparingBoolean<Reference>(reference => !reference.local)
-      .andThen(comparingLocalizable<Reference>(this.languageService.UILanguage, reference => reference.label));
+    return comparingBoolean<Vocabulary>(reference => !reference.local)
+      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, reference => reference.label));
   }
 
   isSelectionConcept() {

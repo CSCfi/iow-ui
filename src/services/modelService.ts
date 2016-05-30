@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import { config } from '../config';
 import {
-  EntityDeserializer, Model, ModelListItem, Reference, ImportedNamespace, Type, GraphData, Relation,
+  EntityDeserializer, Model, ModelListItem, Vocabulary, ImportedNamespace, Type, GraphData, Relation,
   CodeScheme, CodeServer, CodeValue
 } from './entities';
 import { upperCaseFirst } from 'change-case';
@@ -82,7 +82,7 @@ export class ModelService {
       });
   }
 
-  newReference(scheme: any, lang: Language, context: any): IPromise<Reference> {
+  newReference(scheme: any, lang: Language, context: any): IPromise<Vocabulary> {
 
     const graph = {
       '@id': config.fintoUrl + scheme.id,
@@ -95,7 +95,7 @@ export class ModelService {
 
     const frameObject = modelFrame({ '@graph': graph, '@context': context});
 
-    return this.$q.when(new Reference(graph, context, frameObject));
+    return this.$q.when(new Vocabulary(graph, context, frameObject));
   }
 
   newRelation(title: string, description: string, homepage: Uri, lang: Language, context: any) {
