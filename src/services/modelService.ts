@@ -114,12 +114,12 @@ export class ModelService {
     return this.$q.when(new Link(graph, context, frameObject));
   }
 
-  getAllRequires(): IPromise<ImportedNamespace[]> {
+  getAllNamespaces(): IPromise<ImportedNamespace[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('listNamespaces'))
       .then(response => this.entities.deserializeRequires(response.data));
   }
 
-  newRequire(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
+  newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
       .then(response => this.entities.deserializeRequire(response.data));
   }

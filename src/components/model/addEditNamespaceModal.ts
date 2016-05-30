@@ -6,22 +6,22 @@ import { ModelService } from '../../services/modelService';
 import { ImportedNamespace, Model } from '../../services/entities';
 import { Language } from '../../utils/language';
 
-export class AddEditRequireModal {
+export class AddEditNamespaceModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, language: Language, requireToEdit: ImportedNamespace): IPromise<ImportedNamespace> {
+  private open(model: Model, language: Language, namespaceToEdit: ImportedNamespace): IPromise<ImportedNamespace> {
     return this.$uibModal.open({
-      template: require('./addEditRequireModal.html'),
+      template: require('./addEditNamespaceModal.html'),
       size: 'small',
-      controller: AddEditRequireController,
+      controller: AddEditNamespaceController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
         model: () => model,
         language: () => language,
-        requireToEdit: () => requireToEdit
+        namespaceToEdit: () => namespaceToEdit
       }
     }).result;
   }
@@ -35,7 +35,7 @@ export class AddEditRequireModal {
   }
 };
 
-class AddEditRequireController {
+class AddEditNamespaceController {
 
   namespace: string;
   prefix: string;
@@ -45,13 +45,13 @@ class AddEditRequireController {
   edit: boolean;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, public model: Model, private language: Language, private requireToEdit: ImportedNamespace, private modelService: ModelService) {
-    this.edit = !!requireToEdit;
+  constructor(private $uibModalInstance: IModalServiceInstance, public model: Model, private language: Language, private namespaceToEdit: ImportedNamespace, private modelService: ModelService) {
+    this.edit = !!namespaceToEdit;
 
-    if (requireToEdit) {
-      this.namespace = requireToEdit.namespace;
-      this.prefix = requireToEdit.prefix;
-      this.label = requireToEdit.label[language];
+    if (namespaceToEdit) {
+      this.namespace = namespaceToEdit.namespace;
+      this.prefix = namespaceToEdit.prefix;
+      this.label = namespaceToEdit.label[language];
     }
   }
 
@@ -64,28 +64,28 @@ class AddEditRequireController {
   }
 
   labelModifiable() {
-    return !this.edit || this.requireToEdit.labelModifiable;
+    return !this.edit || this.namespaceToEdit.labelModifiable;
   }
 
   namespaceModifiable() {
-    return !this.edit || this.requireToEdit.namespaceModifiable;
+    return !this.edit || this.namespaceToEdit.namespaceModifiable;
   }
 
   prefixModifiable() {
-    return !this.edit || this.requireToEdit.prefixModifiable;
+    return !this.edit || this.namespaceToEdit.prefixModifiable;
   }
 
   create() {
     if (this.edit) {
-      this.requireToEdit.namespace = this.namespace;
-      this.requireToEdit.prefix = this.prefix;
-      this.requireToEdit.label[this.language] = this.label;
+      this.namespaceToEdit.namespace = this.namespace;
+      this.namespaceToEdit.prefix = this.prefix;
+      this.namespaceToEdit.label[this.language] = this.label;
 
-      this.$uibModalInstance.close(this.requireToEdit);
+      this.$uibModalInstance.close(this.namespaceToEdit);
     } else {
       // service call only for validation purposes
-      this.modelService.newRequire(this.namespace, this.prefix, this.label, this.language)
-        .then(newRequire => this.$uibModalInstance.close(newRequire), err => this.submitError = err.data.errorMessage);
+      this.modelService.newNamespaceImport(this.namespace, this.prefix, this.label, this.language)
+        .then(ns => this.$uibModalInstance.close(ns), err => this.submitError = err.data.errorMessage);
     }
   }
 

@@ -1,8 +1,8 @@
 
-import { SearchRequireModal } from './searchRequireModal';
+import { SearchNamespaceModal } from './searchNamespaceModal';
 import { SearchReferenceModal } from './searchReferenceModal';
 import { AddEditLinkModal } from './addEditLinkModal';
-import { AddEditRequireModal } from './addEditRequireModal';
+import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { SearchCodeSchemeModal } from './searchCodeSchemeModal';
 import { EditCodeSchemeModal } from './editCodeSchemeModal';
 import { ViewCodeSchemeModal} from './viewCodeSchemeModal';
@@ -17,15 +17,15 @@ import './model';
 import './modelForm';
 import './modelView';
 import './referencesView';
-import './requiresView';
+import './importedNamespacesView';
 import './linksView';
 import './codeSchemeView';
 import './codeSchemesView';
 import './technicalNamespaces';
 
 mod.service('addEditLinkModal', AddEditLinkModal);
-mod.service('addEditRequireModal', AddEditRequireModal);
-mod.service('searchRequireModal', SearchRequireModal);
+mod.service('addEditRequireModal', AddEditNamespaceModal);
+mod.service('searchRequireModal', SearchNamespaceModal);
 mod.service('searchReferenceModal', SearchReferenceModal);
 mod.service('searchCodeSchemeModal', SearchCodeSchemeModal);
 mod.service('editCodeSchemeModal', EditCodeSchemeModal);

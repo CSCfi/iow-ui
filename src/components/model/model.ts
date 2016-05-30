@@ -190,7 +190,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
   }
 
-  getRequiredModels(): Set<string> {
+  getUsedNamespaces(): Set<string> {
     type WithDefinedBy = { definedBy: DefinedBy };
     return new Set<string>(_.chain<WithDefinedBy>(this.associations)
                          .concat(this.attributes)

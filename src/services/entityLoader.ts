@@ -185,11 +185,11 @@ export class EntityLoader {
           if (isUriResolvable(require)) {
             promises.push(
               asPromise(assertExists(require, 'require for ' + model.label['fi']))
-                .then(requiredModel => this.$q.all([this.$q.when(requiredModel), this.modelService.getAllRequires()]))
+                .then(requiredModel => this.$q.all([this.$q.when(requiredModel), this.modelService.getAllNamespaces()]))
                 .then(([requiredModel, requires]: [Model, ImportedNamespace[]]) => model.addNamespace(_.find(requires, require => require.id.equals(requiredModel.id))))
             );
           } else if (isExternalRequire(require)) {
-            promises.push(this.modelService.newRequire(require.namespace, require.prefix, require.label, 'fi')
+            promises.push(this.modelService.newNamespaceImport(require.namespace, require.prefix, require.label, 'fi')
               .then(newRequire => model.addNamespace(newRequire))
             );
           } else {
