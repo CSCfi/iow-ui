@@ -1,7 +1,8 @@
 import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import ILocationService = angular.ILocationService;
 import ILogService = angular.ILogService;
 import IQService = angular.IQService;
+import IScope = angular.IScope;
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassService } from '../../services/classService';
@@ -46,12 +47,17 @@ export class ClassViewController extends EditableEntityController<Class> {
   /* @ngInject */
   constructor($scope: EditableScope,
               $log: ILogService,
+              $location: ILocationService,
               private searchPredicateModal: SearchPredicateModal,
               private choosePredicateTypeModal: ChoosePredicateTypeModal,
               deleteConfirmationModal: DeleteConfirmationModal,
               private classService: ClassService,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
+
+    this.openPropertyId = $location.search().property;
+    $scope.$watch(() => this.openPropertyId, id => $location.search('property', id));
+
     this.modelController.registerView(this);
   }
 
