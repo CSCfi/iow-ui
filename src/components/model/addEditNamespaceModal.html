@@ -12,13 +12,13 @@
 
       <editable data-title="Namespace" disable="!ctrl.namespaceModifiable" context="ctrl.model">
         <div class="input-group input-group-md">
-          <input id="namespace" type="text" class="form-control" required namespace-input model="ctrl.model" ng-model="ctrl.namespace" active-require="ctrl.requireToEdit" />
+          <input id="namespace" type="text" class="form-control" required namespace-input model="ctrl.model" ng-model="ctrl.namespace" active-namespace="ctrl.namespaceToEdit" />
         </div>
       </editable>
 
       <editable data-title="Prefix" disable="!ctrl.prefixModifiable" context="ctrl.model">
         <div class="input-group input-group-md">
-          <input id="prefix" type="text" class="form-control" required prefix-input model="ctrl.model" ng-model="ctrl.prefix" active-require="ctrl.requireToEdit" />
+          <input id="prefix" type="text" class="form-control" required prefix-input model="ctrl.model" ng-model="ctrl.prefix" active-namespace="ctrl.namespaceToEdit" />
         </div>
       </editable>
 

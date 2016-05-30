@@ -3,14 +3,13 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import { Model, ImportedNamespace } from '../../services/entities';
 import { isValidNamespace, isValidUrl } from './validators';
-
 import { module as mod }  from './module';
 
 mod.directive('namespaceInput', () => {
   return {
     scope: {
       model: '=?',
-      activeRequire: '=?'
+      activeNamespace: '=?'
     },
     restrict: 'A',
     require: 'ngModel',
@@ -19,7 +18,7 @@ mod.directive('namespaceInput', () => {
       ngModel.$validators['url'] = isValidUrl;
       ngModel.$validators['existingId'] = (ns: string) => {
         const model = $scope.model;
-        return !model || !model.getNamespaceNames($scope.activeRequire).has(ns);
+        return !model || !model.getNamespaceNames($scope.activeNamespace).has(ns);
       };
     }
   };
@@ -27,5 +26,5 @@ mod.directive('namespaceInput', () => {
 
 interface NamespaceInputScope extends IScope {
   model: Model;
-  activeRequire: ImportedNamespace;
+  activeNamespace: ImportedNamespace;
 }

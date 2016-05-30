@@ -3,14 +3,13 @@ import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import { Model, ImportedNamespace } from '../../services/entities';
 import { isValidPrefixLength, isValidPrefix } from './validators';
-
 import { module as mod }  from './module';
 
 mod.directive('prefixInput', () => {
   return {
     scope: {
       model: '=?',
-      activeRequire: '=?'
+      activeNamespace: '=?'
     },
     restrict: 'A',
     require: 'ngModel',
@@ -19,7 +18,7 @@ mod.directive('prefixInput', () => {
       ngModel.$validators['length'] = isValidPrefixLength;
       ngModel.$validators['existingId'] = (prefix: string) => {
         const model = $scope.model;
-        return !model || !model.getPrefixNames($scope.activeRequire).has(prefix);
+        return !model || !model.getPrefixNames($scope.activeNamespace).has(prefix);
       };
     }
   };
@@ -27,5 +26,5 @@ mod.directive('prefixInput', () => {
 
 interface PrefixInputScope extends IScope {
   model: Model;
-  activeRequire: ImportedNamespace;
+  activeNamespace: ImportedNamespace;
 }
