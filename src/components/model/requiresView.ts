@@ -1,6 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import { Model, Require, NamespaceType } from '../../services/entities';
+import { Model, ImportedNamespace, NamespaceType } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../form/editableTable';
 import { AddEditRequireModal } from './addEditRequireModal';
@@ -55,7 +55,7 @@ class RequiresViewController {
   addRequire() {
     const language = this.languageService.getModelLanguage(this.model);
 
-    const existsExclude = (require: Require) => {
+    const existsExclude = (require: ImportedNamespace) => {
       for (const ns of this.model.getNamespaces()) {
         if (ns.type !== NamespaceType.IMPLICIT_TECHNICAL && (ns.prefix === require.prefix || ns.url === require.namespace)) {
           return 'Already added';
@@ -64,25 +64,25 @@ class RequiresViewController {
       return null;
     };
 
-    const profileExclude = (require: Require) => (!allowProfiles && require.isOfType('profile')) ? 'Cannot require profile' : null;
+    const profileExclude = (require: ImportedNamespace) => (!allowProfiles && require.isOfType('profile')) ? 'Cannot require profile' : null;
     const exclude = combineExclusions(existsExclude, profileExclude);
     const allowProfiles = this.model.isOfType('profile');
 
     this.searchRequireModal.open(this.model, language, exclude)
-      .then((require: Require) => {
+      .then((require: ImportedNamespace) => {
         this.model.addRequire(require);
         this.expanded = true;
       });
   }
 }
 
-class RequireTableDescriptor extends TableDescriptor<Require> {
+class RequireTableDescriptor extends TableDescriptor<ImportedNamespace> {
 
   constructor(private addEditRequireModal: AddEditRequireModal, private model: Model, private languageService: LanguageService, private modelController: ModelController) {
     super();
   }
 
-  columnDescriptors(requires: Require[]): ColumnDescriptor<Require>[] {
+  columnDescriptors(requires: ImportedNamespace[]): ColumnDescriptor<ImportedNamespace>[] {
     return [
       { headerName: 'Prefix', nameExtractor: require => require.prefix, cssClass: 'prefix' },
       { headerName: 'Require label', nameExtractor: require => this.languageService.translate(require.label, this.model) },
@@ -90,19 +90,19 @@ class RequireTableDescriptor extends TableDescriptor<Require> {
     ];
   }
 
-  orderBy(require: Require) {
+  orderBy(require: ImportedNamespace) {
     return require.prefix;
   }
 
-  edit(require: Require) {
+  edit(require: ImportedNamespace) {
     this.addEditRequireModal.openEdit(require, this.model, this.languageService.getModelLanguage(this.model));
   }
 
-  canEdit(require: Require): boolean {
+  canEdit(require: ImportedNamespace): boolean {
     return require.namespaceModifiable || require.prefixModifiable || require.labelModifiable;
   }
 
-  canRemove(require: Require): boolean {
+  canRemove(require: ImportedNamespace): boolean {
     return !this.modelController || !this.modelController.getRequiredModels().has(require.id.uri);
   }
 }

@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import { config } from '../config';
 import {
-  EntityDeserializer, Model, ModelListItem, Reference, Require, Type, GraphData, Relation,
+  EntityDeserializer, Model, ModelListItem, Reference, ImportedNamespace, Type, GraphData, Relation,
   CodeScheme, CodeServer, CodeValue
 } from './entities';
 import { upperCaseFirst } from 'change-case';
@@ -114,12 +114,12 @@ export class ModelService {
     return this.$q.when(new Relation(graph, context, frameObject));
   }
 
-  getAllRequires(): IPromise<Require[]> {
+  getAllRequires(): IPromise<ImportedNamespace[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('listNamespaces'))
       .then(response => this.entities.deserializeRequires(response.data));
   }
 
-  newRequire(namespace: string, prefix: string, label: string, lang: Language): IPromise<Require> {
+  newRequire(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
       .then(response => this.entities.deserializeRequire(response.data));
   }

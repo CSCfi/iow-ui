@@ -1,7 +1,7 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
-import { Model, Require } from '../../services/entities';
+import { Model, ImportedNamespace } from '../../services/entities';
 import { isValidPrefixLength, isValidPrefix } from './validators';
 
 import { module as mod }  from './module';
@@ -27,5 +27,5 @@ mod.directive('prefixInput', () => {
 
 interface PrefixInputScope extends IScope {
   model: Model;
-  activeRequire: Require;
+  activeRequire: ImportedNamespace;
 }

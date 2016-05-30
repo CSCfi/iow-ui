@@ -2,20 +2,20 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
-import { Require, Model } from '../../services/entities';
+import { ImportedNamespace, Model } from '../../services/entities';
 import { AddEditRequireModal } from './addEditRequireModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { Language } from '../../utils/language';
 import { isDefined } from '../../utils/object';
 
-const noExclude = (require: Require) => <string> null;
+const noExclude = (require: ImportedNamespace) => <string> null;
 
 export class SearchRequireModal {
   /* @ngInject */
   constructor(private $uibModal: angular.ui.bootstrap.IModalService) {
   }
 
-  open(model: Model, language: Language, exclude: (require: Require) => string = noExclude): angular.IPromise<Require> {
+  open(model: Model, language: Language, exclude: (require: ImportedNamespace) => string = noExclude): angular.IPromise<ImportedNamespace> {
     return this.$uibModal.open({
       template: require('./searchRequireModal.html'),
       size: 'medium',
@@ -33,8 +33,8 @@ export class SearchRequireModal {
 
 class SearchRequireController {
 
-  searchResults: Require[];
-  requires: Require[];
+  searchResults: ImportedNamespace[];
+  requires: ImportedNamespace[];
   searchText: string = '';
   showTechnical: boolean;
   loadingResults: boolean;
@@ -42,7 +42,7 @@ class SearchRequireController {
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
-              public  exclude: (require: Require) => string,
+              public  exclude: (require: ImportedNamespace) => string,
               private model: Model,
               private language: Language,
               private modelService: ModelService,
@@ -73,14 +73,14 @@ class SearchRequireController {
       );
 
       this.searchResults.sort(
-        comparingBoolean((item: Require) => !!this.exclude(item))
-          .andThen(comparingString((item: Require) => item.namespace)));
+        comparingBoolean((item: ImportedNamespace) => !!this.exclude(item))
+          .andThen(comparingString((item: ImportedNamespace) => item.namespace)));
 
       this.loadingResults = !isDefined(this.requires);
     }
   }
 
-  textFilter(require: Require) {
+  textFilter(require: ImportedNamespace) {
     const search = this.searchText.toLowerCase();
 
     function contains(text: string): boolean {
@@ -90,15 +90,15 @@ class SearchRequireController {
     return !this.searchText || contains(this.languageService.translate(require.label, this.model)) || contains(require.namespace);
   }
 
-  private excludedFilter(require: Require): boolean {
+  private excludedFilter(require: ImportedNamespace): boolean {
     return this.showExcluded || !this.exclude(require);
   }
 
-  private showTechnicalFilter(require: Require): boolean {
+  private showTechnicalFilter(require: ImportedNamespace): boolean {
     return this.showTechnical || !require.technical;
   }
 
-  selectItem(require: Require) {
+  selectItem(require: ImportedNamespace) {
     if (!this.exclude(require)) {
       this.$uibModalInstance.close(require);
     }

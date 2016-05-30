@@ -240,7 +240,7 @@ export class Model extends AbstractModel {
   comment: Localizable;
   state: State;
   references: Reference[];
-  requires: Require[];
+  requires: ImportedNamespace[];
   relations: Relation[];
   codeSchemes: CodeScheme[];
   unsaved: boolean = false;
@@ -265,7 +265,7 @@ export class Model extends AbstractModel {
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
     this.references = deserializeEntityList(graph.references, context, frame, () => Reference);
-    this.requires = deserializeEntityList(graph.requires, context, frame, () => Require);
+    this.requires = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
     this.relations = deserializeEntityList(graph.relations, context, frame, () => Relation);
     this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => CodeScheme);
     this.version = graph.identifier;
@@ -290,11 +290,11 @@ export class Model extends AbstractModel {
     _.remove(this.references, reference);
   }
 
-  addRequire(require: Require) {
+  addRequire(require: ImportedNamespace) {
     this.requires.push(require);
   }
 
-  removeRequire(require: Require) {
+  removeRequire(require: ImportedNamespace) {
     if (require.namespaceType !== NamespaceType.TECHNICAL) {
       delete this.context[require.prefix];
     }
@@ -317,7 +317,7 @@ export class Model extends AbstractModel {
     _.remove(this.codeSchemes, codeScheme);
   }
 
-  getNamespaceNames(exclude?: Require): Set<string> {
+  getNamespaceNames(exclude?: ImportedNamespace): Set<string> {
     const namespaceNames = new Set<string>();
 
     for (const namespace of this.getNamespaces()) {
@@ -329,7 +329,7 @@ export class Model extends AbstractModel {
     return namespaceNames;
   }
 
-  getPrefixNames(exclude?: Require): Set<string> {
+  getPrefixNames(exclude?: ImportedNamespace): Set<string> {
     const prefixNames = new Set<string>();
 
     for (const namespace of this.getNamespaces()) {
@@ -527,7 +527,7 @@ export class Reference extends GraphNode {
   }
 }
 
-export class Require extends GraphNode {
+export class ImportedNamespace extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -1868,12 +1868,12 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), resolveConceptConstructor);
   }
 
-  deserializeRequire(data: GraphData): IPromise<Require> {
-    return frameAndMap(this.$log, data, frames.requireFrame, (framedData) => Require);
+  deserializeRequire(data: GraphData): IPromise<ImportedNamespace> {
+    return frameAndMap(this.$log, data, frames.requireFrame, (framedData) => ImportedNamespace);
   }
 
-  deserializeRequires(data: GraphData): IPromise<Require[]> {
-    return frameAndMapArray(this.$log, data, frames.requireFrame, (framedData) => Require);
+  deserializeRequires(data: GraphData): IPromise<ImportedNamespace[]> {
+    return frameAndMapArray(this.$log, data, frames.requireFrame, (framedData) => ImportedNamespace);
   }
 
   deserializeCodeServers(data: GraphData): IPromise<CodeServer[]> {

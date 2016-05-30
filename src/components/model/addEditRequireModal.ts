@@ -3,7 +3,7 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { ModelService } from '../../services/modelService';
-import { Require, Model } from '../../services/entities';
+import { ImportedNamespace, Model } from '../../services/entities';
 import { Language } from '../../utils/language';
 
 export class AddEditRequireModal {
@@ -11,7 +11,7 @@ export class AddEditRequireModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, language: Language, requireToEdit: Require): IPromise<Require> {
+  private open(model: Model, language: Language, requireToEdit: ImportedNamespace): IPromise<ImportedNamespace> {
     return this.$uibModal.open({
       template: require('./addEditRequireModal.html'),
       size: 'small',
@@ -26,11 +26,11 @@ export class AddEditRequireModal {
     }).result;
   }
 
-  openAdd(model: Model, language: Language): IPromise<Require> {
+  openAdd(model: Model, language: Language): IPromise<ImportedNamespace> {
     return this.open(model, language, null);
   }
 
-  openEdit(require: Require, model: Model, language: Language): IPromise<Require> {
+  openEdit(require: ImportedNamespace, model: Model, language: Language): IPromise<ImportedNamespace> {
     return this.open(model, language, require);
   }
 };
@@ -45,7 +45,7 @@ class AddEditRequireController {
   edit: boolean;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, public model: Model, private language: Language, private requireToEdit: Require, private modelService: ModelService) {
+  constructor(private $uibModalInstance: IModalServiceInstance, public model: Model, private language: Language, private requireToEdit: ImportedNamespace, private modelService: ModelService) {
     this.edit = !!requireToEdit;
 
     if (requireToEdit) {
