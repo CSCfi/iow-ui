@@ -264,8 +264,8 @@ export class Model extends AbstractModel {
       graph.isPartOf['@type'] = 'foaf:Group';
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
-    this.vocabularies = deserializeEntityList(graph.vocabularies, context, frame, () => Vocabulary);
-    this.namespaces = deserializeEntityList(graph.namespaces, context, frame, () => ImportedNamespace);
+    this.vocabularies = deserializeEntityList(graph.references, context, frame, () => Vocabulary);
+    this.namespaces = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
     this.links = deserializeEntityList(graph.relations, context, frame, () => Link);
     this.referenceDatas = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
@@ -1270,7 +1270,7 @@ export class FintoConcept extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: (Vocabulary|Uri)[];
+  vocabularies: (Vocabulary|Uri)[];
   broaderConcept: Concept;
 
   constructor(graph: any, context: any, frame: any) {
@@ -1278,7 +1278,7 @@ export class FintoConcept extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
-    this.inScheme = deserializeList(graph.inScheme, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
+    this.vocabularies = deserializeList(graph.vocabularies, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
 
@@ -1294,8 +1294,8 @@ export class FintoConcept extends GraphNode {
     return false;
   }
 
-  getSchemes() {
-    return _.map(this.inScheme, scheme => new SchemeNameHref(scheme));
+  getVocabularyNames() {
+    return _.map(this.vocabularies, vocabulary => new VocabularyNameHref(vocabulary));
   }
 
   clone(): FintoConcept {
@@ -1320,7 +1320,7 @@ export class ConceptSuggestion extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  inScheme: Vocabulary|Uri;
+  vocabulary: Vocabulary|Uri;
   definedBy: DefinedBy;
   broaderConcept: Concept;
   createdAt: Moment;
@@ -1331,7 +1331,7 @@ export class ConceptSuggestion extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
-    this.inScheme = deserializeEntityOrId(graph.inScheme, context, frame, () => Vocabulary);
+    this.vocabulary = deserializeEntityOrId(graph.inScheme, context, frame, () => Vocabulary);
     this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.createdAt = deserializeDate(graph.atTime);
@@ -1350,8 +1350,12 @@ export class ConceptSuggestion extends GraphNode {
     return true;
   }
 
-  getSchemes() {
-    return [new SchemeNameHref(this.inScheme)];
+  get vocabularies() {
+    return [this.vocabulary];
+  }
+
+  getVocabularyNames() {
+    return [new VocabularyNameHref(this.vocabulary)];
   }
 
   clone(): ConceptSuggestion {
@@ -1364,14 +1368,14 @@ export class ConceptSuggestion extends GraphNode {
       '@id': this.id.uri,
       prefLabel: serializeLocalizable(this.label),
       definition: serializeLocalizable(this.comment),
-      inScheme: serializeEntityOrId(this.inScheme, clone),
+      inScheme: serializeEntityOrId(this.vocabulary, clone),
       isDefinedBy: serializeOptional(this.definedBy, data => serializeEntity(data, clone)),
       broaderConcept: serializeOptional(this.broaderConcept, data => serializeEntity(data, clone))
     };
   }
 }
 
-export class SchemeNameHref {
+export class VocabularyNameHref {
 
   id: Uri;
   href: Url;
@@ -1399,7 +1403,7 @@ export class SchemeNameHref {
     if (isLocalizable(name)) {
       return localizer.translate(name);
     } else if (typeof name === 'string') {
-      if (name === SchemeNameHref.internalVocabularyName) {
+      if (name === VocabularyNameHref.internalVocabularyName) {
         return gettextCatalog.getString(name);
       } else {
         return name;
