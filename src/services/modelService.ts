@@ -82,7 +82,7 @@ export class ModelService {
       });
   }
 
-  newReference(scheme: any, lang: Language, context: any): IPromise<Vocabulary> {
+  newVocabulary(scheme: any, lang: Language, context: any): IPromise<Vocabulary> {
 
     const graph = {
       '@id': config.fintoUrl + scheme.id,

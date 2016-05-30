@@ -137,7 +137,7 @@ export class EntityLoader {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
     this.loggedIn = this.reset.then(() => userService.login());
-    this.schemes = this.reset.then(() => this.conceptService.getAllSchemes('fi')).then(result => result.data.vocabularies);
+    this.schemes = this.reset.then(() => this.conceptService.getAllVocabularies('fi')).then(result => result.data.vocabularies);
   }
 
   addAction<T>(action: IPromise<T>, details: any): IPromise<T> {
@@ -175,7 +175,7 @@ export class EntityLoader {
                 }
                 return scheme;
               })
-              .then(scheme => this.modelService.newReference(scheme, 'fi', model.context))
+              .then(scheme => this.modelService.newVocabulary(scheme, 'fi', model.context))
               .then(referenceEntity => model.addVocabulary(referenceEntity))
           );
         }

@@ -24,7 +24,7 @@ export class ConceptService {
   constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
-  getAllSchemes(lang: Language): IHttpPromise<any> {
+  getAllVocabularies(lang: Language): IHttpPromise<any> {
     return this.$http.get(config.apiEndpointWithName('scheme'), {params: {lang}});
   }
 

@@ -7,18 +7,18 @@ import { comparingBoolean, comparingString } from '../../services/comparators';
 import { Language } from '../../utils/language';
 import { isDefined } from '../../utils/object';
 
-const noExclude = (scheme: any) => <string> null;
+const noExclude = (vocabulary: any) => <string> null;
 
-export class SearchReferenceModal {
+export class SearchVocabularyModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(language: Language, exclude: (scheme: any) => string = noExclude): angular.IPromise<any> {
+  open(language: Language, exclude: (vocabulary: any) => string = noExclude): angular.IPromise<any> {
     return this.$uibModal.open({
-      template: require('./searchReferenceModal.html'),
+      template: require('./searchVocabularyModal.html'),
       size: 'medium',
-      controller: SearchReferenceController,
+      controller: SearchVocabularyController,
       controllerAs: 'ctrl',
       backdrop: true,
       resolve: {
@@ -29,24 +29,24 @@ export class SearchReferenceModal {
   }
 }
 
-class SearchReferenceController {
+class SearchVocabularyController {
 
   searchResults: any[];
-  schemes: any[];
+  vocabularies: any[];
   searchText: string = '';
   loadingResults: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
-              public exclude: (scheme: any) => string,
+              public exclude: (vocabulary: any) => string,
               private conceptService: ConceptService,
               private language: Language) {
 
     this.loadingResults = true;
 
-    conceptService.getAllSchemes(language).then(result => {
-      this.schemes = result.data.vocabularies;
+    conceptService.getAllVocabularies(language).then(result => {
+      this.vocabularies = result.data.vocabularies;
       this.search();
     });
 
@@ -59,32 +59,32 @@ class SearchReferenceController {
   }
 
   search() {
-    if (this.schemes) {
-      this.searchResults = this.schemes.filter(scheme =>
-        this.textFilter(scheme) &&
-        this.excludedFilter(scheme)
+    if (this.vocabularies) {
+      this.searchResults = this.vocabularies.filter(vocabulary =>
+        this.textFilter(vocabulary) &&
+        this.excludedFilter(vocabulary)
       );
 
       this.searchResults.sort(
-        comparingBoolean((scheme: any) => !!this.exclude(scheme))
-          .andThen(comparingString((scheme: any) => scheme.title)));
+        comparingBoolean((vocabulary: any) => !!this.exclude(vocabulary))
+          .andThen(comparingString((vocabulary: any) => vocabulary.title)));
     }
 
-    this.loadingResults = !isDefined(this.schemes);
+    this.loadingResults = !isDefined(this.vocabularies);
   }
 
-  selectItem(scheme: any) {
-    if (!this.exclude(scheme)) {
-      this.$uibModalInstance.close(scheme);
+  selectItem(vocabulary: any) {
+    if (!this.exclude(vocabulary)) {
+      this.$uibModalInstance.close(vocabulary);
     }
   }
 
-  private textFilter(scheme: any): boolean {
-    return !this.searchText || (scheme.title || '').toLowerCase().includes(this.searchText.toLowerCase());
+  private textFilter(vocabulary: any): boolean {
+    return !this.searchText || (vocabulary.title || '').toLowerCase().includes(this.searchText.toLowerCase());
   }
 
-  private excludedFilter(scheme: any): boolean {
-    return this.showExcluded || !this.exclude(scheme);
+  private excludedFilter(vocabulary: any): boolean {
+    return this.showExcluded || !this.exclude(vocabulary);
   }
 
   close() {

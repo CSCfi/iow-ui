@@ -4,14 +4,14 @@ import { ModelViewController } from './modelView';
 import { Vocabulary, Model } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
-import { SearchReferenceModal } from './searchReferenceModal';
+import { SearchVocabularyModal } from './searchVocabularyModal';
 import { ModelService } from '../../services/modelService';
 import { module as mod }  from './module';
 import { createExistsExclusion } from '../../utils/exclusion';
 import { collectProperties } from '../../utils/entity';
 import { ConceptEditorModal } from './conceptEditorModal';
 
-mod.directive('referencesView', () => {
+mod.directive('vocabulariesView', () => {
   return {
     scope: {
       model: '='
@@ -20,7 +20,7 @@ mod.directive('referencesView', () => {
     template: `
       <h4>
         <span translate>References</span> 
-        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addReference()" ng-show="ctrl.isEditing()">
+        <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addVocabulary()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
           <span translate>Add reference</span>
         </button>
@@ -33,30 +33,30 @@ mod.directive('referencesView', () => {
     `,
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['referencesView', '?^modelView'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [ReferencesViewController, ModelViewController]) {
+    require: ['vocabulariesView', '?^modelView'],
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [VocabulariesViewController, ModelViewController]) {
       thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
-    controller: ReferencesViewController
+    controller: VocabulariesViewController
   };
 });
 
-class ReferencesViewController {
+class VocabulariesViewController {
 
   model: Model;
   isEditing: () => boolean;
 
-  descriptor: ReferenceTableDescriptor;
+  descriptor: VocabularyTableDescriptor;
   expanded: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
-              private searchReferenceModal: SearchReferenceModal,
+              private searchVocabularyModal: SearchVocabularyModal,
               private conceptEditorModal: ConceptEditorModal,
               private modelService: ModelService,
               private languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
-      this.descriptor = new ReferenceTableDescriptor(model, languageService);
+      this.descriptor = new VocabularyTableDescriptor(model, languageService);
     });
   }
 
@@ -64,46 +64,46 @@ class ReferencesViewController {
     this.conceptEditorModal.open(this.model);
   }
 
-  addReference() {
+  addVocabulary() {
     const language = this.languageService.getModelLanguage(this.model);
-    const vocabularies = collectProperties(this.model.vocabularies, reference => reference.vocabularyId);
+    const vocabularies = collectProperties(this.model.vocabularies, vocabulary => vocabulary.vocabularyId);
     const exclude = createExistsExclusion(vocabularies);
 
-    this.searchReferenceModal.open(language, exclude)
-      .then((scheme: any) => this.modelService.newReference(scheme, language, this.model.context))
-      .then((reference: Vocabulary) => {
-        this.model.addVocabulary(reference);
+    this.searchVocabularyModal.open(language, exclude)
+      .then((scheme: any) => this.modelService.newVocabulary(scheme, language, this.model.context))
+      .then((vocabulary: Vocabulary) => {
+        this.model.addVocabulary(vocabulary);
         this.expanded = true;
       });
   }
 }
 
-class ReferenceTableDescriptor extends TableDescriptor<Vocabulary> {
+class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
 
   constructor(private model: Model, private languageService: LanguageService) {
     super();
   }
 
-  columnDescriptors(references: Vocabulary[]): ColumnDescriptor<Vocabulary>[] {
+  columnDescriptors(vocabularies: Vocabulary[]): ColumnDescriptor<Vocabulary>[] {
     return [
-      { headerName: 'Identifier', nameExtractor: reference => reference.vocabularyId, cssClass: 'prefix', hrefExtractor: reference => reference.href},
-      { headerName: 'Vocabulary name', nameExtractor: reference => this.languageService.translate(reference.label, this.model)}
+      { headerName: 'Identifier', nameExtractor: vocabualry => vocabualry.vocabularyId, cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
+      { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.label, this.model)}
     ];
   }
 
-  canEdit(reference: Vocabulary): boolean {
+  canEdit(vocabulary: Vocabulary): boolean {
     return false;
   }
 
-  canRemove(reference: Vocabulary): boolean {
-    return !reference.local;
+  canRemove(vocabulary: Vocabulary): boolean {
+    return !vocabulary.local;
   }
 
-  orderBy(reference: Vocabulary): any {
-    return reference.id;
+  orderBy(vocabulary: Vocabulary): any {
+    return vocabulary.id;
   }
 
-  filter(reference: Vocabulary) {
-    return !reference.local;
+  filter(vocabluary: Vocabulary) {
+    return !vocabluary.local;
   }
 }
