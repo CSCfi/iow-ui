@@ -38,7 +38,7 @@ export interface EntityDetails {
   state?: State;
 }
 
-export interface ExternalRequireDetails {
+export interface ExternalNamespaceDetails {
   prefix: string;
   namespace: Url;
   label: string;
@@ -46,8 +46,8 @@ export interface ExternalRequireDetails {
 
 export interface ModelDetails extends EntityDetails {
   prefix: string;
-  references?: string[];
-  requires?: (Resolvable<Model>|ExternalRequireDetails)[];
+  vocabularies?: string[];
+  namespaces?: (Resolvable<Model>|ExternalNamespaceDetails)[];
 }
 
 export interface ConstraintDetails {
@@ -123,7 +123,7 @@ export class EntityLoader {
 
   private reset: IPromise<any>;
   private loggedIn: IPromise<any>;
-  private schemes: IPromise<any>;
+  private vocabularies: IPromise<any>;
   private actions: IPromise<any>[] = [];
 
   constructor(private $q: IQService,
@@ -137,7 +137,7 @@ export class EntityLoader {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
     this.loggedIn = this.reset.then(() => userService.login());
-    this.schemes = this.reset.then(() => this.conceptService.getAllVocabularies('fi')).then(result => result.data.vocabularies);
+    this.vocabularies = this.reset.then(() => this.conceptService.getAllVocabularies('fi')).then(result => result.data.vocabularies);
   }
 
   addAction<T>(action: IPromise<T>, details: any): IPromise<T> {
@@ -166,34 +166,34 @@ export class EntityLoader {
 
         const promises: IPromise<any>[] = [];
 
-        for (const reference of details.references || []) {
+        for (const importedVocabulary of details.vocabularies || []) {
           promises.push(
-            this.schemes.then((schemes: any) => {
-                const scheme = _.find(schemes, (scheme: any) => scheme.id === reference);
-                if (!scheme) {
-                  throw new Error('Reference not found: ' + reference);
+            this.vocabularies.then((vocabularies: any) => {
+                const vocabulary = _.find(vocabularies, (vocabulary: any) => vocabulary.id === importedVocabulary);
+                if (!vocabulary) {
+                  throw new Error('Vocabulary not found: ' + vocabulary);
                 }
-                return scheme;
+                return vocabulary;
               })
-              .then(scheme => this.modelService.newVocabulary(scheme, 'fi', model.context))
-              .then(referenceEntity => model.addVocabulary(referenceEntity))
+              .then(vocabulary => this.modelService.newVocabulary(vocabulary, 'fi', model.context))
+              .then(vocabularyEntity => model.addVocabulary(vocabularyEntity))
           );
         }
 
-        for (const require of details.requires || []) {
+        for (const ns of details.namespaces || []) {
 
-          if (isUriResolvable(require)) {
+          if (isUriResolvable(ns)) {
             promises.push(
-              asPromise(assertExists(require, 'require for ' + model.label['fi']))
-                .then(requiredModel => this.$q.all([this.$q.when(requiredModel), this.modelService.getAllNamespaces()]))
-                .then(([requiredModel, requires]: [Model, ImportedNamespace[]]) => model.addNamespace(_.find(requires, require => require.id.equals(requiredModel.id))))
+              asPromise(assertExists(ns, 'namespace for ' + model.label['fi']))
+                .then(importedNamespace => this.$q.all([this.$q.when(importedNamespace), this.modelService.getAllNamespaces()]))
+                .then(([importedNamespace, importableNamespaces]: [Model, ImportedNamespace[]]) => model.addNamespace(_.find(importableNamespaces, ns => ns.id.equals(importedNamespace.id))))
             );
-          } else if (isExternalRequire(require)) {
-            promises.push(this.modelService.newNamespaceImport(require.namespace, require.prefix, require.label, 'fi')
-              .then(newRequire => model.addNamespace(newRequire))
+          } else if (isExternalNamespace(ns)) {
+            promises.push(this.modelService.newNamespaceImport(ns.namespace, ns.prefix, ns.label, 'fi')
+              .then(newImportedNamespace => model.addNamespace(newImportedNamespace))
             );
           } else {
-            throw new Error('Unknown require: ' + require);
+            throw new Error('Unknown namespace: ' + ns);
           }
         }
 
@@ -436,7 +436,7 @@ function isConceptSuggestion(obj: any): obj is ConceptSuggestionDetails {
   return typeof obj === 'object';
 }
 
-function isExternalRequire(obj: any): obj is ExternalRequireDetails {
+function isExternalNamespace(obj: any): obj is ExternalNamespaceDetails {
   return !!obj.label && !!obj.namespace && !!obj.prefix;
 }
 

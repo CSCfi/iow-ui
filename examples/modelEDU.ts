@@ -15,7 +15,7 @@ export const model = loader.createLibrary(ktkGroupId, {
              en: 'Core Vocabulary of Education' },
   comment: { fi: 'Opiskelun, opetuksen ja koulutuksen yhteiset tietokomponentit',
              en: 'Common core data model of teaching, learning and education' },
-  requires: [
+  namespaces: [
     Jhs.model,
     {
       prefix: 'mlo',

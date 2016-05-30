@@ -7,7 +7,7 @@ export const model = loader.createProfile(ktkGroupId, {
   prefix: 'oili',
   label:   { fi: 'Opiskelijaksi ilmoittautuminen esimerkkiprofiili' },
   comment: { fi: 'Esimerkki profiilin ominaisuuksista OILI casella' },
-  requires: [Jhs.model]
+  namespaces: [Jhs.model]
 });
 
 export namespace Attributes {
