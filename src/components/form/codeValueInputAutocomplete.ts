@@ -5,7 +5,7 @@ import IPromise = angular.IPromise;
 import IRepeatScope = angular.IRepeatScope;
 import IModelFormatter = angular.IModelFormatter;
 import IQService = angular.IQService;
-import { ReferenceData, CodeValue, LanguageContext } from '../../services/entities';
+import { ReferenceData, ReferenceDataCode, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -37,7 +37,7 @@ export class UriInputAutocompleteController {
 
   datasource = (search: string) => this.codeScheme && !this.codeScheme.isExternal() ? this.modelService.getCodeValues(this.codeScheme) : this.$q.when([]);
 
-  formatter = (codeValue: CodeValue) => `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
+  formatter = (codeValue: ReferenceDataCode) => `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
 
-  valueExtractor = (codeValue: CodeValue) => codeValue.identifier;
+  valueExtractor = (codeValue: ReferenceDataCode) => codeValue.identifier;
 }

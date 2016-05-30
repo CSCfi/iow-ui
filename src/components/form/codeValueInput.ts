@@ -9,7 +9,7 @@ import INgModelController = angular.INgModelController;
 import IModelFormatter = angular.IModelFormatter;
 import { ModelService } from '../../services/modelService';
 import { LanguageService } from '../../services/languageService';
-import { ReferenceData, CodeValue } from '../../services/entities';
+import { ReferenceData, ReferenceDataCode } from '../../services/entities';
 import { module as mod }  from './module';
 
 export function placeholderText(gettextCatalog: gettextCatalog) {
@@ -18,7 +18,7 @@ export function placeholderText(gettextCatalog: gettextCatalog) {
 
 export function createAsyncValidators($q: IQService, codeScheme: ReferenceData, modelService: ModelService): IAsyncModelValidators {
 
-    const codeValues: IPromise<CodeValue[]> = codeScheme && !codeScheme.isExternal() ? modelService.getCodeValues(codeScheme) : $q.when([]);
+    const codeValues: IPromise<ReferenceDataCode[]> = codeScheme && !codeScheme.isExternal() ? modelService.getCodeValues(codeScheme) : $q.when([]);
 
     return {
       codeValue(codeValue: string) {

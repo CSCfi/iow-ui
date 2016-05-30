@@ -1,6 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import { ReferenceData, CodeValue, LanguageContext } from '../../services/entities';
+import { ReferenceData, ReferenceDataCode, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
 import { ViewCodeSchemeModal } from './viewCodeSchemeModal';
@@ -26,7 +26,7 @@ class CodeSchemeViewController {
   codeScheme: ReferenceData;
   context: LanguageContext;
   title: string;
-  values: CodeValue[];
+  values: ReferenceDataCode[];
 
   constructor($scope: IScope, modelService: ModelService, private viewCodeSchemeModal: ViewCodeSchemeModal) {
     $scope.$watch(() => this.codeScheme, codeScheme => {

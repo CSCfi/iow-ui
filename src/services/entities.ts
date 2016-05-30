@@ -658,7 +658,7 @@ export class ReferenceData extends GraphNode {
   }
 }
 
-export class CodeValue extends GraphNode {
+export class ReferenceDataCode extends GraphNode {
 
   id: Uri;
   title: Localizable;
@@ -1888,8 +1888,8 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.codeSchemeFrame, (framedData) => ReferenceData);
   }
 
-  deserializeCodeValues(data: GraphData): IPromise<CodeValue[]> {
-    return frameAndMapArray(this.$log, data, frames.codeValueFrame, (framedData) => CodeValue);
+  deserializeCodeValues(data: GraphData): IPromise<ReferenceDataCode[]> {
+    return frameAndMapArray(this.$log, data, frames.codeValueFrame, (framedData) => ReferenceDataCode);
   }
 
   deserializeUser(data: GraphData): IPromise<User> {

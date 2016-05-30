@@ -8,7 +8,7 @@ import Moment = moment.Moment;
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, Vocabulary, ImportedNamespace, Type, GraphData, Link,
-  ReferenceData, ReferenceDataServer, CodeValue
+  ReferenceData, ReferenceDataServer, ReferenceDataCode
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -18,7 +18,7 @@ import { expandContextWithKnownModels } from '../utils/entity';
 
 export class ModelService {
 
-  private codeValuesCache = new Map<string, CodeValue[]>();
+  private codeValuesCache = new Map<string, ReferenceDataCode[]>();
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
