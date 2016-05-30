@@ -1,6 +1,6 @@
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
-import { Model, CodeScheme } from '../../services/entities';
+import { Model, ReferenceData } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 import { SearchCodeSchemeModal } from '../model/searchCodeSchemeModal';
 import { module as mod }  from './module';
@@ -27,7 +27,7 @@ mod.directive('editableCodeSchemeSelect', () => {
 class EditableCodeSchemeSelectController {
 
   isEditing: () => boolean;
-  codeScheme: CodeScheme;
+  codeScheme: ReferenceData;
   model: Model;
 
   /* @ngInject */

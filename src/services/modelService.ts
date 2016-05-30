@@ -8,7 +8,7 @@ import Moment = moment.Moment;
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, Vocabulary, ImportedNamespace, Type, GraphData, Relation,
-  CodeScheme, CodeServer, CodeValue
+  ReferenceData, CodeServer, CodeValue
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -140,21 +140,21 @@ export class ModelService {
       .then(response => this.entities.deserializeCodeServers(response.data));
   }
 
-  getCodeSchemesForServer(server: CodeServer): IPromise<CodeScheme[]> {
+  getCodeSchemesForServer(server: CodeServer): IPromise<ReferenceData[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
       .then(response => this.entities.deserializeCodeSchemes(response.data));
   }
 
-  getCodeSchemesForServers(servers: CodeServer[]): IPromise<CodeScheme[]> {
+  getCodeSchemesForServers(servers: CodeServer[]): IPromise<ReferenceData[]> {
     return this.$q.all(_.map(servers, server => this.getCodeSchemesForServer(server)))
       .then(schemeLists => _.flatten(schemeLists));
   }
 
-  getAllCodeSchemes(): IPromise<CodeScheme[]> {
+  getAllCodeSchemes(): IPromise<ReferenceData[]> {
     return this.getCodeServers().then(servers => this.getCodeSchemesForServers(servers));
   }
 
-  getCodeValues(codeScheme: CodeScheme) {
+  getCodeValues(codeScheme: ReferenceData) {
 
     const cached = this.codeValuesCache.get(codeScheme.id.uri);
 
@@ -170,7 +170,7 @@ export class ModelService {
     }
   }
 
-  newCodeScheme(uri: Uri, label: string, description: string, lang: Language): IPromise<CodeScheme> {
+  newCodeScheme(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
       .then(response => this.entities.deserializeCodeScheme(response.data));
   }

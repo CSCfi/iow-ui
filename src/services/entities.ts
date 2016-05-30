@@ -242,7 +242,7 @@ export class Model extends AbstractModel {
   references: Vocabulary[];
   requires: ImportedNamespace[];
   relations: Relation[];
-  codeSchemes: CodeScheme[];
+  codeSchemes: ReferenceData[];
   unsaved: boolean = false;
   namespace: Url;
   prefix: string;
@@ -267,7 +267,7 @@ export class Model extends AbstractModel {
     this.references = deserializeEntityList(graph.references, context, frame, () => Vocabulary);
     this.requires = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
     this.relations = deserializeEntityList(graph.relations, context, frame, () => Relation);
-    this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => CodeScheme);
+    this.codeSchemes = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
     if (graph.rootResource) {
       this.rootClass = new Uri(graph.rootResource, context);
@@ -309,11 +309,11 @@ export class Model extends AbstractModel {
     _.remove(this.relations, relation);
   }
 
-  addCodeScheme(codeScheme: CodeScheme) {
+  addCodeScheme(codeScheme: ReferenceData) {
     this.codeSchemes.push(codeScheme);
   }
 
-  removeCodeScheme(codeScheme: CodeScheme) {
+  removeCodeScheme(codeScheme: ReferenceData) {
     _.remove(this.codeSchemes, codeScheme);
   }
 
@@ -625,7 +625,7 @@ export class CodeGroup extends GraphNode {
   }
 }
 
-export class CodeScheme extends GraphNode {
+export class ReferenceData extends GraphNode {
 
   id: Uri;
   title: Localizable;
@@ -964,7 +964,7 @@ export class Property extends GraphNode {
   in: string[];
   hasValue: string;
   pattern: string;
-  codeScheme: CodeScheme;
+  codeScheme: ReferenceData;
   predicateType: Type;
   classIn: Uri[];
   editorialNote: Localizable;
@@ -980,7 +980,7 @@ export class Property extends GraphNode {
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
     this.classIn = deserializeList(graph.classIn, klass => new Uri(klass, context));
-    this.codeScheme = deserializeOptional(graph.memberOf, (data) => deserializeEntity(data, context, frame, () => CodeScheme));
+    this.codeScheme = deserializeOptional(graph.memberOf, (data) => deserializeEntity(data, context, frame, () => ReferenceData));
 
     if (graph.type) {
       this.predicateType = mapType(graph.type);
@@ -1880,12 +1880,12 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.codeServerFrame, (framedData) => CodeServer);
   }
 
-  deserializeCodeScheme(data: GraphData): IPromise<CodeScheme> {
-    return frameAndMap(this.$log, data, frames.codeSchemeFrame, (framedData) => CodeScheme);
+  deserializeCodeScheme(data: GraphData): IPromise<ReferenceData> {
+    return frameAndMap(this.$log, data, frames.codeSchemeFrame, (framedData) => ReferenceData);
   }
 
-  deserializeCodeSchemes(data: GraphData): IPromise<CodeScheme[]> {
-    return frameAndMapArray(this.$log, data, frames.codeSchemeFrame, (framedData) => CodeScheme);
+  deserializeCodeSchemes(data: GraphData): IPromise<ReferenceData[]> {
+    return frameAndMapArray(this.$log, data, frames.codeSchemeFrame, (framedData) => ReferenceData);
   }
 
   deserializeCodeValues(data: GraphData): IPromise<CodeValue[]> {

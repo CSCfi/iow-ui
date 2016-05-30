@@ -1,7 +1,7 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
-import { Model, CodeScheme } from '../../services/entities';
+import { Model, ReferenceData } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../../utils/language';
 
@@ -10,7 +10,7 @@ export class EditCodeSchemeModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, lang: Language, codeSchemeToEdit: CodeScheme): IPromise<CodeScheme> {
+  private open(model: Model, lang: Language, codeSchemeToEdit: ReferenceData): IPromise<ReferenceData> {
     return this.$uibModal.open({
       template: require('./editCodeSchemeModal.html'),
       size: 'small',
@@ -25,7 +25,7 @@ export class EditCodeSchemeModal {
     }).result;
   }
 
-  openEdit(codeScheme: CodeScheme, model: Model, lang: Language): IPromise<CodeScheme> {
+  openEdit(codeScheme: ReferenceData, model: Model, lang: Language): IPromise<ReferenceData> {
     return this.open(model, lang, codeScheme);
   }
 }
@@ -39,7 +39,7 @@ class EditCodeSchemeModalController {
   cancel = this.$uibModalInstance.dismiss;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, private lang: Language, public model: Model, private codeSchemeToEdit: CodeScheme) {
+  constructor(private $uibModalInstance: IModalServiceInstance, private lang: Language, public model: Model, private codeSchemeToEdit: ReferenceData) {
     this.id = codeSchemeToEdit.id;
     this.title = codeSchemeToEdit.title[lang];
     this.description = codeSchemeToEdit.description[lang];

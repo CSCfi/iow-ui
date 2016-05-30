@@ -7,7 +7,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import IModelValidators = angular.IModelValidators;
 import { DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
-import { CodeScheme, LanguageContext } from '../../services/entities';
+import { ReferenceData, LanguageContext } from '../../services/entities';
 
 mod.directive('editableMultipleDataTypeInput', () => {
   return {
@@ -47,6 +47,6 @@ class EditableMultipleDataTypeInputController {
   inputType: DataType;
   id: string;
   title: string;
-  codeScheme: CodeScheme;
+  codeScheme: ReferenceData;
   context: LanguageContext;
 }

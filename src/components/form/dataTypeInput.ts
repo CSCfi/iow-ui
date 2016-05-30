@@ -7,7 +7,7 @@ import { DataType } from '../../services/dataTypes';
 import { resolveValidator } from './validators';
 import { LanguageService } from '../../services/languageService';
 import { createAsyncValidators } from './codeValueInput';
-import { CodeScheme } from '../../services/entities';
+import { ReferenceData } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { module as mod }  from './module';
 
@@ -19,7 +19,7 @@ export function placeholderText(dataType: DataType, gettextCatalog: gettextCatal
 
 interface DatatypeInputScope extends IScope {
   datatypeInput: DataType;
-  codeScheme: CodeScheme;
+  codeScheme: ReferenceData;
 }
 
 mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: ModelService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
@@ -48,7 +48,7 @@ mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: Mod
         ngModel.$validate();
       }
 
-      function initializeCodeScheme(codeScheme: CodeScheme) {
+      function initializeCodeScheme(codeScheme: ReferenceData) {
         Object.assign(ngModel.$asyncValidators, createAsyncValidators($q, codeScheme, modelService));
         ngModel.$validate();
       }

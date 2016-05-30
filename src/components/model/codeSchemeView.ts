@@ -1,6 +1,6 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
-import { CodeScheme, CodeValue, LanguageContext } from '../../services/entities';
+import { ReferenceData, CodeValue, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
 import { ViewCodeSchemeModal } from './viewCodeSchemeModal';
@@ -23,7 +23,7 @@ mod.directive('codeSchemeView', () => {
 
 class CodeSchemeViewController {
 
-  codeScheme: CodeScheme;
+  codeScheme: ReferenceData;
   context: LanguageContext;
   title: string;
   values: CodeValue[];

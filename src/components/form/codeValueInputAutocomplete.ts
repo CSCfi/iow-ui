@@ -5,7 +5,7 @@ import IPromise = angular.IPromise;
 import IRepeatScope = angular.IRepeatScope;
 import IModelFormatter = angular.IModelFormatter;
 import IQService = angular.IQService;
-import { CodeScheme, CodeValue, LanguageContext } from '../../services/entities';
+import { ReferenceData, CodeValue, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -27,7 +27,7 @@ mod.directive('codeValueInputAutocomplete', () => {
 
 export class UriInputAutocompleteController {
 
-  codeScheme: CodeScheme;
+  codeScheme: ReferenceData;
   context: LanguageContext;
   localizer: Localizer;
 

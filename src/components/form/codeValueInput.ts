@@ -9,14 +9,14 @@ import INgModelController = angular.INgModelController;
 import IModelFormatter = angular.IModelFormatter;
 import { ModelService } from '../../services/modelService';
 import { LanguageService } from '../../services/languageService';
-import { CodeScheme, CodeValue } from '../../services/entities';
+import { ReferenceData, CodeValue } from '../../services/entities';
 import { module as mod }  from './module';
 
 export function placeholderText(gettextCatalog: gettextCatalog) {
   return gettextCatalog.getString('Write code');
 }
 
-export function createAsyncValidators($q: IQService, codeScheme: CodeScheme, modelService: ModelService): IAsyncModelValidators {
+export function createAsyncValidators($q: IQService, codeScheme: ReferenceData, modelService: ModelService): IAsyncModelValidators {
 
     const codeValues: IPromise<CodeValue[]> = codeScheme && !codeScheme.isExternal() ? modelService.getCodeValues(codeScheme) : $q.when([]);
 
@@ -62,5 +62,5 @@ mod.directive('codeValueInput', /* @ngInject */ ($q: IQService, modelService: Mo
 });
 
 interface CodeValueInputScope extends IScope {
-  codeScheme: CodeScheme;
+  codeScheme: ReferenceData;
 }

@@ -3,7 +3,7 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
-import { CodeScheme, Model, CodeGroup, CodeServer } from '../../services/entities';
+import { ReferenceData, Model, CodeGroup, CodeServer } from '../../services/entities';
 import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
@@ -12,14 +12,14 @@ import { EditableForm } from '../form/editableEntityController';
 import { Uri } from '../../services/uri';
 import { any, all } from '../../utils/array';
 
-const noExclude = (codeScheme: CodeScheme) => <string> null;
+const noExclude = (codeScheme: ReferenceData) => <string> null;
 
 export class SearchCodeSchemeModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, codeSchemesFromModel: boolean, exclude: (codeScheme: CodeScheme) => string = noExclude): IPromise<CodeScheme> {
+  private open(model: Model, codeSchemesFromModel: boolean, exclude: (codeScheme: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
     return this.$uibModal.open({
       template: require('./searchCodeSchemeModal.html'),
       size: 'large',
@@ -34,11 +34,11 @@ export class SearchCodeSchemeModal {
     }).result;
   }
 
-  openSelectionForModel(model: Model, exclude: (codeScheme: CodeScheme) => string = noExclude): IPromise<CodeScheme> {
+  openSelectionForModel(model: Model, exclude: (codeScheme: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
     return this.open(model, false, exclude);
   }
 
-  openSelectionForProperty(model: Model, exclude: (codeScheme: CodeScheme) => string = noExclude) {
+  openSelectionForProperty(model: Model, exclude: (codeScheme: ReferenceData) => string = noExclude) {
     return this.open(model, true, exclude);
   }
 }
@@ -49,16 +49,16 @@ export interface SearchCodeSchemeScope extends IScope {
 
 export class SearchCodeSchemeModalController {
 
-  searchResults: (CodeScheme|AddNewCodeScheme)[];
+  searchResults: (ReferenceData|AddNewCodeScheme)[];
   codeServers: CodeServer[];
-  codeSchemes: CodeScheme[];
+  codeSchemes: ReferenceData[];
   codeGroups: CodeGroup[];
   showServer: CodeServer;
   showGroup: CodeGroup;
   searchText: string = '';
   loadingResults = true;
-  selectedItem: CodeScheme|AddNewCodeScheme;
-  selection: CodeScheme|AddNewSchemeFormData;
+  selectedItem: ReferenceData|AddNewCodeScheme;
+  selection: ReferenceData|AddNewSchemeFormData;
   cannotConfirm: string;
   submitError: string;
 
@@ -72,11 +72,11 @@ export class SearchCodeSchemeModalController {
               private modelService: ModelService,
               languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
-              public exclude: (codeScheme: CodeScheme) => string) {
+              public exclude: (codeScheme: ReferenceData) => string) {
 
     this.localizer = languageService.createLocalizer(model);
 
-    const init = (codeSchemes: CodeScheme[]) => {
+    const init = (codeSchemes: ReferenceData[]) => {
       this.codeSchemes = codeSchemes;
       this.codeGroups = _.chain(this.codeSchemes)
         .map(codeScheme => codeScheme.groups)
@@ -120,7 +120,7 @@ export class SearchCodeSchemeModalController {
   search() {
     if (this.codeSchemes) {
 
-      const result: (CodeScheme|AddNewCodeScheme)[] = [
+      const result: (ReferenceData|AddNewCodeScheme)[] = [
         new AddNewCodeScheme(`${this.gettextCatalog.getString('Create new code scheme')} '${this.searchText}'`, this.canAddNew.bind(this))
       ];
 
@@ -138,7 +138,7 @@ export class SearchCodeSchemeModalController {
     }
   }
 
-  selectItem(item: CodeScheme|AddNewCodeScheme) {
+  selectItem(item: ReferenceData|AddNewCodeScheme) {
     this.selectedItem = item;
     this.submitError = null;
     this.$scope.form.editing = false;
@@ -148,7 +148,7 @@ export class SearchCodeSchemeModalController {
       this.$scope.form.editing = true;
       this.selection = new AddNewSchemeFormData();
 
-    } else if (item instanceof CodeScheme) {
+    } else if (item instanceof ReferenceData) {
 
       this.cannotConfirm = this.exclude(item);
 
@@ -167,14 +167,14 @@ export class SearchCodeSchemeModalController {
       this.modelService.newCodeScheme(selection.uri, selection.label, selection.description, this.localizer.language)
         .then(codeScheme => this.$uibModalInstance.close(codeScheme), err => this.submitError = err.data.errorMessage);
     } else {
-      this.$uibModalInstance.close((<CodeScheme> selection));
+      this.$uibModalInstance.close((<ReferenceData> selection));
     }
   }
 
-  loadingSelection(item: CodeScheme|AddNewSchemeFormData) {
+  loadingSelection(item: ReferenceData|AddNewSchemeFormData) {
     const selection = this.selection;
-    if (item instanceof CodeScheme) {
-      return item === this.selectedItem && (!selection || (!this.isSelectionFormData() && !item.id.equals((<CodeScheme> selection).id)));
+    if (item instanceof ReferenceData) {
+      return item === this.selectedItem && (!selection || (!this.isSelectionFormData() && !item.id.equals((<ReferenceData> selection).id)));
     } else {
       return false;
     }
@@ -188,15 +188,15 @@ export class SearchCodeSchemeModalController {
     return !!this.searchText && !this.codeSchemesFromModel;
   }
 
-  private textFilter(codeScheme: CodeScheme): boolean {
+  private textFilter(codeScheme: ReferenceData): boolean {
     return !this.searchText || this.localizer.translate(codeScheme.title).toLowerCase().includes(this.searchText.toLowerCase());
   }
 
-  private excludedFilter(codeScheme: CodeScheme): boolean {
+  private excludedFilter(codeScheme: ReferenceData): boolean {
     return this.showExcluded || !this.exclude(codeScheme);
   }
 
-  private groupFilter(codeScheme: CodeScheme): boolean {
+  private groupFilter(codeScheme: ReferenceData): boolean {
     return !this.showGroup || any(codeScheme.groups, codeGroup => codeGroup.id.equals(this.showGroup.id));
   }
 

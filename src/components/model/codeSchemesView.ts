@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { Model, CodeScheme } from '../../services/entities';
+import { Model, ReferenceData } from '../../services/entities';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { module as mod }  from './module';
@@ -63,15 +63,15 @@ class CodeSchemesViewController {
   }
 }
 
-class CodeSchemeTableDescriptor extends TableDescriptor<CodeScheme> {
+class CodeSchemeTableDescriptor extends TableDescriptor<ReferenceData> {
 
   constructor(private model: Model, private localizer: Localizer, private editCodeSchemeModal: EditCodeSchemeModal, private viewCodeSchemeModal: ViewCodeSchemeModal) {
     super();
   }
 
-  columnDescriptors(codeSchemes: CodeScheme[]): ColumnDescriptor<CodeScheme>[] {
+  columnDescriptors(codeSchemes: ReferenceData[]): ColumnDescriptor<ReferenceData>[] {
 
-    const clickHandler = (value: CodeScheme) => {
+    const clickHandler = (value: ReferenceData) => {
       if (value.isExternal()) {
         window.open(value.id.uri, '_blank');
       } else {
@@ -85,19 +85,19 @@ class CodeSchemeTableDescriptor extends TableDescriptor<CodeScheme> {
     ];
   }
 
-  canEdit(codeScheme: CodeScheme): boolean {
+  canEdit(codeScheme: ReferenceData): boolean {
     return codeScheme.isExternal();
   }
 
-  edit(value: CodeScheme): any {
+  edit(value: ReferenceData): any {
     this.editCodeSchemeModal.openEdit(value, this.model, this.localizer.language);
   }
 
-  canRemove(codeScheme: CodeScheme): boolean {
+  canRemove(codeScheme: ReferenceData): boolean {
     return true;
   }
 
-  orderBy(codeScheme: CodeScheme): any {
+  orderBy(codeScheme: ReferenceData): any {
     return codeScheme.identifier;
   }
 }

@@ -1,14 +1,14 @@
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
-import { CodeScheme, LanguageContext } from '../../services/entities';
+import { ReferenceData, LanguageContext } from '../../services/entities';
 
 export class ViewCodeSchemeModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(codeScheme: CodeScheme, context: LanguageContext): IPromise<any> {
+  open(codeScheme: ReferenceData, context: LanguageContext): IPromise<any> {
     return this.$uibModal.open({
       template: `
         <form>
@@ -39,6 +39,6 @@ export class ViewCodeSchemeModal {
 
 export class ViewCodeSchemeModalController {
   /* @ngInject */
-  constructor(public codeScheme: CodeScheme, public context: LanguageContext) {
+  constructor(public codeScheme: ReferenceData, public context: LanguageContext) {
   }
 }
