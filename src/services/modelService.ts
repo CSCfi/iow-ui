@@ -18,7 +18,8 @@ import { expandContextWithKnownModels } from '../utils/entity';
 
 export class ModelService {
 
-  private codeValuesCache = new Map<string, ReferenceDataCode[]>();
+  // indexed by reference data id
+  private referenceDataCodesCache = new Map<string, ReferenceDataCode[]>();
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
@@ -98,7 +99,7 @@ export class ModelService {
     return this.$q.when(new Vocabulary(graph, context, frameObject));
   }
 
-  newRelation(title: string, description: string, homepage: Uri, lang: Language, context: any) {
+  newLink(title: string, description: string, homepage: Uri, lang: Language, context: any) {
     const graph = {
       title: {
         [lang]: title
@@ -116,12 +117,12 @@ export class ModelService {
 
   getAllNamespaces(): IPromise<ImportedNamespace[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('listNamespaces'))
-      .then(response => this.entities.deserializeRequires(response.data));
+      .then(response => this.entities.deserializeNamespaces(response.data));
   }
 
   newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
-      .then(response => this.entities.deserializeRequire(response.data));
+      .then(response => this.entities.deserializeNamespace(response.data));
   }
 
   getVisualizationData(model: Model) {
@@ -137,34 +138,34 @@ export class ModelService {
 
   getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeServer'))
-      .then(response => this.entities.deserializeCodeServers(response.data));
+      .then(response => this.entities.deserializeReferenceDataServers(response.data));
   }
 
-  getCodeSchemesForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
+  getReferenceDatasForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
-      .then(response => this.entities.deserializeCodeSchemes(response.data));
+      .then(response => this.entities.deserializeReferenceDatas(response.data));
   }
 
   getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
-    return this.$q.all(_.map(servers, server => this.getCodeSchemesForServer(server)))
+    return this.$q.all(_.map(servers, server => this.getReferenceDatasForServer(server)))
       .then(schemeLists => _.flatten(schemeLists));
   }
 
-  getAllCodeSchemes(): IPromise<ReferenceData[]> {
+  getAllReferenceDatas(): IPromise<ReferenceData[]> {
     return this.getReferenceDataServers().then(servers => this.getReferenceDatasForServers(servers));
   }
 
   getReferenceDataCodes(referenceData: ReferenceData) {
 
-    const cached = this.codeValuesCache.get(referenceData.id.uri);
+    const cached = this.referenceDataCodesCache.get(referenceData.id.uri);
 
     if (cached) {
       return this.$q.when(cached);
     } else {
       return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: referenceData.id.uri } })
-        .then(response => this.entities.deserializeCodeValues(response.data))
+        .then(response => this.entities.deserializeReferenceDataCodes(response.data))
         .then(codeValues => {
-          this.codeValuesCache.set(referenceData.id.uri, codeValues);
+          this.referenceDataCodesCache.set(referenceData.id.uri, codeValues);
           return codeValues;
         });
     }
@@ -172,6 +173,6 @@ export class ModelService {
 
   newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
-      .then(response => this.entities.deserializeCodeScheme(response.data));
+      .then(response => this.entities.deserializeReferenceData(response.data));
   }
 }

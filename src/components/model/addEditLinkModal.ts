@@ -71,7 +71,7 @@ class AddEditLinkModalController {
 
       this.$uibModalInstance.close(this.linkToEdit);
     } else {
-      this.modelService.newRelation(this.title, this.description, this.homepage, this.lang, this.model.context)
+      this.modelService.newLink(this.title, this.description, this.homepage, this.lang, this.model.context)
         .then(link => this.$uibModalInstance.close(link));
     }
   }

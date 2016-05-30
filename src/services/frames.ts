@@ -82,12 +82,12 @@ const versionContext = Object.assign({}, coreContext, {
 
 const groupContext = Object.assign({}, coreContext, {});
 
-const requireContext = Object.assign({}, coreContext, {
+const namespaceContext = Object.assign({}, coreContext, {
   preferredXMLNamespaceName: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespaceName' },
   preferredXMLNamespacePrefix: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix' }
 });
 
-const codeServerContext = Object.assign({}, coreContext, {
+const referenceDataServerContext = Object.assign({}, coreContext, {
   description
 });
 
@@ -96,9 +96,9 @@ const referenceDataContext = Object.assign({}, coreContext, {
   description
 });
 
-const codeValueContext = Object.assign({}, coreContext, {});
+const referenceDataCodeContext = Object.assign({}, coreContext, {});
 
-const modelContext = Object.assign({}, coreContext, requireContext, {
+const modelContext = Object.assign({}, coreContext, namespaceContext, {
   rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' },
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
   requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
@@ -233,12 +233,12 @@ export function userFrame(data: any): Frame {
   return frame(data, userContext, { name: {} });
 }
 
-export function requireFrame(data: any): Frame {
-  return frame(data, requireContext);
+export function namespaceFrame(data: any): Frame {
+  return frame(data, namespaceContext);
 }
 
-export function codeServerFrame(data: any): Frame {
-  return frame(data, codeServerContext, {
+export function referenceDataServerFrame(data: any): Frame {
+  return frame(data, referenceDataServerContext, {
     identifier: {}
   });
 }
@@ -254,8 +254,8 @@ export function referenceDataFrame(data: any): Frame {
   });
 }
 
-export function codeValueFrame(data: any): Frame {
-  return frame(data, codeValueContext, { '@type': 'iow:FCode' });
+export function referenceDataCodeFrame(data: any): Frame {
+  return frame(data, referenceDataCodeContext, { '@type': 'iow:FCode' });
 }
 
 export function searchResultFrame(data: any): Frame {

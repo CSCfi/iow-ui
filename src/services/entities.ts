@@ -1868,28 +1868,28 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), resolveConceptConstructor);
   }
 
-  deserializeRequire(data: GraphData): IPromise<ImportedNamespace> {
-    return frameAndMap(this.$log, data, frames.requireFrame, (framedData) => ImportedNamespace);
+  deserializeNamespace(data: GraphData): IPromise<ImportedNamespace> {
+    return frameAndMap(this.$log, data, frames.namespaceFrame, (framedData) => ImportedNamespace);
   }
 
-  deserializeRequires(data: GraphData): IPromise<ImportedNamespace[]> {
-    return frameAndMapArray(this.$log, data, frames.requireFrame, (framedData) => ImportedNamespace);
+  deserializeNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
+    return frameAndMapArray(this.$log, data, frames.namespaceFrame, (framedData) => ImportedNamespace);
   }
 
-  deserializeCodeServers(data: GraphData): IPromise<ReferenceDataServer[]> {
-    return frameAndMapArray(this.$log, data, frames.codeServerFrame, (framedData) => ReferenceDataServer);
+  deserializeReferenceDataServers(data: GraphData): IPromise<ReferenceDataServer[]> {
+    return frameAndMapArray(this.$log, data, frames.referenceDataServerFrame, (framedData) => ReferenceDataServer);
   }
 
-  deserializeCodeScheme(data: GraphData): IPromise<ReferenceData> {
+  deserializeReferenceData(data: GraphData): IPromise<ReferenceData> {
     return frameAndMap(this.$log, data, frames.referenceDataFrame, (framedData) => ReferenceData);
   }
 
-  deserializeCodeSchemes(data: GraphData): IPromise<ReferenceData[]> {
+  deserializeReferenceDatas(data: GraphData): IPromise<ReferenceData[]> {
     return frameAndMapArray(this.$log, data, frames.referenceDataFrame, (framedData) => ReferenceData);
   }
 
-  deserializeCodeValues(data: GraphData): IPromise<ReferenceDataCode[]> {
-    return frameAndMapArray(this.$log, data, frames.codeValueFrame, (framedData) => ReferenceDataCode);
+  deserializeReferenceDataCodes(data: GraphData): IPromise<ReferenceDataCode[]> {
+    return frameAndMapArray(this.$log, data, frames.referenceDataCodeFrame, (framedData) => ReferenceDataCode);
   }
 
   deserializeUser(data: GraphData): IPromise<User> {
