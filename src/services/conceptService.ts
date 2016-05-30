@@ -16,7 +16,7 @@ export interface ConceptSearchResult {
   id: Uri;
   label: Localizable;
   suggestion: boolean;
-  reference: Vocabulary;
+  vocabulary: Vocabulary;
 }
 
 export class ConceptService {
@@ -28,24 +28,24 @@ export class ConceptService {
     return this.$http.get(config.apiEndpointWithName('scheme'), {params: {lang}});
   }
 
-  searchConcepts(reference: Vocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[] {
+  searchConcepts(vocabulary: Vocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[] {
 
     function mapResult(result: FintoConceptSearchResult|ConceptSuggestion) {
       return {
         id: result.id,
         label: result.label,
         suggestion: result instanceof ConceptSuggestion,
-        reference: reference
+        vocabulary: vocabulary
       };
     }
 
-    const conceptSuggestions = this.searchConceptSuggestions(searchText, language, reference.id)
+    const conceptSuggestions = this.searchConceptSuggestions(searchText, language, vocabulary.id)
       .then(suggestions => _.map(suggestions, mapResult));
 
     const result = [conceptSuggestions];
 
-    if (!reference.local) {
-      const concepts = this.searchFintoConcepts(searchText, language, reference.vocabularyId)
+    if (!vocabulary.local) {
+      const concepts = this.searchFintoConcepts(searchText, language, vocabulary.vocabularyId)
         .then(suggestions => _.map(suggestions, mapResult));
 
       result.push(concepts);
@@ -82,10 +82,10 @@ export class ConceptService {
       .then(response => this.entities.deserializeConceptSuggestions(response.data));
   }
 
-  createConceptSuggestion(reference: Vocabulary, label: string, comment: string, broaderConceptId: Uri, lang: Language, model: Model): IPromise<Uri> {
+  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri, lang: Language, model: Model): IPromise<Uri> {
     return this.$http.put(config.apiEndpointWithName('conceptSuggestion'), null, {
       params: {
-        schemeID: reference.id.uri,
+        schemeID: vocabulary.id.uri,
         label: upperCaseFirst(label),
         comment,
         lang,
