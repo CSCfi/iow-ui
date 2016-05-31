@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import { config } from '../config';
 import {
-  EntityDeserializer, Model, ModelListItem, Vocabulary, ImportedNamespace, Type, GraphData, Link,
+  EntityDeserializer, Model, ModelListItem, ImportedVocabulary, ImportedNamespace, Type, GraphData, Link,
   ReferenceData, ReferenceDataServer, ReferenceDataCode
 } from './entities';
 import { upperCaseFirst } from 'change-case';
@@ -83,7 +83,7 @@ export class ModelService {
       });
   }
 
-  newVocabulary(scheme: any, lang: Language, context: any): IPromise<Vocabulary> {
+  newVocabularyImport(scheme: any, lang: Language, context: any): IPromise<ImportedVocabulary> {
 
     const graph = {
       '@id': config.fintoUrl + scheme.id,
@@ -96,7 +96,7 @@ export class ModelService {
 
     const frameObject = modelFrame({ '@graph': graph, '@context': context});
 
-    return this.$q.when(new Vocabulary(graph, context, frameObject));
+    return this.$q.when(new ImportedVocabulary(graph, context, frameObject));
   }
 
   newLink(title: string, description: string, homepage: Uri, lang: Language, context: any) {
@@ -115,14 +115,14 @@ export class ModelService {
     return this.$q.when(new Link(graph, context, frameObject));
   }
 
-  getAllNamespaces(): IPromise<ImportedNamespace[]> {
+  getAllImportableNamespaces(): IPromise<ImportedNamespace[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('listNamespaces'))
-      .then(response => this.entities.deserializeNamespaces(response.data));
+      .then(response => this.entities.deserializeImportedNamespaces(response.data));
   }
 
   newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
-      .then(response => this.entities.deserializeNamespace(response.data));
+      .then(response => this.entities.deserializeImportedNamespace(response.data));
   }
 
   getVisualizationData(model: Model) {

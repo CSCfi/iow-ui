@@ -6,7 +6,7 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Vocabulary, Type } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, ImportedVocabulary, Type } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
@@ -39,9 +39,9 @@ export class ConceptEditorModalController {
   selection: Concept;
 
   models: DefinedBy[] = [];
-  vocabularies: Vocabulary[] = [];
+  vocabularies: ImportedVocabulary[] = [];
   showModel: DefinedBy;
-  showVocabulary: Vocabulary;
+  showVocabulary: ImportedVocabulary;
   showConceptType: Type;
   searchText: string = '';
 
@@ -75,7 +75,7 @@ export class ConceptEditorModalController {
         this.vocabularies = _.chain(concepts)
           .map(concept => concept.vocabularies)
           .flatten()
-          .filter(vocabulary => vocabulary instanceof Vocabulary)
+          .filter(vocabulary => vocabulary instanceof ImportedVocabulary)
           .filter(vocabulary => !vocabulary.local)
           .uniq(vocabulary => vocabulary.id)
           .value();

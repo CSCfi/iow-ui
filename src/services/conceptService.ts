@@ -5,7 +5,7 @@ import IQService = angular.IQService;
 import * as _ from 'lodash';
 import {
   EntityDeserializer, ConceptSuggestion, FintoConcept, GraphData, FintoConceptSearchResult,
-  Vocabulary, Localizable, Model, Concept
+  ImportedVocabulary, Localizable, Model, Concept
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -16,7 +16,7 @@ export interface ConceptSearchResult {
   id: Uri;
   label: Localizable;
   suggestion: boolean;
-  vocabulary: Vocabulary;
+  vocabulary: ImportedVocabulary;
 }
 
 export class ConceptService {
@@ -28,7 +28,7 @@ export class ConceptService {
     return this.$http.get(config.apiEndpointWithName('scheme'), {params: {lang}});
   }
 
-  searchConcepts(vocabulary: Vocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[] {
+  searchConcepts(vocabulary: ImportedVocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[] {
 
     function mapResult(result: FintoConceptSearchResult|ConceptSuggestion) {
       return {
@@ -82,7 +82,7 @@ export class ConceptService {
       .then(response => this.entities.deserializeConceptSuggestions(response.data));
   }
 
-  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri, lang: Language, model: Model): IPromise<Uri> {
+  createConceptSuggestion(vocabulary: ImportedVocabulary, label: string, comment: string, broaderConceptId: Uri, lang: Language, model: Model): IPromise<Uri> {
     return this.$http.put(config.apiEndpointWithName('conceptSuggestion'), null, {
       params: {
         schemeID: vocabulary.id.uri,

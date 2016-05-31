@@ -51,7 +51,7 @@ class SearchNamespaceController {
 
     this.loadingResults = true;
 
-    modelService.getAllNamespaces().then(result => {
+    modelService.getAllImportableNamespaces().then(result => {
       this.namespaces = result;
       this.search();
     });

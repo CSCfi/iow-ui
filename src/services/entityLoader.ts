@@ -175,7 +175,7 @@ export class EntityLoader {
                 }
                 return vocabulary;
               })
-              .then(vocabulary => this.modelService.newVocabulary(vocabulary, 'fi', model.context))
+              .then(vocabulary => this.modelService.newVocabularyImport(vocabulary, 'fi', model.context))
               .then(vocabularyEntity => model.addVocabulary(vocabularyEntity))
           );
         }
@@ -185,7 +185,7 @@ export class EntityLoader {
           if (isUriResolvable(ns)) {
             promises.push(
               asPromise(assertExists(ns, 'namespace for ' + model.label['fi']))
-                .then(importedNamespace => this.$q.all([this.$q.when(importedNamespace), this.modelService.getAllNamespaces()]))
+                .then(importedNamespace => this.$q.all([this.$q.when(importedNamespace), this.modelService.getAllImportableNamespaces()]))
                 .then(([importedNamespace, importableNamespaces]: [Model, ImportedNamespace[]]) => model.addNamespace(_.find(importableNamespaces, ns => ns.id.equals(importedNamespace.id))))
             );
           } else if (isExternalNamespace(ns)) {

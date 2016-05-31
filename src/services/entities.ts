@@ -239,7 +239,7 @@ export class Model extends AbstractModel {
 
   comment: Localizable;
   state: State;
-  vocabularies: Vocabulary[];
+  vocabularies: ImportedVocabulary[];
   namespaces: ImportedNamespace[];
   links: Link[];
   referenceDatas: ReferenceData[];
@@ -264,7 +264,7 @@ export class Model extends AbstractModel {
       graph.isPartOf['@type'] = 'foaf:Group';
     }
     this.group = new GroupListItem(graph.isPartOf, context, frame);
-    this.vocabularies = deserializeEntityList(graph.references, context, frame, () => Vocabulary);
+    this.vocabularies = deserializeEntityList(graph.references, context, frame, () => ImportedVocabulary);
     this.namespaces = deserializeEntityList(graph.requires, context, frame, () => ImportedNamespace);
     this.links = deserializeEntityList(graph.relations, context, frame, () => Link);
     this.referenceDatas = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
@@ -282,11 +282,11 @@ export class Model extends AbstractModel {
     return this.group.id;
   }
 
-  addVocabulary(vocabulary: Vocabulary) {
+  addVocabulary(vocabulary: ImportedVocabulary) {
     this.vocabularies.push(vocabulary);
   }
 
-  removeVocabulary(vocabulary: Vocabulary) {
+  removeVocabulary(vocabulary: ImportedVocabulary) {
     _.remove(this.vocabularies, vocabulary);
   }
 
@@ -503,7 +503,7 @@ export class Link extends GraphNode {
   }
 }
 
-export class Vocabulary extends GraphNode {
+export class ImportedVocabulary extends GraphNode {
 
   id: Uri;
   label: Localizable;
@@ -1270,7 +1270,7 @@ export class FintoConcept extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  vocabularies: (Vocabulary|Uri)[];
+  vocabularies: (ImportedVocabulary|Uri)[];
   broaderConcept: Concept;
 
   constructor(graph: any, context: any, frame: any) {
@@ -1278,7 +1278,7 @@ export class FintoConcept extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
-    this.vocabularies = deserializeList(graph.vocabularies, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
+    this.vocabularies = deserializeList(graph.vocabularies, (data) => deserializeEntityOrId(data, context, frame, () => ImportedVocabulary));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
 
@@ -1320,7 +1320,7 @@ export class ConceptSuggestion extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  vocabulary: Vocabulary|Uri;
+  vocabulary: ImportedVocabulary|Uri;
   definedBy: DefinedBy;
   broaderConcept: Concept;
   createdAt: Moment;
@@ -1331,7 +1331,7 @@ export class ConceptSuggestion extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition);
-    this.vocabulary = deserializeEntityOrId(graph.inScheme, context, frame, () => Vocabulary);
+    this.vocabulary = deserializeEntityOrId(graph.inScheme, context, frame, () => ImportedVocabulary);
     this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.createdAt = deserializeDate(graph.atTime);
@@ -1383,12 +1383,12 @@ export class VocabularyNameHref {
 
   private static internalVocabularyName = 'Internal vocabulary';
 
-  constructor(private vocabulary: Vocabulary|Uri) {
+  constructor(private vocabulary: ImportedVocabulary|Uri) {
     if (vocabulary instanceof Uri) {
       this.id = vocabulary;
       this.href = vocabulary.uri;
       this.name = vocabulary.uri;
-    } else if (vocabulary instanceof Vocabulary) {
+    } else if (vocabulary instanceof ImportedVocabulary) {
       this.id = vocabulary.id;
       this.href = vocabulary.local ? null : vocabulary.href;
       this.name = vocabulary.label;
@@ -1872,11 +1872,11 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), resolveConceptConstructor);
   }
 
-  deserializeNamespace(data: GraphData): IPromise<ImportedNamespace> {
+  deserializeImportedNamespace(data: GraphData): IPromise<ImportedNamespace> {
     return frameAndMap(this.$log, data, frames.namespaceFrame, (framedData) => ImportedNamespace);
   }
 
-  deserializeNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
+  deserializeImportedNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
     return frameAndMapArray(this.$log, data, frames.namespaceFrame, (framedData) => ImportedNamespace);
   }
 

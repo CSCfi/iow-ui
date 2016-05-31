@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { Vocabulary, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
+import { ImportedVocabulary, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
@@ -30,7 +30,7 @@ class NewConceptData {
   comment: string;
   broaderConcept: Concept;
 
-  constructor(public label: string, public vocabulary: Vocabulary) {
+  constructor(public label: string, public vocabulary: ImportedVocabulary) {
   }
 }
 
@@ -40,7 +40,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(vocabularies: Vocabulary[], model: Model, type: Type, newEntityCreation: boolean, initialSearch: string) {
+  private open(vocabularies: ImportedVocabulary[], model: Model, type: Type, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -57,11 +57,11 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(vocabularies: Vocabulary[], model: Model, type?: Type): IPromise<Concept> {
+  openSelection(vocabularies: ImportedVocabulary[], model: Model, type?: Type): IPromise<Concept> {
     return this.open(vocabularies, model, type, false, '');
   }
 
-  openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
+  openNewEntityCreation(vocabularies: ImportedVocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
     return this.open(vocabularies, model, type, true, initialSearch);
   }
 };
@@ -87,14 +87,14 @@ class SearchConceptController {
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
-  selectedVocabulary: Vocabulary;
+  selectedVocabulary: ImportedVocabulary;
   searchText: string = '';
   submitError: string;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: ConceptSearchResult|AddNewConcept;
-  vocabularies: Vocabulary[];
-  selectableVocabularies: Vocabulary[];
+  vocabularies: ImportedVocabulary[];
+  selectableVocabularies: ImportedVocabulary[];
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -104,7 +104,7 @@ class SearchConceptController {
               public type: Type,
               initialSearch: string,
               public newEntityCreation: boolean,
-              vocabularies: Vocabulary[],
+              vocabularies: ImportedVocabulary[],
               private model: Model,
               private conceptService: ConceptService,
               private gettextCatalog: gettextCatalog,
@@ -137,7 +137,7 @@ class SearchConceptController {
     });
   }
 
-  translateVocabulary(vocabulary: Vocabulary) {
+  translateVocabulary(vocabulary: ImportedVocabulary) {
     if (vocabulary.local) {
       return this.gettextCatalog.getString('Internal vocabulary');
     } else {
@@ -146,8 +146,8 @@ class SearchConceptController {
   }
 
   get vocabularyComparator() {
-    return comparingBoolean<Vocabulary>(vocabulary => !vocabulary.local)
-      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.label));
+    return comparingBoolean<ImportedVocabulary>(vocabulary => !vocabulary.local)
+      .andThen(comparingLocalizable<ImportedVocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.label));
   }
 
   isSelectionConcept() {

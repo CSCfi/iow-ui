@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { Vocabulary, Model } from '../../services/entities';
+import { ImportedVocabulary, Model } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchVocabularyModal } from './searchVocabularyModal';
@@ -70,40 +70,40 @@ class VocabulariesViewController {
     const exclude = createExistsExclusion(vocabularies);
 
     this.searchVocabularyModal.open(language, exclude)
-      .then((vocabulary: any) => this.modelService.newVocabulary(vocabulary, language, this.model.context))
-      .then((vocabulary: Vocabulary) => {
+      .then((vocabulary: any) => this.modelService.newVocabularyImport(vocabulary, language, this.model.context))
+      .then((vocabulary: ImportedVocabulary) => {
         this.model.addVocabulary(vocabulary);
         this.expanded = true;
       });
   }
 }
 
-class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
+class VocabularyTableDescriptor extends TableDescriptor<ImportedVocabulary> {
 
   constructor(private model: Model, private languageService: LanguageService) {
     super();
   }
 
-  columnDescriptors(vocabularies: Vocabulary[]): ColumnDescriptor<Vocabulary>[] {
+  columnDescriptors(vocabularies: ImportedVocabulary[]): ColumnDescriptor<ImportedVocabulary>[] {
     return [
       { headerName: 'Identifier', nameExtractor: vocabualry => vocabualry.vocabularyId, cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
       { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.label, this.model)}
     ];
   }
 
-  canEdit(vocabulary: Vocabulary): boolean {
+  canEdit(vocabulary: ImportedVocabulary): boolean {
     return false;
   }
 
-  canRemove(vocabulary: Vocabulary): boolean {
+  canRemove(vocabulary: ImportedVocabulary): boolean {
     return !vocabulary.local;
   }
 
-  orderBy(vocabulary: Vocabulary): any {
+  orderBy(vocabulary: ImportedVocabulary): any {
     return vocabulary.id;
   }
 
-  filter(vocabluary: Vocabulary) {
+  filter(vocabluary: ImportedVocabulary) {
     return !vocabluary.local;
   }
 }
