@@ -76,8 +76,8 @@ msgstr "Lisää linkki"
 msgid "Add require"
 msgstr "Lisää nimiavaruus"
 
-#: components/editor/classForm.html:91 components/editor/predicateForm.html:57
-#: components/model/conceptForm.html:37 components/model/modelForm.html:24
+#: components/editor/classForm.html:85 components/editor/predicateForm.html:49
+#: components/model/conceptForm.html:57 components/model/modelForm.html:24
 msgid "Additional information"
 msgstr "Lisätiedot"
 
@@ -89,26 +89,26 @@ msgstr "Pääkäyttäjänä ryhmissä"
 msgid "Advanced search"
 msgstr "Tarkennettu haku"
 
-#: components/model/searchCodeSchemeModal.html:36
+#: components/model/searchReferenceDataModal.html:36
 msgid "All groups"
 msgstr "Kaikki ryhmät"
 
 #: components/editor/searchClassModal.html:34
 #: components/editor/searchPredicateModal.html:41
-#: components/model/conceptEditorModal.html:28
+#: components/model/conceptEditorModal.html:53
 msgid "All models"
 msgstr "Kaikki kirjastot"
 
 #: components/editor/searchConceptModal.html:28
-#: components/model/conceptEditorModal.html:40
+#: components/model/conceptEditorModal.html:28
 msgid "All references"
 msgstr "Kaikki sanastot"
 
-#: components/model/searchCodeSchemeModal.html:25
+#: components/model/searchReferenceDataModal.html:25
 msgid "All servers"
 msgstr "Kaikki palvelimet"
 
-#: components/model/conceptEditorModal.html:51
+#: components/model/conceptEditorModal.html:39
 msgid "All states"
 msgstr "Kaikki tilat"
 
@@ -246,8 +246,8 @@ msgstr "Käsitteeseen liittyvä yläkäsite"
 msgid "Browse"
 msgstr "Selaa"
 
-#: components/editor/editableCodeSchemeSelect.html:12
-#: components/model/codeSchemeView.html:10
+#: components/editor/editableReferenceDataSelect.html:12
+#: components/model/referenceDataView.html:10
 msgid "Browse code values"
 msgstr "Selaa koodistoa"
 
@@ -274,16 +274,16 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
-#: components/editor/searchClassModal.html:77
+#: components/editor/searchClassModal.html:88
 #: components/editor/searchConceptModal.html:93
-#: components/editor/searchPredicateModal.html:95
+#: components/editor/searchPredicateModal.html:113
 #: components/group/addModelModal.html:24
-#: components/model/addEditRelationModal.html:20
-#: components/model/addEditRequireModal.html:30
-#: components/model/editCodeSchemeModal.html:26
-#: components/model/searchCodeSchemeModal.html:92
-#: components/model/searchReferenceModal.html:27
-#: components/model/searchRequireModal.html:44
+#: components/model/addEditLinkModal.html:20
+#: components/model/addEditNamespaceModal.html:30
+#: components/model/editReferenceDataModal.html:26
+#: components/model/searchNamespaceModal.html:44
+#: components/model/searchReferenceDataModal.html:92
+#: components/model/searchVocabularyModal.html:27
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -316,7 +316,7 @@ msgstr "valitse laajempi käsite"
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/editor/editableCodeSchemeSelect.html:17
+#: components/editor/editableReferenceDataSelect.html:17
 #: translations/misc.html:194
 msgid "Choose code scheme"
 msgstr "valitse koodisto"
@@ -399,7 +399,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
-#: components/editor/editableCodeSchemeSelect.html:18
+#: components/editor/editableReferenceDataSelect.html:18
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr "poista valinta"
@@ -441,7 +441,7 @@ msgstr ""
 msgid "Code schemes"
 msgstr "Koodistot"
 
-#: components/model/searchCodeSchemeModal.html:21
+#: components/model/searchReferenceDataModal.html:21
 msgid "Code server"
 msgstr "Koodistopalvelin"
 
@@ -479,7 +479,7 @@ msgstr ""
 "Hae ensin tarvitsemaasi käsitettä sanastoista. Jos et löydä tarpeisiisi "
 "sopivaa, voit luoda uuden käsite-ehdotuksen."
 
-#: components/model/conceptEditorModal.html:47
+#: components/model/conceptEditorModal.html:35
 msgid "Concept state"
 msgstr "Käsitteen tila"
 
@@ -524,7 +524,7 @@ msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
 #: components/group/addModelModal.html:25
-#: components/model/searchCodeSchemeModal.html:94
+#: components/model/searchReferenceDataModal.html:94
 msgid "Create new"
 msgstr "Luo uusi"
 
@@ -548,7 +548,7 @@ msgstr "Luo uusi koodisto"
 msgid "Create new predicate"
 msgstr "Luo uusi ominaisuus"
 
-#: components/model/searchRequireModal.html:8
+#: components/model/searchNamespaceModal.html:8
 msgid "Create new require"
 msgstr "Luo uusi nimiavaruus"
 
@@ -796,11 +796,11 @@ msgid "Duplicate error"
 msgstr "Syöte on jo lisätty"
 
 #: components/form/editableEntityButtons.html:5
-#: components/model/editCodeSchemeModal.html:27
+#: components/model/editReferenceDataModal.html:27
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: components/model/editCodeSchemeModal.html:3 translations/misc.html:193
+#: components/model/editReferenceDataModal.html:3 translations/misc.html:193
 msgid "Edit code scheme"
 msgstr "Muokkaa koodistoa"
 
@@ -917,8 +917,8 @@ msgstr "Suomeksi"
 #: components/editor/searchConceptModal.html:21
 #: components/editor/searchPredicateModal.html:31
 #: components/model/conceptEditorModal.html:20
-#: components/model/searchCodeSchemeModal.html:18
-#: components/model/searchRequireModal.html:23
+#: components/model/searchNamespaceModal.html:23
+#: components/model/searchReferenceDataModal.html:18
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
@@ -954,7 +954,7 @@ msgstr "Ei saa olla suurempi kuin maksimi"
 msgid "group"
 msgstr "Ryhmä"
 
-#: components/model/searchCodeSchemeModal.html:32
+#: components/model/searchReferenceDataModal.html:32
 msgid "Group"
 msgstr "Ryhmä"
 
@@ -1001,7 +1001,7 @@ msgstr "Tunniste on jo käytössä"
 msgid "Id name is required"
 msgstr "Tunniste puuttuu nimiavaruuden sisältä"
 
-#: components/model/codeSchemeView.html:19 translations/misc.html:181
+#: components/model/referenceDataView.html:19 translations/misc.html:181
 msgid "Identifier"
 msgstr "Tunniste"
 
@@ -1021,7 +1021,7 @@ msgstr "Ryhmän sisäiset sivut"
 msgid "Internal group page info"
 msgstr "Kohdealueen ryhmän sisäiset sivut"
 
-#: translations/misc.html:172
+#: components/model/conceptForm.html:44 translations/misc.html:172
 msgid "Internal vocabulary"
 msgstr "Sisäinen käsitteistö"
 
@@ -1227,7 +1227,7 @@ msgstr "Erikoistamattomia luokkia ei saavalita"
 msgid "None added"
 msgstr "Ei yhtään lisätty"
 
-#: components/editor/editableCodeSchemeSelect.html:4
+#: components/editor/editableReferenceDataSelect.html:4
 #: components/editor/subjectView.html:3
 msgid "Not defined"
 msgstr "Ei määritelty"
@@ -1395,7 +1395,7 @@ msgstr "Literaali"
 msgid "rdfs:Literal error"
 msgstr "Virheellinen literaali"
 
-#: components/model/conceptEditorModal.html:52 translations/misc.html:16
+#: components/model/conceptEditorModal.html:40 translations/misc.html:16
 msgid "Recommendation"
 msgstr "Suositus"
 
@@ -1487,11 +1487,11 @@ msgstr "Hae attribuuttia tai assosiaatiota…"
 msgid "search class"
 msgstr "Hae luokkaa…"
 
-#: components/model/searchCodeSchemeModal.html:10 translations/misc.html:190
+#: components/model/searchReferenceDataModal.html:10 translations/misc.html:190
 msgid "search code scheme"
 msgstr "Hae koodistoa…"
 
-#: components/model/searchCodeSchemeModal.html:3 translations/misc.html:189
+#: components/model/searchReferenceDataModal.html:3 translations/misc.html:189
 msgid "Search code schemes"
 msgstr "Hae koodistoja"
 
@@ -1523,19 +1523,19 @@ msgstr ""
 "Hae tarvitsemaasi attribuuttia tai assosiaatiota yhteentoimivuuden "
 "kuvauksista."
 
-#: components/model/searchRequireModal.html:15
+#: components/model/searchNamespaceModal.html:15
 msgid "search require"
 msgstr "Hae nimiavaruutta…"
 
-#: components/model/searchRequireModal.html:2
+#: components/model/searchNamespaceModal.html:2
 msgid "Search requires"
 msgstr "Hae nimiavaruuksia"
 
-#: components/model/searchReferenceModal.html:8
+#: components/model/searchVocabularyModal.html:8
 msgid "search scheme"
 msgstr "Hae sanastoa…"
 
-#: components/model/searchReferenceModal.html:2
+#: components/model/searchVocabularyModal.html:2
 msgid "Search schemes"
 msgstr "Hae sanastoja"
 
@@ -1611,7 +1611,7 @@ msgstr "Näytä myös ne, joita ei voi lisätä"
 msgid "Show history"
 msgstr "Näytä historia"
 
-#: components/model/searchRequireModal.html:26
+#: components/model/searchNamespaceModal.html:26
 msgid "Show technical namespaces"
 msgstr "Näytä tekniset nimiavaruudet"
 
@@ -1651,7 +1651,7 @@ msgstr "Käsite"
 msgid "suggest"
 msgstr "ehdota"
 
-#: components/model/conceptEditorModal.html:23
+#: components/model/conceptEditorModal.html:48
 msgid "Suggested in"
 msgstr "Ehdotettu kirjastossa"
 
@@ -1659,7 +1659,7 @@ msgstr "Ehdotettu kirjastossa"
 msgid "suggestion"
 msgstr "ehdotus"
 
-#: components/model/conceptEditorModal.html:53 translations/misc.html:18
+#: components/model/conceptEditorModal.html:41 translations/misc.html:18
 msgid "Suggestion"
 msgstr "Ehdotus"
 
@@ -1703,7 +1703,7 @@ msgstr "Tekniset nimiavaruudet"
 msgid "text/turtle"
 msgstr "Turtle"
 
-#: components/model/codeSchemeView.html:20 translations/titles.html:68
+#: components/model/referenceDataView.html:20 translations/titles.html:68
 msgid "Title"
 msgstr "Nimi"
 
@@ -1751,7 +1751,7 @@ msgstr "Käytä attribuuttia"
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/model/searchCodeSchemeModal.html:95 translations/misc.html:88
+#: components/model/searchReferenceDataModal.html:95 translations/misc.html:88
 msgid "Use selection"
 msgstr "Käytä valintaa"
 
@@ -1783,7 +1783,7 @@ msgstr "Versio"
 msgid "Visualization"
 msgstr "Visualisointi"
 
-#: components/model/conceptEditorModal.html:35 translations/titles.html:51
+#: components/model/conceptEditorModal.html:23 translations/titles.html:51
 msgid "Vocabulary"
 msgstr "Sanasto"
 

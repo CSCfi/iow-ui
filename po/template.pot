@@ -71,9 +71,9 @@ msgstr ""
 msgid "Add require"
 msgstr ""
 
-#: components/editor/classForm.html:91
-#: components/editor/predicateForm.html:57
-#: components/model/conceptForm.html:37
+#: components/editor/classForm.html:85
+#: components/editor/predicateForm.html:49
+#: components/model/conceptForm.html:57
 #: components/model/modelForm.html:24
 msgid "Additional information"
 msgstr ""
@@ -88,26 +88,26 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:36
+#: components/model/searchReferenceDataModal.html:36
 msgid "All groups"
 msgstr ""
 
 #: components/editor/searchClassModal.html:34
 #: components/editor/searchPredicateModal.html:41
-#: components/model/conceptEditorModal.html:28
+#: components/model/conceptEditorModal.html:53
 msgid "All models"
 msgstr ""
 
 #: components/editor/searchConceptModal.html:28
-#: components/model/conceptEditorModal.html:40
+#: components/model/conceptEditorModal.html:28
 msgid "All references"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:25
+#: components/model/searchReferenceDataModal.html:25
 msgid "All servers"
 msgstr ""
 
-#: components/model/conceptEditorModal.html:51
+#: components/model/conceptEditorModal.html:39
 msgid "All states"
 msgstr ""
 
@@ -248,8 +248,8 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: components/editor/editableCodeSchemeSelect.html:12
-#: components/model/codeSchemeView.html:10
+#: components/editor/editableReferenceDataSelect.html:12
+#: components/model/referenceDataView.html:10
 msgid "Browse code values"
 msgstr ""
 
@@ -277,16 +277,16 @@ msgstr ""
 #: components/advancedSearchModal.html:32
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
-#: components/editor/searchClassModal.html:77
+#: components/editor/searchClassModal.html:88
 #: components/editor/searchConceptModal.html:93
-#: components/editor/searchPredicateModal.html:95
+#: components/editor/searchPredicateModal.html:113
 #: components/group/addModelModal.html:24
-#: components/model/addEditRelationModal.html:20
-#: components/model/addEditRequireModal.html:30
-#: components/model/editCodeSchemeModal.html:26
-#: components/model/searchCodeSchemeModal.html:92
-#: components/model/searchReferenceModal.html:27
-#: components/model/searchRequireModal.html:44
+#: components/model/addEditLinkModal.html:20
+#: components/model/addEditNamespaceModal.html:30
+#: components/model/editReferenceDataModal.html:26
+#: components/model/searchNamespaceModal.html:44
+#: components/model/searchReferenceDataModal.html:92
+#: components/model/searchVocabularyModal.html:27
 msgid "Cancel"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 msgid "Choose class"
 msgstr ""
 
-#: components/editor/editableCodeSchemeSelect.html:17
+#: components/editor/editableReferenceDataSelect.html:17
 #: translations/misc.html:194
 msgid "Choose code scheme"
 msgstr ""
@@ -401,7 +401,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
-#: components/editor/editableCodeSchemeSelect.html:18
+#: components/editor/editableReferenceDataSelect.html:18
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr ""
@@ -444,7 +444,7 @@ msgstr ""
 msgid "Code schemes"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:21
+#: components/model/searchReferenceDataModal.html:21
 msgid "Code server"
 msgstr ""
 
@@ -481,7 +481,7 @@ msgstr ""
 msgid "Concept search info"
 msgstr ""
 
-#: components/model/conceptEditorModal.html:47
+#: components/model/conceptEditorModal.html:35
 msgid "Concept state"
 msgstr ""
 
@@ -528,7 +528,7 @@ msgid "Create and use attribute"
 msgstr ""
 
 #: components/group/addModelModal.html:25
-#: components/model/searchCodeSchemeModal.html:94
+#: components/model/searchReferenceDataModal.html:94
 msgid "Create new"
 msgstr ""
 
@@ -552,7 +552,7 @@ msgstr ""
 msgid "Create new predicate"
 msgstr ""
 
-#: components/model/searchRequireModal.html:8
+#: components/model/searchNamespaceModal.html:8
 msgid "Create new require"
 msgstr ""
 
@@ -800,11 +800,11 @@ msgid "Duplicate error"
 msgstr ""
 
 #: components/form/editableEntityButtons.html:5
-#: components/model/editCodeSchemeModal.html:27
+#: components/model/editReferenceDataModal.html:27
 msgid "Edit"
 msgstr ""
 
-#: components/model/editCodeSchemeModal.html:3
+#: components/model/editReferenceDataModal.html:3
 #: translations/misc.html:193
 msgid "Edit code scheme"
 msgstr ""
@@ -913,8 +913,8 @@ msgstr ""
 #: components/editor/searchConceptModal.html:21
 #: components/editor/searchPredicateModal.html:31
 #: components/model/conceptEditorModal.html:20
-#: components/model/searchCodeSchemeModal.html:18
-#: components/model/searchRequireModal.html:23
+#: components/model/searchNamespaceModal.html:23
+#: components/model/searchReferenceDataModal.html:18
 msgid "Filter results"
 msgstr ""
 
@@ -950,7 +950,7 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:32
+#: components/model/searchReferenceDataModal.html:32
 msgid "Group"
 msgstr ""
 
@@ -995,7 +995,7 @@ msgstr ""
 msgid "Id name is required"
 msgstr ""
 
-#: components/model/codeSchemeView.html:19
+#: components/model/referenceDataView.html:19
 #: translations/misc.html:181
 msgid "Identifier"
 msgstr ""
@@ -1016,6 +1016,7 @@ msgstr ""
 msgid "Internal group page info"
 msgstr ""
 
+#: components/model/conceptForm.html:44
 #: translations/misc.html:172
 msgid "Internal vocabulary"
 msgstr ""
@@ -1226,7 +1227,7 @@ msgstr ""
 msgid "None added"
 msgstr ""
 
-#: components/editor/editableCodeSchemeSelect.html:4
+#: components/editor/editableReferenceDataSelect.html:4
 #: components/editor/subjectView.html:3
 msgid "Not defined"
 msgstr ""
@@ -1392,7 +1393,7 @@ msgstr ""
 msgid "rdfs:Literal error"
 msgstr ""
 
-#: components/model/conceptEditorModal.html:52
+#: components/model/conceptEditorModal.html:40
 #: translations/misc.html:16
 msgid "Recommendation"
 msgstr ""
@@ -1485,12 +1486,12 @@ msgstr ""
 msgid "search class"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:10
+#: components/model/searchReferenceDataModal.html:10
 #: translations/misc.html:190
 msgid "search code scheme"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:3
+#: components/model/searchReferenceDataModal.html:3
 #: translations/misc.html:189
 msgid "Search code schemes"
 msgstr ""
@@ -1520,19 +1521,19 @@ msgstr ""
 msgid "Search predicate info"
 msgstr ""
 
-#: components/model/searchRequireModal.html:15
+#: components/model/searchNamespaceModal.html:15
 msgid "search require"
 msgstr ""
 
-#: components/model/searchRequireModal.html:2
+#: components/model/searchNamespaceModal.html:2
 msgid "Search requires"
 msgstr ""
 
-#: components/model/searchReferenceModal.html:8
+#: components/model/searchVocabularyModal.html:8
 msgid "search scheme"
 msgstr ""
 
-#: components/model/searchReferenceModal.html:2
+#: components/model/searchVocabularyModal.html:2
 msgid "Search schemes"
 msgstr ""
 
@@ -1609,7 +1610,7 @@ msgstr ""
 msgid "Show history"
 msgstr ""
 
-#: components/model/searchRequireModal.html:26
+#: components/model/searchNamespaceModal.html:26
 msgid "Show technical namespaces"
 msgstr ""
 
@@ -1649,7 +1650,7 @@ msgstr ""
 msgid "suggest"
 msgstr ""
 
-#: components/model/conceptEditorModal.html:23
+#: components/model/conceptEditorModal.html:48
 msgid "Suggested in"
 msgstr ""
 
@@ -1658,7 +1659,7 @@ msgstr ""
 msgid "suggestion"
 msgstr ""
 
-#: components/model/conceptEditorModal.html:53
+#: components/model/conceptEditorModal.html:41
 #: translations/misc.html:18
 msgid "Suggestion"
 msgstr ""
@@ -1703,7 +1704,7 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: components/model/codeSchemeView.html:20
+#: components/model/referenceDataView.html:20
 #: translations/titles.html:68
 msgid "Title"
 msgstr ""
@@ -1752,7 +1753,7 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: components/model/searchCodeSchemeModal.html:95
+#: components/model/searchReferenceDataModal.html:95
 #: translations/misc.html:88
 msgid "Use selection"
 msgstr ""
@@ -1788,7 +1789,7 @@ msgstr ""
 msgid "Visualization"
 msgstr ""
 
-#: components/model/conceptEditorModal.html:35
+#: components/model/conceptEditorModal.html:23
 #: translations/titles.html:51
 msgid "Vocabulary"
 msgstr ""
