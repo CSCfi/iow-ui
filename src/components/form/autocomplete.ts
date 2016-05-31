@@ -4,6 +4,7 @@ import INgModelController = angular.INgModelController;
 import IPromise = angular.IPromise;
 import IRepeatScope = angular.IRepeatScope;
 import IModelFormatter = angular.IModelFormatter;
+import * as _ from 'lodash';
 import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
 import { formatWithFormatters, scrollToElement } from '../../utils/angular';
