@@ -1,13 +1,13 @@
 <form name="form">
   <modal-template>
-    <modal-title translate>Search code schemes</modal-title>
+    <modal-title translate>Search reference data</modal-title>
 
     <modal-body>
       <div class="row">
         <div class="col-md-4">
 
           <div class="input-group input-group-lg">
-            <input autofocus type="text" class="form-control" placeholder="{{'search code scheme' | translate}}"
+            <input autofocus type="text" class="form-control" placeholder="{{'search reference data' | translate}}"
                    ng-model="ctrl.searchText"
                    ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
                    key-control="ctrl.searchResults" />
@@ -18,7 +18,7 @@
             <span class="title" translate>Filter results</span>
 
             <div class="form-group" ng-if="!ctrl.referenceDatasFromModel">
-              <label for="server" translate>Code server</label>
+              <label for="server" translate>Reference data server</label>
               <div class="input-group input-group-md">
                 <select id="server" class="form-control" ng-model="ctrl.showServer"
                         ng-options="(referenceDataServer.title | translateValue: ctrl.model) for referenceDataServer in ctrl.referenceDataServers">
@@ -55,17 +55,17 @@
 
         <div class="col-md-4 search-selection">
           <div ng-if="!ctrl.isSelectionFormData() && ctrl.selection">
-            <reference-data-view title="Code scheme information" context="ctrl.model" reference-data="ctrl.selection" show-codes="true"></reference-data-view>
+            <reference-data-view title="Reference data information" context="ctrl.model" reference-data="ctrl.selection" show-codes="true"></reference-data-view>
           </div>
 
           <div ng-if="ctrl.isSelectionFormData()">
-            <editable data-title="Code scheme URI" context="ctrl.model" autofocus>
+            <editable data-title="Reference data URI" context="ctrl.model" autofocus>
               <div class="input-group input-group-md">
                 <input id="uri" type="text" class="form-control" required uri-input="free-url" model="ctrl.model" ng-model="ctrl.selection.uri" />
               </div>
             </editable>
 
-            <editable data-title="Code scheme label" context="ctrl.model">
+            <editable data-title="Reference data label" context="ctrl.model">
               <div class="input-group input-group-md">
                 <input id="label" type="text" class="form-control" required string-input="label" model="ctrl.model" ng-model="ctrl.selection.label" />
               </div>

@@ -1,11 +1,11 @@
 <modal-template>
-  <modal-title translate>Search schemes</modal-title>
+  <modal-title translate>Search vocabularies</modal-title>
 
   <modal-body>
     <div class="row">
       <div class="col-md-6">
         <div class="input-group input-group-lg">
-          <input autofocus type="text" class="form-control" placeholder="{{'search scheme' | translate}}"
+          <input autofocus type="text" class="form-control" placeholder="{{'search vocabulary' | translate}}"
                  ng-model="ctrl.searchText"
                  ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
                  key-control="ctrl.searchResults" />

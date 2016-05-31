@@ -19,10 +19,10 @@ mod.directive('importedNamespacesView', () => {
     restrict: 'E',
     template: `
       <h4>
-        <span translate>Imported requires</span>
+        <span translate>Imported namespaces</span>
         <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.importNamespace()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
-          <span translate>Add require</span>
+          <span translate>Import namespace</span>
         </button>
       </h4>
       <editable-table descriptor="ctrl.descriptor" values="ctrl.model.namespaces" expanded="ctrl.expanded"></editable-table>
@@ -64,7 +64,7 @@ class ImportedNamespacesViewController {
       return null;
     };
 
-    const profileExclude = (ns: ImportedNamespace) => (!allowProfiles && ns.isOfType('profile')) ? 'Cannot require profile' : null;
+    const profileExclude = (ns: ImportedNamespace) => (!allowProfiles && ns.isOfType('profile')) ? 'Cannot import profile' : null;
     const exclude = combineExclusions(existsExclude, profileExclude);
     const allowProfiles = this.model.isOfType('profile');
 
@@ -85,7 +85,7 @@ class ImportedNamespaceTableDescriptor extends TableDescriptor<ImportedNamespace
   columnDescriptors(namespaces: ImportedNamespace[]): ColumnDescriptor<ImportedNamespace>[] {
     return [
       { headerName: 'Prefix', nameExtractor: ns => ns.prefix, cssClass: 'prefix' },
-      { headerName: 'Require label', nameExtractor: ns => this.languageService.translate(ns.label, this.model) },
+      { headerName: 'Namespace label', nameExtractor: ns => this.languageService.translate(ns.label, this.model) },
       { headerName: 'Namespace', nameExtractor: ns => ns.namespace }
     ];
   }

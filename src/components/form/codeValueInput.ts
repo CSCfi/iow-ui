@@ -13,7 +13,7 @@ import { ReferenceData, ReferenceDataCode } from '../../services/entities';
 import { module as mod }  from './module';
 
 export function placeholderText(gettextCatalog: gettextCatalog) {
-  return gettextCatalog.getString('Write code');
+  return gettextCatalog.getString('Write reference data code');
 }
 
 export function createAsyncValidators($q: IQService, referenceData: ReferenceData, modelService: ModelService): IAsyncModelValidators {

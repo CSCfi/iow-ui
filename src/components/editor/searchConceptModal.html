@@ -20,12 +20,12 @@
           <div class="search-filters">
             <span class="title" translate>Filter results</span>
             <div class="form-group">
-              <label for="vocabulary" translate>Reference filter</label>
+              <label for="vocabulary" translate>Vocabulary filter</label>
               <div class="input-group input-group-lg">
                 <div class="selectContainer">
                   <select id="vocabulary" class="form-control" ng-model="ctrl.selectedVocabulary" ignore-dirty
                           ng-options="ctrl.translateVocabulary(vocabulary) for vocabulary in ctrl.vocabularies">
-                    <option value="" translate>All references</option>
+                    <option value="" translate>All vocabularies</option>
                   </select>
                 </div>
               </div>
@@ -80,7 +80,7 @@
               </div>
 
               <br />
-              <p><span translate>Concept is suggested to scheme</span> {{ctrl.selection.vocabulary | translateLabel: ctrl.model}}</p>
+              <p><span translate>Concept is suggested to vocabulary</span> {{ctrl.selection.vocabulary | translateLabel: ctrl.model}}</p>
             </div>
 
           </div>

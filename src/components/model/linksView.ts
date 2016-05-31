@@ -15,10 +15,10 @@ mod.directive('linksView', () => {
     restrict: 'E',
     template: `
       <h4>
-        <span translate>Related resources</span> 
+        <span translate>Links</span> 
         <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addLink()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
-          <span translate>Add related resource</span>
+          <span translate>Add link</span>
         </button>
       </h4>
       <editable-table descriptor="ctrl.descriptor" values="ctrl.model.links" expanded="ctrl.expanded"></editable-table>

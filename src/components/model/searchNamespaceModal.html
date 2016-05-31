@@ -1,18 +1,18 @@
 <modal-template>
-  <modal-title translate>Search requires</modal-title>
+  <modal-title translate>Search namespaces</modal-title>
 
   <modal-body>
     <div class="clearfix" style="margin-bottom: 15px">
       <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew()">
         <span class="glyphicon glyphicon-plus"></span>
-        {{'Create new require' | translate}}
+        {{'Add new namespace' | translate}}
       </button>
     </div>
 
     <div class="row">
       <div class="col-md-6">
         <div class="input-group input-group-lg">
-          <input autofocus type="text" class="form-control" placeholder="{{'search require' | translate}}"
+          <input autofocus type="text" class="form-control" placeholder="{{'search namespace' | translate}}"
                  ng-model="ctrl.searchText"
                  ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
                  key-control="ctrl.searchResults" />

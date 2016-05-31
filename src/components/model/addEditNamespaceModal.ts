@@ -60,7 +60,7 @@ class AddEditNamespaceController {
   }
 
   get titleLabel() {
-    return this.edit ? 'Edit require' : 'Add require';
+    return this.edit ? 'Edit namespace' : 'Import namespace';
   }
 
   labelModifiable() {

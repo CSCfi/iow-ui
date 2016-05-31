@@ -1,20 +1,20 @@
 <div ng-if="ctrl.referenceData || ctrl.isEditing()" class="editable-wrap">
   <div>
-    <editable-label data-title="'Code scheme'"></editable-label>
+    <editable-label data-title="'Reference data'"></editable-label>
     <div ng-hide="ctrl.referenceData" translate>Not defined</div>
   </div>
   <div ng-if="ctrl.referenceData" class="model-view__sub row">
-    <non-editable class="col-md-5" title="Code scheme name" value="ctrl.referenceData.title" context="ctrl.model"></non-editable>
+    <non-editable class="col-md-5" title="Reference data name" value="ctrl.referenceData.title" context="ctrl.model"></non-editable>
     <non-editable class="col-md-7" title="Description" value="ctrl.referenceData.description" context="ctrl.model"></non-editable>
   </div>
   <div ng-if="ctrl.referenceData" class="row">
     <div class="col-md-12">
-      <a ng-click="ctrl.browse()" translate>Browse code values</a>
+      <a ng-click="ctrl.browse()" translate>Browse reference data codes</a>
     </div>
   </div>
 
   <div ng-class="{'model-view__sub': !!ctrl.referenceData}" style="margin-bottom: 15px">
-    <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectReferenceData()" translate>Choose code scheme</button>
+    <button ng-if="ctrl.isEditing()" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectReferenceData()" translate>Choose reference data</button>
     <button ng-show="ctrl.isEditing() && ctrl.referenceData" type="button" class="btn btn-default btn-sm" ng-click="ctrl.removeReferenceData()" translate>Clear selection</button>
   </div>
 </div>

@@ -1,15 +1,15 @@
 <form name="editCodeSchemeForm">
   <modal-template>
-    <modal-title translate>Edit code scheme</modal-title>
+    <modal-title translate>Edit reference data</modal-title>
 
     <modal-body>
-      <editable data-title="Code scheme URI" context="ctrl.model" autofocus>
+      <editable data-title="Reference data URI" context="ctrl.model" autofocus>
         <div class="input-group input-group-md">
           <input id="uri" type="text" class="form-control" required uri-input="free-url" model="ctrl.model" ng-model="ctrl.id" />
         </div>
       </editable>
 
-      <editable data-title="Code scheme label" context="ctrl.model">
+      <editable data-title="Reference data label" context="ctrl.model">
         <div class="input-group input-group-md">
           <input id="label" type="text" class="form-control" required string-input="label" model="ctrl.model" ng-model="ctrl.title" />
         </div>

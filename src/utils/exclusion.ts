@@ -32,7 +32,7 @@ export function createDefinedByExclusion(model: Model) {
 
   return (item: WithDefinedBy) => {
     if (!modelIds.has(item.definedBy.id.uri)) {
-      return 'Not required by model';
+      return 'Not imported by model';
     } else {
       return null;
     }

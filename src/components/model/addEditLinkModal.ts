@@ -60,7 +60,7 @@ class AddEditLinkModalController {
   }
 
   get titleLabel() {
-    return this.edit ? 'Edit related resource' : 'Add related resource';
+    return this.edit ? 'Edit link' : 'Add link';
   }
 
   create() {

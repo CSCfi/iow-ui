@@ -1,13 +1,13 @@
 <h4 ng-if="ctrl.title">{{ctrl.title | translate}}</h4>
 
-<non-editable title="Code scheme URI" value="ctrl.referenceData.id" context="ctrl.context"></non-editable>
-<non-editable title="Code scheme name" value="ctrl.referenceData.title" context="ctrl.context"></non-editable>
+<non-editable title="Reference data URI" value="ctrl.referenceData.id" context="ctrl.context"></non-editable>
+<non-editable title="Reference data name" value="ctrl.referenceData.title" context="ctrl.context"></non-editable>
 <non-editable title="Description" value="ctrl.referenceData.description" context="ctrl.context"></non-editable>
 <non-editable title="Creator" value="ctrl.referenceData.creator" context="ctrl.context"></non-editable>
 
 <br />
 
-<a ng-if="!ctrl.showCodes || ctrl.referenceData.isExternal()" ng-click="ctrl.browse()" translate>Browse code values</a>
+<a ng-if="!ctrl.showCodes || ctrl.referenceData.isExternal()" ng-click="ctrl.browse()" translate>Reference data codes</a>
 
 <div ng-if="ctrl.showCodes && !ctrl.referenceData.isExternal()">
 

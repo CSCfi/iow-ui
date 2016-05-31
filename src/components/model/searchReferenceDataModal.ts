@@ -121,7 +121,7 @@ export class SearchReferenceDataModalController {
     if (this.referenceDatas) {
 
       const result: (ReferenceData|AddNewReferenceData)[] = [
-        new AddNewReferenceData(`${this.gettextCatalog.getString('Create new code scheme')} '${this.searchText}'`, this.canAddNew.bind(this))
+        new AddNewReferenceData(`${this.gettextCatalog.getString('Create new reference data')} '${this.searchText}'`, this.canAddNew.bind(this))
       ];
 
       const referenceDataSearchResults = this.referenceDatas.filter(referenceData =>

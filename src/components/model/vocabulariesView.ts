@@ -19,10 +19,10 @@ mod.directive('vocabulariesView', () => {
     restrict: 'E',
     template: `
       <h4>
-        <span translate>References</span> 
+        <span translate>Controlled vocabularies</span> 
         <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addVocabulary()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
-          <span translate>Add reference</span>
+          <span translate>Add vocabulary</span>
         </button>
         <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.browseConcepts()">
           <span class="fa fa-th"></span>

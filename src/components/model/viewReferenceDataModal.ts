@@ -13,7 +13,7 @@ export class ViewReferenceDataModal {
       template: `
         <form>
           <modal-template>
-            <modal-title translate>Code scheme information</modal-title>
+            <modal-title translate>Reference data information</modal-title>
             
             <modal-body>
               <reference-data-view reference-data="ctrl.referenceData" context="ctrl.context" class="popup" show-codes="true"></reference-data-view>

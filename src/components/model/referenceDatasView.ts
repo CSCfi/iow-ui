@@ -19,10 +19,10 @@ mod.directive('referenceDatasView', () => {
     restrict: 'E',
     template: `
       <h4>
-        <span translate>Code schemes</span> 
+        <span translate>Reference data</span> 
         <button type="button" class="btn btn-link btn-xs pull-right" ng-click="ctrl.addReferenceData()" ng-show="ctrl.isEditing()">
           <span class="glyphicon glyphicon-plus"></span>
-          <span translate>Add code scheme</span>
+          <span translate>Add reference data</span>
         </button>
       </h4>
       <editable-table descriptor="ctrl.descriptor" values="ctrl.model.referenceDatas" expanded="ctrl.expanded"></editable-table>
@@ -80,7 +80,7 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     };
 
     return [
-      { headerName: 'Code scheme name', nameExtractor: referenceData => this.localizer.translate(referenceData.title), onClick: clickHandler },
+      { headerName: 'Reference data name', nameExtractor: referenceData => this.localizer.translate(referenceData.title), onClick: clickHandler },
       { headerName: 'Description', nameExtractor: referenceData => this.localizer.translate(referenceData.description) }
     ];
   }
