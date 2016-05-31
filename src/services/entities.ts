@@ -748,7 +748,7 @@ export class DummyVisualizationClass implements VisualizationClass {
   resolved = false;
 
   constructor(public id: Uri, model: Model) {
-    this.label = createConstantLocalizable(id.uri, model.language);
+    this.label = createConstantLocalizable(id.curie, model.language);
   }
 }
 
