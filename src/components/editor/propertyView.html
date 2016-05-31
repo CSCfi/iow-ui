@@ -31,19 +31,7 @@
   </div>
 </div>
 
-<h4 translate
-    ng-show="ctrl.isEditing()
-           || ctrl.property.externalId
-           || ctrl.property.example
-           || ctrl.property.in.length > 0
-           || ctrl.property.defaultValue
-           || ctrl.property.hasValue
-           || ctrl.property.pattern
-           || ctrl.property.minLength
-           || ctrl.property.maxLength
-           || ctrl.property.minCount
-           || ctrl.property.maxCount
-    ">Optional metadata</h4>
+<h4 translate ng-show="ctrl.isEditing() || ctrl.property.hasOptionalMetadata()">Optional metadata</h4>
 
 <div class="row">
   <div class="col-md-6">

@@ -1048,6 +1048,19 @@ export class Property extends GraphNode {
     }
   }
 
+  hasOptionalMetadata() {
+    return this.externalId
+      || this.example
+      || this.in.length > 0
+      || this.defaultValue
+      || this.hasValue
+      || this.pattern
+      || this.minLength
+      || this.maxLength
+      || this.minCount
+      || this.maxCount;
+  }
+
   hasAssociationTarget() {
     return !!this.valueClass;
   }
