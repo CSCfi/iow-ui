@@ -753,13 +753,13 @@ function recurseLink(paper: joint.dia.Paper, link: joint.dia.Link, siblingIndex:
   function resolveSign() {
     switch (position) {
       case 0:
-        return { x: 1,  y: 1};
+        return { x: 1,  y: 1 };
       case 1:
-        return { x: -1, y: 1};
+        return { x: -1, y: 1 };
       case 2:
-        return { x: 1,  y: -1};
+        return { x: 1,  y: -1 };
       case 3:
-        return { x: -1, y: -1};
+        return { x: -1, y: -1 };
       default:
         throw new Error('Unsupported position: ' + position);
     }
