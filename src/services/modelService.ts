@@ -8,7 +8,7 @@ import Moment = moment.Moment;
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, ImportedVocabulary, ImportedNamespace, Type, GraphData, Link,
-  ReferenceData, ReferenceDataServer, ReferenceDataCode
+  ReferenceData, ReferenceDataServer, ReferenceDataCode, Vocabulary
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -83,15 +83,13 @@ export class ModelService {
       });
   }
 
-  newVocabularyImport(scheme: any, lang: Language, context: any): IPromise<ImportedVocabulary> {
+  newVocabularyImport(vocabulary: Vocabulary, context: any): IPromise<ImportedVocabulary> {
 
     const graph = {
-      '@id': config.fintoUrl + scheme.id,
+      '@id': config.fintoUrl + vocabulary.id,
       '@type': 'skos:ConceptScheme',
-      'identifier': scheme.id,
-      'title': {
-        [lang]: scheme.title
-      }
+      'identifier': vocabulary.id,
+      'title': vocabulary.label
     };
 
     const frameObject = modelFrame({ '@graph': graph, '@context': context});

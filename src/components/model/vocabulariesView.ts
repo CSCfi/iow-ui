@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { ImportedVocabulary, Model } from '../../services/entities';
+import { ImportedVocabulary, Model, Vocabulary } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchVocabularyModal } from './searchVocabularyModal';
@@ -70,7 +70,7 @@ class VocabulariesViewController {
     const exclude = createExistsExclusion(vocabularies);
 
     this.searchVocabularyModal.open(language, exclude)
-      .then((vocabulary: any) => this.modelService.newVocabularyImport(vocabulary, language, this.model.context))
+      .then((vocabulary: Vocabulary) => this.modelService.newVocabularyImport(vocabulary, this.model.context))
       .then((vocabulary: ImportedVocabulary) => {
         this.model.addVocabulary(vocabulary);
         this.expanded = true;

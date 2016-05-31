@@ -3,18 +3,20 @@ import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ConceptService } from '../../services/conceptService';
-import { comparingBoolean, comparingString } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { Language } from '../../utils/language';
 import { isDefined } from '../../utils/object';
+import { Vocabulary } from '../../services/entities';
+import { LanguageService } from '../../services/languageService';
 
-const noExclude = (vocabulary: any) => <string> null;
+const noExclude = (vocabulary: Vocabulary) => <string> null;
 
 export class SearchVocabularyModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(language: Language, exclude: (vocabulary: any) => string = noExclude): angular.IPromise<any> {
+  open(language: Language, exclude: (vocabulary: Vocabulary) => string = noExclude): IPromise<Vocabulary> {
     return this.$uibModal.open({
       template: require('./searchVocabularyModal.html'),
       size: 'medium',
@@ -31,22 +33,23 @@ export class SearchVocabularyModal {
 
 class SearchVocabularyController {
 
-  searchResults: any[];
-  vocabularies: any[];
+  searchResults: Vocabulary[];
+  vocabularies: Vocabulary[];
   searchText: string = '';
   loadingResults: boolean;
 
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
-              public exclude: (vocabulary: any) => string,
+              public exclude: (vocabulary: Vocabulary) => string,
               private conceptService: ConceptService,
+              private languageService: LanguageService,
               private language: Language) {
 
     this.loadingResults = true;
 
-    conceptService.getAllVocabularies(language).then(result => {
-      this.vocabularies = result.data.vocabularies;
+    conceptService.getAllVocabularies(language).then(vocabularies => {
+      this.vocabularies = vocabularies;
       this.search();
     });
 
@@ -66,24 +69,28 @@ class SearchVocabularyController {
       );
 
       this.searchResults.sort(
-        comparingBoolean((vocabulary: any) => !!this.exclude(vocabulary))
-          .andThen(comparingString((vocabulary: any) => vocabulary.title)));
+        comparingBoolean((vocabulary: Vocabulary) => !!this.exclude(vocabulary))
+          .andThen(comparingLocalizable(this.language, (vocabulary: Vocabulary) => vocabulary.label)));
     }
 
     this.loadingResults = !isDefined(this.vocabularies);
   }
 
-  selectItem(vocabulary: any) {
+  selectItem(vocabulary: Vocabulary) {
     if (!this.exclude(vocabulary)) {
       this.$uibModalInstance.close(vocabulary);
     }
   }
 
-  private textFilter(vocabulary: any): boolean {
-    return !this.searchText || (vocabulary.title || '').toLowerCase().includes(this.searchText.toLowerCase());
+  private localizedLabelAsLower(vocabulary: Vocabulary): string {
+    return this.languageService.translate(vocabulary.label).toLowerCase();
   }
 
-  private excludedFilter(vocabulary: any): boolean {
+  private textFilter(vocabulary: Vocabulary): boolean {
+    return !this.searchText || this.localizedLabelAsLower(vocabulary).includes(this.searchText.toLowerCase());
+  }
+
+  private excludedFilter(vocabulary: Vocabulary): boolean {
     return this.showExcluded || !this.exclude(vocabulary);
   }
 

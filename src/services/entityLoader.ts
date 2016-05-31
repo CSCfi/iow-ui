@@ -13,7 +13,7 @@ import {
   State,
   ConceptSuggestion,
   ConstraintType,
-  ImportedNamespace
+  ImportedNamespace, Vocabulary
 } from './entities';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
@@ -137,7 +137,7 @@ export class EntityLoader {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
     this.loggedIn = this.reset.then(() => userService.login());
-    this.vocabularies = this.reset.then(() => this.conceptService.getAllVocabularies('fi')).then(result => result.data.vocabularies);
+    this.vocabularies = this.reset.then(() => this.conceptService.getAllVocabularies('fi'));
   }
 
   addAction<T>(action: IPromise<T>, details: any): IPromise<T> {
@@ -168,14 +168,14 @@ export class EntityLoader {
 
         for (const importedVocabulary of details.vocabularies || []) {
           promises.push(
-            this.vocabularies.then((vocabularies: any) => {
-                const vocabulary = _.find(vocabularies, (vocabulary: any) => vocabulary.id === importedVocabulary);
+            this.vocabularies.then((vocabularies: Vocabulary[]) => {
+                const vocabulary = _.find(vocabularies, (vocabulary: Vocabulary) => vocabulary.id === importedVocabulary);
                 if (!vocabulary) {
                   throw new Error('Vocabulary not found: ' + vocabulary);
                 }
                 return vocabulary;
               })
-              .then(vocabulary => this.modelService.newVocabularyImport(vocabulary, 'fi', model.context))
+              .then(vocabulary => this.modelService.newVocabularyImport(vocabulary, model.context))
               .then(vocabularyEntity => model.addVocabulary(vocabularyEntity))
           );
         }

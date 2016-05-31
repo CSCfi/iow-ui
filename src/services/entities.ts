@@ -503,6 +503,18 @@ export class Link extends GraphNode {
   }
 }
 
+export class Vocabulary extends GraphNode {
+
+  id: string;
+  label: Localizable;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = graph.id;
+    this.label = graph.label;
+  }
+}
+
 export class ImportedVocabulary extends GraphNode {
 
   id: Uri;
@@ -1870,6 +1882,10 @@ export class EntityDeserializer {
 
   deserializeConcepts(data: GraphData): IPromise<Concept[]> {
     return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), resolveConceptConstructor);
+  }
+
+  deserializeVocabularies(data: GraphData): IPromise<Vocabulary[]> {
+    return frameAndMapArray(this.$log, data, frames.vocabularyFrame, (framedData) => Vocabulary);
   }
 
   deserializeImportedNamespace(data: GraphData): IPromise<ImportedNamespace> {

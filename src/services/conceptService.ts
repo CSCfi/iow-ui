@@ -5,7 +5,7 @@ import IQService = angular.IQService;
 import * as _ from 'lodash';
 import {
   EntityDeserializer, ConceptSuggestion, FintoConcept, GraphData, FintoConceptSearchResult,
-  ImportedVocabulary, Localizable, Model, Concept
+  ImportedVocabulary, Localizable, Model, Concept, Vocabulary
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -24,8 +24,9 @@ export class ConceptService {
   constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
-  getAllVocabularies(lang: Language): IHttpPromise<any> {
-    return this.$http.get(config.apiEndpointWithName('scheme'), {params: {lang}});
+  getAllVocabularies(lang: Language): IPromise<Vocabulary[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('scheme'), {params: {lang}})
+      .then(response => this.entities.deserializeVocabularies(response.data));
   }
 
   searchConcepts(vocabulary: ImportedVocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[] {
@@ -106,7 +107,7 @@ export class ConceptService {
   }
 
   updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any> {
-    const requestParams: any = {
+    const requestParams = {
       conceptID: conceptSuggestion.id.uri
     };
 
