@@ -1,0 +1,17 @@
+<div ng-if="ctrl.predicate">
+  <div class="row">
+    <div class="col-md-6">
+      <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label" context="ctrl.model"></non-editable>
+      <non-editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" value="ctrl.predicate.id" context="ctrl.model"></non-editable>
+      <non-editable data-title="Range" value="ctrl.predicate.range" context="ctrl.model"></non-editable>
+    </div>
+    <div class="col-md-6">
+      <non-editable data-title="Description" value="ctrl.predicate.comment" context="ctrl.model"></non-editable>
+      <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
+      <non-editable data-title="Predicate type" value="ctrl.predicate.normalizedType" value-as-localization-key="true" context="ctrl.model"></non-editable>
+    </div>
+  </div>
+  <subject-view subject="ctrl.predicate.subject" context="ctrl.model"></subject-view>
+</div>
+
+<div ng-if="ctrl.predicate === null" translate>Predicate information not found</div>

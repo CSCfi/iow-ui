@@ -7,7 +7,6 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { ClassViewController } from './classView';
-import { PredicateService } from '../../services/predicateService';
 import { Uri } from '../../services/uri';
 import { LanguageService } from '../../services/languageService';
 import { any } from '../../utils/array';
@@ -58,7 +57,6 @@ export class PropertyViewController {
   property: Property;
   class: Class;
   model: Model;
-  predicate: Predicate;
   otherPropertyLabels: Localizable[];
   otherPropertyIdentifiers: string[];
   isEditing: () => boolean;
@@ -67,21 +65,7 @@ export class PropertyViewController {
     any(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass));
 
   /* @ngInject */
-  constructor($scope: PropertyViewScope, predicateService: PredicateService, private languageService: LanguageService) {
-
-    const predicate = this.property.predicate;
-
-    if (predicate instanceof Predicate) {
-      this.predicate = predicate;
-    } else if (predicate instanceof Uri) {
-      if (this.model.isNamespaceKnownToBeNotModel(predicate.namespace)) {
-        predicateService.getExternalPredicate(predicate, this.model).then(p => this.predicate = p);
-      } else {
-        predicateService.getPredicate(predicate).then(p => this.predicate = p);
-      }
-    } else {
-      throw new Error('Unsupported predicate: ' + predicate);
-    }
+  constructor($scope: PropertyViewScope, private languageService: LanguageService) {
 
     $scope.$watchCollection(() => this.class.properties, properties => {
       this.otherPropertyLabels = [];
@@ -102,14 +86,6 @@ export class PropertyViewController {
 
   linkToValueClass() {
     return this.model.linkTo({ type: 'class', id: this.property.valueClass }, true);
-  }
-
-  isAssociation() {
-    return this.property.isAssociation() || (this.predicate && this.predicate.isAssociation());
-  }
-
-  isAttribute() {
-    return this.property.isAttribute() || (this.predicate && this.predicate.isAttribute());
   }
 
   get predicateName() {

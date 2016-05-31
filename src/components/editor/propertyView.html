@@ -11,11 +11,11 @@
       <input id="{{ctrl.property.internalId + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" context="ctrl.model" ng-model="ctrl.property.label" />
     </editable>
 
-    <editable ng-if="ctrl.isAttribute()" data-title="Range" context="ctrl.model">
+    <editable ng-if="ctrl.property.isAttribute()" data-title="Range" context="ctrl.model">
       <range-select id="{{ctrl.property.internalId + 'range'}}" range="ctrl.property.dataType"></range-select>
     </editable>
 
-    <editable ng-if="ctrl.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
+    <editable ng-if="ctrl.property.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
       <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.property.inUnstableState" duplicate="ctrl.isConflictingValueClass" model="ctrl.model"></uri-select>
     </editable>
   </div>
@@ -52,7 +52,7 @@
       <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
     </editable>
 
-    <editable-multiple-uri-select ng-if="ctrl.isAssociation()" id="classIn" type="class" ng-model="ctrl.property.classIn" model="ctrl.model" data-title="{{'Class type'}}"></editable-multiple-uri-select>
+    <editable-multiple-uri-select ng-if="ctrl.property.isAssociation()" id="classIn" type="class" ng-model="ctrl.property.classIn" model="ctrl.model" data-title="{{'Class type'}}"></editable-multiple-uri-select>
 
   </div>
 
@@ -95,7 +95,7 @@
 
   <div class="col-md-6">
 
-    <editable ng-if="ctrl.isAttribute()" data-title="Pattern" context="ctrl.model">
+    <editable ng-if="ctrl.property.isAttribute()" data-title="Pattern" context="ctrl.model">
       <input id="{{ctrl.property.internalId + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
     </editable>
 
@@ -125,24 +125,12 @@
 
 <uib-accordion>
   <uib-accordion-group is-open="predicateOpen">
+
     <uib-accordion-heading>
       <span accordion-chevron is-open="predicateOpen">{{ctrl.predicateName}}</span>
     </uib-accordion-heading>
-    <div ng-if="ctrl.predicate">
-      <div class="row">
-        <div class="col-md-6">
-          <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label" context="ctrl.model"></non-editable>
-          <non-editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" value="ctrl.predicate.id" context="ctrl.model"></non-editable>
-          <non-editable data-title="Range" value="ctrl.predicate.range" context="ctrl.model"></non-editable>
-        </div>
-        <div class="col-md-6">
-          <non-editable data-title="Description" value="ctrl.predicate.comment" context="ctrl.model"></non-editable>
-          <defined-by entity="ctrl.predicate" model="ctrl.model"></defined-by>
-          <non-editable data-title="Predicate type" value="ctrl.predicate.normalizedType" value-as-localization-key="true" context="ctrl.model"></non-editable>
-        </div>
-      </div>
-      <subject-view subject="ctrl.predicate.subject" context="ctrl.model"></subject-view>
-    </div>
-    <div ng-if="!ctrl.predicate" translate>Predicate information not found</div>
+
+    <property-predicate-view ng-if="predicateOpen" predicate="ctrl.property.predicate" model="ctrl.model"></property-predicate-view>
+
   </uib-accordion-group>
 </uib-accordion>

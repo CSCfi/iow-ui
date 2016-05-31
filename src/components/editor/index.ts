@@ -21,6 +21,7 @@ import './editableReferenceDataSelect';
 import './predicateForm';
 import './predicateView';
 import './propertyView';
+import './propertyPredicateView';
 import './rangeSelect';
 import './selectionView';
 import './subjectView';
