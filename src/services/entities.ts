@@ -61,10 +61,10 @@ export type Type = 'class'
                  | 'collection'
                  | 'vocabulary'
                  | 'standard'
-                 | 'codeScheme'
-                 | 'externalCodeScheme'
-                 | 'codeGroup'
-                 | 'code';
+                 | 'referenceData'
+                 | 'externalReferenceData'
+                 | 'referenceDataGroup'
+                 | 'referenceDataCode';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -657,7 +657,7 @@ export class ReferenceData extends GraphNode {
   }
 
   isExternal() {
-    return this.isOfType('externalCodeScheme');
+    return this.isOfType('externalReferenceData');
   }
 
   serializationValues(clone: boolean): {} {

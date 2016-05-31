@@ -29,10 +29,10 @@ registerType('activity', ['prov:Activity']);
 registerType('resource', ['rdfs:Resource']);
 registerType('collection', ['skos:Collection']);
 registerType('standard', ['dcterms:Standard']);
-registerType('codeScheme', ['iow:FCodeScheme']);
-registerType('externalCodeScheme', ['dcam:VocabularyEncodingScheme']);
-registerType('codeGroup', ['iow:FCodeGroup']);
-registerType('code', ['iow:FCode']);
+registerType('referenceData', ['iow:FCodeScheme']);
+registerType('externalReferenceData', ['dcam:VocabularyEncodingScheme']);
+registerType('referenceDataGroup', ['iow:FCodeGroup']);
+registerType('referenceDataCode', ['iow:FCode']);
 
 export function mapType(type: string): Type {
   const result = toType.get(type);
