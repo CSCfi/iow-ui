@@ -1,5 +1,6 @@
 import { Localizable, LanguageContext } from './entities';
 import { Language, availableUILanguages, availableLanguages, translate } from '../utils/language';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const defaultLanguage: Language = 'fi';
 
@@ -14,7 +15,7 @@ export class LanguageService {
   private _modelLanguage: {[entityId: string]: Language} = {};
 
   /* @ngInject */
-  constructor(private gettextCatalog: any) {
+  constructor(private gettextCatalog: gettextCatalog) {
     gettextCatalog.setStrings('fi', fi);
     gettextCatalog.setStrings('en', en);
 

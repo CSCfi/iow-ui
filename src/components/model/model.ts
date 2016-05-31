@@ -90,7 +90,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     this.init(new RouteData($routeParams));
 
-    $scope.$on('$locationChangeSuccess', (event: any, next: any, current: any) => {
+    $scope.$on('$locationChangeSuccess', (event, next, current) => {
       if ($location.path() === '/model' && isDifferentUrl(next, current)) {
         this.init(new RouteData($location.search()));
       }

@@ -616,7 +616,7 @@ function createClass($scope: IScope, languageService: LanguageService, context: 
 
   const classConstructor = klass.resolved ? withoutUnusedMarkupClass : shadowClass;
 
-  const classCell: any = new classConstructor({
+  const classCell = new classConstructor({
     id: klass.id.uri,
     size: size(className, propertyNames),
     name: className,
@@ -648,7 +648,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, con
     return languageService.translate(data.association.label, context);
   }
 
-  const associationCell: any = new withoutUnusedMarkupLink({
+  const associationCell = new withoutUnusedMarkupLink({
     source: { id: data.klass.id.uri },
     target: { id: data.association.valueClass.uri },
     connector: { name: 'normal' },

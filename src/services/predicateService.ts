@@ -124,7 +124,7 @@ export class PredicateService {
   getExternalPredicate(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.entities.deserializePredicate(response.data))
+      .then(response => this.entities.deserializePredicate(response.data))
       .then(predicate => {
         if (predicate) {
           predicate.external = true;
