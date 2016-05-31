@@ -1023,7 +1023,7 @@ export class Property extends GraphNode {
     this.maxCount = graph.maxCount;
     this.minLength = graph.minLength;
     this.maxLength = graph.maxLength;
-    this.in = deserializeList<string>(graph.in);
+    this.in = deserializeList<string>(graph.inValues);
     this.hasValue = graph.hasValue;
     this.pattern = graph.pattern;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
@@ -1134,7 +1134,7 @@ export class Property extends GraphNode {
       maxCount: this.maxCount,
       minLength: this.minLength,
       maxLength: this.maxLength,
-      in: serializeList(this.in),
+      inValues: serializeList(this.in),
       hasValue: this.hasValue,
       pattern: this.pattern,
       classIn: serializeList(this.classIn, classId => classId.uri),
