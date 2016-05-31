@@ -148,7 +148,7 @@ export class ModelService {
 
   getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
     return this.$q.all(_.map(servers, server => this.getReferenceDatasForServer(server)))
-      .then(schemeLists => _.flatten(schemeLists));
+      .then(referenceDatas => _.flatten(referenceDatas));
   }
 
   getAllReferenceDatas(): IPromise<ReferenceData[]> {

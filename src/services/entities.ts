@@ -1383,17 +1383,17 @@ export class VocabularyNameHref {
 
   private static internalVocabularyName = 'Internal vocabulary';
 
-  constructor(private scheme: Vocabulary|Uri) {
-    if (scheme instanceof Uri) {
-      this.id = scheme;
-      this.href = scheme.uri;
-      this.name = scheme.uri;
-    } else if (scheme instanceof Vocabulary) {
-      this.id = scheme.id;
-      this.href = scheme.local ? null : scheme.href;
-      this.name = scheme.label;
+  constructor(private vocabulary: Vocabulary|Uri) {
+    if (vocabulary instanceof Uri) {
+      this.id = vocabulary;
+      this.href = vocabulary.uri;
+      this.name = vocabulary.uri;
+    } else if (vocabulary instanceof Vocabulary) {
+      this.id = vocabulary.id;
+      this.href = vocabulary.local ? null : vocabulary.href;
+      this.name = vocabulary.label;
     } else {
-      throw new Error('Unknown scheme type: ' + scheme);
+      throw new Error('Unknown scheme type: ' + vocabulary);
     }
   }
 

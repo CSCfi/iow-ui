@@ -70,7 +70,7 @@ class VocabulariesViewController {
     const exclude = createExistsExclusion(vocabularies);
 
     this.searchVocabularyModal.open(language, exclude)
-      .then((scheme: any) => this.modelService.newVocabulary(scheme, language, this.model.context))
+      .then((vocabulary: any) => this.modelService.newVocabulary(vocabulary, language, this.model.context))
       .then((vocabulary: Vocabulary) => {
         this.model.addVocabulary(vocabulary);
         this.expanded = true;

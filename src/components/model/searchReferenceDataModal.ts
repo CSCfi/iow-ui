@@ -124,17 +124,17 @@ export class SearchReferenceDataModalController {
         new AddNewReferenceData(`${this.gettextCatalog.getString('Create new code scheme')} '${this.searchText}'`, this.canAddNew.bind(this))
       ];
 
-      const schemeSearchResults = this.referenceDatas.filter(scheme =>
-        this.textFilter(scheme) &&
-        this.excludedFilter(scheme) &&
-        this.groupFilter(scheme)
+      const referenceDataSearchResults = this.referenceDatas.filter(referenceData =>
+        this.textFilter(referenceData) &&
+        this.excludedFilter(referenceData) &&
+        this.groupFilter(referenceData)
       );
 
-      schemeSearchResults.sort(
-        comparingBoolean((scheme: any) => !!this.exclude(scheme))
-          .andThen(comparingString((scheme: any) => scheme.title)));
+      referenceDataSearchResults.sort(
+        comparingBoolean((referenceData: ReferenceData) => !!this.exclude(referenceData))
+          .andThen(comparingLocalizable(this.localizer.language, (referenceData: ReferenceData) => referenceData.title)));
 
-      this.searchResults = result.concat(schemeSearchResults);
+      this.searchResults = result.concat(referenceDataSearchResults);
     }
   }
 

@@ -75,7 +75,7 @@ export class ConceptEditorModalController {
         this.vocabularies = _.chain(concepts)
           .map(concept => concept.vocabularies)
           .flatten()
-          .filter(scheme => scheme instanceof Vocabulary)
+          .filter(vocabulary => vocabulary instanceof Vocabulary)
           .filter(vocabulary => !vocabulary.local)
           .uniq(vocabulary => vocabulary.id)
           .value();

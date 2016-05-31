@@ -59,7 +59,7 @@ export class ConceptService {
       .then(response => this.entities.deserializeFintoConceptSearchResults(response.data));
   }
 
-  private searchConceptSuggestions(query: string, lang: Language, schemeId: Uri): IPromise<ConceptSuggestion[]> {
+  private searchConceptSuggestions(query: string, lang: Language, vocabularyId: Uri): IPromise<ConceptSuggestion[]> {
     function suggestionContains(suggestion: ConceptSuggestion): boolean {
       const localization = suggestion.label[lang] || '';
       return localization.toLowerCase().includes(query.toLowerCase());
@@ -69,7 +69,7 @@ export class ConceptService {
       return _.filter(suggestions, suggestion => suggestionContains(suggestion));
     }
 
-    return this.getConceptSuggestions(schemeId).then(suggestions => matchingSuggestions(suggestions));
+    return this.getConceptSuggestions(vocabularyId).then(suggestions => matchingSuggestions(suggestions));
   }
 
   getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion> {
@@ -77,8 +77,8 @@ export class ConceptService {
       .then(response => this.entities.deserializeConceptSuggestion(response.data));
   }
 
-  getConceptSuggestions(schemeId: Uri): IPromise<ConceptSuggestion[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {schemeID: schemeId.uri}})
+  getConceptSuggestions(vocabularyId: Uri): IPromise<ConceptSuggestion[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {schemeID: vocabularyId.uri}})
       .then(response => this.entities.deserializeConceptSuggestions(response.data));
   }
 
