@@ -23,7 +23,7 @@ registerType('constraint', ['sh:AbstractOrNodeConstraint', 'sh:AbstractAndNodeCo
 registerType('user', ['foaf:Person']);
 registerType('concept', ['skos:Concept']);
 registerType('conceptSuggestion', ['iow:ConceptSuggestion']);
-registerType('scheme', ['skos:ConceptScheme']);
+registerType('vocabulary', ['skos:ConceptScheme']);
 registerType('entity', ['prov:Entity']);
 registerType('activity', ['prov:Activity']);
 registerType('resource', ['rdfs:Resource']);

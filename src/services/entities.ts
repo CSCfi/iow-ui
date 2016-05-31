@@ -59,7 +59,7 @@ export type Type = 'class'
                  | 'activity'
                  | 'resource'
                  | 'collection'
-                 | 'scheme'
+                 | 'vocabulary'
                  | 'standard'
                  | 'codeScheme'
                  | 'externalCodeScheme'
@@ -1405,7 +1405,7 @@ export class VocabularyNameHref {
       this.href = vocabulary.local ? null : vocabulary.href;
       this.name = vocabulary.label;
     } else {
-      throw new Error('Unknown scheme type: ' + vocabulary);
+      throw new Error('Unknown vocabulary type: ' + vocabulary);
     }
   }
 
