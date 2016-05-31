@@ -1504,7 +1504,7 @@ msgstr "Hae nimiavaruutta…"
 
 #: components/model/searchNamespaceModal.html:2
 msgid "Search namespaces"
-msgstr ""
+msgstr "Hae nimiavaruuksia"
 
 #: components/editor/searchPredicateModal.html:20
 msgid "Search or create predicate info"
