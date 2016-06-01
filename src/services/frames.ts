@@ -33,6 +33,17 @@ const conceptContext = Object.assign({}, coreContext, {
   inScheme
 });
 
+const referenceDataServerContext = Object.assign({}, coreContext, {
+  description
+});
+
+const referenceDataContext = Object.assign({}, coreContext, {
+  creator: { '@id': 'http://purl.org/dc/terms/creator' },
+  description
+});
+
+const referenceDataCodeContext = Object.assign({}, coreContext, {});
+
 const predicateContext = Object.assign({}, coreContext, conceptContext, {
   range: { '@id': 'http://www.w3.org/2000/01/rdf-schema#range', '@type': '@id' },
   subPropertyOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subPropertyOf', '@type': '@id' },
@@ -41,7 +52,7 @@ const predicateContext = Object.assign({}, coreContext, conceptContext, {
   subject
 });
 
-const propertyContext = Object.assign({}, coreContext, predicateContext, {
+const propertyContext = Object.assign({}, coreContext, predicateContext, referenceDataContext, {
   index: { '@id': 'http://www.w3.org/ns/shacl#index' },
   example: { '@id': 'http://www.w3.org/2004/02/skos/core#example' },
   defaultValue: { '@id': 'http://www.w3.org/ns/shacl#defaultValue' },
@@ -88,24 +99,12 @@ const namespaceContext = Object.assign({}, coreContext, {
   preferredXMLNamespacePrefix: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix' }
 });
 
-const referenceDataServerContext = Object.assign({}, coreContext, {
-  description
-});
-
-const referenceDataContext = Object.assign({}, coreContext, {
-  creator: { '@id': 'http://purl.org/dc/terms/creator' },
-  description
-});
-
-const referenceDataCodeContext = Object.assign({}, coreContext, {});
-
-const modelContext = Object.assign({}, coreContext, namespaceContext, {
+const modelContext = Object.assign({}, coreContext, namespaceContext, referenceDataContext, {
   rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' },
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
   requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
   relations: { '@id': 'http://purl.org/dc/terms/relation', '@container': '@list' },
   codeLists: { '@id': 'http://iow.csc.fi/ns/iow#codeLists', '@type': '@id' },
-  description,
   language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' }
 });
 
