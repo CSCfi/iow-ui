@@ -1058,7 +1058,8 @@ export class Property extends GraphNode {
       || this.minLength
       || this.maxLength
       || this.minCount
-      || this.maxCount;
+      || this.maxCount
+      || this.referenceData;
   }
 
   hasAssociationTarget() {
