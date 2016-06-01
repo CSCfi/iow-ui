@@ -4,11 +4,13 @@ import IScope = angular.IScope;
 import IFormController = angular.IFormController;
 import INgModelController = angular.INgModelController;
 import ILocationService = angular.ILocationService;
+import ICompiledExpression = angular.ICompiledExpression;
+import IParseService = angular.IParseService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
-import { module as mod }  from './module';
 import { LanguageContext } from '../../services/entities';
+import { module as mod }  from './module';
 
 const NG_HIDE_CLASS = 'ng-hide';
 const NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
@@ -24,7 +26,8 @@ mod.directive('editable', /* @ngInject */ ($animate: any) => {
       link: '=',
       valueAsLocalizationKey: '@',
       disable: '=',
-      context: '='
+      context: '=',
+      onClick: '@'
     },
     restrict: 'E',
     template: require('./editable.html'),
@@ -89,12 +92,24 @@ class EditableController {
   required: boolean;
   inputId: string;
   context: LanguageContext;
+  onClick: string;
 
   isEditing: () => boolean;
   item: DisplayItem;
 
   /* @ngInject */
-  constructor(private displayItemFactory: DisplayItemFactory) {
-    this.item = displayItemFactory.create(() => this.context, () => this.value, (value: string) => this.link, this.valueAsLocalizationKey);
+  constructor($scope: IScope, $parse: IParseService, private displayItemFactory: DisplayItemFactory) {
+
+    // we need to know if handler was set or not so parse ourselves instead of using scope '&'
+    const clickHandler = $parse(this.onClick);
+    const onClick = this.onClick ? (value: Value) => clickHandler($scope.$parent, {value}) : null;
+
+    this.item = displayItemFactory.create({
+      context: () => this.context,
+      value: () => this.value,
+      link: (value: Value) => this.link,
+      valueAsLocalizationKey: this.valueAsLocalizationKey,
+      onClick: onClick
+    });
   }
 }

@@ -1,13 +1,14 @@
 import IAttributes = angular.IAttributes;
 import IFormController = angular.IFormController;
 import ILocationService = angular.ILocationService;
+import ICompiledExpression = angular.ICompiledExpression;
+import IParseService = angular.IParseService;
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
-
-import { module as mod }  from './module';
 import { LanguageContext } from '../../services/entities';
+import { module as mod }  from './module';
 
 mod.directive('nonEditable', () => {
   return {
@@ -15,6 +16,7 @@ mod.directive('nonEditable', () => {
       title: '@',
       value: '=',
       link: '=',
+      onClick: '@',
       valueAsLocalizationKey: '@',
       context: '='
     },
@@ -37,12 +39,25 @@ class NonEditableController {
   link: string;
   valueAsLocalizationKey: boolean;
   context: LanguageContext;
+  onClick: string;
 
   isEditing: () => boolean;
   item: DisplayItem;
 
   /* @ngInject */
-  constructor(displayItemFactory: DisplayItemFactory) {
-    this.item = displayItemFactory.create(() => this.context, () => this.value, (value) => this.link, this.valueAsLocalizationKey, () => this.isEditing());
+  constructor($scope: IScope, $parse: IParseService, displayItemFactory: DisplayItemFactory) {
+
+    // we need to know if handler was set or not so parse ourselves instead of using scope '&'
+    const clickHandler = $parse(this.onClick);
+    const onClick = this.onClick ? (value: Value) => clickHandler($scope.$parent, {value}) : null;
+
+    this.item = displayItemFactory.create({
+      context: () => this.context,
+      value: () => this.value,
+      link: (value: Value) => this.link,
+      valueAsLocalizationKey: this.valueAsLocalizationKey,
+      hideLinks: () => this.isEditing(),
+      onClick: onClick
+    });
   }
 }

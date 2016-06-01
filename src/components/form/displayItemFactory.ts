@@ -1,3 +1,4 @@
+import ICompiledExpression = angular.ICompiledExpression;
 import ILocationService = angular.ILocationService;
 import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
@@ -16,27 +17,28 @@ function isMoment(obj: any): obj is Moment {
 }
 
 export class DisplayItem {
+
+  onClick: (value: Value) => void;
+
   constructor(private $location: ILocationService,
               private languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
-              private context: () => LanguageContext,
-              public value: () => Value,
-              private link: (value: Value) => string,
-              private hideLinks: () => boolean,
-              private valueAsLocalizationKey: boolean) {
+              private config: DisplayItemConfiguration) {
+
+    this.onClick = config.onClick;
   }
 
   get displayValue(): string {
-    const value = this.value();
+    const value = this.value;
 
     if (isMoment(value)) {
       return value.format(this.gettextCatalog.getString('date format'));
     } else if (value instanceof Uri) {
       return value.compact;
     }  else if (isLocalizable(value)) {
-      return this.languageService.translate(value, this.context());
+      return this.languageService.translate(value, this.config.context());
     } else if (isString(value)) {
-      if (this.valueAsLocalizationKey) {
+      if (this.config.valueAsLocalizationKey) {
         return this.gettextCatalog.getString(value);
       } else {
         return value;
@@ -50,36 +52,42 @@ export class DisplayItem {
     }
   }
 
-  get href(): string {
-    const link = this.formatLink();
-    if (link) {
-      const external = !link.startsWith('/');
-      return external ? link : '#' + link;
+  get value() {
+    return this.config.value();
+  }
+
+  get href() {
+    if (this.config.hideLinks && this.config.hideLinks()) {
+      return null;
     } else {
-      return '';
+      const link = this.config.link && this.config.link(this.value);
+
+      if (!link || !isDifferentUrl(link, this.$location.url())) {
+        return null;
+      } else {
+        const internal = link.startsWith('/');
+        return internal ? '#' + link : link;
+      }
     }
   }
-
-  get showLink(): boolean {
-    const link = this.formatLink();
-    return !this.hideLinks() && link && isDifferentUrl(link, this.$location.url());
-  }
-
-  get showPlain(): boolean {
-    return !this.showLink;
-  }
-
-  private formatLink() {
-    return this.link(this.value());
-  }
 }
+
+export type DisplayItemConfiguration = {
+  context(): LanguageContext;
+  value(): Value;
+  link?(value: Value): string;
+  onClick?(value: Value): void;
+  hideLinks?: () => boolean;
+  valueAsLocalizationKey?: boolean;
+}
+
 
 export class DisplayItemFactory {
   /* @ngInject */
   constructor(private $location: ILocationService, private languageService: LanguageService, private gettextCatalog: gettextCatalog) {
   }
 
-  create(context: () => LanguageContext, value: () => Value, link: (value: Value) => string, valueAsLocalizationKey: boolean, hideLinks: () => boolean = () => false) {
-    return new DisplayItem(this.$location, this.languageService, this.gettextCatalog, context, value, link, hideLinks, valueAsLocalizationKey);
+  create(config: DisplayItemConfiguration) {
+    return new DisplayItem(this.$location, this.languageService, this.gettextCatalog, config);
   }
 }

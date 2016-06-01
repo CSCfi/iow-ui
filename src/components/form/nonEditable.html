@@ -1,7 +1,8 @@
 <div ng-if="ctrl.item.displayValue" class="editable-wrap">
   <editable-label data-title="ctrl.title"></editable-label>
   <div class="content">
-    <a ng-if="ctrl.item.showLink" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
-    <div ng-if="ctrl.item.showPlain">{{ctrl.item.displayValue}}</div>
+    <a ng-if="ctrl.item.href" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
+    <a ng-if="ctrl.item.onClick" ng-click="ctrl.item.onClick()">{{ctrl.item.displayValue}}</a>
+    <span ng-if="!ctrl.item.href && !ctrl.item.onClick">{{ctrl.item.displayValue}}</span>
   </div>
 </div>
