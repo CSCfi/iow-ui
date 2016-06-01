@@ -3,34 +3,20 @@
   <h2><i class="fa fa-user"></i><span translate>User details</span></h2>
 
   <form>
-    <div>
-      <label translate>User login</label>
-      <div>{{ctrl.user.login}}</div>
-    </div>
 
-    <div>
-      <label translate>User name</label>
-      <div>{{ctrl.user.name}}</div>
-    </div>
+    <non-editable title="User login" value="ctrl.user.login"></non-editable>
+    <non-editable title="User name" value="ctrl.user.name"></non-editable>
+    <non-editable title="Created at" value="ctrl.user.createdAt"></non-editable>
+    <non-editable title="Modified at" value="ctrl.user.modifiedAt"></non-editable>
 
-    <div>
-      <label translate>Created at</label>
-      <div>{{ctrl.user.createdAt | localizedDate}}</div>
-    </div>
-
-    <div ng-show="ctrl.user.modifiedAt">
-      <label translate>Modified at</label>
-      <div>{{ctrl.user.modifiedAt | localizedDate}}</div>
-    </div>
-
-    <div>
+    <div class="editable-wrap">
       <label translate>Member groups</label>
       <ul>
         <li ng-repeat="group in ctrl.user.memberGroups"><a ng-href="{{ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
       </ul>
     </div>
 
-    <div>
+    <div class="editable-wrap">
       <label translate>Admin groups</label>
       <ul>
         <li ng-repeat="group in ctrl.user.adminGroups"><a ng-href="{{ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
