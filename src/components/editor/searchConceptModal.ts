@@ -202,7 +202,7 @@ class SearchConceptController {
   }
 
   private showVocabularyFilter(concept: ConceptSearchResult) {
-    return any(this.activeVocabularies, vocabualry => concept.vocabulary.id.equals(vocabualry.id));
+    return any(this.activeVocabularies, vocabulary => concept.vocabulary.id.equals(vocabulary.id));
   }
 
   selectItem(item: ConceptSearchResult|AddNewConcept) {
