@@ -1,4 +1,4 @@
-import { Url } from './uri';
+import { Url, Uri, Urn } from './uri';
 
 export type Frame = {};
 export type FrameFn = (data: any) => Frame;
@@ -131,8 +131,9 @@ export function groupListFrame(data: any): Frame {
   return frame(data, groupContext);
 }
 
-export function modelFrame(data: any): Frame {
-  return frame(data, modelContext, {
+export function modelFrame(data: any, id?: Uri|Urn): Frame {
+
+  const frameObj: any = {
     isPartOf: {},
     codeLists: {
       '@omitDefault': true,
@@ -143,7 +144,9 @@ export function modelFrame(data: any): Frame {
         '@embed': '@always'
       }
     }
-  });
+  };
+
+  return frame(data, modelContext, id ? Object.assign(frameObj, { '@id': id.toString() }) : frameObj);
 }
 
 export function modelListFrame(data: any): Frame {

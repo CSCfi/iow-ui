@@ -32,7 +32,7 @@ export class ModelService {
 
   getModelByUrn(urn: Uri|Urn): IPromise<Model> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { id: urn.toString() } })
-      .then(response => this.entities.deserializeModel(response.data));
+      .then(response => this.entities.deserializeModel(response.data, urn));
   }
 
   createModel(model: Model): IPromise<any> {

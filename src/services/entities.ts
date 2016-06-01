@@ -1841,8 +1841,8 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.modelListFrame, (framedData) => ModelListItem);
   }
 
-  deserializeModel(data: GraphData): IPromise<Model> {
-    return frameAndMap(this.$log, data, true, frames.modelFrame, (framedData) => Model);
+  deserializeModel(data: GraphData, id?: Uri|Urn): IPromise<Model> {
+    return frameAndMap(this.$log, data, true, frames.modelFrame(data, id), (framedData) => Model);
   }
 
   deserializeClassList(data: GraphData): IPromise<ClassListItem[]> {
