@@ -60,7 +60,7 @@ export class ConceptFormController {
   }
 
   selectBroaderConcept() {
-      this.searchConceptModal.openSelection(this.model.vocabularies, this.model)
+      this.searchConceptModal.openSelection(this.model.vocabularies, this.model, false)
         .then(concept => this.concept.broaderConcept = concept);
   }
 }

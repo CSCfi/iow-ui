@@ -40,7 +40,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(vocabularies: ImportedVocabulary[], model: Model, type: Type, newEntityCreation: boolean, initialSearch: string) {
+  private open(vocabularies: ImportedVocabulary[], model: Model, type: Type, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -52,17 +52,18 @@ export class SearchConceptModal {
         model: () => model,
         type: () => type,
         newEntityCreation: () => newEntityCreation,
-        initialSearch: () => initialSearch
+        initialSearch: () => initialSearch,
+        allowSuggestions: () => allowSuggestions
       }
     }).result;
   }
 
-  openSelection(vocabularies: ImportedVocabulary[], model: Model, type?: Type): IPromise<Concept> {
-    return this.open(vocabularies, model, type, false, '');
+  openSelection(vocabularies: ImportedVocabulary[], model: Model, allowSuggestions: boolean, type?: Type): IPromise<Concept> {
+    return this.open(vocabularies, model, type, allowSuggestions, false, '');
   }
 
   openNewEntityCreation(vocabularies: ImportedVocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
-    return this.open(vocabularies, model, type, true, initialSearch);
+    return this.open(vocabularies, model, type, true, true, initialSearch);
   }
 };
 
@@ -104,6 +105,7 @@ class SearchConceptController {
               public type: Type,
               initialSearch: string,
               public newEntityCreation: boolean,
+              private allowSuggestions: boolean,
               vocabularies: ImportedVocabulary[],
               private model: Model,
               private conceptService: ConceptService,
@@ -240,7 +242,7 @@ class SearchConceptController {
   selectBroaderConcept() {
     const selection = this.selection;
     if (isNewConceptData(selection)) {
-      this.searchConceptModal.openSelection(this.activeVocabularies, this.model)
+      this.searchConceptModal.openSelection(this.activeVocabularies, this.model, false)
         .then(concept => selection.broaderConcept = concept);
     } else {
       throw new Error('Selection must be new concept data: ' + selection);
@@ -258,7 +260,7 @@ class SearchConceptController {
   }
 
   canAddNew() {
-    return !!this.searchText && this.selectableVocabularies.length > 0;
+    return this.allowSuggestions && !!this.searchText && this.selectableVocabularies.length > 0;
   }
 
   confirm() {

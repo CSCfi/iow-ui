@@ -37,6 +37,6 @@ class EditableSubjectSelectController {
   }
 
   selectSubject() {
-    this.searchConceptModal.openSelection(this.model.vocabularies, this.model, this.type).then(concept => this.subject = concept);
+    this.searchConceptModal.openSelection(this.model.vocabularies, this.model, true, this.type).then(concept => this.subject = concept);
   }
 }
