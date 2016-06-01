@@ -1892,11 +1892,11 @@ export class EntityDeserializer {
   }
 
   deserializeFintoConceptSearchResults(data: GraphData): IPromise<FintoConceptSearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame(data), (framedData) => FintoConceptSearchResult);
+    return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame, (framedData) => FintoConceptSearchResult);
   }
 
   deserializeConcepts(data: GraphData): IPromise<Concept[]> {
-    return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), resolveConceptConstructor);
+    return frameAndMapArray(this.$log, data, frames.iowConceptFrame, resolveConceptConstructor);
   }
 
   deserializeVocabularies(data: GraphData): IPromise<Vocabulary[]> {
