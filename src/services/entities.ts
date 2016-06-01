@@ -1784,13 +1784,10 @@ function frameData($log: angular.ILogService, data: GraphData, frame: any): IPro
     });
 }
 
-function isFrameFunction(f: Frame|FrameFn): f is FrameFn {
-  return typeof f === 'function';
-}
 
-function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: GraphData, optional: boolean, frame: Frame|FrameFn, entityFactory: EntityFactory<T>): IPromise<T> {
-  const frameObject = isFrameFunction(frame) ? frame(data) : frame;
-  return frameData($log, data, frameObject)
+function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: GraphData, optional: boolean, frame: Frame, entityFactory: EntityFactory<T>): IPromise<T> {
+
+  return frameData($log, data, frame)
     .then(framed => {
       try {
         if (optional && framed['@graph'].length === 0) {
@@ -1799,7 +1796,7 @@ function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: Graph
           throw new Error('Multiple graphs found: \n' + JSON.stringify(framed, null, 2));
         } else {
           const entity: EntityConstructor<T> = entityFactory(framed);
-          return new entity(framed['@graph'][0], framed['@context'], frameObject);
+          return new entity(framed['@graph'][0], framed['@context'], frame);
         }
       } catch (error) {
         $log.error(error);
@@ -1808,14 +1805,14 @@ function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: Graph
     });
 }
 
-function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: GraphData, frame: Frame|FrameFn, entityFactory: EntityFactory<T>): IPromise<T[]> {
-  const frameObject = isFrameFunction(frame) ? frame(data) : frame;
-  return frameData($log, data, frameObject)
+function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: GraphData, frame: Frame, entityFactory: EntityFactory<T>): IPromise<T[]> {
+
+  return frameData($log, data, frame)
     .then(framed => {
       try {
         return _.map(normalizeAsArray(framed['@graph']), element => {
           const entity: EntityConstructor<T> = entityFactory(element);
-          return new entity(element, framed['@context'], frameObject);
+          return new entity(element, framed['@context'], frame);
         });
       } catch (error) {
         $log.error(error);
@@ -1830,15 +1827,15 @@ export class EntityDeserializer {
   }
 
   deserializeGroupList(data: GraphData): IPromise<GroupListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.groupListFrame, (framedData) => GroupListItem);
+    return frameAndMapArray(this.$log, data, frames.groupListFrame(data), (framedData) => GroupListItem);
   }
 
   deserializeGroup(data: GraphData): IPromise<Group> {
-    return frameAndMap(this.$log, data, true, frames.groupFrame, (framedData) => Group);
+    return frameAndMap(this.$log, data, true, frames.groupFrame(data), (framedData) => Group);
   }
 
   deserializeModelList(data: GraphData): IPromise<ModelListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.modelListFrame, (framedData) => ModelListItem);
+    return frameAndMapArray(this.$log, data, frames.modelListFrame(data), (framedData) => ModelListItem);
   }
 
   deserializeModel(data: GraphData, id?: Uri|Urn): IPromise<Model> {
@@ -1846,22 +1843,23 @@ export class EntityDeserializer {
   }
 
   deserializeClassList(data: GraphData): IPromise<ClassListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.classListFrame, (framedData) => ClassListItem);
+    return frameAndMapArray(this.$log, data, frames.classListFrame(data), (framedData) => ClassListItem);
   }
 
   deserializeClass(data: GraphData): IPromise<Class> {
-    return frameAndMap(this.$log, data, true, frames.classFrame, (framedData) => Class);
+    return frameAndMap(this.$log, data, true, frames.classFrame(data), (framedData) => Class);
   }
 
   deserializeProperty(data: GraphData): IPromise<Property> {
-    return frameAndMap(this.$log, data, true, frames.propertyFrame, (framedData) => Property);
+    return frameAndMap(this.$log, data, true, frames.propertyFrame(data), (framedData) => Property);
   }
 
   deserializePredicateList(data: GraphData): IPromise<PredicateListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.predicateListFrame, (framedData) => PredicateListItem);
+    return frameAndMapArray(this.$log, data, frames.predicateListFrame(data), (framedData) => PredicateListItem);
   }
 
   deserializePredicate(data: GraphData): IPromise<Attribute|Association|Predicate> {
+
     const entityFactory: EntityFactory<Predicate> = (framedData) => {
       const types = mapGraphTypeObject(framedData['@graph'][0]);
 
@@ -1876,15 +1874,15 @@ export class EntityDeserializer {
       }
     };
 
-    return frameAndMap(this.$log, data, true, frames.predicateFrame, entityFactory);
+    return frameAndMap(this.$log, data, true, frames.predicateFrame(data), entityFactory);
   }
 
   deserializeConceptSuggestion(data: GraphData): IPromise<ConceptSuggestion> {
-    return frameAndMap(this.$log, data, true, frames.iowConceptFrame, (framedData) => ConceptSuggestion);
+    return frameAndMap(this.$log, data, true, frames.iowConceptFrame(data), (framedData) => ConceptSuggestion);
   }
 
   deserializeConceptSuggestions(data: GraphData): IPromise<ConceptSuggestion[]> {
-    return frameAndMapArray(this.$log, data, frames.iowConceptFrame, (framedData) => ConceptSuggestion);
+    return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), (framedData) => ConceptSuggestion);
   }
 
   deserializeFintoConcept(data: GraphData, id: Url): IPromise<FintoConcept> {
@@ -1892,62 +1890,62 @@ export class EntityDeserializer {
   }
 
   deserializeFintoConceptSearchResults(data: GraphData): IPromise<FintoConceptSearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame, (framedData) => FintoConceptSearchResult);
+    return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame(data), (framedData) => FintoConceptSearchResult);
   }
 
   deserializeConcepts(data: GraphData): IPromise<Concept[]> {
-    return frameAndMapArray(this.$log, data, frames.iowConceptFrame, resolveConceptConstructor);
+    return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), resolveConceptConstructor);
   }
 
   deserializeVocabularies(data: GraphData): IPromise<Vocabulary[]> {
-    return frameAndMapArray(this.$log, data, frames.vocabularyFrame, (framedData) => Vocabulary);
+    return frameAndMapArray(this.$log, data, frames.vocabularyFrame(data), (framedData) => Vocabulary);
   }
 
   deserializeImportedNamespace(data: GraphData): IPromise<ImportedNamespace> {
-    return frameAndMap(this.$log, data, true, frames.namespaceFrame, (framedData) => ImportedNamespace);
+    return frameAndMap(this.$log, data, true, frames.namespaceFrame(data), (framedData) => ImportedNamespace);
   }
 
   deserializeImportedNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
-    return frameAndMapArray(this.$log, data, frames.namespaceFrame, (framedData) => ImportedNamespace);
+    return frameAndMapArray(this.$log, data, frames.namespaceFrame(data), (framedData) => ImportedNamespace);
   }
 
   deserializeReferenceDataServers(data: GraphData): IPromise<ReferenceDataServer[]> {
-    return frameAndMapArray(this.$log, data, frames.referenceDataServerFrame, (framedData) => ReferenceDataServer);
+    return frameAndMapArray(this.$log, data, frames.referenceDataServerFrame(data), (framedData) => ReferenceDataServer);
   }
 
   deserializeReferenceData(data: GraphData): IPromise<ReferenceData> {
-    return frameAndMap(this.$log, data, true, frames.referenceDataFrame, (framedData) => ReferenceData);
+    return frameAndMap(this.$log, data, true, frames.referenceDataFrame(data), (framedData) => ReferenceData);
   }
 
   deserializeReferenceDatas(data: GraphData): IPromise<ReferenceData[]> {
-    return frameAndMapArray(this.$log, data, frames.referenceDataFrame, (framedData) => ReferenceData);
+    return frameAndMapArray(this.$log, data, frames.referenceDataFrame(data), (framedData) => ReferenceData);
   }
 
   deserializeReferenceDataCodes(data: GraphData): IPromise<ReferenceDataCode[]> {
-    return frameAndMapArray(this.$log, data, frames.referenceDataCodeFrame, (framedData) => ReferenceDataCode);
+    return frameAndMapArray(this.$log, data, frames.referenceDataCodeFrame(data), (framedData) => ReferenceDataCode);
   }
 
   deserializeUser(data: GraphData): IPromise<User> {
-    return frameAndMap(this.$log, data, true, frames.userFrame, (framedData) => DefaultUser);
+    return frameAndMap(this.$log, data, true, frames.userFrame(data), (framedData) => DefaultUser);
   }
 
   deserializeSearch(data: GraphData): IPromise<SearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.searchResultFrame, (framedData) => SearchResult);
+    return frameAndMapArray(this.$log, data, frames.searchResultFrame(data), (framedData) => SearchResult);
   }
 
   deserializeClassVisualization(data: GraphData): IPromise<VisualizationClass[]> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => AssociationTargetPlaceholderClass);
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => AssociationTargetPlaceholderClass);
   }
 
   deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame, (framedData) => AssociationTargetPlaceholderClass);
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => AssociationTargetPlaceholderClass);
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {
-    return frameAndMap(this.$log, data, true, frames.usageFrame, (framedData) => DefaultUsage);
+    return frameAndMap(this.$log, data, true, frames.usageFrame(data), (framedData) => DefaultUsage);
   }
 
   deserializeVersion(data: GraphData): IPromise<Activity> {
-    return frameAndMap(this.$log, data, true, frames.versionFrame, (framedData) => Activity);
+    return frameAndMap(this.$log, data, true, frames.versionFrame(data), (framedData) => Activity);
   }
 }
