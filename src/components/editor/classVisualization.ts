@@ -648,7 +648,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, con
     const localizedName = languageService.translate(data.association.label, context);
 
     if (data.association.stem) {
-      return localizedName + '\n' + data.association.stem;
+      return localizedName + '\n' + ' {' + data.association.stem + '}';
     } else {
       return localizedName;
     }
