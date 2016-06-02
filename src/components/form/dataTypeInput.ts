@@ -9,11 +9,13 @@ import { LanguageService } from '../../services/languageService';
 import { createAsyncValidators } from './codeValueInput';
 import { ReferenceData } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
+import { isUpperCase } from 'change-case';
 import { module as mod }  from './module';
 
 export function placeholderText(dataType: DataType, gettextCatalog: gettextCatalog) {
   const validator = resolveValidator(dataType);
-  const placeholder = gettextCatalog.getString('Input') + ' ' + gettextCatalog.getString(dataType).toLowerCase() + '...';
+  const localization = gettextCatalog.getString(dataType);
+  const placeholder = gettextCatalog.getString('Input') + ' ' + (isUpperCase(localization) ? localization : localization.toLowerCase()) + '...';
   return validator.format ? placeholder + ` (${validator.format})` : placeholder;
 };
 
