@@ -979,6 +979,7 @@ export class Property extends GraphNode {
   referenceData: ReferenceData;
   predicateType: Type;
   classIn: Uri[];
+  stem: Uri;
   editorialNote: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
@@ -1026,6 +1027,7 @@ export class Property extends GraphNode {
     this.in = deserializeList<string>(graph.inValues);
     this.hasValue = graph.hasValue;
     this.pattern = graph.pattern;
+    this.stem = deserializeOptional(graph.stem, stem => new Uri(stem, context));
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
   }
 
@@ -1139,6 +1141,7 @@ export class Property extends GraphNode {
       hasValue: this.hasValue,
       pattern: this.pattern,
       classIn: serializeList(this.classIn, classId => classId.uri),
+      stem: serializeOptional(this.stem, stem => stem.uri),
       memberOf: serializeOptional(this.referenceData, (data) => serializeEntity(data, clone)),
       editorialNote: serializeLocalizable(this.editorialNote)
     };
