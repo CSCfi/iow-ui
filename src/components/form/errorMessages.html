@@ -2,6 +2,7 @@
 <div ng-if="isVisible()">
   <ul ng-messages="ngModelController.$error" ng-messages-multiple class="errors" ng-repeat="ngModelController in ngModelControllers">
     <li ng-message="url">{{'Invalid url error' | translate}}</li>
+    <li ng-message="stem">{{'Invalid stem error' | translate}}</li>
     <li ng-message="namespace">{{'Invalid namespace error' | translate}}</li>
     <li ng-message="id">{{'Invalid id error' | translate}}</li>
     <li ng-message="existingId">{{'Existing id error' | translate}}</li>

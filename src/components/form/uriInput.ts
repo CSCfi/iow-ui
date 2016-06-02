@@ -5,19 +5,28 @@ import IQService = angular.IQService;
 import IModelValidators = angular.IModelValidators;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Model } from '../../services/entities';
-import { isValidUri, isValidUrl } from './validators';
+import { isValidUri, isValidUrl, isValidUriStem } from './validators';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { LanguageService } from '../../services/languageService';
 
-type UriInputType = 'required-namespace' | 'free-url';
+type UriInputType = 'required-namespace' | 'free-url' | 'free-uri';
 
 interface UriInputAttributes extends IAttributes {
   uriInput: UriInputType;
 }
 
-export function placeholderText(gettextCatalog: gettextCatalog) {
-  return gettextCatalog.getString('Write identifier');
+export function placeholderText(uriInputType: UriInputType, gettextCatalog: gettextCatalog) {
+  switch (uriInputType) {
+    case 'free-url':
+      return gettextCatalog.getString('Write URL');
+    case 'stem':
+      return gettextCatalog.getString('Write URI');
+    case 'required-namespace':
+      return gettextCatalog.getString('Write identifier');
+    default:
+      return gettextCatalog.getString('Write identifier');
+  }
 }
 
 export function createParser(modelProvider: () => Model) {
@@ -32,13 +41,16 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
 
   const result: IModelValidators = {};
 
-  result['xsd:anyURI'] = isValidUri;
-
-  if (type === 'free-url') {
-    result['url'] = value => {
-      return !value || !isValidUri(value) || isValidUrl(value);
-    };
+  if (type === 'stem') {
+    result['stem'] = isValidUriStem;
+  } else if (type === 'free-url') {
+    result['xsd:anyURI'] = isValidUri;
+    result['url'] = value => !value || !isValidUri(value) || isValidUrl(value);
   } else {
+    result['xsd:anyURI'] = isValidUri;
+    result['unknownNS'] = value => !value || !isValidUri(value) || value.hasResolvablePrefix();
+    result['idNameRequired'] = value => !value || !isValidUri(value) || !value.hasResolvablePrefix() || value.name.length > 0;
+
     if (type === 'required-namespace') {
       result['mustBeRequiredNS'] = value => {
         function isRequiredNamespace(ns: string) {
@@ -53,13 +65,6 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
         return !value || !isValidUri(value) || !value.hasResolvablePrefix() || isRequiredNamespace(value.namespace);
       };
     }
-    result['unknownNS'] = value => {
-      return !value || !isValidUri(value) || value.hasResolvablePrefix();
-    };
-
-    result['idNameRequired'] = value => {
-      return !value || !isValidUri(value) || !value.hasResolvablePrefix() || value.name.length > 0;
-    };
   }
 
   return result;
@@ -76,7 +81,7 @@ mod.directive('uriInput', /* @ngInject */ (languageService: LanguageService, get
 
       if (!attributes['placeholder']) {
         $scope.$watch(() => languageService.UILanguage, () => {
-          element.attr('placeholder', placeholderText(gettextCatalog));
+          element.attr('placeholder', placeholderText(attributes.uriInput, gettextCatalog));
         });
       }
 
