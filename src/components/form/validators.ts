@@ -5,6 +5,7 @@ import Moment = moment.Moment;
 import { DataType } from '../../services/dataTypes';
 import { Uri } from '../../services/uri';
 import { availableLanguages } from '../../utils/language';
+import { contains } from '../../utils/array';
 const URI = require('uri-js');
 
 export interface Validator<T> {
@@ -70,13 +71,18 @@ export function isValidUrl(url: string|Uri): boolean {
   }
 }
 
-export function isValidUri(uri: string|Uri): boolean {
+export function isValidUri(uri: string|Uri, toleratedErrors: string[] = []): boolean {
   if (!uri) {
     return true;
   } else {
     const parsed = URI.parse(uri.toString());
-    return !parsed.error && !!parsed.scheme;
+    console.log(parsed.error, contains(toleratedErrors, parsed.error), toleratedErrors);
+    return !parsed.error || contains(toleratedErrors, parsed.error) && !!parsed.scheme;
   }
+}
+
+export function isValidUriStem(uri: string|Uri): boolean {
+  return isValidUri(uri, ['HTTP URIs must have a host.', 'URN is not strictly valid.']);
 }
 
 export function isValidLanguageCode(code: string): boolean {
