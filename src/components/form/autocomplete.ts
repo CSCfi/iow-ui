@@ -2,6 +2,7 @@ import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import INgModelController = angular.INgModelController;
 import IPromise = angular.IPromise;
+import IQService = angular.IQService;
 import IRepeatScope = angular.IRepeatScope;
 import IModelFormatter = angular.IModelFormatter;
 import * as _ from 'lodash';
@@ -128,6 +129,9 @@ export class AutocompleteController<T> {
     [esc]: () => this.clear()
   };
 
+  constructor(private $q: IQService) {
+  }
+
   keyPressed(event: JQueryEventObject) {
     const handler = this.keyEventHandlers[event.keyCode];
     if (handler) {
@@ -179,7 +183,7 @@ export class AutocompleteController<T> {
   }
 
   autocomplete(search: string) {
-    this.datasource(search).then(data => {
+    this.$q.when(this.datasource(search)).then(data => {
       if (search) {
         this.setMatches(_.filter(data, item => this.match(search, item)), true);
       } else {
