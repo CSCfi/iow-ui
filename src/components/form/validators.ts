@@ -76,7 +76,6 @@ export function isValidUri(uri: string|Uri, toleratedErrors: string[] = []): boo
     return true;
   } else {
     const parsed = URI.parse(uri.toString());
-    console.log(parsed.error, contains(toleratedErrors, parsed.error), toleratedErrors);
     return !parsed.error || contains(toleratedErrors, parsed.error) && !!parsed.scheme;
   }
 }
