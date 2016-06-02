@@ -80,6 +80,17 @@ export class PropertyViewController {
     });
   }
 
+  stemDatasource(search: string) {
+    return [
+      new Uri('http://'),
+      new Uri('https://'),
+      new Uri('data:'),
+      new Uri('mailto:'),
+      new Uri('tel:'),
+      new Uri('urn:')
+    ];
+  }
+
   removeProperty(property: Property) {
     this.class.removeProperty(property);
   }

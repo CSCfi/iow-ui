@@ -87,6 +87,12 @@
       <input id="{{ctrl.property.internalId + 'pattern'}}" class="form-control" type="text" ng-model="ctrl.property.pattern" />
     </editable>
 
+    <autocomplete ng-if="ctrl.property.isAssociation()" datasource="ctrl.stemDatasource">
+      <editable data-title="URI stem" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'stem'}}" uri-input="stem" model="ctrl.model" class="form-control" type="text" ng-model="ctrl.property.stem" />
+      </editable>
+    </autocomplete>
+
     <div class="range-input">
       <editable data-title="Min length" context="ctrl.model">
         <input id="{{ctrl.property.internalId + 'minLength'}}" min-input max="ctrl.property.maxLength" class="form-control" type="number" ng-model="ctrl.property.minLength" />
