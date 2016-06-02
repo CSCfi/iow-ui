@@ -645,7 +645,13 @@ function createClass($scope: IScope, languageService: LanguageService, context: 
 function createAssociation($scope: IScope, languageService: LanguageService, context: LanguageContext, data: {klass: VisualizationClass, association: Property}, showCardinality: boolean) {
 
   function getName() {
-    return languageService.translate(data.association.label, context);
+    const localizedName = languageService.translate(data.association.label, context);
+
+    if (data.association.stem) {
+      return localizedName + '\n' + data.association.stem;
+    } else {
+      return localizedName;
+    }
   }
 
   const associationCell = new withoutUnusedMarkupLink({
