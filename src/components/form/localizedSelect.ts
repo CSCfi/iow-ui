@@ -1,7 +1,5 @@
 import gettextCatalog = angular.gettext.gettextCatalog;
 import IScope = angular.IScope;
-import * as _ from 'lodash';
-
 import { module as mod }  from './module';
 
 mod.directive('localizedSelect', () => {
@@ -12,9 +10,11 @@ mod.directive('localizedSelect', () => {
       id: '@'
     },
     restrict: 'E',
-    template: `<select id="{{ctrl.id}}" class="form-control" required ng-model="ctrl.value" 
-                       ng-options="value.value as value.localization for value in ctrl.localizedValues">
-               </select>`,
+    template: `
+      <iow-select id="{{ctrl.id}}" required ng-model="ctrl.value" options="value in ctrl.values">
+        <span>{{value | translate}}</span>
+      </iow-select>
+    `,
     controllerAs: 'ctrl',
     bindToController: true,
     controller: LocalizedSelectController
@@ -22,16 +22,7 @@ mod.directive('localizedSelect', () => {
 });
 
 class LocalizedSelectController {
-
+  value: string;
   values: string[];
-  localizedValues: {localization: string, value: string}[];
-
-  /* @ngInject */
-  constructor($scope: IScope, gettextCatalog: gettextCatalog) {
-    function localize(text: string) {
-      return {localization: text && `${gettextCatalog.getString(text)} (${text})`, value: text};
-    }
-
-    $scope.$watch(() => this.values, values => this.localizedValues = _.map(values, localize));
-  }
+  id: string;
 }
