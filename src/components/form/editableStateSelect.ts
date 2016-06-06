@@ -2,11 +2,13 @@ import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { State, Model } from '../../services/entities';
 import { module as mod }  from './module';
+import IAttributes = angular.IAttributes;
+import { EditableForm } from './editableEntityController';
 
 const userStates: State[] = ['Unstable', 'Draft'];
 const adminStates: State[] = userStates.concat(['Recommendation', 'Deprecated']);
 
-mod.directive('stateSelect', () => {
+mod.directive('editableStateSelect', () => {
   return {
     scope: {
       state: '=',
@@ -15,13 +17,26 @@ mod.directive('stateSelect', () => {
     },
     restrict: 'E',
     template: `
-      <iow-select id="{{ctrl.id}}" options="state in ctrl.getStates()" ng-model="ctrl.state">
-        <i ng-class="ctrl.classForState(state)"></i>
-        <span>{{state | translate}}</span>
-      </iow-select>
+      <div class="editable-wrap form-group">
+        <editable-label data-title="'State'" input-id="ctrl.id" required="'true'"></editable-label>
+        
+        <iow-select ng-if="ctrl.isEditing()" id="{{ctrl.id}}" options="state in ctrl.getStates()" ng-model="ctrl.state">
+          <i ng-class="ctrl.classForState(state)"></i>
+          <span>{{state | translate}}</span>
+        </iow-select>
+
+        <div ng-if="!ctrl.isEditing()">
+          <i ng-class="ctrl.classForState(ctrl.state)"></i>
+          <span>{{ctrl.state | translate}}</span>
+        </div>
+      </div>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
+    require: ['editableStateSelect', '?^form'],
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, editableController]: [StateSelectController, EditableForm]) {
+      thisController.isEditing = () => editableController && editableController.editing;
+    },
     controller: StateSelectController
   };
 });
@@ -31,6 +46,7 @@ class StateSelectController {
   model: Model;
   state: State;
   id: string;
+  isEditing: () => boolean;
 
   /* @ngInject */
   constructor(private userService: UserService) {

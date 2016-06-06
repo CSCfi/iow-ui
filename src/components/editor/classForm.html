@@ -28,9 +28,7 @@
       <textarea id="classComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.class.comment"></textarea>
     </editable>
 
-    <editable data-title="State" value-as-localization-key="true" ng-if="!ctrl.class.unsaved" context="ctrl.model">
-      <state-select id="classState" state="ctrl.class.state" model="ctrl.model"></state-select>
-    </editable>
+    <editable-state-select ng-if="!ctrl.class.unsaved" id="classState" state="ctrl.class.state" model="ctrl.model"></editable-state-select>
   </div>
 
 </div>
