@@ -79,9 +79,16 @@ reference-data-view.popup {
   }
 }
 
-autocomplete .dropdown-menu {
-  max-height: 400px;
-  overflow-y: scroll;
+autocomplete, iow-select {
+  .caret {
+    float: right;
+    margin-top: 10px;
+  }
+
+  .dropdown-menu {
+    max-height: 400px;
+    overflow-y: scroll;
+  }
 }
 
 table.editable-table {

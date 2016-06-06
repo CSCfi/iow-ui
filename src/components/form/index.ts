@@ -32,5 +32,6 @@ import './minInput';
 import './ignoreDirty';
 import './dragSortable';
 import './editableTable';
+import './iowSelect';
 
 mod.service('displayItemFactory', DisplayItemFactory);
