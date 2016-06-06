@@ -1,7 +1,6 @@
 import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { State, Model } from '../../services/entities';
-
 import { module as mod }  from './module';
 
 const userStates: State[] = ['Unstable', 'Draft'];
@@ -15,7 +14,12 @@ mod.directive('stateSelect', () => {
       id: '@'
     },
     restrict: 'E',
-    template: '<localized-select id="{{ctrl.id}}" values="ctrl.getStates()" value="ctrl.state"></localized-select>',
+    template: `
+      <iow-select id="{{ctrl.id}}" options="state in ctrl.getStates()" ng-model="ctrl.state">
+        <i ng-class="ctrl.classForState(state)"></i>
+        <span>{{state | translate}}</span>
+      </iow-select>
+    `,
     controllerAs: 'ctrl',
     bindToController: true,
     controller: StateSelectController
@@ -34,5 +38,19 @@ class StateSelectController {
 
   getStates() {
     return this.userService.user.isAdminOf(this.model) ? adminStates : userStates;
+  }
+
+  classForState(state: State) {
+    switch (state) {
+      case 'Unstable':
+      case 'Deprecated':
+        return ['fa', 'fa-exclamation-circle', 'danger'];
+      case 'Draft':
+        return ['fa', 'fa-exclamation-circle', 'warning'];
+      case 'Recommendation':
+        return ['fa', 'fa-check-circle', 'success'];
+      default:
+        throw new Error('Unsupported state: ' + state);
+    }
   }
 }
