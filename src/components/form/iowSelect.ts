@@ -27,8 +27,8 @@ mod.directive('iowSelect', () => {
           <iow-selection-transclude></iow-selection-transclude>       
           <i class="caret" ng-hide="ctrl.show"></i>
         </div>
-        <div ng-if="ctrl.show" ng-class="{open: ctrl.show}" style="position: relative">
-          <ul class="dropdown-menu" ng-show="ctrl.show" style="width: 100%">
+        <div ng-if="ctrl.show" ng-class="{ open: ctrl.show }" style="position: relative">
+          <ul class="dropdown-menu" ng-show="ctrl.show" ng-style="{ width: ctrl.popupWidth }">
             <li ng-repeat="item in ctrl.items"
                 class="ng-animate-disabled"
                 ng-class="{ active: ctrl.isSelected($index) }" 
@@ -77,6 +77,7 @@ export class IowSelectController<T> {
 
   show: boolean;
   selectedSelectionIndex = -1;
+  popupWidth = '100%';
 
   /* @ngInject */
   constructor($q: IQService, $scope: SelectionScope, $parse: IParseService) {
@@ -197,6 +198,8 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
           $document.off('click', blurClickHandler);
         }
       };
+
+      $scope.$watch(() => element.outerWidth(), width => controller.popupWidth = width + 'px');
 
       element.on('click', clickHandler);
       element.on('keydown', keyDownHandler);
