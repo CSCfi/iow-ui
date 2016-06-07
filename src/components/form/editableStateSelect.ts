@@ -60,7 +60,7 @@ class StateSelectController {
       case 'Deprecated':
         return ['fa', 'fa-exclamation-circle', 'danger'];
       case 'Draft':
-        return ['fa', 'fa-exclamation-circle', 'warning'];
+        return ['fa', 'fa-check-circle', 'warning'];
       case 'Recommendation':
         return ['fa', 'fa-check-circle', 'success'];
       default:
