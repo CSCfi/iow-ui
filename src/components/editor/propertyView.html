@@ -1,11 +1,15 @@
+
+<div class="top-actions">
+  <button ng-if="ctrl.isEditing()"
+          type="button"
+          class="btn btn-default right"
+          ng-disabled="!ctrl.property.inUnstableState"
+          ng-click="ctrl.removeProperty(ctrl.property)" uib-tooltip="{{'Delete property' | translate}}"><i class="fa fa-trash"></i></button>
+  <editable-state-select class="pull-right" id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></editable-state-select>
+</div>
+
 <div class="row">
-  <div class="col-md-1 pull-right">
-    <button ng-if="ctrl.isEditing()"
-            type="button"
-            class="btn btn-default pull-right"
-            ng-disabled="!ctrl.property.inUnstableState"
-            ng-click="ctrl.removeProperty(ctrl.property)" uib-tooltip="{{'Delete property' | translate}}"><i class="fa fa-trash"></i></button>
-  </div>
+
   <div class="col-md-6">
     <editable data-title="Class property label" context="ctrl.model">
       <input id="{{ctrl.property.internalId + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" context="ctrl.model" ng-model="ctrl.property.label" />
@@ -20,12 +24,10 @@
     </editable>
   </div>
 
-  <div class="col-md-5">
+  <div class="col-md-6">
     <editable data-title="Description" context="ctrl.model">
       <textarea id="{{ctrl.property.internalId + 'comment'}}" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.property.comment"></textarea>
     </editable>
-
-    <editable-state-select id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></editable-state-select>
   </div>
 </div>
 

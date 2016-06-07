@@ -51,6 +51,12 @@ editable-state-select {
   i.danger { color: $brand-danger; }
   i.warning { color: $brand-warning; }
   i.success { color: $brand-success; }
+
+  .non-editable {
+    vertical-align: middle;
+    line-height: 2.6;
+    padding: 0 5px 0 5px;
+  }
 }
 
 reference-data-view.popup {
@@ -89,12 +95,22 @@ autocomplete, iow-select {
   .caret {
     float: right;
     margin-top: 10px;
+
+    &.ng-hide {
+      display: inherit !important;
+      visibility: hidden;
+    }
   }
 
   .dropdown-menu {
     max-height: 400px;
     overflow-y: scroll;
   }
+}
+
+iow-select {
+  @include no-select;
+  cursor: default;
 }
 
 table.editable-table {

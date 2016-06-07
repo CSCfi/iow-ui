@@ -6,6 +6,7 @@
           <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.predicate"></export>
           <history model="ctrl.model" resource="ctrl.predicate" ng-hide="ctrl.isEditing()"></history>
+          <editable-state-select class="pull-right" ng-if="!ctrl.predicate.unsaved" id="predicateState" state="ctrl.editableInEdit.state" model="ctrl.model"></editable-state-select>
         </selection-buttons>
 
         <selection-content>

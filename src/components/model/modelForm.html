@@ -13,8 +13,6 @@
     <textarea id="modelComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.model.comment"></textarea>
   </editable>
 
-  <editable-state-select ng-if="!ctrl.model.unsaved" id="modelState" state="ctrl.model.state" model="ctrl.model"></editable-state-select>
-
   <editable-multiple-language-select title="Model languages" id="modelLanguage" ng-model="ctrl.model.language"></editable-multiple-language-select>
 
   <editable-root-class ng-if="ctrl.model.isOfType('profile')" model="ctrl.model"></editable-root-class>
