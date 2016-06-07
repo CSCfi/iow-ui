@@ -40,27 +40,7 @@
       <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
     </editable>
 
-    <editable-multiple-uri-select ng-if="ctrl.property.isAssociation()" id="classIn" type="class" ng-model="ctrl.property.classIn" model="ctrl.model" data-title="{{'Class type'}}"></editable-multiple-uri-select>
-
-  </div>
-
-  <div class="col-md-6">
-    <editable data-title="Editorial note" context="ctrl.model">
-      <textarea id="editorialNote" class="form-control" localized-input="free" context="ctrl.model" ng-model="ctrl.property.editorialNote"></textarea>
-    </editable>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <editable-reference-data-select model="ctrl.model" reference-data="ctrl.property.referenceData"></editable-reference-data-select>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
-
-    <editable data-title="Example" context="ctrl.model">
+§    <editable data-title="Example" context="ctrl.model">
       <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
         <input id="{{ctrl.property.internalId + 'example attribute'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.example" />
       </code-value-input-autocomplete>
@@ -68,17 +48,17 @@
 
     <editable-multiple-data-type-input data-title="Allowed values" id="{{ctrl.property.internalId + 'allowedValues'}}" input-type="ctrl.property.inputType" ng-model="ctrl.property.in" reference-data="ctrl.property.referenceData" context="ctrl.model"></editable-multiple-data-type-input>
 
-    <editable data-title="Default value" context="ctrl.model">
-      <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
-        <input id="{{ctrl.property.internalId + 'default value'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.defaultValue" />
-      </code-value-input-autocomplete>
-    </editable>
+    <div class="range-input">
+      <editable data-title="Min length" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'minLength'}}" min-input max="ctrl.property.maxLength" class="form-control" type="number" ng-model="ctrl.property.minLength" />
+      </editable>
 
-    <editable data-title="Fixed value" context="ctrl.model">
-      <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
-        <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.hasValue" />
-      </code-value-input-autocomplete>
-    </editable>
+      <editable data-title="Max length" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'maxLength'}}" max-input min="ctrl.property.minLength" class="form-control" type="number" ng-model="ctrl.property.maxLength" />
+      </editable>
+    </div>
+
+    <editable-multiple-uri-select ng-if="ctrl.property.isAssociation()" id="classIn" type="class" ng-model="ctrl.property.classIn" model="ctrl.model" data-title="{{'Class type'}}"></editable-multiple-uri-select>
   </div>
 
   <div class="col-md-6">
@@ -93,15 +73,17 @@
       </editable>
     </autocomplete>
 
-    <div class="range-input">
-      <editable data-title="Min length" context="ctrl.model">
-        <input id="{{ctrl.property.internalId + 'minLength'}}" min-input max="ctrl.property.maxLength" class="form-control" type="number" ng-model="ctrl.property.minLength" />
-      </editable>
+    <editable data-title="Default value" context="ctrl.model">
+      <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'default value'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.defaultValue" />
+      </code-value-input-autocomplete>
+    </editable>
 
-      <editable data-title="Max length" context="ctrl.model">
-        <input id="{{ctrl.property.internalId + 'maxLength'}}" max-input min="ctrl.property.minLength" class="form-control" type="number" ng-model="ctrl.property.maxLength" />
-      </editable>
-    </div>
+    <editable data-title="Fixed value" context="ctrl.model">
+      <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.hasValue" />
+      </code-value-input-autocomplete>
+    </editable>
 
     <div class="range-input">
       <editable data-title="Min count" context="ctrl.model">
@@ -112,6 +94,23 @@
         <input id="{{ctrl.property.internalId + 'maxCount'}}" placeholder="*" max-input min="ctrl.property.minCount" class="form-control" type="number" ng-model="ctrl.property.maxCount" />
       </editable>
     </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <editable-reference-data-select model="ctrl.model" reference-data="ctrl.property.referenceData"></editable-reference-data-select>
+  </div>
+</div>
+
+
+<h4 translate>Additional information</h4>
+
+<div class="row">
+  <div class="col-md-12">
+    <editable data-title="Editorial note" context="ctrl.model">
+      <textarea id="editorialNote" class="form-control" localized-input="free" context="ctrl.model" ng-model="ctrl.property.editorialNote"></textarea>
+    </editable>
   </div>
 </div>
 

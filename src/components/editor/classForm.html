@@ -18,8 +18,6 @@
       <uri-select id="scopeClass" type="class" uri="ctrl.class.scopeClass" model="ctrl.model" mandatory="true" after-selected="ctrl.addPropertiesFromClass(id, 'scope')"></uri-select>
     </editable>
 
-    <editable-multiple-uri-select id="equivalentClass" type="class" ng-model="ctrl.class.equivalentClasses" model="ctrl.model" data-title="{{'Equivalent class'}}"></editable-multiple-uri-select>
-
     <defined-by entity="ctrl.class" model="ctrl.model"></defined-by>
   </div>
 
@@ -27,6 +25,8 @@
     <editable data-title="Description" context="ctrl.model">
       <textarea id="classComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.class.comment"></textarea>
     </editable>
+
+    <editable-multiple-uri-select id="equivalentClass" type="class" ng-model="ctrl.class.equivalentClasses" model="ctrl.model" data-title="{{'Equivalent class'}}"></editable-multiple-uri-select>
   </div>
 
 </div>
