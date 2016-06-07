@@ -60,4 +60,12 @@ class NonEditableController {
       onClick: onClick
     });
   }
+
+  get style(): {} {
+    if (this.isEditing()) {
+      return { 'margin-bottom': '33px'};
+    } else {
+      return {};
+    }
+  }
 }
