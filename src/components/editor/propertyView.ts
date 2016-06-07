@@ -91,7 +91,7 @@ export class PropertyViewController {
       new Uri('urn:')
     ];
   }
-  
+
   get showAdditionalInformation() {
     return hasLocalization(this.property.editorialNote);
   }
