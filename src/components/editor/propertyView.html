@@ -40,7 +40,7 @@
       <input id="{{ctrl.property.internalId + 'id'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyIdentifiers" string-input="identifier" ng-trim="false" ng-model="ctrl.property.externalId" />
     </editable>
 
-§    <editable data-title="Example" context="ctrl.model">
+    <editable data-title="Example" context="ctrl.model">
       <code-value-input-autocomplete reference-data="ctrl.property.referenceData" context="ctrl.model">
         <input id="{{ctrl.property.internalId + 'example attribute'}}" class="form-control" type="text" datatype-input="ctrl.property.inputType" reference-data="ctrl.property.referenceData" ng-model="ctrl.property.example" />
       </code-value-input-autocomplete>
