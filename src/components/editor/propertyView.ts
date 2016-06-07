@@ -11,6 +11,7 @@ import { Uri } from '../../services/uri';
 import { LanguageService } from '../../services/languageService';
 import { any } from '../../utils/array';
 import { module as mod }  from './module';
+import { hasLocalization } from '../../utils/language';
 
 mod.directive('propertyView', () => {
   return {
@@ -89,6 +90,10 @@ export class PropertyViewController {
       new Uri('tel:'),
       new Uri('urn:')
     ];
+  }
+  
+  get showAdditionalInformation() {
+    return hasLocalization(this.property.editorialNote);
   }
 
   removeProperty(property: Property) {
