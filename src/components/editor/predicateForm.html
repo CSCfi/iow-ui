@@ -1,12 +1,21 @@
 <h4>{{ctrl.predicate.normalizedType + ' information' | capitalize | translate}}</h4>
 
-<div class="row">
 
+<div class="row">
   <div class="col-md-6">
     <editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" context="ctrl.model" autofocus>
       <input id="predicateName" class="form-control" type="text" localized-input="label" context="ctrl.model" ng-model="ctrl.predicate.label" />
     </editable>
+  </div>
+  <div class="col-md-6">
+    <editable data-title="Description" context="ctrl.model">
+      <textarea id="predicateComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.predicate.comment"></textarea>
+    </editable>
+  </div>
+</div>
 
+<div class="row">
+  <div class="col-md-6">
     <editable data-title="{{ctrl.predicate.normalizedType + ' id' | capitalize}}" context="ctrl.model">
       <input id="predicateId" class="form-control" type="text" required id-input="predicate" old="ctrl.oldPredicate" ng-model="ctrl.predicate.id" ng-disabled="!ctrl.predicate.inUnstableState" />
     </editable>
@@ -19,12 +28,6 @@
   </div>
 
   <div class="col-md-6">
-    <editable data-title="Description" context="ctrl.model">
-      <textarea id="predicateComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.predicate.comment"></textarea>
-    </editable>
-
-    <editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" ng-model="ctrl.predicate.equivalentProperties" model="ctrl.model" data-title="{{'Equivalent ' + ctrl.predicate.normalizedType}}"></editable-multiple-uri-select>
-
     <editable ng-if="ctrl.predicate.isAttribute()" data-title="Range" name="Range" context="ctrl.model">
       <range-select id="predicateRange" range="ctrl.predicate.dataType"></range-select>
     </editable>
@@ -32,8 +35,9 @@
     <editable ng-if="ctrl.predicate.isAssociation()" data-title="Value class" name="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
       <uri-select id="predicateValueClass" type="class" uri="ctrl.predicate.valueClass" model="ctrl.model"></uri-select>
     </editable>
-  </div>
 
+    <editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" ng-model="ctrl.predicate.equivalentProperties" model="ctrl.model" data-title="{{'Equivalent ' + ctrl.predicate.normalizedType}}"></editable-multiple-uri-select>
+  </div>
 </div>
 
 <div class="row">
