@@ -158,8 +158,7 @@ export class IowSelectController<T> {
     }
 
     if (this.selectedSelectionIndex >= 0) {
-      const newSelection = this.items[this.selectedSelectionIndex];
-      this.ngModel = newSelection;
+      this.ngModel = this.items[this.selectedSelectionIndex];
     }
 
     this.close();
