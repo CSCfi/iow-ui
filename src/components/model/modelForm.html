@@ -6,9 +6,6 @@
     <input id="modelLabel" class="form-control" type="text" localized-input="modelLabel" context="ctrl.model" ng-model="ctrl.model.label" />
   </editable>
 
-  <non-editable data-title="Namespace" value="ctrl.model.namespace" context="ctrl.model"></non-editable>
-  <non-editable data-title="Prefix" value="ctrl.model.prefix" context="ctrl.model"></non-editable>
-
   <editable data-title="Description" context="ctrl.model">
     <textarea id="modelComment" class="form-control" localized-input context="ctrl.model" ng-model="ctrl.model.comment"></textarea>
   </editable>
@@ -16,6 +13,9 @@
   <editable-multiple-language-select title="Model languages" id="modelLanguage" ng-model="ctrl.model.language"></editable-multiple-language-select>
 
   <editable-root-class ng-if="ctrl.model.isOfType('profile')" model="ctrl.model"></editable-root-class>
+
+  <non-editable data-title="Prefix" value="ctrl.model.prefix" context="ctrl.model"></non-editable>
+  <non-editable data-title="Namespace" value="ctrl.model.namespace" context="ctrl.model"></non-editable>
 
   <h4 translate>Additional information</h4>
 
