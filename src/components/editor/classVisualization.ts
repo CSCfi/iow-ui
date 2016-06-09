@@ -128,7 +128,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
       this.focus();
     });
-    $scope.$watch(() => this.selectionFocus, focus => this.focus());
+    $scope.$watch(() => this.selectionFocus, _.debounce(() => this.focus(), 500));
   }
 
   refresh(invalidateCache: boolean = false) {
