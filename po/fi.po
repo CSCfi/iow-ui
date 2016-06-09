@@ -994,7 +994,14 @@ msgstr "Sisäinen käsitteistö"
 
 #: components/frontPage.html:5
 msgid "Interoperability method"
-msgstr "Yhteentoimivuusmenetelmä"
+msgstr "Yhteentoimivuutta ja ymmärrettävyyttä"
+
+#: components/frontPage.html:51 translations/misc.html:207
+msgid "Interoperability method description"
+msgstr ""
+"Menetelmän avulla varmistetaan, että yhteisten määritysten "
+"soveltaminen on systemaattista ja säilyttää semantiikan eri "
+"toteutuksissa, ja on siten eri toimijoiden yhtenäisesti ymmärrettävissä."
 
 #: translations/misc.html:165
 msgid "Invalid ID"
@@ -1848,10 +1855,7 @@ msgstr ""
 "Yhteentoimivuusmenetelmän avulla voidaan kuvata tietojärjestelmissä "
 "käytettävä tietosisältö ottamatta kantaa sovellusten tekniseen toteutukseen. "
 "Yhteentoimivuusmenetelmä yhdistää tietomallien, sanastojen ja koodistojen "
-"kehittämisen yhtenäiseksi kokonaisuudeksi. Menetelmän avulla varmistetaan, "
-"että yhteisten määritysten soveltaminen on systemaattista ja säilyttää "
-"tietojen semantiikan eri toteutuksissa, ja on siten eri toimijoiden "
-"yhtenäisesti ymmärrettävissä. Menetelmä pohjautuu kansainvälisten "
+"kehittämisen yhtenäiseksi kokonaisuudeksi. Menetelmä pohjautuu kansainvälisten "
 "standardien soveltamiseen, voit lukea lisää yhteentoimivuusmenetelmästä ja "
 "välineistön kehittämisestä <a href='https://confluence.csc.fi/pages/viewpage."
 "action?pageId=51893708'>täältä.</a>"

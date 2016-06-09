@@ -71,10 +71,11 @@ msgstr ""
 msgid "Add vocabulary"
 msgstr ""
 
-#: components/editor/classForm.html:85
+#: components/editor/classForm.html:84
 #: components/editor/predicateForm.html:49
+#: components/editor/propertyView.html:114
 #: components/model/conceptForm.html:57
-#: components/model/modelForm.html:24
+#: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr ""
 
@@ -84,7 +85,7 @@ msgid "Admin groups"
 msgstr ""
 
 #: components/advancedSearchModal.html:2
-#: components/frontPage.html:30
+#: components/frontPage.html:18
 msgid "Advanced search"
 msgstr ""
 
@@ -244,7 +245,7 @@ msgstr ""
 msgid "Broader concept info"
 msgstr ""
 
-#: components/frontPage.html:45
+#: components/frontPage.html:35
 msgid "Browse"
 msgstr ""
 
@@ -701,7 +702,7 @@ msgstr ""
 msgid "Delete profile"
 msgstr ""
 
-#: components/editor/propertyView.html:7
+#: components/editor/propertyView.html:12
 msgid "Delete property"
 msgstr ""
 
@@ -941,10 +942,12 @@ msgstr ""
 msgid "Homepage info"
 msgstr ""
 
+#: components/frontPage.html:71
 #: translations/misc.html:72
 msgid "How content"
 msgstr ""
 
+#: components/frontPage.html:70
 #: translations/misc.html:71
 msgid "How?"
 msgstr ""
@@ -987,8 +990,13 @@ msgstr ""
 msgid "Internal vocabulary"
 msgstr ""
 
-#: components/frontPage.html:5
+#: components/frontPage.html:50
 msgid "Interoperability method"
+msgstr ""
+
+#: components/frontPage.html:51
+#: translations/misc.html:207
+msgid "Interoperability method description"
 msgstr ""
 
 #: translations/misc.html:165
@@ -1196,7 +1204,7 @@ msgid "No referrers"
 msgstr ""
 
 #: components/advancedSearchModal.html:21
-#: components/frontPage.html:33
+#: components/frontPage.html:21
 msgid "No search results"
 msgstr ""
 
@@ -1265,7 +1273,7 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: components/editor/propertyView.html:34
+#: components/editor/propertyView.html:41
 msgid "Optional metadata"
 msgstr ""
 
@@ -1338,6 +1346,7 @@ msgstr ""
 msgid "Property id info"
 msgstr ""
 
+#: components/editor/propertyView.html:3
 #: translations/misc.html:111
 msgid "Property information"
 msgstr ""
@@ -1443,7 +1452,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:118
+#: components/editor/propertyView.html:125
 msgid "Reusable predicate"
 msgstr ""
 
@@ -1459,7 +1468,7 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: components/frontPage.html:20
+#: components/frontPage.html:8
 msgid "Search"
 msgstr ""
 
@@ -1488,7 +1497,7 @@ msgid "Search concept"
 msgstr ""
 
 #: components/advancedSearchModal.html:8
-#: components/frontPage.html:23
+#: components/frontPage.html:11
 msgid "search descriptions"
 msgstr ""
 

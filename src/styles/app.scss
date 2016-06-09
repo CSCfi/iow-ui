@@ -47,6 +47,10 @@ $footer-height: 50px;
   color: $brand-accent-dark;
 }
 
+.brand-primary-bg {
+  background-color: $brand-primary
+}
+
 editable-state-select {
   i.danger { color: $brand-danger; }
   i.warning { color: $brand-warning; }
@@ -227,6 +231,12 @@ table.editable-table {
   font-size: small;
   border: none;
   padding: 15px;
+  background-color: $brand-primary;
+  color: white;
+  border: 0;
+  a {
+    color: white;
+  }
 }
 
 .btn-default {
@@ -638,6 +648,9 @@ subject-view .editable-wrap {
 
 .breadcrumb {
   margin-bottom: 0;
+  padding-bottom: 0;
+  padding-left: 25px;
+  padding-top: 15px;
   border: none;
   font-weight: 400;
   background-color: white;
@@ -925,6 +938,11 @@ ajax-loading-indicator-small {
 
 .navbar-brand {
   line-height: 40px;
+  font-size: 26px;
+  margin-left: 10px;
+  div {
+    margin-right: 20px;
+  }
 }
 
 .navbar-right {
@@ -1097,7 +1115,59 @@ a.accordion-toggle {
 
   &.with-footer {
     margin-bottom: $footer-height;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
+}
+
+.iow-breadcrumb {
+  &.with-breadcrumb {
+    display: none;
+  }
+}
+
+.frontpage-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.frontpage-text-container {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  h3 {
+    color: $brand-primary;
+  }
+}
+
+.main-functions-row {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}
+
+.main-content-row {
+  padding-top: 30px; 
+  margin-bottom: 40px;
+  line-height: 1.15!important;
+  span {
+    font-size: 14px;
+  }
+  blockquote {
+    padding-top: 0;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    color: #666666;
+    border-left-width: 5px;
+    border-color: $brand-accent-lighter;
+  }
+}
+
+.main-bottom-row {
+  padding-top: 30px;
+  padding-bottom: 150px;
+  background-color: $brand-accent-lighter;
 }
 
 .iow-panel {
@@ -1109,6 +1179,13 @@ a.accordion-toggle {
 .frontpage-panel {
   @extend .iow-panel;
   margin-top: 21px;
+  min-height: 190px;
+  .iow-panel-heading {
+    h3 {
+      margin-top: 5px;
+      margin-bottom: 4px;
+    }
+  }
 }
 
 .group-panel {

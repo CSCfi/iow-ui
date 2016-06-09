@@ -34,8 +34,7 @@ export class FrontPageController {
   bullets: Bullet[] = [
     { title: 'What is description?', content: 'What is description content' },
     { title: 'What is method?', content: 'What is method content' },
-    { title: 'What can I do?', content: 'What can I do content' },
-    { title: 'How?', content: 'How content' }
+    { title: 'What can I do?', content: 'What can I do content' }
   ];
 
   groups: GroupListItem[];

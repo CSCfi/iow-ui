@@ -1,56 +1,82 @@
 <div ng-show="ctrl.groups">
 
-  <div class="col-md-5">
+  <div class="row main-functions-row brand-primary-bg">
+    <div class="frontpage-container">
 
-    <h2><i class="fa fa-users"></i><span translate>Interoperability method</span></h2>
+    <div class="col-md-6">
+      <div class="frontpage-panel">
+        <div class="iow-panel-heading"><h3 translate>Search</h3></div>
+        <div class="frontpage-panel__body">
+          <div class="input-group input-group-lg">
+            <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
+                   ng-model="ctrl.searchText"
+                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                   key-control="ctrl.searchResults" />
+            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+          </div>
 
-    <div ng-repeat="bullet in ctrl.bullets" class="">
-      
-      <blockquote class="">
-        <h4>{{bullet.title | translate}}</h4>
-        <span ng-bind-html="bullet.content | translate | trustAsHtml"></span>
-      </blockquote>
-    </div>
+          <span class="advanced-search link" ng-click="ctrl.openAdvancedSearch()" translate>Advanced search</span>
 
-  </div>
+          <ul class="selectable-panel__list">
+            <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
+            <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)" key-control-selection>
+              <i ng-class="searchResult.glyphIconClass"></i>
+              <span ng-class="{link: searchResult.iowUrl}">{{searchResult | translateLabel}}</span>
+              <p>{{searchResult.comment | translateValue}}</p>
+            </li>
+          </ul>
 
-  <div class="col-md-5 col-md-offset-1">
-
-    <div class="frontpage-panel">
-      <div class="iow-panel-heading"><h2 translate>Search</h2></div>
-      <div class="frontpage-panel__body">
-        <div class="input-group input-group-lg">
-          <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
-                 ng-model="ctrl.searchText"
-                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                 key-control="ctrl.searchResults" />
-          <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
-
-        <span class="advanced-search link" ng-click="ctrl.openAdvancedSearch()" translate>Advanced search</span>
-
-        <ul class="selectable-panel__list">
-          <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
-          <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)" key-control-selection>
-            <i ng-class="searchResult.glyphIconClass"></i>
-            <span ng-class="{link: searchResult.iowUrl}">{{searchResult | translateLabel}}</span>
-            <p>{{searchResult.comment | translateValue}}</p>
-          </li>
-        </ul>
-
       </div>
     </div>
 
-    <div class="frontpage-panel">
-      <div class="iow-panel-heading"><h2 translate>Browse</h2></div>
-      <div class="frontpage-panel__body">
-        <ul class="selectable-panel__list">
-          <li ng-repeat="group in ctrl.groups" ng-click="ctrl.selectGroup(group)">
-            <span class="link">{{group | translateLabel}}</span>
-          </li>
-        </ul>
+    <div class="col-md-6">
+      <div class="frontpage-panel">
+        <div class="iow-panel-heading"><h3 translate>Browse</h3></div>
+        <div class="frontpage-panel__body">
+          <ul class="selectable-panel__list">
+            <li ng-repeat="group in ctrl.groups" ng-click="ctrl.selectGroup(group)">
+              <span class="link">{{group | translateLabel}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="row frontpage-container">
+    <div class="text-center frontpage-text-container">
+      <h3></i><span translate>Interoperability method</span></h3>
+      <span translate>Interoperability method description</span>
+    </div>
+  </div>
+  <div class="row main-content-row frontpage-container">
+    <div class="col-md-6">
+      <div ng-repeat="bullet in ctrl.bullets" class="">
+        <blockquote class="front-page-descriptions">
+          <h4>{{bullet.title | translate}}</h4>
+          <span ng-bind-html="bullet.content | translate | trustAsHtml"></span>
+        </blockquote>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+      <div>
+        <img src="../../assets/iow_etusivu_kuva.png" />
       </div>
     </div>
   </div>
+  <div class="row main-bottom-row">
+    <div class="frontpage-container">
+    <div class="text-center frontpage-text-container">
+      <h3></i><span translate>How?</span></h3>
+      <span translate>How content</span>
+    </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-5 col-md-offset-1"></div>
 
 </div>
