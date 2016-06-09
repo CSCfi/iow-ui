@@ -139,7 +139,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
       this.modelService.getVisualizationData(this.model, invalidateCache)
         .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
-        .then(() => layoutGraph(this.graph, this.paper, !!this.model.rootClass))
+        .then(() => layoutGraph(this.graph, !!this.model.rootClass))
+        .then(() => adjustGraphLinks(this.graph, this.paper))
         .then(() => this.focus())
         .then(() => this.loading = false);
     }
@@ -469,7 +470,7 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
   });
 }
 
-function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper, directed: boolean): Promise<any> {
+function layoutGraph(graph: joint.dia.Graph, directed: boolean): Promise<any> {
   if (directed) {
     return new Promise((resolve) => {
       joint.layout.DirectedGraph.layout(graph, {
@@ -478,11 +479,10 @@ function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper, directed: b
         rankSep: 500,
         rankDir: "LR"
       });
-      adjustGraphLinks(graph, paper);
       resolve();
     });
   } else {
-    return colaLayout(graph).then(() => adjustGraphLinks(graph, paper));
+    return colaLayout(graph);
   }
 }
 
