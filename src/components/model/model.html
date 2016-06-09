@@ -1,36 +1,34 @@
 <div ng-show="ctrl.loading"><ajax-loading-indicator></ajax-loading-indicator></div>
-<div ng-hide="ctrl.loading">
 
-  <model-view ng-if="ctrl.model" model="ctrl.model" model-controller="ctrl"></model-view>
+<model-view ng-if="ctrl.model" model="ctrl.model" model-controller="ctrl"></model-view>
 
-  <div class="bottom" ng-if="!ctrl.model.unsaved">
-    <div class="model-panel--left" float="model-panel--left-placeholder">
-      <uib-tabset active="ctrl.activeTab">
-        <uib-tab ng-repeat="tab in ctrl.tabs">
-          <uib-tab-heading>
-            <i ng-class="tab.glyphIconClass"></i><p>{{tab.type | translate}}</p>
-          </uib-tab-heading>
+<div class="bottom" ng-if="!ctrl.model.unsaved">
+  <div class="model-panel--left" float="model-panel--left-placeholder">
+    <uib-tabset active="ctrl.activeTab">
+      <uib-tab ng-repeat="tab in ctrl.tabs">
+        <uib-tab-heading>
+          <i ng-class="tab.glyphIconClass"></i><p>{{tab.type | translate}}</p>
+        </uib-tab-heading>
 
-          <button ng-if="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="tab.addNew()">
-            <span class="glyphicon glyphicon-plus"></span>
-            <span>{{tab.addLabel | translate}}</span>
-          </button>
+        <button ng-if="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="tab.addNew()">
+          <span class="glyphicon glyphicon-plus"></span>
+          <span>{{tab.addLabel | translate}}</span>
+        </button>
 
-          <ul class="panel__list" ng-class="{'has-button': ctrl.canEdit()}">
-            <li ng-repeat="item in tab.items() track by item.id.value"
-                ng-class="{'model-panel__selection': ctrl.isSelected(item)}"
-                ng-click="ctrl.select(item)">
-              {{item.label}} <ajax-loading-indicator-small ng-if="ctrl.isLoading(item)"></ajax-loading-indicator-small>
-            </li>
-          </ul>
-        </uib-tab>
-      </uib-tabset>
-    </div>
+        <ul class="panel__list" ng-class="{'has-button': ctrl.canEdit()}">
+          <li ng-repeat="item in tab.items() track by item.id.value"
+              ng-class="{'model-panel__selection': ctrl.isSelected(item)}"
+              ng-click="ctrl.select(item)">
+            {{item.label}} <ajax-loading-indicator-small ng-if="ctrl.isLoading(item)"></ajax-loading-indicator-small>
+          </li>
+        </ul>
+      </uib-tab>
+    </uib-tabset>
+  </div>
 
-    <div class="model-panel--right">
-      <class-view ng-if="ctrl.selection.isClass()" class="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></class-view>
-      <predicate-view ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></predicate-view>
-      <visualization-view ng-if="ctrl.model" selection="ctrl.selection" model="ctrl.model" show="ctrl.show" ng-class="ctrl.classForVisualization()" change-notifier="ctrl"></visualization-view>
-    </div>
+  <div class="model-panel--right">
+    <class-view ng-if="ctrl.selection.isClass()" class="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></class-view>
+    <predicate-view ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></predicate-view>
+    <visualization-view ng-if="ctrl.model" selection="ctrl.selection" model="ctrl.model" show="ctrl.show" ng-class="ctrl.classForVisualization()" change-notifier="ctrl"></visualization-view>
   </div>
 </div>
