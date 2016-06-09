@@ -114,6 +114,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   dimensionChangeInProgress: boolean = true;
 
+  private visualizationDataCache = new Map<string, joint.dia.Cell[]>();
+
   /* @ngInject */
   constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
 
@@ -138,13 +140,23 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       this.loading = true;
 
       const showCardinality = this.model.isOfType('profile');
+      const cachedCells = this.visualizationDataCache.get(this.model.id.uri);
 
-      this.modelService.getVisualizationData(this.model, invalidateCache)
-        .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
-        .then(() => layoutGraph(this.graph, !!this.model.rootClass))
-        .then(() => adjustLinks(this.paper))
-        .then(() => this.focus())
-        .then(() => this.loading = false);
+      if (!invalidateCache && cachedCells) {
+        this.graph.resetCells(cachedCells);
+        this.focus();
+        this.loading = false;
+      } else {
+        this.modelService.getVisualizationData(this.model)
+          .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
+          .then(() => layoutGraph(this.graph, !!this.model.rootClass))
+          .then(() => adjustLinks(this.paper))
+          .then(() => this.focus())
+          .then(() => {
+            this.visualizationDataCache.set(this.model.id.uri, (<joint.dia.Graph> this.paper.model).getCells());
+            this.loading = false;
+          });
+      }
     }
   }
 

@@ -124,30 +124,15 @@ export class ModelService {
       .then(response => this.entities.deserializeImportedNamespace(response.data));
   }
 
-  getVisualizationData(model: Model, invalidateCache: boolean = true) {
-
-    if (invalidateCache) {
-      this.visualizationDataCache.delete(model.id.uri);
-    }
-
-    const cached = this.visualizationDataCache.get(model.id.uri);
-
-    if (cached) {
-      return this.$q.when(cached);
-    } else {
-      return this.$http.get<GraphData>(config.apiEndpointWithName('exportModel'), {
-        params: {
-          graph: model.id.uri,
-          'content-type': 'application/ld+json'
-        }
-      })
-      .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeModelVisualization(response.data))
-      .then(data => {
-        this.visualizationDataCache.set(model.id.uri, data);
-        return data;
-      });
-    }
+  getVisualizationData(model: Model) {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('exportModel'), {
+      params: {
+        graph: model.id.uri,
+        'content-type': 'application/ld+json'
+      }
+    })
+    .then(expandContextWithKnownModels(model))
+    .then(response => this.entities.deserializeModelVisualization(response.data));
   }
 
   getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
