@@ -20,7 +20,7 @@ class SimpleColaLayout extends Layout {
     this.avoidOverlaps(true);
     this.handleDisconnected(true);
     this.jaccardLinkLengths(30);
-    this.convergenceThreshold(0.02);
+    this.convergenceThreshold(0.11);
   }
 
   trigger(e: Event): void {
@@ -126,6 +126,6 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
       resolve(layout.tickCount);
     });
 
-    layout.start(20, 0, 20, 0);
+    layout.start(200, 200, 200, 0);
   });
 }
