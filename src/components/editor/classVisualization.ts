@@ -117,7 +117,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   dimensionChangeInProgress: boolean = true;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private $timeout: ITimeoutService, private modelService: ModelService, private languageService: LanguageService) {
+  constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
 
     this.changeNotifier.addListener(this);
 
@@ -131,41 +131,35 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     $scope.$watch(() => this.selectionFocus, focus => this.focus());
   }
 
-  refresh() {
+  refresh(invalidateCache: boolean = false) {
     if (this.model) {
       this.loading = true;
-      // HACK: IE9 SVG rendering caused "unexpected call to method or property access " without this timeout hack
-      this.$timeout(() => {
-        (<Promise<any>> this.modelService.getVisualizationData(this.model))
-          .then(data => this.initGraph(data))
-          .then(() => this.loading = false);
-      });
-    }
-  }
 
-  initGraph(visualizationData: VisualizationClass[]) {
-    this.graph.clear();
-    const showCardinality = this.model.isOfType('profile');
-    return createCells(this.$scope, this.languageService, this.model, this.graph, visualizationData, showCardinality)
-      .then(() => layoutGraph(this.graph, this.paper, !!this.model.rootClass))
-      .then(() => this.focus());
+      const showCardinality = this.model.isOfType('profile');
+
+      this.modelService.getVisualizationData(this.model, invalidateCache)
+        .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
+        .then(() => layoutGraph(this.graph, this.paper, !!this.model.rootClass))
+        .then(() => this.focus())
+        .then(() => this.loading = false);
+    }
   }
 
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
     if (newItem instanceof Class) {
-      this.refresh();
+      this.refresh(true);
     }
   }
 
   onDelete(item: Class|Predicate) {
     if (item instanceof Class) {
-      this.refresh();
+      this.refresh(true);
     }
   }
 
   onAssign(item: Class|Predicate) {
     if (item instanceof Class) {
-      this.refresh();
+      this.refresh(true);
     }
   }
 
@@ -329,7 +323,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
 
-    this.fitToContent(null, true);
+    return this.fitToContent(null, true);
   }
 
   private getClassElement(classOrPredicate: Class|Predicate): joint.dia.Element {
@@ -492,59 +486,33 @@ function layoutGraph(graph: joint.dia.Graph, paper: joint.dia.Paper, directed: b
   }
 }
 
-function forEachInBackground<T>(batchSize: number, items: T[], callback: (item: T) => void): Promise<boolean> {
-  return new Promise<boolean>(resolve => {
-
-    function forItemAtIndex(index: number) {
-
-      for (let i = 0; i < batchSize && index + i < items.length; i++) {
-        const item = items[index + i];
-        callback(item);
-      }
-
-      const newIndex = index + batchSize;
-
-      if (newIndex < items.length) {
-
-        joint.util.nextFrame(() => forItemAtIndex(newIndex));
-      } else {
-        resolve(true);
-      }
-    }
-
-    forItemAtIndex(0);
-  });
-}
-
-function createCells($scope: IScope, languageService: LanguageService, model: Model, graph: joint.dia.Graph, classes: VisualizationClass[], showCardinality: boolean) {
+function createCells($scope: IScope, languageService: LanguageService, model: Model, classes: VisualizationClass[], showCardinality: boolean) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
   const classIds = collectIds(classes);
 
-  const addClasses = () => {
-    return forEachInBackground(10, classes, klass => {
-      for (const property of klass.properties) {
+  const cells: joint.dia.Cell[] = [];
 
-        if (property.isAssociation() && property.valueClass) {
-          if (!classIds.has(property.valueClass.uri)) {
-            classIds.add(property.valueClass.uri);
-            graph.addCell(createClass($scope, languageService, model, new DummyVisualizationClass(property.valueClass, model), showCardinality));
-          }
-          associations.push({klass: klass, association: property});
+  for (const klass of classes) {
+    for (const property of klass.properties) {
+
+      if (property.isAssociation() && property.valueClass) {
+        if (!classIds.has(property.valueClass.uri)) {
+          classIds.add(property.valueClass.uri);
+          cells.push(createClass($scope, languageService, model, new DummyVisualizationClass(property.valueClass, model), showCardinality));
         }
+        associations.push({klass: klass, association: property});
       }
+    }
 
-      graph.addCell(createClass($scope, languageService, model, klass, showCardinality));
-    });
+    cells.push(createClass($scope, languageService, model, klass, showCardinality));
+  }
+
+  for (const association of associations) {
+    cells.push(createAssociation($scope, languageService, model, association, showCardinality));
   };
 
-  const addAssociations = () => {
-    return forEachInBackground(10, associations, association => {
-      graph.addCell(createAssociation($scope, languageService, model, association, showCardinality));
-    });
-  };
-
-  return addClasses().then(() => addAssociations());
+  return cells;
 }
 
 function formatCardinality(property: Property) {
