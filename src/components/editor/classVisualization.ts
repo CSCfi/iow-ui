@@ -16,7 +16,7 @@ import { isDefined } from '../../utils/object';
 const joint = require('jointjs');
 import { module as mod }  from './module';
 import { collectIds } from '../../utils/entity';
-
+import { Iterable } from '../../utils/iterable';
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
   return {
@@ -27,38 +27,27 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
       changeNotifier: '='
     },
     template: `<div>
-                <div class="button zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
-                <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
-                <div class="button zoom-fit" ng-click="ctrl.fitToContent($event)"><i class="fa fa-arrows-alt"></i></div>
-                <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="fa fa-crosshairs"></i></div>
-                <div ng-show="ctrl.canFocus()" class="selection-focus">
-                  <div class="button focus-in" ng-click="ctrl.focusOut($event)"><i class="fa fa-angle-left"></i></div>
-                  <div class="button focus-indicator">{{ctrl.renderSelectionFocus()}}</div>
-                  <div class="button focus-out" ng-click="ctrl.focusIn($event)"><i class="fa fa-angle-right"></i></div>
-                </div>
-                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
+                 <div class="button zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
+                 <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
+                 <div class="button zoom-fit" ng-click="ctrl.fitToContent($event)"><i class="fa fa-arrows-alt"></i></div>
+                 <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="fa fa-crosshairs"></i></div>
+                 <div ng-show="ctrl.canFocus()" class="selection-focus">
+                   <div class="button focus-in" ng-click="ctrl.focusOut($event)"><i class="fa fa-angle-left"></i></div>
+                   <div class="button focus-indicator">{{ctrl.renderSelectionFocus()}}</div>
+                   <div class="button focus-out" ng-click="ctrl.focusIn($event)"><i class="fa fa-angle-right"></i></div>
+                 </div>
+                 <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
                </div>`,
     bindToController: true,
     controllerAs: 'ctrl',
     require: 'classVisualization',
     link($scope: IScope, element: JQuery, attributes: IAttributes, controller: ClassVisualizationController) {
-
       element.addClass('visualization-container');
-
-      const paper = createPaper(element, new joint.dia.Graph);
-
-      registerZoomAndPan($window, paper);
-
-      paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
-        const cell = cellView.model;
-        if (cell instanceof joint.dia.Element) {
-          adjustElementLinks(paper, <joint.dia.Element> cell);
-        }
-      });
-
-      controller.paper = paper;
+      controller.paperHolder = new PaperHolder($window, element);
 
       const intervalHandle = window.setInterval(() => {
+
+        const paper = controller.paper;
         const xd = paper.options.width - element.width();
         const yd = paper.options.height - element.height();
 
@@ -106,7 +95,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   model: Model;
   changeNotifier: ChangeNotifier<Class|Predicate>;
 
-  paper: joint.dia.Paper;
   loading: boolean;
 
   zoomInHandle: number;
@@ -114,10 +102,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   dimensionChangeInProgress: boolean = true;
 
-  private visualizationDataCache = new Map<string, joint.dia.Cell[]>();
+  paperHolder: PaperHolder;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private $timeout: ITimeoutService, private modelService: ModelService, private languageService: LanguageService) {
+  constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
 
     this.changeNotifier.addListener(this);
 
@@ -131,33 +119,30 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     $scope.$watch(() => this.selectionFocus, () => this.focus());
   }
 
+  get paper(): joint.dia.Paper {
+    return this.paperHolder.getPaper(this.model);
+  }
+
   get graph(): joint.dia.Graph {
     return <joint.dia.Graph> this.paper.model;
   }
 
   refresh(invalidateCache: boolean = false) {
     if (this.model) {
-      this.loading = true;
 
+      this.paperHolder.setVisible(this.model);
+      const graph = this.graph;
       const showCardinality = this.model.isOfType('profile');
-      const cachedCells = this.visualizationDataCache.get(this.model.id.uri);
 
-      if (!invalidateCache && cachedCells) {
-        this.$timeout(() => {
-          this.graph.resetCells(cachedCells);
-          this.focus();
-          this.loading = false;
-        });
-      } else {
+      if (invalidateCache || graph.getCells().length === 0) {
+        this.loading = true;
+
         this.modelService.getVisualizationData(this.model)
           .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
           .then(() => layoutGraph(this.graph, !!this.model.rootClass))
           .then(() => adjustLinks(this.paper))
           .then(() => this.focus())
-          .then(() => {
-            this.visualizationDataCache.set(this.model.id.uri, (<joint.dia.Graph> this.paper.model).getCells());
-            this.loading = false;
-          });
+          .then(() => this.loading = false);
       }
     }
   }
@@ -358,6 +343,54 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     } else {
       return null;
     }
+  }
+}
+
+class PaperHolder {
+
+  private cache = new Map<string, { element: JQuery, paper: joint.dia.Paper }>();
+
+  constructor(private $window: IWindowService, private element: JQuery) {
+  }
+
+  getPaper(model: Model): joint.dia.Paper {
+
+    const createPaperAndRegisterHandlers = (element: JQuery) => {
+      const paper = createPaper(element, new joint.dia.Graph);
+
+      registerZoomAndPan(this.$window, paper);
+
+      paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
+        const cell = cellView.model;
+        if (cell instanceof joint.dia.Element) {
+          adjustElementLinks(paper, <joint.dia.Element> cell);
+        }
+      });
+
+      return paper;
+    };
+
+    const cached = this.cache.get(model.id.uri);
+
+    if (cached) {
+      return cached.paper;
+    } else {
+      const newElement = jQuery(document.createElement('div'));
+      this.element.append(newElement);
+      const newPaper = createPaperAndRegisterHandlers(newElement);
+      this.cache.set(model.id.uri, { element: newElement, paper: newPaper });
+      return newPaper;
+    }
+  }
+
+  setVisible(model: Model) {
+    Iterable.forEach(this.cache.entries(), ([modelId, value]) => {
+      if (model.id.uri === modelId) {
+        value.element.show();
+      } else {
+        value.element.hide();
+      }
+    });
   }
 }
 
