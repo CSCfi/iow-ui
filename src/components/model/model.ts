@@ -174,7 +174,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
             .then(updated => {
               const afterModelPromises = [this.selectRouteOrDefault(routeData)];
               if (updated) {
-                afterModelPromises.push(this.updateSelectables());
+                afterModelPromises.push(this.updateSelectables(false));
               }
               return this.$q.all(afterModelPromises);
             })
@@ -226,7 +226,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
-    this.updateSelectables();
+    this.updateSelectables(true);
 
     for (const changeListener of this.changeListeners) {
       changeListener.onEdit(newSelection, oldSelection);
@@ -340,7 +340,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
           mapEntity().then(entity => {
               this.updateSelection(entity);
               if (!entity.unsaved) {
-                this.updateSelectables();
+                this.updateSelectables(true);
 
                 for (const changeListener of this.changeListeners) {
                   changeListener.onAssign(entity);
@@ -390,7 +390,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         .map((predicateId: Uri) => this.assignPredicateToModel(predicateId))
         .value()
       )
-      .then(() => this.updatePredicates());
+      .then(() => this.updatePredicates(true));
   }
 
   private createPredicate(conceptCreation: EntityCreation, type: Type) {
@@ -499,20 +499,20 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     return this.$q.when(this.model = model);
   }
 
-  private updateSelectables(): IPromise<any> {
-    return this.$q.all([this.updateClasses(), this.updatePredicates()]);
+  private updateSelectables(invalidateCaches: boolean): IPromise<any> {
+    return this.$q.all([this.updateClasses(invalidateCaches), this.updatePredicates(invalidateCaches)]);
   }
 
-  private updateClasses(): IPromise<any> {
-    return this.classService.getClassesForModel(this.model)
+  private updateClasses(invalidateCaches: boolean): IPromise<any> {
+    return this.classService.getClassesForModel(this.model, invalidateCaches)
       .then(classes => {
         this.classes = _.map(classes, klass => new SelectableItem(klass, this));
         this.sortClasses();
       });
   }
 
-  private updatePredicates(): IPromise<any> {
-    return this.predicateService.getPredicatesForModel(this.model)
+  private updatePredicates(invalidateCaches: boolean): IPromise<any> {
+    return this.predicateService.getPredicatesForModel(this.model, invalidateCaches)
       .then(predicates => {
         this.attributes = _.chain(predicates)
           .filter(predicate => predicate.isOfType('attribute'))
