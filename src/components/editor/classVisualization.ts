@@ -117,7 +117,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   private visualizationDataCache = new Map<string, joint.dia.Cell[]>();
 
   /* @ngInject */
-  constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
+  constructor(private $scope: IScope, private $timeout: ITimeoutService, private modelService: ModelService, private languageService: LanguageService) {
 
     this.changeNotifier.addListener(this);
 
@@ -143,9 +143,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       const cachedCells = this.visualizationDataCache.get(this.model.id.uri);
 
       if (!invalidateCache && cachedCells) {
-        this.graph.resetCells(cachedCells);
-        this.focus();
-        this.loading = false;
+        this.$timeout(() => {
+          this.graph.resetCells(cachedCells);
+          this.focus();
+          this.loading = false;
+        });
       } else {
         this.modelService.getVisualizationData(this.model)
           .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
