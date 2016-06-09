@@ -45,18 +45,17 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
 
       element.addClass('visualization-container');
 
-      const {graph, paper} = createGraph(element);
+      const paper = createPaper(element, new joint.dia.Graph);
 
       registerZoomAndPan($window, paper);
 
       paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
         const cell = cellView.model;
         if (cell instanceof joint.dia.Element) {
-          adjustElementLinks(graph, paper, <joint.dia.Element> cell);
+          adjustElementLinks(paper, <joint.dia.Element> cell);
         }
       });
 
-      controller.graph = graph;
       controller.paper = paper;
 
       const intervalHandle = window.setInterval(() => {
@@ -107,7 +106,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   model: Model;
   changeNotifier: ChangeNotifier<Class|Predicate>;
 
-  graph: joint.dia.Graph;
   paper: joint.dia.Paper;
   loading: boolean;
 
@@ -131,6 +129,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     $scope.$watch(() => this.selectionFocus, _.debounce(() => this.focus(), 500));
   }
 
+  get graph(): joint.dia.Graph {
+    return <joint.dia.Graph> this.paper.model;
+  }
+
   refresh(invalidateCache: boolean = false) {
     if (this.model) {
       this.loading = true;
@@ -140,7 +142,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       this.modelService.getVisualizationData(this.model, invalidateCache)
         .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
         .then(() => layoutGraph(this.graph, !!this.model.rootClass))
-        .then(() => adjustGraphLinks(this.graph, this.paper))
+        .then(() => adjustLinks(this.paper))
         .then(() => this.focus())
         .then(() => this.loading = false);
     }
@@ -345,10 +347,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 }
 
-function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia.Paper} {
-
-  const graph = new joint.dia.Graph;
-  const paper = new joint.dia.Paper({
+function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
+  return new joint.dia.Paper({
     el: element,
     width: element.width() || 100,
     height: element.height() || 100,
@@ -356,8 +356,6 @@ function createGraph(element: JQuery): {graph: joint.dia.Graph, paper: joint.dia
     linkPinning: false,
     snapLinks: false
   });
-
-  return {graph, paper};
 }
 
 
@@ -664,20 +662,25 @@ function isLoop(link: joint.dia.Link) {
   return link.get('source').id === link.get('target').id;
 }
 
-function adjustGraphLinks(graph: joint.dia.Graph, paper: joint.dia.Paper) {
+function adjustLinks(paper: joint.dia.Paper) {
+  const graph = <joint.dia.Graph> paper.model;
+
   for (const link of graph.getLinks()) {
-    adjustLink(graph, paper, link);
+    adjustLink(paper, link);
   }
 }
 
-function adjustElementLinks(graph: joint.dia.Graph, paper: joint.dia.Paper, element: joint.dia.Element) {
+function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element) {
+  const graph = <joint.dia.Graph> paper.model;
+
   for (const link of graph.getConnectedLinks(<joint.dia.Cell> element)) {
-    adjustLink(graph, paper, link);
+    adjustLink(paper, link);
   }
 }
 
-function adjustLink(graph: joint.dia.Graph, paper: joint.dia.Paper, link: joint.dia.Link) {
+function adjustLink(paper: joint.dia.Paper, link: joint.dia.Link) {
 
+  const graph = <joint.dia.Graph> paper.model;
   const srcId = link.get('source').id;
   const trgId = link.get('target').id;
 
