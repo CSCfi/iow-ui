@@ -15,8 +15,11 @@ import { expandContextWithKnownModels } from '../utils/entity';
 import { Language } from '../utils/language';
 
 export class PredicateService {
+
+  private modelPredicatesCache = new Map<string, PredicateListItem[]>();
+
   /* @ngInject */
-  constructor(private $http: IHttpService, private entities: EntityDeserializer) {
+  constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
   }
 
   getPredicate(id: Uri|Urn, model?: Model): IPromise<Predicate> {
@@ -29,10 +32,25 @@ export class PredicateService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicate')).then(response => this.entities.deserializePredicateList(response.data));
   }
 
-  getPredicatesForModel(model: Model): IPromise<PredicateListItem[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {model: model.id.uri}})
-      .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicateList(response.data));
+  getPredicatesForModel(model: Model, invalidateCache: boolean = false): IPromise<PredicateListItem[]> {
+
+    if (invalidateCache) {
+      this.modelPredicatesCache.delete(model.id.uri);
+    }
+
+    const predicates = this.modelPredicatesCache.get(model.id.uri);
+
+    if (predicates) {
+      return this.$q.when(predicates);
+    } else {
+      return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {model: model.id.uri}})
+        .then(expandContextWithKnownModels(model))
+        .then(response => this.entities.deserializePredicateList(response.data))
+        .then(predicateList => {
+          this.modelPredicatesCache.set(model.id.uri, predicateList);
+          return predicateList;
+        });
+    }
   }
 
   createPredicate(predicate: Predicate): IPromise<any> {

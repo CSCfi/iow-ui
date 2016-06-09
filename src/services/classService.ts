@@ -27,6 +27,8 @@ import { Language, hasLocalization } from '../utils/language';
 
 export class ClassService {
 
+  private modelClassesCache = new Map<string, ClassListItem[]>();
+
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private predicateService: PredicateService, private entities: EntityDeserializer) {
   }
@@ -41,10 +43,25 @@ export class ClassService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class')).then(response => this.entities.deserializeClassList(response.data));
   }
 
-  getClassesForModel(model: Model): IPromise<ClassListItem[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {model: model.id.uri}})
-      .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeClassList(response.data));
+  getClassesForModel(model: Model, invalidateCache: boolean = true): IPromise<ClassListItem[]> {
+
+    if (invalidateCache) {
+      this.modelClassesCache.delete(model.id.uri);
+    }
+
+    const classes = this.modelClassesCache.get(model.id.uri);
+
+    if (classes) {
+      return this.$q.when(classes);
+    } else {
+      return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {model: model.id.uri}})
+        .then(expandContextWithKnownModels(model))
+        .then(response => this.entities.deserializeClassList(response.data))
+        .then(classList => {
+          this.modelClassesCache.set(model.id.uri, classList);
+          return classList;
+        });
+    }
   }
 
   createClass(klass: Class): IPromise<any> {
