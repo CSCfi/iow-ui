@@ -13,6 +13,7 @@ import { Url } from '../services/uri';
 import { module as mod }  from './module';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.png');
+const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.png');
 
 mod.directive('frontPage', () => {
   return {
@@ -67,7 +68,7 @@ export class FrontPageController {
       case 'fi':
         return frontPageImage;
       case 'en':
-        return frontPageImage;
+        return frontPageImageEn;
       default:
         return frontPageImage;
     }
