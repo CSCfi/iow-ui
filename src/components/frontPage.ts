@@ -10,8 +10,9 @@ import { AdvancedSearchModal } from './advancedSearchModal';
 import { GroupListItem, SearchResult } from '../services/entities';
 import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
-
 import { module as mod }  from './module';
+
+const frontPageImage = require('../assets/iow_etusivu_kuva.png');
 
 mod.directive('frontPage', () => {
   return {
@@ -40,6 +41,7 @@ export class FrontPageController {
   groups: GroupListItem[];
   searchText: string = '';
   searchResults: SearchResult[] = [];
+  frontPageImage = frontPageImage;
 
   /* @ngInject */
   constructor(private $scope: IScope,
