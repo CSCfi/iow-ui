@@ -41,7 +41,6 @@ export class FrontPageController {
   groups: GroupListItem[];
   searchText: string = '';
   searchResults: SearchResult[] = [];
-  frontPageImage = frontPageImage;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -61,6 +60,17 @@ export class FrontPageController {
     }, error => maintenanceModal.open(error));
 
     $scope.$watch(() => this.searchText, text => this.search(text));
+  }
+
+  get frontPageImage() {
+    switch (this.languageService.UILanguage) {
+      case 'fi':
+        return frontPageImage;
+      case 'en':
+        return frontPageImage;
+      default:
+        return frontPageImage;
+    }
   }
 
   search(text: string) {
