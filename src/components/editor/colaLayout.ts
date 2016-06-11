@@ -20,7 +20,7 @@ class SimpleColaLayout extends Layout {
     this.avoidOverlaps(true);
     this.handleDisconnected(true);
     this.jaccardLinkLengths(30);
-    this.convergenceThreshold(0.11);
+    this.convergenceThreshold(0.005);
   }
 
   trigger(e: Event): void {
@@ -61,7 +61,7 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 }
 
 
-const coordinateRatio = 1 / 8;
+const coordinateRatio = 1 / 100;
 const padding = 15;
 
 function hash(str: string) {
@@ -81,8 +81,8 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
   Iterable.forEach(jointElements.values(), element => {
     nodes.set(element.id, {
       id: element.id,
-      x: element.attributes.position.x * coordinateRatio || hash(element.id + 'x'),
-      y: element.attributes.position.y * coordinateRatio || hash(element.id + 'y'),
+      x: (element.attributes.position.x || hash(element.id + 'x')) * coordinateRatio,
+      y: (element.attributes.position.y || hash(element.id + 'y')) * coordinateRatio,
       width: element.attributes.size.width * coordinateRatio,
       height: element.attributes.size.height * coordinateRatio
     });
@@ -126,6 +126,6 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
       resolve(layout.tickCount);
     });
 
-    layout.start(200, 200, 200, 0);
+    layout.start(30, 0, 30, 0);
   });
 }
