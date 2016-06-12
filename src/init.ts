@@ -4,7 +4,7 @@ import { config } from './config';
 const pw = require('please-wait');
 
 const logo = require('./assets/logo.png');
-const backgroundColor = '#3F51B5';
+const backgroundColor = '#375e97';
 
 function loadingScreen() {
   if (config.production) {
