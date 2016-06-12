@@ -123,7 +123,9 @@ export class SearchPredicateController {
     };
 
     predicateService.getAllPredicates().then(appendResults);
-    predicateService.getPredicatesForModel(model).then(predicates => this.currentModelPredicateIds = collectIds(predicates));
+    predicateService.getPredicatesForModel(model)
+      .then(predicates => this.currentModelPredicateIds = collectIds(predicates))
+      .then(() => this.search());
 
     if (this.canAddExternal()) {
       predicateService.getExternalPredicatesForModel(model).then(appendResults);
