@@ -75,7 +75,7 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 }
 
 
-const coordinateRatio = 1 / 100;
+const coordinateRatio = 1 / 12;
 const padding = 15;
 
 function hash(str: string) {
