@@ -1,6 +1,8 @@
 import { Layout, Event, EventType, Link, Node } from 'webcola';
 import { Iterable } from '../../utils/iterable';
 
+const debugPerformance = false;
+
 interface IdentifiedNode extends Node {
   id: string;
   width?: number;
@@ -13,6 +15,10 @@ class SimpleColaLayout extends Layout {
 
   constructor(nodes: IdentifiedNode[], links: Link<IdentifiedNode>[], private ready: () => void) {
     super();
+
+    if (debugPerformance) {
+      console.time('initial');
+    }
 
     this.nodes(nodes);
     this.links(links);
@@ -37,10 +43,18 @@ class SimpleColaLayout extends Layout {
   }
 
   kick() {
+
+    if (debugPerformance && this.tickCount === 0) {
+      console.timeEnd('initial');
+      console.time('async');
+    }
+
     window.requestAnimFrame(() => {
       this.tickCount++;
       if (!this.tick()) {
         this.kick();
+      } else if (debugPerformance) {
+        console.timeEnd('async');
       }
     });
   }
