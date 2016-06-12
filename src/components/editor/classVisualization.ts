@@ -1,11 +1,12 @@
 import IAttributes = angular.IAttributes;
 import IIntervalService = angular.IIntervalService;
+import IQService = angular.IQService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
 import {
-  Class, Model, VisualizationClass, Property, Predicate, LanguageContext,
+  Class, Model, VisualizationClass, Property, Predicate,
   DummyVisualizationClass
 } from '../../services/entities';
 import * as _ from 'lodash';
@@ -17,6 +18,7 @@ const joint = require('jointjs');
 import { module as mod }  from './module';
 import { collectIds } from '../../utils/entity';
 import { Iterable } from '../../utils/iterable';
+import { ClassService } from '../../services/classService';
 import { Uri } from '../../services/uri';
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
@@ -106,7 +108,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   paperHolder: PaperHolder;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private modelService: ModelService, private languageService: LanguageService) {
+  constructor(private $scope: IScope, private $q: IQService, private modelService: ModelService, private classService: ClassService, private languageService: LanguageService) {
 
     this.changeNotifier.addListener(this);
 
@@ -133,24 +135,37 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
       this.paperHolder.setVisible(this.model);
       const graph = this.graph;
-      const showCardinality = this.model.isOfType('profile');
 
       if (invalidateCache || graph.getCells().length === 0) {
         this.loading = true;
 
         this.modelService.getVisualizationData(this.model)
-          .then(data => this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data, showCardinality)))
-          .then(() => layoutGraph(this.graph, !!this.model.rootClass))
-          .then(() => adjustLinks(this.paper))
-          .then(() => this.focus())
-          .then(() => this.loading = false);
+          .then(data => {
+            this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data));
+            this.layoutAndAdjust()
+              .then(() => this.focus())
+              .then(() => this.loading = false);
+          });
       }
     }
   }
 
+  layoutAndAdjust(onlyClass?: VisualizationClass) {
+    return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClass ? onlyClass.id : null))
+      .then(() => adjustLinks(this.paper));
+  }
+
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
     if (newItem instanceof Class) {
-      this.refresh(true);
+      if (oldItem.unsaved) {
+        this.classService.getVisualizationData(this.model, newItem.id).then(data => {
+          const addedClass = _.find(data, klass => klass.id.equals(newItem.id));
+          this.graph.addCell(createClass(this.$scope, this.languageService, this.model, addedClass));
+          this.layoutAndAdjust(addedClass).then(() => this.focus());
+        });
+      } else {
+        this.refresh(true);
+      }
     }
   }
 
@@ -518,6 +533,7 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
 
 function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeId?: Uri): Promise<any> {
   if (directed) {
+    // TODO directed doesn't support incremental layout
     return new Promise((resolve) => {
       joint.layout.DirectedGraph.layout(graph, {
         nodeSep: 100,
@@ -532,7 +548,7 @@ function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeId?: Uri
   }
 }
 
-function createCells($scope: IScope, languageService: LanguageService, model: Model, classes: VisualizationClass[], showCardinality: boolean) {
+function createCells($scope: IScope, languageService: LanguageService, model: Model, classes: VisualizationClass[]) {
 
   const associations: {klass: VisualizationClass, association: Property}[] = [];
   const classIds = collectIds(classes);
@@ -545,17 +561,17 @@ function createCells($scope: IScope, languageService: LanguageService, model: Mo
       if (property.isAssociation() && property.valueClass) {
         if (!classIds.has(property.valueClass.uri)) {
           classIds.add(property.valueClass.uri);
-          cells.push(createClass($scope, languageService, model, new DummyVisualizationClass(property.valueClass, model), showCardinality));
+          cells.push(createClass($scope, languageService, model, new DummyVisualizationClass(property.valueClass, model)));
         }
         associations.push({klass: klass, association: property});
       }
     }
 
-    cells.push(createClass($scope, languageService, model, klass, showCardinality));
+    cells.push(createClass($scope, languageService, model, klass));
   }
 
   for (const association of associations) {
-    cells.push(createAssociation($scope, languageService, model, association, showCardinality));
+    cells.push(createAssociation($scope, languageService, model, association));
   };
 
   return cells;
@@ -599,15 +615,17 @@ const classMarkup = (shadow: boolean) => {
 const withoutUnusedMarkupClass = joint.shapes.uml.Class.extend({ markup: classMarkup(false) });
 const shadowClass = joint.shapes.uml.Class.extend({ markup: classMarkup(true) });
 
-function createClass($scope: IScope, languageService: LanguageService, context: LanguageContext, klass: VisualizationClass, showCardinality: boolean) {
+function createClass($scope: IScope, languageService: LanguageService, model: Model, klass: VisualizationClass) {
+
+  const showCardinality = model.isOfType('profile');
 
   function getName() {
-    return languageService.translate(klass.label, context);
+    return languageService.translate(klass.label, model);
   }
 
   function getPropertyNames() {
     function propertyAsString(property: Property): string {
-      const name = languageService.translate(property.label, context);
+      const name = languageService.translate(property.label, model);
       const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
       const cardinality = formatCardinality(property);
       return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
@@ -643,7 +661,7 @@ function createClass($scope: IScope, languageService: LanguageService, context: 
     z: zIndexClass
   });
 
-  $scope.$watch(() => languageService.getModelLanguage(context), (lang, oldLang) => {
+  $scope.$watch(() => languageService.getModelLanguage(model), (lang, oldLang) => {
     if (oldLang && (lang !== oldLang)) {
       const newPropertyNames = getPropertyNames();
       const newClassName = getName();
@@ -656,10 +674,12 @@ function createClass($scope: IScope, languageService: LanguageService, context: 
   return classCell;
 }
 
-function createAssociation($scope: IScope, languageService: LanguageService, context: LanguageContext, data: {klass: VisualizationClass, association: Property}, showCardinality: boolean) {
+function createAssociation($scope: IScope, languageService: LanguageService, model: Model, data: {klass: VisualizationClass, association: Property}) {
+
+  const showCardinality = model.isOfType('profile');
 
   function getName() {
-    const localizedName = languageService.translate(data.association.label, context);
+    const localizedName = languageService.translate(data.association.label, model);
 
     if (data.association.stem) {
       return localizedName + '\n' + ' {' + data.association.stem + '}';
@@ -684,7 +704,7 @@ function createAssociation($scope: IScope, languageService: LanguageService, con
     z: zIndexAssociation
   });
 
-  $scope.$watch(() => languageService.getModelLanguage(context), (lang, oldLang) => {
+  $scope.$watch(() => languageService.getModelLanguage(model), (lang, oldLang) => {
     if (oldLang && (lang !== oldLang)) {
       associationCell.prop('labels/0/attrs/text/text', getName());
       if (showCardinality) {
