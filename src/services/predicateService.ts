@@ -117,28 +117,6 @@ export class PredicateService {
       });
   }
 
-  newPredicateFromExternal(externalId: Uri, type: Type, model: Model) {
-    return this.getExternalPredicate(externalId, model)
-      .then(predicate => {
-        if (!predicate) {
-          const graph = {
-            '@id': externalId.uri,
-            '@type': reverseMapType(type),
-            isDefinedBy: model.namespaceAsDefinedBy(externalId.namespace).serialize(true, false)
-          };
-          if (type === 'association') {
-            return new Association(graph, model.context, model.frame);
-          } else if (type === 'attribute') {
-            return new Attribute(graph, model.context, model.frame);
-          } else {
-            throw new Error('Unsupported predicate type: ' + type);
-          }
-        } else {
-          return predicate;
-        }
-      });
-  }
-
   getExternalPredicate(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
