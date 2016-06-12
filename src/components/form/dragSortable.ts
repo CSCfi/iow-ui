@@ -144,7 +144,7 @@ mod.directive('dragSortableItem', () => {
         }
       });
 
-      $scope.$on('destroy', release);
+      $scope.$on('$destroy', release);
     }
   };
 });

@@ -67,7 +67,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
       inputElement.on('keydown', keyDownHandler);
       inputElement.on('focus', focusHandler);
 
-      $scope.$on('destroy', () => {
+      $scope.$on('$destroy', () => {
         inputElement.off('keydown', keyDownHandler);
         inputElement.off('focus', focusHandler);
       });

@@ -204,7 +204,7 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
       element.on('keydown', keyDownHandler);
       element.on('focus', focusHandler);
 
-      $scope.$on('destroy', () => {
+      $scope.$on('$destroy', () => {
         element.off('click', clickHandler);
         element.off('keydown', keyDownHandler);
         element.off('focus', focusHandler);
