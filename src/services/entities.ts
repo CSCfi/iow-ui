@@ -736,6 +736,7 @@ export interface VisualizationClass {
   label: Localizable;
   properties: Property[];
   resolved: boolean;
+  associationPropertiesWithTarget: Property[];
 }
 
 export class AssociationTargetPlaceholderClass extends GraphNode implements VisualizationClass {
@@ -751,6 +752,10 @@ export class AssociationTargetPlaceholderClass extends GraphNode implements Visu
     this.label = deserializeLocalizable(graph.label);
     this.properties = deserializeEntityList(graph.property, context, frame, () => Property);
   }
+
+  get associationPropertiesWithTarget() {
+    return _.filter(this.properties, property => property.isAssociation() && property.valueClass);
+  }
 }
 
 export class DummyVisualizationClass implements VisualizationClass {
@@ -758,6 +763,7 @@ export class DummyVisualizationClass implements VisualizationClass {
   label: Localizable;
   properties: Property[] = [];
   resolved = false;
+  associationPropertiesWithTarget: Property[] = [];
 
   constructor(public id: Uri, model: Model) {
     this.label = createConstantLocalizable(id.curie, model.language);
@@ -806,6 +812,10 @@ export class Class extends AbstractClass {
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
     this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
     this.createdAt = deserializeDate(graph.created);
+  }
+
+  get associationPropertiesWithTarget() {
+    return _.filter(this.properties, property => property.isAssociation() && property.valueClass);
   }
 
   get inUnstableState(): boolean {
