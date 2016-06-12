@@ -95,8 +95,8 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
   Iterable.forEach(jointElements.values(), element => {
     nodes.set(element.id, {
       id: element.id,
-      x: (element.attributes.position.x || hash(element.id + 'x')) * coordinateRatio,
-      y: (element.attributes.position.y || hash(element.id + 'y')) * coordinateRatio,
+      x: (element.attributes.position.x * coordinateRatio || hash('x' + element.id)),
+      y: (element.attributes.position.y * coordinateRatio || hash('y' + element.id)),
       width: element.attributes.size.width * coordinateRatio,
       height: element.attributes.size.height * coordinateRatio
     });
