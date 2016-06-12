@@ -7,6 +7,7 @@ interface IdentifiedNode extends Node {
   id: string;
   width?: number;
   height?: number;
+  fixed: boolean;
 }
 
 class SimpleColaLayout extends Layout {
@@ -75,8 +76,7 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 }
 
 
-const coordinateRatio = 1 / 12;
-const padding = 15;
+const scaleCorrection = 15;
 
 function hash(str: string) {
   let hash = 0;
@@ -86,7 +86,7 @@ function hash(str: string) {
   return hash % 47;
 }
 
-export function layout(graph: joint.dia.Graph): Promise<any> {
+export function layout(graph: joint.dia.Graph, onlyNodeId?: string): Promise<any> {
 
   const nodes: Map<string, IdentifiedNode> = new Map<string, IdentifiedNode>();
   const links: Link<IdentifiedNode>[] = [];
@@ -95,10 +95,11 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
   Iterable.forEach(jointElements.values(), element => {
     nodes.set(element.id, {
       id: element.id,
-      x: (element.attributes.position.x * coordinateRatio || hash('x' + element.id)),
-      y: (element.attributes.position.y * coordinateRatio || hash('y' + element.id)),
-      width: element.attributes.size.width * coordinateRatio,
-      height: element.attributes.size.height * coordinateRatio
+      x: (element.attributes.position.x || hash('x' + element.id)),
+      y: (element.attributes.position.y || hash('y' + element.id)),
+      width: element.attributes.size.width / scaleCorrection,
+      height: element.attributes.size.height / scaleCorrection,
+      fixed: onlyNodeId && element.id !== onlyNodeId
     });
   });
 
@@ -107,12 +108,6 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
       source: nodes.get(link.attributes.source.id),
       target: nodes.get(link.attributes.target.id)
     });
-  }
-
-  function setNewPosition(node: IdentifiedNode, element: joint.dia.Element, min: {x: number, y: number}) {
-    const x = (node.x - min.x) * padding;
-    const y = (node.y - min.y) * padding;
-    element.position(x, y);
   }
 
   function findMin(iterable: Iterable<IdentifiedNode>) {
@@ -135,8 +130,21 @@ export function layout(graph: joint.dia.Graph): Promise<any> {
 
   return new Promise((resolve) => {
     const layout = new SimpleColaLayout(Array.from(nodes.values()), links, () => {
-      const min = findMin(nodes.values());
-      Iterable.forEach(nodes.values(), node => setNewPosition(node, jointElements.get(node.id), min));
+
+      if (onlyNodeId) {
+        const node = nodes.get(onlyNodeId);
+        const element = jointElements.get(onlyNodeId);
+        element.position(node.x, node.y);
+      } else {
+        const min = findMin(nodes.values());
+
+        Iterable.forEach(nodes.values(), node => {
+          const element = jointElements.get(node.id);
+          const normalizedX = (node.x - min.x) * scaleCorrection;
+          const normalizedY = (node.y - min.y) * scaleCorrection;
+          element.position(normalizedX, normalizedY);
+        });
+      }
       resolve(layout.tickCount);
     });
 

@@ -17,6 +17,7 @@ const joint = require('jointjs');
 import { module as mod }  from './module';
 import { collectIds } from '../../utils/entity';
 import { Iterable } from '../../utils/iterable';
+import { Uri } from '../../services/uri';
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
   return {
@@ -515,7 +516,7 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
   });
 }
 
-function layoutGraph(graph: joint.dia.Graph, directed: boolean): Promise<any> {
+function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeId?: Uri): Promise<any> {
   if (directed) {
     return new Promise((resolve) => {
       joint.layout.DirectedGraph.layout(graph, {
@@ -527,7 +528,7 @@ function layoutGraph(graph: joint.dia.Graph, directed: boolean): Promise<any> {
       resolve();
     });
   } else {
-    return colaLayout(graph);
+    return colaLayout(graph, onlyNodeId ? onlyNodeId.uri : null);
   }
 }
 
