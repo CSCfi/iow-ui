@@ -173,24 +173,22 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   private updateClassAndLayout(klass: Class, oldId?: Uri) {
-    this.classService.getVisualizationData(this.model, klass.id).then(assignedClass => {
 
-      const addedClasses = this.addOrReplaceClass(assignedClass);
+    const addedClasses = this.addOrReplaceClass(klass);
 
-      if (oldId && !oldId.equals(klass.id)) {
-        if (this.isAssociationTarget(oldId)) {
-          this.replaceClass(new DummyVisualizationClass(oldId, this.model));
-        } else {
-          this.removeClass(oldId);
-        }
-      }
-
-      if (addedClasses.length > 0) {
-        this.layoutAndAdjust(addedClasses).then(() => this.focus());
+    if (oldId && !oldId.equals(klass.id)) {
+      if (this.isAssociationTarget(oldId)) {
+        this.replaceClass(new DummyVisualizationClass(oldId, this.model));
       } else {
-        this.focus();
+        this.removeClass(oldId);
       }
-    });
+    }
+
+    if (addedClasses.length > 0) {
+      this.layoutAndAdjust(addedClasses).then(() => this.focus());
+    } else {
+      this.focus();
+    }
   }
 
   onResize(show: Show) {

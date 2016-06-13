@@ -784,7 +784,7 @@ export class DummyVisualizationClass implements VisualizationClass {
   }
 }
 
-export class Class extends AbstractClass {
+export class Class extends AbstractClass implements VisualizationClass {
 
   subClassOf: Uri;
   scopeClass: Uri;
@@ -798,6 +798,7 @@ export class Class extends AbstractClass {
   modifiedAt: Moment;
   createdAt: Moment;
 
+  resolved = true;
   unsaved: boolean = false;
   external: boolean = false;
 
@@ -828,10 +829,6 @@ export class Class extends AbstractClass {
     this.createdAt = deserializeDate(graph.created);
   }
 
-  get associationPropertiesWithTarget() {
-    return _.filter(this.properties, property => property.isAssociation() && property.valueClass);
-  }
-
   get inUnstableState(): boolean {
     return this.state === 'Unstable';
   }
@@ -855,6 +852,19 @@ export class Class extends AbstractClass {
 
   removeProperty(property: Property): void {
     _.remove(this.properties, property);
+  }
+
+  get associationPropertiesWithTarget() {
+    return _.filter(this.properties, property => property.isAssociation() && property.valueClass);
+  }
+
+  hasAssociationTarget(id: Uri) {
+    for (const association of this.associationPropertiesWithTarget) {
+      if (association.valueClass.equals(id)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   clone(): Class {
@@ -1958,10 +1968,6 @@ export class EntityDeserializer {
 
   deserializeSearch(data: GraphData): IPromise<SearchResult[]> {
     return frameAndMapArray(this.$log, data, frames.searchResultFrame(data), (framedData) => SearchResult);
-  }
-
-  deserializeClassVisualization(data: GraphData): IPromise<VisualizationClass[]> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => AssociationTargetPlaceholderClass);
   }
 
   deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
