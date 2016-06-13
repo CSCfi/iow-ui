@@ -162,12 +162,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
     if (newItem instanceof Class) {
-      if (newItem.id.equals(oldItem.id)) {
-        this.updateClassAndLayout(newItem);
-      } else {
-        // TODO: ID change incremental refresh
-        this.refresh(true);
-      }
+      this.updateClassAndLayout(newItem, oldItem ? oldItem.id : null);
     }
   }
 
@@ -177,9 +172,18 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  private updateClassAndLayout(klass: Class) {
+  private updateClassAndLayout(klass: Class, oldId?: Uri) {
     this.classService.getVisualizationData(this.model, klass.id).then(assignedClass => {
+
       const addedClasses = this.addOrReplaceClass(assignedClass);
+
+      if (oldId && !oldId.equals(klass.id)) {
+        if (this.isAssociationTarget(oldId)) {
+          this.replaceClass(new DummyVisualizationClass(oldId, this.model));
+        } else {
+          this.removeClass(oldId);
+        }
+      }
 
       if (addedClasses.length > 0) {
         this.layoutAndAdjust(addedClasses).then(() => this.focus());
@@ -369,20 +373,21 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  private removeClass(klass: Class) {
+  private removeClass(klass: Class|Uri) {
+
+    const id: Uri = klass instanceof Class ? klass.id : <Uri> klass;
 
     // remove to be unreferenced shadow classes
-    for (const property of klass.associationPropertiesWithTarget) {
-      const element = this.graph.getCell(property.valueClass.uri);
-      if (element && element instanceof shadowClass && this.graph.getConnectedLinks(element).length === 1) {
+    for (const element of this.graph.getNeighbors(<joint.dia.Element> this.graph.getCell(id.uri))) {
+      if (element instanceof shadowClass && this.graph.getConnectedLinks(element).length === 1) {
         element.remove();
       }
     }
 
     if (this.isAssociationTarget(klass)) {
-      this.replaceClass(new DummyVisualizationClass(klass.id, this.model));
+      this.replaceClass(new DummyVisualizationClass(id, this.model));
     } else {
-      this.graph.getCell(klass.id.uri).remove();
+      this.graph.getCell(id.uri).remove();
     }
   }
 
@@ -390,7 +395,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (this.isExistingClass(klass.id)) {
       return this.replaceClass(klass);
     } else {
-      return this.addClass(klass);
+      return this.addClass(klass, true);
     }
   }
 
@@ -398,19 +403,20 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     const oldElement = this.graph.getCell(klass.id.uri);
     const incomingLinks: joint.dia.Link[] = [];
+    const oldOutgoingClassIds = new Set<string>();
 
     for (const link of this.graph.getConnectedLinks(oldElement)) {
 
       const targetId = link.attributes.target.id;
       const targetElement = this.graph.getCell(targetId);
 
-      if (targetElement
-        && targetElement instanceof shadowClass
-        && !klass.hasAssociationTarget(new Uri(targetId))
-        && this.graph.getConnectedLinks(targetElement).length === 1) {
-
-        // Remove to be unreferenced shadow class
-        targetElement.remove();
+      if (!klass.hasAssociationTarget(new Uri(targetId))) {
+        if (targetElement instanceof shadowClass && this.graph.getConnectedLinks(targetElement).length === 1) {
+          // Remove to be unreferenced shadow class
+          targetElement.remove();
+        }
+      } else {
+        oldOutgoingClassIds.add(targetId);
       }
 
       if (link.attributes.source.id === klass.id.uri) {
@@ -421,19 +427,29 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    const newClassElement = this.createClass(klass);
-    newClassElement.position(oldElement.attributes.position.x, oldElement.attributes.position.y);
+    const oldElementLocation = oldElement.attributes.position;
     oldElement.remove();
-    this.graph.addCell(newClassElement);
+
+    const addedClasses = this.addClass(klass, true, oldElementLocation);
     this.graph.addCells(incomingLinks);
 
-    return this.addAssociations(klass);
+    const result = _.filter(addedClasses, addedClass => !klass.id.equals(addedClass) && !oldOutgoingClassIds.has(addedClass.uri));
+
+    return result;
   }
 
-  private addClass(klass: VisualizationClass) {
-    this.graph.addCell(this.createClass(klass));
-    const addedClasses = this.addAssociations(klass);
-    return addedClasses.concat([klass.id]);
+  private addClass(klass: VisualizationClass, addAssociations: boolean, location?: {x: number, y: number}) {
+    const classElement = this.createClass(klass);
+    if (location) {
+      classElement.position(location.x, location.y);
+    }
+    this.graph.addCell(classElement);
+
+    if (addAssociations) {
+      return this.addAssociations(klass).concat([klass.id]);
+    } else {
+      return [klass.id];
+    }
   }
 
   private addAssociation(klass: VisualizationClass, association: Property) {
@@ -441,13 +457,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     let addedClass = false;
 
     if (!this.isExistingClass(association.valueClass)) {
-      const fromElement = this.graph.getCell(klass.id.uri);
-      const newClass = this.createClass(new DummyVisualizationClass(association.valueClass, this.model));
-      newClass.position(fromElement.attributes.position.x, fromElement.attributes.position.y);
-      this.graph.addCell(newClass);
+      const sourceLocation = this.graph.getCell(klass.id.uri).attributes.position;
+      this.addClass(new DummyVisualizationClass(association.valueClass, this.model), false, sourceLocation);
       addedClass = true;
     }
-
+    
     this.graph.addCell(this.createAssociation(klass, association));
 
     return addedClass;
@@ -471,9 +485,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     return !!this.graph.getCell(id.uri);
   }
 
-  isAssociationTarget(item: Class) {
+  isAssociationTarget(klass: Class|Uri) {
+    const id: Uri = klass instanceof Class ? klass.id : <Uri> klass;
+
     for (const link of this.graph.getLinks()) {
-      if (link.attributes.target.id === item.id.uri) {
+      if (link.attributes.target.id === id.uri) {
         return true;
       }
     }
