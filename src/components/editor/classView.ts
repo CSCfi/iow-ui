@@ -3,6 +3,7 @@ import ILocationService = angular.ILocationService;
 import ILogService = angular.ILogService;
 import IQService = angular.IQService;
 import IScope = angular.IScope;
+import * as _ from 'lodash';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassService } from '../../services/classService';
