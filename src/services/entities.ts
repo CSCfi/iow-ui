@@ -737,6 +737,7 @@ export interface VisualizationClass {
   properties: Property[];
   resolved: boolean;
   associationPropertiesWithTarget: Property[];
+  hasAssociationTarget(id: Uri): boolean;
 }
 
 export class AssociationTargetPlaceholderClass extends GraphNode implements VisualizationClass {
@@ -756,6 +757,15 @@ export class AssociationTargetPlaceholderClass extends GraphNode implements Visu
   get associationPropertiesWithTarget() {
     return _.filter(this.properties, property => property.isAssociation() && property.valueClass);
   }
+
+  hasAssociationTarget(id: Uri) {
+    for (const association of this.associationPropertiesWithTarget) {
+      if (association.valueClass.equals(id)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 export class DummyVisualizationClass implements VisualizationClass {
@@ -767,6 +777,10 @@ export class DummyVisualizationClass implements VisualizationClass {
 
   constructor(public id: Uri, model: Model) {
     this.label = createConstantLocalizable(id.curie, model.language);
+  }
+
+  hasAssociationTarget(id: Uri) {
+    return false;
   }
 }
 
