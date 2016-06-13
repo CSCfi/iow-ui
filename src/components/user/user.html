@@ -1,27 +1,30 @@
-<div ng-show="ctrl.user" class="col-md-5">
+<div ng-show="ctrl.user">
+  <div class="main-header">
+    <h2><span translate>User details</span></h2>
+  </div>
 
-  <h2><i class="fa fa-user"></i><span translate>User details</span></h2>
+    <form>
+      <div class="top-actions"></div>
+      <div class="col-md-12">
+        <non-editable title="User login" value="ctrl.user.login"></non-editable>
+        <non-editable title="User name" value="ctrl.user.name"></non-editable>
+        <non-editable title="Created at" value="ctrl.user.createdAt"></non-editable>
+        <non-editable title="Modified at" value="ctrl.user.modifiedAt"></non-editable>
 
-  <form>
+        <div class="editable-wrap">
+          <label translate>Member groups</label>
+          <ul>
+            <li ng-repeat="group in ctrl.user.memberGroups"><a ng-href="{{ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
+          </ul>
+        </div>
 
-    <non-editable title="User login" value="ctrl.user.login"></non-editable>
-    <non-editable title="User name" value="ctrl.user.name"></non-editable>
-    <non-editable title="Created at" value="ctrl.user.createdAt"></non-editable>
-    <non-editable title="Modified at" value="ctrl.user.modifiedAt"></non-editable>
+        <div class="editable-wrap">
+          <label translate>Admin groups</label>
+          <ul>
+            <li ng-repeat="group in ctrl.user.adminGroups"><a ng-href="{{ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </form>
 
-    <div class="editable-wrap">
-      <label translate>Member groups</label>
-      <ul>
-        <li ng-repeat="group in ctrl.user.memberGroups"><a ng-href="{{ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
-      </ul>
-    </div>
-
-    <div class="editable-wrap">
-      <label translate>Admin groups</label>
-      <ul>
-        <li ng-repeat="group in ctrl.user.adminGroups"><a ng-href="{{ctrl.groupUrl(group)}}">{{group.compact}}</a></li>
-      </ul>
-    </div>
-
-  </form>
 </div>
