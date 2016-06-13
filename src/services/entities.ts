@@ -739,7 +739,7 @@ export interface VisualizationClass {
   hasAssociationTarget(id: Uri): boolean;
 }
 
-export class AssociationTargetPlaceholderClass extends GraphNode implements VisualizationClass {
+export class DefaultVisualizationClass extends GraphNode implements VisualizationClass {
 
   id: Uri;
   label: Localizable;
@@ -1970,7 +1970,7 @@ export class EntityDeserializer {
   }
 
   deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => AssociationTargetPlaceholderClass);
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => DefaultVisualizationClass);
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {
