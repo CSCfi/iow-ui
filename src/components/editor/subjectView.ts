@@ -30,4 +30,8 @@ class SubjectViewController {
       return this.subject.suggestion ? 'Concept suggestion' : 'Concept';
     }
   }
+
+  get link() {
+    return !this.subject.suggestion && this.subject.id.url;
+  }
 }
