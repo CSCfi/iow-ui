@@ -134,14 +134,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (this.model) {
 
       this.paperHolder.setVisible(this.model);
-      const graph = this.graph;
 
-      if (invalidateCache || graph.getCells().length === 0) {
+      if (invalidateCache || this.graph.getCells().length === 0) {
         this.loading = true;
 
         this.modelService.getVisualizationData(this.model)
           .then(data => {
-            this.graph.resetCells(createCells(this.$scope, this.languageService, this.model, data));
+            this.graph.resetCells(this.createCells(data));
             this.layoutAndAdjust()
               .then(() => this.focus())
               .then(() => this.loading = false);
@@ -150,35 +149,44 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  layoutAndAdjust(onlyClass?: VisualizationClass) {
-    return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClass ? onlyClass.id : null))
+  layoutAndAdjust(onlyClassIda: Uri[] = []) {
+    return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClassIda))
       .then(() => adjustLinks(this.paper));
+  }
+
+  onDelete(item: Class|Predicate) {
+    if (item instanceof Class) {
+      this.removeClass(item);
+    }
   }
 
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
     if (newItem instanceof Class) {
-      if (oldItem.unsaved) {
-        this.classService.getVisualizationData(this.model, newItem.id).then(data => {
-          const addedClass = _.find(data, klass => klass.id.equals(newItem.id));
-          this.graph.addCell(createClass(this.$scope, this.languageService, this.model, addedClass));
-          this.layoutAndAdjust(addedClass).then(() => this.focus());
-        });
+      if (newItem.id.equals(oldItem.id)) {
+        this.updateClassAndLayout(newItem);
       } else {
+        // TODO: ID change incremental refresh
         this.refresh(true);
       }
     }
   }
 
-  onDelete(item: Class|Predicate) {
+  onAssign(item: Class|Predicate) {
     if (item instanceof Class) {
-      this.refresh(true);
+      this.updateClassAndLayout(item);
     }
   }
 
-  onAssign(item: Class|Predicate) {
-    if (item instanceof Class) {
-      this.refresh(true);
-    }
+  private updateClassAndLayout(klass: Class) {
+    this.classService.getVisualizationData(this.model, klass.id).then(assignedClass => {
+      const addedClasses = this.addOrReplaceClass(assignedClass);
+
+      if (addedClasses.length > 0) {
+        this.layoutAndAdjust(addedClasses).then(() => this.focus());
+      } else {
+        this.focus();
+      }
+    });
   }
 
   onResize(show: Show) {
@@ -360,6 +368,250 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       return null;
     }
   }
+
+  private removeClass(klass: Class) {
+
+    // remove to be unreferenced shadow classes
+    for (const property of klass.associationPropertiesWithTarget) {
+      const element = this.graph.getCell(property.valueClass.uri);
+      if (element && element instanceof shadowClass && this.graph.getConnectedLinks(element).length === 1) {
+        element.remove();
+      }
+    }
+
+    if (this.isAssociationTarget(klass)) {
+      this.replaceClass(new DummyVisualizationClass(klass.id, this.model));
+    } else {
+      this.graph.getCell(klass.id.uri).remove();
+    }
+  }
+
+  private addOrReplaceClass(klass: VisualizationClass) {
+    if (this.isExistingClass(klass.id)) {
+      return this.replaceClass(klass);
+    } else {
+      return this.addClass(klass);
+    }
+  }
+
+  private replaceClass(klass: VisualizationClass) {
+
+    const oldElement = this.graph.getCell(klass.id.uri);
+    const incomingLinks: joint.dia.Link[] = [];
+
+    for (const link of this.graph.getConnectedLinks(oldElement)) {
+
+      const targetId = link.attributes.target.id;
+      const targetElement = this.graph.getCell(targetId);
+
+      if (targetElement
+        && targetElement instanceof shadowClass
+        && !klass.hasAssociationTarget(new Uri(targetId))
+        && this.graph.getConnectedLinks(targetElement).length === 1) {
+
+        // Remove to be unreferenced shadow class
+        targetElement.remove();
+      }
+
+      if (link.attributes.source.id === klass.id.uri) {
+        // remove outgoing links since they will be added again
+        link.remove();
+      } else {
+        incomingLinks.push(link);
+      }
+    }
+
+    const newClassElement = this.createClass(klass);
+    newClassElement.position(oldElement.attributes.position.x, oldElement.attributes.position.y);
+    oldElement.remove();
+    this.graph.addCell(newClassElement);
+    this.graph.addCells(incomingLinks);
+
+    return this.addAssociations(klass);
+  }
+
+  private addClass(klass: VisualizationClass) {
+    this.graph.addCell(this.createClass(klass));
+    const addedClasses = this.addAssociations(klass);
+    return addedClasses.concat([klass.id]);
+  }
+
+  private addAssociation(klass: VisualizationClass, association: Property) {
+
+    let addedClass = false;
+
+    if (!this.isExistingClass(association.valueClass)) {
+      const fromElement = this.graph.getCell(klass.id.uri);
+      const newClass = this.createClass(new DummyVisualizationClass(association.valueClass, this.model));
+      newClass.position(fromElement.attributes.position.x, fromElement.attributes.position.y);
+      this.graph.addCell(newClass);
+      addedClass = true;
+    }
+
+    this.graph.addCell(this.createAssociation(klass, association));
+
+    return addedClass;
+  }
+
+  private addAssociations(klass: VisualizationClass) {
+    const addedClasses: Uri[] = [];
+
+    for (const association of klass.associationPropertiesWithTarget) {
+      const addedClass = this.addAssociation(klass, association);
+      if (addedClass) {
+        addedClasses.push(association.valueClass);
+      }
+    }
+
+    return addedClasses;
+  }
+
+  isExistingClass(klass: Class|Uri) {
+    const id: Uri = klass instanceof Class ? klass.id : <Uri> klass;
+    return !!this.graph.getCell(id.uri);
+  }
+
+  isAssociationTarget(item: Class) {
+    for (const link of this.graph.getLinks()) {
+      if (link.attributes.target.id === item.id.uri) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private createCells(classes: VisualizationClass[]) {
+
+    const associations: {klass: VisualizationClass, property: Property}[] = [];
+    const classIds = collectIds(classes);
+
+    const cells: joint.dia.Cell[] = [];
+
+    for (const klass of classes) {
+      for (const property of klass.properties) {
+
+        if (property.isAssociation() && property.valueClass) {
+          if (!classIds.has(property.valueClass.uri)) {
+            classIds.add(property.valueClass.uri);
+            cells.push(this.createClass(new DummyVisualizationClass(property.valueClass, this.model)));
+          }
+          associations.push({klass, property});
+        }
+      }
+
+      cells.push(this.createClass(klass));
+    }
+
+    for (const association of associations) {
+      cells.push(this.createAssociation(association.klass, association.property));
+    };
+
+    return cells;
+  }
+
+  private createClass(klass: VisualizationClass) {
+
+    const that = this;
+    const showCardinality = this.model.isOfType('profile');
+
+    function getName() {
+      return that.languageService.translate(klass. label, that.model);
+    }
+
+    function getPropertyNames() {
+      function propertyAsString(property: Property): string {
+        const name = that.languageService.translate(property.label, that.model);
+        const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
+        const cardinality = formatCardinality(property);
+        return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
+      }
+
+      const attributes = _.filter(klass.properties, property => property.isAttribute());
+      return _.map(_.sortBy(attributes, property => property.index), propertyAsString);
+    }
+
+    function size(className: string, propertyNames: string[]) {
+      const propertyLengths = _.map(propertyNames, name => name.length);
+      const width = _.max([_.max(propertyLengths) * 6.5, className.length * 6.5, 150]);
+      const height = 12 * propertyNames.length + 35;
+
+      return { width, height };
+    }
+
+    const className = getName();
+    const propertyNames = getPropertyNames();
+
+    const classConstructor = klass.resolved ? withoutUnusedMarkupClass : shadowClass;
+
+    const classCell = new classConstructor({
+      id: klass.id.uri,
+      size: size(className, propertyNames),
+      name: className,
+      attributes: propertyNames,
+      attrs: {
+        '.uml-class-name-text': {
+          'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
+        }
+      },
+      z: zIndexClass
+    });
+
+    this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
+      if (oldLang && (lang !== oldLang)) {
+        const newPropertyNames = getPropertyNames();
+        const newClassName = getName();
+        classCell.prop('name', newClassName);
+        classCell.prop('attributes', newPropertyNames);
+        classCell.prop('size', size(newClassName, newPropertyNames));
+      }
+    });
+
+    return classCell;
+  }
+
+  private createAssociation(klass: VisualizationClass, association: Property) {
+
+    const that = this;
+    const showCardinality = this.model.isOfType('profile');
+
+    function getName() {
+      const localizedName = that.languageService.translate(association.label, that.model);
+
+      if (association.stem) {
+        return localizedName + '\n' + ' {' + association.stem + '}';
+      } else {
+        return localizedName;
+      }
+    }
+
+    const associationCell = new withoutUnusedMarkupLink({
+      source: { id: klass.id.uri },
+      target: { id: association.valueClass.uri },
+      connector: { name: 'normal' },
+      attrs: {
+        '.marker-target': {
+          d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
+        }
+      },
+      labels: [
+        { position: 0.5, attrs: { text: { text: getName() } } },
+        { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(association) : ''} } }
+      ],
+      z: zIndexAssociation
+    });
+
+    this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
+      if (oldLang && (lang !== oldLang)) {
+        associationCell.prop('labels/0/attrs/text/text', getName());
+        if (showCardinality) {
+          associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
+        }
+      }
+    });
+
+    return associationCell;
+  }
+
 }
 
 class PaperHolder {
@@ -531,7 +783,7 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
   });
 }
 
-function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeId?: Uri): Promise<any> {
+function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): Promise<any> {
   if (directed) {
     // TODO directed doesn't support incremental layout
     return new Promise((resolve) => {
@@ -544,37 +796,8 @@ function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeId?: Uri
       resolve();
     });
   } else {
-    return colaLayout(graph, onlyNodeId ? onlyNodeId.uri : null);
+    return colaLayout(graph, _.map(onlyNodeIds, id => id.uri));
   }
-}
-
-function createCells($scope: IScope, languageService: LanguageService, model: Model, classes: VisualizationClass[]) {
-
-  const associations: {klass: VisualizationClass, association: Property}[] = [];
-  const classIds = collectIds(classes);
-
-  const cells: joint.dia.Cell[] = [];
-
-  for (const klass of classes) {
-    for (const property of klass.properties) {
-
-      if (property.isAssociation() && property.valueClass) {
-        if (!classIds.has(property.valueClass.uri)) {
-          classIds.add(property.valueClass.uri);
-          cells.push(createClass($scope, languageService, model, new DummyVisualizationClass(property.valueClass, model)));
-        }
-        associations.push({klass: klass, association: property});
-      }
-    }
-
-    cells.push(createClass($scope, languageService, model, klass));
-  }
-
-  for (const association of associations) {
-    cells.push(createAssociation($scope, languageService, model, association));
-  };
-
-  return cells;
 }
 
 function formatCardinality(property: Property) {
@@ -614,107 +837,6 @@ const classMarkup = (shadow: boolean) => {
 
 const withoutUnusedMarkupClass = joint.shapes.uml.Class.extend({ markup: classMarkup(false) });
 const shadowClass = joint.shapes.uml.Class.extend({ markup: classMarkup(true) });
-
-function createClass($scope: IScope, languageService: LanguageService, model: Model, klass: VisualizationClass) {
-
-  const showCardinality = model.isOfType('profile');
-
-  function getName() {
-    return languageService.translate(klass.label, model);
-  }
-
-  function getPropertyNames() {
-    function propertyAsString(property: Property): string {
-      const name = languageService.translate(property.label, model);
-      const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
-      const cardinality = formatCardinality(property);
-      return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
-    }
-
-    const attributes = _.filter(klass.properties, property => property.isAttribute());
-    return _.map(_.sortBy(attributes, property => property.index), propertyAsString);
-  }
-
-  function size(className: string, propertyNames: string[]) {
-    const propertyLengths = _.map(propertyNames, name => name.length);
-    const width = _.max([_.max(propertyLengths) * 6.5, className.length * 6.5, 150]);
-    const height = 12 * propertyNames.length + 35;
-
-    return { width, height };
-  }
-
-  const className = getName();
-  const propertyNames = getPropertyNames();
-
-  const classConstructor = klass.resolved ? withoutUnusedMarkupClass : shadowClass;
-
-  const classCell = new classConstructor({
-    id: klass.id.uri,
-    size: size(className, propertyNames),
-    name: className,
-    attributes: propertyNames,
-    attrs: {
-      '.uml-class-name-text': {
-        'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
-      }
-    },
-    z: zIndexClass
-  });
-
-  $scope.$watch(() => languageService.getModelLanguage(model), (lang, oldLang) => {
-    if (oldLang && (lang !== oldLang)) {
-      const newPropertyNames = getPropertyNames();
-      const newClassName = getName();
-      classCell.prop('name', newClassName);
-      classCell.prop('attributes', newPropertyNames);
-      classCell.prop('size', size(newClassName, newPropertyNames));
-    }
-  });
-
-  return classCell;
-}
-
-function createAssociation($scope: IScope, languageService: LanguageService, model: Model, data: {klass: VisualizationClass, association: Property}) {
-
-  const showCardinality = model.isOfType('profile');
-
-  function getName() {
-    const localizedName = languageService.translate(data.association.label, model);
-
-    if (data.association.stem) {
-      return localizedName + '\n' + ' {' + data.association.stem + '}';
-    } else {
-      return localizedName;
-    }
-  }
-
-  const associationCell = new withoutUnusedMarkupLink({
-    source: { id: data.klass.id.uri },
-    target: { id: data.association.valueClass.uri },
-    connector: { name: 'normal' },
-    attrs: {
-      '.marker-target': {
-        d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
-      }
-    },
-    labels: [
-      { position: 0.5, attrs: { text: { text: getName() } } },
-      { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(data.association) : ''} } }
-    ],
-    z: zIndexAssociation
-  });
-
-  $scope.$watch(() => languageService.getModelLanguage(model), (lang, oldLang) => {
-    if (oldLang && (lang !== oldLang)) {
-      associationCell.prop('labels/0/attrs/text/text', getName());
-      if (showCardinality) {
-        associationCell.prop('labels/1/attrs/text/text', formatCardinality(data.association));
-      }
-    }
-  });
-
-  return associationCell;
-}
 
 
 function isSiblingLink(lhs: joint.dia.Link, rhs: joint.dia.Link) {

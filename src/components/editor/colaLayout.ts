@@ -14,7 +14,7 @@ class SimpleColaLayout extends Layout {
 
   tickCount = 0;
 
-  constructor(nodes: IdentifiedNode[], links: Link<IdentifiedNode>[], private ready: () => void) {
+  constructor(nodes: IdentifiedNode[], links: Link<IdentifiedNode>[], allNodes: boolean, private ready: () => void) {
     super();
 
     if (debugPerformance) {
@@ -26,7 +26,7 @@ class SimpleColaLayout extends Layout {
 
     this.avoidOverlaps(true);
     this.handleDisconnected(true);
-    this.jaccardLinkLengths(30);
+    this.jaccardLinkLengths(allNodes ? 30 : 300);
     this.convergenceThreshold(0.005);
   }
 
@@ -86,11 +86,12 @@ function hash(str: string) {
   return hash % 47;
 }
 
-export function layout(graph: joint.dia.Graph, onlyNodeId?: string): Promise<any> {
+export function layout(graph: joint.dia.Graph, onlyNodeIds: string[] = []): Promise<any> {
 
   const nodes: Map<string, IdentifiedNode> = new Map<string, IdentifiedNode>();
   const links: Link<IdentifiedNode>[] = [];
   const jointElements = index(graph.getElements());
+  const onlyNodeIdsSet = new Set<string>(onlyNodeIds);
 
   Iterable.forEach(jointElements.values(), element => {
     nodes.set(element.id, {
@@ -99,7 +100,7 @@ export function layout(graph: joint.dia.Graph, onlyNodeId?: string): Promise<any
       y: (element.attributes.position.y || hash('y' + element.id)),
       width: element.attributes.size.width / scaleCorrection,
       height: element.attributes.size.height / scaleCorrection,
-      fixed: onlyNodeId && element.id !== onlyNodeId
+      fixed: onlyNodeIdsSet.size > 0 && !onlyNodeIdsSet.has(element.id)
     });
   });
 
@@ -129,12 +130,14 @@ export function layout(graph: joint.dia.Graph, onlyNodeId?: string): Promise<any
   }
 
   return new Promise((resolve) => {
-    const layout = new SimpleColaLayout(Array.from(nodes.values()), links, () => {
+    const layout = new SimpleColaLayout(Array.from(nodes.values()), links, onlyNodeIds.length === 0, () => {
 
-      if (onlyNodeId) {
-        const node = nodes.get(onlyNodeId);
-        const element = jointElements.get(onlyNodeId);
-        element.position(node.x, node.y);
+      if (onlyNodeIds.length > 0) {
+        for (const nodeId of onlyNodeIds) {
+          const node = nodes.get(nodeId);
+          const element = jointElements.get(nodeId);
+          element.position(node.x, node.y);
+        }
       } else {
         const min = findMin(nodes.values());
 
