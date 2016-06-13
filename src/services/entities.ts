@@ -767,7 +767,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
   }
 }
 
-export class DummyVisualizationClass implements VisualizationClass {
+export class AssociationTargetPlaceholderClass implements VisualizationClass {
 
   label: Localizable;
   properties: Property[] = [];

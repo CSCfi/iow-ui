@@ -7,7 +7,7 @@ import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
-  DummyVisualizationClass
+  AssociationTargetPlaceholderClass
 } from '../../services/entities';
 import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
@@ -178,7 +178,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     if (oldId && !oldId.equals(klass.id)) {
       if (this.isAssociationTarget(oldId)) {
-        this.replaceClass(new DummyVisualizationClass(oldId, this.model));
+        this.replaceClass(new AssociationTargetPlaceholderClass(oldId, this.model));
       } else {
         this.removeClass(oldId);
       }
@@ -383,7 +383,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     if (this.isAssociationTarget(klass)) {
-      this.replaceClass(new DummyVisualizationClass(id, this.model));
+      this.replaceClass(new AssociationTargetPlaceholderClass(id, this.model));
     } else {
       this.graph.getCell(id.uri).remove();
     }
@@ -456,7 +456,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     if (!this.isExistingClass(association.valueClass)) {
       const sourceLocation = this.graph.getCell(klass.id.uri).attributes.position;
-      this.addClass(new DummyVisualizationClass(association.valueClass, this.model), false, sourceLocation);
+      this.addClass(new AssociationTargetPlaceholderClass(association.valueClass, this.model), false, sourceLocation);
       addedClass = true;
     }
 
@@ -507,7 +507,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         if (property.isAssociation() && property.valueClass) {
           if (!classIds.has(property.valueClass.uri)) {
             classIds.add(property.valueClass.uri);
-            cells.push(this.createClass(new DummyVisualizationClass(property.valueClass, this.model)));
+            cells.push(this.createClass(new AssociationTargetPlaceholderClass(property.valueClass, this.model)));
           }
           associations.push({klass, property});
         }
