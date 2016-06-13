@@ -4,7 +4,6 @@ import * as frames from './frames';
 import * as moment from 'moment';
 import Moment = moment.Moment;
 import { Frame } from './frames';
-import { FrameFn } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
