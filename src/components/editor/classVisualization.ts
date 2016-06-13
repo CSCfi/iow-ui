@@ -461,7 +461,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       this.addClass(new DummyVisualizationClass(association.valueClass, this.model), false, sourceLocation);
       addedClass = true;
     }
-    
+
     this.graph.addCell(this.createAssociation(klass, association));
 
     return addedClass;
