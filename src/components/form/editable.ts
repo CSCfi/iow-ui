@@ -11,12 +11,13 @@ import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
 import { LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
+import { isDefined } from '../../utils/object';
 
 const NG_HIDE_CLASS = 'ng-hide';
 const NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
 
 interface EditableAttributes extends IAttributes {
-  autofocus: void;
+  autofocus: string;
 }
 
 mod.directive('editable', /* @ngInject */ ($animate: any) => {
@@ -52,7 +53,9 @@ mod.directive('editable', /* @ngInject */ ($animate: any) => {
 
       if (attributes.hasOwnProperty('autofocus')) {
         $scope.$watch(() => isEditing(), (currentEditing) => {
-          if (currentEditing) {
+          const shouldFocus = attributes.hasOwnProperty('autofocus') && (!isDefined(attributes.autofocus) || $scope.$parent.$eval(attributes.autofocus));
+
+          if (shouldFocus && currentEditing) {
             setTimeout(() => input.focus(), 0);
           }
         });
