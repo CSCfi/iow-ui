@@ -28,7 +28,7 @@ mod.directive('predicateView', () => {
   };
 });
 
-class PredicateViewController extends EditableEntityController<Association|Attribute> {
+export class PredicateViewController extends EditableEntityController<Association|Attribute> {
 
   predicate: Association|Attribute;
   model: Model;

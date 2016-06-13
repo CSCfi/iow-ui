@@ -9,6 +9,7 @@ import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { Uri } from '../../services/uri';
 import { ClassService } from '../../services/classService';
 import { module as mod }  from './module';
+import { isDefined } from '../../utils/object';
 
 mod.directive('classForm', () => {
   return {
@@ -25,6 +26,7 @@ mod.directive('classForm', () => {
     bindToController: true,
     link($scope: IScope, element: JQuery, attributes: IAttributes, [classFormController, classViewController]: [ClassFormController, ClassViewController]) {
       classFormController.isEditing = () => classViewController && classViewController.isEditing();
+      classFormController.shouldAutofocus = !isDefined(classViewController);
     },
     controller: ClassFormController
   };
@@ -38,6 +40,7 @@ export class ClassFormController {
   isEditing: () => boolean;
   openPropertyId: string;
   onPropertyReorder = (property: Property, index: number) => property.index = index;
+  shouldAutofocus: boolean;
 
   /* @ngInject */
   constructor(private classService: ClassService,

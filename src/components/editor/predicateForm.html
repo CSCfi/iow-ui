@@ -3,7 +3,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" context="ctrl.model" autofocus>
+    <editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" context="ctrl.model" autofocus="ctrl.shouldAutofocus">
       <input id="predicateName" class="form-control" type="text" localized-input="label" context="ctrl.model" ng-model="ctrl.predicate.label" />
     </editable>
   </div>
