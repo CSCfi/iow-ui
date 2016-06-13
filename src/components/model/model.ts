@@ -368,29 +368,12 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       })
       .then(([shape, properties]: [Class, Property[]]) => {
         shape.properties = properties;
-        // TODO: assigning predicates should be done later on when shape is being persisted
-        this.assignMissingPredicates(shape);
         return shape;
       });
   }
 
   private assignClassToModel(klass: Class) {
-    this.assignMissingPredicates(klass);
     return this.classService.assignClassToModel(klass.id, this.model.id);
-  }
-
-  private assignMissingPredicates(klass: Class) {
-    const predicateIds = collectIds([this.attributes, this.associations]);
-
-    this.$q.all(
-      _.chain(klass.properties)
-        .map((property: Property) => property.predicate)
-        .filter((predicateId: Uri) => this.model.isNamespaceKnownToBeModel(predicateId.namespace))
-        .filter((predicateId: Uri) => !predicateIds.has(predicateId.uri))
-        .map((predicateId: Uri) => this.assignPredicateToModel(predicateId))
-        .value()
-      )
-      .then(() => this.updatePredicates(true));
   }
 
   private createPredicate(conceptCreation: EntityCreation, type: Type) {
