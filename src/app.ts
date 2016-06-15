@@ -1,5 +1,3 @@
-/// <reference path="./main.d.ts" />
-
 import IAnimateProvider = angular.IAnimateProvider;
 import ICompileProvider = angular.ICompileProvider;
 import ILocationService = angular.ILocationService;

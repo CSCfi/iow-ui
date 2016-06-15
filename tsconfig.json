@@ -8,6 +8,9 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true
   },
+  "files": [
+    "./src/main.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "typings",
