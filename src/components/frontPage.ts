@@ -12,8 +12,8 @@ import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
 import { module as mod }  from './module';
 
-const frontPageImage = require('../assets/iow_etusivu_kuva.png');
-const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.png');
+const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
+const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
 
 mod.directive('frontPage', () => {
   return {
