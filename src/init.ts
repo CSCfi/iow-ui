@@ -3,7 +3,7 @@ import './styles/loading.scss';
 import { config } from './config';
 const pw = require('please-wait');
 
-const logo = require('./assets/logo.png');
+const logo = require('./assets/logo-01.svg');
 const backgroundColor = '#375e97';
 
 function loadingScreen() {
