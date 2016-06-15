@@ -5,7 +5,7 @@
 // Definitions by: Aidan Reel <http://github.com/areel>, David Durman <http://github.com/DavidDurman>, Ewout Van Gossum <https://github.com/DenEwout>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-
+/// <reference path="./backbone.d.ts" />
 
 declare module joint {
 
