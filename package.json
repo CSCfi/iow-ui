@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.serve-config.js",
     "build": "node node_modules/webpack/bin/webpack.js --config webpack.build-config.js",
-    "postinstall": "node node_modules/typings/dist/bin/typings.js install",
+    "postinstall": "node node_modules/typings/dist/bin.js install",
     "create-translations": "node node_modules/ts-node/dist/bin/ts-node.js generatePot.ts",
     "example-data": "node node_modules/ts-node/dist/bin/ts-node.js examples/loadExamples.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -68,7 +68,7 @@
     "tslint": "^3.3.0",
     "tslint-loader": "^2.1.0",
     "typescript": "^1.8.0",
-    "typings": "^0.6.8",
+    "typings": "^1.1.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.13",
     "webpack-config": "^3.1.0",

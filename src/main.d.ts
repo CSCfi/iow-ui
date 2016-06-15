@@ -1,4 +1,4 @@
-/// <reference path="../typings/browser.d.ts" />
+/// <reference path="../typings/index.d.ts" />
 /// <reference path="./vendor/webcola.d.ts" />
 /// <reference path="./vendor/jointjs.d.ts" />
 
