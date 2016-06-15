@@ -28,7 +28,7 @@ $brand-accent-dark:     #375e97;
 @import '../vendor/variables';
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../vendor/bootswatch';
-@import '../../node_modules/jointjs/joint.css';
+@import '../../node_modules/jointjs/dist/joint.css';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;

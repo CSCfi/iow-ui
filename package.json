@@ -33,7 +33,7 @@
     "checklist-model": "^0.6.0",
     "core-js": "2.1.0",
     "font-awesome": "^4.6.1",
-    "jointjs": "0.9.7",
+    "jointjs": "0.9.10",
     "jquery": "2.1.1",
     "jquery-mousewheel": "3.1.13",
     "jsonld": "0.4.2",
