@@ -703,48 +703,52 @@ subject-view .editable-wrap {
 }
 
 .visualization-container {
+
   display: inline-block;
   width: 100%;
   height: calc(100vh - 85px);
   overflow: hidden;
   $enabledColor: #bbb;
 
-  .button {
+  .paper {
+    z-index: 10;
+  }
+
+  .visualization-buttons {
+
     position: absolute;
-    width: 30px;
-    height: 30px;
-    margin: 0;
-    padding: 8px 7px;
-    top: 75px;
-    background-color: $brand-accent-light;
-    border: 1px solid $brand-accent-light;
-    line-height: 0.6;
-    color: white;
-  }
+    z-index: 20;
+    padding-top: 10px;
 
-  .button:hover {
-    color: white;
-    background-color: $brand-accent-dark;
-    border: 1px solid $brand-accent-dark;
-    cursor: pointer;
-  }
+    .button {
+      @include no-select;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      padding-top: 4px;
+      background-color: $brand-accent-light;
+      border: 1px solid $brand-accent-light;
+      color: white;
+      text-align: center;
+    }
 
-  .zoom-out { left: 25px; }
-  .zoom-in { left: 60px; }
-  .zoom-fit { left: 95px; }
-  .zoom-focus { left: 130px; }
-  .focus-in { left: 165px; }
-  .focus-indicator {
-    @include no-select;
-    left: 195px;
-    text-align: center;
-    line-height: 1;
-    &:hover {
+    .button:hover {
       background-color: $brand-accent-dark;
-      cursor: default;
+      border: 1px solid $brand-accent-dark;
+      cursor: pointer;
+    }
+
+    .focus-indicator {
+      margin-left: -4px;
+      margin-right: -4px;
+
+      &:hover {
+        background-color: $brand-accent-light;
+        border: 1px solid $brand-accent-light;
+        cursor: default;
+      }
     }
   }
-  .focus-out { left: 225px; }
 
   .enabled {
     background-color: $enabledColor;

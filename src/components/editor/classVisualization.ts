@@ -29,18 +29,20 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
       model: '=',
       changeNotifier: '='
     },
-    template: `<div>
+    template: `
+               <div class="visualization-buttons">
                  <div class="button zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
                  <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
                  <div class="button zoom-fit" ng-click="ctrl.fitToContent($event)"><i class="fa fa-arrows-alt"></i></div>
                  <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="fa fa-crosshairs"></i></div>
-                 <div ng-show="ctrl.canFocus()" class="selection-focus">
+                 <span ng-show="ctrl.canFocus()">
                    <div class="button focus-in" ng-click="ctrl.focusOut($event)"><i class="fa fa-angle-left"></i></div>
-                   <div class="button focus-indicator">{{ctrl.renderSelectionFocus()}}</div>
+                   <div class="button focus-indicator"><i>{{ctrl.renderSelectionFocus()}}</i></div>
                    <div class="button focus-out" ng-click="ctrl.focusIn($event)"><i class="fa fa-angle-right"></i></div>
-                 </div>
-                 <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
-               </div>`,
+                 </span>                
+               </div>
+               <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
+    `,
     bindToController: true,
     controllerAs: 'ctrl',
     require: 'classVisualization',
