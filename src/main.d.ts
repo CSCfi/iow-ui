@@ -34,3 +34,15 @@ interface JQuery {
   mousewheel(handler: (eventObject: MousewheelEvent) => any): JQuery;
   controller(name: string): any;
 }
+
+declare module "webpack-merge" {
+
+  import { Configuration } from 'webpack';
+
+  interface WebpackMerge {
+    (...configs: Configuration[]): any;
+  }
+
+  export default WebpackMerge;
+  export const smart: WebpackMerge;
+}

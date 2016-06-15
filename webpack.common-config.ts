@@ -1,9 +1,13 @@
-"use strict";
-var path = require('path');
-var webpack = require('webpack');
-var WebpackConfig = require('webpack-config');
+import * as path from 'path';
+import * as webpack from 'webpack';
 
-module.exports = new WebpackConfig().merge({
+interface Configuration extends webpack.Configuration {
+  tslint: {
+    configuration: {}
+  };
+}
+
+export const commonConfig: Configuration = {
   entry: "./src/init.ts",
   output: {
     path: path.join(__dirname, 'public/assets'),
@@ -49,4 +53,10 @@ module.exports = new WebpackConfig().merge({
       }
     })
   ]
-});
+};
+
+const appDir = path.join(__dirname, 'src');
+
+export function isVendorModule(module: { resource: string }) {
+  return module.resource && module.resource.indexOf(appDir) === -1;
+}
