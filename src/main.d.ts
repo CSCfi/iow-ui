@@ -40,7 +40,7 @@ declare module "webpack-merge" {
   import { Configuration } from 'webpack';
 
   interface WebpackMerge {
-    (...configs: Configuration[]): any;
+    (...configs: Configuration[]): Configuration;
   }
 
   export default WebpackMerge;
