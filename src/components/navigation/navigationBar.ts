@@ -6,6 +6,8 @@ import { LoginModal } from './loginModal';
 import { module as mod }  from './module';
 import { Language } from '../../utils/language';
 
+const logoImage = require('../../assets/logo-01.svg');
+
 mod.directive('navigationBar', () => {
   return {
     restrict: 'E',
@@ -32,6 +34,10 @@ class NavigationController {
           throw new Error('Unknown language: ' + language);
       }
     });
+  }
+
+  get logoImage() {
+    return logoImage;
   }
 
   get language(): Language {

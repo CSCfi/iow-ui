@@ -28,7 +28,6 @@ $brand-accent-dark:     #375e97;
 @import '../vendor/variables';
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../vendor/bootswatch';
-@import '../vendor/_hexagon.css';
 @import '../../node_modules/jointjs/joint.css';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -936,12 +935,19 @@ ajax-loading-indicator-small {
   min-height: 60px;
 }
 
-.navbar-brand {
-  line-height: 40px;
-  font-size: 26px;
-  margin-left: 10px;
+.navbar-header {
+  padding-left: 15px;
+  padding-top: 10px;
   div {
-    margin-right: 20px;
+    float: left;
+    line-height: 46px;
+  }
+  span {
+    color: white;
+    margin-left: 20px;
+    font-size: 24px;
+    font-weight: 300;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 }
 
@@ -1149,6 +1155,12 @@ a.accordion-toggle {
   padding-top: 30px;
   padding-bottom: 30px;
   margin: 0 -10px 30px -10px;
+}
+
+#logo-image {
+  min-width: 40px;
+  max-width: 40px;
+  margin-left: 15px;
 }
 
 .main-content-row {
