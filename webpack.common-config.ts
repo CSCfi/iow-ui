@@ -8,10 +8,10 @@ interface Configuration extends webpack.Configuration {
 }
 
 export const commonConfig: Configuration = {
-  entry: "./src/init.ts",
+  entry: './src/init.ts',
   output: {
     path: path.join(__dirname, 'public/assets'),
-    filename: "app.js"
+    filename: 'app.js'
   },
 
   resolve: {
@@ -20,21 +20,21 @@ export const commonConfig: Configuration = {
 
   module: {
     preLoaders: [
-      { test: /\.ts$/,            loader: "tslint" }
+      { test: /\.ts$/,            loader: 'tslint' }
     ],
     loaders: [
-      { test: /\.css$/,           loader: "style!css" },
-      { test: /\.scss$/,          loader: "style!css!sass" },
+      { test: /\.css$/,           loader: 'style!css' },
+      { test: /\.scss$/,          loader: 'style!css!sass' },
       { test: /\.ts$/,            loader: 'ng-annotate!awesome-typescript-loader' },
-      { test: /\.woff(\?.+)?$/,   loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-      { test: /\.woff2(\?.+)?$/,  loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-      { test: /\.ttf(\?.+)?$/,    loader: "file-loader" },
-      { test: /\.eot(\?.+)?$/,    loader: "file-loader" },
-      { test: /\.svg(\?.+)?$/,    loader: "file-loader" },
+      { test: /\.woff(\?.+)?$/,   loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.woff2(\?.+)?$/,  loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.ttf(\?.+)?$/,    loader: 'file-loader' },
+      { test: /\.eot(\?.+)?$/,    loader: 'file-loader' },
+      { test: /\.svg(\?.+)?$/,    loader: 'file-loader' },
       { test: /\.html/,           loader: 'raw' },
       { test: /\.po$/,            loader: 'json!po?format=mf' },
-      { test: /\.png$/,           loader: "url-loader?mimetype=image/png" },
-      { test: /\.gif$/,           loader: "url-loader?mimetype=image/gif" }
+      { test: /\.png$/,           loader: 'url-loader?mimetype=image/png' },
+      { test: /\.gif$/,           loader: 'url-loader?mimetype=image/gif' }
     ]
   },
 
@@ -44,7 +44,7 @@ export const commonConfig: Configuration = {
 
   plugins: [
     new webpack.DefinePlugin({
-      "process.env": {
+      'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
         GIT_DATE: JSON.stringify(process.env.GIT_DATE),
         GIT_HASH: JSON.stringify(process.env.GIT_HASH),

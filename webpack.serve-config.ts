@@ -11,8 +11,8 @@ const serveConfig: webpack.Configuration = {
   plugins: [
     new HtmlWebpackPlugin({ template: 'src/index.html' }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "vendor.js",
+      name: 'vendor',
+      filename: 'vendor.js',
       minChunks: isVendorModule
     }),
     new webpack.HotModuleReplacementPlugin(),

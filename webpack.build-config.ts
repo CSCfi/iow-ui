@@ -13,8 +13,8 @@ const buildConfig: webpack.Configuration = {
   plugins: [
     new HtmlWebpackPlugin({ template: 'src/index.html', filename: '../index.html' }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "vendor.[chunkhash].js",
+      name: 'vendor',
+      filename: 'vendor.[chunkhash].js',
       minChunks: isVendorModule
     }),
     new webpack.optimize.DedupePlugin(),
