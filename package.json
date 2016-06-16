@@ -4,7 +4,7 @@
   "description": "Interoperability workbench user interface seed.",
   "license": "EUPL-1.1",
   "scripts": {
-    "ts-node": "node node_modules/ts-node/dist/bin/ts-node.js",
+    "ts-node": "node node_modules/ts-node/dist/bin.js'",
     "start": "ts-node node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.serve-config.ts",
     "build": "ts-node node_modules/webpack/bin/webpack.js --config webpack.build-config.ts",
     "postinstall": "node node_modules/typings/dist/bin.js install",
