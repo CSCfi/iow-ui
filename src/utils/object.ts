@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 export function isDefined(obj: any): boolean {
   return obj !== null && obj !== undefined;
 }
