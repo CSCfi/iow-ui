@@ -1,5 +1,5 @@
-
 import 'core-js';
+import * as jQuery from 'jquery';
 
 if (SVGElement.prototype.contains === undefined) {
   SVGElement.prototype.contains = function(el: any) {
