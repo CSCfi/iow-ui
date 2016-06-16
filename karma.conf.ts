@@ -1,5 +1,4 @@
-/// <reference path="./src/node.d.ts" />
-/// <reference path="./typings/globals/karma/index.d.ts" />
+/// <reference path="./type-context/karma-runner.d.ts" />
 
 import * as karma from 'karma';
 import * as webpack from 'webpack';

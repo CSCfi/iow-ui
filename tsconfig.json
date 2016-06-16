@@ -9,7 +9,7 @@
     "noImplicitReturns": true
   },
   "files": [
-    "./src/browser.d.ts",
+    "./type-context/browser.d.ts",
     "./src/init.ts"
   ]
 }

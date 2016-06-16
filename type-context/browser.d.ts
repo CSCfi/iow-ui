@@ -12,8 +12,8 @@
 
 /// <reference path="../node_modules/awesome-typescript-loader/lib/runtime.d.ts" />
 
-/// <reference path="./vendor/webcola.d.ts" />
-/// <reference path="./vendor/jointjs.d.ts" />
+/// <reference path="../src/vendor/webcola.d.ts" />
+/// <reference path="../src/vendor/jointjs.d.ts" />
 
 interface Window {
   jQuery: JQueryStatic;

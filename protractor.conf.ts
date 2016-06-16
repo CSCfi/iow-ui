@@ -1,6 +1,4 @@
-/// <reference path="./src/node.d.ts" />
-/// <reference path="./typings/globals/angular-protractor/index.d.ts" />
-/// <reference path="./typings/globals/selenium-webdriver/index.d.ts" />
+/// <reference path="./type-context/protractor.d.ts" />
 
 import * as path from 'path';
 

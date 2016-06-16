@@ -79,7 +79,7 @@ msgstr ""
 msgid "Additional information"
 msgstr ""
 
-#: components/user/user.html:20
+#: components/user/user.html:22
 #: translations/misc.html:135
 msgid "Admin groups"
 msgstr ""
@@ -950,12 +950,12 @@ msgstr ""
 msgid "Homepage info"
 msgstr ""
 
-#: components/frontPage.html:74
+#: components/frontPage.html:73
 #: translations/misc.html:74
 msgid "How content"
 msgstr ""
 
-#: components/frontPage.html:73
+#: components/frontPage.html:72
 #: translations/misc.html:73
 msgid "How?"
 msgstr ""
@@ -1125,7 +1125,7 @@ msgstr ""
 msgid "Max length info"
 msgstr ""
 
-#: components/user/user.html:13
+#: components/user/user.html:15
 #: translations/misc.html:134
 msgid "Member groups"
 msgstr ""
