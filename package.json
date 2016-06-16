@@ -10,6 +10,13 @@
     "postinstall": "node node_modules/typings/dist/bin.js install",
     "create-translations": "npm run ts-node -- generatePot.ts",
     "example-data": "npm run ts-node -- examples/loadExamples.ts",
+    "webdriver-manager": "node node_modules/protractor/bin/webdriver-manager",
+    "protractor": "npm run ts-node -- node_modules/protractor/bin/protractor protractor.conf.ts",
+    "pree2e": "npm run webdriver:update -- --standalone",
+    "e2e": "npm run protractor",
+    "e2e:live": "npm run e2e -- --elementExplorer",
+    "webdriver:update": "npm run webdriver-manager -- update",
+    "webdriver:start": "nom run webdriver-manager -- start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -60,6 +67,7 @@
     "optimist": "0.6.1",
     "po-loader": "0.3.1",
     "po2json": "0.4.2",
+    "protractor": "3.3.0",
     "q": "2.0.3",
     "raw-loader": "0.5.1",
     "request": "2.72.0",
