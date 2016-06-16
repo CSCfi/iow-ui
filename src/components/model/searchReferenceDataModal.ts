@@ -4,7 +4,7 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ModelService } from '../../services/modelService';
 import { ReferenceData, Model, ReferenceDataGroup, ReferenceDataServer } from '../../services/entities';
-import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
@@ -80,7 +80,7 @@ export class SearchReferenceDataModalController {
       this.referenceDatas = referenceDatas;
       this.referenceDataGroups = _.chain(this.referenceDatas)
         .map(referenceData => referenceData.groups)
-        .flatten()
+        .flatten<ReferenceDataGroup>()
         .uniq(group => group.id.uri)
         .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer.language, group => group.title))
         .value();

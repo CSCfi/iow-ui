@@ -1,4 +1,4 @@
-import IAnimateProvider = angular.IAnimateProvider;
+import IAnimateProvider = angular.animate.IAnimateProvider;
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import IFormController = angular.IFormController;

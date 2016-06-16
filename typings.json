@@ -1,16 +1,17 @@
 {
   "name": "iow-ui",
   "globalDependencies": {
-    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts#17ef40452039d19e06dc2a3815ea898c505860fa",
-    "angular-gettext": "github:DefinitelyTyped/DefinitelyTyped/angular-gettext/angular-gettext.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
-    "angular-route": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-route.d.ts#17ef40452039d19e06dc2a3815ea898c505860fa",
-    "angular-ui-bootstrap": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-bootstrap/angular-ui-bootstrap.d.ts#17ef40452039d19e06dc2a3815ea898c505860fa",
-    "change-case": "github:DefinitelyTyped/DefinitelyTyped/change-case/change-case.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
-    "core-js": "github:DefinitelyTyped/DefinitelyTyped/core-js/core-js.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
-    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
-    "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#76ed26e95e91f1c91f2d11819c44b55b617e859a",
-    "modernizr": "github:DefinitelyTyped/DefinitelyTyped/modernizr/modernizr.d.ts#f791d1f4763660a84d6f02117d5a70a80c5f3e49",
-    "moment-node": "github:DefinitelyTyped/DefinitelyTyped/moment/moment-node.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d"
+    "angular": "registry:dt/angular#1.5.0+20160614091201",
+    "angular-animate": "registry:dt/angular-animate#1.5.0+20160614091201",
+    "angular-gettext": "registry:dt/angular-gettext#0.0.0+20160317120654",
+    "angular-route": "registry:dt/angular-route#1.3.0+20160317120654",
+    "angular-ui-bootstrap": "registry:dt/angular-ui-bootstrap#0.13.3+20160602140119",
+    "change-case": "registry:dt/change-case#0.0.0+20160316155526",
+    "core-js": "registry:dt/core-js#0.0.0+20160602141332",
+    "jquery": "registry:dt/jquery#1.10.0+20160417213236",
+    "lodash": "registry:dt/lodash#3.10.0+20160330154726",
+    "modernizr": "registry:dt/modernizr#3.2.0+20160215162030",
+    "moment-node": "registry:dt/moment-node#2.11.1+20160511043338"
   },
   "globalDevDependencies": {
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",

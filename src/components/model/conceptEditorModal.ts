@@ -11,6 +11,7 @@ import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
 import { any } from '../../utils/array';
+import { Uri } from '../../services/uri';
 
 export class ConceptEditorModal {
 
@@ -55,7 +56,6 @@ export class ConceptEditorModalController {
   constructor(private $scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
               languageService: LanguageService,
-              private gettextCatalog: gettextCatalog,
               private conceptService: ConceptService,
               private confirmationModal: ConfirmationModal,
               private model: Model) {
@@ -68,15 +68,16 @@ export class ConceptEditorModalController {
         this.concepts = concepts;
         this.models = _.chain(concepts)
           .filter(concept => concept instanceof ConceptSuggestion && !!concept.definedBy)
-          .map((concept: ConceptSuggestion) => concept.definedBy)
+          .map(concept => concept as ConceptSuggestion)
+          .map(concept => concept.definedBy)
           .uniq(definedBy => definedBy.id.uri)
           .value();
 
         this.vocabularies = _.chain(concepts)
           .map(concept => concept.vocabularies)
-          .flatten()
-          .filter(vocabulary => vocabulary instanceof ImportedVocabulary)
-          .filter(vocabulary => !vocabulary.local)
+          .flatten<ImportedVocabulary|Uri>()
+          .filter(vocabulary => vocabulary instanceof ImportedVocabulary && !vocabulary.local)
+          .map(vocabulary => vocabulary as ImportedVocabulary)
           .uniq(vocabulary => vocabulary.id)
           .value();
 

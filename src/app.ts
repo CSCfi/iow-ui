@@ -1,4 +1,4 @@
-import IAnimateProvider = angular.IAnimateProvider;
+import IAnimateProvider = angular.animate.IAnimateProvider;
 import ICompileProvider = angular.ICompileProvider;
 import ILocationService = angular.ILocationService;
 import ILogProvider = angular.ILogProvider;

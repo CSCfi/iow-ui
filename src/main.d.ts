@@ -15,6 +15,12 @@ interface Window {
   mozRequestAnimationFrame(callback: FrameRequestCallback): number;
 }
 
+declare module _ {
+  interface LoDashExplicitArrayWrapper<T> {
+    sort(comparator: (lhs: T, rhs: T) => number): LoDashExplicitArrayWrapper<T>;
+  }
+}
+
 declare namespace angular {
   interface INgModelController {
     $options: any;
