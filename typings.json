@@ -15,9 +15,18 @@
   },
   "globalDevDependencies": {
     "angular-protractor": "registry:dt/angular-protractor#1.5.0+20160425143459",
+    "bluebird": "registry:dt/bluebird#2.0.0+20160319051630",
+    "express": "registry:dt/express#4.0.0+20160317120654",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160602151406",
+    "istanbul": "registry:dt/istanbul#0.4.0+20160316155526",
     "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
+    "karma": "registry:dt/karma#0.13.9+20160501125529",
+    "karma-jasmine": "registry:dt/karma-jasmine#0.0.0+20160316155526",
+    "log4js": "registry:dt/log4js#0.0.0+20160608042355",
+    "mime": "registry:dt/mime#0.0.0+20160316155526",
     "node": "registry:dt/node#6.0.0+20160613154055",
     "selenium-webdriver": "registry:dt/selenium-webdriver#2.44.0+20160317120654",
+    "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",
     "source-map": "registry:dt/source-map#0.0.0+20160317120654",
     "uglify-js": "registry:dt/uglify-js#2.6.1+20160316155526",
     "webpack": "registry:dt/webpack#1.12.9+20160523035535"

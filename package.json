@@ -17,7 +17,7 @@
     "e2e:live": "npm run e2e -- --elementExplorer",
     "webdriver:update": "npm run webdriver-manager -- update",
     "webdriver:start": "nom run webdriver-manager -- start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run ts-node -- node_modules/karma/bin/karma start karma.conf.ts"
   },
   "repository": {
     "type": "git",
@@ -61,10 +61,17 @@
     "html-webpack-plugin": "2.21.0",
     "http-status-to-description": "0.0.1",
     "imports-loader": "0.6.5",
+    "jasmine-core": "2.4.1",
     "json-loader": "0.5.4",
+    "karma": "0.13.22",
+    "karma-jasmine": "1.0.2",
+    "karma-phantomjs-launcher": "1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "1.7.0",
     "ng-annotate-loader": "0.1.0",
     "node-sass": "3.7.0",
     "optimist": "0.6.1",
+    "phantomjs-prebuilt": "2.1.7",
     "po-loader": "0.3.1",
     "po2json": "0.4.2",
     "protractor": "3.3.0",
