@@ -1668,12 +1668,6 @@ export class Entity extends GraphNode {
   }
 }
 
-function reportErrorWithStack(error: string, graph: any) {
-  console.log(error);
-  console.log(new Error().stack);
-  console.log(graph);
-}
-
 function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
   return new Map(items.map<[Urn, number]>((item: T, index: number) => [item.id, index]));
 }
