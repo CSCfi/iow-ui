@@ -20,7 +20,7 @@ interface ConfigOptions extends karma.ConfigOptions {
   webpackServer?: any;
 }
 
-const files = ['src/spec-bundle.ts'];
+const files = ['spec-bundle.ts'];
 const preprocessors: any = {};
 
 for (const file of files) {

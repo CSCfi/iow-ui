@@ -1,9 +1,9 @@
-/// <reference path="../node_modules/awesome-typescript-loader/lib/runtime.d.ts" />
-/// <reference path="../typings/globals/jasmine/index.d.ts" />
+/// <reference path="./node_modules/awesome-typescript-loader/lib/runtime.d.ts" />
+/// <reference path="./typings/globals/jasmine/index.d.ts" />
 
 import 'core-js';
 
-const testContext = require.context('./', true, /\.spec\.ts/);
+const testContext = require.context('./src', true, /\.spec\.ts/);
 
 /*
  * get all the files, for each file, call the context function
