@@ -14,7 +14,7 @@
     "moment-node": "registry:dt/moment-node#2.11.1+20160511043338"
   },
   "globalDevDependencies": {
-    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#36c6ce86fb64bafb28ec95dc78c6b98228b45c8d",
+    "node": "registry:dt/node#6.0.0+20160613154055",
     "source-map": "registry:dt/source-map#0.0.0+20160317120654",
     "uglify-js": "registry:dt/uglify-js#2.6.1+20160316155526",
     "webpack": "registry:dt/webpack#1.12.9+20160523035535"
