@@ -5,8 +5,8 @@
   "license": "EUPL-1.1",
   "scripts": {
     "ts-node": "node node_modules/ts-node/dist/bin.js --project tsconfig-node.json",
-    "start": "npm run ts-node -- node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.serve-config.ts",
-    "build": "npm run ts-node -- node_modules/webpack/bin/webpack.js --config webpack.build-config.ts",
+    "start": "npm run ts-node -- node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.serve-config.ts --progress",
+    "build": "npm run ts-node -- node_modules/webpack/bin/webpack.js --config webpack.build-config.ts  --progress",
     "postinstall": "node node_modules/typings/dist/bin.js install",
     "create-translations": "npm run ts-node -- generatePot.ts",
     "example-data": "npm run ts-node -- examples/loadExamples.ts",
