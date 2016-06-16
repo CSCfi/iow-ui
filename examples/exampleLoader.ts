@@ -1,3 +1,5 @@
+/// <reference path="../src/browser.d.ts" />
+
 import { EntityLoader } from '../src/services/entityLoader';
 import { EntityDeserializer } from '../src/services/entities';
 import { httpService } from './requestToAngularHttpService';

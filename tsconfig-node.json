@@ -8,8 +8,5 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true
   },
-  "files": [
-    "./src/browser.d.ts",
-    "./src/init.ts"
-  ]
+  "files": []
 }

@@ -1,4 +1,6 @@
-import * as fs from "fs";
+/// <reference path="./src/node.d.ts" />
+
+import * as fs from 'fs';
 const Extractor: any = require('angular-gettext-tools').Extractor;
 const file: any = require('file');
 
