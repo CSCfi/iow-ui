@@ -15,6 +15,7 @@ import { modelFrame } from './frames';
 import { Uri, Urn } from './uri';
 import { Language } from '../utils/language';
 import { expandContextWithKnownModels } from '../utils/entity';
+import { normalizeAsArray } from '../utils/array';
 
 export class ModelService {
 
@@ -154,20 +155,27 @@ export class ModelService {
     return this.getReferenceDataServers().then(servers => this.getReferenceDatasForServers(servers));
   }
 
-  getReferenceDataCodes(referenceData: ReferenceData) {
+  getReferenceDataCodes(referenceData: ReferenceData|ReferenceData[]): IPromise<ReferenceDataCode[]> {
 
-    const cached = this.referenceDataCodesCache.get(referenceData.id.uri);
+    const getSingle = (rd: ReferenceData) => {
+      const cached = this.referenceDataCodesCache.get(rd.id.uri);
 
-    if (cached) {
-      return this.$q.when(cached);
-    } else {
-      return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), { params: { uri: referenceData.id.uri } })
-        .then(response => this.entities.deserializeReferenceDataCodes(response.data))
-        .then(codeValues => {
-          this.referenceDataCodesCache.set(referenceData.id.uri, codeValues);
-          return codeValues;
-        });
-    }
+      if (cached) {
+        return this.$q.when(cached);
+      } else {
+        return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri}})
+          .then(response => this.entities.deserializeReferenceDataCodes(response.data))
+          .then(codeValues => {
+            this.referenceDataCodesCache.set(rd.id.uri, codeValues);
+            return codeValues;
+          });
+      }
+    };
+
+    const internalReferenceData = _.filter(normalizeAsArray(referenceData), rd => !rd.isExternal());
+
+    return this.$q.all(_.map(internalReferenceData, rd => getSingle(rd)))
+        .then(referenceDatas => _.flatten(referenceDatas));
   }
 
   newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {

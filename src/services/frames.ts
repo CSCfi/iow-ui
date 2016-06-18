@@ -68,7 +68,7 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, referen
   valueShape: { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' },
   predicate: { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' },
   classIn: { '@id': 'http://www.w3.org/ns/shacl#classIn', '@type': '@id' },
-  memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf', '@type': '@id' },
+  memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf'},
   stem: { '@id': 'http://www.w3.org/ns/shacl#stem', '@type': '@id' }
 });
 

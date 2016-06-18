@@ -1009,7 +1009,7 @@ export class Property extends GraphNode {
   in: string[];
   hasValue: string;
   pattern: string;
-  referenceData: ReferenceData;
+  referenceData: ReferenceData[];
   predicateType: Type;
   classIn: Uri[];
   stem: Uri;
@@ -1026,7 +1026,7 @@ export class Property extends GraphNode {
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
     this.classIn = deserializeList(graph.classIn, klass => new Uri(klass, context));
-    this.referenceData = deserializeOptional(graph.memberOf, (data) => deserializeEntity(data, context, frame, () => ReferenceData));
+    this.referenceData = deserializeEntityList(graph.memberOf, context, frame, () => ReferenceData);
 
     if (graph.type) {
       this.predicateType = mapType(graph.type);
@@ -1094,7 +1094,7 @@ export class Property extends GraphNode {
       || this.maxLength
       || this.minCount
       || this.maxCount
-      || this.referenceData;
+      || this.referenceData.length > 0;
   }
 
   hasAssociationTarget() {
@@ -1175,7 +1175,7 @@ export class Property extends GraphNode {
       pattern: this.pattern,
       classIn: serializeList(this.classIn, classId => classId.uri),
       stem: serializeOptional(this.stem, stem => stem.uri),
-      memberOf: serializeOptional(this.referenceData, (data) => serializeEntity(data, clone)),
+      memberOf: serializeEntityList(this.referenceData, clone),
       editorialNote: serializeLocalizable(this.editorialNote)
     };
   }
