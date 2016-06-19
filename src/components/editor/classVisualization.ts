@@ -31,15 +31,16 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
     },
     template: `
                <div class="visualization-buttons">
-                 <div class="button zoom-out" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
-                 <div class="button zoom-in" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
-                 <div class="button zoom-fit" ng-click="ctrl.fitToContent($event)"><i class="fa fa-arrows-alt"></i></div>
+                 <div class="button" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
+                 <div class="button" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
+                 <div class="button" ng-click="ctrl.fitToContent($event)"><i class="fa fa-arrows-alt"></i></div>
                  <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="fa fa-crosshairs"></i></div>
                  <span ng-show="ctrl.canFocus()">
-                   <div class="button focus-in" ng-click="ctrl.focusOut($event)"><i class="fa fa-angle-left"></i></div>
+                   <div class="button" ng-click="ctrl.focusOut($event)"><i class="fa fa-angle-left"></i></div>
                    <div class="button focus-indicator"><i>{{ctrl.renderSelectionFocus()}}</i></div>
-                   <div class="button focus-out" ng-click="ctrl.focusIn($event)"><i class="fa fa-angle-right"></i></div>
-                 </span>                
+                   <div class="button" ng-click="ctrl.focusIn($event)"><i class="fa fa-angle-right"></i></div>
+                 </span>
+                 <div class="button" ng-class="{active: ctrl.showId}" ng-click="ctrl.toggleId()"><i>ID</i></div>
                </div>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
@@ -96,6 +97,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selection: Class|Predicate;
   selectionFocus: FocusLevel = FocusLevel.DEPTH1;
+  showId = false;
 
   model: Model;
   changeNotifier: ChangeNotifier<Class|Predicate>;
@@ -222,6 +224,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (this.selectionFocus > FocusLevel.DEPTH1) {
       this.selectionFocus--;
     }
+  }
+
+  toggleId() {
+    this.showId = !this.showId;
   }
 
   private isSelectionClass() {
@@ -531,12 +537,27 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const showCardinality = this.model.isOfType('profile');
 
     function getName() {
-      return that.languageService.translate(klass. label, that.model);
+      if (that.showId) {
+        return klass.id.compact;
+      } else {
+        return that.languageService.translate(klass.label, that.model);
+      }
     }
 
     function getPropertyNames() {
       function propertyAsString(property: Property): string {
-        const name = that.languageService.translate(property.label, that.model);
+        let name = '';
+
+        if (that.showId) {
+          name += property.predicateId.curie;
+
+          if (property.externalId) {
+            name += ' / ' + property.externalId;
+          }
+        } else {
+          name += that.languageService.translate(property.label, that.model);
+        }
+
         const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
         const cardinality = formatCardinality(property);
         return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
@@ -572,13 +593,23 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       z: zIndexClass
     });
 
+    function updateCellModel() {
+      const newPropertyNames = getPropertyNames();
+      const newClassName = getName();
+      classCell.prop('name', newClassName);
+      classCell.prop('attributes', newPropertyNames);
+      classCell.prop('size', size(newClassName, newPropertyNames));
+    };
+
     this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
-      if (oldLang && (lang !== oldLang)) {
-        const newPropertyNames = getPropertyNames();
-        const newClassName = getName();
-        classCell.prop('name', newClassName);
-        classCell.prop('attributes', newPropertyNames);
-        classCell.prop('size', size(newClassName, newPropertyNames));
+      if (lang !== oldLang) {
+        updateCellModel();
+      }
+    });
+
+    this.$scope.$watch(() => this.showId, (showId, oldShowId) => {
+      if (showId !== oldShowId) {
+        updateCellModel();
       }
     });
 
@@ -591,13 +622,23 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const showCardinality = this.model.isOfType('profile');
 
     function getName() {
-      const localizedName = that.languageService.translate(association.label, that.model);
+      let name = '';
+
+      if (that.showId) {
+        name += association.predicateId.compact;
+
+        if (association.externalId) {
+          name += '\n' + association.externalId;
+        }
+      } else {
+        name += that.languageService.translate(association.label, that.model);
+      }
 
       if (association.stem) {
-        return localizedName + '\n' + ' {' + association.stem + '}';
-      } else {
-        return localizedName;
+        name += '\n' + ' {' + association.stem + '}';
       }
+
+      return name;
     }
 
     const associationCell = new withoutUnusedMarkupLink({
@@ -616,12 +657,22 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       z: zIndexAssociation
     });
 
+    function updateCellModel() {
+      associationCell.prop('labels/0/attrs/text/text', getName());
+      if (showCardinality) {
+        associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
+      }
+    }
+
     this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
-      if (oldLang && (lang !== oldLang)) {
-        associationCell.prop('labels/0/attrs/text/text', getName());
-        if (showCardinality) {
-          associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
-        }
+      if (lang !== oldLang) {
+        updateCellModel();
+      }
+    });
+
+    this.$scope.$watch(() => this.showId, (showId, oldShowId) => {
+      if (showId !== oldShowId) {
+        updateCellModel();
       }
     });
 

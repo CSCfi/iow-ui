@@ -730,22 +730,27 @@ subject-view .editable-wrap {
       border: 1px solid $brand-accent-light;
       color: white;
       text-align: center;
-    }
 
-    .button:hover {
-      background-color: $brand-accent-dark;
-      border: 1px solid $brand-accent-dark;
-      cursor: pointer;
-    }
-
-    .focus-indicator {
-      margin-left: -4px;
-      margin-right: -4px;
+      &.active {
+        background-color: $brand-accent-dark;
+        border: 1px solid $brand-accent-dark;
+      }
 
       &:hover {
-        background-color: $brand-accent-light;
-        border: 1px solid $brand-accent-light;
-        cursor: default;
+        background-color: $brand-accent-dark;
+        border: 1px solid $brand-accent-dark;
+        cursor: pointer;
+      }
+
+      &.focus-indicator {
+        margin-left: -4px;
+        margin-right: -4px;
+
+        &:hover {
+          background-color: $brand-accent-light;
+          border: 1px solid $brand-accent-light;
+          cursor: default;
+        }
       }
     }
   }
