@@ -109,13 +109,25 @@ export class ConceptEditorModalController {
     this.models.sort(labelComparator);
   }
 
-  selectionEdited(concept: Concept) {
+  getConceptIndex(concept: Concept) {
     for (let i = 0; i < this.concepts.length; i++) {
       if (this.concepts[i].id.equals(concept.id)) {
-        Object.assign(this.concepts[i], concept);
-        break;
+        return i;
       }
     }
+
+    throw new Error('Concept not found ' + concept.id.compact);
+  }
+
+  selectionEdited(concept: Concept) {
+    this.concepts.splice(this.getConceptIndex(concept), 1, concept);
+    this.sort();
+    this.search();
+  }
+
+  selectionDeleted(concept: Concept) {
+    this.concepts.splice(this.getConceptIndex(concept), 1);
+    this.search();
   }
 
   registerView(view: ConceptViewController) {

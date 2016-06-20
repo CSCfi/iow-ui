@@ -67,14 +67,14 @@ export class ConceptViewController extends EditableEntityController<Concept> {
 
   update(entity: Concept, oldId: Uri) {
     if (entity instanceof ConceptSuggestion) {
-      return this.conceptService.updateConceptSuggestion(entity).then(() => this.modelController.selectionEdited(this.editableInEdit));
+      return this.conceptService.updateConceptSuggestion(entity).then(() => this.modelController.selectionEdited(entity));
     } else {
       return this.$q.reject('Entity must be instance of ConceptSuggestion');
     }
   }
 
   remove(entity: Concept) {
-    return this.conceptService.deleteConceptFromModel(entity, this.model);
+    return this.conceptService.deleteConceptFromModel(entity, this.model).then(() => this.modelController.selectionDeleted(entity));
   }
 
   isNotInUseInThisModel() {
