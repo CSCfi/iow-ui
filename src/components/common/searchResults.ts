@@ -14,6 +14,7 @@ mod.directive('searchResults', () => {
     bindToController: true,
     scope: {
       items: '=',
+      selected: '=',
       exclude: '=',
       onSelect: '&',
       editInProgress: '='
@@ -79,7 +80,7 @@ class SearchResultsController<T extends WithId> {
   items: (T|AddNew)[];
   exclude: (item: T) => string;
   searchResults: (SearchResult<T>|AddNew)[];
-  selected: SearchResult<T>|AddNew;
+  selected: T|AddNew;
   onSelect: angular.ICompiledExpression;
   editInProgress: () => boolean;
 
@@ -115,13 +116,13 @@ class SearchResultsController<T extends WithId> {
   }
 
   isSelected(item: SearchResult<T>|AddNew) {
-    return this.selected === item;
+    return this.selected === item.unwrap();
   }
 
   selectItem(item: SearchResult<T>|AddNew) {
     const doSelection = () => {
-      this.selected = item;
-      this.onSelect({item: item.unwrap()});
+      this.selected = item.unwrap();
+      this.onSelect({item: this.selected});
     };
 
     if (this.editInProgress && this.editInProgress()) {
