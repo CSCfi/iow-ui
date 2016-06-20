@@ -723,9 +723,8 @@ subject-view .editable-wrap {
     .button {
       @include no-select;
       display: inline-block;
-      width: 30px;
       height: 30px;
-      padding-top: 4px;
+      padding: 4px 7px 0 7px;
       background-color: $brand-accent-light;
       border: 1px solid $brand-accent-light;
       color: white;
@@ -745,6 +744,7 @@ subject-view .editable-wrap {
       &.focus-indicator {
         margin-left: -4px;
         margin-right: -4px;
+        width: 30px;
 
         &:hover {
           background-color: $brand-accent-light;
