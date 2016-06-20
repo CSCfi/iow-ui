@@ -1,5 +1,3 @@
-import { Model } from './entities';
-
 export type Url = string;
 export type Urn = string;
 export type RelativeUrl = string;
@@ -134,10 +132,6 @@ export class Uri {
 
   namespaceResolves() {
     return !!this.findResolvablePrefix();
-  }
-
-  addKnownModelsToContext(model: Model) {
-    model.expandContextWithKnownModels(this.context);
   }
 
   private isFullUrl() {
