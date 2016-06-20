@@ -63,6 +63,7 @@ msgstr ""
 msgid "Add property"
 msgstr ""
 
+#: components/editor/editableReferenceDataSelect.html:12
 #: translations/misc.html:192
 msgid "Add reference data"
 msgstr ""
@@ -324,7 +325,6 @@ msgstr ""
 msgid "Choose class"
 msgstr ""
 
-#: components/editor/editableReferenceDataSelect.html:13
 #: translations/misc.html:198
 msgid "Choose reference data"
 msgstr ""
@@ -405,7 +405,6 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
-#: components/editor/editableReferenceDataSelect.html:14
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr ""
@@ -960,6 +959,10 @@ msgstr ""
 msgid "How?"
 msgstr ""
 
+#: translations/misc.html:211
+msgid "ID"
+msgstr ""
+
 #: translations/misc.html:96
 msgid "ID is already in use"
 msgstr ""
@@ -1039,6 +1042,10 @@ msgstr ""
 msgid "Is not valid reference data code"
 msgstr ""
 
+#: translations/misc.html:210
+msgid "Label"
+msgstr ""
+
 #: translations/misc.html:175
 msgid "language code"
 msgstr ""
@@ -1077,6 +1084,10 @@ msgstr ""
 
 #: translations/misc.html:188
 msgid "Links"
+msgstr ""
+
+#: translations/misc.html:212
+msgid "Local ID"
 msgstr ""
 
 #: components/editor/editableConstraint.html:5

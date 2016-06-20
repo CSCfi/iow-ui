@@ -730,11 +730,6 @@ subject-view .editable-wrap {
       color: white;
       text-align: center;
 
-      &.active {
-        background-color: $brand-accent-dark;
-        border: 1px solid $brand-accent-dark;
-      }
-
       &:hover {
         background-color: $brand-accent-dark;
         border: 1px solid $brand-accent-dark;

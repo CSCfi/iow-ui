@@ -39,7 +39,7 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
                    <div class="button focus-indicator"><i>{{ctrl.renderSelectionFocus()}}</i></div>
                    <div class="button" ng-click="ctrl.focusIn($event)"><i class="fa fa-angle-right"></i></div>
                  </span>
-                 <div class="button" ng-class="{active: ctrl.showId}" ng-click="ctrl.toggleId()"><i>ID</i></div>
+                 <div class="button" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></div>
                </div>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
@@ -86,6 +86,12 @@ enum Direction {
   BOTH
 }
 
+enum NameType {
+  LABEL,
+  ID,
+  LOCAL_ID
+}
+
 const zIndexAssociation = 5;
 const zIndexClass = 10;
 const backgroundClass = 'background';
@@ -97,7 +103,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selection: Class|Predicate;
   selectionFocus: FocusLevel = FocusLevel.DEPTH1;
-  showId = false;
+  showName = NameType.LABEL;
 
   model: Model;
   changeNotifier: ChangeNotifier<Class|Predicate>;
@@ -234,8 +240,47 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  toggleId() {
-    this.showId = !this.showId;
+  toggleShowName() {
+    this.showName = (this.showName + 1) % 3;
+  }
+
+  get showNameLabel() {
+    switch (this.showName) {
+      case NameType.ID:
+        return 'ID';
+      case NameType.LABEL:
+        return 'Label';
+      case NameType.LOCAL_ID:
+        return 'Local ID';
+      default:
+        throw new Error('Unsupported show name type: ' + this.showName);
+    }
+  }
+
+  propertyName(property: Property) {
+    switch (this.showName) {
+      case NameType.LABEL:
+        return this.languageService.translate(property.label, this.model);
+      case NameType.ID:
+        return property.predicateId.compact;
+      case NameType.LOCAL_ID:
+        return property.externalId || property.predicateId.compact;
+      default:
+        throw new Error('Unsupported show name type: ' + this.showName);
+    }
+  }
+
+  className(klass: VisualizationClass) {
+    switch (this.showName) {
+      case NameType.LABEL:
+        return this.languageService.translate(klass.label, this.model);
+      case NameType.ID:
+        return klass.scopeClass ? klass.scopeClass.compact : klass.id.compact;
+      case NameType.LOCAL_ID:
+        return klass.id.namespaceResolves() ? klass.id.name : klass.id.uri;
+      default:
+        throw new Error('Unsupported show name type: ' + this.showName);
+    }
   }
 
   private isSelectionClass() {
@@ -544,28 +589,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const that = this;
     const showCardinality = this.model.isOfType('profile');
 
-    function getName() {
-      if (that.showId) {
-        return klass.id.compact;
-      } else {
-        return that.languageService.translate(klass.label, that.model);
-      }
-    }
-
     function getPropertyNames() {
+
       function propertyAsString(property: Property): string {
-        let name = '';
-
-        if (that.showId) {
-          name += property.predicateId.compact;
-
-          if (property.externalId) {
-            name += ' / ' + property.externalId;
-          }
-        } else {
-          name += that.languageService.translate(property.label, that.model);
-        }
-
+        const name = that.propertyName(property);
         const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
         const cardinality = formatCardinality(property);
         return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
@@ -583,7 +610,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       return { width, height };
     }
 
-    const className = getName();
+    const className = this.className(klass);
     const propertyNames = getPropertyNames();
 
     const classConstructor = klass.resolved ? withoutUnusedMarkupClass : shadowClass;
@@ -603,7 +630,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     function updateCellModel() {
       const newPropertyNames = getPropertyNames();
-      const newClassName = getName();
+      const newClassName = that.className(klass);
       classCell.prop('name', newClassName);
       classCell.prop('attributes', newPropertyNames);
       classCell.prop('size', size(newClassName, newPropertyNames));
@@ -615,8 +642,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     });
 
-    this.$scope.$watch(() => this.showId, (showId, oldShowId) => {
-      if (showId !== oldShowId) {
+    this.$scope.$watch(() => this.showName, (showName, oldShowName) => {
+      if (showName !== oldShowName) {
         updateCellModel();
       }
     });
@@ -630,23 +657,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const showCardinality = this.model.isOfType('profile');
 
     function getName() {
-      let name = '';
-
-      if (that.showId) {
-        name += association.predicateId.compact;
-
-        if (association.externalId) {
-          name += '\n' + association.externalId;
-        }
-      } else {
-        name += that.languageService.translate(association.label, that.model);
-      }
+      const name = that.propertyName(association);
 
       if (association.stem) {
-        name += '\n' + ' {' + association.stem + '}';
+        return name + '\n' + ' {' + association.stem + '}';
+      } else {
+        return name;
       }
-
-      return name;
     }
 
     const associationCell = new withoutUnusedMarkupLink({
@@ -678,8 +695,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     });
 
-    this.$scope.$watch(() => this.showId, (showId, oldShowId) => {
-      if (showId !== oldShowId) {
+    this.$scope.$watch(() => this.showName, (showName, oldShowName) => {
+      if (showName !== oldShowName) {
         updateCellModel();
       }
     });

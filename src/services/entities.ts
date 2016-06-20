@@ -733,6 +733,7 @@ export interface VisualizationClass {
 
   id: Uri;
   label: Localizable;
+  scopeClass: Uri;
   properties: Property[];
   resolved: boolean;
   associationPropertiesWithTarget: Property[];
@@ -743,6 +744,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
 
   id: Uri;
   label: Localizable;
+  scopeClass: Uri;
   properties: Property[];
   resolved = true;
 
@@ -750,6 +752,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
+    this.scopeClass = deserializeOptional(graph.scopeClass, scopeClass => new Uri(scopeClass, context));
     this.properties = deserializeEntityList(graph.property, context, frame, () => Property);
   }
 
@@ -772,6 +775,7 @@ export class AssociationTargetPlaceholderClass implements VisualizationClass {
   label: Localizable;
   properties: Property[] = [];
   resolved = false;
+  scopeClass: Uri = null;
   associationPropertiesWithTarget: Property[] = [];
 
   constructor(public id: Uri, model: Model) {
@@ -803,12 +807,9 @@ export class Class extends AbstractClass implements VisualizationClass {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    if (graph.subClassOf) {
-      this.subClassOf = new Uri(graph.subClassOf, context);
-    }
-    if (graph.scopeClass) {
-      this.scopeClass = new Uri(graph.scopeClass, context);
-    }
+
+    this.subClassOf = deserializeOptional(graph.subClassOf, subClassOf => new Uri(subClassOf, context));
+    this.scopeClass = deserializeOptional(graph.scopeClass, scopeClass => new Uri(scopeClass, context));
     this.state = graph.versionInfo;
 
     this.properties = deserializeEntityList(graph.property, context, frame, () => Property)

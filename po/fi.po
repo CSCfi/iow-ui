@@ -68,6 +68,7 @@ msgstr "Lisää ominaisuudet yläluokasta"
 msgid "Add property"
 msgstr "Lisää ominaisuus"
 
+#: components/editor/editableReferenceDataSelect.html:12
 #: translations/misc.html:192
 msgid "Add reference data"
 msgstr "Lisää koodisto"
@@ -82,7 +83,7 @@ msgstr "Lisää sanasto"
 msgid "Additional information"
 msgstr "Lisätiedot"
 
-#: components/user/user.html:20 translations/misc.html:135
+#: components/user/user.html:22 translations/misc.html:135
 msgid "Admin groups"
 msgstr "Pääkäyttäjänä ryhmissä"
 
@@ -320,7 +321,6 @@ msgstr "valitse laajempi käsite"
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/editor/editableReferenceDataSelect.html:13
 #: translations/misc.html:198
 msgid "Choose reference data"
 msgstr "valitse koodisto"
@@ -403,7 +403,6 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
-#: components/editor/editableReferenceDataSelect.html:14
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr "poista valinta"
@@ -954,16 +953,20 @@ msgstr "Linkki"
 msgid "Homepage info"
 msgstr "Linkki sivustoon tai sovellukseen joissa tietosisältöjä on hyödynnetty"
 
-#: components/frontPage.html:74 translations/misc.html:74
+#: components/frontPage.html:73 translations/misc.html:74
 msgid "How content"
 msgstr ""
 "Välineistössä julkaistut tietomääritykset ovat vapaasti selailtavissa. "
 "Sisältöjä tietokomponenttikirjastoihin tuottavat eri kohdealueiden "
 "asiantuntijat."
 
-#: components/frontPage.html:73 translations/misc.html:73
+#: components/frontPage.html:72 translations/misc.html:73
 msgid "How?"
 msgstr "Kuinka pääsen osallistumaan?"
+
+#: translations/misc.html:211
+msgid "ID"
+msgstr "ID"
 
 #: translations/misc.html:96
 msgid "ID is already in use"
@@ -1044,6 +1047,10 @@ msgstr "Ei ole tunnettu kielikoodi"
 msgid "Is not valid reference data code"
 msgstr "Ei tunnettu koodiston arvo"
 
+#: translations/misc.html:210
+msgid "Label"
+msgstr "Nimi"
+
 #: translations/misc.html:175
 msgid "language code"
 msgstr "kielikoodi"
@@ -1083,6 +1090,10 @@ msgstr "lisenssillä"
 #: translations/misc.html:188
 msgid "Links"
 msgstr "Linkit"
+
+#: translations/misc.html:212
+msgid "Local ID"
+msgstr "Paikallinen ID"
 
 #: components/editor/editableConstraint.html:5
 msgid "Logical constraints"
@@ -1130,7 +1141,7 @@ msgstr "Enimmäispituus"
 msgid "Max length info"
 msgstr "Sallitun arvon enimmäispituus"
 
-#: components/user/user.html:13 translations/misc.html:134
+#: components/user/user.html:15 translations/misc.html:134
 msgid "Member groups"
 msgstr "Käyttäjänä ryhmissä"
 
@@ -2068,9 +2079,6 @@ msgstr "Kyllä"
 
 #~ msgid "Is defined by"
 #~ msgstr "Kirjasto"
-
-#~ msgid "Label"
-#~ msgstr "Nimi"
 
 #~ msgid "Name"
 #~ msgstr "Nimi"
