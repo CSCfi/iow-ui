@@ -21,7 +21,7 @@
           <div float="top-actions-placeholder">
             <div class="top-actions">
               <model-language-chooser context="ctrl.model"></model-language-chooser>
-              <export entity="ctrl.selection"></export>
+              <export entity="ctrl.selection" context="ctrl.model"></export>
             </div>
           </div>
           <model-form ng-if="ctrl.selection.isOfType('model')" model="ctrl.selection"></model-form>

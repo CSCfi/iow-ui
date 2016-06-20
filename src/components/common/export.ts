@@ -4,9 +4,9 @@ import IWindowService = angular.IWindowService;
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import Moment = moment.Moment;
-import { Predicate, Class, Model } from '../../services/entities';
+import { Predicate, Class, Model, LanguageContext } from '../../services/entities';
 import { config } from '../../config';
-
+import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
 
 const exportOptions = [
@@ -22,7 +22,8 @@ const UTF8_BOM = '\ufeff';
 mod.directive('export', () => {
   return {
     scope: {
-      entity: '='
+      entity: '=',
+      context: '='
     },
     bindToController: true,
     restrict: 'E',
@@ -41,6 +42,8 @@ function formatFileName(entity: EntityType, extension: string) {
 class ExportController {
 
   entity: Model|Class|Predicate;
+  context: LanguageContext;
+
   downloads: { name: string, filename: string, href: string , hrefRaw: string}[];
 
   framedUrlObject: string;
@@ -49,11 +52,11 @@ class ExportController {
   frameUrlObjectRaw: string;
 
   /* @ngInject */
-  constructor($scope: IScope, $window: IWindowService) {
-    $scope.$watch(() => this.entity, entity => {
+  constructor($scope: IScope, $window: IWindowService, languageService: LanguageService) {
+    $scope.$watchGroup([() => this.entity, () => languageService.getModelLanguage(this.context)], ([entity, lang]) => {
       const hrefBase = entity instanceof Model ? config.apiEndpointWithName('exportModel') : config.apiEndpointWithName('exportResource');
       this.downloads = _.map(exportOptions, option => {
-        const href = `${hrefBase}?graph=${encodeURIComponent(entity.id.uri)}&content-type=${encodeURIComponent(option.type)}`;
+        const href = `${hrefBase}?graph=${encodeURIComponent(entity.id.uri)}&content-type=${encodeURIComponent(option.type)}&lang=${lang}`;
 
         return {
           name: option.type,
