@@ -105,16 +105,6 @@ class SearchResultsController<T extends WithId> {
     }
   }
 
-  trackingFn(item: SearchResult<T>|AddNew) {
-    if (item instanceof SearchResult) {
-      return item.item.id.toString();
-    } else if (item instanceof AddNew) {
-      return item.label;
-    } else {
-      throw new Error('Unsupported item type: ' + item);
-    }
-  }
-
   isSelected(item: SearchResult<T>|AddNew) {
     return this.selected === item.unwrap();
   }
