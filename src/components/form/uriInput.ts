@@ -48,8 +48,8 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
     result['url'] = value => !value || !isValidUri(value) || isValidUrl(value);
   } else {
     result['xsd:anyURI'] = isValidUri;
-    result['unknownNS'] = value => !value || !isValidUri(value) || value.hasResolvablePrefix();
-    result['idNameRequired'] = value => !value || !isValidUri(value) || !value.hasResolvablePrefix() || value.name.length > 0;
+    result['unknownNS'] = value => !value || !isValidUri(value) || value.namespaceResolves();
+    result['idNameRequired'] = value => !value || !isValidUri(value) || !value.namespaceResolves() || value.name.length > 0;
 
     if (type === 'required-namespace') {
       result['mustBeRequiredNS'] = value => {
@@ -62,7 +62,7 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
           return false;
         }
 
-        return !value || !isValidUri(value) || !value.hasResolvablePrefix() || isRequiredNamespace(value.namespace);
+        return !value || !isValidUri(value) || !value.namespaceResolves() || isRequiredNamespace(value.namespace);
       };
     }
   }

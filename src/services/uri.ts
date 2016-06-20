@@ -89,11 +89,11 @@ export class Uri {
   }
 
   get compact() {
-    return this.hasResolvablePrefix() ? this.curie : this.uri;
+    return this.namespaceResolves() ? this.curie : this.uri;
   }
 
   get uri() {
-    if (this.hasResolvablePrefix()) {
+    if (this.namespaceResolves()) {
       return this.namespace + this.name;
     } else {
       return this.value;
@@ -132,7 +132,7 @@ export class Uri {
     return !this.equals(other);
   }
 
-  hasResolvablePrefix() {
+  namespaceResolves() {
     return !!this.findResolvablePrefix();
   }
 
