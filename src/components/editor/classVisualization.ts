@@ -144,10 +144,18 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
         this.modelService.getVisualizationData(this.model)
           .then(data => {
-            this.graph.resetCells(this.createCells(data));
-            this.layoutAndAdjust()
-              .then(() => this.focus())
-              .then(() => this.loading = false);
+            const process = () => {
+              this.graph.resetCells(this.createCells(data));
+              this.layoutAndAdjust()
+                .then(() => this.focus())
+                .then(() => this.loading = false);
+            };
+
+            if (this.dimensionChangeInProgress) {
+              setTimeout(process, 200);
+            } else {
+              process();
+            }
           });
       }
     }
