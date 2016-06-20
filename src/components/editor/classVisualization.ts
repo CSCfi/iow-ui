@@ -59,6 +59,7 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
         if (xd || yd) {
           paper.setDimensions(element.width(), element.height());
           moveOrigin(paper, xd / 2, yd / 2);
+        } else {
           controller.dimensionChangeInProgress = false;
         }
       }, 200);
