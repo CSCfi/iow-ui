@@ -18,7 +18,6 @@ const joint = require('jointjs');
 import { module as mod }  from './module';
 import { collectIds } from '../../utils/entity';
 import { Iterable } from '../../utils/iterable';
-import { ClassService } from '../../services/classService';
 import { Uri } from '../../services/uri';
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
@@ -112,7 +111,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   paperHolder: PaperHolder;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private $q: IQService, private modelService: ModelService, private classService: ClassService, private languageService: LanguageService) {
+  constructor(private $scope: IScope, private $q: IQService, private modelService: ModelService, private languageService: LanguageService) {
 
     this.changeNotifier.addListener(this);
 
