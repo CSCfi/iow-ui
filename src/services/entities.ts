@@ -775,7 +775,7 @@ export class AssociationTargetPlaceholderClass implements VisualizationClass {
   associationPropertiesWithTarget: Property[] = [];
 
   constructor(public id: Uri, model: Model) {
-    this.label = createConstantLocalizable(id.curie, model.language);
+    this.label = createConstantLocalizable(id.compact, model.language);
   }
 
   hasAssociationTarget(id: Uri) {

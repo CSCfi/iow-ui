@@ -549,7 +549,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         let name = '';
 
         if (that.showId) {
-          name += property.predicateId.curie;
+          name += property.predicateId.compact;
 
           if (property.externalId) {
             name += ' / ' + property.externalId;
