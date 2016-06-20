@@ -2,14 +2,6 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 
-interface ConfirmationModalScope extends IScope {
-  confirmationModal: boolean;
-}
-
-export function isConfirmationModalScope($scope: IScope): $scope is ConfirmationModalScope {
-  return $scope['confirmationModal'] === true;
-}
-
 export class ConfirmationModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
@@ -23,10 +15,9 @@ export class ConfirmationModal {
                  </modal-template>`,
       controllerAs: 'ctrl',
       /* @ngInject */
-      controller($scope: ConfirmationModalScope) {
+      controller() {
         this.title = title;
         this.body = body;
-        $scope.confirmationModal = true;
       }
     }).result;
   }

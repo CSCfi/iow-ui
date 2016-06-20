@@ -1,10 +1,11 @@
 import ILocationService = angular.ILocationService;
 import IModalScope = angular.ui.bootstrap.IModalScope;
+import IModalStackService = angular.ui.bootstrap.IModalStackService;
 import IWindowService = angular.IWindowService;
 import IScope = angular.IScope;
 import { UserService } from '../services/userService';
 import { config } from '../config';
-import { isConfirmationModalScope, ConfirmationModal } from './common/confirmationModal';
+import { ConfirmationModal } from './common/confirmationModal';
 import { module as mod }  from './module';
 
 mod.directive('application', () => {
@@ -26,7 +27,7 @@ class ApplicationController {
   /* @ngInject */
   constructor($scope: IScope,
               $location: ILocationService,
-              $window: IWindowService,
+              $uibModalStack: IModalStackService,
               userService: UserService,
               confirmationModal: ConfirmationModal) {
 
@@ -35,19 +36,18 @@ class ApplicationController {
     this.production = config.production;
 
     $scope.$on('$locationChangeStart', (event, next) => {
-      const modalElement = angular.element($window.document).find('body [uib-modal-window]');
 
-      if (modalElement.length > 0) {
-        const modalScope = <IModalScope> modalElement.scope();
+      const modal = $uibModalStack.getTop();
 
-        if (!isConfirmationModalScope(modalScope)) {
-          event.preventDefault();
+      if (!!modal) {
+        const modalScope: IModalScope = modal.value.modalScope;
 
-          confirmationModal.openCloseModal().then(() => {
-            modalScope.$dismiss();
-            $location.url($location.url(next).hash());
-          });
-        }
+        event.preventDefault();
+
+        confirmationModal.openCloseModal().then(() => {
+          modalScope.$dismiss();
+          $location.url($location.url(next).hash());
+        });
       }
     });
   }
