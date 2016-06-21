@@ -87,21 +87,17 @@ export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChec
 
 export function arraysAreEqual<T>(lhs: T[], rhs: T[], equals: EqualityChecker<T> = referenceEquality) {
 
-  function rhsContains(item: T) {
-    for (const r of rhs) {
-      if (equals(r, item)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   for (const l of lhs) {
-    if (rhsContains(l)) {
-      return true;
+    if (!contains(rhs, l, equals)) {
+      return false;
     }
   }
 
-  return false;
+  for (const r of rhs) {
+    if (!contains(lhs, r, equals)) {
+      return false;
+    }
+  }
+
+  return true;
 }
