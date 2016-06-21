@@ -4,7 +4,7 @@ export type RelativeUrl = string;
 
 export class Uri {
 
-  constructor(public value: string, private context: any = {}) {
+  constructor(private value: string, private context: any = {}) {
     if (!value) {
       throw new Error('Empty uri');
     }

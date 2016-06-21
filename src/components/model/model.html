@@ -16,7 +16,7 @@
         </button>
 
         <ul class="panel__list" ng-class="{'has-button': ctrl.canEdit()}">
-          <li ng-repeat="item in tab.items() track by item.id.value"
+          <li ng-repeat="item in tab.items() track by item.id.uri"
               ng-class="{'model-panel__selection': ctrl.isSelected(item)}"
               ng-click="ctrl.select(item)">
             {{item.label}} <ajax-loading-indicator-small ng-if="ctrl.isLoading(item)"></ajax-loading-indicator-small>

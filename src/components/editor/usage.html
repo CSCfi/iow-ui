@@ -3,7 +3,7 @@
   <li ng-repeat="(type, referrers) in ctrl.referrers track by $index">
     <span>{{type | translate}}</span>
     <ul>
-      <li ng-repeat="referrer in referrers track by referrer.id.value">
+      <li ng-repeat="referrer in referrers track by referrer.id.uri">
         {{referrer | translateLabel: ctrl.context}} <span ng-hide="ctrl.showLinks()">({{referrer.id.compact}})</span><a ng-show="ctrl.showLinks()" ng-href="{{referrer.iowUrl(true)}}">({{referrer.id.compact}})</a>
       </li>
     </ul>
