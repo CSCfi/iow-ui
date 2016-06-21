@@ -14,6 +14,7 @@ import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
 import { isDefined } from '../../utils/object';
 import { any } from '../../utils/array';
+import { lower } from 'change-case';
 
 const limit = 1000;
 
@@ -214,7 +215,7 @@ class SearchConceptController {
     this.$scope.form.$setPristine();
 
     if (item instanceof AddNewConcept) {
-      this.selection = new NewConceptData(this.searchText, this.resolveInitialVocabulary());
+      this.selection = new NewConceptData(lower(this.searchText), this.resolveInitialVocabulary());
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
       const conceptPromise: IPromise<Concept> = conceptSearchResult.suggestion
