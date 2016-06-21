@@ -71,7 +71,15 @@ export function contains<T>(arr: T[], value: T, equals: EqualityChecker<T> = ref
 }
 
 export function containsAny<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): boolean {
-  return any(arr, (item: T) => any(values, (value: T) => equals(item, value)));
+  return any(values, (value: T) => contains(arr, value, equals));
+}
+
+export function containsAll<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): boolean {
+  return all(values, (value: T) => contains(arr, value, equals));
+}
+
+export function arraysAreEqual<T>(lhs: T[], rhs: T[], equals: EqualityChecker<T> = referenceEquality) {
+  return containsAll(lhs, rhs, equals) && containsAll(rhs, lhs, equals);
 }
 
 export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): T {
@@ -83,21 +91,4 @@ export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChec
     }
   }
   return null;
-}
-
-export function arraysAreEqual<T>(lhs: T[], rhs: T[], equals: EqualityChecker<T> = referenceEquality) {
-
-  for (const l of lhs) {
-    if (!contains(rhs, l, equals)) {
-      return false;
-    }
-  }
-
-  for (const r of rhs) {
-    if (!contains(lhs, r, equals)) {
-      return false;
-    }
-  }
-
-  return true;
 }
