@@ -5,6 +5,15 @@ export function normalizeAsArray<T>(obj: T|T[]): T[] {
 }
 
 export function moveElement<T>(array: T[], fromIndex: number, toIndex: number, indexChangedCb?: (item: T, index: number) => void) {
+
+  if (fromIndex >= array.length || fromIndex < 0) {
+    throw new Error('From index out of bounds: ' + fromIndex);
+  }
+
+  if (toIndex >= array.length || toIndex < 0) {
+    throw new Error('Index2 out of bounds: ' + toIndex);
+  }
+
   const value = array.splice(fromIndex, 1);
   array.splice(toIndex, 0, value[0]);
 
@@ -24,6 +33,14 @@ export function moveElement<T>(array: T[], fromIndex: number, toIndex: number, i
 }
 
 export function swapElements<T>(array: T[], index1: number, index2: number, indexChangedCb?: (item: T, index: number) => void) {
+
+  if (index1 >= array.length || index1 < 0) {
+    throw new Error('Index1 out of bounds: ' + index1);
+  }
+
+  if (index2 >= array.length || index1 < 0) {
+    throw new Error('Index2 out of bounds: ' + index1);
+  }
 
   const temp = array[index1];
   array[index1] = array[index2];
