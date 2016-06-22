@@ -3,11 +3,13 @@ import IAttributes = angular.IAttributes;
 import ITranscludeFunction = angular.ITranscludeFunction;
 import IParseService = angular.IParseService;
 import { module as mod }  from './module';
+import { isDefined } from '../../utils/object';
 
 mod.directive('accordion', () => {
   return {
     scope: {
-      openId: '='
+      openId: '=',
+      animate: '='
     },
     controllerAs: 'ctrl',
     controller: AccordionController,
@@ -24,6 +26,7 @@ mod.directive('accordion', () => {
 
 class AccordionController {
   openId: any;
+  animate: boolean;
 
   isOpen(id: any) {
     return this.openId === id;
@@ -53,7 +56,12 @@ mod.directive('accordionGroup', () => {
         <div ng-click="toggleVisibility()">
           <div accordion-transclude="heading" is-open="isOpen"></div>
         </div>
-        <div class="panel-collapse collapse" uib-collapse="!isOpen()">
+        <div uib-collapse="!isOpen()" ng-if="isAnimate()">
+          <div class="panel-body">
+            <div accordion-transclude="body" is-open="isOpen"></div>
+          </div>
+        </div>
+        <div class="panel-collapse" ng-show="isOpen()" ng-if="!isAnimate()">
           <div class="panel-body">
             <div accordion-transclude="body" is-open="isOpen"></div>
           </div>
@@ -65,6 +73,7 @@ mod.directive('accordionGroup', () => {
       pre($scope: AccordionGroupScope, element: JQuery, attributes: IAttributes, accordionController: AccordionController) {
         $scope.isOpen = () => accordionController.isOpen($scope.identifier);
         $scope.toggleVisibility = () => accordionController.toggleVisibility($scope.identifier);
+        $scope.isAnimate = () => isDefined(accordionController.animate) ? accordionController.animate : true;
       }
     }
   };
@@ -74,6 +83,7 @@ interface AccordionGroupScope extends IScope {
   identifier: any;
   isOpen: () => boolean;
   toggleVisibility: () => void;
+  isAnimate(): boolean;
 }
 
 interface AccordionTranscludeAttributes extends IAttributes {
