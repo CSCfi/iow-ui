@@ -6,7 +6,6 @@ import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';
-import { ClassViewController } from './classView';
 import { Uri } from '../../services/uri';
 import { LanguageService } from '../../services/languageService';
 import { any } from '../../utils/array';
@@ -25,22 +24,25 @@ mod.directive('propertyView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['propertyView', '^classForm'],
-    link($scope: PropertyViewScope, element: JQuery, attributes: IAttributes,
+    link($scope: IScope, element: JQuery, attributes: IAttributes,
          [thisController, classFormController]: [PropertyViewController, ClassFormController]) {
 
+      thisController.isOpen = () => classFormController.openPropertyId === thisController.property.internalId.uri;
       thisController.isEditing = () => classFormController.isEditing();
 
-      function scrollTo() {
+      function scrollTo(previousTop?: number) {
         const scrollTop = element.offset().top;
-        if (scrollTop === 0) {
-          setTimeout(scrollTo, 100);
+
+        if (!previousTop || scrollTop !== previousTop) {
+          // wait for stabilization
+          setTimeout(() => scrollTo(scrollTop), 100);
         } else {
-          jQuery('html, body').animate({scrollTop}, 'slow');
+          jQuery('html, body').animate({scrollTop: scrollTop - 105}, 500);
         }
       }
 
-      $scope.$watch(() => classFormController.openPropertyId, propertyId => {
-        if (propertyId === thisController.property.internalId.uri) {
+      $scope.$watchCollection(() => this.class && this.class.properties, () => {
+        if (thisController.isOpen()) {
           scrollTo();
         }
       });
@@ -48,10 +50,6 @@ mod.directive('propertyView', () => {
     controller: PropertyViewController
   };
 });
-
-interface PropertyViewScope extends IScope {
-  editableController: ClassViewController;
-}
 
 export class PropertyViewController {
 
@@ -61,12 +59,13 @@ export class PropertyViewController {
   otherPropertyLabels: Localizable[];
   otherPropertyIdentifiers: string[];
   isEditing: () => boolean;
+  isOpen: () => boolean;
 
   isConflictingValueClass = (valueClass: Uri) =>
     any(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass));
 
   /* @ngInject */
-  constructor($scope: PropertyViewScope, private languageService: LanguageService) {
+  constructor($scope: IScope, private languageService: LanguageService) {
 
     $scope.$watchCollection(() => this.class.properties, properties => {
       this.otherPropertyLabels = [];
