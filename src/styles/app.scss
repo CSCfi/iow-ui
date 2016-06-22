@@ -217,6 +217,12 @@ table.editable-table {
   transition:opacity .3s linear;
 }
 
+.collapsing {
+  -webkit-transition: height .15s ease-in-out;
+  -o-transition: height .15s ease-in-out;
+  transition: height .15s ease-in-out;
+}
+
 .btn-group.right .dropdown-menu {
   right: 0;
   left: auto;
