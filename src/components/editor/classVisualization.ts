@@ -492,9 +492,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const addedClasses = this.addClass(klass, true, oldElementLocation);
     this.graph.addCells(incomingLinks);
 
-    const result = _.filter(addedClasses, addedClass => !klass.id.equals(addedClass) && !oldOutgoingClassIds.has(addedClass.uri));
-
-    return result;
+    return _.filter(addedClasses, addedClass => !klass.id.equals(addedClass) && !oldOutgoingClassIds.has(addedClass.uri));
   }
 
   private addClass(klass: VisualizationClass, addAssociations: boolean, location?: {x: number, y: number}) {
