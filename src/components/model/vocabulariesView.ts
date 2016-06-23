@@ -1,7 +1,7 @@
 import IAttributes = angular.IAttributes;
 import IScope = angular.IScope;
 import { ModelViewController } from './modelView';
-import { ImportedVocabulary, Model, Vocabulary } from '../../services/entities';
+import { Model, Vocabulary } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchVocabularyModal } from './searchVocabularyModal';
@@ -66,44 +66,43 @@ class VocabulariesViewController {
 
   addVocabulary() {
     const language = this.languageService.getModelLanguage(this.model);
-    const vocabularies = collectProperties(this.model.vocabularies, vocabulary => vocabulary.vocabularyId);
+    const vocabularies = collectProperties(this.model.vocabularies, vocabulary => vocabulary.id.uri);
     const exclude = createExistsExclusion(vocabularies);
 
     this.searchVocabularyModal.open(language, exclude)
-      .then((vocabulary: Vocabulary) => this.modelService.newVocabularyImport(vocabulary, this.model.context))
-      .then((vocabulary: ImportedVocabulary) => {
+      .then((vocabulary: Vocabulary) => {
         this.model.addVocabulary(vocabulary);
         this.expanded = true;
       });
   }
 }
 
-class VocabularyTableDescriptor extends TableDescriptor<ImportedVocabulary> {
+class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
 
   constructor(private model: Model, private languageService: LanguageService) {
     super();
   }
 
-  columnDescriptors(vocabularies: ImportedVocabulary[]): ColumnDescriptor<ImportedVocabulary>[] {
+  columnDescriptors(vocabularies: Vocabulary[]): ColumnDescriptor<Vocabulary>[] {
     return [
-      { headerName: 'Identifier', nameExtractor: vocabualry => vocabualry.vocabularyId, cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
+      { headerName: 'Identifier', nameExtractor: vocabulary => vocabulary.vocabularyId, cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
       { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.label, this.model)}
     ];
   }
 
-  canEdit(vocabulary: ImportedVocabulary): boolean {
+  canEdit(vocabulary: Vocabulary): boolean {
     return false;
   }
 
-  canRemove(vocabulary: ImportedVocabulary): boolean {
+  canRemove(vocabulary: Vocabulary): boolean {
     return !vocabulary.local;
   }
 
-  orderBy(vocabulary: ImportedVocabulary): any {
+  orderBy(vocabulary: Vocabulary): any {
     return vocabulary.id;
   }
 
-  filter(vocabluary: ImportedVocabulary) {
-    return !vocabluary.local;
+  filter(vocabulary: Vocabulary) {
+    return !vocabulary.local;
   }
 }

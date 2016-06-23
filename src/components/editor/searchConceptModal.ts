@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService } from '../../services/languageService';
-import { ImportedVocabulary, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
+import { Vocabulary, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
@@ -31,7 +31,7 @@ class NewConceptData {
   comment: string;
   broaderConcept: Concept;
 
-  constructor(public label: string, public vocabulary: ImportedVocabulary) {
+  constructor(public label: string, public vocabulary: Vocabulary) {
   }
 }
 
@@ -41,7 +41,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(vocabularies: ImportedVocabulary[], model: Model, type: Type, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
+  private open(vocabularies: Vocabulary[], model: Model, type: Type, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -59,11 +59,11 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(vocabularies: ImportedVocabulary[], model: Model, allowSuggestions: boolean, type?: Type): IPromise<Concept> {
+  openSelection(vocabularies: Vocabulary[], model: Model, allowSuggestions: boolean, type?: Type): IPromise<Concept> {
     return this.open(vocabularies, model, type, allowSuggestions, false, '');
   }
 
-  openNewEntityCreation(vocabularies: ImportedVocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
+  openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
     return this.open(vocabularies, model, type, true, true, initialSearch);
   }
 };
@@ -89,14 +89,14 @@ class SearchConceptController {
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
-  selectedVocabulary: ImportedVocabulary;
+  selectedVocabulary: Vocabulary;
   searchText: string = '';
   submitError: string;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: ConceptSearchResult|AddNewConcept;
-  vocabularies: ImportedVocabulary[];
-  selectableVocabularies: ImportedVocabulary[];
+  vocabularies: Vocabulary[];
+  selectableVocabularies: Vocabulary[];
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -107,7 +107,7 @@ class SearchConceptController {
               initialSearch: string,
               public newEntityCreation: boolean,
               private allowSuggestions: boolean,
-              vocabularies: ImportedVocabulary[],
+              vocabularies: Vocabulary[],
               private model: Model,
               private conceptService: ConceptService,
               private gettextCatalog: gettextCatalog,
@@ -140,7 +140,7 @@ class SearchConceptController {
     });
   }
 
-  translateVocabulary(vocabulary: ImportedVocabulary) {
+  translateVocabulary(vocabulary: Vocabulary) {
     if (vocabulary.local) {
       return this.gettextCatalog.getString('Internal vocabulary');
     } else {
@@ -149,8 +149,8 @@ class SearchConceptController {
   }
 
   get vocabularyComparator() {
-    return comparingBoolean<ImportedVocabulary>(vocabulary => !vocabulary.local)
-      .andThen(comparingLocalizable<ImportedVocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.label));
+    return comparingBoolean<Vocabulary>(vocabulary => !vocabulary.local)
+      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.label));
   }
 
   isSelectionConcept() {

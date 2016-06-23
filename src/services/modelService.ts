@@ -7,8 +7,8 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 import { config } from '../config';
 import {
-  EntityDeserializer, Model, ModelListItem, ImportedVocabulary, ImportedNamespace, Type, GraphData, Link,
-  ReferenceData, ReferenceDataServer, ReferenceDataCode, Vocabulary, VisualizationClass
+  EntityDeserializer, Model, ModelListItem, ImportedNamespace, Type, GraphData, Link,
+  ReferenceData, ReferenceDataServer, ReferenceDataCode, VisualizationClass
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame } from './frames';
@@ -21,7 +21,6 @@ export class ModelService {
 
   // indexed by reference data id
   private referenceDataCodesCache = new Map<string, ReferenceDataCode[]>();
-  private visualizationDataCache = new Map<string, VisualizationClass[]>();
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
@@ -83,20 +82,6 @@ export class ModelService {
         model.unsaved = true;
         return model;
       });
-  }
-
-  newVocabularyImport(vocabulary: Vocabulary, context: any): IPromise<ImportedVocabulary> {
-
-    const graph = {
-      '@id': config.fintoUrl + vocabulary.id,
-      '@type': 'skos:ConceptScheme',
-      'identifier': vocabulary.id,
-      'title': vocabulary.label
-    };
-
-    const frameObject = modelFrame({ '@graph': graph, '@context': context});
-
-    return this.$q.when(new ImportedVocabulary(graph, context, frameObject));
   }
 
   newLink(title: string, description: string, homepage: Uri, lang: Language, context: any) {

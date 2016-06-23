@@ -174,13 +174,12 @@ export class EntityLoader {
         for (const importedVocabulary of details.vocabularies || []) {
           promises.push(
             this.vocabularies.then((vocabularies: Vocabulary[]) => {
-                const vocabulary = _.find(vocabularies, (vocabulary: Vocabulary) => vocabulary.id === importedVocabulary);
+                const vocabulary = _.find(vocabularies, (vocabulary: Vocabulary) => vocabulary.vocabularyId === importedVocabulary);
                 if (!vocabulary) {
                   throw new Error('Vocabulary not found: ' + vocabulary);
                 }
                 return vocabulary;
               })
-              .then(vocabulary => this.modelService.newVocabularyImport(vocabulary, model.context))
               .then(vocabularyEntity => model.addVocabulary(vocabularyEntity))
           );
         }

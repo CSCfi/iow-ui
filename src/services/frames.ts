@@ -29,6 +29,11 @@ const coreContext = {
   editorialNote: { '@id': 'http://www.w3.org/2004/02/skos/core#editorialNote', '@container': '@language' }
 };
 
+const vocabularyContext = Object.assign({}, coreContext, {
+  description,
+  isFormatOf: { '@id': 'http://purl.org/dc/terms/isFormatOf', '@type': '@id' }
+});
+
 const conceptContext = Object.assign({}, coreContext, {
   inScheme
 });
@@ -100,7 +105,7 @@ const namespaceContext = Object.assign({}, coreContext, {
   preferredXMLNamespacePrefix: { '@id': 'http://purl.org/ws-mmi-dc/terms/preferredXMLNamespacePrefix' }
 });
 
-const modelContext = Object.assign({}, coreContext, namespaceContext, referenceDataContext, {
+const modelContext = Object.assign({}, coreContext, namespaceContext, referenceDataContext, vocabularyContext, {
   rootResource : { '@id' : 'http://rdfs.org/ns/void#rootResource',  '@type' : '@id' },
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
   requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
@@ -206,11 +211,8 @@ export function iowConceptFrame(data: any): Frame {
 }
 
 export function vocabularyFrame(data: any): Frame {
-
-  const context = Object.assign({}, coreContext);
-
-  return frame(data, context, {
-    'id': {}
+  return frame(data, vocabularyContext, {
+    '@type': ['skos:ConceptScheme', 'skos:Collection']
   });
 }
 
