@@ -7,6 +7,8 @@ import { module as mod }  from './module';
 import { ViewReferenceDataModal } from '../model/viewReferenceDataModal';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { Localizer, LanguageService } from '../../services/languageService';
+import { collectProperties } from '../../utils/entity';
+import { createExistsExclusion } from '../../utils/exclusion';
 
 mod.directive('editableReferenceDataSelect', () => {
   return {
@@ -40,7 +42,9 @@ class EditableCodeSchemeSelectController {
   }
 
   addReferenceData() {
-    this.searchReferenceDataModal.openSelectionForProperty(this.model).then(referenceData => {
+    const exclude = createExistsExclusion(collectProperties(this.referenceData, rd => rd.id.uri));
+
+    this.searchReferenceDataModal.openSelectionForProperty(this.model, exclude).then(referenceData => {
       this.expanded = true;
       this.referenceData.push(referenceData);
     });
