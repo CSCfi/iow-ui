@@ -360,7 +360,7 @@ export namespace Classes {
   });
 
   export const opintojakso = loader.createClass(model, {
-    concept: 'http://www.yso.fi/onto/koko/p70433',
+    concept: 'http://jhsmeta.fi/skos/J483',
     label:   { fi: 'Opintojakso',
       en: 'Study module'
     },
@@ -518,7 +518,7 @@ export namespace Classes {
   });
 
   export const arvosana = loader.createClass(model, {
-    concept: 'http://www.yso.fi/onto/koko/p17136',
+    concept: 'http://jhsmeta.fi/skos/J469',
     label:   { en: 'Grade',
                fi: 'Arvosana' },
     comment: { fi: 'arvioinnin tuloksena oppilaalle, opiskelijalle tai tutkinnon suorittajalle annettava, järjestetystä joukosta valittava numeerinen tai sanallinen ilmaus' },
