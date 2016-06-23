@@ -102,7 +102,7 @@ const maxScale = 3;
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selection: Class|Predicate;
-  selectionFocus: FocusLevel = FocusLevel.DEPTH1;
+  selectionFocus: FocusLevel = FocusLevel.ALL;
   showName = NameType.LABEL;
 
   model: Model;
@@ -123,13 +123,16 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.changeNotifier.addListener(this);
 
     $scope.$watch(() => this.model, () => this.refresh());
-    $scope.$watch(() => this.selection, newSelection => {
-      if (newSelection && newSelection.id.equals(this.model.rootClass)) {
-        this.selectionFocus = FocusLevel.ALL;
+    $scope.$watch(() => this.selection, (newSelection, oldSelection) => {
+      if (newSelection !== oldSelection) {
+        this.focus();
       }
-      this.focus();
     });
-    $scope.$watch(() => this.selectionFocus, () => this.focus());
+    $scope.$watch(() => this.selectionFocus, (newFocus, oldFocus) => {
+      if (newFocus !== oldFocus) {
+        this.focus();
+      }
+    });
   }
 
   get paper(): joint.dia.Paper {
@@ -153,7 +156,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
             const process = () => {
               this.graph.resetCells(this.createCells(data));
               this.layoutAndAdjust()
-                .then(() => this.focus())
+                .then(() => {
+                  const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
+                  this.focus(forceFitToAllContent);
+                })
                 .then(() => this.loading = false);
             };
 
@@ -327,10 +333,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       event.stopPropagation();
     }
 
-    const element = this.getClassElement(this.selection);
-
-    if (element) {
-      this.centerToElement(element);
+    if (this.selectionFocus === FocusLevel.ALL) {
+      const element = this.getClassElement(this.selection);
+      if (element) {
+        this.centerToElement(element);
+      }
+    } else {
+      this.fitToContent(null, true);
     }
   }
 
@@ -344,7 +353,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.paper.setOrigin(x, y);
   }
 
-  focus() {
+  focus(forceFitToAllContent = false) {
     const that = this;
 
     function resetFocusOnAllCells() {
@@ -412,7 +421,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
     }
 
-    return this.fitToContent(null, true);
+    if (forceFitToAllContent) {
+      this.fitToContent(null, false);
+    } else if (this.selection) {
+      this.centerToSelectedClass();
+    } else {
+      this.fitToContent(null, true);
+    }
   }
 
   private getClassElement(classOrPredicate: Class|Predicate): joint.dia.Element {
