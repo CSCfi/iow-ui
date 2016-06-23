@@ -30,14 +30,14 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
     },
     template: `
                <div class="visualization-buttons">
-                 <div class="button" ng-mousedown="ctrl.zoomOut($event)"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
-                 <div class="button" ng-mousedown="ctrl.zoomIn($event)" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
-                 <div class="button" ng-click="ctrl.fitToContent($event)"><i class="fa fa-arrows-alt"></i></div>
+                 <div class="button" ng-mousedown="ctrl.zoomOut()"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
+                 <div class="button" ng-mousedown="ctrl.zoomIn()" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
+                 <div class="button" ng-click="ctrl.fitToContent()"><i class="fa fa-arrows-alt"></i></div>
                  <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="fa fa-crosshairs"></i></div>
                  <span ng-show="ctrl.canFocus()">
-                   <div class="button" ng-click="ctrl.focusOut($event)"><i class="fa fa-angle-left"></i></div>
+                   <div class="button" ng-click="ctrl.focusOut()"><i class="fa fa-angle-left"></i></div>
                    <div class="button focus-indicator"><i>{{ctrl.renderSelectionFocus()}}</i></div>
-                   <div class="button" ng-click="ctrl.focusIn($event)"><i class="fa fa-angle-right"></i></div>
+                   <div class="button" ng-click="ctrl.focusIn()"><i class="fa fa-angle-right"></i></div>
                  </span>
                  <div class="button" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></div>
                </div>
@@ -234,13 +234,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  focusIn(event: JQueryEventObject) {
+  focusIn() {
     if (this.selectionFocus < FocusLevel.ALL) {
       this.selectionFocus++;
     }
   }
 
-  focusOut(event: JQueryEventObject) {
+  focusOut() {
     if (this.selectionFocus > FocusLevel.DEPTH1) {
       this.selectionFocus--;
     }
@@ -293,53 +293,38 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     return this.selection instanceof Class;
   }
 
-  zoomIn(event: JQueryEventObject) {
-    event.stopPropagation();
-    this.zoomInHandle = window.setInterval(() => {
-      scale(this.paper, 0.01);
-    }, 10);
+  zoomIn() {
+    this.zoomInHandle = window.setInterval(() => scale(this.paper, 0.01), 10);
   }
 
-  zoomInEnded(event: JQueryEventObject) {
+  zoomInEnded() {
     window.clearInterval(this.zoomInHandle);
   }
 
-  zoomOut(event: JQueryEventObject) {
-    event.stopPropagation();
-    this.zoomOutHandle = window.setInterval(() => {
-      scale(this.paper, -0.01);
-    }, 10);
+  zoomOut() {
+    this.zoomOutHandle = window.setInterval(() => scale(this.paper, -0.01), 10);
   }
 
-  zoomOutEnded(event: JQueryEventObject) {
-    event.stopPropagation();
+  zoomOutEnded() {
     window.clearInterval(this.zoomOutHandle);
   }
 
-  fitToContent(event?: JQueryEventObject, onlyVisible: boolean = false) {
-    if (event) {
-      event.stopPropagation();
-    }
-
+  fitToContent(onlyVisible: boolean = false) {
     if (this.dimensionChangeInProgress) {
-      setTimeout(() => this.fitToContent(event, onlyVisible), 200);
+      setTimeout(() => this.fitToContent(onlyVisible), 200);
     } else {
       scaleToFit(this.paper, this.graph, onlyVisible);
     }
   }
 
-  centerToSelectedClass(event?: JQueryEventObject) {
-    if (event) {
-      event.stopPropagation();
-    }
-
+  centerToSelectedClass() {
     if (this.selectionFocus === FocusLevel.ALL) {
       const element = this.getClassElement(this.selection);
       if (element) {
         this.centerToElement(element);
       }
     } else {
-      this.fitToContent(null, true);
+      this.fitToContent(true);
     }
   }
 
@@ -422,11 +407,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     if (forceFitToAllContent) {
-      this.fitToContent(null, false);
+      this.fitToContent(false);
     } else if (this.selection) {
       this.centerToSelectedClass();
     } else {
-      this.fitToContent(null, true);
+      this.fitToContent(true);
     }
   }
 
