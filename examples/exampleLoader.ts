@@ -30,4 +30,13 @@ const userService = new UserService(httpService, q, entityDeserializer);
 const conceptService = new ConceptService(httpService, entityDeserializer);
 const resetService = new ResetService(httpService);
 
-export const loader = new EntityLoader(q, modelService, predicateService, classService, userService, conceptService, resetService, true);
+
+const context = {
+  'skos' : 'http://www.w3.org/2004/02/skos/core#',
+  'dc' : 'http://purl.org/dc/elements/1.1/',
+  'schema' : 'http://schema.org/',
+  'foaf' : 'http://xmlns.com/foaf/0.1/'
+};
+
+
+export const loader = new EntityLoader(q, modelService, predicateService, classService, userService, conceptService, resetService, context, true);

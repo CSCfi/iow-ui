@@ -114,8 +114,8 @@ export class EntityLoaderService {
               private resetService: ResetService) {
   }
 
-  create(shouldReset: boolean): EntityLoader {
-    return new EntityLoader(this.$q, this.modelService, this.predicateService, this.classService, this.userService, this.conceptService, this.resetService, shouldReset);
+  create(context: any, shouldReset: boolean): EntityLoader {
+    return new EntityLoader(this.$q, this.modelService, this.predicateService, this.classService, this.userService, this.conceptService, this.resetService, context, shouldReset);
   }
 }
 
@@ -133,6 +133,7 @@ export class EntityLoader {
               private userService: UserService,
               private conceptService: ConceptService,
               private resetService: ResetService,
+              private context: any,
               private shouldReset: boolean) {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
@@ -144,6 +145,10 @@ export class EntityLoader {
     const withDetails = action.then(identity, failWithDetails(details));
     this.actions.push(withDetails);
     return withDetails;
+  }
+
+  createUri(value: string) {
+    return new Uri(value, this.context);
   }
 
   result(successCallback: () => void, errorCallback: (err: any) => void) {
@@ -239,7 +244,7 @@ export class EntityLoader {
             }
 
             for (const equivalentClass of details.equivalentClasses || []) {
-              promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(id => shape.equivalentClasses.push(id)));
+              promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi']), this.context).then(id => shape.equivalentClasses.push(id)));
             }
 
             if (details.constraint) {
@@ -265,7 +270,7 @@ export class EntityLoader {
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
       ? this.createConceptSuggestion(concept, modelPromise).then(conceptSuggestion => conceptSuggestion.id)
-      : concept ? this.$q.when(new Uri(<string> concept)) : this.$q.when(asiaConceptId);
+      : concept ? this.$q.when(this.createUri(<string> concept)) : this.$q.when(asiaConceptId);
 
     const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, conceptIdPromise]))
@@ -281,10 +286,10 @@ export class EntityLoader {
         }
 
         assertPropertyValueExists(details, 'subClassOf for ' + details.label['fi']);
-        promises.push(asUriPromise(details.subClassOf).then(uri => klass.subClassOf = uri));
+        promises.push(asUriPromise(details.subClassOf, this.context).then(uri => klass.subClassOf = uri));
 
         for (const equivalentClass of details.equivalentClasses || []) {
-          promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi'])).then(uri => klass.equivalentClasses.push(uri)));
+          promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi']), this.context).then(uri => klass.equivalentClasses.push(uri)));
         }
 
         if (details.constraint) {
@@ -317,7 +322,7 @@ export class EntityLoader {
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
       ? this.createConceptSuggestion(concept, modelPromise).then(conceptSuggestion => conceptSuggestion.id)
-      : concept ? this.$q.when(new Uri(<string> concept)) : this.$q.when(asiaConceptId);
+      : concept ? this.$q.when(this.createUri(<string> concept)) : this.$q.when(asiaConceptId);
 
     const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, conceptIdPromise]))
@@ -329,10 +334,10 @@ export class EntityLoader {
         const promises: IPromise<any>[] = [];
 
         assertPropertyValueExists(details, 'subPropertyOf for ' + details.label['fi]']);
-        promises.push(asUriPromise(details.subPropertyOf).then(uri => predicate.subPropertyOf = uri));
+        promises.push(asUriPromise(details.subPropertyOf, this.context).then(uri => predicate.subPropertyOf = uri));
 
         for (const equivalentProperty of details.equivalentProperties || []) {
-          promises.push(asUriPromise(assertExists(equivalentProperty, 'equivalent property for ' + details.label['fi'])).then(uri => predicate.equivalentProperties.push(uri)));
+          promises.push(asUriPromise(assertExists(equivalentProperty, 'equivalent property for ' + details.label['fi']), this.context).then(uri => predicate.equivalentProperties.push(uri)));
         }
 
         promises.push(mangler(predicate));
@@ -355,7 +360,7 @@ export class EntityLoader {
   createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
     return this.createPredicate<Association>(modelPromise, 'association', details, association => {
       assertPropertyValueExists(details, 'valueClass');
-      return asUriPromise(details.valueClass)
+      return asUriPromise(details.valueClass, this.context)
         .then(uri => association.valueClass = uri);
     });
   }
@@ -367,7 +372,7 @@ export class EntityLoader {
       .then((p: Property) => {
         setDetails(p, details);
         assertPropertyValueExists(details, 'valueClass');
-        const valueClassPromise = asUriPromise(details.valueClass).then(id => {
+        const valueClassPromise = asUriPromise(details.valueClass, this.context).then(id => {
           if (id) {
             p.valueClass = id;
           }
@@ -444,7 +449,7 @@ function isUriResolvable<T>(obj: any): obj is UriResolvable<T> {
   return isPromiseProvider(obj) || isPromise(obj);
 }
 
-function asUriPromise<T extends { id: Uri }>(resolvable: UriResolvable<T>): IPromise<Uri> {
+function asUriPromise<T extends { id: Uri }>(resolvable: UriResolvable<T>, context: any): IPromise<Uri> {
   if (isPromiseProvider(resolvable)) {
     const promise = resolvable();
     if (isPromise<T>(promise)) {
@@ -455,7 +460,7 @@ function asUriPromise<T extends { id: Uri }>(resolvable: UriResolvable<T>): IPro
   } else if (isPromise(resolvable)) {
     return resolvable.then(withId => withId.id);
   } else if (typeof resolvable === 'string') {
-    return <IPromise<Uri>> Promise.resolve(new Uri(resolvable));
+    return <IPromise<Uri>> Promise.resolve(new Uri(resolvable, context));
   } else {
     return <IPromise<Uri>> Promise.resolve(null);
   }
