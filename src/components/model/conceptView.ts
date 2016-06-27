@@ -123,7 +123,8 @@ export class ConceptViewController extends EditableEntityController<Concept> {
   }
 
   openDeleteConfirmationModal() {
-    return this.deleteConfirmationModal.open(this.getEditable(), this.isReference() ? this.model : null);
+    const onlyDefinedInModel = this.isReference() ? this.model : null;
+    return this.deleteConfirmationModal.open(this.getEditable(), this.getContext(), onlyDefinedInModel);
   }
 
   getContext(): LanguageContext {

@@ -134,7 +134,8 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   openDeleteConfirmationModal() {
-    return this.deleteConfirmationModal.open(this.getEditable(), this.isReference() ? this.model : null);
+    const onlyDefinedInModel = this.isReference() ? this.model : null;
+    return this.deleteConfirmationModal.open(this.getEditable(), this.getContext(), onlyDefinedInModel);
   }
 
   getContext(): LanguageContext {
