@@ -1,16 +1,16 @@
 import { Type } from '../services/entities';
-import { containsAny, findFirstMatching } from './array';
+import { contains, containsAny, findFirstMatching } from './array';
 
 export function normalizeSelectionType(types: Type[]): Type {
   if (containsAny(types, ['class', 'shape'])) {
     return 'class';
-  } else if (containsAny(types, ['attribute'])) {
+  } else if (contains(types, 'attribute')) {
     return 'attribute';
-  } else if (containsAny(types, ['association'])) {
+  } else if (contains(types, 'association')) {
     return 'association';
   } else if (containsAny(types, ['model', 'profile', 'library'])) {
     return 'model';
-  } else if (containsAny(types, ['property'])) {
+  } else if (contains(types, 'property')) {
     return null;
   } else {
     throw new Error('Unsupported selection type: ' + types.join());
