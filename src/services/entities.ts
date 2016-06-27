@@ -172,7 +172,7 @@ export abstract class AbstractGroup extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.description);
+    this.comment = deserializeLocalizable(graph.comment);
     this.homepage = graph.homepage;
   }
 
@@ -254,7 +254,7 @@ export class Model extends AbstractModel {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.comment = deserializeLocalizable(graph.description);
+    this.comment = deserializeLocalizable(graph.comment);
     this.state = graph.versionInfo;
     this.namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
@@ -686,7 +686,7 @@ export abstract class AbstractClass extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.description);
+    this.comment = deserializeLocalizable(graph.comment);
     this.selectionType = normalizeSelectionType(this.type);
     this.normalizedType = normalizeClassType(this.type);
     // TODO: remove this if when externalClass API is fixed to return it
@@ -916,7 +916,7 @@ export class Constraint extends GraphNode {
       this.items = [];
     }
 
-    this.comment = deserializeLocalizable(graph.description);
+    this.comment = deserializeLocalizable(graph.comment);
   }
 
   isVisible() {
@@ -1012,7 +1012,7 @@ export class Property extends GraphNode {
     this.externalId = graph['identifier'];
     this.state = graph.versionInfo;
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.description);
+    this.comment = deserializeLocalizable(graph.comment);
     this.example = graph.example;
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
@@ -1185,7 +1185,7 @@ export abstract class AbstractPredicate extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.description);
+    this.comment = deserializeLocalizable(graph.comment);
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.normalizedType = normalizePredicateType(this.type);
     this.selectionType = normalizeSelectionType(this.type);
@@ -1330,7 +1330,7 @@ export class FintoConcept extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
-    this.comment = deserializeLocalizable(graph.definition || graph.description);
+    this.comment = deserializeLocalizable(graph.definition || graph.comment);
     this.vocabularies = deserializeList(graph.vocabularies, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
@@ -1548,7 +1548,7 @@ export class SearchResult extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.description);
+    this.comment = deserializeLocalizable(graph.comment);
   }
 
   iowUrl(href: boolean) {
