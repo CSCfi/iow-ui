@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import Moment = moment.Moment;
 
 export interface Config {
+  apiEndpointWithName(name: string): string;
   apiEndpoint: string;
   production: boolean;
   development: boolean;
@@ -41,4 +42,4 @@ class EnvironmentConfig implements Config {
   }
 }
 
-export const config = new EnvironmentConfig();
+export const config: Config = new EnvironmentConfig();
