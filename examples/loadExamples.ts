@@ -9,7 +9,7 @@ loader.result(() => {
   console.log('=========== Result ==========');
   console.log('All OK!');
   console.log('=============================');
-}, err => {
+}, (err: any) => {
   console.log('=========== Result ==========');
   console.log('Failed!');
   console.log(err);
