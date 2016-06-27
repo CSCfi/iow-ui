@@ -56,7 +56,7 @@ export class ClassViewController extends EditableEntityController<Class> {
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, userService);
 
-    this.openPropertyId = $location.search().property;
+    $scope.$watch(() => $location.search().property, id => this.openPropertyId = id);
     $scope.$watch(() => this.openPropertyId, id => $location.search('property', id));
 
     this.modelController.registerView(this);
