@@ -1096,20 +1096,22 @@ modal-body {
         border: 1px solid $brand-accent-dark;
       }
 
-      &.selected {
-        background-color: $brand-accent-lighter;
-        border: 1px solid $brand-accent-dark;
-      }
-
-      &.selection {
-        box-shadow: 2px 2px 2px $brand-accent-dark;
-        border-color: $brand-primary;
-      }
-
       &.disabled {
         background-color: whitesmoke;
         color: #a5a5a5;
         cursor: not-allowed;
+      }
+
+      &.selected {
+        color: inherit;
+        background-color: $brand-accent-lighter;
+        border: 1px solid $brand-accent-dark;
+        box-shadow: 2px 2px 2px $brand-accent-dark;
+      }
+
+      &.selection {
+        border: 1px solid black;
+        box-shadow: 2px 2px 2px black;
       }
 
       i {
