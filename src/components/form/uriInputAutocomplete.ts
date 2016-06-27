@@ -27,27 +27,33 @@ mod.directive('uriInputAutocomplete', () => {
   };
 });
 
+type DataType = ClassListItem|PredicateListItem;
+
 export class UriInputAutocompleteController {
 
   type: Type;
   model: Model;
-  data: IPromise<(ClassListItem|PredicateListItem)[]>;
+  data: IPromise<DataType[]>;
 
   constructor(private $q: IQService, private classService: ClassService, private predicateService: PredicateService) {
   }
 
   datasource = (search: string) => {
 
-    const fetch = () => {
-      switch (this.type) {
+    const that = this;
+
+    function fetch(): IPromise<DataType[]> {
+      switch (that.type) {
         case 'class':
-          return this.$q.all([this.classService.getClassesForModel(this.model), this.classService.getExternalClassesForModel(this.model)])
+          return that.$q.all([that.classService.getClassesForModel(that.model), that.classService.getExternalClassesForModel(that.model)])
             .then((lists: ClassListItem[][]) => _.flatten(lists));
-        case 'predicate':
-          return this.$q.all([this.predicateService.getPredicatesForModel(this.model), this.predicateService.getExternalPredicatesForModel(this.model)])
+        case 'attribute':
+        case 'association':
+        case 'property':
+          return that.$q.all([that.predicateService.getPredicatesForModel(that.model), that.predicateService.getExternalPredicatesForModel(that.model)])
             .then((lists: PredicateListItem[][]) => _.flatten(lists));
         default:
-          return this.$q.when([]);
+          throw new Error('Unsupported type: ' + that.type);
       }
     };
 
@@ -59,5 +65,5 @@ export class UriInputAutocompleteController {
     return this.data;
   };
 
-  valueExtractor = (item: ClassListItem|PredicateListItem) => item.id;
+  valueExtractor = (item: DataType) => item.id;
 }
