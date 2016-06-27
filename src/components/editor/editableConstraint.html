@@ -23,10 +23,12 @@
           <div class="input-group input-group-sm pull-left input-select">
             <select class="form-control" ng-model="ctrl.constraint.constraint" ng-options="type | capitalize for type in ctrl.types"></select>
           </div>
-          <div class="form-control with-button multi-input">
+          <div class="form-control with-button multi-input" drag-sortable="ctrl.constraint.items">
             <div ng-repeat="item in ctrl.constraint.items" class="added-item">
-              {{item | translateLabel: ctrl.model}}
-              <div class="delete-item badge" ng-click="ctrl.removeItem(item)">&times;</div>
+              <div class="box draggable" drag-sortable-item>
+                {{item | translateLabel: ctrl.model}}
+                <div class="delete-item badge" ng-click="ctrl.removeItem(item)">&times;</div>
+              </div>
             </div>
           </div>
 
