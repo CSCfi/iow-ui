@@ -1,3 +1,4 @@
+import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import * as _ from 'lodash';
@@ -13,7 +14,7 @@ import {
   State,
   ConceptSuggestion,
   ConstraintType,
-  ImportedNamespace, Vocabulary
+  ImportedNamespace, Vocabulary, User
 } from './entities';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
@@ -24,6 +25,7 @@ import { ResetService } from './resetService';
 import { Uri, Url } from './uri';
 import { DataType } from './dataTypes';
 import { identity } from '../utils/function';
+import { config } from '../config';
 
 export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392');
 export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK');
@@ -106,6 +108,7 @@ export interface ConceptSuggestionDetails {
 export class EntityLoaderService {
   /* @ngInject */
   constructor(private $q: IQService,
+              private $http: IHttpService,
               private modelService: ModelService,
               private predicateService: PredicateService,
               private classService: ClassService,
@@ -115,7 +118,7 @@ export class EntityLoaderService {
   }
 
   create(context: any, shouldReset: boolean): EntityLoader {
-    return new EntityLoader(this.$q, this.modelService, this.predicateService, this.classService, this.userService, this.conceptService, this.resetService, context, shouldReset);
+    return new EntityLoader(this.$q, this.$http, this.modelService, this.predicateService, this.classService, this.userService, this.conceptService, this.resetService, context, shouldReset);
   }
 }
 
@@ -127,6 +130,7 @@ export class EntityLoader {
   private actions: IPromise<any>[] = [];
 
   constructor(private $q: IQService,
+              private $http: IHttpService,
               private modelService: ModelService,
               private predicateService: PredicateService,
               private classService: ClassService,
@@ -137,8 +141,16 @@ export class EntityLoader {
               private shouldReset: boolean) {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
-    this.loggedIn = this.reset.then(() => userService.login());
+    this.loggedIn = this.reset.then(() => this.login());
     this.vocabularies = this.reset.then(() => this.conceptService.getAllVocabularies('fi'));
+  }
+
+  login(): IPromise<User> {
+    return this.userService.updateLogin().then((user: User) => {
+      return !user.isLoggedIn()
+        ? this.$http.get(config.apiEndpoint + '/login', { params: { target: 'http://dummy' } }).then(() => this.userService.updateLogin())
+        : this.$q.when(this.userService.user);
+    });
   }
 
   addAction<T>(action: IPromise<T>, details: any): IPromise<T> {

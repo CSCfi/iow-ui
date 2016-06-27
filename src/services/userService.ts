@@ -33,15 +33,6 @@ export class UserService {
     return this.user.isLoggedIn();
   }
 
-  /**
-   * Usually should be just browser redirect
-   */
-  login(): IPromise<any> {
-      return this.updateLogin().then<any>(user => !user.isLoggedIn()
-      ? this.$http.get(config.apiEndpoint + '/login', { params: { target: 'http://dummy' } }).then(() => this.updateLogin())
-      : this.$q.when());
-  }
-
   logout(): IPromise<User> {
     return this.$http.get(config.apiEndpointWithName('logout')).then(() => this.user = new AnonymousUser());
   }
