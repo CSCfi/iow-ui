@@ -319,7 +319,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   centerToSelectedClass() {
     if (this.selectionFocus === FocusLevel.ALL) {
-      const element = this.getClassElement(this.selection);
+      const element = this.findElementForPersistentClass(this.selection);
       if (element) {
         this.centerToElement(element);
       }
@@ -399,7 +399,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     resetFocusOnAllCells();
-    const element = this.getClassElement(this.selection);
+    const element = this.findElementForPersistentClass(this.selection);
 
     if (element) {
       applyFocus(element, Direction.BOTH, 1, new Set<joint.dia.Element>(), new Set<joint.dia.Element>());
@@ -415,7 +415,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  private getClassElement(classOrPredicate: Class|Predicate): joint.dia.Element {
+  private findElementForPersistentClass(classOrPredicate: Class|Predicate): joint.dia.Element {
     if (classOrPredicate instanceof Class && !classOrPredicate.unsaved) {
       const cell = this.graph.getCell(classOrPredicate.id.uri);
       if (cell) {
