@@ -39,4 +39,4 @@ const context = {
 };
 
 
-export const loader = new EntityLoader(q, modelService, predicateService, classService, userService, conceptService, resetService, context, true);
+export const loader = new EntityLoader(q, httpService, modelService, predicateService, classService, userService, conceptService, resetService, context, true);
