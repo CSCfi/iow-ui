@@ -157,7 +157,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
               this.graph.resetCells(this.createCells(data));
               this.layoutAndAdjust()
                 .then(() => {
-                  const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
+                  const selectionIsRootClass = this.selection && this.selection.id.equals(this.model.rootClass);
+                  const selectionIsPredicate = this.selection && this.selection.isPredicate();
+                  const forceFitToAllContent = selectionIsRootClass || selectionIsPredicate;
                   this.focus(forceFitToAllContent);
                 })
                 .then(() => this.loading = false);
@@ -317,17 +319,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  centerToSelectedClass() {
-    if (this.selectionFocus === FocusLevel.ALL) {
-      const element = this.findElementForPersistentClass(this.selection);
-      if (element) {
-        this.centerToElement(element);
-      }
-    } else {
-      this.fitToContent(true);
-    }
-  }
-
   centerToElement(element: joint.dia.Element) {
     const scale = 0.8;
     const bbox = element.getBBox();
@@ -408,10 +399,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     if (forceFitToAllContent) {
       this.fitToContent(false);
-    } else if (this.selection) {
-      this.centerToSelectedClass();
+    } else if (element) {
+      if (this.selectionFocus === FocusLevel.ALL) {
+        this.centerToElement(element);
+      } else {
+        this.fitToContent(true);
+      }
     } else {
-      this.fitToContent(true);
+      // nothing
     }
   }
 
