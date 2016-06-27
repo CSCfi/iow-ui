@@ -64,9 +64,9 @@ class ImportedNamespacesViewController {
       return null;
     };
 
+    const allowProfiles = this.model.isOfType('profile');
     const profileExclude = (ns: ImportedNamespace) => (!allowProfiles && ns.isOfType('profile')) ? 'Cannot import profile' : null;
     const exclude = combineExclusions(existsExclude, profileExclude);
-    const allowProfiles = this.model.isOfType('profile');
 
     this.searchNamespaceModal.open(this.model, language, exclude)
       .then((ns: ImportedNamespace) => {
@@ -103,6 +103,7 @@ class ImportedNamespaceTableDescriptor extends TableDescriptor<ImportedNamespace
   }
 
   canRemove(ns: ImportedNamespace): boolean {
-    return !this.modelController || !this.modelController.getUsedNamespaces().has(ns.id.uri);
+    console.log(this.modelController.getUsedNamespaces());
+    return this.modelController && !this.modelController.getUsedNamespaces().has(ns.id.uri);
   }
 }
