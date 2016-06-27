@@ -880,7 +880,7 @@ export class Class extends AbstractClass implements VisualizationClass {
       property: serializeEntityList(this.properties, clone),
       subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
-      constraint: serializeOptional(this.constraint, isConstraintDefined, (data) => serializeEntity(data, clone)),
+      constraint: serializeOptional(this.constraint, (data) => serializeEntity(data, clone), isConstraintDefined),
       identifier: this.version,
       editorialNote: serializeLocalizable(this.editorialNote),
       created: serializeDate(this.createdAt),
