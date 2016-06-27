@@ -53,7 +53,6 @@ class VocabulariesViewController {
   constructor($scope: IScope,
               private searchVocabularyModal: SearchVocabularyModal,
               private conceptEditorModal: ConceptEditorModal,
-              private modelService: ModelService,
               private languageService: LanguageService) {
     $scope.$watch(() => this.model, model => {
       this.descriptor = new VocabularyTableDescriptor(model, languageService);
