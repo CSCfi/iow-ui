@@ -88,7 +88,7 @@ class GroupController extends EditableEntityController<Group> {
     throw new Error('Not supported');
   }
 
-  update(entity: Group, oldId: Uri): IPromise<any> {
+  update(entity: Group, oldEntity: Group): IPromise<any> {
     throw new Error('Not supported');
   }
 

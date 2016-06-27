@@ -53,7 +53,7 @@ export class ModelViewController extends EditableEntityController<Model> {
     return this.modelService.createModel(model);
   }
 
-  update(model: Model, oldId: Uri) {
+  update(model: Model, oldEntity: Model) {
     return this.modelService.updateModel(model);
   }
 

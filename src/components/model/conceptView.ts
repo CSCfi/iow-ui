@@ -65,7 +65,7 @@ export class ConceptViewController extends EditableEntityController<Concept> {
     return this.$q.reject('Concept creation is not possible');
   }
 
-  update(entity: Concept, oldId: Uri) {
+  update(entity: Concept, oldEntity: Concept) {
     if (entity instanceof ConceptSuggestion) {
       return this.conceptService.updateConceptSuggestion(entity).then(() => this.modelController.selectionEdited(entity));
     } else {

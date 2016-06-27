@@ -38,7 +38,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   }
 
   abstract create(entity: T): IPromise<any>;
-  abstract update(entity: T, oldId: Uri): IPromise<any>;
+  abstract update(entity: T, oldEntity: T): IPromise<any>;
   abstract remove(entity: T): IPromise<any>;
   abstract rights(): Rights;
   abstract getEditable(): T;
@@ -62,7 +62,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
     const editableInEdit = this.editableInEdit;
     this.$log.info(JSON.stringify(editableInEdit.serialize(), null, 2));
     this.persisting = true;
-    (editable.unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable.id))
+    (editable.unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable))
       .then(() => {
         this.select(editableInEdit);
         this.persisting = false;

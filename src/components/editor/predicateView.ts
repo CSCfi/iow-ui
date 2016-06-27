@@ -46,15 +46,15 @@ export class PredicateViewController extends EditableEntityController<Associatio
   }
 
   create(entity: Association|Attribute) {
-    return this.predicateService.createPredicate(entity).then(() => this.modelController.selectionEdited(this.predicate, this.editableInEdit));
+    return this.predicateService.createPredicate(entity).then(() => this.modelController.selectionEdited(null, entity));
   }
 
-  update(entity: Association|Attribute, oldId: Uri) {
-    return this.predicateService.updatePredicate(entity, oldId).then(() => this.modelController.selectionEdited(this.predicate, this.editableInEdit));
+  update(entity: Association|Attribute, oldEntity: Association|Attribute) {
+    return this.predicateService.updatePredicate(entity, oldEntity.id).then(() => this.modelController.selectionEdited(oldEntity, entity));
   }
 
   remove(entity: Association|Attribute) {
-    return this.predicateService.deletePredicate(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(this.predicate));
+    return this.predicateService.deletePredicate(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(entity));
   }
 
   rights(): Rights {

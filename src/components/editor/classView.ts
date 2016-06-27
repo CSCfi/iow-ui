@@ -86,15 +86,15 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   create(entity: Class) {
     return this.classService.createClass(entity)
-      .then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
+      .then(() => this.modelController.selectionEdited(this.class, entity));
   }
 
-  update(entity: Class, oldId: Uri) {
-    return this.classService.updateClass(entity, oldId).then(() => this.modelController.selectionEdited(this.class, this.editableInEdit));
+  update(entity: Class, oldEntity: Class) {
+    return this.classService.updateClass(entity, oldEntity.id).then(() => this.modelController.selectionEdited(oldEntity, entity));
   }
 
   remove(entity: Class) {
-    return this.classService.deleteClass(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(this.class));
+    return this.classService.deleteClass(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(entity));
   }
 
   rights(): Rights {
