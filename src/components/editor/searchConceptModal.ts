@@ -144,13 +144,13 @@ class SearchConceptController {
     if (vocabulary.local) {
       return this.gettextCatalog.getString('Internal vocabulary');
     } else {
-      return this.languageService.translate(vocabulary.label, this.model);
+      return this.languageService.translate(vocabulary.title, this.model);
     }
   }
 
   get vocabularyComparator() {
     return comparingBoolean<Vocabulary>(vocabulary => !vocabulary.local)
-      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.label));
+      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.title));
   }
 
   isSelectionConcept() {

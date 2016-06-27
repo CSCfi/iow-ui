@@ -70,7 +70,7 @@ class SearchVocabularyController {
 
       this.searchResults.sort(
         comparingBoolean((vocabulary: Vocabulary) => !!this.exclude(vocabulary))
-          .andThen(comparingLocalizable(this.language, (vocabulary: Vocabulary) => vocabulary.label)));
+          .andThen(comparingLocalizable(this.language, (vocabulary: Vocabulary) => vocabulary.title)));
     }
 
     this.loadingResults = !isDefined(this.vocabularies);
@@ -83,7 +83,7 @@ class SearchVocabularyController {
   }
 
   private localizedLabelAsLower(vocabulary: Vocabulary): string {
-    return this.languageService.translate(vocabulary.label).toLowerCase();
+    return this.languageService.translate(vocabulary.title).toLowerCase();
   }
 
   private textFilter(vocabulary: Vocabulary): boolean {

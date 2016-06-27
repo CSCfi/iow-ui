@@ -17,7 +17,7 @@
         <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selected" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
-          <h5>{{searchResult | translateLabel}}</h5>
+          <h5>{{searchResult.title | translateValue}}</h5>
         </search-results>
       </div>
     </div>

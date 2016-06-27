@@ -172,7 +172,7 @@ export abstract class AbstractGroup extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.comment);
+    this.comment = deserializeLocalizable(graph.description);
     this.homepage = graph.homepage;
   }
 
@@ -254,7 +254,7 @@ export class Model extends AbstractModel {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.comment = deserializeLocalizable(graph.comment);
+    this.comment = deserializeLocalizable(graph.description);
     this.state = graph.versionInfo;
     this.namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
@@ -505,17 +505,17 @@ export class Link extends GraphNode {
 export class Vocabulary extends GraphNode {
 
   id: Uri;
-  label: Localizable;
-  comment: Localizable;
+  title: Localizable;
+  description: Localizable;
   vocabularyId: string;
   isFormatOf: Url;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
-    this.label = deserializeLocalizable(graph.label);
     this.vocabularyId = graph.identifier;
-    this.comment = deserializeLocalizable(graph.comment);
+    this.title = deserializeLocalizable(graph.title);
+    this.description = deserializeLocalizable(graph.description);
     this.isFormatOf = graph.isFormatOf;
   }
 
@@ -686,7 +686,7 @@ export abstract class AbstractClass extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.comment);
+    this.comment = deserializeLocalizable(graph.description);
     this.selectionType = normalizeSelectionType(this.type);
     this.normalizedType = normalizeClassType(this.type);
     // TODO: remove this if when externalClass API is fixed to return it
@@ -916,7 +916,7 @@ export class Constraint extends GraphNode {
       this.items = [];
     }
 
-    this.comment = deserializeLocalizable(graph.comment);
+    this.comment = deserializeLocalizable(graph.description);
   }
 
   isVisible() {
@@ -1012,7 +1012,7 @@ export class Property extends GraphNode {
     this.externalId = graph['identifier'];
     this.state = graph.versionInfo;
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.comment);
+    this.comment = deserializeLocalizable(graph.description);
     this.example = graph.example;
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
@@ -1185,7 +1185,7 @@ export abstract class AbstractPredicate extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.comment);
+    this.comment = deserializeLocalizable(graph.description);
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.normalizedType = normalizePredicateType(this.type);
     this.selectionType = normalizeSelectionType(this.type);
@@ -1330,7 +1330,7 @@ export class FintoConcept extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
-    this.comment = deserializeLocalizable(graph.definition || graph.comment);
+    this.comment = deserializeLocalizable(graph.definition || graph.description);
     this.vocabularies = deserializeList(graph.vocabularies, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
@@ -1444,7 +1444,7 @@ export class VocabularyNameHref {
     } else if (vocabulary instanceof Vocabulary) {
       this.id = vocabulary.id;
       this.href = vocabulary.local ? null : vocabulary.href;
-      this.name = vocabulary.label;
+      this.name = vocabulary.title;
     } else {
       throw new Error('Unknown vocabulary type: ' + vocabulary);
     }
@@ -1548,7 +1548,7 @@ export class SearchResult extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.comment = deserializeLocalizable(graph.comment);
+    this.comment = deserializeLocalizable(graph.description);
   }
 
   iowUrl(href: boolean) {

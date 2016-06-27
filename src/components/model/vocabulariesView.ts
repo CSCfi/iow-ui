@@ -86,7 +86,7 @@ class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
   columnDescriptors(vocabularies: Vocabulary[]): ColumnDescriptor<Vocabulary>[] {
     return [
       { headerName: 'Identifier', nameExtractor: vocabulary => vocabulary.vocabularyId, cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
-      { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.label, this.model)}
+      { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.title, this.model)}
     ];
   }
 
