@@ -1015,6 +1015,7 @@ modal-body {
 .top-actions {
   @include clearfix;
 
+  background-color: white;
   padding: 10px 10px 10px 10px;
 
   p.button-label {
