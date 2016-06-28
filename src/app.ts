@@ -67,6 +67,7 @@ mod.config(($routeProvider: IRouteProvider,
   $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
 
   $uibTooltipProvider.options({ appendToBody: true });
+  $uibTooltipProvider.setTriggers({'mouseenter': 'mouseleave click'});
 });
 
 mod.run((gettextCatalog: gettextCatalog) => gettextCatalog.debug = true);
