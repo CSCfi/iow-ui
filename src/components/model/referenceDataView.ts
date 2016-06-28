@@ -17,11 +17,11 @@ mod.directive('referenceDataView', () => {
     template: require('./referenceDataView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller: CodeSchemeViewController
+    controller: ReferenceDataViewController
   };
 });
 
-class CodeSchemeViewController {
+class ReferenceDataViewController {
 
   referenceData: ReferenceData;
   context: LanguageContext;

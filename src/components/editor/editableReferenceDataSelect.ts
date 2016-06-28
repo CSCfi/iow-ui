@@ -21,14 +21,14 @@ mod.directive('editableReferenceDataSelect', () => {
     bindToController: true,
     template: require('./editableReferenceDataSelect.html'),
     require: ['editableReferenceDataSelect', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableCodeSchemeSelectController, EditableForm]) {
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableReferenceDataSelectController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
     },
-    controller: EditableCodeSchemeSelectController
+    controller: EditableReferenceDataSelectController
   };
 });
 
-class EditableCodeSchemeSelectController {
+class EditableReferenceDataSelectController {
 
   isEditing: () => boolean;
   referenceData: ReferenceData[];
