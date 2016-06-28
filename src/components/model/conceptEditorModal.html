@@ -24,7 +24,7 @@
             <div class="input-group input-group-md">
               <div class="selectContainer">
                 <select id="vocabulary" class="form-control" ng-model="ctrl.showVocabulary"
-                        ng-options="(vocabulary | translateLabel: ctrl.model) for vocabulary in ctrl.vocabularies">
+                        ng-options="(vocabulary.title | translateValue: ctrl.model) for vocabulary in ctrl.vocabularies">
                   <option value="" translate>All vocabularies</option>
                 </select>
               </div>
