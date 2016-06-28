@@ -25,8 +25,6 @@ import './propertyPredicateView';
 import './rangeSelect';
 import './selectionView';
 import './subjectView';
-import './usage';
-import './usagePanel';
 import './visualizationView';
 
 mod.service('choosePredicateTypeModal', ChoosePredicateTypeModal);

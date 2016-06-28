@@ -1,7 +1,6 @@
 import IScope = angular.IScope;
 import { UsageService } from '../../services/usageService';
 import { Usage, EditableEntity, LanguageContext } from '../../services/entities';
-
 import { module as mod }  from './module';
 
 mod.directive('usagePanel', () => {

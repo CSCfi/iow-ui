@@ -4,8 +4,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { Usage, Referrer, LanguageContext } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
-
-import { module as mod }  from './module';
+import { module as mod }  from '../module';
 
 interface UsageAttributes extends IAttributes {
   showLinks: string;

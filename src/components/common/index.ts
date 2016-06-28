@@ -21,6 +21,8 @@ import './keyControl';
 import './keyControlItem';
 import './modalTemplate';
 import './searchResults';
+import './usage';
+import './usagePanel';
 
 mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);
