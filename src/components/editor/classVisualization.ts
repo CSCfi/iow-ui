@@ -30,10 +30,10 @@ mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, 
     },
     template: `
                <div class="visualization-buttons">
-                 <div class="button" ng-mousedown="ctrl.zoomOut()"  ng-mouseup="ctrl.zoomOutEnded($event)"><i class="fa fa-search-minus"></i></div>
-                 <div class="button" ng-mousedown="ctrl.zoomIn()" ng-mouseup="ctrl.zoomInEnded($event)"><i class="fa fa-search-plus"></i></div>
+                 <div class="button" ng-mousedown="ctrl.zoomOut()" ng-mouseup="ctrl.zoomOutEnded()"><i class="fa fa-search-minus"></i></div>
+                 <div class="button" ng-mousedown="ctrl.zoomIn()" ng-mouseup="ctrl.zoomInEnded()"><i class="fa fa-search-plus"></i></div>
                  <div class="button" ng-click="ctrl.fitToContent()"><i class="fa fa-arrows-alt"></i></div>
-                 <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass($event)"><i class="fa fa-crosshairs"></i></div>
+                 <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass()"><i class="fa fa-crosshairs"></i></div>
                  <span ng-show="ctrl.canFocus()">
                    <div class="button" ng-click="ctrl.focusOut()"><i class="fa fa-angle-left"></i></div>
                    <div class="button focus-indicator"><i>{{ctrl.renderSelectionFocus()}}</i></div>
@@ -314,6 +314,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       setTimeout(() => this.fitToContent(onlyVisible), 200);
     } else {
       scaleToFit(this.paper, this.graph, onlyVisible);
+    }
+  }
+
+  centerToSelectedClass() {
+    const element = this.findElementForPersistentClass(this.selection);
+    if (element) {
+      this.centerToElement(element);
     }
   }
 
