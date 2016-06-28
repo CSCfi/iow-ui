@@ -25,9 +25,10 @@ export const commonConfig: Configuration = {
       { test: /\.ts$/,            loader: 'tslint' }
     ],
     loaders: [
+      { test: /\.js$/,            loader: 'strip-sourcemap-loader' },
       { test: /\.css$/,           loader: 'style!css' },
       { test: /\.scss$/,          loader: 'style!css!sass' },
-      { test: /\.ts$/,            loader: 'ng-annotate!awesome-typescript-loader' },
+      { test: /\.ts$/,            loader: 'ng-annotate!awesome-typescript-loader!strip-sourcemap-loader' },
       { test: /\.woff(\?.+)?$/,   loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
       { test: /\.woff2(\?.+)?$/,  loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
       { test: /\.ttf(\?.+)?$/,    loader: 'file-loader' },
