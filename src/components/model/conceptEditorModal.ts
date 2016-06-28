@@ -149,7 +149,7 @@ export class ConceptEditorModalController {
   }
 
   private modelFilter(concept: Concept): boolean {
-    return !this.showModel || concept instanceof ConceptSuggestion && concept.definedBy.id.equals(this.showModel.id);
+    return !this.showModel || concept instanceof ConceptSuggestion && concept.definedBy && concept.definedBy.id.equals(this.showModel.id);
   }
 
   private vocabularyFilter(concept: Concept): boolean {
