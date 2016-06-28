@@ -79,7 +79,7 @@ export class ConceptEditorModalController {
           .flatten<Vocabulary|Uri>()
           .filter(vocabulary => vocabulary instanceof Vocabulary && !vocabulary.local)
           .map(vocabulary => vocabulary as Vocabulary)
-          .uniq(vocabulary => vocabulary.id)
+          .uniq(vocabulary => vocabulary.vocabularyId)
           .value();
 
         this.sort();
