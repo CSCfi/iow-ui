@@ -1713,8 +1713,10 @@ function serializeEntityOrId(data: GraphNode|Uri, clone: boolean) {
 function deserializeEntityOrId<T extends GraphNode>(data: any, context: any, frame: any, entityFactory: EntityFactory<T>): T|Uri {
   if (typeof data === 'object') {
     return deserializeEntity(data, context, frame, entityFactory);
-  } else {
+  } else if (typeof data === 'string') {
     return new Uri(data, context);
+  } else {
+    throw new Error('Incompatible data for entity or id: ' + data);
   }
 }
 
