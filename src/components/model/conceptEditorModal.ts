@@ -56,6 +56,7 @@ export class ConceptEditorModalController {
   constructor(private $scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
               languageService: LanguageService,
+              public gettextCatalog: gettextCatalog,
               private conceptService: ConceptService,
               private confirmationModal: ConfirmationModal,
               private model: Model) {

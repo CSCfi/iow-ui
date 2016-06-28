@@ -66,7 +66,7 @@
           <h5>{{searchResult | translateLabel: ctrl.model}}</h5>
           <p>{{searchResult.definedBy | translateLabel: ctrl.model}}</p>
           <p ng-init="vocabularyNames = searchResult.getVocabularyNames()">
-            <span ng-repeat="vocabularyName in vocabularyNames">{{vocabulary.getLocalizedName(ctrl.localizer)}}<span ng-show="!$last">, </span></span>
+            <span ng-repeat="vocabularyName in vocabularyNames">{{vocabularyName.getLocalizedName(ctrl.localizer, ctrl.gettextCatalog)}}<span ng-show="!$last">, </span></span>
           </p>
         </search-results>
       </div>

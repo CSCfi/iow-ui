@@ -1331,7 +1331,7 @@ export class FintoConcept extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.prefLabel);
     this.comment = deserializeLocalizable(graph.definition || graph.comment);
-    this.vocabularies = deserializeList(graph.vocabularies, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
+    this.vocabularies = deserializeList(graph.inScheme, (data) => deserializeEntityOrId(data, context, frame, () => Vocabulary));
     this.broaderConcept = deserializeOptional(graph.broaderConcept, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
   }
 

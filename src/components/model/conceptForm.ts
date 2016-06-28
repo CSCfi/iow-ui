@@ -36,7 +36,7 @@ export class ConceptFormController {
   vocabularyNames: VocabularyNameHref[];
   localizer: Localizer;
 
-  constructor($scope: IScope, private searchConceptModal: SearchConceptModal, private languageService: LanguageService) {
+  constructor($scope: IScope, private searchConceptModal: SearchConceptModal, private languageService: LanguageService, public gettextCatalog: gettextCatalog) {
     this.localizer = languageService.createLocalizer(this.model);
     $scope.$watch(() => this.concept, (concept: Concept) => {
       if (concept instanceof ConceptSuggestion) {
@@ -55,7 +55,7 @@ export class ConceptFormController {
     });
   }
 
-  isSchemeEditable() {
+  isConceptEditable() {
     return this.concept instanceof ConceptSuggestion;
   }
 
