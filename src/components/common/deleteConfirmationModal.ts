@@ -33,7 +33,7 @@ class DeleteConfirmationModalController {
   exclude = (referrer: Referrer) => this.onlyInDefinedModel && (referrer.isOfType('model') || referrer.definedBy.id.notEquals(this.onlyInDefinedModel.id));
 
   /* @ngInject */
-  constructor(public entity: EditableEntity, context: LanguageContext, private onlyInDefinedModel: Model, usageService: UsageService) {
+  constructor(public entity: EditableEntity, public context: LanguageContext, private onlyInDefinedModel: Model, usageService: UsageService) {
     usageService.getUsage(entity).then(usage => {
       this.usage = usage;
       this.hasReferrers = usage && _.any(usage.referrers, referrer => !this.exclude(referrer));
