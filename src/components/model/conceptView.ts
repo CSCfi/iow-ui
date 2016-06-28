@@ -6,7 +6,6 @@ import { EditableEntityController, EditableScope, Rights } from '../form/editabl
 import { Model, LanguageContext, Concept, GroupListItem, ConceptSuggestion, Usage } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { ConceptEditorModalController } from './conceptEditorModal';
 import { ConceptService } from '../../services/conceptService';
@@ -114,7 +113,7 @@ export class ConceptViewController extends EditableEntityController<Concept> {
 
   isReference(): boolean {
     const concept = this.concept;
-    return !(concept instanceof ConceptSuggestion && concept.definedBy.id.equals(this.model.id));
+    return !(concept instanceof ConceptSuggestion && (!concept.definedBy || concept.definedBy.id.equals(this.model.id)));
   }
 
   getRemoveText(): string {
