@@ -226,6 +226,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
+    this.selectedItem = newSelection;
     this.updateSelectables(true);
 
     for (const changeListener of this.changeListeners) {
