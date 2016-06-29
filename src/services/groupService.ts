@@ -24,7 +24,7 @@ export class GroupService {
         const context = response.data['@context'];
         return {
           '@context': context,
-          '@graph': _.find(normalizeAsArray(response.data['@graph']), (group: any) => new Uri(group['@id', context]).equals(groupId))
+          '@graph': _.find(normalizeAsArray(response.data['@graph']), (group: any) => new Uri(group['@id'], context).equals(groupId))
         };
       })
       .then(data => this.entities.deserializeGroup(data));
