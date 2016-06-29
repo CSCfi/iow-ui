@@ -5,7 +5,6 @@ import IScope = angular.IScope;
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { LanguageContext, EditableEntity } from '../../services/entities';
-import { Uri } from '../../services/uri';
 import { isModalCancel } from '../../utils/angular';
 
 export interface EditableForm extends IFormController {
@@ -69,7 +68,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
       }, err => {
         if (err) {
           this.$log.error(err);
-          this.submitError = err.data.errorMessage;
+          this.submitError = (err.data && err.data.errorMessage) || 'Unexpected error';
         }
         this.persisting = false;
       });
@@ -91,7 +90,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
         }, err => {
           if (!isModalCancel(err)) {
             this.$log.error(err);
-            this.submitError = err.data.errorMessage;
+            this.submitError = (err.data && err.data.errorMessage) || 'Unexpected error';
           }
           this.persisting = false;
         });
