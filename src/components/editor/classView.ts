@@ -86,7 +86,7 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   create(entity: Class) {
     return this.classService.createClass(entity)
-      .then(() => this.modelController.selectionEdited(this.class, entity));
+      .then(() => this.modelController.selectionEdited(null, entity));
   }
 
   update(entity: Class, oldEntity: Class) {
