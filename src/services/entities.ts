@@ -608,7 +608,7 @@ export class ReferenceDataServer extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = new Uri(graph['@id']);
+    this.id = new Uri(graph['@id', context]);
     this.identifier = graph.identifier;
     this.description = deserializeLocalizable(graph.description);
     this.title = deserializeLocalizable(graph.title);
@@ -621,7 +621,7 @@ export class ReferenceDataGroup extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = new Uri(graph['@id']);
+    this.id = new Uri(graph['@id'], context);
     this.title = deserializeLocalizable(graph.title);
   }
 }
@@ -637,7 +637,7 @@ export class ReferenceData extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = new Uri(graph['@id']);
+    this.id = new Uri(graph['@id'], context);
     this.title = deserializeLocalizable(graph.title);
     this.description = deserializeLocalizable(graph.description);
     this.creator = graph.creator;
@@ -667,7 +667,7 @@ export class ReferenceDataCode extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = new Uri(graph['@id']);
+    this.id = new Uri(graph['@id', context]);
     this.title = deserializeLocalizable(graph.title);
     this.identifier = graph.identifier;
   }

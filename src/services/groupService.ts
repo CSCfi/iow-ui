@@ -21,9 +21,10 @@ export class GroupService {
     // TODO proper API
     return this.$http.get<GraphData>(config.apiEndpointWithName('groups'))
       .then((response: any) => {
+        const context = response.data['@context'];
         return {
-          '@context': response.data['@context'],
-          '@graph': _.find(normalizeAsArray(response.data['@graph']), (group: any) => new Uri(group['@id']).equals(groupId))
+          '@context': context,
+          '@graph': _.find(normalizeAsArray(response.data['@graph']), (group: any) => new Uri(group['@id', context]).equals(groupId))
         };
       })
       .then(data => this.entities.deserializeGroup(data));
