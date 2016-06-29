@@ -608,7 +608,7 @@ export class ReferenceDataServer extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = new Uri(graph['@id', context]);
+    this.id = new Uri(graph['@id'], context);
     this.identifier = graph.identifier;
     this.description = deserializeLocalizable(graph.description);
     this.title = deserializeLocalizable(graph.title);
