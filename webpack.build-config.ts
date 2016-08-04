@@ -9,7 +9,7 @@ const buildConfig: webpack.Configuration = {
     filename: 'app.[chunkhash].js',
     publicPath: '/assets/'
   },
-  devtool: 'cheap-source-map',
+  devtool: 'source-map',
   plugins: [
     new HtmlWebpackPlugin({ template: 'src/index.html', filename: '../index.html' }),
     new webpack.optimize.CommonsChunkPlugin({
