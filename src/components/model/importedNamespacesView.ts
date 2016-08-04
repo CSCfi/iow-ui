@@ -103,7 +103,6 @@ class ImportedNamespaceTableDescriptor extends TableDescriptor<ImportedNamespace
   }
 
   canRemove(ns: ImportedNamespace): boolean {
-    console.log(this.modelController.getUsedNamespaces());
     return this.modelController && !this.modelController.getUsedNamespaces().has(ns.id.uri);
   }
 }
