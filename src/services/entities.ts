@@ -667,7 +667,7 @@ export class ReferenceDataCode extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = new Uri(graph['@id', context]);
+    this.id = new Uri(graph['@id'], context);
     this.title = deserializeLocalizable(graph.title);
     this.identifier = graph.identifier;
   }
