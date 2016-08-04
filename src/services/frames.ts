@@ -181,7 +181,16 @@ export function classFrame(data: any): Frame {
   return frame(data, classContext, {
     '@type': ['rdfs:Class', 'sh:Shape'],
     isDefinedBy: { '@embed': '@always' },
-    subject: { '@embed': '@always' }
+    subject: { '@embed': '@always' },
+    property: {
+      memberOf: {
+        '@omitDefault': true,
+        '@default': [],
+        isPartOf: {
+          '@embed': '@always'
+        }
+      }
+    }
   });
 }
 
@@ -293,6 +302,13 @@ export function classVisualizationFrame(data: any): Frame {
         '@omitDefault': true,
         '@default': [],
         '@embed': false
+      },
+      memberOf: {
+        '@omitDefault': true,
+        '@default': [],
+        isPartOf: {
+          '@embed': '@always'
+        }
       }
     },
     subject: {
