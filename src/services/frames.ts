@@ -183,6 +183,9 @@ export function classFrame(data: any): Frame {
     isDefinedBy: { '@embed': '@always' },
     subject: { '@embed': '@always' },
     property: {
+      predicate: {
+        '@embed': false
+      },
       memberOf: {
         '@omitDefault': true,
         '@default': [],
