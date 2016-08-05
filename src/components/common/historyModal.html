@@ -25,7 +25,7 @@
             </div>
           </div>
           <model-form ng-if="ctrl.selection.isOfType('model')" model="ctrl.selection"></model-form>
-          <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model"></class-form>
+          <class-form ng-if="ctrl.selection.isClass()" class="ctrl.selection" old-class="ctrl.selection" model="ctrl.model" open-property-id="openPropertyId"></class-form>
           <predicate-form ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" old-predicate="ctrl.selection" model="ctrl.model"></predicate-form>
         </div>
       </form>
