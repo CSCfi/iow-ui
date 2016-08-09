@@ -40,6 +40,8 @@ import {
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { Language } from '../../utils/language';
+import { SessionService } from '../../services/sessionService';
+import { isDefined } from '../../utils/object';
 
 mod.directive('model', () => {
   return {
@@ -62,7 +64,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   classes: SelectableItem[] = [];
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
-  show: Show = Show.Both;
+  private _show: Show;
 
   activeTab = 0;
   tabs = [
@@ -86,8 +88,10 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private confirmationModal: ConfirmationModal,
               private maintenanceModal: MaintenanceModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal,
+              private sessionService: SessionService,
               public languageService: LanguageService) {
 
+    this._show = sessionService.show;
     this.init(new RouteData($routeParams));
 
     $scope.$on('$locationChangeSuccess', (event, next, current) => {
@@ -122,9 +126,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       }
 
       if (!selection) {
-        this.show = Show.Visualization;
+        this._show = Show.Visualization;
       } else if (!oldSelection) {
-        this.show = Show.Both;
+        this._show = this.sessionService.show;
       }
     });
 
@@ -134,6 +138,15 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         changeListener.onResize(show);
       }
     });
+  }
+
+  get show() {
+    return isDefined(this._show) ? this._show : Show.Both;
+  }
+
+  set show(value: Show) {
+    this._show = value;
+    this.sessionService.show = value;
   }
 
   addListener(listener: ChangeListener<Class|Predicate>) {

@@ -1,8 +1,10 @@
 import { isDefined } from '../utils/object';
 import { Language } from '../utils/language';
+import { Show } from '../components/contracts';
 
 const modelLanguageKey = 'modelLanguage';
 const uiLanguageKey = 'UILanguage';
+const showKey = 'show';
 
 export class SessionService {
 
@@ -29,5 +31,13 @@ export class SessionService {
 
   set modelLanguage(lang: {[entityId: string]: Language}) {
     this.set(modelLanguageKey, lang);
+  }
+
+  get show(): Show {
+    return this.get<Show>(showKey);
+  }
+
+  set show(value: Show) {
+    this.set(showKey, value);
   }
 }
