@@ -7,12 +7,13 @@ mod.directive('localizedSelect', () => {
     scope: {
       value: '=',
       values: '=',
-      id: '@'
+      id: '@',
+      displayNameFormatter: '='
     },
     restrict: 'E',
     template: `
       <iow-select id="{{ctrl.id}}" required ng-model="ctrl.value" options="value in ctrl.values">
-        <span>{{value | translate}}</span>
+        <span>{{ctrl.getName(value)}}</span>
       </iow-select>
     `,
     controllerAs: 'ctrl',
@@ -25,4 +26,16 @@ class LocalizedSelectController {
   value: string;
   values: string[];
   id: string;
+  displayNameFormatter: (value: string, gettextCatalog: gettextCatalog) => string;
+
+  constructor(private gettextCatalog: gettextCatalog) {
+  }
+
+  getName(value: string) {
+    if (this.displayNameFormatter) {
+      return this.displayNameFormatter(value, this.gettextCatalog);
+    } else {
+      return this.gettextCatalog.getString(value);
+    }
+  }
 }
