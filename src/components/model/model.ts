@@ -374,8 +374,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     return this.classService.newShape(classOrExternal, this.model, external, this.languageService.getModelLanguage(this.model))
       .then(shape => {
-        if (shape.external && shape.properties.length > 0) {
-          return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, 'external', this.model)]);
+        if (shape.properties.length > 0) {
+          return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, external ? 'external' : 'scope', this.model)]);
         } else {
           return this.$q.when([shape, shape.properties]);
         }
