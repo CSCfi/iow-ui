@@ -128,7 +128,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       if (!selection) {
         this._show = Show.Visualization;
       } else if (!oldSelection) {
-        this._show = this.sessionService.show;
+        this._show = this.sessionService.show !== Show.Visualization ? this.sessionService.show : Show.Both;
       }
     });
 
