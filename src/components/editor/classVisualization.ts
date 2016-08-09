@@ -19,6 +19,8 @@ import { module as mod }  from './module';
 import { collectIds } from '../../utils/entity';
 import { Iterable } from '../../utils/iterable';
 import { Uri } from '../../services/uri';
+import { DataType } from '../../services/dataTypes';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
   return {
@@ -118,7 +120,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   paperHolder: PaperHolder;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private $q: IQService, private modelService: ModelService, private languageService: LanguageService) {
+  constructor(private $scope: IScope,
+              private $q: IQService,
+              private modelService: ModelService,
+              private languageService: LanguageService,
+              private gettextCatalog: gettextCatalog) {
 
     this.changeNotifier.addListener(this);
 
@@ -271,6 +277,19 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         return property.predicateId.compact;
       case NameType.LOCAL_ID:
         return property.externalId || property.predicateId.compact;
+      default:
+        throw new Error('Unsupported show name type: ' + this.showName);
+    }
+  }
+
+  dataTypeName(dataType: DataType) {
+    switch (this.showName) {
+      case NameType.LABEL:
+        return this.gettextCatalog.getString(dataType);
+      case NameType.ID:
+        return dataType;
+      case NameType.LOCAL_ID:
+        return dataType;
       default:
         throw new Error('Unsupported show name type: ' + this.showName);
     }
@@ -591,7 +610,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
       function propertyAsString(property: Property): string {
         const name = that.propertyName(property);
-        const range = property.hasAssociationTarget() ? property.valueClass.compact : property.dataType;
+        const range = property.hasAssociationTarget() ? property.valueClass.compact : that.dataTypeName(property.dataType);
         const cardinality = formatCardinality(property);
         return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
       }
