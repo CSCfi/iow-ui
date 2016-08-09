@@ -9,13 +9,14 @@ mod.directive('editableMultipleLanguageSelect', () => {
     scope: {
       ngModel: '=',
       id: '@',
-      title: '@'
+      title: '@',
+      required: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
     template: `
-      <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" required="true" input="ctrl.input">
+      <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" required="ctrl.required" input="ctrl.input">
         <input-container>
           <autocomplete datasource="ctrl.datasource">
             <input id="{{ctrl.id}}"
