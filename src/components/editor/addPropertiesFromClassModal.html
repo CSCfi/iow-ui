@@ -6,7 +6,7 @@
     <div class="checkbox" ng-repeat="property in ctrl.properties track by property.internalId.uri">
       <label>
         <input ng-disabled="ctrl.isExcluded(property)" type="checkbox" checklist-model="ctrl.selectedProperties" checklist-value="property" />
-        <span ng-class="strike">{{property | translateLabel: ctrl.context}}</span>
+        <span uib-tooltip="{{ctrl.tooltip(property)}}">{{property | translateLabel: ctrl.context}}</span>
       </label>
     </div>
     <button class="btn btn-default btn-xs" ng-click="ctrl.selectAll()" translate>Select all</button>

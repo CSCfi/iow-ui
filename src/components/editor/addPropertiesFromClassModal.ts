@@ -5,6 +5,8 @@ import * as _ from 'lodash';
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import { Class, Property, LanguageContext } from '../../services/entities';
 import { ClassService } from '../../services/classService';
+import { LanguageService } from '../../services/languageService';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const noExclude = (property: Property) => false;
 
@@ -35,7 +37,15 @@ export class AddPropertiesFromClassModalController {
   selectedProperties: Property[];
 
   /* @ngInject */
-  constructor($uibModalInstance: IModalServiceInstance, private classService: ClassService, klass: Class, public classType: string, private context: LanguageContext, private exclude: (property: Property) => boolean) {
+  constructor($uibModalInstance: IModalServiceInstance,
+              private classService: ClassService,
+              private languageService: LanguageService,
+              private gettextCatalog: gettextCatalog,
+              klass: Class,
+              public classType: string,
+              private context: LanguageContext,
+              private exclude: (property: Property) => boolean) {
+
       this.properties = klass.properties;
       this.selectAll();
   }
@@ -50,5 +60,13 @@ export class AddPropertiesFromClassModalController {
 
   deselectAll() {
     this.selectedProperties = [];
+  }
+
+  tooltip(property: Property) {
+    if (this.isExcluded(property)) {
+      return this.gettextCatalog.getString('Already added');
+    } else {
+      return this.languageService.translate(property.comment);
+    }
   }
 }
