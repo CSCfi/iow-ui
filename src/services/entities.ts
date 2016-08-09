@@ -990,6 +990,7 @@ export class Property extends GraphNode {
   example: string;
   defaultValue: string;
   dataType: DataType;
+  language: Language[];
   valueClass: Uri;
   predicate: Uri|Predicate;
   index: number;
@@ -1016,6 +1017,7 @@ export class Property extends GraphNode {
     this.example = graph.example;
     this.defaultValue = graph.defaultValue;
     this.dataType = graph.datatype;
+    this.language = deserializeList<Language>(graph.language);
     this.classIn = deserializeList(graph.classIn, klass => new Uri(klass, context));
     this.referenceData = deserializeEntityList(graph.memberOf, context, frame, () => ReferenceData);
 
@@ -1154,6 +1156,7 @@ export class Property extends GraphNode {
       example: this.example,
       defaultValue: this.defaultValue,
       datatype: this.dataType,
+      language: serializeList(this.language),
       valueShape: this.valueClass && this.valueClass.uri,
       predicate: serializePredicate(),
       index: this.index,
