@@ -74,7 +74,7 @@ msgstr ""
 
 #: components/editor/classForm.html:84
 #: components/editor/predicateForm.html:49
-#: components/editor/propertyView.html:114
+#: components/editor/propertyView.html:122
 #: components/model/conceptForm.html:57
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -115,6 +115,10 @@ msgstr ""
 #: components/editor/searchConceptModal.html:28
 #: components/model/conceptEditorModal.html:28
 msgid "All vocabularies"
+msgstr ""
+
+#: translations/misc.html:215
+msgid "Allowed languages"
 msgstr ""
 
 #: translations/titles.html:56
@@ -320,7 +324,7 @@ msgstr ""
 msgid "Choose broader concept"
 msgstr ""
 
-#: components/editor/editableConstraint.html:33
+#: components/editor/editableConstraint.html:35
 #: translations/misc.html:64
 msgid "Choose class"
 msgstr ""
@@ -705,7 +709,7 @@ msgstr ""
 msgid "Delete profile"
 msgstr ""
 
-#: components/editor/propertyView.html:12
+#: components/editor/propertyView.html:13
 msgid "Delete property"
 msgstr ""
 
@@ -1217,8 +1221,8 @@ msgstr ""
 msgid "No profiles yet"
 msgstr ""
 
-#: components/editor/usage.html:1
-#: components/editor/usagePanel.html:8
+#: components/common/usage.html:1
+#: components/common/usagePanel.html:8
 msgid "No referrers"
 msgstr ""
 
@@ -1300,7 +1304,7 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: components/editor/propertyView.html:41
+#: components/editor/propertyView.html:49
 msgid "Optional metadata"
 msgstr ""
 
@@ -1373,7 +1377,7 @@ msgstr ""
 msgid "Property id info"
 msgstr ""
 
-#: components/editor/propertyView.html:3
+#: components/editor/propertyView.html:4
 #: translations/misc.html:115
 msgid "Property information"
 msgstr ""
@@ -1479,7 +1483,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:125
+#: components/editor/propertyView.html:133
 msgid "Reusable predicate"
 msgstr ""
 
@@ -1766,7 +1770,7 @@ msgstr ""
 msgid "URI stem"
 msgstr ""
 
-#: components/editor/usagePanel.html:4
+#: components/common/usagePanel.html:4
 msgid "Usage"
 msgstr ""
 

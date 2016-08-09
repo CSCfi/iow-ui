@@ -78,7 +78,7 @@ msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
 #: components/editor/classForm.html:84 components/editor/predicateForm.html:49
-#: components/editor/propertyView.html:114 components/model/conceptForm.html:57
+#: components/editor/propertyView.html:122 components/model/conceptForm.html:57
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -117,6 +117,10 @@ msgstr "Kaikki tyypit"
 #: components/model/conceptEditorModal.html:28
 msgid "All vocabularies"
 msgstr "Kaikki sanastot"
+
+#: translations/misc.html:215
+msgid "Allowed languages"
+msgstr "Sallitut kielet"
 
 #: translations/titles.html:56
 msgid "Allowed values"
@@ -317,7 +321,7 @@ msgstr "valitse attribuutti"
 msgid "Choose broader concept"
 msgstr "valitse laajempi käsite"
 
-#: components/editor/editableConstraint.html:33 translations/misc.html:64
+#: components/editor/editableConstraint.html:35 translations/misc.html:64
 msgid "Choose class"
 msgstr "valitse luokka"
 
@@ -701,7 +705,7 @@ msgstr "Poista tietokomponenttikirjasto"
 msgid "Delete profile"
 msgstr "Poista soveltamisprofiili"
 
-#: components/editor/propertyView.html:12
+#: components/editor/propertyView.html:13
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
@@ -1221,7 +1225,7 @@ msgstr "Ei vielä yhtään tietokomponenttikirjastoa"
 msgid "No profiles yet"
 msgstr "Ei vielä yhtään soveltamisprofiilia"
 
-#: components/editor/usage.html:1 components/editor/usagePanel.html:8
+#: components/common/usage.html:1 components/common/usagePanel.html:8
 msgid "No referrers"
 msgstr "Ei viittauksia"
 
@@ -1302,7 +1306,7 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: components/editor/propertyView.html:41
+#: components/editor/propertyView.html:49
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1377,7 +1381,7 @@ msgstr "Ominaisuuden tunniste"
 msgid "Property id info"
 msgstr "Ominaisuuden yksilöivä tunniste"
 
-#: components/editor/propertyView.html:3 translations/misc.html:115
+#: components/editor/propertyView.html:4 translations/misc.html:115
 msgid "Property information"
 msgstr "Ominaisuuden tiedot"
 
@@ -1481,7 +1485,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:125
+#: components/editor/propertyView.html:133
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
@@ -1765,7 +1769,7 @@ msgstr "Keskeneräinen"
 msgid "URI stem"
 msgstr "URI muoto"
 
-#: components/editor/usagePanel.html:4
+#: components/common/usagePanel.html:4
 msgid "Usage"
 msgstr "Viittaukset muista komponenteista"
 

@@ -27,6 +27,13 @@
         <range-select id="{{ctrl.property.internalId + 'range'}}" range="ctrl.property.dataType"></range-select>
       </editable>
 
+      <editable-multiple-language-select ng-if="ctrl.property.dataType === 'rdf:langString'"
+                                         title="Allowed languages"
+                                         id="dataTypeAllowedLanguage"
+                                         ng-model="ctrl.property.language"
+                                         required="false">
+      </editable-multiple-language-select>
+
       <editable ng-if="ctrl.property.isAssociation()" data-title="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
         <uri-select id="{{ctrl.property.internalId + 'valueClass'}}" type="class" uri="ctrl.property.valueClass" mandatory="!ctrl.property.inUnstableState" duplicate="ctrl.isConflictingValueClass" model="ctrl.model"></uri-select>
       </editable>
