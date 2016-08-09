@@ -13,6 +13,7 @@ import { ValidatorService } from './validatorService';
 import { HistoryService } from './historyService';
 import { EntityLoaderService } from './entityLoader';
 import { ResetService } from './resetService';
+import { SessionService } from './sessionService';
 
 import { module as mod }  from './module';
 export default mod.name;
@@ -32,3 +33,4 @@ mod.service('validatorService', ValidatorService);
 mod.service('historyService', HistoryService);
 mod.service('resetService', ResetService);
 mod.service('entityLoaderService', EntityLoaderService);
+mod.service('sessionService', SessionService);

@@ -1,5 +1,6 @@
 import { Localizable, LanguageContext } from './entities';
 import { Language, availableUILanguages, availableLanguages, translate } from '../utils/language';
+import { SessionService } from './sessionService';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
 const defaultLanguage: Language = 'fi';
@@ -7,25 +8,17 @@ const defaultLanguage: Language = 'fi';
 const fi = require('../../po/fi.po');
 const en = require('../../po/en.po');
 
-const modelLanguageKey = 'modelLanguage';
-const uiLanguageKey = 'UILanguage';
-
 export class LanguageService {
 
   private _modelLanguage: {[entityId: string]: Language} = {};
 
   /* @ngInject */
-  constructor(private gettextCatalog: gettextCatalog) {
+  constructor(private gettextCatalog: gettextCatalog, private sessionService: SessionService) {
     gettextCatalog.setStrings('fi', fi);
     gettextCatalog.setStrings('en', en);
 
-    this.setGettextLanguage(window.sessionStorage.getItem(uiLanguageKey) || defaultLanguage);
-    const storedModelLanguage = window.sessionStorage.getItem(modelLanguageKey);
-    this._modelLanguage = storedModelLanguage ? JSON.parse(storedModelLanguage) : {};
-  }
-
-  private setGettextLanguage(language: Language): void {
-    this.gettextCatalog.setCurrentLanguage(language);
+    this.gettextCatalog.setCurrentLanguage(sessionService.UILanguage || defaultLanguage);
+    this._modelLanguage = sessionService.modelLanguage || {};
   }
 
   get UILanguage(): Language {
@@ -33,8 +26,8 @@ export class LanguageService {
   }
 
   set UILanguage(language: Language) {
-    window.sessionStorage.setItem(uiLanguageKey, language);
-    this.setGettextLanguage(language);
+    this.sessionService.UILanguage = language;
+    this.gettextCatalog.setCurrentLanguage(language);
   }
 
   getModelLanguage(context?: LanguageContext): Language {
@@ -49,7 +42,7 @@ export class LanguageService {
 
   setModelLanguage(context: LanguageContext, language: Language) {
     this._modelLanguage[context.id.uri] = language;
-    window.sessionStorage.setItem(modelLanguageKey, JSON.stringify(this._modelLanguage));
+    this.sessionService.modelLanguage = this._modelLanguage;
   }
 
   get availableUILanguages() {
