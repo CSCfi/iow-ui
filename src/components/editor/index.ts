@@ -22,7 +22,7 @@ import './predicateForm';
 import './predicateView';
 import './propertyView';
 import './propertyPredicateView';
-import './rangeSelect';
+import './editableRangeSelect';
 import './selectionView';
 import './subjectView';
 import './visualizationView';

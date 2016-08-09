@@ -28,9 +28,7 @@
   </div>
 
   <div class="col-md-6">
-    <editable ng-if="ctrl.predicate.isAttribute()" data-title="Range" name="Range" context="ctrl.model">
-      <range-select id="predicateRange" range="ctrl.predicate.dataType"></range-select>
-    </editable>
+    <editable-range-select ng-if="ctrl.predicate.isAttribute()" id="predicateRange" range="ctrl.predicate.dataType"></editable-range-select>
 
     <editable ng-if="ctrl.predicate.isAssociation()" data-title="Value class" name="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
       <uri-select id="predicateValueClass" type="class" uri="ctrl.predicate.valueClass" model="ctrl.model"></uri-select>

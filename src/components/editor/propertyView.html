@@ -23,9 +23,10 @@
         <input id="{{ctrl.property.internalId + 'label'}}" class="form-control" type="text" restrict-duplicates="ctrl.otherPropertyLabels" localized-input="label" context="ctrl.model" ng-model="ctrl.property.label" />
       </editable>
 
-      <editable ng-if="ctrl.property.isAttribute()" data-title="Range" context="ctrl.model">
-        <range-select id="{{ctrl.property.internalId + 'range'}}" range="ctrl.property.dataType"></range-select>
-      </editable>
+      <editable-range-select ng-if="ctrl.property.isAttribute()"
+                             id="{{ctrl.property.internalId + 'range'}}"
+                             range="ctrl.property.dataType">
+      </editable-range-select>
 
       <editable-multiple-language-select ng-if="ctrl.property.dataType === 'rdf:langString'"
                                          title="Allowed languages"
