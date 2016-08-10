@@ -77,8 +77,8 @@ msgstr "Lisää koodisto"
 msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
-#: components/editor/classForm.html:84 components/editor/predicateForm.html:49
-#: components/editor/propertyView.html:122 components/model/conceptForm.html:57
+#: components/editor/classForm.html:84 components/editor/predicateForm.html:47
+#: components/editor/propertyView.html:123 components/model/conceptForm.html:57
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -992,6 +992,10 @@ msgstr "Lisää nimiavaruus"
 msgid "Imported namespaces"
 msgstr "Käytetyt nimiavaruudet"
 
+#: translations/misc.html:216
+msgid "In language"
+msgstr "Suomeksi"
+
 #: translations/misc.html:173
 msgid "Input"
 msgstr "Kirjoita"
@@ -1306,7 +1310,7 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: components/editor/propertyView.html:49
+#: components/editor/propertyView.html:50
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1485,7 +1489,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:133
+#: components/editor/propertyView.html:134
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 

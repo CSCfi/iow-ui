@@ -36,6 +36,7 @@ export interface EditableEntity {
   serialize<T>(): T;
 }
 
+// TODO: type language indexer as Language when typescript supports it https://github.com/Microsoft/TypeScript/issues/5683
 export type Localizable = { [language: string]: string; }
 export type UserLogin = string;
 

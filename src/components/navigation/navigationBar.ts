@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
-import { LanguageService } from '../../services/languageService';
+import { LanguageService, localizationStrings } from '../../services/languageService';
 import { UserService } from '../../services/userService';
 import { User } from '../../services/entities';
 import { LoginModal } from './loginModal';
 import { module as mod }  from './module';
-import { Language } from '../../utils/language';
+import { availableUILanguages, UILanguage } from '../../utils/language';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const logoImage = require('../../assets/logo-01.svg');
 
@@ -20,19 +21,13 @@ mod.directive('navigationBar', () => {
 });
 
 class NavigationController {
-  languages: {code: Language, name: string}[];
+  languages: { code: UILanguage, name: string }[];
 
   /* @ngInject */
   constructor(private languageService: LanguageService, private userService: UserService, private loginModal: LoginModal) {
-    this.languages = _.map(languageService.availableUILanguages, language => {
-      switch (language) {
-        case 'fi':
-          return {code: language, name: 'Suomeksi'};
-        case 'en':
-          return {code: language, name: 'In English'};
-        default:
-          throw new Error('Unknown language: ' + language);
-      }
+    this.languages = _.map(availableUILanguages, language => {
+      const stringsForLang = localizationStrings[language];
+      return { code: language, name: (stringsForLang && stringsForLang['In language']) || language };
     });
   }
 
@@ -40,11 +35,11 @@ class NavigationController {
     return logoImage;
   }
 
-  get language(): Language {
+  get language(): UILanguage {
     return this.languageService.UILanguage;
   }
 
-  set language(language: Language) {
+  set language(language: UILanguage) {
     this.languageService.UILanguage = language;
   }
 

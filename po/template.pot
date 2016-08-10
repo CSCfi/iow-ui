@@ -73,8 +73,8 @@ msgid "Add vocabulary"
 msgstr ""
 
 #: components/editor/classForm.html:84
-#: components/editor/predicateForm.html:49
-#: components/editor/propertyView.html:122
+#: components/editor/predicateForm.html:47
+#: components/editor/propertyView.html:123
 #: components/model/conceptForm.html:57
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -988,6 +988,10 @@ msgstr ""
 msgid "Imported namespaces"
 msgstr ""
 
+#: translations/misc.html:216
+msgid "In language"
+msgstr ""
+
 #: translations/misc.html:173
 msgid "Input"
 msgstr ""
@@ -1304,7 +1308,7 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: components/editor/propertyView.html:49
+#: components/editor/propertyView.html:50
 msgid "Optional metadata"
 msgstr ""
 
@@ -1483,7 +1487,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:133
+#: components/editor/propertyView.html:134
 msgid "Reusable predicate"
 msgstr ""
 
