@@ -285,7 +285,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   dataTypeName(dataType: DataType) {
     switch (this.showName) {
       case NameType.LABEL:
-        return this.gettextCatalog.getString(dataType);
+        return this.languageService.getStringWithModelLanguageOrDefault(dataType, 'en', this.model);
       case NameType.ID:
         return dataType;
       case NameType.LOCAL_ID:
