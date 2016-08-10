@@ -3,8 +3,6 @@ import { Language, availableUILanguages, availableLanguages, translate, UILangua
 import { SessionService } from './sessionService';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
-const defaultLanguage: Language = 'fi';
-
 export const localizationStrings: { [key: string]: { [key: string]: string } } = {};
 
 for (const language of availableUILanguages) {
@@ -12,6 +10,11 @@ for (const language of availableUILanguages) {
 }
 
 Object.freeze(localizationStrings);
+
+function findLocalization(key: string, language: Language) {
+  const stringsForLang = localizationStrings[language];
+  return stringsForLang ? stringsForLang[key] : null;
+}
 
 export class LanguageService {
 
@@ -24,6 +27,7 @@ export class LanguageService {
       gettextCatalog.setStrings(language, localizationStrings[language]);
     }
 
+    const defaultLanguage = 'fi';
     this.gettextCatalog.setCurrentLanguage(sessionService.UILanguage || defaultLanguage);
     this._modelLanguage = sessionService.modelLanguage || {};
   }
@@ -54,6 +58,25 @@ export class LanguageService {
 
   translate(data: Localizable, context?: LanguageContext): string {
     return translate(data, this.getModelLanguage(context), context ? context.language : availableLanguages);
+  }
+
+  getStringWithModelLanguageOrDefault(key: string, defaultLanguage: UILanguage, context?: LanguageContext): string {
+
+    const modelLanguage = this.getModelLanguage(context);
+
+    const askedLocalization = findLocalization(key, modelLanguage);
+    if (askedLocalization) {
+      return askedLocalization;
+    } else {
+      const defaultLocalization = findLocalization(key, defaultLanguage);
+
+      if (!defaultLocalization) {
+        console.log(`Localization (${key}) not found for default language (${defaultLanguage})`);
+        return '??? ' + key;
+      } else {
+        return defaultLocalization;
+      }
+    }
   }
 
   createLocalizer(context: LanguageContext) {
