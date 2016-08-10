@@ -33,7 +33,7 @@ export const availableLanguages: Language[] =
     'bo', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug', 'uk', 'ur',
     'uz', 've', 'vi', 'vo', 'wa', 'cy', 'wo', 'fy', 'xh', 'yi', 'yo', 'za', 'zu' ];
 
-export type UILanguage = 'fi' | 'en' | 'pl';
+export type UILanguage = 'fi' | 'en';
 
 export const availableUILanguages: UILanguage[] = ['fi', 'en'];
 
