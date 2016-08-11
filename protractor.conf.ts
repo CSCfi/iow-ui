@@ -10,8 +10,8 @@ exports.config = {
   baseUrl: 'http://localhost:9001/',
 
   specs: [
-    root('src/**/**.e2e.ts'),
-    root('src/**/*.e2e.ts')
+    root('e2e/**/**.e2e.ts'),
+    root('e2e/**/*.e2e.ts')
   ],
   exclude: [],
 
