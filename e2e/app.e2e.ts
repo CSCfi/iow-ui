@@ -1,19 +1,24 @@
+import { ApplicationPage } from './pages/app.po';
+import { GroupPage } from './pages/group.po';
+import { applicationUrl } from './utils/constants';
+
 describe('App', () => {
 
-  beforeEach(() => {
-    browser.get('/');
-  });
+  const page = new ApplicationPage();
+  const groupPage = new GroupPage();
+
+  beforeEach(() => page.navigate());
 
   it('should have a title', () => {
-    expect(browser.getTitle()).toBe('IOW');
+    expect(page.title).toBe('IOW');
   });
 
   it('should have a footer', () => {
-    expect(element(by.css('footer')).isPresent()).toBeTruthy();
+    expect(page.footer.isPresent()).toBe(true);
   });
 
   it('group should be navigable', () => {
-    element(by.id('browse-panel')).all(by.css('li')).first().click();
-    expect(browser.getCurrentUrl()).toEqual('http://localhost:9001/#/group?urn=https:%2F%2Ftt.eduuni.fi%2Fsites%2Fcsc-iow%23JHS');
+    page.groupLinks.first().click();
+    expect(browser.getCurrentUrl().then(decodeURIComponent)).toEqual(decodeURIComponent(applicationUrl + groupPage.path(groupPage.JHS_ID)));
   });
 });

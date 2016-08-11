@@ -1,11 +1,12 @@
+import { GroupPage } from './pages/group.po';
+
 describe('Group', () => {
 
-  beforeEach(() => {
-    browser.get('/#/group?urn=https:%2F%2Ftt.eduuni.fi%2Fsites%2Fcsc-iow%23JHS');
-  });
+  const page = new GroupPage();
+
+  beforeEach(() => page.navigate(page.JHS_ID));
 
   it('should contain group info', () => {
-    const editable = element(by.css('editable[data-title="Group label"] .content *'));
-    expect(editable.getText()).toContain('Yhteiset tietokomponentit');
+    expect(page.label.text).toContain('Yhteiset tietokomponentit');
   });
 });
