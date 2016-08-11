@@ -74,7 +74,7 @@
     "phantomjs-prebuilt": "2.1.7",
     "po-loader": "0.3.1",
     "po2json": "0.4.2",
-    "protractor": "3.3.0",
+    "protractor": "4.0.3",
     "q": "2.0.3",
     "raw-loader": "0.5.1",
     "request": "2.72.0",
