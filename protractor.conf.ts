@@ -1,6 +1,7 @@
 /// <reference path="./type-context/protractor.d.ts" />
 
 import * as path from 'path';
+import IAnimateService = angular.animate.IAnimateService;
 
 function root(...globs: string[]) {
   return path.join.apply(path, [__dirname].concat(globs));
@@ -30,5 +31,15 @@ exports.config = {
 
   capabilities: {
     'browserName': 'chrome'
+  },
+
+  onPrepare() {
+    var disableNgAnimate = function () {
+      angular.module('disableNgAnimate', []).run(['$animate', function ($animate: IAnimateService) {
+        $animate.enabled(false);
+      }]);
+    };
+
+    browser.addMockModule('disableNgAnimate', disableNgAnimate);
   }
 };
