@@ -5,9 +5,9 @@ export class EditableComponent {
   inputElement: ElementFinder;
   content: ElementFinder;
 
-  constructor(public element: ElementFinder) {
-    this.inputElement = element.$('[ng-model]');
-    this.content = element.$(' .content *');
+  constructor(public editableElement: ElementFinder) {
+    this.inputElement = editableElement.$('input[ng-model],select[ng-model],textarea[ng-model]');
+    this.content = editableElement.$(' .content *');
   }
 
   static byTitleLocalizationKey(title: string) {
