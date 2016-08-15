@@ -1,9 +1,9 @@
 <div class="top-actions">
   <model-language-chooser context="context"></model-language-chooser>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.cancelEditing()" ng-show="ctrl.isEditing()" uib-tooltip="{{'Cancel edit' | translate}}"><i class="fa fa-undo"></i></button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.saveEdited()" ng-show="ctrl.isEditing()" ng-disabled="form.$invalid || form.$pending" uib-tooltip="{{'Save changes' | translate}}"><i class="fa fa-floppy-o"></i></button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" uib-tooltip="{{'Edit' | translate}}"><i class="fa fa-pencil"></i></button>
-  <button type="button" class="btn btn-default right" ng-click="ctrl.removeEdited()" ng-show="ctrl.canRemove()" uib-tooltip="{{ctrl.getRemoveText() | translate}}"><i class="fa fa-trash"></i></button>
+  <button type="button" class="btn btn-default right cancel" ng-click="ctrl.cancelEditing()" ng-show="ctrl.isEditing()" uib-tooltip="{{'Cancel edit' | translate}}"><i class="fa fa-undo"></i></button>
+  <button type="button" class="btn btn-default right save" ng-click="ctrl.saveEdited()" ng-show="ctrl.isEditing()" ng-disabled="form.$invalid || form.$pending" uib-tooltip="{{'Save changes' | translate}}"><i class="fa fa-floppy-o"></i></button>
+  <button type="button" class="btn btn-default right edit" ng-click="ctrl.edit()" ng-show="ctrl.canEdit()" uib-tooltip="{{'Edit' | translate}}"><i class="fa fa-pencil"></i></button>
+  <button type="button" class="btn btn-default right remove" ng-click="ctrl.removeEdited()" ng-show="ctrl.canRemove()" uib-tooltip="{{ctrl.getRemoveText() | translate}}"><i class="fa fa-trash"></i></button>
 
   <ng-transclude></ng-transclude>
   <submit-error-panel error="ctrl.submitError"></submit-error-panel>
