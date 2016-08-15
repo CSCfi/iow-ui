@@ -7,6 +7,6 @@ describe('Group', () => {
   beforeEach(() => page.navigate(page.JHS_ID));
 
   it('should contain group info', () => {
-    expect(page.label.text).toContain('Yhteiset tietokomponentit');
+    expect(page.label.content.getText()).toContain('Yhteiset tietokomponentit');
   });
 });
