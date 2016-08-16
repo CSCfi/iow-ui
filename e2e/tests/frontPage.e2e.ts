@@ -4,10 +4,9 @@ import { expectCurrentUrlToEqualPath } from '../util/url';
 
 describe('Front page', () => {
 
-  const page = new FrontPage();
-  const groupPage = new GroupPage();
+  let page: FrontPage;
 
-  beforeEach(() => page.navigate());
+  beforeEach(() => page = FrontPage.navigate());
 
   it('should have a title', () => {
     expect(page.title).toBe('IOW');
@@ -21,6 +20,6 @@ describe('Front page', () => {
     const firstLink = page.groupLinks.first();
     expect(firstLink.getText()).toBe('Yhteiset tietokomponentit');
     firstLink.click();
-    expectCurrentUrlToEqualPath(groupPage.path(GroupPage.JHS_ID));
+    expectCurrentUrlToEqualPath(GroupPage.path(GroupPage.JHS_ID));
   });
 });

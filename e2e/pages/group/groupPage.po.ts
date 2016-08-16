@@ -1,10 +1,12 @@
 import { EditableComponent } from '../common/component/editableComponent.po';
 import { AddModelModal } from './addModelModal.po';
+import { navigateAndReturn } from '../../util/browser';
 
 export class GroupPage {
 
-  path = (id: string) => `/#/group?urn=${encodeURIComponent(id)}`;
-  navigate = (id: string) => browser.get(this.path(id));
+  static path = (id: string) => `/#/group?urn=${encodeURIComponent(id)}`;
+  static navigate = (id: string) => navigateAndReturn(GroupPage.path(id), new GroupPage());
+
   label = EditableComponent.byTitleLocalizationKey('Group label');
 
   addLibrary() {

@@ -2,14 +2,15 @@ import { GroupPage } from '../pages/group/groupPage.po';
 import { expectCurrentUrlToEqualPath } from '../util/url';
 import { NavBar } from '../pages/common/navbar.po';
 import { libraryParameters } from './test-data';
+import { ModelPage } from '../pages/model/modelPage.po';
 
 describe('Group page', () => {
 
-  const page = new GroupPage();
+  let page: GroupPage;
   const navbar = new NavBar();
 
   beforeEach(() => {
-    page.navigate(libraryParameters.groupId);
+    page = GroupPage.navigate(libraryParameters.groupId);
     navbar.ensureLoggedIn();
   });
 
@@ -33,6 +34,6 @@ describe('Group page', () => {
     addModelModal.setValues(libraryParameters);
     const modelPage = addModelModal.submit();
     expect(modelPage.modelView.title.getText()).toBe(libraryParameters.label);
-    expectCurrentUrlToEqualPath(modelPage.pathToNewModel(libraryParameters));
+    expectCurrentUrlToEqualPath(ModelPage.pathToNewModel(libraryParameters));
   });
 });

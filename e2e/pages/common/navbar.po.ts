@@ -6,7 +6,7 @@ export class NavBar {
   element: ElementFinder;
 
   constructor() {
-    this.element = element(by.css('.nav'));
+    this.element = element(by.css('.nav.navbar-nav'));
   }
 
   isLoggedIn() {
