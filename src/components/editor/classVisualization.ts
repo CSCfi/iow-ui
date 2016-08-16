@@ -22,7 +22,7 @@ import { Uri } from '../../services/uri';
 import { DataType } from '../../services/dataTypes';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
-mod.directive('classVisualization', /* @ngInject */ ($timeout: ITimeoutService, $window: IWindowService) => {
+mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
   return {
     restrict: 'E',
     scope: {
