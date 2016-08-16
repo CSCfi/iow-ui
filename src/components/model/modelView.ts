@@ -9,7 +9,6 @@ import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from './model';
-import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 
 mod.directive('modelView', () => {
