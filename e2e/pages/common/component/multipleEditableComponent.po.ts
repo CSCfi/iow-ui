@@ -19,11 +19,10 @@ export class MultipleEditableComponent extends EditableComponent {
   setItems(values: string[]) {
     this.clearExistingValues();
     this.addItems(values);
-    this.setValue(Key.ESCAPE); // dismiss autocomplete
   }
 
   addItem(value: string) {
-    this.setValue(value + Key.ESCAPE + Key.ENTER); // dismiss autocomplete and add
+    this.setValue(value + Key.ESCAPE + Key.ENTER + Key.ESCAPE); // dismiss autocomplete and add and dismiss
   }
 
   addItems(values: string[]) {
