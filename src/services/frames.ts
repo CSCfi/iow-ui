@@ -174,7 +174,9 @@ export function predicateListFrame(data: any): Frame {
 
 export function predicateFrame(data: any): Frame {
   return frame(data, predicateContext, {
-    isDefinedBy: { '@embed': '@always' }
+    '@type': ['owl:DatatypeProperty', 'owl:ObjectProperty'],
+    isDefinedBy: { '@embed': '@always' },
+    inScheme: { '@embed': '@always' }
   });
 }
 
