@@ -1,27 +1,29 @@
 import { ModelPage } from '../pages/model/modelPage.po';
 import { NavBar } from '../pages/common/navbar.po';
 import { libraryParameters } from './test-data';
+import { ModelView } from '../pages/model/modelView.po';
 
 describe('Model view', () => {
 
-  let page: ModelPage;
+  let view: ModelView;
   const navbar = new NavBar();
 
   beforeEach(() => {
-    page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(libraryParameters.prefix), libraryParameters.type);
+    const page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(libraryParameters.prefix), libraryParameters.type);
     navbar.ensureLoggedIn();
     page.modelView.ensureOpen();
+    view = page.modelView;
   });
 
   it('Modifies model properties', () => {
-    page.modelView.buttons.edit();
-    page.modelView.label.appendValue('2');
-    page.modelView.description.appendValue('Kuvaus');
-    page.modelView.language.addItem('pl');
-    page.modelView.buttons.save();
+    view.buttons.edit();
+    view.label.appendValue('2');
+    view.description.appendValue('Kuvaus');
+    view.language.addItem('pl');
+    view.buttons.save();
 
-    expect(page.modelView.label.content.getText()).toBe(libraryParameters.label + '2');
-    expect(page.modelView.description.content.getText()).toBe('Kuvaus');
-    expect(page.modelView.language.content.getText()).toBe('fi, en, pl');
+    expect(view.label.content.getText()).toBe(libraryParameters.label + '2');
+    expect(view.description.content.getText()).toBe('Kuvaus');
+    expect(view.language.content.getText()).toBe('fi, en, pl');
   });
 });
