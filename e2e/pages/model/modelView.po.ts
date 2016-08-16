@@ -2,6 +2,7 @@ import { EditableComponent } from '../common/component/editableComponent.po';
 import { Type } from '../../../src/services/entities';
 import { upperCaseFirst } from 'change-case';
 import { EditableEntityButtons } from '../common/component/editableEntityButtons.po';
+import { EditableMultipleComponent } from '../common/component/editableMultipleComponent.po';
 
 export class ModelView {
 
@@ -11,7 +12,8 @@ export class ModelView {
   buttons = new EditableEntityButtons(this.element);
 
   label: EditableComponent;
-  // TODO rest of editables
+  description = EditableComponent.byTitleLocalizationKey('Description');
+  language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey('editable-multiple-language-select', 'Model languages');
 
   constructor(private type: Type) {
     this.label = EditableComponent.byTitleLocalizationKey(upperCaseFirst(type) + ' label');

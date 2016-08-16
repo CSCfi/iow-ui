@@ -27,12 +27,24 @@ describe('Model page', () => {
     beforeEach(() => {
       page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(libraryParameters.prefix), libraryParameters.type);
       navbar.ensureLoggedIn();
+      page.modelView.ensureOpen();
     });
 
-    // TODO tests with created model
+    it('Modifies model properties', () => {
+      page.modelView.buttons.edit();
+      page.modelView.label.appendValue('2');
+      page.modelView.description.appendValue('Kuvaus');
+      page.modelView.language.addItem('pl');
+      page.modelView.buttons.save();
 
-    it ('Removes model', () => {
-      page.modelView.ensureOpen();
+      expect(page.modelView.label.content.getText()).toBe(libraryParameters.label + '2');
+      expect(page.modelView.description.content.getText()).toBe('Kuvaus');
+      expect(page.modelView.language.content.getText()).toBe('fi, en, pl');
+    });
+
+    // TODO rest of tests with created model
+
+    it('Removes model', () => {
       page.modelView.buttons.removeAndConfirm();
       expectCurrentUrlToEqualPath(GroupPage.path(libraryParameters.groupId));
     });
