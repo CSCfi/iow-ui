@@ -1,5 +1,4 @@
-export class ApplicationPage {
-
+export class FrontPage {
   path = '/';
   navigate = () => browser.get(this.path);
   get title() { return browser.getTitle() };

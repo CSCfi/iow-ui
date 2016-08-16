@@ -1,6 +1,6 @@
 import { Language } from '../../src/utils/language';
 import { Type } from '../../src/services/entities';
-import { GroupPage } from '../pages/group/group.po';
+import { GroupPage } from '../pages/group/groupPage.po';
 
 export const libraryParameters = {
   label: 'E2E Kirjasto',

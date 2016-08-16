@@ -2,7 +2,7 @@ import { Modal } from '../common/modal.po';
 import { Type } from '../../../src/services/entities';
 import { EditableComponent } from '../common/component/editableComponent.po';
 import { upperCaseFirst } from 'change-case';
-import { ModelPage } from '../model/model.po';
+import { ModelPage } from '../model/modelPage.po';
 import { Language } from '../../../src/utils/language';
 import { MultipleEditableComponent } from '../common/component/multipleEditableComponent.po';
 
