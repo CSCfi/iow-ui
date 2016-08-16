@@ -18,7 +18,13 @@ export class EditableComponent {
     return this.inputElement.isDisplayed();
   }
 
-  setValue(value: string) {
+  appendValue(value: string) {
     this.inputElement.sendKeys(value);
+  }
+
+  setValue(value: string) {
+    this.inputElement.clear().then(() => {
+      this.appendValue(value);
+    });
   }
 }
