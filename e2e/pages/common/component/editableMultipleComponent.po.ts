@@ -2,14 +2,14 @@ import { EditableComponent } from './editableComponent.po';
 import { ElementFinder } from 'protractor';
 import Key = protractor.Key;
 
-export class MultipleEditableComponent extends EditableComponent {
+export class EditableMultipleComponent extends EditableComponent {
 
   constructor(element: ElementFinder) {
     super(element);
   }
 
   static byElementNameAndTitleLocalizationKey(elementName: string, title: string) {
-    return new MultipleEditableComponent(element(by.css(`${elementName}[data-title="${title}"]`)));
+    return new EditableMultipleComponent(element(by.css(`${elementName}[data-title="${title}"]`)));
   }
 
   clearExistingValues() {

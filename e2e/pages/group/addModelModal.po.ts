@@ -4,13 +4,13 @@ import { EditableComponent } from '../common/component/editableComponent.po';
 import { upperCaseFirst } from 'change-case';
 import { ModelPage } from '../model/modelPage.po';
 import { Language } from '../../../src/utils/language';
-import { MultipleEditableComponent } from '../common/component/multipleEditableComponent.po';
+import { EditableMultipleComponent } from '../common/component/editableMultipleComponent.po';
 
 export class AddModelModal extends Modal {
 
   prefix = EditableComponent.byTitleLocalizationKey('Prefix');
   label: EditableComponent;
-  language = MultipleEditableComponent.byElementNameAndTitleLocalizationKey('editable-multiple-language-select', 'Model languages');
+  language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey('editable-multiple-language-select', 'Model languages');
   submitButton = element(by.buttonText('Luo uusi'));
 
   constructor(private type: Type) {
