@@ -1,5 +1,5 @@
 import { ElementFinder } from 'protractor';
-import { LoginModal } from '../modal/loginModal.po';
+import { LoginModal } from './loginModal.po';
 
 export class NavBar {
 

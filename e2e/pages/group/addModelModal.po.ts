@@ -1,10 +1,10 @@
-import { Modal } from './modal.po';
-import { Type } from '../../src/services/entities';
-import { EditableComponent } from '../components/editableComponent.po';
+import { Modal } from '../common/modal.po';
+import { Type } from '../../../src/services/entities';
+import { EditableComponent } from '../common/component/editableComponent.po';
 import { upperCaseFirst } from 'change-case';
-import { ModelPage } from '../pages/model.po';
-import { Language } from '../../src/utils/language';
-import { MultipleEditableComponent } from '../components/multipleEditableComponent.po';
+import { ModelPage } from '../model/model.po';
+import { Language } from '../../../src/utils/language';
+import { MultipleEditableComponent } from '../common/component/multipleEditableComponent.po';
 
 export class AddModelModal extends Modal {
 

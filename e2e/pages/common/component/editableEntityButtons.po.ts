@@ -1,5 +1,5 @@
 import { ElementFinder } from 'protractor';
-import { ConfirmationModal } from '../modal/confirmationModal.po';
+import { ConfirmationModal } from './confirmationModal.po';
 
 export class EditableEntityButtons {
 
@@ -31,7 +31,7 @@ export class EditableEntityButtons {
   }
 
   save() {
-    this.saveButton.click();
+    return this.saveButton.click();
   }
 
   cancel() {

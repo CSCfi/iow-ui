@@ -1,7 +1,7 @@
-import { EditableComponent } from './editableComponent.po';
-import { Type } from '../../src/services/entities';
+import { EditableComponent } from '../common/component/editableComponent.po';
+import { Type } from '../../../src/services/entities';
 import { upperCaseFirst } from 'change-case';
-import { EditableEntityButtons } from './editableEntityButtons.po';
+import { EditableEntityButtons } from '../common/component/editableEntityButtons.po';
 
 export class ModelView {
 

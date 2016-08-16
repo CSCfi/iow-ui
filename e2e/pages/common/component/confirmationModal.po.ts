@@ -1,4 +1,4 @@
-import { Modal } from './modal.po';
+import { Modal } from '../modal.po';
 
 export class ConfirmationModal extends Modal {
 

@@ -1,5 +1,5 @@
-import { EditableComponent } from '../components/editableComponent.po';
-import { AddModelModal } from '../modal/addModelModal.po';
+import { EditableComponent } from '../common/component/editableComponent.po';
+import { AddModelModal } from './addModelModal.po';
 
 export class GroupPage {
 
@@ -17,6 +17,6 @@ export class GroupPage {
     return new AddModelModal('profile');
   };
 
-  JHS_ID = 'https://tt.eduuni.fi/sites/csc-iow#JHS';
-  KTK_ID = 'https://tt.eduuni.fi/sites/csc-iow#KTK';
+  static JHS_ID = 'https://tt.eduuni.fi/sites/csc-iow#JHS';
+  static KTK_ID = 'https://tt.eduuni.fi/sites/csc-iow#KTK';
 }

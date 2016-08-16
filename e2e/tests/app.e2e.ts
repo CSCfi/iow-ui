@@ -1,6 +1,6 @@
-import { ApplicationPage } from './pages/app.po';
-import { GroupPage } from './pages/group.po';
-import { applicationUrl } from './utils/constants';
+import { ApplicationPage } from '../pages/app.po';
+import { GroupPage } from '../pages/group/group.po';
+import { applicationUrl } from '../util/url';
 
 describe('App', () => {
 
@@ -19,6 +19,6 @@ describe('App', () => {
 
   it('group should be navigable', () => {
     page.groupLinks.first().click();
-    expect(browser.getCurrentUrl().then(decodeURIComponent)).toEqual(decodeURIComponent(applicationUrl + groupPage.path(groupPage.JHS_ID)));
+    expect(browser.getCurrentUrl().then(decodeURIComponent)).toEqual(decodeURIComponent(applicationUrl + groupPage.path(GroupPage.JHS_ID)));
   });
 });

@@ -1,6 +1,6 @@
-import { ModelView } from '../components/modelView.po';
-import { Type } from '../../src/services/entities';
-import { Language } from '../../src/utils/language';
+import { ModelView } from './modelView.po';
+import { Type } from '../../../src/services/entities';
+import { Language } from '../../../src/utils/language';
 
 export interface NewModelParameters {
   prefix: string;
@@ -14,8 +14,8 @@ export class ModelPage {
 
   pathToNewModel(params: NewModelParameters) {
     const { prefix, label, language, groupId, type } = params;
-    const languageQueryParameters = language.map(lang => `language=${lang}`).join('&');
-    return `/#/model?prefix=${prefix}&label=${label}&${languageQueryParameters}&group=${groupId}&type=${type}`;
+    const languageQueryParameters = language.map(lang => `language=${encodeURIComponent(lang)}`).join('&');
+    return `/#/model?prefix=${prefix}&label=${encodeURIComponent(label)}&${languageQueryParameters}&group=${encodeURIComponent(groupId)}&type=${type}`;
   }
   pathToExistingModel = (id: string) => `/#/model?urn=${encodeURIComponent(id)}`;
   pathWithClass = (id: string, classId: string) => this.pathToExistingModel(id) + `&class=${encodeURIComponent(classId)}`;
