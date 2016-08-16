@@ -44,7 +44,6 @@ export class ModelViewController extends EditableEntityController<Model> {
 
     $scope.$watch(() => this.isEditing(), editing => {
       if (editing) {
-        console.log('editing');
         this.visible = true;
       }
     });
