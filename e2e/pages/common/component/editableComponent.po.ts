@@ -7,7 +7,7 @@ export class EditableComponent {
 
   constructor(public editableElement: ElementFinder) {
     this.inputElement = editableElement.$('input[ng-model],select[ng-model],textarea[ng-model]');
-    this.content = editableElement.$(' .content *');
+    this.content = editableElement.$('.content');
   }
 
   static byTitleLocalizationKey(title: string) {
