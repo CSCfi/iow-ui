@@ -2,7 +2,7 @@
 
 <model-view ng-if="ctrl.model" model="ctrl.model" model-controller="ctrl"></model-view>
 
-<div class="bottom" ng-if="!ctrl.model.unsaved">
+<div class="bottom" ng-if="ctrl.model && !ctrl.model.unsaved">
   <div class="model-panel--left" float="model-panel--left-placeholder">
     <uib-tabset active="ctrl.activeTab">
       <uib-tab ng-repeat="tab in ctrl.tabs">
