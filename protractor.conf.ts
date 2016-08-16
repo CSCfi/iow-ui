@@ -1,20 +1,9 @@
 /// <reference path="./type-context/protractor.d.ts" />
 
-import * as path from 'path';
-import IAnimateService = angular.animate.IAnimateService;
-
-function root(...globs: string[]) {
-  return path.join.apply(path, [__dirname].concat(globs));
-}
-
 exports.config = {
   baseUrl: 'http://localhost:9001/',
 
-  specs: [
-    root('e2e/**/**.e2e.ts'),
-    root('e2e/**/*.e2e.ts')
-  ],
-  exclude: [],
+  specs: ['e2e/tests/app.e2e.ts'],
 
   framework: 'jasmine2',
 
@@ -35,7 +24,7 @@ exports.config = {
 
   onPrepare() {
     var disableNgAnimate = function () {
-      angular.module('disableNgAnimate', []).run(['$animate', function ($animate: IAnimateService) {
+      angular.module('disableNgAnimate', []).run(['$animate', function ($animate: angular.animate.IAnimateService) {
         $animate.enabled(false);
       }]);
     };

@@ -22,3 +22,6 @@ describe('App', () => {
     expect(browser.getCurrentUrl().then(decodeURIComponent)).toEqual(decodeURIComponent(applicationUrl + groupPage.path(GroupPage.JHS_ID)));
   });
 });
+
+require('./group.e2e');
+require('./model.e2e');
