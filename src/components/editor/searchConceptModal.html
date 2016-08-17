@@ -90,8 +90,8 @@
     </modal-body>
 
     <modal-buttons>
-      <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
-      <button type="button" class="btn btn-default" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || form.$invalid || form.$pending">{{ctrl.buttonTitle | translate}}</button>
+      <button type="button" class="btn btn-default cancel" ng-click="ctrl.close()" translate>Cancel</button>
+      <button type="button" class="btn btn-default confirm" ng-click="ctrl.confirm()" ng-disabled="!ctrl.selection || form.$invalid || form.$pending">{{ctrl.buttonTitle | translate}}</button>
     </modal-buttons>
 
   </modal-template>

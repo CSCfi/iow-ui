@@ -85,9 +85,9 @@
         <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
         <span>{{ctrl.cannotConfirm | translate}}</span>
       </div>
-      <button type="button" class="btn btn-default" ng-click="ctrl.close()" translate>Cancel</button>
+      <button type="button" class="btn btn-default cancel" ng-click="ctrl.close()" translate>Cancel</button>
       <button type="button"
-              class="btn btn-default"
+              class="btn btn-default confirm"
               ng-click="ctrl.confirm()"
               ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending || ctrl.isExternalClassPending()">
         {{ctrl.textForSelection(ctrl.selection) | translate}}
