@@ -29,6 +29,10 @@ export class EditableTable {
 
     return new EditableTableRow(rowElement, indicesPromise);
   }
+
+  isEmpty() {
+    return this.element.isPresent().then(x => !x);
+  }
 }
 
 export class EditableTableRow {
