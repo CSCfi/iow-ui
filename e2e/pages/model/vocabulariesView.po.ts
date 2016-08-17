@@ -8,4 +8,8 @@ export class VocabulariesView extends ModelPanelView<VocabularyModal> {
   constructor() {
     super('vocabularies-view', VocabularyModal);
   }
+
+  getRowByName(name: string) {
+    return this.table.getRowByColumnText('Sanaston nimi', name);
+  }
 }

@@ -30,8 +30,8 @@ mod.directive('editableTable', () => {
             <a ng-if="property.hrefExtractor" target="_blank" ng-href="{{property.hrefExtractor(value)}}">{{property.nameExtractor(value)}}</a>
             <a ng-if="property.onClick" ng-click="property.onClick(value)">{{property.nameExtractor(value)}}</a>
           </td>
-          <td ng-class="[ 'action', { editable: ctrl.canRemove(value) } ]" ng-click="ctrl.remove(value, valueIndex)"><i class="fa fa-trash" uib-tooltip="{{'Remove' | translate}}"></i></td>
-          <td ng-class="[ 'action', { editable: ctrl.canEdit(value) } ]" ng-click="ctrl.edit(value, valueIndex)"><i class="fa fa-pencil" uib-tooltip="{{'Edit' | translate}}"></i></td>
+          <td ng-class="[ 'action', 'remove', { editable: ctrl.canRemove(value) } ]" ng-click="ctrl.remove(value, valueIndex)"><i class="fa fa-trash" uib-tooltip="{{'Remove' | translate}}"></i></td>
+          <td ng-class="[ 'action', 'edit', { editable: ctrl.canEdit(value) } ]" ng-click="ctrl.edit(value, valueIndex)"><i class="fa fa-pencil" uib-tooltip="{{'Edit' | translate}}"></i></td>
         </tr>
       </tbody>
       <tfoot class="expander" ng-if="ctrl.canExpand()">
