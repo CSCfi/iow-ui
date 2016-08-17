@@ -33,6 +33,6 @@ describe('Model view', () => {
     const modal = view.vocabularies.addNew();
     modal.selectResult(VocabulariesView.EOS);
     view.buttons.save();
-    expect(view.vocabularies.table.hasColumnWithText(VocabulariesView.EOS)).toBe(true);
+    expect(view.vocabularies.table.hasColumnWithText('Sanaston nimi', VocabulariesView.EOS)).toBe(true);
   });
 });
