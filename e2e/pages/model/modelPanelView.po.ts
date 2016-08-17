@@ -1,14 +1,14 @@
+import ElementFinder = protractor.ElementFinder;
 import { Modal } from '../common/modal.po';
 import { EditableTable } from '../common/component/editableTable.po';
 
 export class ModelPanelView<M extends Modal> {
 
-  element = element(by.css('vocabularies-view'));
+  element = element(by.css(this.elementName));
   addNewButton = this.element.element(by.partialButtonText('Lisää'));
   table = new EditableTable(this.element);
 
-  constructor(elementName: string, private modalConstructor: { new(): M }) {
-    this.element = element(by.css(elementName));
+  constructor(private elementName: string, private modalConstructor: { new(): M }) {
   }
 
   addNew() {
