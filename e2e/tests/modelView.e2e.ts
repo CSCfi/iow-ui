@@ -3,6 +3,7 @@ import { NavBar } from '../pages/common/navbar.po';
 import { libraryParameters } from './test-data';
 import { ModelView } from '../pages/model/modelView.po';
 import { VocabulariesView } from '../pages/model/vocabulariesView.po';
+import { ReferenceDataView } from '../pages/model/referenceDataView.po';
 
 describe('Model view', () => {
 
@@ -41,5 +42,22 @@ describe('Model view', () => {
     view.vocabularies.getRowByName(VocabulariesView.EOS).remove();
     view.buttons.save();
     expect(view.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(false);
+  });
+
+  it('Adds reference data', () => {
+    view.buttons.edit();
+    const modal = view.referenceData.addNew();
+    modal.search('haku');
+    modal.selectResult(ReferenceDataView.hakukelpoisuus);
+    modal.confirm();
+    view.buttons.save();
+    expect(view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).isPresent()).toBe(true);
+  });
+
+  it('Removes reference data', () => {
+    view.buttons.edit();
+    view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).remove();
+    view.buttons.save();
+    expect(view.referenceData.table.isEmpty()).toBe(true);
   });
 });

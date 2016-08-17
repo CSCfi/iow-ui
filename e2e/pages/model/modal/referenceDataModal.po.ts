@@ -1,4 +1,4 @@
-import { Modal } from '../../common/modal.po';
+import { SearchModal } from '../../common/searchModal.po';
 
-export class ReferenceDataModal extends Modal {
+export class ReferenceDataModal extends SearchModal {
 }
