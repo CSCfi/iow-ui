@@ -99,5 +99,32 @@ describe('Model view', () => {
       view.saveAndReload();
       expect(view.namespaces.table.isEmpty()).toBe(true);
     });
+
+    it('Adds link', () => {
+      view.edit();
+      const addModal = view.links.addNew();
+      addModal.homepage.setValue('http://example.org');
+      addModal.label.setValue('Example');
+      addModal.description.setValue('Example description');
+      addModal.confirm();
+      view.saveAndReload();
+      expect(view.links.getRowByName('Example').isPresent()).toBe(true);
+    });
+
+    it('Edits link', () => {
+      view.edit();
+      const editModal = view.links.editRowByName('Example');
+      editModal.label.appendValue('2');
+      editModal.confirm();
+      view.saveAndReload();
+      expect(view.links.getRowByName('Example2').isPresent()).toBe(true);
+    });
+
+    it('Removes link', () => {
+      view.edit();
+      view.links.removeRowByName('Example2');
+      view.saveAndReload();
+      expect(view.links.table.isEmpty()).toBe(true);
+    });
   });
 });
