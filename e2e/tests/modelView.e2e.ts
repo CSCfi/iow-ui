@@ -57,6 +57,13 @@ describe('Model view', () => {
       expect(view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).isPresent()).toBe(true);
     });
 
+    it('Opens reference data details', () => {
+      const modal = view.referenceData.clickName(ReferenceDataView.hakukelpoisuus);
+      expect(modal.label.content.getText()).toBe(ReferenceDataView.hakukelpoisuus);
+      modal.close();
+      expect(modal.isClosed()).toBe(true);
+    });
+
     it('Removes reference data', () => {
       view.edit();
       view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).remove();
