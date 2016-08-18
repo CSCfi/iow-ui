@@ -1,6 +1,6 @@
 import { ModelPage } from '../pages/model/modelPage.po';
 import { NavBar } from '../pages/common/navbar.po';
-import { libraryParameters } from './test-data';
+import { library1Parameters } from './test-data';
 import { ModelView } from '../pages/model/modelView.po';
 import { VocabulariesView } from '../pages/model/vocabulariesView.po';
 import { ReferenceDataView } from '../pages/model/referenceDataView.po';
@@ -12,7 +12,7 @@ describe('Model view', () => {
   let view: ModelView;
 
   beforeEach(() => {
-    const page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(libraryParameters.prefix), libraryParameters.type);
+    const page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(library1Parameters.prefix), library1Parameters.type);
     navbar.ensureLoggedIn();
     page.modelView.ensureOpen();
     view = page.modelView;
@@ -27,7 +27,7 @@ describe('Model view', () => {
       view.language.addItem('pl');
       view.saveAndReload();
 
-      expect(view.label.content.getText()).toBe(libraryParameters.label + '2');
+      expect(view.label.content.getText()).toBe(library1Parameters.label + '2');
       expect(view.description.content.getText()).toBe('Kuvaus');
       expect(view.language.content.getText()).toBe('fi, en, pl');
     });

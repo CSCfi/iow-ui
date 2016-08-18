@@ -1,7 +1,7 @@
 import { GroupPage } from '../pages/group/groupPage.po';
 import { expectCurrentUrlToEqualPath } from '../util/url';
 import { NavBar } from '../pages/common/navbar.po';
-import { libraryParameters } from './test-data';
+import { library1Parameters } from './test-data';
 import { ModelPage } from '../pages/model/modelPage.po';
 
 describe('Group page', () => {
@@ -10,7 +10,7 @@ describe('Group page', () => {
   const navbar = new NavBar();
 
   beforeEach(() => {
-    page = GroupPage.navigate(libraryParameters.groupId);
+    page = GroupPage.navigate(library1Parameters.groupId);
     navbar.ensureLoggedIn();
   });
 
@@ -31,9 +31,9 @@ describe('Group page', () => {
 
   it('Creates unsaved model', () => {
     const addModelModal = page.addLibrary();
-    addModelModal.setValues(libraryParameters);
+    addModelModal.setValues(library1Parameters);
     const modelPage = addModelModal.submit();
-    expect(modelPage.modelView.title.getText()).toBe(libraryParameters.label);
-    expectCurrentUrlToEqualPath(ModelPage.pathToNewModel(libraryParameters));
+    expect(modelPage.modelView.title.getText()).toBe(library1Parameters.label);
+    expectCurrentUrlToEqualPath(ModelPage.pathToNewModel(library1Parameters));
   });
 });

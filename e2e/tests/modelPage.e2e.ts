@@ -1,24 +1,28 @@
-import { ModelPage } from '../pages/model/modelPage.po';
+import { ModelPage, NewModelParameters } from '../pages/model/modelPage.po';
 import { expectCurrentUrlToEqualPath } from '../util/url';
-import { libraryParameters } from './test-data';
+import { library1Parameters, library2Parameters } from './test-data';
 import { NavBar } from '../pages/common/navbar.po';
 import { GroupPage } from '../pages/group/groupPage.po';
 
 describe('Model page', () => {
 
-  let page: ModelPage;
   const navbar = new NavBar();
 
-  describe('Before model is created', () => {
+  describe('Before models are created', () => {
 
-    beforeEach(() => {
-      page = ModelPage.navigateToNewModel(libraryParameters);
+    const createLibraryAndCheckExpectations = (parameters: NewModelParameters) => {
+      const page = ModelPage.navigateToNewModel(parameters);
       navbar.ensureLoggedIn();
-    });
+      page.modelView.buttons.save();
+      expectCurrentUrlToEqualPath(ModelPage.pathToExistingModel(ModelPage.modelIdForPrefix(parameters.prefix)));
+    };
 
     it('Creates saved model', () => {
-      page.modelView.buttons.save();
-      expectCurrentUrlToEqualPath(ModelPage.pathToExistingModel(ModelPage.modelIdForPrefix(libraryParameters.prefix)));
+      createLibraryAndCheckExpectations(library1Parameters);
+    });
+
+    it('Creates another model', () => {
+      createLibraryAndCheckExpectations(library2Parameters);
     });
   });
 
@@ -29,12 +33,20 @@ describe('Model page', () => {
     require('./classView.e2e');
     require('./predicateView.e2e');
 
-    it('Removes model', () => {
-      page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(libraryParameters.prefix), libraryParameters.type);
+    const removeLibraryAndCheckExpectations = (parameters: NewModelParameters) => {
+      const page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(parameters.prefix), parameters.type);
       navbar.ensureLoggedIn();
       page.modelView.ensureOpen();
       page.modelView.buttons.removeAndConfirm();
-      expectCurrentUrlToEqualPath(GroupPage.path(libraryParameters.groupId));
+      expectCurrentUrlToEqualPath(GroupPage.path(parameters.groupId));
+    };
+
+    it('Removes model', () => {
+      removeLibraryAndCheckExpectations(library1Parameters);
+    });
+
+    it('Removes another model', () => {
+      removeLibraryAndCheckExpectations(library2Parameters);
     });
   });
 });
