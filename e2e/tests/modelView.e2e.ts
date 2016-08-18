@@ -87,7 +87,6 @@ describe('Model view', () => {
       addModal.label.setValue('Foobar');
       addModal.namespace.setValue('http://www.google.com/');
       addModal.prefix.setValue('foo');
-      browser.pause();
       addModal.confirm();
       view.saveAndReload();
       expect(view.namespaces.getRowByName('Foobar').isPresent()).toBe(true);
