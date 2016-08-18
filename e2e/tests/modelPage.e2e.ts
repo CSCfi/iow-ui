@@ -32,6 +32,7 @@ describe('Model page', () => {
     require('./addResources.e2e');
     require('./classView.e2e');
     require('./predicateView.e2e');
+    require('./conceptEditor.e2e');
 
     const removeLibraryAndCheckExpectations = (parameters: NewModelParameters) => {
       const page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(parameters.prefix), parameters.type);
