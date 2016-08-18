@@ -27,8 +27,8 @@
     <modal-buttons>
       <submit-error-panel error="ctrl.submitError"></submit-error-panel>
 
-      <button class="btn btn-default" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
-      <button class="btn btn-default" type="button" ng-click="ctrl.create()" ng-disabled="!form.$valid">{{ctrl.confirmLabel | translate}}</button>
+      <button class="btn btn-default cancel" type="button" ng-click="ctrl.cancel()" translate>Cancel</button>
+      <button class="btn btn-default confirm" type="button" ng-click="ctrl.create()" ng-disabled="!form.$valid">{{ctrl.confirmLabel | translate}}</button>
     </modal-buttons>
   </modal-template>
 </form>

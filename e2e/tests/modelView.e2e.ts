@@ -1,6 +1,6 @@
 import { ModelPage } from '../pages/model/modelPage.po';
 import { NavBar } from '../pages/common/navbar.po';
-import { library1Parameters } from './test-data';
+import { library1Parameters, library2Parameters } from './test-data';
 import { ModelView } from '../pages/model/modelView.po';
 import { VocabulariesView } from '../pages/model/vocabulariesView.po';
 import { ReferenceDataView } from '../pages/model/referenceDataView.po';
@@ -69,6 +69,36 @@ describe('Model view', () => {
       view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).remove();
       view.saveAndReload();
       expect(view.referenceData.table.isEmpty()).toBe(true);
+    });
+
+    it('Adds other library as namespace', () => {
+      view.edit();
+      const modal = view.namespaces.addNew();
+      modal.search('E2E');
+      modal.selectResult(library2Parameters.label);
+      view.saveAndReload();
+      expect(view.namespaces.getRowByName(library2Parameters.label).isPresent()).toBe(true);
+    });
+
+    it('Adds external namespace', () => {
+      view.edit();
+      const modal = view.namespaces.addNew();
+      const addModal = modal.createNewNamespace();
+      addModal.label.setValue('Foobar');
+      addModal.namespace.setValue('http://www.google.com/');
+      addModal.prefix.setValue('foo');
+      browser.pause();
+      addModal.confirm();
+      view.saveAndReload();
+      expect(view.namespaces.getRowByName('Foobar').isPresent()).toBe(true);
+    });
+
+    it('Removes namespaces', () => {
+      view.edit();
+      view.namespaces.getRowByName(library2Parameters.label).remove();
+      view.namespaces.getRowByName('Foobar').remove();
+      view.saveAndReload();
+      expect(view.namespaces.table.isEmpty()).toBe(true);
     });
   });
 });
