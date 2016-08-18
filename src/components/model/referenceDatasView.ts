@@ -25,7 +25,7 @@ mod.directive('referenceDatasView', () => {
           <span translate>Add reference data</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.referenceDatas" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -85,6 +85,10 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     ];
   }
 
+  values(): ReferenceData[] {
+    return this.model && this.model.referenceDatas;
+  }
+
   canEdit(referenceData: ReferenceData): boolean {
     return referenceData.isExternal();
   }
@@ -95,6 +99,10 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
 
   canRemove(referenceData: ReferenceData): boolean {
     return true;
+  }
+
+  remove(referenceData: ReferenceData): any {
+    this.model.removeReferenceData(referenceData);
   }
 
   orderBy(referenceData: ReferenceData): any {

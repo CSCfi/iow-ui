@@ -8,7 +8,6 @@ import { Url } from '../../services/uri';
 mod.directive('editableTable', () => {
   return {
     scope: {
-      values: '=',
       descriptor: '=',
       expanded: '='
     },
@@ -56,12 +55,16 @@ export abstract class TableDescriptor<T> {
   abstract columnDescriptors(values: T[]): ColumnDescriptor<T>[];
   abstract canEdit(value: T): boolean;
   abstract canRemove(value: T): boolean;
+  abstract values(): T[];
 
   hasOrder(): boolean {
     return false;
   }
 
   edit(value: T): any {
+  }
+
+  remove(value: T): any {
   }
 
   filter(value: T): boolean {
@@ -97,16 +100,14 @@ class EditableTableController<T> {
   orderBy = (value: T) => this.descriptor.orderBy(value);
 
   constructor($scope: IScope) {
+    $scope.$watchCollection(() => this.descriptor ? this.descriptor.values() : [], values => {
+      this.values = values;
 
-    const init = () => {
-      if (this.values && this.descriptor) {
-        this.properties = this.descriptor.columnDescriptors(this.values);
-        this.visibleValues = this.values ? _.filter(this.values, this.filter).length : 0;
+      if (values && this.descriptor) {
+        this.properties = this.descriptor.columnDescriptors(values);
+        this.visibleValues = values ? _.filter(values, this.filter).length : 0;
       }
-    };
-
-    $scope.$watchCollection(() => this.values, init);
-    $scope.$watch(() => this.descriptor, init);
+    });
   }
 
   canSort() {
@@ -115,7 +116,7 @@ class EditableTableController<T> {
 
   remove(value: T, index: number) {
     if (this.canRemove(value)) {
-      _.remove(this.values, value);
+      this.descriptor.remove(value);
     }
   }
 

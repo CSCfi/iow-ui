@@ -25,7 +25,7 @@ mod.directive('importedNamespacesView', () => {
           <span translate>Import namespace</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.namespaces" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -90,12 +90,20 @@ class ImportedNamespaceTableDescriptor extends TableDescriptor<ImportedNamespace
     ];
   }
 
+  values(): ImportedNamespace[] {
+    return this.model && this.model.namespaces;
+  }
+
   orderBy(ns: ImportedNamespace) {
     return ns.prefix;
   }
 
   edit(ns: ImportedNamespace) {
     this.addEditNamespaceModal.openEdit(ns, this.model, this.languageService.getModelLanguage(this.model));
+  }
+
+  remove(ns: ImportedNamespace) {
+    this.model.removeNamespace(ns);
   }
 
   canEdit(ns: ImportedNamespace): boolean {

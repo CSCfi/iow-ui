@@ -37,8 +37,10 @@ class EditableReferenceDataSelectController {
   descriptor: ReferenceDataTableDescriptor;
 
   /* @ngInject */
-  constructor(private searchReferenceDataModal: SearchReferenceDataModal, private languageService: LanguageService, private viewReferenceDataModal: ViewReferenceDataModal) {
-    this.descriptor = new ReferenceDataTableDescriptor(this.model, languageService.createLocalizer(this.model), viewReferenceDataModal);
+  constructor($scope: IScope, private searchReferenceDataModal: SearchReferenceDataModal, private languageService: LanguageService, private viewReferenceDataModal: ViewReferenceDataModal) {
+    $scope.$watch(() => this.referenceData, referenceData => {
+      this.descriptor = new ReferenceDataTableDescriptor(referenceData, this.model, languageService.createLocalizer(this.model), viewReferenceDataModal);
+    });
   }
 
   addReferenceData() {
@@ -53,7 +55,7 @@ class EditableReferenceDataSelectController {
 
 class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
 
-  constructor(private model: Model, private localizer: Localizer, private viewReferenceDataModal: ViewReferenceDataModal) {
+  constructor(private referenceData: ReferenceData[], private model: Model, private localizer: Localizer, private viewReferenceDataModal: ViewReferenceDataModal) {
     super();
   }
 
@@ -74,12 +76,20 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     ];
   }
 
+  values(): ReferenceData[] {
+    return this.referenceData;
+  }
+
   canEdit(referenceData: ReferenceData): boolean {
     return false;
   }
 
-  edit(value: ReferenceData): any {
+  edit(referenceData: ReferenceData): any {
     throw new Error('Edit unsupported');
+  }
+
+  remove(referenceData: ReferenceData): any {
+    _.remove(this.values(), referenceData);
   }
 
   canRemove(referenceData: ReferenceData): boolean {

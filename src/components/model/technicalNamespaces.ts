@@ -12,7 +12,7 @@ mod.directive('technicalNamespaces', () => {
     restrict: 'E',
     template: `
       <h4 translate>Technical namespaces</h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.namespaces" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -22,24 +22,35 @@ mod.directive('technicalNamespaces', () => {
 
 class TechnicalNamespacesController {
   model: Model;
-  namespaces: Namespace[];
   descriptor: TechnicalNamespaceTableDescriptor;
   expanded = false;
 
   /* @ngInject */
   constructor($scope: IScope) {
-    this.descriptor = new TechnicalNamespaceTableDescriptor();
-    $scope.$watch(() => this.model, model => this.namespaces = model.getNamespaces().filter(ns => ns.type === NamespaceType.IMPLICIT_TECHNICAL));
+    $scope.$watch(() => this.model, model => {
+      this.descriptor = new TechnicalNamespaceTableDescriptor(model);
+    });
   }
 }
 
 class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
+
+  namespaces: Namespace[];
+
+  constructor(private model: Model) {
+    super();
+    this.namespaces = model.getNamespaces().filter(ns => ns.type === NamespaceType.IMPLICIT_TECHNICAL);
+  }
 
   columnDescriptors(values: Namespace[]): ColumnDescriptor<Namespace>[] {
     return [
       { headerName: 'Prefix', nameExtractor: ns => ns.prefix, cssClass: 'prefix' },
       { headerName: 'Namespace', nameExtractor: ns => ns.url }
     ];
+  }
+
+  values(): Namespace[] {
+    return this.namespaces;
   }
 
   orderBy(ns: Namespace) {

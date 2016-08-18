@@ -21,7 +21,7 @@ mod.directive('linksView', () => {
           <span translate>Add link</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.links" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -69,12 +69,20 @@ class LinkTableDescriptor extends TableDescriptor<Link> {
     ];
   }
 
+  values(): Link[] {
+    return this.model && this.model.links;
+  }
+
   hasOrder() {
     return true;
   }
 
   edit(link: Link) {
     this.addEditLinkModal.openEdit(link, this.model, this.languageService.getModelLanguage(this.model));
+  }
+
+  remove(link: Link) {
+    this.model.removeLink(link);
   }
 
   canEdit(link: Link): boolean {

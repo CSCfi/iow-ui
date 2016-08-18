@@ -5,7 +5,6 @@ import { Model, Vocabulary } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchVocabularyModal } from './searchVocabularyModal';
-import { ModelService } from '../../services/modelService';
 import { module as mod }  from './module';
 import { createExistsExclusion } from '../../utils/exclusion';
 import { collectProperties } from '../../utils/entity';
@@ -29,7 +28,7 @@ mod.directive('vocabulariesView', () => {
           <span translate>Browse concepts</span>
         </button>
       </h4>
-      <editable-table descriptor="ctrl.descriptor" values="ctrl.model.vocabularies" expanded="ctrl.expanded"></editable-table>
+      <editable-table descriptor="ctrl.descriptor" expanded="ctrl.expanded"></editable-table>
     `,
     controllerAs: 'ctrl',
     bindToController: true,
@@ -89,12 +88,20 @@ class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
     ];
   }
 
+  values(): Vocabulary[] {
+    return this.model && this.model.vocabularies;
+  }
+
   canEdit(vocabulary: Vocabulary): boolean {
     return false;
   }
 
   canRemove(vocabulary: Vocabulary): boolean {
     return !vocabulary.local;
+  }
+
+  remove(vocabulary: Vocabulary): any {
+    this.model.removeVocabulary(vocabulary);
   }
 
   orderBy(vocabulary: Vocabulary): any {
