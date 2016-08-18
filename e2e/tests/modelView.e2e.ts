@@ -92,10 +92,19 @@ describe('Model view', () => {
       expect(view.namespaces.getRowByName('Foobar').isPresent()).toBe(true);
     });
 
+    it('Edits external namespace', () => {
+      view.edit();
+      const modal = view.namespaces.editRowByName('Foobar');
+      modal.label.appendValue(' edit');
+      modal.confirm();
+      view.saveAndReload();
+      expect(view.namespaces.getRowByName('Foobar edit').isPresent()).toBe(true);
+    });
+
     it('Removes namespaces', () => {
       view.edit();
       view.namespaces.getRowByName(library2Parameters.label).remove();
-      view.namespaces.getRowByName('Foobar').remove();
+      view.namespaces.getRowByName('Foobar edit').remove();
       view.saveAndReload();
       expect(view.namespaces.table.isEmpty()).toBe(true);
     });
