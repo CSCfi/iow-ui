@@ -22,12 +22,12 @@ describe('Model view', () => {
 
     it('Modifies model properties', () => {
       view.edit();
-      view.label.appendValue('2');
+      view.label.appendValue(' edit');
       view.description.appendValue('Kuvaus');
       view.language.addItem('pl');
       view.saveAndReload();
 
-      expect(view.label.content.getText()).toBe(library1Parameters.label + '2');
+      expect(view.label.content.getText()).toBe(library1Parameters.label + ' edit');
       expect(view.description.content.getText()).toBe('Kuvaus');
       expect(view.language.content.getText()).toBe('fi, en, pl');
     });
