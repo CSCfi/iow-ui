@@ -4,10 +4,10 @@ export class Modal {
 
   element = element(by.css('.modal-dialog'));
   title = this.element.$('modal-title');
+  body = this.element.$('modal-body');
 
   constructor() {
-    // TODO better check for when angular template is rendered fully
-    browser.sleep(200);
+    browser.wait(protractor.ExpectedConditions.presenceOf(this.body.$$('*').first()));
   }
 
   close() {
