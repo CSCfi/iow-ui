@@ -1,6 +1,6 @@
 import { ModelPanelView } from './modelPanelView.po';
 import { ReferenceDataModal } from './modal/referenceDataModal.po';
-import { ViewReferenceDataModal } from './viewReferenceDataModal.po';
+import { ViewReferenceDataModal } from './modal/viewReferenceDataModal.po';
 
 export class ReferenceDataView extends ModelPanelView<ReferenceDataModal> {
 

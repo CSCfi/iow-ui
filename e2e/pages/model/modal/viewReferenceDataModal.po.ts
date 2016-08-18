@@ -1,5 +1,5 @@
-import { Modal } from '../common/modal.po';
-import { NonEditableComponent } from '../common/component/nonEditableComponent.po';
+import { Modal } from '../../common/modal.po';
+import { NonEditableComponent } from '../../common/component/nonEditableComponent.po';
 
 export class ViewReferenceDataModal extends Modal {
 
