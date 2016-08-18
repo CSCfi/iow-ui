@@ -8,8 +8,8 @@ export class EditableMultipleComponent extends EditableComponent {
     super(element);
   }
 
-  static byElementNameAndTitleLocalizationKey(elementName: string, title: string) {
-    return new EditableMultipleComponent(element(by.css(`${elementName}[data-title="${title}"]`)));
+  static byElementNameAndTitleLocalizationKey(context: ElementFinder, elementName: string, title: string) {
+    return new EditableMultipleComponent(context.$(`${elementName}[data-title="${title}"]`));
   }
 
   clearExistingValues() {

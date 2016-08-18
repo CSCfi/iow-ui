@@ -6,12 +6,12 @@ export class EditableComponent {
   content: ElementFinder;
 
   constructor(public editableElement: ElementFinder) {
-    this.inputElement = editableElement.$('input[ng-model],select[ng-model],textarea[ng-model]');
+    this.inputElement = editableElement.$('.editable-wrap [ng-model]');
     this.content = editableElement.$('.content');
   }
 
-  static byTitleLocalizationKey(title: string) {
-    return new EditableComponent(element(by.css(`editable[data-title="${title}"]`)));
+  static byTitleLocalizationKey(context: ElementFinder, title: string) {
+    return new EditableComponent(context.$(`editable[data-title="${title}"]`));
   }
 
   isEditing() {

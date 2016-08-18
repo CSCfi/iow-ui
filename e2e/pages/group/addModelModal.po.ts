@@ -8,14 +8,14 @@ import { SubmitButton } from '../common/component/submitButton.po';
 
 export class AddModelModal extends Modal {
 
-  prefix = EditableComponent.byTitleLocalizationKey('Prefix');
+  prefix = EditableComponent.byTitleLocalizationKey(this.element, 'Prefix');
   label: EditableComponent;
-  language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey('editable-multiple-language-select', 'Model languages');
+  language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey(this.element, 'editable-multiple-language-select', 'Model languages');
   submitButton = new SubmitButton(element(by.buttonText('Luo uusi')));
 
   constructor(private type: Type) {
     super();
-    this.label = EditableComponent.byTitleLocalizationKey(upperCaseFirst(type) + ' label');
+    this.label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(type) + ' label');
   }
 
   submit() {

@@ -4,11 +4,11 @@ export class NonEditableComponent {
 
   content: ElementFinder;
 
-  constructor(public editableElement: ElementFinder) {
-    this.content = editableElement.$('.content');
+  constructor(public nonEditableElement: ElementFinder) {
+    this.content = nonEditableElement.$('.content');
   }
 
-  static byTitleLocalizationKey(title: string) {
-    return new NonEditableComponent(element(by.css(`non-editable[data-title="${title}"]`)));
+  static byTitleLocalizationKey(context: ElementFinder, title: string) {
+    return new NonEditableComponent(context.$(`non-editable[data-title="${title}"]`));
   }
 }

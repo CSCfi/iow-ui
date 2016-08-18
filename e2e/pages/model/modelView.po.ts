@@ -19,8 +19,8 @@ export class ModelView {
   buttons = new EditableEntityButtons(this.element);
 
   label: EditableComponent;
-  description = EditableComponent.byTitleLocalizationKey('Description');
-  language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey('editable-multiple-language-select', 'Model languages');
+  description = EditableComponent.byTitleLocalizationKey(this.element, 'Description');
+  language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey(this.element, 'editable-multiple-language-select', 'Model languages');
 
   vocabularies = new VocabulariesView();
   referenceData = new ReferenceDataView();
@@ -28,7 +28,7 @@ export class ModelView {
   links = new LinksView();
 
   constructor(private type: Type) {
-    this.label = EditableComponent.byTitleLocalizationKey(upperCaseFirst(type) + ' label');
+    this.label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(type) + ' label');
   }
 
   edit() {

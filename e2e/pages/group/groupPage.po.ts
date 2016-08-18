@@ -7,7 +7,7 @@ export class GroupPage {
   static path = (id: string) => `/#/group?urn=${encodeURIComponent(id)}`;
   static navigate = (id: string) => navigateAndReturn(GroupPage.path(id), new GroupPage());
 
-  label = EditableComponent.byTitleLocalizationKey('Group label');
+  label = EditableComponent.byTitleLocalizationKey(element(by.css('body')), 'Group label');
 
   addLibrary() {
     element(by.id('add-library-button')).click();
