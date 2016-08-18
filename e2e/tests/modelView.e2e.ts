@@ -21,7 +21,7 @@ describe('Model view', () => {
   describe('After navigated', () => {
 
     it('Modifies model properties', () => {
-      view.buttons.edit();
+      view.edit();
       view.label.appendValue('2');
       view.description.appendValue('Kuvaus');
       view.language.addItem('pl');
@@ -33,7 +33,7 @@ describe('Model view', () => {
     });
 
     it('Adds vocabulary', () => {
-      view.buttons.edit();
+      view.edit();
       const modal = view.vocabularies.addNew();
       modal.selectResult(VocabulariesView.EOS);
       view.saveAndReload();
@@ -41,14 +41,14 @@ describe('Model view', () => {
     });
 
     it('Removes vocabulary', () => {
-      view.buttons.edit();
+      view.edit();
       view.vocabularies.getRowByName(VocabulariesView.EOS).remove();
       view.saveAndReload();
       expect(view.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(false);
     });
 
     it('Adds reference data', () => {
-      view.buttons.edit();
+      view.edit();
       const modal = view.referenceData.addNew();
       modal.search('haku');
       modal.selectResult(ReferenceDataView.hakukelpoisuus);
@@ -58,7 +58,7 @@ describe('Model view', () => {
     });
 
     it('Removes reference data', () => {
-      view.buttons.edit();
+      view.edit();
       view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).remove();
       view.saveAndReload();
       expect(view.referenceData.table.isEmpty()).toBe(true);

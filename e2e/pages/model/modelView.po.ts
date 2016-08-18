@@ -31,6 +31,10 @@ export class ModelView {
     this.label = EditableComponent.byTitleLocalizationKey(upperCaseFirst(type) + ' label');
   }
 
+  edit() {
+    this.buttons.edit();
+  }
+
   saveAndReload() {
     this.buttons.save();
     browser.refresh();
