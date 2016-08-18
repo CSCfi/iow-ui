@@ -40,10 +40,18 @@ export class EditableTableRow {
   constructor(private rowElementPromise: protractor.promise.Promise<ElementFinder>, private indicesPromise: protractor.promise.Promise<ColumnIndices>) {
   }
 
-  getCellText(columnName: string) {
+  getCell(columnName: string) {
     return protractor.promise.all([this.rowElementPromise, this.indicesPromise]).then(([element, indices]) => {
-      return element.$(`td:nth-child(${indices[columnName]})`).getText();
+      return element.$(`td:nth-child(${indices[columnName]})`);
     });
+  }
+
+  clickCell(columnName: string) {
+    return this.getCell(columnName).then(e => e.$('a').click());
+  }
+
+  getCellText(columnName: string) {
+    return this.getCell(columnName).then(e => e.getText());
   }
 
   edit() {
