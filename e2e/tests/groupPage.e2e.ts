@@ -31,7 +31,9 @@ describe('Group page', () => {
 
   it('Creates unsaved model', () => {
     const addModelModal = page.addLibrary();
-    addModelModal.setValues(library1Parameters);
+    addModelModal.prefix.setValue(library1Parameters.prefix);
+    addModelModal.label.setValue(library1Parameters.label);
+    addModelModal.language.setItems(library1Parameters.language);
     const modelPage = addModelModal.submit();
     expect(modelPage.modelView.title.getText()).toBe(library1Parameters.label);
     expectCurrentUrlToEqualPath(ModelPage.pathToNewModel(library1Parameters));
