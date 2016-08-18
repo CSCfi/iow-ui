@@ -2,7 +2,7 @@ import Key = protractor.Key;
 
 export class Modal {
 
-  element = element(by.css('.modal-dialog'));
+  element = element(by.css('.modal:first-child'));
   title = this.element.$('modal-title');
   body = this.element.$('modal-body');
 
