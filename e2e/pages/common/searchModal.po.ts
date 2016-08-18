@@ -5,10 +5,11 @@ export class SearchModal extends Modal {
 
   searchElement = this.element.element(by.model('ctrl.searchText'));
   searchResults = this.element.$('.search-results');
+  loadingIndicator = this.searchResults.$('ajax-loading-indicator');
   confirmButton = new SubmitButton(this.element.$('modal-buttons button.confirm'));
 
   search(text: string) {
-    this.searchElement.sendKeys(text);
+    return browser.wait(protractor.ExpectedConditions.stalenessOf(this.loadingIndicator)).then(() => this.searchElement.sendKeys(text));
   }
 
   findResultElementByName(name: string) {
