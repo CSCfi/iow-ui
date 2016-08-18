@@ -7,6 +7,9 @@ import { VocabulariesView } from './vocabulariesView.po';
 import { LinksView } from './linksView.po';
 import { NamespacesView } from './namespacesView.po';
 import { ReferenceDataView } from './referenceDataView.po';
+import { NavBar } from '../common/navbar.po';
+
+const navbar = new NavBar();
 
 export class ModelView {
 
@@ -26,6 +29,13 @@ export class ModelView {
 
   constructor(private type: Type) {
     this.label = EditableComponent.byTitleLocalizationKey(upperCaseFirst(type) + ' label');
+  }
+
+  saveAndReload() {
+    this.buttons.save();
+    browser.refresh();
+    navbar.ensureLoggedIn();
+    this.ensureOpen();
   }
 
   toggle() {
