@@ -5,13 +5,14 @@ import { upperCaseFirst } from 'change-case';
 import { ModelPage } from '../model/modelPage.po';
 import { Language } from '../../../src/utils/language';
 import { EditableMultipleComponent } from '../common/component/editableMultipleComponent.po';
+import { SubmitButton } from '../common/component/submitButton.po';
 
 export class AddModelModal extends Modal {
 
   prefix = EditableComponent.byTitleLocalizationKey('Prefix');
   label: EditableComponent;
   language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey('editable-multiple-language-select', 'Model languages');
-  submitButton = element(by.buttonText('Luo uusi'));
+  submitButton = new SubmitButton(element(by.buttonText('Luo uusi')));
 
   constructor(private type: Type) {
     super();
@@ -25,7 +26,7 @@ export class AddModelModal extends Modal {
   }
 
   submit() {
-    this.submitButton.click();
+    this.submitButton.submit();
     return new ModelPage(this.type);
   }
 }

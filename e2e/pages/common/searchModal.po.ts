@@ -1,9 +1,11 @@
 import { Modal } from './modal.po';
+import { SubmitButton } from './component/submitButton.po';
 
 export class SearchModal extends Modal {
 
   searchElement = this.element.element(by.model('ctrl.searchText'));
   searchResults = this.element.$('.search-results');
+  confirmButton = new SubmitButton(this.element.$('modal-buttons button.confirm'));
 
   search(text: string) {
     this.searchElement.sendKeys(text);
@@ -19,6 +21,6 @@ export class SearchModal extends Modal {
   }
 
   confirm() {
-    this.element.$('modal-buttons button.confirm').click();
+    this.confirmButton.submit();
   }
 }
