@@ -124,6 +124,12 @@ const userContext = Object.assign({}, coreContext, {
   isAdminOf: { '@id': 'http://purl.org/dc/terms/isAdminOf', '@type': '@id' }
 });
 
+const modelPositionContext = Object.assign({}, coreContext, {
+  property: { '@id': 'http://www.w3.org/ns/shacl#property',  '@type': '@id' },
+  pointXY: { '@id': 'http://iow.csc.fi/ns/iow#pointXY' },
+  vertexXY: { '@id': 'http://iow.csc.fi/ns/iow#vertexXY' }
+});
+
 const searchResultContext = Object.assign({}, coreContext, {});
 
 function frame(data: any, context: {}, frame?: {}) {
@@ -326,6 +332,12 @@ export function classVisualizationFrame(data: any): Frame {
     isDefinedBy: {
       '@embed': false
     }
+  });
+}
+
+export function modelPositionsFrame(data: any): Frame {
+  return frame(data, modelPositionContext, {
+    '@type': 'rdfs:Class'
   });
 }
 

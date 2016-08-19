@@ -39,6 +39,7 @@ export interface EditableEntity {
 // TODO: type language indexer as Language when typescript supports it https://github.com/Microsoft/TypeScript/issues/5683
 export type Localizable = { [language: string]: string; }
 export type UserLogin = string;
+export type Coordinate = { x: number, y: number };
 
 export type Concept = FintoConcept|ConceptSuggestion;
 
@@ -758,6 +759,50 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
       }
     }
     return false;
+  }
+}
+
+
+export class ModelPosition extends GraphNode {
+
+  id: Uri;
+  location: Coordinate;
+  properties: ModelPositionProperty[];
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = graph['@id'];
+    this.location = deserializeCoordinate(graph.pointXY);
+    this.properties = deserializeEntityList(graph.property, context, frame, () => ModelPositionProperty);
+  }
+
+  serializationValues(clone: boolean): {} {
+    return {
+      '@id': this.id.uri,
+      pointXY: serializeCoordinate(this.location),
+      property: serializeEntityList(this.properties, clone)
+    };
+  }
+}
+
+export class ModelPositionProperty extends GraphNode {
+
+  id: Uri;
+  vertices: Coordinate[];
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    this.id = graph['@id'];
+    this.vertices = deserializeList(graph.vertexXY ? graph.vertexXY['@list'] : [], deserializeCoordinate);
+  }
+
+  serializationValues(clone: boolean): {} {
+    return {
+      '@id': this.id.uri,
+      vertexXY: {
+        '@list': serializeList(this.vertices)
+      }
+    };
   }
 }
 
@@ -1757,6 +1802,15 @@ function deserializeDate(date: any) {
   return moment(date, isoDateFormat);
 }
 
+function serializeCoordinate(coordinate: Coordinate) {
+  return coordinate.x + ',' + coordinate.y;
+}
+
+function deserializeCoordinate(coordinate: string): Coordinate {
+  const split = coordinate.split(',');
+  return { x: parseInt(split[0], 10), y: parseInt(split[1], 10) };
+}
+
 function deserializeUserLogin(userName: string): UserLogin {
   return userName.substring('mailto:'.length);
 }
@@ -1962,6 +2016,10 @@ export class EntityDeserializer {
 
   deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
     return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => DefaultVisualizationClass);
+  }
+
+  deserializeModelPositions(data: GraphData): IPromise<ModelPosition[]> {
+    return frameAndMapArray(this.$log, data, frames.modelPositionsFrame(data), (framedData) => ModelPosition);
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {
