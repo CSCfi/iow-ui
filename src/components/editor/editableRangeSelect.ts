@@ -46,7 +46,7 @@ class RangeSelectController {
 
   range: DataType;
   ranges: DataType[] = dataTypes;
-  displayNameFormatter = (value: string, gettextCatalog: gettextCatalog) => `${gettextCatalog.getString(value)} (${value})`;
+  displayNameFormatter = (value: string, gettextCatalog: gettextCatalog) => value ? `${gettextCatalog.getString(value)} (${value})` : '';
   isEditing: () => boolean;
 
   constructor(private gettextCatalog: gettextCatalog) {
