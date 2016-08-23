@@ -671,12 +671,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       z: zIndexClass
     });
 
-    function updateCellModel() {
-      const newPropertyNames = getPropertyNames();
-      const newClassName = that.className(klass);
-      classCell.prop('name', newClassName);
-      classCell.prop('attributes', newPropertyNames);
-      classCell.prop('size', size(newClassName, newPropertyNames));
+    const updateCellModel = () => {
+      this.queueWhenNotVisible(() => {
+        const newPropertyNames = getPropertyNames();
+        const newClassName = that.className(klass);
+        classCell.prop('name', newClassName);
+        classCell.prop('attributes', newPropertyNames);
+        classCell.prop('size', size(newClassName, newPropertyNames));
+      });
     };
 
     this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
@@ -725,12 +727,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       z: zIndexAssociation
     });
 
-    function updateCellModel() {
-      associationCell.prop('labels/0/attrs/text/text', getName());
-      if (showCardinality) {
-        associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
-      }
-    }
+    const updateCellModel = () => {
+      this.queueWhenNotVisible(() => {
+        associationCell.prop('labels/0/attrs/text/text', getName());
+        if (showCardinality) {
+          associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
+        }
+      });
+    };
 
     this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
       if (lang !== oldLang) {
