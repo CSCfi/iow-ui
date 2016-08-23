@@ -119,7 +119,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   paperHolder: PaperHolder;
 
-  visible = false;
+  visible = true;
   operationQueue: (() => void)[] = [];
 
   /* @ngInject */
