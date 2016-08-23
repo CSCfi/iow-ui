@@ -180,9 +180,17 @@ export function predicateListFrame(data: any): Frame {
 
 export function predicateFrame(data: any): Frame {
   return frame(data, predicateContext, {
-    '@type': ['owl:DatatypeProperty', 'owl:ObjectProperty'],
+    '@type': ['owl:DatatypeProperty', 'owl:ObjectProperty', 'rdf:Property'],
     isDefinedBy: { '@embed': '@always' },
-    inScheme: { '@embed': '@always' }
+    subject: {
+      '@omitDefault': true,
+      '@default': [],
+       inScheme: {
+        '@omitDefault': true,
+        '@default': [],
+        '@embed': '@always'
+      }
+    }
   });
 }
 
