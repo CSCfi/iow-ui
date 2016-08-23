@@ -119,6 +119,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   paperHolder: PaperHolder;
 
+  visible = false;
+  operationQueue: (() => void)[] = [];
+
   /* @ngInject */
   constructor(private $scope: IScope,
               private $q: IQService,
@@ -156,50 +159,60 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
       if (invalidateCache || this.graph.getCells().length === 0) {
         this.loading = true;
-
+        this.operationQueue = [];
         this.modelService.getVisualizationData(this.model)
-          .then(data => {
-            const process = () => {
-              this.graph.resetCells(this.createCells(data));
-              this.layoutAndAdjust()
-                .then(() => {
-                  const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
-                  this.focus(forceFitToAllContent);
-                })
-                .then(() => this.loading = false);
-            };
-
-            if (this.dimensionChangeInProgress) {
-              setTimeout(process, 200);
-            } else {
-              process();
-            }
-          });
+          .then(data => this.initialize(data));
       }
     }
+  }
+
+  queueWhenNotVisible(operation: () => void) {
+    if (this.visible) {
+      operation();
+    } else {
+      this.operationQueue.push(() => setTimeout(operation, 200));
+    }
+  }
+
+  initialize(data: VisualizationClass[]) {
+    this.queueWhenNotVisible(() => {
+      this.graph.resetCells(this.createCells(data));
+      this.layoutAndAdjust()
+        .then(() => {
+          const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
+          this.focus(forceFitToAllContent);
+        })
+        .then(() => this.loading = false);
+    });
+  }
+
+  onDelete(item: Class|Predicate) {
+    this.queueWhenNotVisible(() => {
+      if (item instanceof Class) {
+        this.removeClass(item);
+      }
+    });
+  }
+
+  onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
+    this.queueWhenNotVisible(() => {
+      if (newItem instanceof Class) {
+        this.updateClassAndLayout(newItem, oldItem ? oldItem.id : null);
+      }
+    });
+  }
+
+  onAssign(item: Class|Predicate) {
+    this.queueWhenNotVisible(() => {
+      if (item instanceof Class) {
+        this.updateClassAndLayout(item);
+      }
+    });
   }
 
   layoutAndAdjust(onlyClassIda: Uri[] = []) {
     return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClassIda))
       .then(() => adjustLinks(this.paper));
-  }
-
-  onDelete(item: Class|Predicate) {
-    if (item instanceof Class) {
-      this.removeClass(item);
-    }
-  }
-
-  onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
-    if (newItem instanceof Class) {
-      this.updateClassAndLayout(newItem, oldItem ? oldItem.id : null);
-    }
-  }
-
-  onAssign(item: Class|Predicate) {
-    if (item instanceof Class) {
-      this.updateClassAndLayout(item);
-    }
   }
 
   private updateClassAndLayout(klass: Class, oldId?: Uri) {
@@ -222,6 +235,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   onResize(show: Show) {
+    this.visible = show !== Show.Selection;
+
+    if (this.visible) {
+      this.operationQueue.forEach(operation => operation());
+      this.operationQueue = [];
+    }
+
     this.dimensionChangeInProgress = true;
   }
 
