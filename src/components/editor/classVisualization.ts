@@ -170,8 +170,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (this.visible) {
       operation();
     } else {
-      this.operationQueue.push(() => setTimeout(operation, 200));
+      this.operationQueue.push(operation);
     }
+  }
+
+  executeQueue() {
+    setTimeout(() => {
+      this.operationQueue.forEach(operation => operation());
+      this.operationQueue = [];
+    }, 200);
   }
 
   initialize(data: VisualizationClass[]) {
@@ -238,8 +245,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.visible = show !== Show.Selection;
 
     if (this.visible) {
-      this.operationQueue.forEach(operation => operation());
-      this.operationQueue = [];
+      this.executeQueue();
     }
 
     this.dimensionChangeInProgress = true;
