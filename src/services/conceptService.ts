@@ -93,7 +93,7 @@ export class ConceptService {
         topConceptID: broaderConceptId && broaderConceptId.uri,
         modelID: model.id.uri
       }})
-      .then((response: any) => new Uri(response.data['@id']));
+      .then((response: any) => new Uri(response.data['@id'], {}));
   }
 
   getFintoConcept(id: Uri): IPromise<FintoConcept> {

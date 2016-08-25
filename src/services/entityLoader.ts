@@ -27,9 +27,9 @@ import { DataType } from './dataTypes';
 import { identity } from '../utils/function';
 import { config } from '../config';
 
-export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392');
-export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK');
-export const jhsGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#JHS');
+export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392', {});
+export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK', {});
+export const jhsGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#JHS', {});
 
 export type Resolvable<T> = IPromise<T>|(() => IPromise<T>);
 export type UriResolvable<T extends { id: Uri }> = Url|IPromise<T>|(() => IPromise<T>);

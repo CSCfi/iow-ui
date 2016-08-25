@@ -557,13 +557,13 @@ class RouteData {
 
   constructor(private params: any) {
     if (params.urn) {
-      this.existingModelId = new Uri(params.urn);
+      this.existingModelId = new Uri(params.urn, {});
     }
   }
 
   get newModel() {
     if (this.params.label && this.params.prefix && this.params.group && this.params.type && this.params.language) {
-      return {label: this.params.label, prefix: this.params.prefix, language: this.params.language, groupId: new Uri(this.params.group), type: this.params.type};
+      return {label: this.params.label, prefix: this.params.prefix, language: this.params.language, groupId: new Uri(this.params.group, {}), type: this.params.type};
     } else {
       return null;
     }
@@ -573,7 +573,7 @@ class RouteData {
     for (const type of <Type[]> ['attribute', 'class', 'association']) {
       const id: string = this.params[type];
       if (id) {
-        return {selectionType: type, id: new Uri(id)};
+        return {selectionType: type, id: new Uri(id, {})};
       }
     }
     return null;
