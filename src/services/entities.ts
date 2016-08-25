@@ -885,6 +885,7 @@ export class ClassPosition extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this._coordinate = deserializeOptional(graph.pointXY, deserializeCoordinate);
     this.associationProperties = indexById(deserializeEntityList(graph.property, context, frame, () => AssociationPropertyPosition));
+    this.associationProperties.forEach(p => p.parent = this);
   }
 
   get coordinate() {
@@ -931,6 +932,7 @@ export class ClassPosition extends GraphNode {
 
   private newAssociationPosition(associationPropertyInternalId: Uri) {
     const position = new AssociationPropertyPosition({ '@id': associationPropertyInternalId.uri }, this.context, this.frame);
+    position.parent = this;
     this.associationProperties.set(associationPropertyInternalId.uri, position);
     return position;
   }
@@ -969,6 +971,7 @@ export class AssociationPropertyPosition extends GraphNode {
 
   setDirty() {
     if (this.parent) {
+      console.log('never here');
       this.parent.setDirty();
     }
   }
