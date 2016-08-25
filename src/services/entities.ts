@@ -963,7 +963,6 @@ export class AssociationPropertyPosition extends GraphNode {
 
   setDirty() {
     if (this.parent) {
-      console.log('never here');
       this.parent.setDirty();
     }
   }
