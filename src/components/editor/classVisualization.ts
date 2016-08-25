@@ -253,9 +253,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
     this.queueWhenNotVisible(() => {
       if (newItem instanceof Class) {
-        if (oldItem && newItem.id.notEquals(oldItem.id)) {
-          this.modelPositions.changeClassId(oldItem.id, newItem.id);
-        }
         this.updateClassAndLayout(newItem, oldItem ? oldItem.id : null);
       }
     });
@@ -283,10 +280,18 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   private updateClassAndLayout(klass: Class, oldId?: Uri) {
 
+    const idChanged = oldId && klass.id.notEquals(oldId);
+    const oldIdIsAssociationTarget = oldId && this.isAssociationTarget(oldId);
+
+    if (idChanged) {
+      this.modelPositions.changeClassId(oldId, klass.id);
+    }
+
     const addedClasses = this.addOrReplaceClass(klass);
 
-    if (oldId && !oldId.equals(klass.id)) {
-      if (this.isAssociationTarget(oldId)) {
+    if (idChanged) {
+      if (oldIdIsAssociationTarget) {
+        addedClasses.push(oldId);
         this.replaceClass(new AssociationTargetPlaceholderClass(oldId, this.model));
       } else {
         this.removeClass(oldId);
@@ -294,7 +299,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     if (addedClasses.length > 0) {
-      this.layout(addedClasses)
+      this.layout(addedClasses.filter(classId => klass.id.notEquals(classId)))
         .then(() => this.adjustLinks())
         .then(() => this.focus());
     } else {
@@ -590,7 +595,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    this.modelPositions.getClass(klass.id).coordinate = oldElement.attributes.position;
     oldElement.remove();
 
     const addedClasses = this.addClass(klass, true);
@@ -617,6 +621,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const classPosition = this.modelPositions.getClass(klass.id);
 
     if (!this.isExistingClass(association.valueClass)) {
+      // set target location as source location for layout
       classPosition.coordinate = this.graph.getCell(klass.id.uri).attributes.position;
       this.addClass(new AssociationTargetPlaceholderClass(association.valueClass, this.model), false);
       addedClass = true;
@@ -1003,7 +1008,7 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
 }
 
 function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): Promise<any> {
-  if (directed) {
+  if (directed && onlyNodeIds.length === 0) {
     // TODO directed doesn't support incremental layout
     return new Promise((resolve) => {
       joint.layout.DirectedGraph.layout(graph, {
