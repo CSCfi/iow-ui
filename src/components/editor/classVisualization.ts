@@ -196,9 +196,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         this.operationQueue = [];
         this.modelService.getVisualization(this.model)
           .then(visualization => {
-            visualization.addPositionChangeListener(() => {
-              this.$timeout(() => {}); // Hacking way to apply scope outside potentially currently running digest cycle
-            });
+            // Hackish way to apply scope outside potentially currently running digest cycle
+            visualization.addPositionChangeListener(() => this.$timeout(() => {}));
             this.classVisualization = visualization;
             this.initialize(visualization);
           });
