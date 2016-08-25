@@ -3,7 +3,8 @@ import INgModelController = angular.INgModelController;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { Uri } from '../../services/uri';
-import { contains, containsAny, referenceEquality } from '../../utils/array';
+import { contains, containsAny } from '../../utils/array';
+import { referenceEquality } from '../../utils/object';
 import { module as mod }  from './module';
 
 interface RestrictDuplicatesAttributes extends IAttributes {

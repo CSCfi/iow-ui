@@ -1,4 +1,4 @@
-import { isDefined } from './object';
+import { isDefined, EqualityChecker, referenceEquality } from './object';
 
 export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : isDefined(obj) ? [obj] : [];
@@ -57,12 +57,6 @@ export function resetWith<T>(array: T[], toResetWith: T[]) {
   for (const item of toResetWith) {
     array.push(item);
   }
-}
-
-export type EqualityChecker<T> = (lhs: T, rhs: T) => boolean;
-
-export function referenceEquality<T>(lhs: T, rhs: T) {
-  return lhs === rhs;
 }
 
 export function any<T>(arr: T[], predicate: (item: T) => boolean) {
