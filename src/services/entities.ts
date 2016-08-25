@@ -800,11 +800,8 @@ export class ModelPositions extends GraphNodes<ClassPosition> {
 
   constructor(graph: any[], context: any, frame: any) {
     super(context, frame);
-    this.classes = indexById(graph.map(g => {
-      const classPosition = new ClassPosition(g, context, frame);
-      classPosition.parent = this;
-      return classPosition;
-    }));
+    this.classes = indexById(deserializeEntityList(graph, context, frame, () => ClassPosition));
+    this.classes.forEach(c => c.parent = this);
   }
 
   getNodes() {
