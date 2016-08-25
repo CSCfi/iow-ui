@@ -735,7 +735,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     classCell.on('change:position', () => {
       classPosition.coordinate = classCell.position();
-      adjustElementLinks(paper, classCell);
+      adjustElementLinks(paper, classCell, new Set<joint.dia.Link>(), isRightClick() ? this.modelPositions : null);
     });
 
     const updateCellModel = () => {
@@ -879,6 +879,14 @@ function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
   });
 }
 
+function isRightClick() {
+  const event = window.event;
+  if (event instanceof MouseEvent) {
+    return event.which === 3;
+  } else {
+    return false;
+  }
+}
 
 function moveOrigin(paper: joint.dia.Paper, dx: number, dy: number) {
   const oldOrigin = paper.options.origin;
@@ -1067,7 +1075,7 @@ function adjustLinks(paper: joint.dia.Paper, modelPositions: ModelPositions) {
   }
 }
 
-function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<joint.dia.Link> = new Set<joint.dia.Link>(), modelPositions?: ModelPositions) {
+function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<joint.dia.Link>, modelPositions?: ModelPositions) {
   const graph = <joint.dia.Graph> paper.model;
 
   const connectedLinks = graph.getConnectedLinks(<joint.dia.Cell> element);
