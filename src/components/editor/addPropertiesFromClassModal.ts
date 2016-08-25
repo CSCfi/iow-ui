@@ -46,7 +46,7 @@ export class AddPropertiesFromClassModalController {
               private context: LanguageContext,
               private exclude: (property: Property) => boolean) {
 
-      this.properties = klass.properties;
+      this.properties = klass.properties.map(property => property.copy());
       this.selectAll();
   }
 

@@ -1170,6 +1170,12 @@ export class Property extends GraphNode {
     return glyphIconClassForType(type ? [type] : []);
   }
 
+  copy(): Property {
+    const clone = this.clone();
+    clone.internalId = Uri.randomUUID();
+    return clone;
+  }
+
   clone(): Property {
     const serialization = this.serialize(false, true);
     return new Property(serialization['@graph'], serialization['@context'], this.frame);

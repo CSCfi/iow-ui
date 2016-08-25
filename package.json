@@ -47,6 +47,7 @@
     "jsonld": "0.4.11",
     "lodash": "3.10.1",
     "moment": "2.13.0",
+    "node-uuid": "1.4.7",
     "please-wait": "0.0.5",
     "uri-js": "2.1.1",
     "webcola": "3.1.3"

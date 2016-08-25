@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'node-uuid';
+
 export type Url = string;
 export type Urn = string;
 export type RelativeUrl = string;
@@ -12,6 +14,10 @@ export class Uri {
       console.log(value);
       throw new Error('Uri value must be string');
     }
+  }
+
+  static randomUUID() {
+    return new Uri('urn:uuid:' + uuid(), {});
   }
 
   isUrn() {

@@ -14,6 +14,7 @@
 
 /// <reference path="../src/vendor/webcola.d.ts" />
 /// <reference path="../src/vendor/jointjs.d.ts" />
+/// <reference path="../src/vendor/node-uuid.d.ts" />
 
 interface Window {
   jQuery: JQueryStatic;
