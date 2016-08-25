@@ -726,33 +726,22 @@ subject-view .editable-wrap {
     z-index: 20;
     padding-top: 10px;
 
-    .button {
+    button:focus {
+      outline:0;
+    }
+
+    .focus-indicator {
       @include no-select;
       display: inline-block;
-      height: 30px;
-      padding: 4px 7px 0 7px;
+      height: 28px;
+      width: 30px;
       background-color: $brand-accent-light;
       border: 1px solid $brand-accent-light;
       color: white;
       text-align: center;
-
-      &:hover {
-        background-color: $brand-accent-dark;
-        border: 1px solid $brand-accent-dark;
-        cursor: pointer;
-      }
-
-      &.focus-indicator {
-        margin-left: -4px;
-        margin-right: -4px;
-        width: 30px;
-
-        &:hover {
-          background-color: $brand-accent-light;
-          border: 1px solid $brand-accent-light;
-          cursor: default;
-        }
-      }
+      padding-top: 1px;
+      margin-left: -4px;
+      margin-right: -4px;
     }
   }
 

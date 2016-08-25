@@ -7,20 +7,20 @@ import IWindowService = angular.IWindowService;
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
-  AssociationTargetPlaceholderClass
+  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions
 } from '../../services/entities';
 import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
-import { ModelService } from '../../services/modelService';
+import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import { isDefined } from '../../utils/object';
 const joint = require('jointjs');
 import { module as mod }  from './module';
-import { collectIds } from '../../utils/entity';
 import { Iterable } from '../../utils/iterable';
 import { Uri } from '../../services/uri';
 import { DataType } from '../../services/dataTypes';
-import gettextCatalog = angular.gettext.gettextCatalog;
+import { normalizeAsArray } from '../../utils/array';
+import { UserService } from '../../services/userService';
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
   return {
@@ -32,16 +32,18 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
     },
     template: `
                <div class="visualization-buttons">
-                 <div class="button" ng-mousedown="ctrl.zoomOut()" ng-mouseup="ctrl.zoomOutEnded()"><i class="fa fa-search-minus"></i></div>
-                 <div class="button" ng-mousedown="ctrl.zoomIn()" ng-mouseup="ctrl.zoomInEnded()"><i class="fa fa-search-plus"></i></div>
-                 <div class="button" ng-click="ctrl.fitToContent()"><i class="fa fa-arrows-alt"></i></div>
-                 <div ng-show="ctrl.canFocus()" class="button zoom-focus" ng-click="ctrl.centerToSelectedClass()"><i class="fa fa-crosshairs"></i></div>
+                 <button type="button" class="btn btn-default btn-xs" ng-mousedown="ctrl.zoomOut()" ng-mouseup="ctrl.zoomOutEnded()"><i class="fa fa-search-minus"></i></button>
+                 <button type="button" class="btn btn-default btn-xs" ng-mousedown="ctrl.zoomIn()" ng-mouseup="ctrl.zoomInEnded()"><i class="fa fa-search-plus"></i></button>
+                 <button type="button" class="btn btn-default btn-xs" ng-click="ctrl.fitToContent()"><i class="fa fa-arrows-alt"></i></button>
+                 <button type="button" ng-show="ctrl.canFocus()" class="btn btn-default btn-xs" ng-click="ctrl.centerToSelectedClass()"><i class="fa fa-crosshairs"></i></button>
                  <span ng-show="ctrl.canFocus()">
-                   <div class="button" ng-click="ctrl.focusOut()"><i class="fa fa-angle-left"></i></div>
-                   <div class="button focus-indicator"><i>{{ctrl.renderSelectionFocus()}}</i></div>
-                   <div class="button" ng-click="ctrl.focusIn()"><i class="fa fa-angle-right"></i></div>
+                   <button type="button" class="btn btn-default btn-xs" ng-click="ctrl.focusOut()"><i class="fa fa-angle-left"></i></button>
+                   <div class="focus-indicator"><i>{{ctrl.renderSelectionFocus()}}</i></div>
+                   <button type="button" class="btn btn-default btn-xs" ng-click="ctrl.focusIn()"><i class="fa fa-angle-right"></i></button>
                  </span>
-                 <div class="button" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></div>
+                 <button type="button" class="btn btn-default btn-xs" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></button>
+                 <button type="button" class="btn btn-default btn-xs" ng-show="ctrl.canSave()" ng-disabled="ctrl.modelPositions.isPristine()" ng-click="ctrl.savePositions()"><i class="fa fa-save"></i></button>
+                 <button type="button" class="btn btn-default btn-xs" ng-click="ctrl.layoutPositions()"><i class="fa fa-refresh"></i></button>
                </div>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
@@ -62,6 +64,9 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
           paper.setDimensions(element.width(), element.height());
           moveOrigin(paper, xd / 2, yd / 2);
         } else {
+          if (controller.dimensionChangeInProgress && controller.visible) {
+            controller.executeQueue();
+          }
           controller.dimensionChangeInProgress = false;
         }
       }, 200);
@@ -122,12 +127,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   visible = true;
   operationQueue: (() => void)[] = [];
 
+  classVisualization: ClassVisualization;
+
   /* @ngInject */
   constructor(private $scope: IScope,
               private $q: IQService,
+              private $timeout: ITimeoutService,
               private modelService: ModelService,
               private languageService: LanguageService,
-              private gettextCatalog: gettextCatalog) {
+              private userService: UserService) {
 
     this.changeNotifier.addListener(this);
 
@@ -152,6 +160,27 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     return <joint.dia.Graph> this.paper.model;
   }
 
+  get modelPositions() {
+    return this.classVisualization && this.classVisualization.positions;
+  }
+
+  canSave() {
+    return this.userService.user.isMemberOf(this.model.group);
+  }
+
+  savePositions() {
+    this.modelService.updateModelPositions(this.model, this.modelPositions)
+      .then(() => this.modelPositions.setPristine());
+  }
+
+  layoutPositions() {
+    this.loading = true;
+    this.modelPositions.clear();
+    this.layout()
+      .then(() => this.adjustLinks())
+      .then(() => this.loading = false);
+  }
+
   refresh(invalidateCache: boolean = false) {
     if (this.model) {
 
@@ -160,14 +189,20 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       if (invalidateCache || this.graph.getCells().length === 0) {
         this.loading = true;
         this.operationQueue = [];
-        this.modelService.getVisualizationData(this.model)
-          .then(data => this.initialize(data));
+        this.modelService.getVisualization(this.model)
+          .then(visualization => {
+            visualization.addPositionChangeListener(() => {
+              this.$timeout(() => {}); // Hacking way to apply scope outside potentially currently running digest cycle
+            });
+            this.classVisualization = visualization;
+            this.initialize(visualization);
+          });
       }
     }
   }
 
   queueWhenNotVisible(operation: () => void) {
-    if (this.visible) {
+    if (this.visible && !this.dimensionChangeInProgress) {
       operation();
     } else {
       this.operationQueue.push(operation);
@@ -175,16 +210,24 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   executeQueue() {
-    setTimeout(() => {
+    if (this.dimensionChangeInProgress) {
+      setTimeout(() => this.executeQueue(), 200);
+    } else {
       this.operationQueue.forEach(operation => operation());
       this.operationQueue = [];
-    }, 200);
+    }
   }
 
-  initialize(data: VisualizationClass[]) {
+  initialize(data: ClassVisualization) {
     this.queueWhenNotVisible(() => {
       this.graph.resetCells(this.createCells(data));
-      this.layoutAndAdjust()
+
+      const withoutPositionIds = data.getClassIdsWithoutPosition();
+      const layoutAll = withoutPositionIds.length === data.classes.length;
+      const ids = layoutAll ? null : withoutPositionIds;
+
+      this.layout(ids)
+        .then(() => this.adjustLinks())
         .then(() => {
           const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
           this.focus(forceFitToAllContent);
@@ -196,6 +239,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   onDelete(item: Class|Predicate) {
     this.queueWhenNotVisible(() => {
       if (item instanceof Class) {
+        this.modelPositions.removeClass(item.id);
         this.removeClass(item);
       }
     });
@@ -204,6 +248,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
     this.queueWhenNotVisible(() => {
       if (newItem instanceof Class) {
+        if (oldItem && newItem.id.notEquals(oldItem.id)) {
+          this.modelPositions.changeClassId(oldItem.id, newItem.id);
+        }
         this.updateClassAndLayout(newItem, oldItem ? oldItem.id : null);
       }
     });
@@ -217,9 +264,16 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     });
   }
 
-  layoutAndAdjust(onlyClassIda: Uri[] = []) {
-    return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClassIda))
-      .then(() => adjustLinks(this.paper));
+  layout(onlyClassIds?: Uri[] /* // undefined ids means layout all */) {
+    if (onlyClassIds && onlyClassIds.length === 0) {
+      return this.$q.when();
+    } else {
+      return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClassIds ? onlyClassIds : []));
+    }
+  }
+
+  adjustLinks() {
+    adjustLinks(this.paper, this.modelPositions);
   }
 
   private updateClassAndLayout(klass: Class, oldId?: Uri) {
@@ -235,7 +289,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     if (addedClasses.length > 0) {
-      this.layoutAndAdjust(addedClasses).then(() => this.focus());
+      this.layout(addedClasses)
+        .then(() => this.adjustLinks())
+        .then(() => this.focus());
     } else {
       this.focus();
     }
@@ -355,11 +411,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   fitToContent(onlyVisible: boolean = false) {
-    if (this.dimensionChangeInProgress) {
-      setTimeout(() => this.fitToContent(onlyVisible), 200);
-    } else {
+    this.queueWhenNotVisible(() => {
       scaleToFit(this.paper, this.graph, onlyVisible);
-    }
+    });
   }
 
   centerToSelectedClass() {
@@ -514,7 +568,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       const targetId = link.attributes.target.id;
       const targetElement = this.graph.getCell(targetId);
 
-      if (!klass.hasAssociationTarget(new Uri(targetId))) {
+      if (!klass.hasAssociationTarget(new Uri(targetId, {}))) {
         if (targetElement instanceof shadowClass && this.graph.getConnectedLinks(targetElement).length === 1) {
           // Remove to be unreferenced shadow class
           targetElement.remove();
@@ -531,20 +585,18 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    const oldElementLocation = oldElement.attributes.position;
+    this.modelPositions.getClass(klass.id).coordinate = oldElement.attributes.position;
     oldElement.remove();
 
-    const addedClasses = this.addClass(klass, true, oldElementLocation);
+    const addedClasses = this.addClass(klass, true);
     this.graph.addCells(incomingLinks);
 
     return _.filter(addedClasses, addedClass => !klass.id.equals(addedClass) && !oldOutgoingClassIds.has(addedClass.uri));
   }
 
-  private addClass(klass: VisualizationClass, addAssociations: boolean, location?: {x: number, y: number}) {
-    const classElement = this.createClass(klass);
-    if (location) {
-      classElement.position(location.x, location.y);
-    }
+  private addClass(klass: VisualizationClass, addAssociations: boolean) {
+    const classElement = this.createClassElement(this.paper, klass);
+
     this.graph.addCell(classElement);
 
     if (addAssociations) {
@@ -557,14 +609,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   private addAssociation(klass: VisualizationClass, association: Property) {
 
     let addedClass = false;
+    const classPosition = this.modelPositions.getClass(klass.id);
 
     if (!this.isExistingClass(association.valueClass)) {
-      const sourceLocation = this.graph.getCell(klass.id.uri).attributes.position;
-      this.addClass(new AssociationTargetPlaceholderClass(association.valueClass, this.model), false, sourceLocation);
+      classPosition.coordinate = this.graph.getCell(klass.id.uri).attributes.position;
+      this.addClass(new AssociationTargetPlaceholderClass(association.valueClass, this.model), false);
       addedClass = true;
     }
 
-    this.graph.addCell(this.createAssociation(klass, association));
+    this.graph.addCell(this.createAssociationLink(klass, association, classPosition.getAssociationProperty(association.internalId)));
 
     return addedClass;
   }
@@ -598,39 +651,44 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     return false;
   }
 
-  private createCells(classes: VisualizationClass[]) {
+  private createCells(visualization: ClassVisualization) {
 
     const associations: {klass: VisualizationClass, property: Property}[] = [];
-    const classIds = collectIds(classes);
+    const classIds = visualization.getClassIds();
 
     const cells: joint.dia.Cell[] = [];
 
-    for (const klass of classes) {
+    for (const klass of visualization.classes) {
+
       for (const property of klass.properties) {
 
         if (property.isAssociation() && property.valueClass) {
           if (!classIds.has(property.valueClass.uri)) {
             classIds.add(property.valueClass.uri);
-            cells.push(this.createClass(new AssociationTargetPlaceholderClass(property.valueClass, this.model)));
+            cells.push(this.createClassElement(this.paper, new AssociationTargetPlaceholderClass(property.valueClass, this.model)));
           }
           associations.push({klass, property});
         }
       }
+      const element = this.createClassElement(this.paper, klass);
 
-      cells.push(this.createClass(klass));
+      cells.push(element);
     }
 
     for (const association of associations) {
-      cells.push(this.createAssociation(association.klass, association.property));
-    };
+      const associationPosition = this.modelPositions.getAssociationProperty(association.klass.id, association.property.internalId);
+      const link = this.createAssociationLink(association.klass, association.property, associationPosition);
+      cells.push(link);
+    }
 
     return cells;
   }
 
-  private createClass(klass: VisualizationClass) {
+  private createClassElement(paper: joint.dia.Paper, klass: VisualizationClass) {
 
     const that = this;
     const showCardinality = this.model.isOfType('profile');
+    const classPosition = this.modelPositions.getClass(klass.id);
 
     function getPropertyNames() {
 
@@ -671,6 +729,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       z: zIndexClass
     });
 
+    if (classPosition.isDefined()) {
+      classCell.position(classPosition.coordinate.x, classPosition.coordinate.y);
+    }
+
+    classCell.on('change:position', () => {
+      classPosition.coordinate = classCell.position();
+      adjustElementLinks(paper, classCell);
+    });
+
     const updateCellModel = () => {
       this.queueWhenNotVisible(() => {
         const newPropertyNames = getPropertyNames();
@@ -696,7 +763,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     return classCell;
   }
 
-  private createAssociation(klass: VisualizationClass, association: Property) {
+  private createAssociationLink(klass: VisualizationClass, association: Property, position: AssociationPropertyPosition) {
 
     const that = this;
     const showCardinality = this.model.isOfType('profile');
@@ -720,11 +787,21 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
           d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
         }
       },
+      internalId: association.internalId.uri,
       labels: [
         { position: 0.5, attrs: { text: { text: getName() } } },
         { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(association) : ''} } }
       ],
       z: zIndexAssociation
+    });
+
+    if (position.isDefined()) {
+      associationCell.set('vertices', position.vertices);
+    }
+
+    associationCell.on('change:vertices', () => {
+      const propertyPosition = this.modelPositions.getAssociationProperty(klass.id, association.internalId);
+      propertyPosition.vertices = normalizeAsArray(associationCell.get('vertices'));
     });
 
     const updateCellModel = () => {
@@ -750,7 +827,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     return associationCell;
   }
-
 }
 
 class PaperHolder {
@@ -764,16 +840,7 @@ class PaperHolder {
 
     const createPaperAndRegisterHandlers = (element: JQuery) => {
       const paper = createPaper(element, new joint.dia.Graph);
-
       registerZoomAndPan(this.$window, paper);
-
-      paper.on('cell:pointermove', (cellView: joint.dia.CellView) => {
-        const cell = cellView.model;
-        if (cell instanceof joint.dia.Element) {
-          adjustElementLinks(paper, <joint.dia.Element> cell);
-        }
-      });
-
       return paper;
     };
 
@@ -991,65 +1058,84 @@ function isLoop(link: joint.dia.Link) {
   return link.get('source').id === link.get('target').id;
 }
 
-function adjustLinks(paper: joint.dia.Paper) {
+function adjustLinks(paper: joint.dia.Paper, modelPositions: ModelPositions) {
   const graph = <joint.dia.Graph> paper.model;
+  const alreadyAdjusted = new Set<joint.dia.Link>();
 
-  for (const link of graph.getLinks()) {
-    adjustLink(paper, link);
+  for (const element of graph.getElements()) {
+    adjustElementLinks(paper, element, alreadyAdjusted, modelPositions);
   }
 }
 
-function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element) {
+function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<joint.dia.Link> = new Set<joint.dia.Link>(), modelPositions?: ModelPositions) {
   const graph = <joint.dia.Graph> paper.model;
 
-  for (const link of graph.getConnectedLinks(<joint.dia.Cell> element)) {
-    adjustLink(paper, link);
-  }
-}
+  const connectedLinks = graph.getConnectedLinks(<joint.dia.Cell> element);
 
-function adjustLink(paper: joint.dia.Paper, link: joint.dia.Link) {
-
-  const graph = <joint.dia.Graph> paper.model;
-  const srcId = link.get('source').id;
-  const trgId = link.get('target').id;
-
-  if (srcId && trgId) {
-
-    const siblings = _.filter(graph.getLinks(), _.partial(isSiblingLink, link));
-    const srcCenter = (<joint.dia.Element> graph.getCell(srcId)).getBBox().center();
-    const trgCenter = (<joint.dia.Element> graph.getCell(trgId)).getBBox().center();
-    const midPoint = joint.g.line(srcCenter, trgCenter).midpoint();
-    const theta = srcCenter.theta(trgCenter);
-
-    const gapBetweenSiblings = 25;
-
-    if (isLoop(link)) {
-      for (let i = 0; i < siblings.length; i++) {
-        recurseLink(paper, siblings[i], i);
-      }
-    } else {
-      if (siblings.length === 1) {
-        link.unset('vertices');
-        link.prop('connector', { name: 'normal' });
-      } else {
-        for (let i = 0; i < siblings.length; i++) {
-          const sibling = siblings[i];
-          const offset = gapBetweenSiblings * Math.ceil((i + 1) / 2);
-          const sign = i % 2 ? 1 : -1;
-          const angle = joint.g.toRad(theta + sign * 90);
-          const vertex = joint.g.point.fromPolar(offset, angle, midPoint);
-
-          sibling.prop('connector', { name: 'smooth' });
-          sibling.set('vertices', [vertex]);
-        }
-      }
+  for (const link of connectedLinks) {
+    if (!alreadyAdjusted.has(link) && !!link.get('source').id && !!link.get('target').id) {
+      const siblings = _.filter(connectedLinks, _.partial(isSiblingLink, link));
+      adjustSiblingLinks(paper, siblings, alreadyAdjusted, modelPositions);
     }
   }
-};
+}
 
-function recurseLink(paper: joint.dia.Paper, link: joint.dia.Link, siblingIndex: number) {
+function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<joint.dia.Link>, modelPositions?: ModelPositions) {
 
-  const bbox = joint.V(paper.findViewByModel(link.get('source').id).el).bbox(false, paper.viewport);
+  function getLinkPositionVertices(link: joint.dia.Link) {
+    if (modelPositions) {
+      const sourcePosition = modelPositions.getClass(new Uri(link.get('source').id, {}));
+      return sourcePosition.getAssociationProperty(new Uri(link.get('internalId'), {})).vertices;
+    } else {
+      return [];
+    }
+  }
+
+  const graph = <joint.dia.Graph> paper.model;
+
+  for (let i = 0; i < siblings.length; i++) {
+
+    const link = siblings[i];
+    const source = (<joint.dia.Element> graph.getCell(link.get('source').id));
+    const target = (<joint.dia.Element> graph.getCell(link.get('target').id));
+    const persistedVertices = getLinkPositionVertices(link);
+
+    link.prop('connector', { name: (isLoop(link) || siblings.length === 1) ? 'normal' : 'smooth' });
+
+    if (persistedVertices.length > 0) {
+      link.set('vertices', persistedVertices);
+    } else if (isLoop(link)) {
+      link.set('vertices', calculateRecurseSiblingVertices(source, i));
+    } else if (siblings.length > 1) {
+      link.set('vertices', calculateNormalSiblingVertices(source, target, i));
+    } else {
+      link.unset('vertices');
+    }
+
+    alreadyAdjusted.add(link);
+  }
+}
+
+function calculateNormalSiblingVertices(source: joint.dia.Element, target: joint.dia.Element, siblingIndex: number) {
+
+  const gapBetweenSiblings = 25;
+
+  const srcCenter = source.getBBox().center();
+  const trgCenter = target.getBBox().center();
+  const midPoint = joint.g.line(srcCenter, trgCenter).midpoint();
+  const theta = srcCenter.theta(trgCenter);
+
+  const offset = gapBetweenSiblings * Math.ceil((siblingIndex + 1) / 2);
+  const sign = siblingIndex % 2 ? 1 : -1;
+  const angle = joint.g.toRad(theta + sign * 90);
+  const vertex = joint.g.point.fromPolar(offset, angle, midPoint);
+
+  return [vertex];
+}
+
+function calculateRecurseSiblingVertices(element: joint.dia.Element, siblingIndex: number) {
+
+  const bbox = element.getBBox();
   const left = bbox.width / 2;
   const top = bbox.height / 2;
   const centre = joint.g.point(bbox.x + left, bbox.y + top);
@@ -1075,9 +1161,9 @@ function recurseLink(paper: joint.dia.Paper, link: joint.dia.Link, siblingIndex:
   const sign = resolveSign();
   const scale = Math.floor(siblingIndex / 4) + 1;
 
-  link.set('vertices', [
+  return [
     joint.g.point(centre).offset(0, sign.y * (top + offset * scale)),
     joint.g.point(centre).offset(sign.x * (left + offset * scale), sign.y * (top + offset * scale)),
     joint.g.point(centre).offset(sign.x * (left + offset * scale), 0)
-  ]);
+  ];
 }

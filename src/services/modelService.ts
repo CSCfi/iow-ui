@@ -8,14 +8,31 @@ import Moment = moment.Moment;
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, ImportedNamespace, Type, GraphData, Link,
-  ReferenceData, ReferenceDataServer, ReferenceDataCode, VisualizationClass
+  ReferenceData, ReferenceDataServer, ReferenceDataCode, ModelPositions, VisualizationClass
 } from './entities';
 import { upperCaseFirst } from 'change-case';
-import { modelFrame } from './frames';
+import { modelFrame, modelPositionsFrame } from './frames';
 import { Uri, Urn } from './uri';
 import { Language } from '../utils/language';
-import { expandContextWithKnownModels } from '../utils/entity';
+import { expandContextWithKnownModels, collectIds } from '../utils/entity';
 import { normalizeAsArray } from '../utils/array';
+
+export class ClassVisualization {
+  constructor(public classes: VisualizationClass[], public positions: ModelPositions) {
+  }
+
+  getClassIds() {
+    return collectIds(this.classes);
+  }
+
+  getClassIdsWithoutPosition() {
+    return this.classes.filter(c => !this.positions.isClassDefined(c.id)).map(c => c.id);
+  }
+
+  addPositionChangeListener(listener: () => void) {
+    this.positions.addChangeListener(listener);
+  }
+}
 
 export class ModelService {
 
@@ -110,7 +127,12 @@ export class ModelService {
       .then(response => this.entities.deserializeImportedNamespace(response.data));
   }
 
-  getVisualizationData(model: Model) {
+  getVisualization(model: Model) {
+    return this.$q.all([this.getVisualizationClasses(model), this.getModelPositions(model)])
+      .then(([classes, positions]) => new ClassVisualization(classes, positions));
+  }
+
+  getVisualizationClasses(model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('exportModel'), {
       params: {
         graph: model.id.uri,
@@ -119,6 +141,25 @@ export class ModelService {
     })
     .then(expandContextWithKnownModels(model))
     .then(response => this.entities.deserializeModelVisualization(response.data));
+  }
+
+  getModelPositions(model: Model) {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('modelPositions'), {
+      params: {
+        model: model.id.uri
+      }
+    })
+    .then(expandContextWithKnownModels(model))
+    .then(response => this.entities.deserializeModelPositions(response.data), () => this.newModelPositions(model));
+  }
+
+  updateModelPositions(model: Model, modelPositions: ModelPositions) {
+    return this.$http.put(config.apiEndpointWithName('modelPositions'), modelPositions.serialize(), { params: { model: model.id.uri } });
+  }
+
+  newModelPositions(model: Model) {
+    const frame: any = modelPositionsFrame({ '@context': model.context });
+    return new ModelPositions([], frame['@context'], frame);
   }
 
   getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
