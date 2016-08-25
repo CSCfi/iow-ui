@@ -4,6 +4,20 @@ export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : isDefined(obj) ? [obj] : [];
 }
 
+export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult): Set<TResult> {
+  const result = new Set<TResult>();
+  for (const item of items) {
+    if (Array.isArray(item)) {
+      for (const innerItem of item) {
+        result.add(propertyExtractor(innerItem));
+      }
+    } else {
+      result.add(propertyExtractor(item));
+    }
+  }
+  return result;
+}
+
 export function moveElement<T>(array: T[], fromIndex: number, toIndex: number, indexChangedCb?: (item: T, index: number) => void) {
 
   if (fromIndex >= array.length || fromIndex < 0) {

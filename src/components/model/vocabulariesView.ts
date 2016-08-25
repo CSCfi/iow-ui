@@ -7,8 +7,8 @@ import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchVocabularyModal } from './searchVocabularyModal';
 import { module as mod }  from './module';
 import { createExistsExclusion } from '../../utils/exclusion';
-import { collectProperties } from '../../utils/entity';
 import { ConceptEditorModal } from './conceptEditorModal';
+import { collectProperties } from '../../utils/array';
 
 mod.directive('vocabulariesView', () => {
   return {

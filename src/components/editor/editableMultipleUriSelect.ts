@@ -10,7 +10,7 @@ import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
-import { collectProperties } from '../../utils/entity';
+import { collectProperties } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
 
 mod.directive('editableMultipleUriSelect', () => {

@@ -7,7 +7,7 @@ import { module as mod }  from './module';
 import { ViewReferenceDataModal } from '../model/viewReferenceDataModal';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { Localizer, LanguageService } from '../../services/languageService';
-import { collectProperties } from '../../utils/entity';
+import { collectProperties } from '../../utils/array';
 import { createExistsExclusion } from '../../utils/exclusion';
 
 mod.directive('editableReferenceDataSelect', () => {

@@ -16,10 +16,9 @@ import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
-import { Uri } from '../../services/uri';
-import { collectProperties } from '../../utils/entity';
 import { createDefinedByExclusion, createExistsExclusion, combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';
+import { collectProperties } from '../../utils/array';
 
 mod.directive('classView', () => {
   return {

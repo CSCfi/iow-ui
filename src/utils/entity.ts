@@ -1,26 +1,11 @@
 import { GraphData, Model, Type } from '../services/entities';
-import { containsAny } from './array';
+import { containsAny, collectProperties } from './array';
 import { WithId } from '../components/contracts';
-
 
 export function collectIds(items: WithId[]|WithId[][]): Set<string> {
   return collectProperties<WithId, string>(items, item => {
     return item.id.toString();
   });
-}
-
-export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtractor: (item: T) => TResult): Set<TResult> {
-  const result = new Set<TResult>();
-  for (const item of items) {
-    if (Array.isArray(item)) {
-      for (const innerItem of item) {
-        result.add(propertyExtractor(innerItem));
-      }
-    } else {
-      result.add(propertyExtractor(item));
-    }
-  }
-  return result;
 }
 
 export function expandContextWithKnownModels(model?: Model): (response: angular.IHttpPromiseCallbackArg<GraphData>) => angular.IHttpPromiseCallbackArg<GraphData> {

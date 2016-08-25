@@ -14,7 +14,7 @@ import {
   createClassTypeExclusion, createExistsExclusion, createDefinedByExclusion,
   createSelfExclusion, combineExclusions
 } from '../../utils/exclusion';
-import { collectProperties } from '../../utils/entity';
+import { collectProperties } from '../../utils/array';
 import { module as mod }  from './module';
 
 mod.directive('editableConstraint', () => {
