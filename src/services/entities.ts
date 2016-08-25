@@ -911,11 +911,6 @@ export class ClassPosition extends GraphNode {
     return isDefined(this.coordinate);
   }
 
-  isAssociationPropertyDefined(associationPropertyInternalId: Uri) {
-    const associationPosition = this.associationProperties.get(associationPropertyInternalId.uri);
-    return associationPosition && associationPosition.isDefined();
-  }
-
   getAssociationProperty(associationPropertyInternalId: Uri) {
 
     const associationPosition = this.associationProperties.get(associationPropertyInternalId.uri);
