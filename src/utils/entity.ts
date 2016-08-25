@@ -1,6 +1,10 @@
 import { GraphData, Model, Type } from '../services/entities';
-import { containsAny, collectProperties } from './array';
+import { containsAny, collectProperties, index } from './array';
 import { WithId } from '../components/contracts';
+
+export function indexById<T extends WithId>(items: T[]): Map<string, T> {
+  return index<T, string>(items, item => item.id.toString());
+}
 
 export function collectIds(items: WithId[]|WithId[][]): Set<string> {
   return collectProperties<WithId, string>(items, item => {

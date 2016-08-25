@@ -10,8 +10,9 @@ import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
 import { Language, hasLocalization, createConstantLocalizable } from '../utils/language';
-import { containsAny, normalizeAsArray, swapElements, contains } from '../utils/array';
-import { glyphIconClassForType } from '../utils/entity';
+import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual } from '../utils/array';
+import { Iterable } from '../utils/iterable';
+import { glyphIconClassForType, indexById } from '../utils/entity';
 import {
   normalizeModelType, normalizeSelectionType, normalizeClassType, normalizePredicateType,
   normalizeReferrerType
@@ -20,7 +21,7 @@ import { identity } from '../utils/function';
 // TODO entities should not depend on services
 import { Localizer } from './languageService';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { isDefined } from '../utils/object';
+import { isDefined, areEqual } from '../utils/object';
 
 const jsonld: any = require('jsonld');
 
@@ -85,7 +86,12 @@ interface EntityConstructor<T extends GraphNode> {
   new(graph: any, context: any, frame: any): T;
 }
 
+interface EntityArrayConstructor<T extends GraphNode, A extends GraphNodes<T>> {
+  new(graph: any[], context: any, frame: any): A;
+}
+
 type EntityFactory<T extends GraphNode> = (framedData: any) => EntityConstructor<T>;
+type EntityArrayFactory<T extends GraphNode, A extends GraphNodes<T>> = (framedData: any) => EntityArrayConstructor<T, A>;
 
 export function isLocalizable(obj: any): obj is Localizable {
   return typeof obj === 'object';
@@ -103,6 +109,28 @@ export class ExternalEntity {
 export interface LanguageContext {
   id: Uri;
   language: Language[];
+}
+
+export abstract class GraphNodes<T extends GraphNode> {
+
+  constructor(public context: any, public frame: any) {
+  }
+
+  abstract getNodes(): T[];
+
+  serialize(inline: boolean = false, clone: boolean = false): any {
+
+    const values = this.getNodes().map(node => node.serialize(true, clone));
+
+    if (inline) {
+      return values;
+    } else {
+      return {
+        '@graph': values,
+        '@context': this.context
+      };
+    }
+  }
 }
 
 export abstract class GraphNode {
@@ -490,7 +518,7 @@ export class Link extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.homepage = graph.homepage && new Uri(graph.homepage);
+    this.homepage = graph.homepage && new Uri(graph.homepage, context);
     this.title = deserializeLocalizable(graph.title);
     this.description = deserializeLocalizable(graph.description);
   }
@@ -724,6 +752,7 @@ export class ClassListItem extends AbstractClass {
 export interface VisualizationClass {
 
   id: Uri;
+  type: Type[];
   label: Localizable;
   scopeClass: Uri;
   properties: Property[];
@@ -762,46 +791,200 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
   }
 }
 
+export class ModelPositions extends GraphNodes<ClassPosition> {
 
-export class ModelPosition extends GraphNode {
+  private classes: Map<string, ClassPosition>;
+
+  private dirty = false;
+  private listeners: (() => void)[] = [];
+
+  constructor(graph: any[], context: any, frame: any) {
+    super(context, frame);
+    this.classes = indexById(graph.map(g => {
+      const classPosition = new ClassPosition(g, context, frame);
+      classPosition.parent = this;
+      return classPosition;
+    }));
+  }
+
+  getNodes() {
+    return Array.from(this.classes.values());
+  }
+
+  addChangeListener(listener: () => void) {
+    this.listeners.push(listener);
+  }
+
+  setPristine() {
+    this.dirty = false;
+  }
+
+  setDirty() {
+    const wasPristine = !this.dirty;
+    this.dirty = true;
+
+    if (wasPristine) {
+      this.listeners.forEach(l => l());
+    }
+  }
+
+  isPristine() {
+    return !this.dirty;
+  }
+
+  clear() {
+    Iterable.forEach(this.classes.values(), c => c.clear());
+  }
+
+  changeClassId(oldClassId: Uri, newClassId: Uri) {
+    const classPosition = this.getClass(oldClassId);
+    classPosition.id = newClassId;
+    this.classes.delete(oldClassId.uri);
+    this.classes.set(newClassId.uri, classPosition);
+  }
+
+  removeClass(classId: Uri) {
+    this.getClass(classId).clear();
+  }
+
+  isClassDefined(classId: Uri) {
+    const classPosition = this.classes.get(classId.uri);
+    return classPosition && classPosition.isDefined();
+  }
+
+  getClass(classId: Uri) {
+    const classPosition = this.classes.get(classId.uri);
+    if (classPosition) {
+      return classPosition;
+    } else {
+      return this.newClassPosition(classId);
+    }
+  }
+
+  getAssociationProperty(classId: Uri, associationPropertyInternalId: Uri) {
+    return this.getClass(classId).getAssociationProperty(associationPropertyInternalId);
+  }
+
+  private newClassPosition(classId: Uri) {
+    const position =  new ClassPosition({ '@id': classId.uri, '@type': reverseMapTypeObject(['class']) }, this.context, this.frame);
+    position.parent = this;
+    this.classes.set(classId.uri, position);
+    return position;
+  }
+}
+
+export class ClassPosition extends GraphNode {
 
   id: Uri;
-  location: Coordinate;
-  properties: ModelPositionProperty[];
+  private _coordinate: Coordinate;
+  associationProperties: Map<string, AssociationPropertyPosition>;
+  parent: ModelPositions;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
-    this.location = deserializeCoordinate(graph.pointXY);
-    this.properties = deserializeEntityList(graph.property, context, frame, () => ModelPositionProperty);
+    this.id = new Uri(graph['@id'], context);
+    this._coordinate = deserializeOptional(graph.pointXY, deserializeCoordinate);
+    this.associationProperties = indexById(deserializeEntityList(graph.property, context, frame, () => AssociationPropertyPosition));
+  }
+
+  get coordinate() {
+    return this._coordinate;
+  }
+
+  set coordinate(value: Coordinate) {
+    if (!areEqual(this.coordinate, value, coordinatesAreEqual)) {
+      this.setDirty();
+    }
+    this._coordinate = value;
+  }
+
+  setDirty() {
+    if (this.parent) {
+      this.parent.setDirty();
+    }
+  }
+
+  clear() {
+    this.coordinate = null;
+    Iterable.forEach(this.associationProperties.values(), p => p.clear());
+  }
+
+  isDefined() {
+    return isDefined(this.coordinate);
+  }
+
+  isAssociationPropertyDefined(associationPropertyInternalId: Uri) {
+    const associationPosition = this.associationProperties.get(associationPropertyInternalId.uri);
+    return associationPosition && associationPosition.isDefined();
+  }
+
+  getAssociationProperty(associationPropertyInternalId: Uri) {
+
+    const associationPosition = this.associationProperties.get(associationPropertyInternalId.uri);
+
+    if (associationPosition) {
+      return associationPosition;
+    } else {
+      return this.newAssociationPosition(associationPropertyInternalId);
+    }
+  }
+
+  private newAssociationPosition(associationPropertyInternalId: Uri) {
+    const position = new AssociationPropertyPosition({ '@id': associationPropertyInternalId.uri }, this.context, this.frame);
+    this.associationProperties.set(associationPropertyInternalId.uri, position);
+    return position;
   }
 
   serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
-      pointXY: serializeCoordinate(this.location),
-      property: serializeEntityList(this.properties, clone)
+      pointXY: serializeOptional(this.coordinate, serializeCoordinate),
+      property: serializeEntityList(Array.from(this.associationProperties.values()), clone)
     };
   }
 }
 
-export class ModelPositionProperty extends GraphNode {
+export class AssociationPropertyPosition extends GraphNode {
 
   id: Uri;
-  vertices: Coordinate[];
+  _vertices: Coordinate[];
+  parent: ClassPosition;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.id = graph['@id'];
-    this.vertices = deserializeList(graph.vertexXY ? graph.vertexXY['@list'] : [], deserializeCoordinate);
+    this.id = new Uri(graph['@id'], context);
+    this._vertices = deserializeList(graph.vertexXY, deserializeCoordinate);
+  }
+
+  get vertices() {
+    return this._vertices;
+  }
+
+  set vertices(value: Coordinate[]) {
+    if (!arraysAreEqual(this.vertices, value, coordinatesAreEqual)) {
+      this.setDirty();
+    }
+    this._vertices = value;
+  }
+
+  setDirty() {
+    if (this.parent) {
+      this.parent.setDirty();
+    }
+  }
+
+  clear() {
+    this.vertices = [];
+  }
+
+  isDefined() {
+    return this.vertices.length > 0;
   }
 
   serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
-      vertexXY: {
-        '@list': serializeList(this.vertices)
-      }
+      vertexXY: serializeList(this.vertices, serializeCoordinate)
     };
   }
 }
@@ -809,6 +992,7 @@ export class ModelPositionProperty extends GraphNode {
 export class AssociationTargetPlaceholderClass implements VisualizationClass {
 
   label: Localizable;
+  type: Type[] = ['association'];
   properties: Property[] = [];
   resolved = false;
   scopeClass: Uri = null;
@@ -1680,7 +1864,7 @@ export class Activity extends GraphNode {
     this.createdAt = deserializeDate(graph.startedAtTime);
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
     this.versions = deserializeEntityList(graph.generated, context, frame, () => Entity).sort(comparingDate<Entity>(entity => entity.createdAt));
-    this.versionIndex = indexById(this.versions);
+    this.versionIndex = idToIndexMap(this.versions);
     this.latestVersion = graph.used;
   }
 
@@ -1714,7 +1898,7 @@ export class Entity extends GraphNode {
   }
 }
 
-function indexById<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
+function idToIndexMap<T extends {id: Urn}>(items: T[]): Map<Urn, number> {
   return new Map(items.map<[Urn, number]>((item: T, index: number) => [item.id, index]));
 }
 
@@ -1814,11 +1998,18 @@ function serializeCoordinate(coordinate: Coordinate) {
 
 function deserializeCoordinate(coordinate: string): Coordinate {
   const split = coordinate.split(',');
+  if (split.length !== 2) {
+    throw new Error('Misformatted coordinate: ' + coordinate);
+  }
   return { x: parseInt(split[0], 10), y: parseInt(split[1], 10) };
 }
 
 function deserializeUserLogin(userName: string): UserLogin {
   return userName.substring('mailto:'.length);
+}
+
+function coordinatesAreEqual(lhs: Coordinate, rhs: Coordinate) {
+  return lhs.x === rhs.x && lhs.y === rhs.y;
 }
 
 function mapGraphTypeObject(withType: { '@type': string|string[] }): Type[] {
@@ -1901,6 +2092,20 @@ function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: 
           const entity: EntityConstructor<T> = entityFactory(element);
           return new entity(element, framed['@context'], frame);
         });
+      } catch (error) {
+        $log.error(error);
+        throw error;
+      }
+    });
+}
+
+function frameAndMapArrayEntity<T extends GraphNode, A extends GraphNodes<T>>($log: angular.ILogService, data: GraphData, frame: Frame, entityArrayFactory: EntityArrayFactory<T, A>): IPromise<A> {
+
+  return frameData($log, data, frame)
+    .then(framed => {
+      try {
+        const entity: EntityArrayConstructor<T, A> = entityArrayFactory(framed);
+        return new entity(framed['@graph'], framed['@context'], frame);
       } catch (error) {
         $log.error(error);
         throw error;
@@ -2024,8 +2229,8 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => DefaultVisualizationClass);
   }
 
-  deserializeModelPositions(data: GraphData): IPromise<ModelPosition[]> {
-    return frameAndMapArray(this.$log, data, frames.modelPositionsFrame(data), (framedData) => ModelPosition);
+  deserializeModelPositions(data: GraphData): IPromise<ModelPositions> {
+    return frameAndMapArrayEntity(this.$log, data, frames.modelPositionsFrame(data), (framedData) => ModelPositions);
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {

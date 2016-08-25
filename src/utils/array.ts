@@ -1,4 +1,4 @@
-import { isDefined, EqualityChecker, referenceEquality } from './object';
+import { isDefined, EqualityChecker } from './object';
 
 export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : isDefined(obj) ? [obj] : [];
@@ -15,6 +15,16 @@ export function collectProperties<T, TResult>(items: T[]|T[][], propertyExtracto
       result.add(propertyExtractor(item));
     }
   }
+  return result;
+}
+
+export function index<T, TIndex>(items: T[], indexExtractor: (item: T) => TIndex): Map<TIndex, T> {
+  const result = new Map<TIndex, T>();
+
+  for (const item of items) {
+    result.set(indexExtractor(item), item);
+  }
+
   return result;
 }
 
@@ -71,6 +81,10 @@ export function resetWith<T>(array: T[], toResetWith: T[]) {
   for (const item of toResetWith) {
     array.push(item);
   }
+}
+
+export function referenceEquality<T>(lhs: T, rhs: T) {
+  return lhs === rhs;
 }
 
 export function any<T>(arr: T[], predicate: (item: T) => boolean) {

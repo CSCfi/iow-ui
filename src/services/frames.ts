@@ -1,12 +1,13 @@
 import { Url, Uri, Urn } from './uri';
 
 export type Frame = {};
-export type FrameFn = (data: any) => Frame;
 
 const inScheme = { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme', '@type': '@id' };
 const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
 const comment = { '@id': 'http://www.w3.org/2000/01/rdf-schema#comment', '@container': '@language' };
 const description = { '@id': 'http://purl.org/dc/terms/description', '@container': '@language' };
+const predicate = { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' };
+const property = { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' };
 
 const coreContext = {
   comment,
@@ -71,7 +72,7 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, referen
   pattern: { '@id': 'http://www.w3.org/ns/shacl#pattern' },
   type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' },
   valueShape: { '@id': 'http://www.w3.org/ns/shacl#valueShape', '@type': '@id' },
-  predicate: { '@id': 'http://www.w3.org/ns/shacl#predicate', '@type': '@id' },
+  predicate,
   classIn: { '@id': 'http://www.w3.org/ns/shacl#classIn', '@type': '@id' },
   memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf'},
   stem: { '@id': 'http://www.w3.org/ns/shacl#stem', '@type': '@id' },
@@ -80,7 +81,7 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, referen
 
 const classContext = Object.assign({}, coreContext, propertyContext, conceptContext, {
   abstract: { '@id': 'http://www.w3.org/ns/shacl#abstract'},
-  property: { '@id': 'http://www.w3.org/ns/shacl#property', '@type': '@id' },
+  property,
   scopeClass : { '@id' : 'http://www.w3.org/ns/shacl#scopeClass', '@type' : '@id' },
   subClassOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id' },
   equivalentClass: { '@id' : 'http://www.w3.org/2002/07/owl#equivalentClass', '@type' : '@id' },
@@ -125,9 +126,10 @@ const userContext = Object.assign({}, coreContext, {
 });
 
 const modelPositionContext = Object.assign({}, coreContext, {
-  property: { '@id': 'http://www.w3.org/ns/shacl#property',  '@type': '@id' },
+  predicate,
+  property,
   pointXY: { '@id': 'http://iow.csc.fi/ns/iow#pointXY' },
-  vertexXY: { '@id': 'http://iow.csc.fi/ns/iow#vertexXY' }
+  vertexXY: { '@id': 'http://iow.csc.fi/ns/iow#vertexXY', '@container': '@list' }
 });
 
 const searchResultContext = Object.assign({}, coreContext, {});
@@ -345,7 +347,13 @@ export function classVisualizationFrame(data: any): Frame {
 
 export function modelPositionsFrame(data: any): Frame {
   return frame(data, modelPositionContext, {
-    '@type': 'rdfs:Class'
+    '@type': ['rdfs:Class', 'sh:Shape'],
+    property: {
+      vertexXY: {},
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    }
   });
 }
 
