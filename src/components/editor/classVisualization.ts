@@ -43,7 +43,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
                  </span>
                  <button type="button" class="btn btn-default btn-xs" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></button>
                  <button type="button" class="btn btn-default btn-xs" ng-show="ctrl.canSave()" ng-disabled="ctrl.modelPositions.isPristine()" ng-click="ctrl.savePositions()"><i class="fa fa-save"></i></button>
-                 <button type="button" class="btn btn-default btn-xs" ng-click="ctrl.layoutPositions()"><i class="fa fa-refresh"></i></button>
+                 <button type="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPositions()"><i class="fa fa-refresh"></i></button>
                </div>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
@@ -125,6 +125,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   paperHolder: PaperHolder;
 
   visible = true;
+  saving = false;
   operationQueue: (() => void)[] = [];
 
   classVisualization: ClassVisualization;
@@ -169,8 +170,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   savePositions() {
+    this.saving = true;
     this.modelService.updateModelPositions(this.model, this.modelPositions)
-      .then(() => this.modelPositions.setPristine());
+      .then(() => {
+        this.modelPositions.setPristine();
+        this.saving = false;
+      });
   }
 
   layoutPositions() {
