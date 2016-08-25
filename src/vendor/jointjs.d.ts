@@ -57,6 +57,7 @@ declare module joint {
         position: { x: number, y: number };
         size: { height: number, width: number };
       };
+      position(): {x: number, y: number};
       position(x:number, y:number):Element;
       translate(tx:number, ty?:number):Element;
       resize(width:number, height:number):Element;
