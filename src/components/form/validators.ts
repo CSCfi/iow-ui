@@ -44,7 +44,7 @@ export function arrayAsyncValidator<T>($q: IQService, asyncValidator: AsyncValid
 }
 
 export const isValidPrefix = createRegexValidator(/^[a-z][a-z0-9]*$/);
-export const isValidIdentifier = createRegexValidator(/^[a-zA-Z][a-zA-Z0-9]*$/);
+export const isValidIdentifier = createRegexValidator(/^[a-zA-Z_\-][a-zA-Z0-9_\-]*$/);
 
 export function isValidLabelLength(label: string): boolean {
   return !label || label.length <= 40;
