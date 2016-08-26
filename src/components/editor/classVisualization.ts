@@ -64,9 +64,6 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
           paper.setDimensions(element.width(), element.height());
           moveOrigin(paper, xd / 2, yd / 2);
         } else {
-          if (controller.dimensionChangeInProgress && controller.visible) {
-            controller.executeQueue();
-          }
           controller.dimensionChangeInProgress = false;
         }
       }, 200);
@@ -211,14 +208,20 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     } else {
       this.operationQueue.push(operation);
     }
+
+    if (this.visible) {
+      this.executeQueue();
+    }
   }
 
   executeQueue() {
-    if (this.dimensionChangeInProgress) {
+    if (this.dimensionChangeInProgress || !this.visible) {
       setTimeout(() => this.executeQueue(), 200);
     } else {
-      this.operationQueue.forEach(operation => operation());
-      this.operationQueue = [];
+      setTimeout(() => {
+        this.operationQueue.forEach(operation => operation());
+        this.operationQueue = [];
+      });
     }
   }
 
