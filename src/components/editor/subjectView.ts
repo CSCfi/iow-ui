@@ -30,18 +30,23 @@ class SubjectViewController {
   vocabularies: string;
   link: string;
 
-  constructor($scope: IScope, private searchConceptModal: SearchConceptModal) {
+  constructor($scope: IScope, private searchConceptModal: SearchConceptModal, languageService: LanguageService, gettextCatalog: gettextCatalog) {
+
+    const localizer = languageService.createLocalizer(this.model);
 
     const setValues = () => {
       const subject = this.entity.subject;
       this.subjectTitle = (!subject || !subject.suggestion) ? 'Concept' : 'Concept suggestion';
 
       if (subject) {
+        this.vocabularies = subject.getVocabularyNames().map(v => v.getLocalizedName(localizer, gettextCatalog)).join(', ');
         this.link = !subject.suggestion && subject.id.url;
       }
     };
 
     $scope.$watch(() => this.entity && this.entity.subject, setValues);
+    $scope.$watch(() => languageService.UILanguage, setValues);
+    $scope.$watch(() => localizer.language, setValues);
   }
 
   changeSubject() {
