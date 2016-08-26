@@ -74,13 +74,10 @@
                 </div>
               </editable>
 
-              <subject-view subject="ctrl.selection.broaderConcept" data-title="Broader concept"></subject-view>
-              <div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.selection.broaderConcept}]">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
-              </div>
+              <editable-concept-select concept="ctrl.selection.broaderConcept" data-title="Broader concept" model="ctrl.model" allow-suggestions="false"></editable-concept-select>
 
               <br />
-              <p><span translate>Concept is suggested to vocabulary</span> {{ctrl.selection.vocabulary | translateLabel: ctrl.model}}</p>
+              <p><span translate>Concept is suggested to vocabulary</span> {{ctrl.selection.vocabulary.title | translateValue: ctrl.model}}</p>
             </div>
 
           </div>

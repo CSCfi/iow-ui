@@ -38,11 +38,8 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <editable-subject-select type="{{ctrl.predicate.normalizedType}}" subject="ctrl.predicate.subject" model="ctrl.model" disable="!ctrl.predicate.inUnstableState"></editable-subject-select>
-  </div>
-</div>
+
+<subject-view entity="ctrl.predicate" model="ctrl.model" is-editing="ctrl.isEditing"></subject-view>
 
 <h4 translate>Additional information</h4>
 

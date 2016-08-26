@@ -110,8 +110,7 @@ class SearchConceptController {
               vocabularies: Vocabulary[],
               private model: Model,
               private conceptService: ConceptService,
-              private gettextCatalog: gettextCatalog,
-              private searchConceptModal: SearchConceptModal) {
+              private gettextCatalog: gettextCatalog) {
 
     this.defineConceptTitle = type ? `Define concept for the ${newEntityCreation ? 'new ' : ''}${type}` : 'Search concept';
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
@@ -237,16 +236,6 @@ class SearchConceptController {
         const selection = this.selection;
         return isConcept(selection) && !searchResult.id.equals(selection.id);
       }
-    }
-  }
-
-  selectBroaderConcept() {
-    const selection = this.selection;
-    if (isNewConceptData(selection)) {
-      this.searchConceptModal.openSelection(this.activeVocabularies, this.model, false)
-        .then(concept => selection.broaderConcept = concept);
-    } else {
-      throw new Error('Selection must be new concept data: ' + selection);
     }
   }
 

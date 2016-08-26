@@ -17,10 +17,7 @@
       </div>
     </editable>
 
-    <subject-view subject="ctrl.concept.broaderConcept" data-title="Broader concept"></subject-view>
-    <div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.concept.broaderConcept}]" ng-if="ctrl.isEditing()">
-      <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectBroaderConcept()" translate>Choose broader concept</button>
-    </div>
+    <editable-concept-select concept="ctrl.concept.broaderConcept" data-title="Broader concept" model="ctrl.model" allow-suggestions="false"></editable-concept-select>
 
     <div ng-if="ctrl.vocabularyNames.length > 0 && !ctrl.isConceptEditable()" class="editable-wrap form-group">
       <editable-label data-title="'Vocabulary'"></editable-label>

@@ -1,0 +1,15 @@
+
+<div class="editable-wrap">
+  <editable-label data-title="ctrl.title"></editable-label>
+  <div ng-hide="ctrl.concept" translate>Not defined</div>
+</div>
+
+<div ng-if="ctrl.concept" class="model-view__sub row">
+  <non-editable class="col-md-6" data-title="Concept label" value="ctrl.concept.label" link="ctrl.link" context="ctrl.model"></non-editable>
+  <non-editable class="col-md-6" data-title="Definition" value="ctrl.concept.comment" context="ctrl.model"></non-editable>
+</div>
+
+<div ng-class="['editable-wrap', {'model-view__sub': !!ctrl.concept}]">
+  <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectConcept()" translate>Choose concept</button>
+  <button ng-show="!!ctrl.concept" type="button" class="btn btn-default btn-sm" ng-click="ctrl.clearSelection()" translate>Clear selection</button>
+</div>

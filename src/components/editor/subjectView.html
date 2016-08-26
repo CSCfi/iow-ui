@@ -1,9 +1,35 @@
-<div class="editable-wrap">
-  <editable-label data-title="ctrl.subjectTitle"></editable-label>
-  <div ng-hide="ctrl.subject" translate>Not defined</div>
+<div class="row">
+  <div class="col-md-6">
+    <h4>{{ctrl.subjectTitle + ' information' | capitalize | translate}}</h4>
+  </div>
+
+  <div class="col-md-6">
+    <button ng-if="ctrl.isEditing()"
+            type="button"
+            class="btn btn-default pull-right"
+            ng-disabled="!ctrl.entity.inUnstableState"
+            ng-click="ctrl.changeSubject()" uib-tooltip="{{'Change concept' | translate}}"><i class="fa fa-repeat"></i></button>
+  </div>
 </div>
 
-<div ng-if="ctrl.subject" class="model-view__sub row">
-  <non-editable class="col-md-6" data-title="Concept label" value="ctrl.subject.label" link="ctrl.link" context="ctrl.context"></non-editable>
-  <non-editable class="col-md-6" data-title="Definition" value="ctrl.subject.comment" context="ctrl.context"></non-editable>
+
+<div ng-if="!ctrl.entity.subject">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="editable-wrap">
+        <div ng-hide="ctrl.entity.subject" translate>Not defined</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-if="ctrl.entity.subject">
+  <div class="row">
+    <div class="col-md-6">
+      <non-editable data-title="Concept label" value="ctrl.entity.subject.label" link="ctrl.link" context="ctrl.model"></non-editable>
+    </div>
+    <div class="col-md-6">
+      <non-editable data-title="Definition" value="ctrl.entity.subject.comment" context="ctrl.model"></non-editable>
+    </div>
+  </div>
 </div>

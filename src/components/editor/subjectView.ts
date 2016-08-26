@@ -1,12 +1,16 @@
-import { LanguageContext, Concept } from '../../services/entities';
+import { Predicate, Class, Concept, Model } from '../../services/entities';
 import { module as mod }  from './module';
+import IScope = angular.IScope;
+import { LanguageService } from '../../services/languageService';
+import gettextCatalog = angular.gettext.gettextCatalog;
+import { SearchConceptModal } from './searchConceptModal';
 
 mod.directive('subjectView', () => {
   return {
     scope: {
-      subject: '=',
-      title: '@',
-      context: '='
+      entity: '=',
+      model: '=',
+      isEditing: '='
     },
     bindToController: true,
     controllerAs: 'ctrl',
@@ -17,21 +21,30 @@ mod.directive('subjectView', () => {
 });
 
 class SubjectViewController {
-  subject: Concept;
-  title: string;
-  context: LanguageContext;
 
-  get subjectTitle() {
-    if (this.title) {
-      return this.title;
-    } else if (!this.subject) {
-      return 'Concept';
-    } else {
-      return this.subject.suggestion ? 'Concept suggestion' : 'Concept';
-    }
+  entity: Class|Predicate;
+  model: Model;
+  isEditing: () => boolean;
+
+  subjectTitle: string;
+  vocabularies: string;
+  link: string;
+
+  constructor($scope: IScope, private searchConceptModal: SearchConceptModal) {
+
+    const setValues = () => {
+      const subject = this.entity.subject;
+      this.subjectTitle = (!subject || !subject.suggestion) ? 'Concept' : 'Concept suggestion';
+
+      if (subject) {
+        this.link = !subject.suggestion && subject.id.url;
+      }
+    };
+
+    $scope.$watch(() => this.entity && this.entity.subject, setValues);
   }
 
-  get link() {
-    return !this.subject.suggestion && this.subject.id.url;
+  changeSubject() {
+    this.searchConceptModal.openSelection(this.model.vocabularies, this.model, true, this.entity.normalizedType).then(concept => this.entity.subject = concept);
   }
 }

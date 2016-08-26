@@ -77,8 +77,8 @@ msgstr "Lisää koodisto"
 msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
-#: components/editor/classForm.html:84 components/editor/predicateForm.html:47
-#: components/editor/propertyView.html:123 components/model/conceptForm.html:57
+#: components/editor/classForm.html:79 components/editor/predicateForm.html:44
+#: components/editor/propertyView.html:123 components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -284,7 +284,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
 #: components/editor/searchClassModal.html:88
-#: components/editor/searchConceptModal.html:93
+#: components/editor/searchConceptModal.html:90
 #: components/editor/searchPredicateModal.html:113
 #: components/group/addModelModal.html:24
 #: components/model/addEditLinkModal.html:20
@@ -304,6 +304,10 @@ msgstr "Peruuta muokkaus"
 msgid "Cannot import profile"
 msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 
+#: components/editor/subjectView.html:11 translations/misc.html:220
+msgid "Change concept"
+msgstr "Vaihda käsite"
+
 #: components/editor/propertyPredicateView.html:13 translations/misc.html:218
 msgid "Change reusable predicate"
 msgstr "Vaihda uudelleenkäytettävä ominaisuus"
@@ -320,14 +324,13 @@ msgstr "valitse assosiaatio"
 msgid "Choose attribute"
 msgstr "valitse attribuutti"
 
-#: components/editor/searchConceptModal.html:79
-#: components/model/conceptForm.html:22
-msgid "Choose broader concept"
-msgstr "valitse laajempi käsite"
-
 #: components/editor/editableConstraint.html:35 translations/misc.html:64
 msgid "Choose class"
 msgstr "valitse luokka"
+
+#: components/editor/editableConceptSelect.html:13 translations/misc.html:221
+msgid "Choose concept"
+msgstr "valitse käsite"
 
 #: translations/misc.html:200
 msgid "Choose reference data"
@@ -336,10 +339,6 @@ msgstr "valitse koodisto"
 #: components/model/editableRootClass.html:7
 msgid "Choose root class"
 msgstr "valitse juurisolmu"
-
-#: components/editor/editableSubjectSelect.html:5
-msgid "Choose subject"
-msgstr "valitse käsite"
 
 #: translations/misc.html:31
 msgid "class"
@@ -436,7 +435,7 @@ msgstr "Käsitteen yksilöivä uri tunniste"
 msgid "Concept information"
 msgstr "Käsitteen tiedot"
 
-#: components/editor/searchConceptModal.html:83
+#: components/editor/searchConceptModal.html:80
 msgid "Concept is suggested to vocabulary"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
@@ -636,6 +635,10 @@ msgstr "Määritelty soveltamisprofiilissa"
 #: translations/titles.html:32
 msgid "Defined by profile info"
 msgstr "Viite soveltamisprofiiliin jossa resurssin käyttö on määritelty"
+
+#: translations/misc.html:219
+msgid "Defined in vocabularies"
+msgstr "Määritelty sanastoissa"
 
 #: translations/titles.html:1
 msgid "Definition"
@@ -1012,7 +1015,7 @@ msgstr "Ryhmän sisäiset sivut"
 msgid "Internal group page info"
 msgstr "Kohdealueen ryhmän sisäiset sivut"
 
-#: components/model/conceptForm.html:44 translations/misc.html:178
+#: components/model/conceptForm.html:41 translations/misc.html:178
 msgid "Internal vocabulary"
 msgstr "Sisäinen käsitteistö"
 
@@ -1249,8 +1252,9 @@ msgstr "Erikoistamattomia luokkia ei saavalita"
 msgid "None added"
 msgstr "Ei yhtään lisätty"
 
+#: components/editor/editableConceptSelect.html:4
 #: components/editor/editableReferenceDataSelect.html:4
-#: components/editor/subjectView.html:3
+#: components/editor/subjectView.html:20
 msgid "Not defined"
 msgstr "Ei määritelty"
 
@@ -1335,7 +1339,7 @@ msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
-#: components/editor/propertyPredicateView.html:32
+#: components/editor/propertyPredicateView.html:34
 msgid "Predicate information not found"
 msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
@@ -2068,6 +2072,12 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:17
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Choose broader concept"
+#~ msgstr "valitse laajempi käsite"
+
+#~ msgid "Choose subject"
+#~ msgstr "valitse käsite"
 
 #~ msgid "Invalid uri error"
 #~ msgstr "Syöte ei ole URI"

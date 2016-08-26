@@ -5,7 +5,6 @@ import ITimeoutService = angular.ITimeoutService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Model, Concept, VocabularyNameHref, ConceptSuggestion, Vocabulary } from '../../services/entities';
 import { ConceptViewController } from './conceptView';
-import { SearchConceptModal } from '../editor/searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { module as mod }  from './module';
 import { Uri } from '../../services/uri';
@@ -36,7 +35,7 @@ export class ConceptFormController {
   vocabularyNames: VocabularyNameHref[];
   localizer: Localizer;
 
-  constructor($scope: IScope, private searchConceptModal: SearchConceptModal, private languageService: LanguageService, public gettextCatalog: gettextCatalog) {
+  constructor($scope: IScope, private languageService: LanguageService, public gettextCatalog: gettextCatalog) {
     this.localizer = languageService.createLocalizer(this.model);
     $scope.$watch(() => this.concept, (concept: Concept) => {
       if (concept instanceof ConceptSuggestion) {
@@ -57,10 +56,5 @@ export class ConceptFormController {
 
   isConceptEditable() {
     return this.concept instanceof ConceptSuggestion;
-  }
-
-  selectBroaderConcept() {
-      this.searchConceptModal.openSelection(this.model.vocabularies, this.model, false)
-        .then(concept => this.concept.broaderConcept = concept);
   }
 }

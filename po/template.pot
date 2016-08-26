@@ -72,10 +72,10 @@ msgstr ""
 msgid "Add vocabulary"
 msgstr ""
 
-#: components/editor/classForm.html:84
-#: components/editor/predicateForm.html:47
+#: components/editor/classForm.html:79
+#: components/editor/predicateForm.html:44
 #: components/editor/propertyView.html:123
-#: components/model/conceptForm.html:57
+#: components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr ""
@@ -287,7 +287,7 @@ msgstr ""
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:18
 #: components/editor/searchClassModal.html:88
-#: components/editor/searchConceptModal.html:93
+#: components/editor/searchConceptModal.html:90
 #: components/editor/searchPredicateModal.html:113
 #: components/group/addModelModal.html:24
 #: components/model/addEditLinkModal.html:20
@@ -307,6 +307,11 @@ msgstr ""
 msgid "Cannot import profile"
 msgstr ""
 
+#: components/editor/subjectView.html:11
+#: translations/misc.html:220
+msgid "Change concept"
+msgstr ""
+
 #: components/editor/propertyPredicateView.html:13
 #: translations/misc.html:218
 msgid "Change reusable predicate"
@@ -324,14 +329,14 @@ msgstr ""
 msgid "Choose attribute"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:79
-#: components/model/conceptForm.html:22
-msgid "Choose broader concept"
-msgstr ""
-
 #: components/editor/editableConstraint.html:35
 #: translations/misc.html:64
 msgid "Choose class"
+msgstr ""
+
+#: components/editor/editableConceptSelect.html:13
+#: translations/misc.html:221
+msgid "Choose concept"
 msgstr ""
 
 #: translations/misc.html:200
@@ -340,10 +345,6 @@ msgstr ""
 
 #: components/model/editableRootClass.html:7
 msgid "Choose root class"
-msgstr ""
-
-#: components/editor/editableSubjectSelect.html:5
-msgid "Choose subject"
 msgstr ""
 
 #: translations/misc.html:31
@@ -441,7 +442,7 @@ msgstr ""
 msgid "Concept information"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:83
+#: components/editor/searchConceptModal.html:80
 msgid "Concept is suggested to vocabulary"
 msgstr ""
 
@@ -640,6 +641,10 @@ msgstr ""
 
 #: translations/titles.html:32
 msgid "Defined by profile info"
+msgstr ""
+
+#: translations/misc.html:219
+msgid "Defined in vocabularies"
 msgstr ""
 
 #: translations/titles.html:1
@@ -1009,7 +1014,7 @@ msgstr ""
 msgid "Internal group page info"
 msgstr ""
 
-#: components/model/conceptForm.html:44
+#: components/model/conceptForm.html:41
 #: translations/misc.html:178
 msgid "Internal vocabulary"
 msgstr ""
@@ -1248,8 +1253,9 @@ msgstr ""
 msgid "None added"
 msgstr ""
 
+#: components/editor/editableConceptSelect.html:4
 #: components/editor/editableReferenceDataSelect.html:4
-#: components/editor/subjectView.html:3
+#: components/editor/subjectView.html:20
 msgid "Not defined"
 msgstr ""
 
@@ -1333,7 +1339,7 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
-#: components/editor/propertyPredicateView.html:32
+#: components/editor/propertyPredicateView.html:34
 msgid "Predicate information not found"
 msgstr ""
 
