@@ -140,7 +140,7 @@
         <span accordion-chevron is-open="predicateOpen">{{ctrl.predicateName}}</span>
       </uib-accordion-heading>
 
-      <property-predicate-view ng-if="predicateOpen" predicate="ctrl.property.predicate" model="ctrl.model"></property-predicate-view>
+      <property-predicate-view ng-if="predicateOpen" property="ctrl.property" model="ctrl.model"></property-predicate-view>
 
     </uib-accordion-group>
   </uib-accordion>

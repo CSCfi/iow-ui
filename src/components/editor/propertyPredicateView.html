@@ -1,4 +1,19 @@
 <div ng-if="ctrl.predicate">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h4 translate>Reusable predicate information</h4>
+    </div>
+
+    <div class="col-md-6">
+      <button ng-if="ctrl.isEditing()"
+              type="button"
+              class="btn btn-default pull-right"
+              ng-disabled="!ctrl.property.inUnstableState"
+              ng-click="ctrl.changeReusablePredicate()" uib-tooltip="{{'Change reusable predicate' | translate}}"><i class="fa fa-repeat"></i></button>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-6">
       <non-editable data-title="{{ctrl.predicate.normalizedType + ' label' | capitalize}}" value="ctrl.predicate.label" context="ctrl.model"></non-editable>
@@ -12,6 +27,7 @@
     </div>
   </div>
   <subject-view subject="ctrl.predicate.subject" context="ctrl.model"></subject-view>
+
 </div>
 
 <div ng-if="ctrl.predicate === null" translate>Predicate information not found</div>

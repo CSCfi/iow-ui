@@ -304,6 +304,10 @@ msgstr "Peruuta muokkaus"
 msgid "Cannot import profile"
 msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 
+#: components/editor/propertyPredicateView.html:13 translations/misc.html:218
+msgid "Change reusable predicate"
+msgstr "Vaihda uudelleenkäytettävä ominaisuus"
+
 #: components/editor/choosePredicateTypeModal.html:13
 msgid "Choose"
 msgstr "valitse"
@@ -1331,7 +1335,7 @@ msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
-#: components/editor/propertyPredicateView.html:17
+#: components/editor/propertyPredicateView.html:32
 msgid "Predicate information not found"
 msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
@@ -1492,6 +1496,10 @@ msgstr "Ei ole poistettavassa tilassa"
 #: components/editor/propertyView.html:134
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
+
+#: components/editor/propertyPredicateView.html:5
+msgid "Reusable predicate information"
+msgstr "Uudelleenkäytettävän ominaisuuden tiedot"
 
 #: translations/titles.html:72
 msgid "Root class"
@@ -1756,6 +1764,10 @@ msgstr "sanastoon"
 #: translations/misc.html:97
 msgid "Unauthorized"
 msgstr "Ei oikeuksia"
+
+#: translations/misc.html:217
+msgid "Undefined"
+msgstr ""
 
 #: translations/misc.html:100
 msgid "Unexpected error"

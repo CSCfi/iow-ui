@@ -307,6 +307,11 @@ msgstr ""
 msgid "Cannot import profile"
 msgstr ""
 
+#: components/editor/propertyPredicateView.html:13
+#: translations/misc.html:218
+msgid "Change reusable predicate"
+msgstr ""
+
 #: components/editor/choosePredicateTypeModal.html:13
 msgid "Choose"
 msgstr ""
@@ -1328,7 +1333,7 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
-#: components/editor/propertyPredicateView.html:17
+#: components/editor/propertyPredicateView.html:32
 msgid "Predicate information not found"
 msgstr ""
 
@@ -1489,6 +1494,10 @@ msgstr ""
 
 #: components/editor/propertyView.html:134
 msgid "Reusable predicate"
+msgstr ""
+
+#: components/editor/propertyPredicateView.html:5
+msgid "Reusable predicate information"
 msgstr ""
 
 #: translations/titles.html:72
@@ -1756,6 +1765,10 @@ msgstr ""
 
 #: translations/misc.html:97
 msgid "Unauthorized"
+msgstr ""
+
+#: translations/misc.html:217
+msgid "Undefined"
 msgstr ""
 
 #: translations/misc.html:100
