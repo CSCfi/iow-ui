@@ -42,10 +42,19 @@ export class LanguageService {
   }
 
   getModelLanguage(context?: LanguageContext): Language {
+
+    const getUILanguageOrFirst = () => {
+      if (context.language.indexOf(this.UILanguage) !== -1) {
+        return this.UILanguage;
+      } else {
+        return context.language[0];
+      }
+    };
+
     if (context) {
       const key = context.id.uri;
       const language = this._modelLanguage[key];
-      return language ? language : context.language[0];
+      return language ? language : getUILanguageOrFirst();
     } else {
       return this.UILanguage;
     }
