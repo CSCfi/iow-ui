@@ -69,19 +69,8 @@ class PredicateFormController {
       if (usage.referrers.length > 0) {
         this.errorModal.openUsageError('Predicate in use', 'Predicate type cannot be changed because it is already used by following resources', usage, this.model);
       } else {
-        this.predicateService.newPredicate(this.model, '', this.predicate.subject.id, this.changedType, 'fi')
-          .then(changedPredicate => {
-            changedPredicate.id = this.predicate.id;
-            changedPredicate.label = this.predicate.label;
-            changedPredicate.comment = this.predicate.comment;
-            changedPredicate.createdAt = this.predicate.createdAt;
-            changedPredicate.modifiedAt = this.predicate.modifiedAt;
-            changedPredicate.editorialNote = this.predicate.editorialNote;
-            changedPredicate.state = this.predicate.state;
-            changedPredicate.unsaved = this.predicate.unsaved;
-            this.predicate = changedPredicate;
-          });
-
+        this.predicateService.changePredicateType(this.predicate, this.changedType, this.model)
+          .then(changedPredicate => this.predicate = changedPredicate);
       }
     });
   }

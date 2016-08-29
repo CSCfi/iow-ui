@@ -117,6 +117,21 @@ export class PredicateService {
       });
   }
 
+  changePredicateType(predicate: Attribute|Association, newType: Type, model: Model) {
+    return this.newPredicate(model, '', predicate.subject.id, newType, 'fi')
+      .then(changedPredicate => {
+        changedPredicate.id = predicate.id;
+        changedPredicate.label = predicate.label;
+        changedPredicate.comment = predicate.comment;
+        changedPredicate.createdAt = predicate.createdAt;
+        changedPredicate.modifiedAt = predicate.modifiedAt;
+        changedPredicate.editorialNote = predicate.editorialNote;
+        changedPredicate.state = predicate.state;
+        changedPredicate.unsaved = predicate.unsaved;
+        return changedPredicate;
+      });
+  }
+
   getExternalPredicate(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
