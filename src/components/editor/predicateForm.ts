@@ -1,9 +1,13 @@
-import { Association, Model, Predicate } from '../../services/entities';
+import { Association, Model, Attribute, Type } from '../../services/entities';
 import { module as mod }  from './module';
 import IScope = angular.IScope;
 import IAttributes = angular.IAttributes;
 import { PredicateViewController } from './predicateView';
 import { isDefined } from '../../utils/object';
+import { UsageService } from '../../services/usageService';
+import { ErrorModal } from '../form/errorModal';
+import { PredicateService } from '../../services/predicateService';
+import { glyphIconClassForType } from '../../utils/entity';
 
 mod.directive('predicateForm', () => {
   return {
@@ -28,10 +32,16 @@ mod.directive('predicateForm', () => {
 class PredicateFormController {
 
   model: Model;
-  predicate: Predicate;
-  oldPredicate: Predicate;
+  predicate: Attribute|Association;
+  oldPredicate: Attribute|Association;
   isEditing: () => boolean;
   shouldAutofocus: boolean;
+
+  /* @ngInject */
+  constructor(private predicateService: PredicateService,
+              private usageService: UsageService,
+              private errorModal: ErrorModal) {
+  }
 
   linkToSuperProperty() {
     return this.model.linkTo({ type: this.predicate.type, id: this.predicate.subPropertyOf }, true);
@@ -44,5 +54,33 @@ class PredicateFormController {
     } else {
       return '';
     }
+  }
+
+  get changedType(): Type {
+    return this.predicate instanceof Attribute ? 'association' : 'attribute';
+  }
+
+  get changeTypeIconClass() {
+    return glyphIconClassForType([this.changedType]);
+  }
+
+  changeType() {
+    this.usageService.getUsage(this.predicate).then(usage => {
+      if (usage.referrers.length > 0) {
+        this.errorModal.openUsageError('Predicate in use', 'Predicate type cannot be changed because it is already used by following resources', usage, this.model);
+      } else {
+        this.predicateService.newPredicate(this.model, '', this.predicate.subject.id, this.changedType, 'fi')
+          .then(changedPredicate => {
+            changedPredicate.id = this.predicate.id;
+            changedPredicate.label = this.predicate.label;
+            changedPredicate.comment = this.predicate.comment;
+            changedPredicate.createdAt = this.predicate.createdAt;
+            changedPredicate.modifiedAt = this.predicate.modifiedAt;
+            changedPredicate.editorialNote = this.predicate.editorialNote;
+            this.predicate = changedPredicate;
+          });
+
+      }
+    });
   }
 }

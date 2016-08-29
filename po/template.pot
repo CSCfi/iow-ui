@@ -73,7 +73,7 @@ msgid "Add vocabulary"
 msgstr ""
 
 #: components/editor/classForm.html:79
-#: components/editor/predicateForm.html:54
+#: components/editor/predicateForm.html:58
 #: components/editor/propertyView.html:121
 #: components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
@@ -317,10 +317,6 @@ msgstr ""
 msgid "Change reusable predicate"
 msgstr ""
 
-#: components/editor/predicateForm.html:10
-msgid "Change type"
-msgstr ""
-
 #: components/editor/choosePredicateTypeModal.html:13
 msgid "Choose"
 msgstr ""
@@ -503,6 +499,14 @@ msgstr ""
 
 #: translations/misc.html:186
 msgid "Controlled vocabularies"
+msgstr ""
+
+#: translations/misc.html:225
+msgid "Convert to association"
+msgstr ""
+
+#: translations/misc.html:226
+msgid "Convert to attribute"
 msgstr ""
 
 #: translations/misc.html:96
