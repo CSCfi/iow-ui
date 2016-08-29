@@ -1,18 +1,16 @@
 <div ng-if="ctrl.isOpen()">
   <div class="row">
-    <div class="col-md-6">
-      <h4 translate>Property information</h4>
-    </div>
+    <div class="col-md-12">
+        <h4 class="pull-left" translate>Property information</h4>
 
-    <div class="col-md-6">
-      <button ng-if="ctrl.isEditing()"
-              type="button"
-              class="btn btn-default pull-right"
-              style="margin-left: 5px"
-              ng-disabled="!ctrl.property.inUnstableState"
-              ng-click="ctrl.removeProperty(ctrl.property)" uib-tooltip="{{'Delete property' | translate}}"><i class="fa fa-trash"></i></button>
+        <button ng-if="ctrl.isEditing()"
+                type="button"
+                class="btn btn-default pull-right"
+                style="margin-left: 5px"
+                ng-disabled="!ctrl.property.inUnstableState"
+                ng-click="ctrl.removeProperty(ctrl.property)" uib-tooltip="{{'Delete property' | translate}}"><i class="fa fa-trash"></i></button>
 
-      <editable-state-select class="pull-right" id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></editable-state-select>
+        <editable-state-select class="pull-right" id="{{ctrl.property.internalId + 'state'}}" state="ctrl.property.state" model="ctrl.model"></editable-state-select>
     </div>
   </div>
 
