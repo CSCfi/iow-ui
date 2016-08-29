@@ -15,6 +15,7 @@ import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { Language } from '../../utils/language';
+import { ErrorModal } from '../form/errorModal';
 
 mod.directive('group', () => {
   return {
@@ -48,8 +49,9 @@ class GroupController extends EditableEntityController<Group> {
               userService: UserService,
               private addModelModal: AddModelModal,
               deleteConfirmationModal: DeleteConfirmationModal,
+              errorModal: ErrorModal,
               maintenanceModal: MaintenanceModal) {
-    super($scope, $log, deleteConfirmationModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, userService);
 
     $scope.$watch(() => this.groupId, groupId => {
       this.loading = true;

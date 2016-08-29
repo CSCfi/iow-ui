@@ -72,7 +72,7 @@ export class SearchPredicateController {
   models: (DefinedBy|Model)[] = [];
   types: Type[];
   typeSelectable: boolean;
-  submitError: string;
+  excludeError: string;
   cannotConfirm: string;
   loadingResults: boolean;
   selectedItem: PredicateListItem|AddNewPredicate;
@@ -187,7 +187,7 @@ export class SearchPredicateController {
   selectItem(item: PredicateListItem|AddNewPredicate) {
     this.selectedItem = item;
     this.externalPredicate = undefined;
-    this.submitError = null;
+    this.excludeError = null;
     this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
 
@@ -230,7 +230,7 @@ export class SearchPredicateController {
     if (selection instanceof Predicate) {
       if (selection.unsaved) {
         this.predicateService.createPredicate(selection)
-          .then(() => this.$uibModalInstance.close(selection), err => this.submitError = err.data.errorMessage);
+          .then(() => this.$uibModalInstance.close(selection), err => this.excludeError = err.data.errorMessage);
       } else {
         this.$uibModalInstance.close(selection);
       }
@@ -238,7 +238,7 @@ export class SearchPredicateController {
       if (this.externalPredicate) {
         const exclude = this.exclude(this.externalPredicate);
         if (exclude) {
-          this.submitError = exclude;
+          this.excludeError = exclude;
         } else {
           this.$uibModalInstance.close(this.externalPredicate);
         }

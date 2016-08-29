@@ -6,6 +6,7 @@ import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { LanguageContext, EditableEntity } from '../../services/entities';
 import { isModalCancel } from '../../utils/angular';
+import { ErrorModal } from '../form/errorModal';
 
 export interface EditableForm extends IFormController {
   editing: boolean;
@@ -22,11 +23,14 @@ export type Rights = {
 
 export abstract class EditableEntityController<T extends EditableEntity> {
 
-  submitError: string;
   editableInEdit: T;
   persisting: boolean;
 
-  constructor(private $scope: EditableScope, private $log: ILogService, protected deleteConfirmationModal: DeleteConfirmationModal, protected userService: UserService) {
+  constructor(private $scope: EditableScope,
+              private $log: ILogService,
+              protected deleteConfirmationModal: DeleteConfirmationModal,
+              private errorModal: ErrorModal,
+              protected userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
       if (!isLoggedIn && wasLoggedIn) {
         this.cancelEditing();
@@ -45,7 +49,6 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   abstract getContext(): LanguageContext;
 
   select(editable: T) {
-    this.submitError = null;
     this.setEditable(editable);
     this.editableInEdit = editable ? <T> editable.clone() : null;
 
@@ -68,7 +71,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
       }, err => {
         if (err) {
           this.$log.error(err);
-          this.submitError = (err.data && err.data.errorMessage) || 'Unexpected error';
+          this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
         }
         this.persisting = false;
       });
@@ -90,7 +93,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
         }, err => {
           if (!isModalCancel(err)) {
             this.$log.error(err);
-            this.submitError = (err.data && err.data.errorMessage) || 'Unexpected error';
+            this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
           }
           this.persisting = false;
         });
@@ -104,10 +107,6 @@ export abstract class EditableEntityController<T extends EditableEntity> {
 
   cancelEditing() {
     if (this.isEditing()) {
-      if (this.submitError) {
-        this.userService.updateLogin();
-      }
-      this.submitError = null;
       this.$scope.form.editing = false;
       this.$scope.form.$setPristine();
       const editable = this.getEditable();

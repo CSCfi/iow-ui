@@ -1,3 +1,4 @@
+import { ErrorModal } from './errorModal';
 import { DisplayItemFactory } from './displayItemFactory';
 
 import { module as mod }  from './module';
@@ -25,7 +26,7 @@ import './nonEditable';
 import './languageInput';
 import './restrictDuplicates';
 import './editableStateSelect';
-import './submitErrorPanel';
+import './errorPanel';
 import './localizedSelect';
 import './maxInput';
 import './minInput';
@@ -34,4 +35,5 @@ import './dragSortable';
 import './editableTable';
 import './iowSelect';
 
+mod.service('errorModal', ErrorModal);
 mod.service('displayItemFactory', DisplayItemFactory);

@@ -19,6 +19,7 @@ import { Show } from '../contracts';
 import { createDefinedByExclusion, createExistsExclusion, combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';
 import { collectProperties } from '../../utils/array';
+import { ErrorModal } from '../form/errorModal';
 
 mod.directive('classView', () => {
   return {
@@ -51,9 +52,10 @@ export class ClassViewController extends EditableEntityController<Class> {
               private searchPredicateModal: SearchPredicateModal,
               private choosePredicateTypeModal: ChoosePredicateTypeModal,
               deleteConfirmationModal: DeleteConfirmationModal,
+              errorModal: ErrorModal,
               private classService: ClassService,
               userService: UserService) {
-    super($scope, $log, deleteConfirmationModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, userService);
 
     $scope.$watch(() => $location.search().property, id => this.openPropertyId = id);
     $scope.$watch(() => this.openPropertyId, id => $location.search('property', id));

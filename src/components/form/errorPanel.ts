@@ -1,9 +1,9 @@
 import { module as mod }  from './module';
 
-mod.directive('submitErrorPanel', () => {
+mod.directive('errorPanel', () => {
   return {
     restrict: 'E',
-    template: require('./submitErrorPanel.html'),
+    template: require('./errorPanel.html'),
     scope: {
       error: '='
     }

@@ -68,7 +68,7 @@ class SearchClassController {
   cannotConfirm: string;
   loadingResults: boolean;
   selectedItem: ClassListItem|AddNewClass;
-  submitError: string;
+  excludeError: string;
 
   // undefined means not fetched, null means does not exist
   externalClass: Class;
@@ -170,7 +170,7 @@ class SearchClassController {
   selectItem(item: ClassListItem|AddNewClass) {
     this.selectedItem = item;
     this.externalClass = undefined;
-    this.submitError = null;
+    this.excludeError = null;
     this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
 
@@ -216,7 +216,7 @@ class SearchClassController {
       if (this.externalClass) {
         const exclude = this.exclude(this.externalClass);
         if (exclude) {
-          this.submitError = exclude;
+          this.excludeError = exclude;
         } else {
           this.$uibModalInstance.close(this.externalClass);
         }

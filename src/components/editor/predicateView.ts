@@ -8,8 +8,7 @@ import { Attribute, Association, GroupListItem, Model, LanguageContext } from '.
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
-import { Uri } from '../../services/uri';
-
+import { ErrorModal } from '../form/errorModal';
 import { module as mod }  from './module';
 
 mod.directive('predicateView', () => {
@@ -39,9 +38,10 @@ export class PredicateViewController extends EditableEntityController<Associatio
   constructor($scope: EditableScope,
               $log: ILogService,
               deleteConfirmationModal: DeleteConfirmationModal,
+              errorModal: ErrorModal,
               private predicateService: PredicateService,
               userService: UserService) {
-    super($scope, $log, deleteConfirmationModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, userService);
     this.modelController.registerView(this);
   }
 

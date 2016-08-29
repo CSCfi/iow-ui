@@ -74,7 +74,7 @@ msgstr ""
 
 #: components/editor/classForm.html:79
 #: components/editor/predicateForm.html:44
-#: components/editor/propertyView.html:123
+#: components/editor/propertyView.html:121
 #: components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -307,7 +307,7 @@ msgstr ""
 msgid "Cannot import profile"
 msgstr ""
 
-#: components/editor/subjectView.html:11
+#: components/editor/subjectView.html:9
 #: translations/misc.html:220
 msgid "Change concept"
 msgstr ""
@@ -415,6 +415,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
+#: components/editor/editableConceptSelect.html:14
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr ""
@@ -719,7 +720,7 @@ msgstr ""
 msgid "Delete profile"
 msgstr ""
 
-#: components/editor/propertyView.html:13
+#: components/editor/propertyView.html:11
 msgid "Delete property"
 msgstr ""
 
@@ -1255,7 +1256,7 @@ msgstr ""
 
 #: components/editor/editableConceptSelect.html:4
 #: components/editor/editableReferenceDataSelect.html:4
-#: components/editor/subjectView.html:20
+#: components/editor/subjectView.html:17
 msgid "Not defined"
 msgstr ""
 
@@ -1319,7 +1320,7 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: components/editor/propertyView.html:50
+#: components/editor/propertyView.html:48
 msgid "Optional metadata"
 msgstr ""
 
@@ -1498,7 +1499,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:134
+#: components/editor/propertyView.html:132
 msgid "Reusable predicate"
 msgstr ""
 
@@ -1696,6 +1697,10 @@ msgstr ""
 
 #: translations/misc.html:160
 msgid "Subject"
+msgstr ""
+
+#: translations/misc.html:222
+msgid "Submit error"
 msgstr ""
 
 #: translations/misc.html:10

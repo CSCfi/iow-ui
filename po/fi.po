@@ -78,7 +78,7 @@ msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
 #: components/editor/classForm.html:79 components/editor/predicateForm.html:44
-#: components/editor/propertyView.html:123 components/model/conceptForm.html:54
+#: components/editor/propertyView.html:121 components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -304,7 +304,7 @@ msgstr "Peruuta muokkaus"
 msgid "Cannot import profile"
 msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 
-#: components/editor/subjectView.html:11 translations/misc.html:220
+#: components/editor/subjectView.html:9 translations/misc.html:220
 msgid "Change concept"
 msgstr "Vaihda käsite"
 
@@ -410,6 +410,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
+#: components/editor/editableConceptSelect.html:14
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr "poista valinta"
@@ -712,7 +713,7 @@ msgstr "Poista tietokomponenttikirjasto"
 msgid "Delete profile"
 msgstr "Poista soveltamisprofiili"
 
-#: components/editor/propertyView.html:13
+#: components/editor/propertyView.html:11
 msgid "Delete property"
 msgstr "Poista ominaisuus"
 
@@ -1254,7 +1255,7 @@ msgstr "Ei yhtään lisätty"
 
 #: components/editor/editableConceptSelect.html:4
 #: components/editor/editableReferenceDataSelect.html:4
-#: components/editor/subjectView.html:20
+#: components/editor/subjectView.html:17
 msgid "Not defined"
 msgstr "Ei määritelty"
 
@@ -1318,7 +1319,7 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: components/editor/propertyView.html:50
+#: components/editor/propertyView.html:48
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1497,7 +1498,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:134
+#: components/editor/propertyView.html:132
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
@@ -1696,6 +1697,10 @@ msgstr "Literaalin täytyy alkaa kirjaimella"
 #: translations/misc.html:160
 msgid "Subject"
 msgstr "Käsite"
+
+#: translations/misc.html:222
+msgid "Submit error"
+msgstr "Toiminnossa tapahtui virhe"
 
 #: translations/misc.html:10
 msgid "suggest"
