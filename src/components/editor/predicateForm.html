@@ -2,15 +2,15 @@
   <div class="col-md-12">
     <h4 class="pull-left">{{ctrl.predicate.normalizedType + ' information' | capitalize | translate}}</h4>
 
-    <a ng-if="ctrl.isEditing()"
-            role="button"
+    <button ng-if="ctrl.isEditing()"
+            type="button"
             class="btn btn-default pull-right"
             style="margin-left: 5px"
             ng-disabled="!ctrl.predicate.inUnstableState"
             ng-click="ctrl.changeType()" uib-tooltip="{{'Convert to ' + ctrl.changedType | translate}}">
       <i class="glyphicon glyphicon-arrow-right"></i>
       <i ng-class="ctrl.changeTypeIconClass"></i>
-    </a>
+    </button>
   </div>
 </div>
 
