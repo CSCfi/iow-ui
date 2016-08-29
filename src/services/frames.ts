@@ -180,19 +180,24 @@ export function predicateListFrame(data: any): Frame {
   return frame(data, predicateContext, { isDefinedBy: {} });
 }
 
+const embeddedSubject: any = {
+  '@id': {},
+  '@omitDefault': true,
+  '@default': [],
+  '@embed': '@always',
+  inScheme: {
+    '@id': {},
+    '@omitDefault': true,
+    '@default': [],
+    '@embed': '@always'
+  }
+};
+
 export function predicateFrame(data: any): Frame {
   return frame(data, predicateContext, {
     '@type': ['owl:DatatypeProperty', 'owl:ObjectProperty', 'rdf:Property'],
-    isDefinedBy: { '@embed': '@always' },
-    subject: {
-      '@omitDefault': true,
-      '@default': [],
-       inScheme: {
-        '@omitDefault': true,
-        '@default': [],
-        '@embed': '@always'
-      }
-    }
+    isDefinedBy: {'@embed': '@always'},
+    subject: embeddedSubject
   });
 }
 
@@ -200,7 +205,7 @@ export function classFrame(data: any): Frame {
   return frame(data, classContext, {
     '@type': ['rdfs:Class', 'sh:Shape'],
     isDefinedBy: { '@embed': '@always' },
-    subject: { '@embed': '@always' },
+    subject: embeddedSubject,
     property: {
       predicate: {
         '@embed': false
