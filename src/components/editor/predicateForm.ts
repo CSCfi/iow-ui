@@ -77,6 +77,7 @@ class PredicateFormController {
             changedPredicate.createdAt = this.predicate.createdAt;
             changedPredicate.modifiedAt = this.predicate.modifiedAt;
             changedPredicate.editorialNote = this.predicate.editorialNote;
+            changedPredicate.unsaved = this.predicate.unsaved;
             this.predicate = changedPredicate;
           });
 
