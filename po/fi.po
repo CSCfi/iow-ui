@@ -77,7 +77,7 @@ msgstr "Lisää koodisto"
 msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
-#: components/editor/classForm.html:79 components/editor/predicateForm.html:44
+#: components/editor/classForm.html:79 components/editor/predicateForm.html:54
 #: components/editor/propertyView.html:121 components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -311,6 +311,10 @@ msgstr "Vaihda käsite"
 #: components/editor/propertyPredicateView.html:13 translations/misc.html:218
 msgid "Change reusable predicate"
 msgstr "Vaihda uudelleenkäytettävä ominaisuus"
+
+#: components/editor/predicateForm.html:10
+msgid "Change type"
+msgstr ""
 
 #: components/editor/choosePredicateTypeModal.html:13
 msgid "Choose"
@@ -1340,6 +1344,10 @@ msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
+#: translations/misc.html:223
+msgid "Predicate in use"
+msgstr "Predikaatti on käytössä"
+
 #: components/editor/propertyPredicateView.html:34
 msgid "Predicate information not found"
 msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
@@ -1347,6 +1355,13 @@ msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 #: components/editor/searchPredicateModal.html:47 translations/titles.html:41
 msgid "Predicate type"
 msgstr "Ominaisuuden tyyppi"
+
+#: translations/misc.html:224
+msgid ""
+"Predicate type cannot be changed because it is already used by following "
+"resources"
+msgstr ""
+"Predikaatin tyyppiä ei voida muuttaa koska seuraavat resurssit käyttävät sitä"
 
 #: translations/titles.html:41
 msgid "Predicate type info"

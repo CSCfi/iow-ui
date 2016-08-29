@@ -11,7 +11,7 @@ export class ErrorModal {
     return this.$uibModal.open({
       template:
         `
-          <modal-template>
+          <modal-template purpose="danger">
           
             <modal-title>{{ctrl.title | translate}}</modal-title>
           

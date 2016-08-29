@@ -73,7 +73,7 @@ msgid "Add vocabulary"
 msgstr ""
 
 #: components/editor/classForm.html:79
-#: components/editor/predicateForm.html:44
+#: components/editor/predicateForm.html:54
 #: components/editor/propertyView.html:121
 #: components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
@@ -315,6 +315,10 @@ msgstr ""
 #: components/editor/propertyPredicateView.html:13
 #: translations/misc.html:218
 msgid "Change reusable predicate"
+msgstr ""
+
+#: components/editor/predicateForm.html:10
+msgid "Change type"
 msgstr ""
 
 #: components/editor/choosePredicateTypeModal.html:13
@@ -1340,6 +1344,10 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
+#: translations/misc.html:223
+msgid "Predicate in use"
+msgstr ""
+
 #: components/editor/propertyPredicateView.html:34
 msgid "Predicate information not found"
 msgstr ""
@@ -1347,6 +1355,10 @@ msgstr ""
 #: components/editor/searchPredicateModal.html:47
 #: translations/titles.html:41
 msgid "Predicate type"
+msgstr ""
+
+#: translations/misc.html:224
+msgid "Predicate type cannot be changed because it is already used by following resources"
 msgstr ""
 
 #: translations/titles.html:41
