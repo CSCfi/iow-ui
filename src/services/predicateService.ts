@@ -97,7 +97,7 @@ export class PredicateService {
     return this.$http.post(config.apiEndpointWithName('predicate'), undefined, {params: requestParams});
   }
 
-  newPredicate<T extends Predicate>(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<T> {
+  newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<T> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicateCreator'), {
       params: {
         modelID: model.id.uri,

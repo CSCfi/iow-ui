@@ -328,7 +328,7 @@ export class EntityLoader {
     return this.addAction(result, 'assign predicate');
   }
 
-  createPredicate<T extends Predicate>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
+  createPredicate<T extends Attribute|Association>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
 
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
