@@ -98,19 +98,39 @@ reference-data-view.popup {
 }
 
 autocomplete, iow-select {
-  .caret {
-    float: right;
-    margin-top: 10px;
 
-    &.ng-hide {
-      display: inherit !important;
-      visibility: hidden;
+  div[iow-select-input] {
+
+    iow-selection-transclude {
+      overflow-x: hidden;
+      width: calc(100% - 10px);
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .caret {
+      float: right;
+      margin-top: 10px;
+
+      &.ng-hide {
+        display: inherit !important;
+        visibility: hidden;
+      }
     }
   }
 
   .dropdown-menu {
     max-height: 400px;
-    overflow-y: scroll;
+    overflow-y: auto;
+
+    iow-selectable-item-transclude {
+      overflow-x: hidden;
+      width: 100%;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }
 
