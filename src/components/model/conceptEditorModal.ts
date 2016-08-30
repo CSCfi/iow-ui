@@ -25,7 +25,7 @@ export class ConceptEditorModal {
       size: 'large',
       controller: ConceptEditorModalController,
       controllerAs: 'ctrl',
-      backdrop: false,
+      backdrop: 'static',
       resolve: {
         model: () => model
       }
