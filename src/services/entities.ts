@@ -1040,7 +1040,7 @@ export class Class extends AbstractClass implements VisualizationClass {
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
     this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
-    this.createdAt = deserializeDate(graph.created);
+    this.createdAt = deserializeOptional(graph.created, deserializeDate);
   }
 
   get inUnstableState(): boolean {
@@ -1477,7 +1477,7 @@ export class Predicate extends AbstractPredicate {
     this.version = graph.identifier;
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
     this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
-    this.createdAt = deserializeDate(graph.created);
+    this.createdAt = deserializeOptional(graph.created, deserializeDate);
   }
 
   get inUnstableState(): boolean {
