@@ -10,6 +10,7 @@ import { Uri } from '../../services/uri';
 import { ClassService } from '../../services/classService';
 import { module as mod }  from './module';
 import { isDefined } from '../../utils/object';
+import { SearchPredicateModal } from './searchPredicateModal';
 
 mod.directive('classForm', () => {
   return {
@@ -44,7 +45,16 @@ export class ClassFormController {
 
   /* @ngInject */
   constructor(private classService: ClassService,
+              private searchPredicateModal: SearchPredicateModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
+  }
+
+  addProperty() {
+    this.searchPredicateModal.openNewProperty(this.model, this.class)
+      .then(property => {
+        this.class.addProperty(property);
+        this.openPropertyId = property.internalId.uri;
+      });
   }
 
   addPropertiesFromClass(id: Uri, classType: string) {

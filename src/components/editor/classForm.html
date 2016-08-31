@@ -40,7 +40,12 @@
 
   <div class="col-md-12">
     <div ng-show="ctrl.class.properties.length > 0">
-      <h4>{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
+      <div class="clearfix">
+        <h4 class="pull-left" style="margin-bottom: 0">{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
+        <button type="button" class="btn btn-default pull-right" ng-click="ctrl.addProperty()" ng-show="ctrl.isEditing()" uib-tooltip="{{'Add property' | translate}}">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+      </div>
 
       <accordion open-id="ctrl.openPropertyId" drag-sortable="ctrl.class.properties" drag-disabled="!ctrl.isEditing()" on-reorder="ctrl.onPropertyReorder">
         <accordion-group ng-repeat="property in ctrl.class.properties track by property.internalId" identifier="property.internalId.uri">
