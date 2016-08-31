@@ -7,7 +7,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import {
   Predicate, PredicateListItem, Model, Type, DefinedBy,
-  AbstractPredicate, ExternalEntity
+  AbstractPredicate, ExternalEntity, Property, Class
 } from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
@@ -16,13 +16,19 @@ import { EditableForm } from '../form/editableEntityController';
 import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
+import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
+import { ClassService } from '../../services/classService';
+import { collectProperties } from '../../utils/array';
+import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
 export class SearchPredicateModal {
 
   /* @ngInject */
-  constructor(private $uibModal: IModalService) {
+  constructor(private $uibModal: IModalService,
+              private choosePredicateTypeModal: ChoosePredicateTypeModal,
+              private classService: ClassService) {
   }
 
   private openModal(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string, onlySelection: boolean) {
@@ -47,6 +53,24 @@ export class SearchPredicateModal {
 
   openForProperty(model: Model, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<ExternalEntity|Predicate> {
     return this.openModal(model, null, exclude, false);
+  }
+
+  openNewProperty(model: Model, klass: Class): IPromise<Property> {
+
+    const exclude = combineExclusions<PredicateListItem>(
+      createExistsExclusion(collectProperties(_.filter(klass.properties, p => p.isAttribute()), p => p.predicateId.uri)),
+      createDefinedByExclusion(model)
+    );
+
+    return this.openForProperty(model, exclude).then(predicate => {
+      if (predicate instanceof Predicate && predicate.normalizedType === 'property') {
+        return this.choosePredicateTypeModal.open().then(type => {
+          return this.classService.newProperty(predicate, type, model);
+        });
+      } else {
+        return this.classService.newProperty(predicate, predicate.normalizedType, model);
+      }
+    });
   }
 
   openWithOnlySelection(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<Predicate> {

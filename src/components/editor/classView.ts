@@ -3,22 +3,15 @@ import ILocationService = angular.ILocationService;
 import ILogService = angular.ILogService;
 import IQService = angular.IQService;
 import IScope = angular.IScope;
-import * as _ from 'lodash';
-import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassService } from '../../services/classService';
-import {
-  Class, GroupListItem, Model, PredicateListItem, Predicate,
-  LanguageContext
-} from '../../services/entities';
+import { Class, GroupListItem, Model, LanguageContext } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
-import { createDefinedByExclusion, createExistsExclusion, combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';
-import { collectProperties } from '../../utils/array';
 import { ErrorModal } from '../form/errorModal';
 
 mod.directive('classView', () => {
@@ -50,7 +43,6 @@ export class ClassViewController extends EditableEntityController<Class> {
               $log: ILogService,
               $location: ILocationService,
               private searchPredicateModal: SearchPredicateModal,
-              private choosePredicateTypeModal: ChoosePredicateTypeModal,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
               private classService: ClassService,
@@ -64,21 +56,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   addProperty() {
-    const exclude = combineExclusions<PredicateListItem>(
-      createExistsExclusion(collectProperties(_.filter(this.editableInEdit.properties, p => p.isAttribute()), p => p.predicateId.uri)),
-      createDefinedByExclusion(this.model)
-    );
-
-    this.searchPredicateModal.openForProperty(this.model, exclude)
-      .then(result => {
-        if (result instanceof Predicate && result.normalizedType === 'property') {
-          return this.choosePredicateTypeModal.open().then(type => {
-            return this.classService.newProperty(result, type, this.model);
-          });
-        } else {
-          return this.classService.newProperty(result, result.normalizedType, this.model);
-        }
-      })
+    this.searchPredicateModal.openNewProperty(this.model, this.editableInEdit)
       .then(property => {
         this.editableInEdit.addProperty(property);
         this.openPropertyId = property.internalId.uri;
