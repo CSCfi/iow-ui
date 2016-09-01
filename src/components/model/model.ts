@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { ClassService } from '../../services/classService';
-import { LanguageService } from '../../services/languageService';
+import { LanguageService, Localizer } from '../../services/languageService';
 import { LocationService } from '../../services/locationService';
 import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
@@ -73,6 +73,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     new Tab('association', () => this.associations, this)
   ];
 
+  private localizerProvider: () => Localizer;
+
   /* @ngInject */
   constructor(private $scope: IScope,
               private $location: ILocationService,
@@ -91,6 +93,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private sessionService: SessionService,
               public languageService: LanguageService) {
 
+    this.localizerProvider = () => languageService.createLocalizer(this.model);
     this._show = sessionService.show;
     this.init(new RouteData($routeParams));
 
@@ -175,7 +178,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   get selectableItemComparator() {
-    return comparingLocalizable<SelectableItem>(this.languageService.getModelLanguage(this.model), selectableItem => selectableItem.item.label);
+    return comparingLocalizable<SelectableItem>(this.localizerProvider(), selectableItem => selectableItem.item.label);
   }
 
   init(routeData: RouteData) {

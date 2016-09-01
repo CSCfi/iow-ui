@@ -1,7 +1,8 @@
 import Moment = moment.Moment;
 import { Localizable } from './entities';
 import { isDefined } from '../utils/object';
-import { Language, translate } from '../utils/language';
+import { translate } from '../utils/language';
+import { Localizer } from './languageService';
 
 export interface Comparator<T> {
   (lhs: T, rhs: T): number;
@@ -45,6 +46,11 @@ export function compareDates(l: Moment, r: Moment): number {
   });
 }
 
+export function compareLocalizables(localizer: Localizer, l: Localizable, r: Localizable) {
+  const language = localizer.language;
+  return compareStrings(translate(l, language).toLowerCase(), translate(r, language).toLowerCase());
+}
+
 export function reversed<T>(comparator: Comparator<T>): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => comparator(rhs, lhs));
 }
@@ -65,8 +71,8 @@ export function comparingDate<T>(extractor: (item: T) => Moment): ChainableCompa
   return makeChainable((lhs: T, rhs: T) => compareDates(extractor(lhs), extractor(rhs)));
 }
 
-export function comparingLocalizable<T>(language: Language, extractor: (item: T) => Localizable) {
-  return makeChainable((lhs: T, rhs: T) => compareStrings(translate(extractor(lhs), language), translate(extractor(rhs), language)));
+export function comparingLocalizable<T>(localizer: Localizer, extractor: (item: T) => Localizable) {
+  return makeChainable((lhs: T, rhs: T) => compareLocalizables(localizer, extractor(lhs), extractor(rhs)));
 }
 
 export function makeChainable<T>(comparator: Comparator<T>): ChainableComparator<T> {

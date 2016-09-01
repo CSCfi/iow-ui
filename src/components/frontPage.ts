@@ -11,7 +11,7 @@ import { GroupListItem, SearchResult, frontPageSearchLanguageContext, LanguageCo
 import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
 import { module as mod }  from './module';
-import { comparingString } from '../services/comparators';
+import { comparingLocalizable } from '../services/comparators';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -84,7 +84,7 @@ export class FrontPageController {
     if (text) {
       this.searchService.searchAnything(text)
         .then(results => {
-          results.sort(comparingString<SearchResult>(s => this.localizer.translateLabelAsLower(s)));
+          results.sort(comparingLocalizable<SearchResult>(this.localizer, s => s.label));
           this.searchResults = results;
         });
     } else {

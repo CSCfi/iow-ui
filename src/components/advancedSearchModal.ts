@@ -7,6 +7,7 @@ import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
 import { SearchResult, Type, frontPageSearchLanguageContext, LanguageContext } from '../services/entities';
 import { containsAny } from '../utils/array';
+import { comparingLocalizable } from '../services/comparators';
 
 
 export class AdvancedSearchModal {
@@ -60,7 +61,7 @@ class AdvancedSearchController {
 
   search() {
     this.searchResults = _.chain(this.apiSearchResults)
-      .sortBy(result => this.localizer.translateLabelAsLower(result))
+      .sort(comparingLocalizable<SearchResult>(this.localizer, result => result.label))
       .filter(result => this.typeFilter(result))
       .value();
   }

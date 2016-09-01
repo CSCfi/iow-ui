@@ -6,12 +6,13 @@ import IQService = angular.IQService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Localizable, Vocabulary, Type } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Vocabulary, Type } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
 import { any } from '../../utils/array';
 import { Uri } from '../../services/uri';
+import { localizableContains } from '../../utils/language';
 
 export class ConceptEditorModal {
 
@@ -50,7 +51,7 @@ export class ConceptEditorModalController {
   editInProgress = () => this.view.isEditing();
 
   view: ConceptViewController;
-  localizer: Localizer;
+  private localizer: Localizer;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -105,7 +106,7 @@ export class ConceptEditorModalController {
   }
 
   sort() {
-    const labelComparator = comparingLocalizable<{label: Localizable}>(this.localizer.language, definedBy => definedBy.label);
+    const labelComparator = comparingLocalizable<Concept>(this.localizer, definedBy => definedBy.label);
     this.concepts.sort(labelComparator);
     this.models.sort(labelComparator);
   }
@@ -145,7 +146,7 @@ export class ConceptEditorModalController {
   }
 
   private textFilter(concept: Concept): boolean {
-    return !this.searchText || this.localizedLabelAsLower(concept).includes(this.searchText.toLowerCase());
+    return !this.searchText || localizableContains(concept.label, this.searchText);
   }
 
   private modelFilter(concept: Concept): boolean {
@@ -160,10 +161,6 @@ export class ConceptEditorModalController {
     return !this.showConceptType
       || this.showConceptType === 'conceptSuggestion' && concept.isOfType(this.showConceptType)
       || this.showConceptType === 'concept' && !concept.isOfType('conceptSuggestion');
-  }
-
-  private localizedLabelAsLower(concept: Concept): string {
-    return this.localizer.translate(concept.label).toLowerCase();
   }
 
   selectItem(item: Concept) {

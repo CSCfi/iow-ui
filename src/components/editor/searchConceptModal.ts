@@ -6,9 +6,9 @@ import IQService = angular.IQService;
 import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
-import { LanguageService } from '../../services/languageService';
+import { LanguageService, Localizer } from '../../services/languageService';
 import { Vocabulary, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
-import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
@@ -97,6 +97,7 @@ class SearchConceptController {
   selectedItem: ConceptSearchResult|AddNewConcept;
   vocabularies: Vocabulary[];
   selectableVocabularies: Vocabulary[];
+  private localizer: Localizer;
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -112,6 +113,7 @@ class SearchConceptController {
               private conceptService: ConceptService,
               private gettextCatalog: gettextCatalog) {
 
+    this.localizer = languageService.createLocalizer(model);
     this.defineConceptTitle = type ? `Define concept for the ${newEntityCreation ? 'new ' : ''}${type}` : 'Search concept';
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
     this.labelTitle = `${_.capitalize(this.type)} label`;
@@ -122,11 +124,12 @@ class SearchConceptController {
 
     $scope.$watch(() => this.searchText, text => this.query(text).then(() => this.search()));
     $scope.$watch(() => this.selectedVocabulary, () => this.query(this.searchText).then(() => this.search()));
+    $scope.$watch(() => this.localizer.language, () => this.query(this.searchText).then(() => this.search()));
     $scope.$watch(() => this.queryResults, results => {
       if (results) {
         this.selectableVocabularies = _.filter(vocabularies, vocabulary => {
           for (const concept of results) {
-            const exactMatch = this.localizedLabelAsLower(concept) === this.searchText.toLowerCase();
+            const exactMatch = this.localizer.translate(concept.label).toLowerCase() === this.searchText.toLowerCase();
             if (exactMatch && concept.vocabulary.id.equals(vocabulary.id)) {
               return false;
             }
@@ -149,7 +152,7 @@ class SearchConceptController {
 
   get vocabularyComparator() {
     return comparingBoolean<Vocabulary>(vocabulary => !vocabulary.local)
-      .andThen(comparingLocalizable<Vocabulary>(this.languageService.UILanguage, vocabulary => vocabulary.title));
+      .andThen(comparingLocalizable<Vocabulary>(this.localizer, vocabulary => vocabulary.title));
   }
 
   isSelectionConcept() {
@@ -188,8 +191,8 @@ class SearchConceptController {
       );
 
       conceptSearchResult.sort(
-          comparingString(this.localizedLabelAsLower.bind(this))
-            .andThen(comparingBoolean((item: ConceptSearchResult) => item.suggestion)));
+          comparingLocalizable<ConceptSearchResult>(this.localizer, item => item.label)
+            .andThen(comparingBoolean<ConceptSearchResult>(item => item.suggestion)));
 
       this.searchResults = result.concat(conceptSearchResult);
     } else {
@@ -197,10 +200,6 @@ class SearchConceptController {
     }
 
     this.loadingResults = !isDefined(this.queryResults);
-  }
-
-  private localizedLabelAsLower(concept: ConceptSearchResult): string {
-    return this.languageService.translate(concept.label, this.model).toLowerCase();
   }
 
   private showVocabularyFilter(concept: ConceptSearchResult) {

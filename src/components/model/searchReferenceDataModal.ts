@@ -82,7 +82,7 @@ export class SearchReferenceDataModalController {
         .map(referenceData => referenceData.groups)
         .flatten<ReferenceDataGroup>()
         .uniq(group => group.id.uri)
-        .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer.language, group => group.title))
+        .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer, group => group.title))
         .value();
 
       if (this.showGroup && all(this.referenceDataGroups, group => !group.id.equals(this.showGroup.id))) {
@@ -131,8 +131,8 @@ export class SearchReferenceDataModalController {
       );
 
       referenceDataSearchResults.sort(
-        comparingBoolean((referenceData: ReferenceData) => !!this.exclude(referenceData))
-          .andThen(comparingLocalizable(this.localizer.language, (referenceData: ReferenceData) => referenceData.title)));
+        comparingBoolean<ReferenceData>(referenceData => !!this.exclude(referenceData))
+          .andThen(comparingLocalizable<ReferenceData>(this.localizer, referenceData => referenceData.title)));
 
       this.searchResults = result.concat(referenceDataSearchResults);
     }

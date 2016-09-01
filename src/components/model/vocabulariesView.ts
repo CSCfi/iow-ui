@@ -63,11 +63,10 @@ class VocabulariesViewController {
   }
 
   addVocabulary() {
-    const language = this.languageService.getModelLanguage(this.model);
     const vocabularies = collectProperties(this.model.vocabularies, vocabulary => vocabulary.id.uri);
     const exclude = createExistsExclusion(vocabularies);
 
-    this.searchVocabularyModal.open(language, exclude)
+    this.searchVocabularyModal.open(this.model, exclude)
       .then((vocabulary: Vocabulary) => {
         this.model.addVocabulary(vocabulary);
         this.expanded = true;

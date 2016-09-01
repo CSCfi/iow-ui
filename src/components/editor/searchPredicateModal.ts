@@ -13,13 +13,14 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import { comparingString, comparingBoolean, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from '../../services/classService';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
+import { localizableContains } from '../../utils/language';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -133,7 +134,7 @@ export class SearchPredicateController {
       this.models = this.models.concat(_.chain(this.predicates)
         .map(predicate => predicate.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<DefinedBy>(languageService.getModelLanguage(model), definedBy => definedBy.label))
+        .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label))
         .value());
 
       this.types = _.chain(this.predicates)
@@ -202,8 +203,8 @@ export class SearchPredicateController {
     );
 
     predicateSearchResult.sort(
-      comparingBoolean((item: PredicateListItem) => !!this.exclude(item))
-        .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
+      comparingBoolean<PredicateListItem>(item => !!this.exclude(item))
+        .andThen(comparingLocalizable<PredicateListItem>(this.localizer, item => item.label)));
 
     this.searchResults = result.concat(predicateSearchResult);
   }
@@ -302,12 +303,8 @@ export class SearchPredicateController {
     return this.searchText && (this.typeSelectable || this.type === 'association');
   }
 
-  private localizedLabelAsLower(predicate: PredicateListItem): string {
-    return this.localizer.translate(predicate.label).toLowerCase();
-  }
-
   private textFilter(predicate: PredicateListItem): boolean {
-    return !this.searchText || this.localizedLabelAsLower(predicate).includes(this.searchText.toLowerCase());
+    return !this.searchText || localizableContains(predicate.label, this.searchText);
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {

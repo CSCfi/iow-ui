@@ -10,11 +10,12 @@ import {
 } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { comparingBoolean, comparingString, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
+import { localizableContains } from '../../utils/language';
 
 export const noExclude = (item: AbstractClass) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';
@@ -83,7 +84,7 @@ class SearchClassController {
               public model: Model,
               public exclude: (klass: AbstractClass) => string,
               public onlySelection: boolean,
-              private textForSelection: (klass: Class) => string,
+              public textForSelection: (klass: Class) => string,
               private searchConceptModal: SearchConceptModal,
               private gettextCatalog: gettextCatalog) {
 
@@ -102,7 +103,7 @@ class SearchClassController {
       this.models = this.models.concat(_.chain(this.classes)
         .map(klass => klass.definedBy)
         .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<DefinedBy>(languageService.getModelLanguage(this.model), definedBy => definedBy.label))
+        .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label))
         .value());
 
       this.search();
@@ -157,8 +158,8 @@ class SearchClassController {
     );
 
     classSearchResult.sort(
-      comparingBoolean((item: ClassListItem) => !!this.exclude(item))
-        .andThen(comparingString(this.localizedLabelAsLower.bind(this))));
+      comparingBoolean<ClassListItem>(item => !!this.exclude(item))
+        .andThen(comparingLocalizable<ClassListItem>(this.localizer, item => item.label)));
 
     this.searchResults = result.concat(classSearchResult);
   }
@@ -233,12 +234,8 @@ class SearchClassController {
       .then(conceptCreation => this.$uibModalInstance.close(conceptCreation));
   }
 
-  private localizedLabelAsLower(klass: ClassListItem): string {
-    return this.localizer.translate(klass.label).toLowerCase();
-  }
-
   private textFilter(klass: ClassListItem): boolean {
-    return !this.searchText || this.localizedLabelAsLower(klass).includes(this.searchText.toLowerCase());
+    return !this.searchText || localizableContains(klass.label, this.searchText);
   }
 
   private modelFilter(klass: ClassListItem): boolean {

@@ -1,5 +1,9 @@
 import { Localizable, LanguageContext } from './entities';
-import { Language, availableUILanguages, availableLanguages, translate, UILanguage } from '../utils/language';
+import {
+  Language, availableUILanguages, availableLanguages, translate, UILanguage,
+  Localizer
+} from '../utils/language';
+export { Localizer } from '../utils/language';
 import { SessionService } from './sessionService';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
@@ -89,11 +93,11 @@ export class LanguageService {
   }
 
   createLocalizer(context: LanguageContext) {
-    return new Localizer(this, context);
+    return new DefaultLocalizer(this, context);
   }
 }
 
-export class Localizer {
+export class DefaultLocalizer implements Localizer {
   constructor(private languageService: LanguageService, public context: LanguageContext) {
   }
 
@@ -103,9 +107,5 @@ export class Localizer {
 
   translate(data: Localizable): string {
     return this.languageService.translate(data, this.context);
-  }
-
-  translateLabelAsLower(data: { label: Localizable }) {
-    return this.translate(data.label).toLowerCase();
   }
 }

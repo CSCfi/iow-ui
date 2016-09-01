@@ -4,10 +4,10 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import { ConceptService } from '../../services/conceptService';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
-import { Language } from '../../utils/language';
+import { localizableContains } from '../../utils/language';
 import { isDefined } from '../../utils/object';
-import { Vocabulary } from '../../services/entities';
-import { LanguageService } from '../../services/languageService';
+import { Vocabulary, LanguageContext } from '../../services/entities';
+import { LanguageService, Localizer } from '../../services/languageService';
 
 const noExclude = (vocabulary: Vocabulary) => <string> null;
 
@@ -16,7 +16,7 @@ export class SearchVocabularyModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(language: Language, exclude: (vocabulary: Vocabulary) => string = noExclude): IPromise<Vocabulary> {
+  open(context: LanguageContext, exclude: (vocabulary: Vocabulary) => string = noExclude): IPromise<Vocabulary> {
     return this.$uibModal.open({
       template: require('./searchVocabularyModal.html'),
       size: 'medium',
@@ -25,7 +25,7 @@ export class SearchVocabularyModal {
       backdrop: true,
       resolve: {
         exclude: () => exclude,
-        language: () => language
+        context: () => context
       }
     }).result;
   }
@@ -37,6 +37,7 @@ class SearchVocabularyController {
   vocabularies: Vocabulary[];
   searchText: string = '';
   loadingResults: boolean;
+  private localizer: Localizer;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -44,8 +45,9 @@ class SearchVocabularyController {
               public exclude: (vocabulary: Vocabulary) => string,
               private conceptService: ConceptService,
               private languageService: LanguageService,
-              private language: Language) {
+              context: LanguageContext) {
 
+    this.localizer = languageService.createLocalizer(context);
     this.loadingResults = true;
 
     conceptService.getAllVocabularies().then(vocabularies => {
@@ -69,8 +71,8 @@ class SearchVocabularyController {
       );
 
       this.searchResults.sort(
-        comparingBoolean((vocabulary: Vocabulary) => !!this.exclude(vocabulary))
-          .andThen(comparingLocalizable(this.language, (vocabulary: Vocabulary) => vocabulary.title)));
+        comparingBoolean<Vocabulary>(vocabulary => !!this.exclude(vocabulary))
+          .andThen(comparingLocalizable<Vocabulary>(this.localizer, vocabulary => vocabulary.title)));
     }
 
     this.loadingResults = !isDefined(this.vocabularies);
@@ -82,12 +84,8 @@ class SearchVocabularyController {
     }
   }
 
-  private localizedLabelAsLower(vocabulary: Vocabulary): string {
-    return this.languageService.translate(vocabulary.title).toLowerCase();
-  }
-
   private textFilter(vocabulary: Vocabulary): boolean {
-    return !this.searchText || this.localizedLabelAsLower(vocabulary).includes(this.searchText.toLowerCase());
+    return !this.searchText || localizableContains(vocabulary.title, this.searchText);
   }
 
   private excludedFilter(vocabulary: Vocabulary): boolean {

@@ -1,4 +1,4 @@
-import { Localizable } from '../services/entities';
+import { Localizable, LanguageContext } from '../services/entities';
 import { hasValue } from './object';
 
 export type Language = 'ab' | 'aa' | 'af' | 'ak' | 'sq' | 'am' | 'ar' | 'an' | 'hy' | 'as' | 'av' | 'ae' | 'ay'
@@ -37,6 +37,11 @@ export type UILanguage = 'fi' | 'en';
 
 export const availableUILanguages: UILanguage[] = ['fi', 'en'];
 
+export interface Localizer {
+  language: Language;
+  context: LanguageContext;
+  translate(localizable: Localizable): string;
+}
 
 function localize(localizable: Localizable, lang: Language, showLang: boolean): string {
 
