@@ -4,8 +4,8 @@ import IPromise = angular.IPromise;
 import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchService } from '../services/searchService';
-import { LanguageService } from '../services/languageService';
-import { SearchResult, Type, frontPageSearchLanguageContext } from '../services/entities';
+import { LanguageService, Localizer } from '../services/languageService';
+import { SearchResult, Type, frontPageSearchLanguageContext, LanguageContext } from '../services/entities';
 import { containsAny } from '../utils/array';
 
 
@@ -33,13 +33,15 @@ class AdvancedSearchController {
   types: Type[] = ['model', 'class', 'shape', 'attribute', 'association'];
   searchText: string = '';
   searchTypes: Type[] = _.clone(this.types);
-  context = frontPageSearchLanguageContext;
+  private localizer: Localizer;
 
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
               private searchService: SearchService,
               private languageService: LanguageService) {
+
+    this.localizer = languageService.createLocalizer(frontPageSearchLanguageContext);
 
     $scope.$watch(() => this.searchText, text => {
       if (text) {
@@ -52,9 +54,13 @@ class AdvancedSearchController {
     $scope.$watch(() => this.searchTypes, () => this.search(), true);
   }
 
+  get context(): LanguageContext {
+    return this.localizer.context;
+  }
+
   search() {
     this.searchResults = _.chain(this.apiSearchResults)
-      .sortBy(result => this.localizedLabelAsLower(result))
+      .sortBy(result => this.localizer.translateLabelAsLower(result))
       .filter(result => this.typeFilter(result))
       .value();
   }
@@ -64,10 +70,6 @@ class AdvancedSearchController {
       this.$uibModalInstance.close(searchResult);
     }
   };
-
-  private localizedLabelAsLower(searchResult: SearchResult) {
-    return this.languageService.translate(searchResult.label).toLowerCase();
-  }
 
   private typeFilter(searchResult: SearchResult) {
     return containsAny(searchResult.type, this.searchTypes);

@@ -104,4 +104,8 @@ export class Localizer {
   translate(data: Localizable): string {
     return this.languageService.translate(data, this.context);
   }
+
+  translateLabelAsLower(data: { label: Localizable }) {
+    return this.translate(data.label).toLowerCase();
+  }
 }

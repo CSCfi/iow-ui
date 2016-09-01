@@ -5,12 +5,13 @@ import _ = require('lodash');
 import { LocationService } from '../services/locationService';
 import { GroupService } from '../services/groupService';
 import { SearchService } from '../services/searchService';
-import { LanguageService } from '../services/languageService';
+import { LanguageService, Localizer } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
-import { GroupListItem, SearchResult, frontPageSearchLanguageContext } from '../services/entities';
+import { GroupListItem, SearchResult, frontPageSearchLanguageContext, LanguageContext } from '../services/entities';
 import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
 import { module as mod }  from './module';
+import { comparingString } from '../services/comparators';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -42,7 +43,7 @@ export class FrontPageController {
   groups: GroupListItem[];
   searchText: string = '';
   searchResults: SearchResult[] = [];
-  context = frontPageSearchLanguageContext;
+  private localizer: Localizer;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -54,6 +55,7 @@ export class FrontPageController {
               private advancedSearchModal: AdvancedSearchModal,
               private maintenanceModal: MaintenanceModal) {
 
+    this.localizer = languageService.createLocalizer(frontPageSearchLanguageContext);
     locationService.atFrontPage();
 
     groupService.getAllGroups().then(groups => {
@@ -61,6 +63,10 @@ export class FrontPageController {
     }, error => maintenanceModal.open(error));
 
     $scope.$watch(() => this.searchText, text => this.search(text));
+  }
+
+  get context(): LanguageContext {
+    return this.localizer.context;
   }
 
   get frontPageImage() {
@@ -78,6 +84,7 @@ export class FrontPageController {
     if (text) {
       this.searchService.searchAnything(text)
         .then(results => {
+          results.sort(comparingString<SearchResult>(s => this.localizer.translateLabelAsLower(s)));
           this.searchResults = results;
         });
     } else {
