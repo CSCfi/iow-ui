@@ -3,7 +3,7 @@ import { AddEditNamespaceModal } from './addEditNamespaceModal.po';
 
 export class NamespaceModal extends SearchModal {
 
-  createNewNamespaceButton = this.element.$('modal-body button');
+  createNewNamespaceButton = this.element.$('modal-body button.pull-right');
 
   createNewNamespace() {
     this.createNewNamespaceButton.click();
