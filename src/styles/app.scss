@@ -648,6 +648,11 @@ $input-select: 80px;
 }
 
 modal-body {
+
+  model-language-chooser {
+    margin-bottom: 10px; display: inline-block
+  }
+
   .editable-wrap {
 
     .form-control {
