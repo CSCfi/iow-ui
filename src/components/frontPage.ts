@@ -7,7 +7,7 @@ import { GroupService } from '../services/groupService';
 import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
-import { GroupListItem, SearchResult } from '../services/entities';
+import { GroupListItem, SearchResult, frontPageSearchLanguageContext } from '../services/entities';
 import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
 import { module as mod }  from './module';
@@ -42,10 +42,10 @@ export class FrontPageController {
   groups: GroupListItem[];
   searchText: string = '';
   searchResults: SearchResult[] = [];
+  context = frontPageSearchLanguageContext;
 
   /* @ngInject */
   constructor(private $scope: IScope,
-              private $log: ILogService,
               private $location: ILocationService,
               private locationService: LocationService,
               private groupService: GroupService,
@@ -76,7 +76,7 @@ export class FrontPageController {
 
   search(text: string) {
     if (text) {
-      this.searchService.searchAnything(text, this.languageService.getModelLanguage())
+      this.searchService.searchAnything(text)
         .then(results => {
           this.searchResults = results;
         });

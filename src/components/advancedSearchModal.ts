@@ -5,7 +5,7 @@ import IScope = angular.IScope;
 import * as _ from 'lodash';
 import { SearchService } from '../services/searchService';
 import { LanguageService } from '../services/languageService';
-import { SearchResult, Type } from '../services/entities';
+import { SearchResult, Type, frontPageSearchLanguageContext } from '../services/entities';
 import { containsAny } from '../utils/array';
 
 
@@ -33,6 +33,7 @@ class AdvancedSearchController {
   types: Type[] = ['model', 'class', 'shape', 'attribute', 'association'];
   searchText: string = '';
   searchTypes: Type[] = _.clone(this.types);
+  context = frontPageSearchLanguageContext;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -42,7 +43,7 @@ class AdvancedSearchController {
 
     $scope.$watch(() => this.searchText, text => {
       if (text) {
-        this.searchService.searchAnything(text, this.languageService.getModelLanguage())
+        this.searchService.searchAnything(text)
         .then(results => this.apiSearchResults = results)
         .then(() => this.search());
       }

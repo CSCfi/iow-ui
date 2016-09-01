@@ -9,7 +9,10 @@ import { config } from '../config';
 import { Uri, Url, Urn, RelativeUrl } from './uri';
 import { comparingDate, comparingNumber } from './comparators';
 import { DataType } from './dataTypes';
-import { Language, hasLocalization, createConstantLocalizable } from '../utils/language';
+import {
+  Language, hasLocalization, createConstantLocalizable,
+  availableUILanguages
+} from '../utils/language';
 import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual } from '../utils/array';
 import { Iterable } from '../utils/iterable';
 import { glyphIconClassForType, indexById } from '../utils/entity';
@@ -110,6 +113,11 @@ export interface LanguageContext {
   id: Uri;
   language: Language[];
 }
+
+export const frontPageSearchLanguageContext: LanguageContext = {
+  id: new Uri('http://iow/frontpage', {}),
+  language: availableUILanguages
+};
 
 export abstract class GraphNodes<T extends GraphNode> {
 

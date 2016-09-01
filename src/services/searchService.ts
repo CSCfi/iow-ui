@@ -10,12 +10,12 @@ export class SearchService {
   constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
-  search(graph: string, search: string, language: Language): IPromise<SearchResult[]> {
+  search(graph: string, search: string, language?: Language): IPromise<SearchResult[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('search'), {params: {graph, search, lang: language}})
       .then(response => this.entities.deserializeSearch(response.data));
   }
 
-  searchAnything(search: string, language: Language): IPromise<SearchResult[]> {
+  searchAnything(search: string, language?: Language): IPromise<SearchResult[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('search'), {
         params: {
           graph: 'default',
