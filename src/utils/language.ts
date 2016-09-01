@@ -123,6 +123,10 @@ export function anyLocalization(predicate: (localized: string) => boolean, local
   return false;
 }
 
+export function localizableContains(localizable: Localizable, searchString: string) {
+  return anyLocalization(localized => localized.toLowerCase().includes(searchString.toLowerCase()), localizable);
+}
+
 export function hasLocalization(localizable: Localizable) {
   return !!localizable && hasValue(localizable);
 }
