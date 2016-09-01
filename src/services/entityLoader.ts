@@ -142,7 +142,7 @@ export class EntityLoader {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
     this.loggedIn = this.reset.then(() => this.login());
-    this.vocabularies = this.reset.then(() => this.conceptService.getAllVocabularies('fi'));
+    this.vocabularies = this.reset.then(() => this.conceptService.getAllVocabularies());
   }
 
   login(): IPromise<User> {

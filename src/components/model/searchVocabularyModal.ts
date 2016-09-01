@@ -48,7 +48,7 @@ class SearchVocabularyController {
 
     this.loadingResults = true;
 
-    conceptService.getAllVocabularies(language).then(vocabularies => {
+    conceptService.getAllVocabularies().then(vocabularies => {
       this.vocabularies = vocabularies;
       this.search();
     });

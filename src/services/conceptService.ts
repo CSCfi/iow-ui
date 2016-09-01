@@ -24,8 +24,8 @@ export class ConceptService {
   constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
-  getAllVocabularies(lang: Language): IPromise<Vocabulary[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSchemes'), {params: {lang}})
+  getAllVocabularies(): IPromise<Vocabulary[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSchemes'))
       .then(response => this.entities.deserializeVocabularies(response.data));
   }
 
