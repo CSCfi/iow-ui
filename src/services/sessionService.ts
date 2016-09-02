@@ -5,6 +5,7 @@ import { Show } from '../components/contracts';
 const modelLanguageKey = 'modelLanguage';
 const uiLanguageKey = 'UILanguage';
 const showKey = 'show';
+const selectionWidthKey = 'selectionWidth';
 
 export class SessionService {
 
@@ -39,5 +40,13 @@ export class SessionService {
 
   set show(value: Show) {
     this.set(showKey, value);
+  }
+
+  get selectionWidth(): number {
+    return this.get<number>(selectionWidthKey);
+  }
+
+  set selectionWidth(value: number) {
+    this.set(selectionWidthKey, value);
   }
 }

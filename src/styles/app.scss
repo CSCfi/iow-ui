@@ -532,8 +532,43 @@ ul.errors {
   min-height: 100vh;
   padding: 10px 0;
 
-  >.col-md-1, >.col-md-5, >.col-md-7, >.col-md-11, >.col-md-12 {
-    padding: 0 0 0 10px;
+  divider {
+    div {
+      @media (max-width: $screen-md-max) {
+        display: none;
+      }
+
+      display: inline-block;
+      float: left;
+      height: 100vh;
+      width: 5px;
+
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &:hover {
+        cursor: col-resize;
+        border: 1px dashed;
+      }
+    }
+  }
+
+  class-view, predicate-view, visualization-view {
+    float: left;
+    display: inline-block;
+
+    @media (max-width: $screen-md-max) {
+      width: 100% !important;
+    }
+  }
+
+  visualization-view {
+    @media (max-width: $screen-md-max) {
+      padding-left: 5px !important;
+      padding-right: 0 !important;
+    }
   }
 }
 
@@ -580,7 +615,6 @@ a {
   cursor: pointer;
 }
 
-$input-max-width: 500px;
 $input-select: 80px;
 
 .input-select {
@@ -594,13 +628,11 @@ $input-select: 80px;
   editable {
     float: left;
     width: calc(50% + 7.5px);
-    max-width: calc(#{$input-max-width} / 2 + 7.5px);
     padding-right: 15px;
   }
 
   editable:last-child {
     width: calc(50% - 7.5px);
-    max-width: calc(#{$input-max-width} / 2 - 7.5px);
     padding-right: 0;
   }
 }
@@ -638,10 +670,8 @@ $input-select: 80px;
   }
 
   .form-control {
-    max-width: $input-max-width;
 
     &.with-button {
-      max-width: calc(#{$input-max-width} - #{$input-select});
       width: calc(100% - #{$input-select});
     }
   }
@@ -701,7 +731,6 @@ modal-body {
   .selection-form {
     min-height: calc(100vh - 134px);
     padding-right: 40px;
-    max-width: 1100px;
 
     property-view .row {
       padding-right: 10px;
@@ -750,10 +779,6 @@ modal-body {
     position: absolute;
     z-index: 20;
     padding-top: 10px;
-
-    button:focus {
-      outline:0;
-    }
 
     .focus-indicator {
       @include no-select;
@@ -826,7 +851,9 @@ modal-body {
 }
 
 visualization-view ajax-loading-indicator {
-  width: calc(100% - 12px);
+  display: inline-block;
+  position: relative;
+  top: 50%;
 }
 
 .search-results ajax-loading-indicator {
@@ -874,6 +901,8 @@ ajax-loading-indicator-small {
   padding: 15px;
   border-bottom: solid 1px #ddd;
   font-size: 26px;
+  height: 60px;
+
   h3 {
     margin: 0;
   }

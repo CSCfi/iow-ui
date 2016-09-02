@@ -13,6 +13,7 @@ export default mod.name;
 import './editableRootClass';
 import './conceptForm';
 import './conceptView';
+import './divider';
 import './model';
 import './modelForm';
 import './modelView';

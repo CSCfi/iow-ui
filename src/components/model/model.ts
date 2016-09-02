@@ -27,6 +27,7 @@ import IScope = angular.IScope;
 import ILocationService = angular.ILocationService;
 import IRouteParamsService = angular.route.IRouteParamsService;
 import IQService = angular.IQService;
+import IWindowService = angular.IWindowService;
 import { MaintenanceModal } from '../maintenance';
 import { Show, ChangeNotifier, ChangeListener, SearchClassType } from './../contracts';
 import { Uri } from '../../services/uri';
@@ -64,6 +65,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   classes: SelectableItem[] = [];
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
+  selectionWidth: number;
   private _show: Show;
 
   activeTab = 0;
@@ -532,29 +534,25 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   classForSelection() {
-    switch (this.show) {
-      case Show.Both:
-        return 'col-md-7';
-      case Show.Selection:
-        return 'col-md-12';
-      case Show.Visualization:
-        return 'hide';
-      default:
-        throw new Error('Unsupported show: ' + this.show);
-    }
+    return this.show === Show.Visualization ? 'hide' : '';
+  }
+
+  styleForSelection() {
+    return {
+      'padding-left': '5px',
+      width: this.show === Show.Both ? `${this.selectionWidth + 5}px` : '100%'
+    };
   }
 
   classForVisualization() {
-    switch (this.show) {
-      case Show.Both:
-        return 'col-md-5';
-      case Show.Selection:
-        return 'hide';
-      case Show.Visualization:
-        return 'col-md-12';
-      default:
-        throw new Error('Unsupported show: ' + this.show);
-    }
+    return this.show === Show.Selection ? 'hide' : '';
+  }
+
+  styleForVisualization() {
+    return {
+      'padding-left': this.show === Show.Visualization ? '5px' : 0,
+      width: this.show === Show.Both ? `calc(100% - ${this.selectionWidth + 10}px)` : '100%'
+    };
   }
 }
 

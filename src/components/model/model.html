@@ -27,8 +27,30 @@
   </div>
 
   <div class="model-panel--right">
-    <class-view ng-if="ctrl.selection.isClass()" class="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></class-view>
-    <predicate-view ng-if="ctrl.selection.isPredicate()" predicate="ctrl.selection" model="ctrl.model" model-controller="ctrl" show="ctrl.show" ng-class="ctrl.classForSelection()"></predicate-view>
-    <visualization-view ng-if="ctrl.model" selection="ctrl.selection" model="ctrl.model" show="ctrl.show" ng-class="ctrl.classForVisualization()" change-notifier="ctrl"></visualization-view>
+    <class-view ng-if="ctrl.selection.isClass()"
+                class="ctrl.selection"
+                model="ctrl.model"
+                model-controller="ctrl"
+                show="ctrl.show"
+                ng-style="ctrl.styleForSelection()"
+                ng-class="ctrl.classForSelection()"></class-view>
+
+    <predicate-view ng-if="ctrl.selection.isPredicate()"
+                    predicate="ctrl.selection"
+                    model="ctrl.model"
+                    model-controller="ctrl"
+                    show="ctrl.show"
+                    ng-style="ctrl.styleForSelection()"
+                    ng-class="ctrl.classForSelection()"></predicate-view>
+
+    <divider ng-if="ctrl.show === 1" selection-width="ctrl.selectionWidth"></divider>
+
+    <visualization-view ng-if="ctrl.model"
+                        selection="ctrl.selection"
+                        model="ctrl.model"
+                        show="ctrl.show"
+                        ng-style="ctrl.styleForVisualization()"
+                        ng-class="ctrl.classForVisualization()"
+                        change-notifier="ctrl"></visualization-view>
   </div>
 </div>
