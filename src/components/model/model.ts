@@ -40,7 +40,6 @@ import {
   createExistsExclusion
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
-import { Language } from '../../utils/language';
 import { SessionService } from '../../services/sessionService';
 import { isDefined } from '../../utils/object';
 
@@ -56,7 +55,7 @@ mod.directive('model', () => {
 
 export class ModelController implements ChangeNotifier<Class|Predicate> {
 
-  loading: boolean;
+  loading = true;
   views: View[] = [];
   changeListeners: ChangeListener<Class|Predicate>[] = [];
   selectedItem: WithIdAndType;
@@ -114,12 +113,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
 
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
-      if (!matchesIdentity(newModel, oldModel) || (oldModel && oldModel.unsaved && newModel && !newModel.unsaved)) {
-        this.updateLocation();
-      }
-
-      // new model creation cancelled
-      if (oldModel && !newModel) {
+      if (oldModel && !newModel) { // model removed
         $location.path('/group');
         $location.search({urn: oldModel.groupId.uri});
       }
@@ -184,32 +178,19 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   init(routeData: RouteData) {
-    const loadingPromises: IPromise<any>[] = [];
 
-    if (routeData.newModel) {
-      loadingPromises.push(this.updateNewModel(routeData.newModel));
+    const modelChanged = !this.model || this.model.id.notEquals(routeData.existingModelId);
+
+    if (modelChanged) {
+      this.loading = true;
+      this.updateModelById(routeData.existingModelId)
+        .then(() => this.$q.all([this.selectRouteOrDefault(routeData), this.updateSelectables(false)]))
+        .then(() => this.updateLocation())
+        .then(() => this.loading = false);
     } else {
-      if (!this.model || this.model.id.notEquals(routeData.existingModelId)) {
-        this.loading = true;
-        loadingPromises.push(
-          this.updateModelById(routeData.existingModelId)
-            .then(updated => {
-              const afterModelPromises = [this.selectRouteOrDefault(routeData)];
-              if (updated) {
-                afterModelPromises.push(this.updateSelectables(false));
-              }
-              return this.$q.all(afterModelPromises);
-            })
-        );
-      } else {
-        loadingPromises.push(this.selectRouteOrDefault(routeData));
-      }
+      this.selectRouteOrDefault(routeData)
+        .then(() => this.updateLocation());
     }
-
-    this.$q.all(loadingPromises).then(() => {
-      this.loading = false;
-      this.updateLocation();
-    });
   }
 
   getUsedNamespaces(): Set<string> {
@@ -271,21 +252,19 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updateLocation() {
-    if (!this.loading && this.model) {
+    if (this.model) {
       this.locationService.atModel(this.model, this.selection);
 
-      if (!this.model.unsaved) {
-        const newSearch: any = {urn: this.model.id.uri};
-        if (this.selection) {
-          newSearch[this.selection.selectionType] = this.selection.id.uri;
-        }
+      const newSearch: any = {urn: this.model.id.uri};
+      if (this.selection) {
+        newSearch[this.selection.selectionType] = this.selection.id.uri;
+      }
 
-        const search = _.clone(this.$location.search());
-        delete search.property;
+      const search = _.clone(this.$location.search());
+      delete search.property;
 
-        if (!_.isEqual(search, newSearch)) {
-          this.$location.search(newSearch);
-        }
+      if (!_.isEqual(search, newSearch)) {
+        this.$location.search(newSearch);
       }
     }
   }
@@ -487,22 +466,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updateModelById(modelId: Uri) {
-    if (!this.model || this.model.id.notEquals(modelId)) {
-      return this.modelService.getModelByUrn(modelId)
-        .then(model => this.updateModel(model))
-        .then(model => true, err => this.maintenanceModal.open(err));
-    } else {
-      return this.$q.when(false);
-    }
-  }
-
-  private updateNewModel(newModel: {prefix: string, label: string, groupId: Uri, language: Language[], type: Type}) {
-    return this.modelService.newModel(newModel.prefix, newModel.label, newModel.groupId, newModel.language, newModel.type)
-      .then(model => this.updateModel(model));
-  }
-
-  private updateModel(model: Model) {
-    return this.$q.when(this.model = model);
+    return this.modelService.getModelByUrn(modelId)
+      .then(model => this.model = model)
+      .then(model => true, err => this.maintenanceModal.open(err));
   }
 
   private updateSelectables(invalidateCaches: boolean): IPromise<any> {
@@ -563,14 +529,6 @@ class RouteData {
   constructor(private params: any) {
     if (params.urn) {
       this.existingModelId = new Uri(params.urn, {});
-    }
-  }
-
-  get newModel() {
-    if (this.params.label && this.params.prefix && this.params.group && this.params.type && this.params.language) {
-      return {label: this.params.label, prefix: this.params.prefix, language: this.params.language, groupId: new Uri(this.params.group, {}), type: this.params.type};
-    } else {
-      return null;
     }
   }
 

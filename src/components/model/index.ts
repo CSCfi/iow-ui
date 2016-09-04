@@ -15,6 +15,7 @@ import './conceptForm';
 import './conceptView';
 import './divider';
 import './model';
+import './newModel';
 import './modelForm';
 import './modelView';
 import './vocabulariesView';

@@ -41,7 +41,9 @@ export class ModelViewController extends EditableEntityController<Model> {
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, errorModal, userService);
 
-    this.modelController.registerView(this);
+    if (this.modelController) {
+      this.modelController.registerView(this);
+    }
 
     $scope.$watch(() => this.isEditing(), editing => {
       if (editing) {
