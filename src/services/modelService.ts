@@ -53,6 +53,14 @@ export class ModelService {
       .then(response => this.entities.deserializeModel(response.data, urn));
   }
 
+  // FIXME: Temporary implementation before proper api
+  mapPrefixToId(prefix: string) {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('model'))
+      .then(response => this.entities.deserializeModelList(response.data))
+      .then(models => models.find(model => model.prefix === prefix))
+      .then(model => model.id);
+  }
+
   createModel(model: Model): IPromise<any> {
     return this.$http.put<{ identifier: Urn }>(config.apiEndpointWithName('model'), model.serialize(), { params: { id: model.id.uri, group: model.group.id.uri } })
       .then(response => {
