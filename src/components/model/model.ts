@@ -495,14 +495,24 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       });
   }
 
-  private updateSelectionByTypeAndId(selection: WithIdAndType) {
+  // TODO remove retrying when data is coherent
+  private updateSelectionByTypeAndId(selection: WithIdAndType, isRetry: boolean = false): IPromise<any> {
 
     // set selected item also here for showing selection before entity actually is loaded
     this.selectedItem = selection;
 
     if (selection) {
       return this.fetchEntityByTypeAndId(selection)
-        .then(entity => this.updateSelection(entity), err => this.updateSelection(null));
+        .then(entity => {
+          if (!entity && !isRetry) {
+            return this.updateSelectionByTypeAndId({
+              id: selection.id,
+              selectionType: selection.selectionType === 'class' ? 'predicate' : 'class'
+            }, true);
+          } else {
+            return this.updateSelection(entity)
+          }
+        });
     } else {
       return this.$q.when(this.updateSelection(null));
     }
