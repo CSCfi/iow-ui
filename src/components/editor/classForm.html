@@ -48,7 +48,7 @@
       </div>
 
       <accordion open-id="ctrl.openPropertyId" drag-sortable="ctrl.class.properties" drag-disabled="!ctrl.isEditing()" on-reorder="ctrl.onPropertyReorder">
-        <accordion-group ng-repeat="property in ctrl.class.properties track by property.internalId" identifier="property.internalId.uri">
+        <accordion-group ng-repeat="property in ctrl.class.properties track by property.internalId" identifier="property.internalId.uuid">
           <accordion-heading>
             <div class="panel-heading" drag-sortable-item>
               <h4 class="panel-title">

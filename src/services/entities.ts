@@ -17,7 +17,7 @@ import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual }
 import { Iterable } from '../utils/iterable';
 import { glyphIconClassForType, indexById } from '../utils/entity';
 import {
-  normalizeModelType, normalizeSelectionType, normalizeClassType, normalizePredicateType,
+  normalizeModelType, normalizeClassType, normalizePredicateType,
   normalizeReferrerType
 } from '../utils/type';
 import { identity } from '../utils/function';
@@ -70,6 +70,8 @@ export type Type = 'class'
                  | 'externalReferenceData'
                  | 'referenceDataGroup'
                  | 'referenceDataCode';
+
+export type SelectionType = 'class' | 'predicate';
 
 export type State = 'Unstable'
                   | 'Draft'
@@ -219,7 +221,7 @@ export abstract class AbstractGroup extends GraphNode {
   }
 
   iowUrl() {
-    return internalUrl(this.id, this.type);
+    return groupUrl(this.id.toString());
   }
 }
 
@@ -251,7 +253,6 @@ abstract class AbstractModel extends GraphNode {
   id: Uri;
   label: Localizable;
   normalizedType: Type;
-  selectionType: Type;
   namespace: Url;
   prefix: string;
 
@@ -260,13 +261,12 @@ abstract class AbstractModel extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.normalizedType = normalizeModelType(this.type);
-    this.selectionType = normalizeSelectionType(this.type);
     this.namespace = graph['preferredXMLNamespaceName'];
     this.prefix = graph['preferredXMLNamespacePrefix'];
   }
 
   iowUrl() {
-    return internalUrl(this.id, this.type);
+    return modelUrl(this.prefix);
   }
 }
 
@@ -461,15 +461,12 @@ export class Model extends AbstractModel {
     return false;
   }
 
-  linkTo(destination: Destination) {
-    if (destination) {
-      const id = destination.id;
-      const typeArray: Type[] = normalizeAsArray<Type>(destination.type);
-
-      if (id && !id.isUrn()) {
-        return this.isNamespaceKnownToBeModel(id.namespace) ? internalUrl(id, typeArray) : id.url;
+  linkToResource(id: Uri) {
+    if (id && !id.isUrn()) {
+      if (this.isNamespaceKnownToBeModel(id.namespace)) {
+        return resourceUrl(id);
       } else {
-        return null;
+        return id.url;
       }
     } else {
       return null;
@@ -716,7 +713,7 @@ export abstract class AbstractClass extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  selectionType: Type;
+  selectionType: SelectionType = 'class';
   normalizedType: Type;
   definedBy: DefinedBy;
 
@@ -725,7 +722,6 @@ export abstract class AbstractClass extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
-    this.selectionType = normalizeSelectionType(this.type);
     this.normalizedType = normalizeClassType(this.type);
     // TODO: remove this if when externalClass API is fixed to return it
     if (graph.isDefinedBy) {
@@ -742,7 +738,7 @@ export abstract class AbstractClass extends GraphNode {
   }
 
   iowUrl() {
-    return internalUrl(this.id, this.type);
+    return resourceUrl(this.id);
   }
 
   isSpecializedClass() {
@@ -1420,7 +1416,7 @@ export abstract class AbstractPredicate extends GraphNode {
   comment: Localizable;
   definedBy: DefinedBy;
   normalizedType: Type;
-  selectionType: Type;
+  selectionType: SelectionType = 'predicate';
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1429,7 +1425,6 @@ export abstract class AbstractPredicate extends GraphNode {
     this.comment = deserializeLocalizable(graph.comment);
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     this.normalizedType = normalizePredicateType(this.type);
-    this.selectionType = normalizeSelectionType(this.type);
   }
 
   isClass() {
@@ -1449,7 +1444,7 @@ export abstract class AbstractPredicate extends GraphNode {
   }
 
   iowUrl() {
-    return internalUrl(this.id, this.type);
+    return resourceUrl(this.id);
   }
 }
 
@@ -1793,7 +1788,7 @@ export class SearchResult extends GraphNode {
   }
 
   iowUrl() {
-    return internalUrl(this.id, this.type);
+    return contextlessInternalUrl({id: this.id, type: this.type});
   }
 }
 
@@ -1847,7 +1842,7 @@ export class Referrer extends GraphNode {
   }
 
   iowUrl() {
-    return internalUrl(this.id, this.type);
+    return contextlessInternalUrl({id: this.id, type: this.normalizedType});
   }
 }
 
@@ -2028,30 +2023,36 @@ function reverseMapTypeObject(types: Type[]): string[] {
     .value();
 }
 
-export function modelUrl(id: string): RelativeUrl {
-  return `/ns?id=${encodeURIComponent(id)}`;
+export function modelUrl(prefix: string): RelativeUrl {
+  return `/model/${prefix}` + '/';
 }
 
-export function groupUrl(id: string): RelativeUrl {
-  return `/group?id=${encodeURIComponent(id)}`;
+export function resourceUrl(resource: Uri, linkedFromPrefix?: string) {
+  const prefix = linkedFromPrefix || resource.findPrefix();
+  return modelUrl(prefix) +  (linkedFromPrefix ? resource.curie : resource.name) + '/';
 }
 
-export function internalUrl(id: Uri, type: Type[]): RelativeUrl {
-  if (id) {
-    if (containsAny(type, ['model', 'profile'])) {
-      return modelUrl(id.uri);
-    } else if (containsAny(type, ['group'])) {
-      return `${groupUrl(id.uri)}`;
-    } else if (containsAny(type, ['association', 'attribute'])) {
-      return `${modelUrl(id.namespaceId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id.uri)}`;
-    } else if (containsAny(type, ['class', 'shape'])) {
-      return `${modelUrl(id.namespaceId)}&class=${encodeURIComponent(id.uri)}`;
+function contextlessInternalUrl(destination: Destination) {
+  if (destination) {
+    const id = destination.id;
+    const types = normalizeAsArray(destination.type);
+
+    if (containsAny(types, ['model', 'profile'])) {
+      return modelUrl(id.findPrefix());
+    } else if (containsAny(types, ['group'])) {
+      return groupUrl(id.uri);
+    } else if (containsAny(types, ['association', 'attribute', 'class', 'shape'])) {
+      return resourceUrl(id);
     } else {
-      throw new Error('Unsupported type for url: ' + type);
+      throw new Error('Unsupported type for url: ' + types);
     }
   } else {
     return null;
   }
+}
+
+export function groupUrl(id: string): RelativeUrl {
+  return `/group?id=${encodeURIComponent(id)}`;
 }
 
 function frameData($log: angular.ILogService, data: GraphData, frame: any): IPromise<GraphData> {
@@ -2132,8 +2133,16 @@ export class EntityDeserializer {
     return frameAndMapArray(this.$log, data, frames.modelListFrame(data), (framedData) => ModelListItem);
   }
 
-  deserializeModel(data: GraphData, id?: Uri|Urn): IPromise<Model> {
-    return frameAndMap(this.$log, data, true, frames.modelFrame(data, id), (framedData) => Model);
+  deserializeModel(data: GraphData): IPromise<Model> {
+    return frameAndMap(this.$log, data, true, frames.modelFrame(data), (framedData) => Model);
+  }
+
+  deserializeModelById(data: GraphData, id: Uri|Urn): IPromise<Model> {
+    return frameAndMap(this.$log, data, true, frames.modelFrame(data, {id}), (framedData) => Model);
+  }
+
+  deserializeModelByPrefix(data: GraphData, prefix: string): IPromise<Model> {
+    return frameAndMap(this.$log, data, true, frames.modelFrame(data, {prefix}), (framedData) => Model);
   }
 
   deserializeClassList(data: GraphData): IPromise<ClassListItem[]> {

@@ -30,7 +30,7 @@ export function routeConfig($routeProvider: IRouteProvider) {
         $scope.type = params.type;
       }
     })
-    .when('/ns', {
+    .when('/model/:prefix/:resource?/:property?', {
       template: '<model></model>',
       reloadOnSearch: false
     });

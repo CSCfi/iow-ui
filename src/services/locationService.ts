@@ -3,10 +3,10 @@ import { Model, Group, Localizable } from './entities';
 export interface Location {
   localizationKey?: string;
   label?: Localizable;
-  iowUrl?(href: boolean): string;
+  iowUrl?(): string;
 }
 
-const frontPage = { localizationKey: 'Front page', iowUrl: (href: boolean) => (href ? '#' : '') + '/' };
+const frontPage = { localizationKey: 'Front page', iowUrl: () => '/' };
 
 export class LocationService {
   location: Location = [frontPage];

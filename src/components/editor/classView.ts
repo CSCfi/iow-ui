@@ -20,7 +20,8 @@ mod.directive('classView', () => {
       class: '=',
       model: '=',
       modelController: '=',
-      show: '='
+      show: '=',
+      openPropertyId: '='
     },
     restrict: 'E',
     template: require('./classView.html'),
@@ -41,16 +42,12 @@ export class ClassViewController extends EditableEntityController<Class> {
   /* @ngInject */
   constructor($scope: EditableScope,
               $log: ILogService,
-              $location: ILocationService,
               private searchPredicateModal: SearchPredicateModal,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
               private classService: ClassService,
               userService: UserService) {
     super($scope, $log, deleteConfirmationModal, errorModal, userService);
-
-    $scope.$watch(() => $location.search().property, id => this.openPropertyId = id);
-    $scope.$watch(() => this.openPropertyId, id => $location.search('property', id));
 
     this.modelController.registerView(this);
   }

@@ -65,7 +65,7 @@ class EditableMultipleUriSelectController {
   model: Model;
   id: string;
   title: string;
-  link = (uri: Uri) => this.model.linkTo({ type: this.type, id: uri });
+  link = (uri: Uri) => this.model.linkToResource(uri);
 
   isEditing: () => boolean;
   addUri: (uri: Uri) => void;

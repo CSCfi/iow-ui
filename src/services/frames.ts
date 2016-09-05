@@ -146,7 +146,7 @@ export function groupListFrame(data: any): Frame {
   return frame(data, groupContext);
 }
 
-export function modelFrame(data: any, id?: Uri|Urn): Frame {
+export function modelFrame(data: any, options: { id?: Uri|Urn, prefix?: string } = {}): Frame {
 
   const frameObj: any = {
     isPartOf: {},
@@ -161,7 +161,14 @@ export function modelFrame(data: any, id?: Uri|Urn): Frame {
     }
   };
 
-  return frame(data, modelContext, id ? Object.assign(frameObj, { '@id': id.toString() }) : frameObj);
+
+  if (options.id) {
+    Object.assign(frameObj, { '@id': options.id.toString() });
+  } else if (options.prefix) {
+    Object.assign(frameObj, { preferredXMLNamespacePrefix: options.prefix });
+  }
+
+  return frame(data, modelContext, frameObj);
 }
 
 export function modelListFrame(data: any): Frame {

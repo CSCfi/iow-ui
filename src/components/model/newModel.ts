@@ -48,8 +48,7 @@ export class NewModelController {
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
       // new model creation cancelled
       if (oldModel && !newModel) {
-        $location.path('/group');
-        $location.search({urn: oldModel.groupId.uri});
+        $location.url(oldModel.group.iowUrl());
       }
 
       if (newModel && !newModel.unsaved) {

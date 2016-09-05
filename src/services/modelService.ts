@@ -50,15 +50,12 @@ export class ModelService {
 
   getModelByUrn(urn: Uri|Urn): IPromise<Model> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { id: urn.toString() } })
-      .then(response => this.entities.deserializeModel(response.data, urn));
+      .then(response => this.entities.deserializeModelById(response.data, urn));
   }
 
-  // FIXME: Temporary implementation before proper api
-  mapPrefixToId(prefix: string) {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('model'))
-      .then(response => this.entities.deserializeModelList(response.data))
-      .then(models => models.find(model => model.prefix === prefix))
-      .then(model => model.id);
+  getModelByPrefix(prefix: string): IPromise<Model> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { prefix } })
+      .then(response => this.entities.deserializeModelByPrefix(response.data, prefix));
   }
 
   createModel(model: Model): IPromise<any> {

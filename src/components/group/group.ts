@@ -83,7 +83,10 @@ class GroupController extends EditableEntityController<Group> {
   };
 
   selectModel(model: ModelListItem) {
-    this.$location.url(model.iowUrl());
+    // FIXME: ModeListItem should contain prefix
+    this.modelService.getModelByUrn(model.id).then(m => {
+      this.$location.url(m.iowUrl());
+    });
   }
 
   create(entity: Group): IPromise<any> {

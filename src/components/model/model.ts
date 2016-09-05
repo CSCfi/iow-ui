@@ -1,3 +1,10 @@
+import IPromise = angular.IPromise;
+import IScope = angular.IScope;
+import ILocationService = angular.ILocationService;
+import IRouteService = angular.route.IRouteService;
+import ICurrentRoute = angular.route.ICurrentRoute;
+import IQService = angular.IQService;
+import IWindowService = angular.IWindowService;
 import * as _ from 'lodash';
 import { ClassService } from '../../services/classService';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -16,18 +23,13 @@ import {
   DefinedBy,
   ExternalEntity,
   AbstractClass,
-  AbstractPredicate
+  AbstractPredicate,
+  SelectionType
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { EntityCreation } from '../editor/searchConceptModal';
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
-import ILocationService = angular.ILocationService;
-import IRouteParamsService = angular.route.IRouteParamsService;
-import IQService = angular.IQService;
-import IWindowService = angular.IWindowService;
 import { MaintenanceModal } from '../maintenance';
 import { Show, ChangeNotifier, ChangeListener, SearchClassType } from './../contracts';
 import { Uri } from '../../services/uri';
@@ -61,6 +63,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   selectedItem: WithIdAndType;
   model: Model;
   selection: Class|Predicate;
+  openPropertyId: string;
   classes: SelectableItem[] = [];
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
@@ -76,10 +79,13 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private localizerProvider: () => Localizer;
 
+  private initialRoute: ICurrentRoute;
+  private currentRoute: ICurrentRoute;
+
   /* @ngInject */
   constructor(private $scope: IScope,
               private $location: ILocationService,
-              private $routeParams: IRouteParamsService,
+              private $route: IRouteService,
               private $q: IQService,
               private locationService: LocationService,
               private modelService: ModelService,
@@ -96,11 +102,25 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     this.localizerProvider = () => languageService.createLocalizer(this.model);
     this._show = sessionService.show;
-    this.init(new RouteData($routeParams));
+
+    this.initialRoute = $route.current;
+    this.currentRoute = this.initialRoute;
+
+    this.init();
 
     $scope.$on('$locationChangeSuccess', (event, next, current) => {
-      if ($location.path() === '/model' && isDifferentUrl(next, current)) {
-        this.init(new RouteData($location.search()));
+
+      this.currentRoute = $route.current;
+
+      if ($location.path().startsWith('/model')) {
+        if (isDifferentUrl(next, current)) {
+          this.init();
+        }
+
+        // FIXME: hack to prevent reload on params update
+        // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
+        // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
+        $route.current = this.initialRoute;
       }
     });
 
@@ -114,13 +134,15 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
       if (oldModel && !newModel) { // model removed
-        $location.path('/group');
-        $location.search({urn: oldModel.groupId.uri});
+        $location.url(oldModel.group.iowUrl());
       }
     });
 
     $scope.$watch(() => this.selection, (selection, oldSelection) => {
       if (!matchesIdentity(selection, oldSelection)) {
+        if (oldSelection) {
+          this.openPropertyId = null;
+        }
         this.updateLocation();
       }
 
@@ -139,6 +161,13 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     $scope.$watch(() => this.show, show => {
       for (const changeListener of this.changeListeners) {
         changeListener.onResize(show);
+      }
+    });
+
+    $scope.$watch(() => $route.current.params.property, propertyId => this.openPropertyId = propertyId);
+    $scope.$watch(() => this.openPropertyId, propertyId => {
+      if (this.currentRoute.params.property !== propertyId) {
+        this.updateLocation();
       }
     });
   }
@@ -177,13 +206,15 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     return comparingLocalizable<SelectableItem>(this.localizerProvider(), selectableItem => selectableItem.item.label);
   }
 
-  init(routeData: RouteData) {
+  init() {
+    const routeData = new RouteData(this.currentRoute.params);
+    const modelChanged = !this.model || this.model.prefix !== routeData.existingModelPrefix;
 
-    const modelChanged = !this.model || this.model.id.notEquals(routeData.existingModelId);
+    this.openPropertyId = routeData.propertyId;
 
     if (modelChanged) {
       this.loading = true;
-      this.updateModelById(routeData.existingModelId)
+      this.updateModelByPrefix(routeData.existingModelPrefix)
         .then(() => this.$q.all([this.selectRouteOrDefault(routeData), this.updateSelectables(false)]))
         .then(() => this.updateLocation())
         .then(() => this.loading = false);
@@ -215,16 +246,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     return matchesIdentity(listItem, this.selectedItem) && !matchesIdentity(listItem, this.selection);
   }
 
-  select(item: WithIdAndType) {
+  select(item: SelectableItem) {
     this.askPermissionWhenEditing(() => {
-      this.selectedItem = item;
-
-      if (item) {
-        this.fetchEntityByTypeAndId(item)
-          .then(selection => this.selection = selection);
-      } else {
-        this.selection = null;
-      }
+      this.updateSelectionByTypeAndId(item);
     });
   }
 
@@ -252,19 +276,29 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updateLocation() {
+
     if (this.model) {
       this.locationService.atModel(this.model, this.selection);
 
-      const newSearch: any = {urn: this.model.id.uri};
+      const newParams: any = { prefix: this.model.prefix };
+
       if (this.selection) {
-        newSearch[this.selection.selectionType] = this.selection.id.uri;
+        newParams.resource = this.selection.id.namespace === this.model.namespace
+          ? this.selection.id.name
+          : this.selection.id.curie;
       }
 
-      const search = _.clone(this.$location.search());
-      delete search.property;
+      newParams.property = this.openPropertyId;
 
-      if (!_.isEqual(search, newSearch)) {
-        this.$location.search(newSearch);
+      const currentParams = _.clone(this.currentRoute.params);
+
+      if (!currentParams.hasOwnProperty('property')) {
+        // add property as undefined so that equality comparison works
+        currentParams.property = undefined;
+      }
+
+      if (!_.isEqual(currentParams, newParams)) {
+        this.$route.updateParams(newParams);
       }
     }
   }
@@ -418,35 +452,59 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private selectRouteOrDefault(routeData: RouteData): IPromise<any> {
 
-    function rootClassSelection(model: Model): WithIdAndType {
-      return (model && model.rootClass) ? { id: model.rootClass, selectionType: 'class' } : null;
+    const that = this;
+
+    function rootClassSelection(): WithIdAndType {
+      return that.model.rootClass ? { id: that.model.rootClass, selectionType: 'class' } : null;
     }
 
-    if (routeData.selected) {
-      for (let i = 0; i < this.tabs.length; i++) {
-        if (this.tabs[i].type === routeData.selected.selectionType) {
-          this.activeTab = i;
-          break;
+    function routeSelection(): IPromise<WithIdAndType> {
+
+      if (routeData.resourceCurie) {
+        const resourceUri = new Uri(routeData.resourceCurie, that.model.context);
+        const startsWithCapital = /^([A-Z]).*/.test(resourceUri.name);
+        const selectionType: SelectionType = startsWithCapital ? 'class' : 'predicate';
+
+        if (resourceUri.namespaceResolves()) {
+          return that.$q.resolve({
+            id: resourceUri,
+            selectionType
+          });
+        } else {
+          return that.modelService.getModelByPrefix(resourceUri.findPrefix()).then(model => {
+            return {
+              id: new Uri(routeData.resourceCurie, model.context),
+              selectionType
+            };
+          });
         }
+      } else {
+        return that.$q.when(null);
       }
-    }
+    };
 
-    const selection = routeData.selected || rootClassSelection(this.model);
+    return routeSelection()
+      .then(selectionFromRoute => {
+        const selection = selectionFromRoute || rootClassSelection();
 
-    if (!matchesIdentity(this.selection, selection)) {
-      return this.updateSelectionByTypeAndId(selection);
-    } else {
-      return this.$q.resolve();
-    }
+        if (!matchesIdentity(this.selection, selection)) {
+          return this.updateSelectionByTypeAndId(selection);
+        } else {
+          return this.$q.resolve();
+        }
+      });
   }
 
   private updateSelectionByTypeAndId(selection: WithIdAndType) {
+
+    // set selected item also here for showing selection before entity actually is loaded
     this.selectedItem = selection;
+
     if (selection) {
       return this.fetchEntityByTypeAndId(selection)
         .then(entity => this.updateSelection(entity), err => this.updateSelection(null));
     } else {
-      return this.updateSelection(null);
+      return this.$q.when(this.updateSelection(null));
     }
   }
 
@@ -460,13 +518,26 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
   }
 
-  private updateSelection(selection: Class|Predicate) {
-    this.selectedItem = selection;
-    return this.$q.when(this.selection = selection);
+  private alignTabWithSelection() {
+
+    const tabType = this.selection instanceof Predicate ? this.selection.normalizedType : 'class';
+
+    for (let i = 0; i < this.tabs.length; i++) {
+      if (this.tabs[i].type === tabType) {
+        this.activeTab = i;
+        break;
+      }
+    }
   }
 
-  private updateModelById(modelId: Uri) {
-    return this.modelService.getModelByUrn(modelId)
+  private updateSelection(selection: Class|Predicate) {
+    this.selectedItem = selection;
+    this.selection = selection;
+    this.alignTabWithSelection();
+  }
+
+  private updateModelByPrefix(prefix: string) {
+    return this.modelService.getModelByPrefix(prefix)
       .then(model => this.model = model)
       .then(model => true, err => this.maintenanceModal.open(err));
   }
@@ -522,24 +593,31 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 }
 
+
 class RouteData {
 
-  existingModelId: Uri;
+  existingModelPrefix: string;
+  resourceCurie: string;
+  propertyId: string;
 
   constructor(private params: any) {
-    if (params.id) {
-      this.existingModelId = new Uri(params.id, {});
-    }
-  }
+    this.existingModelPrefix = params.prefix;
 
-  get selected() {
-    for (const type of <Type[]> ['attribute', 'class', 'association']) {
-      const id: string = this.params[type];
-      if (id) {
-        return {selectionType: type, id: new Uri(id, {})};
+    if (params.resource) {
+      const split = params.resource.split(':');
+
+      if (split.length === 1) {
+        this.resourceCurie = params.prefix + ':' + params.resource;
+      } else if (split.length === 2) {
+        this.resourceCurie = params.resource;
+      } else {
+        throw new Error('Unsupported resource format: ' + params.resource);
+      }
+
+      if (params.property) {
+        this.propertyId = params.property;
       }
     }
-    return null;
   }
 }
 
@@ -563,10 +641,10 @@ interface View {
 
 interface WithIdAndType {
   id: Uri;
-  selectionType: Type;
+  selectionType: SelectionType;
 }
 
-function matchesIdentity(lhs: SelectableItem|Class|Predicate|WithIdAndType, rhs: SelectableItem|Class|Predicate|WithIdAndType) {
+function matchesIdentity(lhs: WithIdAndType, rhs: WithIdAndType) {
   if (!lhs && !rhs) {
     return true;
   }  else if ((lhs && !rhs) || (rhs && !lhs)) {
@@ -616,7 +694,7 @@ class SelectableItem {
     return this.item.selectionType;
   }
 
-  matchesIdentity(obj: SelectableItem|Class|Predicate|WithIdAndType) {
+  matchesIdentity(obj: WithIdAndType) {
     return matchesIdentity(this.item, obj);
   }
 }

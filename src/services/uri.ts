@@ -1,8 +1,12 @@
 import { v4 as uuid } from 'node-uuid';
+import { isDefined } from '../utils/object';
 
 export type Url = string;
 export type Urn = string;
 export type RelativeUrl = string;
+
+const urnPrefix = 'urn:';
+const uuidUrnPrefix = urnPrefix + 'uuid:';
 
 export class Uri {
 
@@ -17,11 +21,23 @@ export class Uri {
   }
 
   static randomUUID() {
-    return new Uri('urn:uuid:' + uuid(), {});
+    return new Uri(uuidUrnPrefix + uuid(), {});
+  }
+
+  get uuid() {
+    if (this.isUuid()) {
+      return this.value.substr(uuidUrnPrefix.length, this.value.length);
+    } else {
+      throw new Error('Uri is not an uuid urn: ' + this.value);
+    }
+  }
+
+  isUuid() {
+    return this.value.startsWith(uuidUrnPrefix);
   }
 
   isUrn() {
-    return this.value.startsWith('urn');
+    return this.value.startsWith(urnPrefix);
   }
 
   isUrl() {
@@ -142,16 +158,16 @@ export class Uri {
     return !!this.findResolvablePrefix();
   }
 
-  private isCurieUrl() {
+  isCurieUrl() {
     return !this.isUrn() && /\w+:\w+/.test(this.value);
   }
 
-  private findResolvablePrefix() {
+  findPrefix() {
     if (this.isUrn()) {
       return null;
     } else if (this.isCurieUrl()) {
       const split = splitCurie(this.value);
-      return split && !!this.context[split.prefix] && split.prefix;
+      return split && split.prefix;
     } else {
 
       const ns = splitNamespace(this.value);
@@ -167,6 +183,11 @@ export class Uri {
 
       return null;
     }
+  }
+
+  findResolvablePrefix() {
+    const prefix = this.findPrefix();
+    return isDefined(prefix) && isDefined(this.context[prefix]) && prefix;
   }
 }
 

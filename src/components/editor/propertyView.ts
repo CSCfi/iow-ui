@@ -27,7 +27,7 @@ mod.directive('propertyView', () => {
     link($scope: IScope, element: JQuery, attributes: IAttributes,
          [thisController, classFormController]: [PropertyViewController, ClassFormController]) {
 
-      thisController.isOpen = () => classFormController.openPropertyId === thisController.property.internalId.uri;
+      thisController.isOpen = () => classFormController.openPropertyId === thisController.property.internalId.uuid;
       thisController.isEditing = () => classFormController.isEditing();
 
       function scrollTo(previousTop?: number) {
@@ -41,7 +41,7 @@ mod.directive('propertyView', () => {
         }
       }
 
-      $scope.$watchCollection(() => this.class && this.class.properties, () => {
+      $scope.$watchCollection(() => thisController.class && thisController.class.properties, () => {
         if (thisController.isOpen()) {
           scrollTo();
         }
@@ -100,7 +100,7 @@ export class PropertyViewController {
   }
 
   linkToValueClass() {
-    return this.model.linkTo({ type: 'class', id: this.property.valueClass });
+    return this.model.linkToResource(this.property.valueClass);
   }
 
   get predicateName() {

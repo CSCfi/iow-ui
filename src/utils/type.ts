@@ -1,23 +1,5 @@
 import { Type } from '../services/entities';
-import { contains, containsAny, findFirstMatching } from './array';
-
-export function normalizeSelectionType(types: Type[]): Type {
-  if (contains(types, 'group')) {
-    return 'group';
-  } else if (containsAny(types, ['class', 'shape'])) {
-    return 'class';
-  } else if (contains(types, 'attribute')) {
-    return 'attribute';
-  } else if (contains(types, 'association')) {
-    return 'association';
-  } else if (containsAny(types, ['model', 'profile', 'library'])) {
-    return 'model';
-  } else if (contains(types, 'property')) {
-    return null;
-  } else {
-    throw new Error('Unsupported selection type: ' + types.join());
-  }
-}
+import { findFirstMatching } from './array';
 
 export function normalizeReferrerType(types: Type[]): Type {
   return normalizePredicateType(types) || normalizeClassType(types) || normalizeModelType(types) || normalizeGroupType(types);
