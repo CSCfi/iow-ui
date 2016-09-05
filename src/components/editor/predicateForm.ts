@@ -43,6 +43,10 @@ class PredicateFormController {
               private errorModal: ErrorModal) {
   }
 
+  linkToIdProperty() {
+    return this.model.linkToResource(this.predicate.id);
+  }
+
   linkToSuperProperty() {
     return this.model.linkToResource(this.predicate.subPropertyOf);
   }

@@ -71,6 +71,10 @@ export class ClassFormController {
     });
   }
 
+  linkToIdClass() {
+    return this.model.linkToResource(this.class.id);
+  }
+
   linkToSuperclass() {
     return this.model.linkToResource(this.class.subClassOf);
   }
