@@ -252,6 +252,8 @@ abstract class AbstractModel extends GraphNode {
   label: Localizable;
   normalizedType: Type;
   selectionType: Type;
+  namespace: Url;
+  prefix: string;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -259,6 +261,8 @@ abstract class AbstractModel extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this.normalizedType = normalizeModelType(this.type);
     this.selectionType = normalizeSelectionType(this.type);
+    this.namespace = graph['preferredXMLNamespaceName'];
+    this.prefix = graph['preferredXMLNamespacePrefix'];
   }
 
   iowUrl(href: boolean) {
@@ -281,8 +285,6 @@ export class Model extends AbstractModel {
   links: Link[];
   referenceDatas: ReferenceData[];
   unsaved: boolean = false;
-  namespace: Url;
-  prefix: string;
   group: GroupListItem;
   version: Urn;
   rootClass: Uri;
@@ -294,8 +296,6 @@ export class Model extends AbstractModel {
     super(graph, context, frame);
     this.comment = deserializeLocalizable(graph.comment);
     this.state = graph.versionInfo;
-    this.namespace = graph['preferredXMLNamespaceName'];
-    this.prefix = graph['preferredXMLNamespacePrefix'];
     if (!graph.isPartOf['@type']) {
       // TODO: Shouldn't be needed but in all cases API doesn't return it
       graph.isPartOf['@type'] = 'foaf:Group';
