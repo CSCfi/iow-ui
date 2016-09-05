@@ -12,7 +12,7 @@ describe('Model view', () => {
   let view: ModelView;
 
   beforeEach(() => {
-    const page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(library1Parameters.prefix), library1Parameters.type);
+    const page = ModelPage.navigateToExistingModel(library1Parameters.prefix, library1Parameters.type);
     navbar.ensureLoggedIn();
     page.modelView.ensureOpen();
     view = page.modelView;

@@ -18,20 +18,14 @@ export class ModelPage {
   static pathToNewModel(params: NewModelParameters) {
     const { prefix, label, language, groupId, type } = params;
     const languageQueryParameters = language.map(lang => `language=${encodeURIComponent(lang)}`).join('&');
-    return `/#/model?prefix=${prefix}&label=${encodeURIComponent(label)}&${languageQueryParameters}&group=${encodeURIComponent(groupId)}&type=${type}`;
+    return `/newModel?prefix=${prefix}&label=${encodeURIComponent(label)}&${languageQueryParameters}&group=${encodeURIComponent(groupId)}&type=${type}`;
   }
-  static pathToExistingModel = (id: string) => `/#/model?urn=${encodeURIComponent(id)}`;
-  static pathWithClass = (id: string, classId: string) => ModelPage.pathToExistingModel(id) + `&class=${encodeURIComponent(classId)}`;
-  static pathWithAttribute = (id: string, attributeId: string) => ModelPage.pathToExistingModel(id) + `&attribute=${encodeURIComponent(attributeId)}`;
-  static pathWithAssociation = (id: string, associationId: string) => ModelPage.pathToExistingModel(id) + `&association=${encodeURIComponent(associationId)}`;
+  static pathToExistingModel = (prefix: string) => `/model/${prefix}/`;
+  static pathWithResource = (prefix: string, resourceName: string) => ModelPage.pathToExistingModel(prefix) + `/${resourceName}`;
 
   static navigateToNewModel = (params: NewModelParameters) => ModelPage.navigate(params.type, ModelPage.pathToNewModel(params));
-  static navigateToExistingModel = (id: string, type: Type) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(id));
-  static navigateToClass = (id: string, type: Type, classId: string) =>  ModelPage.navigate(type, ModelPage.pathWithClass(id, classId));
-  static navigateToAttribute = (id: string, type: Type, attributeId: string) =>  ModelPage.navigate(type, ModelPage.pathWithClass(id, attributeId));
-  static navigateToAssociation = (id: string, type: Type, associationId: string) =>  ModelPage.navigate(type, ModelPage.pathWithClass(id, associationId));
-
-  static modelIdForPrefix = (prefix: string) => `http://iow.csc.fi/ns/${prefix}`;
+  static navigateToExistingModel = (prefix: string, type: Type) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(prefix));
+  static navigateToResource = (prefix: string, type: Type, resourceName: string) =>  ModelPage.navigate(type, ModelPage.pathWithResource(prefix, resourceName));
 
   modelView: ModelView;
 

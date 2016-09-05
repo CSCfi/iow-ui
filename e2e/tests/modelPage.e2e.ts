@@ -14,7 +14,7 @@ describe('Model page', () => {
       const page = ModelPage.navigateToNewModel(parameters);
       navbar.ensureLoggedIn();
       page.modelView.buttons.save();
-      expectCurrentUrlToEqualPath(ModelPage.pathToExistingModel(ModelPage.modelIdForPrefix(parameters.prefix)));
+      expectCurrentUrlToEqualPath(ModelPage.pathToExistingModel(parameters.prefix));
     };
 
     it('Creates saved model', () => {
@@ -35,7 +35,7 @@ describe('Model page', () => {
     require('./conceptEditor.e2e');
 
     const removeLibraryAndCheckExpectations = (parameters: NewModelParameters) => {
-      const page = ModelPage.navigateToExistingModel(ModelPage.modelIdForPrefix(parameters.prefix), parameters.type);
+      const page = ModelPage.navigateToExistingModel(parameters.prefix, parameters.type);
       navbar.ensureLoggedIn();
       page.modelView.ensureOpen();
       page.modelView.buttons.removeAndConfirm();
