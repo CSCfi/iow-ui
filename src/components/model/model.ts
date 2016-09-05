@@ -510,7 +510,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               selectionType: selection.selectionType === 'class' ? 'predicate' : 'class'
             }, true);
           } else {
-            return this.updateSelection(entity)
+            return this.updateSelection(entity);
           }
         });
     } else {
