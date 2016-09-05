@@ -30,7 +30,7 @@ export function routeConfig($routeProvider: IRouteProvider) {
         $scope.type = params.type;
       }
     })
-    .when('/model', {
+    .when('/ns', {
       template: '<model></model>',
       reloadOnSearch: false
     });

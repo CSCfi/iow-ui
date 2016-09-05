@@ -527,8 +527,8 @@ class RouteData {
   existingModelId: Uri;
 
   constructor(private params: any) {
-    if (params.urn) {
-      this.existingModelId = new Uri(params.urn, {});
+    if (params.id) {
+      this.existingModelId = new Uri(params.id, {});
     }
   }
 

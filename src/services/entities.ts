@@ -2029,7 +2029,7 @@ function reverseMapTypeObject(types: Type[]): string[] {
 }
 
 export function modelUrl(id: string): RelativeUrl {
-  return `/model?urn=${encodeURIComponent(id)}`;
+  return `/ns?id=${encodeURIComponent(id)}`;
 }
 
 export function groupUrl(id: string): RelativeUrl {
