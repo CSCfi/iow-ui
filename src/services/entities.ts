@@ -2033,7 +2033,7 @@ export function modelUrl(id: string): RelativeUrl {
 }
 
 export function groupUrl(id: string): RelativeUrl {
-  return `/group?urn=${encodeURIComponent(id)}`;
+  return `/group?id=${encodeURIComponent(id)}`;
 }
 
 export function internalUrl(id: Uri, type: Type[]): RelativeUrl {

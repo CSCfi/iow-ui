@@ -2,7 +2,6 @@ import IRouteProvider = angular.route.IRouteProvider;
 import IRouteService = angular.route.IRouteService;
 import IScope = angular.IScope;
 import { Uri } from './services/uri';
-import { Type } from './services/entities';
 
 /* @ngInject */
 export function routeConfig($routeProvider: IRouteProvider) {
@@ -16,7 +15,7 @@ export function routeConfig($routeProvider: IRouteProvider) {
     .when('/group', {
       template: '<group group-id="groupId"></group>',
       controller($scope: any, $route: IRouteService) {
-        $scope.groupId = new Uri($route.current.params.urn, {});
+        $scope.groupId = new Uri($route.current.params.id, {});
       }
     })
     .when('/newModel', {
