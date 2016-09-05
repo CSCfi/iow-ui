@@ -2,7 +2,9 @@ import { Type } from '../services/entities';
 import { contains, containsAny, findFirstMatching } from './array';
 
 export function normalizeSelectionType(types: Type[]): Type {
-  if (containsAny(types, ['class', 'shape'])) {
+  if (contains(types, 'group')) {
+    return 'group';
+  } else if (containsAny(types, ['class', 'shape'])) {
     return 'class';
   } else if (contains(types, 'attribute')) {
     return 'attribute';
