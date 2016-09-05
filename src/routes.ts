@@ -2,6 +2,8 @@ import IRouteProvider = angular.route.IRouteProvider;
 import IRouteService = angular.route.IRouteService;
 import IScope = angular.IScope;
 import { Uri } from './services/uri';
+import ILocationService = angular.ILocationService;
+import { resourceUrl } from './services/entities';
 
 /* @ngInject */
 export function routeConfig($routeProvider: IRouteProvider) {
@@ -28,6 +30,14 @@ export function routeConfig($routeProvider: IRouteProvider) {
         $scope.group = new Uri(params.group, {});
         $scope.languages = $route.current.params.language;
         $scope.type = params.type;
+      }
+    })
+    .when('/ns/:prefix*', {
+      template: '',
+      controller($location: ILocationService, $route: IRouteService) {
+        const prefix = $route.current.params.prefix;
+        const resource = $location.hash();
+        $location.url(resourceUrl(new Uri(prefix + ':' + resource, {})));
       }
     })
     .when('/model/:prefix/:resource?/:property?', {
