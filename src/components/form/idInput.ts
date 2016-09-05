@@ -4,7 +4,10 @@ import IScope = angular.IScope;
 import IQService = angular.IQService;
 import { ValidatorService } from '../../services/validatorService';
 import { Class, Predicate, Type } from '../../services/entities';
-import { isValidLabelLength, isValidIdentifier } from './validators';
+import {
+  isValidLabelLength, isValidIdentifier, isValidClassIdentifier,
+  isValidPredicateIdentifier
+} from './validators';
 import { Uri } from '../../services/uri';
 import { extendNgModelOptions } from '../../utils/angular';
 import { module as mod }  from './module';
@@ -55,7 +58,13 @@ mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: Valid
       };
 
       modelController.$validators['id'] = value => {
-        return value && isValidIdentifier(value.name);
+        if (attributes.idInput === 'class') {
+          return value && isValidClassIdentifier(value.name, attributes.idInput);
+        } else if (attributes.idInput === 'predicate') {
+          return value && isValidPredicateIdentifier(value.name, attributes.idInput);
+        } else {
+          return value && isValidIdentifier(value.name, attributes.idInput);
+        }
       };
 
       modelController.$validators['length'] = value => {
