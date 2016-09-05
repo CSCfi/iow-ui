@@ -5,7 +5,7 @@ import ILogProvider = angular.ILogProvider;
 import IProvideService = angular.auto.IProvideService;
 import IRootScopeService = angular.IRootScopeService;
 import IRoute = angular.route.IRoute;
-import IRouteProvider = angular.route.IRouteProvider;
+import ILocationProvider = angular.ILocationProvider;
 import IRouteService = angular.route.IRouteService;
 import IQService = angular.IQService;
 import ITooltipProvider = angular.ui.bootstrap.ITooltipProvider;
@@ -52,12 +52,13 @@ const mod = angular.module('iow-ui', [
 
 mod.config(routeConfig);
 
-mod.config(($routeProvider: IRouteProvider,
+mod.config(($locationProvider: ILocationProvider,
             $logProvider: ILogProvider,
             $compileProvider: ICompileProvider,
             $animateProvider: IAnimateProvider,
             $uibTooltipProvider: ITooltipProvider) => {
 
+  $locationProvider.html5Mode(true);
   $logProvider.debugEnabled(false);
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);

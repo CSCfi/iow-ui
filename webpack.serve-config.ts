@@ -24,6 +24,7 @@ const serveConfig: webpack.Configuration = {
     contentBase: './src',
     hot: true,
     inline: true,
+    historyApiFallback: '/',
     proxy: {
       '/api/*': {
         target: 'http://localhost:8084/',

@@ -44,13 +44,13 @@ class PredicateFormController {
   }
 
   linkToSuperProperty() {
-    return this.model.linkTo({ type: this.predicate.type, id: this.predicate.subPropertyOf }, true);
+    return this.model.linkTo({ type: this.predicate.type, id: this.predicate.subPropertyOf });
   }
 
   linkToValueClass() {
     const predicate = this.predicate;
     if (predicate instanceof Association) {
-      return this.model.linkTo({ type: 'class', id: predicate.valueClass }, true);
+      return this.model.linkTo({ type: 'class', id: predicate.valueClass });
     } else {
       return '';
     }

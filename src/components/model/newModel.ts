@@ -53,7 +53,7 @@ export class NewModelController {
       }
 
       if (newModel && !newModel.unsaved) {
-        $location.url(newModel.iowUrl(false));
+        $location.url(newModel.iowUrl());
       }
     });
   }

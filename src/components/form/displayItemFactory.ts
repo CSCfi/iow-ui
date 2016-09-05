@@ -65,8 +65,7 @@ export class DisplayItem {
       if (!link || !isDifferentUrl(link, this.$location.url())) {
         return null;
       } else {
-        const internal = link.startsWith('/');
-        return internal ? '#' + link : link;
+        return link;
       }
     }
   }

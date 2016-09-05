@@ -104,9 +104,9 @@ export class FrontPageController {
     this.advancedSearchModal.open().then(searchResult => this.selectSearchResult(searchResult));
   }
 
-  private go(withIowUrl: {iowUrl(href: boolean): Url}) {
+  private go(withIowUrl: {iowUrl(): Url}) {
     if (withIowUrl.iowUrl) {
-      this.$location.url(withIowUrl.iowUrl(false));
+      this.$location.url(withIowUrl.iowUrl());
     }
   }
 }

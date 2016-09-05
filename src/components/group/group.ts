@@ -83,7 +83,7 @@ class GroupController extends EditableEntityController<Group> {
   };
 
   selectModel(model: ModelListItem) {
-    this.$location.url(model.iowUrl(false));
+    this.$location.url(model.iowUrl());
   }
 
   create(entity: Group): IPromise<any> {

@@ -218,8 +218,8 @@ export abstract class AbstractGroup extends GraphNode {
     return this.id;
   }
 
-  iowUrl(href: boolean) {
-    return internalUrl(this.id, this.type, href);
+  iowUrl() {
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -265,8 +265,8 @@ abstract class AbstractModel extends GraphNode {
     this.prefix = graph['preferredXMLNamespacePrefix'];
   }
 
-  iowUrl(href: boolean) {
-    return internalUrl(this.id, this.type, href);
+  iowUrl() {
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -461,13 +461,13 @@ export class Model extends AbstractModel {
     return false;
   }
 
-  linkTo(destination: Destination, href: boolean) {
+  linkTo(destination: Destination) {
     if (destination) {
       const id = destination.id;
       const typeArray: Type[] = normalizeAsArray<Type>(destination.type);
 
       if (id && !id.isUrn()) {
-        return this.isNamespaceKnownToBeModel(id.namespace) ? internalUrl(id, typeArray, href) : id.url;
+        return this.isNamespaceKnownToBeModel(id.namespace) ? internalUrl(id, typeArray) : id.url;
       } else {
         return null;
       }
@@ -741,8 +741,8 @@ export abstract class AbstractClass extends GraphNode {
     return false;
   }
 
-  iowUrl(href: boolean) {
-    return internalUrl(this.id, this.type, href);
+  iowUrl() {
+    return internalUrl(this.id, this.type);
   }
 
   isSpecializedClass() {
@@ -1448,8 +1448,8 @@ export abstract class AbstractPredicate extends GraphNode {
     return this.isOfType('association');
   }
 
-  iowUrl(href: boolean) {
-    return internalUrl(this.id, this.type, href);
+  iowUrl() {
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -1792,8 +1792,8 @@ export class SearchResult extends GraphNode {
     this.comment = deserializeLocalizable(graph.comment);
   }
 
-  iowUrl(href: boolean) {
-    return internalUrl(this.id, this.type, href);
+  iowUrl() {
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -1846,8 +1846,8 @@ export class Referrer extends GraphNode {
     this.normalizedType = normalizeReferrerType(this.type);
   }
 
-  iowUrl(href: boolean) {
-    return internalUrl(this.id, this.type, href);
+  iowUrl() {
+    return internalUrl(this.id, this.type);
   }
 }
 
@@ -2028,24 +2028,24 @@ function reverseMapTypeObject(types: Type[]): string[] {
     .value();
 }
 
-export function modelUrl(id: string, href: boolean): RelativeUrl {
-  return (href ? '#' : '') + `/model?urn=${encodeURIComponent(id)}`;
+export function modelUrl(id: string): RelativeUrl {
+  return `/model?urn=${encodeURIComponent(id)}`;
 }
 
-export function groupUrl(id: string, href: boolean): RelativeUrl {
-  return (href ? '#' : '') + `/group?urn=${encodeURIComponent(id)}`;
+export function groupUrl(id: string): RelativeUrl {
+  return `/group?urn=${encodeURIComponent(id)}`;
 }
 
-export function internalUrl(id: Uri, type: Type[], href: boolean): RelativeUrl {
+export function internalUrl(id: Uri, type: Type[]): RelativeUrl {
   if (id) {
     if (containsAny(type, ['model', 'profile'])) {
-      return modelUrl(id.uri, href);
+      return modelUrl(id.uri);
     } else if (containsAny(type, ['group'])) {
-      return `${groupUrl(id.uri, href)}`;
+      return `${groupUrl(id.uri)}`;
     } else if (containsAny(type, ['association', 'attribute'])) {
-      return `${modelUrl(id.namespaceId, href)}&${normalizeSelectionType(type)}=${encodeURIComponent(id.uri)}`;
+      return `${modelUrl(id.namespaceId)}&${normalizeSelectionType(type)}=${encodeURIComponent(id.uri)}`;
     } else if (containsAny(type, ['class', 'shape'])) {
-      return `${modelUrl(id.namespaceId, href)}&class=${encodeURIComponent(id.uri)}`;
+      return `${modelUrl(id.namespaceId)}&class=${encodeURIComponent(id.uri)}`;
     } else {
       throw new Error('Unsupported type for url: ' + type);
     }

@@ -100,7 +100,7 @@ export class PropertyViewController {
   }
 
   linkToValueClass() {
-    return this.model.linkTo({ type: 'class', id: this.property.valueClass }, true);
+    return this.model.linkTo({ type: 'class', id: this.property.valueClass });
   }
 
   get predicateName() {

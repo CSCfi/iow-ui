@@ -34,6 +34,6 @@ class UserController {
   }
 
   groupUrl(id: Uri) {
-    return groupUrl(id.uri, true);
+    return groupUrl(id.uri);
   }
 }

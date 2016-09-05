@@ -72,11 +72,11 @@ export class ClassFormController {
   }
 
   linkToSuperclass() {
-    return this.model.linkTo({ type: 'class', id: this.class.subClassOf }, true);
+    return this.model.linkTo({ type: 'class', id: this.class.subClassOf });
   }
 
   linkToScopeclass() {
-    return this.model.linkTo({ type: 'class', id: this.class.scopeClass }, true);
+    return this.model.linkTo({ type: 'class', id: this.class.scopeClass });
   }
 
   movePropertyUp($event: JQueryEventObject, property: Property) {

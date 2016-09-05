@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default">
   <div class="navbar-header">
-    <div><a class="" ng-href="#/"><img id="logo-image" ng-src="{{ctrl.logoImage}}" /></a></div><div><span>{{'IOW' | translate}}</span></div>
+    <div><a class="" ng-href="/"><img id="logo-image" ng-src="{{ctrl.logoImage}}" /></a></div><div><span>{{'IOW' | translate}}</span></div>
   </div>
 
   <ul class="nav navbar-nav navbar-right">
@@ -14,7 +14,7 @@
       <div class="btn-group navbar-btn" uib-dropdown is-open="status.isopen">
         <button class="btn btn-default navbar-btn" uib-dropdown-toggle>{{ctrl.getUser().name}} <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
-          <li role="menuitem"><a ng-href="#/user" translate>User details</a></li>
+          <li role="menuitem"><a ng-href="/user" translate>User details</a></li>
           <li role="menuitem"><a id="logout" ng-click="ctrl.logout()" translate>Logout</a></li>
         </ul>
       </div>

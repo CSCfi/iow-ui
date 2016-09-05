@@ -33,7 +33,7 @@ class EditableRootClassController {
   }
 
   get href() {
-    return this.model.linkTo({ type: 'class', id: this.model.rootClass }, true);
+    return this.model.linkTo({ type: 'class', id: this.model.rootClass });
   }
 
   selectClass() {
