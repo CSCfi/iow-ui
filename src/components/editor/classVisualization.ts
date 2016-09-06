@@ -747,7 +747,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     classCell.on('change:position', () => {
       classPosition.coordinate = classCell.position();
-      adjustElementLinks(paper, classCell, new Set<joint.dia.Link>(), isRightClick() ? this.modelPositions : null);
+      adjustElementLinks(paper, classCell, new Set<string>(), isRightClick() ? this.modelPositions : null);
     });
 
     const updateCellModel = () => {
@@ -1080,27 +1080,27 @@ function isLoop(link: joint.dia.Link) {
 
 function adjustLinks(paper: joint.dia.Paper, modelPositions: ModelPositions) {
   const graph = <joint.dia.Graph> paper.model;
-  const alreadyAdjusted = new Set<joint.dia.Link>();
+  const alreadyAdjusted = new Set<string>();
 
   for (const element of graph.getElements()) {
     adjustElementLinks(paper, element, alreadyAdjusted, modelPositions);
   }
 }
 
-function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<joint.dia.Link>, modelPositions?: ModelPositions) {
+function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<string>, modelPositions?: ModelPositions) {
   const graph = <joint.dia.Graph> paper.model;
 
   const connectedLinks = graph.getConnectedLinks(<joint.dia.Cell> element);
 
   for (const link of connectedLinks) {
-    if (!alreadyAdjusted.has(link) && !!link.get('source').id && !!link.get('target').id) {
+    if (!alreadyAdjusted.has(link.id) && !!link.get('source').id && !!link.get('target').id) {
       const siblings = _.filter(connectedLinks, _.partial(isSiblingLink, link));
       adjustSiblingLinks(paper, siblings, alreadyAdjusted, modelPositions);
     }
   }
 }
 
-function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<joint.dia.Link>, modelPositions?: ModelPositions) {
+function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<string>, modelPositions?: ModelPositions) {
 
   function getLinkPositionVertices(link: joint.dia.Link) {
     if (modelPositions) {
@@ -1112,6 +1112,7 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
   }
 
   const graph = <joint.dia.Graph> paper.model;
+  const firstSource = siblings[0].get('source');
 
   for (let i = 0; i < siblings.length; i++) {
 
@@ -1120,19 +1121,23 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
     const target = (<joint.dia.Element> graph.getCell(link.get('target').id));
     const persistedVertices = getLinkPositionVertices(link);
 
-    link.prop('connector', { name: (isLoop(link) || siblings.length === 1) ? 'normal' : 'smooth' });
+    link.prop('connector', {name: (isLoop(link) || siblings.length === 1) ? 'normal' : 'smooth'});
 
     if (persistedVertices.length > 0) {
       link.set('vertices', persistedVertices);
     } else if (isLoop(link)) {
       link.set('vertices', calculateRecurseSiblingVertices(source, i));
     } else if (siblings.length > 1) {
-      link.set('vertices', calculateNormalSiblingVertices(source, target, i));
+      if (firstSource.id === source.id) {
+        link.set('vertices', calculateNormalSiblingVertices(source, target, i));
+      } else {
+        link.set('vertices', calculateNormalSiblingVertices(target, source, i));
+      }
     } else {
       link.unset('vertices');
     }
 
-    alreadyAdjusted.add(link);
+    alreadyAdjusted.add(link.id);
   }
 }
 
