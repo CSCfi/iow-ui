@@ -139,6 +139,9 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
 
     $scope.$watch(() => this.selection, (selection, oldSelection) => {
+
+      this.alignTabWithSelection();
+
       if (!matchesIdentity(selection, oldSelection)) {
         if (oldSelection) {
           this.openPropertyId = null;
@@ -543,7 +546,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   private updateSelection(selection: Class|Predicate) {
     this.selectedItem = selection;
     this.selection = selection;
-    this.alignTabWithSelection();
   }
 
   private updateModelByPrefix(prefix: string) {
