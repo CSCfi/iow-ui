@@ -3,7 +3,6 @@
 // Note: ~ tells webpack to look-up the modulesDirectories
 // See also: https://github.com/jtangelder/sass-loader/issues/40
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
-$fa-font-path: '~font-awesome/fonts';
 
 $gray-base:             #222;
 $gray-darker:           lighten($gray-base, 13.5%);
@@ -30,8 +29,6 @@ $brand-accent-dark:     #375e97;
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../vendor/bootswatch';
 @import '~jointjs/dist/joint.css';
-@import '~font-awesome/scss/font-awesome.scss';
-@import '~font-awesome/scss/_variables.scss';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
