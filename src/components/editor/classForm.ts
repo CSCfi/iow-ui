@@ -53,7 +53,7 @@ export class ClassFormController {
     this.searchPredicateModal.openNewProperty(this.model, this.class)
       .then(property => {
         this.class.addProperty(property);
-        this.openPropertyId = property.internalId.uri;
+        this.openPropertyId = property.internalId.uuid;
       });
   }
 

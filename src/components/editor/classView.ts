@@ -56,7 +56,7 @@ export class ClassViewController extends EditableEntityController<Class> {
     this.searchPredicateModal.openNewProperty(this.model, this.editableInEdit)
       .then(property => {
         this.editableInEdit.addProperty(property);
-        this.openPropertyId = property.internalId.uri;
+        this.openPropertyId = property.internalId.uuid;
       });
   }
 
