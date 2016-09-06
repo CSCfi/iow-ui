@@ -3,7 +3,7 @@ import IRouteService = angular.route.IRouteService;
 import IScope = angular.IScope;
 import { Uri } from './services/uri';
 import ILocationService = angular.ILocationService;
-import { resourceUrl } from './services/entities';
+import { resourceUrl, modelUrl } from './services/entities';
 
 /* @ngInject */
 export function routeConfig($routeProvider: IRouteProvider) {
@@ -37,7 +37,12 @@ export function routeConfig($routeProvider: IRouteProvider) {
       controller($location: ILocationService, $route: IRouteService) {
         const prefix = $route.current.params.prefix;
         const resource = $location.hash();
-        $location.url(resourceUrl(new Uri(prefix + ':' + resource, {})));
+
+        if (resource) {
+          $location.url(resourceUrl(new Uri(prefix + ':' + resource, {})));
+        } else {
+          $location.url(modelUrl(prefix));
+        }
       }
     })
     .when('/model/:prefix/:resource?/:property?', {
