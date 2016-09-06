@@ -296,11 +296,11 @@ export class SearchPredicateController {
   }
 
   isAttributeAddable(): boolean {
-    return this.searchText && (this.typeSelectable || this.type === 'attribute');
+    return this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'attribute');
   }
 
   isAssociationAddable(): boolean {
-    return this.searchText && (this.typeSelectable || this.type === 'association');
+    return this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'association');
   }
 
   private textFilter(predicate: PredicateListItem): boolean {
