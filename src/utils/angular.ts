@@ -10,12 +10,14 @@ export function isModalCancel(err: any) {
   return err === 'cancel' || err === 'escape key press';
 }
 
-function normalizeUrl(url: string): string {
-  return url.replace(/^#/, '').replace(/:/g, '%3A').replace(/&property.*/, '');
+const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function normalizeUrl(url: string, removeProperty: boolean = false): string {
+  return url.replace(/^#/, '').replace(/:/g, '%3A').replace(uuidRegex, '');
 }
 
-export function isDifferentUrl(lhs: string, rhs: string): boolean {
-  return normalizeUrl(lhs) !== normalizeUrl(rhs);
+export function isDifferentUrl(lhs: string, rhs: string, ignoreProperty: boolean = false): boolean {
+  return normalizeUrl(lhs, ignoreProperty) !== normalizeUrl(rhs, ignoreProperty);
 }
 
 export function extendNgModelOptions(ngModel: INgModelController, options: any) {

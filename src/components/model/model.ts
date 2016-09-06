@@ -125,7 +125,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
 
     $scope.$on('$locationChangeStart', (event, next, current) => {
-      if ((this.selection && !this.selection.unsaved) && isDifferentUrl(current, next)) {
+      if ((this.selection && !this.selection.unsaved) && isDifferentUrl(current, next, true)) {
         this.ifEditing(() => event.preventDefault(), () => {
           $location.url($location.url(next).hash());
         });
