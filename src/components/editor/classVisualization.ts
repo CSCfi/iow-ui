@@ -21,6 +21,7 @@ import { Uri } from '../../services/uri';
 import { DataType } from '../../services/dataTypes';
 import { normalizeAsArray } from '../../utils/array';
 import { UserService } from '../../services/userService';
+import { ConfirmationModal } from '../common/confirmationModal';
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
   return {
@@ -134,7 +135,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
               private $timeout: ITimeoutService,
               private modelService: ModelService,
               private languageService: LanguageService,
-              private userService: UserService) {
+              private userService: UserService,
+              private confirmationModal: ConfirmationModal) {
 
     this.changeNotifier.addListener(this);
 
@@ -168,12 +170,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   savePositions() {
-    this.saving = true;
-    this.modelService.updateModelPositions(this.model, this.modelPositions)
+    this.confirmationModal.openVisualizationLocationsSave()
       .then(() => {
-        this.modelPositions.setPristine();
-        this.persistentPositions = this.modelPositions.clone();
-        this.saving = false;
+        this.saving = true;
+        this.modelService.updateModelPositions(this.model, this.modelPositions)
+          .then(() => {
+            this.modelPositions.setPristine();
+            this.persistentPositions = this.modelPositions.clone();
+            this.saving = false;
+          });
       });
   }
 

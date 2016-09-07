@@ -29,4 +29,8 @@ export class ConfirmationModal {
   openCloseModal() {
     return this.open('Dialog is open', 'Are you sure that you want to close dialog?');
   }
+
+  openVisualizationLocationsSave() {
+    return this.open('Save visualization position', 'Are you sure you want to save? Saving overrides previously saves positions.');
+  }
 };
