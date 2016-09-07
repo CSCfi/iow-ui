@@ -141,12 +141,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     $scope.$watch(() => this.model, () => this.refresh());
     $scope.$watch(() => this.selection, (newSelection, oldSelection) => {
       if (newSelection !== oldSelection) {
-        this.focus();
+        this.focus(false);
       }
     });
     $scope.$watch(() => this.selectionFocus, (newFocus, oldFocus) => {
       if (newFocus !== oldFocus) {
-        this.focus();
+        this.focus(false);
       }
     });
   }
@@ -179,7 +179,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   layoutPersistentPositions() {
     this.modelPositions.resetWith(this.persistentPositions);
-    this.layoutPositionsAndFocus();
+    this.layoutPositionsAndFocus(false);
   }
 
   refresh(invalidateCache: boolean = false) {
@@ -228,24 +228,18 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   initialize() {
     this.queueWhenNotVisible(() => {
       this.graph.resetCells(this.createCells(this.classVisualization));
-      this.layoutPositionsAndFocus().then(() => this.loading = false);
+
+      const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
+      this.layoutPositionsAndFocus(forceFitToAllContent).then(() => this.loading = false);
     });
   }
 
-  layoutPositionsAndFocus() {
+  layoutPositionsAndFocus(forceFitToAllContent: boolean) {
     const withoutPositionIds = this.classVisualization.getClassIdsWithoutPosition();
     const layoutAll = withoutPositionIds.length === this.classVisualization.classes.length;
     const ids = layoutAll ? null : withoutPositionIds;
 
-    return this.layout(ids)
-      .then(() => this.adjustLinks())
-      .then(() => {
-      // Delay fitting because dom needs to be repainted
-        window.setTimeout(() => {
-          const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
-          this.focus(forceFitToAllContent);
-        }, 0);
-      });
+    return this.layoutAndFocus(forceFitToAllContent, ids);
   }
 
   onDelete(item: Class|Predicate) {
@@ -273,12 +267,22 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     });
   }
 
-  layout(onlyClassIds?: Uri[] /* // undefined ids means layout all */) {
-    if (onlyClassIds && onlyClassIds.length === 0) {
-      return this.$q.when();
-    } else {
-      return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClassIds ? onlyClassIds : []));
-    }
+  layoutAndFocus(forceFitToAllContent: boolean, onlyClassIds?: Uri[] /* // undefined ids means layout all */) {
+
+    const layout = () => {
+      if (onlyClassIds && onlyClassIds.length === 0) {
+        return this.$q.when();
+      } else {
+        return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClassIds ? onlyClassIds : []));
+      }
+    };
+
+    return layout()
+      .then(() => this.adjustLinks())
+      .then(() => {
+        // Delay fitting because dom needs to be repainted
+        window.setTimeout(() => this.focus(forceFitToAllContent), 0);
+      });
   }
 
   adjustLinks() {
@@ -306,11 +310,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     if (addedClasses.length > 0) {
-      this.layout(addedClasses.filter(classId => klass.id.notEquals(classId)))
-        .then(() => this.adjustLinks())
-        .then(() => this.focus());
+      this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
     } else {
-      this.focus();
+      this.focus(false);
     }
   }
 
@@ -450,7 +452,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.paper.setOrigin(x, y);
   }
 
-  focus(forceFitToAllContent = false) {
+  focus(forceFitToAllContent: boolean) {
     const that = this;
 
     function resetFocusOnAllCells() {
