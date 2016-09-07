@@ -20,9 +20,10 @@ import { module as mod }  from './module';
 import { Iterable } from '../../utils/iterable';
 import { Uri } from '../../services/uri';
 import { DataType } from '../../services/dataTypes';
-import { normalizeAsArray } from '../../utils/array';
+import { normalizeAsArray, arraysAreEqual } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
+import { copyVertices } from '../../utils/entity';
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
   return {
@@ -839,16 +840,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         { position: 0.5, attrs: { text: { text: getName() } } },
         { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(association) : ''} } }
       ],
+      vertices: copyVertices(position.vertices),
       z: zIndexAssociation
     });
 
-    if (position.isDefined()) {
-      associationCell.set('vertices', position.vertices);
-    }
-
     associationCell.on('change:vertices', () => {
       const propertyPosition = this.modelPositions.getAssociationProperty(klass.id, association.internalId);
-      propertyPosition.vertices = normalizeAsArray(associationCell.get('vertices'));
+      propertyPosition.vertices = copyVertices(normalizeAsArray(associationCell.get('vertices')));
     });
 
     const updateCellModel = () => {
@@ -869,6 +867,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.$scope.$watch(() => this.showName, (showName, oldShowName) => {
       if (showName !== oldShowName) {
         updateCellModel();
+      }
+    });
+
+    this.$scope.$watch(() => position.vertices, (vertices, oldVertices) => {
+      if (!arraysAreEqual(vertices, oldVertices, (l, r) => l.x === r.x && l.y === r.y)) {
+        associationCell.set('vertices', copyVertices(vertices));
       }
     });
 

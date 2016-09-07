@@ -15,7 +15,7 @@ import {
 } from '../utils/language';
 import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual } from '../utils/array';
 import { Iterable } from '../utils/iterable';
-import { glyphIconClassForType, indexById } from '../utils/entity';
+import { glyphIconClassForType, indexById, copyVertices, copyCoordinate } from '../utils/entity';
 import {
   normalizeModelType, normalizeClassType, normalizePredicateType,
   normalizeReferrerType
@@ -837,14 +837,14 @@ export class ModelPositions extends GraphNodes<ClassPosition> {
     Iterable.forEach(this.classes.values(), c => c.clear());
   }
 
-  resetWith(modelPositions: ModelPositions) {
+  resetWith(resetWithPosition: ModelPositions) {
 
-    Iterable.forEach(modelPositions.classes.values(), classPosition => {
+    Iterable.forEach(resetWithPosition.classes.values(), classPosition => {
       this.classes.get(classPosition.id.toString()).resetWith(classPosition);
     });
 
     Iterable.forEach(this.classes.values(), classPosition => {
-      if (!modelPositions.classes.has(classPosition.id.toString())) {
+      if (!resetWithPosition.classes.has(classPosition.id.toString())) {
         classPosition.clear();
       }
     });
@@ -931,9 +931,18 @@ export class ClassPosition extends GraphNode {
     Iterable.forEach(this.associationProperties.values(), p => p.clear());
   }
 
-  resetWith(classPosition: ClassPosition) {
-    this.coordinate = classPosition.coordinate;
-    this.associationProperties = classPosition.associationProperties;
+  resetWith(resetWithPosition: ClassPosition) {
+    this.coordinate = copyCoordinate(resetWithPosition.coordinate);
+
+    Iterable.forEach(resetWithPosition.associationProperties.values(), associationPropertyPosition => {
+      this.associationProperties.get(associationPropertyPosition.id.toString()).resetWith(associationPropertyPosition);
+    });
+
+    Iterable.forEach(this.associationProperties.values(), associationPropertyPosition => {
+      if (!resetWithPosition.associationProperties.has(associationPropertyPosition.id.toString())) {
+        associationPropertyPosition.clear();
+      }
+    });
   }
 
   isDefined() {
@@ -998,6 +1007,10 @@ export class AssociationPropertyPosition extends GraphNode {
 
   clear() {
     this.vertices = [];
+  }
+
+  resetWith(resetWithPosition: AssociationPropertyPosition) {
+    this.vertices = copyVertices(resetWithPosition.vertices);
   }
 
   isDefined() {

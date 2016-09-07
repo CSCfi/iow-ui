@@ -1,6 +1,14 @@
-import { GraphData, Model, Type } from '../services/entities';
+import { GraphData, Model, Type, Coordinate } from '../services/entities';
 import { containsAny, collectProperties, index } from './array';
 import { WithId } from '../components/contracts';
+
+export function copyCoordinate(coordinate: Coordinate) {
+  return { x: coordinate.x, y: coordinate.y };
+}
+
+export function copyVertices(vertices: Coordinate[]) {
+  return vertices.map(copyCoordinate);
+}
 
 export function indexById<T extends WithId>(items: T[]): Map<string, T> {
   return index<T, string>(items, item => item.id.toString());
