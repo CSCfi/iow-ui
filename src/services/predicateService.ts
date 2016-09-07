@@ -145,6 +145,8 @@ export class PredicateService {
   }
 
   getExternalPredicatesForModel(model: Model) {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri}}).then(response => this.entities.deserializePredicateList(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri}})
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializePredicateList(response.data));
   }
 }

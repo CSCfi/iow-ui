@@ -181,7 +181,9 @@ export class ClassService {
   }
 
   getExternalClassesForModel(model: Model) {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}}).then(response => this.entities.deserializeClassList(response.data));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}})
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializeClassList(response.data));
   }
 
   newProperty(predicateOrExternal: Predicate|ExternalEntity, type: Type, model: Model): IPromise<Property> {
