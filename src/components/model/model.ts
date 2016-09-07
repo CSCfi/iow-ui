@@ -43,7 +43,7 @@ import {
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { SessionService } from '../../services/sessionService';
-import { isDefined } from '../../utils/object';
+import { isDefined, areEqual } from '../../utils/object';
 
 mod.directive('model', () => {
   return {
@@ -80,7 +80,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   private localizerProvider: () => Localizer;
 
   private initialRoute: ICurrentRoute;
-  private currentRoute: ICurrentRoute;
+  private currentRouteParams: any;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -104,22 +104,18 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     this._show = sessionService.show;
 
     this.initialRoute = $route.current;
-    this.currentRoute = this.initialRoute;
+    this.currentRouteParams = this.initialRoute.params;
 
-    this.init();
+    this.init(new RouteData(this.currentRouteParams));
 
-    $scope.$on('$locationChangeSuccess', (event, next, current) => {
-
-      this.currentRoute = $route.current;
-
+    $scope.$on('$locationChangeSuccess', () => {
       if ($location.path().startsWith('/model')) {
-        if (isDifferentUrl(next, current)) {
-          this.init();
-        }
+        this.init(new RouteData($route.current.params));
 
         // FIXME: hack to prevent reload on params update
         // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
         // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
+        this.currentRouteParams = $route.current.params;
         $route.current = this.initialRoute;
       }
     });
@@ -144,7 +140,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
       if (!matchesIdentity(selection, oldSelection)) {
         if (oldSelection) {
-          this.openPropertyId = null;
+          this.openPropertyId = undefined;
         }
         this.updateLocation();
       }
@@ -161,6 +157,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         this.sortAll();
       }
     });
+
     $scope.$watch(() => this.show, show => {
       for (const changeListener of this.changeListeners) {
         changeListener.onResize(show);
@@ -169,10 +166,57 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     $scope.$watch(() => $route.current.params.property, propertyId => this.openPropertyId = propertyId);
     $scope.$watch(() => this.openPropertyId, propertyId => {
-      if (this.currentRoute.params.property !== propertyId) {
+      if (this.currentRouteParams.property !== propertyId) {
         this.updateLocation();
       }
     });
+  }
+
+  private init(routeData: RouteData) {
+
+    const modelChanged = !this.model || this.model.prefix !== routeData.existingModelPrefix;
+    const selectionChanged = !areEqual((this.selection && this.selection.id.curie), routeData.resourceCurie);
+
+    this.openPropertyId = routeData.propertyId;
+
+    if (modelChanged) {
+      this.loading = true;
+
+      this.updateModelByPrefix(routeData.existingModelPrefix)
+        .then(() => this.$q.all([this.selectRouteOrDefault(routeData), this.updateSelectables(false)]))
+        .then(() => this.updateLocation())
+        .then(() => this.loading = false);
+
+    } else if (selectionChanged) {
+      this.selectRouteOrDefault(routeData)
+        .then(() => this.updateLocation());
+    }
+  }
+
+  private updateLocation() {
+
+    if (this.model) {
+      this.locationService.atModel(this.model, this.selection);
+
+      const newParams: any = { prefix: this.model.prefix };
+
+      if (this.selection) {
+        newParams.resource = this.selection.id.namespace === this.model.namespace
+          ? this.selection.id.name
+          : this.selection.id.curie;
+      } else {
+        newParams.resource = undefined;
+      }
+
+      newParams.property = this.openPropertyId;
+
+      if (!areEqual(newParams.prefix, this.currentRouteParams.prefix)
+        || !areEqual(newParams.resource, this.currentRouteParams.resource)
+        || !areEqual(newParams.property, this.currentRouteParams.property)) {
+
+        this.$route.updateParams(newParams);
+      }
+    }
   }
 
   get show() {
@@ -207,24 +251,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   get selectableItemComparator() {
     return comparingLocalizable<SelectableItem>(this.localizerProvider(), selectableItem => selectableItem.item.label);
-  }
-
-  init() {
-    const routeData = new RouteData(this.currentRoute.params);
-    const modelChanged = !this.model || this.model.prefix !== routeData.existingModelPrefix;
-
-    this.openPropertyId = routeData.propertyId;
-
-    if (modelChanged) {
-      this.loading = true;
-      this.updateModelByPrefix(routeData.existingModelPrefix)
-        .then(() => this.$q.all([this.selectRouteOrDefault(routeData), this.updateSelectables(false)]))
-        .then(() => this.updateLocation())
-        .then(() => this.loading = false);
-    } else {
-      this.selectRouteOrDefault(routeData)
-        .then(() => this.updateLocation());
-    }
   }
 
   getUsedNamespaces(): Set<string> {
@@ -275,34 +301,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     for (const changeListener of this.changeListeners) {
       changeListener.onDelete(selection);
-    }
-  }
-
-  private updateLocation() {
-
-    if (this.model) {
-      this.locationService.atModel(this.model, this.selection);
-
-      const newParams: any = { prefix: this.model.prefix };
-
-      if (this.selection) {
-        newParams.resource = this.selection.id.namespace === this.model.namespace
-          ? this.selection.id.name
-          : this.selection.id.curie;
-      }
-
-      newParams.property = this.openPropertyId;
-
-      const currentParams = _.clone(this.currentRoute.params);
-
-      if (!currentParams.hasOwnProperty('property')) {
-        // add property as undefined so that equality comparison works
-        currentParams.property = undefined;
-      }
-
-      if (!_.isEqual(currentParams, newParams)) {
-        this.$route.updateParams(newParams);
-      }
     }
   }
 
@@ -461,7 +459,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       return that.model.rootClass ? { id: that.model.rootClass, selectionType: 'class' } : null;
     }
 
-    function routeSelection(): IPromise<WithIdAndType> {
+    function getRouteSelection(): IPromise<WithIdAndType> {
 
       if (routeData.resourceCurie) {
         const resourceUri = new Uri(routeData.resourceCurie, that.model.context);
@@ -486,7 +484,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       }
     };
 
-    return routeSelection()
+    return getRouteSelection()
       .then(selectionFromRoute => {
         const selection = selectionFromRoute || rootClassSelection();
 
