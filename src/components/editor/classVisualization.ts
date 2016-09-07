@@ -293,16 +293,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     };
 
-    return layout()
-      .then(() => this.adjustLinks())
-      .then(() => {
-        // Delay fitting because dom needs to be repainted
-        window.setTimeout(() => this.focus(forceFitToAllContent), 0);
+    return layout().then(() => {
+      // Delay focus because dom needs to be repainted
+      window.setTimeout(() => {
+        this.focus(forceFitToAllContent);
       });
-  }
-
-  adjustLinks() {
-    adjustLinks(this.paper, this.modelPositions);
+    });
   }
 
   private updateClassAndLayout(klass: Class, oldId?: Uri) {
@@ -328,7 +324,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (addedClasses.length > 0) {
       this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
     } else {
-      this.adjustLinks();
       this.focus(false);
     }
   }
@@ -1124,15 +1119,6 @@ function isSiblingLink(lhs: joint.dia.Link, rhs: joint.dia.Link) {
 
 function isLoop(link: joint.dia.Link) {
   return link.get('source').id === link.get('target').id;
-}
-
-function adjustLinks(paper: joint.dia.Paper, modelPositions: ModelPositions) {
-  const graph = <joint.dia.Graph> paper.model;
-  const alreadyAdjusted = new Set<string>();
-
-  for (const element of graph.getElements()) {
-    adjustElementLinks(paper, element, alreadyAdjusted, modelPositions);
-  }
 }
 
 function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<string>, modelPositions?: ModelPositions) {
