@@ -158,12 +158,12 @@ msgstr ""
 msgid "application/schema+json"
 msgstr ""
 
-#: translations/misc.html:44
-msgid "Are you sure that you want to cancel edit?"
-msgstr ""
-
 #: translations/misc.html:46
 msgid "Are you sure that you want to close dialog?"
+msgstr ""
+
+#: translations/misc.html:44
+msgid "Are you sure that you want to continue? By continuing unsaved changes will be lost."
 msgstr ""
 
 #: components/common/deleteConfirmationModal.html:11

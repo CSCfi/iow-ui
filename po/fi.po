@@ -158,13 +158,17 @@ msgstr "RDF"
 msgid "application/schema+json"
 msgstr "JSON Schema"
 
-#: translations/misc.html:44
-msgid "Are you sure that you want to cancel edit?"
-msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
-
 #: translations/misc.html:46
 msgid "Are you sure that you want to close dialog?"
 msgstr "Oletko varma, että haluat sulkea dialogin?"
+
+#: translations/misc.html:44
+msgid ""
+"Are you sure that you want to continue? By continuing unsaved changes will "
+"be lost."
+msgstr ""
+"Oletko varma, että haluat jatkaa? Jatkaessasi tallentamattomat muutokset "
+"katoavat."
 
 #: components/common/deleteConfirmationModal.html:11 translations/misc.html:48
 msgid "Are you sure that you want to delete?"
@@ -2112,6 +2116,9 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:17
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Are you sure that you want to cancel edit?"
+#~ msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
 
 #~ msgid "Choose broader concept"
 #~ msgstr "valitse laajempi käsite"

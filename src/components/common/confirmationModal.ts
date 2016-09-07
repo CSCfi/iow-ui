@@ -23,7 +23,7 @@ export class ConfirmationModal {
   }
 
   openEditInProgress() {
-    return this.open('Edit in progress', 'Are you sure that you want to cancel edit?');
+    return this.open('Edit in progress', 'Are you sure that you want to continue? By continuing unsaved changes will be lost.');
   }
 
   openCloseModal() {
