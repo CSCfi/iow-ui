@@ -296,9 +296,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     return layout().then(() => {
       // Delay focus because dom needs to be repainted
-      window.setTimeout(() => {
-        this.focus(forceFitToAllContent);
-      });
+      window.setTimeout(() => this.focus(forceFitToAllContent));
     });
   }
 
@@ -322,10 +320,24 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
+    if (oldIdIsAssociationTarget) {
+      this.adjustElementLinks(oldId);
+    }
+
+    this.adjustElementLinks(klass.id);
+
     if (addedClasses.length > 0) {
       this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
     } else {
-      this.focus(false);
+      // Delay focus because dom needs to be repainted
+      setTimeout(() => this.focus(false));
+    }
+  }
+
+  adjustElementLinks(classId: Uri) {
+    const element = this.graph.getCell(classId.toString());
+    if (element instanceof joint.dia.Element) {
+      adjustElementLinks(this.paper, <joint.dia.Element> element, new Set<string>(), this.modelPositions);
     }
   }
 
