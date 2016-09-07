@@ -312,6 +312,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     if (addedClasses.length > 0) {
       this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
     } else {
+      this.adjustLinks();
       this.focus(false);
     }
   }
