@@ -13,7 +13,7 @@ import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
-import { isDefined } from '../../utils/object';
+import { isDefined, areEqual } from '../../utils/object';
 const joint = require('jointjs');
 import { module as mod }  from './module';
 import { Iterable } from '../../utils/iterable';
@@ -43,7 +43,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
                  </span>
                  <a role="button" class="btn btn-default btn-xs" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></a>
                  <a role="button" class="btn btn-default btn-xs" ng-show="ctrl.canSave()" ng-disabled="ctrl.modelPositions.isPristine()" ng-click="ctrl.savePositions()"><i class="fa fa-save"></i></a>
-                 <a role="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPositions()"><i class="fa fa-refresh"></i></a>
+                 <a role="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPersistentPositions()"><i class="fa fa-refresh"></i></a>
                </div>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
@@ -126,6 +126,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   operationQueue: (() => void)[] = [];
 
   classVisualization: ClassVisualization;
+  persistentPositions: ModelPositions;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -171,16 +172,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.modelService.updateModelPositions(this.model, this.modelPositions)
       .then(() => {
         this.modelPositions.setPristine();
+        this.persistentPositions = this.modelPositions.clone();
         this.saving = false;
       });
   }
 
-  layoutPositions() {
-    this.loading = true;
-    this.modelPositions.clear();
-    this.layout()
-      .then(() => this.adjustLinks())
-      .then(() => this.loading = false);
+  layoutPersistentPositions() {
+    this.modelPositions.resetWith(this.persistentPositions);
+    this.layoutPositionsAndFocus();
   }
 
   refresh(invalidateCache: boolean = false) {
@@ -196,7 +195,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
             // Hackish way to apply scope outside potentially currently running digest cycle
             visualization.addPositionChangeListener(() => this.$timeout(() => {}));
             this.classVisualization = visualization;
-            this.initialize(visualization);
+            this.persistentPositions = this.modelPositions.clone();
+            this.initialize();
           });
       }
     }
@@ -225,22 +225,27 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  initialize(data: ClassVisualization) {
+  initialize() {
     this.queueWhenNotVisible(() => {
-      this.graph.resetCells(this.createCells(data));
+      this.graph.resetCells(this.createCells(this.classVisualization));
+      this.layoutPositionsAndFocus().then(() => this.loading = false);
+    });
+  }
 
-      const withoutPositionIds = data.getClassIdsWithoutPosition();
-      const layoutAll = withoutPositionIds.length === data.classes.length;
-      const ids = layoutAll ? null : withoutPositionIds;
+  layoutPositionsAndFocus() {
+    const withoutPositionIds = this.classVisualization.getClassIdsWithoutPosition();
+    const layoutAll = withoutPositionIds.length === this.classVisualization.classes.length;
+    const ids = layoutAll ? null : withoutPositionIds;
 
-      this.layout(ids)
-        .then(() => this.adjustLinks())
-        .then(() => {
+    return this.layout(ids)
+      .then(() => this.adjustLinks())
+      .then(() => {
+      // Delay fitting because dom needs to be repainted
+        window.setTimeout(() => {
           const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
           this.focus(forceFitToAllContent);
-        })
-        .then(() => this.loading = false);
-    });
+        }, 0);
+      });
   }
 
   onDelete(item: Class|Predicate) {
@@ -723,6 +728,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       return { width, height };
     }
 
+    function position() {
+      if (classPosition.isDefined()) {
+        return classPosition.coordinate;
+      } else {
+        return { x: 0, y: 0 };
+      }
+    }
+
     const className = this.className(klass);
     const propertyNames = getPropertyNames();
 
@@ -738,12 +751,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
           'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
         }
       },
+      position: position(),
       z: zIndexClass
     });
 
-    if (classPosition.isDefined()) {
-      classCell.position(classPosition.coordinate.x, classPosition.coordinate.y);
-    }
+    const updateCellPosition = () => {
+      const newPosition = position();
+      classCell.position(newPosition.x, newPosition.y);
+    };
 
     classCell.on('change:position', () => {
       classPosition.coordinate = classCell.position();
@@ -769,6 +784,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     this.$scope.$watch(() => this.showName, (showName, oldShowName) => {
       if (showName !== oldShowName) {
         updateCellModel();
+      }
+    });
+
+    this.$scope.$watch(() => classPosition.coordinate, (coordinate, oldCoordinate) => {
+      if (!areEqual(coordinate, oldCoordinate, (l, r) => l.x === r.x && l.y === r.y)) {
+        updateCellPosition();
       }
     });
 

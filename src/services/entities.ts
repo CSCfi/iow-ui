@@ -837,6 +837,21 @@ export class ModelPositions extends GraphNodes<ClassPosition> {
     Iterable.forEach(this.classes.values(), c => c.clear());
   }
 
+  resetWith(modelPositions: ModelPositions) {
+
+    Iterable.forEach(modelPositions.classes.values(), classPosition => {
+      this.classes.get(classPosition.id.toString()).resetWith(classPosition);
+    });
+
+    Iterable.forEach(this.classes.values(), classPosition => {
+      if (!modelPositions.classes.has(classPosition.id.toString())) {
+        classPosition.clear();
+      }
+    });
+
+    this.setPristine();
+  }
+
   changeClassId(oldClassId: Uri, newClassId: Uri) {
     const classPosition = this.getClass(oldClassId);
     classPosition.id = newClassId;
@@ -871,6 +886,11 @@ export class ModelPositions extends GraphNodes<ClassPosition> {
     position.parent = this;
     this.classes.set(classId.uri, position);
     return position;
+  }
+
+  clone() {
+    const serialization = this.serialize(false, true);
+    return new ModelPositions(serialization['@graph'], serialization['@context'], this.frame);
   }
 }
 
@@ -909,6 +929,11 @@ export class ClassPosition extends GraphNode {
   clear() {
     this.coordinate = null;
     Iterable.forEach(this.associationProperties.values(), p => p.clear());
+  }
+
+  resetWith(classPosition: ClassPosition) {
+    this.coordinate = classPosition.coordinate;
+    this.associationProperties = classPosition.associationProperties;
   }
 
   isDefined() {
