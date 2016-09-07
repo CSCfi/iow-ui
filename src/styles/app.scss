@@ -739,21 +739,14 @@ modal-body {
 
       span {
         font-size: xx-small;
+        position: absolute;
+        padding: 10px;
+        top: -23px;
+        left: 10px;
+        color: #bbb;
       }
       span:hover {
-        color: $brand-primary;
-      }
-
-      .glyphicon-chevron-up {
-        position: absolute;
-        top: -25px;
-        color: #bbb;
-      }
-
-      .glyphicon-chevron-down {
-        position: absolute;
-        top: -5px;
-        color: #bbb;
+        cursor: move;
       }
     }
   }

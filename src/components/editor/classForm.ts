@@ -82,16 +82,4 @@ export class ClassFormController {
   linkToScopeclass() {
     return this.model.linkToResource(this.class.scopeClass);
   }
-
-  movePropertyUp($event: JQueryEventObject, property: Property) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.class.movePropertyUp(property);
-  }
-
-  movePropertyDown($event: JQueryEventObject, property: Property) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.class.movePropertyDown(property);
-  }
 }

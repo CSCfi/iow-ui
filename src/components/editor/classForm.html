@@ -57,13 +57,7 @@
                   <span>{{property | translateLabel: ctrl.model}}</span>
                   <accordion-chevron is-open="isOpen()"></accordion-chevron>
                   <div class="property-ordering" ng-show="ctrl.isEditing()">
-                  <span ng-show="!$first"
-                        class="glyphicon glyphicon-chevron-up"
-                        ng-click="ctrl.movePropertyUp($event, property)"></span>
-                    <br />
-                  <span ng-show="!$last"
-                        class="glyphicon glyphicon-chevron-down"
-                        ng-click="ctrl.movePropertyDown($event, property)"></span>
+                    <span class="fa fa-bars"></span>
                   </div>
                 </a>
               </h4>
