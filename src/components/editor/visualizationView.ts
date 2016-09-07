@@ -12,7 +12,8 @@ mod.directive('visualizationView', () => {
       selection: '=',
       model: '=',
       show: '=',
-      changeNotifier: '='
+      changeNotifier: '=',
+      selectClassById: '='
     },
     restrict: 'E',
     template: require('./visualizationView.html'),

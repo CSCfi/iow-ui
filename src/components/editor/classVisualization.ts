@@ -4,6 +4,7 @@ import IQService = angular.IQService;
 import IScope = angular.IScope;
 import ITimeoutService = angular.ITimeoutService;
 import IWindowService = angular.IWindowService;
+import IPromise = angular.IPromise;
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
@@ -29,7 +30,8 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
     scope: {
       selection: '=',
       model: '=',
-      changeNotifier: '='
+      changeNotifier: '=',
+      selectClassById: '='
     },
     template: `
                <div class="visualization-buttons">
@@ -53,7 +55,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
     require: 'classVisualization',
     link($scope: IScope, element: JQuery, attributes: IAttributes, controller: ClassVisualizationController) {
       element.addClass('visualization-container');
-      controller.paperHolder = new PaperHolder($window, element);
+      controller.paperHolder = new PaperHolder($window, element, id => controller.selectClassById(new Uri(id, {})));
 
       const intervalHandle = window.setInterval(() => {
 
@@ -128,6 +130,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   classVisualization: ClassVisualization;
   persistentPositions: ModelPositions;
+
+  selectClassById: (id: Uri) => IPromise<any>;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -881,13 +885,21 @@ class PaperHolder {
 
   private cache = new Map<string, { element: JQuery, paper: joint.dia.Paper }>();
 
-  constructor(private $window: IWindowService, private element: JQuery) {
+  constructor(private $window: IWindowService, private element: JQuery, private onClickCallback: (id: string) => void) {
   }
 
   getPaper(model: Model): joint.dia.Paper {
 
     const createPaperAndRegisterHandlers = (element: JQuery) => {
       const paper = createPaper(element, new joint.dia.Graph);
+
+      paper.on('cell:pointerclick', (cellView: joint.dia.CellView) => {
+        const cell: joint.dia.Cell = cellView.model;
+        if (cell instanceof joint.shapes.uml.Class && !(cell instanceof shadowClass)) {
+          this.onClickCallback(cell.id);
+        }
+      });
+
       registerZoomAndPan(this.$window, paper);
       return paper;
     };

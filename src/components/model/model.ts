@@ -82,6 +82,12 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   private initialRoute: ICurrentRoute;
   private currentRouteParams: any;
 
+  selectClassById = (classId: Uri) => {
+    this.askPermissionWhenEditing(() => {
+      this.selectByTypeAndId({selectionType: 'class', id: classId});
+    });
+  };
+
   /* @ngInject */
   constructor(private $scope: IScope,
               private $location: ILocationService,
@@ -277,7 +283,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   select(item: SelectableItem) {
     this.askPermissionWhenEditing(() => {
-      this.updateSelectionByTypeAndId(item);
+      this.selectByTypeAndId(item);
     });
   }
 
@@ -489,7 +495,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         const selection = selectionFromRoute || rootClassSelection();
 
         if (!matchesIdentity(this.selection, selection)) {
-          return this.updateSelectionByTypeAndId(selection);
+          return this.selectByTypeAndId(selection);
         } else {
           return this.$q.resolve();
         }
@@ -497,7 +503,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   // TODO remove retrying when data is coherent
-  private updateSelectionByTypeAndId(selection: WithIdAndType, isRetry: boolean = false): IPromise<any> {
+  private selectByTypeAndId(selection: WithIdAndType, isRetry: boolean = false): IPromise<any> {
 
     // set selected item also here for showing selection before entity actually is loaded
     this.selectedItem = selection;
@@ -506,7 +512,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       return this.fetchEntityByTypeAndId(selection)
         .then(entity => {
           if (!entity && !isRetry) {
-            return this.updateSelectionByTypeAndId({
+            return this.selectByTypeAndId({
               id: selection.id,
               selectionType: selection.selectionType === 'class' ? 'predicate' : 'class'
             }, true);
