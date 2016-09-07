@@ -23,6 +23,7 @@ import './modalTemplate';
 import './searchResults';
 import './usage';
 import './usagePanel';
+import './ngContextMenu';
 
 mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);

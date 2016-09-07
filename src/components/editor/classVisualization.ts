@@ -44,7 +44,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
                  </span>
                  <a role="button" class="btn btn-default btn-xs" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></a>
                  <a role="button" class="btn btn-default btn-xs" ng-show="ctrl.canSave()" ng-disabled="ctrl.modelPositions.isPristine()" ng-click="ctrl.savePositions()"><i class="fa fa-save"></i></a>
-                 <a role="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPersistentPositions()"><i class="fa fa-refresh"></i></a>
+                 <a role="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPersistentPositions()" ng-context-menu="ctrl.relayoutPositions()"><i class="fa fa-refresh"></i></a>
                </div>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
@@ -180,6 +180,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
             this.saving = false;
           });
       });
+  }
+
+  relayoutPositions() {
+    this.loading = true;
+    this.modelPositions.clear();
+    this.layoutAndFocus(false)
+      .then(() => this.loading = false);
   }
 
   layoutPersistentPositions() {
