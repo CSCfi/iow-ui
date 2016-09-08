@@ -148,7 +148,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     $scope.$watch(() => this.model, () => this.refresh());
     $scope.$watch(() => this.selection, (newSelection, oldSelection) => {
       if (newSelection !== oldSelection) {
-        this.focus(false);
+        if (!newSelection || !oldSelection) {
+          // Need to do this on next frame since selection change will change visualization size
+          window.setTimeout(() => this.queueWhenNotVisible(() => this.focus(false)));
+        } else {
+          this.focus(false);
+        }
       }
     });
     $scope.$watch(() => this.selectionFocus, (newFocus, oldFocus) => {
@@ -1024,12 +1029,6 @@ function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
 
 function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
 
-  function times(times: number, callback: () => void) {
-    for (let i = 0; i < times; i++) {
-      callback();
-    }
-  }
-
   function getContentBBox(elements: joint.dia.Element[]) {
 
     if (elements.length === 0) {
@@ -1056,29 +1055,26 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
     return !joint.V(paper.findViewByModel(element).el).hasClass(backgroundClass);
   });
 
-  // TODO: figure out why the algorithm needs to be run twice to get expected results
-  times(2, () => {
-    const scale = getScale(paper);
-    const padding = 45;
+  const scale = getScale(paper);
+  const padding = 45;
 
-    const contentBBox = getContentBBox(visibleElements);
-    const fittingBBox = {
-      x: paper.options.origin.x + padding,
-      y: paper.options.origin.y + padding,
-      width: paper.options.width - padding * 2,
-      height: paper.options.height - padding * 2
-    };
+  const contentBBox = getContentBBox(visibleElements);
+  const fittingBBox = {
+    x: paper.options.origin.x + padding,
+    y: paper.options.origin.y + padding,
+    width: paper.options.width - padding * 2,
+    height: paper.options.height - padding * 2
+  };
 
-    const newScale = Math.min(fittingBBox.width / contentBBox.width * scale, fittingBBox.height / contentBBox.height * scale);
+  const newScale = Math.min(fittingBBox.width / contentBBox.width * scale, fittingBBox.height / contentBBox.height * scale);
 
-    paper.scale(Math.max(Math.min(newScale, maxScale), minScale));
-    const contentBBoxAfterScaling = getContentBBox(visibleElements);
+  paper.scale(Math.max(Math.min(newScale, maxScale), minScale));
+  const contentBBoxAfterScaling = getContentBBox(visibleElements);
 
-    const newOx = fittingBBox.x - contentBBoxAfterScaling.x;
-    const newOy = fittingBBox.y - contentBBoxAfterScaling.y;
+  const newOx = fittingBBox.x - contentBBoxAfterScaling.x;
+  const newOy = fittingBBox.y - contentBBoxAfterScaling.y;
 
-    paper.setOrigin(newOx, newOy);
-  });
+  paper.setOrigin(newOx, newOy);
 }
 
 function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): Promise<any> {
