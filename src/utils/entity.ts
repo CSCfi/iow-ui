@@ -1,6 +1,11 @@
 import { GraphData, Model, Type, Coordinate } from '../services/entities';
 import { containsAny, collectProperties, index } from './array';
 import { WithId } from '../components/contracts';
+import { areEqual } from './object';
+
+export function coordinatesAreEqual(l: Coordinate, r: Coordinate) {
+  return areEqual(l, r, (lhs, rhs) => lhs.x === rhs.x && lhs.y === rhs.y);
+}
 
 export function copyCoordinate(coordinate: Coordinate) {
   return { x: coordinate.x, y: coordinate.y };

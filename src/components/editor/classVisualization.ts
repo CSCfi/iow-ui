@@ -14,7 +14,7 @@ import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
 import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
-import { isDefined, areEqual } from '../../utils/object';
+import { isDefined } from '../../utils/object';
 const joint = require('jointjs');
 import { module as mod }  from './module';
 import { Iterable } from '../../utils/iterable';
@@ -23,7 +23,7 @@ import { DataType } from '../../services/dataTypes';
 import { normalizeAsArray, arraysAreEqual } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
-import { copyVertices } from '../../utils/entity';
+import { copyVertices, copyCoordinate, coordinatesAreEqual } from '../../utils/entity';
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
   return {
@@ -195,8 +195,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   layoutPersistentPositions() {
+    this.loading = true;
     this.modelPositions.resetWith(this.persistentPositions);
-    this.layoutPositionsAndFocus(false);
+    this.layoutPositionsAndFocus(false)
+      .then(() => this.loading = false);
   }
 
   refresh(invalidateCache: boolean = false) {
@@ -247,7 +249,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       this.graph.resetCells(this.createCells(this.classVisualization));
 
       const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
-      this.layoutPositionsAndFocus(forceFitToAllContent).then(() => this.loading = false);
+      this.layoutPositionsAndFocus(forceFitToAllContent).then(() => {
+        this.adjustElementLinks();
+        this.loading = false;
+      });
     });
   }
 
@@ -320,11 +325,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    if (oldIdIsAssociationTarget) {
-      this.adjustElementLinks(oldId);
-    }
-
-    this.adjustElementLinks(klass.id);
+    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId] : [klass.id]);
 
     if (addedClasses.length > 0) {
       this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
@@ -334,10 +335,21 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  adjustElementLinks(classId: Uri) {
-    const element = this.graph.getCell(classId.toString());
-    if (element instanceof joint.dia.Element) {
-      adjustElementLinks(this.paper, <joint.dia.Element> element, new Set<string>(), this.modelPositions);
+  adjustElementLinks(classIds?: Uri[]) {
+
+    const alreadyAdjusted = new Set<string>();
+
+    if (classIds) {
+      for (const classId of classIds) {
+        const element = this.graph.getCell(classId.toString());
+        if (element instanceof joint.dia.Element) {
+          adjustElementLinks(this.paper, <joint.dia.Element> element, alreadyAdjusted, this.modelPositions, false);
+        }
+      }
+    } else {
+      for (const element of this.graph.getElements()) {
+        adjustElementLinks(this.paper, element, alreadyAdjusted, this.modelPositions, false);
+      }
     }
   }
 
@@ -656,7 +668,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     if (!this.isExistingClass(association.valueClass)) {
       // set target location as source location for layout
-      classPosition.coordinate = this.graph.getCell(klass.id.uri).attributes.position;
+      classPosition.setCoordinate(this.graph.getCell(klass.id.uri).attributes.position);
       this.addClass(new AssociationTargetPlaceholderClass(association.valueClass, this.model), false);
       addedClass = true;
     }
@@ -755,14 +767,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       return { width, height };
     }
 
-    function position() {
-      if (classPosition.isDefined()) {
-        return classPosition.coordinate;
-      } else {
-        return { x: 0, y: 0 };
-      }
-    }
-
     const className = this.className(klass);
     const propertyNames = getPropertyNames();
 
@@ -778,18 +782,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
           'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
         }
       },
-      position: position(),
+      position: classPosition.isDefined() ? copyCoordinate(classPosition.coordinate) : { x: 0, y: 0 },
       z: zIndexClass
     });
 
-    const updateCellPosition = () => {
-      const newPosition = position();
-      classCell.position(newPosition.x, newPosition.y);
-    };
-
     classCell.on('change:position', () => {
-      classPosition.coordinate = classCell.position();
-      adjustElementLinks(paper, classCell, new Set<string>(), isRightClick() ? this.modelPositions : null);
+      if (!coordinatesAreEqual(classCell.position(), classPosition.coordinate)) {
+        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, !isRightClick());
+        classPosition.setCoordinate(copyCoordinate(classCell.position()));
+      }
     });
 
     const updateCellModel = () => {
@@ -814,9 +815,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     });
 
-    this.$scope.$watch(() => classPosition.coordinate, (coordinate, oldCoordinate) => {
-      if (!areEqual(coordinate, oldCoordinate, (l, r) => l.x === r.x && l.y === r.y)) {
-        updateCellPosition();
+    classPosition.changeListeners.push(coordinate => {
+      if (coordinate && !coordinatesAreEqual(coordinate, classCell.position())) {
+        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, false);
+        classCell.position(coordinate.x, coordinate.y);
       }
     });
 
@@ -858,7 +860,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     associationCell.on('change:vertices', () => {
       const propertyPosition = this.modelPositions.getAssociationProperty(klass.id, association.internalId);
-      propertyPosition.vertices = copyVertices(normalizeAsArray(associationCell.get('vertices')));
+      const vertices = normalizeAsArray(associationCell.get('vertices'));
+      const oldVertices = propertyPosition.vertices;
+
+      if (!arraysAreEqual(vertices, oldVertices, coordinatesAreEqual)) {
+        propertyPosition.setVertices(copyVertices(normalizeAsArray(associationCell.get('vertices'))));
+      }
     });
 
     const updateCellModel = () => {
@@ -882,8 +889,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     });
 
-    this.$scope.$watch(() => position.vertices, (vertices, oldVertices) => {
-      if (!arraysAreEqual(vertices, oldVertices, (l, r) => l.x === r.x && l.y === r.y)) {
+    position.changeListeners.push(vertices => {
+      const oldVertices = normalizeAsArray(associationCell.get('vertices'));
+
+      if (!arraysAreEqual(vertices, oldVertices, coordinatesAreEqual)) {
         associationCell.set('vertices', copyVertices(vertices));
       }
     });
@@ -1137,7 +1146,7 @@ function isLoop(link: joint.dia.Link) {
   return link.get('source').id === link.get('target').id;
 }
 
-function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<string>, modelPositions?: ModelPositions) {
+function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<string>, modelPositions: ModelPositions, resetVertices: boolean) {
   const graph = <joint.dia.Graph> paper.model;
 
   const connectedLinks = graph.getConnectedLinks(<joint.dia.Cell> element);
@@ -1145,37 +1154,38 @@ function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, 
   for (const link of connectedLinks) {
     if (!alreadyAdjusted.has(link.id) && !!link.get('source').id && !!link.get('target').id) {
       const siblings = _.filter(connectedLinks, _.partial(isSiblingLink, link));
-      adjustSiblingLinks(paper, siblings, alreadyAdjusted, modelPositions);
+      adjustSiblingLinks(paper, siblings, alreadyAdjusted, modelPositions, resetVertices);
     }
   }
 }
 
-function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<string>, modelPositions?: ModelPositions) {
+function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<string>, modelPositions: ModelPositions, resetVertices: boolean) {
 
   function getLinkPositionVertices(link: joint.dia.Link) {
-    if (modelPositions) {
-      const sourcePosition = modelPositions.getClass(new Uri(link.get('source').id, {}));
-      return sourcePosition.getAssociationProperty(new Uri(link.get('internalId'), {})).vertices;
-    } else {
-      return [];
-    }
+    const sourcePosition = modelPositions.getClass(new Uri(link.get('source').id, {}));
+    return sourcePosition.getAssociationProperty(new Uri(link.get('internalId'), {})).vertices;
   }
 
   const graph = <joint.dia.Graph> paper.model;
-  const firstSource = siblings[0].get('source');
+  const first = siblings[0];
+  const firstSource = first.get('source');
+
+  const loop = isLoop(first);
+  const connector = {name: (loop || siblings.length === 1) ? 'normal' : 'smooth'};
 
   for (let i = 0; i < siblings.length; i++) {
 
     const link = siblings[i];
     const source = (<joint.dia.Element> graph.getCell(link.get('source').id));
     const target = (<joint.dia.Element> graph.getCell(link.get('target').id));
-    const persistedVertices = getLinkPositionVertices(link);
 
-    link.prop('connector', {name: (isLoop(link) || siblings.length === 1) ? 'normal' : 'smooth'});
+    const persistedVertices = resetVertices ? [] : getLinkPositionVertices(link);
+
+    link.prop('connector', connector);
 
     if (persistedVertices.length > 0) {
       link.set('vertices', persistedVertices);
-    } else if (isLoop(link)) {
+    } else if (loop) {
       link.set('vertices', calculateRecurseSiblingVertices(source, i));
     } else if (siblings.length > 1) {
       if (firstSource.id === source.id) {

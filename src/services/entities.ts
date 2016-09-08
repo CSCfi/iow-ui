@@ -900,6 +900,7 @@ export class ClassPosition extends GraphNode {
   private _coordinate: Coordinate;
   associationProperties: Map<string, AssociationPropertyPosition>;
   parent: ModelPositions;
+  changeListeners: ((coordinate: Coordinate) => void)[] = [];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -913,11 +914,15 @@ export class ClassPosition extends GraphNode {
     return this._coordinate;
   }
 
-  set coordinate(value: Coordinate) {
+  setCoordinate(value: Coordinate, notify: boolean = true) {
     if (!areEqual(this.coordinate, value, coordinatesAreEqual)) {
       this.setDirty();
     }
     this._coordinate = value;
+
+    if (notify) {
+      this.changeListeners.forEach(l => l(value));
+    }
   }
 
   setDirty() {
@@ -927,22 +932,25 @@ export class ClassPosition extends GraphNode {
   }
 
   clear() {
-    this.coordinate = null;
     Iterable.forEach(this.associationProperties.values(), p => p.clear());
+    this.setCoordinate(null, false);
   }
 
   resetWith(resetWithPosition: ClassPosition) {
-    this.coordinate = copyCoordinate(resetWithPosition.coordinate);
+    if (resetWithPosition.isDefined()) {
 
-    Iterable.forEach(resetWithPosition.associationProperties.values(), associationPropertyPosition => {
-      this.associationProperties.get(associationPropertyPosition.id.toString()).resetWith(associationPropertyPosition);
-    });
+      Iterable.forEach(resetWithPosition.associationProperties.values(), associationPropertyPosition => {
+        this.associationProperties.get(associationPropertyPosition.id.toString()).resetWith(associationPropertyPosition);
+      });
 
-    Iterable.forEach(this.associationProperties.values(), associationPropertyPosition => {
-      if (!resetWithPosition.associationProperties.has(associationPropertyPosition.id.toString())) {
-        associationPropertyPosition.clear();
-      }
-    });
+      Iterable.forEach(this.associationProperties.values(), associationPropertyPosition => {
+        if (!resetWithPosition.associationProperties.has(associationPropertyPosition.id.toString())) {
+          associationPropertyPosition.clear();
+        }
+      });
+
+      this.setCoordinate(copyCoordinate(resetWithPosition.coordinate));
+    }
   }
 
   isDefined() {
@@ -981,6 +989,7 @@ export class AssociationPropertyPosition extends GraphNode {
   id: Uri;
   _vertices: Coordinate[];
   parent: ClassPosition;
+  changeListeners: ((vertices: Coordinate[]) => void)[] = [];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -992,11 +1001,15 @@ export class AssociationPropertyPosition extends GraphNode {
     return this._vertices;
   }
 
-  set vertices(value: Coordinate[]) {
+  setVertices(value: Coordinate[], notify: boolean = true) {
     if (!arraysAreEqual(this.vertices, value, coordinatesAreEqual)) {
       this.setDirty();
     }
     this._vertices = value;
+
+    if (notify) {
+      this.changeListeners.forEach(l => l(value));
+    }
   }
 
   setDirty() {
@@ -1006,11 +1019,13 @@ export class AssociationPropertyPosition extends GraphNode {
   }
 
   clear() {
-    this.vertices = [];
+    this.setVertices([], false);
   }
 
   resetWith(resetWithPosition: AssociationPropertyPosition) {
-    this.vertices = copyVertices(resetWithPosition.vertices);
+    if (resetWithPosition.isDefined()) {
+      this.setVertices(copyVertices(resetWithPosition.vertices));
+    }
   }
 
   isDefined() {
