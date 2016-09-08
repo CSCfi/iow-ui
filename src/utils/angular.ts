@@ -1,5 +1,6 @@
 import INgModelController = angular.INgModelController;
 import IModelFormatter = angular.IModelFormatter;
+import ILocationService = angular.ILocationService;
 import IPromise = angular.IPromise;
 import IQService = angular.IQService;
 import { Validator, AsyncValidator } from '../components/form/validators';
@@ -14,6 +15,12 @@ const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0
 
 function normalizeUrl(url: string, removeProperty: boolean = false): string {
   return url.replace(/^#/, '').replace(/:/g, '%3A').replace(uuidRegex, '');
+}
+
+export function formatApplicationBase($location: ILocationService, baseHref: string) {
+  const port = $location.port();
+  const portString = (port === 80 || port === 443) ? '' : (':' + $location.port());
+  return $location.protocol() + '://' + $location.host() + portString + baseHref;
 }
 
 export function isDifferentUrl(lhs: string, rhs: string, ignoreProperty: boolean = false): boolean {
