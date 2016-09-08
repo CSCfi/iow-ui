@@ -170,6 +170,12 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       }
     });
 
+    $scope.$watch(() => this.selectionWidth, () => {
+      for (const changeListener of this.changeListeners) {
+        changeListener.onResize(this.show);
+      }
+    });
+
     $scope.$watch(() => $route.current.params.property, propertyId => this.openPropertyId = propertyId);
     $scope.$watch(() => this.openPropertyId, propertyId => {
       if (this.currentRouteParams.property !== propertyId) {

@@ -58,8 +58,8 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
       element.addClass('visualization-container');
       controller.paperHolder = new PaperHolder($window, element, id => controller.selectClassById(new Uri(id, {})));
 
-      const intervalHandle = window.setInterval(() => {
-
+      const setDimensions = () => {
+        controller.dimensionChangeInProgress = true;
         const paper = controller.paper;
         const xd = paper.options.width - element.width();
         const yd = paper.options.height - element.height();
@@ -67,13 +67,26 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
         if (xd || yd) {
           paper.setDimensions(element.width(), element.height());
           moveOrigin(paper, xd / 2, yd / 2);
+          window.setTimeout(setDimensions);
         } else {
           controller.dimensionChangeInProgress = false;
         }
-      }, 200);
+      };
 
-      $scope.$on('$destroy', () => window.clearInterval(intervalHandle));
+      const setDimensionsIfNotAlreadyInProgress = () => {
+        if (!controller.dimensionChangeInProgress) {
+          setDimensions();
+        }
+      };
 
+      // init
+      window.setTimeout(setDimensions);
+      controller.setDimensions = () => window.setTimeout(setDimensionsIfNotAlreadyInProgress);
+      window.addEventListener('resize', setDimensionsIfNotAlreadyInProgress);
+
+      $scope.$on('$destroy', () => {
+        window.removeEventListener('resize', setDimensions);
+      });
     },
     controller: ClassVisualizationController
   };
@@ -121,7 +134,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   zoomInHandle: number;
   zoomOutHandle: number;
 
-  dimensionChangeInProgress: boolean = true;
+  dimensionChangeInProgress: boolean;
 
   paperHolder: PaperHolder;
 
@@ -133,6 +146,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   persistentPositions: ModelPositions;
 
   selectClassById: (id: Uri) => IPromise<any>;
+  setDimensions: () => void;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -363,13 +377,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   onResize(show: Show) {
+
     this.visible = show !== Show.Selection;
+    this.setDimensions();
 
     if (this.visible) {
       this.executeQueue();
     }
-
-    this.dimensionChangeInProgress = true;
   }
 
   canFocus() {
