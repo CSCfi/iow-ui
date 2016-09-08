@@ -18,7 +18,7 @@ mod.directive('ngContextMenu', /* @ngInject */ ($parse: IParseService) => {
         e.preventDefault();
 
         scope.$apply(() => {
-          fn(scope, {$event: event});
+          fn(scope, {$event: e});
         });
       });
     }
