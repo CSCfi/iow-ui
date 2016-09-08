@@ -250,7 +250,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
       const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
       this.layoutPositionsAndFocus(forceFitToAllContent).then(() => {
-        this.adjustElementLinks();
+        this.adjustAllLinks(VertexAction.KeepAll);
         this.loading = false;
       });
     });
@@ -325,7 +325,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId] : [klass.id]);
+    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId] : [klass.id], VertexAction.KeepAll);
 
     if (addedClasses.length > 0) {
       this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
@@ -335,7 +335,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
-  adjustElementLinks(classIds?: Uri[]) {
+  adjustAllLinks(vertexAction: VertexAction) {
+    this.adjustElementLinks(null, vertexAction);
+  }
+
+  adjustElementLinks(classIds: Uri[], vertexAction: VertexAction) {
 
     const alreadyAdjusted = new Set<string>();
 
@@ -343,12 +347,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       for (const classId of classIds) {
         const element = this.graph.getCell(classId.toString());
         if (element instanceof joint.dia.Element) {
-          adjustElementLinks(this.paper, <joint.dia.Element> element, alreadyAdjusted, this.modelPositions, false);
+          adjustElementLinks(this.paper, <joint.dia.Element> element, alreadyAdjusted, this.modelPositions, vertexAction);
         }
       }
     } else {
       for (const element of this.graph.getElements()) {
-        adjustElementLinks(this.paper, element, alreadyAdjusted, this.modelPositions, false);
+        adjustElementLinks(this.paper, element, alreadyAdjusted, this.modelPositions, vertexAction);
       }
     }
   }
@@ -788,7 +792,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     classCell.on('change:position', () => {
       if (!coordinatesAreEqual(classCell.position(), classPosition.coordinate)) {
-        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, !isRightClick());
+        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, isRightClick() ? VertexAction.Reset : VertexAction.KeepNormal);
         classPosition.setCoordinate(copyCoordinate(classCell.position()));
       }
     });
@@ -817,7 +821,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     classPosition.changeListeners.push(coordinate => {
       if (coordinate && !coordinatesAreEqual(coordinate, classCell.position())) {
-        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, false);
+        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, VertexAction.KeepAll);
         classCell.position(coordinate.x, coordinate.y);
       }
     });
@@ -1146,7 +1150,7 @@ function isLoop(link: joint.dia.Link) {
   return link.get('source').id === link.get('target').id;
 }
 
-function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<string>, modelPositions: ModelPositions, resetVertices: boolean) {
+function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, alreadyAdjusted: Set<string>, modelPositions: ModelPositions, vertexAction: VertexAction) {
   const graph = <joint.dia.Graph> paper.model;
 
   const connectedLinks = graph.getConnectedLinks(<joint.dia.Cell> element);
@@ -1154,22 +1158,33 @@ function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.Element, 
   for (const link of connectedLinks) {
     if (!alreadyAdjusted.has(link.id) && !!link.get('source').id && !!link.get('target').id) {
       const siblings = _.filter(connectedLinks, _.partial(isSiblingLink, link));
-      adjustSiblingLinks(paper, siblings, alreadyAdjusted, modelPositions, resetVertices);
+      adjustSiblingLinks(paper, siblings, alreadyAdjusted, modelPositions, vertexAction);
     }
   }
 }
 
-function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<string>, modelPositions: ModelPositions, resetVertices: boolean) {
+enum VertexAction {
+  Reset, KeepNormal, KeepAll
+}
+
+function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<string>, modelPositions: ModelPositions, vertexAction: VertexAction) {
 
   function getLinkPositionVertices(link: joint.dia.Link) {
     const sourcePosition = modelPositions.getClass(new Uri(link.get('source').id, {}));
     return sourcePosition.getAssociationProperty(new Uri(link.get('internalId'), {})).vertices;
   }
 
+  function getPersistedVertices(link: joint.dia.Link, siblingCount: number, isLoop: boolean) {
+    if (vertexAction === VertexAction.Reset || (vertexAction === VertexAction.KeepNormal && (siblingCount > 1 || isLoop))) {
+      return [];
+    } else {
+      return getLinkPositionVertices(link);
+    }
+  }
+
   const graph = <joint.dia.Graph> paper.model;
   const first = siblings[0];
   const firstSource = first.get('source');
-
   const loop = isLoop(first);
   const connector = {name: (loop || siblings.length === 1) ? 'normal' : 'smooth'};
 
@@ -1178,8 +1193,7 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
     const link = siblings[i];
     const source = (<joint.dia.Element> graph.getCell(link.get('source').id));
     const target = (<joint.dia.Element> graph.getCell(link.get('target').id));
-
-    const persistedVertices = resetVertices ? [] : getLinkPositionVertices(link);
+    const persistedVertices = getPersistedVertices(link, siblings.length, loop);
 
     link.prop('connector', connector);
 
