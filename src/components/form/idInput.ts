@@ -14,7 +14,7 @@ import { module as mod }  from './module';
 
 
 interface IdInputAttributes extends IAttributes {
-  idInput: Type;
+  idInput: 'class' | 'predicate';
 }
 
 mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: ValidatorService) => {

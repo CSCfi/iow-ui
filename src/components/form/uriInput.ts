@@ -10,7 +10,7 @@ import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { LanguageService } from '../../services/languageService';
 
-type UriInputType = 'required-namespace' | 'free-url' | 'free-uri';
+type UriInputType = 'required-namespace' | 'free-url' | 'free-uri' | 'stem';
 
 interface UriInputAttributes extends IAttributes {
   uriInput: UriInputType;
