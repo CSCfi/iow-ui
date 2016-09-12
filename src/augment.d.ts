@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/@types/jointjs/index.d.ts" />
-
 import { IAugmentedJQuery, ICloneAttachFunction } from 'angular';
 
 declare global {
