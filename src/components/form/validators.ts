@@ -48,7 +48,7 @@ export const isValidPredicateIdentifier = createRegexValidator(/^[a-z][a-zA-Z0-9
 export const isValidIdentifier = createRegexValidator(/^[a-zA-Z_\-][a-zA-Z0-9_\-]*$/);
 
 export function isValidLabelLength(label: string): boolean {
-  return !label || label.length <= 40;
+  return true;
 }
 
 export function isValidModelLabelLength(label: string): boolean {
