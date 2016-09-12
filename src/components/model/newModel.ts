@@ -1,5 +1,4 @@
-import IScope = angular.IScope;
-import ILocationService = angular.ILocationService;
+import { IScope, ILocationService } from 'angular';
 import { module as mod }  from './module';
 import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';

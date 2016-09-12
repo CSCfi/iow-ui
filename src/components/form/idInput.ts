@@ -1,9 +1,6 @@
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IScope = angular.IScope;
-import IQService = angular.IQService;
+import { IAttributes, INgModelController, IScope, IQService } from 'angular';
 import { ValidatorService } from '../../services/validatorService';
-import { Class, Predicate, Type } from '../../services/entities';
+import { Class, Predicate } from '../../services/entities';
 import {
   isValidLabelLength, isValidIdentifier, isValidClassIdentifier,
   isValidPredicateIdentifier

@@ -48,7 +48,7 @@ function localize(localizable: Localizable, lang: Language, showLang: boolean): 
   let localization = localizable ? localizable[lang] : '';
 
   if (Array.isArray(localization)) {
-    localization = Array.join(localization, ' ');
+    localization = localization.join(' ');
   }
 
   if (!localization) {

@@ -1,4 +1,5 @@
-/// <reference path="./type-context/karma-spec.d.ts" />
+/// <reference path="node_modules/awesome-typescript-loader/lib/runtime.d.ts" />
+/// <reference types="jasmine" />
 
 import 'core-js';
 

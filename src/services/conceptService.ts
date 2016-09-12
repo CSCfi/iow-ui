@@ -1,7 +1,4 @@
-import IHttpPromise = angular.IHttpPromise;
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IHttpPromise, IHttpService, IPromise } from 'angular';
 import * as _ from 'lodash';
 import {
   EntityDeserializer, ConceptSuggestion, FintoConcept, GraphData, FintoConceptSearchResult,

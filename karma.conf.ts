@@ -1,5 +1,3 @@
-/// <reference path="./type-context/karma-runner.d.ts" />
-
 import * as karma from 'karma';
 import * as webpack from 'webpack';
 import { commonConfig } from './webpack.common-config';

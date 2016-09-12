@@ -1,10 +1,8 @@
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
+import { IHttpService, IPromise } from 'angular';
 import {
   EntityDeserializer, Usage, GraphData, EmptyUsage, EditableEntity
 } from './entities';
 import { config } from '../config';
-import IQService = angular.IQService;
 
 export class UsageService {
   /* @ngInject */

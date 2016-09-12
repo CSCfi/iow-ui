@@ -1,8 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import IFormController = angular.IFormController;
-import INgModelController = angular.INgModelController;
-import ILocationService = angular.ILocationService;
+import { IAttributes, IScope } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from './editableEntityController';
 import { LanguageService } from '../../services/languageService';

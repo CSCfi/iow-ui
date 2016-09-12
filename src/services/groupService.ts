@@ -1,5 +1,4 @@
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
+import { IHttpService, IPromise } from 'angular';
 import * as _  from 'lodash';
 import { EntityDeserializer, Group, GroupListItem, GraphData } from './entities';
 import { config } from '../config';

@@ -1,8 +1,4 @@
-import IAttributes = angular.IAttributes;
-import ILocaleService = angular.ILocaleService;
-import ILocationService = angular.ILocationService;
-import IScope = angular.IScope;
-import ITimeoutService = angular.ITimeoutService;
+import { IAttributes, IScope } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Predicate, Model, Property } from '../../services/entities';
 import { Uri } from '../../services/uri';

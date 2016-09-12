@@ -1,6 +1,4 @@
-import IScope = angular.IScope;
-import ILogService = angular.ILogService;
-import ILocationService = angular.ILocationService;
+import { IScope, ILocationService} from 'angular';
 import _ = require('lodash');
 import { LocationService } from '../services/locationService';
 import { GroupService } from '../services/groupService';
@@ -83,10 +81,8 @@ export class FrontPageController {
   search(text: string) {
     if (text) {
       this.searchService.searchAnything(text)
-        .then(results => {
-          results.sort(comparingLocalizable<SearchResult>(this.localizer, s => s.label));
-          this.searchResults = results;
-        });
+        .then(results => results.sort(comparingLocalizable<SearchResult>(this.localizer, s => s.label)))
+        .then(results => this.searchResults = results);
     } else {
       this.searchResults = [];
     }

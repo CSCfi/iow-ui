@@ -1,6 +1,3 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import ILogService = angular.ILogService;
 import { Class, Model, Predicate } from '../../services/entities';
 import { Show } from '../contracts';
 

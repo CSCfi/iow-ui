@@ -1,6 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IRepeatScope = angular.IRepeatScope;
-import IScope = angular.IScope;
+import { IAttributes, IRepeatScope, IScope } from 'angular';
 import { moveElement, resetWith } from '../../utils/array';
 import { module as mod }  from './module';
 

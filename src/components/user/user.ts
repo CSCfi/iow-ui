@@ -1,5 +1,4 @@
-import IScope = angular.IScope;
-import ILocationService = angular.ILocationService;
+import { IScope, ILocationService } from 'angular';
 import { DefaultUser, groupUrl } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { LocationService } from '../../services/locationService';

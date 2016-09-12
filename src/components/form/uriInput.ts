@@ -1,8 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IQService = angular.IQService;
-import IModelValidators = angular.IModelValidators;
+import { IScope, IAttributes, INgModelController, IModelValidators } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Model } from '../../services/entities';
 import { isValidUri, isValidUrl, isValidUriStem } from './validators';

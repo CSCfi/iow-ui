@@ -1,7 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import IWindowService = angular.IWindowService;
-import ITimeoutService = angular.ITimeoutService;
+import { IScope, IAttributes, IWindowService, ITimeoutService } from 'angular';
 import * as _ from 'lodash';
 
 import { module as mod }  from './module';

@@ -1,5 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import { arrowDown, arrowUp, pageDown, pageUp, enter } from '../../utils/keyCode';
 import { module as mod }  from './module';
 

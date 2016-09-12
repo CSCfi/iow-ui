@@ -1,11 +1,10 @@
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IPromise, IQService } from 'angular';
 import * as moment from 'moment';
-import Moment = moment.Moment;
 import { DataType } from '../../services/dataTypes';
 import { Uri } from '../../services/uri';
 import { availableLanguages } from '../../utils/language';
 import { contains } from '../../utils/array';
+import * as _ from 'lodash';
 const URI = require('uri-js');
 
 export interface Validator<T> {

@@ -1,5 +1,6 @@
 import { Layout, Event, EventType, Link, Node } from 'webcola';
 import { Iterable } from '../../utils/iterable';
+import * as joint from 'jointjs';
 
 const debugPerformance = false;
 

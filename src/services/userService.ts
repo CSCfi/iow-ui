@@ -1,9 +1,6 @@
-import IPromise = angular.IPromise;
-import IHttpPromise = angular.IHttpPromise;
-import IHttpService = angular.IHttpService;
+import { IPromise, IHttpPromise, IHttpService, IQService } from 'angular';
 import { EntityDeserializer, User, AnonymousUser, GraphData } from './entities';
 import { config } from '../config';
-import IQService = angular.IQService;
 
 export class UserService {
 

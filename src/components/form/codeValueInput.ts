@@ -1,12 +1,5 @@
-import IAttributes = angular.IAttributes;
-import IAsyncModelValidators = angular.IAsyncModelValidators;
-import IModelValidators = angular.IModelValidators;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
-import IScope = angular.IScope;
+import { IAttributes, IAsyncModelValidators, IQService, IScope, INgModelController } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import INgModelController = angular.INgModelController;
-import IModelFormatter = angular.IModelFormatter;
 import { ModelService } from '../../services/modelService';
 import { LanguageService } from '../../services/languageService';
 import { ReferenceData } from '../../services/entities';

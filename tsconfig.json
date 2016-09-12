@@ -1,15 +1,30 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "lib": ["es2016", "es2017.object", "dom"],
     "noImplicitAny": true,
     "removeComments": false,
     "sourceMap": true,
     "module": "commonjs",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "types": [
+      "angular",
+      "angular-animate",
+      "angular-gettext",
+      "angular-route",
+      "angular-ui-bootstrap",
+      "change-case",
+      "jointjs",
+      "jquery",
+      "lodash",
+      "modernizr",
+      "moment"
+    ]
   },
   "files": [
-    "./type-context/browser.d.ts",
-    "./src/init.ts"
+    "node_modules/awesome-typescript-loader/lib/runtime.d.ts",
+    "src/augment.d.ts",
+    "src/init.ts"
   ]
 }

@@ -1,13 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IFormController = angular.IFormController;
-import INgModelController = angular.INgModelController;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
-import IScope = angular.IScope;
-import IAsyncModelValidators = angular.IAsyncModelValidators;
-import IModelValidators = angular.IModelValidators;
-import IModelParser = angular.IModelParser;
-import IModelFormatter = angular.IModelFormatter;
+import { IAttributes, INgModelController, IQService, IScope, IModelFormatter } from 'angular';
 import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { arrayValidator, arrayAsyncValidator } from '../form/validators';

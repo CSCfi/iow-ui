@@ -1,6 +1,4 @@
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IScope = angular.IScope;
+import { IAttributes, INgModelController, IScope } from 'angular';
 import * as _ from 'lodash';
 import { Uri } from '../../services/uri';
 import { contains, containsAny } from '../../utils/array';

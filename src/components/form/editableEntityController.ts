@@ -1,7 +1,4 @@
-import IFormController = angular.IFormController;
-import ILogService = angular.ILogService;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IFormController, ILogService, IPromise, IScope } from 'angular';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { LanguageContext, EditableEntity } from '../../services/entities';

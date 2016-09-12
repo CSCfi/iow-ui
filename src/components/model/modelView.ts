@@ -1,8 +1,5 @@
 import _ = require('lodash');
-import ILogService = angular.ILogService;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
+import { ILogService, IPromise } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { GroupListItem, Model, LanguageContext } from '../../services/entities';
 import { ModelService } from '../../services/modelService';

@@ -1,7 +1,6 @@
 import { Association, Model, Attribute, Type } from '../../services/entities';
 import { module as mod }  from './module';
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
+import { IScope, IAttributes } from 'angular';
 import { PredicateViewController } from './predicateView';
 import { isDefined } from '../../utils/object';
 import { UsageService } from '../../services/usageService';

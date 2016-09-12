@@ -2,6 +2,7 @@ import { GraphData, Model, Type, Coordinate } from '../services/entities';
 import { containsAny, collectProperties, index } from './array';
 import { WithId } from '../components/contracts';
 import { areEqual } from './object';
+import { IHttpPromiseCallbackArg } from 'angular';
 
 export function coordinatesAreEqual(l: Coordinate, r: Coordinate) {
   return areEqual(l, r, (lhs, rhs) => lhs.x === rhs.x && lhs.y === rhs.y);
@@ -25,8 +26,8 @@ export function collectIds(items: WithId[]|WithId[][]): Set<string> {
   });
 }
 
-export function expandContextWithKnownModels(model?: Model): (response: angular.IHttpPromiseCallbackArg<GraphData>) => angular.IHttpPromiseCallbackArg<GraphData> {
-  return (response: angular.IHttpPromiseCallbackArg<GraphData>) => {
+export function expandContextWithKnownModels(model?: Model): (response: IHttpPromiseCallbackArg<GraphData>) => IHttpPromiseCallbackArg<GraphData> {
+  return (response: IHttpPromiseCallbackArg<GraphData>) => {
     if (model) {
       model.expandContextWithKnownModels(response.data['@context']);
     }

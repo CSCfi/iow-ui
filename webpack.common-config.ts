@@ -1,4 +1,4 @@
-/// <reference path="./type-context/webpack.d.ts" />
+/// <reference types="node" />
 
 import * as path from 'path';
 import * as webpack from 'webpack';

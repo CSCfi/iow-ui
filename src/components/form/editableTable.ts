@@ -1,9 +1,8 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import IPromise = angular.IPromise;
+import { IAttributes, IScope } from 'angular';
 import { EditableForm } from './editableEntityController';
 import { module as mod }  from './module';
 import { Url } from '../../services/uri';
+import * as _ from 'lodash';
 
 mod.directive('editableTable', () => {
   return {

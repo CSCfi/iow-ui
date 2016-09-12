@@ -1,6 +1,4 @@
-import IAttributes = angular.IAttributes;
-import ILogService = angular.ILogService;
-import IScope = angular.IScope;
+import { ILogService } from 'angular';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';

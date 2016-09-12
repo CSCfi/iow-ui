@@ -1,10 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IIntervalService = angular.IIntervalService;
-import IQService = angular.IQService;
-import IScope = angular.IScope;
-import ITimeoutService = angular.ITimeoutService;
-import IWindowService = angular.IWindowService;
-import IPromise = angular.IPromise;
+import { IAttributes, IQService, IScope, ITimeoutService, IWindowService, IPromise, IQResolveReject } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
@@ -15,7 +9,7 @@ import { layout as colaLayout } from './colaLayout';
 import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import { isDefined } from '../../utils/object';
-const joint = require('jointjs');
+import * as joint from 'jointjs';
 import { module as mod }  from './module';
 import { Iterable } from '../../utils/iterable';
 import { Uri } from '../../services/uri';
@@ -24,6 +18,7 @@ import { normalizeAsArray, arraysAreEqual } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { copyVertices, copyCoordinate, coordinatesAreEqual } from '../../utils/entity';
+
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
   return {
@@ -314,7 +309,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       if (onlyClassIds && onlyClassIds.length === 0) {
         return this.$q.when();
       } else {
-        return this.$q.when(layoutGraph(this.graph, !!this.model.rootClass, onlyClassIds ? onlyClassIds : []));
+        return layoutGraph(this.$q, this.graph, !!this.model.rootClass, onlyClassIds ? onlyClassIds : []);
       }
     };
 
@@ -616,7 +611,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     // remove to be unreferenced shadow classes
     for (const element of this.graph.getNeighbors(<joint.dia.Element> this.graph.getCell(id.uri))) {
-      if (element instanceof shadowClass && this.graph.getConnectedLinks(element).length === 1) {
+      if (element instanceof ShadowClass && this.graph.getConnectedLinks(element).length === 1) {
         element.remove();
       }
     }
@@ -648,7 +643,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       const targetElement = this.graph.getCell(targetId);
 
       if (!klass.hasAssociationTarget(new Uri(targetId, {}))) {
-        if (targetElement instanceof shadowClass && this.graph.getConnectedLinks(targetElement).length === 1) {
+        if (targetElement instanceof ShadowClass && this.graph.getConnectedLinks(targetElement).length === 1) {
           // Remove to be unreferenced shadow class
           targetElement.remove();
         }
@@ -793,7 +788,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const className = this.className(klass);
     const propertyNames = getPropertyNames();
 
-    const classConstructor = klass.resolved ? withoutUnusedMarkupClass : shadowClass;
+    const classConstructor = klass.resolved ? WithoutUnusedMarkupClass : ShadowClass;
 
     const classCell = new classConstructor({
       id: klass.id.uri,
@@ -863,7 +858,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       }
     }
 
-    const associationCell = new withoutUnusedMarkupLink({
+    const associationCell = new WithoutUnusedMarkupLink({
       source: { id: klass.id.uri },
       target: { id: association.valueClass.uri },
       connector: { name: 'normal' },
@@ -938,7 +933,7 @@ class PaperHolder {
 
       paper.on('cell:pointerclick', (cellView: joint.dia.CellView) => {
         const cell: joint.dia.Cell = cellView.model;
-        if (cell instanceof joint.shapes.uml.Class && !(cell instanceof shadowClass)) {
+        if (cell instanceof joint.shapes.uml.Class && !(cell instanceof ShadowClass)) {
           this.onClickCallback(cell.id);
         }
       });
@@ -1091,20 +1086,23 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
   paper.setOrigin(newOx, newOy);
 }
 
-function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): Promise<any> {
+function layoutGraph($q: IQService, graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): IPromise<any> {
   if (directed && onlyNodeIds.length === 0) {
     // TODO directed doesn't support incremental layout
-    return new Promise((resolve) => {
+
+    return $q.when(
       joint.layout.DirectedGraph.layout(graph, {
         nodeSep: 100,
         edgeSep: 150,
         rankSep: 500,
         rankDir: "LR"
-      });
-      resolve();
-    });
+      })
+  );
   } else {
-    return colaLayout(graph, _.map(onlyNodeIds, id => id.uri));
+    return $q((resolve: IQResolveReject<any>, reject: IQResolveReject<any>) => {
+      colaLayout(graph, _.map(onlyNodeIds, id => id.uri))
+        .then(() => resolve(), err => reject(err));
+    });
   }
 }
 
@@ -1121,18 +1119,17 @@ function formatCardinality(property: Property) {
   }
 }
 
-const withoutUnusedMarkupLink = joint.dia.Link.extend({
-  markup: [
+class WithoutUnusedMarkupLink extends joint.dia.Link {
+  markup = [
     '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
     '<path class="marker-target" fill="black" stroke="black" d="M 0 0 0 0"/>',
     '<path class="connection-wrap" d="M 0 0 0 0"/>',
     '<g class="labels"/>',
     '<g class="marker-vertices"/>'
-  ].join(''),
+    ].join('');
 
-  toolMarkup: ''
-});
-
+  toolMarkup = '';
+}
 
 const classMarkup = (shadow: boolean) => {
   return `<g class="rotatable ${shadow ? 'shadow' : ''}">
@@ -1143,9 +1140,13 @@ const classMarkup = (shadow: boolean) => {
           </g>`;
 };
 
-const withoutUnusedMarkupClass = joint.shapes.uml.Class.extend({ markup: classMarkup(false) });
-const shadowClass = joint.shapes.uml.Class.extend({ markup: classMarkup(true) });
+class WithoutUnusedMarkupClass extends joint.shapes.uml.Class {
+  markup = classMarkup(false);
+}
 
+class ShadowClass extends joint.shapes.uml.Class {
+  markup = classMarkup(true);
+}
 
 function isSiblingLink(lhs: joint.dia.Link, rhs: joint.dia.Link) {
   const lhsSource = lhs.get('source').id;

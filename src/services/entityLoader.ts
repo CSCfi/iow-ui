@@ -1,6 +1,4 @@
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IHttpService, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import {
   Localizable,
@@ -478,9 +476,9 @@ function asUriPromise<T extends { id: Uri }>(resolvable: UriResolvable<T>, ...co
       Object.assign(uriContext, context);
     }
 
-    return <IPromise<Uri>> Promise.resolve(new Uri(resolvable, Object.assign({}, uriContext)));
+    return <IPromise<Uri>> <any> Promise.resolve(new Uri(resolvable, Object.assign({}, uriContext)));
   } else {
-    return <IPromise<Uri>> Promise.resolve(null);
+    return <IPromise<Uri>> <any> Promise.resolve(null);
   }
 }
 

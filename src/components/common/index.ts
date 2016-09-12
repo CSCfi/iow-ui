@@ -1,6 +1,6 @@
-import IFilterService = angular.IFilterService;
+import { ISCEService } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import Moment = moment.Moment;
+import { Moment } from 'moment';
 import * as _ from 'lodash';
 import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
@@ -43,7 +43,7 @@ mod.filter('capitalize', function() {
   };
 });
 
-mod.filter('trustAsHtml', /* @ngInject */ ($sce: angular.ISCEService) => {
+mod.filter('trustAsHtml', /* @ngInject */ ($sce: ISCEService) => {
   return (text: string) => $sce.trustAsHtml(text);
 });
 

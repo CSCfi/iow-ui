@@ -1,4 +1,4 @@
-import IScope = angular.IScope;
+import { IScope } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
 import { LanguageContext } from '../../services/entities';

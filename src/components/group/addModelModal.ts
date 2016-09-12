@@ -1,6 +1,6 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IPromise = angular.IPromise;
+import { IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { ModelService } from '../../services/modelService';
 import { Type } from '../../services/entities';
 import { Uri } from '../../services/uri';

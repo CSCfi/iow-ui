@@ -1,10 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IPromise = angular.IPromise;
-import IRepeatScope = angular.IRepeatScope;
-import IModelFormatter = angular.IModelFormatter;
-import IQService = angular.IQService;
+import { IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
 import { ClassService } from '../../services/classService';

@@ -1,5 +1,6 @@
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IPromise, IScope, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
 import { ImportedNamespace, Model } from '../../services/entities';
@@ -12,10 +13,10 @@ const noExclude = (ns: ImportedNamespace) => <string> null;
 
 export class SearchNamespaceModal {
   /* @ngInject */
-  constructor(private $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(private $uibModal: IModalService) {
   }
 
-  open(model: Model, language: Language, exclude: (ns: ImportedNamespace) => string = noExclude): angular.IPromise<ImportedNamespace> {
+  open(model: Model, language: Language, exclude: (ns: ImportedNamespace) => string = noExclude): IPromise<ImportedNamespace> {
     return this.$uibModal.open({
       template: require('./searchNamespaceModal.html'),
       size: 'medium',
@@ -41,7 +42,7 @@ class SearchNamespaceController {
 
   /* @ngInject */
   constructor($scope: IScope,
-              private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
+              private $uibModalInstance: IModalServiceInstance,
               public  exclude: (ns: ImportedNamespace) => string,
               private model: Model,
               private language: Language,

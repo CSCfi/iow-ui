@@ -1,7 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IRepeatScope = angular.IRepeatScope;
-import IScope = angular.IScope;
-import ITimeoutService = angular.ITimeoutService;
+import { IRepeatScope, ITimeoutService } from 'angular';
 import { scrollToElement } from '../../utils/angular';
 import { module as mod }  from './module';
 

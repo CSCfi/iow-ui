@@ -1,8 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IFormController = angular.IFormController;
-import INgModelController = angular.INgModelController;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IAttributes, IPromise, IScope } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';

@@ -1,10 +1,3 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IPromise = angular.IPromise;
-import IRepeatScope = angular.IRepeatScope;
-import IModelFormatter = angular.IModelFormatter;
-import IQService = angular.IQService;
 import { ReferenceData, ReferenceDataCode, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';

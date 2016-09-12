@@ -1,7 +1,6 @@
-import Dictionary = _.Dictionary;
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import * as _ from 'lodash';
+import Dictionary = _.Dictionary;
 import { Usage, Referrer, LanguageContext } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 import { module as mod }  from '../module';

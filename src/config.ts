@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import Moment = moment.Moment;
+import { Moment } from 'moment';
 
 export interface Config {
   apiEndpointWithName(name: string): string;

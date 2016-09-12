@@ -1,8 +1,8 @@
-import IPromise = angular.IPromise;
+import { IPromise, ILogService } from 'angular';
 import * as _ from 'lodash';
 import * as frames from './frames';
 import * as moment from 'moment';
-import Moment = moment.Moment;
+import { Moment } from 'moment';
 import { Frame } from './frames';
 import { mapType, reverseMapType } from './typeMapping';
 import { config } from '../config';
@@ -406,7 +406,7 @@ export class Model extends AbstractModel {
     const result: {[prefix: string]: string} = {};
 
     for (const namespace of this.getNamespaces()) {
-      if (_.contains(namespaceTypes, namespace.type)) {
+      if (contains(namespaceTypes, namespace.type)) {
         result[namespace.prefix] = namespace.url;
       }
     }
@@ -622,7 +622,7 @@ export class ImportedNamespace extends GraphNode {
 
   set namespace(ns) {
     this._namespace = ns;
-    this.id = new Uri(_.trimRight(ns, '#/'), { [this.prefix]: ns });
+    this.id = new Uri(_.trimEnd(ns, '#/'), { [this.prefix]: ns });
   }
 
   serializationValues(clone: boolean): {} {
@@ -2108,7 +2108,7 @@ export function groupUrl(id: string): RelativeUrl {
   return `/group?id=${encodeURIComponent(id)}`;
 }
 
-function frameData($log: angular.ILogService, data: GraphData, frame: any): IPromise<GraphData> {
+function frameData($log: ILogService, data: GraphData, frame: any): IPromise<GraphData> {
   return jsonld.promises.frame(data, frame)
     .then((framed: any) => framed, (err: any) => {
       $log.error(frame);
@@ -2119,7 +2119,7 @@ function frameData($log: angular.ILogService, data: GraphData, frame: any): IPro
 }
 
 
-function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: GraphData, optional: boolean, frame: Frame, entityFactory: EntityFactory<T>): IPromise<T> {
+function frameAndMap<T extends GraphNode>($log: ILogService, data: GraphData, optional: boolean, frame: Frame, entityFactory: EntityFactory<T>): IPromise<T> {
 
   return frameData($log, data, frame)
     .then(framed => {
@@ -2139,7 +2139,7 @@ function frameAndMap<T extends GraphNode>($log: angular.ILogService, data: Graph
     });
 }
 
-function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: GraphData, frame: Frame, entityFactory: EntityFactory<T>): IPromise<T[]> {
+function frameAndMapArray<T extends GraphNode>($log: ILogService, data: GraphData, frame: Frame, entityFactory: EntityFactory<T>): IPromise<T[]> {
 
   return frameData($log, data, frame)
     .then(framed => {
@@ -2155,7 +2155,7 @@ function frameAndMapArray<T extends GraphNode>($log: angular.ILogService, data: 
     });
 }
 
-function frameAndMapArrayEntity<T extends GraphNode, A extends GraphNodes<T>>($log: angular.ILogService, data: GraphData, frame: Frame, entityArrayFactory: EntityArrayFactory<T, A>): IPromise<A> {
+function frameAndMapArrayEntity<T extends GraphNode, A extends GraphNodes<T>>($log: ILogService, data: GraphData, frame: Frame, entityArrayFactory: EntityArrayFactory<T, A>): IPromise<A> {
 
   return frameData($log, data, frame)
     .then(framed => {
@@ -2171,7 +2171,7 @@ function frameAndMapArrayEntity<T extends GraphNode, A extends GraphNodes<T>>($l
 
 export class EntityDeserializer {
   /* @ngInject */
-  constructor(private $log: angular.ILogService) {
+  constructor(private $log: ILogService) {
   }
 
   deserializeGroupList(data: GraphData): IPromise<GroupListItem[]> {

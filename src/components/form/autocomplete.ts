@@ -1,10 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
-import IRepeatScope = angular.IRepeatScope;
-import IModelFormatter = angular.IModelFormatter;
+import { IScope, IAttributes, INgModelController, IPromise, IQService, IRepeatScope, IModelFormatter } from 'angular';
 import * as _ from 'lodash';
 import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
@@ -164,7 +158,7 @@ export class AutocompleteController<T> {
 
   match(search: string, value: T): boolean {
     if (!this.matcher) {
-      return _.contains(this.format(value).toLowerCase(), search.toLowerCase());
+      return this.format(value).toLowerCase().indexOf(search.toLowerCase()) !== -1;
     } else {
       return this.matcher(search, value);
     }

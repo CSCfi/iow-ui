@@ -1,5 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
+import { IScope, IAttributes } from 'angular';
 import { Model, ReferenceData } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 import { SearchReferenceDataModal } from '../model/searchReferenceDataModal';
@@ -9,6 +8,7 @@ import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion } from '../../utils/exclusion';
+import * as _ from 'lodash';
 
 mod.directive('editableReferenceDataSelect', () => {
   return {

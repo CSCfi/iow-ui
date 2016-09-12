@@ -1,11 +1,8 @@
-import INgModelController = angular.INgModelController;
-import IModelFormatter = angular.IModelFormatter;
-import ILocationService = angular.ILocationService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { INgModelController, IModelFormatter, ILocationService, IPromise, IQService } from 'angular';
 import { Validator, AsyncValidator } from '../components/form/validators';
 import { normalizeAsArray, all } from './array';
 import { valuesExcludingKeys } from './object';
+import * as _ from 'lodash';
 
 export function isModalCancel(err: any) {
   return err === 'cancel' || err === 'escape key press';

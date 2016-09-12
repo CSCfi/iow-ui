@@ -1,9 +1,9 @@
-import Dictionary = _.Dictionary;
-import IModalService = angular.ui.bootstrap.IModalService;
-import IPromise = angular.IPromise;
+import { IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
 import * as _ from 'lodash';
 import { UsageService } from '../../services/usageService';
 import { Usage, EditableEntity, Model, Referrer, LanguageContext } from '../../services/entities';
+import { any } from '../../utils/array';
 
 export class DeleteConfirmationModal {
   /* @ngInject */
@@ -36,7 +36,7 @@ class DeleteConfirmationModalController {
   constructor(public entity: EditableEntity, public context: LanguageContext, private onlyInDefinedModel: Model, usageService: UsageService) {
     usageService.getUsage(entity).then(usage => {
       this.usage = usage;
-      this.hasReferrers = usage && _.any(usage.referrers, referrer => !this.exclude(referrer));
+      this.hasReferrers = usage && any(usage.referrers, referrer => !this.exclude(referrer));
     });
   }
 }

@@ -1,5 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
+import { IScope } from 'angular';
 import { Show } from '../contracts';
 import { module as mod }  from './module';
 

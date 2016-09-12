@@ -1,7 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IQService = angular.IQService;
+import { IScope, IAttributes, INgModelController } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
 import { module as mod }  from './module';

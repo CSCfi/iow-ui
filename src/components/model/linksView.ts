@@ -1,5 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import { Link, Model } from '../../services/entities';
 import { AddEditLinkModal } from './addEditLinkModal';
 import { LanguageService } from '../../services/languageService';

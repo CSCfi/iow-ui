@@ -1,8 +1,6 @@
-import IWindowService = angular.IWindowService;
+import { IWindowService, IScope, ui } from 'angular';
+import IModalScope = ui.bootstrap.IModalScope;
 import { module as mod }  from './module';
-import IModalScope = angular.ui.bootstrap.IModalScope;
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
 import { SessionService } from '../../services/sessionService';
 
 mod.directive('divider', () => {

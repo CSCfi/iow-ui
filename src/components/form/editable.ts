@@ -1,11 +1,5 @@
-import IAnimateProvider = angular.animate.IAnimateProvider;
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import IFormController = angular.IFormController;
-import INgModelController = angular.INgModelController;
-import ILocationService = angular.ILocationService;
-import ICompiledExpression = angular.ICompiledExpression;
-import IParseService = angular.IParseService;
+import { IAttributes, IScope, INgModelController, IParseService, animate } from 'angular';
+import IAnimateProvider = animate.IAnimateProvider;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';

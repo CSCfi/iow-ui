@@ -1,7 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import ITimeoutService = angular.ITimeoutService;
+import { IScope, IAttributes, INgModelController } from 'angular';
 import { resolveValidator } from './validators';
 import { dataTypes } from '../../services/dataTypes';
 import { normalizeAsArray } from '../../utils/array';

@@ -1,6 +1,4 @@
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IScope = angular.IScope;
+import { IAttributes, INgModelController, IScope } from 'angular';
 import { Localizable, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { isValidString, isValidLabelLength, isValidModelLabelLength } from './validators';

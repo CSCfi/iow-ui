@@ -1,8 +1,6 @@
-import IScope = angular.IScope;
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IScope, IPromise, IQService, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
@@ -14,7 +12,7 @@ import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
 import { isDefined } from '../../utils/object';
 import { any } from '../../utils/array';
-import { lower } from 'change-case';
+import { lowerCase } from 'change-case';
 
 const limit = 1000;
 
@@ -213,7 +211,7 @@ class SearchConceptController {
     this.$scope.form.$setPristine();
 
     if (item instanceof AddNewConcept) {
-      this.selection = new NewConceptData(lower(this.searchText), this.resolveInitialVocabulary());
+      this.selection = new NewConceptData(lowerCase(this.searchText, this.localizer.language), this.resolveInitialVocabulary());
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
       const conceptPromise: IPromise<Concept> = conceptSearchResult.suggestion

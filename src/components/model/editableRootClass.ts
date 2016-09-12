@@ -1,5 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, ClassListItem } from '../../services/entities';
 import { SearchClassModal } from '../editor/searchClassModal';

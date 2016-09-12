@@ -1,12 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IDocumentService = angular.IDocumentService;
-import INgModelController = angular.INgModelController;
-import IParseService = angular.IParseService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
-import IRepeatScope = angular.IRepeatScope;
-import IScope = angular.IScope;
-import ITranscludeFunction = angular.ITranscludeFunction;
+import { IAttributes, IDocumentService, IParseService, IQService, IRepeatScope, IScope, ITranscludeFunction } from 'angular';
 import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
 import { scrollToElement } from '../../utils/angular';

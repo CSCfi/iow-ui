@@ -1,12 +1,10 @@
-import IRouteProvider = angular.route.IRouteProvider;
-import IRouteService = angular.route.IRouteService;
-import IScope = angular.IScope;
+import { route } from 'angular';
 import { Uri } from './services/uri';
-import ILocationService = angular.ILocationService;
+import { ILocationService } from 'angular';
 import { resourceUrl, modelUrl } from './services/entities';
 
 /* @ngInject */
-export function routeConfig($routeProvider: IRouteProvider) {
+export function routeConfig($routeProvider: route.IRouteProvider) {
   $routeProvider
     .when('/', {
       template: '<front-page></front-page>'
@@ -16,13 +14,13 @@ export function routeConfig($routeProvider: IRouteProvider) {
     })
     .when('/group', {
       template: '<group group-id="groupId"></group>',
-      controller($scope: any, $route: IRouteService) {
+      controller($scope: any, $route: route.IRouteService) {
         $scope.groupId = new Uri($route.current.params.id, {});
       }
     })
     .when('/newModel', {
       template: '<new-model prefix="prefix" label="label" group="group" languages="languages" type="type"></new-model>',
-      controller($scope: any, $route: IRouteService) {
+      controller($scope: any, $route: route.IRouteService) {
         const params: any = $route.current.params;
 
         $scope.prefix = params.prefix;
@@ -34,7 +32,7 @@ export function routeConfig($routeProvider: IRouteProvider) {
     })
     .when('/ns/:prefix*', {
       template: '',
-      controller($location: ILocationService, $route: IRouteService) {
+      controller($location: ILocationService, $route: route.IRouteService) {
         const prefix = $route.current.params.prefix;
         const resource = $location.hash();
 

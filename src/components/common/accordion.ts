@@ -1,7 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import ITranscludeFunction = angular.ITranscludeFunction;
-import IParseService = angular.IParseService;
+import { IScope, IAttributes, ITranscludeFunction } from 'angular';
 import { module as mod }  from './module';
 import { isDefined } from '../../utils/object';
 

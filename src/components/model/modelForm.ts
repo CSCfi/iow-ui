@@ -1,5 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import { Model } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelViewController } from './modelView';

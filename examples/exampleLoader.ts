@@ -1,5 +1,6 @@
-/// <reference path="../type-context/browser.d.ts" />
+/// <reference types="node" />
 
+import { ILogCall, ILogService, IQService } from 'angular';
 import { EntityLoader } from '../src/services/entityLoader';
 import { EntityDeserializer } from '../src/services/entities';
 import { httpService } from './requestToAngularHttpService';
@@ -19,9 +20,9 @@ const argv = require('optimist')
 
 process.env['API_ENDPOINT'] = `http://${argv.host}:${argv.port}/api`;
 
-const logFn: angular.ILogCall = (...args: any[]) => console.log(args);
-const log: angular.ILogService = { debug: logFn, error: logFn, info: logFn, log: logFn, warn: logFn };
-const q = <angular.IQService> require('q');
+const logFn: ILogCall = (...args: any[]) => console.log(args);
+const log: ILogService = { debug: logFn, error: logFn, info: logFn, log: logFn, warn: logFn };
+const q = <IQService> require('q');
 const entityDeserializer = new EntityDeserializer(log);
 const modelService = new ModelService(httpService, q, entityDeserializer);
 const predicateService = new PredicateService(httpService, q, entityDeserializer);

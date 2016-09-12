@@ -1,8 +1,5 @@
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
-import IScope = angular.IScope;
+import { IAttributes, INgModelController, IScope } from 'angular';
 import { isValidString, isValidLabelLength, isValidModelLabelLength, isValidIdentifier } from './validators';
-
 import { module as mod }  from './module';
 
 interface StringInputAttributes extends IAttributes {

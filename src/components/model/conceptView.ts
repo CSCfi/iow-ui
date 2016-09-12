@@ -1,7 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import ILogService = angular.ILogService;
-import IQService = angular.IQService;
+import { ILogService, IQService } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { Model, LanguageContext, Concept, GroupListItem, ConceptSuggestion, Usage } from '../../services/entities';
 import { UserService } from '../../services/userService';

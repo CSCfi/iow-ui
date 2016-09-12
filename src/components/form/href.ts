@@ -1,7 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import ITimeoutService = angular.ITimeoutService;
-
+import { IScope, ITimeoutService } from 'angular';
 import { module as mod }  from './module';
 
 mod.directive('ngHref', ($timeout: ITimeoutService) => {

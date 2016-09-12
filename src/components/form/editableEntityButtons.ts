@@ -1,6 +1,4 @@
-import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
-import IFormController = angular.IFormController;
+import { IScope, IAttributes, IFormController } from 'angular';
 import { EditableEntityController } from './editableEntityController';
 import { module as mod }  from './module';
 

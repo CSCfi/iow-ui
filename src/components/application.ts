@@ -1,8 +1,6 @@
-import ILocationService = angular.ILocationService;
-import IModalScope = angular.ui.bootstrap.IModalScope;
-import IModalStackService = angular.ui.bootstrap.IModalStackService;
-import IWindowService = angular.IWindowService;
-import IScope = angular.IScope;
+import { ILocationService, IScope, ui } from 'angular';
+import IModalScope = ui.bootstrap.IModalScope;
+import IModalStackService = ui.bootstrap.IModalStackService;
 import { UserService } from '../services/userService';
 import { config } from '../config';
 import { ConfirmationModal } from './common/confirmationModal';

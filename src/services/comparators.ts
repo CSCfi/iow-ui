@@ -1,4 +1,4 @@
-import Moment = moment.Moment;
+import { Moment } from 'moment';
 import { Localizable } from './entities';
 import { isDefined } from '../utils/object';
 import { translate } from '../utils/language';

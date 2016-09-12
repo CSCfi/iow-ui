@@ -1,8 +1,6 @@
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
-import IScope = angular.IScope;
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import { IPromise, IScope, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import {
@@ -130,12 +128,13 @@ export class SearchPredicateController {
     const appendResults = (predicates: PredicateListItem[]) => {
       this.predicates = this.predicates.concat(predicates);
 
-      this.models = [this.model];
-      this.models = this.models.concat(_.chain(this.predicates)
+      const definedByFromPredicates = _.chain(this.predicates)
         .map(predicate => predicate.definedBy)
-        .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label))
-        .value());
+        .uniqBy(definedBy => definedBy.id.uri)
+        .value()
+        .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label));
+
+      this.models = [this.model, ...definedByFromPredicates];
 
       this.types = _.chain(this.predicates)
         .map(predicate => predicate.normalizedType)

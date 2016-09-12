@@ -1,13 +1,11 @@
-import ICompiledExpression = angular.ICompiledExpression;
-import ILocationService = angular.ILocationService;
-import IScope = angular.IScope;
+import { ILocationService } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
 import { Localizable, isLocalizable, LanguageContext } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { isString, isNumber } from '../../utils/object';
 import { isDifferentUrl } from '../../utils/angular';
-import Moment = moment.Moment;
+import { Moment } from 'moment';
 import * as moment from 'moment';
 
 export type Value = string|Localizable|number|Uri|Moment;

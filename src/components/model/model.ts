@@ -1,10 +1,6 @@
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
-import ILocationService = angular.ILocationService;
-import IRouteService = angular.route.IRouteService;
-import ICurrentRoute = angular.route.ICurrentRoute;
-import IQService = angular.IQService;
-import IWindowService = angular.IWindowService;
+import { IPromise, IScope, ILocationService, IQService, route } from 'angular';
+import IRouteService = route.IRouteService;
+import ICurrentRoute = route.ICurrentRoute;
 import * as _ from 'lodash';
 import { ClassService } from '../../services/classService';
 import { LanguageService, Localizer } from '../../services/languageService';

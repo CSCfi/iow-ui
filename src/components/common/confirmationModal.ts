@@ -1,6 +1,5 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
 
 export class ConfirmationModal {
   /* @ngInject */

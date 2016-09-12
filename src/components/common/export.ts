@@ -1,9 +1,6 @@
-import ICompiledExpression = angular.ICompiledExpression;
-import IScope = angular.IScope;
-import IWindowService = angular.IWindowService;
+import { IScope, IWindowService } from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import Moment = moment.Moment;
 import { Predicate, Class, Model, LanguageContext } from '../../services/entities';
 import { config } from '../../config';
 import { LanguageService } from '../../services/languageService';

@@ -1,5 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import { ModelViewController } from './modelView';
 import { Model, Vocabulary } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';

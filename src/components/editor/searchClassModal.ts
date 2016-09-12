@@ -1,8 +1,6 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
-import IScope = angular.IScope;
+import { IPromise, IScope, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import {
@@ -99,13 +97,13 @@ class SearchClassController {
     const appendResults = (classes: ClassListItem[]) => {
       this.classes = this.classes.concat(classes);
 
-      this.models = [this.model];
-      this.models = this.models.concat(_.chain(this.classes)
+      const definedByFromClasses = _.chain(this.classes)
         .map(klass => klass.definedBy)
-        .uniq(definedBy => definedBy.id.uri)
-        .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label))
-        .value());
+        .uniqBy(definedBy => definedBy.id.uri)
+        .value()
+        .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label));
 
+      this.models = [this.model, ...definedByFromClasses];
       this.search();
 
       this.loadingResults = false;

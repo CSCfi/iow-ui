@@ -1,7 +1,6 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { ModelService } from '../../services/modelService';
 import { ImportedNamespace, Model } from '../../services/entities';
 import { Language } from '../../utils/language';

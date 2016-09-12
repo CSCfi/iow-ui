@@ -1,7 +1,4 @@
-import ILocationService = angular.ILocationService;
-import ILogService = angular.ILogService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { ILocationService, ILogService, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { AddModelModal } from './addModelModal';

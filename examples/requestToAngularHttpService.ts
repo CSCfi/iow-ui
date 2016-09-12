@@ -1,34 +1,35 @@
 import * as _ from 'lodash';
+import { IPromise, IHttpPromise, IRequestShortcutConfig, IHttpPromiseCallback, IHttpPromiseCallbackArg, IRequestConfig, IHttpService } from 'angular';
 const request = require('request');
 const hstd = require('http-status-to-description');
 
-class AngularPromiseWrapper<T> implements angular.IHttpPromise<T> {
+class AngularPromiseWrapper<T> implements IHttpPromise<T> {
 
   constructor(private promise: Promise<T>) {}
 
-  then<TResult>(successCallback: (promiseValue: angular.IHttpPromiseCallbackArg<T>) => (angular.IPromise<TResult>|TResult),
+  then<TResult>(successCallback: (promiseValue: IHttpPromiseCallbackArg<T>) => (IPromise<TResult>|TResult),
                 errorCallback?: (reason: any) => any, notifyCallback?: (state: any) => any) {
-    return <angular.IPromise<TResult>> this.promise.then(successCallback, errorCallback);
+    return <IPromise<TResult>> <any> this.promise.then(successCallback, errorCallback);
   }
 
-  success(callback: angular.IHttpPromiseCallback<T>): angular.IHttpPromise<T> {
+  success(callback: IHttpPromiseCallback<T>): IHttpPromise<T> {
     throw new Error('Unimplemented');
   }
 
-  error(callback: angular.IHttpPromiseCallback<any>): angular.IHttpPromise<T> {
+  error(callback: IHttpPromiseCallback<any>): IHttpPromise<T> {
     throw new Error('Unimplemented');
   }
 
-  catch<TResult>(onRejected: (reason:any) => (angular.IPromise<TResult>|TResult)): angular.IPromise<TResult> {
+  catch<TResult>(onRejected: (reason:any) => (IPromise<TResult>|TResult)): IPromise<TResult> {
     throw new Error('Unimplemented');
   }
 
-  finally(finallyCallback: () => any): angular.IPromise<angular.IHttpPromiseCallbackArg<T>> {
+  finally(finallyCallback: () => any): IPromise<IHttpPromiseCallbackArg<T>> {
     throw new Error('Unimplemented');
   }
 }
 
-const pendingRequests: angular.IRequestConfig[] = [];
+const pendingRequests: IRequestConfig[] = [];
 
 
 function makeUrl(url: string, params?: any) {
@@ -49,7 +50,7 @@ function isNotHtml(headers: any) {
   return contentType.indexOf('text/html') === -1;
 }
 
-function makeRequest<T>(method: string, url: string, config: angular.IRequestShortcutConfig = {}): angular.IHttpPromise<T> {
+function makeRequest<T>(method: string, url: string, config: IRequestShortcutConfig = {}): IHttpPromise<T> {
 
   const requestConfig = Object.assign({}, config, { method, url });
   pendingRequests.push(requestConfig);
@@ -103,31 +104,31 @@ function makeRequest<T>(method: string, url: string, config: angular.IRequestSho
   }));
 }
 
-const requests: any = function<T>(config: angular.IRequestConfig) {
+const requests: any = function<T>(config: IRequestConfig) {
   return makeRequest(config.method, config.url, config);
 };
 
 requests.pendingRequest = pendingRequests;
 
-requests.get = function<T>(url: string, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+requests.get = function<T>(url: string, config?: IRequestShortcutConfig): IHttpPromise<T> {
   return makeRequest<T>('GET', url, config);
 };
-requests.post = function<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+requests.post = function<T>(url: string, data: any, config?: IRequestShortcutConfig): IHttpPromise<T> {
   return makeRequest<T>('POST', url, Object.assign(config, {data}));
 };
-requests.put = function<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+requests.put = function<T>(url: string, data: any, config?: IRequestShortcutConfig): IHttpPromise<T> {
   return makeRequest<T>('PUT', url, Object.assign(config, {data}));
 };
-requests.patch = function<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+requests.patch = function<T>(url: string, data: any, config?: IRequestShortcutConfig): IHttpPromise<T> {
   return makeRequest<T>('PATCH', url, Object.assign(config, {data}));
 };
-requests.delete = function<T>(url: string, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+requests.delete = function<T>(url: string, config?: IRequestShortcutConfig): IHttpPromise<T> {
   return makeRequest<T>('DELETE', url, config);
 };
-requests.head = function<T>(url: string, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+requests.head = function<T>(url: string, config?: IRequestShortcutConfig): IHttpPromise<T> {
   return makeRequest<T>('HEAD', url, config);
 };
-requests.jsonp = function<T>(url: string, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+requests.jsonp = function<T>(url: string, config?: IRequestShortcutConfig): IHttpPromise<T> {
   throw new Error('Unsupported');
 };
 
@@ -136,5 +137,5 @@ Object.defineProperty(request, 'defaults', {
   set: function(newValue) { throw new Error('Unsupported') },
 });
 
-export const httpService: angular.IHttpService = requests;
+export const httpService: IHttpService = requests;
 

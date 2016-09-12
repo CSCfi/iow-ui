@@ -1,8 +1,4 @@
-import IAttributes = angular.IAttributes;
-import ICompiledExpression = angular.ICompiledExpression;
-import IFormController = angular.IFormController;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IAttributes, ICompiledExpression, IPromise, IScope } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';

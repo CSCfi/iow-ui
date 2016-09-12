@@ -1,12 +1,11 @@
-import Dictionary = _.Dictionary;
-import IModalService = angular.ui.bootstrap.IModalService;
-import IPromise = angular.IPromise;
+import { IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
+import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import { Class, Property, LanguageContext } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
-import gettextCatalog = angular.gettext.gettextCatalog;
 
 const noExclude = (property: Property) => false;
 

@@ -1,10 +1,8 @@
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
-import ILogService = angular.ILogService;
+import { ILogService, ui } from 'angular';
 
 export class MaintenanceModal {
   /* @ngInject */
-  constructor(private $uibModal: angular.ui.bootstrap.IModalService, private $log: ILogService) {
+  constructor(private $uibModal: ui.bootstrap.IModalService, private $log: ILogService) {
   }
 
   open(err: any) {

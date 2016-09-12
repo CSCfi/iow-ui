@@ -1,6 +1,4 @@
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IPromise, IHttpService, IQService } from 'angular';
 import { Uri } from './uri';
 import { pascalCase, camelCase } from 'change-case';
 import { config } from '../config';

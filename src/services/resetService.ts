@@ -1,7 +1,4 @@
-import IHttpPromise = angular.IHttpPromise;
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IHttpService, IPromise } from 'angular';
 import { config } from '../config';
 
 export class ResetService {

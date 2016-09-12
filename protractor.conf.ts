@@ -1,6 +1,11 @@
-/// <reference path="./type-context/protractor.d.ts" />
+/// <reference types="jasmine" />
 
-exports.config = {
+// FIXME: If angular is imported properly then while initializing disableNgAnimate global window variable is missing
+//        If just types are used by referencing angular.module etc... then compiler reports "Identifier 'angular' must be imported from a module"
+
+declare const angular: any;
+
+export const config = {
   baseUrl: 'http://localhost:9001/',
 
   specs: ['e2e/tests/app.e2e.ts'],
@@ -23,8 +28,8 @@ exports.config = {
   },
 
   onPrepare() {
-    var disableNgAnimate = function () {
-      angular.module('disableNgAnimate', []).run(['$animate', function ($animate: angular.animate.IAnimateService) {
+    const disableNgAnimate = () => {
+      angular.module('disableNgAnimate', []).run(['$animate', ($animate: any) => {
         $animate.enabled(false);
       }]);
     };

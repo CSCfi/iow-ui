@@ -2,6 +2,7 @@ import { dataTypes, DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
+import { INgModelController, IScope, IAttributes } from 'angular';
 
 // TODO duplication with editable just to get past
 mod.directive('editableRangeSelect', () => {
@@ -29,7 +30,7 @@ mod.directive('editableRangeSelect', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['editableRangeSelect', '^form'],
-    link($scope: EditableScope, element: JQuery, attributes: angular.IAttributes, [thisController, formController]: [RangeSelectController, EditableForm]) {
+    link($scope: EditableScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [RangeSelectController, EditableForm]) {
       const input = element.find('[ng-model]');
       $scope.ngModel = input.controller('ngModel');
       thisController.isEditing = () => formController.editing;
@@ -38,8 +39,8 @@ mod.directive('editableRangeSelect', () => {
   };
 });
 
-interface EditableScope extends angular.IScope {
-  ngModel: angular.INgModelController;
+interface EditableScope extends IScope {
+  ngModel: INgModelController;
 }
 
 class RangeSelectController {

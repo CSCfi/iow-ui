@@ -1,8 +1,6 @@
-import IScope = angular.IScope;
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IScope, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -13,6 +11,7 @@ import { ConceptViewController } from './conceptView';
 import { any } from '../../utils/array';
 import { Uri } from '../../services/uri';
 import { localizableContains } from '../../utils/language';
+import * as _ from 'lodash';
 
 export class ConceptEditorModal {
 
@@ -72,7 +71,7 @@ export class ConceptEditorModalController {
           .filter(concept => concept instanceof ConceptSuggestion && !!concept.definedBy)
           .map(concept => concept as ConceptSuggestion)
           .map(concept => concept.definedBy)
-          .uniq(definedBy => definedBy.id.uri)
+          .uniqBy(definedBy => definedBy.id.uri)
           .value();
 
         this.vocabularies = _.chain(concepts)
@@ -80,7 +79,7 @@ export class ConceptEditorModalController {
           .flatten<Vocabulary|Uri>()
           .filter(vocabulary => vocabulary instanceof Vocabulary && !vocabulary.local)
           .map(vocabulary => vocabulary as Vocabulary)
-          .uniq(vocabulary => vocabulary.vocabularyId)
+          .uniqBy(vocabulary => vocabulary.vocabularyId)
           .value();
 
         this.sort();

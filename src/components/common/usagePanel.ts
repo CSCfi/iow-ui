@@ -1,4 +1,4 @@
-import IScope = angular.IScope;
+import { IScope } from 'angular';
 import { UsageService } from '../../services/usageService';
 import { Usage, EditableEntity, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';

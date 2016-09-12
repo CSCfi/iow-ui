@@ -1,7 +1,6 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IScope, IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { ModelService } from '../../services/modelService';
 import { ReferenceData, Model, ReferenceDataGroup, ReferenceDataServer } from '../../services/entities';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
@@ -11,6 +10,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { Uri } from '../../services/uri';
 import { any, all } from '../../utils/array';
+import * as _ from 'lodash';
 
 const noExclude = (referenceData: ReferenceData) => <string> null;
 
@@ -78,12 +78,13 @@ export class SearchReferenceDataModalController {
 
     const init = (referenceDatas: ReferenceData[]) => {
       this.referenceDatas = referenceDatas;
-      this.referenceDataGroups = _.chain(this.referenceDatas)
+
+      this.referenceDataGroups = _.chain<ReferenceData>(this.referenceDatas)
         .map(referenceData => referenceData.groups)
         .flatten<ReferenceDataGroup>()
-        .uniq(group => group.id.uri)
-        .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer, group => group.title))
-        .value();
+        .uniqBy(group => group.id.uri)
+        .value()
+        .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer, group => group.title));
 
       if (this.showGroup && all(this.referenceDataGroups, group => !group.id.equals(this.showGroup.id))) {
         this.showGroup = null;

@@ -1,6 +1,6 @@
 import { Predicate, Class, Concept, Model } from '../../services/entities';
 import { module as mod }  from './module';
-import IScope = angular.IScope;
+import { IScope } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { SearchConceptModal } from './searchConceptModal';

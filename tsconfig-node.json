@@ -1,12 +1,20 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "lib": ["es2016", "es2017.object"],
     "noImplicitAny": true,
     "removeComments": false,
     "sourceMap": true,
     "module": "commonjs",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "types": [
+      "node",
+      "webpack",
+      "webpack-merge",
+      "karma",
+      "protractor"
+    ]
   },
   "files": []
 }

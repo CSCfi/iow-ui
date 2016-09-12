@@ -1,9 +1,5 @@
-import IHttpPromise = angular.IHttpPromise;
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
-import Moment = moment.Moment;
 import {
   EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association
 } from './entities';

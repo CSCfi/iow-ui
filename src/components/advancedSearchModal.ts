@@ -1,7 +1,6 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IPromise, IScope, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
 import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
@@ -47,8 +46,9 @@ class AdvancedSearchController {
     $scope.$watch(() => this.searchText, text => {
       if (text) {
         this.searchService.searchAnything(text)
-        .then(results => this.apiSearchResults = results)
-        .then(() => this.search());
+          .then(results => results.sort(comparingLocalizable<SearchResult>(this.localizer, result => result.label)))
+          .then(results => this.apiSearchResults = results)
+          .then(() => this.search());
       }
     });
 
@@ -60,10 +60,7 @@ class AdvancedSearchController {
   }
 
   search() {
-    this.searchResults = _.chain(this.apiSearchResults)
-      .sort(comparingLocalizable<SearchResult>(this.localizer, result => result.label))
-      .filter(result => this.typeFilter(result))
-      .value();
+    this.searchResults = _.filter(this.apiSearchResults, result => this.typeFilter(result));
   }
 
   selectSearchResult(searchResult: SearchResult) {

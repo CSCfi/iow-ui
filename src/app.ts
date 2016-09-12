@@ -1,15 +1,9 @@
-import IAnimateProvider = angular.animate.IAnimateProvider;
-import ICompileProvider = angular.ICompileProvider;
-import ILocationService = angular.ILocationService;
-import ILogProvider = angular.ILogProvider;
-import IProvideService = angular.auto.IProvideService;
-import IRootScopeService = angular.IRootScopeService;
-import IRoute = angular.route.IRoute;
-import ILocationProvider = angular.ILocationProvider;
-import IRouteService = angular.route.IRouteService;
-import IQService = angular.IQService;
-import ITooltipProvider = angular.ui.bootstrap.ITooltipProvider;
-import gettextCatalog = angular.gettext.gettextCatalog;
+import { ICompileProvider, ILogProvider, ILocationProvider, route, ui, auto, animate } from 'angular';
+import IRoute = route.IRoute;
+import IProvideService = auto.IProvideService;
+import IRouteService = route.IRouteService;
+import IAnimateProvider = animate.IAnimateProvider;
+import ITooltipProvider = ui.bootstrap.ITooltipProvider;
 import './shim';
 import * as jQuery from 'jquery';
 window.jQuery = jQuery;
@@ -71,10 +65,12 @@ mod.config(($locationProvider: ILocationProvider,
   $uibTooltipProvider.setTriggers({'mouseenter': 'mouseleave click'});
 });
 
-mod.run((gettextCatalog: gettextCatalog) => gettextCatalog.debug = true);
+// FIXME: proper typing for gettextCatalog
+mod.run((gettextCatalog: any) => gettextCatalog.debug = true);
 
 export const done = new Promise((resolve) => {
   mod.run(() => resolve(true));
 });
 
 angular.bootstrap(document.body, ['iow-ui'], {strictDi: true});
+

@@ -1,4 +1,3 @@
-import IScope = angular.IScope;
 import { HistoryModal } from './historyModal';
 import { Model, Predicate, Class } from '../../services/entities';
 import { module as mod }  from './module';

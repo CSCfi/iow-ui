@@ -1,7 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import INgModelController = angular.INgModelController;
-
+import { IAttributes, IScope, INgModelController } from 'angular';
 import { module as mod }  from './module';
 
 mod.directive('input', () => {

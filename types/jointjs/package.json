@@ -1,0 +1,7 @@
+{
+  "name": "@types/jointjs",
+  "version": "0.9.27",
+  "dependencies": {
+    "@types/backbone": "1.0.*"
+  }
+}

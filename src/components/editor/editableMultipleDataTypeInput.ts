@@ -1,10 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IFormController = angular.IFormController;
-import INgModelController = angular.INgModelController;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import IModelValidators = angular.IModelValidators;
 import { DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
 import { ReferenceData, LanguageContext } from '../../services/entities';

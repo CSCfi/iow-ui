@@ -1,10 +1,6 @@
-import IHttpPromise = angular.IHttpPromise;
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
-import IQService = angular.IQService;
+import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import Moment = moment.Moment;
 import { config } from '../config';
 import {
   EntityDeserializer, Model, ModelListItem, ImportedNamespace, Type, GraphData, Link,

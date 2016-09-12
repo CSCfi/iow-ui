@@ -1,5 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IScope } from 'angular';
 import { ReferenceData, ReferenceDataCode, LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';

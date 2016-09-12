@@ -1,9 +1,6 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
-import ITranscludeFunction = angular.ITranscludeFunction;
+import { IAttributes, IScope, ITranscludeFunction, ICompiledExpression } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import IPromise = angular.IPromise;
 import { ConfirmationModal } from './confirmationModal';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
@@ -81,7 +78,7 @@ class SearchResultsController<T extends WithId> {
   exclude: (item: T) => string;
   searchResults: (SearchResult<T>|AddNew)[];
   selected: T|AddNew;
-  onSelect: angular.ICompiledExpression;
+  onSelect: ICompiledExpression;
   editInProgress: () => boolean;
 
   constructor(private $scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {

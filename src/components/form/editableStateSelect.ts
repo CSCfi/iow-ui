@@ -1,8 +1,7 @@
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import { UserService } from '../../services/userService';
 import { State, Model } from '../../services/entities';
 import { module as mod }  from './module';
-import IAttributes = angular.IAttributes;
 import { EditableForm } from './editableEntityController';
 
 const userStates: State[] = ['Unstable', 'Draft'];

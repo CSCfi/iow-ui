@@ -1,6 +1,6 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IPromise = angular.IPromise;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import { IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { Type } from '../../services/entities';
 
 export class ChoosePredicateTypeModal {

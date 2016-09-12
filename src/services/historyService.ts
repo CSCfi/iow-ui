@@ -1,5 +1,4 @@
-import IHttpService = angular.IHttpService;
-import IPromise = angular.IPromise;
+import { IHttpService, IPromise } from 'angular';
 import { Activity, EntityDeserializer, GraphData } from './entities';
 import { config } from '../config';
 import { Uri } from './uri';

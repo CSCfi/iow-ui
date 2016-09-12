@@ -1,8 +1,4 @@
-import IAttributes = angular.IAttributes;
-import ILocaleService = angular.ILocaleService;
-import ILocationService = angular.ILocationService;
-import IScope = angular.IScope;
-import ITimeoutService = angular.ITimeoutService;
+import { IAttributes, IScope } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';

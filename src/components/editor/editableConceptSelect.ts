@@ -2,9 +2,8 @@ import { Concept, Model, Type } from '../../services/entities';
 import { module as mod }  from './module';
 import { SearchConceptModal } from './searchConceptModal';
 import { EditableForm } from '../form/editableEntityController';
-import IScope = angular.IScope;
+import { IScope, IAttributes } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import IAttributes = angular.IAttributes;
 
 mod.directive('editableConceptSelect', () => {
   return {

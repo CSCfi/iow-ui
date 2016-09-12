@@ -1,5 +1,4 @@
-import IAttributes = angular.IAttributes;
-import IScope = angular.IScope;
+import { IAttributes, IScope } from 'angular';
 import { Model, ImportedNamespace, NamespaceType } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../form/editableTable';

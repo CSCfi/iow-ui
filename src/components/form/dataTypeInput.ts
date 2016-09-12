@@ -1,8 +1,5 @@
-import IAttributes = angular.IAttributes;
-import INgModelController = angular.INgModelController;
+import { IAttributes, IScope, IQService, INgModelController } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import IScope = angular.IScope;
-import IQService = angular.IQService;
 import { DataType } from '../../services/dataTypes';
 import { resolveValidator } from './validators';
 import { LanguageService } from '../../services/languageService';

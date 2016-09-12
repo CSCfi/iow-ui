@@ -1,6 +1,5 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IPromise = angular.IPromise;
-import IScope = angular.IScope;
+import { IPromise, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
 import { Model, Predicate, Class, Entity } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';

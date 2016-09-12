@@ -1,4 +1,3 @@
-import IPromise = angular.IPromise;
 import { loader } from './exampleLoader';
 import { ktkGroupId } from '../src/services/entityLoader';
 import * as Jhs from './modelJHS';

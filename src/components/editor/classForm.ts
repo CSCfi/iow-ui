@@ -1,7 +1,4 @@
-import IAttributes = angular.IAttributes;
-import ILocationService = angular.ILocationService;
-import IScope = angular.IScope;
-import ITimeoutService = angular.ITimeoutService;
+import { IAttributes, IScope } from 'angular';
 import * as _ from 'lodash';
 import { ClassViewController } from './classView';
 import { Class, Model, Property } from '../../services/entities';

@@ -1,7 +1,6 @@
-import IModalService = angular.ui.bootstrap.IModalService;
-import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
-import IWindowService = angular.IWindowService;
-import ILocationService = angular.ILocationService;
+import { IWindowService, ILocationService, ui } from 'angular';
+import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { config } from '../../config';
 
 export class LoginModal {
