@@ -1,4 +1,4 @@
-/// <reference path="./typings/globals/node/index.d.ts" />
+/// <reference types="node" />
 
 import * as fs from 'fs';
 const Extractor: any = require('angular-gettext-tools').Extractor;
