@@ -1014,8 +1014,8 @@ msgstr "Interoperability and understandability"
 msgid "Interoperability method description"
 msgstr ""
 "The method ensures that shared definitions are applied in a systematic way "
-"and the semantics is passed to every implementation that re-uses the "
-"information components."
+"and the semantics are passed to every implementation that re-uses the "
+"interoperability descriptions."
 
 #: translations/misc.html:169
 msgid "Invalid ID"
@@ -1174,7 +1174,7 @@ msgstr ""
 
 #: components/group/group.html:31
 msgid "Models"
-msgstr ""
+msgstr "Core Vocabularies"
 
 #: translations/misc.html:135
 msgid "Modified at"
@@ -1873,17 +1873,16 @@ msgstr "What are the descriptions for interoperability?"
 #: translations/misc.html:70
 msgid "What is method content"
 msgstr ""
-"Interoperability Method is a technique to describe the metadata of "
+"Semantic interoperability framework describes a method to define the metadata of "
 "information systems in a technology independent way. It forms a structured, "
-"common architecture connecting terminological work and data modelling and "
-"reuse of codelists and classifications. The method is based on international "
-"standards. Please read more <a href=\"https://confluence.csc.fi/display/"
-"korkeakoulujentietomalli/Semantic+Interoperability+Architecture\">here</a> "
-"about the Interoperability Method and the development of tools supporting it."
+"common architecture connecting terminological work, data modelling and "
+"reference data. The method is based on international "
+"standards and recommendations. Read more about the method and the development of tools from <a href=\"https://confluence.csc.fi/display/"
+"korkeakoulujentietomalli/Semantic+Interoperability+Architecture\">here</a>."
 
 #: translations/misc.html:69
 msgid "What is method?"
-msgstr "What is the interoperability method?"
+msgstr "What is the semantic interoperability framework?"
 
 #: translations/misc.html:106
 msgid "Write identifier"

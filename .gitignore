@@ -8,4 +8,5 @@ typings/*
 # Idea user related configs
 .idea/workspace.xml
 .idea/tasks.xml
-.idea/shelf
+.idea/shelf/
+**/idea/shelf/
