@@ -59,7 +59,7 @@ msgstr ""
 msgid "Add properties from super class"
 msgstr ""
 
-#: components/editor/classForm.html:45
+#: components/editor/classForm.html:44
 #: components/editor/classView.html:7
 msgid "Add property"
 msgstr ""
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Add vocabulary"
 msgstr ""
 
-#: components/editor/classForm.html:84
+#: components/editor/classForm.html:78
 #: components/editor/predicateForm.html:57
 #: components/editor/propertyView.html:121
 #: components/model/conceptForm.html:54
@@ -290,7 +290,7 @@ msgstr ""
 
 #: components/advancedSearchModal.html:41
 #: components/common/modalTemplate.html:16
-#: components/editor/addPropertiesFromClassModal.html:18
+#: components/editor/addPropertiesFromClassModal.html:27
 #: components/editor/searchClassModal.html:91
 #: components/editor/searchConceptModal.html:93
 #: components/editor/searchPredicateModal.html:116
@@ -317,7 +317,7 @@ msgstr ""
 msgid "Change concept"
 msgstr ""
 
-#: components/editor/propertyPredicateView.html:13
+#: components/editor/propertyPredicateView.html:12
 #: translations/misc.html:221
 msgid "Change reusable predicate"
 msgstr ""
@@ -761,7 +761,7 @@ msgstr ""
 msgid "Description info"
 msgstr ""
 
-#: components/editor/addPropertiesFromClassModal.html:13
+#: components/editor/addPropertiesFromClassModal.html:22
 msgid "Deselect all"
 msgstr ""
 
@@ -1254,6 +1254,10 @@ msgstr ""
 msgid "No profiles yet"
 msgstr ""
 
+#: components/editor/classForm.html:72
+msgid "No properties yet"
+msgstr ""
+
 #: components/common/usage.html:1
 #: components/common/usagePanel.html:8
 msgid "No referrers"
@@ -1362,7 +1366,7 @@ msgstr ""
 msgid "Predicate in use"
 msgstr ""
 
-#: components/editor/propertyPredicateView.html:34
+#: components/editor/propertyPredicateView.html:33
 msgid "Predicate information not found"
 msgstr ""
 
@@ -1620,7 +1624,7 @@ msgstr ""
 msgid "search vocabulary"
 msgstr ""
 
-#: components/editor/addPropertiesFromClassModal.html:12
+#: components/editor/addPropertiesFromClassModal.html:21
 msgid "Select all"
 msgstr ""
 
@@ -2088,6 +2092,6 @@ msgid "xsd:time error"
 msgstr ""
 
 #: components/common/modalTemplate.html:15
-#: components/editor/addPropertiesFromClassModal.html:17
+#: components/editor/addPropertiesFromClassModal.html:26
 msgid "Yes"
 msgstr ""
