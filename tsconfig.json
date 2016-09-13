@@ -22,9 +22,5 @@
       "moment"
     ]
   },
-  "files": [
-    "node_modules/awesome-typescript-loader/lib/runtime.d.ts",
-    "src/augment.d.ts",
-    "src/init.ts"
-  ]
+  "exclude": ["types", "node_modules"]
 }

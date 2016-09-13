@@ -1,3 +1,6 @@
+/// <reference path="../node_modules/awesome-typescript-loader/lib/runtime.d.ts" />
+/// <reference path="augment.d.ts" />
+
 import './vendor/modernizr';
 import './styles/loading.scss';
 import { config } from './config';
