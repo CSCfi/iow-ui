@@ -70,7 +70,7 @@ export class LanguageService {
   }
 
   translate(data: Localizable, context?: LanguageContext): string {
-    return translate(data, this.getModelLanguage(context), context ? context.language : availableLanguages);
+    return translate(data, this.getModelLanguage(context), context ? context.language : availableUILanguages);
   }
 
   getStringWithModelLanguageOrDefault(key: string, defaultLanguage: UILanguage, context?: LanguageContext): string {
