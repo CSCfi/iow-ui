@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'node-uuid';
 import { isDefined } from '../utils/object';
+const URI = require('uri-js');
 
 export type Url = string;
 export type Urn = string;
@@ -159,7 +160,8 @@ export class Uri {
   }
 
   isCurieUrl() {
-    return !this.isUrn() && /\w+:\w+/.test(this.value);
+    const parsed = URI.parse(this.value);
+    return !this.isUrn() && !parsed.port && /\w+:\w+/.test(this.value);
   }
 
   findPrefix() {
