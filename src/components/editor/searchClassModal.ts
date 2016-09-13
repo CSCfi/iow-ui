@@ -62,7 +62,7 @@ class SearchClassController {
   searchResults: (ClassListItem|AddNewClass)[] = [];
   selection: Class|ExternalEntity;
   searchText: string = '';
-  showProfiles: boolean;
+  showProfiles: boolean = true;
   showModel: DefinedBy|Model;
   models: (DefinedBy|Model)[] = [];
   cannotConfirm: string;
@@ -89,7 +89,6 @@ class SearchClassController {
               private gettextCatalog: gettextCatalog) {
 
     this.localizer = languageService.createLocalizer(model);
-    this.showProfiles = onlySelection;
     this.loadingResults = true;
 
     if (defaultToCurrentModel) {
