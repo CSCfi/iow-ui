@@ -181,6 +181,7 @@ export class DefinedBy extends GraphNode {
 
   id: Uri;
   label: Localizable;
+  prefix: string;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -193,6 +194,7 @@ export class DefinedBy extends GraphNode {
     } else if (typeof graph === 'object') {
       this.id = new Uri(graph['@id'], context);
       this.label = deserializeLocalizable(graph.label);
+      this.prefix = graph.preferredXMLNamespacePrefix;
     } else {
       throw new Error('Unsupported is defined sub-graph');
     }
@@ -464,7 +466,7 @@ export class Model extends AbstractModel {
   linkToResource(id: Uri) {
     if (id && !id.isUrn()) {
       if (this.isNamespaceKnownToBeModel(id.namespace)) {
-        return resourceUrl(id);
+        return resourceUrl(id.findResolvablePrefix(), id);
       } else {
         return id.url;
       }
@@ -503,7 +505,9 @@ export class Model extends AbstractModel {
 
 export interface Destination {
   id: Uri;
-  type?: Type|Type[];
+  type: Type[];
+  prefix?: string;
+  definedBy?: DefinedBy;
 }
 
 export enum NamespaceType {
@@ -738,7 +742,7 @@ export abstract class AbstractClass extends GraphNode {
   }
 
   iowUrl() {
-    return resourceUrl(this.id);
+    return resourceUrl(this.definedBy.prefix, this.id);
   }
 
   isSpecializedClass() {
@@ -1497,7 +1501,7 @@ export abstract class AbstractPredicate extends GraphNode {
   }
 
   iowUrl() {
-    return resourceUrl(this.id);
+    return resourceUrl(this.definedBy.prefix, this.id);
   }
 }
 
@@ -1832,16 +1836,20 @@ export class SearchResult extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
+  prefix: string;
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
+    this.prefix = graph.preferredXMLNamespacePrefix;
+    this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
   }
 
   iowUrl() {
-    return contextlessInternalUrl({id: this.id, type: this.type});
+    return contextlessInternalUrl(this);
   }
 }
 
@@ -1883,6 +1891,7 @@ export class Referrer extends GraphNode {
 
   id: Uri;
   label: Localizable;
+  prefix: string;
   definedBy: DefinedBy;
   normalizedType: Type;
 
@@ -1890,12 +1899,13 @@ export class Referrer extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
+    this.prefix = graph.preferredXMLNamespacePrefix;
     this.definedBy = deserializeOptional(graph.isDefinedBy, (data) => deserializeEntity(data, context, frame, () => DefinedBy));
     this.normalizedType = normalizeReferrerType(this.type);
   }
 
   iowUrl() {
-    return contextlessInternalUrl({id: this.id, type: this.normalizedType});
+    return contextlessInternalUrl(this);
   }
 }
 
@@ -2080,24 +2090,22 @@ export function modelUrl(prefix: string): RelativeUrl {
   return `/model/${prefix}` + '/';
 }
 
-export function resourceUrl(resource: Uri, linkedFromPrefix?: string) {
-  const prefix = linkedFromPrefix || resource.findPrefix();
-  return modelUrl(prefix) +  (linkedFromPrefix ? resource.curie : resource.name) + '/';
+export function resourceUrl(modelPrefix: string, resource: Uri) {
+  const resourcePrefix = resource.findPrefix();
+  const linked = isDefined(resourcePrefix) && resourcePrefix !== modelPrefix;
+  return modelUrl(modelPrefix) +  (linked ? resource.curie : resource.name) + '/';
 }
 
 function contextlessInternalUrl(destination: Destination) {
   if (destination) {
-    const id = destination.id;
-    const types = normalizeAsArray(destination.type);
-
-    if (containsAny(types, ['model', 'profile'])) {
-      return modelUrl(id.findPrefix());
-    } else if (containsAny(types, ['group'])) {
-      return groupUrl(id.uri);
-    } else if (containsAny(types, ['association', 'attribute', 'class', 'shape'])) {
-      return resourceUrl(id);
+    if (containsAny(destination.type, ['model', 'profile'])) {
+      return modelUrl(destination.prefix);
+    } else if (containsAny(destination.type, ['group'])) {
+      return groupUrl(destination.id.uri);
+    } else if (containsAny(destination.type, ['association', 'attribute', 'class', 'shape'])) {
+      return resourceUrl(destination.definedBy.prefix, destination.id);
     } else {
-      throw new Error('Unsupported type for url: ' + types);
+      throw new Error('Unsupported type for url: ' + destination.type);
     }
   } else {
     return null;

@@ -105,7 +105,7 @@ export class ConceptEditorModalController {
   }
 
   sort() {
-    const labelComparator = comparingLocalizable<Concept>(this.localizer, definedBy => definedBy.label);
+    const labelComparator = comparingLocalizable<Concept|DefinedBy>(this.localizer, definedBy => definedBy.label);
     this.concepts.sort(labelComparator);
     this.models.sort(labelComparator);
   }

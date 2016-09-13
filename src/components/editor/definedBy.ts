@@ -1,4 +1,4 @@
-import { DefinedBy, Destination, Model } from '../../services/entities';
+import { Destination, Model } from '../../services/entities';
 import { normalizeModelType } from '../../utils/type';
 import { module as mod } from './module';
 
@@ -16,13 +16,9 @@ mod.directive('definedBy', () => {
   };
 });
 
-interface Entity extends Destination {
-  definedBy: DefinedBy;
-}
-
 class DefinedByController {
 
-  entity: Entity;
+  entity: Destination;
   model: Model;
 
   get definedByTitle() {

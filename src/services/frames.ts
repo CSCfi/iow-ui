@@ -116,7 +116,7 @@ const modelContext = Object.assign({}, coreContext, namespaceContext, referenceD
   language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' }
 });
 
-const usageContext = Object.assign({}, coreContext, {
+const usageContext = Object.assign({}, coreContext, modelContext, {
   isReferencedBy: { '@id': 'http://purl.org/dc/terms/isReferencedBy', '@type': '@id' }
 });
 
@@ -132,7 +132,7 @@ const modelPositionContext = Object.assign({}, coreContext, {
   vertexXY: { '@id': 'http://iow.csc.fi/ns/iow#vertexXY', '@container': '@list' }
 });
 
-const searchResultContext = Object.assign({}, coreContext, {});
+const searchResultContext = Object.assign({}, coreContext, modelContext, {});
 
 function frame(data: any, context: {}, frame?: {}) {
   return Object.assign({ '@context': Object.assign({}, data['@context'], context) }, frame);
@@ -176,7 +176,16 @@ export function modelListFrame(data: any): Frame {
 }
 
 export function usageFrame(data: any): Frame {
-  return frame(data, usageContext, { isReferencedBy: {} });
+  return frame(data, usageContext, {
+    isReferencedBy: {
+      '@id': {},
+      isDefinedBy: {
+        '@omitDefault': true,
+        '@default': [],
+        '@embed': '@always'
+      }
+    }
+  });
 }
 
 export function propertyFrame(data: any): Frame {
@@ -317,7 +326,15 @@ export function referenceDataCodeFrame(data: any): Frame {
 }
 
 export function searchResultFrame(data: any): Frame {
-  return frame(data, searchResultContext);
+  return frame(data, searchResultContext, {
+    '@id': {},
+    '@type': {},
+    isDefinedBy: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    }
+  });
 }
 
 export function classVisualizationFrame(data: any): Frame {
