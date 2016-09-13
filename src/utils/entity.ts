@@ -5,7 +5,8 @@ import { areEqual } from './object';
 import { IHttpPromiseCallbackArg } from 'angular';
 
 export function coordinatesAreEqual(l: Coordinate, r: Coordinate) {
-  return areEqual(l, r, (lhs, rhs) => lhs.x === rhs.x && lhs.y === rhs.y);
+  // Coordinates seem to fluctuate a bit with jointjs and firefox so normalize by truncating decimals
+  return areEqual(l, r, (lhs, rhs) => Math.trunc(lhs.x) === Math.trunc(rhs.x) && Math.trunc(lhs.y) === Math.trunc(rhs.y));
 }
 
 export function copyCoordinate(coordinate: Coordinate) {
