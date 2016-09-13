@@ -3,15 +3,21 @@
 
   <modal-body>
     <p><span>{{'Do you want to add following properties from ' + ctrl.classType + ' class?' | translate}}</span></p>
-    <div class="checkbox" ng-repeat="property in ctrl.properties track by property.internalId.uri">
-      <label>
-        <input ng-disabled="ctrl.isExcluded(property)" type="checkbox" checklist-model="ctrl.selectedProperties" checklist-value="property" />
-        <span uib-tooltip="{{ctrl.tooltip(property)}}">
+
+    <div ng-repeat="(type, properties) in ctrl.properties track by $index">
+      <h5>{{type | translate}}</h5>
+
+      <div class="checkbox" ng-repeat="property in properties track by property.internalId.uri">
+        <label>
+          <input ng-disabled="ctrl.isExcluded(property)" type="checkbox" checklist-model="ctrl.selectedProperties" checklist-value="property" />
+          <span uib-tooltip="{{ctrl.tooltip(property)}}">
           <i ng-class="property.glyphIconClass"></i>
           {{property | translateLabel: ctrl.context}}
         </span>
-      </label>
+        </label>
+      </div>
     </div>
+
     <button class="btn btn-default btn-xs" ng-click="ctrl.selectAll()" translate>Select all</button>
     <button class="btn btn-default btn-xs" ng-click="ctrl.deselectAll()" translate>Deselect all</button>
   </modal-body>

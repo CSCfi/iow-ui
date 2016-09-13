@@ -3,8 +3,8 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
+import Dictionary = _.Dictionary;
 import { Class, Property, LanguageContext } from '../../services/entities';
-import { ClassService } from '../../services/classService';
 import { LanguageService } from '../../services/languageService';
 
 const noExclude = (property: Property) => false;
@@ -32,20 +32,18 @@ export class AddPropertiesFromClassModal {
 
 export class AddPropertiesFromClassModalController {
 
-  properties: Property[];
+  properties: Dictionary<Property[]>;
   selectedProperties: Property[];
 
   /* @ngInject */
-  constructor($uibModalInstance: IModalServiceInstance,
-              private classService: ClassService,
-              private languageService: LanguageService,
+  constructor(private languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
               klass: Class,
               public classType: string,
               private context: LanguageContext,
               private exclude: (property: Property) => boolean) {
 
-      this.properties = klass.properties.map(property => property.copy());
+      this.properties = _.groupBy<Property>(klass.properties.map(property => property.copy()), 'normalizedPredicateType');
       this.selectAll();
   }
 
@@ -54,7 +52,7 @@ export class AddPropertiesFromClassModalController {
   }
 
   selectAll() {
-    this.selectedProperties = _.reject(this.properties, property => this.exclude(property));
+    this.selectedProperties = _.reject(_.flatten(Object.values(this.properties)), property => this.exclude(property));
   }
 
   deselectAll() {
