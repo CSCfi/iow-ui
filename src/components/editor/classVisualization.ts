@@ -1187,7 +1187,7 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
 
   function getPersistedVertices(link: joint.dia.Link, siblingCount: number, isLoop: boolean) {
     if (vertexAction === VertexAction.Reset || (vertexAction === VertexAction.KeepNormal && (siblingCount > 1 || isLoop))) {
-      return [];
+      return null;
     } else {
       return getLinkPositionVertices(link);
     }
@@ -1208,7 +1208,7 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
 
     link.prop('connector', connector);
 
-    if (persistedVertices.length > 0) {
+    if (persistedVertices) {
       link.set('vertices', persistedVertices);
     } else if (loop) {
       link.set('vertices', calculateRecurseSiblingVertices(source, i));
