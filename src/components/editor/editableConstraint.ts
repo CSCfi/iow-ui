@@ -57,7 +57,7 @@ class EditableConstraint {
       createSelfExclusion(this.class)
     );
 
-    this.searchClassModal.openWithOnlySelection(this.model, exclude).then(klass => this.constraint.addItem(klass));
+    this.searchClassModal.openWithOnlySelection(this.model, true, exclude).then(klass => this.constraint.addItem(klass));
   }
 
   removeItem(item: ConstraintListItem) {

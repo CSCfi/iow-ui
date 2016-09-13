@@ -77,7 +77,7 @@ class EditableMultipleUriSelectController {
     const predicateExclusion = combineExclusions<PredicateListItem>(existsExclusion, definedExclusion);
 
     const promise: IPromise<WithId> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, classExclusion)
+      ? this.searchClassModal.openWithOnlySelection(this.model, false, classExclusion)
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, predicateExclusion);
 
     promise.then(withId => {

@@ -16,7 +16,8 @@ mod.directive('uriSelect', () => {
       id: '@',
       afterSelected: '&',
       mandatory: '=',
-      duplicate: '='
+      duplicate: '=',
+      defaultToCurrentModel: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
@@ -47,6 +48,7 @@ class UriSelectController {
   afterSelected: ICompiledExpression;
   mandatory: boolean;
   duplicate: (uri: Uri) => boolean;
+  defaultToCurrentModel: boolean;
 
   private change: Uri;
 
@@ -67,7 +69,7 @@ class UriSelectController {
 
   selectUri() {
     const promise: IPromise<WithId> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, createDefinedByExclusion(this.model))
+      ? this.searchClassModal.openWithOnlySelection(this.model, this.defaultToCurrentModel || false, createDefinedByExclusion(this.model))
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createDefinedByExclusion(this.model));
 
     promise.then(withId => {

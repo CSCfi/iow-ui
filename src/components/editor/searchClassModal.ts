@@ -23,7 +23,7 @@ export class SearchClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, exclude: (klass: AbstractClass) => string, onlySelection: boolean, textForSelection: (klass: Class) => string) {
+  private openModal(model: Model, exclude: (klass: AbstractClass) => string, defaultToCurrentModel: boolean, onlySelection: boolean, textForSelection: (klass: Class) => string) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -33,6 +33,7 @@ export class SearchClassModal {
       resolve: {
         model: () => model,
         exclude: () => exclude,
+        defaultToCurrentModel: () => defaultToCurrentModel,
         onlySelection: () => onlySelection,
         textForSelection: () => textForSelection
       }
@@ -40,13 +41,13 @@ export class SearchClassModal {
   }
 
   open(model: Model, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string): IPromise<ExternalEntity|EntityCreation|Class> {
-    return this.openModal(model, exclude, false, textForSelection);
+    return this.openModal(model, exclude, false, false, textForSelection);
   }
 
-  openWithOnlySelection(model: Model, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
-    return this.openModal(model, exclude, true, textForSelection);
+  openWithOnlySelection(model: Model, defaultToCurrentModel: boolean, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
+    return this.openModal(model, exclude, defaultToCurrentModel, true, textForSelection);
   }
-};
+}
 
 export interface SearchClassScope extends IScope {
   form: EditableForm;
@@ -81,6 +82,7 @@ class SearchClassController {
               languageService: LanguageService,
               public model: Model,
               public exclude: (klass: AbstractClass) => string,
+              defaultToCurrentModel: boolean,
               public onlySelection: boolean,
               public textForSelection: (klass: Class) => string,
               private searchConceptModal: SearchConceptModal,
@@ -90,7 +92,7 @@ class SearchClassController {
     this.showProfiles = onlySelection;
     this.loadingResults = true;
 
-    if (onlySelection) {
+    if (defaultToCurrentModel) {
       this.showModel = model;
     }
 

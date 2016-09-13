@@ -121,10 +121,6 @@ export class SearchPredicateController {
     this.loadingResults = true;
     this.typeSelectable = !type;
 
-    if (onlySelection) {
-      this.showModel = model;
-    }
-
     const appendResults = (predicates: PredicateListItem[]) => {
       this.predicates = this.predicates.concat(predicates);
 

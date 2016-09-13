@@ -44,7 +44,7 @@
     <editable-range-select ng-if="ctrl.predicate.isAttribute()" id="predicateRange" range="ctrl.predicate.dataType"></editable-range-select>
 
     <editable ng-if="ctrl.predicate.isAssociation()" data-title="Value class" name="Value class" link="ctrl.linkToValueClass()" context="ctrl.model">
-      <uri-select id="predicateValueClass" type="class" uri="ctrl.predicate.valueClass" model="ctrl.model"></uri-select>
+      <uri-select id="predicateValueClass" type="class" uri="ctrl.predicate.valueClass" model="ctrl.model" default-to-current-model="true"></uri-select>
     </editable>
 
     <editable-multiple-uri-select id="equivalentProperty" type="{{ctrl.predicate.normalizedType}}" ng-model="ctrl.predicate.equivalentProperties" model="ctrl.model" data-title="{{'Equivalent ' + ctrl.predicate.normalizedType}}"></editable-multiple-uri-select>
