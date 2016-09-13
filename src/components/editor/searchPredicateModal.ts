@@ -46,7 +46,7 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  open(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<ExternalEntity|EntityCreation|Predicate> {
+  openAddPredicate(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<ExternalEntity|EntityCreation|Predicate> {
     return this.openModal(model, type, exclude, false);
   }
 
@@ -54,7 +54,7 @@ export class SearchPredicateModal {
     return this.openModal(model, null, exclude, false);
   }
 
-  openNewProperty(model: Model, klass: Class): IPromise<Property> {
+  openAddProperty(model: Model, klass: Class): IPromise<Property> {
 
     const exclude = combineExclusions<PredicateListItem>(
       createExistsExclusion(collectProperties(_.filter(klass.properties, p => p.isAttribute()), p => p.predicateId.uri)),
@@ -75,7 +75,7 @@ export class SearchPredicateModal {
   openWithOnlySelection(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<Predicate> {
     return this.openModal(model, type, exclude, true);
   }
-};
+}
 
 export interface SearchPredicateScope extends IScope {
   form: EditableForm;
@@ -172,7 +172,7 @@ export class SearchPredicateController {
   }
 
   canAddExternal() {
-    return this.model.isOfType('profile') && this.typeSelectable;
+    return this.model.isOfType('profile');
   }
 
   get showExcluded() {
@@ -191,7 +191,7 @@ export class SearchPredicateController {
     const result: (PredicateListItem|AddNewPredicate)[] = [
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
-      new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal() && (this.isAttributeAddable() || this.isAssociationAddable()), null, true)
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), null, true)
     ];
 
     const predicateSearchResult = this.predicates.filter(predicate =>

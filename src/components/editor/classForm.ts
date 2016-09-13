@@ -47,7 +47,7 @@ export class ClassFormController {
   }
 
   addProperty() {
-    this.searchPredicateModal.openNewProperty(this.model, this.class)
+    this.searchPredicateModal.openAddProperty(this.model, this.class)
       .then(property => {
         this.class.addProperty(property);
         this.openPropertyId = property.internalId.uuid;

@@ -363,7 +363,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private addPredicate(type: Type, exclusion: (predicate: AbstractPredicate) => string) {
     this.createOrAssignEntity(
-      () => this.searchPredicateModal.open(this.model, type, exclusion),
+      () => this.searchPredicateModal.openAddPredicate(this.model, type, exclusion),
       (external: ExternalEntity) => this.$q.reject('Unsupported operation'),
       (concept: EntityCreation) => this.createPredicate(concept, type),
       (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
