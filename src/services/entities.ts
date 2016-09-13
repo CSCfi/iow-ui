@@ -44,6 +44,7 @@ export interface EditableEntity {
 export type Localizable = { [language: string]: string; }
 export type UserLogin = string;
 export type Coordinate = { x: number, y: number };
+export type Dimensions = { width: number, height: number };
 
 export type Concept = FintoConcept|ConceptSuggestion;
 

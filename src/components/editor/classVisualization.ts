@@ -17,7 +17,7 @@ import { DataType } from '../../services/dataTypes';
 import { normalizeAsArray, arraysAreEqual } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
-import { copyVertices, copyCoordinate, coordinatesAreEqual } from '../../utils/entity';
+import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils/entity';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
@@ -789,10 +789,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const propertyNames = getPropertyNames();
 
     const classConstructor = klass.resolved ? WithoutUnusedMarkupClass : ShadowClass;
+    const dimensions = size(className, propertyNames);
 
     const classCell = new classConstructor({
       id: klass.id.uri,
-      size: size(className, propertyNames),
+      size: dimensions,
       name: className,
       attributes: propertyNames,
       attrs: {
@@ -800,14 +801,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
           'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
         }
       },
-      position: classPosition.isDefined() ? copyCoordinate(classPosition.coordinate) : { x: 0, y: 0 },
+      position: classPosition.isDefined() ? centerToPosition(classPosition.coordinate, dimensions) : { x: 0, y: 0 },
       z: zIndexClass
     });
 
     classCell.on('change:position', () => {
-      if (!coordinatesAreEqual(classCell.position(), classPosition.coordinate)) {
+      const newCenter = classCell.getBBox().center();
+      if (!coordinatesAreEqual(newCenter, classPosition.coordinate)) {
         adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, isRightClick() ? VertexAction.Reset : VertexAction.KeepNormal);
-        classPosition.setCoordinate(copyCoordinate(classCell.position()));
+        classPosition.setCoordinate(newCenter);
       }
     });
 
@@ -815,9 +817,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       this.queueWhenNotVisible(() => {
         const newPropertyNames = getPropertyNames();
         const newClassName = that.className(klass);
+        const previousPosition = classCell.position();
+        const previousSize = classCell.getBBox();
+        const newSize = size(newClassName, newPropertyNames);
+        const xd = (newSize.width - previousSize.width) / 2;
+        const yd = (newSize.height - previousSize.height) / 2;
         classCell.prop('name', newClassName);
         classCell.prop('attributes', newPropertyNames);
         classCell.prop('size', size(newClassName, newPropertyNames));
+        classCell.position(previousPosition.x - xd, previousPosition.y - yd);
       });
     };
 
@@ -834,9 +842,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     });
 
     classPosition.changeListeners.push(coordinate => {
-      if (coordinate && !coordinatesAreEqual(coordinate, classCell.position())) {
+      const bbox = classCell.getBBox();
+      const newPosition = centerToPosition(coordinate, bbox);
+
+      if (coordinate && !coordinatesAreEqual(newPosition, bbox)) {
+        classCell.position(newPosition.x, newPosition.y);
         adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, VertexAction.KeepAll);
-        classCell.position(coordinate.x, coordinate.y);
       }
     });
 

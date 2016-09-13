@@ -1,4 +1,4 @@
-import { GraphData, Model, Type, Coordinate } from '../services/entities';
+import { GraphData, Model, Type, Coordinate, Dimensions } from '../services/entities';
 import { containsAny, collectProperties, index } from './array';
 import { WithId } from '../components/contracts';
 import { areEqual } from './object';
@@ -9,12 +9,16 @@ export function coordinatesAreEqual(l: Coordinate, r: Coordinate) {
   return areEqual(l, r, (lhs, rhs) => Math.trunc(lhs.x) === Math.trunc(rhs.x) && Math.trunc(lhs.y) === Math.trunc(rhs.y));
 }
 
+export function centerToPosition(center: Coordinate, dimensions: Dimensions): Coordinate {
+  return { x: center.x - (dimensions.width / 2), y: center.y - (dimensions.height / 2) };
+}
+
 export function copyCoordinate(coordinate: Coordinate) {
   return { x: coordinate.x, y: coordinate.y };
 }
 
 export function copyVertices(vertices: Coordinate[]) {
-  return vertices.map(copyCoordinate);
+  return vertices.slice();
 }
 
 export function indexById<T extends WithId>(items: T[]): Map<string, T> {
