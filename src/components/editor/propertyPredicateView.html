@@ -30,4 +30,12 @@
 
 </div>
 
-<div ng-if="ctrl.predicate === null" translate>Predicate information not found</div>
+<div ng-if="ctrl.predicate === null">
+  <span class="pull-left">Predicate information not found</span>
+
+  <button ng-if="ctrl.isEditing()"
+          type="button"
+          class="btn btn-default pull-right"
+          ng-disabled="!ctrl.property.inUnstableState"
+          ng-click="ctrl.changeReusablePredicate()" uib-tooltip="{{'Change reusable predicate' | translate}}"><i class="fa fa-repeat"></i></button>
+</div>
