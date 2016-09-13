@@ -38,6 +38,7 @@
     "bootstrap-sass": "3.3.6",
     "change-case": "3.0.0",
     "checklist-model": "0.9.0",
+    "core-js": "2.4.0",
     "font-awesome": "4.6.3",
     "jointjs": "0.9.10",
     "jquery": "3.0.0",
