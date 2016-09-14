@@ -4,7 +4,7 @@
   <model-view model="ctrl.model" model-controller="ctrl"></model-view>
 
   <div class="bottom">
-    <div class="model-panel--left" float="model-panel--left-placeholder">
+    <div class="model-panel--left" float="model-panel--left-placeholder" always="true">
       <uib-tabset active="ctrl.activeTab">
         <uib-tab ng-repeat="tab in ctrl.tabs">
           <uib-tab-heading>
@@ -51,10 +51,10 @@
                           selection="ctrl.selection"
                           model="ctrl.model"
                           show="ctrl.show"
-                          ng-style="ctrl.styleForVisualization()"
-                          ng-class="ctrl.classForVisualization()"
                           select-class-by-id="ctrl.selectClassById"
-                          change-notifier="ctrl"></visualization-view>
+                          change-notifier="ctrl"
+                          selection-width="ctrl.selectionWidth"
+                          float></visualization-view>
     </div>
   </div>
 </div>

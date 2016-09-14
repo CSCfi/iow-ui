@@ -604,17 +604,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       width: this.show === Show.Both ? `${this.selectionWidth + 5}px` : '100%'
     };
   }
-
-  classForVisualization() {
-    return this.show === Show.Selection ? 'hide' : '';
-  }
-
-  styleForVisualization() {
-    return {
-      'padding-left': this.show === Show.Visualization ? '5px' : 0,
-      width: this.show === Show.Both ? `calc(100% - ${this.selectionWidth + 10}px)` : '100%'
-    };
-  }
 }
 
 

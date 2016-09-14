@@ -38,6 +38,22 @@ input[type=checkbox][disabled] + span {
   text-decoration: line-through;
 }
 
+.floating {
+  position: fixed;
+
+  &.always {
+    position: fixed !important;
+  }
+
+  &.no-floating {
+    position: inherit !important;
+  }
+
+  @media (max-width: $screen-md-max) {
+    position: inherit;
+  }
+}
+
 $selectionListWidth: 275px;
 $versionListWidth: 400px;
 $footer-height: 50px;
@@ -1065,8 +1081,16 @@ ajax-loading-indicator-small {
   background-color: #f5f5f5;
 }
 
+[float="top-actions-placeholder"] {
+  z-index: 1000;
+}
+
 .top-actions-placeholder {
   z-index: 1000;
+
+  @media (max-width: $screen-md-max) {
+    display: none !important;
+  }
 }
 
 modal-body {
