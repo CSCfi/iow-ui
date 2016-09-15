@@ -467,10 +467,6 @@ ul.errors {
   border-right: solid 1px #ddd;
   background-color: #fff;
 
-  .tab-pane {
-    border-bottom: solid 1px #ddd;
-  }
-
   .nav-tabs {
 
     border-bottom: none;
@@ -542,8 +538,7 @@ ul.errors {
 .model-panel--right {
   float: right;
   width: calc(100% - #{$selectionListWidth});
-  min-height: 100vh;
-  padding: 10px 0;
+  padding: 10px 0 0 0;
 
   divider {
     div {
@@ -553,7 +548,7 @@ ul.errors {
 
       display: inline-block;
       float: left;
-      height: 100vh;
+      height: calc(100vh - 19px);
       width: 5px;
 
       -webkit-user-select: none;
@@ -742,7 +737,7 @@ modal-body {
   }
 
   .selection-form {
-    min-height: calc(100vh - 134px);
+    min-height: calc(100vh - 140px);
     padding-right: 40px;
 
     property-view .row {
