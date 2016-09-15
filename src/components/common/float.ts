@@ -1,19 +1,18 @@
 import { module as mod }  from './module';
-import { IScope, IAttributes, IWindowService } from 'angular';
+import { IScope, IAttributes } from 'angular';
 
 interface FloatAttributes extends IAttributes {
   float: string;
   always: string;
 }
 
-mod.directive('float', ($window: IWindowService) => {
+mod.directive('float', () => {
   return {
     restrict: 'A',
     controller: FloatController,
     require: 'float',
     link($scope: IScope, element: JQuery, attributes: FloatAttributes, ctrl: FloatController) {
 
-      const windowElement = angular.element($window);
       const placeholderClass = attributes.float;
       let elementStaticLocation = element.offset();
 
@@ -30,8 +29,7 @@ mod.directive('float', ($window: IWindowService) => {
 
       element.attr('will-change', 'scroll-position');
 
-      windowElement.on('scroll', () => {
-
+      function scrollHandler() {
         if (!ctrl.floating) {
           // re-refresh has to be done since location can change due to accordion etc
           elementStaticLocation = element.offset();
@@ -51,6 +49,12 @@ mod.directive('float', ($window: IWindowService) => {
             }
           }
         }
+      }
+
+      window.addEventListener('scroll', scrollHandler);
+
+      $scope.$on('$destroy', () => {
+        window.removeEventListener('scroll', scrollHandler);
       });
 
       function isInitialized() {
