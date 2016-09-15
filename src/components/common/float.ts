@@ -27,8 +27,6 @@ mod.directive('float', () => {
       ctrl.isFloatingPosition = () => window.pageYOffset >= elementStaticLocation.top;
       ctrl.isStaticPosition = () => window.pageYOffset < elementStaticLocation.top;
 
-      element.attr('will-change', 'scroll-position');
-
       function scrollHandler() {
         if (!ctrl.floating) {
           // re-refresh has to be done since location can change due to accordion etc
