@@ -24,8 +24,9 @@ mod.directive('float', () => {
           .addClass(placeholderClass)
           .insertBefore(element);
 
-      ctrl.isFloatingPosition = () => window.pageYOffset >= elementStaticLocation.top;
-      ctrl.isStaticPosition = () => window.pageYOffset < elementStaticLocation.top;
+      const offset = 3;
+      ctrl.isFloatingPosition = () => window.pageYOffset >= elementStaticLocation.top - offset;
+      ctrl.isStaticPosition = () => window.pageYOffset < elementStaticLocation.top - offset;
 
       function scrollHandler() {
         if (!ctrl.floating) {
