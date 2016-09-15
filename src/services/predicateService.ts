@@ -28,7 +28,7 @@ export class PredicateService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicate')).then(response => this.entities.deserializePredicateList(response.data));
   }
 
-  getPredicatesForModel(model: Model, invalidateCache: boolean = false): IPromise<PredicateListItem[]> {
+  getPredicatesAssignedToModel(model: Model, invalidateCache: boolean = false): IPromise<PredicateListItem[]> {
 
     if (invalidateCache) {
       this.modelPredicatesCache.delete(model.id.uri);

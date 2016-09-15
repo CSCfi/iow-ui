@@ -39,12 +39,12 @@ export class UriInputAutocompleteController {
     function fetch(): IPromise<DataType[]> {
       switch (that.type) {
         case 'class':
-          return that.$q.all([that.classService.getClassesForModel(that.model), that.classService.getExternalClassesForModel(that.model)])
+          return that.$q.all([that.classService.getClassesAssignedToModel(that.model), that.classService.getExternalClassesForModel(that.model)])
             .then((lists: ClassListItem[][]) => _.flatten(lists));
         case 'attribute':
         case 'association':
         case 'property':
-          return that.$q.all([that.predicateService.getPredicatesForModel(that.model), that.predicateService.getExternalPredicatesForModel(that.model)])
+          return that.$q.all([that.predicateService.getPredicatesAssignedToModel(that.model), that.predicateService.getExternalPredicatesForModel(that.model)])
             .then((lists: PredicateListItem[][]) => _.flatten(lists));
         default:
           throw new Error('Unsupported type: ' + that.type);

@@ -39,7 +39,7 @@ export class ClassService {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class')).then(response => this.entities.deserializeClassList(response.data));
   }
 
-  getClassesForModel(model: Model, invalidateCache: boolean = true): IPromise<ClassListItem[]> {
+  getClassesAssignedToModel(model: Model, invalidateCache: boolean = true): IPromise<ClassListItem[]> {
 
     if (invalidateCache) {
       this.modelClassesCache.delete(model.id.uri);

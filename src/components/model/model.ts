@@ -571,7 +571,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updateClasses(invalidateCaches: boolean): IPromise<any> {
-    return this.classService.getClassesForModel(this.model, invalidateCaches)
+    return this.classService.getClassesAssignedToModel(this.model, invalidateCaches)
       .then(classes => {
         this.classes = _.map(classes, klass => new SelectableItem(klass, this));
         this.sortClasses();
@@ -579,7 +579,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   private updatePredicates(invalidateCaches: boolean): IPromise<any> {
-    return this.predicateService.getPredicatesForModel(this.model, invalidateCaches)
+    return this.predicateService.getPredicatesAssignedToModel(this.model, invalidateCaches)
       .then(predicates => {
         this.attributes = _.chain(predicates)
           .filter(predicate => predicate.isOfType('attribute'))
