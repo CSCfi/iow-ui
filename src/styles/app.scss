@@ -40,17 +40,21 @@ input[type=checkbox][disabled] + span {
 
 .floating {
   position: fixed;
+  backface-visibility: hidden;
 
   &.always {
     position: fixed !important;
+    backface-visibility: hidden !important;
   }
 
   &.no-floating {
     position: inherit !important;
+    backface-visibility: inherit !important;
   }
 
   @media (max-width: $screen-md-max) {
     position: inherit;
+    backface-visibility: inherit !important;
   }
 }
 
