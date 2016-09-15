@@ -3,6 +3,7 @@ import { Class, Model, Predicate } from '../../services/entities';
 import { Show } from '../contracts';
 import { IScope, IAttributes } from 'angular';
 import { FloatController } from '../common/float';
+import { assertNever } from '../../utils/object';
 
 mod.directive('visualizationView', () => {
   return {
@@ -21,7 +22,7 @@ mod.directive('visualizationView', () => {
     require: ['visualizationView', 'float'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, floatController]: [VisualizationViewController, FloatController]) {
 
-      $scope.$watchGroup([() => thisController.selectionWidth, () => thisController.show, () => floatController.floating], ([selectionWidth, show, floating]) => {
+      $scope.$watchGroup([() => thisController.selectionWidth, () => thisController.show, () => floatController.floating], ([selectionWidth, show, floating]: [number, Show, boolean]) => {
 
         const width = show === Show.Both ? `calc(100% - ${selectionWidth + 10 + (floating ? 295 : 0)}px)` : '100%';
 
@@ -32,16 +33,21 @@ mod.directive('visualizationView', () => {
 
         floatController.setWidth(width);
 
-        if (show === Show.Both) {
-          floatController.enableFloating();
-        } else {
-          floatController.disableFloating();
-        }
-
-        if (show === Show.Selection) {
-          element.addClass('hide');
-        } else {
-          element.removeClass('hide');
+        switch (show) {
+          case Show.Both:
+            floatController.enableFloating();
+            element.removeClass('hide');
+            break;
+          case Show.Visualization:
+            floatController.disableFloating();
+            element.removeClass('hide');
+            break;
+          case Show.Selection:
+            floatController.disableFloating();
+            element.addClass('hide');
+            break;
+          default:
+            assertNever(show, 'Unsupported show: ' + show);
         }
       });
     },
