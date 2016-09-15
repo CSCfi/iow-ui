@@ -23,8 +23,6 @@ mod.directive('visualizationView', () => {
 
       $scope.$watchGroup([() => thisController.selectionWidth, () => thisController.show, () => floatController.floating], ([selectionWidth, show, floating]) => {
 
-        console.log(floating);
-        console.log(floatController);
         const width = show === Show.Both ? `calc(100% - ${selectionWidth + 10 + (floating ? 295 : 0)}px)` : '100%';
 
         element.css({
