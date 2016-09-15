@@ -155,10 +155,7 @@ export class FloatController {
 
   setWidth(width: string|number) {
     this.width = width;
-
-    if (this.floating) {
-      this.placeholder.css('width', width);
-      this.element.css('width', width);
-    }
+    this.placeholder.css('width', width);
+    this.element.css('width', width);
   }
 }
