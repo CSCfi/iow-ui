@@ -538,7 +538,7 @@ ul.errors {
 .model-panel--right {
   float: right;
   width: calc(100% - #{$selectionListWidth});
-  padding: 10px 0 0 0;
+  padding: 0;
 
   divider {
     div {
@@ -549,6 +549,7 @@ ul.errors {
       display: inline-block;
       float: left;
       height: calc(100vh - 19px);
+      margin-top: 10px;
       width: 5px;
 
       -webkit-user-select: none;
@@ -566,6 +567,7 @@ ul.errors {
   class-view, predicate-view, visualization-view {
     float: left;
     display: inline-block;
+    padding-top: 10px;
 
     @media (max-width: $screen-md-max) {
       width: 100% !important;
