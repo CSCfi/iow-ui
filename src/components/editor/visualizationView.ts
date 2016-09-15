@@ -19,10 +19,10 @@ mod.directive('visualizationView', () => {
     template: require('./visualizationView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    require: ['visualizationView', 'float'],
+    require: ['visualizationView', '?float'],
     link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, floatController]: [VisualizationViewController, FloatController]) {
 
-      $scope.$watchGroup([() => thisController.selectionWidth, () => thisController.show, () => floatController.floating], ([selectionWidth, show, floating]: [number, Show, boolean]) => {
+      $scope.$watchGroup([() => thisController.selectionWidth, () => thisController.show, () => floatController && floatController.floating], ([selectionWidth, show, floating]: [number, Show, boolean]) => {
 
         const width = show === Show.Both ? `calc(100% - ${selectionWidth + 10 + (floating ? 295 : 0)}px)` : '100%';
 
@@ -31,23 +31,25 @@ mod.directive('visualizationView', () => {
           width: width
         });
 
-        floatController.setWidth(width);
+        if (floatController) {
+          floatController.setWidth(width);
 
-        switch (show) {
-          case Show.Both:
-            floatController.enableFloating();
-            element.removeClass('hide');
-            break;
-          case Show.Visualization:
-            floatController.disableFloating();
-            element.removeClass('hide');
-            break;
-          case Show.Selection:
-            floatController.disableFloating();
-            element.addClass('hide');
-            break;
-          default:
-            assertNever(show, 'Unsupported show: ' + show);
+          switch (show) {
+            case Show.Both:
+              floatController.enableFloating();
+              element.removeClass('hide');
+              break;
+            case Show.Visualization:
+              floatController.disableFloating();
+              element.removeClass('hide');
+              break;
+            case Show.Selection:
+              floatController.disableFloating();
+              element.addClass('hide');
+              break;
+            default:
+              assertNever(show, 'Unsupported show: ' + show);
+          }
         }
       });
     },
