@@ -78,7 +78,7 @@ msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
 #: components/editor/classForm.html:78 components/editor/predicateForm.html:57
-#: components/editor/propertyView.html:121 components/model/conceptForm.html:54
+#: components/editor/propertyView.html:127 components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -319,7 +319,8 @@ msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 msgid "Change concept"
 msgstr "Vaihda käsite"
 
-#: components/editor/propertyPredicateView.html:12 translations/misc.html:221
+#: components/editor/propertyPredicateView.html:12
+#: components/editor/propertyPredicateView.html:40 translations/misc.html:221
 msgid "Change reusable predicate"
 msgstr "Vaihda uudelleenkäytettävä ominaisuus"
 
@@ -512,6 +513,14 @@ msgstr "Muuta assosiaatioksi"
 #: translations/misc.html:229
 msgid "Convert to attribute"
 msgstr "Muuta attribuutiksi"
+
+#: translations/misc.html:231
+msgid "Copied"
+msgstr "Kopioitu"
+
+#: translations/misc.html:230
+msgid "Copy \"{{text}}\" to clipboard"
+msgstr "Kopioi “{{text}}” leikepöydälle"
 
 #: translations/misc.html:99
 msgid "Create and use association"
@@ -1347,7 +1356,7 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: components/editor/propertyView.html:48
+#: components/editor/propertyView.html:54
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1371,10 +1380,6 @@ msgstr ""
 #: translations/misc.html:226
 msgid "Predicate in use"
 msgstr "Predikaatti on käytössä"
-
-#: components/editor/propertyPredicateView.html:33
-msgid "Predicate information not found"
-msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
 #: components/editor/searchPredicateModal.html:50 translations/titles.html:41
 msgid "Predicate type"
@@ -1537,7 +1542,7 @@ msgstr "On jo käytössä"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:132
+#: components/editor/propertyView.html:138
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
@@ -2120,6 +2125,18 @@ msgstr "Virheellinen aika"
 #: components/editor/addPropertiesFromClassModal.html:26
 msgid "Yes"
 msgstr "Kyllä"
+
+#~ msgid "Copy '{{text}}' to clipboard"
+#~ msgstr "Kopioi ‘{{text}}' leikepöydälle"
+
+#~ msgid "Copy '{text}' to clipboard"
+#~ msgstr "Kopioi ‘{text}’ leikepöydälle"
+
+#~ msgid "Copy to clipboard"
+#~ msgstr "Kopioi leikepöydälle"
+
+#~ msgid "Predicate information not found"
+#~ msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
 #~ msgid "Are you sure that you want to cancel edit?"
 #~ msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"

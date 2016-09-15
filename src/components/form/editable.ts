@@ -22,7 +22,8 @@ mod.directive('editable', /* @ngInject */ ($animate: any) => {
       valueAsLocalizationKey: '@',
       disable: '=',
       context: '=',
-      onClick: '@'
+      onClick: '@',
+      clipboard: '='
     },
     restrict: 'E',
     template: require('./editable.html'),
@@ -90,6 +91,7 @@ class EditableController {
   inputId: string;
   context: LanguageContext;
   onClick: string;
+  clipboard: string;
 
   isEditing: () => boolean;
   item: DisplayItem;

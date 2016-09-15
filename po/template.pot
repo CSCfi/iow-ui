@@ -75,7 +75,7 @@ msgstr ""
 
 #: components/editor/classForm.html:78
 #: components/editor/predicateForm.html:57
-#: components/editor/propertyView.html:121
+#: components/editor/propertyView.html:127
 #: components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -318,6 +318,7 @@ msgid "Change concept"
 msgstr ""
 
 #: components/editor/propertyPredicateView.html:12
+#: components/editor/propertyPredicateView.html:40
 #: translations/misc.html:221
 msgid "Change reusable predicate"
 msgstr ""
@@ -512,6 +513,14 @@ msgstr ""
 
 #: translations/misc.html:229
 msgid "Convert to attribute"
+msgstr ""
+
+#: translations/misc.html:231
+msgid "Copied"
+msgstr ""
+
+#: translations/misc.html:230
+msgid "Copy \"{{text}}\" to clipboard"
 msgstr ""
 
 #: translations/misc.html:99
@@ -1342,7 +1351,7 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: components/editor/propertyView.html:48
+#: components/editor/propertyView.html:54
 msgid "Optional metadata"
 msgstr ""
 
@@ -1364,10 +1373,6 @@ msgstr ""
 
 #: translations/misc.html:226
 msgid "Predicate in use"
-msgstr ""
-
-#: components/editor/propertyPredicateView.html:33
-msgid "Predicate information not found"
 msgstr ""
 
 #: components/editor/searchPredicateModal.html:50
@@ -1529,7 +1534,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:132
+#: components/editor/propertyView.html:138
 msgid "Reusable predicate"
 msgstr ""
 

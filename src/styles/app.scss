@@ -34,6 +34,14 @@ $brand-accent-dark:     #375e97;
   display: none !important;
 }
 
+img.svg-icon {
+  width: 14px;
+}
+
+div.tooltip-inner {
+  max-width: 350px;
+}
+
 input[type=checkbox][disabled] + span {
   text-decoration: line-through;
 }

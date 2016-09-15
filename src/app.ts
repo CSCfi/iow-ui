@@ -26,6 +26,7 @@ require('./vendor/modernizr');
 require('imports?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
 require('angular-gettext');
 require('checklist-model');
+require('ngclipboard');
 
 const mod = angular.module('iow-ui', [
   require('angular-animate'),
@@ -34,6 +35,7 @@ const mod = angular.module('iow-ui', [
   require('angular-ui-bootstrap'),
   'gettext',
   'checklist-model',
+  'ngclipboard',
   commonModule,
   editorModule,
   formModule,
