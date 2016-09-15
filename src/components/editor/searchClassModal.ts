@@ -110,7 +110,7 @@ class SearchClassController {
       this.loadingResults = false;
     };
 
-    classService.getAllClasses().then(appendResults);
+    classService.getAllClasses(model).then(appendResults);
     classService.getClassesAssignedToModel(model)
       .then(classes => this.currentModelClassIds = collectIds(classes))
       .then(() => this.search());

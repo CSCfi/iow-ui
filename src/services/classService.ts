@@ -35,8 +35,15 @@ export class ClassService {
       .then(response => this.entities.deserializeClass(response.data));
   }
 
-  getAllClasses(): IPromise<ClassListItem[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('class')).then(response => this.entities.deserializeClassList(response.data));
+  getAllClasses(model: Model): IPromise<ClassListItem[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('class'))
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializeClassList(response.data));
+  }
+
+  getClassesForModel(model: Model) {
+    return this.getAllClasses(model)
+      .then(classes => classes.filter(klass => klass.id.isCurieUrl())); // if curie, it is known namespace
   }
 
   getClassesAssignedToModel(model: Model, invalidateCache: boolean = true): IPromise<ClassListItem[]> {

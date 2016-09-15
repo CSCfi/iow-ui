@@ -1,4 +1,4 @@
-import { IPromise, IQService } from 'angular';
+import { IScope, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
 import { ClassService } from '../../services/classService';
@@ -29,7 +29,10 @@ export class UriInputAutocompleteController {
   model: Model;
   data: IPromise<DataType[]>;
 
-  constructor(private $q: IQService, private classService: ClassService, private predicateService: PredicateService) {
+  constructor(private $scope: IScope, private $q: IQService, private classService: ClassService, private predicateService: PredicateService) {
+    $scope.$watchCollection(() => Object.keys(this.model.context), () => {
+      this.data = null; // invalidate cache
+    });
   }
 
   datasource = (search: string) => {
@@ -39,17 +42,17 @@ export class UriInputAutocompleteController {
     function fetch(): IPromise<DataType[]> {
       switch (that.type) {
         case 'class':
-          return that.$q.all([that.classService.getClassesAssignedToModel(that.model), that.classService.getExternalClassesForModel(that.model)])
+          return that.$q.all([that.classService.getClassesForModel(that.model), that.classService.getExternalClassesForModel(that.model)])
             .then((lists: ClassListItem[][]) => _.flatten(lists));
         case 'attribute':
         case 'association':
         case 'property':
-          return that.$q.all([that.predicateService.getPredicatesAssignedToModel(that.model), that.predicateService.getExternalPredicatesForModel(that.model)])
+          return that.$q.all([that.predicateService.getPredicatesForModel(that.model), that.predicateService.getExternalPredicatesForModel(that.model)])
             .then((lists: PredicateListItem[][]) => _.flatten(lists));
         default:
           throw new Error('Unsupported type: ' + that.type);
       }
-    };
+    }
 
     if (!this.data) {
       const exclusion = createDefinedByExclusion(this.model);

@@ -24,8 +24,15 @@ export class PredicateService {
       .then(response => this.entities.deserializePredicate(response.data));
   }
 
-  getAllPredicates(): IPromise<PredicateListItem[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate')).then(response => this.entities.deserializePredicateList(response.data));
+  getAllPredicates(model: Model): IPromise<PredicateListItem[]> {
+    return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'))
+      .then(expandContextWithKnownModels(model))
+      .then(response => this.entities.deserializePredicateList(response.data));
+  }
+
+  getPredicatesForModel(model: Model) {
+    return this.getAllPredicates(model)
+      .then(predicates => predicates.filter(predicate => predicate.id.isCurieUrl()));  // if curie, it is known namespace
   }
 
   getPredicatesAssignedToModel(model: Model, invalidateCache: boolean = false): IPromise<PredicateListItem[]> {
