@@ -3,6 +3,7 @@ import { Validator, AsyncValidator } from '../components/form/validators';
 import { normalizeAsArray, all } from './array';
 import { valuesExcludingKeys } from './object';
 import * as _ from 'lodash';
+import { Show } from '../components/contracts';
 
 export function isModalCancel(err: any) {
   return err === 'cancel' || err === 'escape key press';
@@ -89,4 +90,17 @@ export function validateWithValidators<T>($q: IQService, ngModelController: INgM
   }
 
   return $q.all(asyncValidationResults).then(() => new ValidationResult(result));
+}
+
+export function setSelectionStyles(element: JQuery, show: Show, selectionWidth: number) {
+  element.css({
+    'padding-left': '5px',
+    width: show === Show.Both ? `${selectionWidth + 5}px` : '100%'
+  });
+
+  if (show === Show.Visualization) {
+    element.addClass('hide');
+  } else {
+    element.removeClass('hide');
+  }
 }

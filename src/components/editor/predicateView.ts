@@ -1,4 +1,4 @@
-import { ILogService } from 'angular';
+import { IScope, IAttributes, ILogService } from 'angular';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
@@ -8,6 +8,7 @@ import { ModelController } from '../model/model';
 import { Show } from '../contracts';
 import { ErrorModal } from '../form/errorModal';
 import { module as mod }  from './module';
+import { setSelectionStyles } from '../../utils/angular';
 
 mod.directive('predicateView', () => {
   return {
@@ -15,13 +16,20 @@ mod.directive('predicateView', () => {
       predicate: '=',
       model: '=',
       modelController: '=',
-      show: '='
+      show: '=',
+      selectionWidth: '='
     },
     restrict: 'E',
     template: require('./predicateView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller: PredicateViewController
+    controller: PredicateViewController,
+    require: 'predicateView',
+    link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: PredicateViewController) {
+      $scope.$watchGroup([() => ctrl.selectionWidth, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
+        setSelectionStyles(element, show, selectionWidth);
+      });
+    }
   };
 });
 
@@ -31,6 +39,7 @@ export class PredicateViewController extends EditableEntityController<Associatio
   model: Model;
   modelController: ModelController;
   show: Show;
+  selectionWidth: number;
 
   /* @ngInject */
   constructor($scope: EditableScope,

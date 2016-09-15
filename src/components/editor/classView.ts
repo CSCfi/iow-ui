@@ -1,4 +1,4 @@
-import { ILogService } from 'angular';
+import { IScope, IAttributes, ILogService } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassService } from '../../services/classService';
 import { Class, GroupListItem, Model, LanguageContext } from '../../services/entities';
@@ -9,6 +9,7 @@ import { ModelController } from '../model/model';
 import { Show } from '../contracts';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
+import { setSelectionStyles } from '../../utils/angular';
 
 mod.directive('classView', () => {
   return {
@@ -17,13 +18,20 @@ mod.directive('classView', () => {
       model: '=',
       modelController: '=',
       show: '=',
-      openPropertyId: '='
+      openPropertyId: '=',
+      selectionWidth: '='
     },
     restrict: 'E',
     template: require('./classView.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller: ClassViewController
+    controller: ClassViewController,
+    require: 'classView',
+    link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: ClassViewController) {
+      $scope.$watchGroup([() => ctrl.selectionWidth, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
+        setSelectionStyles(element, show, selectionWidth);
+      });
+    }
   };
 });
 
@@ -34,6 +42,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   modelController: ModelController;
   show: Show;
   openPropertyId: string;
+  selectionWidth: number;
 
   /* @ngInject */
   constructor($scope: EditableScope,

@@ -593,17 +593,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         this.sortPredicates();
       });
   }
-
-  classForSelection() {
-    return this.show === Show.Visualization ? 'hide' : '';
-  }
-
-  styleForSelection() {
-    return {
-      'padding-left': '5px',
-      width: this.show === Show.Both ? `${this.selectionWidth + 5}px` : '100%'
-    };
-  }
 }
 
 

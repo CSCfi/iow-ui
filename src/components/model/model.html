@@ -34,16 +34,16 @@
                   model="ctrl.model"
                   model-controller="ctrl"
                   show="ctrl.show"
-                  ng-style="ctrl.styleForSelection()"
-                  ng-class="ctrl.classForSelection()"></class-view>
+                  selection-width="ctrl.selectionWidth">
+      </class-view>
 
       <predicate-view ng-if="ctrl.selection.isPredicate()"
                       predicate="ctrl.selection"
                       model="ctrl.model"
                       model-controller="ctrl"
                       show="ctrl.show"
-                      ng-style="ctrl.styleForSelection()"
-                      ng-class="ctrl.classForSelection()"></predicate-view>
+                      selection-width="ctrl.selectionWidth">
+      </predicate-view>
 
       <divider ng-if="ctrl.show === 1" selection-width="ctrl.selectionWidth"></divider>
 
@@ -54,7 +54,8 @@
                           select-class-by-id="ctrl.selectClassById"
                           change-notifier="ctrl"
                           selection-width="ctrl.selectionWidth"
-                          float></visualization-view>
+                          float>
+      </visualization-view>
     </div>
   </div>
 </div>
