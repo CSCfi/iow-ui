@@ -281,7 +281,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   onDelete(item: Class|Predicate) {
     this.queueWhenNotVisible(() => {
       if (item instanceof Class) {
-        this.modelPositions.removeClass(item.id);
         this.removeClass(item);
       }
     });
