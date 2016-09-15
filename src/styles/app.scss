@@ -46,9 +46,12 @@ input[type=checkbox][disabled] + span {
   text-decoration: line-through;
 }
 
+[float] {
+  will-change: scroll-position;
+}
+
 .floating {
   position: fixed;
-  will-change: scroll-position;
   backface-visibility: hidden;
 
   &.always {
