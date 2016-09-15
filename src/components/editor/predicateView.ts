@@ -17,7 +17,7 @@ mod.directive('predicateView', () => {
       model: '=',
       modelController: '=',
       show: '=',
-      selectionWidth: '='
+      width: '='
     },
     restrict: 'E',
     template: require('./predicateView.html'),
@@ -26,7 +26,7 @@ mod.directive('predicateView', () => {
     controller: PredicateViewController,
     require: 'predicateView',
     link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: PredicateViewController) {
-      $scope.$watchGroup([() => ctrl.selectionWidth, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
+      $scope.$watchGroup([() => ctrl.width, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
         setSelectionStyles(element, show, selectionWidth);
       });
     }
@@ -39,7 +39,7 @@ export class PredicateViewController extends EditableEntityController<Associatio
   model: Model;
   modelController: ModelController;
   show: Show;
-  selectionWidth: number;
+  width: number;
 
   /* @ngInject */
   constructor($scope: EditableScope,

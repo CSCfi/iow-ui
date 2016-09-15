@@ -19,7 +19,7 @@ mod.directive('classView', () => {
       modelController: '=',
       show: '=',
       openPropertyId: '=',
-      selectionWidth: '='
+      width: '='
     },
     restrict: 'E',
     template: require('./classView.html'),
@@ -28,7 +28,7 @@ mod.directive('classView', () => {
     controller: ClassViewController,
     require: 'classView',
     link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: ClassViewController) {
-      $scope.$watchGroup([() => ctrl.selectionWidth, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
+      $scope.$watchGroup([() => ctrl.width, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
         setSelectionStyles(element, show, selectionWidth);
       });
     }
@@ -42,7 +42,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   modelController: ModelController;
   show: Show;
   openPropertyId: string;
-  selectionWidth: number;
+  width: number;
 
   /* @ngInject */
   constructor($scope: EditableScope,
