@@ -462,15 +462,11 @@ ul.errors {
   }
 }
 
-.model-panel--left-placeholder {
-  float: left;
-}
-
 .model-panel--left {
   width: $selectionListWidth;
   float: left;
-  border-right: solid 1px #ddd;
   background-color: #fff;
+  padding-top: 10px;
 
   .nav-tabs {
 
@@ -481,8 +477,9 @@ ul.errors {
       width: 33%;
 
       > a {
-        padding: 10px 0 0 0;
+        padding: 0;
         background-color: $brand-accent-lighter;
+        margin: 0 0 0 2px;
       }
     }
 
@@ -496,7 +493,7 @@ ul.errors {
 
   ul.nav {
     margin-right: 0;
-    padding: 9px 0;
+    padding-bottom: 9px;
   }
 
   .add-new-button {
@@ -507,7 +504,7 @@ ul.errors {
   uib-tab-heading {
     i {
       width: 100%;
-      padding-right: 2px;
+      padding-top: 6px;
       text-align: center;
       font-size: x-large;
     }
@@ -519,7 +516,7 @@ ul.errors {
   }
 
   .panel__list {
-    height: calc(100vh - 95px);
+    height: calc(100vh - 84px);
     overflow-y: auto;
 
     &.has-button {
@@ -543,7 +540,7 @@ ul.errors {
 .model-panel--right {
   float: right;
   width: calc(100% - #{$selectionListWidth});
-  padding: 0;
+  padding-top: 10px;
 
   divider {
     div {
@@ -553,8 +550,7 @@ ul.errors {
 
       display: inline-block;
       float: left;
-      height: calc(100vh - 19px);
-      margin-top: 10px;
+      height: calc(100vh - 11px);
       width: 5px;
 
       -webkit-user-select: none;
@@ -572,7 +568,6 @@ ul.errors {
   class-view, predicate-view, visualization-view {
     float: left;
     display: inline-block;
-    padding-top: 10px;
 
     @media (max-width: $screen-md-max) {
       width: 100% !important;
@@ -732,7 +727,11 @@ modal-body {
 }
 
 .component {
-  border-right: solid 1px #ddd;
+  border-left: solid 1px #ddd;
+
+  [float] {
+    z-index: 1000;
+  }
 
   .collapsable {
     font-size: large;
@@ -744,7 +743,7 @@ modal-body {
   }
 
   .selection-form {
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 130px);
     padding-right: 40px;
 
     property-view .row {
@@ -774,7 +773,7 @@ modal-body {
 
   display: inline-block;
   width: 100%;
-  height: calc(100vh - 85px);
+  height: calc(100vh - 77px);
   overflow: hidden;
   $enabledColor: #bbb;
 
@@ -786,7 +785,7 @@ modal-body {
 
     position: absolute;
     z-index: 20;
-    padding-top: 10px;
+    padding: 10px 0 0 10px;
 
     .focus-indicator {
       @include no-select;

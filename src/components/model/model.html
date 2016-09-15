@@ -4,8 +4,8 @@
   <model-view model="ctrl.model" model-controller="ctrl"></model-view>
 
   <div class="bottom">
-    <div class="model-panel--left" float="model-panel--left-placeholder" always="true">
-      <uib-tabset active="ctrl.activeTab">
+    <div class="model-panel--left">
+      <uib-tabset active="ctrl.activeTab" float always="true">
         <uib-tab ng-repeat="tab in ctrl.tabs">
           <uib-tab-heading>
             <i ng-class="tab.glyphIconClass"></i><p>{{tab.type | translate}}</p>

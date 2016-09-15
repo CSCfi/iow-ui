@@ -10,6 +10,7 @@ import './classForm';
 import './classView';
 import './classVisualization';
 import './definedBy';
+import './selectionFloatSizeAdjuster';
 import './uriSelect';
 import './editableConceptSelect';
 import './editableConstraint';
