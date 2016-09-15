@@ -1,13 +1,12 @@
 import { module as mod }  from './module';
-import { IScope, IAttributes, IWindowService, ITimeoutService } from 'angular';
-import * as _ from 'lodash';
+import { IScope, IAttributes, IWindowService } from 'angular';
 
 interface FloatAttributes extends IAttributes {
   float: string;
   always: string;
 }
 
-mod.directive('float', ($window: IWindowService, $timeout: ITimeoutService) => {
+mod.directive('float', ($window: IWindowService) => {
   return {
     restrict: 'A',
     controller: FloatController,
@@ -31,38 +30,28 @@ mod.directive('float', ($window: IWindowService, $timeout: ITimeoutService) => {
 
       element.attr('will-change', 'scroll-position');
 
-      // after DOM is fully rendered, initialize element location
-      (function init() {
-        elementStaticLocation = element.offset();
-        if (!isInitialized()) {
-          $timeout(init, 500);
-        }
-      })();
-
       windowElement.on('scroll', () => {
+
+        if (!ctrl.floating) {
+          // re-refresh has to be done since location can change due to accordion etc
+          elementStaticLocation = element.offset();
+        }
+
         if (isInitialized()) {
-          if (!ctrl.floating) {
-            if (ctrl.enabled && ctrl.isFloatingPosition()) {
-              $scope.$apply(() => {
-                ctrl.setFloating();
-              });
+          if (ctrl.floating) {
+            if (ctrl.isStaticPosition()) {
+              ctrl.setStatic();
+              elementStaticLocation = element.offset();
+              $scope.$apply();
             }
           } else {
-            if (ctrl.isStaticPosition()) {
-              $scope.$apply(() => {
-                ctrl.setStatic();
-              });
+            if (ctrl.enabled && ctrl.isFloatingPosition()) {
+              ctrl.setFloating();
+              $scope.$apply();
             }
           }
         }
       });
-
-      // re-refresh has to be done since location can change due to accordion etc
-      windowElement.on('scroll', _.throttle(() => {
-        if (ctrl.enabled && ctrl.isStaticPosition()) {
-          elementStaticLocation = element.offset();
-        }
-      }, 500));
 
       function isInitialized() {
         return elementStaticLocation.top > 0;
@@ -79,14 +68,12 @@ export class FloatController {
   always: boolean;
   isFloatingPosition: () => boolean;
   isStaticPosition: () => boolean;
+
   floating: boolean = false;
-
   enabled = true;
-
   width: string|number;
 
   setFloating() {
-
     this.floating = true;
     const width = this.width || this.element.outerWidth() + 'px';
 
