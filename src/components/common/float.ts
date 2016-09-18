@@ -4,6 +4,7 @@ import { IScope, IAttributes } from 'angular';
 interface FloatAttributes extends IAttributes {
   float: string;
   always: string;
+  snap: string;
 }
 
 mod.directive('float', () => {
@@ -14,6 +15,7 @@ mod.directive('float', () => {
     link($scope: IScope, element: JQuery, attributes: FloatAttributes, ctrl: FloatController) {
 
       const placeholderClass = attributes.float;
+      const shouldSnap = attributes.snap === 'true';
       let elementStaticLocation = element.offset();
 
       ctrl.element = element;
@@ -24,33 +26,50 @@ mod.directive('float', () => {
           .addClass(placeholderClass)
           .insertBefore(element);
 
-      const offset = 0;
-      ctrl.isFloatingPosition = () => window.pageYOffset >= elementStaticLocation.top - offset;
-      ctrl.isStaticPosition = () => window.pageYOffset < elementStaticLocation.top - offset;
+      ctrl.isFloatingPosition = () => window.pageYOffset >= elementStaticLocation.top;
+      ctrl.isStaticPosition = () => window.pageYOffset < elementStaticLocation.top;
+
+      let timeoutId: any = null;
+
+      function snap(destination: number) {
+        if (Math.abs(destination - window.scrollY) < 3) {
+          scrollTo(window.scrollX, destination + 1);
+        } else if (Math.abs(destination - window.scrollY) < 80) {
+          scrollTo(window.scrollX, window.scrollY + ((destination - window.scrollY) / 2));
+          setTimeout(snap, 20, destination);
+        }
+      }
 
       function scrollHandler() {
+
+        if (shouldSnap) {
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+          }
+
+          timeoutId = setTimeout(snap, 200, elementStaticLocation.top);
+        }
+
         if (!ctrl.floating) {
           // re-refresh has to be done since location can change due to accordion etc
           elementStaticLocation = element.offset();
         }
 
-        if (isInitialized()) {
-          if (ctrl.floating) {
-            if (ctrl.isStaticPosition()) {
-              ctrl.setStatic();
-              elementStaticLocation = element.offset();
-              $scope.$apply();
-            }
-          } else {
-            if (ctrl.enabled && ctrl.isFloatingPosition()) {
-              ctrl.setFloating();
-              $scope.$apply();
-            }
+        if (ctrl.floating) {
+          if (ctrl.canSetStatic()) {
+            ctrl.setStatic();
+            elementStaticLocation = element.offset();
+            $scope.$apply();
+          }
+        } else {
+          if (ctrl.canSetFloating()) {
+            ctrl.setFloating();
+            $scope.$apply();
           }
         }
       }
 
-      window.addEventListener('scroll', scrollHandler);
+      window.addEventListener('scroll', scrollHandler, true);
 
       $scope.$on('$destroy', () => {
         window.removeEventListener('scroll', scrollHandler);
@@ -75,6 +94,14 @@ export class FloatController {
   floating: boolean = false;
   enabled = true;
   width: string|number;
+
+  canSetFloating() {
+    return this.enabled && this.isFloatingPosition();
+  }
+
+  canSetStatic() {
+    return this.isStaticPosition();
+  }
 
   setFloating() {
     this.floating = true;
@@ -118,7 +145,7 @@ export class FloatController {
   enableFloating() {
     this.enabled = true;
 
-    if (this.isFloatingPosition()) {
+    if (this.canSetFloating()) {
       if (this.floating) {
         this.placeholder.show();
       } else {
@@ -132,7 +159,7 @@ export class FloatController {
   disableFloating() {
     this.enabled = false;
 
-    if (this.isStaticPosition()) {
+    if (this.canSetStatic()) {
       if (this.floating) {
         this.setStatic();
       }
