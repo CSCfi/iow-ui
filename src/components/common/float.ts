@@ -32,9 +32,12 @@ mod.directive('float', () => {
       let timeoutId: any = null;
 
       function snap(destination: number) {
-        if (Math.abs(destination - window.scrollY) < 3) {
+
+        const diff = destination - window.scrollY;
+
+        if (Math.abs(diff) < 3) {
           scrollTo(window.scrollX, destination + 1);
-        } else if (Math.abs(destination - window.scrollY) < 80) {
+        } else if (diff < 80 && diff > 0) {
           scrollTo(window.scrollX, window.scrollY + ((destination - window.scrollY) / 2));
           setTimeout(snap, 20, destination);
         }
