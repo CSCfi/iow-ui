@@ -1,5 +1,5 @@
 <div ng-if="ctrl.item.displayValue" class="editable-wrap" ng-style="ctrl.style">
-  <editable-label data-title="ctrl.title"></editable-label>
+  <editable-label data-title="ctrl.title" clipboard="ctrl.clipboard"></editable-label>
   <div class="content">
     <a ng-if="ctrl.item.href" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
     <a ng-if="ctrl.item.onClick" ng-click="ctrl.item.onClick()">{{ctrl.item.displayValue}}</a>
