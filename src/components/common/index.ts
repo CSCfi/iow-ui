@@ -14,6 +14,7 @@ import './accordion';
 import './accordionChevron';
 import './ajaxLoadingIndicator';
 import './ajaxLoadingIndicatorSmall';
+import './clipboard';
 import './export';
 import './float';
 import './history';

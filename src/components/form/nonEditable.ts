@@ -13,7 +13,8 @@ mod.directive('nonEditable', () => {
       link: '=',
       onClick: '@',
       valueAsLocalizationKey: '@',
-      context: '='
+      context: '=',
+      clipboard: '='
     },
     restrict: 'E',
     template: require('./nonEditable.html'),
@@ -35,6 +36,7 @@ class NonEditableController {
   valueAsLocalizationKey: boolean;
   context: LanguageContext;
   onClick: string;
+  clipboard: string;
 
   isEditing: () => boolean;
   item: DisplayItem;

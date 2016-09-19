@@ -1,11 +1,12 @@
 <div class="editable-wrap form-group">
-  <editable-label data-title="ctrl.title" input-id="ctrl.inputId" required="ctrl.required" clipboard="ctrl.clipboard"></editable-label>
+  <editable-label data-title="ctrl.title" input-id="ctrl.inputId" required="ctrl.required"></editable-label>
   <div ng-show="ctrl.isEditing()" ng-transclude></div>
 
   <div ng-if="!ctrl.isEditing()" class="content">
     <a ng-if="ctrl.item.href" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
     <a ng-if="ctrl.item.onClick" ng-click="ctrl.item.onClick()">{{ctrl.item.displayValue}}</a>
     <span ng-if="!ctrl.item.href && !ctrl.item.onClick" >{{ctrl.item.displayValue}}</span>
+    <clipboard text="ctrl.clipboard"></clipboard>
   </div>
   <error-messages ng-model-controller="ngModel"></error-messages>
 </div>
