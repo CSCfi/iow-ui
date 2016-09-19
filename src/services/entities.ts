@@ -15,7 +15,7 @@ import {
 } from '../utils/language';
 import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual } from '../utils/array';
 import { Iterable } from '../utils/iterable';
-import { glyphIconClassForType, indexById, copyVertices, copyCoordinate } from '../utils/entity';
+import { glyphIconClassForType, indexById, copyVertices, copyCoordinate, glyphIconClassUnknown } from '../utils/entity';
 import {
   normalizeModelType, normalizeClassType, normalizePredicateType,
   normalizeReferrerType
@@ -1407,7 +1407,12 @@ export class Property extends GraphNode {
 
   get glyphIconClass() {
     const type = this.normalizedPredicateType;
-    return glyphIconClassForType(type ? [type] : []);
+
+    if (type === 'association' && !this.hasAssociationTarget()) {
+      return glyphIconClassUnknown;
+    } else {
+      return glyphIconClassForType(type ? [type] : []);
+    }
   }
 
   copy(): Property {

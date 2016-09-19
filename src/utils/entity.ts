@@ -52,3 +52,5 @@ export function glyphIconClassForType(type: Type[]) {
     }
   ];
 }
+
+export const glyphIconClassUnknown = ['glyphicon', 'glyphicon-question-sign'];
