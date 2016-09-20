@@ -1043,8 +1043,11 @@ function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
   });
 }
 
-
 function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
+
+  function isVisible(modelOrId: Element|string) {
+    return !joint.V(paper.findViewByModel(modelOrId).el).hasClass(backgroundClass);
+  }
 
   function getContentBBox(elements: joint.dia.Element[]) {
 
@@ -1057,21 +1060,28 @@ function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible:
     let maxX = Number.MIN_VALUE;
     let maxY = Number.MIN_VALUE;
 
-    for (const element of elements) {
-      const bbox = paper.findViewByModel(element).getBBox();
+    function applyBBox(bbox: { x: number; y: number; width: number; height: number; }) {
       minX = Math.min(minX, (bbox.x));
       minY = Math.min(minY, (bbox.y));
       maxX = Math.max(maxX, (bbox.x + bbox.width));
       maxY = Math.max(maxY, (bbox.y + bbox.height));
     }
 
+    for (const element of elements) {
+
+      applyBBox(paper.findViewByModel(element).getBBox());
+
+      for (const link of graph.getConnectedLinks(element)) {
+        if (isVisible(link.get('source').id) && isVisible(link.get('target').id)) {
+          applyBBox(paper.findViewByModel(link).getBBox());
+        }
+      }
+    }
+
     return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
   }
 
-  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), element => {
-    return !joint.V(paper.findViewByModel(element).el).hasClass(backgroundClass);
-  });
-
+  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), isVisible);
   const scale = getScale(paper);
   const padding = 45;
 
