@@ -54,20 +54,25 @@ mod.directive('float', () => {
         }
 
         if (!ctrl.floating) {
-          // re-refresh has to be done since location can change due to accordion etc
-          elementStaticLocation = element.offset();
+          const offset = element.offset();
+
+          if (offset.top > 0) {
+            // re-refresh has to be done since location can change due to accordion etc
+            elementStaticLocation = element.offset();
+          }
         }
 
-        if (ctrl.floating) {
-          if (ctrl.canSetStatic()) {
-            ctrl.setStatic();
-            elementStaticLocation = element.offset();
-            $scope.$apply();
-          }
-        } else {
-          if (ctrl.canSetFloating()) {
-            ctrl.setFloating();
-            $scope.$apply();
+        if (isInitialized()) {
+          if (ctrl.floating) {
+            if (ctrl.isStaticPosition()) {
+              ctrl.setStatic();
+              $scope.$apply();
+            }
+          } else {
+            if (ctrl.enabled && ctrl.isFloatingPosition()) {
+              ctrl.setFloating();
+              $scope.$apply();
+            }
           }
         }
       }
@@ -97,14 +102,6 @@ export class FloatController {
   floating: boolean = false;
   enabled = true;
   width: string|number;
-
-  canSetFloating() {
-    return this.enabled && this.isFloatingPosition();
-  }
-
-  canSetStatic() {
-    return this.isStaticPosition();
-  }
 
   setFloating() {
     this.floating = true;
@@ -148,7 +145,7 @@ export class FloatController {
   enableFloating() {
     this.enabled = true;
 
-    if (this.canSetFloating()) {
+    if (this.isFloatingPosition()) {
       if (this.floating) {
         this.placeholder.show();
       } else {
@@ -162,7 +159,7 @@ export class FloatController {
   disableFloating() {
     this.enabled = false;
 
-    if (this.canSetStatic()) {
+    if (this.isStaticPosition()) {
       if (this.floating) {
         this.setStatic();
       }
