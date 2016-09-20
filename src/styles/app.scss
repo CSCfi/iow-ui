@@ -848,7 +848,7 @@ modal-body {
     stroke-width: 1px;
   }
 
-  .element.uml.Class {
+  .joint-type-uml-class {
     &.background {
       fill-opacity: 0.3;
     }
@@ -864,7 +864,7 @@ modal-body {
     }
   }
 
-  .link.background {
+  .joint-link.background {
     fill-opacity: 0.3;
 
     path {
