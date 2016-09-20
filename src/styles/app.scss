@@ -301,6 +301,11 @@ table.editable-table {
   color: white;
   background-color: $brand-accent-light;
   border: 1px solid $brand-accent-light;
+
+  &.additional {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active {
