@@ -236,11 +236,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   queueWhenNotVisible(operation: () => void) {
-    if (this.visible && !this.dimensionChangeInProgress) {
-      operation();
-    } else {
-      this.operationQueue.push(operation);
-    }
+    this.operationQueue.push(operation);
 
     if (this.visible) {
       this.executeQueue();
@@ -252,7 +248,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       setTimeout(() => this.executeQueue(), 200);
     } else {
       setTimeout(() => {
-        this.operationQueue.forEach(operation => operation());
+        for (let i = this.operationQueue.length - 1; i >= 0; i--) {
+          this.operationQueue[i]();
+        }
         this.operationQueue = [];
       });
     }
