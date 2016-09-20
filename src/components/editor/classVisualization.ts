@@ -891,6 +891,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
       if (!arraysAreEqual(vertices, oldVertices, coordinatesAreEqual)) {
         propertyPosition.setVertices(copyVertices(normalizeAsArray(associationCell.get('vertices'))));
+        // TODO do actual calculation
+        associationCell.prop('labels/0/position', 0.5);
       }
     });
 
@@ -981,7 +983,8 @@ function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
     height: element.height() || 100,
     model: graph,
     linkPinning: false,
-    snapLinks: false
+    snapLinks: false,
+    perpendicularLinks: true
   });
 }
 
@@ -1215,7 +1218,6 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
   const first = siblings[0];
   const firstSource = first.get('source');
   const loop = isLoop(first);
-  const connector = {name: (loop || siblings.length === 1) ? 'normal' : 'smooth'};
 
   for (let i = 0; i < siblings.length; i++) {
 
@@ -1223,8 +1225,6 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
     const source = (<joint.dia.Element> graph.getCell(link.get('source').id));
     const target = (<joint.dia.Element> graph.getCell(link.get('target').id));
     const persistedVertices = getPersistedVertices(link, siblings.length, loop);
-
-    link.prop('connector', connector);
 
     if (persistedVertices) {
       link.set('vertices', persistedVertices);
@@ -1240,8 +1240,21 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
       link.unset('vertices');
     }
 
+    if (!loop && siblings.length > 1) {
+      const length = (paper.findViewByModel(link) as joint.dia.LinkView).getConnectionLength();
+      link.prop('labels/0/position', calculateNormalSiblingLabelPosition(length, firstSource.id !== source.id, i));
+    } else {
+      link.prop('labels/0/position', 0.5);
+    }
+
     alreadyAdjusted.add(link.id);
   }
+}
+
+function calculateNormalSiblingLabelPosition(linkLength: number, inverseDirection: boolean, siblingIndex: number) {
+  const sign = siblingIndex % 2 ? 1 : -1;
+  const gapBetweenSiblings = 30;
+  return (linkLength / 2) + (sign * (inverseDirection ? -1 : 1) * Math.ceil(siblingIndex / 2) * gapBetweenSiblings) + (inverseDirection ? 10 : 0);
 }
 
 function calculateNormalSiblingVertices(source: joint.dia.Element, target: joint.dia.Element, siblingIndex: number) {
@@ -1253,7 +1266,7 @@ function calculateNormalSiblingVertices(source: joint.dia.Element, target: joint
   const midPoint = joint.g.line(srcCenter, trgCenter).midpoint();
   const theta = srcCenter.theta(trgCenter);
 
-  const offset = gapBetweenSiblings * Math.ceil((siblingIndex + 1) / 2);
+  const offset = gapBetweenSiblings * Math.ceil(siblingIndex / 2);
   const sign = siblingIndex % 2 ? 1 : -1;
   const angle = joint.g.toRad(theta + sign * 90);
   const vertex = joint.g.point.fromPolar(offset, angle, midPoint);
@@ -1264,10 +1277,6 @@ function calculateNormalSiblingVertices(source: joint.dia.Element, target: joint
 function calculateRecurseSiblingVertices(element: joint.dia.Element, siblingIndex: number) {
 
   const bbox = element.getBBox();
-  const left = bbox.width / 2;
-  const top = bbox.height / 2;
-  const centre = joint.g.point(bbox.x + left, bbox.y + top);
-
   const position = siblingIndex % 4;
 
   function resolveSign() {
@@ -1287,11 +1296,13 @@ function calculateRecurseSiblingVertices(element: joint.dia.Element, siblingInde
 
   const offset = 50;
   const sign = resolveSign();
+  const center = joint.g.point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
+  const corner = joint.g.point(center).offset(bbox.width / 2 * sign.x, bbox.height / 2 * sign.y);
   const scale = Math.floor(siblingIndex / 4) + 1;
 
   return [
-    joint.g.point(centre).offset(0, sign.y * (top + offset * scale)),
-    joint.g.point(centre).offset(sign.x * (left + offset * scale), sign.y * (top + offset * scale)),
-    joint.g.point(centre).offset(sign.x * (left + offset * scale), 0)
+    joint.g.point(corner).offset(-sign.x * bbox.width / 4, sign.y * (offset * scale)),
+    joint.g.point(corner).offset(sign.x * (offset * scale), sign.y * (offset * scale)),
+    joint.g.point(corner).offset(sign.x * (offset * scale), -sign.y * bbox.height / 4)
   ];
 }

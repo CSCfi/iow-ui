@@ -100,7 +100,8 @@ export namespace dia {
       width?: number,
       height?: number,
       linkPinning?: boolean,
-      snapLinks?: boolean
+      snapLinks?: boolean,
+      perpendicularLinks?: boolean
     });
 
     options:IOptions;
