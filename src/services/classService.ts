@@ -46,11 +46,7 @@ export class ClassService {
       .then(classes => classes.filter(klass => klass.id.isCurieUrl())); // if curie, it is known namespace
   }
 
-  getClassesAssignedToModel(model: Model, invalidateCache: boolean = true): IPromise<ClassListItem[]> {
-
-    if (invalidateCache) {
-      this.modelClassesCache.delete(model.id.uri);
-    }
+  getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]> {
 
     const classes = this.modelClassesCache.get(model.id.uri);
 
@@ -74,6 +70,7 @@ export class ClassService {
     };
     return this.$http.put<{ identifier: Urn }>(config.apiEndpointWithName('class'), klass.serialize(), {params: requestParams})
       .then(response => {
+        this.modelClassesCache.delete(klass.definedBy.id.uri);
         klass.unsaved = false;
         klass.version = response.data.identifier;
         klass.createdAt = moment();
@@ -90,6 +87,7 @@ export class ClassService {
     }
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('class'), klass.serialize(), {params: requestParams})
       .then(response => {
+        this.modelClassesCache.delete(klass.definedBy.id.uri);
         klass.version = response.data.identifier;
         klass.modifiedAt = moment();
       });
@@ -100,7 +98,8 @@ export class ClassService {
       id: id.uri,
       model: modelId.uri
     };
-    return this.$http.delete(config.apiEndpointWithName('class'), {params: requestParams});
+    return this.$http.delete(config.apiEndpointWithName('class'), {params: requestParams})
+      .then(() => this.modelClassesCache.delete(modelId.uri));
   }
 
   assignClassToModel(classId: Uri, modelId: Uri): IHttpPromise<any> {
@@ -108,7 +107,8 @@ export class ClassService {
       id: classId.uri,
       model: modelId.uri
     };
-    return this.$http.post(config.apiEndpointWithName('class'), undefined, {params: requestParams});
+    return this.$http.post(config.apiEndpointWithName('class'), undefined, {params: requestParams})
+      .then(() => this.modelClassesCache.delete(modelId.uri));
   }
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {

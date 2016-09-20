@@ -35,11 +35,7 @@ export class PredicateService {
       .then(predicates => predicates.filter(predicate => predicate.id.isCurieUrl()));  // if curie, it is known namespace
   }
 
-  getPredicatesAssignedToModel(model: Model, invalidateCache: boolean = false): IPromise<PredicateListItem[]> {
-
-    if (invalidateCache) {
-      this.modelPredicatesCache.delete(model.id.uri);
-    }
+  getPredicatesAssignedToModel(model: Model): IPromise<PredicateListItem[]> {
 
     const predicates = this.modelPredicatesCache.get(model.id.uri);
 
@@ -63,6 +59,7 @@ export class PredicateService {
     };
     return this.$http.put<{ identifier: Urn }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
+        this.modelPredicatesCache.delete(predicate.definedBy.id.uri);
         predicate.unsaved = false;
         predicate.version = response.data.identifier;
         predicate.createdAt = moment();
@@ -81,7 +78,8 @@ export class PredicateService {
       .then(response => {
         predicate.version = response.data.identifier;
         predicate.modifiedAt = moment();
-      });
+      })
+      .then(() => this.modelPredicatesCache.delete(predicate.definedBy.id.uri));
   }
 
   deletePredicate(id: Uri, modelId: Uri): IHttpPromise<any> {
@@ -89,7 +87,8 @@ export class PredicateService {
       id: id.uri,
       model: modelId.uri
     };
-    return this.$http.delete(config.apiEndpointWithName('predicate'), {params: requestParams});
+    return this.$http.delete(config.apiEndpointWithName('predicate'), {params: requestParams})
+      .then(() => this.modelPredicatesCache.delete(modelId.uri));
   }
 
   assignPredicateToModel(predicateId: Uri, modelId: Uri): IHttpPromise<any> {
@@ -97,7 +96,8 @@ export class PredicateService {
       id: predicateId.uri,
       model: modelId.uri
     };
-    return this.$http.post(config.apiEndpointWithName('predicate'), undefined, {params: requestParams});
+    return this.$http.post(config.apiEndpointWithName('predicate'), undefined, {params: requestParams})
+      .then(() => this.modelPredicatesCache.delete(modelId.uri));
   }
 
   newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<T> {
