@@ -9,6 +9,7 @@ import { module as mod }  from './module';
 import { isDefined } from '../../utils/object';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
+import { Option } from '../common/buttonWithOptions';
 
 mod.directive('classForm', () => {
   return {
@@ -40,11 +41,17 @@ export class ClassFormController {
   openPropertyId: string;
   onPropertyReorder = (property: Property, index: number) => property.index = index;
   shouldAutofocus: boolean;
+  addPropertyActions: Option[];
 
   /* @ngInject */
   constructor(private classService: ClassService,
               private searchPredicateModal: SearchPredicateModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
+
+    this.addPropertyActions = [{
+      name: 'Add property',
+      apply: () => this.addProperty()
+    }];
   }
 
   addProperty() {

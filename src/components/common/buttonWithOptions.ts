@@ -4,6 +4,7 @@ mod.directive('buttonWithOptions', () => {
   return {
     restrict: 'E',
     scope: {
+      iconClass: '@',
       options: '=',
       disabled: '='
     },
@@ -24,7 +25,7 @@ mod.directive('buttonWithOptions', () => {
         <button type="button"
                 class="btn btn-default pull-right"
                 ng-disabled="ctrl.disabled"
-                ng-click="ctrl.options[0].apply()" uib-tooltip="{{ctrl.options[0].name | translate}}"><i class="fa fa-repeat"></i></button>
+                ng-click="ctrl.options[0].apply()" uib-tooltip="{{ctrl.options[0].name | translate}}"><i ng-class="ctrl.iconClass"></i></button>
     `
   };
 });
@@ -36,6 +37,7 @@ export interface Option {
 
 class ButtonWithOptionsController {
 
+  iconClass: string;
   options: Option[];
   disabled: boolean;
 

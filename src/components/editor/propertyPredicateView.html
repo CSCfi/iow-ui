@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-md-12">
       <h4 class="pull-left" translate>Reusable predicate information</h4>
-      <button-with-options options="ctrl.changeActions" class="pull-right" disabled="!ctrl.property.inUnstableState"></button-with-options>
+      <button-with-options icon-class="fa fa-repeat" options="ctrl.changeActions" class="pull-right" disabled="!ctrl.property.inUnstableState"></button-with-options>
     </div>
   </div>
 
@@ -26,5 +26,5 @@
 
 <div ng-if="ctrl.predicate === null && !ctrl.loading">
   <span class="pull-left" translate>Predicate information not found</span>
-  <button-with-options options="ctrl.changeActions" class="pull-right" disabled="!ctrl.property.inUnstableState"></button-with-options>
+  <button-with-options icon-class="fa fa-repeat" options="ctrl.changeActions" class="pull-right" disabled="!ctrl.property.inUnstableState"></button-with-options>
 </div>

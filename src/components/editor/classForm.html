@@ -41,9 +41,7 @@
 
     <div class="clearfix">
       <h4 class="pull-left" style="margin-bottom: 0">{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
-      <button type="button" class="btn btn-default pull-right" ng-click="ctrl.addProperty()" ng-show="ctrl.isEditing()" uib-tooltip="{{'Add property' | translate}}">
-        <span class="glyphicon glyphicon-plus"></span>
-      </button>
+      <button-with-options icon-class="glyphicon glyphicon-plus" ng-show="ctrl.isEditing()" options="ctrl.addPropertyActions"></button-with-options>
     </div>
 
     <accordion ng-if="ctrl.class.properties.length > 0" open-id="ctrl.openPropertyId" drag-sortable="ctrl.class.properties" drag-disabled="!ctrl.isEditing()" on-reorder="ctrl.onPropertyReorder">
