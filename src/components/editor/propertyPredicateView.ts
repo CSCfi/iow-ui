@@ -69,32 +69,41 @@ class PropertyPredicateViewController {
   updateChangeActions() {
 
     const predicate = this.predicate;
+    const predicateId = this.property.predicateId;
 
     this.changeActions = [{name: 'Change reusable predicate', apply: () => this.changeReusablePredicate()}];
 
-    if (predicate instanceof Attribute || predicate instanceof Association) {
+    const assignAction = () => {
+      return {
+        name: `Assign reusable predicate to ${this.model.normalizedType}`,
+        apply: () => this.assignReusablePredicateToModel()
+      };
+    };
 
-      return this.predicateService.getPredicatesAssignedToModel(this.model).then(predicates => {
-        const isAssignedToModel = any(predicates, assignedPredicate => assignedPredicate.id.equals(predicate.id));
+    const copyAction = (type: 'attribute'|'association') => {
+      return {
+        name: `Copy reusable ${type} to ${this.model.normalizedType}`,
+        apply: () => this.copyReusablePredicateToModel(predicate || predicateId, type)
+      };
+    };
 
-        if (!isAssignedToModel) {
+    return this.predicateService.getPredicatesAssignedToModel(this.model).then(predicates => {
 
-          if (!this.model.isNamespaceKnownToBeNotModel(predicate.id.namespace)) {
-            this.changeActions.push({
-              name: `Assign reusable predicate to ${this.model.normalizedType}`,
-              apply: () => this.assignReusablePredicateToModel()
-            });
-          }
+      const isAssignedToModel = any(predicates, assignedPredicate => assignedPredicate.id.equals(predicateId));
 
-          this.changeActions.push({
-            name: `Copy reusable to ${this.model.normalizedType}`,
-            apply: () => this.copyReusablePredicateToModel(predicate)
-          });
+      if (!isAssignedToModel) {
+        if (!this.model.isNamespaceKnownToBeNotModel(predicateId.namespace)) {
+          this.changeActions.push(assignAction());
         }
-      });
-    } else {
-      return this.$q.when();
-    }
+
+        if (predicate && (predicate.isAssociation() || predicate.isAttribute())) {
+          this.changeActions.push(copyAction(predicate.normalizedType as 'attribute' | 'association'));
+        } else {
+          this.changeActions.push(copyAction('attribute'));
+          this.changeActions.push(copyAction('association'));
+        }
+      }
+    });
   }
 
   linkToId() {
@@ -112,8 +121,8 @@ class PropertyPredicateViewController {
       .then(() => this.updateChangeActions());
   }
 
-  copyReusablePredicateToModel(predicateToBeCopied: Attribute|Association) {
-    this.copyPredicateModal.open(predicateToBeCopied, this.model)
+  copyReusablePredicateToModel(predicateToBeCopied: Predicate|Uri, type: 'attribute'|'association') {
+    this.copyPredicateModal.open(predicateToBeCopied, type, this.model)
       .then(copied => this.predicateService.createPredicate(copied).then(() => copied))
       .then(predicate => this.property.predicate = predicate.id);
   }

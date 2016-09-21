@@ -321,7 +321,7 @@ msgid "Cannot import profile"
 msgstr ""
 
 #: components/editor/subjectView.html:9
-#: translations/misc.html:227
+#: translations/misc.html:229
 msgid "Change concept"
 msgstr ""
 
@@ -347,7 +347,7 @@ msgid "Choose class"
 msgstr ""
 
 #: components/editor/editableConceptSelect.html:18
-#: translations/misc.html:228
+#: translations/misc.html:230
 msgid "Choose concept"
 msgstr ""
 
@@ -513,32 +513,40 @@ msgstr ""
 msgid "Controlled vocabularies"
 msgstr ""
 
-#: translations/misc.html:232
+#: translations/misc.html:234
 msgid "Convert to association"
 msgstr ""
 
-#: translations/misc.html:233
+#: translations/misc.html:235
 msgid "Convert to attribute"
 msgstr ""
 
-#: translations/misc.html:235
+#: translations/misc.html:237
 msgid "Copied"
 msgstr ""
 
-#: translations/misc.html:236
+#: translations/misc.html:238
 msgid "Copy"
 msgstr ""
 
-#: translations/misc.html:234
+#: translations/misc.html:236
 msgid "Copy \"{{text}}\" to clipboard"
 msgstr ""
 
 #: translations/misc.html:224
-msgid "Copy reusable to library"
+msgid "Copy reusable association to library"
 msgstr ""
 
 #: translations/misc.html:225
-msgid "Copy reusable to profile"
+msgid "Copy reusable association to profile"
+msgstr ""
+
+#: translations/misc.html:226
+msgid "Copy reusable attribute to library"
+msgstr ""
+
+#: translations/misc.html:227
+msgid "Copy reusable attribute to profile"
 msgstr ""
 
 #: translations/misc.html:99
@@ -688,7 +696,7 @@ msgstr ""
 msgid "Defined by profile info"
 msgstr ""
 
-#: translations/misc.html:226
+#: translations/misc.html:228
 msgid "Defined in vocabularies"
 msgstr ""
 
@@ -1389,7 +1397,7 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
-#: translations/misc.html:230
+#: translations/misc.html:232
 msgid "Predicate in use"
 msgstr ""
 
@@ -1402,7 +1410,7 @@ msgstr ""
 msgid "Predicate type"
 msgstr ""
 
-#: translations/misc.html:231
+#: translations/misc.html:233
 msgid "Predicate type cannot be changed because it is already used by following resources"
 msgstr ""
 
@@ -1760,7 +1768,7 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: translations/misc.html:229
+#: translations/misc.html:231
 msgid "Submit error"
 msgstr ""
 

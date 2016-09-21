@@ -1,7 +1,8 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import { Predicate, Model, Association, Attribute } from '../../services/entities';
+import { Predicate, Model } from '../../services/entities';
+import { PredicateService } from '../../services/predicateService';
 import { Uri } from '../../services/uri';
 
 export class CopyPredicateModal {
@@ -9,7 +10,7 @@ export class CopyPredicateModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(predicate: Association|Attribute, model: Model): IPromise<Predicate> {
+  open(predicate: Predicate|Uri, type: 'attribute' | 'association', model: Model): IPromise<Predicate> {
     return this.$uibModal.open({
       template: `
         <form name="form">
@@ -32,10 +33,9 @@ export class CopyPredicateModal {
             <modal-buttons>
               <button class="btn btn-default" type="button" ng-click="$dismiss('cancel')" translate>Cancel</button>
               <button type="button"
-              class="btn btn-default confirm"
-              ng-click="ctrl.confirm()"
-              ng-disabled="form.$invalid || form.$pending || !ctrl.predicate.subject">
-                {{'Copy' | translate}}
+                      class="btn btn-default confirm"
+                      ng-click="ctrl.confirm()"
+                      ng-disabled="form.$invalid || form.$pending || !ctrl.predicate.subject">{{'Copy' | translate}}
               </button>
             </modal-buttons>
           </modal-template>
@@ -45,25 +45,26 @@ export class CopyPredicateModal {
       controllerAs: 'ctrl',
       resolve: {
         predicate: () => predicate,
+        type: () => type,
         model: () => model
       },
       controller: CopyPredicateModalController
     }).result;
   }
-};
+}
 
 export class CopyPredicateModalController {
 
   predicate: Predicate;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, predicate: Association|Attribute, public model: Model) {
-    this.predicate = predicate.clone();
-    model.expandContextWithKnownModels(predicate.context);
-    this.predicate.state = 'Unstable';
-    this.predicate.unsaved = true;
-    this.predicate.id = new Uri(model.namespace + predicate.id.name, predicate.context);
-    this.predicate.definedBy = model.asDefinedBy();
+  constructor(private $uibModalInstance: IModalServiceInstance,
+              predicateService: PredicateService,
+              predicate: Predicate|Uri,
+              type: 'attribute' | 'association',
+              public model: Model) {
+
+    predicateService.copyPredicate(predicate, type, model).then(copied => this.predicate = copied);
   }
 
   confirm() {

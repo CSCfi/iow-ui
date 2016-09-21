@@ -9,6 +9,7 @@ import { reverseMapType } from './typeMapping';
 import { Urn, Uri } from './uri';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language } from '../utils/language';
+import { predicateFrame } from './frames';
 
 export class PredicateService {
 
@@ -133,6 +134,49 @@ export class PredicateService {
         changedPredicate.unsaved = predicate.unsaved;
         return changedPredicate;
       });
+  }
+
+  copyPredicate(predicate: Predicate|Uri, type: 'attribute' | 'association', model: Model) {
+
+    function newEmptyPredicate(): Attribute|Association {
+
+      const graph = {
+        '@id': id.uri,
+        '@type': reverseMapType(type),
+        versionInfo: 'Unstable',
+        isDefinedBy: model.asDefinedBy().serialize(true)
+      };
+
+      const newPredicate = type === 'attribute' ? new Attribute(graph, model.context, predicateFrame)
+                                                : new Association(graph, model.context, predicateFrame);
+
+      newPredicate.unsaved = true;
+      newPredicate.createdAt = moment();
+
+      return newPredicate;
+    }
+
+    const oldId = predicate instanceof Uri ? predicate : predicate.id;
+    const id = new Uri(model.namespace + oldId.name, model.context);
+    const copied = newEmptyPredicate();
+
+    if (predicate instanceof Predicate) {
+      copied.label = predicate.label;
+      copied.comment = predicate.comment;
+      copied.subPropertyOf = predicate.subPropertyOf;
+      copied.subject = predicate.subject;
+      copied.equivalentProperties = predicate.equivalentProperties;
+    }
+
+    if (copied instanceof Association && predicate instanceof Association) {
+      copied.valueClass = predicate.valueClass;
+    }
+
+    if (copied instanceof Attribute && predicate instanceof Attribute) {
+      copied.dataType = predicate.dataType;
+    }
+
+    return this.$q.when(copied);
   }
 
   getExternalPredicate(externalId: Uri, model: Model) {
