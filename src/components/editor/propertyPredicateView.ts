@@ -1,6 +1,6 @@
 import { IAttributes, IScope, IQService } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Model, Property, Attribute, Association } from '../../services/entities';
+import { Model, Property, Attribute, Association, Predicate } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { PredicateService } from '../../services/predicateService';
@@ -34,7 +34,7 @@ class PropertyPredicateViewController {
   loading: boolean;
   property: Property;
   model: Model;
-  predicate: Association|Attribute;
+  predicate: Predicate;
   isEditing: () => boolean;
   changeActions: { name: string, apply: () => void }[] = [];
   /* @ngInject */
@@ -44,7 +44,7 @@ class PropertyPredicateViewController {
               private searchPredicateModal: SearchPredicateModal,
               private copyPredicateModal: CopyPredicateModal) {
 
-    const setResult = (p: Association|Attribute) => {
+    const setResult = (p: Predicate) => {
         this.predicate = p;
         this.updateChangeActions().then(() => this.loading = false);
     };
@@ -72,7 +72,7 @@ class PropertyPredicateViewController {
 
     this.changeActions = [{name: 'Change reusable predicate', apply: () => this.changeReusablePredicate()}];
 
-    if (predicate != null) {
+    if (predicate instanceof Attribute || predicate instanceof Association) {
 
       return this.predicateService.getPredicatesAssignedToModel(this.model).then(predicates => {
         const isAssignedToModel = any(predicates, assignedPredicate => assignedPredicate.id.equals(predicate.id));
@@ -88,7 +88,7 @@ class PropertyPredicateViewController {
 
           this.changeActions.push({
             name: `Copy reusable to ${this.model.normalizedType}`,
-            apply: () => this.copyReusablePredicateToModel()
+            apply: () => this.copyReusablePredicateToModel(predicate)
           });
         }
       });
@@ -112,8 +112,8 @@ class PropertyPredicateViewController {
       .then(() => this.updateChangeActions());
   }
 
-  copyReusablePredicateToModel() {
-    this.copyPredicateModal.open(this.predicate, this. model)
+  copyReusablePredicateToModel(predicateToBeCopied: Attribute|Association) {
+    this.copyPredicateModal.open(predicateToBeCopied, this.model)
       .then(copied => this.predicateService.createPredicate(copied).then(() => copied))
       .then(predicate => this.property.predicate = predicate.id);
   }
