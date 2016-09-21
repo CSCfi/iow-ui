@@ -1400,6 +1400,10 @@ msgstr ""
 msgid "Predicate in use"
 msgstr "Predikaatti on käytössä"
 
+#: components/editor/propertyPredicateView.html:28
+msgid "Predicate information not found"
+msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
+
 #: components/editor/searchPredicateModal.html:50 translations/titles.html:41
 msgid "Predicate type"
 msgstr "Ominaisuuden tyyppi"
@@ -2153,9 +2157,6 @@ msgstr "Kyllä"
 
 #~ msgid "Copy to clipboard"
 #~ msgstr "Kopioi leikepöydälle"
-
-#~ msgid "Predicate information not found"
-#~ msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
 
 #~ msgid "Are you sure that you want to cancel edit?"
 #~ msgstr "Oletko varma, että haluat keskeyttää muokkauksen?"
