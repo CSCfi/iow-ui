@@ -18,6 +18,7 @@ import { normalizeAsArray, arraysAreEqual } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils/entity';
+import { SessionService, FocusLevel } from '../../services/sessionService';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
@@ -88,14 +89,6 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
 });
 
 
-enum FocusLevel {
-  DEPTH1 = 1,
-  DEPTH2 = 2,
-  DEPTH3 = 3,
-  INFINITE_DEPTH = 4,
-  ALL = 5
-}
-
 enum Direction {
   INCOMING,
   OUTGOING,
@@ -118,7 +111,6 @@ const maxScale = 3;
 class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selection: Class|Predicate;
-  selectionFocus: FocusLevel = FocusLevel.ALL;
   showName = NameType.LABEL;
 
   model: Model;
@@ -150,6 +142,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
               private modelService: ModelService,
               private languageService: LanguageService,
               private userService: UserService,
+              private sessionService: SessionService,
               private confirmationModal: ConfirmationModal) {
 
     this.changeNotifier.addListener(this);
@@ -170,6 +163,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         this.focus(false);
       }
     });
+  }
+
+  get selectionFocus() {
+    return this.sessionService.visualizationFocus || FocusLevel.ALL;
+  }
+
+  set selectionFocus(value: FocusLevel) {
+    this.sessionService.visualizationFocus = value;
   }
 
   get paper(): joint.dia.Paper {

@@ -6,6 +6,15 @@ const modelLanguageKey = 'modelLanguage';
 const uiLanguageKey = 'UILanguage';
 const showKey = 'show';
 const selectionWidthKey = 'selectionWidth';
+const visualizationFocus = 'visualizationFocus';
+
+export enum FocusLevel {
+  DEPTH1 = 1,
+  DEPTH2 = 2,
+  DEPTH3 = 3,
+  INFINITE_DEPTH = 4,
+  ALL = 5
+}
 
 export class SessionService {
 
@@ -48,5 +57,12 @@ export class SessionService {
 
   set selectionWidth(value: number) {
     this.set(selectionWidthKey, value);
+  }
+
+  get visualizationFocus(): FocusLevel {
+    return this.get<FocusLevel>(visualizationFocus);
+  }
+  set visualizationFocus(value: FocusLevel) {
+    this.set(visualizationFocus, value);
   }
 }
