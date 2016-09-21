@@ -1162,15 +1162,15 @@ export class Class extends AbstractClass implements VisualizationClass {
       subClassOf: this.subClassOf && this.subClassOf.uri,
       scopeClass: this.scopeClass && this.scopeClass.uri,
       versionInfo: this.state,
-      isDefinedBy: this.definedBy.serialize(true),
+      isDefinedBy: serializeEntity(this.definedBy, clone),
       property: serializeEntityList(this.properties, clone),
       subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
       constraint: serializeOptional(this.constraint, (data) => serializeEntity(data, clone), isConstraintDefined),
       identifier: this.version,
       editorialNote: serializeLocalizable(this.editorialNote),
-      created: serializeDate(this.createdAt),
-      modified: serializeDate(this.modifiedAt)
+      created: serializeOptional(this.createdAt, serializeDate),
+      modified: serializeOptional(this.modifiedAt, serializeDate)
     };
   }
 }
@@ -1555,14 +1555,15 @@ export class Predicate extends AbstractPredicate {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
+      isDefinedBy: serializeEntity(this.definedBy, clone),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf && this.subPropertyOf.uri,
       subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
       equivalentProperty: serializeList(this.equivalentProperties, equivalentProperty => equivalentProperty.uri),
       identifier: this.version,
       editorialNote: serializeLocalizable(this.editorialNote),
-      created: serializeDate(this.createdAt),
-      modified: serializeDate(this.modifiedAt)
+      created: serializeOptional(this.createdAt, serializeDate),
+      modified: serializeOptional(this.modifiedAt, serializeDate)
     };
   }
 }

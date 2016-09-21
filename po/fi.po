@@ -77,7 +77,7 @@ msgstr "Lisää koodisto"
 msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
-#: components/editor/classForm.html:78 components/editor/predicateForm.html:57
+#: components/editor/classForm.html:78 components/editor/predicateForm.html:59
 #: components/editor/propertyView.html:127 components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -186,6 +186,14 @@ msgstr ""
 #: components/model/modelView.html:11
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
+
+#: translations/misc.html:222
+msgid "Assign reusable predicate to library"
+msgstr "Lisää viite kirjastoon"
+
+#: translations/misc.html:223
+msgid "Assign reusable predicate to profile"
+msgstr "Lisää viite soveltamisprofiiliin"
 
 #: translations/misc.html:179
 msgid "Assigned to this library"
@@ -315,12 +323,11 @@ msgstr "Peruuta muokkaus"
 msgid "Cannot import profile"
 msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
 
-#: components/editor/subjectView.html:9 translations/misc.html:223
+#: components/editor/subjectView.html:9 translations/misc.html:227
 msgid "Change concept"
 msgstr "Vaihda käsite"
 
-#: components/editor/propertyPredicateView.html:12
-#: components/editor/propertyPredicateView.html:40 translations/misc.html:221
+#: translations/misc.html:221
 msgid "Change reusable predicate"
 msgstr "Vaihda uudelleenkäytettävä ominaisuus"
 
@@ -340,7 +347,7 @@ msgstr "valitse attribuutti"
 msgid "Choose class"
 msgstr "valitse luokka"
 
-#: components/editor/editableConceptSelect.html:18 translations/misc.html:224
+#: components/editor/editableConceptSelect.html:18 translations/misc.html:228
 msgid "Choose concept"
 msgstr "valitse käsite"
 
@@ -506,21 +513,33 @@ msgstr "Yhteystiedot"
 msgid "Controlled vocabularies"
 msgstr "Käytetyt sanastot"
 
-#: translations/misc.html:228
+#: translations/misc.html:232
 msgid "Convert to association"
 msgstr "Muuta assosiaatioksi"
 
-#: translations/misc.html:229
+#: translations/misc.html:233
 msgid "Convert to attribute"
 msgstr "Muuta attribuutiksi"
 
-#: translations/misc.html:231
+#: translations/misc.html:235
 msgid "Copied"
 msgstr "Kopioitu"
 
-#: translations/misc.html:230
+#: translations/misc.html:236
+msgid "Copy"
+msgstr "Kopioi"
+
+#: translations/misc.html:234
 msgid "Copy \"{{text}}\" to clipboard"
 msgstr "Kopioi “{{text}}” leikepöydälle"
+
+#: translations/misc.html:224
+msgid "Copy reusable to library"
+msgstr "Kopioi ominaisuus kirjastoon"
+
+#: translations/misc.html:225
+msgid "Copy reusable to profile"
+msgstr "Kopioi ominaisuus soveltamisprofiiliin"
 
 #: translations/misc.html:99
 msgid "Create and use association"
@@ -669,7 +688,7 @@ msgstr "Määritelty soveltamisprofiilissa"
 msgid "Defined by profile info"
 msgstr "Viite soveltamisprofiiliin jossa resurssin käyttö on määritelty"
 
-#: translations/misc.html:222
+#: translations/misc.html:226
 msgid "Defined in vocabularies"
 msgstr "Määritelty sanastoissa"
 
@@ -1377,7 +1396,7 @@ msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
-#: translations/misc.html:226
+#: translations/misc.html:230
 msgid "Predicate in use"
 msgstr "Predikaatti on käytössä"
 
@@ -1385,7 +1404,7 @@ msgstr "Predikaatti on käytössä"
 msgid "Predicate type"
 msgstr "Ominaisuuden tyyppi"
 
-#: translations/misc.html:227
+#: translations/misc.html:231
 msgid ""
 "Predicate type cannot be changed because it is already used by following "
 "resources"
@@ -1746,7 +1765,7 @@ msgstr "Literaalin täytyy alkaa kirjaimella"
 msgid "Subject"
 msgstr "Käsite"
 
-#: translations/misc.html:225
+#: translations/misc.html:229
 msgid "Submit error"
 msgstr "Toiminnossa tapahtui virhe"
 

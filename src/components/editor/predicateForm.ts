@@ -1,12 +1,13 @@
 import { Association, Model, Attribute, Type } from '../../services/entities';
 import { module as mod }  from './module';
 import { IScope, IAttributes } from 'angular';
-import { PredicateViewController } from './predicateView';
 import { isDefined } from '../../utils/object';
 import { UsageService } from '../../services/usageService';
 import { ErrorModal } from '../form/errorModal';
 import { PredicateService } from '../../services/predicateService';
 import { glyphIconClassForType } from '../../utils/entity';
+import { EditableForm } from '../form/editableEntityController';
+import { PredicateViewController } from './predicateView';
 
 mod.directive('predicateForm', () => {
   return {
@@ -19,9 +20,9 @@ mod.directive('predicateForm', () => {
     template: require('./predicateForm.html'),
     bindToController: true,
     controllerAs: 'ctrl',
-    require: ['predicateForm', '?^predicateView'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [predicateFormController, predicateViewController]: [PredicateFormController, PredicateViewController]) {
-      predicateFormController.isEditing = () => predicateViewController && predicateViewController.isEditing();
+    require: ['predicateForm', '?^predicateView', '?^form'],
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [predicateFormController, predicateViewController, formController]: [PredicateFormController, PredicateViewController, EditableForm]) {
+      predicateFormController.isEditing = () => formController && formController.editing;
       predicateFormController.shouldAutofocus = !isDefined(predicateViewController);
     },
     controller: PredicateFormController

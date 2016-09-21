@@ -1,4 +1,5 @@
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
+import { CopyPredicateModal } from './copyPredicateModal';
 import { SearchConceptModal } from './searchConceptModal';
 import { SearchClassModal } from './searchClassModal';
 import { SearchPredicateModal } from './searchPredicateModal';
@@ -29,6 +30,7 @@ import './subjectView';
 import './visualizationView';
 
 mod.service('choosePredicateTypeModal', ChoosePredicateTypeModal);
+mod.service('copyPredicateModal', CopyPredicateModal);
 mod.service('addPropertiesFromClassModal', AddPropertiesFromClassModal);
 mod.service('searchClassModal', SearchClassModal);
 mod.service('searchConceptModal', SearchConceptModal);

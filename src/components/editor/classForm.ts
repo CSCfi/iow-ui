@@ -8,6 +8,7 @@ import { ClassService } from '../../services/classService';
 import { module as mod }  from './module';
 import { isDefined } from '../../utils/object';
 import { SearchPredicateModal } from './searchPredicateModal';
+import { EditableForm } from '../form/editableEntityController';
 
 mod.directive('classForm', () => {
   return {
@@ -19,11 +20,11 @@ mod.directive('classForm', () => {
     },
     restrict: 'E',
     template: require('./classForm.html'),
-    require: ['classForm', '?^classView'],
+    require: ['classForm', '?^classView', '?^form'],
     controllerAs: 'ctrl',
     bindToController: true,
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [classFormController, classViewController]: [ClassFormController, ClassViewController]) {
-      classFormController.isEditing = () => classViewController && classViewController.isEditing();
+    link($scope: IScope, element: JQuery, attributes: IAttributes, [classFormController, classViewController, formController]: [ClassFormController, ClassViewController, EditableForm]) {
+      classFormController.isEditing = () => formController && formController.editing;
       classFormController.shouldAutofocus = !isDefined(classViewController);
     },
     controller: ClassFormController

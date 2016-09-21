@@ -74,7 +74,7 @@ msgid "Add vocabulary"
 msgstr ""
 
 #: components/editor/classForm.html:78
-#: components/editor/predicateForm.html:57
+#: components/editor/predicateForm.html:59
 #: components/editor/propertyView.html:127
 #: components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
@@ -181,6 +181,14 @@ msgstr ""
 #: components/model/conceptView.html:5
 #: components/model/modelView.html:11
 msgid "Ask for group rights"
+msgstr ""
+
+#: translations/misc.html:222
+msgid "Assign reusable predicate to library"
+msgstr ""
+
+#: translations/misc.html:223
+msgid "Assign reusable predicate to profile"
 msgstr ""
 
 #: translations/misc.html:179
@@ -313,12 +321,10 @@ msgid "Cannot import profile"
 msgstr ""
 
 #: components/editor/subjectView.html:9
-#: translations/misc.html:223
+#: translations/misc.html:227
 msgid "Change concept"
 msgstr ""
 
-#: components/editor/propertyPredicateView.html:12
-#: components/editor/propertyPredicateView.html:40
 #: translations/misc.html:221
 msgid "Change reusable predicate"
 msgstr ""
@@ -341,7 +347,7 @@ msgid "Choose class"
 msgstr ""
 
 #: components/editor/editableConceptSelect.html:18
-#: translations/misc.html:224
+#: translations/misc.html:228
 msgid "Choose concept"
 msgstr ""
 
@@ -507,20 +513,32 @@ msgstr ""
 msgid "Controlled vocabularies"
 msgstr ""
 
-#: translations/misc.html:228
+#: translations/misc.html:232
 msgid "Convert to association"
 msgstr ""
 
-#: translations/misc.html:229
+#: translations/misc.html:233
 msgid "Convert to attribute"
 msgstr ""
 
-#: translations/misc.html:231
+#: translations/misc.html:235
 msgid "Copied"
 msgstr ""
 
-#: translations/misc.html:230
+#: translations/misc.html:236
+msgid "Copy"
+msgstr ""
+
+#: translations/misc.html:234
 msgid "Copy \"{{text}}\" to clipboard"
+msgstr ""
+
+#: translations/misc.html:224
+msgid "Copy reusable to library"
+msgstr ""
+
+#: translations/misc.html:225
+msgid "Copy reusable to profile"
 msgstr ""
 
 #: translations/misc.html:99
@@ -670,7 +688,7 @@ msgstr ""
 msgid "Defined by profile info"
 msgstr ""
 
-#: translations/misc.html:222
+#: translations/misc.html:226
 msgid "Defined in vocabularies"
 msgstr ""
 
@@ -1371,7 +1389,7 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
-#: translations/misc.html:226
+#: translations/misc.html:230
 msgid "Predicate in use"
 msgstr ""
 
@@ -1380,7 +1398,7 @@ msgstr ""
 msgid "Predicate type"
 msgstr ""
 
-#: translations/misc.html:227
+#: translations/misc.html:231
 msgid "Predicate type cannot be changed because it is already used by following resources"
 msgstr ""
 
@@ -1738,7 +1756,7 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: translations/misc.html:225
+#: translations/misc.html:229
 msgid "Submit error"
 msgstr ""
 

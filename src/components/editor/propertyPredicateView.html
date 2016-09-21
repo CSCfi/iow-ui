@@ -1,15 +1,9 @@
-<div ng-if="ctrl.predicate">
+<div ng-if="ctrl.predicate && !ctrl.loading">
 
   <div class="row">
     <div class="col-md-12">
       <h4 class="pull-left" translate>Reusable predicate information</h4>
-
-
-      <button ng-if="ctrl.isEditing()"
-              type="button"
-              class="btn btn-default pull-right"
-              ng-disabled="!ctrl.property.inUnstableState"
-              ng-click="ctrl.changeReusablePredicate()" uib-tooltip="{{'Change reusable predicate' | translate}}"><i class="fa fa-repeat"></i></button>
+      <button-with-options options="ctrl.changeActions" class="pull-right" disabled="!ctrl.property.inUnstableState"></button-with-options>
     </div>
   </div>
 
@@ -30,12 +24,7 @@
 
 </div>
 
-<div ng-if="ctrl.predicate === null">
+<div ng-if="ctrl.predicate === null && !ctrl.loading">
   <span class="pull-left">Predicate information not found</span>
-
-  <button ng-if="ctrl.isEditing()"
-          type="button"
-          class="btn btn-default pull-right"
-          ng-disabled="!ctrl.property.inUnstableState"
-          ng-click="ctrl.changeReusablePredicate()" uib-tooltip="{{'Change reusable predicate' | translate}}"><i class="fa fa-repeat"></i></button>
+  <button-with-options options="ctrl.changeActions" class="pull-right" disabled="!ctrl.property.inUnstableState"></button-with-options>
 </div>
