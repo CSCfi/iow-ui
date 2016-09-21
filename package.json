@@ -66,7 +66,6 @@
     "@types/karma-jasmine": "0.0.27",
     "@types/lodash": "4.14.34",
     "@types/modernizr": "3.2.26",
-    "@types/moment": "2.13.0",
     "@types/node": "6.0.38",
     "@types/node-uuid": "file:./types/node-uuid",
     "@types/protractor": "1.5.18",
