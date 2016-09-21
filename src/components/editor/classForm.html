@@ -21,11 +21,11 @@
     </editable>
 
     <editable ng-if="ctrl.class.isOfType('class')" data-title="Superclass" link="ctrl.linkToSuperclass()" context="ctrl.model">
-      <uri-select id="superClass" type="class" uri="ctrl.class.subClassOf" model="ctrl.model" after-selected="ctrl.addPropertiesFromClass(id, 'super')"></uri-select>
+      <uri-select id="superClass" type="class" uri="ctrl.class.subClassOf" model="ctrl.model" after-selected="ctrl.addPropertiesFromClassId(id, 'super class')"></uri-select>
     </editable>
 
     <editable ng-if="ctrl.class.isOfType('shape')" data-title="Specialized from class" link="ctrl.linkToScopeclass()" context="ctrl.model">
-      <uri-select id="scopeClass" type="class" uri="ctrl.class.scopeClass" model="ctrl.model" mandatory="true" after-selected="ctrl.addPropertiesFromClass(id, 'scope')"></uri-select>
+      <uri-select id="scopeClass" type="class" uri="ctrl.class.scopeClass" model="ctrl.model" mandatory="true" after-selected="ctrl.addPropertiesFromClassId(id, 'scope class')"></uri-select>
     </editable>
   </div>
   <div class="col-md-6">

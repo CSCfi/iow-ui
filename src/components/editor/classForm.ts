@@ -10,6 +10,7 @@ import { isDefined } from '../../utils/object';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Option } from '../common/buttonWithOptions';
+import { SearchClassModal, noExclude } from './searchClassModal';
 
 mod.directive('classForm', () => {
   return {
@@ -46,12 +47,19 @@ export class ClassFormController {
   /* @ngInject */
   constructor(private classService: ClassService,
               private searchPredicateModal: SearchPredicateModal,
+              private searchClassModal: SearchClassModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
 
-    this.addPropertyActions = [{
-      name: 'Add property',
-      apply: () => this.addProperty()
-    }];
+    this.addPropertyActions = [
+      {
+        name: 'Add property',
+        apply: () => this.addProperty()
+      },
+      {
+        name: 'Copy properties from class',
+        apply: () => this.copyPropertiesFromClass()
+      }
+    ];
   }
 
   addProperty() {
@@ -62,18 +70,25 @@ export class ClassFormController {
       });
   }
 
-  addPropertiesFromClass(id: Uri, classType: string) {
-    this.classService.getInternalOrExternalClass(id, this.model).then(klass => {
+  copyPropertiesFromClass() {
+    this.searchClassModal.openWithOnlySelection(this.model, false, noExclude, klass => 'Copy properties')
+      .then(selectedClass => this.addPropertiesFromClass(selectedClass, 'class'));
+  }
 
-      if (klass && klass.properties.length > 0) {
+  addPropertiesFromClass(klass: Class, classType: string) {
+    if (klass && klass.properties.length > 0) {
 
-        const existingPredicates = new Set<string>(_.map(this.class.properties, property => property.predicateId.uri));
-        const exclude = (property: Property) => existingPredicates.has(property.predicateId.uri);
+      const existingPredicates = new Set<string>(_.map(this.class.properties, property => property.predicateId.uri));
+      const exclude = (property: Property) => existingPredicates.has(property.predicateId.uri);
 
-        this.addPropertiesFromClassModal.open(klass, classType, this.model, exclude)
-          .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
-      }
-    });
+      this.addPropertiesFromClassModal.open(klass, classType, this.model, exclude)
+        .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
+    }
+  }
+
+  addPropertiesFromClassId(id: Uri, classType: string) {
+    this.classService.getInternalOrExternalClass(id, this.model)
+      .then(klass => this.addPropertiesFromClass(klass, classType));
   }
 
   linkToIdClass() {

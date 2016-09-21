@@ -1,8 +1,8 @@
 <modal-template>
-  <modal-title>{{'Add properties from ' + ctrl.classType + ' class' | translate}}</modal-title>
+  <modal-title>{{'Add properties from ' + ctrl.classType | translate}}</modal-title>
 
   <modal-body>
-    <p><span>{{'Do you want to add following properties from ' + ctrl.classType + ' class?' | translate}}</span></p>
+    <p><span>{{'Do you want to add following properties from ' + ctrl.classType + '?' | translate}}</span></p>
 
     <div ng-repeat="(type, properties) in ctrl.properties track by $index">
       <h5>{{type | translate}}</h5>
