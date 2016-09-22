@@ -15,6 +15,11 @@ function normalizeUrl(url: string, removeProperty: boolean = false): string {
   return url.replace(/^#/, '').replace(/:/g, '%3A').replace(uuidRegex, '');
 }
 
+export function nextUrl($location: ILocationService, next: string) {
+  const base = formatApplicationBase($location, '' /* TODO parametrize base href here */);
+  return next.substr(base.length + (next.startsWith('#/') ? 2 : 0));
+}
+
 export function formatApplicationBase($location: ILocationService, baseHref: string) {
   const port = $location.port();
   const portString = (port === 80 || port === 443) ? '' : (':' + $location.port());

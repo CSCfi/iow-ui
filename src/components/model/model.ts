@@ -32,7 +32,7 @@ import { Uri } from '../../services/uri';
 import { comparingLocalizable } from '../../services/comparators';
 import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
 import { module as mod }  from './module';
-import { isDifferentUrl, formatApplicationBase } from '../../utils/angular';
+import { isDifferentUrl, nextUrl } from '../../utils/angular';
 import {
   createClassTypeExclusion, createDefinedByExclusion, combineExclusions,
   createExistsExclusion
@@ -124,15 +124,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     $scope.$on('$locationChangeStart', (event, next, current) => {
       if ((this.selection && !this.selection.unsaved) && isDifferentUrl(current, next, true)) {
-        this.ifEditing(() => event.preventDefault(), () => {
-          const base = formatApplicationBase($location, '' /* TODO parametrize base href here */);
-
-          if (next.indexOf('#/') !== -1) { // detect if browser is falling back to hash urls
-            $location.url(next.substr(base.length + 2));
-          } else {
-            $location.url(next.substr(base.length));
-          }
-        });
+        this.ifEditing(() => event.preventDefault(), () => $location.url(nextUrl($location, next)));
       }
     });
 
