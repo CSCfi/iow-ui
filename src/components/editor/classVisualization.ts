@@ -287,7 +287,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
     this.queueWhenNotVisible(() => {
-      if (newItem instanceof Class) {
+      // id change can cause massive association realignment in the server
+      if (oldItem && newItem.id.notEquals(oldItem.id)) {
+        // FIXME: api should block until writes are done and not return inconsistent data
+        this.loading = true;
+        this.$timeout(() => this.refresh(true), 500);
+      } else if (newItem instanceof Class) {
         this.updateClassAndLayout(newItem, oldItem ? oldItem.id : null);
       }
     });
