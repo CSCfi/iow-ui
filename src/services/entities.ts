@@ -23,7 +23,6 @@ import {
 import { identity } from '../utils/function';
 // TODO entities should not depend on services
 import { Localizer } from './languageService';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { isDefined, areEqual } from '../utils/object';
 
 const jsonld: any = require('jsonld');
@@ -1750,14 +1749,14 @@ export class VocabularyNameHref {
     }
   }
 
-  getLocalizedName(localizer: Localizer, gettextCatalog: gettextCatalog) {
+  getLocalizedName(localizer: Localizer, translator: { getString: (s: string) => string }) {
     const name = this.name;
 
     if (isLocalizable(name)) {
       return localizer.translate(name);
     } else if (typeof name === 'string') {
       if (name === VocabularyNameHref.internalVocabularyName) {
-        return gettextCatalog.getString(name);
+        return translator.getString(name);
       } else {
         return name;
       }
