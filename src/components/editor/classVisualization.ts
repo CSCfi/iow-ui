@@ -19,6 +19,7 @@ import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils/entity';
 import { SessionService, FocusLevel } from '../../services/sessionService';
+import { NotLoggedInModal } from '../form/notLoggedInModal';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
@@ -143,7 +144,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
               private languageService: LanguageService,
               private userService: UserService,
               private sessionService: SessionService,
-              private confirmationModal: ConfirmationModal) {
+              private confirmationModal: ConfirmationModal,
+              private notLoggedInModal: NotLoggedInModal) {
 
     this.changeNotifier.addListener(this);
 
@@ -190,16 +192,18 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 
   savePositions() {
-    this.confirmationModal.openVisualizationLocationsSave()
-      .then(() => {
-        this.saving = true;
-        this.modelService.updateModelPositions(this.model, this.modelPositions)
-          .then(() => {
-            this.modelPositions.setPristine();
-            this.persistentPositions = this.modelPositions.clone();
-            this.saving = false;
-          });
-      });
+    this.userService.ifStillLoggedIn(() => {
+      this.confirmationModal.openVisualizationLocationsSave()
+        .then(() => {
+          this.saving = true;
+          this.modelService.updateModelPositions(this.model, this.modelPositions)
+            .then(() => {
+              this.modelPositions.setPristine();
+              this.persistentPositions = this.modelPositions.clone();
+              this.saving = false;
+            });
+        });
+    }, () => this.notLoggedInModal.open());
   }
 
   relayoutPositions() {
