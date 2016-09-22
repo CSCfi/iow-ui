@@ -40,6 +40,7 @@ import {
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { SessionService } from '../../services/sessionService';
 import { isDefined, areEqual } from '../../utils/object';
+import { NotLoggedInModal } from '../form/notLoggedInModal';
 
 mod.directive('model', () => {
   return {
@@ -98,6 +99,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
               private maintenanceModal: MaintenanceModal,
+              private notLoggedInModal: NotLoggedInModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               private sessionService: SessionService,
               public languageService: LanguageService) {
@@ -392,7 +394,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
             });
         });
       });
-    });
+    },
+      () => this.notLoggedInModal.open());
   }
 
   private createClass(conceptCreation: EntityCreation) {

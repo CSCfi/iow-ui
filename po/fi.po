@@ -1415,6 +1415,10 @@ msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
 
+#: translations/misc.html:244
+msgid "Please login to perform the action"
+msgstr "Ole hyvä ja kirjaudu suorittaaksesi toiminto"
+
 #: translations/misc.html:234
 msgid "Predicate in use"
 msgstr "Predikaatti on käytössä"
@@ -1703,6 +1707,10 @@ msgstr "Valitse luokka"
 #: translations/misc.html:173
 msgid "Self reference not allowed"
 msgstr "Viittaus itseensä ei ole sallittu"
+
+#: translations/misc.html:243
+msgid "Session expired"
+msgstr "Istunto on vanhentunut"
 
 #: translations/misc.html:30
 msgid "shape"

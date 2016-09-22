@@ -1408,6 +1408,10 @@ msgstr ""
 msgid "Pattern info"
 msgstr ""
 
+#: translations/misc.html:244
+msgid "Please login to perform the action"
+msgstr ""
+
 #: translations/misc.html:234
 msgid "Predicate in use"
 msgstr ""
@@ -1692,6 +1696,10 @@ msgstr ""
 
 #: translations/misc.html:173
 msgid "Self reference not allowed"
+msgstr ""
+
+#: translations/misc.html:243
+msgid "Session expired"
 msgstr ""
 
 #: translations/misc.html:30

@@ -9,6 +9,7 @@ import { Show } from '../contracts';
 import { ErrorModal } from '../form/errorModal';
 import { module as mod }  from './module';
 import { setSelectionStyles } from '../../utils/angular';
+import { NotLoggedInModal } from '../form/notLoggedInModal';
 
 mod.directive('predicateView', () => {
   return {
@@ -46,9 +47,10 @@ export class PredicateViewController extends EditableEntityController<Associatio
               $log: ILogService,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
+              notLoggedInModal: NotLoggedInModal,
               private predicateService: PredicateService,
               userService: UserService) {
-    super($scope, $log, deleteConfirmationModal, errorModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
     this.modelController.registerView(this);
   }
 

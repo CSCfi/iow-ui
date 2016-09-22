@@ -9,6 +9,7 @@ import { ConceptService } from '../../services/conceptService';
 import { UsageService } from '../../services/usageService';
 import { all } from '../../utils/array';
 import { ErrorModal } from '../form/errorModal';
+import { NotLoggedInModal } from '../form/notLoggedInModal';
 
 mod.directive('conceptView', () => {
   return {
@@ -39,10 +40,11 @@ export class ConceptViewController extends EditableEntityController<Concept> {
               $log: ILogService,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
+              notLoggedInModal: NotLoggedInModal,
               userService: UserService,
               private conceptService: ConceptService,
               usageService: UsageService) {
-    super($scope, $log, deleteConfirmationModal, errorModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
 
     this.modelController.registerView(this);
 

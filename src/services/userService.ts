@@ -1,4 +1,4 @@
-import { IPromise, IHttpPromise, IHttpService, IQService } from 'angular';
+import { IPromise, IHttpService } from 'angular';
 import { EntityDeserializer, User, AnonymousUser, GraphData } from './entities';
 import { config } from '../config';
 
@@ -7,7 +7,7 @@ export class UserService {
   user: User = new AnonymousUser();
 
   /* @ngInject */
-  constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
+  constructor(private $http: IHttpService, private entities: EntityDeserializer) {
   }
 
   updateLogin(): IPromise<User> {
@@ -18,10 +18,12 @@ export class UserService {
       .then(updatedUser => this.user = updatedUser);
   }
 
-  ifStillLoggedIn(callback: () => void) {
+  ifStillLoggedIn(loggedInCallback: () => void, notLoggedInCallback: () => void) {
     this.updateLogin().then(user => {
       if (user.isLoggedIn()) {
-        callback();
+        loggedInCallback();
+      } else {
+        notLoggedInCallback();
       }
     });
   }

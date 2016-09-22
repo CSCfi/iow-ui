@@ -10,6 +10,7 @@ import { Show } from '../contracts';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { setSelectionStyles } from '../../utils/angular';
+import { NotLoggedInModal } from '../form/notLoggedInModal';
 
 mod.directive('classView', () => {
   return {
@@ -50,9 +51,10 @@ export class ClassViewController extends EditableEntityController<Class> {
               private searchPredicateModal: SearchPredicateModal,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
+              notLoggedInModal: NotLoggedInModal,
               private classService: ClassService,
               userService: UserService) {
-    super($scope, $log, deleteConfirmationModal, errorModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
 
     this.modelController.registerView(this);
   }
