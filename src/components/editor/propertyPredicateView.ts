@@ -92,7 +92,7 @@ class PropertyPredicateViewController {
       const isAssignedToModel = any(predicates, assignedPredicate => assignedPredicate.id.equals(predicateId));
 
       if (!isAssignedToModel) {
-        if (!this.model.isNamespaceKnownToBeNotModel(predicateId.namespace)) {
+        if (predicate && (this.model.isOfType('profile') || predicate.definedBy.isOfType('library')) && this.model.isNamespaceKnownToBeModel(predicate.id.namespace)) {
           this.changeActions.push(assignAction());
         }
 
