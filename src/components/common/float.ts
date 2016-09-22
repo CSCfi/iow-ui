@@ -28,6 +28,7 @@ mod.directive('float', () => {
 
       ctrl.isFloatingPosition = () => window.pageYOffset >= elementStaticLocation.top;
       ctrl.isStaticPosition = () => window.pageYOffset < elementStaticLocation.top;
+      ctrl.isInitialized = () => elementStaticLocation.top > 0;
 
       let timeoutId: any = null;
 
@@ -62,7 +63,7 @@ mod.directive('float', () => {
           }
         }
 
-        if (isInitialized()) {
+        if (ctrl.isInitialized()) {
           if (ctrl.floating) {
             if (ctrl.isStaticPosition()) {
               ctrl.setStatic();
@@ -82,10 +83,6 @@ mod.directive('float', () => {
       $scope.$on('$destroy', () => {
         window.removeEventListener('scroll', scrollHandler);
       });
-
-      function isInitialized() {
-        return elementStaticLocation.top > 0;
-      }
     }
   };
 });
@@ -98,6 +95,7 @@ export class FloatController {
   always: boolean;
   isFloatingPosition: () => boolean;
   isStaticPosition: () => boolean;
+  isInitialized: () => boolean;
 
   floating: boolean = false;
   enabled = true;
@@ -145,7 +143,7 @@ export class FloatController {
   enableFloating() {
     this.enabled = true;
 
-    if (this.isFloatingPosition()) {
+    if (this.isInitialized() && this.isFloatingPosition()) {
       if (this.floating) {
         this.placeholder.show();
       } else {
