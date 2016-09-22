@@ -147,8 +147,11 @@ export class PredicateService {
         isDefinedBy: model.asDefinedBy().serialize(true)
       };
 
-      const newPredicate = type === 'attribute' ? new Attribute(graph, model.context, predicateFrame)
-                                                : new Association(graph, model.context, predicateFrame);
+      const frameData = { '@graph': graph, '@context': model.context };
+      const frame: any = predicateFrame(frameData);
+
+      const newPredicate = type === 'attribute' ? new Attribute(graph, frame['@context'], frame)
+        : new Association(graph, frame['@context'], frame);
 
       newPredicate.unsaved = true;
       newPredicate.createdAt = moment();
