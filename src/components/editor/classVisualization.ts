@@ -1044,10 +1044,10 @@ function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
   window.mouseup(() => drag = null);
   window.mousemove(event => {
 
-    event.preventDefault();
     mouse = { x: event.pageX, y: event.pageY};
 
     if (drag) {
+      event.preventDefault();
       moveOrigin(paper, drag.x - mouse.x, drag.y - mouse.y);
       drag = mouse;
     }
