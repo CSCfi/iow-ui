@@ -40,12 +40,14 @@
   <div class="col-md-12">
 
     <div class="clearfix">
-      <h4 class="pull-left" style="margin-bottom: 0">{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}</h4>
+      <h4 class="pull-left" style="margin-bottom: 0">{{ctrl.class.normalizedType + ' properties' | capitalize | translate}}
+        <a ng-show="!ctrl.isEditing()" class="btn btn-default btn-xs" uib-btn-checkbox ng-model="ctrl.sortAlphabetically"><i class="fa fa-sort-alpha-asc"></i></a>
+      </h4>
       <button-with-options icon-class="glyphicon glyphicon-plus" ng-show="ctrl.isEditing()" options="ctrl.addPropertyActions"></button-with-options>
     </div>
 
-    <accordion ng-if="ctrl.class.properties.length > 0" open-id="ctrl.openPropertyId" drag-sortable="ctrl.class.properties" drag-disabled="!ctrl.isEditing()" on-reorder="ctrl.onPropertyReorder">
-      <accordion-group ng-repeat="property in ctrl.class.properties track by property.internalId" identifier="property.internalId.uuid">
+    <accordion ng-if="ctrl.class.properties.length > 0" open-id="ctrl.openPropertyId" drag-sortable="ctrl.properties" drag-disabled="!ctrl.isEditing()" on-reorder="ctrl.onPropertyReorder">
+      <accordion-group ng-repeat="property in ctrl.properties track by property.internalId" identifier="property.internalId.uuid">
         <accordion-heading>
           <div class="panel-heading" drag-sortable-item>
             <h4 class="panel-title">

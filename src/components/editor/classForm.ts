@@ -11,6 +11,10 @@ import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Option } from '../common/buttonWithOptions';
 import { SearchClassModal, noExclude } from './searchClassModal';
+import { SessionService } from '../../services/sessionService';
+import { LanguageService } from '../../services/languageService';
+import { Localizer } from '../../utils/language';
+import { comparingLocalizable } from '../../services/comparators';
 
 mod.directive('classForm', () => {
   return {
@@ -36,6 +40,7 @@ mod.directive('classForm', () => {
 export class ClassFormController {
 
   class: Class;
+  properties: Property[];
   oldClass: Class;
   model: Model;
   isEditing: () => boolean;
@@ -43,12 +48,33 @@ export class ClassFormController {
   onPropertyReorder = (property: Property, index: number) => property.index = index;
   shouldAutofocus: boolean;
   addPropertyActions: Option[];
+  localizer: Localizer;
 
   /* @ngInject */
-  constructor(private classService: ClassService,
+  constructor($scope: IScope,
+              private classService: ClassService,
+              private sessionService: SessionService,
+              languageService: LanguageService,
               private searchPredicateModal: SearchPredicateModal,
               private searchClassModal: SearchClassModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal) {
+
+    const setProperties = () => {
+      if (this.isEditing() || !this.sortAlphabetically) {
+        this.properties = this.class.properties;
+      } else {
+        this.properties = this.class.properties.slice();
+        this.properties.sort(comparingLocalizable<Property>(languageService.createLocalizer(this.model), property => property.label));
+      }
+    };
+
+    $scope.$watchGroup([
+      () => this.class,
+      () => languageService.getModelLanguage(this.model),
+      () => this.sortAlphabetically,
+      () => this.isEditing()
+    ],
+      () => setProperties());
 
     this.addPropertyActions = [
       {
@@ -60,6 +86,14 @@ export class ClassFormController {
         apply: () => this.copyPropertiesFromClass()
       }
     ];
+  }
+
+  get sortAlphabetically() {
+    return this.sessionService.sortAlphabetically || false;
+  }
+
+  set sortAlphabetically(value: boolean) {
+    this.sessionService.sortAlphabetically = value;
   }
 
   addProperty() {

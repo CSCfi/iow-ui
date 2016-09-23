@@ -7,6 +7,7 @@ const uiLanguageKey = 'UILanguage';
 const showKey = 'show';
 const selectionWidthKey = 'selectionWidth';
 const visualizationFocus = 'visualizationFocus';
+const sortAlphabetically = 'sortAlphabetically';
 
 export enum FocusLevel {
   DEPTH1 = 1,
@@ -62,7 +63,16 @@ export class SessionService {
   get visualizationFocus(): FocusLevel {
     return this.get<FocusLevel>(visualizationFocus);
   }
+
   set visualizationFocus(value: FocusLevel) {
     this.set(visualizationFocus, value);
+  }
+
+  get sortAlphabetically(): boolean {
+    return this.get<boolean>(sortAlphabetically);
+  }
+
+  set sortAlphabetically(value: boolean) {
+    this.set(sortAlphabetically, value);
   }
 }
