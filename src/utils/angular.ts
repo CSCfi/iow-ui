@@ -110,10 +110,10 @@ export function setSelectionStyles(element: JQuery, show: Show, selectionWidth: 
   }
 }
 
-export function ifChanged<T>(cb: () => void ) {
-  return (lhs: T, rhs: T) => {
-    if (lhs !== rhs) {
-      cb();
+export function ifChanged<T>(cb: (newItem: T, oldItem: T) => void ) {
+  return (newItem: T, oldItem: T) => {
+    if (newItem !== oldItem) {
+      cb(newItem, oldItem);
     }
   };
 }

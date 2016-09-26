@@ -146,21 +146,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     this.changeNotifier.addListener(this);
 
     $scope.$watch(() => this.model, () => this.refresh());
-    $scope.$watch(() => this.selection, (newSelection, oldSelection) => {
-      if (newSelection !== oldSelection) {
-        if (!newSelection || !oldSelection) {
-          // Need to do this on next frame since selection change will change visualization size
-          window.setTimeout(() => this.queueWhenNotVisible(() => this.focusSelection(false)));
-        } else {
-          this.focusSelection(false);
-        }
-      }
-    });
-    $scope.$watch(() => this.selectionFocus, (newFocus, oldFocus) => {
-      if (newFocus !== oldFocus) {
+    $scope.$watch(() => this.selection, ifChanged((newSelection, oldSelection) => {
+      if (!newSelection || !oldSelection) {
+        // Need to do this on next frame since selection change will change visualization size
+        window.setTimeout(() => this.queueWhenNotVisible(() => this.focusSelection(false)));
+      } else {
         this.focusSelection(false);
       }
-    });
+    }));
+    $scope.$watch(() => this.selectionFocus, ifChanged(() => this.focusSelection(false)));
   }
 
   get selectionFocus() {
