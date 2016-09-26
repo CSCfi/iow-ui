@@ -11,10 +11,18 @@ import { modelFrame, modelPositionsFrame } from './frames';
 import { Uri, Urn } from './uri';
 import { Language } from '../utils/language';
 import { expandContextWithKnownModels, collectIds } from '../utils/entity';
-import { normalizeAsArray } from '../utils/array';
+import { normalizeAsArray, index } from '../utils/array';
 
 export class ClassVisualization {
+
+  private classIndex: Map<string, VisualizationClass>;
+
   constructor(public classes: VisualizationClass[], public positions: ModelPositions) {
+    this.classIndex = index(classes, klass => klass.id.toString());
+  }
+
+  getClassById(classId: string) {
+    return this.classIndex.get(classId);
   }
 
   getClassIds() {
