@@ -762,6 +762,7 @@ export interface VisualizationClass {
   id: Uri;
   type: Type[];
   label: Localizable;
+  comment: Localizable;
   scopeClass: Uri;
   properties: Property[];
   resolved: boolean;
@@ -773,6 +774,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
 
   id: Uri;
   label: Localizable;
+  comment: Localizable;
   scopeClass: Uri;
   properties: Property[];
   resolved = true;
@@ -781,6 +783,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
+    this.comment = deserializeLocalizable(graph.comment);
     this.scopeClass = deserializeOptional(graph.scopeClass, scopeClass => new Uri(scopeClass, context));
     this.properties = deserializeEntityList(graph.property, context, frame, () => Property);
   }
@@ -1047,6 +1050,7 @@ export class AssociationPropertyPosition extends GraphNode {
 export class AssociationTargetPlaceholderClass implements VisualizationClass {
 
   label: Localizable;
+  comment: Localizable = {};
   type: Type[] = ['association'];
   properties: Property[] = [];
   resolved = false;
