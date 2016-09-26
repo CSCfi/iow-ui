@@ -1,6 +1,6 @@
 import { Localizable, LanguageContext } from './entities';
 import {
-  Language, availableUILanguages, availableLanguages, translate, UILanguage,
+  Language, availableUILanguages, translate, UILanguage,
   Localizer
 } from '../utils/language';
 export { Localizer } from '../utils/language';
@@ -73,25 +73,6 @@ export class LanguageService {
     return translate(data, this.getModelLanguage(context), context ? context.language : availableUILanguages);
   }
 
-  getStringWithModelLanguageOrDefault(key: string, defaultLanguage: UILanguage, context?: LanguageContext): string {
-
-    const modelLanguage = this.getModelLanguage(context);
-
-    const askedLocalization = findLocalization(key, modelLanguage);
-    if (askedLocalization) {
-      return askedLocalization;
-    } else {
-      const defaultLocalization = findLocalization(key, defaultLanguage);
-
-      if (!defaultLocalization) {
-        console.log(`Localization (${key}) not found for default language (${defaultLanguage})`);
-        return '??? ' + key;
-      } else {
-        return defaultLocalization;
-      }
-    }
-  }
-
   createLocalizer(context: LanguageContext) {
     return new DefaultLocalizer(this, context);
   }
@@ -107,5 +88,22 @@ export class DefaultLocalizer implements Localizer {
 
   translate(data: Localizable): string {
     return this.languageService.translate(data, this.context);
+  }
+
+  getStringWithModelLanguageOrDefault(key: string, defaultLanguage: UILanguage): string {
+
+    const askedLocalization = findLocalization(key, this.language);
+    if (askedLocalization) {
+      return askedLocalization;
+    } else {
+      const defaultLocalization = findLocalization(key, defaultLanguage);
+
+      if (!defaultLocalization) {
+        console.log(`Localization (${key}) not found for default language (${defaultLanguage})`);
+        return '??? ' + key;
+      } else {
+        return defaultLocalization;
+      }
+    }
   }
 }

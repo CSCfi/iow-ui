@@ -2,16 +2,14 @@ import { IAttributes, IQService, IScope, ITimeoutService, IPromise } from 'angul
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
-  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate
+  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate, Dimensions
 } from '../../services/entities';
 import * as _ from 'lodash';
 import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
-import { isDefined } from '../../utils/object';
 import * as joint from 'jointjs';
 import { module as mod }  from './module';
 import { Uri } from '../../services/uri';
-import { DataType } from '../../services/dataTypes';
 import { normalizeAsArray, arraysAreEqual, first } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
@@ -24,6 +22,12 @@ import { PaperHolder } from './paperHolder';
 import { ClassInteractionListener } from './contract';
 import { moveOrigin, scale, focusElement, centerToElement, scaleToFit } from './paperUtil';
 import { adjustElementLinks, layoutGraph, VertexAction } from './layout';
+import { Localizer } from '../../utils/language';
+import {
+  NameType, formatClassName, formatAssociationPropertyName,
+  formatCardinality, formatAttributeNamesAndAnnotations
+} from './formatter';
+import { ifChanged } from '../../utils/angular';
 
 
 mod.directive('classVisualization', () => {
@@ -94,13 +98,6 @@ mod.directive('classVisualization', () => {
   };
 });
 
-
-enum NameType {
-  LABEL,
-  ID,
-  LOCAL_ID
-}
-
 const zIndexAssociation = 5;
 const zIndexClass = 10;
 
@@ -132,6 +129,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   setDimensions: () => void;
 
   popoverDetails: VisualizationPopoverDetails;
+
+  localizer: Localizer;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -220,6 +219,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   refresh(invalidateCache: boolean = false) {
     if (this.model) {
 
+      this.localizer = this.languageService.createLocalizer(this.model);
       this.paperHolder.setVisible(this.model);
 
       if (invalidateCache || this.graph.getCells().length === 0) {
@@ -458,45 +458,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     }
   }
 
-  propertyName(property: Property) {
-    switch (this.showName) {
-      case NameType.LABEL:
-        return this.languageService.translate(property.label, this.model);
-      case NameType.ID:
-        return property.predicateId.compact;
-      case NameType.LOCAL_ID:
-        return property.externalId || property.predicateId.compact;
-      default:
-        throw new Error('Unsupported show name type: ' + this.showName);
-    }
-  }
-
-  dataTypeName(dataType: DataType) {
-    switch (this.showName) {
-      case NameType.LABEL:
-        return this.languageService.getStringWithModelLanguageOrDefault(dataType, 'en', this.model);
-      case NameType.ID:
-        return dataType;
-      case NameType.LOCAL_ID:
-        return dataType;
-      default:
-        throw new Error('Unsupported show name type: ' + this.showName);
-    }
-  }
-
-  className(klass: VisualizationClass) {
-    switch (this.showName) {
-      case NameType.LABEL:
-        return this.languageService.translate(klass.label, this.model);
-      case NameType.ID:
-        return klass.scopeClass ? klass.scopeClass.compact : klass.id.compact;
-      case NameType.LOCAL_ID:
-        return klass.id.namespaceResolves() ? klass.id.name : klass.id.uri;
-      default:
-        throw new Error('Unsupported show name type: ' + this.showName);
-    }
-  }
-
   onClassClick(classId: string): void {
     this.selectClassById(new Uri(classId, {}));
   }
@@ -714,49 +675,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
   private createClassElement(paper: joint.dia.Paper, klass: VisualizationClass) {
 
-    const that = this;
-    const showCardinality = this.model.isOfType('profile');
-    const classPosition = this.modelPositions.getClass(klass.id);
-
-    type ProcessedProperty = { name: string, annotation: { start: number, end: number, attrs: { id: string }}};
-
-    function getProcessedProperties(): ProcessedProperty[] {
-
-      function propertyAsString(property: Property): string {
-        const name = that.propertyName(property);
-        const range = property.hasAssociationTarget() ? property.valueClass.compact : that.dataTypeName(property.dataType);
-        const cardinality = formatCardinality(property);
-        return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
-      }
-
-      let chars = 0;
-      const result: ProcessedProperty[] = [];
-
-      for (const property of _.sortBy(klass.properties, p => p.index)) {
-        if (property.isAttribute()) {
-
-          const propertyName = propertyAsString(property);
-          const previousChars = chars;
-
-          chars += propertyName.length + 1;
-
-          result.push({
-            name: propertyName,
-            annotation: {
-              start: previousChars,
-              end: chars,
-              attrs: {
-                id: property.internalId.toString()
-              }
-            }
-          });
-        }
-      }
-
-      return result;
-    }
-
-    function size(className: string, propertyNames: string[]) {
+    function calculateElementDimensions(className: string, propertyNames: string[]): Dimensions {
       const propertyLengths = _.map(propertyNames, name => name.length);
       const width = _.max([_.max(propertyLengths) * 6.5, className.length * 6.5, 150]);
       const height = 12 * propertyNames.length + 35;
@@ -764,13 +683,24 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       return { width, height };
     }
 
-    const className = this.className(klass);
-    const processedProperties = getProcessedProperties();
-    const propertyNames = processedProperties.map(p => p.name);
-    const propertyAnnotations = processedProperties.map(p => p.annotation);
+    // FIXME: this method does not work with firefox
+    function isRightClick() {
+      const event = window.event;
+      if (event instanceof MouseEvent) {
+        return event.which === 3;
+      } else {
+        return false;
+      }
+    }
+
+    const showCardinality = this.model.isOfType('profile');
+    const classPosition = this.modelPositions.getClass(klass.id);
+
+    const className = formatClassName(klass, this.showName, this.localizer);
+    const [propertyNames, propertyAnnotations] = formatAttributeNamesAndAnnotations(klass.properties, showCardinality, this.showName, this.localizer);
 
     const classConstructor = klass.resolved ? IowClassElement : ShadowClass;
-    const dimensions = size(className, propertyNames);
+    const dimensions = calculateElementDimensions(className, propertyNames);
 
     const classCell = new classConstructor({
       id: klass.id.uri,
@@ -799,13 +729,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
     const updateCellModel = () => {
       this.queueWhenNotVisible(() => {
-        const newProcessedProperties = getProcessedProperties();
-        const newPropertyNames = newProcessedProperties.map(p => p.name);
-        const newPropertyAnnotations = newProcessedProperties.map(p => p.annotation);
-        const newClassName = that.className(klass);
+        const [newPropertyNames, newPropertyAnnotations] = formatAttributeNamesAndAnnotations(klass.properties, showCardinality, this.showName, this.localizer);
+        const newClassName = formatClassName(klass, this.showName, this.localizer);
         const previousPosition = classCell.position();
         const previousSize = classCell.getBBox();
-        const newSize = size(newClassName, newPropertyNames);
+        const newSize = calculateElementDimensions(newClassName, newPropertyNames);
         const xd = (newSize.width - previousSize.width) / 2;
         const yd = (newSize.height - previousSize.height) / 2;
         classCell.prop('name', newClassName);
@@ -815,22 +743,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
             'annotations': newPropertyAnnotations
           }
         });
-        classCell.prop('size', size(newClassName, newPropertyNames));
+        classCell.prop('size', calculateElementDimensions(newClassName, newPropertyNames));
         classCell.position(previousPosition.x - xd, previousPosition.y - yd);
       });
     };
 
-    this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
-      if (lang !== oldLang) {
-        updateCellModel();
-      }
-    });
-
-    this.$scope.$watch(() => this.showName, (showName, oldShowName) => {
-      if (showName !== oldShowName) {
-        updateCellModel();
-      }
-    });
+    this.$scope.$watch(() => this.localizer.language, ifChanged(updateCellModel));
+    this.$scope.$watch(() => this.showName, ifChanged(updateCellModel));
 
     classPosition.changeListeners.push(coordinate => {
       const bbox = classCell.getBBox();
@@ -847,18 +766,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
   private createAssociationLink(klass: VisualizationClass, association: Property, position: AssociationPropertyPosition) {
 
-    const that = this;
     const showCardinality = this.model.isOfType('profile');
-
-    function getName() {
-      const name = that.propertyName(association);
-
-      if (association.stem) {
-        return name + '\n' + ' {' + association.stem + '}';
-      } else {
-        return name;
-      }
-    }
 
     const associationCell = new LinkWithoutUnusedMarkup({
       source: { id: klass.id.uri },
@@ -871,7 +779,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       },
       internalId: association.internalId.uri,
       labels: [
-        { position: 0.5, attrs: { text: { text: getName(), id: association.internalId.toString() } } },
+        { position: 0.5, attrs: { text: { text: formatAssociationPropertyName(association, this.showName, this.localizer), id: association.internalId.toString() } } },
         { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(association) : ''} } }
       ],
       vertices: copyVertices(position.vertices),
@@ -892,24 +800,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
     const updateCellModel = () => {
       this.queueWhenNotVisible(() => {
-        associationCell.prop('labels/0/attrs/text/text', getName());
+        associationCell.prop('labels/0/attrs/text/text', formatAssociationPropertyName(association, this.showName, this.localizer));
         if (showCardinality) {
           associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
         }
       });
     };
 
-    this.$scope.$watch(() => this.languageService.getModelLanguage(this.model), (lang, oldLang) => {
-      if (lang !== oldLang) {
-        updateCellModel();
-      }
-    });
-
-    this.$scope.$watch(() => this.showName, (showName, oldShowName) => {
-      if (showName !== oldShowName) {
-        updateCellModel();
-      }
-    });
+    this.$scope.$watch(() => this.localizer.language, ifChanged(updateCellModel));
+    this.$scope.$watch(() => this.showName, ifChanged(updateCellModel));
 
     position.changeListeners.push(vertices => {
       const oldVertices = normalizeAsArray(associationCell.get('vertices'));
@@ -920,27 +819,5 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     });
 
     return associationCell;
-  }
-}
-
-function isRightClick() {
-  const event = window.event;
-  if (event instanceof MouseEvent) {
-    return event.which === 3;
-  } else {
-    return false;
-  }
-}
-
-function formatCardinality(property: Property) {
-  const min = property.minCount;
-  const max = property.maxCount;
-
-  if (!isDefined(min) && !isDefined(max)) {
-    return '*';
-  } else if (min === max) {
-    return min.toString();
-  } else {
-    return `${min || '0'}..${max || '*'}`;
   }
 }

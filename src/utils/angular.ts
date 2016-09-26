@@ -109,3 +109,11 @@ export function setSelectionStyles(element: JQuery, show: Show, selectionWidth: 
     element.removeClass('hide');
   }
 }
+
+export function ifChanged<T>(cb: () => void ) {
+  return (lhs: T, rhs: T) => {
+    if (lhs !== rhs) {
+      cb();
+    }
+  };
+}
