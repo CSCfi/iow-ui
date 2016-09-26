@@ -23,10 +23,10 @@ import { VisualizationPopoverDetails } from './popover';
 import { ShadowClass, LinkWithoutUnusedMarkup, IowClassElement } from './diagram';
 import { PaperHolder } from './paperHolder';
 import { ClassInteractionListener } from './contract';
-import { getScale, maxScale, minScale, moveOrigin, scale } from './paperUtil';
+import { moveOrigin, scale, focusElement, centerToElement, scaleToFit } from './paperUtil';
 
 
-mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
+mod.directive('classVisualization', () => {
   return {
     restrict: 'E',
     scope: {
@@ -95,12 +95,6 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
 });
 
 
-enum Direction {
-  INCOMING,
-  OUTGOING,
-  BOTH
-}
-
 enum NameType {
   LABEL,
   ID,
@@ -109,8 +103,6 @@ enum NameType {
 
 const zIndexAssociation = 5;
 const zIndexClass = 10;
-const backgroundClass = 'background';
-const selectedClass = 'selected';
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate>, ClassInteractionListener {
 
@@ -159,15 +151,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       if (newSelection !== oldSelection) {
         if (!newSelection || !oldSelection) {
           // Need to do this on next frame since selection change will change visualization size
-          window.setTimeout(() => this.queueWhenNotVisible(() => this.focus(false)));
+          window.setTimeout(() => this.queueWhenNotVisible(() => this.focusSelection(false)));
         } else {
-          this.focus(false);
+          this.focusSelection(false);
         }
       }
     });
     $scope.$watch(() => this.selectionFocus, (newFocus, oldFocus) => {
       if (newFocus !== oldFocus) {
-        this.focus(false);
+        this.focusSelection(false);
       }
     });
   }
@@ -327,7 +319,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
     return layout().then(() => {
       // Delay focus because dom needs to be repainted
-      window.setTimeout(() => this.focus(forceFitToAllContent));
+      window.setTimeout(() => this.focusSelection(forceFitToAllContent));
     });
   }
 
@@ -357,7 +349,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
     } else {
       // Delay focus because dom needs to be repainted
-      setTimeout(() => this.focus(false));
+      setTimeout(() => this.focusSelection(false));
     }
   }
 
@@ -541,104 +533,20 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   }
 
   centerToSelectedClass() {
-    const element = this.findElementForPersistentClass(this.selection);
+    const element = this.findElementForSelection();
     if (element) {
-      this.centerToElement(element);
+      centerToElement(this.paper, element);
     }
   }
 
-  centerToElement(element: joint.dia.Element) {
-    const scale = 0.8;
-    const bbox = element.getBBox();
-    const x = (this.paper.options.width / 2) - (bbox.x + bbox.width / 2) * scale;
-    const y = (this.paper.options.height / 2) - (bbox.y + bbox.height / 2) * scale;
-
-    this.paper.scale(scale);
-    this.paper.setOrigin(x, y);
+  focusSelection(forceFitToAllContent: boolean) {
+    focusElement(this.paper, this.graph, this.findElementForSelection(), forceFitToAllContent, this.selectionFocus);
   }
 
-  focus(forceFitToAllContent: boolean) {
-    const that = this;
+  private findElementForSelection(): joint.dia.Element {
 
-    function resetFocusOnAllCells() {
-      for (const cell of that.graph.getCells()) {
-        const jqueryElement = joint.V(that.paper.findViewByModel(cell).el);
+    const classOrPredicate = this.selection;
 
-        jqueryElement.removeClass(selectedClass);
-
-        if (that.isSelectionClass() && that.selectionFocus !== FocusLevel.ALL) {
-          jqueryElement.addClass(backgroundClass);
-        } else {
-          jqueryElement.removeClass(backgroundClass);
-        }
-      }
-    }
-
-    function applyFocus(e: joint.dia.Element, direction: Direction, depth: number, visitedOutgoing: Set<joint.dia.Element>, visitedIncoming: Set<joint.dia.Element>) {
-
-      if (that.selectionFocus === FocusLevel.ALL) {
-        return;
-      }
-
-      const optionsOutgoing = { outbound: true, inbound: false };
-      const optionsIncoming = { outbound: false, inbound: true };
-
-      joint.V(that.paper.findViewByModel(e).el).removeClass(backgroundClass);
-
-      if (that.selectionFocus === FocusLevel.INFINITE_DEPTH || depth <= that.selectionFocus) {
-
-        if (direction === Direction.INCOMING || direction === Direction.BOTH) {
-
-            for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, optionsIncoming)) {
-              joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
-            }
-
-            for (const klass of that.graph.getNeighbors(e, optionsIncoming)) {
-              if (!visitedIncoming.has(klass)) {
-                visitedIncoming.add(klass);
-                applyFocus(klass, Direction.INCOMING, depth + 1, visitedOutgoing, visitedIncoming);
-              }
-            }
-        }
-
-        if (direction === Direction.OUTGOING || direction === Direction.BOTH) {
-
-            for (const association of that.graph.getConnectedLinks(<joint.dia.Cell> e, optionsOutgoing)) {
-              joint.V(that.paper.findViewByModel(association).el).removeClass(backgroundClass);
-            }
-
-            for (const klass of that.graph.getNeighbors(e, optionsOutgoing)) {
-              if (!visitedOutgoing.has(klass)) {
-                visitedOutgoing.add(klass);
-                applyFocus(klass, Direction.OUTGOING, depth + 1, visitedOutgoing, visitedIncoming);
-              }
-            }
-        }
-      }
-    }
-
-    resetFocusOnAllCells();
-    const element = this.findElementForPersistentClass(this.selection);
-
-    if (element) {
-      applyFocus(element, Direction.BOTH, 1, new Set<joint.dia.Element>(), new Set<joint.dia.Element>());
-      joint.V(that.paper.findViewByModel(element).el).addClass(selectedClass);
-    }
-
-    if (forceFitToAllContent) {
-      this.fitToContent(false);
-    } else if (element) {
-      if (this.selectionFocus === FocusLevel.ALL) {
-        this.centerToElement(element);
-      } else {
-        this.fitToContent(true);
-      }
-    } else {
-      this.fitToContent(true);
-    }
-  }
-
-  private findElementForPersistentClass(classOrPredicate: Class|Predicate): joint.dia.Element {
     if (classOrPredicate instanceof Class && !classOrPredicate.unsaved) {
       const cell = this.graph.getCell(classOrPredicate.id.uri);
       if (cell) {
@@ -1026,67 +934,6 @@ function isRightClick() {
   } else {
     return false;
   }
-}
-
-function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
-
-  function isVisible(modelOrId: Element|string) {
-    return !joint.V(paper.findViewByModel(modelOrId).el).hasClass(backgroundClass);
-  }
-
-  function getContentBBox(elements: joint.dia.Element[]) {
-
-    if (elements.length === 0) {
-      return paper.getContentBBox();
-    }
-
-    let minX = Number.MAX_VALUE;
-    let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
-
-    function applyBBox(bbox: { x: number; y: number; width: number; height: number; }) {
-      minX = Math.min(minX, (bbox.x));
-      minY = Math.min(minY, (bbox.y));
-      maxX = Math.max(maxX, (bbox.x + bbox.width));
-      maxY = Math.max(maxY, (bbox.y + bbox.height));
-    }
-
-    for (const element of elements) {
-
-      applyBBox(paper.findViewByModel(element).getBBox());
-
-      for (const link of graph.getConnectedLinks(element)) {
-        if (isVisible(link.get('source').id) && isVisible(link.get('target').id)) {
-          applyBBox(paper.findViewByModel(link).getBBox());
-        }
-      }
-    }
-
-    return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
-  }
-
-  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), isVisible);
-  const scale = getScale(paper);
-  const padding = 45;
-
-  const contentBBox = getContentBBox(visibleElements);
-  const fittingBBox = {
-    x: paper.options.origin.x + padding,
-    y: paper.options.origin.y + padding,
-    width: paper.options.width - padding * 2,
-    height: paper.options.height - padding * 2
-  };
-
-  const newScale = Math.min(fittingBBox.width / contentBBox.width * scale, fittingBBox.height / contentBBox.height * scale);
-
-  paper.scale(Math.max(Math.min(newScale, maxScale), minScale));
-  const contentBBoxAfterScaling = getContentBBox(visibleElements);
-
-  const newOx = fittingBBox.x - contentBBoxAfterScaling.x;
-  const newOy = fittingBBox.y - contentBBoxAfterScaling.y;
-
-  paper.setOrigin(newOx, newOy);
 }
 
 function layoutGraph($q: IQService, graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): IPromise<any> {
