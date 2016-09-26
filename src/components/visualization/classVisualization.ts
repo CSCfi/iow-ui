@@ -2,8 +2,7 @@ import { IAttributes, IQService, IScope, ITimeoutService, IWindowService, IPromi
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
-  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate, Localizable, Dimensions,
-  LanguageContext
+  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate
 } from '../../services/entities';
 import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
@@ -21,7 +20,7 @@ import { ConfirmationModal } from '../common/confirmationModal';
 import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils/entity';
 import { SessionService, FocusLevel } from '../../services/sessionService';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
-import { hasLocalization } from '../../utils/language';
+import { VisualizationPopoverDetails } from './popover';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
@@ -1018,71 +1017,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     return associationCell;
   }
 }
-
-interface VisualizationPopoverDetails {
-  coordinate: Coordinate;
-  comment: Localizable;
-}
-
-mod.directive('visualizationPopover', () => {
-  return {
-    scope: {
-      details: '=',
-      context: '='
-    },
-    restrict: 'E',
-    bindToController: true,
-    controllerAs: 'ctrl',
-    controller: VisualizationPopoverController,
-    template: `
-       <div class="popover left" style="position: absolute; display: block" ng-style="ctrl.style">
-         <div class="arrow"></div>
-         <div class="popover-inner">
-           <div class="popover-content">{{ctrl.details.comment | translateValue: ctrl.context}}</div>
-         </div>
-       </div>
-    `,
-    require: 'visualizationPopover',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: VisualizationPopoverController) {
-
-      const popoverElement = element.find('.popover');
-
-      ctrl.getDimensions = () => {
-        return {
-          width: popoverElement.outerWidth(),
-          height: popoverElement.outerHeight()
-        };
-      };
-    }
-  };
-});
-
-class VisualizationPopoverController {
-  details: VisualizationPopoverDetails;
-  context: LanguageContext;
-
-  getDimensions: () => Dimensions;
-  style: any = {};
-
-  constructor($scope: IScope, $timeout: ITimeoutService) {
-    $scope.$watch(() => this.details, details => {
-      // Hide by keeping off screen absolute position
-      this.style = { top: -1000 + 'px',  left: -1000 + 'px' };
-
-      if (details && hasLocalization(details.comment)) {
-        this.style.comment = details.comment;
-
-        // Let the comment render before accessing calculated dimensions
-        $timeout(() => {
-          const dimensions = this.getDimensions();
-          this.style.top = (details.coordinate.y - (dimensions.height / 2)) + 'px';
-          this.style.left = (details.coordinate.x - dimensions.width - 15) + 'px';
-        });
-      }
-    });
-  }
-}
-
 
 interface ClassInteractionListener {
   onClassClick(classId: string): void;
