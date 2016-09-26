@@ -2,7 +2,8 @@ import { IAttributes, IQService, IScope, ITimeoutService, IWindowService, IPromi
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
-  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate, Localizable, Dimensions
+  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate, Localizable, Dimensions,
+  LanguageContext
 } from '../../services/entities';
 import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
@@ -47,7 +48,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
                  <a role="button" class="btn btn-default btn-xs" ng-show="ctrl.canSave()" ng-disabled="ctrl.modelPositions.isPristine()" ng-click="ctrl.savePositions()"><i class="fa fa-save"></i></a>
                  <a role="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPersistentPositions()" ng-context-menu="ctrl.relayoutPositions()"><i class="fa fa-refresh"></i></a>
                </div>
-               <visualization-popover details="ctrl.popoverDetails"></visualization-popover>
+               <visualization-popover details="ctrl.popoverDetails" context="ctrl.model"></visualization-popover>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
     bindToController: true,
@@ -1026,7 +1027,8 @@ interface VisualizationPopoverDetails {
 mod.directive('visualizationPopover', () => {
   return {
     scope: {
-      details: '='
+      details: '=',
+      context: '='
     },
     restrict: 'E',
     bindToController: true,
@@ -1036,7 +1038,7 @@ mod.directive('visualizationPopover', () => {
        <div class="popover left" style="position: absolute; display: block" ng-style="ctrl.style">
          <div class="arrow"></div>
          <div class="popover-inner">
-           <div class="popover-content">{{ctrl.details.comment | translateValue}}</div>
+           <div class="popover-content">{{ctrl.details.comment | translateValue: ctrl.context}}</div>
          </div>
        </div>
     `,
@@ -1057,6 +1059,8 @@ mod.directive('visualizationPopover', () => {
 
 class VisualizationPopoverController {
   details: VisualizationPopoverDetails;
+  context: LanguageContext;
+
   getDimensions: () => Dimensions;
   style: any = {};
 
