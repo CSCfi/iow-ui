@@ -1106,11 +1106,17 @@ class PaperHolder {
       const paper = createPaper(element, new joint.dia.Graph);
 
       const window = angular.element(this.$window);
+      let movingElementOrVertex = false;
       let drag: {x: number, y: number};
       let mouse: {x: number, y: number};
 
       paper.on('blank:pointerdown', () => drag = mouse);
-      window.mouseup(() => drag = null);
+
+      window.mouseup(() => {
+        drag = null;
+        movingElementOrVertex = false;
+      });
+
       window.mousemove(event => {
 
         mouse = { x: event.pageX, y: event.pageY};
@@ -1127,6 +1133,7 @@ class PaperHolder {
         scale(paper, (event.deltaY * event.deltaFactor / 500), event.offsetX, event.offsetY);
       });
 
+      paper.on('cell:pointerdown', () => movingElementOrVertex = true);
 
       paper.on('cell:pointerclick', (cellView: joint.dia.CellView) => {
         const cell: joint.dia.Cell = cellView.model;
@@ -1136,10 +1143,7 @@ class PaperHolder {
       });
 
       paper.on('cell:mouseover', (cellView: joint.dia.CellView, event: MouseEvent) => {
-
-        const mouseButtonDown = event.which !== 0;
-
-        if (!mouseButtonDown && event.target instanceof SVGElement) {
+        if (!drag && !movingElementOrVertex && event.target instanceof SVGElement) {
 
           const targetElement = jQuery(event.target);
           const targetParentElement = targetElement.parent();
