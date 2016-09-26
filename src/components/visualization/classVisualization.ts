@@ -1,11 +1,10 @@
-import { IAttributes, IQService, IScope, ITimeoutService, IWindowService, IPromise, IQResolveReject } from 'angular';
+import { IAttributes, IQService, IScope, ITimeoutService, IPromise } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
   AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate
 } from '../../services/entities';
 import * as _ from 'lodash';
-import { layout as colaLayout } from './colaLayout';
 import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import { isDefined } from '../../utils/object';
@@ -24,6 +23,7 @@ import { ShadowClass, LinkWithoutUnusedMarkup, IowClassElement } from './diagram
 import { PaperHolder } from './paperHolder';
 import { ClassInteractionListener } from './contract';
 import { moveOrigin, scale, focusElement, centerToElement, scaleToFit } from './paperUtil';
+import { layoutGraph } from './layout';
 
 
 mod.directive('classVisualization', () => {
@@ -933,26 +933,6 @@ function isRightClick() {
     return event.which === 3;
   } else {
     return false;
-  }
-}
-
-function layoutGraph($q: IQService, graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): IPromise<any> {
-  if (directed && onlyNodeIds.length === 0) {
-    // TODO directed doesn't support incremental layout
-
-    return $q.when(
-      joint.layout.DirectedGraph.layout(graph, {
-        nodeSep: 100,
-        edgeSep: 150,
-        rankSep: 500,
-        rankDir: "LR"
-      })
-  );
-  } else {
-    return $q((resolve: IQResolveReject<any>, reject: IQResolveReject<any>) => {
-      colaLayout(graph, _.map(onlyNodeIds, id => id.uri))
-        .then(() => resolve(), err => reject(err));
-    });
   }
 }
 
