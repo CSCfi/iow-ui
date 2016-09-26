@@ -2,7 +2,7 @@ import { IAttributes, IQService, IScope, ITimeoutService, IWindowService, IPromi
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
-  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions
+  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate, Localizable, Dimensions
 } from '../../services/entities';
 import * as _ from 'lodash';
 import { layout as colaLayout } from './colaLayout';
@@ -14,12 +14,13 @@ import { module as mod }  from './module';
 import { Iterable } from '../../utils/iterable';
 import { Uri } from '../../services/uri';
 import { DataType } from '../../services/dataTypes';
-import { normalizeAsArray, arraysAreEqual } from '../../utils/array';
+import { normalizeAsArray, arraysAreEqual, first } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils/entity';
 import { SessionService, FocusLevel } from '../../services/sessionService';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { hasLocalization } from '../../utils/language';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
@@ -46,6 +47,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
                  <a role="button" class="btn btn-default btn-xs" ng-show="ctrl.canSave()" ng-disabled="ctrl.modelPositions.isPristine()" ng-click="ctrl.savePositions()"><i class="fa fa-save"></i></a>
                  <a role="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPersistentPositions()" ng-context-menu="ctrl.relayoutPositions()"><i class="fa fa-refresh"></i></a>
                </div>
+               <visualization-popover details="ctrl.popoverDetails"></visualization-popover>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
     bindToController: true,
@@ -53,7 +55,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
     require: 'classVisualization',
     link($scope: IScope, element: JQuery, attributes: IAttributes, controller: ClassVisualizationController) {
       element.addClass('visualization-container');
-      controller.paperHolder = new PaperHolder($window, element, id => controller.selectClassById(new Uri(id, {})));
+      controller.paperHolder = new PaperHolder($window, element, controller);
 
       const setDimensions = () => {
         controller.dimensionChangeInProgress = true;
@@ -109,7 +111,7 @@ const selectedClass = 'selected';
 const minScale = 0.02;
 const maxScale = 3;
 
-class ClassVisualizationController implements ChangeListener<Class|Predicate> {
+class ClassVisualizationController implements ChangeListener<Class|Predicate>, ClassInteractionListener {
 
   selection: Class|Predicate;
   showName = NameType.LABEL;
@@ -135,6 +137,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
   selectClassById: (id: Uri) => IPromise<any>;
   setDimensions: () => void;
+
+  popoverDetails: VisualizationPopoverDetails;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -471,6 +475,38 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
   }
 
+  onClassClick(classId: string): void {
+    this.selectClassById(new Uri(classId, {}));
+  }
+
+  onClassHover(classId: string, coordinate: Coordinate): void {
+    this.$scope.$apply(() => {
+      const klass = this.classVisualization.getClassById(classId);
+
+      this.popoverDetails = {
+        coordinate: coordinate,
+        comment: klass.comment
+      };
+    });
+  }
+
+  onPropertyHover(classId: string, propertyId: string, coordinate: Coordinate): void {
+    this.$scope.$apply(() => {
+      const klass = this.classVisualization.getClassById(classId);
+
+      this.popoverDetails = {
+        coordinate: coordinate,
+        comment: first(klass.properties, property => property.internalId.toString() === propertyId).comment
+      };
+    });
+  }
+
+  onHoverExit(): void {
+    this.$scope.$apply(() => {
+      this.popoverDetails = null;
+    });
+  }
+
   private isSelectionClass() {
     return this.selection instanceof Class;
   }
@@ -771,7 +807,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     const showCardinality = this.model.isOfType('profile');
     const classPosition = this.modelPositions.getClass(klass.id);
 
-    function getPropertyNames() {
+    type ProcessedProperty = { name: string, annotation: { start: number, end: number, attrs: { id: string }}};
+
+    function getProcessedProperties(): ProcessedProperty[] {
 
       function propertyAsString(property: Property): string {
         const name = that.propertyName(property);
@@ -780,8 +818,31 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
       }
 
-      const attributes = _.filter(klass.properties, property => property.isAttribute());
-      return _.map(_.sortBy(attributes, property => property.index), propertyAsString);
+      let chars = 0;
+      const result: ProcessedProperty[] = [];
+
+      for (const property of _.sortBy(klass.properties, p => p.index)) {
+        if (property.isAttribute()) {
+
+          const propertyName = propertyAsString(property);
+          const previousChars = chars;
+
+          chars += propertyName.length + 1;
+
+          result.push({
+            name: propertyName,
+            annotation: {
+              start: previousChars,
+              end: chars,
+              attrs: {
+                id: property.internalId.toString()
+              }
+            }
+          });
+        }
+      }
+
+      return result;
     }
 
     function size(className: string, propertyNames: string[]) {
@@ -793,9 +854,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
     }
 
     const className = this.className(klass);
-    const propertyNames = getPropertyNames();
+    const processedProperties = getProcessedProperties();
+    const propertyNames = processedProperties.map(p => p.name);
+    const propertyAnnotations = processedProperties.map(p => p.annotation);
 
-    const classConstructor = klass.resolved ? WithoutUnusedMarkupClass : ShadowClass;
+    const classConstructor = klass.resolved ? IowClassElement : ShadowClass;
     const dimensions = size(className, propertyNames);
 
     const classCell = new classConstructor({
@@ -806,6 +869,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       attrs: {
         '.uml-class-name-text': {
           'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
+        },
+        '.uml-class-attrs-text': {
+          'annotations': propertyAnnotations
         }
       },
       position: classPosition.isDefined() ? centerToPosition(classPosition.coordinate, dimensions) : { x: 0, y: 0 },
@@ -822,7 +888,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
 
     const updateCellModel = () => {
       this.queueWhenNotVisible(() => {
-        const newPropertyNames = getPropertyNames();
+        const newProcessedProperties = getProcessedProperties();
+        const newPropertyNames = newProcessedProperties.map(p => p.name);
+        const newPropertyAnnotations = newProcessedProperties.map(p => p.annotation);
         const newClassName = that.className(klass);
         const previousPosition = classCell.position();
         const previousSize = classCell.getBBox();
@@ -831,6 +899,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
         const yd = (newSize.height - previousSize.height) / 2;
         classCell.prop('name', newClassName);
         classCell.prop('attributes', newPropertyNames);
+        classCell.attr({
+          '.uml-class-attrs-text': {
+            'annotations': newPropertyAnnotations
+          }
+        });
         classCell.prop('size', size(newClassName, newPropertyNames));
         classCell.position(previousPosition.x - xd, previousPosition.y - yd);
       });
@@ -887,7 +960,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
       },
       internalId: association.internalId.uri,
       labels: [
-        { position: 0.5, attrs: { text: { text: getName() } } },
+        { position: 0.5, attrs: { text: { text: getName(), id: association.internalId.toString() } } },
         { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(association) : ''} } }
       ],
       vertices: copyVertices(position.vertices),
@@ -939,11 +1012,82 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate> {
   }
 }
 
+interface VisualizationPopoverDetails {
+  coordinate: Coordinate;
+  comment: Localizable;
+}
+
+mod.directive('visualizationPopover', () => {
+  return {
+    scope: {
+      details: '='
+    },
+    restrict: 'E',
+    bindToController: true,
+    controllerAs: 'ctrl',
+    controller: VisualizationPopoverController,
+    template: `
+       <div class="popover left" style="position: absolute; display: block" ng-style="ctrl.style">
+         <div class="arrow"></div>
+         <div class="popover-inner">
+           <div class="popover-content">{{ctrl.details.comment | translateValue}}</div>
+         </div>
+       </div>
+    `,
+    require: 'visualizationPopover',
+    link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: VisualizationPopoverController) {
+
+      const popoverElement = element.find('.popover');
+
+      ctrl.getDimensions = () => {
+        return {
+          width: popoverElement.outerWidth(),
+          height: popoverElement.outerHeight()
+        };
+      };
+    }
+  };
+});
+
+class VisualizationPopoverController {
+  details: VisualizationPopoverDetails;
+  getDimensions: () => Dimensions;
+  style: any = {};
+
+  constructor($scope: IScope, $timeout: ITimeoutService) {
+    $scope.$watch(() => this.details, details => {
+      // Hide by keeping off screen absolute position
+      this.style = { top: -1000 + 'px',  left: -1000 + 'px' };
+
+      if (details && hasLocalization(details.comment)) {
+        this.style.comment = details.comment;
+
+        // Let the comment render before accessing calculated dimensions
+        $timeout(() => {
+          const dimensions = this.getDimensions();
+          this.style.top = (details.coordinate.y - (dimensions.height / 2)) + 'px';
+          this.style.left = (details.coordinate.x - dimensions.width - 15) + 'px';
+        });
+      }
+    });
+  }
+}
+
+
+interface ClassInteractionListener {
+  onClassClick(classId: string): void;
+  onClassHover(classId: string, coordinate: Coordinate): void;
+  onPropertyHover(classId: string, propertyId: string, coordinate: Coordinate): void;
+  onHoverExit(): void;
+}
+
 class PaperHolder {
 
   private cache = new Map<string, { element: JQuery, paper: joint.dia.Paper }>();
 
-  constructor(private $window: IWindowService, private element: JQuery, private onClickCallback: (id: string) => void) {
+  constructor(private $window: IWindowService,
+              private element: JQuery,
+              private listener: ClassInteractionListener) {
   }
 
   getPaper(model: Model): joint.dia.Paper {
@@ -951,14 +1095,61 @@ class PaperHolder {
     const createPaperAndRegisterHandlers = (element: JQuery) => {
       const paper = createPaper(element, new joint.dia.Graph);
 
-      paper.on('cell:pointerclick', (cellView: joint.dia.CellView) => {
-        const cell: joint.dia.Cell = cellView.model;
-        if (cell instanceof joint.shapes.uml.Class && !(cell instanceof ShadowClass)) {
-          this.onClickCallback(cell.id);
+      const window = angular.element(this.$window);
+      let drag: {x: number, y: number};
+      let mouse: {x: number, y: number};
+
+      paper.on('blank:pointerdown', () => drag = mouse);
+      window.mouseup(() => drag = null);
+      window.mousemove(event => {
+
+        mouse = { x: event.pageX, y: event.pageY};
+
+        if (drag) {
+          event.preventDefault();
+          moveOrigin(paper, drag.x - mouse.x, drag.y - mouse.y);
+          drag = mouse;
         }
       });
 
-      registerZoomAndPan(this.$window, paper);
+      jQuery(paper.$el).mousewheel(event => {
+        event.preventDefault();
+        scale(paper, (event.deltaY * event.deltaFactor / 500), event.offsetX, event.offsetY);
+      });
+
+
+      paper.on('cell:pointerclick', (cellView: joint.dia.CellView) => {
+        const cell: joint.dia.Cell = cellView.model;
+        if (cell instanceof joint.shapes.uml.Class && !(cell instanceof ShadowClass)) {
+          this.listener.onClassClick(cell.id);
+        }
+      });
+
+      paper.on('cell:mouseover', (cellView: joint.dia.CellView, event: MouseEvent) => {
+
+        const mouseButtonDown = event.which !== 0;
+
+        if (!mouseButtonDown && event.target instanceof SVGElement) {
+
+          const targetElement = jQuery(event.target);
+          const targetParentElement = targetElement.parent();
+
+          if (targetElement.prop('tagName') === 'tspan') {
+            if (cellView.model instanceof joint.dia.Element && targetElement.attr('id').startsWith('urn:uuid')) {
+              this.listener.onPropertyHover(cellView.model.id, targetElement.attr('id'), { x: event.pageX, y: event.pageY });
+            } else if (cellView.model instanceof joint.dia.Link && targetParentElement.attr('id').startsWith('urn:uuid')) {
+              this.listener.onPropertyHover(cellView.model.get('source').id, targetParentElement.attr('id'), { x: event.pageX, y: event.pageY });
+            } else if (targetParentElement.hasClass('uml-class-name-text')) {
+              this.listener.onClassHover(cellView.model.id, { x: event.pageX, y: event.pageY });
+            }
+          }
+        }
+      });
+
+      paper.on('cell:mouseout', () => {
+        this.listener.onHoverExit();
+      });
+
       return paper;
     };
 
@@ -1033,30 +1224,6 @@ function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number
     paper.setOrigin(tx, ty);
     paper.scale(newScale, newScale);
   }
-}
-
-function registerZoomAndPan($window: IWindowService, paper: joint.dia.Paper) {
-  const window = angular.element($window);
-  let drag: {x: number, y: number};
-  let mouse: {x: number, y: number};
-
-  paper.on('blank:pointerdown', () => drag = mouse);
-  window.mouseup(() => drag = null);
-  window.mousemove(event => {
-
-    mouse = { x: event.pageX, y: event.pageY};
-
-    if (drag) {
-      event.preventDefault();
-      moveOrigin(paper, drag.x - mouse.x, drag.y - mouse.y);
-      drag = mouse;
-    }
-  });
-
-  jQuery(paper.$el).mousewheel(event => {
-    event.preventDefault();
-    scale(paper, (event.deltaY * event.deltaFactor / 500), event.offsetX, event.offsetY);
-  });
 }
 
 function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
@@ -1174,7 +1341,7 @@ const classMarkup = (shadow: boolean) => {
           </g>`;
 };
 
-class WithoutUnusedMarkupClass extends joint.shapes.uml.Class {
+class IowClassElement extends joint.shapes.uml.Class {
   markup = classMarkup(false);
 }
 
