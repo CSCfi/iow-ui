@@ -416,6 +416,35 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     this.showName = (this.showName + 1) % 3;
   }
 
+  zoomIn() {
+    this.zoomInHandle = window.setInterval(() => scale(this.paper, 0.01), 10);
+  }
+
+  zoomInEnded() {
+    window.clearInterval(this.zoomInHandle);
+  }
+
+  zoomOut() {
+    this.zoomOutHandle = window.setInterval(() => scale(this.paper, -0.01), 10);
+  }
+
+  zoomOutEnded() {
+    window.clearInterval(this.zoomOutHandle);
+  }
+
+  fitToContent(onlyVisible: boolean = false) {
+    this.queueWhenNotVisible(() => {
+      scaleToFit(this.paper, this.graph, onlyVisible);
+    });
+  }
+
+  centerToSelectedClass() {
+    const element = this.findElementForSelection();
+    if (element) {
+      centerToElement(this.paper, element);
+    }
+  }
+
   get showNameLabel() {
     switch (this.showName) {
       case NameType.ID:
@@ -504,39 +533,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     this.$scope.$apply(() => {
       this.popoverDetails = null;
     });
-  }
-
-  private isSelectionClass() {
-    return this.selection instanceof Class;
-  }
-
-  zoomIn() {
-    this.zoomInHandle = window.setInterval(() => scale(this.paper, 0.01), 10);
-  }
-
-  zoomInEnded() {
-    window.clearInterval(this.zoomInHandle);
-  }
-
-  zoomOut() {
-    this.zoomOutHandle = window.setInterval(() => scale(this.paper, -0.01), 10);
-  }
-
-  zoomOutEnded() {
-    window.clearInterval(this.zoomOutHandle);
-  }
-
-  fitToContent(onlyVisible: boolean = false) {
-    this.queueWhenNotVisible(() => {
-      scaleToFit(this.paper, this.graph, onlyVisible);
-    });
-  }
-
-  centerToSelectedClass() {
-    const element = this.findElementForSelection();
-    if (element) {
-      centerToElement(this.paper, element);
-    }
   }
 
   focusSelection(forceFitToAllContent: boolean) {
