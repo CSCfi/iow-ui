@@ -480,25 +480,31 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   }
 
   onClassHover(classId: string, coordinate: Coordinate): void {
-    this.$scope.$apply(() => {
-      const klass = this.classVisualization.getClassById(classId);
 
-      this.popoverDetails = {
-        coordinate: coordinate,
-        comment: klass.comment
-      };
-    });
+    const klass = this.classVisualization.getClassById(classId);
+
+    if (klass) {
+      this.$scope.$apply(() => {
+        this.popoverDetails = {
+          coordinate: coordinate,
+          comment: klass.comment
+        };
+      });
+    }
   }
 
   onPropertyHover(classId: string, propertyId: string, coordinate: Coordinate): void {
-    this.$scope.$apply(() => {
-      const klass = this.classVisualization.getClassById(classId);
 
-      this.popoverDetails = {
-        coordinate: coordinate,
-        comment: first(klass.properties, property => property.internalId.toString() === propertyId).comment
-      };
-    });
+    const klass = this.classVisualization.getClassById(classId);
+
+    if (klass) {
+      this.$scope.$apply(() => {
+        this.popoverDetails = {
+          coordinate: coordinate,
+          comment: first(klass.properties, property => property.internalId.toString() === propertyId).comment
+        };
+      });
+    }
   }
 
   onHoverExit(): void {
@@ -1135,7 +1141,7 @@ class PaperHolder {
           const targetParentElement = targetElement.parent();
 
           if (targetElement.prop('tagName') === 'tspan') {
-            if (cellView.model instanceof joint.dia.Element && targetElement.attr('id').startsWith('urn:uuid')) {
+            if (cellView.model instanceof IowClassElement && targetElement.attr('id').startsWith('urn:uuid')) {
               this.listener.onPropertyHover(cellView.model.id, targetElement.attr('id'), { x: event.pageX, y: event.pageY });
             } else if (cellView.model instanceof joint.dia.Link && targetParentElement.attr('id').startsWith('urn:uuid')) {
               this.listener.onPropertyHover(cellView.model.get('source').id, targetParentElement.attr('id'), { x: event.pageX, y: event.pageY });
