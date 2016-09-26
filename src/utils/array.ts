@@ -105,6 +105,15 @@ export function all<T>(arr: T[], predicate: (item: T) => boolean) {
   return true;
 }
 
+export function first<T>(arr: T[], predicate: (item: T) => boolean): T {
+  for (const item of arr) {
+    if (predicate(item)) {
+      return item;
+    }
+  }
+  return null;
+}
+
 export function contains<T>(arr: T[], value: T, equals: EqualityChecker<T> = referenceEquality): boolean {
   return any(arr, (item: T) => equals(item, value));
 }
@@ -122,12 +131,5 @@ export function arraysAreEqual<T>(lhs: T[], rhs: T[], equals: EqualityChecker<T>
 }
 
 export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): T {
-  for (const value of values) {
-    for (const item of arr) {
-      if (equals(item, value)) {
-        return item;
-      }
-    }
-  }
-  return null;
+  return first(arr, item => contains(values, item, equals));
 }
