@@ -11,7 +11,6 @@ import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import { isDefined } from '../../utils/object';
 import * as joint from 'jointjs';
 import { module as mod }  from './module';
-import { Iterable } from '../../utils/iterable';
 import { Uri } from '../../services/uri';
 import { DataType } from '../../services/dataTypes';
 import { normalizeAsArray, arraysAreEqual, first } from '../../utils/array';
@@ -22,6 +21,9 @@ import { SessionService, FocusLevel } from '../../services/sessionService';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { VisualizationPopoverDetails } from './popover';
 import { ShadowClass, LinkWithoutUnusedMarkup, IowClassElement } from './diagram';
+import { PaperHolder } from './paperHolder';
+import { ClassInteractionListener } from './contract';
+import { getScale, maxScale, minScale, moveOrigin, scale } from './paperUtil';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
@@ -56,7 +58,7 @@ mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) =>
     require: 'classVisualization',
     link($scope: IScope, element: JQuery, attributes: IAttributes, controller: ClassVisualizationController) {
       element.addClass('visualization-container');
-      controller.paperHolder = new PaperHolder($window, element, controller);
+      controller.paperHolder = new PaperHolder(element, controller);
 
       const setDimensions = () => {
         controller.dimensionChangeInProgress = true;
@@ -109,8 +111,6 @@ const zIndexAssociation = 5;
 const zIndexClass = 10;
 const backgroundClass = 'background';
 const selectedClass = 'selected';
-const minScale = 0.02;
-const maxScale = 3;
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate>, ClassInteractionListener {
 
@@ -1019,159 +1019,12 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   }
 }
 
-interface ClassInteractionListener {
-  onClassClick(classId: string): void;
-  onClassHover(classId: string, coordinate: Coordinate): void;
-  onPropertyHover(classId: string, propertyId: string, coordinate: Coordinate): void;
-  onHoverExit(): void;
-}
-
-class PaperHolder {
-
-  private cache = new Map<string, { element: JQuery, paper: joint.dia.Paper }>();
-
-  constructor(private $window: IWindowService,
-              private element: JQuery,
-              private listener: ClassInteractionListener) {
-  }
-
-  getPaper(model: Model): joint.dia.Paper {
-
-    const createPaperAndRegisterHandlers = (element: JQuery) => {
-      const paper = createPaper(element, new joint.dia.Graph);
-
-      const window = angular.element(this.$window);
-      let movingElementOrVertex = false;
-      let drag: {x: number, y: number};
-      let mouse: {x: number, y: number};
-
-      paper.on('blank:pointerdown', () => drag = mouse);
-
-      window.mouseup(() => {
-        drag = null;
-        movingElementOrVertex = false;
-      });
-
-      window.mousemove(event => {
-
-        mouse = { x: event.pageX, y: event.pageY};
-
-        if (drag) {
-          event.preventDefault();
-          moveOrigin(paper, drag.x - mouse.x, drag.y - mouse.y);
-          drag = mouse;
-        }
-      });
-
-      jQuery(paper.$el).mousewheel(event => {
-        event.preventDefault();
-        scale(paper, (event.deltaY * event.deltaFactor / 500), event.offsetX, event.offsetY);
-      });
-
-      paper.on('cell:pointerdown', () => movingElementOrVertex = true);
-
-      paper.on('cell:pointerclick', (cellView: joint.dia.CellView) => {
-        const cell: joint.dia.Cell = cellView.model;
-        if (cell instanceof joint.shapes.uml.Class && !(cell instanceof ShadowClass)) {
-          this.listener.onClassClick(cell.id);
-        }
-      });
-
-      paper.on('cell:mouseover', (cellView: joint.dia.CellView, event: MouseEvent) => {
-        if (!drag && !movingElementOrVertex && event.target instanceof SVGElement) {
-
-          const targetElement = jQuery(event.target);
-          const targetParentElement = targetElement.parent();
-
-          if (targetElement.prop('tagName') === 'tspan') {
-            if (cellView.model instanceof IowClassElement && targetElement.attr('id').startsWith('urn:uuid')) {
-              this.listener.onPropertyHover(cellView.model.id, targetElement.attr('id'), { x: event.pageX, y: event.pageY });
-            } else if (cellView.model instanceof joint.dia.Link && targetParentElement.attr('id').startsWith('urn:uuid')) {
-              this.listener.onPropertyHover(cellView.model.get('source').id, targetParentElement.attr('id'), { x: event.pageX, y: event.pageY });
-            } else if (targetParentElement.hasClass('uml-class-name-text')) {
-              this.listener.onClassHover(cellView.model.id, { x: event.pageX, y: event.pageY });
-            }
-          }
-        }
-      });
-
-      paper.on('cell:mouseout', () => {
-        this.listener.onHoverExit();
-      });
-
-      return paper;
-    };
-
-    const cached = this.cache.get(model.id.uri);
-
-    if (cached) {
-      return cached.paper;
-    } else {
-      const newElement = jQuery(document.createElement('div'));
-      this.element.append(newElement);
-      const newPaper = createPaperAndRegisterHandlers(newElement);
-      this.cache.set(model.id.uri, { element: newElement, paper: newPaper });
-      return newPaper;
-    }
-  }
-
-  setVisible(model: Model) {
-    Iterable.forEach(this.cache.entries(), ([modelId, value]) => {
-      if (model.id.uri === modelId) {
-        value.element.show();
-      } else {
-        value.element.hide();
-      }
-    });
-  }
-}
-
-function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
-  return new joint.dia.Paper({
-    el: element,
-    width: element.width() || 100,
-    height: element.height() || 100,
-    model: graph,
-    linkPinning: false,
-    snapLinks: false,
-    perpendicularLinks: true
-  });
-}
-
 function isRightClick() {
   const event = window.event;
   if (event instanceof MouseEvent) {
     return event.which === 3;
   } else {
     return false;
-  }
-}
-
-function moveOrigin(paper: joint.dia.Paper, dx: number, dy: number) {
-  const oldOrigin = paper.options.origin;
-  paper.setOrigin(oldOrigin.x - dx, oldOrigin.y - dy);
-}
-
-function getScale(paper: joint.dia.Paper) {
-  const viewport = joint.V(paper.viewport);
-  return viewport.scale().sx;
-}
-
-function scale(paper: joint.dia.Paper, scaleDiff: number, x?: number, y?: number) {
-  const scale = getScale(paper);
-  const newScale = scale + scaleDiff;
-
-  if (scale !== newScale && newScale >= minScale && newScale <= maxScale) {
-    const scaleRatio = newScale / scale;
-
-    const actualX = x || paper.options.width / 2;
-    const actualY = y || paper.options.height / 2;
-
-    const tx = scaleRatio * (paper.options.origin.x - actualX) + actualX;
-    const ty = scaleRatio * (paper.options.origin.y - actualY) + actualY;
-
-    paper.setOrigin(tx, ty);
-    paper.scale(newScale, newScale);
   }
 }
 
