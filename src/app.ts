@@ -11,6 +11,7 @@ import * as angular from 'angular';
 import { routeConfig } from './routes';
 import commonModule from './components/common';
 import editorModule from './components/editor';
+import visualizationModule from './components/visualization';
 import formModule from './components/form';
 import groupModule from './components/group';
 import modelModule from './components/model';
@@ -38,6 +39,7 @@ const mod = angular.module('iow-ui', [
   'ngclipboard',
   commonModule,
   editorModule,
+  visualizationModule,
   formModule,
   groupModule,
   modelModule,
