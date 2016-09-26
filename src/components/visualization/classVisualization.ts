@@ -21,6 +21,7 @@ import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils
 import { SessionService, FocusLevel } from '../../services/sessionService';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { VisualizationPopoverDetails } from './popover';
+import { ShadowClass, LinkWithoutUnusedMarkup, IowClassElement } from './diagram';
 
 
 mod.directive('classVisualization', /* @ngInject */ ($window: IWindowService) => {
@@ -955,7 +956,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       }
     }
 
-    const associationCell = new WithoutUnusedMarkupLink({
+    const associationCell = new LinkWithoutUnusedMarkup({
       source: { id: klass.id.uri },
       target: { id: association.valueClass.uri },
       connector: { name: 'normal' },
@@ -1266,35 +1267,6 @@ function formatCardinality(property: Property) {
   } else {
     return `${min || '0'}..${max || '*'}`;
   }
-}
-
-class WithoutUnusedMarkupLink extends joint.dia.Link {
-  markup = [
-    '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
-    '<path class="marker-target" fill="black" stroke="black" d="M 0 0 0 0"/>',
-    '<path class="connection-wrap" d="M 0 0 0 0"/>',
-    '<g class="labels"/>',
-    '<g class="marker-vertices"/>'
-    ].join('');
-
-  toolMarkup = '';
-}
-
-const classMarkup = (shadow: boolean) => {
-  return `<g class="rotatable ${shadow ? 'shadow' : ''}">
-            <g class="scalable">
-              <rect class="uml-class-name-rect"/> ${shadow ? '' : '<rect class="uml-class-attrs-rect"/>'}
-            </g>
-            <text class="uml-class-name-text"/> ${shadow ? '' : '<text class="uml-class-attrs-text"/>'}
-          </g>`;
-};
-
-class IowClassElement extends joint.shapes.uml.Class {
-  markup = classMarkup(false);
-}
-
-class ShadowClass extends joint.shapes.uml.Class {
-  markup = classMarkup(true);
 }
 
 function isSiblingLink(lhs: joint.dia.Link, rhs: joint.dia.Link) {
