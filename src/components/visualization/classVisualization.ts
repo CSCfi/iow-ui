@@ -748,7 +748,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 }
 
 
-// FIXME: this method does not work with firefox
+// FIXME: this method does not work with firefox because it doesn't expose global event like chrome
 function isRightClick() {
   const event = window.event;
   if (event instanceof MouseEvent) {
