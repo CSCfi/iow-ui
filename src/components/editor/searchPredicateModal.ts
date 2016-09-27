@@ -16,7 +16,7 @@ import { AddNew } from '../common/searchResults';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from '../../services/classService';
-import { collectProperties } from '../../utils/array';
+import { collectProperties, any } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
 import { localizableContains } from '../../utils/language';
 
@@ -105,6 +105,13 @@ export class SearchPredicateController {
 
   private localizer: Localizer;
 
+  contentMatchers = [
+    { name: 'Label', extractor: (predicate: PredicateListItem) => predicate.label },
+    { name: 'Description', extractor: (predicate: PredicateListItem) => predicate.comment }
+  ];
+
+  contentExtractors = this.contentMatchers.map(m => m.extractor);
+
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
               private $uibModalInstance: IModalServiceInstance,
@@ -154,6 +161,7 @@ export class SearchPredicateController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.type, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
+    $scope.$watchCollection(() => this.contentExtractors, () => this.search());
 
     $scope.$watch(() => this.selection && this.selection.id, selectionId => {
       if (selectionId && this.selection instanceof ExternalEntity) {
@@ -299,7 +307,7 @@ export class SearchPredicateController {
   }
 
   private textFilter(predicate: PredicateListItem): boolean {
-    return !this.searchText || localizableContains(predicate.label, this.searchText);
+    return !this.searchText || any(this.contentExtractors, extractor => localizableContains(extractor(predicate), this.searchText));
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {

@@ -72,7 +72,7 @@ msgstr ""
 msgid "Add vocabulary"
 msgstr ""
 
-#: components/editor/classForm.html:76
+#: components/editor/classForm.html:78
 #: components/editor/predicateForm.html:59
 #: components/editor/propertyView.html:127
 #: components/model/conceptForm.html:54
@@ -298,7 +298,7 @@ msgstr ""
 #: components/advancedSearchModal.html:41
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
-#: components/editor/searchClassModal.html:91
+#: components/editor/searchClassModal.html:103
 #: components/editor/searchConceptModal.html:93
 #: components/editor/searchPredicateModal.html:116
 #: components/group/addModelModal.html:24
@@ -1201,6 +1201,10 @@ msgstr ""
 msgid "Maintenance content"
 msgstr ""
 
+#: components/editor/searchClassModal.html:48
+msgid "Match to content"
+msgstr ""
+
 #: translations/titles.html:61
 msgid "Max count"
 msgstr ""
@@ -1300,7 +1304,7 @@ msgstr ""
 msgid "No profiles yet"
 msgstr ""
 
-#: components/editor/classForm.html:70
+#: components/editor/classForm.html:72
 msgid "No properties yet"
 msgstr ""
 

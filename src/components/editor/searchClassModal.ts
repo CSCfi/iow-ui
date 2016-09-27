@@ -14,6 +14,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { localizableContains } from '../../utils/language';
+import { any } from '../../utils/array';
 
 export const noExclude = (item: AbstractClass) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';
@@ -75,6 +76,13 @@ class SearchClassController {
 
   private localizer: Localizer;
 
+  contentMatchers = [
+    { name: 'Label', extractor: (klass: ClassListItem) => klass.label },
+    { name: 'Description', extractor: (klass: ClassListItem) => klass.comment }
+  ];
+
+  contentExtractors = this.contentMatchers.map(m => m.extractor);
+
   /* @ngInject */
   constructor(private $scope: SearchClassScope,
               private $uibModalInstance: IModalServiceInstance,
@@ -122,6 +130,7 @@ class SearchClassController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showProfiles, () => this.search());
+    $scope.$watchCollection(() => this.contentExtractors, () => this.search());
 
     $scope.$watch(() => this.selection && this.selection.id, selectionId => {
       if (selectionId && this.selection instanceof ExternalEntity) {
@@ -234,7 +243,7 @@ class SearchClassController {
   }
 
   private textFilter(klass: ClassListItem): boolean {
-    return !this.searchText || localizableContains(klass.label, this.searchText);
+    return !this.searchText || any(this.contentExtractors, extractor => localizableContains(extractor(klass), this.searchText));
   }
 
   private modelFilter(klass: ClassListItem): boolean {

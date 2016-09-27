@@ -11,6 +11,20 @@
                  key-control="ctrl.searchResults" />
           <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
+
+        <div class="search-panel">
+          <span class="title" translate>Filter results</span>
+
+          <div class="form-group">
+            <label translate>Match to content</label>
+
+            <div class="input-group input-group-md">
+              <div class="checkbox" ng-repeat="matcher in ctrl.contentMatchers">
+                <label><input class="" type="checkbox" checklist-model="ctrl.contentExtractors" checklist-value="matcher.extractor" /> {{matcher.name | translate}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="col-md-6 search-results">
@@ -18,6 +32,7 @@
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selected" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
           <h5>{{searchResult.title | translateValue}}</h5>
+          <p>{{searchResult.description | translateValue: ctrl.context}}</p>
         </search-results>
       </div>
     </div>

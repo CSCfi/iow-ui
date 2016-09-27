@@ -11,6 +11,7 @@ import { EditableForm } from '../form/editableEntityController';
 import { Uri } from '../../services/uri';
 import { any, all } from '../../utils/array';
 import * as _ from 'lodash';
+import { localizableContains } from '../../utils/language';
 
 const noExclude = (referenceData: ReferenceData) => <string> null;
 
@@ -64,6 +65,13 @@ export class SearchReferenceDataModalController {
 
   localizer: Localizer;
 
+  contentMatchers = [
+    { name: 'Label', extractor: (referenceData: ReferenceData) => referenceData.title },
+    { name: 'Description', extractor: (referenceData: ReferenceData) => referenceData.description }
+  ];
+
+  contentExtractors = this.contentMatchers.map(m => m.extractor);
+
   /* @ngInject */
   constructor(private $scope: SearchReferenceDataScope,
               private $uibModalInstance: IModalServiceInstance,
@@ -112,6 +120,7 @@ export class SearchReferenceDataModalController {
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
     $scope.$watch(() => this.showGroup, () => this.search());
+    $scope.$watchCollection(() => this.contentExtractors, () => this.search());
   }
 
   get showExcluded() {
@@ -190,7 +199,7 @@ export class SearchReferenceDataModalController {
   }
 
   private textFilter(referenceData: ReferenceData): boolean {
-    return !this.searchText || this.localizer.translate(referenceData.title).toLowerCase().includes(this.searchText.toLowerCase());
+    return !this.searchText || any(this.contentExtractors, extractor => localizableContains(extractor(referenceData), this.searchText));
   }
 
   private excludedFilter(referenceData: ReferenceData): boolean {

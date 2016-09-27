@@ -7,6 +7,7 @@ import { localizableContains } from '../../utils/language';
 import { isDefined } from '../../utils/object';
 import { Vocabulary, LanguageContext } from '../../services/entities';
 import { LanguageService, Localizer } from '../../services/languageService';
+import { any } from '../../utils/array';
 
 const noExclude = (vocabulary: Vocabulary) => <string> null;
 
@@ -38,6 +39,13 @@ class SearchVocabularyController {
   loadingResults: boolean;
   private localizer: Localizer;
 
+  contentMatchers = [
+    { name: 'Label', extractor: (vocabulary: Vocabulary) => vocabulary.title },
+    { name: 'Description', extractor: (vocabulary: Vocabulary) => vocabulary.description }
+  ];
+
+  contentExtractors = this.contentMatchers.map(m => m.extractor);
+
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
@@ -56,6 +64,7 @@ class SearchVocabularyController {
 
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showExcluded, () => this.search());
+    $scope.$watchCollection(() => this.contentExtractors, () => this.search());
   }
 
   get showExcluded() {
@@ -84,7 +93,7 @@ class SearchVocabularyController {
   }
 
   private textFilter(vocabulary: Vocabulary): boolean {
-    return !this.searchText || localizableContains(vocabulary.title, this.searchText);
+    return !this.searchText || any(this.contentExtractors, extractor => localizableContains(extractor(vocabulary), this.searchText));
   }
 
   private excludedFilter(vocabulary: Vocabulary): boolean {

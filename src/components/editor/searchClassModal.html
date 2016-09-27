@@ -43,6 +43,16 @@
                 <label><input type="checkbox" ng-model="ctrl.showProfiles">{{'Show classes defined in profiles' | translate}}</label>
               </div>
             </div>
+
+            <div class="form-group">
+              <label translate>Match to content</label>
+
+              <div class="input-group input-group-md">
+                <div class="checkbox" ng-repeat="matcher in ctrl.contentMatchers">
+                  <label><input class="" type="checkbox" checklist-model="ctrl.contentExtractors" checklist-value="matcher.extractor" /> {{matcher.name | translate}}</label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -51,6 +61,7 @@
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selectedItem" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
             <div><i ng-class="searchResult.glyphIconClass"></i><h5>{{searchResult | translateLabel: ctrl.model}}</h5></div>
+            <p>{{searchResult.comment | translateValue: ctrl.model}}</p>
             <p>{{searchResult.definedBy | translateLabel: ctrl.model}} <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small></p>
           </search-results>
         </div>

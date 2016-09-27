@@ -77,7 +77,7 @@ msgstr "Lisää koodisto"
 msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
-#: components/editor/classForm.html:76 components/editor/predicateForm.html:59
+#: components/editor/classForm.html:78 components/editor/predicateForm.html:59
 #: components/editor/propertyView.html:127 components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -302,7 +302,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/advancedSearchModal.html:41
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
-#: components/editor/searchClassModal.html:91
+#: components/editor/searchClassModal.html:103
 #: components/editor/searchConceptModal.html:93
 #: components/editor/searchPredicateModal.html:116
 #: components/group/addModelModal.html:24
@@ -1212,6 +1212,10 @@ msgstr ""
 "Järjestelmä on valitettavasti toistaiseksi poissa käytöstä huoltokatkon "
 "takia."
 
+#: components/editor/searchClassModal.html:48
+msgid "Match to content"
+msgstr "Hae sisällöstä"
+
 #: translations/titles.html:61
 msgid "Max count"
 msgstr "Enimmäismäärä"
@@ -1308,7 +1312,7 @@ msgstr "Ei vielä yhtään tietokomponenttikirjastoa"
 msgid "No profiles yet"
 msgstr "Ei vielä yhtään soveltamisprofiilia"
 
-#: components/editor/classForm.html:70
+#: components/editor/classForm.html:72
 msgid "No properties yet"
 msgstr "Ei vielä yhtään ominaisuutta"
 
