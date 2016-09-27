@@ -1,4 +1,14 @@
 import * as joint from 'jointjs';
+import { VisualizationClass, Dimensions, Property } from '../../services/entities';
+import {
+  formatClassName, formatAttributeNamesAndAnnotations, formatAssociationPropertyName,
+  formatCardinality
+} from './formatter';
+import { NameType } from '../../services/sessionService';
+import { Localizer } from '../../utils/language';
+
+const zIndexAssociation = 5;
+const zIndexClass = 10;
 
 export class LinkWithoutUnusedMarkup extends joint.dia.Link {
   markup = [
@@ -10,6 +20,7 @@ export class LinkWithoutUnusedMarkup extends joint.dia.Link {
   ].join('');
 
   toolMarkup = '';
+  updateModel: () => void;
 }
 
 const classMarkup = (shadow: boolean) => {
@@ -21,10 +32,105 @@ const classMarkup = (shadow: boolean) => {
           </g>`;
 };
 
-export class IowClassElement extends joint.shapes.uml.Class {
-  markup = classMarkup(false);
-}
-
 export class ShadowClass extends joint.shapes.uml.Class {
   markup = classMarkup(true);
+  updateModel = () => {};
+}
+
+export class IowClassElement extends joint.shapes.uml.Class {
+  markup = classMarkup(false);
+  updateModel: () => void;
+}
+
+interface IowCellOptions {
+  showCardinality: boolean;
+  showName: NameType;
+  localizer: Localizer;
+}
+
+export function createClassElement(klass: VisualizationClass, optionsProvider: () => IowCellOptions) {
+
+  const options = optionsProvider();
+  const className = formatClassName(klass, options.showName, options.localizer);
+  const [propertyNames, propertyAnnotations] = formatAttributeNamesAndAnnotations(klass.properties, options.showCardinality, options.showName, options.localizer);
+  const classConstructor = klass.resolved ? IowClassElement : ShadowClass;
+
+  const classCell = new classConstructor({
+    id: klass.id.uri,
+    size: calculateElementDimensions(className, propertyNames),
+    name: className,
+    attributes: propertyNames,
+    attrs: {
+      '.uml-class-name-text': {
+        'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
+      },
+      '.uml-class-attrs-text': {
+        'annotations': propertyAnnotations
+      }
+    },
+    z: zIndexClass
+  });
+
+  classCell.updateModel = () => {
+    const newOptions = optionsProvider();
+    const [newPropertyNames, newPropertyAnnotations] = formatAttributeNamesAndAnnotations(klass.properties, newOptions.showCardinality, newOptions.showName, newOptions.localizer);
+    const newClassName = formatClassName(klass, newOptions.showName, newOptions.localizer);
+    const previousPosition = classCell.position();
+    const previousSize = classCell.getBBox();
+    const newSize = calculateElementDimensions(newClassName, newPropertyNames);
+    const xd = (newSize.width - previousSize.width) / 2;
+    const yd = (newSize.height - previousSize.height) / 2;
+    classCell.prop('name', newClassName);
+    classCell.prop('attributes', newPropertyNames);
+    classCell.attr({
+      '.uml-class-attrs-text': {
+        'annotations': newPropertyAnnotations
+      }
+    });
+    classCell.prop('size', calculateElementDimensions(newClassName, newPropertyNames));
+    classCell.position(previousPosition.x - xd, previousPosition.y - yd);
+  };
+
+  return classCell;
+}
+
+export function createAssociationLink(klass: VisualizationClass, association: Property, optionsProvider: () => IowCellOptions) {
+
+  const options = optionsProvider();
+
+  const associationCell = new LinkWithoutUnusedMarkup({
+    source: { id: klass.id.uri },
+    target: { id: association.valueClass.uri },
+    connector: { name: 'normal' },
+    attrs: {
+      '.marker-target': {
+        d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
+      }
+    },
+    internalId: association.internalId.uri,
+    labels: [
+      { position: 0.5, attrs: { text: { text: formatAssociationPropertyName(association, options.showName, options.localizer), id: association.internalId.toString() } } },
+      { position: .9, attrs: { text: { text: options.showCardinality ? formatCardinality(association) : ''} } }
+    ],
+    z: zIndexAssociation
+  });
+
+
+  associationCell.updateModel = () => {
+    const newOptions = optionsProvider();
+    associationCell.prop('labels/0/attrs/text/text', formatAssociationPropertyName(association, newOptions.showName, newOptions.localizer));
+    if (newOptions.showCardinality) {
+      associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
+    }
+  };
+
+  return associationCell;
+}
+
+function calculateElementDimensions(className: string, propertyNames: string[]): Dimensions {
+  const propertyLengths = _.map(propertyNames, name => name.length);
+  const width = _.max([_.max(propertyLengths) * 6.5, className.length * 6.5, 150]);
+  const height = 12 * propertyNames.length + 35;
+
+  return { width, height };
 }

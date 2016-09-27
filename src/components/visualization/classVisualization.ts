@@ -2,7 +2,7 @@ import { IAttributes, IQService, IScope, ITimeoutService, IPromise } from 'angul
 import { LanguageService } from '../../services/languageService';
 import {
   Class, Model, VisualizationClass, Property, Predicate,
-  AssociationTargetPlaceholderClass, AssociationPropertyPosition, ModelPositions, Coordinate, Dimensions
+  AssociationTargetPlaceholderClass, ModelPositions, Coordinate, AssociationPropertyPosition
 } from '../../services/entities';
 import * as _ from 'lodash';
 import { ModelService, ClassVisualization } from '../../services/modelService';
@@ -10,24 +10,20 @@ import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import * as joint from 'jointjs';
 import { module as mod }  from './module';
 import { Uri } from '../../services/uri';
-import { normalizeAsArray, arraysAreEqual, first } from '../../utils/array';
+import { first, arraysAreEqual, normalizeAsArray } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
-import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils/entity';
 import { SessionService, FocusLevel, NameType } from '../../services/sessionService';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { VisualizationPopoverDetails } from './popover';
-import { ShadowClass, LinkWithoutUnusedMarkup, IowClassElement } from './diagram';
+import { ShadowClass, createClassElement, createAssociationLink } from './diagram';
 import { PaperHolder } from './paperHolder';
 import { ClassInteractionListener } from './contract';
 import { moveOrigin, scale, focusElement, centerToElement, scaleToFit } from './paperUtil';
 import { adjustElementLinks, layoutGraph, VertexAction } from './layout';
 import { Localizer } from '../../utils/language';
-import {
-  formatClassName, formatAssociationPropertyName,
-  formatCardinality, formatAttributeNamesAndAnnotations
-} from './formatter';
 import { ifChanged } from '../../utils/angular';
+import { coordinatesAreEqual, centerToPosition, copyVertices } from '../../utils/entity';
 
 
 mod.directive('classVisualization', () => {
@@ -97,9 +93,6 @@ mod.directive('classVisualization', () => {
     controller: ClassVisualizationController
   };
 });
-
-const zIndexAssociation = 5;
-const zIndexClass = 10;
 
 class ClassVisualizationController implements ChangeListener<Class|Predicate>, ClassInteractionListener {
 
@@ -674,85 +667,28 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     return cells;
   }
 
-  private createClassElement(paper: joint.dia.Paper, klass: VisualizationClass) {
+  private get iowCellOptions() {
+    return {
+      showCardinality: this.model.isOfType('profile'),
+      showName: this.showName,
+      localizer: this.localizer
+    };
+  }
 
-    function calculateElementDimensions(className: string, propertyNames: string[]): Dimensions {
-      const propertyLengths = _.map(propertyNames, name => name.length);
-      const width = _.max([_.max(propertyLengths) * 6.5, className.length * 6.5, 150]);
-      const height = 12 * propertyNames.length + 35;
+  private createClassElement(paper: joint.dia.Paper, klass: VisualizationClass): joint.dia.Element {
 
-      return { width, height };
-    }
-
-    // FIXME: this method does not work with firefox
-    function isRightClick() {
-      const event = window.event;
-      if (event instanceof MouseEvent) {
-        return event.which === 3;
-      } else {
-        return false;
-      }
-    }
-
-    const showCardinality = this.model.isOfType('profile');
+    const classCell = createClassElement(klass, () => this.iowCellOptions);
     const classPosition = this.modelPositions.getClass(klass.id);
 
-    const className = formatClassName(klass, this.showName, this.localizer);
-    const [propertyNames, propertyAnnotations] = formatAttributeNamesAndAnnotations(klass.properties, showCardinality, this.showName, this.localizer);
-
-    const classConstructor = klass.resolved ? IowClassElement : ShadowClass;
-    const dimensions = calculateElementDimensions(className, propertyNames);
-
-    const classCell = new classConstructor({
-      id: klass.id.uri,
-      size: dimensions,
-      name: className,
-      attributes: propertyNames,
-      attrs: {
-        '.uml-class-name-text': {
-          'ref': '.uml-class-name-rect', 'ref-y': 0.6, 'ref-x': 0.5, 'text-anchor': 'middle', 'y-alignment': 'middle'
-        },
-        '.uml-class-attrs-text': {
-          'annotations': propertyAnnotations
-        }
-      },
-      position: classPosition.isDefined() ? centerToPosition(classPosition.coordinate, dimensions) : { x: 0, y: 0 },
-      z: zIndexClass
-    });
-
-    classCell.on('change:position', () => {
+    const onDiagramPositionChange = () => {
       const newCenter = classCell.getBBox().center();
       if (!coordinatesAreEqual(newCenter, classPosition.coordinate)) {
         adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, isRightClick() ? VertexAction.Reset : VertexAction.KeepNormal);
         classPosition.setCoordinate(newCenter);
       }
-    });
-
-    const updateCellModel = () => {
-      this.queueWhenNotVisible(() => {
-        const [newPropertyNames, newPropertyAnnotations] = formatAttributeNamesAndAnnotations(klass.properties, showCardinality, this.showName, this.localizer);
-        const newClassName = formatClassName(klass, this.showName, this.localizer);
-        const previousPosition = classCell.position();
-        const previousSize = classCell.getBBox();
-        const newSize = calculateElementDimensions(newClassName, newPropertyNames);
-        const xd = (newSize.width - previousSize.width) / 2;
-        const yd = (newSize.height - previousSize.height) / 2;
-        classCell.prop('name', newClassName);
-        classCell.prop('attributes', newPropertyNames);
-        classCell.attr({
-          '.uml-class-attrs-text': {
-            'annotations': newPropertyAnnotations
-          }
-        });
-        classCell.prop('size', calculateElementDimensions(newClassName, newPropertyNames));
-        classCell.position(previousPosition.x - xd, previousPosition.y - yd);
-      });
     };
 
-    this.$scope.$watch(() => this.localizer.language, ifChanged(updateCellModel));
-    this.$scope.$watch(() => this.showName, ifChanged(updateCellModel));
-
-    classPosition.changeListeners.push(coordinate => {
+    const onPersistentPositionChange = (coordinate: Coordinate) => {
       const bbox = classCell.getBBox();
       const newPosition = centerToPosition(coordinate, bbox);
 
@@ -760,34 +696,25 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
         classCell.position(newPosition.x, newPosition.y);
         adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, VertexAction.KeepAll);
       }
-    });
+    };
+
+    // Initial position
+    onPersistentPositionChange(this.modelPositions.getClass(klass.id).coordinate);
+
+    classCell.on('change:position', onDiagramPositionChange);
+    classPosition.changeListeners.push(onPersistentPositionChange);
+
+    this.$scope.$watch(() => this.localizer.language, ifChanged(() => this.queueWhenNotVisible(classCell.updateModel)));
+    this.$scope.$watch(() => this.showName, ifChanged(() => this.queueWhenNotVisible(classCell.updateModel)));
 
     return classCell;
   }
 
-  private createAssociationLink(klass: VisualizationClass, association: Property, position: AssociationPropertyPosition) {
+  private createAssociationLink(klass: VisualizationClass, association: Property, position: AssociationPropertyPosition): joint.dia.Link {
 
-    const showCardinality = this.model.isOfType('profile');
+    const associationCell = createAssociationLink(klass, association, () => this.iowCellOptions);
 
-    const associationCell = new LinkWithoutUnusedMarkup({
-      source: { id: klass.id.uri },
-      target: { id: association.valueClass.uri },
-      connector: { name: 'normal' },
-      attrs: {
-        '.marker-target': {
-          d: 'M 10 0 L 0 5 L 10 10 L 3 5 z'
-        }
-      },
-      internalId: association.internalId.uri,
-      labels: [
-        { position: 0.5, attrs: { text: { text: formatAssociationPropertyName(association, this.showName, this.localizer), id: association.internalId.toString() } } },
-        { position: .9, attrs: { text: { text: showCardinality ? formatCardinality(association) : ''} } }
-      ],
-      vertices: copyVertices(position.vertices),
-      z: zIndexAssociation
-    });
-
-    associationCell.on('change:vertices', () => {
+    const onDiagramVerticesChange = () => {
       const propertyPosition = this.modelPositions.getAssociationProperty(klass.id, association.internalId);
       const vertices = normalizeAsArray(associationCell.get('vertices'));
       const oldVertices = propertyPosition.vertices;
@@ -797,28 +724,36 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
         // TODO do actual calculation
         associationCell.prop('labels/0/position', 0.5);
       }
-    });
-
-    const updateCellModel = () => {
-      this.queueWhenNotVisible(() => {
-        associationCell.prop('labels/0/attrs/text/text', formatAssociationPropertyName(association, this.showName, this.localizer));
-        if (showCardinality) {
-          associationCell.prop('labels/1/attrs/text/text', formatCardinality(association));
-        }
-      });
     };
 
-    this.$scope.$watch(() => this.localizer.language, ifChanged(updateCellModel));
-    this.$scope.$watch(() => this.showName, ifChanged(updateCellModel));
-
-    position.changeListeners.push(vertices => {
+    const onPersistentVerticesChange = (vertices: Coordinate[]) => {
       const oldVertices = normalizeAsArray(associationCell.get('vertices'));
 
       if (!arraysAreEqual(vertices, oldVertices, coordinatesAreEqual)) {
         associationCell.set('vertices', copyVertices(vertices));
       }
-    });
+    };
+
+    // Initial vertices
+    onPersistentVerticesChange(position.vertices);
+
+    associationCell.on('change:vertices', onDiagramVerticesChange);
+    position.changeListeners.push(onPersistentVerticesChange);
+
+    this.$scope.$watch(() => this.localizer.language, ifChanged(() => this.queueWhenNotVisible(associationCell.updateModel)));
+    this.$scope.$watch(() => this.showName, ifChanged(() => this.queueWhenNotVisible(associationCell.updateModel)));
 
     return associationCell;
+  }
+}
+
+
+// FIXME: this method does not work with firefox
+function isRightClick() {
+  const event = window.event;
+  if (event instanceof MouseEvent) {
+    return event.which === 3;
+  } else {
+    return false;
   }
 }
