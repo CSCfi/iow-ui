@@ -18,6 +18,7 @@ import './buttonWithOptions';
 import './clipboard';
 import './export';
 import './float';
+import './highlight';
 import './history';
 import './keyControl';
 import './keyControlItem';
