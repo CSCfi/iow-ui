@@ -14,7 +14,7 @@ import { normalizeAsArray, arraysAreEqual, first } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { copyVertices, coordinatesAreEqual, centerToPosition } from '../../utils/entity';
-import { SessionService, FocusLevel } from '../../services/sessionService';
+import { SessionService, FocusLevel, NameType } from '../../services/sessionService';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { VisualizationPopoverDetails } from './popover';
 import { ShadowClass, LinkWithoutUnusedMarkup, IowClassElement } from './diagram';
@@ -24,7 +24,7 @@ import { moveOrigin, scale, focusElement, centerToElement, scaleToFit } from './
 import { adjustElementLinks, layoutGraph, VertexAction } from './layout';
 import { Localizer } from '../../utils/language';
 import {
-  NameType, formatClassName, formatAssociationPropertyName,
+  formatClassName, formatAssociationPropertyName,
   formatCardinality, formatAttributeNamesAndAnnotations
 } from './formatter';
 import { ifChanged } from '../../utils/angular';
@@ -104,7 +104,6 @@ const zIndexClass = 10;
 class ClassVisualizationController implements ChangeListener<Class|Predicate>, ClassInteractionListener {
 
   selection: Class|Predicate;
-  showName = NameType.LABEL;
 
   model: Model;
   changeNotifier: ChangeNotifier<Class|Predicate>;
@@ -163,6 +162,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
   set selectionFocus(value: FocusLevel) {
     this.sessionService.visualizationFocus = value;
+  }
+
+  get showName() {
+    return this.sessionService.showName || NameType.LABEL;
+  }
+
+  set showName(value: NameType) {
+    this.sessionService.showName = value;
   }
 
   get paper(): joint.dia.Paper {

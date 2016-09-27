@@ -2,12 +2,7 @@ import { Property, VisualizationClass } from '../../services/entities';
 import { isDefined } from '../../utils/object';
 import { DataType } from '../../services/dataTypes';
 import { Localizer } from '../../utils/language';
-
-export enum NameType {
-  LABEL,
-  ID,
-  LOCAL_ID
-}
+import { NameType } from '../../services/sessionService';
 
 export function formatDataTypeName(dataType: DataType, showName: NameType, localizer: Localizer) {
   switch (showName) {

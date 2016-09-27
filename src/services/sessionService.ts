@@ -8,6 +8,7 @@ const showKey = 'show';
 const selectionWidthKey = 'selectionWidth';
 const visualizationFocus = 'visualizationFocus';
 const sortAlphabetically = 'sortAlphabetically';
+const showName = 'showName';
 
 export enum FocusLevel {
   DEPTH1 = 1,
@@ -15,6 +16,12 @@ export enum FocusLevel {
   DEPTH3 = 3,
   INFINITE_DEPTH = 4,
   ALL = 5
+}
+
+export enum NameType {
+  LABEL,
+  ID,
+  LOCAL_ID
 }
 
 export class SessionService {
@@ -74,5 +81,13 @@ export class SessionService {
 
   set sortAlphabetically(value: boolean) {
     this.set(sortAlphabetically, value);
+  }
+
+  get showName(): NameType {
+    return this.get<NameType>(showName);
+  }
+
+  set showName(value: NameType) {
+    this.set(showName, value);
   }
 }
