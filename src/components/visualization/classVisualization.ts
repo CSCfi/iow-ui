@@ -264,14 +264,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     });
   }
 
-  layoutPositionsAndFocus(forceFitToAllContent: boolean) {
-    const withoutPositionIds = this.classVisualization.getClassIdsWithoutPosition();
-    const layoutAll = withoutPositionIds.length === this.classVisualization.classes.length;
-    const ids = layoutAll ? null : withoutPositionIds;
-
-    return this.layoutAndFocus(forceFitToAllContent, ids);
-  }
-
   onDelete(item: Class|Predicate) {
     this.queueWhenNotVisible(() => {
       if (item instanceof Class) {
@@ -299,6 +291,14 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
         this.updateClassAndLayout(item);
       }
     });
+  }
+
+  layoutPositionsAndFocus(forceFitToAllContent: boolean) {
+    const withoutPositionIds = this.classVisualization.getClassIdsWithoutPosition();
+    const layoutAll = withoutPositionIds.length === this.classVisualization.classes.length;
+    const ids = layoutAll ? null : withoutPositionIds;
+
+    return this.layoutAndFocus(forceFitToAllContent, ids);
   }
 
   layoutAndFocus(forceFitToAllContent: boolean, onlyClassIds?: Uri[] /* // undefined ids means layout all */) {
@@ -699,7 +699,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     };
 
     // Initial position
-    onPersistentPositionChange(this.modelPositions.getClass(klass.id).coordinate);
+    const position = this.modelPositions.getClass(klass.id);
+
+    if (position.isDefined()) {
+      onPersistentPositionChange(this.modelPositions.getClass(klass.id).coordinate);
+    }
 
     classCell.on('change:position', onDiagramPositionChange);
     classPosition.changeListeners.push(onPersistentPositionChange);
