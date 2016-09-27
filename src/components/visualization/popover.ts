@@ -19,7 +19,7 @@ mod.directive('visualizationPopover', () => {
     controllerAs: 'ctrl',
     controller: VisualizationPopoverController,
     template: `
-       <div class="popover left" style="position: absolute; display: block" ng-style="ctrl.style">
+       <div class="popover left" ng-style="ctrl.style">
          <div class="arrow"></div>
          <div class="popover-inner">
            <div class="popover-content">{{ctrl.details.comment | translateValue: ctrl.context}}</div>

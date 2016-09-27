@@ -819,6 +819,8 @@ modal-body {
   }
 
   .popover {
+    position: absolute;
+    display: block;
     background-color: #555555;
     background-color: rgba(85, 85, 85, 0.9);
     border-color: #555555;
