@@ -818,6 +818,19 @@ modal-body {
     }
   }
 
+  .popover {
+    background-color: #555555;
+    background-color: rgba(85, 85, 85, 0.9);
+    border-color: #555555;
+
+    .arrow {
+      border-left-color: #555555;
+      &:after {
+        border-left-color: rgba(85, 85, 85, 0.9);
+      }
+    }
+  }
+
   .enabled {
     background-color: $enabledColor;
   }
