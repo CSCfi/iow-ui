@@ -57,8 +57,8 @@
           <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selectedItem" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
-            <h5>{{searchResult.title | translateValue: ctrl.model}}</h5>
-            <p>{{searchResult.description | translateValue: ctrl.model}}</p>
+            <h5><highlight text="searchResult.title | translateValue: ctrl.model" search="ctrl.searchText"></highlight></h5>
+            <p><highlight text="searchResult.description | translateValue: ctrl.model" search="ctrl.searchText"></highlight></p>
             <p><span ng-repeat="group in searchResult.groups">{{group.title | translateValue: ctrl.model}}{{$last ? '' : ', '}}</span>
               <ajax-loading-indicator-small ng-if="ctrl.loadingSelection(searchResult)"></ajax-loading-indicator-small>
             </p>
