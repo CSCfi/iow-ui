@@ -1206,6 +1206,14 @@ modal-body {
 
     overflow-y: auto;
 
+    .origin {
+      font-size: x-small;
+      border-top: #dddddd solid 1px;
+      margin: 0 10px 0 0;
+      width: calc(100% - 10px);
+      display: inline-block;
+    }
+
     .search-result {
       font-size: small;
       cursor: pointer;

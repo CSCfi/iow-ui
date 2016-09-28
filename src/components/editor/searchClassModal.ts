@@ -13,8 +13,8 @@ import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
-import { localizableContains } from '../../utils/language';
 import { any } from '../../utils/array';
+import { valueContains } from '../../utils/searchFilter';
 
 export const noExclude = (item: AbstractClass) => <string> null;
 export const defaultTextForSelection = (klass: Class) => 'Use class';
@@ -78,7 +78,8 @@ class SearchClassController {
 
   contentMatchers = [
     { name: 'Label', extractor: (klass: ClassListItem) => klass.label },
-    { name: 'Description', extractor: (klass: ClassListItem) => klass.comment }
+    { name: 'Description', extractor: (klass: ClassListItem) => klass.comment },
+    { name: 'Identifier', extractor: (klass: ClassListItem) => klass.id.compact }
   ];
 
   contentExtractors = this.contentMatchers.map(m => m.extractor);
@@ -243,7 +244,7 @@ class SearchClassController {
   }
 
   private textFilter(klass: ClassListItem): boolean {
-    return !this.searchText || any(this.contentExtractors, extractor => localizableContains(extractor(klass), this.searchText));
+    return !this.searchText || any(this.contentExtractors, extractor => valueContains(extractor(klass), this.searchText));
   }
 
   private modelFilter(klass: ClassListItem): boolean {

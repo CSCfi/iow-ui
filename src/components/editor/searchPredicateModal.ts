@@ -18,7 +18,7 @@ import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from '../../services/classService';
 import { collectProperties, any } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
-import { localizableContains } from '../../utils/language';
+import { valueContains } from '../../utils/searchFilter';
 
 const noExclude = (item: PredicateListItem) => <string> null;
 
@@ -107,7 +107,8 @@ export class SearchPredicateController {
 
   contentMatchers = [
     { name: 'Label', extractor: (predicate: PredicateListItem) => predicate.label },
-    { name: 'Description', extractor: (predicate: PredicateListItem) => predicate.comment }
+    { name: 'Description', extractor: (predicate: PredicateListItem) => predicate.comment },
+    { name: 'Identifier', extractor: (predicate: PredicateListItem) => predicate.id.compact }
   ];
 
   contentExtractors = this.contentMatchers.map(m => m.extractor);
@@ -307,7 +308,7 @@ export class SearchPredicateController {
   }
 
   private textFilter(predicate: PredicateListItem): boolean {
-    return !this.searchText || any(this.contentExtractors, extractor => localizableContains(extractor(predicate), this.searchText));
+    return !this.searchText || any(this.contentExtractors, extractor => valueContains(extractor(predicate), this.searchText));
   }
 
   private modelFilter(predicate: PredicateListItem): boolean {
