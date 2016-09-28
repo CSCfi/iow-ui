@@ -42,6 +42,8 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
   } else if (type === 'free-url') {
     result['xsd:anyURI'] = isValidUri;
     result['url'] = value => !value || !isValidUri(value) || isValidUrl(value);
+  } else if (type === 'free-uri') {
+    result['xsd:anyURI'] = isValidUri;
   } else {
     result['xsd:anyURI'] = isValidUri;
     result['unknownNS'] = value => !value || !isValidUri(value) || value.namespaceResolves();
