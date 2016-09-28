@@ -31,8 +31,8 @@
         <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selected" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
-          <h5><highlight text="searchResult.title | translateValue" search="ctrl.searchText"></highlight></h5>
-          <p><highlight text="searchResult.description | translateValue: ctrl.context" search="ctrl.searchText"></highlight></p>
+          <h5><highlight text="searchResult.title" context="ctrl.context" search="ctrl.searchText"></highlight></h5>
+          <p><highlight text="searchResult.description" context="ctrl.context" search="ctrl.searchText"></highlight></p>
         </search-results>
       </div>
     </div>
