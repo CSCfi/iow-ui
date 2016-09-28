@@ -1,5 +1,5 @@
 import { IScope, IAttributes, INgModelController } from 'angular';
-import { Model, ImportedNamespace } from '../../services/entities';
+import { Model, ImportedNamespace, NamespaceType } from '../../services/entities';
 import { isValidPrefixLength, isValidPrefix } from './validators';
 import { module as mod }  from './module';
 
@@ -7,7 +7,8 @@ mod.directive('prefixInput', () => {
   return {
     scope: {
       model: '=?',
-      activeNamespace: '=?'
+      activeNamespace: '=?',
+      allowTechnical: '=?'
     },
     restrict: 'A',
     require: 'ngModel',
@@ -15,8 +16,27 @@ mod.directive('prefixInput', () => {
       ngModel.$validators['prefix'] = isValidPrefix;
       ngModel.$validators['length'] = isValidPrefixLength;
       ngModel.$validators['existingId'] = (prefix: string) => {
+
         const model = $scope.model;
-        return !model || !model.getPrefixNames($scope.activeNamespace).has(prefix);
+        const activeNamespace = $scope.activeNamespace;
+        const allowTechnical = $scope.allowTechnical;
+
+        if (!model) {
+          return true;
+        } else {
+          for (const modelNamespace of model.getNamespaces()) {
+            if (modelNamespace.prefix === prefix) {
+
+              const isTechnical = modelNamespace.type === NamespaceType.IMPLICIT_TECHNICAL;
+              const isActiveNamespace = activeNamespace && activeNamespace.prefix !== modelNamespace.prefix;
+
+              if ((!isTechnical || !allowTechnical) && !isActiveNamespace) {
+                return false;
+              }
+            }
+          }
+          return true;
+        }
       };
     }
   };
@@ -25,4 +45,5 @@ mod.directive('prefixInput', () => {
 interface PrefixInputScope extends IScope {
   model: Model;
   activeNamespace: ImportedNamespace;
+  allowTechnical: boolean;
 }

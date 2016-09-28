@@ -356,30 +356,6 @@ export class Model extends AbstractModel {
     _.remove(this.referenceDatas, referenceData);
   }
 
-  getNamespaceNames(exclude?: ImportedNamespace): Set<string> {
-    const namespaceNames = new Set<string>();
-
-    for (const namespace of this.getNamespaces()) {
-      if (!exclude || exclude.namespace !== namespace.url) {
-        namespaceNames.add(namespace.url);
-      }
-    }
-
-    return namespaceNames;
-  }
-
-  getPrefixNames(exclude?: ImportedNamespace): Set<string> {
-    const prefixNames = new Set<string>();
-
-    for (const namespace of this.getNamespaces()) {
-      if (!exclude || exclude.prefix !== namespace.prefix) {
-        prefixNames.add(namespace.prefix);
-      }
-    }
-
-    return prefixNames;
-  }
-
   getNamespaces() {
     const namespaces: Namespace[] = [];
     const requiredNamespacePrefixes = new Set<string>();
@@ -573,7 +549,6 @@ export class ImportedNamespace extends GraphNode {
   label: Localizable;
   private _prefix: string;
   private _namespace: Url;
-  namespaceType: NamespaceType;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -581,13 +556,15 @@ export class ImportedNamespace extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this._namespace = graph.preferredXMLNamespaceName;
     this.prefix = graph.preferredXMLNamespacePrefix;
+  }
 
+  get namespaceType() {
     if (this.isOfType('resource')) {
-      this.namespaceType = NamespaceType.EXTERNAL;
+      return NamespaceType.EXTERNAL;
     } else if (this.isOfType('standard')) {
-      this.namespaceType = NamespaceType.TECHNICAL;
+      return NamespaceType.TECHNICAL;
     } else {
-      this.namespaceType = NamespaceType.MODEL;
+      return NamespaceType.MODEL;
     }
   }
 
@@ -632,6 +609,7 @@ export class ImportedNamespace extends GraphNode {
   serializationValues(clone: boolean): {} {
     return {
       '@id': this.id.uri,
+      '@type': reverseMapTypeObject(this.type),
       label: serializeLocalizable(this.label),
       preferredXMLNamespaceName: this.namespace,
       preferredXMLNamespacePrefix: this.prefix
