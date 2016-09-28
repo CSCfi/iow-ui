@@ -83,7 +83,7 @@ export class ModelService {
     return this.$http.delete(config.apiEndpointWithName('model'), { params: { id: id.uri } });
   }
 
-  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: Type): IPromise<Model> {
+  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: Type, redirect?: Uri): IPromise<Model> {
     function mapEndpoint() {
       switch (type) {
         case 'library':
@@ -100,7 +100,8 @@ export class ModelService {
         label: upperCaseFirst(label),
         lang: lang[0],
         langList: lang.join(' '),
-        group: groupId.uri
+        group: groupId.uri,
+        redirect: redirect.uri
       }
     })
       .then(response => this.entities.deserializeModel(response.data))

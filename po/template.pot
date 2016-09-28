@@ -298,16 +298,16 @@ msgstr ""
 #: components/advancedSearchModal.html:41
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
-#: components/editor/searchClassModal.html:103
+#: components/editor/searchClassModal.html:102
 #: components/editor/searchConceptModal.html:93
-#: components/editor/searchPredicateModal.html:116
-#: components/group/addModelModal.html:24
+#: components/editor/searchPredicateModal.html:127
+#: components/group/addModelModal.html:31
 #: components/model/addEditLinkModal.html:20
 #: components/model/addEditNamespaceModal.html:30
 #: components/model/editReferenceDataModal.html:26
 #: components/model/searchNamespaceModal.html:47
-#: components/model/searchReferenceDataModal.html:94
-#: components/model/searchVocabularyModal.html:27
+#: components/model/searchReferenceDataModal.html:104
+#: components/model/searchVocabularyModal.html:42
 msgid "Cancel"
 msgstr ""
 
@@ -496,11 +496,11 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/titles.html:71
+#: translations/titles.html:72
 msgid "Constraint classes"
 msgstr ""
 
-#: translations/titles.html:71
+#: translations/titles.html:72
 msgid "Constraint classes info"
 msgstr ""
 
@@ -564,8 +564,8 @@ msgstr ""
 msgid "Create and use attribute"
 msgstr ""
 
-#: components/group/addModelModal.html:25
-#: components/model/searchReferenceDataModal.html:96
+#: components/group/addModelModal.html:32
+#: components/model/searchReferenceDataModal.html:106
 msgid "Create new"
 msgstr ""
 
@@ -597,11 +597,11 @@ msgstr ""
 msgid "Created at"
 msgstr ""
 
-#: translations/titles.html:74
+#: translations/titles.html:75
 msgid "Creator"
 msgstr ""
 
-#: translations/titles.html:74
+#: translations/titles.html:75
 msgid "Creator info"
 msgstr ""
 
@@ -964,6 +964,7 @@ msgstr ""
 #: components/model/conceptEditorModal.html:23
 #: components/model/searchNamespaceModal.html:26
 #: components/model/searchReferenceDataModal.html:20
+#: components/model/searchVocabularyModal.html:16
 msgid "Filter results"
 msgstr ""
 
@@ -1202,6 +1203,9 @@ msgid "Maintenance content"
 msgstr ""
 
 #: components/editor/searchClassModal.html:48
+#: components/editor/searchPredicateModal.html:59
+#: components/model/searchReferenceDataModal.html:44
+#: components/model/searchVocabularyModal.html:19
 msgid "Match to content"
 msgstr ""
 
@@ -1282,6 +1286,14 @@ msgstr ""
 
 #: translations/titles.html:26
 msgid "Namespace label info"
+msgstr ""
+
+#: translations/titles.html:70
+msgid "Namespace redirection"
+msgstr ""
+
+#: translations/titles.html:70
+msgid "Namespace redirection info"
 msgstr ""
 
 #: components/form/errorMessages.html:15
@@ -1591,11 +1603,11 @@ msgstr ""
 msgid "Reusable predicate information"
 msgstr ""
 
-#: translations/titles.html:72
+#: translations/titles.html:73
 msgid "Root class"
 msgstr ""
 
-#: translations/titles.html:72
+#: translations/titles.html:73
 msgid "Root class info"
 msgstr ""
 
@@ -1910,7 +1922,7 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: components/model/searchReferenceDataModal.html:97
+#: components/model/searchReferenceDataModal.html:107
 #: translations/misc.html:95
 msgid "Use selection"
 msgstr ""

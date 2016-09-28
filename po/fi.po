@@ -302,16 +302,16 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/advancedSearchModal.html:41
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
-#: components/editor/searchClassModal.html:103
+#: components/editor/searchClassModal.html:102
 #: components/editor/searchConceptModal.html:93
-#: components/editor/searchPredicateModal.html:116
-#: components/group/addModelModal.html:24
+#: components/editor/searchPredicateModal.html:127
+#: components/group/addModelModal.html:31
 #: components/model/addEditLinkModal.html:20
 #: components/model/addEditNamespaceModal.html:30
 #: components/model/editReferenceDataModal.html:26
 #: components/model/searchNamespaceModal.html:47
-#: components/model/searchReferenceDataModal.html:94
-#: components/model/searchVocabularyModal.html:27
+#: components/model/searchReferenceDataModal.html:104
+#: components/model/searchVocabularyModal.html:42
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -565,8 +565,8 @@ msgstr "Luo assosiaatio ja käytä"
 msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
-#: components/group/addModelModal.html:25
-#: components/model/searchReferenceDataModal.html:96
+#: components/group/addModelModal.html:32
+#: components/model/searchReferenceDataModal.html:106
 msgid "Create new"
 msgstr "Luo uusi"
 
@@ -973,6 +973,7 @@ msgstr "Suomeksi"
 #: components/model/conceptEditorModal.html:23
 #: components/model/searchNamespaceModal.html:26
 #: components/model/searchReferenceDataModal.html:20
+#: components/model/searchVocabularyModal.html:16
 msgid "Filter results"
 msgstr "Rajaa hakutuloksia"
 
@@ -1213,6 +1214,9 @@ msgstr ""
 "takia."
 
 #: components/editor/searchClassModal.html:48
+#: components/editor/searchPredicateModal.html:59
+#: components/model/searchReferenceDataModal.html:44
+#: components/model/searchVocabularyModal.html:19
 msgid "Match to content"
 msgstr "Hae sisällöstä"
 
@@ -1291,6 +1295,10 @@ msgstr "Nimiavaruuden nimi"
 #: translations/titles.html:26
 msgid "Namespace label info"
 msgstr ""
+
+#: translations/misc.html:245
+msgid "Namespace redirection"
+msgstr "Nimiavaruuden uudelleenohjaus"
 
 #: components/form/errorMessages.html:15
 msgid "Negative error"
@@ -1916,7 +1924,7 @@ msgstr "Käytä attribuuttia"
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/model/searchReferenceDataModal.html:97 translations/misc.html:95
+#: components/model/searchReferenceDataModal.html:107 translations/misc.html:95
 msgid "Use selection"
 msgstr "Käytä valintaa"
 

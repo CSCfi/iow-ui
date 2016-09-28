@@ -16,6 +16,13 @@
         <input id="name" type="text" class="form-control" required string-input="modelLabel" ng-model="ctrl.label" />
       </div>
     </editable>
+
+    <editable data-title="Namespace redirection">
+      <div class="input-group input-group-md">
+        <input id="redirect" type="text" class="form-control" uri-input="free-uri" context="" ng-model="ctrl.redirect" />
+      </div>
+    </editable>
+
   </modal-body>
 
   <modal-buttons>

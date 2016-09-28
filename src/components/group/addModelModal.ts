@@ -11,7 +11,7 @@ export class AddModelModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(groupId: Uri, type: Type): IPromise<{prefix: string, label: string, language: Language[], type: Type}> {
+  open(groupId: Uri, type: Type): IPromise<{prefix: string, label: string, language: Language[], type: Type, redirect: Uri}> {
     return this.$uibModal.open({
       template: require('./addModelModal.html'),
       size: 'small',
@@ -31,6 +31,7 @@ class AddModelController {
   prefix: string;
   label: string;
   language: Language[] = ['fi', 'en'];
+  redirect: Uri;
   submitError: string;
 
   /* @ngInject */
@@ -40,7 +41,8 @@ class AddModelController {
   cancel = this.$uibModalInstance.dismiss;
   create() {
     // service call only for validation purposes
-    this.modelService.newModel(this.prefix, this.label, this.groupId, this.language, this.type)
-      .then(() => this.$uibModalInstance.close({prefix: this.prefix, label: this.label, language: this.language, type: this.type}), err => this.submitError = err.data.errorMessage);
+    this.modelService.newModel(this.prefix, this.label, this.groupId, this.language, this.type, this.redirect)
+      .then(() => this.$uibModalInstance.close({prefix: this.prefix, label: this.label, language: this.language, type: this.type, redirect: this.redirect}),
+        err => this.submitError = err.data.errorMessage);
   }
 }

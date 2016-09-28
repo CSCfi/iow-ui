@@ -14,7 +14,8 @@ mod.directive('newModel', () => {
       label: '=',
       group: '=',
       languages: '=',
-      type: '='
+      type: '=',
+      redirect: '='
     },
     template: require('./newModel.html'),
     controllerAs: 'ctrl',
@@ -30,6 +31,7 @@ export class NewModelController {
   group: Uri;
   languages: Language[];
   type: Type;
+  redirect: Uri;
 
   loading: boolean;
   model: Model;
@@ -40,7 +42,7 @@ export class NewModelController {
               private modelService: ModelService,
               public languageService: LanguageService) {
 
-    this.modelService.newModel(this.prefix, this.label, this.group, this.languages, this.type)
+    this.modelService.newModel(this.prefix, this.label, this.group, this.languages, this.type, this.redirect)
       .then(model => this.model = model)
       .then(() => this.loading = false);
 
