@@ -6,7 +6,7 @@ import { ModelService } from '../../services/modelService';
 import { ImportedNamespace, Model } from '../../services/entities';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
-import { Language, localizableContains } from '../../utils/language';
+import { Language } from '../../utils/language';
 import { isDefined } from '../../utils/object';
 
 const noExclude = (ns: ImportedNamespace) => <string> null;
