@@ -51,69 +51,37 @@ enum Direction {
   BOTH
 }
 
+export function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
+
+  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), isVisible);
+  const scale = getScale(paper);
+  const padding = 45;
+
+  const contentBBox = getContentBBox(paper, graph, visibleElements);
+  const fittingBBox = {
+    x: paper.options.origin.x + padding,
+    y: paper.options.origin.y + padding,
+    width: paper.options.width - padding * 2,
+    height: paper.options.height - padding * 2
+  };
+
+  const newScale = Math.min(fittingBBox.width / contentBBox.width * scale, fittingBBox.height / contentBBox.height * scale);
+
+  paper.scale(Math.max(Math.min(newScale, maxScale), minScale));
+  const contentBBoxAfterScaling = getContentBBox(paper, graph, visibleElements);
+
+  const newOx = fittingBBox.x - contentBBoxAfterScaling.x;
+  const newOy = fittingBBox.y - contentBBoxAfterScaling.y;
+
+  paper.setOrigin(newOx, newOy);
+}
+
 export function focusElement(paper: joint.dia.Paper, graph: joint.dia.Graph, element: joint.dia.Element, forceFitToAllContent: boolean, selectionFocus: FocusLevel) {
 
-  function resetFocusOnAllCells() {
-    for (const cell of graph.getCells()) {
-      const jqueryElement = joint.V(paper.findViewByModel(cell).el);
-
-      jqueryElement.removeClass(selectedClass);
-
-      if (element && selectionFocus !== FocusLevel.ALL) {
-        jqueryElement.addClass(backgroundClass);
-      } else {
-        jqueryElement.removeClass(backgroundClass);
-      }
-    }
-  }
-
-  function applyFocus(e: joint.dia.Element, direction: Direction, depth: number, visitedOutgoing: Set<joint.dia.Element>, visitedIncoming: Set<joint.dia.Element>) {
-
-    if (selectionFocus === FocusLevel.ALL) {
-      return;
-    }
-
-    const optionsOutgoing = { outbound: true, inbound: false };
-    const optionsIncoming = { outbound: false, inbound: true };
-
-    joint.V(paper.findViewByModel(e).el).removeClass(backgroundClass);
-
-    if (selectionFocus === FocusLevel.INFINITE_DEPTH || depth <= selectionFocus) {
-
-      if (direction === Direction.INCOMING || direction === Direction.BOTH) {
-
-        for (const association of graph.getConnectedLinks(<joint.dia.Cell> e, optionsIncoming)) {
-          joint.V(paper.findViewByModel(association).el).removeClass(backgroundClass);
-        }
-
-        for (const klass of graph.getNeighbors(e, optionsIncoming)) {
-          if (!visitedIncoming.has(klass)) {
-            visitedIncoming.add(klass);
-            applyFocus(klass, Direction.INCOMING, depth + 1, visitedOutgoing, visitedIncoming);
-          }
-        }
-      }
-
-      if (direction === Direction.OUTGOING || direction === Direction.BOTH) {
-
-        for (const association of graph.getConnectedLinks(<joint.dia.Cell> e, optionsOutgoing)) {
-          joint.V(paper.findViewByModel(association).el).removeClass(backgroundClass);
-        }
-
-        for (const klass of graph.getNeighbors(e, optionsOutgoing)) {
-          if (!visitedOutgoing.has(klass)) {
-            visitedOutgoing.add(klass);
-            applyFocus(klass, Direction.OUTGOING, depth + 1, visitedOutgoing, visitedIncoming);
-          }
-        }
-      }
-    }
-  }
-
-  resetFocusOnAllCells();
+  resetFocusOnAllCells(paper, graph, element, selectionFocus);
 
   if (element) {
-    applyFocus(element, Direction.BOTH, 1, new Set<joint.dia.Element>(), new Set<joint.dia.Element>());
+    applyFocus(paper, graph, element, selectionFocus, Direction.BOTH, 1, new Set<joint.dia.Element>(), new Set<joint.dia.Element>());
     joint.V(paper.findViewByModel(element).el).addClass(selectedClass);
   }
 
@@ -130,63 +98,97 @@ export function focusElement(paper: joint.dia.Paper, graph: joint.dia.Graph, ele
   }
 }
 
-export function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
+function resetFocusOnAllCells(paper: joint.dia.Paper, graph: joint.dia.Graph, element: joint.dia.Element, selectionFocus: FocusLevel) {
+  for (const cell of graph.getCells()) {
+    const jqueryElement = joint.V(paper.findViewByModel(cell).el);
 
-  function isVisible(modelOrId: Element|string) {
-    return !joint.V(paper.findViewByModel(modelOrId).el).hasClass(backgroundClass);
+    jqueryElement.removeClass(selectedClass);
+
+    if (element && selectionFocus !== FocusLevel.ALL) {
+      jqueryElement.addClass(backgroundClass);
+    } else {
+      // if all focused then we know nothing is in background
+      jqueryElement.removeClass(backgroundClass);
+    }
+  }
+}
+
+function applyFocus(paper: joint.dia.Paper, graph: joint.dia.Graph, e: joint.dia.Element, selectionFocus: FocusLevel, direction: Direction, depth: number, visitedOutgoing: Set<joint.dia.Element>, visitedIncoming: Set<joint.dia.Element>) {
+
+  // optimization handled in resetFocusOnAllCells
+  if (selectionFocus === FocusLevel.ALL) {
+    return;
   }
 
-  function getContentBBox(elements: joint.dia.Element[]) {
+  const optionsOutgoing = { outbound: true, inbound: false };
+  const optionsIncoming = { outbound: false, inbound: true };
 
-    if (elements.length === 0) {
-      return paper.getContentBBox();
-    }
+  joint.V(paper.findViewByModel(e).el).removeClass(backgroundClass);
 
-    let minX = Number.MAX_VALUE;
-    let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
+  if (selectionFocus === FocusLevel.INFINITE_DEPTH || depth <= selectionFocus) {
 
-    function applyBBox(bbox: { x: number; y: number; width: number; height: number; }) {
-      minX = Math.min(minX, (bbox.x));
-      minY = Math.min(minY, (bbox.y));
-      maxX = Math.max(maxX, (bbox.x + bbox.width));
-      maxY = Math.max(maxY, (bbox.y + bbox.height));
-    }
+    if (direction === Direction.INCOMING || direction === Direction.BOTH) {
 
-    for (const element of elements) {
+      for (const association of graph.getConnectedLinks(<joint.dia.Cell> e, optionsIncoming)) {
+        joint.V(paper.findViewByModel(association).el).removeClass(backgroundClass);
+      }
 
-      applyBBox(paper.findViewByModel(element).getBBox());
-
-      for (const link of graph.getConnectedLinks(element)) {
-        if (isVisible(link.get('source').id) && isVisible(link.get('target').id)) {
-          applyBBox(paper.findViewByModel(link).getBBox());
+      for (const klass of graph.getNeighbors(e, optionsIncoming)) {
+        if (!visitedIncoming.has(klass)) {
+          visitedIncoming.add(klass);
+          applyFocus(paper, graph, klass, selectionFocus, Direction.INCOMING, depth + 1, visitedOutgoing, visitedIncoming);
         }
       }
     }
 
-    return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+    if (direction === Direction.OUTGOING || direction === Direction.BOTH) {
+
+      for (const association of graph.getConnectedLinks(<joint.dia.Cell> e, optionsOutgoing)) {
+        joint.V(paper.findViewByModel(association).el).removeClass(backgroundClass);
+      }
+
+      for (const klass of graph.getNeighbors(e, optionsOutgoing)) {
+        if (!visitedOutgoing.has(klass)) {
+          visitedOutgoing.add(klass);
+          applyFocus(paper, graph, klass, selectionFocus, Direction.OUTGOING, depth + 1, visitedOutgoing, visitedIncoming);
+        }
+      }
+    }
+  }
+}
+
+function isVisible(paper: joint.dia.Paper, modelOrId: Element|string) {
+  return !joint.V(paper.findViewByModel(modelOrId).el).hasClass(backgroundClass);
+}
+
+function getContentBBox(paper: joint.dia.Paper, graph: joint.dia.Graph, elements: joint.dia.Element[]) {
+
+  if (elements.length === 0) {
+    return paper.getContentBBox();
   }
 
-  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), isVisible);
-  const scale = getScale(paper);
-  const padding = 45;
+  let minX = Number.MAX_VALUE;
+  let minY = Number.MAX_VALUE;
+  let maxX = Number.MIN_VALUE;
+  let maxY = Number.MIN_VALUE;
 
-  const contentBBox = getContentBBox(visibleElements);
-  const fittingBBox = {
-    x: paper.options.origin.x + padding,
-    y: paper.options.origin.y + padding,
-    width: paper.options.width - padding * 2,
-    height: paper.options.height - padding * 2
-  };
+  function applyBBox(bbox: { x: number; y: number; width: number; height: number; }) {
+    minX = Math.min(minX, (bbox.x));
+    minY = Math.min(minY, (bbox.y));
+    maxX = Math.max(maxX, (bbox.x + bbox.width));
+    maxY = Math.max(maxY, (bbox.y + bbox.height));
+  }
 
-  const newScale = Math.min(fittingBBox.width / contentBBox.width * scale, fittingBBox.height / contentBBox.height * scale);
+  for (const element of elements) {
 
-  paper.scale(Math.max(Math.min(newScale, maxScale), minScale));
-  const contentBBoxAfterScaling = getContentBBox(visibleElements);
+    applyBBox(paper.findViewByModel(element).getBBox());
 
-  const newOx = fittingBBox.x - contentBBoxAfterScaling.x;
-  const newOy = fittingBBox.y - contentBBoxAfterScaling.y;
+    for (const link of graph.getConnectedLinks(element)) {
+      if (isVisible(paper, link.get('source').id) && isVisible(paper, link.get('target').id)) {
+        applyBBox(paper.findViewByModel(link).getBBox());
+      }
+    }
+  }
 
-  paper.setOrigin(newOx, newOy);
+  return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
 }
