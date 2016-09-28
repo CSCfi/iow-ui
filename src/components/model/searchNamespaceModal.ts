@@ -96,7 +96,7 @@ class SearchNamespaceController {
   }
 
   private showTechnicalFilter(ns: ImportedNamespace): boolean {
-    return this.showTechnical || !ns.technical;
+    return this.showTechnical || !!this.searchText || !ns.technical;
   }
 
   selectItem(ns: ImportedNamespace) {
