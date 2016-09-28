@@ -26,7 +26,10 @@ export function placeholderText(uriInputType: UriInputType, gettextCatalog: gett
 }
 
 export function createParser(modelProvider: () => Model) {
-  return (viewValue: string) => !viewValue ? null : new Uri(viewValue, modelProvider().context);
+  return (viewValue: string) => {
+    const model = modelProvider();
+    return !viewValue ? null : new Uri(viewValue, model ? model.context : {});
+  };
 }
 
 export function createFormatter() {
