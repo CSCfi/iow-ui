@@ -2,6 +2,7 @@ import { module as mod } from './module';
 import { IScope, ISCEService } from 'angular';
 import { Localizable, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
+import { Language } from '../../utils/language';
 
 mod.directive('highlight', () => {
   return {
@@ -42,40 +43,57 @@ class HighlightController {
     const regex = createRegex(this.search);
     const primaryTranslation = this.languageService.translate(this.text, this.context);
 
-    if (!regex.test(primaryTranslation)) {
+    if (regex.test(primaryTranslation)) {
+      return primaryTranslation;
+    } else {
 
-      for (const entry of Object.entries(this.text)) {
-        const language = entry[0];
-        const text = entry[1];
+      const secondaryMatch = this.findSecondaryLanguageMatch(regex);
 
-        const match = regex.exec(text);
+      if (secondaryMatch) {
+        return `${primaryTranslation} [${this.formatSecondaryLanguageMatch(secondaryMatch)}]`;
+      } else {
+        return primaryTranslation;
+      }
+    }
+  }
 
-        if (match) {
-          const matchStartIndex = match.index;
-          const matchEndIndex = matchStartIndex + match[0].length;
+  findSecondaryLanguageMatch(regex: RegExp): { language: Language, startIndex: number, endIndex: number } {
 
-          const excessiveThreshold = 30;
-          const startIndex = Math.max(0, matchStartIndex - excessiveThreshold);
-          const endIndex = Math.min(text.length, matchEndIndex + excessiveThreshold);
+    for (const [language, text] of Object.entries(this.text)) {
 
-          let localizedText = '';
+      const match = regex.exec(text);
 
-          if (startIndex > 0) {
-            localizedText += '&hellip;';
-          }
+      if (match) {
+        const startIndex = match.index;
+        const endIndex = startIndex + match[0].length;
 
-          localizedText += text.slice(startIndex, endIndex);
-
-          if (endIndex < text.length) {
-            localizedText += '&hellip;';
-          }
-
-          return `${primaryTranslation} [${language}: ${localizedText}]`;
-        }
+        return { language: language as Language, startIndex, endIndex };
       }
     }
 
-    return primaryTranslation;
+    return null;
+  }
+
+  formatSecondaryLanguageMatch(match: { language: Language, startIndex: number, endIndex: number }) {
+
+    const secondaryTranslation = this.text[match.language];
+    const excessiveThreshold = 30;
+    const startIndex = Math.max(0, match.startIndex - excessiveThreshold);
+    const endIndex = Math.min(secondaryTranslation.length, match.endIndex + excessiveThreshold);
+
+    let abbreviatedText = '';
+
+    if (startIndex > 0) {
+      abbreviatedText += '&hellip;';
+    }
+
+    abbreviatedText += secondaryTranslation.slice(startIndex, endIndex);
+
+    if (endIndex < secondaryTranslation.length) {
+      abbreviatedText += '&hellip;';
+    }
+
+    return `${match.language}: ${abbreviatedText}`;
   }
 }
 
