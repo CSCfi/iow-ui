@@ -298,12 +298,12 @@ msgstr ""
 #: components/advancedSearchModal.html:41
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
-#: components/editor/searchClassModal.html:102
+#: components/editor/searchClassModal.html:112
 #: components/editor/searchConceptModal.html:93
-#: components/editor/searchPredicateModal.html:127
+#: components/editor/searchPredicateModal.html:136
 #: components/group/addModelModal.html:31
 #: components/model/addEditLinkModal.html:20
-#: components/model/addEditNamespaceModal.html:30
+#: components/model/addEditNamespaceModal.html:46
 #: components/model/editReferenceDataModal.html:26
 #: components/model/searchNamespaceModal.html:47
 #: components/model/searchReferenceDataModal.html:104
@@ -841,6 +841,10 @@ msgstr ""
 
 #: translations/misc.html:16
 msgid "Draft"
+msgstr ""
+
+#: translations/misc.html:245
+msgid "Duplicate association target"
 msgstr ""
 
 #: components/form/errorMessages.html:11

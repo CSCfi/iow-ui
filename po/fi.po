@@ -302,12 +302,12 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/advancedSearchModal.html:41
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
-#: components/editor/searchClassModal.html:102
+#: components/editor/searchClassModal.html:112
 #: components/editor/searchConceptModal.html:93
-#: components/editor/searchPredicateModal.html:127
+#: components/editor/searchPredicateModal.html:136
 #: components/group/addModelModal.html:31
 #: components/model/addEditLinkModal.html:20
-#: components/model/addEditNamespaceModal.html:30
+#: components/model/addEditNamespaceModal.html:46
 #: components/model/editReferenceDataModal.html:26
 #: components/model/searchNamespaceModal.html:47
 #: components/model/searchReferenceDataModal.html:104
@@ -497,11 +497,11 @@ msgstr "Ehdotettu termi käsitteelle"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: translations/titles.html:71
+#: translations/titles.html:72
 msgid "Constraint classes"
 msgstr "Loogisen rajoitteen luokat"
 
-#: translations/titles.html:71
+#: translations/titles.html:72
 msgid "Constraint classes info"
 msgstr ""
 
@@ -598,11 +598,11 @@ msgstr "Luo uusi tarkennettu luokka"
 msgid "Created at"
 msgstr "Luotu"
 
-#: translations/titles.html:74
+#: translations/titles.html:75
 msgid "Creator"
 msgstr "Luoja"
 
-#: translations/titles.html:74
+#: translations/titles.html:75
 msgid "Creator info"
 msgstr ""
 
@@ -843,6 +843,10 @@ msgstr "tallenna"
 #: translations/misc.html:16
 msgid "Draft"
 msgstr "Luonnos"
+
+#: translations/misc.html:245
+msgid "Duplicate association target"
+msgstr "Assosiaation kohde on jo lisätty"
 
 #: components/form/errorMessages.html:11
 msgid "Duplicate error"
@@ -1296,9 +1300,13 @@ msgstr "Nimiavaruuden nimi"
 msgid "Namespace label info"
 msgstr ""
 
-#: translations/misc.html:245
+#: translations/titles.html:70
 msgid "Namespace redirection"
 msgstr "Nimiavaruuden uudelleenohjaus"
+
+#: translations/titles.html:70
+msgid "Namespace redirection info"
+msgstr ""
 
 #: components/form/errorMessages.html:15
 msgid "Negative error"
@@ -1608,11 +1616,11 @@ msgstr "Uudelleenkäytettävä ominaisuus"
 msgid "Reusable predicate information"
 msgstr "Uudelleenkäytettävän ominaisuuden tiedot"
 
-#: translations/titles.html:72
+#: translations/titles.html:73
 msgid "Root class"
 msgstr "Juurisolmu"
 
-#: translations/titles.html:72
+#: translations/titles.html:73
 msgid "Root class info"
 msgstr ""
 
