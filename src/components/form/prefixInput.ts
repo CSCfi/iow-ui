@@ -28,10 +28,12 @@ mod.directive('prefixInput', () => {
             if (modelNamespace.prefix === prefix) {
 
               const isTechnical = modelNamespace.type === NamespaceType.IMPLICIT_TECHNICAL;
-              const isActiveNamespace = activeNamespace && activeNamespace.prefix !== modelNamespace.prefix;
+              const isActiveNamespace = activeNamespace ? activeNamespace.prefix === modelNamespace.prefix : false;
 
-              if ((!isTechnical || !allowTechnical) && !isActiveNamespace) {
-                return false;
+              if (isTechnical && allowTechnical) {
+                return true;
+              } else {
+                return isActiveNamespace;
               }
             }
           }

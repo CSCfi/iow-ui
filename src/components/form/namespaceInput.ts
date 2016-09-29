@@ -28,10 +28,12 @@ mod.directive('namespaceInput', () => {
             if (modelNamespace.url === ns) {
 
               const isTechnical = modelNamespace.type === NamespaceType.IMPLICIT_TECHNICAL;
-              const isActiveNamespace = activeNamespace && activeNamespace.namespace !== modelNamespace.url;
+              const isActiveNamespace = activeNamespace ? activeNamespace.namespace === modelNamespace.url : false;
 
-              if ((!isTechnical || !allowTechnical) && !isActiveNamespace) {
-                return false;
+              if (isTechnical && allowTechnical) {
+                return true;
+              } else {
+                return isActiveNamespace;
               }
             }
           }
