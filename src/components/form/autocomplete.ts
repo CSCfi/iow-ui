@@ -4,6 +4,7 @@ import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
 import { formatWithFormatters, scrollToElement } from '../../utils/angular';
 import { module as mod }  from './module';
+import { DataSource } from './dataSource';
 
 const maxMatches = 500;
 
@@ -98,7 +99,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
 
 export class AutocompleteController<T> {
 
-  datasource: (search: string) => IPromise<T[]>;
+  datasource: DataSource<T>;
   matcher: (search: string, item: T) => boolean;
   formatter: (item: T) => string;
   valueExtractor: (item: T) => any;

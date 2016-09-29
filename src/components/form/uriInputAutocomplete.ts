@@ -5,6 +5,7 @@ import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
 import { module as mod }  from './module';
 import { createDefinedByExclusion } from '../../utils/exclusion';
+import { cacheNonFilteringDataSource } from './dataSource';
 
 mod.directive('uriInputAutocomplete', () => {
   return {
@@ -27,40 +28,33 @@ export class UriInputAutocompleteController {
 
   type: Type;
   model: Model;
-  data: IPromise<DataType[]>;
 
   constructor(private $scope: IScope, private $q: IQService, private classService: ClassService, private predicateService: PredicateService) {
     $scope.$watchCollection(() => Object.keys(this.model.context), () => {
-      this.data = null; // invalidate cache
+      this.datasource.invalidateCache(); // invalidate cache
     });
   }
 
-  datasource = (search: string) => {
+  datasource = cacheNonFilteringDataSource(() => {
 
-    const that = this;
-
-    function fetch(): IPromise<DataType[]> {
-      switch (that.type) {
+    const fetch: () => IPromise<DataType[]> = () => {
+      switch (this.type) {
         case 'class':
-          return that.$q.all([that.classService.getClassesForModel(that.model), that.classService.getExternalClassesForModel(that.model)])
+          return this.$q.all([this.classService.getClassesForModel(this.model), this.classService.getExternalClassesForModel(this.model)])
             .then((lists: ClassListItem[][]) => _.flatten(lists));
         case 'attribute':
         case 'association':
         case 'property':
-          return that.$q.all([that.predicateService.getPredicatesForModel(that.model), that.predicateService.getExternalPredicatesForModel(that.model)])
+          return this.$q.all([this.predicateService.getPredicatesForModel(this.model), this.predicateService.getExternalPredicatesForModel(this.model)])
             .then((lists: PredicateListItem[][]) => _.flatten(lists));
         default:
-          throw new Error('Unsupported type: ' + that.type);
+          throw new Error('Unsupported type: ' + this.type);
       }
-    }
+    };
 
-    if (!this.data) {
-      const exclusion = createDefinedByExclusion(this.model);
-      this.data = fetch().then(data => _.filter(data, item => !exclusion(item)));
-    }
-
-    return this.data;
-  };
+    const exclusion = createDefinedByExclusion(this.model);
+    return fetch().then(data => data.filter(item => !exclusion(item)));
+  });
 
   valueExtractor = (item: DataType) => item.id;
 }
