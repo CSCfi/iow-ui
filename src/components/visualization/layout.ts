@@ -119,28 +119,11 @@ function calculateNormalSiblingVertices(source: joint.dia.Element, target: joint
 function calculateRecurseSiblingVertices(element: joint.dia.Element, siblingIndex: number) {
 
   const bbox = element.getBBox();
-  const position = siblingIndex % 4;
-
-  function resolveSign() {
-    switch (position) {
-      case 0:
-        return { x: 1,  y: 1 };
-      case 1:
-        return { x: -1, y: 1 };
-      case 2:
-        return { x: 1,  y: -1 };
-      case 3:
-        return { x: -1, y: -1 };
-      default:
-        throw new Error('Unsupported position: ' + position);
-    }
-  }
-
   const offset = 50;
-  const sign = resolveSign();
-  const center = joint.g.point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
+  const sign = { x: 1, y: 1 };
+  const center = joint.g.point(bbox.x + bbox.width / 2 - (sign.x * siblingIndex * 10), bbox.y + bbox.height / 2 - (sign.y * siblingIndex * 10));
   const corner = joint.g.point(center).offset(bbox.width / 2 * sign.x, bbox.height / 2 * sign.y);
-  const scale = Math.floor(siblingIndex / 4) + 1;
+  const scale = (siblingIndex + 1) * 0.5;
 
   return [
     joint.g.point(corner).offset(-sign.x * bbox.width / 4, sign.y * (offset * scale)),
