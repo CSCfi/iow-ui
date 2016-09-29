@@ -159,12 +159,18 @@ export abstract class GraphNode {
     return glyphIconClassForType(this.type);
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     return {};
   }
 
   serialize(inline: boolean = false, clone: boolean = false): any {
-    const values = Object.assign(this.graph, this.serializationValues(clone));
+    const values = Object.assign(this.graph, this.serializationValues(inline, clone));
+
+    for (const [key, value] of Object.entries(values)) {
+      if (value === null) {
+        delete values[key];
+      }
+    }
 
     if (inline) {
       return values;
@@ -458,7 +464,7 @@ export class Model extends AbstractModel {
     return result;
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     this.copyNamespacesFromRequires();
 
     return {
@@ -606,13 +612,16 @@ export class ImportedNamespace extends GraphNode {
     this.id = new Uri(_.trimEnd(ns, '#/'), { [this.prefix]: ns });
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
+
+    const onlyIdAndType = inline && !clone && this.namespaceType === NamespaceType.MODEL;
+
     return {
       '@id': this.id.uri,
       '@type': reverseMapTypeObject(this.type),
-      label: serializeLocalizable(this.label),
-      preferredXMLNamespaceName: this.namespace,
-      preferredXMLNamespacePrefix: this.prefix
+      label: onlyIdAndType ? null : serializeLocalizable(this.label),
+      preferredXMLNamespaceName: onlyIdAndType ? null : this.namespace,
+      preferredXMLNamespacePrefix: onlyIdAndType ? null : this.prefix
     };
   }
 }
@@ -666,7 +675,7 @@ export class ReferenceData extends GraphNode {
     return this.isOfType('externalReferenceData');
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       title: serializeLocalizable(this.title),
@@ -960,7 +969,7 @@ export class ClassPosition extends GraphNode {
     return position;
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       pointXY: serializeOptional(this.coordinate, serializeCoordinate),
@@ -1017,7 +1026,7 @@ export class AssociationPropertyPosition extends GraphNode {
     return this.vertices.length > 0;
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       vertexXY: serializeList(this.vertices, serializeCoordinate)
@@ -1132,7 +1141,7 @@ export class Class extends AbstractClass implements VisualizationClass {
     return result;
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     const isConstraintDefined = (constraint: Constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment);
 
     return {
@@ -1203,7 +1212,7 @@ export class Constraint extends GraphNode {
     _.remove(this.items, item => item === removedItem);
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     function mapConstraintType(constraint: ConstraintType) {
       switch (constraint) {
         case 'or':
@@ -1240,7 +1249,7 @@ export class ConstraintListItem extends GraphNode {
     this.label = graph.label;
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     return {
       '@id': this.shapeId.uri
     };
@@ -1407,7 +1416,7 @@ export class Property extends GraphNode {
     return new Property(serialization['@graph'], serialization['@context'], this.frame);
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
 
     const predicate = this.predicate;
 
@@ -1531,7 +1540,7 @@ export class Predicate extends AbstractPredicate {
     return this.state === 'Unstable';
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
@@ -1568,8 +1577,8 @@ export class Association extends Predicate {
     return result;
   }
 
-  serializationValues(clone: boolean): {} {
-    return Object.assign(super.serializationValues(clone), {
+  serializationValues(inline: boolean, clone: boolean): {} {
+    return Object.assign(super.serializationValues(inline, clone), {
       range: this.valueClass && this.valueClass.uri
     });
   }
@@ -1592,8 +1601,8 @@ export class Attribute extends Predicate {
     return result;
   }
 
-  serializationValues(clone: boolean): {} {
-    return Object.assign(super.serializationValues(clone), {
+  serializationValues(inline: boolean, clone: boolean): {} {
+    return Object.assign(super.serializationValues(inline, clone), {
       range: this.dataType
     });
   }
@@ -1697,7 +1706,7 @@ export class ConceptSuggestion extends GraphNode {
     return new ConceptSuggestion(serialization['@graph'], serialization['@context'], this.frame);
   }
 
-  serializationValues(clone: boolean): {} {
+  serializationValues(inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       prefLabel: serializeLocalizable(this.label),
