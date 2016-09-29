@@ -38,7 +38,7 @@ export class PredicateService {
       .then(predicates => predicates.filter(predicate => predicate.id.isCurieUrl()));  // if curie, it is known namespace
   }
 
-  getPredicatesForModelDataSource(modelProvider: () => Model, excludeProvider: () => (predicate: AbstractPredicate) => string): DataSource<PredicateListItem> {
+  getPredicatesForModelDataSource(modelProvider: () => Model): DataSource<PredicateListItem> {
 
     const cachedResultsProvider = modelScopeCache(modelProvider,  model => {
       return this.$q.all([
@@ -47,10 +47,7 @@ export class PredicateService {
       ]).then(_.flatten);
     });
 
-    return (search) => {
-      const exclude = excludeProvider();
-      return cachedResultsProvider().then(predicates => predicates.filter(predicate => !exclude(predicate)));
-    };
+    return () => cachedResultsProvider();
   }
 
   getPredicatesAssignedToModel(model: Model): IPromise<PredicateListItem[]> {

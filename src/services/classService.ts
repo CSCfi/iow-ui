@@ -49,7 +49,7 @@ export class ClassService {
       .then(classes => classes.filter(klass => klass.id.isCurieUrl())); // if curie, it is known namespace
   }
 
-  getClassesForModelDataSource(modelProvider: () => Model, excludeProvider: () => (klass: AbstractClass) => string): DataSource<ClassListItem> {
+  getClassesForModelDataSource(modelProvider: () => Model): DataSource<ClassListItem> {
 
     const cachedResultsProvider = modelScopeCache(modelProvider,  model => {
       return this.$q.all([
@@ -58,10 +58,7 @@ export class ClassService {
       ]).then(_.flatten);
     });
 
-    return (search) => {
-      const exclude = excludeProvider();
-      return cachedResultsProvider().then(classes => classes.filter(klass => !exclude(klass)));
-    };
+    return () => cachedResultsProvider();
   }
 
   getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]> {

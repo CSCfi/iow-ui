@@ -16,7 +16,8 @@ mod.directive('autocomplete', ($document: JQuery) => {
       datasource: '=',
       matcher: '=',
       formatter: '=',
-      valueExtractor: '='
+      valueExtractor: '=',
+      excludeProvider: '=?'
     },
     bindToController: true,
     template: `
@@ -103,6 +104,7 @@ export class AutocompleteController<T> {
   matcher: (search: string, item: T) => boolean;
   formatter: (item: T) => string;
   valueExtractor: (item: T) => any;
+  excludeProvider: () => (item: T) => string;
 
   inputFormatter: IModelFormatter|IModelFormatter[];
   dimensions: { left: number, top: number, width: number };
@@ -179,10 +181,14 @@ export class AutocompleteController<T> {
 
   autocomplete(search: string) {
     this.$q.when(this.datasource(search)).then(data => {
+
+      const exclude = this.excludeProvider();
+      const included = data.filter(item => !exclude || !exclude(item));
+
       if (search) {
-        this.setMatches(_.filter(data, item => this.match(search, item)), true);
+        this.setMatches(included.filter(item => this.match(search, item)), true);
       } else {
-        this.setMatches(data, false);
+        this.setMatches(included, false);
       }
     });
   }

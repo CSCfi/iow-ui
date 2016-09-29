@@ -4,7 +4,6 @@ import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
 import { Model, Type, PredicateListItem, ClassListItem } from '../../services/entities';
 import { Uri } from '../../services/uri';
-import { createDefinedByExclusion } from '../../utils/exclusion';
 import { module as mod }  from './module';
 import { DataSource } from '../form/dataSource';
 import { ClassService } from '../../services/classService';
@@ -19,23 +18,23 @@ mod.directive('uriSelect', () => {
       id: '@',
       afterSelected: '&',
       mandatory: '=',
-      duplicate: '=',
+      excludeId: '=?',
       defaultToCurrentModel: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
     template: `
-      <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor">
+      <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor" exclude-provider="ctrl.createExclusion">
         <input id="{{ctrl.id}}"
                type="text"
                class="form-control"
                uri-input
+               exclude-validator="ctrl.excludeId"
                ng-required="ctrl.mandatory"
                model="ctrl.model"
                ng-model="ctrl.uri"
                ng-blur="ctrl.handleChange()"
-               restrict-duplicates="ctrl.duplicate"
                autocomplete="off" />
       </autocomplete>
 
@@ -67,14 +66,16 @@ class UriSelectController {
   defaultToCurrentModel: boolean;
   datasource: DataSource<DataType>;
   valueExtractor = (item: DataType) => item.id;
+  excludeId: (id: Uri) => string;
+  createExclusion = () => (item: DataType) => this.excludeId && this.excludeId(item.id);
 
   private change: Uri;
 
   constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
 
     const modelProvider = () => this.model;
-    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider, this.createExclusion.bind(this))
-                                            : predicateService.getPredicatesForModelDataSource(modelProvider, this.createExclusion.bind(this));
+    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider)
+                                            : predicateService.getPredicatesForModelDataSource(modelProvider);
 
     $scope.$watch(() => this.uri, (current, previous) => {
       if (!current || !current.equals(previous)) {
@@ -88,10 +89,6 @@ class UriSelectController {
       this.afterSelected({id: this.change});
       this.change = null;
     }
-  }
-
-  private createExclusion() {
-    return createDefinedByExclusion(this.model);
   }
 
   selectUri() {

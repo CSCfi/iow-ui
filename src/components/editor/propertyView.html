@@ -37,7 +37,7 @@
         <uri-select id="{{ctrl.property.internalId + 'valueClass'}}"
                     type="class" uri="ctrl.property.valueClass"
                     mandatory="!ctrl.property.inUnstableState"
-                    duplicate="ctrl.isConflictingValueClass"
+                    exclude-id="ctrl.valueClassExclude"
                     model="ctrl.model"
                     default-to-current-model="true">
         </uri-select>

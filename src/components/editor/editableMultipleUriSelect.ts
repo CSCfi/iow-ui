@@ -7,7 +7,7 @@ import { module as mod }  from './module';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { collectProperties } from '../../utils/array';
-import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
+import { createExistsExclusion } from '../../utils/exclusion';
 import { DataSource } from '../form/dataSource';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
@@ -28,7 +28,7 @@ mod.directive('editableMultipleUriSelect', () => {
       <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" link="ctrl.link" input="ctrl.input">
 
         <input-container>
-          <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor">
+          <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor" exclude-provider="ctrl.createExclusion">
             <input id="{{ctrl.id}}"
                    type="text"
                    restrict-duplicates="ctrl.ngModel"
@@ -68,18 +68,13 @@ class EditableMultipleUriSelectController {
   addUri: (uri: Uri) => void;
   datasource: DataSource<DataType>;
   valueExtractor = (item: DataType) => item.id;
+  createExclusion = () => createExistsExclusion(collectProperties(this.ngModel, uri => uri.uri));
 
   /* @ngInject */
   constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
     const modelProvider = () => this.model;
-    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider, this.createExclusion.bind(this))
-                                            : predicateService.getPredicatesForModelDataSource(modelProvider, this.createExclusion.bind(this));
-  }
-
-  private createExclusion<T extends DataType>() {
-    const existsExclusion = createExistsExclusion(collectProperties(this.ngModel, uri => uri.uri));
-    const definedExclusion = createDefinedByExclusion(this.model);
-    return combineExclusions<T>(existsExclusion, definedExclusion);
+    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider)
+                                            : predicateService.getPredicatesForModelDataSource(modelProvider);
   }
 
   selectUri() {

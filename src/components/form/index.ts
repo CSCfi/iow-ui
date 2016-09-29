@@ -8,6 +8,7 @@ export default mod.name;
 import './autocomplete';
 import './codeValueInput';
 import './codeValueInputAutocomplete';
+import './excludeValidator';
 import './stringInput';
 import './prefixInput';
 import './namespaceInput';

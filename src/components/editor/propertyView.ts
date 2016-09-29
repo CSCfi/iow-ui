@@ -57,8 +57,9 @@ export class PropertyViewController {
   isEditing: () => boolean;
   isOpen: () => boolean;
 
-  isConflictingValueClass = (valueClass: Uri) =>
-    any(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass));
+  valueClassExclude = (valueClass: Uri) =>
+    any(this.class.properties, p => p !== this.property && this.property.predicateId.equals(p.predicateId) && valueClass.equals(p.valueClass))
+      ? 'Duplicate association target' : null;
 
   /* @ngInject */
   constructor($scope: IScope, private languageService: LanguageService) {
