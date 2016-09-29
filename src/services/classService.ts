@@ -21,7 +21,8 @@ import { Uri, Urn } from './uri';
 import { reverseMapType } from './typeMapping';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language, hasLocalization } from '../utils/language';
-import { DataSource, modelScopeCachedNonFilteringDataSource } from '../components/form/dataSource';
+import { DataSource } from '../components/form/dataSource';
+import { modelScopeCache } from '../components/form/cache';
 
 export class ClassService {
 
@@ -48,15 +49,19 @@ export class ClassService {
       .then(classes => classes.filter(klass => klass.id.isCurieUrl())); // if curie, it is known namespace
   }
 
-  getClassesForModelDataSource(modelProvider: () => Model, exclude: (klass: AbstractClass) => string): DataSource<ClassListItem> {
-    return modelScopeCachedNonFilteringDataSource(modelProvider, model => search => {
+  getClassesForModelDataSource(modelProvider: () => Model, excludeProvider: () => (klass: AbstractClass) => string): DataSource<ClassListItem> {
+
+    const cachedResultsProvider = modelScopeCache(modelProvider,  model => {
       return this.$q.all([
         this.getClassesForModel(model),
         this.getExternalClassesForModel(model)
-      ])
-        .then((lists: ClassListItem[][]) => _.flatten(lists))
-        .then(classes => classes.filter(klass => !exclude(klass)));
+      ]).then(_.flatten);
     });
+
+    return (search) => {
+      const exclude = excludeProvider();
+      return cachedResultsProvider().then(classes => classes.filter(klass => !exclude(klass)));
+    };
   }
 
   getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]> {

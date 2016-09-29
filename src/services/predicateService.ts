@@ -10,7 +10,8 @@ import { Urn, Uri } from './uri';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language } from '../utils/language';
 import { predicateFrame } from './frames';
-import { DataSource, modelScopeCachedNonFilteringDataSource } from '../components/form/dataSource';
+import { DataSource } from '../components/form/dataSource';
+import { modelScopeCache } from '../components/form/cache';
 
 export class PredicateService {
 
@@ -37,15 +38,19 @@ export class PredicateService {
       .then(predicates => predicates.filter(predicate => predicate.id.isCurieUrl()));  // if curie, it is known namespace
   }
 
-  getPredicatesForModelDataSource(modelProvider: () => Model, exclude: (klass: AbstractPredicate) => string): DataSource<PredicateListItem> {
-    return modelScopeCachedNonFilteringDataSource(modelProvider, model => search => {
+  getPredicatesForModelDataSource(modelProvider: () => Model, excludeProvider: () => (predicate: AbstractPredicate) => string): DataSource<PredicateListItem> {
+
+    const cachedResultsProvider = modelScopeCache(modelProvider,  model => {
       return this.$q.all([
         this.getPredicatesForModel(model),
         this.getExternalPredicatesForModel(model)
-      ])
-        .then((lists: PredicateListItem[][]) => _.flatten(lists))
-        .then(predicates => predicates.filter(predicate => !exclude(predicate)));
+      ]).then(_.flatten);
     });
+
+    return (search) => {
+      const exclude = excludeProvider();
+      return cachedResultsProvider().then(predicates => predicates.filter(predicate => !exclude(predicate)));
+    };
   }
 
   getPredicatesAssignedToModel(model: Model): IPromise<PredicateListItem[]> {

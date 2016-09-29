@@ -72,8 +72,8 @@ class EditableMultipleUriSelectController {
   /* @ngInject */
   constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
     const modelProvider = () => this.model;
-    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider, this.createExclusion())
-                                            : predicateService.getPredicatesForModelDataSource(modelProvider, this.createExclusion());
+    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider, this.createExclusion.bind(this))
+                                            : predicateService.getPredicatesForModelDataSource(modelProvider, this.createExclusion.bind(this));
   }
 
   private createExclusion<T extends DataType>() {
