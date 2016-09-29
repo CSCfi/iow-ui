@@ -14,7 +14,6 @@ import './namespaceInput';
 import './dataTypeInput';
 import './bootstrapInput';
 import './uriInput';
-import './uriInputAutocomplete';
 import './editable';
 import './editableLabel';
 import './editableEntityButtons';

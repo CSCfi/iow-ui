@@ -2,10 +2,13 @@ import { IAttributes, ICompiledExpression, IPromise, IScope } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type } from '../../services/entities';
+import { Model, Type, PredicateListItem, ClassListItem } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { createDefinedByExclusion } from '../../utils/exclusion';
 import { module as mod }  from './module';
+import { DataSource } from '../form/dataSource';
+import { ClassService } from '../../services/classService';
+import { PredicateService } from '../../services/predicateService';
 
 mod.directive('uriSelect', () => {
   return {
@@ -22,7 +25,22 @@ mod.directive('uriSelect', () => {
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
-    template: require('./uriSelect.html'),
+    template: `
+      <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor">
+        <input id="{{ctrl.id}}"
+               type="text"
+               class="form-control"
+               uri-input
+               ng-required="ctrl.mandatory"
+               model="ctrl.model"
+               ng-model="ctrl.uri"
+               ng-blur="ctrl.handleChange()"
+               restrict-duplicates="ctrl.duplicate"
+               autocomplete="off" />
+      </autocomplete>
+
+      <button ng-if="formController.editing" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectUri()">{{('Choose ' + ctrl.type) | translate}}</button>
+    `,
     require: '?^form',
     link($scope: EditableScope, element: JQuery, attributes: IAttributes, formController: EditableForm) {
       $scope.formController = formController;
@@ -35,9 +53,7 @@ interface EditableScope extends IScope {
   formController: EditableForm;
 }
 
-interface WithId {
-  id: Uri;
-}
+type DataType = ClassListItem|PredicateListItem;
 
 class UriSelectController {
 
@@ -49,10 +65,17 @@ class UriSelectController {
   mandatory: boolean;
   duplicate: (uri: Uri) => boolean;
   defaultToCurrentModel: boolean;
+  datasource: DataSource<DataType>;
+  valueExtractor = (item: DataType) => item.id;
 
   private change: Uri;
 
-  constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
+  constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
+
+    const modelProvider = () => this.model;
+    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider, this.createExclusion())
+                                            : predicateService.getPredicatesForModelDataSource(modelProvider, this.createExclusion());
+
     $scope.$watch(() => this.uri, (current, previous) => {
       if (!current || !current.equals(previous)) {
         this.change = current;
@@ -67,14 +90,18 @@ class UriSelectController {
     }
   }
 
-  selectUri() {
-    const promise: IPromise<WithId> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, this.defaultToCurrentModel || false, createDefinedByExclusion(this.model))
-      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, createDefinedByExclusion(this.model));
+  private createExclusion() {
+    return createDefinedByExclusion(this.model);
+  }
 
-    promise.then(withId => {
-      this.uri = withId.id;
-      this.afterSelected({id: withId.id});
+  selectUri() {
+    const promise: IPromise<DataType> = this.type === 'class'
+      ? this.searchClassModal.openWithOnlySelection(this.model, this.defaultToCurrentModel || false, this.createExclusion())
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createExclusion());
+
+    promise.then(result => {
+      this.uri = result.id;
+      this.afterSelected({id: result.id});
     });
   }
 }

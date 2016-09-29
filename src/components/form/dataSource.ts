@@ -1,28 +1,24 @@
 import { IPromise } from 'angular';
+import { Model } from '../../services/entities';
 
 export interface DataSource<T> {
   (search: string): IPromise<T[]>;
 }
 
-export interface CachedDataSource<T> extends DataSource<T> {
-  invalidateCache(): void;
-}
-
-export function cacheNonFilteringDataSource<T>(dataSource: DataSource<T>): CachedDataSource<T> {
+export function modelScopeCachedNonFilteringDataSource<T>(modelProvider: () => Model, dataSourceProvider: (model: Model) => DataSource<T>): DataSource<T> {
 
   let cachedResult: IPromise<T[]>;
+  let previousModel: Model;
 
-  const result: any = (search: string) => {
+  return search => {
 
-    if (!cachedResult) {
-      cachedResult = dataSource(search);
+    const model = modelProvider();
+
+    if (!cachedResult || model !== previousModel) {
+      cachedResult = dataSourceProvider(model)(search);
+      previousModel = model;
     }
 
     return cachedResult;
   };
-
-  const invalidateCache: () => void = () => cachedResult = null;
-  result.invalidateCache = invalidateCache;
-
-  return result;
 }

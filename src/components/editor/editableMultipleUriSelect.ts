@@ -8,6 +8,9 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
+import { DataSource } from '../form/dataSource';
+import { ClassService } from '../../services/classService';
+import { PredicateService } from '../../services/predicateService';
 
 mod.directive('editableMultipleUriSelect', () => {
   return {
@@ -25,14 +28,14 @@ mod.directive('editableMultipleUriSelect', () => {
       <editable-multiple id="{{ctrl.id}}" data-title="{{ctrl.title}}" ng-model="ctrl.ngModel" link="ctrl.link" input="ctrl.input">
 
         <input-container>
-          <uri-input-autocomplete type="{{ctrl.type}}" model="ctrl.model">
+          <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor">
             <input id="{{ctrl.id}}"
                    type="text"
                    restrict-duplicates="ctrl.ngModel"
                    uri-input
                    model="ctrl.model"
                    ng-model="ctrl.input" />
-          </uri-input-autocomplete>
+          </autocomplete>
          </input-container>
 
         <button-container>
@@ -49,9 +52,7 @@ mod.directive('editableMultipleUriSelect', () => {
   };
 });
 
-interface WithId {
-  id: Uri;
-}
+type DataType = ClassListItem|PredicateListItem;
 
 class EditableMultipleUriSelectController {
 
@@ -65,23 +66,29 @@ class EditableMultipleUriSelectController {
 
   isEditing: () => boolean;
   addUri: (uri: Uri) => void;
+  datasource: DataSource<DataType>;
+  valueExtractor = (item: DataType) => item.id;
 
   /* @ngInject */
-  constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal) {
+  constructor(private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
+    const modelProvider = () => this.model;
+    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider, this.createExclusion())
+                                            : predicateService.getPredicatesForModelDataSource(modelProvider, this.createExclusion());
+  }
+
+  private createExclusion<T extends DataType>() {
+    const existsExclusion = createExistsExclusion(collectProperties(this.ngModel, uri => uri.uri));
+    const definedExclusion = createDefinedByExclusion(this.model);
+    return combineExclusions<T>(existsExclusion, definedExclusion);
   }
 
   selectUri() {
-    const existsExclusion = createExistsExclusion(collectProperties(this.ngModel, uri => uri.uri));
-    const definedExclusion = createDefinedByExclusion(this.model);
-    const classExclusion = combineExclusions<ClassListItem>(existsExclusion, definedExclusion);
-    const predicateExclusion = combineExclusions<PredicateListItem>(existsExclusion, definedExclusion);
+    const promise: IPromise<DataType> = this.type === 'class'
+      ? this.searchClassModal.openWithOnlySelection(this.model, false, this.createExclusion())
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createExclusion());
 
-    const promise: IPromise<WithId> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, false, classExclusion)
-      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, predicateExclusion);
-
-    promise.then(withId => {
-      this.ngModel.push(withId.id);
+    promise.then(result => {
+      this.ngModel.push(result.id);
     });
   }
 }

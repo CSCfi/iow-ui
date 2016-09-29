@@ -11,7 +11,8 @@ import {
   Model,
   GraphData,
   ExternalEntity,
-  Type
+  Type,
+  AbstractClass
 } from './entities';
 import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';
@@ -20,6 +21,7 @@ import { Uri, Urn } from './uri';
 import { reverseMapType } from './typeMapping';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language, hasLocalization } from '../utils/language';
+import { DataSource, modelScopeCachedNonFilteringDataSource } from '../components/form/dataSource';
 
 export class ClassService {
 
@@ -44,6 +46,17 @@ export class ClassService {
   getClassesForModel(model: Model) {
     return this.getAllClasses(model)
       .then(classes => classes.filter(klass => klass.id.isCurieUrl())); // if curie, it is known namespace
+  }
+
+  getClassesForModelDataSource(modelProvider: () => Model, exclude: (klass: AbstractClass) => string): DataSource<ClassListItem> {
+    return modelScopeCachedNonFilteringDataSource(modelProvider, model => search => {
+      return this.$q.all([
+        this.getClassesForModel(model),
+        this.getExternalClassesForModel(model)
+      ])
+        .then((lists: ClassListItem[][]) => _.flatten(lists))
+        .then(classes => classes.filter(klass => !exclude(klass)));
+    });
   }
 
   getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]> {

@@ -1,7 +1,7 @@
 import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
 import {
-  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association
+  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association, AbstractPredicate
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -10,6 +10,7 @@ import { Urn, Uri } from './uri';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language } from '../utils/language';
 import { predicateFrame } from './frames';
+import { DataSource, modelScopeCachedNonFilteringDataSource } from '../components/form/dataSource';
 
 export class PredicateService {
 
@@ -34,6 +35,17 @@ export class PredicateService {
   getPredicatesForModel(model: Model) {
     return this.getAllPredicates(model)
       .then(predicates => predicates.filter(predicate => predicate.id.isCurieUrl()));  // if curie, it is known namespace
+  }
+
+  getPredicatesForModelDataSource(modelProvider: () => Model, exclude: (klass: AbstractPredicate) => string): DataSource<PredicateListItem> {
+    return modelScopeCachedNonFilteringDataSource(modelProvider, model => search => {
+      return this.$q.all([
+        this.getPredicatesForModel(model),
+        this.getExternalPredicatesForModel(model)
+      ])
+        .then((lists: PredicateListItem[][]) => _.flatten(lists))
+        .then(predicates => predicates.filter(predicate => !exclude(predicate)));
+    });
   }
 
   getPredicatesAssignedToModel(model: Model): IPromise<PredicateListItem[]> {
