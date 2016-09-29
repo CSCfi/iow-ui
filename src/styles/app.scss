@@ -135,7 +135,7 @@ autocomplete, iow-select {
 
   div[iow-select-input] {
 
-    iow-selection-transclude {
+    iow-selection-transclude, ng-transclude {
       overflow-x: hidden;
       width: calc(100% - 10px);
       display: inline-block;
@@ -158,12 +158,14 @@ autocomplete, iow-select {
     max-height: 400px;
     overflow-y: auto;
 
-    iow-selectable-item-transclude {
-      overflow-x: hidden;
-      width: 100%;
-      display: inline-block;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    li {
+      iow-selectable-item-transclude, span.content {
+        overflow-x: hidden;
+        width: 100%;
+        display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
   }
 }

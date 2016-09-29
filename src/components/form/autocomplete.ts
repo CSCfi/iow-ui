@@ -29,7 +29,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
               ng-mouseenter="ctrl.setSelection($index)" 
               ng-mousedown="ctrl.selectSelection(event)"
               autocomplete-item>
-            <a href="">{{::ctrl.format(match)}}</a>
+            <a href=""><span class="content">{{::ctrl.format(match)}}</span></a>
           </li>
         </ul>
       </div>
