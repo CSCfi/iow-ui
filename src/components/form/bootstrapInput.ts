@@ -10,7 +10,7 @@ mod.directive('input', () => {
       const formGroup = element.closest('.form-group');
 
       function setClasses(invalid: boolean) {
-        if ((modelController.$dirty || modelController.$modelValue) && invalid) {
+        if ((modelController.$dirty || modelController.$viewValue) && invalid) {
           formGroup.addClass('has-error');
         } else {
           formGroup.removeClass('has-error');

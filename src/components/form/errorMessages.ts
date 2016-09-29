@@ -24,7 +24,7 @@ mod.directive('errorMessages', () => {
       $scope.isVisible = () => {
         if ($scope.ngModelControllers) {
           for (const ngModel of $scope.ngModelControllers) {
-            if (ngModel.$dirty || ngModel.$modelValue) {
+            if (ngModel.$dirty || ngModel.$viewValue) {
               return true;
             }
           }
