@@ -1,4 +1,4 @@
-import { IAttributes, ICompiledExpression, IPromise, IScope } from 'angular';
+import { IAttributes, ICompiledExpression, IPromise, IScope, IQService } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
@@ -8,6 +8,7 @@ import { module as mod }  from './module';
 import { DataSource } from '../form/dataSource';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
+import { itemExclusion, idExclusion } from '../../utils/exclusion';
 
 mod.directive('uriSelect', () => {
   return {
@@ -19,18 +20,19 @@ mod.directive('uriSelect', () => {
       afterSelected: '&',
       mandatory: '=',
       excludeId: '=?',
+      excludeItem: '=?',
       defaultToCurrentModel: '='
     },
     restrict: 'E',
     controllerAs: 'ctrl',
     bindToController: true,
     template: `
-      <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor" exclude-provider="ctrl.createExclusion">
+      <autocomplete datasource="ctrl.datasource" value-extractor="ctrl.valueExtractor" exclude-provider="ctrl.createItemExclusion">
         <input id="{{ctrl.id}}"
                type="text"
                class="form-control"
                uri-input
-               exclude-validator="ctrl.excludeId"
+               exclude-validator="ctrl.createIdExclusion"
                ng-required="ctrl.mandatory"
                model="ctrl.model"
                ng-model="ctrl.uri"
@@ -67,11 +69,14 @@ class UriSelectController {
   datasource: DataSource<DataType>;
   valueExtractor = (item: DataType) => item.id;
   excludeId: (id: Uri) => string;
-  createExclusion = () => (item: DataType) => this.excludeId && this.excludeId(item.id);
+  excludeItem: (item: DataType) => string;
+
+  createIdExclusion = () => idExclusion(this.excludeId, this.excludeItem, this.datasource, this.$q);
+  createItemExclusion = () => itemExclusion(this.excludeId, this.excludeItem);
 
   private change: Uri;
 
-  constructor($scope: IScope, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
+  constructor($scope: IScope, private $q: IQService, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
 
     const modelProvider = () => this.model;
     this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider)
@@ -93,8 +98,8 @@ class UriSelectController {
 
   selectUri() {
     const promise: IPromise<DataType> = this.type === 'class'
-      ? this.searchClassModal.openWithOnlySelection(this.model, this.defaultToCurrentModel || false, this.createExclusion())
-      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createExclusion());
+      ? this.searchClassModal.openWithOnlySelection(this.model, this.defaultToCurrentModel || false, this.createItemExclusion())
+      : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createItemExclusion());
 
     promise.then(result => {
       this.uri = result.id;

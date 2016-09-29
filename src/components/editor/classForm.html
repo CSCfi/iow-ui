@@ -21,7 +21,7 @@
     </editable>
 
     <editable ng-if="ctrl.class.isOfType('class')" data-title="Superclass" link="ctrl.linkToSuperclass()" context="ctrl.model">
-      <uri-select id="superClass" type="class" uri="ctrl.class.subClassOf" model="ctrl.model" after-selected="ctrl.addPropertiesFromClassId(id, 'super class')"></uri-select>
+      <uri-select id="superClass" type="class" uri="ctrl.class.subClassOf" model="ctrl.model" exclude-item="ctrl.superClassExclude" after-selected="ctrl.addPropertiesFromClassId(id, 'super class')"></uri-select>
     </editable>
 
     <editable ng-if="ctrl.class.isOfType('shape')" data-title="Specialized from class" link="ctrl.linkToScopeclass()" context="ctrl.model">

@@ -14,13 +14,13 @@ mod.directive('excludeValidator', ($q: IQService) => {
     require: 'ngModel',
     link($scope: IScope, element: JQuery, attributes: ExcludeValidatorAttributes, ngModel: INgModelController) {
 
-      $scope.$watch(attributes.excludeValidator, (excludeProvider: IPromise<IdExclude>|IdExclude) => {
+      $scope.$watch(attributes.excludeValidator, (excludeProvider: () => (id: Uri) => IPromise<string>) => {
         if (excludeProvider) {
-
+          const exclude = excludeProvider();
           // TODO show exclude based dynamic validation errors in the errorMessages panel
-          ngModel.$asyncValidators['exclude'] = (id: Uri) => $q.when(excludeProvider).then(exclude => {
-            return exclude(id) ? $q.reject() : true;
-          });
+          ngModel.$asyncValidators['exclude'] = (id: Uri) => {
+            return exclude(id).then(excludeReason => excludeReason ? $q.reject() : true);
+          };
         } else {
           delete ngModel.$asyncValidators['exclude'];
         }

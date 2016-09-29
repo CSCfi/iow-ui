@@ -1,7 +1,44 @@
 import { SearchClassType, WithId, WithDefinedBy, WithIdAndType } from '../components/contracts';
-import { containsAny, arraysAreEqual } from './array';
+import { containsAny, arraysAreEqual, first } from './array';
 import { ClassListItem, Model } from '../services/entities';
 import { collectIds } from './entity';
+import { Uri } from '../services/uri';
+import { IPromise, IQService } from 'angular';
+import { DataSource } from '../components/form/dataSource';
+
+export function idExclusion<T extends { id: Uri }>(excludeId: (id: Uri) => string,
+                                                   excludeItem: (item: T) => string,
+                                                   dataSource: DataSource<T>,
+                                                   $q: IQService): (itemOrId: Uri|T) => IPromise<string> {
+  return (id: Uri) => {
+
+    if (!id) {
+      return $q.when(null);
+    }
+
+    const excludeIdReason = excludeId && excludeId(id);
+
+    if (excludeIdReason) {
+      return $q.when(excludeIdReason);
+    } else if (excludeItem) {
+      return dataSource(id.toString()).then(items => {
+        const item = first(items, item => item.id.equals(id));
+        return item && excludeItem(item);
+      });
+    } else {
+      return $q.when(null);
+    }
+  };
+}
+
+export function itemExclusion<T extends { id: Uri }>(excludeId: (id: Uri) => string,
+                                                     excludeItem: (item: T) => string) {
+
+  return (item: T) => {
+    return item && (excludeId && excludeId(item.id)) || (excludeItem && excludeItem(item));
+  };
+}
+
 
 export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
   return (item: T) => {

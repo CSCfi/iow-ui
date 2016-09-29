@@ -1,7 +1,7 @@
 import { IAttributes, IScope } from 'angular';
 import * as _ from 'lodash';
 import { ClassViewController } from './classView';
-import { Class, Model, Property } from '../../services/entities';
+import { Class, Model, Property, ClassListItem } from '../../services/entities';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { Uri } from '../../services/uri';
 import { ClassService } from '../../services/classService';
@@ -49,6 +49,8 @@ export class ClassFormController {
   shouldAutofocus: boolean;
   addPropertyActions: Option[];
   localizer: Localizer;
+
+  superClassExclude = (klass: ClassListItem) => klass.isOfType('shape') ? 'Super cannot be shape' : null;
 
   /* @ngInject */
   constructor($scope: IScope,
