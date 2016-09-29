@@ -53,7 +53,7 @@ enum Direction {
 
 export function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
 
-  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), isVisible);
+  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), e => isVisible(paper, e));
   const scale = getScale(paper);
   const padding = 45;
 
@@ -157,7 +157,7 @@ function applyFocus(paper: joint.dia.Paper, graph: joint.dia.Graph, e: joint.dia
   }
 }
 
-function isVisible(paper: joint.dia.Paper, modelOrId: Element|string) {
+function isVisible(paper: joint.dia.Paper, modelOrId: joint.dia.Element|string) {
   return !joint.V(paper.findViewByModel(modelOrId).el).hasClass(backgroundClass);
 }
 
