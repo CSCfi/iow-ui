@@ -4,7 +4,6 @@ import { Model, Type, ClassListItem, PredicateListItem } from '../../services/en
 import { SearchClassModal } from './searchClassModal';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion } from '../../utils/exclusion';

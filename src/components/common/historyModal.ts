@@ -38,11 +38,11 @@ class HistoryModalController {
   loading: boolean;
 
   /* @ngInject */
-  constructor(private historyService: HistoryService,
+  constructor(historyService: HistoryService,
               private classService: ClassService,
               private predicateService: PredicateService,
               private modelService: ModelService,
-              private userService: UserService,
+              userService: UserService,
               public model: Model,
               public resource: Class|Predicate|Model) {
 

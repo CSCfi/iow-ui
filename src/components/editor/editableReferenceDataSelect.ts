@@ -37,7 +37,7 @@ class EditableReferenceDataSelectController {
   descriptor: ReferenceDataTableDescriptor;
 
   /* @ngInject */
-  constructor($scope: IScope, private searchReferenceDataModal: SearchReferenceDataModal, private languageService: LanguageService, private viewReferenceDataModal: ViewReferenceDataModal) {
+  constructor($scope: IScope, private searchReferenceDataModal: SearchReferenceDataModal, languageService: LanguageService, viewReferenceDataModal: ViewReferenceDataModal) {
     $scope.$watch(() => this.referenceData, referenceData => {
       this.descriptor = new ReferenceDataTableDescriptor(referenceData, this.model, languageService.createLocalizer(this.model), viewReferenceDataModal);
     });

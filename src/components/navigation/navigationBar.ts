@@ -5,7 +5,6 @@ import { User } from '../../services/entities';
 import { LoginModal } from './loginModal';
 import { module as mod }  from './module';
 import { availableUILanguages, UILanguage } from '../../utils/language';
-import gettextCatalog = angular.gettext.gettextCatalog;
 
 const logoImage = require('../../assets/logo-01.svg');
 

@@ -1,4 +1,3 @@
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
 import { ReferenceData, LanguageContext } from '../../services/entities';

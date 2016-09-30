@@ -24,7 +24,7 @@ export class UriInputAutocompleteController {
   context: LanguageContext;
   localizer: Localizer;
 
-  constructor(private modelService: ModelService, private languageService: LanguageService) {
+  constructor(private modelService: ModelService, languageService: LanguageService) {
     this.localizer = languageService.createLocalizer(this.context);
   }
 

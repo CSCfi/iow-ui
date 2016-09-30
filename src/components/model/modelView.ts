@@ -1,4 +1,3 @@
-import _ = require('lodash');
 import { ILogService, IPromise } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { GroupListItem, Model, LanguageContext } from '../../services/entities';

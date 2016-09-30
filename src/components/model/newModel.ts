@@ -1,6 +1,5 @@
 import { IScope, ILocationService } from 'angular';
 import { module as mod }  from './module';
-import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
 import { Model, Type } from '../../services/entities';
 import { Uri } from '../../services/uri';
@@ -37,12 +36,11 @@ export class NewModelController {
   model: Model;
 
   /* @ngInject */
-  constructor(private $scope: IScope,
-              private $location: ILocationService,
-              private modelService: ModelService,
-              public languageService: LanguageService) {
+  constructor($scope: IScope,
+              $location: ILocationService,
+              modelService: ModelService) {
 
-    this.modelService.newModel(this.prefix, this.label, this.group, this.languages, this.type, this.redirect)
+    modelService.newModel(this.prefix, this.label, this.group, this.languages, this.type, this.redirect)
       .then(model => this.model = model)
       .then(() => this.loading = false);
 

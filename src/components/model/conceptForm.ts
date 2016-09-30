@@ -32,7 +32,7 @@ export class ConceptFormController {
   vocabularyNames: VocabularyNameHref[];
   localizer: Localizer;
 
-  constructor($scope: IScope, private languageService: LanguageService, public gettextCatalog: gettextCatalog) {
+  constructor($scope: IScope, languageService: LanguageService, public gettextCatalog: gettextCatalog) {
     this.localizer = languageService.createLocalizer(this.model);
     $scope.$watch(() => this.concept, (concept: Concept) => {
       if (concept instanceof ConceptSuggestion) {

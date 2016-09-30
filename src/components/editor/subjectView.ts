@@ -1,4 +1,4 @@
-import { Predicate, Class, Concept, Model } from '../../services/entities';
+import { Predicate, Class, Model } from '../../services/entities';
 import { module as mod }  from './module';
 import { IScope } from 'angular';
 import { LanguageService } from '../../services/languageService';

@@ -1,5 +1,4 @@
 import { IScope, ILocationService} from 'angular';
-import _ = require('lodash');
 import { LocationService } from '../services/locationService';
 import { GroupService } from '../services/groupService';
 import { SearchService } from '../services/searchService';
@@ -44,14 +43,14 @@ export class FrontPageController {
   private localizer: Localizer;
 
   /* @ngInject */
-  constructor(private $scope: IScope,
+  constructor($scope: IScope,
               private $location: ILocationService,
-              private locationService: LocationService,
-              private groupService: GroupService,
+              locationService: LocationService,
+              groupService: GroupService,
               private searchService: SearchService,
               private languageService: LanguageService,
               private advancedSearchModal: AdvancedSearchModal,
-              private maintenanceModal: MaintenanceModal) {
+              maintenanceModal: MaintenanceModal) {
 
     this.localizer = languageService.createLocalizer(frontPageSearchLanguageContext);
     locationService.atFrontPage();

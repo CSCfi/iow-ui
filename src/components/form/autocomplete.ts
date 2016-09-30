@@ -1,4 +1,4 @@
-import { IScope, IAttributes, INgModelController, IPromise, IQService, IRepeatScope, IModelFormatter } from 'angular';
+import { IScope, IAttributes, INgModelController, IQService, IRepeatScope, IModelFormatter } from 'angular';
 import * as _ from 'lodash';
 import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';

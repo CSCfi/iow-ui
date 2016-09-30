@@ -1,7 +1,4 @@
-import { ICompileProvider, ILogProvider, ILocationProvider, route, ui, auto, animate } from 'angular';
-import IRoute = route.IRoute;
-import IProvideService = auto.IProvideService;
-import IRouteService = route.IRouteService;
+import { ICompileProvider, ILogProvider, ILocationProvider, ui, animate } from 'angular';
 import IAnimateProvider = animate.IAnimateProvider;
 import ITooltipProvider = ui.bootstrap.ITooltipProvider;
 import './shim';

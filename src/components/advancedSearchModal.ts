@@ -39,7 +39,7 @@ class AdvancedSearchController {
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
               private searchService: SearchService,
-              private languageService: LanguageService) {
+              languageService: LanguageService) {
 
     this.localizer = languageService.createLocalizer(frontPageSearchLanguageContext);
 

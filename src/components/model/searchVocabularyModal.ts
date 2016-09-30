@@ -50,8 +50,8 @@ class SearchVocabularyController {
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
               public exclude: (vocabulary: Vocabulary) => string,
-              private conceptService: ConceptService,
-              private languageService: LanguageService,
+              conceptService: ConceptService,
+              languageService: LanguageService,
               context: LanguageContext) {
 
     this.localizer = languageService.createLocalizer(context);

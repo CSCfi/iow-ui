@@ -3,7 +3,6 @@ import { module as mod }  from './module';
 import { SearchConceptModal } from './searchConceptModal';
 import { EditableForm } from '../form/editableEntityController';
 import { IScope, IAttributes } from 'angular';
-import gettextCatalog = angular.gettext.gettextCatalog;
 
 mod.directive('editableConceptSelect', () => {
   return {

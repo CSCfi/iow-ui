@@ -1,6 +1,5 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
-import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import Dictionary = _.Dictionary;
@@ -40,7 +39,7 @@ export class AddPropertiesFromClassModalController {
               private gettextCatalog: gettextCatalog,
               klass: Class,
               public classType: string,
-              private context: LanguageContext,
+              public context: LanguageContext,
               private exclude: (property: Property) => boolean) {
 
       this.properties = _.groupBy<Property>(klass.properties.map(property => property.copy()), 'normalizedPredicateType');

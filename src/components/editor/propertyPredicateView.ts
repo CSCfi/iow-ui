@@ -1,5 +1,4 @@
-import { IAttributes, IScope, IQService } from 'angular';
-import gettextCatalog = angular.gettext.gettextCatalog;
+import { IAttributes, IScope } from 'angular';
 import { Model, Property, Attribute, Association, Predicate } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
@@ -39,7 +38,6 @@ class PropertyPredicateViewController {
   changeActions: { name: string, apply: () => void }[] = [];
   /* @ngInject */
   constructor($scope: IScope,
-              private $q: IQService,
               private predicateService: PredicateService,
               private searchPredicateModal: SearchPredicateModal,
               private copyPredicateModal: CopyPredicateModal) {

@@ -1,6 +1,4 @@
-import { IAttributes, IScope, INgModelController, IParseService, animate } from 'angular';
-import IAnimateProvider = animate.IAnimateProvider;
-import gettextCatalog = angular.gettext.gettextCatalog;
+import { IAttributes, IScope, INgModelController, IParseService } from 'angular';
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
 import { LanguageContext } from '../../services/entities';
@@ -97,7 +95,7 @@ class EditableController {
   item: DisplayItem;
 
   /* @ngInject */
-  constructor($scope: IScope, $parse: IParseService, private displayItemFactory: DisplayItemFactory) {
+  constructor($scope: IScope, $parse: IParseService, displayItemFactory: DisplayItemFactory) {
 
     // we need to know if handler was set or not so parse ourselves instead of using scope '&'
     const clickHandler = $parse(this.onClick);

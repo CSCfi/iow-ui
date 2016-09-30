@@ -41,7 +41,7 @@ class EditableLabelController {
   infoText: string;
 
   /* @ngInject */
-  constructor($scope: IScope, private gettextCatalog: gettextCatalog, languageService: LanguageService) {
+  constructor($scope: IScope, gettextCatalog: gettextCatalog, languageService: LanguageService) {
     const key = this.title + ' info';
     $scope.$watch(() => languageService.UILanguage, () => {
       const infoText = gettextCatalog.getString(key);

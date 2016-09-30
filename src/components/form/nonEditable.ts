@@ -1,5 +1,4 @@
 import { IAttributes, IParseService, IScope } from 'angular';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
 import { LanguageContext } from '../../services/entities';

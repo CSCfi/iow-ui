@@ -53,13 +53,13 @@ export class ConceptEditorModalController {
   private localizer: Localizer;
 
   /* @ngInject */
-  constructor(private $scope: IScope,
+  constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
               languageService: LanguageService,
               public gettextCatalog: gettextCatalog,
-              private conceptService: ConceptService,
+              conceptService: ConceptService,
               private confirmationModal: ConfirmationModal,
-              private model: Model) {
+              model: Model) {
 
     this.localizer = languageService.createLocalizer(model);
     this.loadingResults = true;

@@ -1,5 +1,4 @@
 import { IQService } from 'angular';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { Language, availableLanguages } from '../../utils/language';
 import { module as mod }  from './module';
 

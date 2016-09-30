@@ -86,8 +86,8 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   };
 
   /* @ngInject */
-  constructor(private $scope: IScope,
-              private $location: ILocationService,
+  constructor($scope: IScope,
+              $location: ILocationService,
               private $route: IRouteService,
               private $q: IQService,
               private locationService: LocationService,
@@ -597,7 +597,7 @@ class RouteData {
   resourceCurie: string;
   propertyId: string;
 
-  constructor(private params: any) {
+  constructor(params: any) {
     this.existingModelPrefix = params.prefix;
 
     if (params.resource) {

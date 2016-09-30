@@ -46,7 +46,7 @@ class SearchNamespaceController {
               public  exclude: (ns: ImportedNamespace) => string,
               private model: Model,
               private language: Language,
-              private modelService: ModelService,
+              modelService: ModelService,
               private languageService: LanguageService,
               private addEditNamespaceModal: AddEditNamespaceModal) {
 

@@ -81,7 +81,7 @@ class SearchResultsController<T extends WithId> {
   onSelect: ICompiledExpression;
   editInProgress: () => boolean;
 
-  constructor(private $scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
+  constructor($scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
     $scope.$watchCollection(() => this.items, items => {
       this.searchResults = _.map(items, item => {
         if (item instanceof AddNew) {

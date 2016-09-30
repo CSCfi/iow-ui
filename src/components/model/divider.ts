@@ -1,5 +1,4 @@
-import { IWindowService, IScope, ui } from 'angular';
-import IModalScope = ui.bootstrap.IModalScope;
+import { IWindowService, IScope } from 'angular';
 import { module as mod }  from './module';
 import { SessionService } from '../../services/sessionService';
 

@@ -1,5 +1,4 @@
 import { IScope, IAttributes, INgModelController } from 'angular';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { isDefined } from '../../utils/object';
 import { module as mod }  from './module';
 

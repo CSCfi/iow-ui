@@ -11,8 +11,7 @@ import {
   Model,
   GraphData,
   ExternalEntity,
-  Type,
-  AbstractClass
+  Type
 } from './entities';
 import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';

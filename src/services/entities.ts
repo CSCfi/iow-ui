@@ -1726,7 +1726,7 @@ export class VocabularyNameHref {
 
   private static internalVocabularyName = 'Internal vocabulary';
 
-  constructor(private vocabulary: Vocabulary|Uri) {
+  constructor(vocabulary: Vocabulary|Uri) {
     if (vocabulary instanceof Uri) {
       this.id = vocabulary;
       this.href = vocabulary.uri;

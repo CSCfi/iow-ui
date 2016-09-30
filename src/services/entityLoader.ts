@@ -134,9 +134,9 @@ export class EntityLoader {
               private classService: ClassService,
               private userService: UserService,
               private conceptService: ConceptService,
-              private resetService: ResetService,
+              resetService: ResetService,
               private context: any,
-              private shouldReset: boolean) {
+              shouldReset: boolean) {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
     this.loggedIn = this.reset.then(() => this.login());
@@ -166,8 +166,8 @@ export class EntityLoader {
   }
 
   createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<ConceptSuggestion> {
-    const result = this.$q.all([this.loggedIn, modelPromise])
-      .then(([loggedId, model]: [boolean, Model]) => this.conceptService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, null, 'fi', model))
+    const result = this.loggedIn.then(() => modelPromise)
+      .then((model: Model) => this.conceptService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, null, 'fi', model))
       .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
 
     return this.addAction(result, details);

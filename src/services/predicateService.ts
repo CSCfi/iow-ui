@@ -1,7 +1,7 @@
 import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
 import {
-  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association, AbstractPredicate
+  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';

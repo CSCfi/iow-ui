@@ -36,7 +36,7 @@ class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
 
   namespaces: Namespace[];
 
-  constructor(private model: Model) {
+  constructor(model: Model) {
     super();
     this.namespaces = model.getNamespaces().filter(ns => ns.type === NamespaceType.IMPLICIT_TECHNICAL);
   }

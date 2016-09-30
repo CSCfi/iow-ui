@@ -8,6 +8,7 @@
     "module": "commonjs",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "types": [
       "angular",
       "angular-animate",

@@ -1,5 +1,4 @@
 import { IAttributes, IScope } from 'angular';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { Uri } from '../../services/uri';
