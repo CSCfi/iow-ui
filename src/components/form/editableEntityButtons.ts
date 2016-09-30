@@ -12,7 +12,7 @@ mod.directive('editableEntityButtons', () => {
     require: '^form',
     template: require('./editableEntityButtons.html'),
     transclude: true,
-    link($scope: EditableEntityButtonsScope, element: JQuery, attributes: IAttributes, formController: IFormController) {
+    link($scope: EditableEntityButtonsScope, _element: JQuery, _attributes: IAttributes, formController: IFormController) {
       $scope.form = formController;
     }
   };

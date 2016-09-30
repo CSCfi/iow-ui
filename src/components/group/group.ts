@@ -85,15 +85,15 @@ class GroupController extends EditableEntityController<Group> {
     this.$location.url(model.iowUrl());
   }
 
-  create(entity: Group): IPromise<any> {
+  create(_entity: Group): IPromise<any> {
     throw new Error('Not supported');
   }
 
-  update(entity: Group, oldEntity: Group): IPromise<any> {
+  update(_entity: Group, _oldEntity: Group): IPromise<any> {
     throw new Error('Not supported');
   }
 
-  remove(entity: Group): IPromise<any> {
+  remove(_entity: Group): IPromise<any> {
     throw new Error('Not supported');
   }
 

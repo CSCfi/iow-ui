@@ -21,7 +21,7 @@ mod.directive('editableReferenceDataSelect', () => {
     bindToController: true,
     template: require('./editableReferenceDataSelect.html'),
     require: ['editableReferenceDataSelect', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableReferenceDataSelectController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, formController]: [EditableReferenceDataSelectController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
     },
     controller: EditableReferenceDataSelectController
@@ -59,7 +59,7 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     super();
   }
 
-  columnDescriptors(referenceDatas: ReferenceData[]): ColumnDescriptor<ReferenceData>[] {
+  columnDescriptors(): ColumnDescriptor<ReferenceData>[] {
 
     // TODO: shared logic with referenceDatasView.ts
     const clickHandler = (value: ReferenceData) => {
@@ -80,11 +80,11 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     return this.referenceData;
   }
 
-  canEdit(referenceData: ReferenceData): boolean {
+  canEdit(_referenceData: ReferenceData): boolean {
     return false;
   }
 
-  edit(referenceData: ReferenceData): any {
+  edit(_referenceData: ReferenceData): any {
     throw new Error('Edit unsupported');
   }
 
@@ -92,7 +92,7 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     _.remove(this.values(), referenceData);
   }
 
-  canRemove(referenceData: ReferenceData): boolean {
+  canRemove(_referenceData: ReferenceData): boolean {
     return true;
   }
 

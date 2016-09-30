@@ -21,7 +21,7 @@ mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: Valid
     },
     restrict: 'A',
     require: 'ngModel',
-    link($scope: IdInputScope, element: JQuery, attributes: IdInputAttributes, modelController: INgModelController) {
+    link($scope: IdInputScope, _element: JQuery, attributes: IdInputAttributes, modelController: INgModelController) {
       let previous: Uri = null;
 
       extendNgModelOptions(modelController, { updateOn: 'blur' });

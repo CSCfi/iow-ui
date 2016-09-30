@@ -7,7 +7,7 @@ mod.directive('keyControl', () => {
     restrict: 'A',
     controllerAs: 'keyControl',
     require: 'keyControl',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controller: KeyControlController) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, controller: KeyControlController) {
       element.on('keydown', event => controller.keyPressed(event));
       $scope.$watch(element.attr('key-control') + '.length', (items: number) => controller.onItemsChange(items || 0));
     },

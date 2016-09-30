@@ -159,7 +159,7 @@ export abstract class GraphNode {
     return glyphIconClassForType(this.type);
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, _clone: boolean): {} {
     return {};
   }
 
@@ -464,7 +464,7 @@ export class Model extends AbstractModel {
     return result;
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, clone: boolean): {} {
     this.copyNamespacesFromRequires();
 
     return {
@@ -675,7 +675,7 @@ export class ReferenceData extends GraphNode {
     return this.isOfType('externalReferenceData');
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, _clone: boolean): {} {
     return {
       '@id': this.id.uri,
       title: serializeLocalizable(this.title),
@@ -969,7 +969,7 @@ export class ClassPosition extends GraphNode {
     return position;
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       pointXY: serializeOptional(this.coordinate, serializeCoordinate),
@@ -1026,7 +1026,7 @@ export class AssociationPropertyPosition extends GraphNode {
     return this.vertices.length > 0;
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, _clone: boolean): {} {
     return {
       '@id': this.id.uri,
       vertexXY: serializeList(this.vertices, serializeCoordinate)
@@ -1048,7 +1048,7 @@ export class AssociationTargetPlaceholderClass implements VisualizationClass {
     this.label = createConstantLocalizable(id.compact, model.language);
   }
 
-  hasAssociationTarget(id: Uri) {
+  hasAssociationTarget(_id: Uri) {
     return false;
   }
 }
@@ -1141,7 +1141,7 @@ export class Class extends AbstractClass implements VisualizationClass {
     return result;
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, clone: boolean): {} {
     const isConstraintDefined = (constraint: Constraint) => constraint.items.length > 0 || hasLocalization(constraint.comment);
 
     return {
@@ -1212,7 +1212,7 @@ export class Constraint extends GraphNode {
     _.remove(this.items, item => item === removedItem);
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, clone: boolean): {} {
     function mapConstraintType(constraint: ConstraintType) {
       switch (constraint) {
         case 'or':
@@ -1249,7 +1249,7 @@ export class ConstraintListItem extends GraphNode {
     this.label = graph.label;
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, _clone: boolean): {} {
     return {
       '@id': this.shapeId.uri
     };
@@ -1416,7 +1416,7 @@ export class Property extends GraphNode {
     return new Property(serialization['@graph'], serialization['@context'], this.frame);
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, clone: boolean): {} {
 
     const predicate = this.predicate;
 
@@ -1540,7 +1540,7 @@ export class Predicate extends AbstractPredicate {
     return this.state === 'Unstable';
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
@@ -1706,7 +1706,7 @@ export class ConceptSuggestion extends GraphNode {
     return new ConceptSuggestion(serialization['@graph'], serialization['@context'], this.frame);
   }
 
-  serializationValues(inline: boolean, clone: boolean): {} {
+  serializationValues(_inline: boolean, clone: boolean): {} {
     return {
       '@id': this.id.uri,
       prefLabel: serializeLocalizable(this.label),
@@ -1811,19 +1811,19 @@ export class AnonymousUser implements User {
     return false;
   }
 
-  isMemberOf(entity: Model|AbstractGroup) {
+  isMemberOf(_entity: Model|AbstractGroup) {
     return false;
   }
 
-  isMemberOfGroup(id: Uri) {
+  isMemberOfGroup(_id: Uri) {
     return false;
   }
 
-  isAdminOf(entity: Model|AbstractGroup) {
+  isAdminOf(_entity: Model|AbstractGroup) {
     return false;
   }
 
-  isAdminOfGroup(id: Uri) {
+  isAdminOfGroup(_id: Uri) {
     return false;
   }
 }
@@ -2180,43 +2180,43 @@ export class EntityDeserializer {
   }
 
   deserializeGroupList(data: GraphData): IPromise<GroupListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.groupListFrame(data), (framedData) => GroupListItem);
+    return frameAndMapArray(this.$log, data, frames.groupListFrame(data), () => GroupListItem);
   }
 
   deserializeGroup(data: GraphData): IPromise<Group> {
-    return frameAndMap(this.$log, data, true, frames.groupFrame(data), (framedData) => Group);
+    return frameAndMap(this.$log, data, true, frames.groupFrame(data), () => Group);
   }
 
   deserializeModelList(data: GraphData): IPromise<ModelListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.modelListFrame(data), (framedData) => ModelListItem);
+    return frameAndMapArray(this.$log, data, frames.modelListFrame(data), () => ModelListItem);
   }
 
   deserializeModel(data: GraphData): IPromise<Model> {
-    return frameAndMap(this.$log, data, true, frames.modelFrame(data), (framedData) => Model);
+    return frameAndMap(this.$log, data, true, frames.modelFrame(data), () => Model);
   }
 
   deserializeModelById(data: GraphData, id: Uri|Urn): IPromise<Model> {
-    return frameAndMap(this.$log, data, true, frames.modelFrame(data, {id}), (framedData) => Model);
+    return frameAndMap(this.$log, data, true, frames.modelFrame(data, {id}), () => Model);
   }
 
   deserializeModelByPrefix(data: GraphData, prefix: string): IPromise<Model> {
-    return frameAndMap(this.$log, data, true, frames.modelFrame(data, {prefix}), (framedData) => Model);
+    return frameAndMap(this.$log, data, true, frames.modelFrame(data, {prefix}), () => Model);
   }
 
   deserializeClassList(data: GraphData): IPromise<ClassListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.classListFrame(data), (framedData) => ClassListItem);
+    return frameAndMapArray(this.$log, data, frames.classListFrame(data), () => ClassListItem);
   }
 
   deserializeClass(data: GraphData): IPromise<Class> {
-    return frameAndMap(this.$log, data, true, frames.classFrame(data), (framedData) => Class);
+    return frameAndMap(this.$log, data, true, frames.classFrame(data), () => Class);
   }
 
   deserializeProperty(data: GraphData): IPromise<Property> {
-    return frameAndMap(this.$log, data, true, frames.propertyFrame(data), (framedData) => Property);
+    return frameAndMap(this.$log, data, true, frames.propertyFrame(data), () => Property);
   }
 
   deserializePredicateList(data: GraphData): IPromise<PredicateListItem[]> {
-    return frameAndMapArray(this.$log, data, frames.predicateListFrame(data), (framedData) => PredicateListItem);
+    return frameAndMapArray(this.$log, data, frames.predicateListFrame(data), () => PredicateListItem);
   }
 
   deserializePredicate(data: GraphData): IPromise<Attribute|Association|Predicate> {
@@ -2239,19 +2239,19 @@ export class EntityDeserializer {
   }
 
   deserializeConceptSuggestion(data: GraphData): IPromise<ConceptSuggestion> {
-    return frameAndMap(this.$log, data, true, frames.iowConceptFrame(data), (framedData) => ConceptSuggestion);
+    return frameAndMap(this.$log, data, true, frames.iowConceptFrame(data), () => ConceptSuggestion);
   }
 
   deserializeConceptSuggestions(data: GraphData): IPromise<ConceptSuggestion[]> {
-    return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), (framedData) => ConceptSuggestion);
+    return frameAndMapArray(this.$log, data, frames.iowConceptFrame(data), () => ConceptSuggestion);
   }
 
   deserializeFintoConcept(data: GraphData, id: Url): IPromise<FintoConcept> {
-    return frameAndMap(this.$log, data, true, frames.fintoConceptFrame(data, id), (framedData) => FintoConcept);
+    return frameAndMap(this.$log, data, true, frames.fintoConceptFrame(data, id), () => FintoConcept);
   }
 
   deserializeFintoConceptSearchResults(data: GraphData): IPromise<FintoConceptSearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame(data), (framedData) => FintoConceptSearchResult);
+    return frameAndMapArray(this.$log, data, frames.fintoConceptSearchResultsFrame(data), () => FintoConceptSearchResult);
   }
 
   deserializeConcepts(data: GraphData): IPromise<Concept[]> {
@@ -2259,54 +2259,54 @@ export class EntityDeserializer {
   }
 
   deserializeVocabularies(data: GraphData): IPromise<Vocabulary[]> {
-    return frameAndMapArray(this.$log, data, frames.vocabularyFrame(data), (framedData) => Vocabulary);
+    return frameAndMapArray(this.$log, data, frames.vocabularyFrame(data), () => Vocabulary);
   }
 
   deserializeImportedNamespace(data: GraphData): IPromise<ImportedNamespace> {
-    return frameAndMap(this.$log, data, true, frames.namespaceFrame(data), (framedData) => ImportedNamespace);
+    return frameAndMap(this.$log, data, true, frames.namespaceFrame(data), () => ImportedNamespace);
   }
 
   deserializeImportedNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
-    return frameAndMapArray(this.$log, data, frames.namespaceFrame(data), (framedData) => ImportedNamespace);
+    return frameAndMapArray(this.$log, data, frames.namespaceFrame(data), () => ImportedNamespace);
   }
 
   deserializeReferenceDataServers(data: GraphData): IPromise<ReferenceDataServer[]> {
-    return frameAndMapArray(this.$log, data, frames.referenceDataServerFrame(data), (framedData) => ReferenceDataServer);
+    return frameAndMapArray(this.$log, data, frames.referenceDataServerFrame(data), () => ReferenceDataServer);
   }
 
   deserializeReferenceData(data: GraphData): IPromise<ReferenceData> {
-    return frameAndMap(this.$log, data, true, frames.referenceDataFrame(data), (framedData) => ReferenceData);
+    return frameAndMap(this.$log, data, true, frames.referenceDataFrame(data), () => ReferenceData);
   }
 
   deserializeReferenceDatas(data: GraphData): IPromise<ReferenceData[]> {
-    return frameAndMapArray(this.$log, data, frames.referenceDataFrame(data), (framedData) => ReferenceData);
+    return frameAndMapArray(this.$log, data, frames.referenceDataFrame(data), () => ReferenceData);
   }
 
   deserializeReferenceDataCodes(data: GraphData): IPromise<ReferenceDataCode[]> {
-    return frameAndMapArray(this.$log, data, frames.referenceDataCodeFrame(data), (framedData) => ReferenceDataCode);
+    return frameAndMapArray(this.$log, data, frames.referenceDataCodeFrame(data), () => ReferenceDataCode);
   }
 
   deserializeUser(data: GraphData): IPromise<User> {
-    return frameAndMap(this.$log, data, true, frames.userFrame(data), (framedData) => DefaultUser);
+    return frameAndMap(this.$log, data, true, frames.userFrame(data), () => DefaultUser);
   }
 
   deserializeSearch(data: GraphData): IPromise<SearchResult[]> {
-    return frameAndMapArray(this.$log, data, frames.searchResultFrame(data), (framedData) => SearchResult);
+    return frameAndMapArray(this.$log, data, frames.searchResultFrame(data), () => SearchResult);
   }
 
   deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
-    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), (framedData) => DefaultVisualizationClass);
+    return frameAndMapArray(this.$log, data, frames.classVisualizationFrame(data), () => DefaultVisualizationClass);
   }
 
   deserializeModelPositions(data: GraphData): IPromise<ModelPositions> {
-    return frameAndMapArrayEntity(this.$log, data, frames.modelPositionsFrame(data), (framedData) => ModelPositions);
+    return frameAndMapArrayEntity(this.$log, data, frames.modelPositionsFrame(data), () => ModelPositions);
   }
 
   deserializeUsage(data: GraphData): IPromise<Usage> {
-    return frameAndMap(this.$log, data, true, frames.usageFrame(data), (framedData) => DefaultUsage);
+    return frameAndMap(this.$log, data, true, frames.usageFrame(data), () => DefaultUsage);
   }
 
   deserializeVersion(data: GraphData): IPromise<Activity> {
-    return frameAndMap(this.$log, data, true, frames.versionFrame(data), (framedData) => Activity);
+    return frameAndMap(this.$log, data, true, frames.versionFrame(data), () => Activity);
   }
 }

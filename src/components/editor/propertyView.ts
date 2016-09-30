@@ -19,7 +19,7 @@ mod.directive('propertyView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['propertyView', '^classForm'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes,
+    link($scope: IScope, element: JQuery, _attributes: IAttributes,
          [thisController, classFormController]: [PropertyViewController, ClassFormController]) {
 
       thisController.isOpen = () => classFormController.openPropertyId === thisController.property.internalId.uuid;
@@ -76,7 +76,7 @@ export class PropertyViewController {
     });
   }
 
-  stemDatasource(search: string) {
+  stemDatasource(_search: string) {
     return [
       new Uri('http://', {}),
       new Uri('https://', {}),

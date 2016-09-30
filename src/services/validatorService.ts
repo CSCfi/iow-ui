@@ -18,6 +18,6 @@ export class ValidatorService {
 
   private idDoesNotExist(id: Uri): IPromise<boolean> {
     return this.$http.get(config.apiEndpointWithName('freeID'), {params: {id: id.uri}})
-      .then(result => result.data ? true : this.$q.reject('exists'), err => true);
+      .then(result => result.data ? true : this.$q.reject('exists'), _err => true);
   }
 }

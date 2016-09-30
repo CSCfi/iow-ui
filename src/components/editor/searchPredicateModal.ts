@@ -20,7 +20,7 @@ import { collectProperties, any } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
 import { valueContains } from '../../utils/searchFilter';
 
-const noExclude = (item: PredicateListItem) => <string> null;
+const noExclude = (_item: PredicateListItem) => <string> null;
 
 export class SearchPredicateModal {
 

@@ -29,7 +29,7 @@ mod.directive('referenceDatasView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['referenceDatasView', '?^modelView'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [ReferenceDatasViewController, ModelViewController]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [ReferenceDatasViewController, ModelViewController]) {
       thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
     controller: ReferenceDatasViewController
@@ -68,7 +68,7 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     super();
   }
 
-  columnDescriptors(referenceDatas: ReferenceData[]): ColumnDescriptor<ReferenceData>[] {
+  columnDescriptors(): ColumnDescriptor<ReferenceData>[] {
 
     const clickHandler = (value: ReferenceData) => {
       if (value.isExternal()) {
@@ -96,7 +96,7 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
     this.editReferenceDataModal.openEdit(value, this.model, this.localizer.language);
   }
 
-  canRemove(referenceData: ReferenceData): boolean {
+  canRemove(_referenceData: ReferenceData): boolean {
     return true;
   }
 

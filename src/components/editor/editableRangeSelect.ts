@@ -30,7 +30,7 @@ mod.directive('editableRangeSelect', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['editableRangeSelect', '^form'],
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [RangeSelectController, EditableForm]) {
+    link($scope: EditableScope, element: JQuery, _attributes: IAttributes, [thisController, formController]: [RangeSelectController, EditableForm]) {
       const input = element.find('[ng-model]');
       $scope.ngModel = input.controller('ngModel');
       thisController.isEditing = () => formController.editing;

@@ -87,7 +87,7 @@ export class ConceptEditorModalController {
         this.loadingResults = false;
       });
 
-    $scope.$watch(() => this.localizer.language, lang => this.sort());
+    $scope.$watch(() => this.localizer.language, () => this.sort());
     $scope.$watch(() => this.searchText, () => this.search());
     $scope.$watch(() => this.showModel, () => this.search());
     $scope.$watch(() => this.showVocabulary, () => this.search());

@@ -31,7 +31,7 @@ mod.directive('editableStateSelect', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['editableStateSelect', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, editableController]: [StateSelectController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, editableController]: [StateSelectController, EditableForm]) {
       thisController.isEditing = () => editableController && editableController.editing;
     },
     controller: StateSelectController

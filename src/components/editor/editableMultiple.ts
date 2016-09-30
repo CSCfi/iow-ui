@@ -26,14 +26,14 @@ mod.directive('editableMultiple', /* @ngInject */ ($q: IQService) => {
     },
     template: require('./editableMultiple.html'),
     require: ['editableMultiple', 'ngModel', '?^form'],
-    link($scope: EditableMultipleScope, element: JQuery, attributes: IAttributes, [thisController, ngModel, formController]: [EditableMultipleController<any>, INgModelController, EditableForm]) {
+    link($scope: EditableMultipleScope, element: JQuery, _attributes: IAttributes, [thisController, ngModel, formController]: [EditableMultipleController<any>, INgModelController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
 
       const inputElement = element.find('input');
       const inputNgModel = inputElement.controller('ngModel');
 
       const keyDownHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.keyPressed(event));
-      const blurHandler = (event: JQueryEventObject) => $scope.$apply(() => thisController.addValueFromInput());
+      const blurHandler = () => $scope.$apply(() => thisController.addValueFromInput());
 
       inputElement.on('keydown', keyDownHandler);
       inputElement.on('blur', blurHandler);

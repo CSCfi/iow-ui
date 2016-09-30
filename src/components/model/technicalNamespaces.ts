@@ -41,7 +41,7 @@ class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
     this.namespaces = model.getNamespaces().filter(ns => ns.type === NamespaceType.IMPLICIT_TECHNICAL);
   }
 
-  columnDescriptors(values: Namespace[]): ColumnDescriptor<Namespace>[] {
+  columnDescriptors(): ColumnDescriptor<Namespace>[] {
     return [
       { headerName: 'Prefix', nameExtractor: ns => ns.prefix, cssClass: 'prefix' },
       { headerName: 'Namespace', nameExtractor: ns => ns.url }
@@ -56,11 +56,11 @@ class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
     return ns.prefix;
   }
 
-  canEdit(ns: Namespace): boolean {
+  canEdit(_ns: Namespace): boolean {
     return false;
   }
 
-  canRemove(ns: Namespace): boolean {
+  canRemove(_ns: Namespace): boolean {
     return false;
   }
 }

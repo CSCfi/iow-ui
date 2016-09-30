@@ -19,7 +19,7 @@ mod.directive('editableConceptSelect', () => {
     template: require('./editableConceptSelect.html'),
     controller: EditableConceptSelectController,
     require: ['editableConceptSelect', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableConceptSelectController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, formController]: [EditableConceptSelectController, EditableForm]) {
       thisController.isEditing = () => formController && formController.editing;
     }
   };

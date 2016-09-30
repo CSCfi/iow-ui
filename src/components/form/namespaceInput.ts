@@ -12,7 +12,7 @@ mod.directive('namespaceInput', () => {
     },
     restrict: 'A',
     require: 'ngModel',
-    link($scope: NamespaceInputScope, element: JQuery, attributes: IAttributes, ngModel: INgModelController) {
+    link($scope: NamespaceInputScope, _element: JQuery, _attributes: IAttributes, ngModel: INgModelController) {
       ngModel.$validators['namespace'] = isValidNamespace;
       ngModel.$validators['url'] = isValidUrl;
       ngModel.$validators['existingId'] = (ns: string) => {

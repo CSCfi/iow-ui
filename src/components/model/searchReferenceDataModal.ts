@@ -13,7 +13,7 @@ import { any, all } from '../../utils/array';
 import * as _ from 'lodash';
 import { localizableContains } from '../../utils/language';
 
-const noExclude = (referenceData: ReferenceData) => <string> null;
+const noExclude = (_referenceData: ReferenceData) => <string> null;
 
 export class SearchReferenceDataModal {
   /* @ngInject */

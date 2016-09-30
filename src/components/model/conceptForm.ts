@@ -17,7 +17,7 @@ mod.directive('conceptForm', () => {
     require: ['conceptForm', '?^conceptView'],
     controllerAs: 'ctrl',
     bindToController: true,
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, classViewController]: [ConceptFormController, ConceptViewController]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, classViewController]: [ConceptFormController, ConceptViewController]) {
       thisController.isEditing = () => classViewController && classViewController.isEditing();
     },
     controller: ConceptFormController

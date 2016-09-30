@@ -44,7 +44,7 @@ mod.directive('editableMultipleUriSelect', () => {
       </editable-multiple>
     `,
     require: ['editableMultipleUriSelect', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableMultipleUriSelectController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, formController]: [EditableMultipleUriSelectController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
     },
     controller: EditableMultipleUriSelectController

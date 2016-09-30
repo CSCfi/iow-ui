@@ -15,7 +15,7 @@ mod.directive('modelForm', () => {
     bindToController: true,
     require: ['modelForm', '?^modelView'],
     controller: ModelFormController,
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [modelFormController, modelViewController]: [ModelFormController, ModelViewController]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [modelFormController, modelViewController]: [ModelFormController, ModelViewController]) {
       modelFormController.isEditing = () => modelViewController && modelViewController.isEditing();
     }
   };

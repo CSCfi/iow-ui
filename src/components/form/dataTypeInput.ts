@@ -29,7 +29,7 @@ mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: Mod
       referenceData: '='
     },
     require: 'ngModel',
-    link($scope: DatatypeInputScope, element: JQuery, attributes: IAttributes, ngModel: INgModelController) {
+    link($scope: DatatypeInputScope, element: JQuery, _attributes: IAttributes, ngModel: INgModelController) {
 
       const setPlaceholder = () => element.attr('placeholder', placeholderText($scope.datatypeInput, gettextCatalog));
 

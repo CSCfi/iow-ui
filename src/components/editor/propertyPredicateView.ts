@@ -21,7 +21,7 @@ mod.directive('propertyPredicateView', () => {
     bindToController: true,
     controller: PropertyPredicateViewController,
     require: ['propertyPredicateView', '^classForm'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, classFormController]: [PropertyPredicateViewController, ClassFormController]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, classFormController]: [PropertyPredicateViewController, ClassFormController]) {
       thisController.isEditing = () => classFormController.isEditing();
     }
   };

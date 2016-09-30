@@ -16,7 +16,7 @@ mod.directive('errorMessages', () => {
   return {
     restrict: 'E',
     template: require('./errorMessages.html'),
-    link($scope: ErrorMessagesScope, element: JQuery, attributes: ErrorMessagesAttributes) {
+    link($scope: ErrorMessagesScope, _element: JQuery, attributes: ErrorMessagesAttributes) {
       $scope.dynamicErrors = errors;
       $scope.$watch(attributes.ngModelController, (ngModelController: INgModelController|INgModelController[]) => {
         $scope.ngModelControllers = normalizeAsArray(ngModelController);

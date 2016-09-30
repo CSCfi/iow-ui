@@ -28,7 +28,7 @@ mod.directive('classView', () => {
     bindToController: true,
     controller: ClassViewController,
     require: 'classView',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: ClassViewController) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, ctrl: ClassViewController) {
       $scope.$watchGroup([() => ctrl.width, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
         setSelectionStyles(element, show, selectionWidth);
       });

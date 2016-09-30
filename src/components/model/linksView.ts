@@ -25,7 +25,7 @@ mod.directive('linksView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['linksView', '?^modelView'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [LinksViewController, ModelViewController]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [LinksViewController, ModelViewController]) {
       thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
     controller: LinksViewController
@@ -61,7 +61,7 @@ class LinkTableDescriptor extends TableDescriptor<Link> {
     super();
   }
 
-  columnDescriptors(values: Link[]): ColumnDescriptor<Link>[] {
+  columnDescriptors(): ColumnDescriptor<Link>[] {
     return [
       { headerName: 'Title', nameExtractor: link => this.languageService.translate(link.title, this.model), hrefExtractor: link => link.homepage.uri },
       { headerName: 'Description', nameExtractor: link => this.languageService.translate(link.description, this.model) }
@@ -84,11 +84,11 @@ class LinkTableDescriptor extends TableDescriptor<Link> {
     this.model.removeLink(link);
   }
 
-  canEdit(link: Link): boolean {
+  canEdit(_link: Link): boolean {
     return true;
   }
 
-  canRemove(link: Link): boolean {
+  canRemove(_link: Link): boolean {
     return true;
   }
 }

@@ -27,8 +27,8 @@ mod.directive('keyControlSelection', ($timeout: ITimeoutService) => {
         }
       }
 
-      $scope.$on('selectionMoved', (event, selectionIndex) => update(selectionIndex));
-      $scope.$on('selectionSelected', (event, selectionIndex) => {
+      $scope.$on('selectionMoved', (_event, selectionIndex) => update(selectionIndex));
+      $scope.$on('selectionSelected', (_event, selectionIndex) => {
         if (selectionIndex === $scope.$index) {
           // do outside of digest cycle
           $timeout(() => element.click());

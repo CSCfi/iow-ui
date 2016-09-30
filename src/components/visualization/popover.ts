@@ -27,7 +27,7 @@ mod.directive('visualizationPopover', () => {
        </div>
     `,
     require: 'visualizationPopover',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: VisualizationPopoverController) {
+    link(_$scope: IScope, element: JQuery, _attributes: IAttributes, ctrl: VisualizationPopoverController) {
 
       const popoverElement = element.find('.popover');
 

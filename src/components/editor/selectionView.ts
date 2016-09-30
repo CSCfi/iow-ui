@@ -1,4 +1,3 @@
-import { IScope } from 'angular';
 import { Show } from '../contracts';
 import { module as mod }  from './module';
 
@@ -24,10 +23,6 @@ mod.directive('selectionView', () => {
 class SelectionViewController {
 
   show: Show;
-
-  /* @ngInject */
-  constructor($scope: IScope) {
-  }
 
   enlargeSelection() {
     this.show--;

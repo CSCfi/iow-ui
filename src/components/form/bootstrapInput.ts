@@ -5,7 +5,7 @@ mod.directive('input', () => {
   return {
     restrict: 'E',
     require: '?ngModel',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, modelController: INgModelController) {
 
       const formGroup = element.closest('.form-group');
 

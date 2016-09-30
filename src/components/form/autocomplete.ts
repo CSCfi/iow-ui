@@ -38,7 +38,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
     controller: AutocompleteController,
     controllerAs: 'ctrl',
     require: 'autocomplete',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, thisController: AutocompleteController<any>) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, thisController: AutocompleteController<any>) {
 
       const inputElement = element.find('input');
       const ngModel: INgModelController = inputElement.controller('ngModel');
@@ -234,7 +234,7 @@ mod.directive('autocompleteItem', () => {
   return {
     restrict: 'A',
     require: '^autocomplete',
-    link($scope: IRepeatScope, element: JQuery, attributes: IAttributes, controller: AutocompleteController<any>) {
+    link($scope: IRepeatScope, element: JQuery, _attributes: IAttributes, controller: AutocompleteController<any>) {
       $scope.$watch(() => controller.autocompleteSelectionIndex, index => {
         if ($scope.$index === index) {
           scrollToElement(element, element.parent());

@@ -15,7 +15,7 @@ mod.directive('selectionFloatSizeAdjuster', () => {
       show: '='
     },
     require: 'float',
-    link($scope: FloatSizeAdjusterScope, element: JQuery, attributes: IAttributes, floatController: FloatController) {
+    link($scope: FloatSizeAdjusterScope, _element: JQuery, _attributes: IAttributes, floatController: FloatController) {
       $scope.$watchGroup([() => $scope.width, () => $scope.show, () => floatController.floating], ([width, show, floating]: [number, Show, boolean]) => {
         if (floating) {
           floatController.setWidth(show === Show.Both ? `${width - 1}px` : 'calc(100% - 301px)');

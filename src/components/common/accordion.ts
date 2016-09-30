@@ -67,7 +67,7 @@ mod.directive('accordionGroup', () => {
     `,
     require: '^accordion',
     link: {
-      pre($scope: AccordionGroupScope, element: JQuery, attributes: IAttributes, accordionController: AccordionController) {
+      pre($scope: AccordionGroupScope, _element: JQuery, _attributes: IAttributes, accordionController: AccordionController) {
         $scope.isOpen = () => accordionController.isOpen($scope.identifier);
         $scope.toggleVisibility = () => accordionController.toggleVisibility($scope.identifier);
         $scope.isAnimate = () => isDefined(accordionController.animate) ? accordionController.animate : true;
@@ -95,7 +95,7 @@ interface AccordionTranscludeScope extends IScope {
 mod.directive('accordionTransclude', () => {
   return {
     restrict: 'A',
-    link($scope: AccordionGroupScope, element: JQuery, attributes: AccordionTranscludeAttributes, controller: any, transclude: ITranscludeFunction) {
+    link($scope: AccordionGroupScope, element: JQuery, attributes: AccordionTranscludeAttributes, _controller: any, transclude: ITranscludeFunction) {
       function ngTranscludeCloneAttachFn(clone: JQuery, transcludeScope: AccordionTranscludeScope) {
         element.append(clone);
         transcludeScope.isOpen = $scope.$eval(attributes.isOpen);

@@ -16,8 +16,8 @@ import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { any } from '../../utils/array';
 import { valueContains } from '../../utils/searchFilter';
 
-export const noExclude = (item: AbstractClass) => <string> null;
-export const defaultTextForSelection = (klass: Class) => 'Use class';
+export const noExclude = (_item: AbstractClass) => <string> null;
+export const defaultTextForSelection = (_klass: Class) => 'Use class';
 
 export class SearchClassModal {
   /* @ngInject */

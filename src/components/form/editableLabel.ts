@@ -20,7 +20,7 @@ mod.directive('editableLabel', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['editableLabel', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableLabelController, EditableForm]) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, [thisController, formController]: [EditableLabelController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
       const labelElement = element.find('label');
       $scope.$watch(() => thisController.inputId, inputId => {

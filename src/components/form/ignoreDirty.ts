@@ -6,7 +6,7 @@ mod.directive('ignoreDirty', () => {
   return {
     restrict: 'A',
     require: 'ngModel',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, modelController: INgModelController) {
       modelController.$setPristine = () => {};
       modelController.$pristine = false;
     }

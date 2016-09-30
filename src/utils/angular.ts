@@ -11,7 +11,7 @@ export function isModalCancel(err: any) {
 
 const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-function normalizeUrl(url: string, removeProperty: boolean = false): string {
+function normalizeUrl(url: string): string {
   return url.replace(/^#/, '').replace(/:/g, '%3A').replace(uuidRegex, '');
 }
 
@@ -26,8 +26,8 @@ export function formatApplicationBase($location: ILocationService, baseHref: str
   return $location.protocol() + '://' + $location.host() + portString + baseHref;
 }
 
-export function isDifferentUrl(lhs: string, rhs: string, ignoreProperty: boolean = false): boolean {
-  return normalizeUrl(lhs, ignoreProperty) !== normalizeUrl(rhs, ignoreProperty);
+export function isDifferentUrl(lhs: string, rhs: string): boolean {
+  return normalizeUrl(lhs) !== normalizeUrl(rhs);
 }
 
 export function extendNgModelOptions(ngModel: INgModelController, options: any) {
@@ -89,7 +89,7 @@ export function validateWithValidators<T>($q: IQService, ngModelController: INgM
     } else {
       asyncValidationResults.push(validateAsync(value).then(
         () => result.set(value, true),
-        err => result.set(value, false)
+        _err => result.set(value, false)
       ));
     }
   }

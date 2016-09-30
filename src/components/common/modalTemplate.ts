@@ -19,7 +19,7 @@ mod.directive('modalTemplate', () => {
     },
     template: require('./modalTemplate.html'),
     require: '^?form',
-    link($scope: ModalTemplateScope, element: JQuery, attributes: ModalTemplateAttributes, formController: EditableForm) {
+    link($scope: ModalTemplateScope, _element: JQuery, attributes: ModalTemplateAttributes, formController: EditableForm) {
       $scope.defaultButtons = attributes.default === 'true';
       $scope.headerClass = 'modal-header-' + (isDefined(attributes.purpose) ? attributes.purpose : 'normal');
       const editing = 'editing' in attributes.$attr ? attributes.editing === 'true' : true;

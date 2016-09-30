@@ -125,7 +125,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
 
     $scope.$on('$locationChangeStart', (event, next, current) => {
-      if ((this.selection && !this.selection.unsaved) && isDifferentUrl(current, next, true)) {
+      if ((this.selection && !this.selection.unsaved) && isDifferentUrl(current, next)) {
         this.ifEditing(() => event.preventDefault(), () => $location.url(nextUrl($location, next)));
       }
     });
@@ -331,7 +331,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   private addClass(exclusion: (klass: AbstractClass) => string) {
 
     const isProfile = this.model.isOfType('profile');
-    const textForSelection = (klass: Class) => isProfile ? 'Specialize class' : 'Use class';
+    const textForSelection = (_klass: Class) => isProfile ? 'Specialize class' : 'Use class';
 
     this.createOrAssignEntity(
       () => this.searchClassModal.open(this.model, exclusion, textForSelection),
@@ -358,7 +358,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   private addPredicate(type: Type, exclusion: (predicate: AbstractPredicate) => string) {
     this.createOrAssignEntity(
       () => this.searchPredicateModal.openAddPredicate(this.model, type, exclusion),
-      (external: ExternalEntity) => this.$q.reject('Unsupported operation'),
+      (_external: ExternalEntity) => this.$q.reject('Unsupported operation'),
       (concept: EntityCreation) => this.createPredicate(concept, type),
       (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
     );
@@ -558,7 +558,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   private updateModelByPrefix(prefix: string) {
     return this.modelService.getModelByPrefix(prefix)
       .then(model => this.model = model)
-      .then(model => true, err => this.maintenanceModal.open(err));
+      .then(() => true, err => this.maintenanceModal.open(err));
   }
 
   private updateSelectables(): IPromise<any> {

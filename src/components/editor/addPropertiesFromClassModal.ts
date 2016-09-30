@@ -6,7 +6,7 @@ import Dictionary = _.Dictionary;
 import { Class, Property, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 
-const noExclude = (property: Property) => false;
+const noExclude = (_property: Property) => false;
 
 export class AddPropertiesFromClassModal {
   /* @ngInject */

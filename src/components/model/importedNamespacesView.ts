@@ -29,7 +29,7 @@ mod.directive('importedNamespacesView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['importedNamespacesView', '?^modelView'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [ImportedNamespacesViewController, ModelViewController]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [ImportedNamespacesViewController, ModelViewController]) {
       thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
     controller: ImportedNamespacesViewController
@@ -81,7 +81,7 @@ class ImportedNamespaceTableDescriptor extends TableDescriptor<ImportedNamespace
     super();
   }
 
-  columnDescriptors(namespaces: ImportedNamespace[]): ColumnDescriptor<ImportedNamespace>[] {
+  columnDescriptors(): ColumnDescriptor<ImportedNamespace>[] {
     return [
       { headerName: 'Prefix', nameExtractor: ns => ns.prefix, cssClass: 'prefix' },
       { headerName: 'Namespace label', nameExtractor: ns => this.languageService.translate(ns.label, this.model) },

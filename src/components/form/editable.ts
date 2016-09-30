@@ -104,7 +104,7 @@ class EditableController {
     this.item = displayItemFactory.create({
       context: () => this.context,
       value: () => this.value,
-      link: (value: Value) => this.link,
+      link: () => this.link,
       valueAsLocalizationKey: this.valueAsLocalizationKey,
       onClick: onClick
     });

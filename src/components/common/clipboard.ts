@@ -25,7 +25,7 @@ mod.directive('clipboard', () => {
                    data-clipboard-text="{{ctrl.text}}">
               </img>`,
     require: ['clipboard', '?^form'],
-    link($scope: IScope, element: JQuery, atttibutes: IAttributes, [thisController, formController]: [ClipboardController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attibutes: IAttributes, [thisController, formController]: [ClipboardController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
     }
   };

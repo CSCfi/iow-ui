@@ -20,7 +20,7 @@ mod.directive('visualizationView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['visualizationView', '?float'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, floatController]: [VisualizationViewController, FloatController]) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, [thisController, floatController]: [VisualizationViewController, FloatController]) {
 
       $scope.$watchGroup([() => thisController.selectionWidth, () => thisController.show, () => floatController && floatController.floating], ([selectionWidth, show, floating]: [number, Show, boolean]) => {
 

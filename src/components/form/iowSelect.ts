@@ -173,12 +173,12 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
   return {
     restrict: 'A',
     require: '^iowSelect',
-    link($scope: SelectionScope, element: JQuery, attributes: IAttributes, controller: IowSelectController<any>) {
+    link($scope: SelectionScope, element: JQuery, _attributes: IAttributes, controller: IowSelectController<any>) {
 
       const iowSelectElement = element.closest('iow-select');
 
       const keyDownHandler = (event: JQueryEventObject) => $scope.$apply(() => controller.keyPressed(event));
-      const clickHandler = (event: JQueryEventObject) => $scope.$apply(() => controller.toggleOpen());
+      const clickHandler = () => $scope.$apply(() => controller.toggleOpen());
       const focusHandler = () => $document.on('click', blurClickHandler);
       const blurClickHandler = (event: JQueryEventObject) => {
 
@@ -209,7 +209,7 @@ mod.directive('iowSelectItem', () => {
   return {
     restrict: 'A',
     require: '^iowSelect',
-    link($scope: IRepeatScope, element: JQuery, attributes: IAttributes, controller: IowSelectController<any>) {
+    link($scope: IRepeatScope, element: JQuery, _attributes: IAttributes, controller: IowSelectController<any>) {
       $scope.$watch(() => controller.selectedSelectionIndex, index => {
         if ($scope.$index === index) {
           scrollToElement(element, element.parent());
@@ -222,7 +222,7 @@ mod.directive('iowSelectItem', () => {
 mod.directive('iowSelectionTransclude', () => {
   return {
     require: '^iowSelect',
-    link($scope: SelectionScope, element: JQuery, attribute: IAttributes, controller: IowSelectController<any>, transclude: ITranscludeFunction) {
+    link($scope: SelectionScope, element: JQuery, _attribute: IAttributes, controller: IowSelectController<any>, transclude: ITranscludeFunction) {
 
       let childScope: IScope;
 
@@ -248,7 +248,7 @@ interface SelectItemScope extends IRepeatScope {
 mod.directive('iowSelectableItemTransclude', () => {
   return {
     require: '^iowSelect',
-    link($scope: SelectItemScope, element: JQuery, attribute: IAttributes, controller: IowSelectController<any>, transclude: ITranscludeFunction) {
+    link($scope: SelectItemScope, element: JQuery, _attribute: IAttributes, controller: IowSelectController<any>, transclude: ITranscludeFunction) {
       transclude((clone, transclusionScope) => {
         transclusionScope[controller.itemName] = $scope.item;
         element.append(clone);

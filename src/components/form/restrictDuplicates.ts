@@ -13,7 +13,7 @@ mod.directive('restrictDuplicates', () => {
   return {
     restrict: 'A',
     require: ['restrictDuplicates', 'ngModel'],
-    link($scope: IScope, element: JQuery, attributes: RestrictDuplicatesAttributes, [thisController, ngModel]: [RestrictDuplicatesController, INgModelController]) {
+    link($scope: IScope, _element: JQuery, attributes: RestrictDuplicatesAttributes, [thisController, ngModel]: [RestrictDuplicatesController, INgModelController]) {
 
       const restrictDuplicatesValue = $scope.$eval(attributes.restrictDuplicates);
 

@@ -9,7 +9,7 @@ mod.directive('minInput', () => {
     },
     restrict: 'A',
     require: 'ngModel',
-    link($scope: MinInputScope, element: JQuery, attributes: IAttributes, modelController: INgModelController) {
+    link($scope: MinInputScope, _element: JQuery, _attributes: IAttributes, modelController: INgModelController) {
 
       $scope.$watch(() => $scope.max, () => modelController.$validate());
 

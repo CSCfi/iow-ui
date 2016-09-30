@@ -20,7 +20,7 @@ mod.directive('nonEditable', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['nonEditable', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [NonEditableController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, formController]: [NonEditableController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
     },
     controller: NonEditableController
@@ -50,7 +50,7 @@ class NonEditableController {
     this.item = displayItemFactory.create({
       context: () => this.context,
       value: () => this.value,
-      link: (value: Value) => this.link,
+      link: () => this.link,
       valueAsLocalizationKey: this.valueAsLocalizationKey,
       hideLinks: () => this.isEditing(),
       onClick: onClick

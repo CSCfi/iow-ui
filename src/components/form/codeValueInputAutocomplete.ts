@@ -28,7 +28,7 @@ export class UriInputAutocompleteController {
     this.localizer = languageService.createLocalizer(this.context);
   }
 
-  datasource = (search: string) => this.modelService.getReferenceDataCodes(this.referenceData);
+  datasource = () => this.modelService.getReferenceDataCodes(this.referenceData);
 
   formatter = (codeValue: ReferenceDataCode) => `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
 

@@ -9,7 +9,7 @@ import { comparingBoolean, comparingString } from '../../services/comparators';
 import { Language } from '../../utils/language';
 import { isDefined } from '../../utils/object';
 
-const noExclude = (ns: ImportedNamespace) => <string> null;
+const noExclude = (_ns: ImportedNamespace) => <string> null;
 
 export class SearchNamespaceModal {
   /* @ngInject */

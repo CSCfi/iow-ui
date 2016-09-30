@@ -32,7 +32,7 @@ mod.directive('vocabulariesView', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['vocabulariesView', '?^modelView'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, modelViewController]: [VocabulariesViewController, ModelViewController]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [VocabulariesViewController, ModelViewController]) {
       thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
     },
     controller: VocabulariesViewController
@@ -79,7 +79,7 @@ class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
     super();
   }
 
-  columnDescriptors(vocabularies: Vocabulary[]): ColumnDescriptor<Vocabulary>[] {
+  columnDescriptors(): ColumnDescriptor<Vocabulary>[] {
     return [
       { headerName: 'Identifier', nameExtractor: vocabulary => vocabulary.vocabularyId, cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
       { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.title, this.model)}
@@ -90,7 +90,7 @@ class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
     return this.model && this.model.vocabularies;
   }
 
-  canEdit(vocabulary: Vocabulary): boolean {
+  canEdit(_vocabulary: Vocabulary): boolean {
     return false;
   }
 

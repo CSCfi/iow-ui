@@ -15,7 +15,7 @@ mod.directive('editableRootClass', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['editableRootClass', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableRootClassController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, formController]: [EditableRootClassController, EditableForm]) {
       thisController.isEditing = () => formController.editing;
     },
     controller: EditableRootClassController

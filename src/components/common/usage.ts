@@ -9,7 +9,7 @@ interface UsageAttributes extends IAttributes {
   showLinks: string;
 }
 
-const noExclude = (referrer: Referrer) => false;
+const noExclude = (_referrer: Referrer) => false;
 
 mod.directive('usage', () => {
   return {
@@ -23,7 +23,7 @@ mod.directive('usage', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['usage', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: UsageAttributes, [thisController, formController]: [UsageController, EditableForm]) {
+    link($scope: IScope, _element: JQuery, attributes: UsageAttributes, [thisController, formController]: [UsageController, EditableForm]) {
       $scope.$watch(attributes.showLinks, (show: boolean) => thisController.showLinks = () => show && (!formController || !formController.editing));
     },
     controller: UsageController

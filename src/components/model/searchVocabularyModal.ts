@@ -9,7 +9,7 @@ import { Vocabulary, LanguageContext } from '../../services/entities';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { any } from '../../utils/array';
 
-const noExclude = (vocabulary: Vocabulary) => <string> null;
+const noExclude = (_vocabulary: Vocabulary) => <string> null;
 
 export class SearchVocabularyModal {
   /* @ngInject */

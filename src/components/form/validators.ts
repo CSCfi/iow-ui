@@ -47,7 +47,7 @@ export const isValidClassIdentifier = createRegexValidator(/^[A-Z][a-zA-Z0-9_\-]
 export const isValidPredicateIdentifier = createRegexValidator(/^[a-z][a-zA-Z0-9_\-]*$/);
 export const isValidIdentifier = createRegexValidator(/^[a-zA-Z_\-][a-zA-Z0-9_\-]*$/);
 
-export function isValidLabelLength(label: string): boolean {
+export function isValidLabelLength(_label: string): boolean {
   return true;
 }
 
@@ -164,7 +164,7 @@ export function resolveValidator(dataType: DataType): ValidatorWithFormat<string
 }
 
 function createNopValidator<T>(format?: string) {
-  const validator: ValidatorWithFormat<T> = (input: T) => true;
+  const validator: ValidatorWithFormat<T> = () => true;
   validator.format = format;
   return validator;
 }

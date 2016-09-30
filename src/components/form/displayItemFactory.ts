@@ -58,7 +58,7 @@ export class DisplayItem {
     if (this.config.hideLinks && this.config.hideLinks()) {
       return null;
     } else {
-      const link = this.config.link && this.config.link(this.value);
+      const link = this.config.link && this.config.link();
 
       if (!link || !isDifferentUrl(link, this.$location.url())) {
         return null;
@@ -72,7 +72,7 @@ export class DisplayItem {
 export type DisplayItemConfiguration = {
   context(): LanguageContext;
   value(): Value;
-  link?(value: Value): string;
+  link?(): string;
   onClick?(value: Value): void;
   hideLinks?: () => boolean;
   valueAsLocalizationKey?: boolean;

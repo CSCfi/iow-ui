@@ -21,7 +21,7 @@ mod.directive('predicateForm', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: ['predicateForm', '?^predicateView', '?^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [predicateFormController, predicateViewController, formController]: [PredicateFormController, PredicateViewController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [predicateFormController, predicateViewController, formController]: [PredicateFormController, PredicateViewController, EditableForm]) {
       predicateFormController.isEditing = () => formController && formController.editing;
       predicateFormController.shouldAutofocus = !isDefined(predicateViewController);
     },

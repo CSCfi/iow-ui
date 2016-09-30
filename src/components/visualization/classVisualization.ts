@@ -56,7 +56,7 @@ mod.directive('classVisualization', () => {
     bindToController: true,
     controllerAs: 'ctrl',
     require: 'classVisualization',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, controller: ClassVisualizationController) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, controller: ClassVisualizationController) {
       element.addClass('visualization-container');
       controller.paperHolder = new PaperHolder(element, controller);
 

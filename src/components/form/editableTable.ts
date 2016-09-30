@@ -42,7 +42,7 @@ mod.directive('editableTable', () => {
     controllerAs: 'ctrl',
     bindToController: true,
     require: ['editableTable', '^form'],
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [thisController, formController]: [EditableTableController<any>, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, formController]: [EditableTableController<any>, EditableForm]) {
       thisController.isEditing = () => formController.editing;
     },
     controller: EditableTableController
@@ -51,7 +51,7 @@ mod.directive('editableTable', () => {
 
 export abstract class TableDescriptor<T> {
 
-  abstract columnDescriptors(values: T[]): ColumnDescriptor<T>[];
+  abstract columnDescriptors(): ColumnDescriptor<T>[];
   abstract canEdit(value: T): boolean;
   abstract canRemove(value: T): boolean;
   abstract values(): T[];
@@ -60,17 +60,17 @@ export abstract class TableDescriptor<T> {
     return false;
   }
 
-  edit(value: T): any {
+  edit(_value: T): any {
   }
 
-  remove(value: T): any {
+  remove(_value: T): any {
   }
 
-  filter(value: T): boolean {
+  filter(_value: T): boolean {
     return true;
   }
 
-  orderBy(value: T): any {
+  orderBy(_value: T): any {
     return undefined;
   }
 }
@@ -103,7 +103,7 @@ class EditableTableController<T> {
       this.values = values;
 
       if (values && this.descriptor) {
-        this.properties = this.descriptor.columnDescriptors(values);
+        this.properties = this.descriptor.columnDescriptors();
         this.visibleValues = values ? _.filter(values, this.filter).length : 0;
       }
     });
@@ -113,13 +113,13 @@ class EditableTableController<T> {
     return this.descriptor && this.descriptor.hasOrder() && this.isEditing();
   }
 
-  remove(value: T, index: number) {
+  remove(value: T) {
     if (this.canRemove(value)) {
       this.descriptor.remove(value);
     }
   }
 
-  edit(value: T, index: number) {
+  edit(value: T) {
     if (this.canEdit(value)) {
       this.descriptor.edit(value);
     }

@@ -29,7 +29,7 @@ mod.directive('classForm', () => {
     require: ['classForm', '?^classView', '?^form'],
     controllerAs: 'ctrl',
     bindToController: true,
-    link($scope: IScope, element: JQuery, attributes: IAttributes, [classFormController, classViewController, formController]: [ClassFormController, ClassViewController, EditableForm]) {
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [classFormController, classViewController, formController]: [ClassFormController, ClassViewController, EditableForm]) {
       classFormController.isEditing = () => formController && formController.editing;
       classFormController.shouldAutofocus = !isDefined(classViewController);
     },
@@ -107,7 +107,7 @@ export class ClassFormController {
   }
 
   copyPropertiesFromClass() {
-    this.searchClassModal.openWithOnlySelection(this.model, false, noExclude, klass => 'Copy properties')
+    this.searchClassModal.openWithOnlySelection(this.model, false, noExclude, _klass => 'Copy properties')
       .then(selectedClass => this.addPropertiesFromClass(selectedClass, 'class'));
   }
 

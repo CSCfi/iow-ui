@@ -43,7 +43,7 @@ mod.directive('uriSelect', () => {
       <button ng-if="formController.editing" type="button" class="btn btn-default btn-sm" ng-click="ctrl.selectUri()">{{('Choose ' + ctrl.type) | translate}}</button>
     `,
     require: '?^form',
-    link($scope: EditableScope, element: JQuery, attributes: IAttributes, formController: EditableForm) {
+    link($scope: EditableScope, _element: JQuery, _attributes: IAttributes, formController: EditableForm) {
       $scope.formController = formController;
     },
     controller: UriSelectController

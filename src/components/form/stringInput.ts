@@ -10,7 +10,7 @@ mod.directive('stringInput', () => {
   return {
     restrict: 'A',
     require: 'ngModel',
-    link($scope: IScope, element: JQuery, attributes: StringInputAttributes, ngModel: INgModelController) {
+    link(_$scope: IScope, _element: JQuery, attributes: StringInputAttributes, ngModel: INgModelController) {
       ngModel.$validators['string'] = isValidString;
 
       if (attributes.stringInput) {

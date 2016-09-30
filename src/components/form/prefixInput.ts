@@ -12,7 +12,7 @@ mod.directive('prefixInput', () => {
     },
     restrict: 'A',
     require: 'ngModel',
-    link($scope: PrefixInputScope, element: JQuery, attributes: IAttributes, ngModel: INgModelController) {
+    link($scope: PrefixInputScope, _element: JQuery, _attributes: IAttributes, ngModel: INgModelController) {
       ngModel.$validators['prefix'] = isValidPrefix;
       ngModel.$validators['length'] = isValidPrefixLength;
       ngModel.$validators['existingId'] = (prefix: string) => {

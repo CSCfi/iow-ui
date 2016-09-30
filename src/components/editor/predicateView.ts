@@ -26,7 +26,7 @@ mod.directive('predicateView', () => {
     bindToController: true,
     controller: PredicateViewController,
     require: 'predicateView',
-    link($scope: IScope, element: JQuery, attributes: IAttributes, ctrl: PredicateViewController) {
+    link($scope: IScope, element: JQuery, _attributes: IAttributes, ctrl: PredicateViewController) {
       $scope.$watchGroup([() => ctrl.width, () => ctrl.show], ([selectionWidth, show]: [number, Show]) => {
         setSelectionStyles(element, show, selectionWidth);
       });

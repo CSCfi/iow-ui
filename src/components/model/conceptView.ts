@@ -61,11 +61,11 @@ export class ConceptViewController extends EditableEntityController<Concept> {
     });
   }
 
-  create(entity: Concept) {
+  create(_entity: Concept) {
     return this.$q.reject('Concept creation is not possible');
   }
 
-  update(entity: Concept, oldEntity: Concept) {
+  update(entity: Concept, _oldEntity: Concept) {
     if (entity instanceof ConceptSuggestion) {
       return this.conceptService.updateConceptSuggestion(entity).then(() => this.modelController.selectionEdited(entity));
     } else {

@@ -6,13 +6,11 @@ interface ExcludeValidatorAttributes extends IAttributes {
   excludeValidator: string;
 }
 
-export type IdExclude = (id: Uri) => string;
-
 mod.directive('excludeValidator', ($q: IQService) => {
   return {
     restrict: 'A',
     require: 'ngModel',
-    link($scope: IScope, element: JQuery, attributes: ExcludeValidatorAttributes, ngModel: INgModelController) {
+    link($scope: IScope, _element: JQuery, attributes: ExcludeValidatorAttributes, ngModel: INgModelController) {
 
       $scope.$watch(attributes.excludeValidator, (excludeProvider: () => (id: Uri) => IPromise<string>) => {
         if (excludeProvider) {

@@ -40,5 +40,5 @@ class EditableMultipleLanguageSelectController {
   constructor(private $q: IQService) {
   }
 
-  datasource = (search: string) => this.$q.when(availableLanguages);
+  datasource = (_search: string) => this.$q.when(availableLanguages);
 }
