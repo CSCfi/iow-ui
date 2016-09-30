@@ -105,7 +105,7 @@ function makeRequest<T>(method: string, url: string, config: IRequestShortcutCon
 }
 
 const requests: any = function<T>(config: IRequestConfig) {
-  return makeRequest(config.method, config.url, config);
+  return makeRequest<T>(config.method, config.url, config);
 };
 
 requests.pendingRequest = pendingRequests;
