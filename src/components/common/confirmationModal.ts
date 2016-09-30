@@ -14,9 +14,10 @@ export class ConfirmationModal {
                  </modal-template>`,
       controllerAs: 'ctrl',
       /* @ngInject */
-      controller() {
-        this.title = title;
-        this.body = body;
+      controller: ConfirmationModalController,
+      resolve: {
+        title: () => title,
+        body: () => body
       }
     }).result;
   }
@@ -32,4 +33,9 @@ export class ConfirmationModal {
   openVisualizationLocationsSave() {
     return this.open('Save visualization position', 'Are you sure you want to save? Saving overrides previously saves positions.');
   }
-};
+}
+
+class ConfirmationModalController {
+  constructor(public title: string, public body: string) {
+  }
+}

@@ -6,9 +6,11 @@ mod.directive('footer', () => {
     restrict: 'E',
     template: require('./footer.html'),
     controllerAs: 'ctrl',
-    controller() {
-      this.gitHash = config.gitHash;
-      this.gitDate = config.gitDate;
-    }
+    controller: FooterController
   };
 });
+
+class FooterController {
+  gitHash = config.gitHash;
+  gitDate = config.gitDate;
+}

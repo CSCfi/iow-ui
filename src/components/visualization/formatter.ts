@@ -13,7 +13,7 @@ export function formatDataTypeName(dataType: DataType, showName: NameType, local
     case NameType.LOCAL_ID:
       return dataType;
     default:
-      throw new Error('Unsupported show name type: ' + this.showName);
+      throw new Error('Unsupported show name type: ' + showName);
   }
 }
 
@@ -26,7 +26,7 @@ export function formatClassName(klass: VisualizationClass, showName: NameType, l
     case NameType.LOCAL_ID:
       return klass.id.namespaceResolves() ? klass.id.name : klass.id.uri;
     default:
-      throw new Error('Unsupported show name type: ' + this.showName);
+      throw new Error('Unsupported show name type: ' + showName);
   }
 }
 
@@ -39,7 +39,7 @@ export function formatPropertyName(property: Property, showName: NameType, local
     case NameType.LOCAL_ID:
       return property.externalId || property.predicateId.compact;
     default:
-      throw new Error('Unsupported show name type: ' + this.showName);
+      throw new Error('Unsupported show name type: ' + showName);
   }
 }
 

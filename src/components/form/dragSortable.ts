@@ -86,7 +86,7 @@ mod.directive('dragSortableItem', () => {
     require: '^dragSortable',
     link($scope: IRepeatScope, element: JQuery, _attributes: IAttributes, dragSortable: DragSortableController<any>) {
 
-      const selectStartHandler = function() { this.dragDrop(); }; // IE9 support hack
+      const selectStartHandler = () => element[0].dragDrop(); // IE9 support hack
       const dragStartHandler = (event: JQueryMouseEventObject) => $scope.$apply(() => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index, element.width()));
       const dragEndHandler = () => $scope.$apply(() => dragSortable.drop());
       const dragOverHandler = (event: JQueryMouseEventObject) => {
