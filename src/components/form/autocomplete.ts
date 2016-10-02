@@ -104,7 +104,7 @@ export class AutocompleteController<T> {
   matcher: (search: string, item: T) => boolean;
   formatter: (item: T) => string;
   valueExtractor: (item: T) => any;
-  excludeProvider: () => (item: T) => string;
+  excludeProvider?: () => (item: T) => string;
 
   inputFormatter: IModelFormatter|IModelFormatter[];
   dimensions: { left: number, top: number, width: number };
@@ -182,7 +182,7 @@ export class AutocompleteController<T> {
   autocomplete(search: string) {
     this.$q.when(this.datasource(search)).then(data => {
 
-      const exclude = this.excludeProvider();
+      const exclude = this.excludeProvider && this.excludeProvider();
       const included = data.filter(item => !exclude || !exclude(item));
 
       if (search) {
