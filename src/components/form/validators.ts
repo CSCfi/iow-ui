@@ -51,8 +51,8 @@ export function isValidLabelLength(_label: string): boolean {
   return true;
 }
 
-export function isValidModelLabelLength(label: string): boolean {
-  return !label || label.length <= 60;
+export function isValidModelLabelLength(_label: string): boolean {
+  return true;
 }
 
 export function isValidPrefixLength(prefix: string): boolean {
