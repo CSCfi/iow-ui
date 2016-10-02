@@ -35,7 +35,7 @@ import { module as mod }  from './module';
 import { isDifferentUrl, nextUrl } from '../../utils/angular';
 import {
   createClassTypeExclusion, createDefinedByExclusion, combineExclusions,
-  createExistsExclusion
+  createExistsExclusion, Exclusion
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { SessionService } from '../../services/sessionService';
@@ -57,10 +57,10 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   loading = true;
   views: View[] = [];
   changeListeners: ChangeListener<Class|Predicate>[] = [];
-  selectedItem: WithIdAndType;
+  selectedItem: WithIdAndType|null = null;
   model: Model;
-  selection: Class|Predicate;
-  openPropertyId: string;
+  selection: Class|Predicate|null = null;
+  openPropertyId?: string;
   classes: SelectableItem[] = [];
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
@@ -107,19 +107,19 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     this.localizerProvider = () => languageService.createLocalizer(this.model);
     this._show = sessionService.show;
 
-    this.initialRoute = $route.current;
+    this.initialRoute = $route.current!;
     this.currentRouteParams = this.initialRoute.params;
 
     this.init(new RouteData(this.currentRouteParams));
 
     $scope.$on('$locationChangeSuccess', () => {
       if ($location.path().startsWith('/model')) {
-        this.init(new RouteData($route.current.params));
+        this.init(new RouteData($route.current!.params));
 
         // FIXME: hack to prevent reload on params update
         // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
         // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
-        this.currentRouteParams = $route.current.params;
+        this.currentRouteParams = $route.current!.params;
         $route.current = this.initialRoute;
       }
     });
@@ -172,7 +172,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       }
     });
 
-    $scope.$watch(() => $route.current.params.property, propertyId => this.openPropertyId = propertyId);
+    $scope.$watch(() => $route.current!.params.property, propertyId => this.openPropertyId = propertyId);
     $scope.$watch(() => this.openPropertyId, propertyId => {
       if (this.currentRouteParams.property !== propertyId) {
         this.updateLocation();
@@ -262,12 +262,12 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   getUsedNamespaces(): Set<string> {
-    type WithDefinedBy = { definedBy: DefinedBy };
+    type WithDefinedBy = { definedBy?: DefinedBy };
     return new Set<string>(_.chain<WithDefinedBy>(this.associations)
                          .concat(this.attributes)
                          .concat(this.classes)
                          .filter(item => item && item.definedBy)
-                         .map(item => item.definedBy.id.uri)
+                         .map(item => item.definedBy!.id.uri)
                          .value());
   }
 
@@ -289,7 +289,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     });
   }
 
-  selectionEdited(oldSelection: Class|Predicate, newSelection: Class|Predicate) {
+  selectionEdited(oldSelection: Class|Predicate|null, newSelection: Class|Predicate) {
     this.selectedItem = newSelection;
     this.updateSelectables();
 
@@ -328,7 +328,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
   }
 
-  private addClass(exclusion: (klass: AbstractClass) => string) {
+  private addClass(exclusion: Exclusion<AbstractClass>) {
 
     const isProfile = this.model.isOfType('profile');
     const textForSelection = (_klass: Class) => isProfile ? 'Specialize class' : 'Use class';
@@ -355,7 +355,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     );
   }
 
-  private addPredicate(type: Type, exclusion: (predicate: AbstractPredicate) => string) {
+  private addPredicate(type: Type, exclusion: Exclusion<AbstractPredicate>) {
     this.createOrAssignEntity(
       () => this.searchPredicateModal.openAddPredicate(this.model, type, exclusion),
       (_external: ExternalEntity) => this.$q.reject('Unsupported operation'),
@@ -464,11 +464,11 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     const that = this;
 
-    function rootClassSelection(): WithIdAndType {
+    function rootClassSelection(): WithIdAndType|null {
       return that.model.rootClass ? { id: that.model.rootClass, selectionType: 'class' } : null;
     }
 
-    function getRouteSelection(): IPromise<WithIdAndType> {
+    function getRouteSelection(): IPromise<WithIdAndType|null> {
 
       if (routeData.resourceCurie) {
         const resourceUri = new Uri(routeData.resourceCurie, that.model.context);
@@ -481,7 +481,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
             selectionType
           });
         } else {
-          return that.modelService.getModelByPrefix(resourceUri.findPrefix()).then(model => {
+          return that.modelService.getModelByPrefix(resourceUri.findPrefix()!).then(model => {
             return {
               id: new Uri(routeData.resourceCurie, model.context),
               selectionType
@@ -491,7 +491,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
       } else {
         return that.$q.when(null);
       }
-    };
+    }
 
     return getRouteSelection()
       .then(selectionFromRoute => {
@@ -506,7 +506,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   // TODO remove retrying when data is coherent
-  private selectByTypeAndId(selection: WithIdAndType, isRetry: boolean = false): IPromise<any> {
+  private selectByTypeAndId(selection: WithIdAndType|null, isRetry: boolean = false): IPromise<any> {
 
     // set selected item also here for showing selection before entity actually is loaded
     this.selectedItem = selection;
@@ -550,7 +550,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
   }
 
-  private updateSelection(selection: Class|Predicate) {
+  private updateSelection(selection: Class|Predicate|null) {
     this.selectedItem = selection;
     this.selection = selection;
   }
@@ -641,18 +641,12 @@ interface WithIdAndType {
   selectionType: SelectionType;
 }
 
-function matchesIdentity(lhs: WithIdAndType, rhs: WithIdAndType) {
-  if (!lhs && !rhs) {
-    return true;
-  }  else if ((lhs && !rhs) || (rhs && !lhs)) {
-    return false;
-  } else {
-    return lhs.selectionType === rhs.selectionType && lhs.id.equals(rhs.id);
-  }
+function matchesIdentity(lhs: WithIdAndType|null|undefined, rhs: WithIdAndType|null|undefined) {
+  return areEqual(lhs, rhs, (l, r) => l.selectionType === r.selectionType && l.id.equals(r.id));
 }
 
 function setOverlaps(items: SelectableItem[]) {
-  let previous: SelectableItem;
+  let previous: SelectableItem|undefined;
   for (const item of items) {
     if (previous && previous.rawLabel === item.rawLabel) {
       previous.hasOverlap = true;
@@ -691,7 +685,7 @@ class SelectableItem {
     return this.item.selectionType;
   }
 
-  matchesIdentity(obj: WithIdAndType) {
+  matchesIdentity(obj: WithIdAndType|null|undefined) {
     return matchesIdentity(this.item, obj);
   }
 }

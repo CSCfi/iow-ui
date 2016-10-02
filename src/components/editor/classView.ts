@@ -11,6 +11,7 @@ import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { setSelectionStyles } from '../../utils/angular';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { isDefined } from '../../utils/object';
 
 mod.directive('classView', () => {
   return {
@@ -60,9 +61,9 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   addProperty() {
-    this.searchPredicateModal.openAddProperty(this.model, this.editableInEdit)
+    this.searchPredicateModal.openAddProperty(this.model, this.editableInEdit!)
       .then(property => {
-        this.editableInEdit.addProperty(property);
+        this.editableInEdit!.addProperty(property);
         this.openPropertyId = property.internalId.uuid;
       });
   }
@@ -96,7 +97,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   isReference(): boolean {
-    return this.class.definedBy.id.notEquals(this.model.id);
+    return isDefined(this.class.definedBy) && this.class.definedBy.id.notEquals(this.model.id);
   }
 
   getGroup(): GroupListItem {

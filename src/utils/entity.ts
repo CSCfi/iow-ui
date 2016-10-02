@@ -4,7 +4,7 @@ import { WithId } from '../components/contracts';
 import { areEqual } from './object';
 import { IHttpPromiseCallbackArg } from 'angular';
 
-export function coordinatesAreEqual(l: Coordinate, r: Coordinate) {
+export function coordinatesAreEqual(l: Coordinate|null|undefined, r: Coordinate|null|undefined) {
   // Coordinates seem to fluctuate a bit with jointjs and firefox so normalize by truncating decimals
   return areEqual(l, r, (lhs, rhs) => Math.trunc(lhs.x) === Math.trunc(rhs.x) && Math.trunc(lhs.y) === Math.trunc(rhs.y));
 }
@@ -13,8 +13,8 @@ export function centerToPosition(center: Coordinate, dimensions: Dimensions): Co
   return { x: center.x - (dimensions.width / 2), y: center.y - (dimensions.height / 2) };
 }
 
-export function copyCoordinate(coordinate: Coordinate) {
-  return { x: coordinate.x, y: coordinate.y };
+export function copyCoordinate(coordinate: Coordinate|null) {
+  return coordinate ? { x: coordinate.x, y: coordinate.y } : null;
 }
 
 export function copyVertices(vertices: Coordinate[]) {
@@ -34,7 +34,7 @@ export function collectIds(items: WithId[]|WithId[][]): Set<string> {
 export function expandContextWithKnownModels(model?: Model): (response: IHttpPromiseCallbackArg<GraphData>) => IHttpPromiseCallbackArg<GraphData> {
   return (response: IHttpPromiseCallbackArg<GraphData>) => {
     if (model) {
-      model.expandContextWithKnownModels(response.data['@context']);
+      model.expandContextWithKnownModels(response.data!['@context']);
     }
     return response;
   };

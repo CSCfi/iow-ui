@@ -27,8 +27,8 @@ mod.directive('searchResultTransclude', () => {
   return {
     link($scope: SearchResultScope, element: JQuery, _attribute: IAttributes, _ctrl: any, transclude: ITranscludeFunction) {
       transclude((clone, transclusionScope) => {
-        transclusionScope['searchResult'] = $scope.searchResult.item;
-        element.append(clone);
+        transclusionScope!['searchResult'] = $scope.searchResult.item;
+        element.append(clone!);
       });
     }
   };

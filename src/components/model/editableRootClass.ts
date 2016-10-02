@@ -4,6 +4,7 @@ import { Model, ClassListItem } from '../../services/entities';
 import { SearchClassModal } from '../editor/searchClassModal';
 
 import { module as mod }  from './module';
+import { requireDefined } from '../../utils/object';
 
 mod.directive('editableRootClass', () => {
   return {
@@ -38,7 +39,7 @@ class EditableRootClassController {
   selectClass() {
 
     const exclude = (klass: ClassListItem) => {
-      if (klass.definedBy.id.notEquals(this.model.id)) {
+      if (requireDefined(klass.definedBy).id.notEquals(this.model.id)) {
         return 'Can be selected only from this ' + this.model.normalizedType;
       } else {
         return null;

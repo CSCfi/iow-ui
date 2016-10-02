@@ -22,9 +22,9 @@ mod.directive('dragSortable', () => {
 
 class DragSortableController<T> {
 
-  drag: Drag;
+  drag: Drag|null = null;
   dragDisabled: boolean;
-  dragValuesOriginal: T[];
+  dragValuesOriginal: T[]|null = null;
   dragValues: T[];
   onReorder: (item: T, index: number) => void;
 
@@ -38,10 +38,19 @@ class DragSortableController<T> {
   }
 
   cloneCreated() {
+
+    if (!this.drag) {
+      throw new Error('Drag not started');
+    }
+
     this.drag.cloneCreated = true;
   }
 
   overDroppable(index: number, targetWidth: number, mousePosition: number) {
+
+    if (!this.drag) {
+      throw new Error('Drag not started');
+    }
 
     const sourceWidth = this.drag.sourceWidth;
     const toLeft = index < this.drag.fromIndex;
@@ -58,16 +67,26 @@ class DragSortableController<T> {
   }
 
   notOverDroppable() {
+
+    if (!this.drag) {
+      throw new Error('Drag not started');
+    }
+
     this.drag.droppable = false;
   }
 
   canDrop(index: number) {
+
+    if (!this.drag) {
+      throw new Error('Drag not started');
+    }
+
     return this.drag.fromIndex !== index;
   }
 
   drop() {
     if (this.drag && !this.drag.droppable) {
-      resetWith(this.dragValues, this.dragValuesOriginal);
+      resetWith(this.dragValues, this.dragValuesOriginal || []);
     }
     this.drag = null;
     this.dragValuesOriginal = null;
@@ -108,8 +127,8 @@ mod.directive('dragSortableItem', () => {
 
       $scope.$watch(() => dragSortable.drag, drag => {
         const dragReady = drag ? drag.cloneCreated : false;
-        element.toggleClass('dragged', dragReady && drag.fromIndex === $scope.$index);
-        element.toggleClass('droppable', dragReady && drag.droppable);
+        element.toggleClass('dragged', dragReady && drag!.fromIndex === $scope.$index);
+        element.toggleClass('droppable', dragReady && drag!.droppable);
       }, true);
 
       function init() {

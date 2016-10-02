@@ -1,6 +1,7 @@
 import { Layout, Event, EventType, Link, Node } from 'webcola';
 import { Iterable } from '../../utils/iterable';
 import * as joint from 'jointjs';
+import { requireDefined } from '../../utils/object';
 
 const debugPerformance = false;
 
@@ -107,16 +108,16 @@ export function layout(graph: joint.dia.Graph, onlyNodeIds: string[] = []): Prom
 
   for (const link of graph.getLinks()) {
     links.push({
-      source: nodes.get(link.attributes.source.id),
-      target: nodes.get(link.attributes.target.id)
+      source: requireDefined(nodes.get(link.attributes.source.id)),
+      target: requireDefined(nodes.get(link.attributes.target.id))
     });
   }
 
   function findMin(iterable: Iterable<IdentifiedNode>) {
     const iterator = iterable[Symbol.iterator]();
 
-    let minX: number = null;
-    let minY: number = null;
+    let minX: number|null = null;
+    let minY: number|null = null;
 
     for (let next = iterator.next(); next.value !== undefined; next = iterator.next()) {
       if (!minX || next.value.x < minX) {
@@ -135,15 +136,15 @@ export function layout(graph: joint.dia.Graph, onlyNodeIds: string[] = []): Prom
 
       if (onlyNodeIds.length > 0) {
         for (const nodeId of onlyNodeIds) {
-          const node = nodes.get(nodeId);
-          const element = jointElements.get(nodeId);
+          const node = nodes.get(nodeId)!;
+          const element = jointElements.get(nodeId)!;
           element.position(node.x, node.y);
         }
       } else {
         const min = findMin(nodes.values());
 
         Iterable.forEach(nodes.values(), node => {
-          const element = jointElements.get(node.id);
+          const element = jointElements.get(node.id)!;
           const normalizedX = (node.x - min.x) * scaleCorrection;
           const normalizedY = (node.y - min.y) * scaleCorrection;
           element.position(normalizedX, normalizedY);

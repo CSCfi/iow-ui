@@ -8,6 +8,7 @@ import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { Uri } from './uri';
 import { Language } from '../utils/language';
+import { requireDefined } from '../utils/object';
 
 export interface ConceptSearchResult {
   id: Uri;
@@ -23,7 +24,7 @@ export class ConceptService {
 
   getAllVocabularies(): IPromise<Vocabulary[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSchemes'))
-      .then(response => this.entities.deserializeVocabularies(response.data));
+      .then(response => this.entities.deserializeVocabularies(response.data!));
   }
 
   searchConcepts(vocabulary: Vocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[] {
@@ -43,7 +44,7 @@ export class ConceptService {
     const result = [conceptSuggestions];
 
     if (!vocabulary.local) {
-      const concepts = this.searchFintoConcepts(searchText, language, vocabulary.vocabularyId)
+      const concepts = this.searchFintoConcepts(searchText, language, requireDefined(vocabulary.vocabularyId))
         .then(suggestions => _.map(suggestions, mapResult));
 
       result.push(concepts);
@@ -54,7 +55,7 @@ export class ConceptService {
 
   private searchFintoConcepts(query: string, lang: Language, vocabularyId: string): IPromise<FintoConceptSearchResult[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSearch'), {params: {term: query, lang, vocid: vocabularyId}})
-      .then(response => this.entities.deserializeFintoConceptSearchResults(response.data));
+      .then(response => this.entities.deserializeFintoConceptSearchResults(response.data!));
   }
 
   private searchConceptSuggestions(query: string, lang: Language, vocabularyId: Uri): IPromise<ConceptSuggestion[]> {
@@ -72,15 +73,15 @@ export class ConceptService {
 
   getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {conceptID: id.uri}})
-      .then(response => this.entities.deserializeConceptSuggestion(response.data));
+      .then(response => this.entities.deserializeConceptSuggestion(response.data!));
   }
 
   getConceptSuggestions(vocabularyId: Uri): IPromise<ConceptSuggestion[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {schemeID: vocabularyId.uri}})
-      .then(response => this.entities.deserializeConceptSuggestions(response.data));
+      .then(response => this.entities.deserializeConceptSuggestions(response.data!));
   }
 
-  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri, lang: Language, model: Model): IPromise<Uri> {
+  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri|null, lang: Language, model: Model): IPromise<Uri> {
     return this.$http.put(config.apiEndpointWithName('conceptSuggestion'), null, {
       params: {
         schemeID: vocabulary.id.uri,
@@ -95,12 +96,12 @@ export class ConceptService {
 
   getFintoConcept(id: Uri): IPromise<FintoConcept> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('concept'), {params: {uri: id.uri}})
-      .then(response => this.entities.deserializeFintoConcept(response.data, id.uri));
+      .then(response => this.entities.deserializeFintoConcept(response.data!, id.uri));
   }
 
   getConceptsForModel(model: Model): IPromise<Concept[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelConcepts'), {params: {model: model.id.uri}})
-      .then(response => this.entities.deserializeConcepts(response.data));
+      .then(response => this.entities.deserializeConcepts(response.data!));
   }
 
   updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any> {

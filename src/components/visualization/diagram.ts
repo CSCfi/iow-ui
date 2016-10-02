@@ -6,6 +6,7 @@ import {
 } from './formatter';
 import { NameType } from '../../services/sessionService';
 import { Localizer } from '../../utils/language';
+import { requireDefined } from '../../utils/object';
 
 const zIndexAssociation = 5;
 const zIndexClass = 10;
@@ -100,7 +101,7 @@ export function createAssociationLink(klass: VisualizationClass, association: Pr
 
   const associationCell = new LinkWithoutUnusedMarkup({
     source: { id: klass.id.uri },
-    target: { id: association.valueClass.uri },
+    target: { id: requireDefined(association.valueClass).toString() },
     connector: { name: 'normal' },
     attrs: {
       '.marker-target': {

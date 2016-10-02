@@ -45,7 +45,7 @@ class NonEditableController {
 
     // we need to know if handler was set or not so parse ourselves instead of using scope '&'
     const clickHandler = $parse(this.onClick);
-    const onClick = this.onClick ? (value: Value) => clickHandler($scope.$parent, {value}) : null;
+    const onClick = this.onClick ? (value: Value) => clickHandler($scope.$parent, {value}) : undefined;
 
     this.item = displayItemFactory.create({
       context: () => this.context,

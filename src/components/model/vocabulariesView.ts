@@ -8,6 +8,7 @@ import { module as mod }  from './module';
 import { createExistsExclusion } from '../../utils/exclusion';
 import { ConceptEditorModal } from './conceptEditorModal';
 import { collectProperties } from '../../utils/array';
+import { requireDefined } from '../../utils/object';
 
 mod.directive('vocabulariesView', () => {
   return {
@@ -81,7 +82,7 @@ class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
 
   columnDescriptors(): ColumnDescriptor<Vocabulary>[] {
     return [
-      { headerName: 'Identifier', nameExtractor: vocabulary => vocabulary.vocabularyId, cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
+      { headerName: 'Identifier', nameExtractor: vocabulary => requireDefined(vocabulary.vocabularyId), cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
       { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.title, this.model)}
     ];
   }

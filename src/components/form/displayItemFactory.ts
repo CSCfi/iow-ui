@@ -16,7 +16,7 @@ function isMoment(obj: any): obj is Moment {
 
 export class DisplayItem {
 
-  onClick: (value: Value) => void;
+  onClick?: (value: Value) => void;
 
   constructor(private $location: ILocationService,
               private languageService: LanguageService,

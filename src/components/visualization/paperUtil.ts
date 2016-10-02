@@ -76,7 +76,7 @@ export function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyV
   paper.setOrigin(newOx, newOy);
 }
 
-export function focusElement(paper: joint.dia.Paper, graph: joint.dia.Graph, element: joint.dia.Element, forceFitToAllContent: boolean, selectionFocus: FocusLevel) {
+export function focusElement(paper: joint.dia.Paper, graph: joint.dia.Graph, element: joint.dia.Element|null, forceFitToAllContent: boolean, selectionFocus: FocusLevel) {
 
   resetFocusOnAllCells(paper, graph, element, selectionFocus);
 
@@ -98,7 +98,7 @@ export function focusElement(paper: joint.dia.Paper, graph: joint.dia.Graph, ele
   }
 }
 
-function resetFocusOnAllCells(paper: joint.dia.Paper, graph: joint.dia.Graph, element: joint.dia.Element, selectionFocus: FocusLevel) {
+function resetFocusOnAllCells(paper: joint.dia.Paper, graph: joint.dia.Graph, element: joint.dia.Element|null, selectionFocus: FocusLevel) {
   for (const cell of graph.getCells()) {
     const jqueryElement = joint.V(paper.findViewByModel(cell).el);
 

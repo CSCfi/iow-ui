@@ -12,15 +12,16 @@ import { Uri } from '../../services/uri';
 import { any, all } from '../../utils/array';
 import * as _ from 'lodash';
 import { localizableContains } from '../../utils/language';
+import { Exclusion } from '../../utils/exclusion';
 
-const noExclude = (_referenceData: ReferenceData) => <string> null;
+const noExclude = (_referenceData: ReferenceData) => null;
 
 export class SearchReferenceDataModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, referenceDatasFromModel: boolean, exclude: (referenceData: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
+  private open(model: Model, referenceDatasFromModel: boolean, exclude: Exclusion<ReferenceData>): IPromise<ReferenceData> {
     return this.$uibModal.open({
       template: require('./searchReferenceDataModal.html'),
       size: 'large',
@@ -35,11 +36,11 @@ export class SearchReferenceDataModal {
     }).result;
   }
 
-  openSelectionForModel(model: Model, exclude: (referenceData: ReferenceData) => string = noExclude): IPromise<ReferenceData> {
+  openSelectionForModel(model: Model, exclude: Exclusion<ReferenceData> = noExclude): IPromise<ReferenceData> {
     return this.open(model, false, exclude);
   }
 
-  openSelectionForProperty(model: Model, exclude: (referenceData: ReferenceData) => string = noExclude) {
+  openSelectionForProperty(model: Model, exclude: Exclusion<ReferenceData> = noExclude) {
     return this.open(model, true, exclude);
   }
 }
@@ -55,13 +56,13 @@ export class SearchReferenceDataModalController {
   referenceDatas: ReferenceData[];
   referenceDataGroups: ReferenceDataGroup[];
   showServer: ReferenceDataServer;
-  showGroup: ReferenceDataGroup;
+  showGroup: ReferenceDataGroup|null;
   searchText: string = '';
   loadingResults = true;
   selectedItem: ReferenceData|AddNewReferenceData;
   selection: ReferenceData|AddNewReferenceDataFormData;
   cannotConfirm: string;
-  submitError: string;
+  submitError: string|null = null;
 
   localizer: Localizer;
 
@@ -94,7 +95,7 @@ export class SearchReferenceDataModalController {
         .value()
         .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer, group => group.title));
 
-      if (this.showGroup && all(this.referenceDataGroups, group => !group.id.equals(this.showGroup.id))) {
+      if (this.showGroup && all(this.referenceDataGroups, group => !group.id.equals(this.showGroup!.id))) {
         this.showGroup = null;
       }
 
@@ -207,7 +208,7 @@ export class SearchReferenceDataModalController {
   }
 
   private groupFilter(referenceData: ReferenceData): boolean {
-    return !this.showGroup || any(referenceData.groups, group => group.id.equals(this.showGroup.id));
+    return !this.showGroup || any(referenceData.groups, group => group.id.equals(this.showGroup!.id));
   }
 
   close() {

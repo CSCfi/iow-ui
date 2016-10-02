@@ -70,7 +70,9 @@ export class PropertyViewController {
       for (const property of properties) {
         if (property !== this.property) {
           this.otherPropertyLabels.push(property.label);
-          this.otherPropertyIdentifiers.push(property.externalId);
+          if (property.externalId) {
+            this.otherPropertyIdentifiers.push(property.externalId);
+          }
         }
       }
     });

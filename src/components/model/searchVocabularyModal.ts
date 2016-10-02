@@ -8,15 +8,16 @@ import { isDefined } from '../../utils/object';
 import { Vocabulary, LanguageContext } from '../../services/entities';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { any } from '../../utils/array';
+import { Exclusion } from '../../utils/exclusion';
 
-const noExclude = (_vocabulary: Vocabulary) => <string> null;
+const noExclude = (_vocabulary: Vocabulary) => null;
 
 export class SearchVocabularyModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(context: LanguageContext, exclude: (vocabulary: Vocabulary) => string = noExclude): IPromise<Vocabulary> {
+  open(context: LanguageContext, exclude: Exclusion<Vocabulary> = noExclude): IPromise<Vocabulary> {
     return this.$uibModal.open({
       template: require('./searchVocabularyModal.html'),
       size: 'medium',

@@ -63,7 +63,7 @@ class LinkTableDescriptor extends TableDescriptor<Link> {
 
   columnDescriptors(): ColumnDescriptor<Link>[] {
     return [
-      { headerName: 'Title', nameExtractor: link => this.languageService.translate(link.title, this.model), hrefExtractor: link => link.homepage.uri },
+      { headerName: 'Title', nameExtractor: link => this.languageService.translate(link.title, this.model), hrefExtractor: link => link.homepage.toString() },
       { headerName: 'Description', nameExtractor: link => this.languageService.translate(link.description, this.model) }
     ];
   }

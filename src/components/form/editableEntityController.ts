@@ -21,7 +21,7 @@ export type Rights = {
 
 export abstract class EditableEntityController<T extends EditableEntity> {
 
-  editableInEdit: T;
+  editableInEdit: T|null = null;
   persisting: boolean;
 
   constructor(private $scope: EditableScope,
@@ -43,11 +43,11 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   abstract update(entity: T, oldEntity: T): IPromise<any>;
   abstract remove(entity: T): IPromise<any>;
   abstract rights(): Rights;
-  abstract getEditable(): T;
-  abstract setEditable(editable: T): void;
+  abstract getEditable(): T|null;
+  abstract setEditable(editable: T|null): void;
   abstract getContext(): LanguageContext;
 
-  select(editable: T) {
+  select(editable: T|null) {
     this.setEditable(editable);
     this.editableInEdit = editable ? <T> editable.clone() : null;
 
@@ -61,13 +61,13 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   saveEdited() {
     const editable = this.getEditable();
     const editableInEdit = this.editableInEdit;
-    this.$log.info(JSON.stringify(editableInEdit.serialize(), null, 2));
+    this.$log.info(JSON.stringify(editableInEdit!.serialize(), null, 2));
     this.persisting = true;
-    (editable.unsaved ? this.create(editableInEdit) : this.update(editableInEdit, editable))
+    (editable!.unsaved ? this.create(editableInEdit!) : this.update(editableInEdit!, editable!))
       .then(() => {
         this.select(editableInEdit);
         this.persisting = false;
-      }, err => {
+      }, (err: any) => {
         if (err) {
           this.$log.error(err);
           this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
@@ -77,7 +77,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   }
 
   openDeleteConfirmationModal(): IPromise<void> {
-    return this.deleteConfirmationModal.open(this.getEditable(), this.getContext());
+    return this.deleteConfirmationModal.open(this.getEditable()!, this.getContext());
   }
 
   removeEdited() {
@@ -85,7 +85,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
         const editable = this.getEditable();
         this.persisting = true;
         this.openDeleteConfirmationModal()
-          .then(() => this.remove(editable))
+          .then(() => this.remove(editable!))
           .then(() => {
             this.select(null);
             this.persisting = false;
@@ -110,7 +110,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
       this.$scope.form.editing = false;
       this.$scope.form.$setPristine();
       const editable = this.getEditable();
-      this.select(editable.unsaved ? null : editable);
+      this.select(editable!.unsaved ? null : editable);
     }
   }
 
@@ -130,6 +130,6 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   }
 
   getRemoveText(): string {
-    return 'Delete ' + this.getEditable().normalizedType;
+    return 'Delete ' + this.getEditable()!.normalizedType;
   }
 }

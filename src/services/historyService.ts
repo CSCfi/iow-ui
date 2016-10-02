@@ -11,6 +11,6 @@ export class HistoryService {
 
   getHistory(id: Uri): IPromise<Activity> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('history'), {params: {id: id.uri}})
-      .then(response => this.entities.deserializeVersion(response.data));
+      .then(response => this.entities.deserializeVersion(response.data!));
   }
 }

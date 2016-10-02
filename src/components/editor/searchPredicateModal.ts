@@ -17,10 +17,10 @@ import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from '../../services/classService';
 import { collectProperties, any } from '../../utils/array';
-import { createExistsExclusion, createDefinedByExclusion, combineExclusions } from '../../utils/exclusion';
+import { createExistsExclusion, createDefinedByExclusion, combineExclusions, Exclusion } from '../../utils/exclusion';
 import { valueContains } from '../../utils/searchFilter';
 
-const noExclude = (_item: PredicateListItem) => <string> null;
+const noExclude = (_item: PredicateListItem) => null;
 
 export class SearchPredicateModal {
 
@@ -30,7 +30,7 @@ export class SearchPredicateModal {
               private classService: ClassService) {
   }
 
-  private openModal(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string, onlySelection: boolean) {
+  private openModal(model: Model, type: Type|null, exclude: Exclusion<AbstractPredicate>, onlySelection: boolean) {
     return this.$uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'large',
@@ -46,11 +46,11 @@ export class SearchPredicateModal {
     }).result;
   }
 
-  openAddPredicate(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<ExternalEntity|EntityCreation|Predicate> {
+  openAddPredicate(model: Model, type: Type, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<ExternalEntity|EntityCreation|Predicate> {
     return this.openModal(model, type, exclude, false);
   }
 
-  openForProperty(model: Model, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<ExternalEntity|Predicate> {
+  openForProperty(model: Model, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<ExternalEntity|Predicate> {
     return this.openModal(model, null, exclude, false);
   }
 
@@ -72,7 +72,7 @@ export class SearchPredicateModal {
     });
   }
 
-  openWithOnlySelection(model: Model, type: Type, exclude: (predicate: AbstractPredicate) => string = noExclude): IPromise<Predicate> {
+  openWithOnlySelection(model: Model, type: Type, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<Predicate> {
     return this.openModal(model, type, exclude, true);
   }
 }
@@ -95,13 +95,13 @@ export class SearchPredicateController {
   models: (DefinedBy|Model)[] = [];
   types: Type[];
   typeSelectable: boolean;
-  excludeError: string;
-  cannotConfirm: string;
+  excludeError: string|null = null;
+  cannotConfirm: string|null = null;
   loadingResults: boolean;
   selectedItem: PredicateListItem|AddNewPredicate;
 
   // undefined means not fetched, null means does not exist
-  externalPredicate: Predicate;
+  externalPredicate: Predicate|null|undefined;
 
   private localizer: Localizer;
 
@@ -117,7 +117,7 @@ export class SearchPredicateController {
   constructor(private $scope: SearchPredicateScope,
               private $uibModalInstance: IModalServiceInstance,
               public model: Model,
-              public type: Type,
+              public type: Type|null,
               public exclude: (predicate: AbstractPredicate) => string,
               public onlySelection: boolean,
               private predicateService: PredicateService,
@@ -225,12 +225,12 @@ export class SearchPredicateController {
         this.$scope.form.editing = true;
         this.selection = new ExternalEntity(this.localizer.language, this.searchText, this.type || 'attribute');
       } else {
-        this.createNew(item.type);
+        this.createNew(item.type!);
       }
     } else if (item instanceof PredicateListItem) {
       this.cannotConfirm = this.exclude(item);
 
-      if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.url)) {
+      if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.toString())) {
         this.predicateService.getExternalPredicate(item.id, this.model).then(result => this.selection = result);
       } else {
         this.predicateService.getPredicate(item.id, this.model).then(result => this.selection = result);
@@ -300,11 +300,11 @@ export class SearchPredicateController {
   }
 
   isAttributeAddable(): boolean {
-    return this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'attribute');
+    return !!this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'attribute');
   }
 
   isAssociationAddable(): boolean {
-    return this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'association');
+    return !!this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'association');
   }
 
   private textFilter(predicate: PredicateListItem): boolean {
@@ -331,7 +331,7 @@ export class SearchPredicateController {
 }
 
 class AddNewPredicate extends AddNew {
-  constructor(public label: string, public show: () => boolean, public type: Type, public external: boolean) {
-    super(label, show, glyphIconClassForType([type]));
+  constructor(public label: string, public show: () => boolean, public type: Type|null, public external: boolean) {
+    super(label, show, glyphIconClassForType(type ? [type] : []));
   }
 }

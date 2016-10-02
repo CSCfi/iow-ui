@@ -13,7 +13,7 @@ import {
   Language, hasLocalization, createConstantLocalizable,
   availableUILanguages
 } from '../utils/language';
-import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual } from '../utils/array';
+import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual, filterDefined } from '../utils/array';
 import { Iterable } from '../utils/iterable';
 import { glyphIconClassForType, indexById, copyVertices, copyCoordinate, glyphIconClassUnknown } from '../utils/entity';
 import {
@@ -23,7 +23,7 @@ import {
 import { identity } from '../utils/function';
 // TODO entities should not depend on services
 import { Localizer } from './languageService';
-import { isDefined, areEqual } from '../utils/object';
+import { isDefined, areEqual, requireDefined } from '../utils/object';
 
 const jsonld: any = require('jsonld');
 
@@ -103,7 +103,10 @@ export function isLocalizable(obj: any): obj is Localizable {
 }
 
 export class ExternalEntity {
-  constructor(public language: Language, public label: string, public type: Type, public id?: Uri) {
+
+  id?: Uri;
+
+  constructor(public language: Language, public label: string, public type: Type) {
   }
 
   get normalizedType() {
@@ -187,7 +190,7 @@ export class DefinedBy extends GraphNode {
 
   id: Uri;
   label: Localizable;
-  prefix: string;
+  prefix?: string;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -212,7 +215,7 @@ export abstract class AbstractGroup extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  homepage: Url;
+  homepage?: Url;
   normalizedType: Type = 'group';
   selectionType: Type = 'group';
 
@@ -241,7 +244,7 @@ export class GroupListItem extends AbstractGroup {
 
 export class Group extends AbstractGroup {
 
-  unsaved: boolean;
+  unsaved = false;
   language: Language[] = ['fi', 'en'];
 
   constructor(graph: any, context: any, frame: any) {
@@ -268,9 +271,9 @@ abstract class AbstractModel extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.normalizedType = normalizeModelType(this.type);
-    this.namespace = graph['preferredXMLNamespaceName'];
-    this.prefix = graph['preferredXMLNamespacePrefix'];
+    this.normalizedType = requireDefined(normalizeModelType(this.type));
+    this.namespace = requireDefined(graph['preferredXMLNamespaceName']);
+    this.prefix = requireDefined(graph['preferredXMLNamespacePrefix']);
   }
 
   iowUrl() {
@@ -294,16 +297,16 @@ export class Model extends AbstractModel {
   referenceDatas: ReferenceData[];
   unsaved: boolean = false;
   group: GroupListItem;
-  version: Urn;
-  rootClass: Uri;
+  version?: Urn;
+  rootClass: Uri|null;
   language: Language[];
-  modifiedAt: Moment;
-  createdAt: Moment;
+  modifiedAt: Moment|null = null;
+  createdAt: Moment|null = null;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.comment = deserializeLocalizable(graph.comment);
-    this.state = graph.versionInfo;
+    this.state = requireDefined(graph.versionInfo);
     if (!graph.isPartOf['@type']) {
       // TODO: Shouldn't be needed but in all cases API doesn't return it
       graph.isPartOf['@type'] = 'foaf:Group';
@@ -314,9 +317,7 @@ export class Model extends AbstractModel {
     this.links = deserializeEntityList(graph.relations, context, frame, () => Link);
     this.referenceDatas = deserializeEntityList(graph.codeLists, context, frame, () => ReferenceData);
     this.version = graph.identifier;
-    if (graph.rootResource) {
-      this.rootClass = new Uri(graph.rootResource, context);
-    }
+    this.rootClass = deserializeOptional(graph.rootResource, uri => new Uri(uri, context));
     this.language = deserializeList<Language>(graph.language || ['fi', 'en']);
     this.modifiedAt = deserializeOptional(graph.modified, deserializeDate);
     this.createdAt = deserializeDate(graph.created);
@@ -436,7 +437,7 @@ export class Model extends AbstractModel {
     return this.isNamespaceKnownAndOfType(namespace, [NamespaceType.MODEL]);
   }
 
-  isNamespaceKnownAndOfType(namespace: Url, types: NamespaceType[])  {
+  isNamespaceKnownAndOfType(namespace: Url, types: NamespaceType[]): boolean  {
     for (const knownNamespace of this.getNamespaces()) {
       if (namespace === knownNamespace.url && containsAny(types, [knownNamespace.type])) {
         return true;
@@ -445,10 +446,10 @@ export class Model extends AbstractModel {
     return false;
   }
 
-  linkToResource(id: Uri) {
+  linkToResource(id: Uri|null) {
     if (id && !id.isUrn()) {
       if (this.isNamespaceKnownToBeModel(id.namespace)) {
-        return resourceUrl(id.findResolvablePrefix(), id);
+        return resourceUrl(requireDefined(id.findResolvablePrefix()), id);
       } else {
         return id.url;
       }
@@ -479,8 +480,8 @@ export class Model extends AbstractModel {
       identifier: this.version,
       rootResource: this.rootClass && this.rootClass.uri,
       language: serializeList(this.language),
-      created: serializeDate(this.createdAt),
-      modified: serializeDate(this.modifiedAt)
+      created: serializeOptional(this.createdAt, serializeDate),
+      modified: serializeOptional(this.modifiedAt, serializeDate)
     };
   }
 }
@@ -489,7 +490,7 @@ export interface Destination {
   id: Uri;
   type: Type[];
   prefix?: string;
-  definedBy?: DefinedBy;
+  definedBy: DefinedBy|null;
 }
 
 export enum NamespaceType {
@@ -509,14 +510,14 @@ export class Link extends GraphNode {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.homepage = graph.homepage && new Uri(graph.homepage, context);
+    this.homepage = new Uri(graph.homepage, context);
     this.title = deserializeLocalizable(graph.title);
     this.description = deserializeLocalizable(graph.description);
   }
 
   serializationValues(): any {
     return {
-      homepage: this.homepage.uri,
+      homepage: serializeOptional(this.homepage, uri => uri.toString()),
       title: serializeLocalizable(this.title),
       description: serializeLocalizable(this.description)
     };
@@ -528,8 +529,8 @@ export class Vocabulary extends GraphNode {
   id: Uri;
   title: Localizable;
   description: Localizable;
-  vocabularyId: string;
-  isFormatOf: Url;
+  vocabularyId?: string;
+  isFormatOf?: Url;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -560,8 +561,8 @@ export class ImportedNamespace extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this._namespace = graph.preferredXMLNamespaceName;
-    this.prefix = graph.preferredXMLNamespacePrefix;
+    this._namespace = requireDefined(graph.preferredXMLNamespaceName);
+    this.prefix = requireDefined(graph.preferredXMLNamespacePrefix);
   }
 
   get namespaceType() {
@@ -628,7 +629,7 @@ export class ImportedNamespace extends GraphNode {
 
 export class ReferenceDataServer extends GraphNode {
   id: Uri;
-  identifier: string;
+  identifier?: string;
   description: Localizable;
   title: Localizable;
 
@@ -657,8 +658,8 @@ export class ReferenceData extends GraphNode {
   id: Uri;
   title: Localizable;
   description: Localizable;
-  creator: string;
-  identifier: string;
+  creator?: string;
+  identifier?: string;
   groups: ReferenceDataGroup[];
 
   constructor(graph: any, context: any, frame: any) {
@@ -689,7 +690,7 @@ export class ReferenceDataCode extends GraphNode {
 
   id: Uri;
   title: Localizable;
-  identifier: string;
+  identifier?: string;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -706,14 +707,14 @@ export abstract class AbstractClass extends GraphNode {
   comment: Localizable;
   selectionType: SelectionType = 'class';
   normalizedType: Type;
-  definedBy: DefinedBy;
+  definedBy?: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
-    this.normalizedType = normalizeClassType(this.type);
+    this.normalizedType = requireDefined(normalizeClassType(this.type));
     // TODO: remove this if when externalClass API is fixed to return it
     if (graph.isDefinedBy) {
       this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
@@ -729,11 +730,11 @@ export abstract class AbstractClass extends GraphNode {
   }
 
   iowUrl() {
-    return resourceUrl(this.definedBy.prefix, this.id);
+    return resourceUrl(requireDefined(requireDefined(this.definedBy).prefix), this.id);
   }
 
   isSpecializedClass() {
-    return this.definedBy.isOfType('profile');
+    return requireDefined(this.definedBy).isOfType('profile');
   }
 }
 
@@ -750,7 +751,7 @@ export interface VisualizationClass {
   type: Type[];
   label: Localizable;
   comment: Localizable;
-  scopeClass: Uri;
+  scopeClass: Uri|null;
   properties: Property[];
   resolved: boolean;
   associationPropertiesWithTarget: Property[];
@@ -762,7 +763,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  scopeClass: Uri;
+  scopeClass: Uri|null;
   properties: Property[];
   resolved = true;
 
@@ -781,7 +782,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
 
   hasAssociationTarget(id: Uri) {
     for (const association of this.associationPropertiesWithTarget) {
-      if (association.valueClass.equals(id)) {
+      if (association.valueClass!.equals(id)) {
         return true;
       }
     }
@@ -834,7 +835,10 @@ export class ModelPositions extends GraphNodes<ClassPosition> {
   resetWith(resetWithPosition: ModelPositions) {
 
     Iterable.forEach(resetWithPosition.classes.values(), classPosition => {
-      this.classes.get(classPosition.id.toString()).resetWith(classPosition);
+      const klass = this.classes.get(classPosition.id.toString());
+      if (klass) {
+        klass.resetWith(classPosition);
+      }
     });
 
     Iterable.forEach(this.classes.values(), classPosition => {
@@ -891,10 +895,10 @@ export class ModelPositions extends GraphNodes<ClassPosition> {
 export class ClassPosition extends GraphNode {
 
   id: Uri;
-  private _coordinate: Coordinate;
+  private _coordinate: Coordinate|null;
   associationProperties: Map<string, AssociationPropertyPosition>;
   parent: ModelPositions;
-  changeListeners: ((coordinate: Coordinate) => void)[] = [];
+  changeListeners: ((coordinate: Coordinate|null) => void)[] = [];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -908,7 +912,7 @@ export class ClassPosition extends GraphNode {
     return this._coordinate;
   }
 
-  setCoordinate(value: Coordinate, notify: boolean = true) {
+  setCoordinate(value: Coordinate|null, notify: boolean = true) {
     if (!areEqual(this.coordinate, value, coordinatesAreEqual)) {
       this.setDirty();
     }
@@ -934,7 +938,10 @@ export class ClassPosition extends GraphNode {
     if (resetWithPosition.isDefined()) {
 
       Iterable.forEach(resetWithPosition.associationProperties.values(), associationPropertyPosition => {
-        this.associationProperties.get(associationPropertyPosition.id.toString()).resetWith(associationPropertyPosition);
+        const association = this.associationProperties.get(associationPropertyPosition.id.toString());
+        if (association) {
+          association.resetWith(associationPropertyPosition);
+        }
       });
 
       Iterable.forEach(this.associationProperties.values(), associationPropertyPosition => {
@@ -1041,7 +1048,7 @@ export class AssociationTargetPlaceholderClass implements VisualizationClass {
   type: Type[] = ['association'];
   properties: Property[] = [];
   resolved = false;
-  scopeClass: Uri = null;
+  scopeClass: Uri|null = null;
   associationPropertiesWithTarget: Property[] = [];
 
   constructor(public id: Uri, model: Model) {
@@ -1055,17 +1062,17 @@ export class AssociationTargetPlaceholderClass implements VisualizationClass {
 
 export class Class extends AbstractClass implements VisualizationClass {
 
-  subClassOf: Uri;
-  scopeClass: Uri;
+  subClassOf: Uri|null;
+  scopeClass: Uri|null;
   state: State;
   properties: Property[];
-  subject: Concept;
+  subject: Concept|null;
   equivalentClasses: Uri[];
   constraint: Constraint;
-  version: Urn;
+  version?: Urn;
   editorialNote: Localizable;
-  modifiedAt: Moment;
-  createdAt: Moment;
+  modifiedAt: Moment|null;
+  createdAt: Moment|null;
 
   resolved = true;
   unsaved: boolean = false;
@@ -1076,7 +1083,7 @@ export class Class extends AbstractClass implements VisualizationClass {
 
     this.subClassOf = deserializeOptional(graph.subClassOf, subClassOf => new Uri(subClassOf, context));
     this.scopeClass = deserializeOptional(graph.scopeClass, scopeClass => new Uri(scopeClass, context));
-    this.state = graph.versionInfo;
+    this.state = requireDefined(graph.versionInfo);
 
     this.properties = deserializeEntityList(graph.property, context, frame, () => Property)
       .sort(comparingNumber<Property>(property => property.index));
@@ -1126,7 +1133,7 @@ export class Class extends AbstractClass implements VisualizationClass {
 
   hasAssociationTarget(id: Uri) {
     for (const association of this.associationPropertiesWithTarget) {
-      if (association.valueClass.equals(id)) {
+      if (association.valueClass!.equals(id)) {
         return true;
       }
     }
@@ -1152,7 +1159,7 @@ export class Class extends AbstractClass implements VisualizationClass {
       subClassOf: this.subClassOf && this.subClassOf.uri,
       scopeClass: this.scopeClass && this.scopeClass.uri,
       versionInfo: this.state,
-      isDefinedBy: serializeEntity(this.definedBy, clone),
+      isDefinedBy: serializeEntity(requireDefined(this.definedBy), clone),
       property: serializeEntityList(this.properties, clone),
       subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
@@ -1246,7 +1253,7 @@ export class ConstraintListItem extends GraphNode {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.shapeId = new Uri(graph['@id'], context);
-    this.label = graph.label;
+    this.label = deserializeLocalizable(graph.label);
   }
 
   serializationValues(_inline: boolean, _clone: boolean): {} {
@@ -1259,35 +1266,35 @@ export class ConstraintListItem extends GraphNode {
 export class Property extends GraphNode {
 
   internalId: Uri;
-  externalId: string;
+  externalId?: string;
   state: State;
   label: Localizable;
   comment: Localizable;
-  example: string;
-  defaultValue: string;
-  dataType: DataType;
+  example?: string;
+  defaultValue?: string;
+  dataType?: DataType;
   language: Language[];
-  valueClass: Uri;
+  valueClass: Uri|null = null;
   predicate: Uri|Predicate;
   index: number;
-  minCount: number;
-  maxCount: number;
-  minLength: number;
-  maxLength: number;
+  minCount?: number;
+  maxCount?: number;
+  minLength?: number;
+  maxLength?: number;
   in: string[];
-  hasValue: string;
-  pattern: string;
+  hasValue?: string;
+  pattern?: string;
   referenceData: ReferenceData[];
-  predicateType: Type;
+  predicateType: Type|null= null;
   classIn: Uri[];
-  stem: Uri;
+  stem: Uri|null;
   editorialNote: Localizable;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     this.internalId = new Uri(graph['@id'], context);
-    this.externalId = graph['identifier'];
-    this.state = graph.versionInfo;
+    this.externalId = graph.identifier;
+    this.state = requireDefined(graph.versionInfo);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.example = graph.example;
@@ -1298,7 +1305,7 @@ export class Property extends GraphNode {
     this.referenceData = deserializeEntityList(graph.memberOf, context, frame, () => ReferenceData);
 
     if (graph.type) {
-      this.predicateType = mapType(graph.type);
+      this.predicateType = requireDefined(mapType(graph.type));
     }
 
     if (graph.valueShape) {
@@ -1389,8 +1396,12 @@ export class Property extends GraphNode {
       const predicate = this.predicate;
       if (predicate instanceof Predicate) {
         return predicate.normalizedType;
+      } else if (this.dataType) {
+        return 'attribute';
+      } else if (this.valueClass) {
+        return 'association';
       } else {
-        return this.dataType ? 'attribute' : this.valueClass ? 'association' : null;
+        throw new Error('Cannot resolve predicate type');
       }
     }
   }
@@ -1477,7 +1488,7 @@ export abstract class AbstractPredicate extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
-    this.normalizedType = normalizePredicateType(this.type);
+    this.normalizedType = requireDefined(normalizePredicateType(this.type));
   }
 
   isClass() {
@@ -1497,7 +1508,7 @@ export abstract class AbstractPredicate extends GraphNode {
   }
 
   iowUrl() {
-    return resourceUrl(this.definedBy.prefix, this.id);
+    return resourceUrl(requireDefined(this.definedBy.prefix), this.id);
   }
 }
 
@@ -1511,23 +1522,21 @@ export class PredicateListItem extends AbstractPredicate {
 export class Predicate extends AbstractPredicate {
 
   state: State;
-  subPropertyOf: Uri;
-  subject: Concept;
+  subPropertyOf: Uri|null;
+  subject: Concept|null;
   equivalentProperties: Uri[];
-  version: Urn;
+  version?: Urn;
   editorialNote: Localizable;
-  modifiedAt: Moment;
-  createdAt: Moment;
+  modifiedAt: Moment|null;
+  createdAt: Moment|null;
 
   unsaved: boolean = false;
   external: boolean = false;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.state = graph.versionInfo;
-    if (graph.subPropertyOf) {
-      this.subPropertyOf = new Uri(graph.subPropertyOf, context);
-    }
+    this.state = requireDefined(graph.versionInfo);
+    this.subPropertyOf = deserializeOptional(graph.subPropertyOf, uri => new Uri(uri, context));
     this.subject = deserializeOptional(graph.subject, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
     this.version = graph.identifier;
@@ -1560,7 +1569,7 @@ export class Predicate extends AbstractPredicate {
 
 export class Association extends Predicate {
 
-  valueClass: Uri;
+  valueClass: Uri|null = null;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1586,7 +1595,7 @@ export class Association extends Predicate {
 
 export class Attribute extends Predicate {
 
-  dataType: DataType;
+  dataType?: DataType;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1614,7 +1623,7 @@ export class FintoConcept extends GraphNode {
   label: Localizable;
   comment: Localizable;
   vocabularies: (Vocabulary|Uri)[];
-  broaderConcept: Concept;
+  broaderConcept: Concept|null;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1664,10 +1673,10 @@ export class ConceptSuggestion extends GraphNode {
   label: Localizable;
   comment: Localizable;
   vocabulary: Vocabulary|Uri;
-  definedBy: DefinedBy;
-  broaderConcept: Concept;
+  definedBy: DefinedBy|null; // TODO can this really be null?
+  broaderConcept: Concept|null;
   createdAt: Moment;
-  creator: UserLogin;
+  creator: UserLogin|null; // TODO can this really be null?
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1721,7 +1730,7 @@ export class ConceptSuggestion extends GraphNode {
 export class VocabularyNameHref {
 
   id: Uri;
-  href: Url;
+  href: Url|null;
   name: string|Localizable;
 
   private static internalVocabularyName = 'Internal vocabulary';
@@ -1769,10 +1778,10 @@ export interface User {
 export class DefaultUser extends GraphNode implements User {
 
   createdAt: Moment;
-  modifiedAt: Moment;
+  modifiedAt: Moment|null;
   adminGroups: Uri[];
   memberGroups: Uri[];
-  name: string;
+  name?: string;
   login: UserLogin;
 
   constructor(graph: any, context: any, frame: any) {
@@ -1833,8 +1842,8 @@ export class SearchResult extends GraphNode {
   id: Uri;
   label: Localizable;
   comment: Localizable;
-  prefix: string;
-  definedBy: DefinedBy;
+  prefix?: string;
+  definedBy: DefinedBy|null;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1860,7 +1869,7 @@ export class DefaultUsage extends GraphNode implements Usage {
 
   id: Uri;
   label: Localizable;
-  definedBy: DefinedBy;
+  definedBy: DefinedBy|null;
   referrers: Referrer[];
 
   constructor(graph: any, context: any, frame: any) {
@@ -1888,9 +1897,9 @@ export class Referrer extends GraphNode {
 
   id: Uri;
   label: Localizable;
-  prefix: string;
-  definedBy: DefinedBy;
-  normalizedType: Type;
+  prefix?: string;
+  definedBy: DefinedBy|null;
+  normalizedType: Type|null;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1922,12 +1931,12 @@ export class Activity extends GraphNode {
     this.lastModifiedBy = deserializeUserLogin(graph.wasAttributedTo);
     this.versions = deserializeEntityList(graph.generated, context, frame, () => Entity).sort(comparingDate<Entity>(entity => entity.createdAt));
     this.versionIndex = idToIndexMap(this.versions);
-    this.latestVersion = graph.used;
+    this.latestVersion = requireDefined(graph.used);
   }
 
   getVersion(version: Urn): Entity {
     const index = this.versionIndex.get(version);
-    return index && this.versions[index];
+    return requireDefined(index ? this.versions[index] : null);
   }
 
   get latest(): Entity {
@@ -1940,7 +1949,7 @@ export class Entity extends GraphNode {
   id: Urn;
   createdAt: Moment;
   createdBy: UserLogin;
-  previousVersion: Urn;
+  previousVersion?: Urn;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1950,8 +1959,8 @@ export class Entity extends GraphNode {
     this.previousVersion = graph.wasRevisionOf;
   }
 
-  getPrevious(activity: Activity): Entity {
-    return this.previousVersion && activity.getVersion(this.previousVersion);
+  getPrevious(activity: Activity): Entity|null {
+    return this.previousVersion ? activity.getVersion(this.previousVersion) : null;
   }
 }
 
@@ -1971,8 +1980,8 @@ function deserializeOptional<T>(data: any, deserializer: (data: any) => T) {
   return isDefined(data) ? deserializer(data) : null;
 }
 
-function serializeOptional<T>(data: T, serializer: (data: T) => any, isDefinedFn: (data: T) => boolean = isDefined) {
-  return isDefinedFn(data) ? serializer(data) : null;
+function serializeOptional<T>(data: T|null, serializer: (data: T) => any, isDefinedFn: (data: T|null|undefined) => boolean = isDefined) {
+  return isDefinedFn(data) ? serializer(data!) : null;
 }
 
 function serializeList<T>(list: any[], mapper: (obj: any) => T = identity) {
@@ -2070,17 +2079,11 @@ function coordinatesAreEqual(lhs: Coordinate, rhs: Coordinate) {
 }
 
 function mapGraphTypeObject(withType: { '@type': string|string[] }): Type[] {
-  return _.chain(normalizeAsArray(withType['@type']))
-    .map(mapType)
-    .reject(type => !type)
-    .value();
+  return filterDefined(normalizeAsArray(withType['@type']).map(mapType));
 }
 
 function reverseMapTypeObject(types: Type[]): string[] {
-  return _.chain(normalizeAsArray(types))
-    .map(reverseMapType)
-    .reject(type => !type)
-    .value();
+  return filterDefined(types.map(reverseMapType));
 }
 
 export function modelUrl(prefix: string): RelativeUrl {
@@ -2096,11 +2099,11 @@ export function resourceUrl(modelPrefix: string, resource: Uri) {
 function contextlessInternalUrl(destination: Destination) {
   if (destination) {
     if (containsAny(destination.type, ['model', 'profile'])) {
-      return modelUrl(destination.prefix);
+      return modelUrl(requireDefined(destination.prefix));
     } else if (containsAny(destination.type, ['group'])) {
       return groupUrl(destination.id.uri);
     } else if (containsAny(destination.type, ['association', 'attribute', 'class', 'shape'])) {
-      return resourceUrl(destination.definedBy.prefix, destination.id);
+      return resourceUrl(requireDefined(requireDefined(destination.definedBy).prefix), destination.id);
     } else {
       throw new Error('Unsupported type for url: ' + destination.type);
     }

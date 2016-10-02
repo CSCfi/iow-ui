@@ -5,7 +5,6 @@ import {
   ConstraintType, Class
 } from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
-import { RelativeUrl } from '../../services/uri';
 import { SearchClassType } from '../contracts';
 import {
   createClassTypeExclusion, createExistsExclusion, createDefinedByExclusion,
@@ -45,7 +44,7 @@ class EditableConstraint {
   constructor(private searchClassModal: SearchClassModal) {
   }
 
-  linkItem(item: ConstraintListItem): RelativeUrl {
+  linkItem(item: ConstraintListItem) {
     return this.model.linkToResource(item.shapeId);
   }
 

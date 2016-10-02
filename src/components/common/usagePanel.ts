@@ -21,7 +21,7 @@ class UsagePanelController {
 
   entity: EditableEntity;
   context: LanguageContext;
-  usage: Usage;
+  usage: Usage|null = null;
   open: boolean;
   loading: boolean;
 

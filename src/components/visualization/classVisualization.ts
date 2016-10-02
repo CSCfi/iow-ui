@@ -24,6 +24,7 @@ import { adjustElementLinks, layoutGraph, VertexAction } from './layout';
 import { Localizer } from '../../utils/language';
 import { ifChanged } from '../../utils/angular';
 import { coordinatesAreEqual, centerToPosition, copyVertices } from '../../utils/entity';
+import { mapOptional, requireDefined } from '../../utils/object';
 
 
 mod.directive('classVisualization', () => {
@@ -120,7 +121,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   selectClassById: (id: Uri) => IPromise<any>;
   setDimensions: () => void;
 
-  popoverDetails: VisualizationPopoverDetails;
+  popoverDetails: VisualizationPopoverDetails|null;
 
   localizer: Localizer;
 
@@ -272,7 +273,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     });
   }
 
-  onEdit(newItem: Class|Predicate, oldItem: Class|Predicate) {
+  onEdit(newItem: Class|Predicate, oldItem: Class|Predicate|null) {
     this.queueWhenNotVisible(() => {
       // id change can cause massive association realignment in the server
       if (oldItem && newItem.id.notEquals(oldItem.id)) {
@@ -280,7 +281,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
         this.loading = true;
         this.$timeout(() => this.refresh(true), 500);
       } else if (newItem instanceof Class) {
-        this.updateClassAndLayout(newItem, oldItem ? oldItem.id : null);
+        this.updateClassAndLayout(newItem, mapOptional(oldItem, item => item.id));
       }
     });
   }
@@ -296,7 +297,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   layoutPositionsAndFocus(forceFitToAllContent: boolean) {
     const withoutPositionIds = this.classVisualization.getClassIdsWithoutPosition();
     const layoutAll = withoutPositionIds.length === this.classVisualization.classes.length;
-    const ids = layoutAll ? null : withoutPositionIds;
+    const ids = layoutAll ? undefined : withoutPositionIds;
 
     return this.layoutAndFocus(forceFitToAllContent, ids);
   }
@@ -317,27 +318,27 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     });
   }
 
-  private updateClassAndLayout(klass: Class, oldId?: Uri) {
+  private updateClassAndLayout(klass: Class, oldId?: Uri|null) {
 
     const idChanged = oldId && klass.id.notEquals(oldId);
     const oldIdIsAssociationTarget = oldId && this.isAssociationTarget(oldId);
 
     if (idChanged) {
-      this.modelPositions.changeClassId(oldId, klass.id);
+      this.modelPositions.changeClassId(oldId!, klass.id);
     }
 
     const addedClasses = this.addOrReplaceClass(klass);
 
     if (idChanged) {
       if (oldIdIsAssociationTarget) {
-        addedClasses.push(oldId);
-        this.replaceClass(new AssociationTargetPlaceholderClass(oldId, this.model));
+        addedClasses.push(oldId!);
+        this.replaceClass(new AssociationTargetPlaceholderClass(oldId!, this.model));
       } else {
-        this.removeClass(oldId);
+        this.removeClass(oldId!);
       }
     }
 
-    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId] : [klass.id], VertexAction.KeepAll);
+    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId!] : [klass.id], VertexAction.KeepAll);
 
     if (addedClasses.length > 0) {
       this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
@@ -351,7 +352,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     this.adjustElementLinks(null, vertexAction);
   }
 
-  adjustElementLinks(classIds: Uri[], vertexAction: VertexAction) {
+  adjustElementLinks(classIds: Uri[]|null, vertexAction: VertexAction) {
 
     const alreadyAdjusted = new Set<string>();
 
@@ -478,7 +479,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       this.$scope.$applyAsync(() => {
         this.popoverDetails = {
           coordinate: coordinate,
-          comment: first(klass.properties, property => property.internalId.toString() === propertyId).comment
+          comment: requireDefined(first(klass.properties, property => property.internalId.toString() === propertyId)).comment
         };
       });
     }
@@ -494,7 +495,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     focusElement(this.paper, this.graph, this.findElementForSelection(), forceFitToAllContent, this.selectionFocus);
   }
 
-  private findElementForSelection(): joint.dia.Element {
+  private findElementForSelection(): joint.dia.Element|null {
 
     const classOrPredicate = this.selection;
 
@@ -593,10 +594,10 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     let addedClass = false;
     const classPosition = this.modelPositions.getClass(klass.id);
 
-    if (!this.isExistingClass(association.valueClass)) {
+    if (!this.isExistingClass(association.valueClass!)) {
       // set target location as source location for layout
       classPosition.setCoordinate(this.graph.getCell(klass.id.uri).attributes.position);
-      this.addClass(new AssociationTargetPlaceholderClass(association.valueClass, this.model), false);
+      this.addClass(new AssociationTargetPlaceholderClass(association.valueClass!, this.model), false);
       addedClass = true;
     }
 
@@ -611,7 +612,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     for (const association of klass.associationPropertiesWithTarget) {
       const addedClass = this.addAssociation(klass, association);
       if (addedClass) {
-        addedClasses.push(association.valueClass);
+        addedClasses.push(association.valueClass!);
       }
     }
 
@@ -702,7 +703,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     const position = this.modelPositions.getClass(klass.id);
 
     if (position.isDefined()) {
-      onPersistentPositionChange(this.modelPositions.getClass(klass.id).coordinate);
+      onPersistentPositionChange(position.coordinate!);
     }
 
     classCell.on('change:position', onDiagramPositionChange);

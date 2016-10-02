@@ -11,7 +11,7 @@ export class AddEditNamespaceModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, language: Language, namespaceToEdit: ImportedNamespace): IPromise<ImportedNamespace> {
+  private open(model: Model, language: Language, namespaceToEdit: ImportedNamespace|null): IPromise<ImportedNamespace> {
     return this.$uibModal.open({
       template: require('./addEditNamespaceModal.html'),
       size: 'small',
@@ -44,11 +44,11 @@ class AddEditNamespaceController {
   submitError: string;
   edit: boolean;
 
-  namespaceBeforeForced: string;
-  prefixBeforeForced: string;
+  namespaceBeforeForced: string|null = null;
+  prefixBeforeForced: string|null = null;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, $scope: IScope, public model: Model, private language: Language, private namespaceToEdit: ImportedNamespace, private modelService: ModelService) {
+  constructor(private $uibModalInstance: IModalServiceInstance, $scope: IScope, public model: Model, private language: Language, private namespaceToEdit: ImportedNamespace|null, private modelService: ModelService) {
     this.edit = !!namespaceToEdit;
 
     if (namespaceToEdit) {
@@ -74,7 +74,7 @@ class AddEditNamespaceController {
           }
 
           if (namespaceOverrideWasOn && !namespaceOverrideSwitchedOn) {
-            this.namespace = this.namespaceBeforeForced;
+            this.namespace = this.namespaceBeforeForced!;
             this.namespaceBeforeForced = null;
           }
         }
@@ -95,7 +95,7 @@ class AddEditNamespaceController {
           }
 
           if (prefixOverrideWasOn && !prefixOverrideSwitchedOn) {
-            this.prefix = this.prefixBeforeForced;
+            this.prefix = this.prefixBeforeForced!;
             this.prefixBeforeForced = null;
           }
         }
@@ -112,22 +112,22 @@ class AddEditNamespaceController {
   }
 
   labelModifiable() {
-    return !this.edit || this.namespaceToEdit.labelModifiable;
+    return !this.edit || this.namespaceToEdit!.labelModifiable;
   }
 
   namespaceModifiable() {
-    return (!this.edit || this.namespaceToEdit.namespaceModifiable) && !isDefined(this.namespaceBeforeForced);
+    return (!this.edit || this.namespaceToEdit!.namespaceModifiable) && !isDefined(this.namespaceBeforeForced);
   }
 
   prefixModifiable() {
-    return (!this.edit || this.namespaceToEdit.prefixModifiable) && !isDefined(this.prefixBeforeForced);
+    return (!this.edit || this.namespaceToEdit!.prefixModifiable) && !isDefined(this.prefixBeforeForced);
   }
 
   create() {
     if (this.edit) {
-      this.namespaceToEdit.namespace = this.namespace;
-      this.namespaceToEdit.prefix = this.prefix;
-      this.namespaceToEdit.label[this.language] = this.label;
+      this.namespaceToEdit!.namespace = this.namespace;
+      this.namespaceToEdit!.prefix = this.prefix;
+      this.namespaceToEdit!.label[this.language] = this.label;
 
       this.$uibModalInstance.close(this.namespaceToEdit);
     } else {

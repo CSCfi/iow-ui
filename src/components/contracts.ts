@@ -6,7 +6,7 @@ export enum Show {
 }
 
 export interface ChangeListener<T> {
-  onEdit(newItem: T, oldItem: T): void;
+  onEdit(newItem: T, oldItem: T|null): void;
   onDelete(item: T): void;
   onAssign(item: T): void;
   onResize(show: Show): void;
@@ -25,7 +25,7 @@ export interface WithId {
 }
 
 export interface WithDefinedBy {
-  definedBy: DefinedBy;
+  definedBy?: DefinedBy;
 }
 
 export interface WithIdAndType {

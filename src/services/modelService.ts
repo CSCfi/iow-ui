@@ -12,6 +12,7 @@ import { Uri, Urn } from './uri';
 import { Language } from '../utils/language';
 import { expandContextWithKnownModels, collectIds } from '../utils/entity';
 import { normalizeAsArray, index } from '../utils/array';
+import { requireDefined } from '../utils/object';
 
 export class ClassVisualization {
 
@@ -22,7 +23,7 @@ export class ClassVisualization {
   }
 
   getClassById(classId: string) {
-    return this.classIndex.get(classId);
+    return requireDefined(this.classIndex.get(classId));
   }
 
   getClassIds() {
@@ -49,24 +50,24 @@ export class ModelService {
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { group: groupUrn.uri } })
-      .then(response => this.entities.deserializeModelList(response.data));
+      .then(response => this.entities.deserializeModelList(response.data!));
   }
 
   getModelByUrn(urn: Uri|Urn): IPromise<Model> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { id: urn.toString() } })
-      .then(response => this.entities.deserializeModelById(response.data, urn));
+      .then(response => this.entities.deserializeModelById(response.data!, urn));
   }
 
   getModelByPrefix(prefix: string): IPromise<Model> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { prefix } })
-      .then(response => this.entities.deserializeModelByPrefix(response.data, prefix));
+      .then(response => this.entities.deserializeModelByPrefix(response.data!, prefix));
   }
 
   createModel(model: Model): IPromise<any> {
     return this.$http.put<{ identifier: Urn }>(config.apiEndpointWithName('model'), model.serialize(), { params: { id: model.id.uri, group: model.group.id.uri } })
       .then(response => {
         model.unsaved = false;
-        model.version = response.data.identifier;
+        model.version = response.data!.identifier;
         model.createdAt = moment();
       });
   }
@@ -74,7 +75,7 @@ export class ModelService {
   updateModel(model: Model): IPromise<any> {
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('model'), model.serialize(), { params: { id: model.id.uri } })
       .then(response => {
-        model.version = response.data.identifier;
+        model.version = response.data!.identifier;
         model.modifiedAt = moment();
       });
   }
@@ -101,10 +102,10 @@ export class ModelService {
         lang: lang[0],
         langList: lang.join(' '),
         group: groupId.uri,
-        redirect: redirect.uri
+        redirect: redirect && redirect.uri
       }
     })
-      .then(response => this.entities.deserializeModel(response.data))
+      .then(response => this.entities.deserializeModel(response.data!))
       .then((model: Model) => {
         model.unsaved = true;
         return model;
@@ -129,12 +130,12 @@ export class ModelService {
 
   getAllImportableNamespaces(): IPromise<ImportedNamespace[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('listNamespaces'))
-      .then(response => this.entities.deserializeImportedNamespaces(response.data));
+      .then(response => this.entities.deserializeImportedNamespaces(response.data!));
   }
 
   newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
-      .then(response => this.entities.deserializeImportedNamespace(response.data));
+      .then(response => this.entities.deserializeImportedNamespace(response.data!));
   }
 
   getVisualization(model: Model) {
@@ -150,7 +151,7 @@ export class ModelService {
       }
     })
     .then(expandContextWithKnownModels(model))
-    .then(response => this.entities.deserializeModelVisualization(response.data));
+    .then(response => this.entities.deserializeModelVisualization(response.data!));
   }
 
   getModelPositions(model: Model) {
@@ -160,7 +161,7 @@ export class ModelService {
       }
     })
     .then(expandContextWithKnownModels(model))
-    .then(response => this.entities.deserializeModelPositions(response.data), () => this.newModelPositions(model));
+    .then(response => this.entities.deserializeModelPositions(response.data!), () => this.newModelPositions(model));
   }
 
   updateModelPositions(model: Model, modelPositions: ModelPositions) {
@@ -174,12 +175,12 @@ export class ModelService {
 
   getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeServer'))
-      .then(response => this.entities.deserializeReferenceDataServers(response.data));
+      .then(response => this.entities.deserializeReferenceDataServers(response.data!));
   }
 
   getReferenceDatasForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
-      .then(response => this.entities.deserializeReferenceDatas(response.data));
+      .then(response => this.entities.deserializeReferenceDatas(response.data!));
   }
 
   getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
@@ -200,7 +201,7 @@ export class ModelService {
         return this.$q.when(cached);
       } else {
         return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri}})
-          .then(response => this.entities.deserializeReferenceDataCodes(response.data))
+          .then(response => this.entities.deserializeReferenceDataCodes(response.data!))
           .then(codeValues => {
             this.referenceDataCodesCache.set(rd.id.uri, codeValues);
             return codeValues;
@@ -216,6 +217,6 @@ export class ModelService {
 
   newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
-      .then(response => this.entities.deserializeReferenceData(response.data));
+      .then(response => this.entities.deserializeReferenceData(response.data!));
   }
 }

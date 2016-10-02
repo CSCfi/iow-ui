@@ -22,6 +22,7 @@ import { expandContextWithKnownModels } from '../utils/entity';
 import { Language, hasLocalization } from '../utils/language';
 import { DataSource } from '../components/form/dataSource';
 import { modelScopeCache } from '../components/form/cache';
+import { requireDefined } from '../utils/object';
 
 export class ClassService {
 
@@ -34,13 +35,13 @@ export class ClassService {
   getClass(id: Uri|Urn, model: Model): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {id: id.toString()}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeClass(response.data));
+      .then(response => this.entities.deserializeClass(response.data!));
   }
 
   getAllClasses(model: Model): IPromise<ClassListItem[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class'))
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeClassList(response.data));
+      .then(response => this.entities.deserializeClassList(response.data!));
   }
 
   getClassesForModel(model: Model) {
@@ -69,7 +70,7 @@ export class ClassService {
     } else {
       return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {model: model.id.uri}})
         .then(expandContextWithKnownModels(model))
-        .then(response => this.entities.deserializeClassList(response.data))
+        .then(response => this.entities.deserializeClassList(response.data!))
         .then(classList => {
           this.modelClassesCache.set(model.id.uri, classList);
           return classList;
@@ -80,13 +81,13 @@ export class ClassService {
   createClass(klass: Class): IPromise<any> {
     const requestParams = {
       id: klass.id.uri,
-      model: klass.definedBy.id.uri
+      model: requireDefined(klass.definedBy).id.uri
     };
     return this.$http.put<{ identifier: Urn }>(config.apiEndpointWithName('class'), klass.serialize(), {params: requestParams})
       .then(response => {
-        this.modelClassesCache.delete(klass.definedBy.id.uri);
+        this.modelClassesCache.delete(requireDefined(klass.definedBy).id.uri);
         klass.unsaved = false;
-        klass.version = response.data.identifier;
+        klass.version = response.data!.identifier;
         klass.createdAt = moment();
       });
   }
@@ -94,15 +95,15 @@ export class ClassService {
   updateClass(klass: Class, originalId: Uri): IPromise<any> {
     const requestParams: any = {
       id: klass.id.uri,
-      model: klass.definedBy.id.uri
+      model: requireDefined(klass.definedBy).id.uri
     };
     if (klass.id.notEquals(originalId)) {
       requestParams.oldid = originalId.uri;
     }
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('class'), klass.serialize(), {params: requestParams})
       .then(response => {
-        this.modelClassesCache.delete(klass.definedBy.id.uri);
-        klass.version = response.data.identifier;
+        this.modelClassesCache.delete(requireDefined(klass.definedBy).id.uri);
+        klass.version = response.data!.identifier;
         klass.modifiedAt = moment();
       });
   }
@@ -128,22 +129,23 @@ export class ClassService {
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('classCreator'), {params: {modelID: model.id.uri, classLabel: upperCaseFirst(classLabel), conceptID: conceptID.uri, lang}})
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.entities.deserializeClass(response.data))
+      .then((response: any) => this.entities.deserializeClass(response.data!))
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
-        klass.external = model.isNamespaceKnownToBeNotModel(klass.definedBy.id.url);
+        klass.external = model.isNamespaceKnownToBeNotModel(klass.definedBy.id.toString());
         return klass;
       });
   }
 
   newShape(classOrExternal: Class|ExternalEntity, profile: Model, external: boolean, lang: Language): IPromise<Class> {
 
-    const classPromise = (classOrExternal instanceof ExternalEntity) ? this.getExternalClass(classOrExternal.id, profile) : this.$q.when(<Class> classOrExternal);
+    const id = requireDefined(classOrExternal.id);
+    const classPromise = (classOrExternal instanceof ExternalEntity) ? this.getExternalClass(id, profile) : this.$q.when(<Class> classOrExternal);
 
     return this.$q.all([
       classPromise,
-      this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: classOrExternal.id.uri, lang}})
+      this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: id.toString(), lang}})
         .then(expandContextWithKnownModels(profile))
         .then((response: any) => this.entities.deserializeClass(response.data))
       ])
@@ -200,16 +202,17 @@ export class ClassService {
   getExternalClassesForModel(model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeClassList(response.data));
+      .then(response => this.entities.deserializeClassList(response.data!));
   }
 
   newProperty(predicateOrExternal: Predicate|ExternalEntity, type: Type, model: Model): IPromise<Property> {
 
-    const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.predicateService.getExternalPredicate(predicateOrExternal.id, model) : this.$q.when(<Predicate> predicateOrExternal);
+    const id = requireDefined(predicateOrExternal.id);
+    const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.predicateService.getExternalPredicate(id, model) : this.$q.when(<Predicate> predicateOrExternal);
 
     return this.$q.all([
       predicatePromise,
-      this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: predicateOrExternal.id.uri, type: reverseMapType(type)}})
+      this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: id.toString(), type: reverseMapType(type)}})
         .then(expandContextWithKnownModels(model))
         .then((response: any) => this.entities.deserializeProperty(response.data))
     ])

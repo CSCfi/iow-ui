@@ -13,7 +13,7 @@ export class UserService {
   updateLogin(): IPromise<User> {
     return this.$http.get<boolean>(config.apiEndpointWithName('loginstatus'))
       .then(statusResponse => statusResponse.data
-        ? this.$http.get<GraphData>(config.apiEndpointWithName('user')).then(response => this.entities.deserializeUser(response.data))
+        ? this.$http.get<GraphData>(config.apiEndpointWithName('user')).then(response => this.entities.deserializeUser(response.data!))
         : new AnonymousUser())
       .then(updatedUser => this.user = updatedUser);
   }

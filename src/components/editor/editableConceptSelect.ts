@@ -27,7 +27,7 @@ mod.directive('editableConceptSelect', () => {
 
 class EditableConceptSelectController {
 
-  concept: Concept;
+  concept: Concept|null;
   model: Model;
   title: string;
   allowSuggestions: boolean;

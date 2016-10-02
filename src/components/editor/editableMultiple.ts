@@ -119,7 +119,7 @@ interface EditableMultipleScope extends IScope {
 export class EditableMultipleController<T> {
 
   ngModel: T[];
-  input: T;
+  input: T|null;
   id: string;
   title: string;
   formatter: IModelFormatter[];

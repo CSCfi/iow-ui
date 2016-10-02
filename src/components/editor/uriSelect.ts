@@ -74,7 +74,7 @@ class UriSelectController {
   createIdExclusion = () => idExclusion(this.excludeId, this.excludeItem, this.datasource, this.$q);
   createItemExclusion = () => itemExclusion(this.excludeId, this.excludeItem);
 
-  private change: Uri;
+  private change: Uri|null = null;
 
   constructor($scope: IScope, private $q: IQService, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
 

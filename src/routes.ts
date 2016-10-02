@@ -15,13 +15,13 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
     .when('/group', {
       template: '<group group-id="groupId"></group>',
       controller($scope: any, $route: route.IRouteService) {
-        $scope.groupId = new Uri($route.current.params.id, {});
+        $scope.groupId = new Uri($route.current!.params.id, {});
       }
     })
     .when('/newModel', {
       template: '<new-model prefix="prefix" label="label" group="group" languages="languages" type="type" redirect="redirect"></new-model>',
       controller($scope: any, $route: route.IRouteService) {
-        const params: any = $route.current.params;
+        const params: any = $route.current!.params;
 
         $scope.prefix = params.prefix;
         $scope.label = params.label;
@@ -34,7 +34,7 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
     .when('/ns/:prefix*', {
       template: '',
       controller($location: ILocationService, $route: route.IRouteService) {
-        const prefix = $route.current.params.prefix;
+        const prefix = $route.current!.params.prefix;
         const resource = $location.hash();
 
         if (resource) {
@@ -48,4 +48,4 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
       template: '<model></model>',
       reloadOnSearch: false
     });
-};
+}

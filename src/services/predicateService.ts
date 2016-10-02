@@ -12,6 +12,7 @@ import { Language } from '../utils/language';
 import { predicateFrame } from './frames';
 import { DataSource } from '../components/form/dataSource';
 import { modelScopeCache } from '../components/form/cache';
+import { requireDefined } from '../utils/object';
 
 export class PredicateService {
 
@@ -24,13 +25,13 @@ export class PredicateService {
   getPredicate(id: Uri|Urn, model?: Model): IPromise<Predicate> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {id: id.toString()}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicate(response.data));
+      .then(response => this.entities.deserializePredicate(response.data!));
   }
 
   getAllPredicates(model: Model): IPromise<PredicateListItem[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'))
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicateList(response.data));
+      .then(response => this.entities.deserializePredicateList(response.data!));
   }
 
   getPredicatesForModel(model: Model) {
@@ -59,7 +60,7 @@ export class PredicateService {
     } else {
       return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {model: model.id.uri}})
         .then(expandContextWithKnownModels(model))
-        .then(response => this.entities.deserializePredicateList(response.data))
+        .then(response => this.entities.deserializePredicateList(response.data!))
         .then(predicateList => {
           this.modelPredicatesCache.set(model.id.uri, predicateList);
           return predicateList;
@@ -76,7 +77,7 @@ export class PredicateService {
       .then(response => {
         this.modelPredicatesCache.delete(predicate.definedBy.id.uri);
         predicate.unsaved = false;
-        predicate.version = response.data.identifier;
+        predicate.version = response.data!.identifier;
         predicate.createdAt = moment();
       });
   }
@@ -91,7 +92,7 @@ export class PredicateService {
     }
     return this.$http.post<{ identifier: Urn }>(config.apiEndpointWithName('predicate'), predicate.serialize(), {params: requestParams})
       .then(response => {
-        predicate.version = response.data.identifier;
+        predicate.version = response.data!.identifier;
         predicate.modifiedAt = moment();
       })
       .then(() => this.modelPredicatesCache.delete(predicate.definedBy.id.uri));
@@ -124,7 +125,7 @@ export class PredicateService {
         type: reverseMapType(type), lang
       }})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicate(response.data))
+      .then(response => this.entities.deserializePredicate(response.data!))
       .then((predicate: Predicate) => {
         predicate.definedBy = model.asDefinedBy();
         if (predicate instanceof Attribute && !predicate.dataType) {
@@ -136,7 +137,7 @@ export class PredicateService {
   }
 
   changePredicateType(predicate: Attribute|Association, newType: Type, model: Model) {
-    return this.newPredicate(model, '', predicate.subject.id, newType, 'fi')
+    return this.newPredicate(model, '', requireDefined(predicate.subject).id, newType, 'fi')
       .then(changedPredicate => {
         changedPredicate.id = predicate.id;
         changedPredicate.label = predicate.label;
@@ -199,7 +200,7 @@ export class PredicateService {
   getExternalPredicate(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicate(response.data))
+      .then(response => this.entities.deserializePredicate(response.data!))
       .then(predicate => {
         if (predicate) {
           predicate.external = true;
@@ -211,6 +212,6 @@ export class PredicateService {
   getExternalPredicatesForModel(model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicateList(response.data));
+      .then(response => this.entities.deserializePredicateList(response.data!));
   }
 }

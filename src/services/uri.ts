@@ -65,7 +65,7 @@ export class Uri {
     if (this.isUrn()) {
       throw new Error('URN does not have name: ' + this.value);
     } else if (this.isCurieUrl()) {
-      return splitCurie(this.value).name;
+      return splitCurie(this.value)!.name;
     } else {
       const namespaceSplit = splitNamespace(this.value);
 
@@ -141,14 +141,14 @@ export class Uri {
     if (this.isUrn()) {
       throw new Error("Cannot set name for urn: " + this.value);
     } else if (this.isCurieUrl()) {
-      return new Uri(splitCurie(this.value).prefix + ':' + name, this.context);
+      return new Uri(splitCurie(this.value)!.prefix + ':' + name, this.context);
     } else {
       return new Uri(this.namespace + name, this.context);
     }
   }
 
-  equals(other: Uri) {
-    return other && this.uri === other.uri;
+  equals(other: Uri|null) {
+    return !!other && this.uri === other.uri;
   }
 
   notEquals(other: Uri) {
@@ -189,11 +189,15 @@ export class Uri {
 
   findResolvablePrefix() {
     const prefix = this.findPrefix();
-    return isDefined(prefix) && isDefined(this.context[prefix]) && prefix;
+    if (isDefined(prefix) && isDefined(this.context[prefix])) {
+      return prefix;
+    } else {
+      return null;
+    }
   }
 }
 
-function splitCurie(curie: string): {prefix: string, name: string} {
+function splitCurie(curie: string): {prefix: string, name: string}|null {
   const parts = curie.split(':');
   if (parts.length === 2) {
     return {prefix: parts[0], name: parts[1]};
@@ -202,7 +206,7 @@ function splitCurie(curie: string): {prefix: string, name: string} {
   }
 }
 
-function splitNamespace(id: string): {namespaceId: string, name: string, separator: string} {
+function splitNamespace(id: string): {namespaceId: string, name: string, separator: string}|null {
   const hashParts = id.split('#');
   if (hashParts.length === 2) {
     return {namespaceId: hashParts[0], name: hashParts[1], separator: '#'};

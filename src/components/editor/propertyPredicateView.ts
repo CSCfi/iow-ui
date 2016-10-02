@@ -33,7 +33,7 @@ class PropertyPredicateViewController {
   loading: boolean;
   property: Property;
   model: Model;
-  predicate: Predicate;
+  predicate: Predicate|null;
   isEditing: () => boolean;
   changeActions: { name: string, apply: () => void }[] = [];
   /* @ngInject */
@@ -42,7 +42,7 @@ class PropertyPredicateViewController {
               private searchPredicateModal: SearchPredicateModal,
               private copyPredicateModal: CopyPredicateModal) {
 
-    const setResult = (p: Predicate) => {
+    const setResult = (p: Predicate|null) => {
         this.predicate = p;
         this.updateChangeActions().then(() => this.loading = false);
     };
@@ -54,9 +54,9 @@ class PropertyPredicateViewController {
         setResult(predicate);
       } else if (predicate instanceof Uri) {
         if (this.model.isNamespaceKnownToBeNotModel(predicate.namespace)) {
-          predicateService.getExternalPredicate(predicate, this.model).then(setResult);
+          predicateService.getExternalPredicate(predicate, this.model).then(setResult, (_err: any) => setResult(null));
         } else {
-          predicateService.getPredicate(predicate).then(setResult);
+          predicateService.getPredicate(predicate).then(setResult, (_err: any) => setResult(null));
         }
       } else {
         throw new Error('Unsupported predicate: ' + predicate);
@@ -115,7 +115,7 @@ class PropertyPredicateViewController {
   }
 
   assignReusablePredicateToModel() {
-    this.predicateService.assignPredicateToModel(this.predicate.id, this.model.id)
+    this.predicateService.assignPredicateToModel(this.property.predicateId, this.model.id)
       .then(() => this.updateChangeActions());
   }
 

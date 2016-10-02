@@ -1,5 +1,17 @@
 import { isDefined, EqualityChecker } from './object';
 
+export function filterDefined<T>(arr: (T|null|undefined)[]): T[] {
+  const result: T[] = [];
+
+  for (const item of arr) {
+    if (isDefined(item)) {
+      result.push(item);
+    }
+  }
+
+  return result;
+}
+
 export function normalizeAsArray<T>(obj: T|T[]): T[] {
   return Array.isArray(obj) ? obj : isDefined(obj) ? [obj] : [];
 }
@@ -105,7 +117,7 @@ export function all<T>(arr: T[], predicate: (item: T) => boolean) {
   return true;
 }
 
-export function first<T>(arr: T[], predicate: (item: T) => boolean): T {
+export function first<T>(arr: T[], predicate: (item: T) => boolean): T|null {
   for (const item of arr) {
     if (predicate(item)) {
       return item;
@@ -130,6 +142,6 @@ export function arraysAreEqual<T>(lhs: T[], rhs: T[], equals: EqualityChecker<T>
   return containsAll(lhs, rhs, equals) && containsAll(rhs, lhs, equals);
 }
 
-export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): T {
+export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): T|null {
   return first(arr, item => contains(values, item, equals));
 }

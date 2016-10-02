@@ -4,14 +4,14 @@ import { DataType } from '../../services/dataTypes';
 import { Localizer } from '../../utils/language';
 import { NameType } from '../../services/sessionService';
 
-export function formatDataTypeName(dataType: DataType, showName: NameType, localizer: Localizer) {
+export function formatDataTypeName(dataType: DataType|undefined, showName: NameType, localizer: Localizer) {
   switch (showName) {
     case NameType.LABEL:
       return localizer.getStringWithModelLanguageOrDefault(dataType, 'en');
     case NameType.ID:
-      return dataType;
+      return dataType || '';
     case NameType.LOCAL_ID:
-      return dataType;
+      return dataType || '';
     default:
       throw new Error('Unsupported show name type: ' + showName);
   }
@@ -67,7 +67,7 @@ export function formatCardinality(property: Property) {
   if (!isDefined(min) && !isDefined(max)) {
     return '*';
   } else if (min === max) {
-    return min.toString();
+    return min!.toString();
   } else {
     return `${min || '0'}..${max || '*'}`;
   }

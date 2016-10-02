@@ -15,8 +15,10 @@ import { EditableForm } from '../form/editableEntityController';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { any } from '../../utils/array';
 import { valueContains } from '../../utils/searchFilter';
+import { Exclusion } from '../../utils/exclusion';
+import { isDefined } from '../../utils/object';
 
-export const noExclude = (_item: AbstractClass) => <string> null;
+export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
 
 export class SearchClassModal {
@@ -24,7 +26,7 @@ export class SearchClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, exclude: (klass: AbstractClass) => string, defaultToCurrentModel: boolean, onlySelection: boolean, textForSelection: (klass: Class) => string) {
+  private openModal(model: Model, exclude: Exclusion<AbstractClass>, defaultToCurrentModel: boolean, onlySelection: boolean, textForSelection: (klass: Class) => string) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -41,11 +43,11 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string): IPromise<ExternalEntity|EntityCreation|Class> {
+  open(model: Model, exclude: Exclusion<AbstractClass>, textForSelection: (klass: Class) => string): IPromise<ExternalEntity|EntityCreation|Class> {
     return this.openModal(model, exclude, false, false, textForSelection);
   }
 
-  openWithOnlySelection(model: Model, defaultToCurrentModel: boolean, exclude: (klass: AbstractClass) => string, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
+  openWithOnlySelection(model: Model, defaultToCurrentModel: boolean, exclude: Exclusion<AbstractClass>, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
     return this.openModal(model, exclude, defaultToCurrentModel, true, textForSelection);
   }
 }
@@ -69,10 +71,10 @@ class SearchClassController {
   cannotConfirm: string;
   loadingResults: boolean;
   selectedItem: ClassListItem|AddNewClass;
-  excludeError: string;
+  excludeError: string|null = null;
 
   // undefined means not fetched, null means does not exist
-  externalClass: Class;
+  externalClass: Class|null|undefined;
 
   private localizer: Localizer;
 
@@ -108,8 +110,9 @@ class SearchClassController {
       this.classes = this.classes.concat(classes);
 
       const definedByFromClasses = _.chain(this.classes)
-        .map(klass => klass.definedBy)
-        .uniqBy(definedBy => definedBy.id.uri)
+        .map(klass => klass.definedBy!)
+        .filter(definedBy => isDefined(definedBy))
+        .uniqBy(definedBy => definedBy!.id.toString())
         .value()
         .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label));
 
@@ -194,7 +197,7 @@ class SearchClassController {
     } else if (item instanceof ClassListItem) {
       this.cannotConfirm = this.exclude(item);
 
-      if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.url)) {
+      if (isDefined(item.definedBy) && this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.toString())) {
         this.classService.getExternalClass(item.id, this.model).then(result => this.selection = result);
       } else {
         this.classService.getClass(item.id, this.model).then(result => this.selection = result);
@@ -253,7 +256,7 @@ class SearchClassController {
     } else if (this.showModel === this.model) {
       return this.currentModelClassIds.has(klass.id.uri);
     } else {
-      return klass.definedBy.id.equals(this.showModel.id);
+      return isDefined(klass.definedBy) && klass.definedBy.id.equals(this.showModel.id);
     }
   }
 
@@ -262,7 +265,7 @@ class SearchClassController {
   }
 
   private showProfilesFilter(klass: ClassListItem): boolean {
-    return this.showProfiles || !klass.definedBy.isOfType('profile');
+    return this.showProfiles || !isDefined(klass.definedBy) || !klass.definedBy.isOfType('profile');
   }
 }
 

@@ -12,7 +12,7 @@ export class ErrorModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(title: string, errorMessage: string, usage: UsageParameters): IPromise<void> {
+  private open(title: string, errorMessage: string, usage: UsageParameters|null): IPromise<void> {
     return this.$uibModal.open({
       template:
         `
@@ -52,11 +52,10 @@ export class ErrorModal {
   openUsageError(title: string, errorMessage: string, usage: Usage, context: LanguageContext) {
     return this.open(title, errorMessage, { usage, context });
   }
-
-};
+}
 
 class ErrorModalController {
   /* @ngInject */
-  constructor(public title: string, public errorMessage: string, public usage: UsageParameters) {
+  constructor(public title: string, public errorMessage: string, public usage: UsageParameters|null) {
   }
 }

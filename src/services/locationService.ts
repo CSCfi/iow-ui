@@ -16,7 +16,7 @@ export class LocationService {
     this.location = location;
   }
 
-  atModel(model: Model, selection: Location): void {
+  atModel(model: Model, selection: Location|null): void {
     if (model) {
       if (model.unsaved) {
         this.changeLocation([model.group, { localizationKey: `New ${model.normalizedType} creation` }]);

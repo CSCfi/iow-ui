@@ -59,7 +59,7 @@ function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
 function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionListener) {
 
   let movingElementOrVertex = false;
-  let drag: {x: number, y: number};
+  let drag: {x: number, y: number}|null;
   let mouse: {x: number, y: number};
 
   paper.on('blank:pointerdown', () => drag = mouse);

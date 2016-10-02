@@ -8,15 +8,16 @@ import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { Language } from '../../utils/language';
 import { isDefined } from '../../utils/object';
+import { Exclusion } from '../../utils/exclusion';
 
-const noExclude = (_ns: ImportedNamespace) => <string> null;
+const noExclude = (_ns: ImportedNamespace) => null;
 
 export class SearchNamespaceModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(model: Model, language: Language, exclude: (ns: ImportedNamespace) => string = noExclude): IPromise<ImportedNamespace> {
+  open(model: Model, language: Language, exclude: Exclusion<ImportedNamespace> = noExclude): IPromise<ImportedNamespace> {
     return this.$uibModal.open({
       template: require('./searchNamespaceModal.html'),
       size: 'medium',

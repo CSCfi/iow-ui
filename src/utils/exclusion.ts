@@ -5,11 +5,16 @@ import { collectIds } from './entity';
 import { Uri } from '../services/uri';
 import { IPromise, IQService } from 'angular';
 import { DataSource } from '../components/form/dataSource';
+import { isDefined } from './object';
 
-export function idExclusion<T extends { id: Uri }>(excludeId: (id: Uri) => string,
-                                                   excludeItem: (item: T) => string,
+
+export type Exclusion<T> = (obj: T) => string|null;
+export type LazyExclusion<T> = (obj: T) => IPromise<string|null>;
+
+export function idExclusion<T extends { id: Uri }>(excludeId: Exclusion<Uri>,
+                                                   excludeItem: Exclusion<T>,
                                                    dataSource: DataSource<T>,
-                                                   $q: IQService): (itemOrId: Uri|T) => IPromise<string> {
+                                                   $q: IQService): LazyExclusion<Uri|T> {
   return (id: Uri) => {
 
     if (!id) {
@@ -32,7 +37,7 @@ export function idExclusion<T extends { id: Uri }>(excludeId: (id: Uri) => strin
 }
 
 export function itemExclusion<T extends { id: Uri }>(excludeId: (id: Uri) => string,
-                                                     excludeItem: (item: T) => string) {
+                                                     excludeItem: (item: T) => string): Exclusion<T> {
 
   return (item: T) => {
     return item && (excludeId && excludeId(item.id)) || (excludeItem && excludeItem(item));
@@ -40,7 +45,7 @@ export function itemExclusion<T extends { id: Uri }>(excludeId: (id: Uri) => str
 }
 
 
-export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
+export function combineExclusions<T>(...excludes: Exclusion<T>[]): Exclusion<T> {
   return (item: T) => {
     for (const exclude of excludes) {
       const result = exclude(item);
@@ -52,7 +57,7 @@ export function combineExclusions<T>(...excludes: ((item: T) => string)[]) {
   };
 }
 
-export function createSelfExclusion(self: WithIdAndType) {
+export function createSelfExclusion(self: WithIdAndType): Exclusion<WithIdAndType> {
   return (item: WithIdAndType) => {
     if (arraysAreEqual(self.type, item.type) && self.id.equals(item.id)) {
       return 'Self reference not allowed';
@@ -62,13 +67,13 @@ export function createSelfExclusion(self: WithIdAndType) {
   };
 }
 
-export function createDefinedByExclusion(model: Model) {
+export function createDefinedByExclusion(model: Model): Exclusion<WithDefinedBy> {
 
   const modelIds = collectIds(model.namespaces);
   modelIds.add(model.id.uri);
 
   return (item: WithDefinedBy) => {
-    if (!modelIds.has(item.definedBy.id.uri)) {
+    if (isDefined(item.definedBy) && !modelIds.has(item.definedBy.id.uri)) {
       return 'Not imported by model';
     } else {
       return null;
@@ -76,7 +81,7 @@ export function createDefinedByExclusion(model: Model) {
   };
 }
 
-export function createExistsExclusion(itemIds: Set<string>) {
+export function createExistsExclusion(itemIds: Set<string>): Exclusion<WithId> {
   return (item: WithId) => {
     if (itemIds.has(item.id.toString())) {
       return 'Already added';
@@ -86,7 +91,7 @@ export function createExistsExclusion(itemIds: Set<string>) {
   };
 }
 
-export function createClassTypeExclusion(searchClassType: SearchClassType) {
+export function createClassTypeExclusion(searchClassType: SearchClassType): Exclusion<ClassListItem> {
 
   const showShapes = containsAny([SearchClassType.Shape, SearchClassType.SpecializedClass], [searchClassType]);
   const showClasses = containsAny([SearchClassType.Class, SearchClassType.SpecializedClass], [searchClassType]);
@@ -99,7 +104,7 @@ export function createClassTypeExclusion(searchClassType: SearchClassType) {
     } else if (searchClassType === SearchClassType.SpecializedClass && !klass.isSpecializedClass()) {
       return 'Non specialized classes are not allowed';
     } else {
-      return <string> null;
+      return null;
     }
   };
 }

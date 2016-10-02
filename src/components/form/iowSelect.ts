@@ -179,7 +179,6 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
 
       const keyDownHandler = (event: JQueryEventObject) => $scope.$apply(() => controller.keyPressed(event));
       const clickHandler = () => $scope.$apply(() => controller.toggleOpen());
-      const focusHandler = () => $document.on('click', blurClickHandler);
       const blurClickHandler = (event: JQueryEventObject) => {
 
         const eventIowSelectElement = angular.element(event.target).closest('iow-select');
@@ -189,6 +188,7 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
           $document.off('click', blurClickHandler);
         }
       };
+      const focusHandler = () => $document.on('click', blurClickHandler);
 
       $scope.$watch(() => element.outerWidth(), width => controller.popupWidth = width + 'px');
 
@@ -229,9 +229,9 @@ mod.directive('iowSelectionTransclude', () => {
       $scope.$watch(() => $scope.ctrl.ngModel, item => {
         if (!childScope) {
           transclude((clone, transclusionScope) => {
-            childScope = transclusionScope;
-            transclusionScope[controller.itemName] = item;
-            element.append(clone);
+            childScope = transclusionScope!;
+            transclusionScope![controller.itemName] = item;
+            element.append(clone!);
           });
         } else {
           childScope[controller.itemName] = item;
@@ -250,8 +250,8 @@ mod.directive('iowSelectableItemTransclude', () => {
     require: '^iowSelect',
     link($scope: SelectItemScope, element: JQuery, _attribute: IAttributes, controller: IowSelectController<any>, transclude: ITranscludeFunction) {
       transclude((clone, transclusionScope) => {
-        transclusionScope[controller.itemName] = $scope.item;
-        element.append(clone);
+        transclusionScope![controller.itemName] = $scope.item;
+        element.append(clone!);
       });
     }
   };

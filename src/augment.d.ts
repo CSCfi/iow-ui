@@ -34,6 +34,6 @@ declare module 'angular' {
   }
 
   interface ITranscludeFunction {
-    (cloneAttachFn: ICloneAttachFunction, futureParentElement: JQuery, slotName: string): IAugmentedJQuery;
+    (cloneAttachFn: ICloneAttachFunction, futureParentElement: JQuery|null, slotName: string): IAugmentedJQuery;
   }
 }

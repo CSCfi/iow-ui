@@ -28,7 +28,7 @@ class SubjectViewController {
 
   subjectTitle: string;
   vocabularies: string;
-  link: string;
+  link: string|null = null;
 
   constructor($scope: IScope, private searchConceptModal: SearchConceptModal, languageService: LanguageService, gettextCatalog: gettextCatalog) {
 
@@ -40,7 +40,9 @@ class SubjectViewController {
 
       if (subject) {
         this.vocabularies = subject.getVocabularyNames().map(v => v.getLocalizedName(localizer, gettextCatalog)).join(', ');
-        this.link = !subject.suggestion && subject.id.url;
+        this.link = subject.suggestion ? null : subject.id.url;
+      } else {
+        this.link = null;
       }
     };
 

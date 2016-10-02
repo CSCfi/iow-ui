@@ -34,21 +34,22 @@ registerType('externalReferenceData', ['dcam:VocabularyEncodingScheme']);
 registerType('referenceDataGroup', ['iow:FCodeGroup']);
 registerType('referenceDataCode', ['iow:FCode']);
 
-export function mapType(type: string): Type {
+export function mapType(type: string): Type|null {
   const result = toType.get(type);
   if (!result) {
     console.log('Unknown type not mapped: ' + type);
   }
-  return result;
+  return result || null;
 }
 
-export function reverseMapType(type: Type): string {
+export function reverseMapType(type: Type): string|null {
   const result = fromType.get(type);
   if (!result) {
     console.log('Unknown type not mapped: ' + type);
+    return null;
   } else if (result.length !== 1) {
     throw new Error(`Cannot map '${type}' because is not bijection: '${result}'`);
+  } else {
+    return result[0];
   }
-
-  return result[0];
 }

@@ -28,7 +28,7 @@ mod.directive('localizedInput', /* @ngInject */ (languageService: LanguageServic
       }
 
       function removePlaceholder() {
-        element.attr('placeholder', null);
+        element.removeAttr('placeholder');
       }
 
       $scope.$watch(() => languageService.getModelLanguage($scope.context), lang => {

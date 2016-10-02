@@ -11,6 +11,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitThis": true,
+    "strictNullChecks": true,
     "types": [
       "angular",
       "angular-animate",

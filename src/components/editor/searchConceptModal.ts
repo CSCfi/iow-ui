@@ -39,7 +39,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(vocabularies: Vocabulary[], model: Model, type: Type, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
+  private open(vocabularies: Vocabulary[], model: Model, type: Type|null, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -58,7 +58,7 @@ export class SearchConceptModal {
   }
 
   openSelection(vocabularies: Vocabulary[], model: Model, allowSuggestions: boolean, type?: Type): IPromise<Concept> {
-    return this.open(vocabularies, model, type, allowSuggestions, false, '');
+    return this.open(vocabularies, model, type || null, allowSuggestions, false, '');
   }
 
   openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
@@ -89,7 +89,7 @@ class SearchConceptController {
   labelTitle: string;
   selectedVocabulary: Vocabulary;
   searchText: string = '';
-  submitError: string;
+  submitError: string|null = null;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: ConceptSearchResult|AddNewConcept;
@@ -102,7 +102,7 @@ class SearchConceptController {
               private $uibModalInstance: IModalServiceInstance,
               private $q: IQService,
               private languageService: LanguageService,
-              public type: Type,
+              public type: Type|null,
               initialSearch: string,
               public newEntityCreation: boolean,
               private allowSuggestions: boolean,
@@ -114,7 +114,7 @@ class SearchConceptController {
     this.localizer = languageService.createLocalizer(model);
     this.defineConceptTitle = type ? `Define concept for the ${newEntityCreation ? 'new ' : ''}${type}` : 'Search concept';
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
-    this.labelTitle = `${_.capitalize(this.type)} label`;
+    this.labelTitle = type ? `${_.capitalize(type)} label` : '';
     this.searchText = initialSearch;
     this.vocabularies = vocabularies.slice();
     this.vocabularies.sort(this.vocabularyComparator);

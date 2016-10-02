@@ -12,6 +12,7 @@ import { any } from '../../utils/array';
 import { Uri } from '../../services/uri';
 import { localizableContains } from '../../utils/language';
 import * as _ from 'lodash';
+import { isDefined } from '../../utils/object';
 
 export class ConceptEditorModal {
 
@@ -31,7 +32,7 @@ export class ConceptEditorModal {
       }
     }).result;
   }
-};
+}
 
 export class ConceptEditorModalController {
 
@@ -59,7 +60,7 @@ export class ConceptEditorModalController {
               public gettextCatalog: gettextCatalog,
               conceptService: ConceptService,
               private confirmationModal: ConfirmationModal,
-              model: Model) {
+              public model: Model) {
 
     this.localizer = languageService.createLocalizer(model);
     this.loadingResults = true;
@@ -70,7 +71,7 @@ export class ConceptEditorModalController {
         this.models = _.chain(concepts)
           .filter(concept => concept instanceof ConceptSuggestion && !!concept.definedBy)
           .map(concept => concept as ConceptSuggestion)
-          .map(concept => concept.definedBy)
+          .map(concept => concept.definedBy!)
           .uniqBy(definedBy => definedBy.id.uri)
           .value();
 
@@ -149,7 +150,7 @@ export class ConceptEditorModalController {
   }
 
   private modelFilter(concept: Concept): boolean {
-    return !this.showModel || concept instanceof ConceptSuggestion && concept.definedBy && concept.definedBy.id.equals(this.showModel.id);
+    return !this.showModel || (concept instanceof ConceptSuggestion && isDefined(concept.definedBy) && concept.definedBy.id.equals(this.showModel.id));
   }
 
   private vocabularyFilter(concept: Concept): boolean {

@@ -57,7 +57,7 @@ class HighlightController {
     }
   }
 
-  findSecondaryLanguageMatch(regex: RegExp): { language: Language, startIndex: number, endIndex: number } {
+  findSecondaryLanguageMatch(regex: RegExp): { language: Language, startIndex: number, endIndex: number }|null {
 
     for (const [language, text] of Object.entries(this.text)) {
 

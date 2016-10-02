@@ -11,7 +11,7 @@ export class AddEditLinkModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, lang: Language, linkToEdit: Link): IPromise<Link> {
+  private open(model: Model, lang: Language, linkToEdit: Link|null): IPromise<Link> {
     return this.$uibModal.open({
       template: require('./addEditLinkModal.html'),
       size: 'small',
@@ -45,7 +45,7 @@ class AddEditLinkModalController {
   cancel = this.$uibModalInstance.dismiss;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model, private linkToEdit: Link) {
+  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private lang: Language, private model: Model, private linkToEdit: Link|null) {
     this.edit = !!linkToEdit;
 
     if (linkToEdit) {
@@ -65,9 +65,9 @@ class AddEditLinkModalController {
 
   create() {
     if (this.edit) {
-      this.linkToEdit.title[this.lang] = this.title;
-      this.linkToEdit.description[this.lang] = this.description;
-      this.linkToEdit.homepage = this.homepage;
+      this.linkToEdit!.title[this.lang] = this.title;
+      this.linkToEdit!.description[this.lang] = this.description;
+      this.linkToEdit!.homepage = this.homepage;
 
       this.$uibModalInstance.close(this.linkToEdit);
     } else {

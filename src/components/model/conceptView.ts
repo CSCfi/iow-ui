@@ -10,6 +10,7 @@ import { UsageService } from '../../services/usageService';
 import { all } from '../../utils/array';
 import { ErrorModal } from '../form/errorModal';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { isDefined } from '../../utils/object';
 
 mod.directive('conceptView', () => {
   return {
@@ -28,10 +29,10 @@ mod.directive('conceptView', () => {
 
 export class ConceptViewController extends EditableEntityController<Concept> {
 
-  concept: Concept;
+  concept: Concept|null;
   model: Model;
   modelController: ConceptEditorModalController;
-  usage: Usage;
+  usage: Usage|null = null;
   loading: boolean = true;
 
   /* @ngInject */
@@ -77,12 +78,12 @@ export class ConceptViewController extends EditableEntityController<Concept> {
     return this.conceptService.deleteConceptFromModel(entity, this.model).then(() => this.modelController.selectionDeleted(entity));
   }
 
-  isNotInUseInThisModel() {
-    return this.usage && all(this.usage.referrers, referrer => referrer.definedBy.id.notEquals(this.model.id));
+  isNotInUseInThisModel(): boolean {
+    return isDefined(this.usage) && all(this.usage.referrers, referrer => !isDefined(referrer.definedBy) || referrer.definedBy.id.notEquals(this.model.id));
   }
 
   isNotInUse() {
-    return this.usage && this.usage.referrers.length === 0;
+    return isDefined(this.usage) && this.usage.referrers.length === 0;
   }
 
   rights(): Rights {
@@ -104,7 +105,7 @@ export class ConceptViewController extends EditableEntityController<Concept> {
     return this.model.group;
   }
 
-  getEditable(): Concept {
+  getEditable(): Concept|null {
     return this.concept;
   }
 
@@ -124,7 +125,7 @@ export class ConceptViewController extends EditableEntityController<Concept> {
 
   openDeleteConfirmationModal() {
     const onlyDefinedInModel = this.isReference() ? this.model : null;
-    return this.deleteConfirmationModal.open(this.getEditable(), this.getContext(), onlyDefinedInModel);
+    return this.deleteConfirmationModal.open(this.getEditable()!, this.getContext(), onlyDefinedInModel);
   }
 
   getContext(): LanguageContext {

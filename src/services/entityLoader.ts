@@ -295,7 +295,7 @@ export class EntityLoader {
         }
 
         assertPropertyValueExists(details, 'subClassOf for ' + details.label['fi']);
-        promises.push(asUriPromise(details.subClassOf, this.context, klass.context).then(uri => klass.subClassOf = uri));
+        promises.push(asUriPromise(details.subClassOf!, this.context, klass.context).then(uri => klass.subClassOf = uri));
 
         for (const equivalentClass of details.equivalentClasses || []) {
           promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi']), this.context, klass.context).then(uri => klass.equivalentClasses.push(uri)));
@@ -343,7 +343,7 @@ export class EntityLoader {
         const promises: IPromise<any>[] = [];
 
         assertPropertyValueExists(details, 'subPropertyOf for ' + details.label['fi]']);
-        promises.push(asUriPromise(details.subPropertyOf, this.context, predicate.context).then(uri => predicate.subPropertyOf = uri));
+        promises.push(asUriPromise(details.subPropertyOf!, this.context, predicate.context).then(uri => predicate.subPropertyOf = uri));
 
         for (const equivalentProperty of details.equivalentProperties || []) {
           promises.push(asUriPromise(assertExists(equivalentProperty, 'equivalent property for ' + details.label['fi']), this.context, predicate.context).then(uri => predicate.equivalentProperties.push(uri)));
@@ -369,7 +369,7 @@ export class EntityLoader {
   createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
     return this.createPredicate<Association>(modelPromise, 'association', details, association => {
       assertPropertyValueExists(details, 'valueClass');
-      return asUriPromise(details.valueClass, this.context, association.context)
+      return asUriPromise(details.valueClass!, this.context, association.context)
         .then(uri => association.valueClass = uri);
     });
   }
@@ -381,7 +381,7 @@ export class EntityLoader {
       .then((p: Property) => {
         setDetails(p, details);
         assertPropertyValueExists(details, 'valueClass');
-        const valueClassPromise = asUriPromise(details.valueClass, this.context, p.context).then(id => {
+        const valueClassPromise = asUriPromise(details.valueClass!, this.context, p.context).then(id => {
           if (id) {
             p.valueClass = id;
           }
@@ -411,7 +411,7 @@ function failWithDetails(details: any): (err: any) => void {
 
 function setDetails(entity: { label: Localizable, comment: Localizable, state: State }, details: EntityDetails) {
   entity.label = details.label;
-  entity.comment = details.comment;
+  entity.comment = details.comment || {};
   if (details.state) {
     entity.state = details.state;
   }
