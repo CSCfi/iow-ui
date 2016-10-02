@@ -1294,7 +1294,7 @@ export class Property extends GraphNode {
     super(graph, context, frame);
     this.internalId = new Uri(graph['@id'], context);
     this.externalId = graph.identifier;
-    this.state = requireDefined(graph.versionInfo);
+    this.state = graph.versionInfo; // XXX: API does not seem to return this but it guaranteed to be set by newProperty logic
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.example = graph.example;
