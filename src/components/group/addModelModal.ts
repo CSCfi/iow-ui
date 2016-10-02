@@ -11,7 +11,7 @@ export class AddModelModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(groupId: Uri, type: Type): IPromise<{prefix: string, label: string, language: Language[], type: Type, redirect: Uri}> {
+  open(groupId: Uri, type: Type): IPromise<{prefix: string, label: string, language: Language[], type: Type, redirect?: Uri}> {
     return this.$uibModal.open({
       template: require('./addModelModal.html'),
       size: 'small',
@@ -31,7 +31,7 @@ class AddModelController {
   prefix: string;
   label: string;
   language: Language[] = ['fi', 'en'];
-  redirect: Uri;
+  redirect?: Uri;
   submitError: string;
 
   /* @ngInject */

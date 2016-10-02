@@ -28,7 +28,7 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
         $scope.group = new Uri(params.group, {});
         $scope.languages = params.language;
         $scope.type = params.type;
-        $scope.redirect = new Uri(params.redirect, {});
+        $scope.redirect = params.redirect && new Uri(params.redirect, {});
       }
     })
     .when('/ns/:prefix*', {
