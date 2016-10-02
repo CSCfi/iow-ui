@@ -27,7 +27,7 @@ const entityDeserializer = new EntityDeserializer(log);
 const modelService = new ModelService(httpService, q, entityDeserializer);
 const predicateService = new PredicateService(httpService, q, entityDeserializer);
 const classService = new ClassService(httpService, q, predicateService, entityDeserializer);
-const userService = new UserService(httpService, q, entityDeserializer);
+const userService = new UserService(httpService, entityDeserializer);
 const conceptService = new ConceptService(httpService, entityDeserializer);
 const resetService = new ResetService(httpService);
 
