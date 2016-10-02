@@ -23,7 +23,7 @@ const buildConfig: webpack.Configuration = {
         warnings: false
       }
     }),
-    new AssetsPlugin({path: commonConfig.output.path})
+    new AssetsPlugin({path: commonConfig.output!.path})
   ]
 };
 

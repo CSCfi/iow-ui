@@ -8,23 +8,23 @@ class AngularPromiseWrapper<T> implements IHttpPromise<T> {
   constructor(private promise: Promise<T>) {}
 
   then<TResult>(successCallback: (promiseValue: IHttpPromiseCallbackArg<T>) => (IPromise<TResult>|TResult),
-                errorCallback?: (reason: any) => any, notifyCallback?: (state: any) => any) {
-    return <IPromise<TResult>> <any> this.promise.then(successCallback, errorCallback);
+                errorCallback?: (reason: any) => any, _notifyCallback?: (state: any) => any) {
+    return <IPromise<TResult>> <any> this.promise.then(successCallback, errorCallback!);
   }
 
-  success(callback: IHttpPromiseCallback<T>): IHttpPromise<T> {
+  success(_callback: IHttpPromiseCallback<T>): IHttpPromise<T> {
     throw new Error('Unimplemented');
   }
 
-  error(callback: IHttpPromiseCallback<any>): IHttpPromise<T> {
+  error(_callback: IHttpPromiseCallback<any>): IHttpPromise<T> {
     throw new Error('Unimplemented');
   }
 
-  catch<TResult>(onRejected: (reason:any) => (IPromise<TResult>|TResult)): IPromise<TResult> {
+  catch<TResult>(_onRejected: (reason:any) => (IPromise<TResult>|TResult)): IPromise<TResult> {
     throw new Error('Unimplemented');
   }
 
-  finally(finallyCallback: () => any): IPromise<IHttpPromiseCallbackArg<T>> {
+  finally(_finallyCallback: () => any): IPromise<IHttpPromiseCallbackArg<T>> {
     throw new Error('Unimplemented');
   }
 }
@@ -128,13 +128,13 @@ requests.delete = function<T>(url: string, config?: IRequestShortcutConfig): IHt
 requests.head = function<T>(url: string, config?: IRequestShortcutConfig): IHttpPromise<T> {
   return makeRequest<T>('HEAD', url, config);
 };
-requests.jsonp = function<T>(url: string, config?: IRequestShortcutConfig): IHttpPromise<T> {
+requests.jsonp = function<T>(_url: string, _config?: IRequestShortcutConfig): IHttpPromise<T> {
   throw new Error('Unsupported');
 };
 
 Object.defineProperty(request, 'defaults', {
   get: function() { throw new Error('Unsupported') },
-  set: function(newValue) { throw new Error('Unsupported') },
+  set: function(_newValue: any) { throw new Error('Unsupported') },
 });
 
 export const httpService: IHttpService = requests;

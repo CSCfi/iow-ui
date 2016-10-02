@@ -1,4 +1,3 @@
-import ElementFinder = protractor.ElementFinder;
 import { Modal } from '../common/modal.po';
 import { EditableTable } from '../common/component/editableTable.po';
 

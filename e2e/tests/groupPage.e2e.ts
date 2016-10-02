@@ -1,3 +1,6 @@
+/// <reference types="protractor" />
+/// <reference types="jasmine" />
+
 import { GroupPage } from '../pages/group/groupPage.po';
 import { expectCurrentUrlToEqualPath } from '../util/url';
 import { NavBar } from '../pages/common/navbar.po';

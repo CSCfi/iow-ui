@@ -27,7 +27,7 @@ export class ModelView {
   namespaces = new NamespacesView();
   links = new LinksView();
 
-  constructor(private type: Type) {
+  constructor(type: Type) {
     this.label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(type) + ' label');
   }
 

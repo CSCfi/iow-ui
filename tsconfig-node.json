@@ -8,6 +8,10 @@
     "module": "commonjs",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "types": [
       "node",
       "webpack",

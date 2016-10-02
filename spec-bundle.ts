@@ -14,5 +14,5 @@ function requireAll(requireContext: WebpackContext) {
   return requireContext.keys().map(requireContext);
 }
 // requires and returns all modules that match
-const modules = requireAll(testContext);
+requireAll(testContext);
 

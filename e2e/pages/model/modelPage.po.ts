@@ -29,7 +29,7 @@ export class ModelPage {
 
   modelView: ModelView;
 
-  constructor(private type: Type) {
+  constructor(type: Type) {
     this.modelView = new ModelView(type);
   }
 }

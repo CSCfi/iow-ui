@@ -15,7 +15,7 @@ function isExtractable(f: string) {
 
 const extractor = new Extractor();
 
-file.walkSync(root, (dirPath: string, dirs: string[], files: string[]) => {
+file.walkSync(root, (dirPath: string, _dirs: string[], files: string[]) => {
 
   for (const f of files) {
     if (isExtractable(f)) {

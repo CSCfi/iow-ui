@@ -1,3 +1,6 @@
+/// <reference types="protractor" />
+/// <reference types="jasmine" />
+
 import { ModelPage, NewModelParameters } from '../pages/model/modelPage.po';
 import { expectCurrentUrlToEqualPath } from '../util/url';
 import { library1Parameters, library2Parameters } from './test-data';
