@@ -163,7 +163,7 @@ export function modelFrame(data: any, options: { id?: Uri|Urn, prefix?: string }
 
 
   if (options.id) {
-    Object.assign(frameObj, { '@id': options.id.toString() });
+    Object.assign(frameObj, { 'dcterms:identifier': options.id.toString() });
   } else if (options.prefix) {
     Object.assign(frameObj, { preferredXMLNamespacePrefix: options.prefix });
   }
