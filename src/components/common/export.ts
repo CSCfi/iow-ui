@@ -10,6 +10,7 @@ const exportOptions = [
   {type: 'application/ld+json', extension: 'json'},
   {type: 'text/turtle', extension: 'ttl'},
   {type: 'application/rdf+xml', extension: 'rdf'},
+  {type: 'application/xml', extension: 'xml'},
   {type: 'application/schema+json', extension: 'json'},
   {type: 'application/ld+json+context', extension: 'json'}
 ];
