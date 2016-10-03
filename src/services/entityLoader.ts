@@ -409,7 +409,7 @@ function failWithDetails(details: any): (err: any) => void {
   };
 }
 
-function setDetails(entity: { label: Localizable, comment: Localizable, state: State }, details: EntityDetails) {
+function setDetails(entity: { label: Localizable, comment: Localizable, state?: State }, details: EntityDetails) {
   entity.label = details.label;
   entity.comment = details.comment || {};
   if (details.state) {

@@ -1064,7 +1064,7 @@ export class Class extends AbstractClass implements VisualizationClass {
 
   subClassOf: Uri|null;
   scopeClass: Uri|null;
-  state: State;
+  state?: State; // External don't have state
   properties: Property[];
   subject: Concept|null;
   equivalentClasses: Uri[];
@@ -1083,7 +1083,7 @@ export class Class extends AbstractClass implements VisualizationClass {
 
     this.subClassOf = deserializeOptional(graph.subClassOf, subClassOf => new Uri(subClassOf, context));
     this.scopeClass = deserializeOptional(graph.scopeClass, scopeClass => new Uri(scopeClass, context));
-    this.state = requireDefined(graph.versionInfo);
+    this.state = graph.versionInfo;
 
     this.properties = deserializeEntityList(graph.property, context, frame, () => Property)
       .sort(comparingNumber<Property>(property => property.index));
@@ -1521,7 +1521,7 @@ export class PredicateListItem extends AbstractPredicate {
 
 export class Predicate extends AbstractPredicate {
 
-  state: State;
+  state?: State; // External don't have state
   subPropertyOf: Uri|null;
   subject: Concept|null;
   equivalentProperties: Uri[];
@@ -1535,7 +1535,7 @@ export class Predicate extends AbstractPredicate {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-    this.state = requireDefined(graph.versionInfo);
+    this.state = graph.versionInfo;
     this.subPropertyOf = deserializeOptional(graph.subPropertyOf, uri => new Uri(uri, context));
     this.subject = deserializeOptional(graph.subject, (data) => deserializeEntity(data, context, frame, resolveConceptConstructor));
     this.equivalentProperties = deserializeList(graph.equivalentProperty, equivalentProperty => new Uri(equivalentProperty, context));
