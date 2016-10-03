@@ -6,15 +6,15 @@ export function normalizeReferrerType(types: Type[]): Type|null {
 }
 
 export function normalizePredicateType(types: Type[]): Type|null {
-  return findFirstMatching<Type>(types, ['attribute', 'association', 'property']);
+  return findFirstMatching<Type>(['attribute', 'association', 'property'], types);
 }
 
 export function normalizeClassType(types: Type[]): Type|null {
-  return findFirstMatching<Type>(types, ['shape', 'class']);
+  return findFirstMatching<Type>(['shape', 'class'], types);
 }
 
 export function normalizeModelType(types: Type[]): Type|null {
-  const type = findFirstMatching<Type>(types, ['profile', 'library', 'model']);
+  const type = findFirstMatching<Type>(['profile', 'library', 'model'], types);
   if (type === 'model') {
     return 'library';
   } else {
