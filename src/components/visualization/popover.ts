@@ -5,6 +5,7 @@ import { hasLocalization } from '../../utils/language';
 
 export interface VisualizationPopoverDetails {
   coordinate: Coordinate;
+  heading: Localizable;
   comment: Localizable;
 }
 
@@ -22,7 +23,10 @@ mod.directive('visualizationPopover', () => {
        <div class="popover left" ng-style="ctrl.style">
          <div class="arrow"></div>
          <div class="popover-inner">
-           <div class="popover-content">{{ctrl.details.comment | translateValue: ctrl.context}}</div>
+           <div class="popover-content">
+             <h3>{{ctrl.details.heading | translateValue: ctrl.context}}</h3>
+             <p>{{ctrl.details.comment | translateValue: ctrl.context}}</p>
+           </div>
          </div>
        </div>
     `,

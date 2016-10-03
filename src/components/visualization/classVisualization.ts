@@ -465,6 +465,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       this.$scope.$applyAsync(() => {
         this.popoverDetails = {
           coordinate: coordinate,
+          heading: klass.label,
           comment: klass.comment
         };
       });
@@ -477,9 +478,13 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
     if (klass) {
       this.$scope.$applyAsync(() => {
+
+        const property = requireDefined(first(klass.properties, property => property.internalId.toString() === propertyId));
+
         this.popoverDetails = {
           coordinate: coordinate,
-          comment: requireDefined(first(klass.properties, property => property.internalId.toString() === propertyId)).comment
+          heading: property.label,
+          comment: property.comment
         };
       });
     }
