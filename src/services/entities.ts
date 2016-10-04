@@ -717,6 +717,7 @@ export abstract class AbstractClass extends GraphNode {
     this.normalizedType = requireDefined(normalizeClassType(this.type));
     // TODO: remove this if when externalClass API is fixed to return it
     if (graph.isDefinedBy) {
+      console.log(graph.id, graph.isDefinedBy);
       this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
     }
   }
