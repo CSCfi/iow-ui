@@ -75,8 +75,7 @@ class ModelFilterController {
     $scope.$watch(() => this.searchController.items, items => {
       const definedByFromClasses = _.chain(items)
         .map(item => item.definedBy!)
-        .filter(definedBy => isDefined(definedBy))
-        .uniqBy(definedBy => definedBy!.id.toString())
+        .uniqBy(definedBy => definedBy.id.toString())
         .value()
         .sort(comparingLocalizable<DefinedBy>(localizer, definedBy => definedBy.label));
 
