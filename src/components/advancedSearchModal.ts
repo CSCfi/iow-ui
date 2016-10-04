@@ -1,12 +1,12 @@
 import { IPromise, IScope, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import * as _ from 'lodash';
 import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
 import { SearchResult, Type, frontPageSearchLanguageContext, LanguageContext } from '../services/entities';
-import { containsAny } from '../utils/array';
 import { comparingLocalizable } from '../services/comparators';
+import { SearchController, SearchFilter } from './filter/contract';
+import { all } from '../utils/array';
 
 
 export class AdvancedSearchModal {
@@ -22,9 +22,9 @@ export class AdvancedSearchModal {
       controllerAs: 'ctrl'
     }).result;
   }
-};
+}
 
-class AdvancedSearchController {
+class AdvancedSearchController implements SearchController<SearchResult> {
 
   private apiSearchResults: SearchResult[] = [];
 
@@ -32,8 +32,10 @@ class AdvancedSearchController {
   searchResults: SearchResult[];
   types: Type[] = ['model', 'class', 'shape', 'attribute', 'association'];
   searchText: string = '';
-  searchTypes: Type[] = _.clone(this.types);
   private localizer: Localizer;
+
+  contentExtractors = [ (searchResult: SearchResult) => searchResult.label, (searchResult: SearchResult) => searchResult.comment ];
+  private searchFilters: SearchFilter<SearchResult>[] = [];
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -49,10 +51,19 @@ class AdvancedSearchController {
           .then(results => results.sort(comparingLocalizable<SearchResult>(this.localizer, result => result.label)))
           .then(results => this.apiSearchResults = results)
           .then(() => this.search());
+      } else {
+        this.apiSearchResults = [];
+        this.search();
       }
     });
+  }
 
-    $scope.$watch(() => this.searchTypes, () => this.search(), true);
+  addFilter(filter: SearchFilter<SearchResult>) {
+    this.searchFilters.push(filter);
+  }
+
+  get items() {
+    return this.apiSearchResults;
   }
 
   get context(): LanguageContext {
@@ -60,7 +71,7 @@ class AdvancedSearchController {
   }
 
   search() {
-    this.searchResults = _.filter(this.apiSearchResults, result => this.typeFilter(result));
+    this.searchResults = this.apiSearchResults.filter(sr => all(this.searchFilters, filter => filter(sr)));
   }
 
   selectSearchResult(searchResult: SearchResult) {
@@ -68,8 +79,4 @@ class AdvancedSearchController {
       this.$uibModalInstance.close(searchResult);
     }
   };
-
-  private typeFilter(searchResult: SearchResult) {
-    return containsAny(searchResult.type, this.searchTypes);
-  }
 }

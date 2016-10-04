@@ -1,10 +1,9 @@
 import { IPromise, IScope, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import * as _ from 'lodash';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import {
-  Class, ClassListItem, Model, DefinedBy, AbstractClass, ExternalEntity
+  Class, ClassListItem, Model, AbstractClass, ExternalEntity
 } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -12,11 +11,11 @@ import { comparingBoolean, comparingLocalizable } from '../../services/comparato
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
-import { collectIds, glyphIconClassForType } from '../../utils/entity';
-import { any } from '../../utils/array';
-import { valueContains } from '../../utils/searchFilter';
+import { glyphIconClassForType } from '../../utils/entity';
 import { Exclusion } from '../../utils/exclusion';
 import { isDefined } from '../../utils/object';
+import { SearchFilter, SearchController } from '../filter/contract';
+import { all } from '../../utils/array';
 
 export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
@@ -56,19 +55,15 @@ export interface SearchClassScope extends IScope {
   form: EditableForm;
 }
 
-class SearchClassController {
+class SearchClassController implements SearchController<ClassListItem> {
 
   private classes: ClassListItem[] = [];
-  private currentModelClassIds: Set<string> = new Set<string>();
 
   close = this.$uibModalInstance.dismiss;
   searchResults: (ClassListItem|AddNewClass)[] = [];
   selection: Class|ExternalEntity;
   searchText: string = '';
-  showProfiles: boolean = true;
-  showModel: DefinedBy|Model;
-  models: (DefinedBy|Model)[] = [];
-  cannotConfirm: string;
+  cannotConfirm: string|null;
   loadingResults: boolean;
   selectedItem: ClassListItem|AddNewClass;
   excludeError: string|null = null;
@@ -86,14 +81,16 @@ class SearchClassController {
 
   contentExtractors = this.contentMatchers.map(m => m.extractor);
 
+  searchFilters: SearchFilter<ClassListItem>[] = [];
+
   /* @ngInject */
   constructor(private $scope: SearchClassScope,
               private $uibModalInstance: IModalServiceInstance,
               private classService: ClassService,
               languageService: LanguageService,
               public model: Model,
-              public exclude: (klass: AbstractClass) => string,
-              defaultToCurrentModel: boolean,
+              public exclude: Exclusion<AbstractClass>,
+              public defaultToCurrentModel: boolean,
               public onlySelection: boolean,
               public textForSelection: (klass: Class) => string,
               private searchConceptModal: SearchConceptModal,
@@ -102,39 +99,22 @@ class SearchClassController {
     this.localizer = languageService.createLocalizer(model);
     this.loadingResults = true;
 
-    if (defaultToCurrentModel) {
-      this.showModel = model;
-    }
-
     const appendResults = (classes: ClassListItem[]) => {
       this.classes = this.classes.concat(classes);
 
-      const definedByFromClasses = _.chain(this.classes)
-        .map(klass => klass.definedBy!)
-        .filter(definedBy => isDefined(definedBy))
-        .uniqBy(definedBy => definedBy!.id.toString())
-        .value()
-        .sort(comparingLocalizable<DefinedBy>(this.localizer, definedBy => definedBy.label));
+      this.classes.sort(
+        comparingBoolean<ClassListItem>(item => !!this.exclude(item))
+          .andThen(comparingLocalizable<ClassListItem>(this.localizer, item => item.label)));
 
-      this.models = [this.model, ...definedByFromClasses];
       this.search();
-
       this.loadingResults = false;
     };
 
     classService.getAllClasses(model).then(appendResults);
-    classService.getClassesAssignedToModel(model)
-      .then(classes => this.currentModelClassIds = collectIds(classes))
-      .then(() => this.search());
 
     if (model.isOfType('profile')) {
       classService.getExternalClassesForModel(model).then(appendResults);
     }
-
-    $scope.$watch(() => this.searchText, () => this.search());
-    $scope.$watch(() => this.showModel, () => this.search());
-    $scope.$watch(() => this.showProfiles, () => this.search());
-    $scope.$watchCollection(() => this.contentExtractors, () => this.search());
 
     $scope.$watch(() => this.selection && this.selection.id, selectionId => {
       if (selectionId && this.selection instanceof ExternalEntity) {
@@ -144,12 +124,12 @@ class SearchClassController {
     });
   }
 
-  isThisModel(item: DefinedBy|Model) {
-    return this.model === item;
+  get items() {
+    return this.classes;
   }
 
-  get showExcluded() {
-    return !!this.searchText;
+  addFilter(searchFilter: SearchFilter<ClassListItem>) {
+    this.searchFilters.push(searchFilter);
   }
 
   isSelectionExternalEntity(): boolean {
@@ -162,17 +142,7 @@ class SearchClassController {
       new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
     ];
 
-    const classSearchResult = this.classes.filter(klass =>
-      this.textFilter(klass) &&
-      this.modelFilter(klass) &&
-      this.excludedFilter(klass) &&
-      this.showProfilesFilter(klass)
-    );
-
-    classSearchResult.sort(
-      comparingBoolean<ClassListItem>(item => !!this.exclude(item))
-        .andThen(comparingLocalizable<ClassListItem>(this.localizer, item => item.label)));
-
+    const classSearchResult = this.classes.filter(klass => all(this.searchFilters, filter => filter(klass)));
     this.searchResults = result.concat(classSearchResult);
   }
 
@@ -244,28 +214,6 @@ class SearchClassController {
   createNewClass() {
     return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, 'class', this.searchText)
       .then(conceptCreation => this.$uibModalInstance.close(conceptCreation));
-  }
-
-  private textFilter(klass: ClassListItem): boolean {
-    return !this.searchText || any(this.contentExtractors, extractor => valueContains(extractor(klass), this.searchText));
-  }
-
-  private modelFilter(klass: ClassListItem): boolean {
-    if (!this.showModel) {
-      return true;
-    } else if (this.showModel === this.model) {
-      return this.currentModelClassIds.has(klass.id.uri);
-    } else {
-      return isDefined(klass.definedBy) && klass.definedBy.id.equals(this.showModel.id);
-    }
-  }
-
-  private excludedFilter(klass: ClassListItem): boolean {
-    return this.showExcluded || !this.exclude(klass);
-  }
-
-  private showProfilesFilter(klass: ClassListItem): boolean {
-    return this.showProfiles || !isDefined(klass.definedBy) || !klass.definedBy.isOfType('profile');
   }
 }
 

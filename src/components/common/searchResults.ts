@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { ConfirmationModal } from './confirmationModal';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
+import { Exclusion } from '../../utils/exclusion';
 
 mod.directive('searchResults', () => {
   return {
@@ -59,7 +60,7 @@ class SearchResult<T extends WithId> {
 
   disabled: boolean;
 
-  constructor(public item: T, public disabledReason: string) {
+  constructor(public item: T, public disabledReason: string|null) {
     this.disabled = !!disabledReason;
   }
 
@@ -75,7 +76,7 @@ class SearchResult<T extends WithId> {
 class SearchResultsController<T extends WithId> {
 
   items: (T|AddNew)[];
-  exclude: (item: T) => string;
+  exclude: Exclusion<T>;
   searchResults: (SearchResult<T>|AddNew)[];
   selected: T|AddNew;
   onSelect: ICompiledExpression;
@@ -121,7 +122,7 @@ class SearchResultsController<T extends WithId> {
 
   title(item: SearchResult<T>|AddNew) {
     if (item instanceof SearchResult && item.disabled) {
-      return this.gettextCatalog.getString(item.disabledReason);
+      return this.gettextCatalog.getString(item.disabledReason!);
     } else {
       return null;
     }

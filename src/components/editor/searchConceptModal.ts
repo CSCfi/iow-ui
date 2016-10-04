@@ -10,15 +10,16 @@ import { comparingBoolean, comparingLocalizable } from '../../services/comparato
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
-import { isDefined } from '../../utils/object';
-import { any } from '../../utils/array';
+import { any, all } from '../../utils/array';
 import { lowerCase } from 'change-case';
+import { SearchController, SearchFilter } from '../filter/contract';
+import { ifChanged } from '../../utils/angular';
 
 const limit = 1000;
 
 export interface NewEntityData {
   label: string;
-};
+}
 
 export class EntityCreation {
   constructor(public concept: Concept, public entity: NewEntityData) {
@@ -64,7 +65,7 @@ export class SearchConceptModal {
   openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
     return this.open(vocabularies, model, type, true, true, initialSearch);
   }
-};
+}
 
 export interface SearchPredicateScope extends IScope {
   form: EditableForm;
@@ -78,7 +79,7 @@ function isNewConceptData(obj: Concept|NewConceptData): obj is NewConceptData {
   return obj instanceof NewConceptData;
 }
 
-class SearchConceptController {
+class SearchConceptController implements SearchController<ConceptSearchResult> {
 
   close = this.$uibModalInstance.dismiss;
   queryResults: ConceptSearchResult[];
@@ -96,6 +97,9 @@ class SearchConceptController {
   vocabularies: Vocabulary[];
   selectableVocabularies: Vocabulary[];
   private localizer: Localizer;
+
+  contentExtractors = [ (concept: ConceptSearchResult) => concept.label ];
+  private searchFilters: SearchFilter<ConceptSearchResult>[] = [];
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -120,9 +124,13 @@ class SearchConceptController {
     this.vocabularies.sort(this.vocabularyComparator);
     this.loadingResults = true;
 
-    $scope.$watch(() => this.searchText, text => this.query(text).then(() => this.search()));
-    $scope.$watch(() => this.selectedVocabulary, () => this.query(this.searchText).then(() => this.search()));
-    $scope.$watch(() => this.localizer.language, () => this.query(this.searchText).then(() => this.search()));
+    this.addFilter(concept =>
+      any(this.activeVocabularies, vocabulary => concept.vocabulary.id.equals(vocabulary.id))
+    );
+
+    $scope.$watch(() => this.searchText, ifChanged(() => this.query(this.searchText).then(() => this.search())));
+    $scope.$watch(() => this.selectedVocabulary, ifChanged(() => this.query(this.searchText).then(() => this.search())));
+    $scope.$watch(() => this.localizer.language, ifChanged(() => this.query(this.searchText).then(() => this.search())));
     $scope.$watch(() => this.queryResults, results => {
       if (results) {
         this.selectableVocabularies = _.filter(vocabularies, vocabulary => {
@@ -138,6 +146,14 @@ class SearchConceptController {
         this.selectableVocabularies.sort(this.vocabularyComparator);
       }
     });
+  }
+
+  addFilter(filter: SearchFilter<ConceptSearchResult>) {
+    this.searchFilters.push(filter);
+  }
+
+  get items() {
+    return this.queryResults;
   }
 
   translateVocabulary(vocabulary: Vocabulary) {
@@ -171,8 +187,17 @@ class SearchConceptController {
 
     if (searchText && searchText.length >= 3) {
       return this.$q.all(_.flatten(_.map(this.activeVocabularies, vocabulary => this.conceptService.searchConcepts(vocabulary, language, searchText))))
-        .then((results: ConceptSearchResult[][]) => this.queryResults = _.take(_.flatten(results), limit));
+        .then((results: ConceptSearchResult[][]) => {
+          this.queryResults = _.take(_.flatten(results), limit);
+
+          this.queryResults.sort(
+            comparingLocalizable<ConceptSearchResult>(this.localizer, item => item.label)
+              .andThen(comparingBoolean<ConceptSearchResult>(item => item.suggestion)));
+
+          this.loadingResults = false;
+        });
     } else {
+      this.loadingResults = false;
       return this.$q.when(this.queryResults = []);
     }
   }
@@ -183,25 +208,12 @@ class SearchConceptController {
       const suggestText = `${this.gettextCatalog.getString('suggest')} '${this.searchText}'`;
       const toVocabularyText = `${this.gettextCatalog.getString('to vocabulary')}`;
       const result: (ConceptSearchResult|AddNewConcept)[] = [new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew())];
-
-      const conceptSearchResult = this.queryResults.filter(concept =>
-        this.showVocabularyFilter(concept)
-      );
-
-      conceptSearchResult.sort(
-          comparingLocalizable<ConceptSearchResult>(this.localizer, item => item.label)
-            .andThen(comparingBoolean<ConceptSearchResult>(item => item.suggestion)));
+      const conceptSearchResult = this.queryResults.filter(concept => all(this.searchFilters, filter => filter(concept)));
 
       this.searchResults = result.concat(conceptSearchResult);
     } else {
       this.searchResults = [];
     }
-
-    this.loadingResults = !isDefined(this.queryResults);
-  }
-
-  private showVocabularyFilter(concept: ConceptSearchResult) {
-    return any(this.activeVocabularies, vocabulary => concept.vocabulary.id.equals(vocabulary.id));
   }
 
   selectItem(item: ConceptSearchResult|AddNewConcept) {

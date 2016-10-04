@@ -14,6 +14,7 @@ import groupModule from './components/group';
 import modelModule from './components/model';
 import navigationModule from './components/navigation';
 import userModule from './components/user';
+import filterModule from './components/filter';
 import componentsModule from './components';
 import servicesModule from './services';
 
@@ -42,6 +43,7 @@ const mod = angular.module('iow-ui', [
   modelModule,
   navigationModule,
   userModule,
+  filterModule,
   componentsModule,
   servicesModule
 ]);

@@ -9,6 +9,8 @@ import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
 import { module as mod }  from './module';
 import { comparingLocalizable } from '../services/comparators';
+import { SearchController, SearchFilter } from './filter/contract';
+import { all } from '../utils/array';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -29,7 +31,7 @@ interface Bullet {
   content: string;
 }
 
-export class FrontPageController {
+export class FrontPageController implements SearchController<SearchResult> {
 
   bullets: Bullet[] = [
     { title: 'What is description?', content: 'What is description content' },
@@ -40,7 +42,11 @@ export class FrontPageController {
   groups: GroupListItem[];
   searchText: string = '';
   searchResults: SearchResult[] = [];
+  apiSearchResults: SearchResult[] = [];
   private localizer: Localizer;
+
+  contentExtractors = [ (searchResult: SearchResult) => searchResult.label, (searchResult: SearchResult) => searchResult.comment ];
+  private searchFilters: SearchFilter<SearchResult>[] = [];
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -59,7 +65,26 @@ export class FrontPageController {
       this.groups = groups;
     }, error => maintenanceModal.open(error));
 
-    $scope.$watch(() => this.searchText, text => this.search(text));
+
+    $scope.$watch(() => this.searchText, text => {
+      if (text) {
+        this.searchService.searchAnything(text)
+          .then(results => results.sort(comparingLocalizable<SearchResult>(this.localizer, result => result.label)))
+          .then(results => this.apiSearchResults = results)
+          .then(() => this.search());
+      } else {
+        this.apiSearchResults = [];
+        this.search();
+      }
+    });
+  }
+
+  addFilter(filter: SearchFilter<SearchResult>) {
+    this.searchFilters.push(filter);
+  }
+
+  get items() {
+    return this.apiSearchResults;
   }
 
   get context(): LanguageContext {
@@ -77,14 +102,8 @@ export class FrontPageController {
     }
   }
 
-  search(text: string) {
-    if (text) {
-      this.searchService.searchAnything(text)
-        .then(results => results.sort(comparingLocalizable<SearchResult>(this.localizer, s => s.label)))
-        .then(results => this.searchResults = results);
-    } else {
-      this.searchResults = [];
-    }
+  search() {
+    this.searchResults = this.apiSearchResults.filter(sr => all(this.searchFilters, filter => filter(sr)));
   }
 
   selectSearchResult(searchResult: SearchResult) {

@@ -7,8 +7,10 @@ import { ImportedNamespace, Model } from '../../services/entities';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { Language } from '../../utils/language';
-import { isDefined } from '../../utils/object';
 import { Exclusion } from '../../utils/exclusion';
+import { SearchController, SearchFilter } from '../filter/contract';
+import { all } from '../../utils/array';
+import { ifChanged } from '../../utils/angular';
 
 const noExclude = (_ns: ImportedNamespace) => null;
 
@@ -33,7 +35,7 @@ export class SearchNamespaceModal {
   }
 }
 
-class SearchNamespaceController {
+class SearchNamespaceController implements SearchController<ImportedNamespace> {
 
   searchResults: ImportedNamespace[];
   namespaces: ImportedNamespace[];
@@ -41,10 +43,13 @@ class SearchNamespaceController {
   showTechnical: boolean;
   loadingResults: boolean;
 
+  contentExtractors = [ (ns: ImportedNamespace) => ns.namespace, (ns: ImportedNamespace) => ns.label ];
+  private searchFilters: SearchFilter<ImportedNamespace>[] = [];
+
   /* @ngInject */
   constructor($scope: IScope,
               private $uibModalInstance: IModalServiceInstance,
-              public  exclude: (ns: ImportedNamespace) => string,
+              public exclude: Exclusion<ImportedNamespace>,
               private model: Model,
               private language: Language,
               modelService: ModelService,
@@ -55,31 +60,33 @@ class SearchNamespaceController {
 
     modelService.getAllImportableNamespaces().then(result => {
       this.namespaces = result;
-      this.search();
-    });
 
-    $scope.$watch(() => this.searchText, () => this.search());
-    $scope.$watch(() => this.showTechnical, () => this.search());
-  }
-
-  get showExcluded() {
-    return !!this.searchText;
-  }
-
-  search() {
-    if (this.namespaces) {
-      this.searchResults = this.namespaces.filter(ns =>
-        this.textFilter(ns)
-        && this.excludedFilter(ns)
-        && this.showTechnicalFilter(ns)
-      );
-
-      this.searchResults.sort(
+      this.namespaces.sort(
         comparingBoolean((item: ImportedNamespace) => !!this.exclude(item))
           .andThen(comparingString((item: ImportedNamespace) => item.namespace)));
 
-      this.loadingResults = !isDefined(this.namespaces);
-    }
+      this.search();
+      this.loadingResults = false;
+    });
+
+    this.addFilter(ns =>
+      this.showTechnical || !!this.searchText || !ns.technical
+    );
+
+    $scope.$watch(() => this.showTechnical, ifChanged(() => this.search()));
+  }
+
+  addFilter(filter: SearchFilter<ImportedNamespace>) {
+    this.searchFilters.push(filter);
+  }
+
+  get items() {
+    return this.namespaces;
+  }
+
+
+  search() {
+    this.searchResults = this.namespaces.filter(ns => all(this.searchFilters, filter => filter(ns)));
   }
 
   textFilter(ns: ImportedNamespace) {
@@ -90,14 +97,6 @@ class SearchNamespaceController {
     }
 
     return !this.searchText || contains(this.languageService.translate(ns.label, this.model)) || contains(ns.namespace);
-  }
-
-  private excludedFilter(ns: ImportedNamespace): boolean {
-    return this.showExcluded || !this.exclude(ns);
-  }
-
-  private showTechnicalFilter(ns: ImportedNamespace): boolean {
-    return this.showTechnical || !!this.searchText || !ns.technical;
   }
 
   selectItem(ns: ImportedNamespace) {
