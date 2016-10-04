@@ -1,13 +1,13 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
-import { Type } from '../../services/entities';
+import { KnownPredicateType } from '../../services/entities';
 
 export class ChoosePredicateTypeModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(): IPromise<Type> {
+  open(): IPromise<KnownPredicateType> {
     return this.$uibModal.open({
       template: require('./choosePredicateTypeModal.html'),
       size: 'adapting',
@@ -18,5 +18,5 @@ export class ChoosePredicateTypeModal {
 };
 
 export class ChoosePredicateTypeModalController {
-  type: Type = 'attribute';
+  type: KnownPredicateType = 'attribute';
 }

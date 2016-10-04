@@ -11,7 +11,7 @@ import {
   Model,
   GraphData,
   ExternalEntity,
-  Type
+  KnownPredicateType
 } from './entities';
 import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';
@@ -205,7 +205,7 @@ export class ClassService {
       .then(response => this.entities.deserializeClassList(response.data!));
   }
 
-  newProperty(predicateOrExternal: Predicate|ExternalEntity, type: Type, model: Model): IPromise<Property> {
+  newProperty(predicateOrExternal: Predicate|ExternalEntity, type: KnownPredicateType, model: Model): IPromise<Property> {
 
     const id = requireDefined(predicateOrExternal.id);
     const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.predicateService.getExternalPredicate(id, model) : this.$q.when(<Predicate> predicateOrExternal);

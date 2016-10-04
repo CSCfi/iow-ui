@@ -1,5 +1,5 @@
 import { ModelView } from './modelView.po';
-import { Type } from '../../../src/services/entities';
+import { KnownModelType } from '../../../src/services/entities';
 import { Language } from '../../../src/utils/language';
 import { navigateAndReturn } from '../../util/browser';
 
@@ -8,12 +8,12 @@ export interface NewModelParameters {
   label: string;
   language: Language[];
   groupId: string;
-  type: Type;
+  type: KnownModelType;
 }
 
 export class ModelPage {
 
-  static navigate = (type: Type, path: string) => navigateAndReturn(path, new ModelPage(type));
+  static navigate = (type: KnownModelType, path: string) => navigateAndReturn(path, new ModelPage(type));
 
   static pathToNewModel(params: NewModelParameters) {
     const { prefix, label, language, groupId, type } = params;
@@ -24,12 +24,12 @@ export class ModelPage {
   static pathWithResource = (prefix: string, resourceName: string) => ModelPage.pathToExistingModel(prefix) + `/${resourceName}`;
 
   static navigateToNewModel = (params: NewModelParameters) => ModelPage.navigate(params.type, ModelPage.pathToNewModel(params));
-  static navigateToExistingModel = (prefix: string, type: Type) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(prefix));
-  static navigateToResource = (prefix: string, type: Type, resourceName: string) =>  ModelPage.navigate(type, ModelPage.pathWithResource(prefix, resourceName));
+  static navigateToExistingModel = (prefix: string, type: KnownModelType) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(prefix));
+  static navigateToResource = (prefix: string, type: KnownModelType, resourceName: string) =>  ModelPage.navigate(type, ModelPage.pathWithResource(prefix, resourceName));
 
   modelView: ModelView;
 
-  constructor(type: Type) {
+  constructor(type: KnownModelType) {
     this.modelView = new ModelView(type);
   }
 }

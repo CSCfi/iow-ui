@@ -1,5 +1,5 @@
 import { EditableComponent } from '../common/component/editableComponent.po';
-import { Type } from '../../../src/services/entities';
+import { KnownModelType } from '../../../src/services/entities';
 import { upperCaseFirst } from 'change-case';
 import { EditableEntityButtons } from '../common/component/editableEntityButtons.po';
 import { EditableMultipleComponent } from '../common/component/editableMultipleComponent.po';
@@ -27,7 +27,7 @@ export class ModelView {
   namespaces = new NamespacesView();
   links = new LinksView();
 
-  constructor(type: Type) {
+  constructor(type: KnownModelType) {
     this.label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(type) + ' label');
   }
 

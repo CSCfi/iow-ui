@@ -1,4 +1,4 @@
-import { Association, Model, Attribute, Type } from '../../services/entities';
+import { Association, Model, Attribute, KnownPredicateType } from '../../services/entities';
 import { module as mod }  from './module';
 import { IScope, IAttributes } from 'angular';
 import { isDefined } from '../../utils/object';
@@ -60,7 +60,7 @@ class PredicateFormController {
     }
   }
 
-  get changedType(): Type {
+  get changedType(): KnownPredicateType {
     return this.predicate instanceof Attribute ? 'association' : 'attribute';
   }
 

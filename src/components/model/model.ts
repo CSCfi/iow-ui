@@ -14,12 +14,11 @@ import {
   PredicateListItem,
   ClassListItem,
   Model,
-  Type,
   Property,
   ExternalEntity,
   AbstractClass,
   AbstractPredicate,
-  SelectionType
+  SelectionType, ClassType, KnownPredicateType
 } from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
@@ -310,12 +309,12 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     }
   }
 
-  public addEntity(type: Type) {
+  public addEntity(type: ClassType|KnownPredicateType) {
     const isProfile = this.model.isOfType('profile');
     const classExclusion = combineExclusions<AbstractClass>(createClassTypeExclusion(SearchClassType.Class), createDefinedByExclusion(this.model));
     const predicateExclusion = combineExclusions<AbstractPredicate>(createExistsExclusion(collectIds([this.attributes, this.associations])), createDefinedByExclusion(this.model));
 
-    if (type === 'class') {
+    if (type === 'class' || type === 'shape') {
       if (isProfile) {
         return this.addClass(classExclusion);
       } else {
@@ -353,7 +352,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     );
   }
 
-  private addPredicate(type: Type, exclusion: Exclusion<AbstractPredicate>) {
+  private addPredicate(type: KnownPredicateType, exclusion: Exclusion<AbstractPredicate>) {
     this.createOrAssignEntity(
       () => this.searchPredicateModal.openAddPredicate(this.model, type, exclusion),
       (_external: ExternalEntity) => this.$q.reject('Unsupported operation'),
@@ -420,7 +419,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
     return this.classService.assignClassToModel(klass.id, this.model.id);
   }
 
-  private createPredicate(conceptCreation: EntityCreation, type: Type) {
+  private createPredicate(conceptCreation: EntityCreation, type: KnownPredicateType) {
     return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.getModelLanguage(this.model));
   }
 
@@ -622,7 +621,7 @@ class Tab {
   glyphIconClass: any;
   addNew: () => void;
 
-  constructor(public type: Type, public items: () => SelectableItem[], modelController: ModelController) {
+  constructor(public type: ClassType|KnownPredicateType, public items: () => SelectableItem[], modelController: ModelController) {
     this.addLabel = 'Add ' + type;
     this.glyphIconClass = glyphIconClassForType([type]);
     this.addNew = () => modelController.addEntity(type);

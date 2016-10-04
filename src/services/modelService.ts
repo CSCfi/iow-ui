@@ -3,8 +3,8 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { config } from '../config';
 import {
-  EntityDeserializer, Model, ModelListItem, ImportedNamespace, Type, GraphData, Link,
-  ReferenceData, ReferenceDataServer, ReferenceDataCode, ModelPositions, VisualizationClass
+  EntityDeserializer, Model, ModelListItem, ImportedNamespace, GraphData, Link,
+  ReferenceData, ReferenceDataServer, ReferenceDataCode, ModelPositions, VisualizationClass, KnownModelType
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { modelFrame, modelPositionsFrame } from './frames';
@@ -12,7 +12,7 @@ import { Uri, Urn } from './uri';
 import { Language } from '../utils/language';
 import { expandContextWithKnownModels, collectIds } from '../utils/entity';
 import { normalizeAsArray, index } from '../utils/array';
-import { requireDefined } from '../utils/object';
+import { requireDefined, assertNever } from '../utils/object';
 
 export class ClassVisualization {
 
@@ -84,7 +84,7 @@ export class ModelService {
     return this.$http.delete(config.apiEndpointWithName('model'), { params: { id: id.uri } });
   }
 
-  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: Type, redirect?: Uri): IPromise<Model> {
+  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: KnownModelType, redirect?: Uri): IPromise<Model> {
     function mapEndpoint() {
       switch (type) {
         case 'library':
@@ -92,7 +92,7 @@ export class ModelService {
         case 'profile':
           return 'profileCreator';
         default:
-          throw new Error("Unsupported type: " + type);
+          return assertNever(type, 'Unknown type: ' + type);
       }
     }
     return this.$http.get<GraphData>(config.apiEndpointWithName(mapEndpoint()), {

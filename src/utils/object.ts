@@ -56,7 +56,7 @@ export function valuesExcludingKeys<V>(obj: MapLike<V>, exclude: Set<string>): V
     .value();
 }
 
-export function assertNever(_x: never, msg?: string) {
+export function assertNever(_x: never, msg?: string): never {
   throw new Error(msg);
 }
 

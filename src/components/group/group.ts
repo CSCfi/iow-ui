@@ -7,7 +7,7 @@ import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { Group, ModelListItem, Type, LanguageContext } from '../../services/entities';
+import { Group, ModelListItem, LanguageContext, KnownModelType } from '../../services/entities';
 import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
@@ -74,7 +74,7 @@ class GroupController extends EditableEntityController<Group> {
     return this.userService.isLoggedIn() && this.belongToGroup();
   }
 
-  addModel(type: Type) {
+  addModel(type: KnownModelType) {
     this.addModelModal.open(this.groupId, type).then((result: {prefix: string, label: string, language: Language[], redirect?: Uri}) => {
       this.$location.path('/newModel');
       this.$location.search({ prefix: result.prefix, label: result.label, language: result.language, group: this.groupId.uri, type, redirect: result.redirect && result.redirect.uri });

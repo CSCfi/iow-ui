@@ -5,7 +5,10 @@ import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Vocabulary, ConceptSuggestion, Type, FintoConcept, Model, Concept } from '../../services/entities';
+import {
+  Vocabulary, ConceptSuggestion, FintoConcept, Model, Concept,
+  ClassType, KnownPredicateType
+} from '../../services/entities';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
@@ -40,7 +43,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(vocabularies: Vocabulary[], model: Model, type: Type|null, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
+  private open(vocabularies: Vocabulary[], model: Model, type: ClassType|KnownPredicateType|null, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -58,11 +61,11 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(vocabularies: Vocabulary[], model: Model, allowSuggestions: boolean, type?: Type): IPromise<Concept> {
+  openSelection(vocabularies: Vocabulary[], model: Model, allowSuggestions: boolean, type?: ClassType|KnownPredicateType): IPromise<Concept> {
     return this.open(vocabularies, model, type || null, allowSuggestions, false, '');
   }
 
-  openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: Type, initialSearch: string): IPromise<EntityCreation> {
+  openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: ClassType|KnownPredicateType, initialSearch: string): IPromise<EntityCreation> {
     return this.open(vocabularies, model, type, true, true, initialSearch);
   }
 }
@@ -106,7 +109,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
               private $uibModalInstance: IModalServiceInstance,
               private $q: IQService,
               private languageService: LanguageService,
-              public type: Type|null,
+              public type: ClassType|KnownPredicateType|null,
               initialSearch: string,
               public newEntityCreation: boolean,
               private allowSuggestions: boolean,

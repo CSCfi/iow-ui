@@ -52,19 +52,13 @@ export type Dimensions = { width: number, height: number };
 
 export type Concept = FintoConcept|ConceptSuggestion;
 
-export type Type = 'class'
-                 | 'shape'
-                 | 'attribute'
-                 | 'association'
-                 | 'property'
-                 | 'model'
-                 | 'profile'
-                 | 'group'
-                 | 'library'
+export type Type = ModelType
+                 | ClassType
+                 | PredicateType
+                 | ConceptType
+                 | GroupType
                  | 'constraint'
                  | 'user'
-                 | 'concept'
-                 | 'conceptSuggestion'
                  | 'entity'
                  | 'activity'
                  | 'resource'
@@ -75,6 +69,14 @@ export type Type = 'class'
                  | 'externalReferenceData'
                  | 'referenceDataGroup'
                  | 'referenceDataCode';
+
+export type GroupType = 'group';
+export type ModelType = KnownModelType | 'model';
+export type KnownModelType = 'library' | 'profile';
+export type ClassType = 'class' | 'shape';
+export type PredicateType = KnownPredicateType | 'property';
+export type KnownPredicateType = 'attribute' | 'association';
+export type ConceptType = 'concept' | 'conceptSuggestion';
 
 export type SelectionType = 'class' | 'predicate';
 
@@ -111,7 +113,7 @@ export class ExternalEntity {
 
   id?: Uri;
 
-  constructor(public language: Language, public label: string, public type: Type) {
+  constructor(public language: Language, public label: string, public type: ClassType|PredicateType) {
   }
 
   get normalizedType() {
@@ -221,8 +223,8 @@ export abstract class AbstractGroup extends GraphNode {
   label: Localizable;
   comment: Localizable;
   homepage?: Url;
-  normalizedType: Type = 'group';
-  selectionType: Type = 'group';
+  normalizedType: GroupType = 'group';
+  selectionType: GroupType = 'group';
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -268,7 +270,7 @@ abstract class AbstractModel extends GraphNode {
 
   id: Uri;
   label: Localizable;
-  normalizedType: Type;
+  normalizedType: KnownModelType;
   namespace: Url;
   prefix: string;
 
@@ -276,7 +278,12 @@ abstract class AbstractModel extends GraphNode {
     super(graph, context, frame);
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
-    this.normalizedType = requireDefined(normalizeModelType(this.type));
+    const normalizedType = requireDefined(normalizeModelType(this.type));
+    if (normalizedType === 'model') {
+      throw new Error('Model type must be known');
+    } else {
+      this.normalizedType = normalizedType;
+    }
     this.namespace = requireDefined(graph['preferredXMLNamespaceName']);
     this.prefix = requireDefined(graph['preferredXMLNamespacePrefix']);
   }
@@ -711,7 +718,7 @@ export abstract class AbstractClass extends GraphNode {
   label: Localizable;
   comment: Localizable;
   selectionType: SelectionType = 'class';
-  normalizedType: Type;
+  normalizedType: ClassType;
   definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
@@ -1287,7 +1294,7 @@ export class Property extends GraphNode {
   hasValue?: string;
   pattern?: string;
   referenceData: ReferenceData[];
-  predicateType: Type|null= null;
+  predicateType: KnownPredicateType|null= null;
   classIn: Uri[];
   stem: Uri|null;
   editorialNote: Localizable;
@@ -1307,7 +1314,13 @@ export class Property extends GraphNode {
     this.referenceData = deserializeEntityList(graph.memberOf, context, frame, () => ReferenceData);
 
     if (graph.type) {
-      this.predicateType = requireDefined(mapType(graph.type));
+      const predicateType = requireDefined(mapType(graph.type));
+
+      if (predicateType !== 'association' && predicateType !== 'attribute') {
+        throw new Error('Unknown predicate type: ' + predicateType);
+      }
+
+      this.predicateType = predicateType;
     }
 
     if (graph.valueShape) {
@@ -1391,7 +1404,7 @@ export class Property extends GraphNode {
     return this.state === 'Unstable';
   }
 
-  get normalizedPredicateType(): Type {
+  get normalizedPredicateType(): PredicateType {
     if (this.predicateType) {
       return this.predicateType;
     } else {
@@ -1481,7 +1494,7 @@ export abstract class AbstractPredicate extends GraphNode {
   label: Localizable;
   comment: Localizable;
   definedBy: DefinedBy;
-  normalizedType: Type;
+  normalizedType: PredicateType;
   selectionType: SelectionType = 'predicate';
 
   constructor(graph: any, context: any, frame: any) {
@@ -1640,7 +1653,7 @@ export class FintoConcept extends GraphNode {
     return false;
   }
 
-  get normalizedType(): Type {
+  get normalizedType(): ConceptType {
     return 'concept';
   }
 
@@ -1696,7 +1709,7 @@ export class ConceptSuggestion extends GraphNode {
     return false;
   }
 
-  get normalizedType(): Type {
+  get normalizedType(): ConceptType {
     return 'conceptSuggestion';
   }
 
