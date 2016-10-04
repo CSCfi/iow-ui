@@ -13,7 +13,6 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { glyphIconClassForType } from '../../utils/entity';
 import { Exclusion } from '../../utils/exclusion';
-import { isDefined } from '../../utils/object';
 import { SearchFilter, SearchController } from '../filter/contract';
 import { all } from '../../utils/array';
 
@@ -167,7 +166,7 @@ class SearchClassController implements SearchController<ClassListItem> {
     } else if (item instanceof ClassListItem) {
       this.cannotConfirm = this.exclude(item);
 
-      if (isDefined(item.definedBy) && this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.toString())) {
+      if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.toString())) {
         this.classService.getExternalClass(item.id, this.model).then(result => this.selection = result);
       } else {
         this.classService.getClass(item.id, this.model).then(result => this.selection = result);

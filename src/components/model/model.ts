@@ -16,7 +16,6 @@ import {
   Model,
   Type,
   Property,
-  DefinedBy,
   ExternalEntity,
   AbstractClass,
   AbstractPredicate,
@@ -27,7 +26,7 @@ import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { EntityCreation } from '../editor/searchConceptModal';
 import { MaintenanceModal } from '../maintenance';
-import { Show, ChangeNotifier, ChangeListener, SearchClassType } from './../contracts';
+import { Show, ChangeNotifier, ChangeListener, SearchClassType, WithDefinedBy } from './../contracts';
 import { Uri } from '../../services/uri';
 import { comparingLocalizable } from '../../services/comparators';
 import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
@@ -262,7 +261,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
   }
 
   getUsedNamespaces(): Set<string> {
-    type WithDefinedBy = { definedBy?: DefinedBy };
     return new Set<string>(_.chain<WithDefinedBy>(this.associations)
                          .concat(this.attributes)
                          .concat(this.classes)

@@ -25,7 +25,7 @@ export interface WithId {
 }
 
 export interface WithDefinedBy {
-  definedBy?: DefinedBy;
+  definedBy: DefinedBy;
 }
 
 export interface WithIdAndType {

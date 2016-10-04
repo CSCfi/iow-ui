@@ -712,7 +712,7 @@ export abstract class AbstractClass extends GraphNode {
   comment: Localizable;
   selectionType: SelectionType = 'class';
   normalizedType: Type;
-  definedBy?: DefinedBy;
+  definedBy: DefinedBy;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -720,10 +720,7 @@ export abstract class AbstractClass extends GraphNode {
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
     this.normalizedType = requireDefined(normalizeClassType(this.type));
-    // TODO: remove this if when externalClass API is fixed to return it
-    if (graph.isDefinedBy) {
-      this.definedBy = new DefinedBy(normalizeAsSingle(graph.isDefinedBy, this.id), context, frame);
-    }
+    this.definedBy = new DefinedBy(requireDefined(normalizeAsSingle(graph.isDefinedBy, this.id)), context, frame);
   }
 
   isClass() {
@@ -1492,7 +1489,7 @@ export abstract class AbstractPredicate extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
-    this.definedBy = new DefinedBy(normalizeAsSingle(graph.isDefinedBy, this.id), context, frame);
+    this.definedBy = new DefinedBy(requireDefined(normalizeAsSingle(graph.isDefinedBy, this.id)), context, frame);
     this.normalizedType = requireDefined(normalizePredicateType(this.type));
   }
 
