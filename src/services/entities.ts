@@ -13,9 +13,14 @@ import {
   Language, hasLocalization, createConstantLocalizable,
   availableUILanguages
 } from '../utils/language';
-import { containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual, filterDefined } from '../utils/array';
+import {
+  containsAny, normalizeAsArray, swapElements, contains, arraysAreEqual, filterDefined
+} from '../utils/array';
 import { Iterable } from '../utils/iterable';
-import { glyphIconClassForType, indexById, copyVertices, copyCoordinate, glyphIconClassUnknown } from '../utils/entity';
+import {
+  glyphIconClassForType, indexById, copyVertices, copyCoordinate, glyphIconClassUnknown,
+  normalizeAsSingle
+} from '../utils/entity';
 import {
   normalizeModelType, normalizeClassType, normalizePredicateType,
   normalizeReferrerType
@@ -717,7 +722,7 @@ export abstract class AbstractClass extends GraphNode {
     this.normalizedType = requireDefined(normalizeClassType(this.type));
     // TODO: remove this if when externalClass API is fixed to return it
     if (graph.isDefinedBy) {
-      this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
+      this.definedBy = new DefinedBy(normalizeAsSingle(graph.isDefinedBy, this.id), context, frame);
     }
   }
 
@@ -1487,7 +1492,7 @@ export abstract class AbstractPredicate extends GraphNode {
     this.id = new Uri(graph['@id'], context);
     this.label = deserializeLocalizable(graph.label);
     this.comment = deserializeLocalizable(graph.comment);
-    this.definedBy = new DefinedBy(graph.isDefinedBy, context, frame);
+    this.definedBy = new DefinedBy(normalizeAsSingle(graph.isDefinedBy, this.id), context, frame);
     this.normalizedType = requireDefined(normalizePredicateType(this.type));
   }
 
