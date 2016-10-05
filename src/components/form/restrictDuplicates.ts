@@ -17,6 +17,10 @@ mod.directive('restrictDuplicates', () => {
 
       ngModel.$validators['duplicate'] = value => {
 
+        if (!value) {
+          return true;
+        }
+
         const restrictDuplicates = $scope.$eval(attributes.restrictDuplicates);
 
         if (typeof restrictDuplicates === 'function') {
