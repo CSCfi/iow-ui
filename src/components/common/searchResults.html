@@ -1,5 +1,5 @@
 <div ng-repeat="searchResult in ctrl.searchResults | filter : ctrl.isVisible"
-     ng-class="['search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled, 'add-new': searchResult.isAddNew()}]"
+     ng-class="['ng-animate-disabled', 'search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled, 'add-new': searchResult.isAddNew()}]"
      title="{{ctrl.title(searchResult)}}"
      ng-click="ctrl.selectItem(searchResult)"
      key-control-selection>
