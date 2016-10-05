@@ -8,6 +8,7 @@ import { createDefinedByExclusion } from '../../utils/exclusion';
 import { ClassFormController } from './classForm';
 import { any } from '../../utils/array';
 import { CopyPredicateModal } from './copyPredicateModal';
+import { requireDefined } from '../../utils/object';
 
 mod.directive('propertyPredicateView', () => {
   return {
@@ -114,7 +115,7 @@ class PropertyPredicateViewController {
       throw new Error('Property must be of known type');
     }
 
-    this.searchPredicateModal.openWithOnlySelection(this.model, this.property.normalizedPredicateType, createDefinedByExclusion(this.model)).then(predicate => {
+    this.searchPredicateModal.openWithOnlySelection(this.model, requireDefined(this.property.normalizedPredicateType), createDefinedByExclusion(this.model)).then(predicate => {
       this.property.predicate = predicate.id; // Could be full predicate instead of id but this is consistent with api data
     });
   }

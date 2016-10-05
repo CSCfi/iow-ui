@@ -64,16 +64,22 @@ export function expandContextWithKnownModels(model?: Model): (response: IHttpPro
 }
 
 export function glyphIconClassForType(type: Type[]) {
-  return [
-    'glyphicon',
-    {
-      'glyphicon-list-alt': containsAny(type, ['class', 'shape']),
-      'glyphicon-tasks': containsAny(type, ['attribute']),
-      'glyphicon-sort': containsAny(type, ['association']),
-      'glyphicon-book': containsAny(type, ['model', 'profile']),
-      'glyphicon-question-sign': !type || type.length === 0 || (type.length === 1 && containsAny(type, ['property']))
-    }
-  ];
+
+  if (containsAny(type, ['class', 'shape'])) {
+    return ['glyphicon', 'glyphicon-list-alt'];
+  } else if (containsAny(type, ['attribute'])) {
+    return ['glyphicon', 'glyphicon-tasks'];
+  } else if (containsAny(type, ['association'])) {
+    return ['glyphicon', 'glyphicon-sort'];
+  } else if (containsAny(type, ['model', 'profile'])) {
+    return ['glyphicon', 'glyphicon-book'];
+  } else if (containsAny(type, ['concept', 'conceptSuggestion'])) {
+    return ['fa', 'fa-lightbulb-o'];
+  } else if (!type || type.length === 0 || (type.length === 1 && containsAny(type, ['property']))) {
+    return ['glyphicon', 'glyphicon-question-sign'];
+  } else {
+    return [];
+  }
 }
 
 export const glyphIconClassUnknown = ['glyphicon', 'glyphicon-question-sign'];

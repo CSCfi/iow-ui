@@ -125,7 +125,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     this.searchText = initialSearch;
     this.vocabularies = vocabularies.slice();
     this.vocabularies.sort(this.vocabularyComparator);
-    this.loadingResults = true;
+    this.loadingResults = false;
 
     this.addFilter(concept =>
       any(this.activeVocabularies, vocabulary => concept.vocabulary.id.equals(vocabulary.id))

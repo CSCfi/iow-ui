@@ -24,7 +24,7 @@ mod.directive('visualizationPopover', () => {
          <div class="arrow"></div>
          <div class="popover-inner">
            <div class="popover-content">
-             <h3>{{ctrl.details.heading | translateValue: ctrl.context}}</h3>
+             <h4>{{ctrl.details.heading | translateValue: ctrl.context}}</h4>
              <p>{{ctrl.details.comment | translateValue: ctrl.context}}</p>
            </div>
          </div>
