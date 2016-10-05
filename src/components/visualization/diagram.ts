@@ -2,7 +2,7 @@ import * as joint from 'jointjs';
 import { VisualizationClass, Dimensions, Property } from '../../services/entities';
 import {
   formatClassName, formatAttributeNamesAndAnnotations, formatAssociationPropertyName,
-  formatCardinality
+  formatCardinality, allAttributePropertyNames, allClassNames
 } from './formatter';
 import { NameType } from '../../services/sessionService';
 import { Localizer } from '../../utils/language';
@@ -58,7 +58,7 @@ export function createClassElement(klass: VisualizationClass, optionsProvider: (
 
   const classCell = new classConstructor({
     id: klass.id.uri,
-    size: calculateElementDimensions(className, propertyNames),
+    size: calculateElementDimensions(klass, options.showCardinality, options.localizer),
     name: className,
     attributes: propertyNames,
     attrs: {
@@ -78,7 +78,7 @@ export function createClassElement(klass: VisualizationClass, optionsProvider: (
     const newClassName = formatClassName(klass, newOptions.showName, newOptions.localizer);
     const previousPosition = classCell.position();
     const previousSize = classCell.getBBox();
-    const newSize = calculateElementDimensions(newClassName, newPropertyNames);
+    const newSize = calculateElementDimensions(klass, newOptions.showCardinality, newOptions.localizer);
     const xd = (newSize.width - previousSize.width) / 2;
     const yd = (newSize.height - previousSize.height) / 2;
     classCell.prop('name', newClassName);
@@ -88,7 +88,7 @@ export function createClassElement(klass: VisualizationClass, optionsProvider: (
         'annotations': newPropertyAnnotations
       }
     });
-    classCell.prop('size', calculateElementDimensions(newClassName, newPropertyNames));
+    classCell.prop('size', newSize);
     classCell.position(previousPosition.x - xd, previousPosition.y - yd);
   };
 
@@ -128,10 +128,25 @@ export function createAssociationLink(klass: VisualizationClass, association: Pr
   return associationCell;
 }
 
-function calculateElementDimensions(className: string, propertyNames: string[]): Dimensions {
-  const propertyLengths = _.map(propertyNames, name => name.length);
-  const width = _.max([_.max(propertyLengths) * 6.5, className.length * 6.5, 150]);
-  const height = 12 * propertyNames.length + 35;
+function calculateElementDimensions(klass: VisualizationClass, showCardinality: boolean, localizer: Localizer): Dimensions {
 
-  return { width, height };
+  const attributeProperties = klass.properties.filter(p => p.isAttribute());
+  const height = 12 * attributeProperties.length + 35;
+  let length = 0;
+
+  for (const className of allClassNames(klass)) {
+    if (className.length > length) {
+      length = className.length;
+    }
+  }
+
+  for (const property of attributeProperties) {
+    for (const attributePropertyName of allAttributePropertyNames(property, showCardinality, localizer)) {
+      if (attributePropertyName.length > length) {
+        length = attributePropertyName.length;
+      }
+    }
+  }
+
+  return { width: Math.max(length * 6.5, 150), height };
 }

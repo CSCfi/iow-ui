@@ -1,45 +1,77 @@
 import { Property, VisualizationClass } from '../../services/entities';
-import { isDefined } from '../../utils/object';
+import { isDefined, assertNever } from '../../utils/object';
 import { DataType } from '../../services/dataTypes';
 import { Localizer } from '../../utils/language';
 import { NameType } from '../../services/sessionService';
 
-export function formatDataTypeName(dataType: DataType|undefined, showName: NameType, localizer: Localizer) {
+function formatDataTypeAsLabel(dataType: DataType|undefined, localizer: Localizer) {
+  return localizer.getStringWithModelLanguageOrDefault(dataType, 'en');
+}
+
+function formatDataTypeAsId(dataType: DataType|undefined) {
+  return dataType || '';
+}
+
+function formatDataTypeName(dataType: DataType|undefined, showName: NameType, localizer: Localizer) {
   switch (showName) {
     case NameType.LABEL:
-      return localizer.getStringWithModelLanguageOrDefault(dataType, 'en');
+      return formatDataTypeAsLabel(dataType, localizer);
     case NameType.ID:
-      return dataType || '';
+      return formatDataTypeAsId(dataType);
     case NameType.LOCAL_ID:
-      return dataType || '';
+      return formatDataTypeAsId(dataType);
     default:
-      throw new Error('Unsupported show name type: ' + showName);
+      return assertNever(showName, 'Unsupported show name type: ' + showName);
   }
+}
+
+function formatClassNameAsLabel(klass: VisualizationClass, localizer: Localizer) {
+  return localizer.translate(klass.label);
+}
+
+function formatClassNameAsId(klass: VisualizationClass) {
+  return klass.scopeClass ? klass.scopeClass.compact : klass.id.compact;
+}
+
+function formatClassNameAsLocalId(klass: VisualizationClass) {
+  return klass.id.namespaceResolves() ? klass.id.name : klass.id.uri;
 }
 
 export function formatClassName(klass: VisualizationClass, showName: NameType, localizer: Localizer) {
   switch (showName) {
     case NameType.LABEL:
-      return localizer.translate(klass.label);
+      return formatClassNameAsLabel(klass, localizer);
     case NameType.ID:
-      return klass.scopeClass ? klass.scopeClass.compact : klass.id.compact;
+      return formatClassNameAsId(klass);
     case NameType.LOCAL_ID:
-      return klass.id.namespaceResolves() ? klass.id.name : klass.id.uri;
+      return formatClassNameAsLocalId(klass);
     default:
-      throw new Error('Unsupported show name type: ' + showName);
+      return assertNever(showName, 'Unsupported show name type: ' + showName);
   }
 }
 
-export function formatPropertyName(property: Property, showName: NameType, localizer: Localizer) {
+function formatPropertyNameAsLabel(property: Property, localizer: Localizer) {
+  return localizer.translate(property.label);
+}
+
+function formatPropertyNameAsId(property: Property) {
+  return property.predicateId.compact;
+}
+
+function formatPropertyNameAsLocalId(property: Property) {
+  return property.externalId || property.predicateId.compact;
+}
+
+function formatPropertyName(property: Property, showName: NameType, localizer: Localizer) {
   switch (showName) {
     case NameType.LABEL:
-      return localizer.translate(property.label);
+      return formatPropertyNameAsLabel(property, localizer);
     case NameType.ID:
-      return property.predicateId.compact;
+      return formatPropertyNameAsId(property);
     case NameType.LOCAL_ID:
-      return property.externalId || property.predicateId.compact;
+      return formatPropertyNameAsLocalId(property);
     default:
-      throw new Error('Unsupported show name type: ' + showName);
+      return assertNever(showName, 'Unsupported show name type: ' + showName);
   }
 }
 
@@ -53,11 +85,20 @@ export function formatAssociationPropertyName(associationProperty: Property, sho
   }
 }
 
+function formatAttributePropertyNameWithMetaData(propertyName: string, dataTypeName: string, cardinality: string) {
+  return `- ${propertyName} : ${dataTypeName}` + ` [${cardinality}]`;
+}
+
+function formatAttributePropertyCardinality(showCardinality: boolean, attributeProperty: Property) {
+  return showCardinality ? ` [${formatCardinality(attributeProperty)}]` : '';
+}
+
 export function formatAttributePropertyName(attributeProperty: Property, showCardinality: boolean, showName: NameType, localizer: Localizer): string {
-  const name = formatPropertyName(attributeProperty, showName, localizer);
-  const range = formatDataTypeName(attributeProperty.dataType, showName, localizer);
-  const cardinality = formatCardinality(attributeProperty);
-  return `- ${name} : ${range}` + (showCardinality ? ` [${cardinality}]` : '');
+  const propertyName = formatPropertyName(attributeProperty, showName, localizer);
+  const dataTypeName = formatDataTypeName(attributeProperty.dataType, showName, localizer);
+  const cardinality = formatAttributePropertyCardinality(showCardinality, attributeProperty);
+
+  return formatAttributePropertyNameWithMetaData(propertyName, dataTypeName, cardinality);
 }
 
 export function formatCardinality(property: Property) {
@@ -71,6 +112,38 @@ export function formatCardinality(property: Property) {
   } else {
     return `${min || '0'}..${max || '*'}`;
   }
+}
+
+export function allClassNames(klass: VisualizationClass) {
+  return [...Object.values(klass.label), formatClassNameAsId(klass), formatClassNameAsLocalId(klass)];
+}
+
+function allDataTypeNames(dataType: DataType|undefined, localizer: Localizer) {
+  if (!dataType) {
+    return [];
+  } else {
+    return [...localizer.allUILocalizationsForKey(dataType), formatDataTypeAsId(dataType)];
+  }
+}
+
+function allPropertyNames(property: Property) {
+  return [...Object.values(property.label), formatPropertyNameAsId(property), formatPropertyNameAsLocalId(property)];
+}
+
+export function allAttributePropertyNames(attributeProperty: Property, showCardinality: boolean, localizer: Localizer) {
+
+  const cardinality = formatAttributePropertyCardinality(showCardinality, attributeProperty);
+  const dataTypeNames = allDataTypeNames(attributeProperty.dataType, localizer);
+
+  const result: string[] = [];
+
+  for (const propertyName of allPropertyNames(attributeProperty)) {
+    for (const dataTypeName of dataTypeNames) {
+      result.push(formatAttributePropertyNameWithMetaData(propertyName, dataTypeName, cardinality));
+    }
+  }
+
+  return result;
 }
 
 export type ClassAttributePropertyAnnotation = { start: number, end: number, attrs: { id: string } };
