@@ -106,4 +106,19 @@ export class DefaultLocalizer implements Localizer {
       }
     }
   }
+
+  allUILocalizationsForKey(localizationKey: string): string[] {
+
+    const result: string[] = [];
+
+    for (const lang of availableUILanguages) {
+      const localization = localizationStrings[lang][localizationKey];
+
+      if (localization) {
+        result.push(localization);
+      }
+    }
+
+    return result;
+  }
 }

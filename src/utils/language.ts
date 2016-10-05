@@ -42,6 +42,7 @@ export interface Localizer {
   context: LanguageContext;
   translate(localizable: Localizable): string;
   getStringWithModelLanguageOrDefault(key: string|undefined, defaultLanguage: UILanguage): string;
+  allUILocalizationsForKey(localizationKey: string): string[];
 }
 
 function localize(localizable: Localizable, lang: Language, showLang: boolean): string {
