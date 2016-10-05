@@ -2,7 +2,6 @@ import { IHttpService, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import {
   Localizable,
-  Type,
   Model,
   Predicate,
   Attribute,
@@ -12,7 +11,7 @@ import {
   State,
   ConceptSuggestion,
   ConstraintType,
-  ImportedNamespace, Vocabulary, User
+  ImportedNamespace, Vocabulary, User, KnownPredicateType, KnownModelType
 } from './entities';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
@@ -173,7 +172,7 @@ export class EntityLoader {
     return this.addAction(result, details);
   }
 
-  private createModel(type: Type, groupId: Uri, details: ModelDetails): IPromise<Model> {
+  private createModel(type: KnownModelType, groupId: Uri, details: ModelDetails): IPromise<Model> {
     const result = this.loggedIn
       .then(() => this.modelService.newModel(details.prefix, details.label['fi'], groupId, ['fi', 'en'], type))
       .then(model => {
@@ -326,7 +325,7 @@ export class EntityLoader {
     return this.addAction(result, 'assign predicate');
   }
 
-  createPredicate<T extends Attribute|Association>(modelPromise: IPromise<Model>, type: Type, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
+  createPredicate<T extends Attribute|Association>(modelPromise: IPromise<Model>, type: KnownPredicateType, details: PredicateDetails, mangler: (predicate: T) => IPromise<any>): IPromise<T> {
 
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
@@ -377,7 +376,12 @@ export class EntityLoader {
   createProperty(modelPromise: IPromise<Model>, details: PropertyDetails): IPromise<Property> {
     const result = this.loggedIn
       .then(() => this.$q.all([modelPromise, asPromise(assertExists(details.predicate, 'predicate'))]))
-      .then(([model, p]: [Model, Predicate]) => this.classService.newProperty(p, p.normalizedType, model))
+      .then(([model, p]: [Model, Predicate]) => {
+        if (p.normalizedType === 'property') {
+          throw new Error('Type must not be property');
+        }
+        return this.classService.newProperty(p, p.normalizedType, model);
+      })
       .then((p: Property) => {
         setDetails(p, details);
         assertPropertyValueExists(details, 'valueClass');

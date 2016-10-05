@@ -4,7 +4,7 @@ import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Vocabulary, Type } from '../../services/entities';
+import { Model, Concept, DefinedBy, ConceptSuggestion, Vocabulary, ConceptType } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
@@ -44,7 +44,7 @@ export class ConceptEditorModalController {
   vocabularies: Vocabulary[] = [];
   showModel: DefinedBy;
   showVocabulary: Vocabulary;
-  showConceptType: Type;
+  showConceptType: ConceptType;
   searchText: string = '';
 
   loadingResults: boolean;

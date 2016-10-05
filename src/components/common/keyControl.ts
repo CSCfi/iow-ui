@@ -50,11 +50,11 @@ export class KeyControlController {
 
   private setSelection(index: number) {
     this.selectionIndex = index;
-    this.$scope.$broadcast('selectionMoved', this.selectionIndex);
+    this.$scope.$parent.$broadcast('selectionMoved', this.selectionIndex);
   }
 
   private selectSelection() {
-    this.$scope.$broadcast('selectionSelected', this.selectionIndex);
+    this.$scope.$parent.$broadcast('selectionSelected', this.selectionIndex);
   }
 }
 

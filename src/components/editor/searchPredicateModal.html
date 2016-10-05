@@ -21,49 +21,18 @@
 
           <p ng-show="ctrl.onlySelection" translate>Search predicate info</p>
           <p ng-hide="ctrl.onlySelection" translate>Search or create predicate info</p>
-          <div class="input-group input-group-lg">
-            <input autofocus type="text" class="form-control"
-                   placeholder="{{(ctrl.typeSelectable ? 'search attribute or association' : 'search ' + ctrl.type) | translate}}"
-                   ng-model="ctrl.searchText"
-                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                   key-control="ctrl.searchResults" />
-            <i class="glyphicon glyphicon-search form-control-feedback"></i>
-          </div>
+
+
+          <text-filter search-text="ctrl.searchText" search-controller="ctrl" content-extractors="ctrl.contentExtractors"
+                       placeholder="ctrl.typeSelectable ? 'search attribute or association' : 'search ' + ctrl.type"></text-filter>
 
           <div class="search-panel">
             <span class="title" translate>Filter results</span>
 
-            <div class="form-group">
-              <label for="model" translate>Defined by</label>
-              <div class="input-group input-group-md">
-                <select id="model" class="form-control" ng-model="ctrl.showModel"
-                        ng-options="ctrl.isThisModel(model)
-                                    ? ('Assigned to this ' + ctrl.model.normalizedType | translate)
-                                    : (model | translateLabel: ctrl.model)
-                                    for model in ctrl.models">
-                  <option value="" translate>All models</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group" ng-if="ctrl.typeSelectable">
-              <label for="type" translate>Predicate type</label>
-              <div class="input-group input-group-md">
-                  <select id="type" class="form-control" ng-model="ctrl.type" ng-options="type | translate for type in ctrl.types">
-                    <option value="" translate>All types</option>
-                  </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label translate>Match to content</label>
-
-              <div class="input-group input-group-md">
-                <div class="checkbox" ng-repeat="matcher in ctrl.contentMatchers">
-                  <label><input class="" type="checkbox" checklist-model="ctrl.contentExtractors" checklist-value="matcher.extractor" /> {{matcher.name | translate}}</label>
-                </div>
-              </div>
-            </div>
+            <model-filter search-controller="ctrl" type="predicate" model="ctrl.model"></model-filter>
+            <excluded-filter search-controller="ctrl" search-text="ctrl.searchText" exclude="ctrl.exclude"></excluded-filter>
+            <content-filter search-controller="ctrl" content-matchers="ctrl.contentMatchers" content-extractors="ctrl.contentExtractors"></content-filter>
+            <type-filter search-controller="ctrl" ng-show="ctrl.typeSelectable" label="Predicate type" default-type="ctrl.type"></type-filter>
           </div>
         </div>
 

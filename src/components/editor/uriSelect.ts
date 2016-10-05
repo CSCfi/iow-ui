@@ -2,7 +2,7 @@ import { IAttributes, ICompiledExpression, IPromise, IScope, IQService } from 'a
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, Type, PredicateListItem, ClassListItem } from '../../services/entities';
+import { Model, PredicateListItem, ClassListItem, ClassType, KnownPredicateType } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { DataSource } from '../form/dataSource';
@@ -59,7 +59,7 @@ type DataType = ClassListItem|PredicateListItem;
 class UriSelectController {
 
   uri: Uri;
-  type: Type;
+  type: ClassType|KnownPredicateType;
   model: Model;
   id: string;
   afterSelected: ICompiledExpression;
@@ -79,8 +79,8 @@ class UriSelectController {
   constructor($scope: IScope, private $q: IQService, private searchPredicateModal: SearchPredicateModal, private searchClassModal: SearchClassModal, classService: ClassService, predicateService: PredicateService) {
 
     const modelProvider = () => this.model;
-    this.datasource = this.type === 'class' ? classService.getClassesForModelDataSource(modelProvider)
-                                            : predicateService.getPredicatesForModelDataSource(modelProvider);
+    this.datasource = this.type === 'class' || this.type === 'shape' ? classService.getClassesForModelDataSource(modelProvider)
+                                                                     : predicateService.getPredicatesForModelDataSource(modelProvider);
 
     $scope.$watch(() => this.uri, (current, previous) => {
       if (!current || !current.equals(previous)) {
@@ -97,7 +97,7 @@ class UriSelectController {
   }
 
   selectUri() {
-    const promise: IPromise<DataType> = this.type === 'class'
+    const promise: IPromise<DataType> = this.type === 'class' || this.type === 'shape'
       ? this.searchClassModal.openWithOnlySelection(this.model, this.defaultToCurrentModel || false, this.createItemExclusion())
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createItemExclusion());
 

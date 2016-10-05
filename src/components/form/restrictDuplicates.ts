@@ -17,7 +17,7 @@ mod.directive('restrictDuplicates', () => {
 
       const restrictDuplicatesValue = $scope.$eval(attributes.restrictDuplicates);
 
-      if (typeof $scope.$eval(attributes.restrictDuplicates) === 'function') {
+      if (typeof restrictDuplicatesValue === 'function') {
         thisController.duplicateCheckingFunction = restrictDuplicatesValue;
       } else {
         $scope.$watchCollection(attributes.restrictDuplicates, (values: any[]) => {

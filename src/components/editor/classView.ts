@@ -11,7 +11,6 @@ import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { setSelectionStyles } from '../../utils/angular';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
-import { isDefined } from '../../utils/object';
 
 mod.directive('classView', () => {
   return {
@@ -97,7 +96,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   isReference(): boolean {
-    return isDefined(this.class.definedBy) && this.class.definedBy.id.notEquals(this.model.id);
+    return this.class.definedBy.id.notEquals(this.model.id);
   }
 
   getGroup(): GroupListItem {

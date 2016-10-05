@@ -11,14 +11,8 @@
           <model-language-chooser context="ctrl.model"></model-language-chooser>
 
           <p translate>Concept search info</p>
-          <div class="input-group input-group-lg">
-            <input autofocus type="text" class="form-control" placeholder="{{'Search from concept database' | translate}}"
-                   ng-model="ctrl.searchText"
-                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                   key-control="ctrl.searchResults"
-                   ignore-dirty />
-            <i class="glyphicon glyphicon-search form-control-feedback"></i>
-          </div>
+
+          <text-filter search-text="ctrl.searchText" search-controller="ctrl" content-extractors="ctrl.contentExtractors" placeholder="'Search from concept database'"></text-filter>
 
           <div class="search-panel">
             <span class="title" translate>Filter results</span>

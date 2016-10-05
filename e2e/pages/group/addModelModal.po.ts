@@ -1,5 +1,5 @@
 import { Modal } from '../common/modal.po';
-import { Type } from '../../../src/services/entities';
+import { KnownModelType } from '../../../src/services/entities';
 import { EditableComponent } from '../common/component/editableComponent.po';
 import { upperCaseFirst } from 'change-case';
 import { ModelPage } from '../model/modelPage.po';
@@ -13,7 +13,7 @@ export class AddModelModal extends Modal {
   language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey(this.element, 'editable-multiple-language-select', 'Model languages');
   submitButton = new SubmitButton(element(by.buttonText('Luo uusi')));
 
-  constructor(private type: Type) {
+  constructor(private type: KnownModelType) {
     super();
     this.label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(type) + ' label');
   }

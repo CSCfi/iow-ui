@@ -1,7 +1,7 @@
 import { IScope, ILocationService } from 'angular';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
-import { Model, Type } from '../../services/entities';
+import { Model, KnownModelType } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../../utils/language';
 
@@ -29,7 +29,7 @@ export class NewModelController {
   label: string;
   group: Uri;
   languages: Language[];
-  type: Type;
+  type: KnownModelType;
   redirect: Uri;
 
   loading: boolean;

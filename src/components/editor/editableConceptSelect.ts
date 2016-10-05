@@ -1,4 +1,4 @@
-import { Concept, Model, Type } from '../../services/entities';
+import { Concept, Model, ClassType, KnownPredicateType } from '../../services/entities';
 import { module as mod }  from './module';
 import { SearchConceptModal } from './searchConceptModal';
 import { EditableForm } from '../form/editableEntityController';
@@ -31,7 +31,7 @@ class EditableConceptSelectController {
   model: Model;
   title: string;
   allowSuggestions: boolean;
-  type: Type;
+  type: ClassType|KnownPredicateType;
 
   isEditing: () => boolean;
 

@@ -1,6 +1,9 @@
 import { IAttributes, IPromise, IScope } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
-import { Model, Type, ClassListItem, PredicateListItem } from '../../services/entities';
+import {
+  Model, ClassListItem, PredicateListItem, ClassType,
+  KnownPredicateType
+} from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
@@ -57,7 +60,7 @@ class EditableMultipleUriSelectController {
 
   ngModel: Uri[];
   input: Uri;
-  type: Type;
+  type: ClassType|KnownPredicateType;
   model: Model;
   id: string;
   title: string;
@@ -77,7 +80,7 @@ class EditableMultipleUriSelectController {
   }
 
   selectUri() {
-    const promise: IPromise<DataType> = this.type === 'class'
+    const promise: IPromise<DataType> = this.type === 'class' || this.type === 'shape'
       ? this.searchClassModal.openWithOnlySelection(this.model, false, this.createExclusion())
       : this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createExclusion());
 

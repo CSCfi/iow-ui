@@ -11,8 +11,9 @@ import { EditableForm } from '../form/editableEntityController';
 import { Uri } from '../../services/uri';
 import { any, all } from '../../utils/array';
 import * as _ from 'lodash';
-import { localizableContains } from '../../utils/language';
 import { Exclusion } from '../../utils/exclusion';
+import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
+import { ifChanged } from '../../utils/angular';
 
 const noExclude = (_referenceData: ReferenceData) => null;
 
@@ -49,7 +50,7 @@ export interface SearchReferenceDataScope extends IScope {
   form: EditableForm;
 }
 
-export class SearchReferenceDataModalController {
+export class SearchReferenceDataModalController implements SearchController<ReferenceData> {
 
   searchResults: (ReferenceData|AddNewReferenceData)[];
   referenceDataServers: ReferenceDataServer[];
@@ -61,7 +62,7 @@ export class SearchReferenceDataModalController {
   loadingResults = true;
   selectedItem: ReferenceData|AddNewReferenceData;
   selection: ReferenceData|AddNewReferenceDataFormData;
-  cannotConfirm: string;
+  cannotConfirm: string|null;
   submitError: string|null = null;
 
   localizer: Localizer;
@@ -73,6 +74,8 @@ export class SearchReferenceDataModalController {
 
   contentExtractors = this.contentMatchers.map(m => m.extractor);
 
+  private searchFilters: SearchFilter<ReferenceData>[] = [];
+
   /* @ngInject */
   constructor(private $scope: SearchReferenceDataScope,
               private $uibModalInstance: IModalServiceInstance,
@@ -81,7 +84,7 @@ export class SearchReferenceDataModalController {
               private modelService: ModelService,
               languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
-              public exclude: (referenceData: ReferenceData) => string) {
+              public exclude: Exclusion<ReferenceData>) {
 
     this.localizer = languageService.createLocalizer(model);
 
@@ -98,6 +101,10 @@ export class SearchReferenceDataModalController {
       if (this.showGroup && all(this.referenceDataGroups, group => !group.id.equals(this.showGroup!.id))) {
         this.showGroup = null;
       }
+
+      this.referenceDatas.sort(
+        comparingBoolean<ReferenceData>(referenceData => !!this.exclude(referenceData))
+          .andThen(comparingLocalizable<ReferenceData>(this.localizer, referenceData => referenceData.title)));
 
       this.search();
       this.loadingResults = false;
@@ -118,10 +125,19 @@ export class SearchReferenceDataModalController {
       });
     }
 
-    $scope.$watch(() => this.searchText, () => this.search());
-    $scope.$watch(() => this.showExcluded, () => this.search());
-    $scope.$watch(() => this.showGroup, () => this.search());
-    $scope.$watchCollection(() => this.contentExtractors, () => this.search());
+    this.addFilter(referenceData =>
+      !this.showGroup || any(referenceData.groups, group => group.id.equals(this.showGroup!.id))
+    );
+
+    $scope.$watch(() => this.showGroup, ifChanged<ReferenceDataGroup|null>(() => this.search()));
+  }
+
+  addFilter(filter: SearchFilter<ReferenceData>) {
+    this.searchFilters.push(filter);
+  }
+
+  get items() {
+    return this.referenceDatas;
   }
 
   get showExcluded() {
@@ -135,17 +151,7 @@ export class SearchReferenceDataModalController {
         new AddNewReferenceData(`${this.gettextCatalog.getString('Create new reference data')} '${this.searchText}'`, this.canAddNew.bind(this))
       ];
 
-      const referenceDataSearchResults = this.referenceDatas.filter(referenceData =>
-        this.textFilter(referenceData) &&
-        this.excludedFilter(referenceData) &&
-        this.groupFilter(referenceData)
-      );
-
-      referenceDataSearchResults.sort(
-        comparingBoolean<ReferenceData>(referenceData => !!this.exclude(referenceData))
-          .andThen(comparingLocalizable<ReferenceData>(this.localizer, referenceData => referenceData.title)));
-
-      this.searchResults = result.concat(referenceDataSearchResults);
+      this.searchResults = result.concat(applyFilters(this.referenceDatas, this.searchFilters));
     }
   }
 
@@ -197,18 +203,6 @@ export class SearchReferenceDataModalController {
 
   canAddNew() {
     return !!this.searchText && !this.referenceDatasFromModel;
-  }
-
-  private textFilter(referenceData: ReferenceData): boolean {
-    return !this.searchText || any(this.contentExtractors, extractor => localizableContains(extractor(referenceData), this.searchText));
-  }
-
-  private excludedFilter(referenceData: ReferenceData): boolean {
-    return this.showExcluded || !this.exclude(referenceData);
-  }
-
-  private groupFilter(referenceData: ReferenceData): boolean {
-    return !this.showGroup || any(referenceData.groups, group => group.id.equals(this.showGroup!.id));
   }
 
   close() {

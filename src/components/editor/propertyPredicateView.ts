@@ -109,6 +109,11 @@ class PropertyPredicateViewController {
   }
 
   changeReusablePredicate() {
+
+    if (this.property.normalizedPredicateType === 'property') {
+      throw new Error('Property must be of known type');
+    }
+
     this.searchPredicateModal.openWithOnlySelection(this.model, this.property.normalizedPredicateType, createDefinedByExclusion(this.model)).then(predicate => {
       this.property.predicate = predicate.id; // Could be full predicate instead of id but this is consistent with api data
     });

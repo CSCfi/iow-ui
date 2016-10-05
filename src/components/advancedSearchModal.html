@@ -7,22 +7,12 @@
 
         <model-language-chooser context="ctrl.context"></model-language-chooser>
 
-        <div class="input-group input-group-lg">
-          <input autofocus type="text" class="form-control" placeholder="{{'search descriptions' | translate}}"
-                 ng-model="ctrl.searchText"
-                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                 key-control="ctrl.searchResults" />
-          <i class="glyphicon glyphicon-search form-control-feedback"></i>
-        </div>
+        <text-filter search-text="ctrl.searchText" search-controller="ctrl" content-extractors="ctrl.contentExtractors" placeholder="'search descriptions'"></text-filter>
 
         <div class="search-panel">
           <span class="title" translate>Filter results</span>
 
-          <div class="input-group input-group-md">
-            <div class="checkbox" ng-repeat="type in ctrl.types">
-              <label><input class="" type="checkbox" checklist-model="ctrl.searchTypes" checklist-value="type" /> {{type | translate}}</label>
-            </div>
-          </div>
+          <types-filter search-controller="ctrl"></types-filter>
         </div>
       </div>
 

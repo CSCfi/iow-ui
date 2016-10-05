@@ -14,16 +14,13 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="input-group input-group-lg">
-          <input autofocus type="text" class="form-control" placeholder="{{'search namespace' | translate}}"
-                 ng-model="ctrl.searchText"
-                 ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                 key-control="ctrl.searchResults" />
-          <i class="glyphicon glyphicon-search form-control-feedback"></i>
-        </div>
+        <text-filter search-text="ctrl.searchText" search-controller="ctrl" content-extractors="ctrl.contentExtractors" placeholder="'search namespace'"></text-filter>
 
         <div class="search-panel">
           <span class="title" translate>Filter results</span>
+
+          <excluded-filter search-controller="ctrl" exclude="ctrl.exclude" search-text="ctrl.searchText"></excluded-filter>
+
           <div class="form-group">
             <div class="checkbox">
               <label><input type="checkbox" ng-model="ctrl.showTechnical">{{'Show technical namespaces' | translate}}</label>

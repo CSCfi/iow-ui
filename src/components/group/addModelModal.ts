@@ -2,7 +2,7 @@ import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { ModelService } from '../../services/modelService';
-import { Type } from '../../services/entities';
+import { KnownModelType } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../../utils/language';
 
@@ -11,7 +11,7 @@ export class AddModelModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(groupId: Uri, type: Type): IPromise<{prefix: string, label: string, language: Language[], type: Type, redirect?: Uri}> {
+  open(groupId: Uri, type: KnownModelType): IPromise<{prefix: string, label: string, language: Language[], type: KnownModelType, redirect?: Uri}> {
     return this.$uibModal.open({
       template: require('./addModelModal.html'),
       size: 'small',
@@ -35,7 +35,7 @@ class AddModelController {
   submitError: string;
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private groupId: Uri, public type: Type) {
+  constructor(private $uibModalInstance: IModalServiceInstance, private modelService: ModelService, private groupId: Uri, public type: KnownModelType) {
   }
 
   cancel = this.$uibModalInstance.dismiss;

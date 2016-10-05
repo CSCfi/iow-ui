@@ -1,7 +1,7 @@
 import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
 import {
-  EntityDeserializer, Predicate, PredicateListItem, Model, Type, Attribute, GraphData, Association
+  EntityDeserializer, Predicate, PredicateListItem, Model, Attribute, GraphData, Association, KnownPredicateType
 } from './entities';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
@@ -116,7 +116,7 @@ export class PredicateService {
       .then(() => this.modelPredicatesCache.delete(modelId.uri));
   }
 
-  newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri, type: Type, lang: Language): IPromise<T> {
+  newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri, type: KnownPredicateType, lang: Language): IPromise<T> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicateCreator'), {
       params: {
         modelID: model.id.uri,
@@ -136,7 +136,7 @@ export class PredicateService {
       });
   }
 
-  changePredicateType(predicate: Attribute|Association, newType: Type, model: Model) {
+  changePredicateType(predicate: Attribute|Association, newType: KnownPredicateType, model: Model) {
     return this.newPredicate(model, '', requireDefined(predicate.subject).id, newType, 'fi')
       .then(changedPredicate => {
         changedPredicate.id = predicate.id;
