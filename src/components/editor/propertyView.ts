@@ -68,8 +68,10 @@ export class PropertyViewController {
       this.otherPropertyIdentifiers = [];
 
       for (const property of properties) {
-        if (property !== this.property) {
+        if (property.internalId.notEquals(this.property.internalId)) {
+
           this.otherPropertyLabels.push(property.label);
+
           if (property.externalId) {
             this.otherPropertyIdentifiers.push(property.externalId);
           }
