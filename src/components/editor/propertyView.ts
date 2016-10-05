@@ -1,5 +1,5 @@
 import { IAttributes, IScope } from 'angular';
-import { Class, Property, Predicate, Model, Localizable } from '../../services/entities';
+import { Class, Property, Predicate, Model } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { Uri } from '../../services/uri';
 import { LanguageService } from '../../services/languageService';
@@ -51,8 +51,6 @@ export class PropertyViewController {
   property: Property;
   class: Class;
   model: Model;
-  otherPropertyLabels: Localizable[];
-  otherPropertyIdentifiers: string[];
   isEditing: () => boolean;
   isOpen: () => boolean;
 
@@ -61,23 +59,19 @@ export class PropertyViewController {
       ? 'Duplicate association target' : null;
 
   /* @ngInject */
-  constructor($scope: IScope, private languageService: LanguageService) {
+  constructor(private languageService: LanguageService) {
+  }
 
-    $scope.$watchCollection(() => this.class.properties, properties => {
-      this.otherPropertyLabels = [];
-      this.otherPropertyIdentifiers = [];
+  private get otherProperties() {
+    return this.class.properties.filter(property => property.internalId.notEquals(this.property.internalId));
+  }
 
-      for (const property of properties) {
-        if (property.internalId.notEquals(this.property.internalId)) {
+  get otherPropertyLabels() {
+    return this.otherProperties.map(property => property.label);
+  }
 
-          this.otherPropertyLabels.push(property.label);
-
-          if (property.externalId) {
-            this.otherPropertyIdentifiers.push(property.externalId);
-          }
-        }
-      }
-    });
+  get otherPropertyIdentifiers() {
+    return this.otherProperties.map(property => property.externalId);
   }
 
   stemDatasource(_search: string) {
