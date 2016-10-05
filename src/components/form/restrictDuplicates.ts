@@ -12,25 +12,17 @@ interface RestrictDuplicatesAttributes extends IAttributes {
 mod.directive('restrictDuplicates', () => {
   return {
     restrict: 'A',
-    require: ['restrictDuplicates', 'ngModel'],
-    link($scope: IScope, _element: JQuery, attributes: RestrictDuplicatesAttributes, [thisController, ngModel]: [RestrictDuplicatesController, INgModelController]) {
-
-      const restrictDuplicatesValue = $scope.$eval(attributes.restrictDuplicates);
-
-      if (typeof restrictDuplicatesValue === 'function') {
-        thisController.duplicateCheckingFunction = restrictDuplicatesValue;
-      } else {
-        $scope.$watchCollection(attributes.restrictDuplicates, (values: any[]) => {
-          thisController.valuesToCheckAgainst = values;
-        });
-      }
+    require: 'ngModel',
+    link($scope: IScope, _element: JQuery, attributes: RestrictDuplicatesAttributes, ngModel: INgModelController) {
 
       ngModel.$validators['duplicate'] = value => {
 
-        if (!!thisController.duplicateCheckingFunction) {
-          return !thisController.duplicateCheckingFunction(value);
+        const restrictDuplicates = $scope.$eval(attributes.restrictDuplicates);
+
+        if (typeof restrictDuplicates === 'function') {
+          return !restrictDuplicates(value);
         } else {
-          const valuesToCheckAgainst = thisController.valuesToCheckAgainst;
+          const valuesToCheckAgainst: any[] = restrictDuplicates;
 
           if (!valuesToCheckAgainst) {
             return true;
@@ -47,13 +39,6 @@ mod.directive('restrictDuplicates', () => {
 
         }
       };
-    },
-    controller: RestrictDuplicatesController
+    }
   };
 });
-
-
-class RestrictDuplicatesController {
-  duplicateCheckingFunction: (item: any) => boolean;
-  valuesToCheckAgainst: any[] = [];
-}
