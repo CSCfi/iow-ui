@@ -1661,6 +1661,10 @@ export class FintoConcept extends GraphNode {
     return false;
   }
 
+  get glyphIconClass() {
+    return glyphIconClassForType(['concept']);
+  }
+
   getVocabularyNames() {
     return _.map(this.vocabularies, vocabulary => new VocabularyNameHref(vocabulary));
   }
@@ -1719,6 +1723,10 @@ export class ConceptSuggestion extends GraphNode {
 
   get vocabularies() {
     return [this.vocabulary];
+  }
+
+  get glyphIconClass() {
+    return glyphIconClassForType(this.type);
   }
 
   getVocabularyNames() {
