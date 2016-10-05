@@ -26,6 +26,10 @@
                              range="ctrl.property.dataType">
       </editable-range-select>
 
+      <editable data-title="Permanent identifier" context="ctrl.model" ng-if="ctrl.property.dataType === 'xsd:anyURI'">
+        <input id="{{ctrl.property.internalId + 'permanentIdentifier'}}" type="checkbox" ng-model="ctrl.property.resourceIdentifier" restrict-duplicates="ctrl.otherPropertyResourceIdentifiers"/>
+      </editable>
+
       <editable-multiple-language-select ng-if="ctrl.model.isOfType('profile') && ctrl.property.dataType === 'rdf:langString'"
                                          data-title="Allowed languages"
                                          id="dataTypeAllowedLanguage"
