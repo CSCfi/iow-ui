@@ -1298,6 +1298,7 @@ export class Property extends GraphNode {
   classIn: Uri[];
   stem: Uri|null;
   editorialNote: Localizable;
+  resourceIdentifier = false;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -1353,6 +1354,7 @@ export class Property extends GraphNode {
     this.pattern = graph.pattern;
     this.stem = deserializeOptional(graph.stem, stem => new Uri(stem, context));
     this.editorialNote = deserializeLocalizable(graph.editorialNote);
+    this.resourceIdentifier = graph.isResourceIdentifier || false;
   }
 
   get predicateId() {
@@ -1483,7 +1485,8 @@ export class Property extends GraphNode {
       classIn: serializeList(this.classIn, classId => classId.uri),
       stem: serializeOptional(this.stem, stem => stem.uri),
       memberOf: serializeEntityList(this.referenceData, clone),
-      editorialNote: serializeLocalizable(this.editorialNote)
+      editorialNote: serializeLocalizable(this.editorialNote),
+      isResourceIdentifier: this.resourceIdentifier
     };
   }
 }
