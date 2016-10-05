@@ -9,7 +9,6 @@ export function normalizeAsSingle(graph: any, parentId: Uri): string|{} {
 
   if (Array.isArray(graph) && graph.length > 0) {
 
-    console.log('normalizing');
     const parentUri = parentId.uri;
     const ids = graph.map(item => typeof item === 'object' ? item['@id'] : item);
 
