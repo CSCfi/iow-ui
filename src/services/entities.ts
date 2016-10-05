@@ -1404,7 +1404,7 @@ export class Property extends GraphNode {
     return this.state === 'Unstable';
   }
 
-  get normalizedPredicateType(): PredicateType {
+  get normalizedPredicateType(): PredicateType|null {
     if (this.predicateType) {
       return this.predicateType;
     } else {
@@ -1416,7 +1416,7 @@ export class Property extends GraphNode {
       } else if (this.valueClass) {
         return 'association';
       } else {
-        throw new Error('Cannot resolve predicate type');
+        return null;
       }
     }
   }
