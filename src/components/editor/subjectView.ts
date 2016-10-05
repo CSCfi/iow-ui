@@ -26,7 +26,7 @@ class SubjectViewController {
   model: Model;
   isEditing: () => boolean;
 
-  subjectTitle: string;
+  subjectDefinitionTitle: string;
   vocabularies: string;
   link: string|null = null;
 
@@ -36,7 +36,7 @@ class SubjectViewController {
 
     const setValues = () => {
       const subject = this.entity.subject;
-      this.subjectTitle = (!subject || !subject.suggestion) ? 'Concept' : 'Concept suggestion';
+      this.subjectDefinitionTitle = (!subject || !subject.suggestion) ? 'Concept definition' : 'Concept suggestion definition';
 
       if (subject) {
         this.vocabularies = subject.getVocabularyNames().map(v => v.getLocalizedName(localizer, gettextCatalog)).join(', ');

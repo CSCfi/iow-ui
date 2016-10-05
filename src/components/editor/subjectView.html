@@ -1,38 +1,59 @@
-<div class="row">
-  <div class="col-md-12">
-    <h4 class="pull-left">{{ctrl.subjectTitle + ' information' | capitalize | translate}}</h4>
-
-    <button ng-if="ctrl.isEditing()"
-            type="button"
-            class="btn btn-default pull-right"
-            ng-disabled="!ctrl.entity.inUnstableState"
-            ng-click="ctrl.changeSubject()" uib-tooltip="{{'Change concept' | translate}}"><i class="fa fa-repeat"></i></button>
-  </div>
-</div>
-
 <div ng-if="!ctrl.entity.subject">
   <div class="row">
     <div class="col-md-12">
+      <h4 class="pull-left" translate>Concept information</h4>
+
+      <button ng-if="ctrl.isEditing()"
+              type="button"
+              class="btn btn-default pull-right"
+              ng-disabled="!ctrl.entity.inUnstableState"
+              ng-click="ctrl.changeSubject()" uib-tooltip="{{'Change concept' | translate}}"><i class="fa fa-repeat"></i></button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
       <div class="editable-wrap">
-        <div ng-hide="ctrl.entity.subject" translate>Not defined</div>
+        <div translate>Not defined</div>
       </div>
     </div>
   </div>
 </div>
 
-<div ng-if="ctrl.entity.subject">
-  <div class="row">
-    <div class="col-md-6">
-      <non-editable data-title="Concept label" value="ctrl.entity.subject.label" link="ctrl.link" context="ctrl.model"></non-editable>
-    </div>
-    <div class="col-md-6">
-      <non-editable data-title="Definition" value="ctrl.entity.subject.comment" context="ctrl.model"></non-editable>
-    </div>
-  </div>
+<accordion ng-if="ctrl.entity.subject" open-id="subjectViewOpen" >
+  <accordion-group>
+    <accordion-heading>
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <span class="accordion-icon" ng-class="ctrl.entity.subject.glyphIconClass"></span>
+          <span>{{ctrl.entity.subject | translateLabel: ctrl.model}}</span>
+        </h4>
+      </div>
+    </accordion-heading>
 
-  <div class="row">
-    <div class="col-md-12">
-      <non-editable data-title="Defined in vocabularies" value="ctrl.vocabularies" context="ctrl.model"></non-editable>
-    </div>
-  </div>
-</div>
+    <accordion-body>
+
+      <div class="row" ng-if="ctrl.isEditing()">
+        <div class="col-md-12">
+          <button type="button"
+                  class="btn btn-default pull-right"
+                  ng-disabled="!ctrl.entity.inUnstableState"
+                  ng-click="ctrl.changeSubject()" uib-tooltip="{{'Change concept' | translate}}"><i class="fa fa-repeat"></i></button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <non-editable data-title="{{ctrl.subjectDefinitionTitle}}" value="ctrl.entity.subject.comment" context="ctrl.model"></non-editable>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <non-editable data-title="Defined in vocabularies" value="ctrl.vocabularies" context="ctrl.model"></non-editable>
+        </div>
+      </div>
+
+    </accordion-body>
+  </accordion-group>
+</accordion>

@@ -559,16 +559,6 @@ ul.errors {
   }
 }
 
-
-subject-view {
-  border: 1px solid #dddddd;
-  background-color: lighten($brand-primary, 58%);
-  display: inline-block;
-  width: 100%;
-  padding: 10px;
-
-}
-
 .model-panel--right {
   float: right;
   width: calc(100% - #{$selectionListWidth});
