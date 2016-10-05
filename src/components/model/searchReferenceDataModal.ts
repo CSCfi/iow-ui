@@ -12,7 +12,7 @@ import { Uri } from '../../services/uri';
 import { any, all } from '../../utils/array';
 import * as _ from 'lodash';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchController, SearchFilter } from '../filter/contract';
+import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
 
 const noExclude = (_referenceData: ReferenceData) => null;
@@ -151,8 +151,7 @@ export class SearchReferenceDataModalController implements SearchController<Refe
         new AddNewReferenceData(`${this.gettextCatalog.getString('Create new reference data')} '${this.searchText}'`, this.canAddNew.bind(this))
       ];
 
-      const referenceDataSearchResults = this.referenceDatas.filter(referenceData => all(this.searchFilters, filter => filter(referenceData)));
-      this.searchResults = result.concat(referenceDataSearchResults);
+      this.searchResults = result.concat(applyFilters(this.referenceDatas, this.searchFilters));
     }
   }
 

@@ -5,9 +5,7 @@ import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
 import { SearchResult, Type, frontPageSearchLanguageContext, LanguageContext } from '../services/entities';
 import { comparingLocalizable } from '../services/comparators';
-import { SearchController, SearchFilter } from './filter/contract';
-import { all } from '../utils/array';
-
+import { SearchController, SearchFilter, applyFilters } from './filter/contract';
 
 export class AdvancedSearchModal {
   /* @ngInject */
@@ -71,7 +69,7 @@ class AdvancedSearchController implements SearchController<SearchResult> {
   }
 
   search() {
-    this.searchResults = this.apiSearchResults.filter(sr => all(this.searchFilters, filter => filter(sr)));
+    this.searchResults = applyFilters(this.apiSearchResults, this.searchFilters);
   }
 
   selectSearchResult(searchResult: SearchResult) {

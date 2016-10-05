@@ -9,8 +9,7 @@ import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
 import { module as mod }  from './module';
 import { comparingLocalizable } from '../services/comparators';
-import { SearchController, SearchFilter } from './filter/contract';
-import { all } from '../utils/array';
+import { SearchController, SearchFilter, applyFilters } from './filter/contract';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -103,7 +102,7 @@ export class FrontPageController implements SearchController<SearchResult> {
   }
 
   search() {
-    this.searchResults = this.apiSearchResults.filter(sr => all(this.searchFilters, filter => filter(sr)));
+    this.searchResults = applyFilters(this.apiSearchResults, this.searchFilters);
   }
 
   selectSearchResult(searchResult: SearchResult) {

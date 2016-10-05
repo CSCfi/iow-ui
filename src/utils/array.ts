@@ -1,5 +1,9 @@
 import { isDefined, EqualityChecker } from './object';
 
+export function limit<T>(arr: T[], limit: number): T[] {
+  return arr.slice(0, Math.min(limit, arr.length));
+}
+
 export function filterDefined<T>(arr: (T|null|undefined)[]): T[] {
   const result: T[] = [];
 

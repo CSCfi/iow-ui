@@ -5,9 +5,8 @@ import { ConceptService } from '../../services/conceptService';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { Vocabulary, LanguageContext } from '../../services/entities';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { all } from '../../utils/array';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchController, SearchFilter } from '../filter/contract';
+import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 
 const noExclude = (_vocabulary: Vocabulary) => null;
 
@@ -79,7 +78,7 @@ class SearchVocabularyController implements SearchController<Vocabulary> {
   }
 
   search() {
-    this.searchResults = this.vocabularies.filter(vocabulary => all(this.searchFilters, filter => filter(vocabulary)));
+    this.searchResults = applyFilters(this.vocabularies, this.searchFilters);
   }
 
   selectItem(vocabulary: Vocabulary) {

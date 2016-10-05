@@ -13,9 +13,9 @@ import { comparingBoolean, comparingLocalizable } from '../../services/comparato
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../services/uri';
-import { any, all } from '../../utils/array';
+import { any } from '../../utils/array';
 import { lowerCase } from 'change-case';
-import { SearchController, SearchFilter } from '../filter/contract';
+import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
 
 const limit = 1000;
@@ -211,9 +211,8 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
       const suggestText = `${this.gettextCatalog.getString('suggest')} '${this.searchText}'`;
       const toVocabularyText = `${this.gettextCatalog.getString('to vocabulary')}`;
       const result: (ConceptSearchResult|AddNewConcept)[] = [new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew())];
-      const conceptSearchResult = this.queryResults.filter(concept => all(this.searchFilters, filter => filter(concept)));
 
-      this.searchResults = result.concat(conceptSearchResult);
+      this.searchResults = result.concat(applyFilters(this.queryResults, this.searchFilters));
     } else {
       this.searchResults = [];
     }

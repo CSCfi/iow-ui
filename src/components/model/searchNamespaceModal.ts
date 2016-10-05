@@ -8,8 +8,7 @@ import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { Language } from '../../utils/language';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchController, SearchFilter } from '../filter/contract';
-import { all } from '../../utils/array';
+import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
 
 const noExclude = (_ns: ImportedNamespace) => null;
@@ -86,7 +85,7 @@ class SearchNamespaceController implements SearchController<ImportedNamespace> {
 
 
   search() {
-    this.searchResults = this.namespaces.filter(ns => all(this.searchFilters, filter => filter(ns)));
+    this.searchResults = applyFilters(this.namespaces, this.searchFilters);
   }
 
   textFilter(ns: ImportedNamespace) {

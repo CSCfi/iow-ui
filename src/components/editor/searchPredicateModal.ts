@@ -16,9 +16,9 @@ import { AddNew } from '../common/searchResults';
 import { glyphIconClassForType } from '../../utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from '../../services/classService';
-import { collectProperties, all } from '../../utils/array';
+import { collectProperties } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions, Exclusion } from '../../utils/exclusion';
-import { SearchFilter, SearchController } from '../filter/contract';
+import { SearchFilter, SearchController, applyFilters } from '../filter/contract';
 
 const noExclude = (_item: PredicateListItem) => null;
 
@@ -179,8 +179,7 @@ export class SearchPredicateController implements SearchController<PredicateList
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), null, true)
     ];
 
-    const predicateSearchResult = this.predicates.filter(predicate => all(this.searchFilters, filter => filter(predicate)));
-    this.searchResults = result.concat(predicateSearchResult);
+    this.searchResults = result.concat(applyFilters(this.predicates, this.searchFilters));
   }
 
   selectItem(item: PredicateListItem|AddNewPredicate) {

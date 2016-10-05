@@ -13,8 +13,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { glyphIconClassForType } from '../../utils/entity';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchFilter, SearchController } from '../filter/contract';
-import { all } from '../../utils/array';
+import { SearchFilter, SearchController, applyFilters } from '../filter/contract';
 
 export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
@@ -141,8 +140,7 @@ class SearchClassController implements SearchController<ClassListItem> {
       new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
     ];
 
-    const classSearchResult = this.classes.filter(klass => all(this.searchFilters, filter => filter(klass)));
-    this.searchResults = result.concat(classSearchResult);
+    this.searchResults = result.concat(applyFilters(this.classes, this.searchFilters));
   }
 
   canAddNew() {
