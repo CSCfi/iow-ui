@@ -1168,7 +1168,7 @@ export class Class extends AbstractClass implements VisualizationClass {
       subClassOf: this.subClassOf && this.subClassOf.uri,
       scopeClass: this.scopeClass && this.scopeClass.uri,
       versionInfo: this.state,
-      isDefinedBy: serializeEntity(requireDefined(this.definedBy), clone),
+      isDefinedBy: clone ? serializeEntity(this.definedBy, clone) : this.definedBy.id.toString(),
       property: serializeEntityList(this.properties, clone),
       subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
       equivalentClass: serializeList(this.equivalentClasses, equivalentClass => equivalentClass.uri),
@@ -1569,7 +1569,7 @@ export class Predicate extends AbstractPredicate {
       '@id': this.id.uri,
       label: serializeLocalizable(this.label),
       comment: serializeLocalizable(this.comment),
-      isDefinedBy: serializeEntity(this.definedBy, clone),
+      isDefinedBy: clone ? serializeEntity(this.definedBy, clone) : this.definedBy.id.toString(),
       versionInfo: this.state,
       subPropertyOf: this.subPropertyOf && this.subPropertyOf.uri,
       subject: serializeOptional(this.subject, (data) => serializeEntity(data, clone)),
@@ -1736,7 +1736,7 @@ export class ConceptSuggestion extends GraphNode {
       prefLabel: serializeLocalizable(this.label),
       definition: serializeLocalizable(this.comment),
       inScheme: serializeEntityOrId(this.vocabulary, clone),
-      isDefinedBy: serializeOptional(this.definedBy, data => serializeEntity(data, clone)),
+      isDefinedBy: serializeOptional(this.definedBy, data => clone ? serializeEntity(data, clone) : data.id.toString()),
       broaderConcept: serializeOptional(this.broaderConcept, data => serializeEntity(data, clone))
     };
   }
