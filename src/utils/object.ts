@@ -36,6 +36,10 @@ export function isNumber(str: any): str is number {
   return typeof str === 'number';
 }
 
+export function isBoolean(str: any): str is boolean {
+  return typeof str === 'boolean';
+}
+
 export function hasValue(obj: any) {
   for (const value of Object.values(obj)) {
     if (!!value) {
