@@ -2,10 +2,10 @@ import { Localizable } from '../../services/entities';
 import { AddNew } from '../common/searchResults';
 import { all, limit } from '../../utils/array';
 
-export const defaultSearchLimit = 100;
+const defaultSearchLimit = 100;
 
 export function applyFilters<T>(searchResults: T[], filters: SearchFilter<T>[], limitResults = defaultSearchLimit) {
-  return limit(searchResults.filter(klass => all(filters, filter => filter(klass))), limitResults);
+  return limit(searchResults.filter(results => all(filters, filter => filter(results))), limitResults);
 }
 
 export interface SearchController<T> {
