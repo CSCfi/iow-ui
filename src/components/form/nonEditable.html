@@ -3,7 +3,7 @@
   <div class="content">
     <a ng-if="ctrl.item.href" ng-href="{{ctrl.item.href}}">{{ctrl.item.displayValue}}</a>
     <a ng-if="ctrl.item.onClick" ng-click="ctrl.item.onClick()">{{ctrl.item.displayValue}}</a>
-    <span ng-if="!ctrl.item.href && !ctrl.item.onClick">{{ctrl.item.displayValue}}</span>
+    <span ng-if="!ctrl.item.href && !ctrl.item.onClick" ng-bind-html="ctrl.item.displayValue | paragraphize"></span>
     <clipboard text="ctrl.clipboard"></clipboard>
   </div>
 </div>

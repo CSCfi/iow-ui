@@ -3,7 +3,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
 import { Localizable, isLocalizable, LanguageContext } from '../../services/entities';
 import { Uri } from '../../services/uri';
-import { isString, isNumber } from '../../utils/object';
+import { isString, isNumber, isBoolean } from '../../utils/object';
 import { isDifferentUrl } from '../../utils/angular';
 import { Moment } from 'moment';
 import * as moment from 'moment';
@@ -43,6 +43,8 @@ export class DisplayItem {
       }
     } else if (isNumber(value)) {
       return value.toString();
+    } else if (isBoolean(value)) {
+      return this.gettextCatalog.getString(value ? 'Yes' : 'No');
     } else if (!value) {
       return '';
     } else {

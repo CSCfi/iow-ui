@@ -74,6 +74,10 @@ export class PropertyViewController {
     return this.otherProperties.map(property => property.externalId);
   }
 
+  get otherPropertyResourceIdentifiers() {
+    return this.otherProperties.map(property => property.resourceIdentifier);
+  }
+
   stemDatasource(_search: string) {
     return [
       new Uri('http://', {}),
