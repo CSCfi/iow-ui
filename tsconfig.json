@@ -17,6 +17,7 @@
       "angular-animate",
       "angular-gettext",
       "angular-route",
+      "angular-sanitize",
       "angular-ui-bootstrap",
       "change-case",
       "jointjs",
