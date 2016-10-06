@@ -519,7 +519,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
           } else {
             return this.updateSelection(entity);
           }
-        });
+        }, (_err: any) => this.updateSelection(null));
     } else {
       return this.$q.when(this.updateSelection(null));
     }
