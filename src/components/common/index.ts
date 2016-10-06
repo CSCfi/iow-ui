@@ -19,6 +19,7 @@ import './clipboard';
 import './export';
 import './float';
 import './highlight';
+import './paragraphize';
 import './history';
 import './keyControl';
 import './keyControlItem';
