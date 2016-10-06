@@ -25,7 +25,6 @@ class ParagraphizeController {
 
 mod.filter('paragraphize', /* @ngInject */ ($sce: ISCEService, $sanitize: ISanitizeService) => {
   return (text: string) => {
-    console.log($sanitize(text));
     return $sce.trustAsHtml(applyParagraph($sanitize(text)));
   };
 });
