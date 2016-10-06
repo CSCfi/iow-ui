@@ -2069,7 +2069,7 @@ function deserializeLocalizable(localizable: any) {
   if (localizable) {
     for (const lang of Object.keys(localizable)) {
       const value = localizable[lang];
-      result[lang] = Array.isArray(value) ? value.join(' ') : value;
+      result[lang] = Array.isArray(value) ? value.join('\n\n') : value;
     }
   }
 
