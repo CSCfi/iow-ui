@@ -86,7 +86,7 @@ export function formatAssociationPropertyName(associationProperty: Property, sho
 }
 
 function formatAttributePropertyNameWithMetaData(propertyName: string, dataTypeName: string, cardinality: string) {
-  return `- ${propertyName} : ${dataTypeName}` + ` [${cardinality}]`;
+  return `- ${propertyName} : ${dataTypeName}${cardinality}`;
 }
 
 function formatAttributePropertyCardinality(showCardinality: boolean, attributeProperty: Property) {
