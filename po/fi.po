@@ -1232,6 +1232,10 @@ msgstr ""
 "Järjestelmä on valitettavasti toistaiseksi poissa käytöstä huoltokatkon "
 "takia."
 
+#: translations/misc.html:256
+msgid "Match to content"
+msgstr "Hae sisällöstä"
+
 #: translations/titles.html:64
 msgid "Max count"
 msgstr "Enimmäismäärä"
@@ -1788,6 +1792,10 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
+#: translations/misc.html:255
+msgid "Show classes defined in profiles"
+msgstr "Näytä profiileissa määritellyt luokat"
+
 #: translations/misc.html:130
 msgid "Show excluded"
 msgstr "Näytä myös ne, joita ei voi lisätä"
@@ -2215,12 +2223,6 @@ msgstr "Kyllä"
 
 #~ msgid "All types"
 #~ msgstr "Kaikki tyypit"
-
-#~ msgid "Match to content"
-#~ msgstr "Hae sisällöstä"
-
-#~ msgid "Show classes defined in profiles"
-#~ msgstr "Näytä profiileissa määritellyt luokat"
 
 #~ msgid "Copy reusable to library"
 #~ msgstr "Kopioi ominaisuus kirjastoon"
