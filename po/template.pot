@@ -1220,6 +1220,10 @@ msgstr ""
 msgid "Maintenance content"
 msgstr ""
 
+#: translations/misc.html:256
+msgid "Match to content"
+msgstr ""
+
 #: translations/titles.html:64
 msgid "Max count"
 msgstr ""
@@ -1774,6 +1778,10 @@ msgstr ""
 #: components/common/export.html:4
 #: translations/misc.html:20
 msgid "Show"
+msgstr ""
+
+#: translations/misc.html:255
+msgid "Show classes defined in profiles"
 msgstr ""
 
 #: translations/misc.html:130
