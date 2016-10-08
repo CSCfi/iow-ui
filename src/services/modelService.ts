@@ -42,7 +42,7 @@ export class ClassVisualization {
 export class ModelService {
 
   // indexed by reference data id
-  private referenceDataCodesCache = new Map<string, ReferenceDataCode[]>();
+  private referenceDataCodesCache = new Map<string, IPromise<ReferenceDataCode[]>>();
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
@@ -194,18 +194,19 @@ export class ModelService {
 
   getReferenceDataCodes(referenceData: ReferenceData|ReferenceData[]): IPromise<ReferenceDataCode[]> {
 
+    // console.log(new Error().stack);
+
     const getSingle = (rd: ReferenceData) => {
       const cached = this.referenceDataCodesCache.get(rd.id.uri);
 
       if (cached) {
-        return this.$q.when(cached);
+        return cached;
       } else {
-        return this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri}})
-          .then(response => this.entities.deserializeReferenceDataCodes(response.data!))
-          .then(codeValues => {
-            this.referenceDataCodesCache.set(rd.id.uri, codeValues);
-            return codeValues;
-          });
+        const result = this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri}})
+          .then(response => this.entities.deserializeReferenceDataCodes(response.data!));
+
+        this.referenceDataCodesCache.set(rd.id.uri, result);
+        return result;
       }
     };
 
