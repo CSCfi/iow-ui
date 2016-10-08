@@ -106,6 +106,10 @@ msgstr ""
 msgid "All states"
 msgstr ""
 
+#: translations/misc.html:257
+msgid "All types"
+msgstr ""
+
 #: components/editor/searchConceptModal.html:25
 #: components/model/conceptEditorModal.html:31
 msgid "All vocabularies"

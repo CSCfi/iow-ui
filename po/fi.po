@@ -107,6 +107,10 @@ msgstr "Kaikki palvelimet"
 msgid "All states"
 msgstr "Kaikki tilat"
 
+#: translations/misc.html:257
+msgid "All types"
+msgstr "Kaikki tyypit"
+
 #: components/editor/searchConceptModal.html:25
 #: components/model/conceptEditorModal.html:31
 msgid "All vocabularies"
@@ -2220,9 +2224,6 @@ msgstr "Virheellinen aika"
 #: translations/misc.html:253
 msgid "Yes"
 msgstr "Kyllä"
-
-#~ msgid "All types"
-#~ msgstr "Kaikki tyypit"
 
 #~ msgid "Copy reusable to library"
 #~ msgstr "Kopioi ominaisuus kirjastoon"
