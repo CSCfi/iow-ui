@@ -85,7 +85,7 @@
       <button type="button"
               class="btn btn-default confirm"
               ng-click="ctrl.confirm()"
-              ng-disabled="!ctrl.selection || ctrl.cannotConfirm || form.$invalid || form.$pending || ctrl.isExternalClassPending()">
+              ng-disabled="!ctrl.selection || ctrl.cannotConfirm || (form.editing && (form.$invalid || form.$pending)) || ctrl.isExternalClassPending()">
         {{ctrl.textForSelection(ctrl.selection) | translate}}
       </button>
     </modal-buttons>

@@ -131,7 +131,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
       any(this.activeVocabularies, vocabulary => concept.vocabulary.id.equals(vocabulary.id))
     );
 
-    $scope.$watch(() => this.searchText, ifChanged(() => this.query(this.searchText).then(() => this.search())));
+    $scope.$watch(() => this.searchText, () => this.query(this.searchText).then(() => this.search()));
     $scope.$watch(() => this.selectedVocabulary, ifChanged(() => this.query(this.searchText).then(() => this.search())));
     $scope.$watch(() => this.localizer.language, ifChanged(() => this.query(this.searchText).then(() => this.search())));
     $scope.$watch(() => this.queryResults, results => {
