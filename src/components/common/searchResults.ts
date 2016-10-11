@@ -5,6 +5,7 @@ import { ConfirmationModal } from './confirmationModal';
 import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { Exclusion } from '../../utils/exclusion';
+import { WithId } from '../contracts';
 
 mod.directive('searchResults', () => {
   return {
@@ -39,11 +40,10 @@ interface SearchResultScope extends IScope {
   searchResult: SearchResult<any>;
 }
 
-interface WithId {
-  id: Uri|string;
-}
-
 export abstract class AddNew {
+
+  id = Uri.randomUUID();
+
   constructor(public label: string, public show: () => boolean, public glyphiconClass?: (string|{})[]) {
   }
 
@@ -62,6 +62,10 @@ class SearchResult<T extends WithId> {
 
   constructor(public item: T, public disabledReason: string|null) {
     this.disabled = !!disabledReason;
+  }
+
+  get id() {
+    return this.item.id;
   }
 
   unwrap() {
