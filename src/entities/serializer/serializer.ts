@@ -24,7 +24,7 @@ export function identitySerializer<T>(): Serializer<T> {
   return createSerializer(
     (data: T) => {
       const runtimeCheckValue = data as any;
-      if (typeof (runtimeCheckValue as any) === 'string' && runtimeCheckValue.length === 0) {
+      if (typeof runtimeCheckValue === 'string' && runtimeCheckValue.length === 0) {
         return null;
       } else {
         return data;
