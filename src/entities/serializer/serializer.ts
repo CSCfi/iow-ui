@@ -22,7 +22,14 @@ export function createSerializer<T>(serialize: (data: T) => any, deserialize: (d
 
 export function identitySerializer<T>(): Serializer<T> {
   return createSerializer(
-    (data: T) => data,
+    (data: T) => {
+      const runtimeCheckValue = data as any;
+      if (typeof (runtimeCheckValue as any) === 'string' && runtimeCheckValue.length === 0) {
+        return null;
+      } else {
+        return data;
+      }
+    },
     (data: any) => data as T
   );
 }
