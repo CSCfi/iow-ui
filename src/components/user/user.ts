@@ -2,7 +2,7 @@ import { IScope, ILocationService } from 'angular';
 import { UserService } from '../../services/userService';
 import { LocationService } from '../../services/locationService';
 import { module as mod }  from './module';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { DefaultUser } from '../../entities/user';
 import { groupUrl } from '../../utils/entity';
 

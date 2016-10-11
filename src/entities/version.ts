@@ -1,4 +1,4 @@
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { UserLogin } from './contract';
 import { Moment } from 'moment';
 import { requireDefined } from '../utils/object';

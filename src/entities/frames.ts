@@ -1,4 +1,4 @@
-import { Url, Uri, Urn } from '../services/uri';
+import { Url, Uri, Urn } from '../entities/uri';
 
 export type Frame = {};
 

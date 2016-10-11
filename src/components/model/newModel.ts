@@ -1,7 +1,7 @@
 import { IScope, ILocationService } from 'angular';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { Language } from '../../utils/language';
 import { KnownModelType } from '../../entities/type';
 import { Model } from '../../entities/model';

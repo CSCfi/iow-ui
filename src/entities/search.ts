@@ -1,5 +1,5 @@
 import { contextlessInternalUrl } from '../utils/entity';
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { DefinedBy } from './definedBy';
 import { Localizable } from './contract';
 import { init } from './mapping';

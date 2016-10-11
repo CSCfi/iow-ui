@@ -1,5 +1,5 @@
 import { Type } from './type';
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { Language, availableUILanguages } from '../utils/language';
 import { GraphNode, GraphNodes } from './graphNode';
 

@@ -2,7 +2,7 @@ import { containsAny, collectProperties, index, contains } from './array';
 import { WithId } from '../components/contracts';
 import { areEqual, requireDefined, isDefined } from './object';
 import { IHttpPromiseCallbackArg } from 'angular';
-import { Uri, Urn, RelativeUrl } from '../services/uri';
+import { Uri, Urn, RelativeUrl } from '../entities/uri';
 import { Localizable, Coordinate, Dimensions, GraphData, EntityConstructor } from '../entities/contract';
 import { Type } from '../entities/type';
 import { DefinedBy } from '../entities/definedBy';

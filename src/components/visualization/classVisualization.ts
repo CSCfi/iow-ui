@@ -5,7 +5,7 @@ import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import * as joint from 'jointjs';
 import { module as mod }  from './module';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { first, arraysAreEqual, normalizeAsArray } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';

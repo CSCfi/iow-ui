@@ -1,4 +1,4 @@
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { GraphNode } from '../graphNode';
 import { EntityFactory } from '../contract';
 import { isDefined, assertNever } from '../../utils/object';

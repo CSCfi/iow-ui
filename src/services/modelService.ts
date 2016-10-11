@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { config } from '../config';
 import { upperCaseFirst } from 'change-case';
-import { Uri, Urn } from './uri';
+import { Uri, Urn } from '../entities/uri';
 import { Language } from '../utils/language';
 import { expandContextWithKnownModels, collectIds } from '../utils/entity';
 import { normalizeAsArray, index } from '../utils/array';

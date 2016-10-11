@@ -1,7 +1,7 @@
 import { IAttributes, IPromise, IScope } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { EditableForm } from '../form/editableEntityController';
 import { collectProperties } from '../../utils/array';

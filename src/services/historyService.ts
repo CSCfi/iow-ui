@@ -1,6 +1,6 @@
 import { IHttpService, IPromise } from 'angular';
 import { config } from '../config';
-import { Uri } from './uri';
+import { Uri } from '../entities/uri';
 import { GraphData } from '../entities/contract';
 import { FrameService } from './frameService';
 import * as frames from '../entities/frames';

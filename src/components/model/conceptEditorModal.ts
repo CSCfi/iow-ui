@@ -7,7 +7,7 @@ import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
 import { any } from '../../utils/array';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { localizableContains } from '../../utils/language';
 import * as _ from 'lodash';
 import { isDefined } from '../../utils/object';

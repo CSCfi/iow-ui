@@ -1,7 +1,7 @@
 import { ILocationService } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { isString, isNumber, isBoolean } from '../../utils/object';
 import { isDifferentUrl } from '../../utils/angular';
 import { Moment } from 'moment';

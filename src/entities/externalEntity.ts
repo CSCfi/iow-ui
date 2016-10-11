@@ -1,6 +1,6 @@
 import { PredicateType, ClassType } from './type';
 import { Language } from '../utils/language';
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 
 export class ExternalEntity {
 

@@ -1,5 +1,5 @@
 import { route } from 'angular';
-import { Uri } from './services/uri';
+import { Uri } from './entities/uri';
 import { ILocationService } from 'angular';
 import { resourceUrl, modelUrl } from './utils/entity';
 

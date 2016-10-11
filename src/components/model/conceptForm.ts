@@ -3,7 +3,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 import { ConceptViewController } from './conceptView';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { module as mod }  from './module';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { Concept, VocabularyNameHref, ConceptSuggestion, Vocabulary } from '../../entities/vocabulary';
 import { Model } from '../../entities/model';
 

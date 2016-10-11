@@ -4,7 +4,7 @@ import {
   isValidLabelLength, isValidIdentifier, isValidClassIdentifier,
   isValidPredicateIdentifier
 } from './validators';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { extendNgModelOptions } from '../../utils/angular';
 import { module as mod }  from './module';
 import { Class } from '../../entities/class';

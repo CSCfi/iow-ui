@@ -1,5 +1,5 @@
 import { IPromise, IHttpService, IQService } from 'angular';
-import { Uri } from './uri';
+import { Uri } from '../entities/uri';
 import { pascalCase, camelCase } from 'change-case';
 import { config } from '../config';
 

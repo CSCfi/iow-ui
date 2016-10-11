@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { reverseMapType, KnownPredicateType } from '../entities/type';
-import { Urn, Uri } from './uri';
+import { Urn, Uri } from '../entities/uri';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language } from '../utils/language';
 import { DataSource } from '../components/form/dataSource';

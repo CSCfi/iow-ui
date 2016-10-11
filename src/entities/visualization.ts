@@ -1,4 +1,4 @@
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { Type } from './type';
 import { Localizable, Coordinate } from './contract';
 import {  localizableSerializer, optional, coordinateSerializer, list, typeSerializer } from './serializer/serializer';

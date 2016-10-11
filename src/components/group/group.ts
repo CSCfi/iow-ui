@@ -8,7 +8,7 @@ import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { MaintenanceModal } from '../maintenance';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { Language } from '../../utils/language';
 import { ErrorModal } from '../form/errorModal';

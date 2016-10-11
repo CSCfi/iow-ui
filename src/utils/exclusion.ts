@@ -1,7 +1,7 @@
 import { SearchClassType, WithId, WithDefinedBy, WithIdAndType } from '../components/contracts';
 import { containsAny, arraysAreEqual, first } from './array';
 import { collectIds } from './entity';
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { IPromise, IQService } from 'angular';
 import { DataSource } from '../components/form/dataSource';
 import { isDefined } from './object';

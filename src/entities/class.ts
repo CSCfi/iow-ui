@@ -7,7 +7,7 @@ import {
   normalizeClassType, SelectionType, PredicateType,
   KnownPredicateType, mapType, ConstraintType, State, reverseMapType
 } from './type';
-import { Uri, Urn } from '../services/uri';
+import { Uri, Urn } from '../entities/uri';
 import { DefinedBy } from './definedBy';
 import { EntityConstructor, Localizable } from './contract';
 import { DataType } from './dataTypes';

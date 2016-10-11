@@ -5,7 +5,7 @@ import { ClassService } from './classService';
 import { PredicateService } from './predicateService';
 import { UserService } from './userService';
 import { ResetService } from './resetService';
-import { Uri, Url } from './uri';
+import { Uri, Url } from '../entities/uri';
 import { DataType } from '../entities/dataTypes';
 import { identity } from '../utils/function';
 import { config } from '../config';

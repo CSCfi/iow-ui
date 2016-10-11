@@ -3,7 +3,7 @@ import {
   localizableSerializer, dateSerializer,
   optional, userLoginSerializer, stringSerializer, identitySerializer
 } from './serializer/serializer';
-import { Uri, Url } from '../services/uri';
+import { Uri, Url } from '../entities/uri';
 import { Localizable, UserLogin } from './contract';
 import { resolveConceptConstructor, glyphIconClassForType, isLocalizable } from '../utils/entity';
 import { ConceptType } from './type';

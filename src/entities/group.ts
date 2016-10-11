@@ -1,7 +1,7 @@
 import { Language } from '../utils/language';
 import { groupUrl } from '../utils/entity';
 import { localizableSerializer, identitySerializer, optional } from './serializer/serializer';
-import { Uri, Url } from '../services/uri';
+import { Uri, Url } from '../entities/uri';
 import { GroupType } from './type';
 import { Localizable } from './contract';
 import { init } from './mapping';

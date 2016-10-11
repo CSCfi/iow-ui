@@ -1,7 +1,7 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { Language } from '../../utils/language';
 import { Model } from '../../entities/model';
 import { ReferenceData } from '../../entities/referenceData';

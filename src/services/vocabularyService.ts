@@ -2,7 +2,7 @@ import { IHttpPromise, IHttpService, IPromise } from 'angular';
 import * as _ from 'lodash';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
-import { Uri, Url } from './uri';
+import { Uri, Url } from '../entities/uri';
 import { Language } from '../utils/language';
 import { requireDefined } from '../utils/object';
 import { FrameService } from './frameService';

@@ -1,7 +1,7 @@
 import { IAttributes, IScope } from 'angular';
 import { EditableForm } from './editableEntityController';
 import { module as mod }  from './module';
-import { Url } from '../../services/uri';
+import { Url } from '../../entities/uri';
 import * as _ from 'lodash';
 
 mod.directive('editableTable', () => {

@@ -1,6 +1,6 @@
 import { requireDefined } from '../utils/object';
 import { normalizeModelType, KnownModelType, State } from './type';
-import { Uri, Url, Urn } from '../services/uri';
+import { Uri, Url, Urn } from '../entities/uri';
 import { Localizable } from './contract';
 import { modelUrl, resourceUrl } from '../utils/entity';
 import { GroupListItem } from './group';

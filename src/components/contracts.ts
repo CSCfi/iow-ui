@@ -1,4 +1,4 @@
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { DefinedBy } from '../entities/definedBy';
 import { Type } from '../entities/type';
 

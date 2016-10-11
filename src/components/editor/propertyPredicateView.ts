@@ -1,5 +1,5 @@
 import { IAttributes, IScope } from 'angular';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { PredicateService } from '../../services/predicateService';
 import { SearchPredicateModal } from './searchPredicateModal';

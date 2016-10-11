@@ -1,7 +1,7 @@
 import { normalizePredicateType, SelectionType, PredicateType, State } from './type';
 import { requireDefined } from '../utils/object';
 import { resourceUrl, resolveConceptConstructor } from '../utils/entity';
-import { Uri, Urn } from '../services/uri';
+import { Uri, Urn } from '../entities/uri';
 import { DefinedBy } from './definedBy';
 import { Localizable } from './contract';
 import { Moment } from 'moment';

@@ -1,5 +1,5 @@
 import { localizableSerializer, stringSerializer, optional } from './serializer/serializer';
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { createConstantLocalizable } from '../utils/language';
 import { Localizable } from './contract';
 import { init } from './mapping';

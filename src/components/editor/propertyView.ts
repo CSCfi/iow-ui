@@ -1,6 +1,6 @@
 import { IAttributes, IScope } from 'angular';
 import { ClassFormController } from './classForm';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { LanguageService } from '../../services/languageService';
 import { any } from '../../utils/array';
 import { module as mod }  from './module';

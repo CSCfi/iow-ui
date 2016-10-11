@@ -2,7 +2,7 @@ import { IAttributes, IScope } from 'angular';
 import * as _ from 'lodash';
 import { ClassViewController } from './classView';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { ClassService } from '../../services/classService';
 import { module as mod }  from './module';
 import { isDefined } from '../../utils/object';

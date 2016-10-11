@@ -1,4 +1,4 @@
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { Localizable } from './contract';
 import { init, serialize } from './mapping';
 import { GraphNode } from './graphNode';

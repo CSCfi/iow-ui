@@ -1,5 +1,5 @@
 import { EditableEntity, Localizable } from './contract';
-import { Uri } from '../services/uri';
+import { Uri } from '../entities/uri';
 import { localizableSerializer, stringSerializer, optional } from './serializer/serializer';
 import { DefinedBy } from './definedBy';
 import { contextlessInternalUrl } from '../utils/entity';

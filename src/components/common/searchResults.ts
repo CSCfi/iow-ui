@@ -2,7 +2,7 @@ import { IAttributes, IScope, ITranscludeFunction, ICompiledExpression } from 'a
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import { ConfirmationModal } from './confirmationModal';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { Exclusion } from '../../utils/exclusion';
 

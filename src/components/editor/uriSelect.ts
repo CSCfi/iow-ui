@@ -2,7 +2,7 @@ import { IAttributes, ICompiledExpression, IPromise, IScope, IQService } from 'a
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { DataSource } from '../form/dataSource';
 import { ClassService } from '../../services/classService';

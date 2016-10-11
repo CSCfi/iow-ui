@@ -1,6 +1,6 @@
 import { module as mod } from './module';
 import { IScope, IAttributes, INgModelController, IQService, IPromise } from 'angular';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 
 interface ExcludeValidatorAttributes extends IAttributes {
   excludeValidator: string;

@@ -1,6 +1,6 @@
 import { IAttributes, INgModelController, IScope } from 'angular';
 import * as _ from 'lodash';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { contains, containsAny } from '../../utils/array';
 import { referenceEquality } from '../../utils/object';
 import { module as mod }  from './module';

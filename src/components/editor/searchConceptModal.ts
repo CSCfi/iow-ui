@@ -7,7 +7,7 @@ import { LanguageService, Localizer } from '../../services/languageService';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { any } from '../../utils/array';
 import { lowerCase } from 'change-case';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';

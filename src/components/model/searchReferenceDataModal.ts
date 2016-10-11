@@ -7,7 +7,7 @@ import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { any, all } from '../../utils/array';
 import * as _ from 'lodash';
 import { Exclusion } from '../../utils/exclusion';

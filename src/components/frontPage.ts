@@ -5,7 +5,7 @@ import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
 import { MaintenanceModal } from './maintenance';
-import { Url } from '../services/uri';
+import { Url } from '../entities/uri';
 import { module as mod }  from './module';
 import { comparingLocalizable } from '../services/comparators';
 import { SearchController, SearchFilter, applyFilters } from './filter/contract';

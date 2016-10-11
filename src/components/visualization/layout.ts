@@ -1,5 +1,5 @@
 import { IPromise, IQService, IQResolveReject } from 'angular';
-import { Uri } from '../../services/uri';
+import { Uri } from '../../entities/uri';
 import { layout as colaLayout } from './colaLayout';
 import * as joint from 'jointjs';
 import { ModelPositions } from '../../entities/visualization';
