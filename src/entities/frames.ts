@@ -225,6 +225,8 @@ export function classFrame(data: any): Frame {
     subject: embeddedSubject,
     property: {
       valueShape: {
+        '@omitDefault': true,
+        '@default': [],
         '@embed': false
       },
       predicate: {
