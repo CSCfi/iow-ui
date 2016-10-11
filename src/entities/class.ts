@@ -237,14 +237,20 @@ export class Constraint extends GraphNode {
       case 'and':
         Object.assign(result, { '@type': 'sh:AbstractAndNodeConstraint' });
         Object.assign(result, serialize(this, clone, { items: Constraint.constraintMappings.and }));
+        Object.assign(result, { [Constraint.constraintMappings.or.name]: null });
+        Object.assign(result, { [Constraint.constraintMappings.not.name]: null });
         break;
       case 'or':
         Object.assign(result, { '@type': 'sh:AbstractOrNodeConstraint' });
         Object.assign(result, serialize(this, clone, { items: Constraint.constraintMappings.or }));
+        Object.assign(result, { [Constraint.constraintMappings.and.name]: null });
+        Object.assign(result, { [Constraint.constraintMappings.not.name]: null });
         break;
       case 'not':
         Object.assign(result, { '@type': 'sh:AbstractNotNodeConstraint' });
         Object.assign(result, serialize(this, clone, { items: Constraint.constraintMappings.not }));
+        Object.assign(result, { [Constraint.constraintMappings.and.name]: null });
+        Object.assign(result, { [Constraint.constraintMappings.or.name]: null });
         break;
       default:
         assertNever(this.constraint, 'Unsupported constraint: ' + this.constraint);
