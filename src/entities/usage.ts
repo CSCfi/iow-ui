@@ -20,7 +20,7 @@ export class DefaultUsage extends GraphNode implements Usage {
     id:        { name: '@id',            serializer: uriSerializer },
     label:     { name: 'label',          serializer: localizableSerializer },
     definedBy: { name: 'isDefinedBy',    serializer: entityAwareOptional(entity(() => DefinedBy)) },
-    referrers: { name: 'isReferencedBy', serializer:  entityAwareList(entity(() => Referrer))}
+    referrers: { name: 'isReferencedBy', serializer: entityAwareList(entity(() => Referrer))}
   };
 
   id: Uri;
@@ -53,19 +53,17 @@ export class Referrer extends GraphNode {
     label:     { name: 'label',                       serializer: localizableSerializer },
     prefix:    { name: 'preferredXMLNamespacePrefix', serializer: optional(stringSerializer) },
     definedBy: { name: 'isDefinedBy',                 serializer: entityAwareOptional(entity(() => DefinedBy)) }
-
   };
 
   id: Uri;
   label: Localizable;
   prefix: string|null;
   definedBy: DefinedBy|null;
-  normalizedType: Type|null;
+  normalizedType: Type|null = normalizeReferrerType(this.type);
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     init(this, Referrer.referrerMappings);
-    this.normalizedType = normalizeReferrerType(this.type);
   }
 
   iowUrl() {
