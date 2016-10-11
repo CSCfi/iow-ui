@@ -19,9 +19,9 @@ import { normalizingDefinedBySerializer } from './serializer/common';
 export abstract class AbstractPredicate extends GraphNode {
 
   static abstractPredicateMappings = {
-    id: { name: '@id', serializer: uriSerializer },
-    label: { name: 'label', serializer: localizableSerializer },
-    comment: { name: 'comment', serializer: localizableSerializer },
+    id:        { name: '@id',         serializer: uriSerializer },
+    label:     { name: 'label',       serializer: localizableSerializer },
+    comment:   { name: 'comment',     serializer: localizableSerializer },
     definedBy: { name: 'isDefinedBy', serializer: normalizingDefinedBySerializer }
   };
 
