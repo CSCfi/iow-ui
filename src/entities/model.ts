@@ -1,5 +1,5 @@
 import { requireDefined } from '../utils/object';
-import { normalizeModelType, KnownModelType, State } from './type';
+import { normalizeModelType, KnownModelType, State, Type } from './type';
 import { Uri, Url, Urn } from '../entities/uri';
 import { Localizable } from './contract';
 import { modelUrl, resourceUrl } from '../utils/entity';
@@ -22,6 +22,16 @@ import {
 
 export abstract class AbstractModel extends GraphNode {
 
+  static normalizeType(type: Type[]): KnownModelType {
+    const normalizedType = requireDefined(normalizeModelType(type));
+
+    if (normalizedType === 'model') {
+      throw new Error('Model type must be known');
+    } else {
+      return normalizedType;
+    }
+  }
+
   static abstractModelMappings = {
     id:        { name: '@id',                         serializer: uriSerializer },
     label:     { name: 'label',                       serializer: localizableSerializer },
@@ -31,22 +41,13 @@ export abstract class AbstractModel extends GraphNode {
 
   id: Uri;
   label: Localizable;
-  normalizedType: KnownModelType;
   namespace: Url;
   prefix: string;
+  normalizedType = AbstractModel.normalizeType(this.type);
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-
     init(this, AbstractModel.abstractModelMappings);
-
-    const normalizedType = requireDefined(normalizeModelType(this.type));
-
-    if (normalizedType === 'model') {
-      throw new Error('Model type must be known');
-    } else {
-      this.normalizedType = normalizedType;
-    }
   }
 
   iowUrl() {
