@@ -12,7 +12,9 @@ import { Vocabulary } from './vocabulary';
 import { ReferenceData } from './referenceData';
 import { init, serialize, serializeSingle } from './mapping';
 import { GraphNode } from './graphNode';
-import { uriSerializer, entityAwareList, entity, entityAwareOptional } from './serializer/entitySerializer';
+import {
+  uriSerializer, entityAwareList, entity, entityAwareOptional, normalized
+} from './serializer/entitySerializer';
 import {
   localizableSerializer, stringSerializer, identitySerializer, optional, list,
   languageSerializer, dateSerializer, typeSerializer
@@ -60,6 +62,18 @@ export class ModelListItem extends AbstractModel {
 
 export class Model extends AbstractModel {
 
+  static groupSerializer = normalized(
+    entity(() => GroupListItem),
+    (data: any) => {
+      if (!data['@type']) {
+        // TODO: Shouldn't be needed but in all cases API doesn't return it
+        return Object.assign({}, data, { '@type': 'foaf:Group' });
+      } else {
+        return data;
+      }
+    }
+  );
+
   static modelMappings = {
     comment:        { name: 'comment',      serializer: localizableSerializer },
     state:          { name: 'versionInfo',  serializer: identitySerializer<State>() },
@@ -67,7 +81,7 @@ export class Model extends AbstractModel {
     namespaces:     { name: 'requires',     serializer: entityAwareList(entity(() => ImportedNamespace)) },
     links:          { name: 'relations',    serializer: entityAwareList(entity(() => Link)) },
     referenceDatas: { name: 'codeLists',    serializer: entityAwareList(entity(() => ReferenceData)) },
-    group:          { name: 'isPartOf',     serializer: entity(() => GroupListItem) },
+    group:          { name: 'isPartOf',     serializer: Model.groupSerializer },
     version:        { name: 'identifier',   serializer: optional(identitySerializer<Urn>()) },
     rootClass:      { name: 'rootResource', serializer: entityAwareOptional(uriSerializer) },
     language:       { name: 'language',     serializer: list<Language>(languageSerializer, ['fi', 'en']) },
@@ -92,11 +106,6 @@ export class Model extends AbstractModel {
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
-
-    if (!graph.isPartOf['@type']) {
-      // TODO: Shouldn't be needed but in all cases API doesn't return it
-      graph.isPartOf['@type'] = 'foaf:Group';
-    }
 
     init(this, Model.modelMappings);
     this.copyNamespacesFromRequires();
