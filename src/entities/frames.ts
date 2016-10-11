@@ -89,6 +89,7 @@ const classContext = Object.assign({}, coreContext, propertyContext, conceptCont
   constraint: { '@id': 'http://www.w3.org/ns/shacl#constraint', '@type': '@id' },
   or: { '@id': 'http://www.w3.org/ns/shacl#or', '@container': '@list' },
   and: { '@id': 'http://www.w3.org/ns/shacl#and', '@container': '@list' },
+  not: { '@id': 'http://www.w3.org/ns/shacl#not', '@container': '@list' },
   subject
 });
 
