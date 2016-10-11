@@ -12,11 +12,11 @@ import { dateSerializer, userLoginSerializer } from './serializer/serializer';
 export class Activity extends GraphNode {
 
   static activityMappings = {
-    id: { name: '@id', serializer: uriSerializer },
-    createdAt: { name: 'startedAtTime', serializer: dateSerializer },
+    id:             { name: '@id',             serializer: uriSerializer },
+    createdAt:      { name: 'startedAtTime',   serializer: dateSerializer },
     lastModifiedBy: { name: 'wasAttributedTo', serializer: userLoginSerializer },
-    versions: { name: 'generated', serializer: entityAwareList(entity(() => Entity)) },
-    latestVersion: { name: 'used', serializer: uriSerializer }
+    versions:       { name: 'generated',       serializer: entityAwareList(entity(() => Entity)) },
+    latestVersion:  { name: 'used',            serializer: uriSerializer }
   };
 
   id: Uri;
