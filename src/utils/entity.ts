@@ -64,28 +64,6 @@ export function isLocalizable(obj: any): obj is Localizable {
   return typeof obj === 'object';
 }
 
-export function normalizeAsSingle(graph: any, parentId: Uri): string|{} {
-
-  if (Array.isArray(graph) && graph.length > 0) {
-
-    const parentUri = parentId.uri;
-    const ids = graph.map(item => typeof item === 'object' ? item['@id'] : item);
-
-    for (let i = 0; i < ids.length; i++) {
-      const id = ids[i];
-
-      if (parentUri.startsWith(id)) {
-        return graph[i];
-      }
-    }
-
-    return graph[0];
-
-  } else {
-    return graph;
-  }
-}
-
 export function coordinatesAreEqual(l: Coordinate|null|undefined, r: Coordinate|null|undefined) {
   // Coordinates seem to fluctuate a bit with jointjs and firefox so normalize by truncating decimals
   return areEqual(l, r, (lhs, rhs) => Math.trunc(lhs.x) === Math.trunc(rhs.x) && Math.trunc(lhs.y) === Math.trunc(rhs.y));
