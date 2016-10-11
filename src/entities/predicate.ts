@@ -30,13 +30,12 @@ export abstract class AbstractPredicate extends GraphNode {
   comment: Localizable;
   definedBy: DefinedBy;
 
-  normalizedType: PredicateType;
+  normalizedType: PredicateType = requireDefined(normalizePredicateType(this.type));
   selectionType: SelectionType = 'predicate';
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     init(this, AbstractPredicate.abstractPredicateMappings);
-    this.normalizedType = requireDefined(normalizePredicateType(this.type));
   }
 
   isClass() {
