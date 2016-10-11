@@ -15,9 +15,12 @@ export class Uri {
     if (!value) {
       throw new Error('Empty uri');
     }
+    if (!context) {
+      throw new Error('Context not defined');
+    }
     if (typeof value !== 'string') {
       console.log(value);
-      throw new Error('Uri value must be string');
+      throw new Error('Uri value must be string: ' + value);
     }
   }
 
