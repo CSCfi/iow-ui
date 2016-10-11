@@ -224,6 +224,9 @@ export function classFrame(data: any): Frame {
     isDefinedBy: { '@embed': '@always' },
     subject: embeddedSubject,
     property: {
+      valueShape: {
+        '@embed': false
+      },
       predicate: {
         '@embed': false
       },
