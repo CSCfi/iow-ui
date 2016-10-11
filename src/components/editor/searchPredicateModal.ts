@@ -3,10 +3,6 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
-import {
-  Predicate, PredicateListItem, Model,
-  AbstractPredicate, ExternalEntity, Property, Class, KnownPredicateType
-} from '../../services/entities';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -19,6 +15,11 @@ import { ClassService } from '../../services/classService';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions, Exclusion } from '../../utils/exclusion';
 import { SearchFilter, SearchController, applyFilters } from '../filter/contract';
+import { PredicateListItem, AbstractPredicate, Predicate } from '../../entities/predicate';
+import { Model } from '../../entities/model';
+import { KnownPredicateType } from '../../entities/type';
+import { ExternalEntity } from '../../entities/externalEntity';
+import { Class, Property } from '../../entities/class';
 
 const noExclude = (_item: PredicateListItem) => null;
 
@@ -161,7 +162,7 @@ export class SearchPredicateController implements SearchController<PredicateList
   }
 
   canAddExternal() {
-    return this.model.isOfType('profile');
+    return this.model.isOfType('profile') && this.type === null; // type is null when adding new property
   }
 
   isSelectionExternalEntity(): boolean {
@@ -176,7 +177,7 @@ export class SearchPredicateController implements SearchController<PredicateList
     const result: (PredicateListItem|AddNewPredicate)[] = [
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
-      new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), null, true)
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), this.type, true)
     ];
 
     this.searchResults = result.concat(applyFilters(this.predicates, this.searchFilters));

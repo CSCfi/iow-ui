@@ -1,6 +1,5 @@
 import { IAttributes, INgModelController, IScope, IQService } from 'angular';
 import { ValidatorService } from '../../services/validatorService';
-import { Class, Predicate } from '../../services/entities';
 import {
   isValidLabelLength, isValidIdentifier, isValidClassIdentifier,
   isValidPredicateIdentifier
@@ -8,6 +7,8 @@ import {
 import { Uri } from '../../services/uri';
 import { extendNgModelOptions } from '../../utils/angular';
 import { module as mod }  from './module';
+import { Class } from '../../entities/class';
+import { Predicate } from '../../entities/predicate';
 
 
 interface IdInputAttributes extends IAttributes {

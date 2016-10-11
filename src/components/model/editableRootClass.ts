@@ -1,10 +1,10 @@
 import { IAttributes, IScope } from 'angular';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, ClassListItem } from '../../services/entities';
 import { SearchClassModal } from '../editor/searchClassModal';
-
-import { module as mod }  from './module';
 import { requireDefined } from '../../utils/object';
+import { Model } from '../../entities/model';
+import { ClassListItem } from '../../entities/class';
+import { module as mod }  from './module';
 
 mod.directive('editableRootClass', () => {
   return {

@@ -1,9 +1,68 @@
-import { GraphData, Model, Type, Coordinate, Dimensions } from '../services/entities';
-import { containsAny, collectProperties, index } from './array';
+import { containsAny, collectProperties, index, contains } from './array';
 import { WithId } from '../components/contracts';
-import { areEqual } from './object';
+import { areEqual, requireDefined, isDefined } from './object';
 import { IHttpPromiseCallbackArg } from 'angular';
-import { Uri } from '../services/uri';
+import { Uri, Urn, RelativeUrl } from '../services/uri';
+import { Localizable, Coordinate, Dimensions, GraphData, EntityConstructor } from '../entities/contract';
+import { Type } from '../entities/type';
+import { DefinedBy } from '../entities/definedBy';
+import { Concept, ConceptSuggestion, FintoConcept } from '../entities/vocabulary';
+import { Model } from '../entities/model';
+import { typeSerializer } from '../entities/serializer/serializer';
+
+export interface Destination {
+  id: Uri;
+  type: Type[];
+  prefix: string|null;
+  definedBy: DefinedBy|null;
+}
+
+
+export function modelUrl(prefix: string): RelativeUrl {
+  return `/model/${prefix}` + '/';
+}
+
+export function resourceUrl(modelPrefix: string, resource: Uri) {
+  const resourcePrefix = resource.findPrefix();
+  const linked = isDefined(resourcePrefix) && resourcePrefix !== modelPrefix;
+  return modelUrl(modelPrefix) +  (linked ? resource.curie : resource.name) + '/';
+}
+
+export function contextlessInternalUrl(destination: Destination) {
+  if (destination) {
+    if (containsAny(destination.type, ['model', 'profile'])) {
+      return modelUrl(requireDefined(destination.prefix));
+    } else if (containsAny(destination.type, ['group'])) {
+      return groupUrl(destination.id.uri);
+    } else if (containsAny(destination.type, ['association', 'attribute', 'class', 'shape'])) {
+      return resourceUrl(requireDefined(requireDefined(destination.definedBy).prefix), destination.id);
+    } else {
+      throw new Error('Unsupported type for url: ' + destination.type);
+    }
+  } else {
+    return null;
+  }
+}
+
+export function groupUrl(id: string): RelativeUrl {
+  return `/group?id=${encodeURIComponent(id)}`;
+}
+
+export function idToIndexMap<T extends {id: Uri }>(items: T[]): Map<Urn, number> {
+  return new Map(items.map<[string, number]>((item: T, index: number) => [item.id.toString(), index]));
+}
+
+export function resolveConceptConstructor(graph: any): EntityConstructor<Concept> {
+  return isConceptSuggestionGraph(graph) ? ConceptSuggestion : FintoConcept;
+}
+
+export function isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
+  return contains(typeSerializer.deserialize(withType['@type']), 'conceptSuggestion');
+}
+
+export function isLocalizable(obj: any): obj is Localizable {
+  return typeof obj === 'object';
+}
 
 export function normalizeAsSingle(graph: any, parentId: Uri): string|{} {
 

@@ -1,18 +1,19 @@
-import { Property, VisualizationClass } from '../../services/entities';
 import { isDefined, assertNever } from '../../utils/object';
-import { DataType } from '../../services/dataTypes';
 import { Localizer } from '../../utils/language';
 import { NameType } from '../../services/sessionService';
+import { DataType } from '../../entities/dataTypes';
+import { VisualizationClass } from '../../entities/visualization';
+import { Property } from '../../entities/class';
 
-function formatDataTypeAsLabel(dataType: DataType|undefined, localizer: Localizer) {
+function formatDataTypeAsLabel(dataType: DataType|null, localizer: Localizer) {
   return localizer.getStringWithModelLanguageOrDefault(dataType, 'en');
 }
 
-function formatDataTypeAsId(dataType: DataType|undefined) {
+function formatDataTypeAsId(dataType: DataType|null) {
   return dataType || '';
 }
 
-function formatDataTypeName(dataType: DataType|undefined, showName: NameType, localizer: Localizer) {
+function formatDataTypeName(dataType: DataType|null, showName: NameType, localizer: Localizer) {
   switch (showName) {
     case NameType.LABEL:
       return formatDataTypeAsLabel(dataType, localizer);
@@ -118,7 +119,7 @@ export function allClassNames(klass: VisualizationClass) {
   return [...Object.values(klass.label), formatClassNameAsId(klass), formatClassNameAsLocalId(klass)];
 }
 
-function allDataTypeNames(dataType: DataType|undefined, localizer: Localizer) {
+function allDataTypeNames(dataType: DataType|null, localizer: Localizer) {
   if (!dataType) {
     return [];
   } else {

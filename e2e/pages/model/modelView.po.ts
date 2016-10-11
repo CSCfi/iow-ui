@@ -1,5 +1,4 @@
 import { EditableComponent } from '../common/component/editableComponent.po';
-import { KnownModelType } from '../../../src/services/entities';
 import { upperCaseFirst } from 'change-case';
 import { EditableEntityButtons } from '../common/component/editableEntityButtons.po';
 import { EditableMultipleComponent } from '../common/component/editableMultipleComponent.po';
@@ -8,6 +7,7 @@ import { LinksView } from './linksView.po';
 import { NamespacesView } from './namespacesView.po';
 import { ReferenceDataView } from './referenceDataView.po';
 import { NavBar } from '../common/navbar.po';
+import { KnownModelType } from '../../../src/entities/type';
 
 const navbar = new NavBar();
 

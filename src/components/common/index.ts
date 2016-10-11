@@ -1,3 +1,4 @@
+import { module as mod }  from './module';
 import { ISCEService } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Moment } from 'moment';
@@ -6,8 +7,7 @@ import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { HistoryModal } from './historyModal';
 import { LanguageService } from '../../services/languageService';
-import { Localizable, LanguageContext } from '../../services/entities';
-import { module as mod }  from './module';
+import { Localizable, LanguageContext } from '../../entities/contract';
 export default mod.name;
 
 import './accordion';

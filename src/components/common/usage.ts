@@ -1,9 +1,10 @@
+import { module as mod }  from '../module';
 import { IAttributes, IScope } from 'angular';
 import * as _ from 'lodash';
 import Dictionary = _.Dictionary;
-import { Usage, Referrer, LanguageContext } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
-import { module as mod }  from '../module';
+import { Referrer, Usage } from '../../entities/usage';
+import { LanguageContext } from '../../entities/contract';
 
 interface UsageAttributes extends IAttributes {
   showLinks: string;

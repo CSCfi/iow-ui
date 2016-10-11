@@ -1,4 +1,6 @@
-import { Model, Group, Localizable } from './entities';
+import { Localizable } from '../entities/contract';
+import { Model } from '../entities/model';
+import { Group } from '../entities/group';
 
 export interface Location {
   localizationKey?: string;

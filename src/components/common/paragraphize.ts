@@ -1,7 +1,7 @@
 import { module as mod } from './module';
-import { LanguageContext, Localizable } from '../../services/entities';
 import { ISCEService, sanitize } from 'angular';
 import ISanitizeService = sanitize.ISanitizeService;
+import { Localizable, LanguageContext } from '../../entities/contract';
 
 mod.directive('paragraphize', () => {
   return {

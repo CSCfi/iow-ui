@@ -1,9 +1,10 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import { Model, ReferenceData } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../../utils/language';
+import { Model } from '../../entities/model';
+import { ReferenceData } from '../../entities/referenceData';
 
 export class EditReferenceDataModal {
   /* @ngInject */

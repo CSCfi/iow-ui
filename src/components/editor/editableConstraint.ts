@@ -1,9 +1,5 @@
 import { IAttributes, IScope } from 'angular';
 import { EditableForm } from '../form/editableEntityController';
-import {
-  Model, Constraint, ConstraintListItem, ClassListItem,
-  ConstraintType, Class
-} from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import { SearchClassType } from '../contracts';
 import {
@@ -12,6 +8,9 @@ import {
 } from '../../utils/exclusion';
 import { collectProperties } from '../../utils/array';
 import { module as mod }  from './module';
+import { Constraint, Class, ConstraintListItem, ClassListItem } from '../../entities/class';
+import { Model } from '../../entities/model';
+import { ConstraintType } from '../../entities/type';
 
 mod.directive('editableConstraint', () => {
   return {

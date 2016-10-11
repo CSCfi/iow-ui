@@ -2,9 +2,6 @@ import { IPromise, IScope, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
-import {
-  Class, ClassListItem, Model, AbstractClass, ExternalEntity
-} from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
@@ -14,6 +11,9 @@ import { EditableForm } from '../form/editableEntityController';
 import { glyphIconClassForType } from '../../utils/entity';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchFilter, SearchController, applyFilters } from '../filter/contract';
+import { AbstractClass, Class, ClassListItem } from '../../entities/class';
+import { Model } from '../../entities/model';
+import { ExternalEntity } from '../../entities/externalEntity';
 
 export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';

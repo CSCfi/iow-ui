@@ -2,9 +2,7 @@ import { IScope, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { ConceptService } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { Model, Concept, DefinedBy, ConceptSuggestion, Vocabulary, ConceptType } from '../../services/entities';
 import { comparingLocalizable } from '../../services/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
@@ -13,6 +11,11 @@ import { Uri } from '../../services/uri';
 import { localizableContains } from '../../utils/language';
 import * as _ from 'lodash';
 import { isDefined } from '../../utils/object';
+import { Model } from '../../entities/model';
+import { Concept, Vocabulary, ConceptSuggestion } from '../../entities/vocabulary';
+import { DefinedBy } from '../../entities/definedBy';
+import { ConceptType } from '../../entities/type';
+import { VocabularyService } from '../../services/vocabularyService';
 
 export class ConceptEditorModal {
 
@@ -58,14 +61,14 @@ export class ConceptEditorModalController {
               private $uibModalInstance: IModalServiceInstance,
               languageService: LanguageService,
               public gettextCatalog: gettextCatalog,
-              conceptService: ConceptService,
+              vocabularyService: VocabularyService,
               private confirmationModal: ConfirmationModal,
               public model: Model) {
 
     this.localizer = languageService.createLocalizer(model);
     this.loadingResults = true;
 
-    conceptService.getConceptsForModel(model)
+    vocabularyService.getConceptsForModel(model)
       .then(concepts => {
         this.concepts = concepts;
         this.models = _.chain(concepts)

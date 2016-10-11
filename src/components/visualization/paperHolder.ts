@@ -1,9 +1,9 @@
-import { Model } from '../../services/entities';
 import { IowClassElement, ShadowClass } from './diagram';
 import * as joint from 'jointjs';
 import { ClassInteractionListener } from './contract';
 import { Iterable } from '../../utils/iterable';
 import { moveOrigin, scale } from './paperUtil';
+import { Model } from '../../entities/model';
 
 export class PaperHolder {
 

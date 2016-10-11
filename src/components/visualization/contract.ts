@@ -1,4 +1,4 @@
-import { Coordinate } from '../../services/entities';
+import { Coordinate } from '../../entities/contract';
 
 export interface ClassInteractionListener {
   onClassClick(classId: string): void;

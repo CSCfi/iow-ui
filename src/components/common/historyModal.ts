@@ -1,14 +1,17 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
-import { Model, Predicate, Class, Entity } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
 import { ModelService } from '../../services/modelService';
 import { HistoryService } from '../../services/historyService';
 import { UserService } from '../../services/userService';
-import { Urn } from '../../services/uri';
+import { Uri } from '../../services/uri';
 import { comparingDate, reversed } from '../../services/comparators';
 import { containsAny } from '../../utils/array';
+import { Model } from '../../entities/model';
+import { Class } from '../../entities/class';
+import { Predicate } from '../../entities/predicate';
+import { Entity } from '../../entities/version';
 
 export class HistoryModal {
   /* @ngInject */
@@ -70,7 +73,7 @@ class HistoryModalController {
     });
   }
 
-  private fetchResourceAtVersion(versionId: Urn): IPromise<Class|Predicate|Model> {
+  private fetchResourceAtVersion(versionId: Uri): IPromise<Class|Predicate|Model> {
     if (containsAny(this.resource.type, ['class', 'shape'])) {
       return this.classService.getClass(versionId, this.model);
     } else if (containsAny(this.resource.type, ['attribute', 'association'])) {

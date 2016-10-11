@@ -1,9 +1,9 @@
 import { IAttributes, IScope, INgModelController, IParseService } from 'angular';
 import { DisplayItemFactory, DisplayItem, Value } from './displayItemFactory';
 import { EditableForm } from './editableEntityController';
-import { LanguageContext } from '../../services/entities';
 import { module as mod }  from './module';
 import { isDefined } from '../../utils/object';
+import { LanguageContext } from '../../entities/contract';
 
 const NG_HIDE_CLASS = 'ng-hide';
 const NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';

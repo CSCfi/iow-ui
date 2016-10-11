@@ -1,13 +1,13 @@
 import { IAttributes, IScope, IQService, INgModelController } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { DataType } from '../../services/dataTypes';
 import { resolveValidator } from './validators';
 import { LanguageService } from '../../services/languageService';
 import { createAsyncValidators } from './codeValueInput';
-import { ReferenceData } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { isUpperCase } from 'change-case';
 import { module as mod }  from './module';
+import { DataType } from '../../entities/dataTypes';
+import { ReferenceData } from '../../entities/referenceData';
 
 export function placeholderText(dataType: DataType, gettextCatalog: gettextCatalog) {
   const validator = resolveValidator(dataType);

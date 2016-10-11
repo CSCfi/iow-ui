@@ -1,4 +1,4 @@
-import { Localizable, LanguageContext } from './entities';
+import { LanguageContext, Localizable } from '../entities/contract';
 import {
   Language, availableUILanguages, translate, UILanguage,
   Localizer

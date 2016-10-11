@@ -1,10 +1,10 @@
 import { IPromise, IQService } from 'angular';
 import * as moment from 'moment';
-import { DataType } from '../../services/dataTypes';
 import { Uri } from '../../services/uri';
 import { availableLanguages } from '../../utils/language';
 import { contains } from '../../utils/array';
 import * as _ from 'lodash';
+import { DataType } from '../../entities/dataTypes';
 const URI = require('uri-js');
 
 export interface Validator<T> {

@@ -1,9 +1,11 @@
 import { module as mod }  from './module';
-import { Class, Model, Predicate } from '../../services/entities';
 import { Show } from '../contracts';
 import { IScope, IAttributes } from 'angular';
 import { FloatController } from '../common/float';
 import { assertNever } from '../../utils/object';
+import { Class } from '../../entities/class';
+import { Predicate } from '../../entities/predicate';
+import { Model } from '../../entities/model';
 
 mod.directive('visualizationView', () => {
   return {

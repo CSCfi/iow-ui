@@ -1,6 +1,5 @@
 import { IAttributes, IScope } from 'angular';
 import { ModelViewController } from './modelView';
-import { Model, ReferenceData } from '../../services/entities';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { module as mod }  from './module';
@@ -9,6 +8,8 @@ import { collectIds } from '../../utils/entity';
 import { SearchReferenceDataModal } from './searchReferenceDataModal';
 import { EditReferenceDataModal } from './editReferenceDataModal';
 import { ViewReferenceDataModal } from './viewReferenceDataModal';
+import { Model } from '../../entities/model';
+import { ReferenceData } from '../../entities/referenceData';
 
 mod.directive('referenceDatasView', () => {
   return {

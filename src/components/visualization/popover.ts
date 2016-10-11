@@ -1,7 +1,7 @@
 import { module as mod } from './module';
-import { Coordinate, Localizable, LanguageContext, Dimensions } from '../../services/entities';
 import { IScope, IAttributes, ITimeoutService } from 'angular';
 import { hasLocalization } from '../../utils/language';
+import { Coordinate, Localizable, LanguageContext, Dimensions } from '../../entities/contract';
 
 export interface VisualizationPopoverDetails {
   coordinate: Coordinate;

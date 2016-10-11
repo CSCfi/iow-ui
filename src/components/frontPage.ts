@@ -4,12 +4,14 @@ import { GroupService } from '../services/groupService';
 import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
 import { AdvancedSearchModal } from './advancedSearchModal';
-import { GroupListItem, SearchResult, frontPageSearchLanguageContext, LanguageContext } from '../services/entities';
 import { MaintenanceModal } from './maintenance';
 import { Url } from '../services/uri';
 import { module as mod }  from './module';
 import { comparingLocalizable } from '../services/comparators';
 import { SearchController, SearchFilter, applyFilters } from './filter/contract';
+import { frontPageSearchLanguageContext, LanguageContext } from '../entities/contract';
+import { SearchResult } from '../entities/search';
+import { GroupListItem } from '../entities/group';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');

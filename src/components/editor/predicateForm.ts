@@ -1,4 +1,3 @@
-import { Association, Model, Attribute, KnownPredicateType } from '../../services/entities';
 import { module as mod }  from './module';
 import { IScope, IAttributes } from 'angular';
 import { isDefined } from '../../utils/object';
@@ -8,6 +7,9 @@ import { PredicateService } from '../../services/predicateService';
 import { glyphIconClassForType } from '../../utils/entity';
 import { EditableForm } from '../form/editableEntityController';
 import { PredicateViewController } from './predicateView';
+import { Model } from '../../entities/model';
+import { Attribute, Association } from '../../entities/predicate';
+import { KnownPredicateType } from '../../entities/type';
 
 mod.directive('predicateForm', () => {
   return {

@@ -1,5 +1,4 @@
 import { IAttributes, IScope } from 'angular';
-import { Model, ImportedNamespace, NamespaceType } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../form/editableTable';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
@@ -8,6 +7,7 @@ import { ModelController } from './model';
 import { ModelViewController } from './modelView';
 import { combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';
+import { Model, ImportedNamespace, NamespaceType } from '../../entities/model';
 
 mod.directive('importedNamespacesView', () => {
   return {

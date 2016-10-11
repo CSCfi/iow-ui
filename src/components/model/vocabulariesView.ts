@@ -1,6 +1,5 @@
 import { IAttributes, IScope } from 'angular';
 import { ModelViewController } from './modelView';
-import { Model, Vocabulary } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { SearchVocabularyModal } from './searchVocabularyModal';
@@ -9,6 +8,8 @@ import { createExistsExclusion } from '../../utils/exclusion';
 import { ConceptEditorModal } from './conceptEditorModal';
 import { collectProperties } from '../../utils/array';
 import { requireDefined } from '../../utils/object';
+import { Model } from '../../entities/model';
+import { Vocabulary } from '../../entities/vocabulary';
 
 mod.directive('vocabulariesView', () => {
   return {

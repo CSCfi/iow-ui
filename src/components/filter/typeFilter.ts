@@ -1,9 +1,9 @@
 import { module as mod } from './module';
 import { SearchController } from './contract';
 import { IScope } from 'angular';
-import { Type } from '../../services/entities';
 import { isDefined } from '../../utils/object';
 import { ifChanged } from '../../utils/angular';
+import { Type } from '../../entities/type';
 
 mod.directive('typeFilter', () => {
   return {

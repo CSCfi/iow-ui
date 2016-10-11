@@ -1,47 +1,42 @@
 import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
-import {
-  EntityDeserializer,
-  Attribute,
-  Association,
-  Class,
-  ClassListItem,
-  Predicate,
-  Property,
-  Model,
-  GraphData,
-  ExternalEntity,
-  KnownPredicateType
-} from './entities';
 import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { Uri, Urn } from './uri';
-import { reverseMapType } from './typeMapping';
+import { reverseMapType } from '../entities/type';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language, hasLocalization } from '../utils/language';
 import { DataSource } from '../components/form/dataSource';
 import { modelScopeCache } from '../components/form/cache';
 import { requireDefined } from '../utils/object';
+import { GraphData } from '../entities/contract';
+import { FrameService } from './frameService';
+import * as frames from '../entities/frames';
+import { KnownPredicateType } from '../entities/type';
+import { ClassListItem, Class, Property } from '../entities/class';
+import { Model } from '../entities/model';
+import { ExternalEntity } from '../entities/externalEntity';
+import { Predicate, Attribute, Association } from '../entities/predicate';
 
 export class ClassService {
 
   private modelClassesCache = new Map<string, ClassListItem[]>();
 
   /* @ngInject */
-  constructor(private $http: IHttpService, private $q: IQService, private predicateService: PredicateService, private entities: EntityDeserializer) {
+  constructor(private $http: IHttpService, private $q: IQService, private predicateService: PredicateService, private frameService: FrameService) {
   }
 
   getClass(id: Uri|Urn, model: Model): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {id: id.toString()}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeClass(response.data!));
+      .then(response => this.deserializeClass(response.data!));
   }
 
   getAllClasses(model: Model): IPromise<ClassListItem[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('class'))
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeClassList(response.data!));
+      .then(response => this.deserializeClassList(response.data!));
   }
 
   getClassesForModel(model: Model) {
@@ -70,7 +65,7 @@ export class ClassService {
     } else {
       return this.$http.get<GraphData>(config.apiEndpointWithName('class'), {params: {model: model.id.uri}})
         .then(expandContextWithKnownModels(model))
-        .then(response => this.entities.deserializeClassList(response.data!))
+        .then(response => this.deserializeClassList(response.data!))
         .then(classList => {
           this.modelClassesCache.set(model.id.uri, classList);
           return classList;
@@ -129,7 +124,7 @@ export class ClassService {
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('classCreator'), {params: {modelID: model.id.uri, classLabel: upperCaseFirst(classLabel), conceptID: conceptID.uri, lang}})
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.entities.deserializeClass(response.data!))
+      .then((response: any) => this.deserializeClass(response.data!))
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
@@ -147,7 +142,7 @@ export class ClassService {
       classPromise,
       this.$http.get<GraphData>(config.apiEndpointWithName('shapeCreator'), {params: {profileID: profile.id.uri, classID: id.toString(), lang}})
         .then(expandContextWithKnownModels(profile))
-        .then((response: any) => this.entities.deserializeClass(response.data))
+        .then((response: any) => this.deserializeClass(response.data))
       ])
       .then(([klass, shape]: [Class, Class]) => {
 
@@ -190,7 +185,7 @@ export class ClassService {
   getExternalClass(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.entities.deserializeClass(response.data))
+      .then((response: any) => this.deserializeClass(response.data))
       .then(klass => {
         if (klass) {
           klass.external = true;
@@ -202,7 +197,7 @@ export class ClassService {
   getExternalClassesForModel(model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalClass'), {params: {model: model.id.uri}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializeClassList(response.data!));
+      .then(response => this.deserializeClassList(response.data!));
   }
 
   newProperty(predicateOrExternal: Predicate|ExternalEntity, type: KnownPredicateType, model: Model): IPromise<Property> {
@@ -214,7 +209,7 @@ export class ClassService {
       predicatePromise,
       this.$http.get<GraphData>(config.apiEndpointWithName('classProperty'), {params: {predicateID: id.toString(), type: reverseMapType(type)}})
         .then(expandContextWithKnownModels(model))
-        .then((response: any) => this.entities.deserializeProperty(response.data))
+        .then((response: any) => this.deserializeProperty(response.data))
     ])
       .then(([predicate, property]: [Predicate, Property]) => {
 
@@ -240,5 +235,17 @@ export class ClassService {
 
   getInternalOrExternalClass(id: Uri, model: Model) {
     return model.isNamespaceKnownToBeNotModel(id.namespace) ? this.getExternalClass(id, model) : this.getClass(id, model);
+  }
+
+  private deserializeClassList(data: GraphData): IPromise<ClassListItem[]> {
+    return this.frameService.frameAndMapArray(data, frames.classListFrame(data), () => ClassListItem);
+  }
+
+  private deserializeClass(data: GraphData): IPromise<Class> {
+    return this.frameService.frameAndMap(data, true, frames.classFrame(data), () => Class);
+  }
+
+  private deserializeProperty(data: GraphData): IPromise<Property> {
+    return this.frameService.frameAndMap(data, true, frames.propertyFrame(data), () => Property);
   }
 }

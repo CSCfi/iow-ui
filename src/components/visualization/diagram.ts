@@ -1,5 +1,4 @@
 import * as joint from 'jointjs';
-import { VisualizationClass, Dimensions, Property } from '../../services/entities';
 import {
   formatClassName, formatAttributeNamesAndAnnotations, formatAssociationPropertyName,
   formatCardinality, allAttributePropertyNames, allClassNames
@@ -7,6 +6,9 @@ import {
 import { NameType } from '../../services/sessionService';
 import { Localizer } from '../../utils/language';
 import { requireDefined } from '../../utils/object';
+import { VisualizationClass } from '../../entities/visualization';
+import { Property } from '../../entities/class';
+import { Dimensions } from '../../entities/contract';
 
 const zIndexAssociation = 5;
 const zIndexClass = 10;

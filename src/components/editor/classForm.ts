@@ -1,7 +1,6 @@
 import { IAttributes, IScope } from 'angular';
 import * as _ from 'lodash';
 import { ClassViewController } from './classView';
-import { Class, Model, Property, ClassListItem } from '../../services/entities';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { Uri } from '../../services/uri';
 import { ClassService } from '../../services/classService';
@@ -15,6 +14,8 @@ import { SessionService } from '../../services/sessionService';
 import { LanguageService } from '../../services/languageService';
 import { Localizer } from '../../utils/language';
 import { comparingLocalizable } from '../../services/comparators';
+import { Class, Property, ClassListItem } from '../../entities/class';
+import { Model } from '../../entities/model';
 
 mod.directive('classForm', () => {
   return {

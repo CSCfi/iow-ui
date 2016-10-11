@@ -2,9 +2,9 @@ import { IAttributes, IAsyncModelValidators, IQService, IScope, INgModelControll
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { ModelService } from '../../services/modelService';
 import { LanguageService } from '../../services/languageService';
-import { ReferenceData } from '../../services/entities';
 import { module as mod }  from './module';
 import { any } from '../../utils/array';
+import { ReferenceData } from '../../entities/referenceData';
 
 export function placeholderText(gettextCatalog: gettextCatalog) {
   return gettextCatalog.getString('Write reference data code');

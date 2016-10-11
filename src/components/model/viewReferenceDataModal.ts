@@ -1,6 +1,7 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
-import { ReferenceData, LanguageContext } from '../../services/entities';
+import { ReferenceData } from '../../entities/referenceData';
+import { LanguageContext } from '../../entities/contract';
 
 export class ViewReferenceDataModal {
   /* @ngInject */

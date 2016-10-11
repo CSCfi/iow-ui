@@ -1,7 +1,7 @@
 import { IScope, IAttributes, INgModelController } from 'angular';
-import { Model, ImportedNamespace, NamespaceType } from '../../services/entities';
 import { isValidPrefixLength, isValidPrefix } from './validators';
 import { module as mod }  from './module';
+import { NamespaceType, Model, ImportedNamespace } from '../../entities/model';
 
 mod.directive('prefixInput', () => {
   return {

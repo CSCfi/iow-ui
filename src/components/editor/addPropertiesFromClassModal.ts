@@ -3,8 +3,9 @@ import IModalService = ui.bootstrap.IModalService;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import * as _ from 'lodash';
 import Dictionary = _.Dictionary;
-import { Class, Property, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
+import { Property, Class } from '../../entities/class';
+import { LanguageContext } from '../../entities/contract';
 
 const noExclude = (_property: Property) => false;
 

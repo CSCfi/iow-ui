@@ -2,7 +2,6 @@ import { IScope, IAttributes, ILogService } from 'angular';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Attribute, Association, GroupListItem, Model, LanguageContext } from '../../services/entities';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from '../model/model';
 import { Show } from '../contracts';
@@ -10,6 +9,10 @@ import { ErrorModal } from '../form/errorModal';
 import { module as mod }  from './module';
 import { setSelectionStyles } from '../../utils/angular';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { Association, Attribute } from '../../entities/predicate';
+import { Model } from '../../entities/model';
+import { GroupListItem } from '../../entities/group';
+import { LanguageContext } from '../../entities/contract';
 
 mod.directive('predicateView', () => {
   return {

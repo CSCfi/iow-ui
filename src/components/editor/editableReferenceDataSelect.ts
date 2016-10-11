@@ -1,5 +1,4 @@
 import { IScope, IAttributes } from 'angular';
-import { Model, ReferenceData } from '../../services/entities';
 import { EditableForm } from '../form/editableEntityController';
 import { SearchReferenceDataModal } from '../model/searchReferenceDataModal';
 import { module as mod }  from './module';
@@ -9,6 +8,8 @@ import { Localizer, LanguageService } from '../../services/languageService';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion } from '../../utils/exclusion';
 import * as _ from 'lodash';
+import { ReferenceData } from '../../entities/referenceData';
+import { Model } from '../../entities/model';
 
 mod.directive('editableReferenceDataSelect', () => {
   return {

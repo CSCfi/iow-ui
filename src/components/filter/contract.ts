@@ -1,6 +1,6 @@
-import { Localizable } from '../../services/entities';
 import { AddNew } from '../common/searchResults';
 import { all, limit } from '../../utils/array';
+import { Localizable } from '../../entities/contract';
 
 const defaultSearchLimit = 100;
 

@@ -1,9 +1,9 @@
 import { IScope, IAttributes, INgModelController, IModelValidators } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { Model } from '../../services/entities';
 import { isValidUri, isValidUrl, isValidUriStem } from './validators';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
+import { Model } from '../../entities/model';
 import { LanguageService } from '../../services/languageService';
 
 type UriInputType = 'required-namespace' | 'free-url' | 'free-uri' | 'stem';

@@ -1,9 +1,10 @@
 import { IScope, ILocationService } from 'angular';
 import { module as mod }  from './module';
 import { ModelService } from '../../services/modelService';
-import { Model, KnownModelType } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { Language } from '../../utils/language';
+import { KnownModelType } from '../../entities/type';
+import { Model } from '../../entities/model';
 
 mod.directive('newModel', () => {
   return {

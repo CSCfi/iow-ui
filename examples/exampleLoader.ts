@@ -2,14 +2,14 @@
 
 import { ILogCall, ILogService, IQService } from 'angular';
 import { EntityLoader } from '../src/services/entityLoader';
-import { EntityDeserializer } from '../src/services/entities';
 import { httpService } from './requestToAngularHttpService';
 import { PredicateService } from '../src/services/predicateService';
 import { ModelService } from '../src/services/modelService';
 import { ClassService } from '../src/services/classService';
 import { UserService } from '../src/services/userService';
-import { ConceptService } from '../src/services/conceptService';
+import { VocabularyService } from '../src/services/vocabularyService';
 import { ResetService } from '../src/services/resetService';
+import { FrameService } from '../src/services/frameService';
 
 const argv = require('optimist')
   .default({
@@ -23,12 +23,12 @@ process.env['API_ENDPOINT'] = `http://${argv.host}:${argv.port}/api`;
 const logFn: ILogCall = (...args: any[]) => console.log(args);
 const log: ILogService = { debug: logFn, error: logFn, info: logFn, log: logFn, warn: logFn };
 const q = <IQService> require('q');
-const entityDeserializer = new EntityDeserializer(log);
-const modelService = new ModelService(httpService, q, entityDeserializer);
-const predicateService = new PredicateService(httpService, q, entityDeserializer);
-const classService = new ClassService(httpService, q, predicateService, entityDeserializer);
-const userService = new UserService(httpService, entityDeserializer);
-const conceptService = new ConceptService(httpService, entityDeserializer);
+const frameService = new FrameService(log);
+const modelService = new ModelService(httpService, q, frameService);
+const predicateService = new PredicateService(httpService, q, frameService);
+const classService = new ClassService(httpService, q, predicateService, frameService);
+const userService = new UserService(httpService, frameService);
+const vocabularyService = new VocabularyService(httpService, frameService);
 const resetService = new ResetService(httpService);
 
 
@@ -40,4 +40,4 @@ const context = {
 };
 
 
-export const loader = new EntityLoader(q, httpService, modelService, predicateService, classService, userService, conceptService, resetService, context, true);
+export const loader = new EntityLoader(q, httpService, modelService, predicateService, classService, userService, vocabularyService, resetService, context, true);

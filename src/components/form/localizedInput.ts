@@ -1,9 +1,9 @@
 import { IAttributes, INgModelController, IScope } from 'angular';
-import { Localizable, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { isValidString, isValidLabelLength, isValidModelLabelLength } from './validators';
 import { allLocalizations, hasLocalization } from '../../utils/language';
 import { module as mod }  from './module';
+import { LanguageContext, Localizable } from '../../entities/contract';
 
 interface LocalizedInputAttributes extends IAttributes {
   localizedInput: 'required' | 'label' | 'modelLabel' | 'free';

@@ -2,17 +2,19 @@ import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { config } from '../config';
-import {
-  EntityDeserializer, Model, ModelListItem, ImportedNamespace, GraphData, Link,
-  ReferenceData, ReferenceDataServer, ReferenceDataCode, ModelPositions, VisualizationClass, KnownModelType
-} from './entities';
 import { upperCaseFirst } from 'change-case';
-import { modelFrame, modelPositionsFrame } from './frames';
 import { Uri, Urn } from './uri';
 import { Language } from '../utils/language';
 import { expandContextWithKnownModels, collectIds } from '../utils/entity';
 import { normalizeAsArray, index } from '../utils/array';
 import { requireDefined, assertNever } from '../utils/object';
+import * as frames from '../entities/frames';
+import { FrameService } from './frameService';
+import { GraphData } from '../entities/contract';
+import { KnownModelType } from '../entities/type';
+import { ModelPositions, VisualizationClass, DefaultVisualizationClass } from '../entities/visualization';
+import { ReferenceDataCode, ReferenceData, ReferenceDataServer } from '../entities/referenceData';
+import { Model, ModelListItem, ImportedNamespace, Link } from '../entities/model';
 
 export class ClassVisualization {
 
@@ -45,22 +47,22 @@ export class ModelService {
   private referenceDataCodesCache = new Map<string, IPromise<ReferenceDataCode[]>>();
 
   /* @ngInject */
-  constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
+  constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
   }
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { group: groupUrn.uri } })
-      .then(response => this.entities.deserializeModelList(response.data!));
+      .then(response => this.deserializeModelList(response.data!));
   }
 
   getModelByUrn(urn: Uri|Urn): IPromise<Model> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { id: urn.toString() } })
-      .then(response => this.entities.deserializeModelById(response.data!, urn));
+      .then(response => this.deserializeModelById(response.data!, urn));
   }
 
   getModelByPrefix(prefix: string): IPromise<Model> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('model'), { params: { prefix } })
-      .then(response => this.entities.deserializeModelByPrefix(response.data!, prefix));
+      .then(response => this.deserializeModelByPrefix(response.data!, prefix));
   }
 
   createModel(model: Model): IPromise<any> {
@@ -105,7 +107,7 @@ export class ModelService {
         redirect: redirect && redirect.uri
       }
     })
-      .then(response => this.entities.deserializeModel(response.data!))
+      .then(response => this.deserializeModel(response.data!))
       .then((model: Model) => {
         model.unsaved = true;
         return model;
@@ -123,19 +125,19 @@ export class ModelService {
       homepage: homepage.url
     };
 
-    const frameObject = modelFrame({ '@graph': graph, '@context': context});
+    const frameObject = frames.modelFrame({ '@graph': graph, '@context': context});
 
     return this.$q.when(new Link(graph, context, frameObject));
   }
 
   getAllImportableNamespaces(): IPromise<ImportedNamespace[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('listNamespaces'))
-      .then(response => this.entities.deserializeImportedNamespaces(response.data!));
+      .then(response => this.deserializeImportedNamespaces(response.data!));
   }
 
   newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelRequirementCreator'), {params: {namespace, prefix, label, lang}})
-      .then(response => this.entities.deserializeImportedNamespace(response.data!));
+      .then(response => this.deserializeImportedNamespace(response.data!));
   }
 
   getVisualization(model: Model) {
@@ -151,7 +153,7 @@ export class ModelService {
       }
     })
     .then(expandContextWithKnownModels(model))
-    .then(response => this.entities.deserializeModelVisualization(response.data!));
+    .then(response => this.deserializeModelVisualization(response.data!));
   }
 
   getModelPositions(model: Model) {
@@ -161,7 +163,7 @@ export class ModelService {
       }
     })
     .then(expandContextWithKnownModels(model))
-    .then(response => this.entities.deserializeModelPositions(response.data!), () => this.newModelPositions(model));
+    .then(response => this.deserializeModelPositions(response.data!), () => this.newModelPositions(model));
   }
 
   updateModelPositions(model: Model, modelPositions: ModelPositions) {
@@ -169,18 +171,18 @@ export class ModelService {
   }
 
   newModelPositions(model: Model) {
-    const frame: any = modelPositionsFrame({ '@context': model.context });
+    const frame: any = frames.modelPositionsFrame({ '@context': model.context });
     return new ModelPositions([], frame['@context'], frame);
   }
 
   getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeServer'))
-      .then(response => this.entities.deserializeReferenceDataServers(response.data!));
+      .then(response => this.deserializeReferenceDataServers(response.data!));
   }
 
   getReferenceDatasForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
-      .then(response => this.entities.deserializeReferenceDatas(response.data!));
+      .then(response => this.deserializeReferenceDatas(response.data!));
   }
 
   getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
@@ -194,8 +196,6 @@ export class ModelService {
 
   getReferenceDataCodes(referenceData: ReferenceData|ReferenceData[]): IPromise<ReferenceDataCode[]> {
 
-    // console.log(new Error().stack);
-
     const getSingle = (rd: ReferenceData) => {
       const cached = this.referenceDataCodesCache.get(rd.id.uri);
 
@@ -203,7 +203,7 @@ export class ModelService {
         return cached;
       } else {
         const result = this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri}})
-          .then(response => this.entities.deserializeReferenceDataCodes(response.data!));
+          .then(response => this.deserializeReferenceDataCodes(response.data!));
 
         this.referenceDataCodesCache.set(rd.id.uri, result);
         return result;
@@ -218,6 +218,54 @@ export class ModelService {
 
   newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
-      .then(response => this.entities.deserializeReferenceData(response.data!));
+      .then(response => this.deserializeReferenceData(response.data!));
+  }
+
+  private deserializeModelList(data: GraphData): IPromise<ModelListItem[]> {
+    return this.frameService.frameAndMapArray(data, frames.modelListFrame(data), () => ModelListItem);
+  }
+
+  private deserializeModel(data: GraphData): IPromise<Model> {
+    return this.frameService.frameAndMap(data, true, frames.modelFrame(data), () => Model);
+  }
+
+  private deserializeModelById(data: GraphData, id: Uri|Urn): IPromise<Model> {
+    return this.frameService.frameAndMap(data, true, frames.modelFrame(data, {id}), () => Model);
+  }
+
+  private deserializeModelByPrefix(data: GraphData, prefix: string): IPromise<Model> {
+    return this.frameService.frameAndMap(data, true, frames.modelFrame(data, {prefix}), () => Model);
+  }
+
+  private deserializeImportedNamespace(data: GraphData): IPromise<ImportedNamespace> {
+    return this.frameService.frameAndMap(data, true, frames.namespaceFrame(data), () => ImportedNamespace);
+  }
+
+  private deserializeImportedNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
+    return this.frameService.frameAndMapArray(data, frames.namespaceFrame(data), () => ImportedNamespace);
+  }
+
+  private deserializeModelVisualization(data: GraphData): IPromise<VisualizationClass[]> {
+    return this.frameService.frameAndMapArray(data, frames.classVisualizationFrame(data), () => DefaultVisualizationClass);
+  }
+
+  private deserializeModelPositions(data: GraphData): IPromise<ModelPositions> {
+    return this.frameService.frameAndMapArrayEntity(data, frames.modelPositionsFrame(data), () => ModelPositions);
+  }
+
+  private deserializeReferenceDataServers(data: GraphData): IPromise<ReferenceDataServer[]> {
+    return this.frameService.frameAndMapArray(data, frames.referenceDataServerFrame(data), () => ReferenceDataServer);
+  }
+
+  private deserializeReferenceData(data: GraphData): IPromise<ReferenceData> {
+    return this.frameService.frameAndMap(data, true, frames.referenceDataFrame(data), () => ReferenceData);
+  }
+
+  private deserializeReferenceDatas(data: GraphData): IPromise<ReferenceData[]> {
+    return this.frameService.frameAndMapArray(data, frames.referenceDataFrame(data), () => ReferenceData);
+  }
+
+  private deserializeReferenceDataCodes(data: GraphData): IPromise<ReferenceDataCode[]> {
+    return this.frameService.frameAndMapArray(data, frames.referenceDataCodeFrame(data), () => ReferenceDataCode);
   }
 }

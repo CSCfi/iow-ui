@@ -1,10 +1,10 @@
 import { IAttributes, IScope } from 'angular';
-import { Link, Model } from '../../services/entities';
 import { AddEditLinkModal } from './addEditLinkModal';
 import { LanguageService } from '../../services/languageService';
 import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { ModelViewController } from './modelView';
 import { module as mod }  from './module';
+import { Model, Link } from '../../entities/model';
 
 mod.directive('linksView', () => {
   return {

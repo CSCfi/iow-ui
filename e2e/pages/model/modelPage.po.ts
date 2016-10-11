@@ -1,7 +1,7 @@
 import { ModelView } from './modelView.po';
-import { KnownModelType } from '../../../src/services/entities';
 import { Language } from '../../../src/utils/language';
 import { navigateAndReturn } from '../../util/browser';
+import { KnownModelType } from '../../../src/entities/type';
 
 export interface NewModelParameters {
   prefix: string;

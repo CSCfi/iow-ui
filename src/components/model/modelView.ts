@@ -1,6 +1,5 @@
 import { ILogService, IPromise } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { GroupListItem, Model, LanguageContext } from '../../services/entities';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -8,6 +7,9 @@ import { ModelController } from './model';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { Model } from '../../entities/model';
+import { GroupListItem } from '../../entities/group';
+import { LanguageContext } from '../../entities/contract';
 
 mod.directive('modelView', () => {
   return {

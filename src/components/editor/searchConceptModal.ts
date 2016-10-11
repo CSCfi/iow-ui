@@ -3,12 +3,7 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { ConceptService, ConceptSearchResult } from '../../services/conceptService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import {
-  Vocabulary, ConceptSuggestion, FintoConcept, Model, Concept,
-  ClassType, KnownPredicateType
-} from '../../services/entities';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
@@ -17,6 +12,10 @@ import { any } from '../../utils/array';
 import { lowerCase } from 'change-case';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
+import { Concept, Vocabulary, FintoConcept, ConceptSuggestion } from '../../entities/vocabulary';
+import { Model } from '../../entities/model';
+import { ClassType, KnownPredicateType } from '../../entities/type';
+import { VocabularyService, ConceptSearchResult } from '../../services/vocabularyService';
 
 const limit = 1000;
 
@@ -115,7 +114,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
               private allowSuggestions: boolean,
               vocabularies: Vocabulary[],
               private model: Model,
-              private conceptService: ConceptService,
+              private vocabularyService: VocabularyService,
               private gettextCatalog: gettextCatalog) {
 
     this.localizer = languageService.createLocalizer(model);
@@ -189,7 +188,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     const language = this.languageService.getModelLanguage(this.model);
 
     if (searchText && searchText.length >= 3) {
-      return this.$q.all(_.flatten(_.map(this.activeVocabularies, vocabulary => this.conceptService.searchConcepts(vocabulary, language, searchText))))
+      return this.$q.all(_.flatten(_.map(this.activeVocabularies, vocabulary => this.vocabularyService.searchConcepts(vocabulary, language, searchText))))
         .then((results: ConceptSearchResult[][]) => {
           this.queryResults = _.take(_.flatten(results), limit);
 
@@ -229,8 +228,8 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     } else {
       const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
       const conceptPromise: IPromise<Concept> = conceptSearchResult.suggestion
-        ? this.conceptService.getConceptSuggestion(conceptSearchResult.id)
-        : this.conceptService.getFintoConcept(conceptSearchResult.id);
+        ? this.vocabularyService.getConceptSuggestion(conceptSearchResult.id)
+        : this.vocabularyService.getFintoConcept(conceptSearchResult.id);
 
       conceptPromise.then(concept => this.selection = concept);
     }
@@ -283,8 +282,8 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
 
     if (isNewConceptData(selection)) {
 
-      const conceptSuggestion = this.conceptService.createConceptSuggestion(selection.vocabulary, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model)
-        .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
+      const conceptSuggestion = this.vocabularyService.createConceptSuggestion(selection.vocabulary, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model)
+        .then(conceptId => this.vocabularyService.getConceptSuggestion(conceptId));
 
       if (this.newEntityCreation) {
         return conceptSuggestion.then(cs => new EntityCreation(cs, newEntity(cs)));

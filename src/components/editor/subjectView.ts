@@ -1,9 +1,11 @@
-import { Predicate, Class, Model } from '../../services/entities';
 import { module as mod }  from './module';
 import { IScope } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { SearchConceptModal } from './searchConceptModal';
+import { Class } from '../../entities/class';
+import { Predicate } from '../../entities/predicate';
+import { Model } from '../../entities/model';
 
 mod.directive('subjectView', () => {
   return {

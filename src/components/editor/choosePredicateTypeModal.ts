@@ -1,6 +1,6 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
-import { KnownPredicateType } from '../../services/entities';
+import { KnownPredicateType } from '../../entities/type';
 
 export class ChoosePredicateTypeModal {
   /* @ngInject */

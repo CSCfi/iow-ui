@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
 import { LanguageService, localizationStrings } from '../../services/languageService';
 import { UserService } from '../../services/userService';
-import { User } from '../../services/entities';
 import { LoginModal } from './loginModal';
 import { module as mod }  from './module';
 import { availableUILanguages, UILanguage } from '../../utils/language';
+import { User } from '../../entities/user';
 
 const logoImage = require('../../assets/logo-01.svg');
 

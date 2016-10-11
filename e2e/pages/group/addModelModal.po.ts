@@ -1,10 +1,10 @@
 import { Modal } from '../common/modal.po';
-import { KnownModelType } from '../../../src/services/entities';
 import { EditableComponent } from '../common/component/editableComponent.po';
 import { upperCaseFirst } from 'change-case';
 import { ModelPage } from '../model/modelPage.po';
 import { EditableMultipleComponent } from '../common/component/editableMultipleComponent.po';
 import { SubmitButton } from '../common/component/submitButton.po';
+import { KnownModelType } from '../../../src/entities/type';
 
 export class AddModelModal extends Modal {
 

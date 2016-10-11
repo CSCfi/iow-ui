@@ -3,13 +3,13 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
-import { ImportedNamespace, Model } from '../../services/entities';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { comparingBoolean, comparingString } from '../../services/comparators';
 import { Language } from '../../utils/language';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
+import { ImportedNamespace, Model } from '../../entities/model';
 
 const noExclude = (_ns: ImportedNamespace) => null;
 

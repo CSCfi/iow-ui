@@ -1,6 +1,7 @@
-import { DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
-import { ReferenceData, LanguageContext } from '../../services/entities';
+import { DataType } from '../../entities/dataTypes';
+import { ReferenceData } from '../../entities/referenceData';
+import { LanguageContext } from '../../entities/contract';
 
 mod.directive('editableMultipleDataTypeInput', () => {
   return {

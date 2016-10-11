@@ -2,13 +2,16 @@ import { IAttributes, ICompiledExpression, IPromise, IScope, IQService } from 'a
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal } from './searchClassModal';
 import { EditableForm } from '../form/editableEntityController';
-import { Model, PredicateListItem, ClassListItem, ClassType, KnownPredicateType } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { DataSource } from '../form/dataSource';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
 import { itemExclusion, idExclusion } from '../../utils/exclusion';
+import { ClassListItem } from '../../entities/class';
+import { PredicateListItem } from '../../entities/predicate';
+import { ClassType, KnownPredicateType } from '../../entities/type';
+import { Model } from '../../entities/model';
 
 mod.directive('uriSelect', () => {
   return {

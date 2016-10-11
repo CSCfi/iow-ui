@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { Localizable } from './entities';
+import { Localizable } from '../entities/contract';
 import { isDefined } from '../utils/object';
 import { translate } from '../utils/language';
 import { Localizer } from './languageService';

@@ -1,4 +1,4 @@
-import { Url, Uri, Urn } from './uri';
+import { Url, Uri, Urn } from '../services/uri';
 
 export type Frame = {};
 

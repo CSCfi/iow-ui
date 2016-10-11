@@ -1,8 +1,8 @@
-import { dataTypes, DataType } from '../../services/dataTypes';
 import { module as mod }  from './module';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { INgModelController, IScope, IAttributes } from 'angular';
+import { DataType, dataTypes } from '../../entities/dataTypes';
 
 // TODO duplication with editable just to get past
 mod.directive('editableRangeSelect', () => {

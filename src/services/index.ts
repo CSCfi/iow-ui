@@ -1,6 +1,5 @@
 import { ClassService } from './classService';
-import { ConceptService } from './conceptService';
-import { EntityDeserializer } from './entities';
+import { VocabularyService } from './vocabularyService';
 import { GroupService } from './groupService';
 import { LanguageService } from './languageService';
 import { LocationService } from './locationService';
@@ -14,13 +13,13 @@ import { HistoryService } from './historyService';
 import { EntityLoaderService } from './entityLoader';
 import { ResetService } from './resetService';
 import { SessionService } from './sessionService';
+import { FrameService } from './frameService';
 
 import { module as mod }  from './module';
 export default mod.name;
 
 mod.service('classService', ClassService);
-mod.service('conceptService', ConceptService);
-mod.service('entities', EntityDeserializer);
+mod.service('vocabularyService', VocabularyService);
 mod.service('groupService', GroupService);
 mod.service('languageService', LanguageService);
 mod.service('locationService', LocationService);
@@ -34,3 +33,4 @@ mod.service('historyService', HistoryService);
 mod.service('resetService', ResetService);
 mod.service('entityLoaderService', EntityLoaderService);
 mod.service('sessionService', SessionService);
+mod.service('frameService', FrameService);

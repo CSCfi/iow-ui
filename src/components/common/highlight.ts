@@ -1,8 +1,8 @@
 import { module as mod } from './module';
 import { IScope, ISCEService } from 'angular';
-import { Localizable, LanguageContext } from '../../services/entities';
 import { LanguageService } from '../../services/languageService';
 import { Language } from '../../utils/language';
+import { Localizable, LanguageContext } from '../../entities/contract';
 
 mod.directive('highlight', () => {
   return {

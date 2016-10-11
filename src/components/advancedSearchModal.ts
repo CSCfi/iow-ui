@@ -3,9 +3,11 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
-import { SearchResult, Type, frontPageSearchLanguageContext, LanguageContext } from '../services/entities';
 import { comparingLocalizable } from '../services/comparators';
 import { SearchController, SearchFilter, applyFilters } from './filter/contract';
+import { Type } from '../entities/type';
+import { frontPageSearchLanguageContext, LanguageContext } from '../entities/contract';
+import { SearchResult } from '../entities/search';
 
 export class AdvancedSearchModal {
   /* @ngInject */

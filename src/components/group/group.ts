@@ -7,13 +7,16 @@ import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { Group, ModelListItem, LanguageContext, KnownModelType } from '../../services/entities';
 import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { Language } from '../../utils/language';
 import { ErrorModal } from '../form/errorModal';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { Group } from '../../entities/group';
+import { ModelListItem } from '../../entities/model';
+import { KnownModelType } from '../../entities/type';
+import { LanguageContext } from '../../entities/contract';
 
 mod.directive('group', () => {
   return {

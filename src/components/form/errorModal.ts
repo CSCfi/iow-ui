@@ -1,6 +1,7 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
-import { LanguageContext, Usage } from '../../services/entities';
+import { Usage } from '../../entities/usage';
+import { LanguageContext } from '../../entities/contract';
 
 interface UsageParameters {
   usage: Usage;

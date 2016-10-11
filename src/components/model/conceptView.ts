@@ -1,16 +1,20 @@
 import { ILogService, IQService } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
-import { Model, LanguageContext, Concept, GroupListItem, ConceptSuggestion, Usage } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { module as mod }  from './module';
 import { ConceptEditorModalController } from './conceptEditorModal';
-import { ConceptService } from '../../services/conceptService';
 import { UsageService } from '../../services/usageService';
 import { all } from '../../utils/array';
 import { ErrorModal } from '../form/errorModal';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { isDefined } from '../../utils/object';
+import { Concept, ConceptSuggestion } from '../../entities/vocabulary';
+import { Model } from '../../entities/model';
+import { Usage } from '../../entities/usage';
+import { GroupListItem } from '../../entities/group';
+import { LanguageContext } from '../../entities/contract';
+import { VocabularyService } from '../../services/vocabularyService';
 
 mod.directive('conceptView', () => {
   return {
@@ -43,7 +47,7 @@ export class ConceptViewController extends EditableEntityController<Concept> {
               errorModal: ErrorModal,
               notLoggedInModal: NotLoggedInModal,
               userService: UserService,
-              private conceptService: ConceptService,
+              private vocabularyService: VocabularyService,
               usageService: UsageService) {
     super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
 
@@ -68,14 +72,14 @@ export class ConceptViewController extends EditableEntityController<Concept> {
 
   update(entity: Concept, _oldEntity: Concept) {
     if (entity instanceof ConceptSuggestion) {
-      return this.conceptService.updateConceptSuggestion(entity).then(() => this.modelController.selectionEdited(entity));
+      return this.vocabularyService.updateConceptSuggestion(entity).then(() => this.modelController.selectionEdited(entity));
     } else {
       return this.$q.reject('Entity must be instance of ConceptSuggestion');
     }
   }
 
   remove(entity: Concept) {
-    return this.conceptService.deleteConceptFromModel(entity, this.model).then(() => this.modelController.selectionDeleted(entity));
+    return this.vocabularyService.deleteConceptFromModel(entity, this.model).then(() => this.modelController.selectionDeleted(entity));
   }
 
   isNotInUseInThisModel(): boolean {

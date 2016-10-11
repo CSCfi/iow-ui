@@ -1,9 +1,11 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import { UsageService } from '../../services/usageService';
-import { Usage, EditableEntity, Model, Referrer, LanguageContext } from '../../services/entities';
 import { any } from '../../utils/array';
 import { isDefined } from '../../utils/object';
+import { EditableEntity, LanguageContext } from '../../entities/contract';
+import { Model } from '../../entities/model';
+import { Usage, Referrer } from '../../entities/usage';
 
 export class DeleteConfirmationModal {
   /* @ngInject */

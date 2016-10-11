@@ -1,9 +1,5 @@
 import { IAttributes, IPromise, IScope } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
-import {
-  Model, ClassListItem, PredicateListItem, ClassType,
-  KnownPredicateType
-} from '../../services/entities';
 import { SearchClassModal } from './searchClassModal';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
@@ -13,6 +9,10 @@ import { createExistsExclusion } from '../../utils/exclusion';
 import { DataSource } from '../form/dataSource';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
+import { ClassListItem } from '../../entities/class';
+import { PredicateListItem } from '../../entities/predicate';
+import { ClassType, KnownPredicateType } from '../../entities/type';
+import { Model } from '../../entities/model';
 
 mod.directive('editableMultipleUriSelect', () => {
   return {

@@ -1,11 +1,12 @@
 import { SearchClassType, WithId, WithDefinedBy, WithIdAndType } from '../components/contracts';
 import { containsAny, arraysAreEqual, first } from './array';
-import { ClassListItem, Model } from '../services/entities';
 import { collectIds } from './entity';
 import { Uri } from '../services/uri';
 import { IPromise, IQService } from 'angular';
 import { DataSource } from '../components/form/dataSource';
 import { isDefined } from './object';
+import { Model } from '../entities/model';
+import { ClassListItem } from '../entities/class';
 
 
 export type Exclusion<T> = (obj: T) => string|null;

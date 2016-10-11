@@ -1,28 +1,22 @@
 import { IHttpService, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
-import {
-  Localizable,
-  Model,
-  Predicate,
-  Attribute,
-  Association,
-  Class,
-  Property,
-  State,
-  ConceptSuggestion,
-  ConstraintType,
-  ImportedNamespace, Vocabulary, User, KnownPredicateType, KnownModelType
-} from './entities';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
 import { PredicateService } from './predicateService';
 import { UserService } from './userService';
-import { ConceptService } from './conceptService';
 import { ResetService } from './resetService';
 import { Uri, Url } from './uri';
-import { DataType } from './dataTypes';
+import { DataType } from '../entities/dataTypes';
 import { identity } from '../utils/function';
 import { config } from '../config';
+import { Localizable } from '../entities/contract';
+import { State, ConstraintType, KnownModelType, KnownPredicateType } from '../entities/type';
+import { ImportedNamespace, Model } from '../entities/model';
+import { Vocabulary, ConceptSuggestion } from '../entities/vocabulary';
+import { Class, Property } from '../entities/class';
+import { User } from '../entities/user';
+import { Predicate, Association, Attribute } from '../entities/predicate';
+import { VocabularyService } from './vocabularyService';
 
 export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392', {});
 export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK', {});
@@ -110,12 +104,12 @@ export class EntityLoaderService {
               private predicateService: PredicateService,
               private classService: ClassService,
               private userService: UserService,
-              private conceptService: ConceptService,
+              private vocabularyService: VocabularyService,
               private resetService: ResetService) {
   }
 
   create(context: any, shouldReset: boolean): EntityLoader {
-    return new EntityLoader(this.$q, this.$http, this.modelService, this.predicateService, this.classService, this.userService, this.conceptService, this.resetService, context, shouldReset);
+    return new EntityLoader(this.$q, this.$http, this.modelService, this.predicateService, this.classService, this.userService, this.vocabularyService, this.resetService, context, shouldReset);
   }
 }
 
@@ -132,14 +126,14 @@ export class EntityLoader {
               private predicateService: PredicateService,
               private classService: ClassService,
               private userService: UserService,
-              private conceptService: ConceptService,
+              private vocabularyService: VocabularyService,
               resetService: ResetService,
               private context: any,
               shouldReset: boolean) {
 
     this.reset = shouldReset ? resetService.reset() : $q.when();
     this.loggedIn = this.reset.then(() => this.login());
-    this.vocabularies = this.reset.then(() => this.conceptService.getAllVocabularies());
+    this.vocabularies = this.reset.then(() => this.vocabularyService.getAllVocabularies());
   }
 
   login(): IPromise<User> {
@@ -166,8 +160,8 @@ export class EntityLoader {
 
   createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<ConceptSuggestion> {
     const result = this.loggedIn.then(() => modelPromise)
-      .then((model: Model) => this.conceptService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, null, 'fi', model))
-      .then(conceptId => this.conceptService.getConceptSuggestion(conceptId));
+      .then((model: Model) => this.vocabularyService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, null, 'fi', model))
+      .then(conceptId => this.vocabularyService.getConceptSuggestion(conceptId));
 
     return this.addAction(result, details);
   }
@@ -395,10 +389,10 @@ export class EntityLoader {
           p.dataType = details.dataType;
         }
 
-        p.example = details.example;
-        p.minCount = details.minCount;
-        p.maxCount = details.maxCount;
-        p.pattern = details.pattern;
+        p.example = details.example || null;
+        p.minCount = details.minCount || null;
+        p.maxCount = details.maxCount || null;
+        p.pattern = details.pattern || null;
 
         return valueClassPromise.then(() => p);
       });
@@ -413,7 +407,7 @@ function failWithDetails(details: any): (err: any) => void {
   };
 }
 
-function setDetails(entity: { label: Localizable, comment: Localizable, state?: State }, details: EntityDetails) {
+function setDetails(entity: { label: Localizable, comment: Localizable, state: State|null }, details: EntityDetails) {
   entity.label = details.label;
   entity.comment = details.comment || {};
   if (details.state) {

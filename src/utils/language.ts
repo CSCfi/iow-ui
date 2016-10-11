@@ -1,5 +1,5 @@
-import { Localizable, LanguageContext } from '../services/entities';
 import { hasValue } from './object';
+import { LanguageContext, Localizable } from '../entities/contract';
 
 export type Language = 'ab' | 'aa' | 'af' | 'ak' | 'sq' | 'am' | 'ar' | 'an' | 'hy' | 'as' | 'av' | 'ae' | 'ay'
                      | 'az' | 'bm' | 'ba' | 'eu' | 'be' | 'bn' | 'bh' | 'bi' | 'bs' | 'br' | 'bg' | 'my' | 'ca'
@@ -41,7 +41,7 @@ export interface Localizer {
   language: Language;
   context: LanguageContext;
   translate(localizable: Localizable): string;
-  getStringWithModelLanguageOrDefault(key: string|undefined, defaultLanguage: UILanguage): string;
+  getStringWithModelLanguageOrDefault(key: string|undefined|null, defaultLanguage: UILanguage): string;
   allUILocalizationsForKey(localizationKey: string): string[];
 }
 

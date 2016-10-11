@@ -8,18 +8,6 @@ import { LocationService } from '../../services/locationService';
 import { ModelService } from '../../services/modelService';
 import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
-import {
-  Class,
-  Predicate,
-  PredicateListItem,
-  ClassListItem,
-  Model,
-  Property,
-  ExternalEntity,
-  AbstractClass,
-  AbstractPredicate,
-  SelectionType, ClassType, KnownPredicateType
-} from '../../services/entities';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
@@ -39,6 +27,11 @@ import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { SessionService } from '../../services/sessionService';
 import { isDefined, areEqual } from '../../utils/object';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { Predicate, AbstractPredicate, PredicateListItem } from '../../entities/predicate';
+import { Class, AbstractClass, Property, ClassListItem } from '../../entities/class';
+import { Model } from '../../entities/model';
+import { ExternalEntity } from '../../entities/externalEntity';
+import { KnownPredicateType, ClassType, SelectionType } from '../../entities/type';
 
 mod.directive('model', () => {
   return {

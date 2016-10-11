@@ -2,7 +2,6 @@ import { IScope, IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { ModelService } from '../../services/modelService';
-import { ReferenceData, Model, ReferenceDataGroup, ReferenceDataServer } from '../../services/entities';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
@@ -14,6 +13,8 @@ import * as _ from 'lodash';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
+import { ReferenceData, ReferenceDataServer, ReferenceDataGroup } from '../../entities/referenceData';
+import { Model } from '../../entities/model';
 
 const noExclude = (_referenceData: ReferenceData) => null;
 

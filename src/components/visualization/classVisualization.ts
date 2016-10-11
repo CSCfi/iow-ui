@@ -1,9 +1,5 @@
 import { IAttributes, IQService, IScope, ITimeoutService, IPromise } from 'angular';
 import { LanguageService } from '../../services/languageService';
-import {
-  Class, Model, VisualizationClass, Property, Predicate,
-  AssociationTargetPlaceholderClass, ModelPositions, Coordinate, AssociationPropertyPosition
-} from '../../services/entities';
 import * as _ from 'lodash';
 import { ModelService, ClassVisualization } from '../../services/modelService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
@@ -25,6 +21,14 @@ import { Localizer } from '../../utils/language';
 import { ifChanged } from '../../utils/angular';
 import { coordinatesAreEqual, centerToPosition, copyVertices } from '../../utils/entity';
 import { mapOptional, requireDefined } from '../../utils/object';
+import { Class, Property } from '../../entities/class';
+import { Predicate } from '../../entities/predicate';
+import { Model } from '../../entities/model';
+import {
+  ModelPositions, AssociationTargetPlaceholderClass, VisualizationClass,
+  AssociationPropertyPosition
+} from '../../entities/visualization';
+import { Coordinate } from '../../entities/contract';
 
 
 mod.directive('classVisualization', () => {

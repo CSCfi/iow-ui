@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import { SearchController } from './contract';
 import { IScope } from 'angular';
 import { isDefined } from '../../utils/object';
-import { Model, ClassListItem, PredicateListItem, DefinedBy } from '../../services/entities';
 import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
 import { collectIds } from '../../utils/entity';
@@ -11,6 +10,10 @@ import { IPromise } from 'angular';
 import { comparingLocalizable } from '../../services/comparators';
 import { LanguageService } from '../../services/languageService';
 import { ifChanged } from '../../utils/angular';
+import { ClassListItem } from '../../entities/class';
+import { PredicateListItem } from '../../entities/predicate';
+import { Model } from '../../entities/model';
+import { DefinedBy } from '../../entities/definedBy';
 
 mod.directive('modelFilter', () => {
   return {

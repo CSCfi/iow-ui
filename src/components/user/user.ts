@@ -1,9 +1,10 @@
 import { IScope, ILocationService } from 'angular';
-import { DefaultUser, groupUrl } from '../../services/entities';
 import { UserService } from '../../services/userService';
 import { LocationService } from '../../services/locationService';
 import { module as mod }  from './module';
 import { Uri } from '../../services/uri';
+import { DefaultUser } from '../../entities/user';
+import { groupUrl } from '../../utils/entity';
 
 mod.directive('user', () => {
   return {

@@ -1,8 +1,10 @@
-import { Concept, Model, ClassType, KnownPredicateType } from '../../services/entities';
 import { module as mod }  from './module';
 import { SearchConceptModal } from './searchConceptModal';
 import { EditableForm } from '../form/editableEntityController';
 import { IScope, IAttributes } from 'angular';
+import { Concept } from '../../entities/vocabulary';
+import { Model } from '../../entities/model';
+import { ClassType, KnownPredicateType } from '../../entities/type';
 
 mod.directive('editableConceptSelect', () => {
   return {

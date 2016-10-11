@@ -1,7 +1,7 @@
 import { route } from 'angular';
 import { Uri } from './services/uri';
 import { ILocationService } from 'angular';
-import { resourceUrl, modelUrl } from './services/entities';
+import { resourceUrl, modelUrl } from './utils/entity';
 
 /* @ngInject */
 export function routeConfig($routeProvider: route.IRouteProvider) {

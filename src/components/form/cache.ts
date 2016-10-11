@@ -1,5 +1,5 @@
-import { Model } from '../../services/entities';
 import { IPromise } from 'angular';
+import { Model } from '../../entities/model';
 
 export function modelScopeCache<T>(modelProvider: () => Model, dataProvider: (model: Model) => IPromise<T>): () => IPromise<T> {
 

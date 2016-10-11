@@ -1,10 +1,10 @@
 import { module as mod } from './module';
 import { SearchController } from './contract';
 import { IScope } from 'angular';
-import { Type } from '../../services/entities';
 import { WithIdAndType } from '../contracts';
 import { containsAny } from '../../utils/array';
 import { ifChanged } from '../../utils/angular';
+import { Type } from '../../entities/type';
 
 mod.directive('typesFilter', () => {
   return {

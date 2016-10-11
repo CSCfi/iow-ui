@@ -1,5 +1,4 @@
 import { IAttributes, IScope } from 'angular';
-import { Model, Property, Attribute, Association, Predicate } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { module as mod }  from './module';
 import { PredicateService } from '../../services/predicateService';
@@ -9,6 +8,9 @@ import { ClassFormController } from './classForm';
 import { any } from '../../utils/array';
 import { CopyPredicateModal } from './copyPredicateModal';
 import { requireDefined } from '../../utils/object';
+import { Property } from '../../entities/class';
+import { Model } from '../../entities/model';
+import { Predicate, Association, Attribute } from '../../entities/predicate';
 
 mod.directive('propertyPredicateView', () => {
   return {

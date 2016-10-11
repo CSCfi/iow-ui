@@ -1,7 +1,6 @@
 import { IScope, IAttributes, ILogService } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { ClassService } from '../../services/classService';
-import { Class, GroupListItem, Model, LanguageContext } from '../../services/entities';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -11,6 +10,10 @@ import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { setSelectionStyles } from '../../utils/angular';
 import { NotLoggedInModal } from '../form/notLoggedInModal';
+import { Class } from '../../entities/class';
+import { Model } from '../../entities/model';
+import { GroupListItem } from '../../entities/group';
+import { LanguageContext } from '../../entities/contract';
 
 mod.directive('classView', () => {
   return {

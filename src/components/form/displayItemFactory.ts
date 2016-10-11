@@ -1,12 +1,13 @@
 import { ILocationService } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
-import { Localizable, isLocalizable, LanguageContext } from '../../services/entities';
 import { Uri } from '../../services/uri';
 import { isString, isNumber, isBoolean } from '../../utils/object';
 import { isDifferentUrl } from '../../utils/angular';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import { Localizable, LanguageContext } from '../../entities/contract';
+import { isLocalizable } from '../../utils/entity';
 
 export type Value = string|Localizable|number|Uri|Moment;
 

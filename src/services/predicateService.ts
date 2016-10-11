@@ -1,37 +1,40 @@
 import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
-import {
-  EntityDeserializer, Predicate, PredicateListItem, Model, Attribute, GraphData, Association, KnownPredicateType
-} from './entities';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
-import { reverseMapType } from './typeMapping';
+import { reverseMapType, KnownPredicateType } from '../entities/type';
 import { Urn, Uri } from './uri';
 import { expandContextWithKnownModels } from '../utils/entity';
 import { Language } from '../utils/language';
-import { predicateFrame } from './frames';
 import { DataSource } from '../components/form/dataSource';
 import { modelScopeCache } from '../components/form/cache';
 import { requireDefined } from '../utils/object';
+import { FrameService } from './frameService';
+import { GraphData, EntityFactory } from '../entities/contract';
+import * as frames from '../entities/frames';
+import { containsAny } from '../utils/array';
+import { PredicateListItem, Predicate, Attribute, Association } from '../entities/predicate';
+import { Model } from '../entities/model';
+import { typeSerializer } from '../entities/serializer/serializer';
 
 export class PredicateService {
 
   private modelPredicatesCache = new Map<string, PredicateListItem[]>();
 
   /* @ngInject */
-  constructor(private $http: IHttpService, private $q: IQService, private entities: EntityDeserializer) {
+  constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
   }
 
   getPredicate(id: Uri|Urn, model?: Model): IPromise<Predicate> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {id: id.toString()}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicate(response.data!));
+      .then(response => this.deserializePredicate(response.data!));
   }
 
   getAllPredicates(model: Model): IPromise<PredicateListItem[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'))
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicateList(response.data!));
+      .then(response => this.deserializePredicateList(response.data!));
   }
 
   getPredicatesForModel(model: Model) {
@@ -60,7 +63,7 @@ export class PredicateService {
     } else {
       return this.$http.get<GraphData>(config.apiEndpointWithName('predicate'), {params: {model: model.id.uri}})
         .then(expandContextWithKnownModels(model))
-        .then(response => this.entities.deserializePredicateList(response.data!))
+        .then(response => this.deserializePredicateList(response.data!))
         .then(predicateList => {
           this.modelPredicatesCache.set(model.id.uri, predicateList);
           return predicateList;
@@ -125,7 +128,7 @@ export class PredicateService {
         type: reverseMapType(type), lang
       }})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicate(response.data!))
+      .then(response => this.deserializePredicate(response.data!))
       .then((predicate: Predicate) => {
         predicate.definedBy = model.asDefinedBy();
         if (predicate instanceof Attribute && !predicate.dataType) {
@@ -163,7 +166,7 @@ export class PredicateService {
       };
 
       const frameData = { '@graph': graph, '@context': model.context };
-      const frame: any = predicateFrame(frameData);
+      const frame: any = frames.predicateFrame(frameData);
 
       const newPredicate = type === 'attribute' ? new Attribute(graph, frame['@context'], frame)
         : new Association(graph, frame['@context'], frame);
@@ -200,7 +203,7 @@ export class PredicateService {
   getExternalPredicate(externalId: Uri, model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri, id: externalId.uri}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicate(response.data!))
+      .then(response => this.deserializePredicate(response.data!))
       .then(predicate => {
         if (predicate) {
           predicate.external = true;
@@ -212,6 +215,29 @@ export class PredicateService {
   getExternalPredicatesForModel(model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('externalPredicate'), {params: {model: model.id.uri}})
       .then(expandContextWithKnownModels(model))
-      .then(response => this.entities.deserializePredicateList(response.data!));
+      .then(response => this.deserializePredicateList(response.data!));
+  }
+
+  private deserializePredicateList(data: GraphData): IPromise<PredicateListItem[]> {
+    return this.frameService.frameAndMapArray(data, frames.predicateListFrame(data), () => PredicateListItem);
+  }
+
+  private deserializePredicate(data: GraphData): IPromise<Attribute|Association|Predicate> {
+
+    const entityFactory: EntityFactory<Predicate> = (framedData) => {
+      const types = typeSerializer.deserialize(framedData['@graph'][0]['@type']);
+
+      if (containsAny(types, ['association'])) {
+        return Association;
+      } else if (containsAny(types, ['attribute'])) {
+        return Attribute;
+      } else if (containsAny(types, ['property'])) {
+        return Predicate;
+      } else {
+        throw new Error('Incompatible type: ' + types.join());
+      }
+    };
+
+    return this.frameService.frameAndMap(data, true, frames.predicateFrame(data), entityFactory);
   }
 }

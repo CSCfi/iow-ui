@@ -1,12 +1,13 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import { ConceptService } from '../../services/conceptService';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
-import { Vocabulary, LanguageContext } from '../../services/entities';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
+import { Vocabulary } from '../../entities/vocabulary';
+import { LanguageContext } from '../../entities/contract';
+import { VocabularyService } from '../../services/vocabularyService';
 
 const noExclude = (_vocabulary: Vocabulary) => null;
 
@@ -50,14 +51,14 @@ class SearchVocabularyController implements SearchController<Vocabulary> {
   /* @ngInject */
   constructor(private $uibModalInstance: IModalServiceInstance,
               public exclude: Exclusion<Vocabulary>,
-              conceptService: ConceptService,
+              vocabularyService: VocabularyService,
               languageService: LanguageService,
               public context: LanguageContext) {
 
     this.localizer = languageService.createLocalizer(context);
     this.loadingResults = true;
 
-    conceptService.getAllVocabularies().then(vocabularies => {
+    vocabularyService.getAllVocabularies().then(vocabularies => {
       this.vocabularies = vocabularies;
 
       this.vocabularies.sort(

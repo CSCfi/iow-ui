@@ -1,6 +1,8 @@
-import { HistoryModal } from './historyModal';
-import { Model, Predicate, Class } from '../../services/entities';
 import { module as mod }  from './module';
+import { HistoryModal } from './historyModal';
+import { Model } from '../../entities/model';
+import { Class } from '../../entities/class';
+import { Predicate } from '../../entities/predicate';
 
 mod.directive('history', () => {
   return {

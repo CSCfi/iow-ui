@@ -1,11 +1,13 @@
 import { IAttributes, IScope } from 'angular';
-import { Class, Property, Predicate, Model } from '../../services/entities';
 import { ClassFormController } from './classForm';
 import { Uri } from '../../services/uri';
 import { LanguageService } from '../../services/languageService';
 import { any } from '../../utils/array';
 import { module as mod }  from './module';
 import { hasLocalization } from '../../utils/language';
+import { Property, Class } from '../../entities/class';
+import { Model } from '../../entities/model';
+import { Predicate } from '../../entities/predicate';
 
 mod.directive('propertyView', () => {
   return {
