@@ -1,32 +1,45 @@
 import { findFirstMatching } from '../utils/array';
 
 export type Type = ModelType
-  | ClassType
-  | PredicateType
-  | ConceptType
-  | GroupType
-  | 'constraint'
-  | 'user'
-  | 'entity'
-  | 'activity'
-  | 'resource'
-  | 'collection'
-  | 'vocabulary'
-  | 'standard'
-  | 'referenceData'
-  | 'externalReferenceData'
-  | 'referenceDataGroup'
-  | 'referenceDataCode';
+                 | ClassType
+                 | PredicateType
+                 | ConceptType
+                 | GroupType
+                 | 'constraint'
+                 | 'user'
+                 | 'entity'
+                 | 'activity'
+                 | 'resource'
+                 | 'collection'
+                 | 'vocabulary'
+                 | 'standard'
+                 | 'referenceData'
+                 | 'externalReferenceData'
+                 | 'referenceDataGroup'
+                 | 'referenceDataCode';
 
 export type GroupType = 'group';
-export type ModelType = KnownModelType | 'model';
-export type KnownModelType = 'library' | 'profile';
-export type ClassType = 'class' | 'shape';
-export type PredicateType = KnownPredicateType | 'property';
-export type KnownPredicateType = 'attribute' | 'association';
-export type ConceptType = 'concept' | 'conceptSuggestion';
 
-export type SelectionType = 'class' | 'predicate';
+export type ModelType = KnownModelType
+                      | 'model';
+
+export type KnownModelType = 'library'
+                           | 'profile';
+
+export type ClassType = 'class'
+                      | 'shape';
+
+export type PredicateType = KnownPredicateType
+                          | 'property';
+
+export type KnownPredicateType = 'attribute'
+                               | 'association';
+
+export type ConceptType = 'concept'
+                        | 'conceptSuggestion';
+
+export type SelectionType = 'class'
+                          | 'predicate';
 
 export type State = 'Unstable'
                   | 'Draft'
