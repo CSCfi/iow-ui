@@ -99,8 +99,8 @@ export const stringSerializer = identitySerializer<string>(); // TODO: assert va
 export const languageSerializer = identitySerializer<Language>(); // TODO: assert valid values
 
 export const booleanSerializer: Serializer<boolean> = createSerializer(
-  (data: boolean) => data,
-  (data: any) => data || false
+  (data: boolean) => data ? true : null,
+  (data: any) => data
 );
 
 const mailToUriPrefix = 'mailto:';
