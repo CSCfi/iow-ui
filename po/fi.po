@@ -366,6 +366,10 @@ msgstr "valitse juurisolmu"
 msgid "class"
 msgstr "Luokka"
 
+#: translations/help.html:4
+msgid "Class description info"
+msgstr "Luokan tietosisällön kuvaus"
+
 #: translations/titles.html:5
 msgid "Class id"
 msgstr "Luokan tunniste"
@@ -436,6 +440,10 @@ msgstr "Erikoistamattomia luokkia ei saa valita"
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr "poista valinta"
+
+#: translations/help.html:3
+msgid "close"
+msgstr "sulje"
 
 #: components/common/historyModal.html:36
 #: components/model/conceptEditorModal.html:85 translations/misc.html:167
@@ -830,6 +838,10 @@ msgstr "Poista kaikki valinnat"
 #: translations/misc.html:45
 msgid "Dialog is open"
 msgstr "Dialogi on avattuna"
+
+#: translations/help.html:5
+msgid "Diipadaa"
+msgstr "Diipadaa"
 
 #: components/editor/addPropertiesFromClassModal.html:5
 msgid "Do you want to add following properties from ' + ctrl.classType + '?"
@@ -1336,6 +1348,10 @@ msgstr "Uuden tietokomponenttikirjaston luonti"
 msgid "New profile creation"
 msgstr "Uuden soveltamisprofiilin luonti"
 
+#: translations/help.html:2
+msgid "next"
+msgstr "jatka"
+
 #: translations/misc.html:254
 msgid "No"
 msgstr "Ei"
@@ -1827,6 +1843,10 @@ msgstr "Tarkennettu luokasta"
 #: translations/titles.html:40
 msgid "Specialized from class info"
 msgstr "Luokka jota soveltamisprofiilissa on tarkennettu"
+
+#: components/editor/classView.html:12 translations/help.html:1
+msgid "Start help"
+msgstr "Aloita ohje"
 
 #: translations/titles.html:31
 msgid "State"

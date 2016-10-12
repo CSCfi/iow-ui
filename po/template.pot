@@ -365,6 +365,10 @@ msgstr ""
 msgid "class"
 msgstr ""
 
+#: translations/help.html:4
+msgid "Class description info"
+msgstr ""
+
 #: translations/titles.html:5
 msgid "Class id"
 msgstr ""
@@ -432,6 +436,10 @@ msgstr ""
 #: components/editor/editableConceptSelect.html:19
 #: components/model/editableRootClass.html:8
 msgid "Clear selection"
+msgstr ""
+
+#: translations/help.html:3
+msgid "close"
 msgstr ""
 
 #: components/common/historyModal.html:36
@@ -827,6 +835,10 @@ msgstr ""
 
 #: translations/misc.html:45
 msgid "Dialog is open"
+msgstr ""
+
+#: translations/help.html:5
+msgid "Diipadaa"
 msgstr ""
 
 #: components/editor/addPropertiesFromClassModal.html:5
@@ -1327,6 +1339,10 @@ msgstr ""
 msgid "New profile creation"
 msgstr ""
 
+#: translations/help.html:2
+msgid "next"
+msgstr ""
+
 #: translations/misc.html:254
 msgid "No"
 msgstr ""
@@ -1814,6 +1830,11 @@ msgstr ""
 
 #: translations/titles.html:40
 msgid "Specialized from class info"
+msgstr ""
+
+#: components/editor/classView.html:12
+#: translations/help.html:1
+msgid "Start help"
 msgstr ""
 
 #: translations/titles.html:31

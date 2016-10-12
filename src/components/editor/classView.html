@@ -9,6 +9,9 @@
           </button>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.class" context="ctrl.model"></export>
           <history model="ctrl.model" resource="ctrl.class" ng-hide="ctrl.isEditing()"></history>
+          <button type="button" class="btn btn-default right" ng-click="ctrl.startHelp()" ng-show="ctrl.canStartHelp()" uib-tooltip="{{'Start help' | translate}}">
+            <span class="glyphicon glyphicon-question-sign"></span>
+          </button>
           <editable-state-select class="pull-right" ng-if="!ctrl.editableInEdit.unsaved" id="classState" state="ctrl.editableInEdit.state" model="ctrl.model"></editable-state-select>
         </selection-buttons>
 

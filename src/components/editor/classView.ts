@@ -14,6 +14,8 @@ import { Class } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
+import { config } from '../../config';
+import { InteractiveHelp } from '../common/interactiveHelp';
 
 mod.directive('classView', () => {
   return {
@@ -56,7 +58,8 @@ export class ClassViewController extends EditableEntityController<Class> {
               errorModal: ErrorModal,
               notLoggedInModal: NotLoggedInModal,
               private classService: ClassService,
-              userService: UserService) {
+              userService: UserService,
+              private interactiveHelp: InteractiveHelp) {
     super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
 
     this.modelController.registerView(this);
@@ -126,5 +129,31 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   getContext(): LanguageContext {
     return this.model;
+  }
+
+  canStartHelp() {
+    return this.isEditing() && !config.production;
+  }
+
+  startHelp() {
+
+    const focusTo = angular.element('class-view .basic-info');
+
+    this.interactiveHelp.open({ stories: [
+      {
+        popoverTo: () => focusTo.find('[data-title="Class label"]').parent(),
+        focusTo: () => focusTo,
+        popoverPosition: 'top',
+        title: 'Class label info',
+        content: 'Diipadaa'
+      },
+      {
+        popoverTo: () => focusTo.find('[data-title="Description"]').parent(),
+        focusTo: () => focusTo,
+        popoverPosition: 'top',
+        title: 'Class description info',
+        content: 'Diipadaa'
+      }
+    ]});
   }
 }
