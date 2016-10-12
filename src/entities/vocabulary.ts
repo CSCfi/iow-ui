@@ -49,11 +49,11 @@ export type Concept = FintoConcept|ConceptSuggestion;
 export class FintoConcept extends GraphNode {
 
   static fintoConceptMappings = {
-    id:             { name: '@id',            serializer: uriSerializer },
-    label:          { name: 'prefLabel',      serializer: localizableSerializer },
-    comment:        { name: 'definition',     serializer: localizableSerializer },
-    vocabularies:   { name: 'inScheme',       serializer: entityAwareList(entityOrId(entity(() => Vocabulary))) },
-    broaderConcept: { name: 'broaderConcept', serializer: entityAwareOptional(entity(resolveConceptConstructor)) }
+    id:             { name: '@id',                     serializer: uriSerializer },
+    label:          { name: 'prefLabel',               serializer: localizableSerializer },
+    comment:        { name: ['definition', 'comment'], serializer: localizableSerializer },
+    vocabularies:   { name: 'inScheme',                serializer: entityAwareList(entityOrId(entity(() => Vocabulary))) },
+    broaderConcept: { name: 'broaderConcept',          serializer: entityAwareOptional(entity(resolveConceptConstructor)) }
   };
 
   id: Uri;
