@@ -1,10 +1,11 @@
-import { assertNever } from '../utils/object';
+import { assertNever, isDefined } from '../utils/object';
 import { Serializer } from './serializer/serializer';
 import { EntityAwareSerializer } from './serializer/entitySerializer';
 import { GraphNode } from './graphNode';
+import { first } from '../utils/array';
 
 export type Mapping<T, N extends GraphNode> = {
-  name: string,
+  name: string|string[],
   serializer: Serializer<T>|EntityAwareSerializer<T, N>,
 };
 
@@ -20,7 +21,15 @@ export function init<T, N extends GraphNode>(instance: N, mappings: { [propertyN
 
 export function initSingle<T, N extends GraphNode>(instance: N, mapping: Mapping<T, N>) {
 
-  const value = instance.graph[mapping.name];
+  function resolveValue(name: string|string[]): string {
+    if (Array.isArray(name)) {
+      return first(name.map(n => instance.graph[n]), isDefined);
+    } else {
+      return instance.graph[name];
+    }
+  }
+
+  const value = resolveValue(mapping.name);
 
   switch (mapping.serializer.type) {
     case 'Normal':
@@ -45,6 +54,10 @@ export function serialize<T, N extends GraphNode>(instance: N, clone: boolean, m
 }
 
 export function serializeSingle<T, N extends GraphNode>(result: any, instance: N, clone: boolean, propertyExtractor: (instance: N) => T, mapping: Mapping<any, N>) {
+
+  if (Array.isArray(mapping.name)) {
+    throw new Error('Cannot serialize unambiguous name: ' + mapping.name.join(','));
+  }
 
   const value: T = propertyExtractor(instance);
 
