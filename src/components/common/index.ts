@@ -8,6 +8,8 @@ import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { HistoryModal } from './historyModal';
 import { LanguageService } from '../../services/languageService';
 import { Localizable, LanguageContext } from '../../entities/contract';
+import { OverlayService } from './overlay';
+
 export default mod.name;
 
 import './accordion';
@@ -29,6 +31,7 @@ import './usage';
 import './usagePanel';
 import './ngContextMenu';
 
+mod.service('overlayService', OverlayService);
 mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);
 mod.service('historyModal', HistoryModal);
