@@ -1,8 +1,7 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, ITimeoutService, IDocumentService } from 'angular';
+import { IScope, ITimeoutService } from 'angular';
 import { assertNever } from '../../utils/object';
-import { scrollToElement } from '../../utils/angular';
 
 export type PopoverPosition = 'top'|'right'|'left'|'bottom';
 
@@ -120,7 +119,7 @@ class HelpItemController {
   arrowClass: string[] = [];
   offset: { left: number; top: number } | null = null;
 
-  constructor(private $element: JQuery, private $timeout: ITimeoutService, private $document: IDocumentService) {
+  constructor(private $element: JQuery, private $timeout: ITimeoutService) {
     this.helpController.register(this);
   }
 
@@ -141,9 +140,7 @@ class HelpItemController {
     // Off frame so rendering will be done and has correct dimensions
     this.$timeout(() => {
       this.offset = this.calculateOffset(story.popoverTo(), story.focusTo && story.focusTo(), story.popoverPosition);
-
-      // Off frame so rendering will be done and has correct location
-      this.$timeout(() => scrollToElement(this.$element, this.$document.find('body')));
+      angular.element('html, body').animate( {scrollTop: this.offset!.top - 100 }, 100);
     }, wasHidden ? 0 : 500);
   }
 
