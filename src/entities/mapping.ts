@@ -2,7 +2,7 @@ import { assertNever, isDefined } from '../utils/object';
 import { Serializer } from './serializer/serializer';
 import { EntityAwareSerializer } from './serializer/entitySerializer';
 import { GraphNode } from './graphNode';
-import { first } from '../utils/array';
+import { first, contains } from '../utils/array';
 
 export type Mapping<T, N extends GraphNode> = {
   name: string|string[],
@@ -41,13 +41,15 @@ export function initSingle<T, N extends GraphNode>(instance: N, mapping: Mapping
   }
 }
 
-export function serialize<T, N extends GraphNode>(instance: N, clone: boolean, mappings: { [propertyName: string]: Mapping<any, N>; }) {
+export function serialize<T, N extends GraphNode>(instance: N, clone: boolean, mappings: { [propertyName: string]: Mapping<any, N>; }, excludeMappings: Mapping<any, any>[] = []) {
 
   const result: any = {};
 
   for (const [propertyName, mapping] of Object.entries(mappings)) {
-    const propertyExtractor = (i: N) => (i as any)[propertyName] as T;
-    serializeSingle<T, N>(result, instance, clone, propertyExtractor, mapping);
+    if (!contains(excludeMappings, mapping)) {
+      const propertyExtractor = (i: N) => (i as any)[propertyName] as T;
+      serializeSingle<T, N>(result, instance, clone, propertyExtractor, mapping);
+    }
   }
 
   return result;
