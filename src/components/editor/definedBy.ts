@@ -26,4 +26,8 @@ class DefinedByController {
     const type = normalizeModelType(this.entity && this.entity.definedBy && this.entity.definedBy.type || []);
     return 'Defined by' + (type ? ' ' + type : '');
   }
+
+  linkTo() {
+    return this.entity && this.model.linkToResource(this.entity.id);
+  }
 }
