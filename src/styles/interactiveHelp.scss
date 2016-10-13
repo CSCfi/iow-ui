@@ -49,7 +49,12 @@ body.overlay-open {
       -webkit-appearance: none;
     }
 
-    &:hover {
+    &[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    &:hover:not([disabled]) {
       background-color: #0A87A1;
     }
   }
