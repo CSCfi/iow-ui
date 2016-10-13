@@ -2,7 +2,7 @@ import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
 import { IScope, ITimeoutService, IDocumentService, INgModelController, IPromise } from 'angular';
 import { assertNever } from '../../utils/object';
-import { tab } from '../../utils/keyCode';
+import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 
 export type PopoverPosition = 'top'|'right'|'left'|'bottom';
@@ -99,41 +99,44 @@ class InteractiveHelpController {
 
     const keyDownListener = (event: JQueryEventObject) => {
 
-      const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
-
       const stopEvent = () => {
         event.preventDefault();
         event.stopPropagation();
       };
 
-      if (!event.isDefaultPrevented()) {
-        switch (event.which) {
-          case tab: {
+      const manageFocus = () => {
+        const focusableElements = loadFocusableElementList();
 
-            const focusableElements = loadFocusableElementList();
+        if (focusableElements.length > 0) {
 
-            if (focusableElements.length > 0) {
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
 
-              const firstElement = focusableElements[0];
-              const lastElement = focusableElements[focusableElements.length - 1];
-
-              if (event.shiftKey) {
-                if (isFocusInElement(firstElement)) {
-                  lastElement.focus();
-                  stopEvent();
-                }
-              } else {
-                if (isFocusInElement(lastElement)) {
-                  firstElement.focus();
-                  stopEvent();
-                }
-              }
-            } else {
+          if (event.shiftKey) {
+            if (isFocusInElement(firstElement)) {
+              lastElement.focus();
               stopEvent();
             }
-            break;
+          } else {
+            if (isFocusInElement(lastElement)) {
+              firstElement.focus();
+              stopEvent();
+            }
           }
+        } else {
+          stopEvent();
         }
+      };
+
+      const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
+
+      switch (event.which) {
+        case tab:
+          manageFocus();
+          break;
+        case esc:
+          this.close();
+          break;
       }
     };
 
