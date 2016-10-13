@@ -19,6 +19,7 @@ export interface OverlayOptions {
   resolve?: any;
   appendTo?: any;
   scope?: IScope;
+  disableScroll?: boolean;
 }
 
 export interface IOverlayScope extends IScope {
@@ -26,6 +27,8 @@ export interface IOverlayScope extends IScope {
   $dismiss(reason?: any): void;
   $$overlayDestructionScheduled?: boolean;
 }
+
+const overlayOpenClass = 'overlay-open';
 
 export class OverlayService {
 
@@ -43,8 +46,9 @@ export class OverlayService {
 
     if (!options.template) throw new Error('template is required');
 
-    const appendTo = options.appendTo || this.$document.find('body').eq(0);
-    const instance = new DefaultOverlayInstance(this.$q, this.$animate);
+    const body = this.$document.find('body').eq(0);
+    const appendTo = options.appendTo || body;
+    const instance = new DefaultOverlayInstance(this.$q, this.$animate, body);
 
     this.$uibResolve.resolve(options.resolve || {}).then(vars => {
       const parentScope = options.scope || this.$rootScope;
@@ -67,6 +71,11 @@ export class OverlayService {
       }
 
       const elem = angular.element(options.template);
+
+      if (options.disableScroll) {
+        body.addClass(overlayOpenClass);
+      }
+
       this.$animate.enter(this.$compile(elem)(scope), appendTo);
 
       instance.element = () => elem;
@@ -95,7 +104,7 @@ class DefaultOverlayInstance implements OverlayInstance {
   scope: () => IOverlayScope;
   element: () => IAugmentedJQuery;
 
-  constructor($q: IQService, private $animate: IAnimateService) {
+  constructor($q: IQService, private $animate: IAnimateService, private bodyElement: JQuery) {
 
     this.resultDeferred = $q.defer();
     this.openedDeferred = $q.defer();
@@ -150,6 +159,7 @@ class DefaultOverlayInstance implements OverlayInstance {
     const elem = this.element();
 
     this.$animate.leave(elem).then(() => {
+      this.bodyElement.removeClass(overlayOpenClass);
       elem.remove();
       this.closedDeferred.resolve();
     });

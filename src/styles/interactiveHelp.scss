@@ -1,5 +1,9 @@
 // inspired by https://github.com/DaftMonk/angular-tour/blob/master/src/tour/tour.scss
 
+body.overlay-open {
+  overflow: hidden;
+}
+
 .help-item {
   display: block;
   position: absolute;
