@@ -1,7 +1,8 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, ITimeoutService } from 'angular';
+import { IScope, ITimeoutService, IDocumentService } from 'angular';
 import { assertNever } from '../../utils/object';
+import { tab } from '../../utils/keyCode';
 
 export type PopoverPosition = 'top'|'right'|'left'|'bottom';
 
@@ -39,16 +40,88 @@ export class InteractiveHelp {
   }
 }
 
+const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
+                          'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +
+                          'iframe, object, embed, *[tabindex], *[contenteditable=true]';
+
 class InteractiveHelpController {
 
   itemController: HelpItemController;
   activeIndex = 0;
 
   /* @ngInject */
-  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, private storyLine: StoryLine) {
+  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
+
     if (!storyLine || storyLine.stories.length === 0) {
       throw new Error('No stories defined');
     }
+
+    const loadFocusableElementList = () => {
+
+      const isVisible = (element: HTMLElement) => !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+      const story = this.currentStory();
+
+      if (!story.focusTo) {
+        return [];
+      }
+
+      const focusableElements = story.focusTo().find(focusableSelector);
+      const result: HTMLElement[] = [];
+
+      focusableElements.each((_index: number, element: HTMLElement) => {
+        if (isVisible(element)) {
+          result.push(element);
+        }
+      });
+
+      return result;
+    };
+
+    const keyDownListener = (event: JQueryEventObject) => {
+
+      const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
+
+      const stopEvent = () => {
+        event.preventDefault();
+        event.stopPropagation();
+      };
+
+      if (!event.isDefaultPrevented()) {
+        switch (event.which) {
+          case tab: {
+
+            const focusableElements = loadFocusableElementList();
+
+            if (focusableElements.length > 0) {
+
+              const firstElement = focusableElements[0];
+              const lastElement = focusableElements[focusableElements.length - 1];
+
+              if (event.shiftKey) {
+                if (isFocusInElement(firstElement)) {
+                  lastElement.focus();
+                  stopEvent();
+                }
+              } else {
+                if (isFocusInElement(lastElement)) {
+                  firstElement.focus();
+                  stopEvent();
+                }
+              }
+            } else {
+              stopEvent();
+            }
+            break;
+          }
+        }
+      }
+    };
+
+    $document.on('keydown', keyDownListener);
+
+    $scope.$on('$destroy', function() {
+      $document.off('keydown', keyDownListener);
+    });
   }
 
   register(item: HelpItemController) {
@@ -66,6 +139,10 @@ class InteractiveHelpController {
       InteractiveHelpController.focusActiveElement(story.focusTo());
     }
     this.itemController.show(story, index === this.storyLine.stories.length - 1);
+  }
+
+  currentStory() {
+    return this.storyLine.stories[this.activeIndex];
   }
 
   close() {
@@ -140,7 +217,11 @@ class HelpItemController {
 
     // Off frame so rendering will be done and has correct dimensions
     this.$timeout(() => {
-      this.offset = this.calculateOffset(story.popoverTo(), story.focusTo && story.focusTo(), story.popoverPosition);
+
+      const popoverToElement = story.popoverTo();
+      popoverToElement.find(focusableSelector).focus();
+
+      this.offset = this.calculateOffset(popoverToElement, story.focusTo && story.focusTo(), story.popoverPosition);
       angular.element('html, body').animate( {scrollTop: this.offset!.top - 100 }, 100);
     }, wasHidden ? 0 : 500);
   }
