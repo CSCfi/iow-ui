@@ -137,22 +137,30 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   startHelp() {
 
-    const focusTo = angular.element('class-view .basic-info');
-
     this.interactiveHelp.open({ stories: [
       {
-        popoverTo: () => focusTo.find('[data-title="Class label"]').parent(),
-        focusTo: () => focusTo,
+        popoverTo: () => angular.element('class-view .basic-info [data-title="Class label"]').parent(),
+        focusTo: () => angular.element('class-view .basic-info'),
         popoverPosition: 'top',
         title: 'Class label info',
-        content: 'Diipadaa'
+        content: 'Diipadaa',
+        nextCondition: 'explicit'
       },
       {
-        popoverTo: () => focusTo.find('[data-title="Description"]').parent(),
-        focusTo: () => focusTo,
+        popoverTo: () => angular.element('class-view .basic-info [data-title="Description"]').parent(),
+        focusTo: () => angular.element('class-view .basic-info'),
         popoverPosition: 'top',
         title: 'Class description info',
-        content: 'Diipadaa'
+        content: 'Diipadaa',
+        nextCondition: 'explicit'
+      },
+      {
+        popoverTo: () => angular.element('class-view button.save'),
+        focusTo: () => angular.element('class-view button.save'),
+        popoverPosition: 'top',
+        title: 'Save changes',
+        content: 'Diipadaa',
+        nextCondition: 'click'
       }
     ]});
   }
