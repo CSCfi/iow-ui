@@ -70,6 +70,9 @@ class InteractiveHelpController {
       throw new Error('No stories defined');
     }
 
+    // Active element needs to be blurred because it can used for example for multiple interactive help activations
+    angular.element(document.activeElement).blur();
+
     const loadFocusableElementList = () => {
 
       const isVisible = (element: HTMLElement) => !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
