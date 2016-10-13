@@ -17,6 +17,8 @@ import { Group } from '../../entities/group';
 import { ModelListItem } from '../../entities/model';
 import { KnownModelType } from '../../entities/type';
 import { LanguageContext } from '../../entities/contract';
+import { config } from '../../config';
+import { InteractiveHelp } from '../common/interactiveHelp';
 
 mod.directive('group', () => {
   return {
@@ -52,7 +54,8 @@ class GroupController extends EditableEntityController<Group> {
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
               notLoggedInModal: NotLoggedInModal,
-              maintenanceModal: MaintenanceModal) {
+              maintenanceModal: MaintenanceModal,
+              private interactiveHelp: InteractiveHelp) {
     super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
 
     $scope.$watch(() => this.groupId, groupId => {
@@ -129,5 +132,81 @@ class GroupController extends EditableEntityController<Group> {
 
   getContext(): LanguageContext {
     return this.group;
+  }
+
+  canStartHelp() {
+    return !config.production;
+  }
+
+  startHelp() {
+
+    const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
+
+    this.interactiveHelp.open({ stories: [
+      {
+        popoverTo: () => angular.element('#add-library-button'),
+        focusTo: () => ({
+          element: angular.element('#add-library-button')
+        }),
+        popoverPosition: 'left',
+        title: 'Add library',
+        content: 'Diipadaa',
+        nextCondition: 'click'
+      },
+      {
+        popoverTo: () => angular.element('.modal-dialog [data-title="Prefix"] input'),
+        focusTo: () => ({
+          element: angular.element('.modal-dialog [data-title="Prefix"]'),
+          margin: editableMargin
+        }),
+        popoverPosition: 'left',
+        title: 'Prefix',
+        content: 'Prefix info',
+        nextCondition: 'valid-input'
+      },
+      {
+        popoverTo: () => angular.element('editable-multiple-language-select div autocomplete input'),
+        focusTo: () => ({
+          element: angular.element('editable-multiple-language-select div'),
+          margin: Object.assign({}, editableMargin, { bottom: 10 })
+        }),
+        popoverPosition: 'left',
+        title: 'Model languages',
+        content: 'Diipadaa',
+        nextCondition: 'explicit'
+      },
+      {
+        popoverTo: () => angular.element('.modal-dialog [data-title="Library label"] input'),
+        focusTo: () => ({
+          element: angular.element('.modal-dialog [data-title="Library label"]'),
+          margin: editableMargin
+        }),
+        popoverPosition: 'left',
+        title: 'Library label',
+        content: 'Library label info',
+        nextCondition: 'valid-input'
+      },
+      {
+        popoverTo: () => angular.element('.modal-dialog [data-title="Namespace redirection"] input'),
+        focusTo: () => ({
+          element: angular.element('.modal-dialog [data-title="Namespace redirection"]'),
+          margin: editableMargin
+        }),
+        popoverPosition: 'left',
+        title: 'Namespace redirection',
+        content: 'Diipadaa',
+        nextCondition: 'valid-input'
+      },
+      {
+        popoverTo: () => angular.element('button.create'),
+        focusTo: () => ({
+          element: angular.element('button.create')
+        }),
+        popoverPosition: 'left',
+        title: 'Create new',
+        content: 'Diipadaa',
+        nextCondition: 'click'
+      }
+    ]});
   }
 }

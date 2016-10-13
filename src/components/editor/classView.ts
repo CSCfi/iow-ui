@@ -14,8 +14,6 @@ import { Class } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
-import { config } from '../../config';
-import { InteractiveHelp } from '../common/interactiveHelp';
 
 mod.directive('classView', () => {
   return {
@@ -58,8 +56,7 @@ export class ClassViewController extends EditableEntityController<Class> {
               errorModal: ErrorModal,
               notLoggedInModal: NotLoggedInModal,
               private classService: ClassService,
-              userService: UserService,
-              private interactiveHelp: InteractiveHelp) {
+              userService: UserService) {
     super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
 
     this.modelController.registerView(this);
@@ -129,39 +126,5 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   getContext(): LanguageContext {
     return this.model;
-  }
-
-  canStartHelp() {
-    return this.isEditing() && !config.production;
-  }
-
-  startHelp() {
-
-    this.interactiveHelp.open({ stories: [
-      {
-        popoverTo: () => angular.element('class-view .basic-info [data-title="Class label"]').parent(),
-        focusTo: () => angular.element('class-view .basic-info'),
-        popoverPosition: 'top',
-        title: 'Class label info',
-        content: 'Diipadaa',
-        nextCondition: 'valid-input'
-      },
-      {
-        popoverTo: () => angular.element('class-view .basic-info [data-title="Description"]').parent(),
-        focusTo: () => angular.element('class-view .basic-info'),
-        popoverPosition: 'top',
-        title: 'Class description info',
-        content: 'Diipadaa',
-        nextCondition: 'valid-input'
-      },
-      {
-        popoverTo: () => angular.element('class-view button.save'),
-        focusTo: () => angular.element('class-view button.save'),
-        popoverPosition: 'top',
-        title: 'Save changes',
-        content: 'Diipadaa',
-        nextCondition: 'click'
-      }
-    ]});
   }
 }
