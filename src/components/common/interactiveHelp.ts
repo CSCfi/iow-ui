@@ -271,8 +271,8 @@ mod.directive('helpItem', () => {
         <div class="help-content-wrapper">
           <h3>{{ctrl.title | translate}}</h3>
           <p>{{ctrl.content | translate}}</p>
-          <a ng-if="!ctrl.last && ctrl.showNext && ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next-item" translate>next</a>
-          <a ng-if="ctrl.last && ctrl.showNext && ctrl.isValid()" ng-click="ctrl.close()" class="small button help-next-item" translate>close</a>
+          <button ng-if="!ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next-item" translate>next</button>
+          <button ng-if="ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close()" class="small button help-next-item" translate>close</button>
           <a ng-click="ctrl.close()" class="help-close-item">&times;</a>
         </div>
       `,
