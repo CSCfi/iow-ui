@@ -162,6 +162,8 @@ export class ClassService {
           property.state = 'Unstable';
         }
 
+        shape.state = 'Unstable';
+
         return shape;
       });
   }
