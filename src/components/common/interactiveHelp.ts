@@ -187,7 +187,7 @@ class InteractiveHelpController {
       const focusTo = currentStory.focusTo();
 
       if (!focusTo.element || focusTo.element.length === 0) {
-        throw new Error('Focus to element not found');
+        return null;
       }
 
       const focusToElementOffset = focusTo.element.offset();
