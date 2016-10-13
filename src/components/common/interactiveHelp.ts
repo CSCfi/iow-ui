@@ -339,7 +339,7 @@ class HelpItemController {
     this.showNext = story.nextCondition !== 'click';
 
     if (story.nextCondition === 'valid-input') {
-      this.ngModel = popoverToElement.find('[ng-model]').controller('ngModel');
+      this.ngModel = popoverToElement.find('[ng-model]').addBack('[ng-model]').controller('ngModel');
 
       if (!this.ngModel) {
         throw new Error('ng-model does not exits for popover element');
@@ -349,7 +349,7 @@ class HelpItemController {
     // Off frame so rendering will be done and has correct dimensions
     this.$timeout(() => {
 
-      popoverToElement.find(focusableSelector).focus();
+      popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
 
       this.offset = this.calculateOffset(popoverToElement, story.popoverPosition);
       angular.element('html, body').animate( {scrollTop: this.offset!.top - 100 }, 100);
