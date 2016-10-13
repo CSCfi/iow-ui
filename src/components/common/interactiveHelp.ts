@@ -151,7 +151,9 @@ class InteractiveHelpController {
           if (this.isCurrentLastStory()) {
             this.close();
           } else {
-            this.nextStory();
+            $scope.$apply(() => {
+              this.nextStory();
+            });
           }
         }
       }
