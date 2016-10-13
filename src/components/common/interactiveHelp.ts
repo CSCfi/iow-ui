@@ -18,6 +18,13 @@ export interface Story {
   content: string;
 }
 
+interface Positioning {
+  width: number;
+  height: number;
+  left: number;
+  top: number;
+}
+
 export class InteractiveHelp {
 
   /* @ngInject */
@@ -28,7 +35,10 @@ export class InteractiveHelp {
     return this.overlayService.open({
       template: `
         <help-item class="help-item" help-controller="ctrl" ng-style="ctrl.itemController.itemStyle()"></help-item>
-        <div class="help-backdrop"></div>
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.left"></div>
       `,
       controller: InteractiveHelpController,
       controllerAs: 'ctrl',
@@ -48,6 +58,7 @@ class InteractiveHelpController {
 
   itemController: HelpItemController;
   activeIndex = 0;
+  backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
 
   /* @ngInject */
   constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
@@ -122,6 +133,63 @@ class InteractiveHelpController {
     $scope.$on('$destroy', function() {
       $document.off('keydown', keyDownListener);
     });
+
+    const focusPositioning = () => {
+      const currentStory = this.currentStory();
+
+      if (!currentStory || !currentStory.focusTo) {
+        return null;
+      }
+
+      const focusToElement = currentStory.focusTo();
+
+      if (!focusToElement) {
+        return null;
+      }
+
+      const focusToElementPosition = focusToElement.position();
+      const offset = focusToElement.hasClass('row') ? 15 : 0;
+
+      return {
+        width: focusToElement.outerWidth(true) + offset * 2,
+        height: focusToElement.outerHeight(true),
+        left: focusToElementPosition.left - offset,
+        top: focusToElementPosition.top
+      };
+    };
+
+    $scope.$watch(focusPositioning, positioning => {
+      if (positioning) {
+        this.backdrop = {
+          top: {
+            left: 0,
+            top: 0,
+            width: $document.width(),
+            height: positioning.top
+          },
+          right: {
+            left: positioning.left + positioning.width,
+            top: positioning.top,
+            width: $document.width() - positioning.left - positioning.width,
+            height: positioning.height
+          },
+          bottom: {
+            left: 0,
+            top: positioning.top + positioning.height,
+            width: $document.width(),
+            height: $document.height() - positioning.top - positioning.height
+          },
+          left: {
+            left: 0,
+            top: positioning.top,
+            width: positioning.left,
+            height: positioning.height
+          }
+        };
+      } else {
+        this.backdrop = null;
+      }
+    }, true);
   }
 
   register(item: HelpItemController) {
@@ -135,9 +203,6 @@ class InteractiveHelpController {
 
   showStory(index: number) {
     const story = this.storyLine.stories[index];
-    if (story.focusTo) {
-      InteractiveHelpController.focusActiveElement(story.focusTo());
-    }
     this.itemController.show(story, index === this.storyLine.stories.length - 1);
   }
 
@@ -146,21 +211,7 @@ class InteractiveHelpController {
   }
 
   close() {
-    InteractiveHelpController.resetFocus();
     this.$overlayInstance.close();
-  }
-
-  static focusActiveElement(element: JQuery) {
-    if (!element || element.length === 0) {
-      throw new Error('No element for popover');
-    }
-
-    InteractiveHelpController.resetFocus();
-    element.addClass('help-element-active');
-  }
-
-  static resetFocus() {
-    angular.element('.help-element-active').removeClass('help-element-active');
   }
 }
 
@@ -221,7 +272,7 @@ class HelpItemController {
       const popoverToElement = story.popoverTo();
       popoverToElement.find(focusableSelector).focus();
 
-      this.offset = this.calculateOffset(popoverToElement, story.focusTo && story.focusTo(), story.popoverPosition);
+      this.offset = this.calculateOffset(popoverToElement, story.popoverPosition);
       angular.element('html, body').animate( {scrollTop: this.offset!.top - 100 }, 100);
     }, wasHidden ? 0 : 500);
   }
@@ -239,30 +290,16 @@ class HelpItemController {
     this.helpController.nextStory();
   }
 
-  calculateOffset(element: JQuery, focusElement: JQuery|undefined, position: PopoverPosition) {
+  calculateOffset(element: JQuery, position: PopoverPosition) {
 
     if (!element || element.length === 0) {
       throw new Error('No element for popover');
     }
 
-    function isElementInsideFocus() {
-      if (!focusElement) {
-        return false;
-      }
-
-      for (let e = element.parent(); e.length > 0; e = e.parent()) {
-        if (e[0] === focusElement[0]) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    const elementInsideFocus = isElementInsideFocus();
     const popoverWidth = this.$element.width();
     const popoverHeight = this.$element.height();
-    const left = element.position().left + (elementInsideFocus ? focusElement!.position().left : 0);
-    const top = element.position().top + (elementInsideFocus ? focusElement!.position().top : 0);
+    const left = element.position().left;
+    const top = element.position().top;
     const width = element.width();
     const height = element.height();
     const arrow = 15;
