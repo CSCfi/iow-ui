@@ -117,3 +117,16 @@ export function ifChanged<T>(cb: (newItem: T, oldItem: T) => void ) {
     }
   };
 }
+
+export function isTargetElementInsideElement(event: { target: Element }, element: HTMLElement) {
+
+  const target = event.target;
+
+  for (let e = target; !!e; e = e.parentElement) {
+    if (e === element) {
+      return true;
+    }
+  }
+
+  return false;
+}

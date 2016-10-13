@@ -3,8 +3,10 @@ import { OverlayService, OverlayInstance } from './overlay';
 import { IScope, ITimeoutService, IDocumentService } from 'angular';
 import { assertNever } from '../../utils/object';
 import { tab } from '../../utils/keyCode';
+import { isTargetElementInsideElement } from '../../utils/angular';
 
 export type PopoverPosition = 'top'|'right'|'left'|'bottom';
+export type NextCondition = 'explicit'|'click';
 
 export interface StoryLine {
   stories: Story[];
@@ -16,6 +18,7 @@ export interface Story {
   focusTo?: () => JQuery;
   title: string;
   content: string;
+  nextCondition: NextCondition;
 }
 
 interface Positioning {
@@ -128,10 +131,32 @@ class InteractiveHelpController {
       }
     };
 
+    const clickListener = (event: JQueryEventObject) => {
+      const story = this.currentStory();
+
+      if (story && story.nextCondition === 'click') {
+        const popoverElement = story.popoverTo();
+
+        if (!popoverElement || popoverElement.length === 0) {
+          throw new Error('Popover element not found');
+        }
+
+        if (isTargetElementInsideElement(event, story.popoverTo()[0])) {
+          if (this.isCurrentLastStory()) {
+            this.close();
+          } else {
+            this.nextStory();
+          }
+        }
+      }
+    };
+
     $document.on('keydown', keyDownListener);
+    $document.on('click', clickListener);
 
     $scope.$on('$destroy', function() {
       $document.off('keydown', keyDownListener);
+      $document.off('click', clickListener);
     });
 
     const focusPositioning = () => {
@@ -201,9 +226,17 @@ class InteractiveHelpController {
     this.showStory(++this.activeIndex);
   }
 
+  isLastStory(index: number) {
+    return index === this.storyLine.stories.length - 1;
+  }
+
+  isCurrentLastStory() {
+    return this.isLastStory(this.activeIndex);
+  }
+
   showStory(index: number) {
     const story = this.storyLine.stories[index];
-    this.itemController.show(story, index === this.storyLine.stories.length - 1);
+    this.itemController.show(story, this.isLastStory(index));
   }
 
   currentStory() {
@@ -224,8 +257,8 @@ mod.directive('helpItem', () => {
         <div class="help-content-wrapper">
           <h3>{{ctrl.title | translate}}</h3>
           <p>{{ctrl.content | translate}}</p>
-          <a ng-if="!ctrl.last" ng-click="ctrl.next()" class="small button help-next-item" translate>next</a>
-          <a ng-if="ctrl.last" ng-click="ctrl.close()" class="small button help-next-item" translate>close</a>
+          <a ng-if="!ctrl.last && ctrl.showNext" ng-click="ctrl.next()" class="small button help-next-item" translate>next</a>
+          <a ng-if="ctrl.last && ctrl.showNext" ng-click="ctrl.close()" class="small button help-next-item" translate>close</a>
           <a ng-click="ctrl.close()" class="help-close-item">&times;</a>
         </div>
       `,
@@ -246,6 +279,7 @@ class HelpItemController {
   content: string;
   last: boolean;
   arrowClass: string[] = [];
+  showNext: boolean;
   offset: { left: number; top: number } | null = null;
 
   constructor(private $element: JQuery, private $timeout: ITimeoutService) {
@@ -265,6 +299,7 @@ class HelpItemController {
     this.content = story.content;
     this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
     this.last = last;
+    this.showNext = story.nextCondition === 'explicit';
 
     // Off frame so rendering will be done and has correct dimensions
     this.$timeout(() => {
