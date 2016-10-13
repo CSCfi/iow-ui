@@ -1,6 +1,6 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, ITimeoutService, IDocumentService, INgModelController, IPromise } from 'angular';
+import { IScope, ITimeoutService, IDocumentService, INgModelController } from 'angular';
 import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
@@ -104,6 +104,8 @@ class InteractiveHelpController {
         event.stopPropagation();
       };
 
+      const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
+
       const manageFocus = () => {
         const focusableElements = loadFocusableElementList();
 
@@ -119,7 +121,11 @@ class InteractiveHelpController {
             }
           } else {
             if (isFocusInElement(lastElement)) {
-              firstElement.focus();
+              if (this.itemController.isValid()) {
+                this.nextStory();
+              } else {
+                firstElement.focus();
+              }
               stopEvent();
             }
           }
@@ -127,8 +133,6 @@ class InteractiveHelpController {
           stopEvent();
         }
       };
-
-      const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
 
       switch (event.which) {
         case tab:
@@ -316,24 +320,8 @@ class HelpItemController {
   offset: { left: number; top: number } | null = null;
   ngModel: INgModelController|null;
 
-  constructor($scope: IScope, private $element: JQuery, private $timeout: ITimeoutService) {
+  constructor(private $element: JQuery, private $timeout: ITimeoutService) {
     this.helpController.register(this);
-
-    let previousModel: INgModelController|null = null;
-    let timeout: IPromise<any>|null = null;
-    const debounceMs = 1500;
-
-    $scope.$watch(() => this.ngModel && this.ngModel.$modelValue, (value, oldValue) => {
-
-      if (value !== oldValue && previousModel === this.ngModel && this.isValid()) {
-        if (timeout) {
-          $timeout.cancel(timeout);
-        }
-        timeout = $timeout(() => this.next(), debounceMs);
-      }
-
-      previousModel = this.ngModel;
-    }, true);
   }
 
   isValid() {
