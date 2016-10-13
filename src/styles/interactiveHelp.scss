@@ -9,7 +9,7 @@ body.overlay-open {
   position: absolute;
   background: #1C252E;
   color: #FFF;
-  z-index: 1020;
+  z-index: 1052;
   top: 0;
   left: 2.5%;
   font-family: inherit;
@@ -119,5 +119,5 @@ body.overlay-open {
 .help-backdrop {
   position: absolute;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 1010;
+  z-index: 1051; // modal is 1050
 }
