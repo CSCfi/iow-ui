@@ -33,7 +33,8 @@ export class InteractiveHelp {
       controllerAs: 'ctrl',
       resolve: {
         storyLine: () => storyLine
-      }
+      },
+      disableScroll: true
     }).result;
   }
 }
