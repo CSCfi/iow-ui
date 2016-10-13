@@ -178,14 +178,13 @@ class InteractiveHelpController {
         throw new Error('Focus to element not found');
       }
 
-      const focusToElementPosition = focusToElement.position();
-      const marginLeft = parseInt(focusToElement.css('marginLeft'), 10);
+      const focusToElementOffset = focusToElement.offset();
 
       return {
         width: focusToElement.outerWidth(false),
         height: focusToElement.outerHeight(false),
-        left: focusToElementPosition.left + marginLeft,
-        top: focusToElementPosition.top
+        left: focusToElementOffset.left,
+        top: focusToElementOffset.top
       };
     };
 
@@ -370,8 +369,8 @@ class HelpItemController {
 
     const popoverWidth = this.$element.width();
     const popoverHeight = this.$element.height();
-    const left = element.position().left;
-    const top = element.position().top;
+    const left = element.offset().left;
+    const top = element.offset().top;
     const width = element.width();
     const height = element.height();
     const arrow = 15;
