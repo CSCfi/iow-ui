@@ -201,7 +201,7 @@ class InteractiveHelpController {
       };
     };
 
-    $scope.$watch(focusPositioning, positioning => {
+    const setBackdrop = (positioning: Positioning|null) => {
       if (positioning) {
         this.backdrop = {
           top: {
@@ -232,7 +232,17 @@ class InteractiveHelpController {
       } else {
         this.backdrop = null;
       }
-    }, true);
+    };
+
+    $scope.$watch(focusPositioning, setBackdrop, true);
+
+    const resizeEventHandler = () => $scope.$apply(() => setBackdrop(focusPositioning()));
+
+    window.addEventListener('resize', resizeEventHandler);
+
+    $scope.$on('$destroy', () => {
+      window.removeEventListener('resize', resizeEventHandler);
+    });
   }
 
   register(item: HelpItemController) {
