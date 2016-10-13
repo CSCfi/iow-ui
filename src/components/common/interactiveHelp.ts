@@ -15,7 +15,10 @@ export interface StoryLine {
 export interface Story {
   popoverTo: () => JQuery;
   popoverPosition: PopoverPosition;
-  focusTo?: () => JQuery;
+  focusTo?: () => {
+    element: JQuery,
+    margin?: { top?: number, right?: number, bottom?: number, left?: number }
+  };
   title: string;
   content: string;
   nextCondition: NextCondition;
@@ -82,7 +85,7 @@ class InteractiveHelpController {
         return [];
       }
 
-      const focusableElements = story.focusTo().find(focusableSelector);
+      const focusableElements = story.focusTo().element.find(focusableSelector);
       const result: HTMLElement[] = [];
 
       focusableElements.each((_index: number, element: HTMLElement) => {
@@ -172,19 +175,24 @@ class InteractiveHelpController {
         return null;
       }
 
-      const focusToElement = currentStory.focusTo();
+      const focusTo = currentStory.focusTo();
 
-      if (!focusToElement || focusToElement.length === 0) {
+      if (!focusTo.element || focusTo.element.length === 0) {
         throw new Error('Focus to element not found');
       }
 
-      const focusToElementOffset = focusToElement.offset();
+      const focusToElementOffset = focusTo.element.offset();
+
+      const marginTop = focusTo.margin && focusTo.margin.top || 0;
+      const marginRight = focusTo.margin && focusTo.margin.right || 0;
+      const marginBottom = focusTo.margin && focusTo.margin.bottom || 0;
+      const marginLeft = focusTo.margin && focusTo.margin.left || 0;
 
       return {
-        width: focusToElement.outerWidth(false),
-        height: focusToElement.outerHeight(false),
-        left: focusToElementOffset.left,
-        top: focusToElementOffset.top
+        width: focusTo.element.outerWidth(false) + marginLeft + marginRight,
+        height: focusTo.element.outerHeight(false) + marginTop + marginBottom,
+        left: focusToElementOffset.left - marginLeft,
+        top: focusToElementOffset.top - marginTop
       };
     };
 
