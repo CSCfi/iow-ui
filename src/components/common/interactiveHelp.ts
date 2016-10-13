@@ -143,8 +143,8 @@ class InteractiveHelpController {
 
       const focusToElement = currentStory.focusTo();
 
-      if (!focusToElement) {
-        return null;
+      if (!focusToElement || focusToElement.length === 0) {
+        throw new Error('Focus to element not found');
       }
 
       const focusToElementPosition = focusToElement.position();
