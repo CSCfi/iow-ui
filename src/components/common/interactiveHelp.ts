@@ -236,7 +236,11 @@ class InteractiveHelpController {
   }
 
   nextStory() {
-    this.showStory(++this.activeIndex);
+    if (this.isCurrentLastStory()) {
+      this.close();
+    } else {
+      this.showStory(++this.activeIndex);
+    }
   }
 
   isLastStory(index: number) {
