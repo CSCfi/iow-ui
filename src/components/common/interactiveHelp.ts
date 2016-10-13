@@ -148,12 +148,12 @@ class InteractiveHelpController {
       }
 
       const focusToElementPosition = focusToElement.position();
-      const offset = focusToElement.hasClass('row') ? 15 : 0;
+      const marginLeft = parseInt(focusToElement.css('marginLeft'), 10);
 
       return {
-        width: focusToElement.outerWidth(true) + offset * 2,
-        height: focusToElement.outerHeight(true),
-        left: focusToElementPosition.left - offset,
+        width: focusToElement.outerWidth(false),
+        height: focusToElement.outerHeight(false),
+        left: focusToElementPosition.left + marginLeft,
         top: focusToElementPosition.top
       };
     };
