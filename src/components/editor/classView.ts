@@ -144,7 +144,7 @@ export class ClassViewController extends EditableEntityController<Class> {
         popoverPosition: 'top',
         title: 'Class label info',
         content: 'Diipadaa',
-        nextCondition: 'explicit'
+        nextCondition: 'valid-input'
       },
       {
         popoverTo: () => angular.element('class-view .basic-info [data-title="Description"]').parent(),
@@ -152,7 +152,7 @@ export class ClassViewController extends EditableEntityController<Class> {
         popoverPosition: 'top',
         title: 'Class description info',
         content: 'Diipadaa',
-        nextCondition: 'explicit'
+        nextCondition: 'valid-input'
       },
       {
         popoverTo: () => angular.element('class-view button.save'),

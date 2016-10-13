@@ -1,12 +1,12 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, ITimeoutService, IDocumentService } from 'angular';
+import { IScope, ITimeoutService, IDocumentService, INgModelController, IPromise } from 'angular';
 import { assertNever } from '../../utils/object';
 import { tab } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 
 export type PopoverPosition = 'top'|'right'|'left'|'bottom';
-export type NextCondition = 'explicit'|'click';
+export type NextCondition = 'explicit'|'click'|'valid-input';
 
 export interface StoryLine {
   stories: Story[];
@@ -257,8 +257,8 @@ mod.directive('helpItem', () => {
         <div class="help-content-wrapper">
           <h3>{{ctrl.title | translate}}</h3>
           <p>{{ctrl.content | translate}}</p>
-          <a ng-if="!ctrl.last && ctrl.showNext" ng-click="ctrl.next()" class="small button help-next-item" translate>next</a>
-          <a ng-if="ctrl.last && ctrl.showNext" ng-click="ctrl.close()" class="small button help-next-item" translate>close</a>
+          <a ng-if="!ctrl.last && ctrl.showNext && ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next-item" translate>next</a>
+          <a ng-if="ctrl.last && ctrl.showNext && ctrl.isValid()" ng-click="ctrl.close()" class="small button help-next-item" translate>close</a>
           <a ng-click="ctrl.close()" class="help-close-item">&times;</a>
         </div>
       `,
@@ -281,9 +281,30 @@ class HelpItemController {
   arrowClass: string[] = [];
   showNext: boolean;
   offset: { left: number; top: number } | null = null;
+  ngModel: INgModelController|null;
 
-  constructor(private $element: JQuery, private $timeout: ITimeoutService) {
+  constructor($scope: IScope, private $element: JQuery, private $timeout: ITimeoutService) {
     this.helpController.register(this);
+
+    let previousModel: INgModelController|null = null;
+    let timeout: IPromise<any>|null = null;
+    const debounceMs = 1500;
+
+    $scope.$watch(() => this.ngModel && this.ngModel.$modelValue, (value, oldValue) => {
+
+      if (value !== oldValue && previousModel === this.ngModel && this.isValid()) {
+        if (timeout) {
+          $timeout.cancel(timeout);
+        }
+        timeout = $timeout(() => this.next(), debounceMs);
+      }
+
+      previousModel = this.ngModel;
+    }, true);
+  }
+
+  isValid() {
+    return !this.ngModel || this.ngModel.$valid;
   }
 
   itemStyle() {
@@ -294,17 +315,26 @@ class HelpItemController {
   show(story: Story, last: boolean) {
 
     const wasHidden = !this.offset;
-    this.offset = null;
+    const popoverToElement = story.popoverTo();
+
+    this.hide();
     this.title = story.title;
     this.content = story.content;
     this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
     this.last = last;
-    this.showNext = story.nextCondition === 'explicit';
+    this.showNext = story.nextCondition !== 'click';
+
+    if (story.nextCondition === 'valid-input') {
+      this.ngModel = popoverToElement.find('[ng-model]').controller('ngModel');
+
+      if (!this.ngModel) {
+        throw new Error('ng-model does not exits for popover element');
+      }
+    }
 
     // Off frame so rendering will be done and has correct dimensions
     this.$timeout(() => {
 
-      const popoverToElement = story.popoverTo();
       popoverToElement.find(focusableSelector).focus();
 
       this.offset = this.calculateOffset(popoverToElement, story.popoverPosition);
