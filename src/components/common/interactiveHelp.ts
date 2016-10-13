@@ -69,7 +69,7 @@ class InteractiveHelpController {
       const result: HTMLElement[] = [];
 
       focusableElements.each((_index: number, element: HTMLElement) => {
-        if (isVisible(element)) {
+        if (isVisible(element) && (!element.tabIndex || element.tabIndex > 0)) {
           result.push(element);
         }
       });
