@@ -141,7 +141,7 @@ class InteractiveHelpController {
           throw new Error('Popover element not found');
         }
 
-        if (isTargetElementInsideElement(event, story.popoverTo()[0])) {
+        if (isTargetElementInsideElement(event, popoverElement[0])) {
           if (this.isCurrentLastStory()) {
             this.close();
           } else {
@@ -151,8 +151,11 @@ class InteractiveHelpController {
       }
     };
 
-    $document.on('keydown', keyDownListener);
-    $document.on('click', clickListener);
+    // Lazy initialization of listeners so that it doesn't intervene with help opening event
+    window.setTimeout(() => {
+      $document.on('keydown', keyDownListener);
+      $document.on('click', clickListener);
+    });
 
     $scope.$on('$destroy', function() {
       $document.off('keydown', keyDownListener);
