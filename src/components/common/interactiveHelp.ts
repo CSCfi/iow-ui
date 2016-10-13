@@ -255,6 +255,7 @@ mod.directive('helpItem', () => {
   return {
     restrict: 'E',
     template: `
+        <input type="hidden" />
         <span ng-class="ctrl.arrowClass"></span>
       
         <div class="help-content-wrapper">
@@ -380,7 +381,7 @@ class HelpItemController {
       case 'top':
         return { top: top - popoverHeight - arrow, left: left };
       case 'bottom':
-        return { top: top + height + arrow, left: left };
+        return { top: top + height + arrow * 2, left: left };
       default:
         return assertNever(position);
     }
