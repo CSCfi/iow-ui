@@ -1,6 +1,6 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, IDocumentService, INgModelController, ITimeoutService, IPromise } from 'angular';
+import { IScope, IDocumentService, INgModelController } from 'angular';
 import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
@@ -287,8 +287,8 @@ mod.directive('helpPopover', () => {
         <span ng-class="ctrl.arrowClass"></span>
       
         <div class="help-content-wrapper">
-          <h3>{{ctrl.title | translate}}</h3>
-          <p>{{ctrl.content | translate}}</p>
+          <h3>{{ctrl.story.title | translate}}</h3>
+          <p>{{ctrl.story.content | translate}}</p>
           <button ng-if="!ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next" translate>next</button>
           <button ng-if="ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close()" class="small button help-next" translate>close</button>
           <a ng-click="ctrl.close()" class="help-close">&times;</a>
@@ -307,16 +307,37 @@ class HelpPopoverController {
 
   helpController: InteractiveHelpController;
 
-  title: string;
-  content: string;
+  story: Story;
   last: boolean;
   arrowClass: string[] = [];
   showNext: boolean;
   offset: { left: number; top: number } | null = null;
   ngModel: INgModelController|null;
 
-  constructor(private $scope: IScope, private $element: JQuery, public $timeout: ITimeoutService) {
+  constructor($scope: IScope, private $element: JQuery) {
     this.helpController.register(this);
+
+    $scope.$watch(() => this.story && this.story.popoverTo().offset(), () => {
+
+      this.hide();
+      const popoverToElement = this.story.popoverTo();
+      let offsetStabileCheck = this.calculateOffset(popoverToElement, this.story.popoverPosition);
+
+      const applyPositioningAndFocusWhenStabile = () => {
+        let offset = this.calculateOffset(popoverToElement, this.story.popoverPosition);
+
+        if (offset.left !== offsetStabileCheck.left || offset.top !== offsetStabileCheck.top) {
+          offsetStabileCheck = offset;
+          setTimeout(applyPositioningAndFocusWhenStabile, 100);
+        } else {
+          popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
+          angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
+          $scope.$apply(() => this.offset = offset);
+        }
+      };
+
+      setTimeout(applyPositioningAndFocusWhenStabile, 100);
+    }, true);
   }
 
   isValid() {
@@ -329,36 +350,18 @@ class HelpPopoverController {
   }
 
   show(story: Story, last: boolean) {
-
-    const popoverToElement = story.popoverTo();
-
-    this.hide();
-    this.title = story.title;
-    this.content = story.content;
+    this.story = story;
     this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
     this.last = last;
     this.showNext = story.nextCondition !== 'click';
 
     if (story.nextCondition === 'valid-input') {
-      this.ngModel = popoverToElement.find('[ng-model]').addBack('[ng-model]').controller('ngModel');
+      this.ngModel = story.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
 
       if (!this.ngModel) {
         throw new Error('ng-model does not exits for popover element');
       }
     }
-
-    let settingOffset: IPromise<any>;
-
-    this.$scope.$watch(() => this.calculateOffset(popoverToElement, story.popoverPosition), offset => {
-      if (settingOffset) {
-        this.$timeout.cancel(settingOffset);
-      }
-      settingOffset = this.$timeout(() => {
-        this.offset = offset;
-        popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
-        angular.element('html, body').animate({scrollTop: this.offset!.top - 100}, 100);
-      }, 500);
-    }, true);
   }
 
   hide() {
