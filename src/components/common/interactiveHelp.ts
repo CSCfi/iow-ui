@@ -350,7 +350,7 @@ class HelpPopoverController {
 
       if (offset.left !== offsetStabileCheck.left || offset.top !== offsetStabileCheck.top) {
         offsetStabileCheck = offset;
-        setTimeout(applyPositioningAndFocusWhenStabile, 100);
+        setTimeout(applyPositioningAndFocusWhenStabile, 50);
       } else {
         popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
         angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
@@ -358,7 +358,7 @@ class HelpPopoverController {
       }
     };
 
-    setTimeout(applyPositioningAndFocusWhenStabile, 100)
+    setTimeout(applyPositioningAndFocusWhenStabile);
   }
 
   hide() {
