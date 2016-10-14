@@ -135,6 +135,7 @@ export class AutocompleteController<T> {
       const preventDefault = handler();
       if (!isDefined(preventDefault) || preventDefault === true) {
         event.preventDefault();
+        event.stopPropagation();
       }
     }
   }
