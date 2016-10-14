@@ -40,7 +40,7 @@ export class InteractiveHelp {
   open(storyLine: StoryLine) {
     return this.overlayService.open({
       template: `
-        <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverController.itemStyle()"></help-popover>
+        <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverController.popoverStyle()"></help-popover>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
@@ -323,7 +323,7 @@ class HelpPopoverController {
     return !this.ngModel || this.ngModel.$valid;
   }
 
-  itemStyle() {
+  popoverStyle() {
     const hideOffset = { left: -1000, top: -1000 };
     return this.offset ? this.offset : hideOffset;
   }
