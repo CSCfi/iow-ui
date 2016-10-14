@@ -76,27 +76,6 @@ class InteractiveHelpController {
     // Active element needs to be blurred because it can used for example for multiple interactive help activations
     angular.element(document.activeElement).blur();
 
-    const loadFocusableElementList = () => {
-
-      const isVisible = (element: HTMLElement) => !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-      const story = this.currentStory();
-
-      if (!story.focusTo) {
-        return [];
-      }
-
-      const focusableElements = story.focusTo().element.find(focusableSelector);
-      const result: HTMLElement[] = [];
-
-      focusableElements.each((_index: number, element: HTMLElement) => {
-        if (isVisible(element) && (!element.tabIndex || element.tabIndex > 0)) {
-          result.push(element);
-        }
-      });
-
-      return result;
-    };
-
     const keyDownListener = (event: JQueryEventObject) => {
 
       const stopEvent = () => {
@@ -105,6 +84,27 @@ class InteractiveHelpController {
       };
 
       const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
+
+      const loadFocusableElementList = () => {
+
+        const isVisible = (element: HTMLElement) => !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        const story = this.currentStory();
+
+        if (!story.focusTo) {
+          return [];
+        }
+
+        const focusableElements = story.focusTo().element.find(focusableSelector);
+        const result: HTMLElement[] = [];
+
+        focusableElements.each((_index: number, element: HTMLElement) => {
+          if (isVisible(element) && (!element.tabIndex || element.tabIndex > 0)) {
+            result.push(element);
+          }
+        });
+
+        return result;
+      };
 
       const manageFocus = () => {
         const focusableElements = loadFocusableElementList();
@@ -161,17 +161,6 @@ class InteractiveHelpController {
         }
       }
     };
-
-    // Lazy initialization of listeners so that it doesn't intervene with help opening event
-    window.setTimeout(() => {
-      $document.on('keydown', keyDownListener);
-      $document.on('click', clickListener);
-    });
-
-    $scope.$on('$destroy', function() {
-      $document.off('keydown', keyDownListener);
-      $document.off('click', clickListener);
-    });
 
     const focusPositioning = () => {
       const currentStory = this.currentStory();
@@ -233,6 +222,17 @@ class InteractiveHelpController {
         this.backdrop = null;
       }
     };
+
+    // Lazy initialization of listeners so that it doesn't intervene with help opening event
+    window.setTimeout(() => {
+      $document.on('keydown', keyDownListener);
+      $document.on('click', clickListener);
+    });
+
+    $scope.$on('$destroy', function() {
+      $document.off('keydown', keyDownListener);
+      $document.off('click', clickListener);
+    });
 
     $scope.$watch(focusPositioning, setBackdrop, true);
 
