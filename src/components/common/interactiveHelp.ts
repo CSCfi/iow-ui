@@ -1,6 +1,6 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, ITimeoutService, IDocumentService, INgModelController } from 'angular';
+import { IScope, IDocumentService, INgModelController, ITimeoutService, IPromise } from 'angular';
 import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
@@ -155,13 +155,9 @@ class InteractiveHelpController {
         }
 
         if (isTargetElementInsideElement(event, popoverElement[0])) {
-          if (this.isCurrentLastStory()) {
-            this.close();
-          } else {
-            $scope.$apply(() => {
-              this.nextStory();
-            });
-          }
+          $scope.$apply(() => {
+            this.nextStory();
+          });
         }
       }
     };
@@ -320,7 +316,7 @@ class HelpItemController {
   offset: { left: number; top: number } | null = null;
   ngModel: INgModelController|null;
 
-  constructor(private $element: JQuery, private $timeout: ITimeoutService) {
+  constructor(private $scope: IScope, private $element: JQuery, public $timeout: ITimeoutService) {
     this.helpController.register(this);
   }
 
@@ -335,7 +331,6 @@ class HelpItemController {
 
   show(story: Story, last: boolean) {
 
-    const wasHidden = !this.offset;
     const popoverToElement = story.popoverTo();
 
     this.hide();
@@ -353,14 +348,18 @@ class HelpItemController {
       }
     }
 
-    // Off frame so rendering will be done and has correct dimensions
-    this.$timeout(() => {
+    let settingOffset: IPromise<any>;
 
-      popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
-
-      this.offset = this.calculateOffset(popoverToElement, story.popoverPosition);
-      angular.element('html, body').animate( {scrollTop: this.offset!.top - 100 }, 100);
-    }, wasHidden ? 0 : 500);
+    this.$scope.$watch(() => this.calculateOffset(popoverToElement, story.popoverPosition), offset => {
+      if (settingOffset) {
+        this.$timeout.cancel(settingOffset);
+      }
+      settingOffset = this.$timeout(() => {
+        this.offset = offset;
+        popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
+        angular.element('html, body').animate({scrollTop: this.offset!.top - 100}, 100);
+      }, 500);
+    }, true);
   }
 
   hide() {
