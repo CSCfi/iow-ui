@@ -314,30 +314,8 @@ class HelpPopoverController {
   offset: { left: number; top: number } | null = null;
   ngModel: INgModelController|null;
 
-  constructor($scope: IScope, private $element: JQuery) {
+  constructor(private $scope: IScope, private $element: JQuery) {
     this.helpController.register(this);
-
-    $scope.$watch(() => this.story && this.story.popoverTo().offset(), () => {
-
-      this.hide();
-      const popoverToElement = this.story.popoverTo();
-      let offsetStabileCheck = this.calculateOffset(popoverToElement, this.story.popoverPosition);
-
-      const applyPositioningAndFocusWhenStabile = () => {
-        let offset = this.calculateOffset(popoverToElement, this.story.popoverPosition);
-
-        if (offset.left !== offsetStabileCheck.left || offset.top !== offsetStabileCheck.top) {
-          offsetStabileCheck = offset;
-          setTimeout(applyPositioningAndFocusWhenStabile, 100);
-        } else {
-          popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
-          angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
-          $scope.$apply(() => this.offset = offset);
-        }
-      };
-
-      setTimeout(applyPositioningAndFocusWhenStabile, 100);
-    }, true);
   }
 
   isValid() {
@@ -362,6 +340,25 @@ class HelpPopoverController {
         throw new Error('ng-model does not exits for popover element');
       }
     }
+
+    this.hide();
+    const popoverToElement = this.story.popoverTo();
+    let offsetStabileCheck = this.calculateOffset(popoverToElement, this.story.popoverPosition);
+
+    const applyPositioningAndFocusWhenStabile = () => {
+      let offset = this.calculateOffset(popoverToElement, this.story.popoverPosition);
+
+      if (offset.left !== offsetStabileCheck.left || offset.top !== offsetStabileCheck.top) {
+        offsetStabileCheck = offset;
+        setTimeout(applyPositioningAndFocusWhenStabile, 100);
+      } else {
+        popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
+        angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
+        this.$scope.$apply(() => this.offset = offset);
+      }
+    };
+
+    setTimeout(applyPositioningAndFocusWhenStabile, 100)
   }
 
   hide() {
