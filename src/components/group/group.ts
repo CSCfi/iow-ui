@@ -135,7 +135,7 @@ class GroupController extends EditableEntityController<Group> {
   }
 
   canStartHelp() {
-    return !config.production;
+    return !config.production && this.canAddModel();
   }
 
   startHelp() {
