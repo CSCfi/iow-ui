@@ -121,8 +121,8 @@ class InteractiveHelpController {
             }
           } else {
             if (isFocusInElement(lastElement)) {
-              if (this.popoverController.isValid()) {
-                this.nextStory();
+              if (this.currentStory().nextCondition !== 'click' && this.popoverController.isValid()) {
+                $scope.$apply(() => this.nextStory());
               } else {
                 firstElement.focus();
               }
@@ -139,7 +139,7 @@ class InteractiveHelpController {
           manageFocus();
           break;
         case esc:
-          this.close();
+          $scope.$apply(() => this.close());
           break;
       }
     };
