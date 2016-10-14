@@ -94,7 +94,7 @@ class InteractiveHelpController {
           return [];
         }
 
-        const focusableElements = story.focusTo().element.find(focusableSelector);
+        const focusableElements = story.focusTo().element.find(focusableSelector).addBack(focusableSelector);
         const result: HTMLElement[] = [];
 
         focusableElements.each((_index: number, element: HTMLElement) => {
