@@ -40,7 +40,7 @@ export class InteractiveHelp {
   open(storyLine: StoryLine) {
     return this.overlayService.open({
       template: `
-        <help-item class="help-item" help-controller="ctrl" ng-style="ctrl.itemController.itemStyle()"></help-item>
+        <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverController.itemStyle()"></help-popover>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
@@ -62,7 +62,7 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
 
 class InteractiveHelpController {
 
-  itemController: HelpItemController;
+  popoverController: HelpPopoverController;
   activeIndex = 0;
   backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
 
@@ -121,7 +121,7 @@ class InteractiveHelpController {
             }
           } else {
             if (isFocusInElement(lastElement)) {
-              if (this.itemController.isValid()) {
+              if (this.popoverController.isValid()) {
                 this.nextStory();
               } else {
                 firstElement.focus();
@@ -245,8 +245,8 @@ class InteractiveHelpController {
     });
   }
 
-  register(item: HelpItemController) {
-    this.itemController = item;
+  register(popover: HelpPopoverController) {
+    this.popoverController = popover;
     this.showStory(this.activeIndex);
   }
 
@@ -268,7 +268,7 @@ class InteractiveHelpController {
 
   showStory(index: number) {
     const story = this.storyLine.stories[index];
-    this.itemController.show(story, this.isLastStory(index));
+    this.popoverController.show(story, this.isLastStory(index));
   }
 
   currentStory() {
@@ -280,31 +280,30 @@ class InteractiveHelpController {
   }
 }
 
-mod.directive('helpItem', () => {
+mod.directive('helpPopover', () => {
   return {
     restrict: 'E',
     template: `
-        <input type="hidden" />
         <span ng-class="ctrl.arrowClass"></span>
       
         <div class="help-content-wrapper">
           <h3>{{ctrl.title | translate}}</h3>
           <p>{{ctrl.content | translate}}</p>
-          <button ng-if="!ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next-item" translate>next</button>
-          <button ng-if="ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close()" class="small button help-next-item" translate>close</button>
-          <a ng-click="ctrl.close()" class="help-close-item">&times;</a>
+          <button ng-if="!ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next" translate>next</button>
+          <button ng-if="ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close()" class="small button help-next" translate>close</button>
+          <a ng-click="ctrl.close()" class="help-close">&times;</a>
         </div>
       `,
     bindToController: true,
     scope: {
       helpController: '<'
     },
-    controller: HelpItemController,
+    controller: HelpPopoverController,
     controllerAs: 'ctrl'
   };
 });
 
-class HelpItemController {
+class HelpPopoverController {
 
   helpController: InteractiveHelpController;
 

@@ -4,7 +4,7 @@ body.overlay-open {
   overflow: hidden;
 }
 
-.help-item {
+.help-popover {
   display: block;
   position: absolute;
   background: #1C252E;
@@ -104,7 +104,7 @@ body.overlay-open {
     }
   }
 
-  .help-close-item {
+  .help-close {
     position: absolute;
     right: 12px;
     top: 10px;
