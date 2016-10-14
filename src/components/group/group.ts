@@ -165,9 +165,9 @@ class GroupController extends EditableEntityController<Group> {
         nextCondition: 'valid-input'
       },
       {
-        popoverTo: () => angular.element('editable-multiple-language-select div autocomplete input'),
+        popoverTo: () => angular.element('editable-multiple-language-select .multi-input'),
         focusTo: () => ({
-          element: angular.element('editable-multiple-language-select div.multi-input'),
+          element: angular.element('editable-multiple-language-select div.editable-wrap'),
           margin: Object.assign({}, editableMargin, { bottom: 10 })
         }),
         popoverPosition: 'left',
