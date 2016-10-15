@@ -31,6 +31,7 @@ import './searchResults';
 import './usage';
 import './usagePanel';
 import './ngContextMenu';
+import './ngIfBody';
 
 mod.service('overlayService', OverlayService);
 mod.service('interactiveHelp', InteractiveHelp);
