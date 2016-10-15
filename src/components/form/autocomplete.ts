@@ -88,10 +88,22 @@ mod.directive('autocomplete', ($document: JQuery) => {
         ngModel.$render();
       };
 
+      const isFixed = (e: JQuery) => {
+        for (let p = e.parent(); p && p.length > 0 && !p.is('body'); p = p.parent()) {
+          if (p.css('position') === 'fixed') {
+            return true;
+          }
+        }
+
+        return false;
+      };
+
       const calculatePopupStyle = (e: JQuery) => {
         const offset = e.offset();
+        const fixed = isFixed(e);
         return {
-          top: offset.top + e.prop('offsetHeight') - window.scrollY,
+          position: fixed ? 'fixed' : 'absolute',
+          top: offset.top + e.prop('offsetHeight') - (fixed ? window.scrollY : 0),
           left: offset.left,
           width: e.prop('offsetWidth')
         };
@@ -110,11 +122,9 @@ mod.directive('autocomplete', ($document: JQuery) => {
       };
 
       window.addEventListener('resize', setPopupStyleToElement);
-      window.addEventListener('scroll', setPopupStyleToElement, true);
 
       $scope.$on('$destroy', () => {
         window.removeEventListener('resize', setPopupStyleToElement);
-        window.removeEventListener('scroll', setPopupStyleToElement);
       });
     }
   };
@@ -129,7 +139,7 @@ export class AutocompleteController<T> {
   excludeProvider?: () => (item: T) => string;
 
   inputFormatter: IModelFormatter|IModelFormatter[];
-  popupStyle: { left: string|number, top: string|number, width: string|number };
+  popupStyle: { left: string|number, top: string|number, width: string|number, position: string };
   applyValue: (value: string) => void;
 
   autocompleteMatches: T[] = [];

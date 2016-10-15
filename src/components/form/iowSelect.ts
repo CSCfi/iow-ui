@@ -70,7 +70,7 @@ export class IowSelectController<T> {
 
   show: boolean;
   selectedSelectionIndex = -1;
-  popupStyle: { top: string|number, left: string|number, width: string|number };
+  popupStyle: { top: string|number, left: string|number, width: string|number, position: string };
 
   /* @ngInject */
   constructor($q: IQService, $scope: SelectionScope, $parse: IParseService) {
@@ -201,10 +201,22 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
         element.off('focus', focusHandler);
       });
 
+      const isFixed = (e: JQuery) => {
+        for (let p = e.parent(); p && p.length > 0 && !p.is('body'); p = p.parent()) {
+          if (p.css('position') === 'fixed') {
+            return true;
+          }
+        }
+
+        return false;
+      };
+
       const calculatePopupStyle = (e: JQuery) => {
         const offset = e.offset();
+        const fixed = isFixed(e);
         return {
-          top: offset.top + e.prop('offsetHeight') - window.scrollY,
+          position: fixed ? 'fixed' : 'absolute',
+          top: offset.top + e.prop('offsetHeight') - (fixed ? window.scrollY : 0),
           left: offset.left,
           width: e.prop('offsetWidth')
         };
@@ -223,11 +235,9 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
       };
 
       window.addEventListener('resize', setPopupStyleToElement);
-      window.addEventListener('scroll', setPopupStyleToElement, true);
 
       $scope.$on('$destroy', () => {
         window.removeEventListener('resize', setPopupStyleToElement);
-        window.removeEventListener('scroll', setPopupStyleToElement);
       });
     }
   };
