@@ -350,7 +350,8 @@ class HelpPopoverController {
 
       if (offset.left !== offsetStabileCheck.left || offset.top !== offsetStabileCheck.top) {
         offsetStabileCheck = offset;
-        setTimeout(applyPositioningAndFocusWhenStabile, 50);
+        // TODO More robust way of checking that position is ready
+        setTimeout(applyPositioningAndFocusWhenStabile, 100);
       } else {
         popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
         angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
