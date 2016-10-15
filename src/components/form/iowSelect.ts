@@ -4,6 +4,7 @@ import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../uti
 import { scrollToElement } from '../../utils/angular';
 import { module as mod }  from './module';
 
+// FIXME: copy-paste with autocomplete
 mod.directive('iowSelect', () => {
   return {
     restrict: 'E',
@@ -19,14 +20,14 @@ mod.directive('iowSelect', () => {
           <iow-selection-transclude></iow-selection-transclude>       
           <i class="caret" ng-hide="ctrl.show"></i>
         </div>
-        <div ng-if="ctrl.show" ng-class="{ open: ctrl.show }" style="position: relative">
-          <ul class="dropdown-menu" ng-show="ctrl.show" ng-style="{ width: ctrl.popupWidth }">
+        <div ng-if-body="ctrl.show" class="input-popup">
+          <ul class="dropdown-menu" ng-style="ctrl.popupStyle">
             <li ng-repeat="item in ctrl.items"
                 class="ng-animate-disabled"
                 ng-class="{ active: ctrl.isSelected($index) }" 
                 ng-mouseenter="ctrl.setSelection($index)" 
                 ng-mousedown="ctrl.selectSelection(event)"
-                iow-select-item>
+                iow-select-item="ctrl">
               <a href=""><iow-selectable-item-transclude></iow-selectable-item-transclude></a>
             </li>
           </ul>
@@ -53,7 +54,7 @@ function parse(exp: string) {
     itemName: match[1],
     collection: match[2]
   };
-};
+}
 
 interface SelectionScope extends IScope {
   ctrl: IowSelectController<any>;
@@ -69,7 +70,7 @@ export class IowSelectController<T> {
 
   show: boolean;
   selectedSelectionIndex = -1;
-  popupWidth = '100%';
+  popupStyle: { top: string|number, left: string|number, width: string|number };
 
   /* @ngInject */
   constructor($q: IQService, $scope: SelectionScope, $parse: IParseService) {
@@ -190,8 +191,6 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
       };
       const focusHandler = () => $document.on('click', blurClickHandler);
 
-      $scope.$watch(() => element.outerWidth(), width => controller.popupWidth = width + 'px');
-
       element.on('click', clickHandler);
       element.on('keydown', keyDownHandler);
       element.on('focus', focusHandler);
@@ -201,16 +200,51 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
         element.off('keydown', keyDownHandler);
         element.off('focus', focusHandler);
       });
+
+      const calculatePopupStyle = (e: JQuery) => {
+        const offset = e.offset();
+        return {
+          top: offset.top + e.prop('offsetHeight') - window.scrollY,
+          left: offset.left,
+          width: e.prop('offsetWidth')
+        };
+      };
+
+      $scope.$watch(() => controller.show, () => controller.popupStyle = calculatePopupStyle(element));
+      $scope.$watch(() => element.offset(), () => controller.popupStyle = calculatePopupStyle(element), true);
+
+      const setPopupStyleToElement = () => {
+        if (controller.show) {
+          controller.popupStyle = calculatePopupStyle(element);
+          // apply styles without invoking scope for performance reasons
+          // FIXME dropdown should be own directive
+          angular.element('div.input-popup .dropdown-menu').css(controller.popupStyle);
+        }
+      };
+
+      window.addEventListener('resize', setPopupStyleToElement);
+      window.addEventListener('scroll', setPopupStyleToElement, true);
+
+      $scope.$on('$destroy', () => {
+        window.removeEventListener('resize', setPopupStyleToElement);
+        window.removeEventListener('scroll', setPopupStyleToElement);
+      });
     }
   };
 });
 
+interface IowSelectItemScope extends IRepeatScope {
+  iowSelectItem: IowSelectController<any>;
+}
+
 mod.directive('iowSelectItem', () => {
   return {
     restrict: 'A',
-    require: '^iowSelect',
-    link($scope: IRepeatScope, element: JQuery, _attributes: IAttributes, controller: IowSelectController<any>) {
-      $scope.$watch(() => controller.selectedSelectionIndex, index => {
+    scope: {
+      iowSelectItem: '='
+    },
+    link($scope: IowSelectItemScope, element: JQuery) {
+      $scope.$watch(() => $scope.iowSelectItem.selectedSelectionIndex, index => {
         if ($scope.$index === index) {
           scrollToElement(element, element.parent());
         }
@@ -219,10 +253,10 @@ mod.directive('iowSelectItem', () => {
   };
 });
 
+
 mod.directive('iowSelectionTransclude', () => {
   return {
-    require: '^iowSelect',
-    link($scope: SelectionScope, element: JQuery, _attribute: IAttributes, controller: IowSelectController<any>, transclude: ITranscludeFunction) {
+    link($scope: SelectionScope, element: JQuery, _attribute: IAttributes, _controller: any, transclude: ITranscludeFunction) {
 
       let childScope: IScope;
 
@@ -230,27 +264,26 @@ mod.directive('iowSelectionTransclude', () => {
         if (!childScope) {
           transclude((clone, transclusionScope) => {
             childScope = transclusionScope!;
-            transclusionScope![controller.itemName] = item;
+            transclusionScope![$scope.ctrl.itemName] = item;
             element.append(clone!);
           });
         } else {
-          childScope[controller.itemName] = item;
+          childScope[$scope.ctrl.itemName] = item;
         }
       });
     }
   };
 });
 
-interface SelectItemScope extends IRepeatScope {
+interface SelectItemScope extends IRepeatScope, SelectionScope {
   item: any;
 }
 
 mod.directive('iowSelectableItemTransclude', () => {
   return {
-    require: '^iowSelect',
-    link($scope: SelectItemScope, element: JQuery, _attribute: IAttributes, controller: IowSelectController<any>, transclude: ITranscludeFunction) {
+    link($scope: SelectItemScope, element: JQuery, _attribute: IAttributes, _controller: any, transclude: ITranscludeFunction) {
       transclude((clone, transclusionScope) => {
-        transclusionScope![controller.itemName] = $scope.item;
+        transclusionScope![$scope.ctrl.itemName] = $scope.item;
         element.append(clone!);
       });
     }

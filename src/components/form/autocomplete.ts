@@ -8,6 +8,7 @@ import { DataSource } from './dataSource';
 
 const maxMatches = 500;
 
+// FIXME: copy-paste with iowSelect
 mod.directive('autocomplete', ($document: JQuery) => {
   return {
     restrict: 'E',
@@ -22,14 +23,14 @@ mod.directive('autocomplete', ($document: JQuery) => {
     bindToController: true,
     template: `
       <ng-transclude></ng-transclude>
-      <div ng-if="ctrl.show" ng-class="{open: ctrl.show}">
-        <ul class="dropdown-menu" ng-show="ctrl.show" ng-style="ctrl.popupStyle">
+      <div ng-if-body="ctrl.show" class="input-popup">
+        <ul class="dropdown-menu" ng-style="ctrl.popupStyle">
           <li ng-repeat="match in ctrl.autocompleteMatches track by ctrl.formatValue(match)"
               class="ng-animate-disabled"
               ng-class="{ active: ctrl.isSelected($index) }" 
               ng-mouseenter="ctrl.setSelection($index)" 
               ng-mousedown="ctrl.selectSelection(event)"
-              autocomplete-item>
+              autocomplete-item="ctrl">
             <a href=""><span class="content">{{::ctrl.format(match)}}</span></a>
           </li>
         </ul>
@@ -87,12 +88,33 @@ mod.directive('autocomplete', ($document: JQuery) => {
         ngModel.$render();
       };
 
-      $scope.$watch(() => inputElement.position().top, top => {
-        thisController.dimensions = {
-          top: top + inputElement.prop('offsetHeight'),
-          left: inputElement.position().left,
-          width: inputElement.outerWidth()
+      const calculatePopupStyle = (e: JQuery) => {
+        const offset = e.offset();
+        return {
+          top: offset.top + e.prop('offsetHeight') - window.scrollY,
+          left: offset.left,
+          width: e.prop('offsetWidth')
         };
+      };
+
+      $scope.$watch(() => thisController.show, () => thisController.popupStyle = calculatePopupStyle(inputElement));
+      $scope.$watch(() => inputElement.offset(), () => thisController.popupStyle = calculatePopupStyle(inputElement), true);
+
+      const setPopupStyleToElement = () => {
+        if (thisController.show) {
+          thisController.popupStyle = calculatePopupStyle(inputElement);
+          // apply styles without invoking scope for performance reasons
+          // FIXME dropdown should be own directive
+          angular.element('div.input-popup .dropdown-menu').css(thisController.popupStyle);
+        }
+      };
+
+      window.addEventListener('resize', setPopupStyleToElement);
+      window.addEventListener('scroll', setPopupStyleToElement, true);
+
+      $scope.$on('$destroy', () => {
+        window.removeEventListener('resize', setPopupStyleToElement);
+        window.removeEventListener('scroll', setPopupStyleToElement);
       });
     }
   };
@@ -107,7 +129,7 @@ export class AutocompleteController<T> {
   excludeProvider?: () => (item: T) => string;
 
   inputFormatter: IModelFormatter|IModelFormatter[];
-  dimensions: { left: number, top: number, width: number };
+  popupStyle: { left: string|number, top: string|number, width: string|number };
   applyValue: (value: string) => void;
 
   autocompleteMatches: T[] = [];
@@ -221,22 +243,20 @@ export class AutocompleteController<T> {
   get show() {
     return this.autocompleteMatches.length > 0;
   }
+}
 
-  get popupStyle() {
-    return {
-      top: this.dimensions.top + 'px',
-      left: this.dimensions.left + 'px',
-      width: this.dimensions.width + 'px'
-    };
-  }
+interface AutocompleteItemScope extends IRepeatScope {
+  autocompleteItem: AutocompleteController<any>;
 }
 
 mod.directive('autocompleteItem', () => {
   return {
     restrict: 'A',
-    require: '^autocomplete',
-    link($scope: IRepeatScope, element: JQuery, _attributes: IAttributes, controller: AutocompleteController<any>) {
-      $scope.$watch(() => controller.autocompleteSelectionIndex, index => {
+    scope: {
+      autocompleteItem: '='
+    },
+    link($scope: AutocompleteItemScope, element: JQuery) {
+      $scope.$watch(() => $scope.autocompleteItem.autocompleteSelectionIndex, index => {
         if ($scope.$index === index) {
           scrollToElement(element, element.parent());
         }
