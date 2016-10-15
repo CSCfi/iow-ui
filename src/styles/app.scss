@@ -35,6 +35,11 @@ $brand-accent-dark:     #375e97;
   display: none !important;
 }
 
+button.info {
+  border-color: $brand-info;
+  background-color: $brand-info;
+}
+
 span.highlight {
   font-weight: bold;
 }
