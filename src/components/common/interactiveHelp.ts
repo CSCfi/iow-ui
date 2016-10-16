@@ -10,6 +10,8 @@ export type NextCondition = 'explicit'|'click'|'valid-input';
 
 export interface StoryLine {
   stories: Story[];
+  onComplete?: () => void;
+  onCancel?: () => void;
 }
 
 export interface Story {
@@ -158,7 +160,7 @@ class InteractiveHelpController {
           manageFocus();
           break;
         case esc:
-          $scope.$apply(() => this.close());
+          $scope.$apply(() => this.close(true));
           break;
       }
     };
@@ -313,7 +315,7 @@ class InteractiveHelpController {
 
   nextStory() {
     if (this.isCurrentLastStory()) {
-      this.close();
+      this.close(false);
     } else {
       this.showStory(++this.activeIndex);
     }
@@ -336,8 +338,18 @@ class InteractiveHelpController {
     return this.storyLine.stories[this.activeIndex];
   }
 
-  close() {
+  close(cancel: boolean) {
     this.$overlayInstance.close();
+
+    if (cancel) {
+      if (this.storyLine.onCancel) {
+        this.storyLine.onCancel();
+      }
+    } else {
+      if (this.storyLine.onComplete) {
+        this.storyLine.onComplete();
+      }
+    }
   }
 }
 
@@ -351,8 +363,8 @@ mod.directive('helpPopover', () => {
           <h3>{{ctrl.story.title | translate}}</h3>
           <p>{{ctrl.story.content | translate}}</p>
           <button ng-if="!ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next" translate>next</button>
-          <button ng-if="ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close()" class="small button help-next" translate>close</button>
-          <a ng-click="ctrl.close()" class="help-close">&times;</a>
+          <button ng-if="ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next" translate>close</button>
+          <a ng-click="ctrl.close(true)" class="help-close">&times;</a>
         </div>
       `,
     bindToController: true,
@@ -401,9 +413,9 @@ class HelpPopoverController {
     this.helpController.popoverOffset = null;
   }
 
-  close() {
+  close(cancel: boolean) {
     this.hide();
-    this.helpController.close();
+    this.helpController.close(cancel);
   }
 
   next() {
