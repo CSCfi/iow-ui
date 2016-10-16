@@ -26,7 +26,7 @@ mod.directive('linksView', () => {
     bindToController: true,
     require: ['linksView', '?^modelView'],
     link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [LinksViewController, ModelViewController]) {
-      thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
+      thisController.isEditing = () => modelViewController && modelViewController.isEditing();
     },
     controller: LinksViewController
   };

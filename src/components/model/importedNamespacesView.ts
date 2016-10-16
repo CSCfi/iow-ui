@@ -30,7 +30,7 @@ mod.directive('importedNamespacesView', () => {
     bindToController: true,
     require: ['importedNamespacesView', '?^modelView'],
     link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [ImportedNamespacesViewController, ModelViewController]) {
-      thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
+      thisController.isEditing = () => modelViewController && modelViewController.isEditing();
     },
     controller: ImportedNamespacesViewController
   };

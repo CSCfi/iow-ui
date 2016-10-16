@@ -31,7 +31,7 @@ mod.directive('referenceDatasView', () => {
     bindToController: true,
     require: ['referenceDatasView', '?^modelView'],
     link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [ReferenceDatasViewController, ModelViewController]) {
-      thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
+      thisController.isEditing = () => modelViewController && modelViewController.isEditing();
     },
     controller: ReferenceDatasViewController
   };

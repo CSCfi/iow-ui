@@ -35,7 +35,7 @@ mod.directive('vocabulariesView', () => {
     bindToController: true,
     require: ['vocabulariesView', '?^modelView'],
     link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, modelViewController]: [VocabulariesViewController, ModelViewController]) {
-      thisController.isEditing = () => !modelViewController || modelViewController.isEditing();
+      thisController.isEditing = () => modelViewController && modelViewController.isEditing();
     },
     controller: VocabulariesViewController
   };
