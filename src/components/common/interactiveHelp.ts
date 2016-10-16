@@ -110,6 +110,15 @@ class InteractiveHelpController {
       const manageFocus = () => {
         const focusableElements = loadFocusableElementList();
 
+        const activeElementIsFocusable = () => {
+          for (const focusableElement of focusableElements) {
+            if (focusableElement === document.activeElement) {
+              return true;
+            }
+          }
+          return false;
+        };
+
         if (focusableElements.length > 0) {
 
           const firstElement = focusableElements[0];
@@ -130,6 +139,13 @@ class InteractiveHelpController {
               stopEvent();
             }
           }
+
+          // prevent input focus breaking from story focusable area
+          if (!activeElementIsFocusable()) {
+            firstElement.focus();
+            stopEvent();
+          }
+
         } else {
           stopEvent();
         }
