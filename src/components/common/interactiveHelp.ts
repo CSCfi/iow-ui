@@ -40,7 +40,7 @@ export class InteractiveHelp {
   open(storyLine: StoryLine) {
     return this.overlayService.open({
       template: `
-        <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverController.popoverStyle()"></help-popover>
+        <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverStyle()"></help-popover>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
@@ -65,6 +65,7 @@ class InteractiveHelpController {
   popoverController: HelpPopoverController;
   activeIndex = 0;
   backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
+  popoverOffset: { left: number; top: number } | null = null;
 
   /* @ngInject */
   constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
@@ -162,14 +163,13 @@ class InteractiveHelpController {
       }
     };
 
-    const focusPositioning = () => {
-      const currentStory = this.currentStory();
+    const focusPositioning = (story: Story) => {
 
-      if (!currentStory || !currentStory.focusTo) {
+      if (!story || !story.focusTo) {
         return null;
       }
 
-      const focusTo = currentStory.focusTo();
+      const focusTo = story.focusTo();
 
       if (!focusTo.element || focusTo.element.length === 0) {
         return null;
@@ -234,15 +234,58 @@ class InteractiveHelpController {
       $document.off('click', clickListener);
     });
 
-    $scope.$watch(focusPositioning, setBackdrop, true);
+    let offsetStabileCheck: { left: number, top: number };
+    let debounceHandle: any|undefined;
 
-    const resizeEventHandler = () => $scope.$apply(() => setBackdrop(focusPositioning()));
+    const waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles = () => {
 
-    window.addEventListener('resize', resizeEventHandler);
+      this.popoverController.hide();
+
+      const applyPositioningAndFocusWhenStabile = () => {
+        let offset = this.popoverController.calculateOffset();
+
+        if (offset.left === offsetStabileCheck.left && offset.top === offsetStabileCheck.top) {
+
+          const story = this.currentStory();
+          story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
+          angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
+
+          this.$scope.$apply(() => {
+            setBackdrop(focusPositioning(story));
+            this.popoverOffset = offset;
+          });
+
+        } else {
+          offsetStabileCheck = offset;
+
+          if (debounceHandle) {
+            clearTimeout(debounceHandle);
+          }
+
+          debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
+        }
+      };
+
+      if (debounceHandle) {
+        clearTimeout(debounceHandle);
+      }
+
+      offsetStabileCheck = this.popoverController.calculateOffset();
+      debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
+    };
+
+    $scope.$watch(() => this.popoverController.calculateOffset(), waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles, true);
+
+    window.addEventListener('resize', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles);
 
     $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', resizeEventHandler);
+      window.removeEventListener('resize', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles);
     });
+  }
+
+  popoverStyle() {
+    const hideOffset = { left: -1000, top: -1000 };
+    return this.popoverOffset ? this.popoverOffset : hideOffset;
   }
 
   register(popover: HelpPopoverController) {
@@ -311,20 +354,14 @@ class HelpPopoverController {
   last: boolean;
   arrowClass: string[] = [];
   showNext: boolean;
-  offset: { left: number; top: number } | null = null;
   ngModel: INgModelController|null;
 
-  constructor(private $scope: IScope, private $element: JQuery) {
+  constructor(private $element: JQuery) {
     this.helpController.register(this);
   }
 
   isValid() {
     return !this.ngModel || this.ngModel.$valid;
-  }
-
-  popoverStyle() {
-    const hideOffset = { left: -1000, top: -1000 };
-    return this.offset ? this.offset : hideOffset;
   }
 
   show(story: Story, last: boolean) {
@@ -340,30 +377,10 @@ class HelpPopoverController {
         throw new Error('ng-model does not exits for popover element');
       }
     }
-
-    this.hide();
-    const popoverToElement = this.story.popoverTo();
-    let offsetStabileCheck = this.calculateOffset(popoverToElement, this.story.popoverPosition);
-
-    const applyPositioningAndFocusWhenStabile = () => {
-      let offset = this.calculateOffset(popoverToElement, this.story.popoverPosition);
-
-      if (offset.left !== offsetStabileCheck.left || offset.top !== offsetStabileCheck.top) {
-        offsetStabileCheck = offset;
-        // TODO More robust way of checking that position is ready
-        setTimeout(applyPositioningAndFocusWhenStabile, 100);
-      } else {
-        popoverToElement.find(focusableSelector).addBack(focusableSelector).focus();
-        angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
-        this.$scope.$apply(() => this.offset = offset);
-      }
-    };
-
-    setTimeout(applyPositioningAndFocusWhenStabile);
   }
 
   hide() {
-    this.offset = null;
+    this.helpController.popoverOffset = null;
   }
 
   close() {
@@ -375,7 +392,10 @@ class HelpPopoverController {
     this.helpController.nextStory();
   }
 
-  calculateOffset(element: JQuery, position: PopoverPosition) {
+  calculateOffset() {
+
+    const element = this.story.popoverTo();
+    const position = this.story.popoverPosition;
 
     if (!element || element.length === 0) {
       throw new Error('No element for popover');
