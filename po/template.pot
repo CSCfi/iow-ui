@@ -135,7 +135,7 @@ msgstr ""
 msgid "and create new"
 msgstr ""
 
-#: components/group/group.html:46
+#: components/group/group.html:49
 msgid "Application profiles"
 msgstr ""
 
@@ -365,7 +365,7 @@ msgstr ""
 msgid "class"
 msgstr ""
 
-#: translations/help.html:4
+#: translations/help.html:5
 msgid "Class description info"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Clear selection"
 msgstr ""
 
-#: translations/help.html:3
+#: translations/help.html:4
 msgid "close"
 msgstr ""
 
@@ -837,7 +837,7 @@ msgstr ""
 msgid "Dialog is open"
 msgstr ""
 
-#: translations/help.html:5
+#: translations/help.html:6
 msgid "Diipadaa"
 msgstr ""
 
@@ -1291,7 +1291,7 @@ msgstr ""
 msgid "Model languages info"
 msgstr ""
 
-#: components/group/group.html:31
+#: components/group/group.html:34
 msgid "Models"
 msgstr ""
 
@@ -1347,11 +1347,11 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: components/group/group.html:33
+#: components/group/group.html:36
 msgid "No models yet"
 msgstr ""
 
-#: components/group/group.html:48
+#: components/group/group.html:51
 msgid "No profiles yet"
 msgstr ""
 
@@ -1505,6 +1505,10 @@ msgstr ""
 
 #: translations/titles.html:55
 msgid "Prefix info"
+msgstr ""
+
+#: translations/help.html:3
+msgid "previous"
 msgstr ""
 
 #: translations/misc.html:31
@@ -1832,7 +1836,7 @@ msgstr ""
 msgid "Specialized from class info"
 msgstr ""
 
-#: components/editor/classView.html:12
+#: components/group/group.html:15
 #: translations/help.html:1
 msgid "Start help"
 msgstr ""

@@ -170,7 +170,8 @@ class GroupController extends EditableEntityController<Group> {
           popoverPosition: 'left',
           title: 'Prefix',
           content: 'Prefix info',
-          nextCondition: 'valid-input'
+          nextCondition: 'valid-input',
+          cannotMoveBack: true
         },
         {
           popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
@@ -223,7 +224,8 @@ class GroupController extends EditableEntityController<Group> {
           popoverPosition: 'left',
           title: 'Save changes',
           content: 'Diipadaa',
-          nextCondition: 'click'
+          nextCondition: 'click',
+          cannotMoveBack: true
         }
       ]});
   }

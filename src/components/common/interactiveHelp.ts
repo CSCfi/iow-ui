@@ -24,6 +24,7 @@ export interface Story {
   title: string;
   content: string;
   nextCondition: NextCondition;
+  cannotMoveBack?: boolean;
 }
 
 interface Positioning {
@@ -130,7 +131,9 @@ class InteractiveHelpController {
 
           if (event.shiftKey) {
             if (isFocusInElement(firstElement)) {
-              lastElement.focus();
+              if (!this.currentStory().cannotMoveBack) {
+                $scope.$apply(() => this.previousStory());
+              }
               stopEvent();
             }
           } else {
@@ -229,7 +232,7 @@ class InteractiveHelpController {
             left: 0,
             top: positioning.top + positioning.height,
             right: 0,
-            bottom: -80 // FIXME why is 80px negative neede for backdrop to beach bottom at model page
+            bottom: 0
           },
           left: {
             left: 0,
@@ -329,8 +332,24 @@ class InteractiveHelpController {
     }
   }
 
+  previousStory() {
+    if (this.isCurrentFirstStory()) {
+      this.close(true);
+    } else {
+      this.showStory(--this.activeIndex);
+    }
+  }
+
+  isFirstStory(index: number) {
+    return index === 0;
+  }
+
   isLastStory(index: number) {
     return index === this.storyLine.stories.length - 1;
+  }
+
+  isCurrentFirstStory() {
+    return this.isFirstStory(this.activeIndex);
   }
 
   isCurrentLastStory() {
@@ -339,7 +358,7 @@ class InteractiveHelpController {
 
   showStory(index: number) {
     const story = this.storyLine.stories[index];
-    this.popoverController.show(story, this.isLastStory(index));
+    this.popoverController.show(story, this.isFirstStory(index), this.isLastStory(index));
   }
 
   currentStory() {
@@ -370,7 +389,8 @@ mod.directive('helpPopover', () => {
         <div class="help-content-wrapper">
           <h3>{{ctrl.story.title | translate}}</h3>
           <p>{{ctrl.story.content | translate}}</p>
-          <button ng-if="!ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-next" translate>next</button>
+          <button ng-if="!ctrl.first && ctrl.showPrevious" ng-click="ctrl.previous()" class="small button help-navigate" translate>previous</button>
+          <button ng-if="!ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-navigate" translate>next</button>
           <button ng-if="ctrl.last && ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next" translate>close</button>
           <a ng-click="ctrl.close(true)" class="help-close">&times;</a>
         </div>
@@ -390,8 +410,10 @@ class HelpPopoverController {
 
   story: Story;
   last: boolean;
+  first: boolean;
   arrowClass: string[] = [];
   showNext: boolean;
+  showPrevious: boolean;
   ngModel: INgModelController|null;
 
   constructor(private $element: JQuery) {
@@ -402,11 +424,13 @@ class HelpPopoverController {
     return !this.ngModel || this.ngModel.$valid;
   }
 
-  show(story: Story, last: boolean) {
+  show(story: Story, first: boolean, last: boolean) {
     this.story = story;
     this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
+    this.first = first;
     this.last = last;
     this.showNext = story.nextCondition !== 'click';
+    this.showPrevious = !story.cannotMoveBack;
 
     if (story.nextCondition === 'valid-input') {
       this.ngModel = story.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
@@ -428,6 +452,10 @@ class HelpPopoverController {
 
   next() {
     this.helpController.nextStory();
+  }
+
+  previous() {
+    this.helpController.previousStory();
   }
 
   calculateOffset() {

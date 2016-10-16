@@ -136,7 +136,7 @@ msgstr "On jo lisätty"
 msgid "and create new"
 msgstr "ja luo uusi"
 
-#: components/group/group.html:46
+#: components/group/group.html:49
 msgid "Application profiles"
 msgstr "Soveltamisprofiilit"
 
@@ -366,7 +366,7 @@ msgstr "valitse juurisolmu"
 msgid "class"
 msgstr "Luokka"
 
-#: translations/help.html:4
+#: translations/help.html:5
 msgid "Class description info"
 msgstr "Luokan tietosisällön kuvaus"
 
@@ -441,7 +441,7 @@ msgstr "Erikoistamattomia luokkia ei saa valita"
 msgid "Clear selection"
 msgstr "poista valinta"
 
-#: translations/help.html:3
+#: translations/help.html:4
 msgid "close"
 msgstr "sulje"
 
@@ -839,7 +839,7 @@ msgstr "Poista kaikki valinnat"
 msgid "Dialog is open"
 msgstr "Dialogi on avattuna"
 
-#: translations/help.html:5
+#: translations/help.html:6
 msgid "Diipadaa"
 msgstr "Diipadaa"
 
@@ -1300,7 +1300,7 @@ msgstr "Tietosisällön kielet"
 msgid "Model languages info"
 msgstr ""
 
-#: components/group/group.html:31
+#: components/group/group.html:34
 msgid "Models"
 msgstr "Tietokomponenttikirjastot"
 
@@ -1350,17 +1350,17 @@ msgstr "Uuden soveltamisprofiilin luonti"
 
 #: translations/help.html:2
 msgid "next"
-msgstr "jatka"
+msgstr "seuraava"
 
 #: translations/misc.html:254
 msgid "No"
 msgstr "Ei"
 
-#: components/group/group.html:33
+#: components/group/group.html:36
 msgid "No models yet"
 msgstr "Ei vielä yhtään tietokomponenttikirjastoa"
 
-#: components/group/group.html:48
+#: components/group/group.html:51
 msgid "No profiles yet"
 msgstr "Ei vielä yhtään soveltamisprofiilia"
 
@@ -1519,6 +1519,10 @@ msgid "Prefix info"
 msgstr ""
 "Etuliitettä käytetään nimiavaruuden ja helpommin luettavien curie "
 "tunnisteiden muodostamiseen"
+
+#: translations/help.html:3
+msgid "previous"
+msgstr "edellinen"
 
 #: translations/misc.html:31
 msgid "profile"
@@ -1844,7 +1848,7 @@ msgstr "Tarkennettu luokasta"
 msgid "Specialized from class info"
 msgstr "Luokka jota soveltamisprofiilissa on tarkennettu"
 
-#: components/editor/classView.html:12 translations/help.html:1
+#: components/group/group.html:15 translations/help.html:1
 msgid "Start help"
 msgstr "Aloita ohje"
 
