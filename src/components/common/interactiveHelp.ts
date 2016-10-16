@@ -300,6 +300,16 @@ class InteractiveHelpController {
         clearTimeout(debounceHandle);
       }
 
+      $scope.$applyAsync(() => {
+        this.popoverOffset = null;
+        this.backdrop = {
+          top: { left: 0, top: 0, right: 0, bottom: 0 },
+          right: { left: 0, top: 0, width: 0, height: 0 },
+          bottom: { left: 0, top: 0, width: 0, height: 0 },
+          left: { left: 0, top: 0, width: 0, height: 0 },
+        };
+      });
+
       offsetStabileCheck = this.popoverController.calculateOffset();
       debounceCount = 0;
       debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
