@@ -1,4 +1,5 @@
-import { ILocationService, ILogService, IPromise, IQService } from 'angular';
+import { ILocationService, ILogService, IPromise, IQService, ui } from 'angular';
+import IModalStackService = ui.bootstrap.IModalStackService;
 import * as _ from 'lodash';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { AddModelModal } from './addModelModal';
@@ -55,6 +56,7 @@ class GroupController extends EditableEntityController<Group> {
               errorModal: ErrorModal,
               notLoggedInModal: NotLoggedInModal,
               maintenanceModal: MaintenanceModal,
+              private $uibModalStack: IModalStackService,
               private interactiveHelp: InteractiveHelp) {
     super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
 
@@ -140,83 +142,89 @@ class GroupController extends EditableEntityController<Group> {
 
   startHelp() {
 
+    const ctrl = this;
     const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
 
-    this.interactiveHelp.open({ stories: [
-      {
-        popoverTo: () => angular.element('#add-library-button'),
-        focusTo: () => ({
-          element: angular.element('#add-library-button')
-        }),
-        popoverPosition: 'left',
-        title: 'Add library',
-        content: 'Diipadaa',
-        nextCondition: 'click'
+    this.interactiveHelp.open({
+      onCancel() {
+        ctrl.$uibModalStack.dismissAll();
+        ctrl.$location.url(ctrl.group.iowUrl());
       },
-      {
-        popoverTo: () => angular.element('.modal-dialog [data-title="Prefix"] input'),
-        focusTo: () => ({
-          element: angular.element('.modal-dialog [data-title="Prefix"]'),
-          margin: editableMargin
-        }),
-        popoverPosition: 'left',
-        title: 'Prefix',
-        content: 'Prefix info',
-        nextCondition: 'valid-input'
-      },
-      {
-        popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
-        focusTo: () => ({
-          element: angular.element('editable-multiple-language-select div.editable-wrap'),
-          margin: Object.assign({}, editableMargin, { bottom: 10 })
-        }),
-        popoverPosition: 'left',
-        title: 'Model languages',
-        content: 'Diipadaa',
-        nextCondition: 'valid-input'
-      },
-      {
-        popoverTo: () => angular.element('.modal-dialog [data-title="Library label"] input'),
-        focusTo: () => ({
-          element: angular.element('.modal-dialog [data-title="Library label"]'),
-          margin: editableMargin
-        }),
-        popoverPosition: 'left',
-        title: 'Library label',
-        content: 'Library label info',
-        nextCondition: 'valid-input'
-      },
-      {
-        popoverTo: () => angular.element('.modal-dialog [data-title="Namespace redirection"] input'),
-        focusTo: () => ({
-          element: angular.element('.modal-dialog [data-title="Namespace redirection"]'),
-          margin: editableMargin
-        }),
-        popoverPosition: 'left',
-        title: 'Namespace redirection',
-        content: 'Diipadaa',
-        nextCondition: 'valid-input'
-      },
-      {
-        popoverTo: () => angular.element('button.create'),
-        focusTo: () => ({
-          element: angular.element('button.create')
-        }),
-        popoverPosition: 'left',
-        title: 'Create new',
-        content: 'Diipadaa',
-        nextCondition: 'click'
-      },
-      {
-        popoverTo: () => angular.element('button.save'),
-        focusTo: () => ({
-          element: angular.element('button.save')
-        }),
-        popoverPosition: 'left',
-        title: 'Save changes',
-        content: 'Diipadaa',
-        nextCondition: 'click'
-      }
-    ]});
+      stories: [
+        {
+          popoverTo: () => angular.element('#add-library-button'),
+          focusTo: () => ({
+            element: angular.element('#add-library-button')
+          }),
+          popoverPosition: 'left',
+          title: 'Add library',
+          content: 'Diipadaa',
+          nextCondition: 'click'
+        },
+        {
+          popoverTo: () => angular.element('.modal-dialog [data-title="Prefix"] input'),
+          focusTo: () => ({
+            element: angular.element('.modal-dialog [data-title="Prefix"]'),
+            margin: editableMargin
+          }),
+          popoverPosition: 'left',
+          title: 'Prefix',
+          content: 'Prefix info',
+          nextCondition: 'valid-input'
+        },
+        {
+          popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
+          focusTo: () => ({
+            element: angular.element('editable-multiple-language-select div.editable-wrap'),
+            margin: Object.assign({}, editableMargin, { bottom: 10 })
+          }),
+          popoverPosition: 'left',
+          title: 'Model languages',
+          content: 'Diipadaa',
+          nextCondition: 'valid-input'
+        },
+        {
+          popoverTo: () => angular.element('.modal-dialog [data-title="Library label"] input'),
+          focusTo: () => ({
+            element: angular.element('.modal-dialog [data-title="Library label"]'),
+            margin: editableMargin
+          }),
+          popoverPosition: 'left',
+          title: 'Library label',
+          content: 'Library label info',
+          nextCondition: 'valid-input'
+        },
+        {
+          popoverTo: () => angular.element('.modal-dialog [data-title="Namespace redirection"] input'),
+          focusTo: () => ({
+            element: angular.element('.modal-dialog [data-title="Namespace redirection"]'),
+            margin: editableMargin
+          }),
+          popoverPosition: 'left',
+          title: 'Namespace redirection',
+          content: 'Diipadaa',
+          nextCondition: 'valid-input'
+        },
+        {
+          popoverTo: () => angular.element('button.create'),
+          focusTo: () => ({
+            element: angular.element('button.create')
+          }),
+          popoverPosition: 'left',
+          title: 'Create new',
+          content: 'Diipadaa',
+          nextCondition: 'click'
+        },
+        {
+          popoverTo: () => angular.element('button.save'),
+          focusTo: () => ({
+            element: angular.element('button.save')
+          }),
+          popoverPosition: 'left',
+          title: 'Save changes',
+          content: 'Diipadaa',
+          nextCondition: 'click'
+        }
+      ]});
   }
 }
