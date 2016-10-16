@@ -165,7 +165,7 @@ class GroupController extends EditableEntityController<Group> {
         nextCondition: 'valid-input'
       },
       {
-        popoverTo: () => angular.element('editable-multiple-language-select .multi-input'),
+        popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
         focusTo: () => ({
           element: angular.element('editable-multiple-language-select div.editable-wrap'),
           margin: Object.assign({}, editableMargin, { bottom: 10 })
@@ -173,7 +173,7 @@ class GroupController extends EditableEntityController<Group> {
         popoverPosition: 'left',
         title: 'Model languages',
         content: 'Diipadaa',
-        nextCondition: 'explicit'
+        nextCondition: 'valid-input'
       },
       {
         popoverTo: () => angular.element('.modal-dialog [data-title="Library label"] input'),
