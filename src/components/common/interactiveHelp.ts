@@ -25,10 +25,12 @@ export interface Story {
 }
 
 interface Positioning {
-  width: number;
-  height: number;
   left: number;
   top: number;
+  width?: number;
+  height?: number;
+  right?: number;
+  bottom?: number;
 }
 
 export class InteractiveHelp {
@@ -212,7 +214,7 @@ class InteractiveHelpController {
           top: {
             left: 0,
             top: 0,
-            width: $document.width(),
+            right: 0,
             height: positioning.top
           },
           right: {
@@ -224,8 +226,8 @@ class InteractiveHelpController {
           bottom: {
             left: 0,
             top: positioning.top + positioning.height,
-            width: $document.width(),
-            height: $document.height() - positioning.top - positioning.height
+            right: 0,
+            bottom: -80 // FIXME why is 80px negative neede for backdrop to beach bottom at model page
           },
           left: {
             left: 0,
