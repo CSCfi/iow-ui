@@ -263,14 +263,13 @@ class InteractiveHelpController {
 
     const waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles = () => {
 
-      this.popoverController.hide();
+      const story = this.currentStory();
 
       const applyPositioningAndFocusWhenStabile = () => {
         let offset = this.popoverController.calculateOffset();
 
         if (offset && offsetStabileCheck && offset.left === offsetStabileCheck.left && offset.top === offsetStabileCheck.top) {
 
-          const story = this.currentStory();
           story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
           angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
 
@@ -301,13 +300,20 @@ class InteractiveHelpController {
       }
 
       $scope.$applyAsync(() => {
-        this.popoverOffset = null;
-        this.backdrop = {
-          top: { left: 0, top: 0, right: 0, bottom: 0 },
-          right: { left: 0, top: 0, width: 0, height: 0 },
-          bottom: { left: 0, top: 0, width: 0, height: 0 },
-          left: { left: 0, top: 0, width: 0, height: 0 },
-        };
+
+        this.popoverController.hide();
+
+        if (story.focusTo) {
+          // if story has focus area, show initially full backdrop
+          this.backdrop = {
+            top: { left: 0, top: 0, right: 0, bottom: 0 },
+            right: { left: 0, top: 0, width: 0, height: 0 },
+            bottom: { left: 0, top: 0, width: 0, height: 0 },
+            left: { left: 0, top: 0, width: 0, height: 0 },
+          };
+        } else {
+          this.backdrop = null;
+        }
       });
 
       offsetStabileCheck = this.popoverController.calculateOffset();
