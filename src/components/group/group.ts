@@ -206,6 +206,16 @@ class GroupController extends EditableEntityController<Group> {
         title: 'Create new',
         content: 'Diipadaa',
         nextCondition: 'click'
+      },
+      {
+        popoverTo: () => angular.element('button.save'),
+        focusTo: () => ({
+          element: angular.element('button.save')
+        }),
+        popoverPosition: 'left',
+        title: 'Save changes',
+        content: 'Diipadaa',
+        nextCondition: 'click'
       }
     ]});
   }
