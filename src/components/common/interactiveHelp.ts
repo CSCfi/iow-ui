@@ -254,8 +254,9 @@ class InteractiveHelpController {
       $document.off('click', clickListener);
     });
 
-    let offsetStabileCheck: { left: number, top: number };
+    let offsetStabileCheck: { left: number, top: number }|null;
     let debounceHandle: any|undefined;
+    let debounceCount = 0;
 
     const waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles = () => {
 
@@ -264,7 +265,7 @@ class InteractiveHelpController {
       const applyPositioningAndFocusWhenStabile = () => {
         let offset = this.popoverController.calculateOffset();
 
-        if (offset.left === offsetStabileCheck.left && offset.top === offsetStabileCheck.top) {
+        if (offset && offsetStabileCheck && offset.left === offsetStabileCheck.left && offset.top === offsetStabileCheck.top) {
 
           const story = this.currentStory();
           story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
@@ -279,7 +280,13 @@ class InteractiveHelpController {
           offsetStabileCheck = offset;
 
           if (debounceHandle) {
+            debounceCount++;
             clearTimeout(debounceHandle);
+          }
+
+          if (debounceCount > 20) {
+            console.log(this.currentStory().popoverTo());
+            throw new Error('Element not or does not stabilize');
           }
 
           debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
@@ -291,6 +298,7 @@ class InteractiveHelpController {
       }
 
       offsetStabileCheck = this.popoverController.calculateOffset();
+      debounceCount = 0;
       debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
     };
 
@@ -428,7 +436,7 @@ class HelpPopoverController {
     const position = this.story.popoverPosition;
 
     if (!element || element.length === 0) {
-      throw new Error('No element for popover');
+      return null;
     }
 
     const popoverWidth = this.$element.width();
