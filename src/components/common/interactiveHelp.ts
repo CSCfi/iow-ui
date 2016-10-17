@@ -1,6 +1,7 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, IDocumentService, INgModelController } from 'angular';
+import { IScope, IDocumentService, INgModelController, ui } from 'angular';
+import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
@@ -73,7 +74,7 @@ class InteractiveHelpController {
   popoverOffset: { left: number; top: number } | null = null;
 
   /* @ngInject */
-  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
+  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, $uibModalStack: IModalStackService, private storyLine: StoryLine) {
 
     if (!storyLine || storyLine.stories.length === 0) {
       throw new Error('No stories defined');
@@ -291,7 +292,8 @@ class InteractiveHelpController {
           story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
 
           if (!animating) {
-            angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
+            const scrollElement = $uibModalStack.getTop() ? $uibModalStack.getTop().value.modalDomEl : 'html, body';
+            angular.element(scrollElement).animate({scrollTop: offset.top - 100}, 100);
             animating = true;
             debounce();
           } else {
