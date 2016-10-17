@@ -220,23 +220,23 @@ class InteractiveHelpController {
             left: 0,
             top: 0,
             right: 0,
-            height: positioning.top
+            height: positioning.top - window.scrollY
           },
           right: {
             left: positioning.left + positioning.width,
-            top: positioning.top,
+            top: positioning.top - window.scrollY,
             width: $document.width() - positioning.left - positioning.width,
             height: positioning.height
           },
           bottom: {
             left: 0,
-            top: positioning.top + positioning.height,
+            top: positioning.top + positioning.height - window.scrollY,
             right: 0,
             bottom: 0
           },
           left: {
             left: 0,
-            top: positioning.top,
+            top: positioning.top - window.scrollY,
             width: positioning.left,
             height: positioning.height
           }
@@ -260,44 +260,50 @@ class InteractiveHelpController {
     let offsetStabileCheck: { left: number, top: number }|null;
     let debounceHandle: any|undefined;
     let debounceCount = 0;
+    let animating = false;
 
     const waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles = () => {
 
       const story = this.currentStory();
 
+      const debounce = () => {
+        offsetStabileCheck = this.popoverController.calculateOffset();
+
+        if (debounceHandle) {
+          debounceCount++;
+          clearTimeout(debounceHandle);
+        }
+
+        if (debounceCount > 20) {
+          console.log(story.popoverTo());
+          throw new Error('Element not or does not stabilize');
+        }
+
+        debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
+      };
+
       const applyPositioningAndFocusWhenStabile = () => {
+
         let offset = this.popoverController.calculateOffset();
 
         if (offset && offsetStabileCheck && offset.left === offsetStabileCheck.left && offset.top === offsetStabileCheck.top) {
 
           story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
-          angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
 
-          this.$scope.$apply(() => {
-            setBackdrop(focusPositioning(story));
-            this.popoverOffset = offset;
-          });
-
+          if (!animating) {
+            angular.element('html, body').animate({scrollTop: offset.top - 100}, 100);
+            animating = true;
+            debounce();
+          } else {
+            this.$scope.$apply(() => {
+              setBackdrop(focusPositioning(story));
+              this.popoverOffset = offset;
+            });
+          }
         } else {
-          offsetStabileCheck = offset;
-
-          if (debounceHandle) {
-            debounceCount++;
-            clearTimeout(debounceHandle);
-          }
-
-          if (debounceCount > 20) {
-            console.log(this.currentStory().popoverTo());
-            throw new Error('Element not or does not stabilize');
-          }
-
-          debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
+          debounce();
         }
       };
-
-      if (debounceHandle) {
-        clearTimeout(debounceHandle);
-      }
 
       this.popoverController.hide();
 
@@ -313,9 +319,9 @@ class InteractiveHelpController {
         this.backdrop = null;
       }
 
-      offsetStabileCheck = this.popoverController.calculateOffset();
       debounceCount = 0;
-      debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
+      animating = false;
+      debounce();
     };
 
     $scope.$watch(() => this.popoverController.calculateOffset(), waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles, true);
@@ -329,9 +335,11 @@ class InteractiveHelpController {
       () => $scope.$apply(() => waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles());
 
     window.addEventListener('resize', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
+    window.addEventListener('scroll', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
 
     $scope.$on('$destroy', () => {
       window.removeEventListener('resize', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
+      window.removeEventListener('scroll', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
     });
   }
 

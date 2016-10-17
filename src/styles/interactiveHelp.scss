@@ -123,7 +123,7 @@ body.overlay-open {
 }
 
 .help-backdrop {
-  position: absolute;
+  position: fixed;
   background: rgba(0, 0, 0, 0.4);
   z-index: 1051; // modal is 1050
 }
