@@ -324,7 +324,7 @@ class InteractiveHelpController {
     $scope.$watch(() => this.popoverController.calculateOffset(), waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles, true);
     $scope.$watch(() => focusPositioning(this.currentStory()), positioning => {
       if (positioning) {
-        setBackdrop(focusPositioning(this.currentStory()));
+        setBackdrop(positioning);
       }
     }, true);
 
