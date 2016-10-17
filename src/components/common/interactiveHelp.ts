@@ -292,7 +292,7 @@ class InteractiveHelpController {
           story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
 
           if (!animating) {
-            const scrollElement = $uibModalStack.getTop() ? $uibModalStack.getTop().value.modalDomEl : 'html, body';
+            const scrollElement = $uibModalStack.getTop() ? $uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
             angular.element(scrollElement).animate({scrollTop: offset.top - 100}, 100);
             animating = true;
             debounce();
