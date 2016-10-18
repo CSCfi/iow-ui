@@ -381,12 +381,12 @@ class InteractiveHelpController {
         clearTimeout(state.debounceHandle);
       }
 
-      if (state.debounceCount > 20) {
+      if (state.debounceCount > 100) {
         console.log(story);
         throw new Error('Element not exist or does not stabilize');
       }
 
-      state.debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
+      state.debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 20);
     };
 
     const applyPositioningAndFocusWhenStabile = () => {
