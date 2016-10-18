@@ -36,6 +36,7 @@ import './ignoreForm';
 import './dragSortable';
 import './editableTable';
 import './iowSelect';
+import './inputPopup';
 
 mod.service('errorModal', ErrorModal);
 mod.service('notLoggedInModal', NotLoggedInModal);

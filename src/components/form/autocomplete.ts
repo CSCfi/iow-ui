@@ -1,14 +1,15 @@
-import { IScope, IAttributes, INgModelController, IQService, IRepeatScope, IModelFormatter } from 'angular';
+import { IScope, IAttributes, INgModelController, IQService, IModelFormatter } from 'angular';
 import * as _ from 'lodash';
 import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
-import { formatWithFormatters, scrollToElement } from '../../utils/angular';
+import { formatWithFormatters } from '../../utils/angular';
 import { module as mod }  from './module';
 import { DataSource } from './dataSource';
+import { InputWithPopupController } from './inputPopup';
 
 const maxMatches = 500;
 
-// FIXME: copy-paste with iowSelect
+// TODO: similarities with iowSelect
 mod.directive('autocomplete', ($document: JQuery) => {
   return {
     restrict: 'E',
@@ -23,17 +24,7 @@ mod.directive('autocomplete', ($document: JQuery) => {
     bindToController: true,
     template: `
       <ng-transclude></ng-transclude>
-      <div ng-if-body="ctrl.show" class="input-popup">
-        <ul class="dropdown-menu" ng-style="ctrl.popupStyle">
-          <li ng-repeat="match in ctrl.autocompleteMatches track by ctrl.formatValue(match)"
-              ng-class="{ active: ctrl.isSelected($index) }" 
-              ng-mouseenter="ctrl.setSelection($index)" 
-              ng-mousedown="ctrl.selectSelection(event)"
-              autocomplete-item="ctrl">
-            <a href=""><span class="content">{{::ctrl.format(match)}}</span></a>
-          </li>
-        </ul>
-      </div>
+      <input-popup ctrl="ctrl"><span class="content">{{::ctrl.format(match)}}</span></input-popup>
     `,
     controller: AutocompleteController,
     controllerAs: 'ctrl',
@@ -87,49 +78,12 @@ mod.directive('autocomplete', ($document: JQuery) => {
         ngModel.$render();
       };
 
-      const isFixed = (e: JQuery) => {
-        for (let p = e.parent(); p && p.length > 0 && !p.is('body'); p = p.parent()) {
-          if (p.css('position') === 'fixed') {
-            return true;
-          }
-        }
-
-        return false;
-      };
-
-      const calculatePopupStyle = (e: JQuery) => {
-        const offset = e.offset();
-        const fixed = isFixed(e);
-        return {
-          position: fixed ? 'fixed' : 'absolute',
-          top: offset.top + e.prop('offsetHeight') - (fixed ? window.scrollY : 0),
-          left: offset.left,
-          width: e.prop('offsetWidth')
-        };
-      };
-
-      $scope.$watch(() => thisController.show, () => thisController.popupStyle = calculatePopupStyle(inputElement));
-      $scope.$watch(() => inputElement.offset(), () => thisController.popupStyle = calculatePopupStyle(inputElement), true);
-
-      const setPopupStyleToElement = () => {
-        if (thisController.show) {
-          thisController.popupStyle = calculatePopupStyle(inputElement);
-          // apply styles without invoking scope for performance reasons
-          // FIXME dropdown should be own directive
-          angular.element('div.input-popup .dropdown-menu').css(thisController.popupStyle);
-        }
-      };
-
-      window.addEventListener('resize', setPopupStyleToElement);
-
-      $scope.$on('$destroy', () => {
-        window.removeEventListener('resize', setPopupStyleToElement);
-      });
+      thisController.element = inputElement;
     }
   };
 });
 
-export class AutocompleteController<T> {
+export class AutocompleteController<T> implements InputWithPopupController<T> {
 
   datasource: DataSource<T>;
   matcher: (search: string, item: T) => boolean;
@@ -138,11 +92,13 @@ export class AutocompleteController<T> {
   excludeProvider?: () => (item: T) => string;
 
   inputFormatter: IModelFormatter|IModelFormatter[];
-  popupStyle: { left: string|number, top: string|number, width: string|number, position: string };
   applyValue: (value: string) => void;
 
-  autocompleteMatches: T[] = [];
-  autocompleteSelectionIndex = -1;
+  popupItems: T[] = [];
+  selectedSelectionIndex = -1;
+
+  popupItemName = 'match';
+  element: JQuery;
 
   private keyEventHandlers: {[key: number]: () => void|boolean} = {
     [arrowDown]: () => this.moveSelection(1),
@@ -172,15 +128,15 @@ export class AutocompleteController<T> {
   }
 
   private moveSelection(offset: number) {
-    this.setSelection(Math.max(Math.min(this.autocompleteSelectionIndex + offset, this.autocompleteMatches.length - 1), -1));
+    this.setSelection(Math.max(Math.min(this.selectedSelectionIndex + offset, this.popupItems.length - 1), -1));
   }
 
-  private setSelection(index: number) {
-    this.autocompleteSelectionIndex = index;
+  setSelection(index: number) {
+    this.selectedSelectionIndex = index;
   }
 
   isSelected(index: number) {
-    return index === this.autocompleteSelectionIndex;
+    return index === this.selectedSelectionIndex;
   }
 
   format(value: T): string {
@@ -230,8 +186,8 @@ export class AutocompleteController<T> {
   }
 
   setMatches(dataMatches: T[], selectFirst: boolean) {
-    this.autocompleteSelectionIndex = selectFirst ? 0 : -1;
-    this.autocompleteMatches = maxMatches > 0 ?  _.take(dataMatches, maxMatches) : dataMatches;
+    this.selectedSelectionIndex = selectFirst ? 0 : -1;
+    this.popupItems = maxMatches > 0 ?  _.take(dataMatches, maxMatches) : dataMatches;
   }
 
   selectSelection(event?: JQueryEventObject) {
@@ -240,7 +196,7 @@ export class AutocompleteController<T> {
       event.preventDefault();
     }
 
-    const value = this.autocompleteSelectionIndex >= 0 ? this.autocompleteMatches[this.autocompleteSelectionIndex] : null;
+    const value = this.selectedSelectionIndex >= 0 ? this.popupItems[this.selectedSelectionIndex] : null;
 
     if (value) {
       this.applyValue(this.formatValue(value));
@@ -250,26 +206,6 @@ export class AutocompleteController<T> {
   }
 
   get show() {
-    return this.autocompleteMatches.length > 0;
+    return this.popupItems.length > 0;
   }
 }
-
-interface AutocompleteItemScope extends IRepeatScope {
-  autocompleteItem: AutocompleteController<any>;
-}
-
-mod.directive('autocompleteItem', () => {
-  return {
-    restrict: 'A',
-    scope: {
-      autocompleteItem: '='
-    },
-    link($scope: AutocompleteItemScope, element: JQuery) {
-      $scope.$watch(() => $scope.autocompleteItem.autocompleteSelectionIndex, index => {
-        if ($scope.$index === index) {
-          scrollToElement(element, element.parent());
-        }
-      });
-    }
-  };
-});

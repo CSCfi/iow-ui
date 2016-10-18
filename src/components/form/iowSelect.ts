@@ -1,10 +1,10 @@
-import { IAttributes, IDocumentService, IParseService, IQService, IRepeatScope, IScope, ITranscludeFunction } from 'angular';
+import { IAttributes, IDocumentService, IParseService, IQService, IScope, ITranscludeFunction } from 'angular';
 import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
-import { scrollToElement } from '../../utils/angular';
 import { module as mod }  from './module';
+import { InputWithPopupController } from './inputPopup';
 
-// FIXME: copy-paste with autocomplete
+// TODO: similarities with autocomplete
 mod.directive('iowSelect', () => {
   return {
     restrict: 'E',
@@ -20,17 +20,7 @@ mod.directive('iowSelect', () => {
           <iow-selection-transclude></iow-selection-transclude>       
           <i class="caret" ng-hide="ctrl.show"></i>
         </div>
-        <div ng-if-body="ctrl.show" class="input-popup">
-          <ul class="dropdown-menu" ng-style="ctrl.popupStyle">
-            <li ng-repeat="item in ctrl.items"
-                ng-class="{ active: ctrl.isSelected($index) }" 
-                ng-mouseenter="ctrl.setSelection($index)" 
-                ng-mousedown="ctrl.selectSelection(event)"
-                iow-select-item="ctrl">
-              <a href=""><iow-selectable-item-transclude></iow-selectable-item-transclude></a>
-            </li>
-          </ul>
-        </div>
+        <input-popup ctrl="ctrl"><iow-selectable-item-transclude></iow-selectable-item-transclude></input-popup>
       </div>
     `,
     controller: IowSelectController,
@@ -59,17 +49,18 @@ interface SelectionScope extends IScope {
   ctrl: IowSelectController<any>;
 }
 
-export class IowSelectController<T> {
+export class IowSelectController<T> implements InputWithPopupController<T> {
 
   options: string;
   ngModel: T;
 
-  itemName: string;
-  items: T[];
+  popupItemName: string;
+  popupItems: T[];
 
   show: boolean;
   selectedSelectionIndex = -1;
-  popupStyle: { top: string|number, left: string|number, width: string|number, position: string };
+
+  element: JQuery;
 
   /* @ngInject */
   constructor($q: IQService, $scope: SelectionScope, $parse: IParseService) {
@@ -77,8 +68,8 @@ export class IowSelectController<T> {
     $scope.$watch(() => this.options, optionsExp => {
       const result = parse(optionsExp);
 
-      this.itemName = result.itemName;
-      $q.when($parse(result.collection)($scope.$parent)).then(items => this.items = items);
+      this.popupItemName = result.itemName;
+      $q.when($parse(result.collection)($scope.$parent)).then(items => this.popupItems = items);
     });
   }
 
@@ -114,10 +105,10 @@ export class IowSelectController<T> {
   }
 
   private moveSelection(offset: number) {
-    this.setSelection(Math.max(Math.min(this.selectedSelectionIndex + offset, this.items.length - 1), -1));
+    this.setSelection(Math.max(Math.min(this.selectedSelectionIndex + offset, this.popupItems.length - 1), -1));
   }
 
-  private setSelection(index: number) {
+  setSelection(index: number) {
     this.selectedSelectionIndex = index;
   }
 
@@ -150,15 +141,15 @@ export class IowSelectController<T> {
     }
 
     if (this.selectedSelectionIndex >= 0) {
-      this.ngModel = this.items[this.selectedSelectionIndex];
+      this.ngModel = this.popupItems[this.selectedSelectionIndex];
     }
 
     this.close();
   }
 
   private findSelectionIndex() {
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items[i];
+    for (let i = 0; i < this.popupItems.length; i++) {
+      const item = this.popupItems[i];
 
       if (item === this.ngModel) {
         return i;
@@ -200,68 +191,10 @@ mod.directive('iowSelectInput', /* @ngInject */ ($document: IDocumentService) =>
         element.off('focus', focusHandler);
       });
 
-      const isFixed = (e: JQuery) => {
-        for (let p = e.parent(); p && p.length > 0 && !p.is('body'); p = p.parent()) {
-          if (p.css('position') === 'fixed') {
-            return true;
-          }
-        }
-
-        return false;
-      };
-
-      const calculatePopupStyle = (e: JQuery) => {
-        const offset = e.offset();
-        const fixed = isFixed(e);
-        return {
-          position: fixed ? 'fixed' : 'absolute',
-          top: offset.top + e.prop('offsetHeight') - (fixed ? window.scrollY : 0),
-          left: offset.left,
-          width: e.prop('offsetWidth')
-        };
-      };
-
-      $scope.$watch(() => controller.show, () => controller.popupStyle = calculatePopupStyle(element));
-      $scope.$watch(() => element.offset(), () => controller.popupStyle = calculatePopupStyle(element), true);
-
-      const setPopupStyleToElement = () => {
-        if (controller.show) {
-          controller.popupStyle = calculatePopupStyle(element);
-          // apply styles without invoking scope for performance reasons
-          // FIXME dropdown should be own directive
-          angular.element('div.input-popup .dropdown-menu').css(controller.popupStyle);
-        }
-      };
-
-      window.addEventListener('resize', setPopupStyleToElement);
-
-      $scope.$on('$destroy', () => {
-        window.removeEventListener('resize', setPopupStyleToElement);
-      });
+      controller.element = element;
     }
   };
 });
-
-interface IowSelectItemScope extends IRepeatScope {
-  iowSelectItem: IowSelectController<any>;
-}
-
-mod.directive('iowSelectItem', () => {
-  return {
-    restrict: 'A',
-    scope: {
-      iowSelectItem: '='
-    },
-    link($scope: IowSelectItemScope, element: JQuery) {
-      $scope.$watch(() => $scope.iowSelectItem.selectedSelectionIndex, index => {
-        if ($scope.$index === index) {
-          scrollToElement(element, element.parent());
-        }
-      });
-    }
-  };
-});
-
 
 mod.directive('iowSelectionTransclude', () => {
   return {
@@ -273,26 +206,22 @@ mod.directive('iowSelectionTransclude', () => {
         if (!childScope) {
           transclude((clone, transclusionScope) => {
             childScope = transclusionScope!;
-            transclusionScope![$scope.ctrl.itemName] = item;
+            transclusionScope![$scope.ctrl.popupItemName] = item;
             element.append(clone!);
           });
         } else {
-          childScope[$scope.ctrl.itemName] = item;
+          childScope[$scope.ctrl.popupItemName] = item;
         }
       });
     }
   };
 });
 
-interface SelectItemScope extends IRepeatScope, SelectionScope {
-  item: any;
-}
-
 mod.directive('iowSelectableItemTransclude', () => {
   return {
-    link($scope: SelectItemScope, element: JQuery, _attribute: IAttributes, _controller: any, transclude: ITranscludeFunction) {
+    link($scope: SelectionScope, element: JQuery, _attribute: IAttributes, _controller: any, transclude: ITranscludeFunction) {
       transclude((clone, transclusionScope) => {
-        transclusionScope![$scope.ctrl.itemName] = $scope.item;
+        transclusionScope![$scope.ctrl.popupItemName] = $scope[$scope.ctrl.popupItemName];
         element.append(clone!);
       });
     }
