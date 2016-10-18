@@ -383,7 +383,7 @@ class InteractiveHelpController {
 
       if (state.debounceCount > 20) {
         console.log(story);
-        throw new Error('Element not or does not stabilize');
+        throw new Error('Element not exist or does not stabilize');
       }
 
       state.debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
