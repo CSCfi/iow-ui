@@ -15,7 +15,6 @@
     "no-eval": true,
     "no-internal-module": true,
     "no-shadowed-variable": true,
-    "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unreachable": true,
     "no-unused-expression": true,
