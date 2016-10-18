@@ -280,8 +280,7 @@ class InteractiveHelpController {
   }
 
   popoverStyle() {
-    const hideOffset = { left: -1000, top: -1000 };
-    return this.popoverOffset ? this.popoverOffset : hideOffset;
+    return this.popoverOffset ? this.popoverOffset : { visibility: 'hidden' };
   }
 
   register(popover: HelpPopoverController) {
