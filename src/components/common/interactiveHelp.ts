@@ -7,7 +7,10 @@ import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 
 export type PopoverPosition = 'top'|'right'|'left'|'bottom';
-export type NextCondition = 'explicit'|'click'|'valid-input';
+
+export type NextCondition = 'explicit'         // explicit next button to continue
+                          | 'click'            // click on element to continue
+                          | 'valid-input';     // valid input is needed before allowing to continue
 
 export interface StoryLine {
   stories: Story[];
@@ -35,6 +38,14 @@ interface Positioning {
   height?: number;
   right?: number;
   bottom?: number;
+}
+
+interface StyleSetState {
+  offsetStabileCheck: { left: number, top: number }|null;
+  debounceHandle?: any;
+  debounceCount: number;
+  animating: boolean;
+  waitingForStoryToChange: boolean;
 }
 
 export class InteractiveHelp {
@@ -66,6 +77,10 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
                           'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +
                           'iframe, object, embed, *[tabindex], *[contenteditable=true]';
 
+function isClick(nextCondition: NextCondition) {
+  return nextCondition === 'click';
+}
+
 class InteractiveHelpController {
 
   popoverController: HelpPopoverController;
@@ -73,8 +88,15 @@ class InteractiveHelpController {
   backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
   popoverOffset: { left: number; top: number } | null = null;
 
+  private styleSetState: StyleSetState = {
+    offsetStabileCheck: null,
+    debounceCount: 0,
+    animating: false,
+    waitingForStoryToChange: false
+  };
+
   /* @ngInject */
-  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, $uibModalStack: IModalStackService, private storyLine: StoryLine) {
+  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, private $document: IDocumentService, private $uibModalStack: IModalStackService, private storyLine: StoryLine) {
 
     if (!storyLine || storyLine.stories.length === 0) {
       throw new Error('No stories defined');
@@ -83,85 +105,96 @@ class InteractiveHelpController {
     // Active element needs to be blurred because it can used for example for multiple interactive help activations
     angular.element(document.activeElement).blur();
 
-    const keyDownListener = (event: JQueryEventObject) => {
+    function isVisible(element: HTMLElement) {
+      return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+    }
 
-      const stopEvent = () => {
-        event.preventDefault();
-        event.stopPropagation();
-      };
+    function elementExists(e: JQuery) {
+      return e && e.length > 0 && isVisible(e[0]);
+    }
 
-      const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
+    const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
 
-      const loadFocusableElementList = () => {
+    const loadFocusableElementList = () => {
 
-        const isVisible = (element: HTMLElement) => !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-        const story = this.currentStory();
+      const story = this.currentStory();
 
-        if (!story.focusTo) {
-          return [];
+      if (!story.focusTo) {
+        return [];
+      }
+
+      const focusableElements = story.focusTo().element.find(focusableSelector).addBack(focusableSelector);
+      const result: HTMLElement[] = [];
+
+      focusableElements.each((_index: number, element: HTMLElement) => {
+        if (isVisible(element) && (!element.tabIndex || element.tabIndex > 0)) {
+          result.push(element);
         }
+      });
 
-        const focusableElements = story.focusTo().element.find(focusableSelector).addBack(focusableSelector);
-        const result: HTMLElement[] = [];
+      return result;
+    };
 
-        focusableElements.each((_index: number, element: HTMLElement) => {
-          if (isVisible(element) && (!element.tabIndex || element.tabIndex > 0)) {
-            result.push(element);
+    function stopEvent() {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    const manageFocus = (event: JQueryEventObject) => {
+      const focusableElements = loadFocusableElementList();
+
+      const activeElementIsFocusable = () => {
+        for (const focusableElement of focusableElements) {
+          if (focusableElement === document.activeElement) {
+            return true;
           }
-        });
-
-        return result;
+        }
+        return false;
       };
 
-      const manageFocus = () => {
-        const focusableElements = loadFocusableElementList();
+      if (focusableElements.length > 0) {
 
-        const activeElementIsFocusable = () => {
-          for (const focusableElement of focusableElements) {
-            if (focusableElement === document.activeElement) {
-              return true;
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey) {
+          if (isFocusInElement(firstElement)) {
+            if (!this.currentStory().cannotMoveBack) {
+              $scope.$apply(() => this.previousStory());
             }
-          }
-          return false;
-        };
-
-        if (focusableElements.length > 0) {
-
-          const firstElement = focusableElements[0];
-          const lastElement = focusableElements[focusableElements.length - 1];
-
-          if (event.shiftKey) {
-            if (isFocusInElement(firstElement)) {
-              if (!this.currentStory().cannotMoveBack) {
-                $scope.$apply(() => this.previousStory());
-              }
-              stopEvent();
-            }
-          } else {
-            if (isFocusInElement(lastElement)) {
-              if (this.currentStory().nextCondition !== 'click' && this.popoverController.isValid()) {
-                $scope.$apply(() => this.nextStory());
-              } else {
-                firstElement.focus();
-              }
-              stopEvent();
-            }
-          }
-
-          // prevent input focus breaking from story focusable area
-          if (!activeElementIsFocusable()) {
-            firstElement.focus();
             stopEvent();
           }
-
         } else {
+          if (isFocusInElement(lastElement)) {
+            if (!isClick(this.currentStory().nextCondition) && this.popoverController.isValid()) {
+              $scope.$apply(() => this.nextStory());
+            } else {
+              firstElement.focus();
+            }
+            stopEvent();
+          }
+        }
+
+        // prevent input focus breaking from story focusable area
+        if (!activeElementIsFocusable()) {
+          firstElement.focus();
           stopEvent();
         }
-      };
+
+      } else {
+        stopEvent();
+      }
+    };
+
+    const manageNextClick = () => {
+      $scope.$apply(() => this.nextStory());
+    };
+
+    const keyDownListener = (event: JQueryEventObject) => {
 
       switch (event.which) {
         case tab:
-          manageFocus();
+          manageFocus(event);
           break;
         case esc:
           $scope.$apply(() => this.close(true));
@@ -172,78 +205,16 @@ class InteractiveHelpController {
     const clickListener = (event: JQueryEventObject) => {
       const story = this.currentStory();
 
-      if (story && story.nextCondition === 'click') {
+      if (story && isClick(story.nextCondition)) {
         const popoverElement = story.popoverTo();
 
-        if (!popoverElement || popoverElement.length === 0) {
+        if (!elementExists(popoverElement)) {
           throw new Error('Popover element not found');
         }
 
         if (isTargetElementInsideElement(event, popoverElement[0])) {
-          $scope.$apply(() => {
-            this.nextStory();
-          });
+          manageNextClick();
         }
-      }
-    };
-
-    const focusPositioning = (story: Story) => {
-
-      if (!story || !story.focusTo) {
-        return null;
-      }
-
-      const focusTo = story.focusTo();
-
-      if (!focusTo.element || focusTo.element.length === 0) {
-        return null;
-      }
-
-      const focusToElementOffset = focusTo.element.offset();
-
-      const marginTop = focusTo.margin && focusTo.margin.top || 0;
-      const marginRight = focusTo.margin && focusTo.margin.right || 0;
-      const marginBottom = focusTo.margin && focusTo.margin.bottom || 0;
-      const marginLeft = focusTo.margin && focusTo.margin.left || 0;
-
-      return {
-        width: focusTo.element.outerWidth(false) + marginLeft + marginRight,
-        height: focusTo.element.outerHeight(false) + marginTop + marginBottom,
-        left: focusToElementOffset.left - marginLeft,
-        top: focusToElementOffset.top - marginTop
-      };
-    };
-
-    const setBackdrop = (positioning: Positioning|null) => {
-      if (positioning) {
-        this.backdrop = {
-          top: {
-            left: 0,
-            top: 0,
-            right: 0,
-            height: positioning.top - window.scrollY
-          },
-          right: {
-            left: positioning.left + positioning.width,
-            top: positioning.top - window.scrollY,
-            width: $document.width() - positioning.left - positioning.width,
-            height: positioning.height
-          },
-          bottom: {
-            left: 0,
-            top: positioning.top + positioning.height - window.scrollY,
-            right: 0,
-            bottom: 0
-          },
-          left: {
-            left: 0,
-            top: positioning.top - window.scrollY,
-            width: positioning.left,
-            height: positioning.height
-          }
-        };
-      } else {
-        this.backdrop = null;
       }
     };
 
@@ -258,90 +229,22 @@ class InteractiveHelpController {
       $document.off('click', clickListener);
     });
 
-    let offsetStabileCheck: { left: number, top: number }|null;
-    let debounceHandle: any|undefined;
-    let debounceCount = 0;
-    let animating = false;
-
-    const waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles = () => {
-
-      const story = this.currentStory();
-
-      const debounce = () => {
-        offsetStabileCheck = this.popoverController.calculateOffset();
-
-        if (debounceHandle) {
-          debounceCount++;
-          clearTimeout(debounceHandle);
-        }
-
-        if (debounceCount > 20) {
-          console.log(story.popoverTo());
-          throw new Error('Element not or does not stabilize');
-        }
-
-        debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
-      };
-
-      const applyPositioningAndFocusWhenStabile = () => {
-
-        let offset = this.popoverController.calculateOffset();
-
-        if (offset && offsetStabileCheck && offset.left === offsetStabileCheck.left && offset.top === offsetStabileCheck.top) {
-
-          story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
-
-          if (!animating) {
-            const scrollElement = $uibModalStack.getTop() ? $uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
-            angular.element(scrollElement).animate({scrollTop: offset.top - 100}, 100);
-            animating = true;
-            debounce();
-          } else {
-            this.$scope.$apply(() => {
-              setBackdrop(focusPositioning(story));
-              this.popoverOffset = offset;
-            });
-          }
-        } else {
-          debounce();
-        }
-      };
-
-      this.popoverController.hide();
-
-      if (story.focusTo) {
-        // if story has focus area, show initially full backdrop
-        this.backdrop = {
-          top: { left: 0, top: 0, right: 0, bottom: 0 },
-          right: { left: 0, top: 0, width: 0, height: 0 },
-          bottom: { left: 0, top: 0, width: 0, height: 0 },
-          left: { left: 0, top: 0, width: 0, height: 0 }
-        };
-      } else {
-        this.backdrop = null;
-      }
-
-      debounceCount = 0;
-      animating = false;
-      debounce();
-    };
-
-    $scope.$watch(() => this.popoverController.calculateOffset(), waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles, true);
-    $scope.$watch(() => focusPositioning(this.currentStory()), positioning => {
-      if (positioning) {
-        setBackdrop(positioning);
+    $scope.$watch(() => InteractiveHelpController.calculateFocus(this.currentStory()), positioning => {
+      if (!this.styleSetState.waitingForStoryToChange) {
+        this.backdrop = this.calculateBackdrop(positioning);
       }
     }, true);
 
-    const waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope =
-      () => $scope.$apply(() => waitUntilOffsetIsStabileAndSetBackdropAndPopoverStyles());
+    $scope.$watch(() => this.popoverController.calculateOffset(), () => this.setStoryStyles(), true);
 
-    window.addEventListener('resize', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
-    window.addEventListener('scroll', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
+    const setStoryStylesApplyingScope = () => $scope.$apply(() => this.setStoryStyles());
+
+    window.addEventListener('resize', setStoryStylesApplyingScope);
+    window.addEventListener('scroll', setStoryStylesApplyingScope);
 
     $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
-      window.removeEventListener('scroll', waitUntilOffsetIsStabileAndSetBackdropAndPopoverStylesApplyingScope);
+      window.removeEventListener('resize', setStoryStylesApplyingScope);
+      window.removeEventListener('scroll', setStoryStylesApplyingScope);
     });
   }
 
@@ -353,6 +256,150 @@ class InteractiveHelpController {
   register(popover: HelpPopoverController) {
     this.popoverController = popover;
     this.showStory(this.activeIndex);
+  }
+
+  private waitForStoryChange(nextStory: Story|null) {
+
+    this.styleSetState.waitingForStoryToChange = true;
+    this.popoverController.hide();
+
+    if (nextStory && nextStory.focusTo) {
+      // full backdrop
+      this.backdrop = {
+        top: { left: 0, top: 0, right: 0, bottom: 0 },
+        right: { left: 0, top: 0, width: 0, height: 0 },
+        bottom: { left: 0, top: 0, width: 0, height: 0 },
+        left: { left: 0, top: 0, width: 0, height: 0 }
+      };
+    } else {
+      // hide backdrop
+      this.backdrop = null;
+    }
+  }
+
+  private static calculateFocus(story: Story) {
+
+    if (!story || !story.focusTo) {
+      return null;
+    }
+
+    const focusTo = story.focusTo();
+
+    if (!focusTo.element || focusTo.element.length === 0) {
+      return null;
+    }
+
+    const focusToElementOffset = focusTo.element.offset();
+
+    const marginTop = focusTo.margin && focusTo.margin.top || 0;
+    const marginRight = focusTo.margin && focusTo.margin.right || 0;
+    const marginBottom = focusTo.margin && focusTo.margin.bottom || 0;
+    const marginLeft = focusTo.margin && focusTo.margin.left || 0;
+
+    return {
+      width: focusTo.element.outerWidth(false) + marginLeft + marginRight,
+      height: focusTo.element.outerHeight(false) + marginTop + marginBottom,
+      left: focusToElementOffset.left - marginLeft,
+      top: focusToElementOffset.top - marginTop
+    };
+  }
+
+  private calculateBackdrop(positioning: Positioning|null) {
+    if (positioning) {
+      return {
+        top: {
+          left: 0,
+          top: 0,
+          right: 0,
+          height: positioning.top - window.scrollY
+        },
+        right: {
+          left: positioning.left + positioning.width,
+          top: positioning.top - window.scrollY,
+          width: this.$document.width() - positioning.left - positioning.width,
+          height: positioning.height
+        },
+        bottom: {
+          left: 0,
+          top: positioning.top + positioning.height - window.scrollY,
+          right: 0,
+          bottom: 0
+        },
+        left: {
+          left: 0,
+          top: positioning.top - window.scrollY,
+          width: positioning.left,
+          height: positioning.height
+        }
+      };
+    } else {
+      return null;
+    }
+  }
+
+  private setStoryStyles() {
+
+    const state = this.styleSetState;
+    const story = this.currentStory();
+
+    const debounce = () => {
+      state.offsetStabileCheck = this.popoverController.calculateOffset();
+
+      if (state.debounceHandle) {
+        state.debounceCount++;
+        clearTimeout(state.debounceHandle);
+      }
+
+      if (state.debounceCount > 20) {
+        console.log(story);
+        throw new Error('Element not or does not stabilize');
+      }
+
+      state.debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 100);
+    };
+
+    const applyPositioningAndFocusWhenStabile = () => {
+
+      let offset = this.popoverController.calculateOffset();
+
+      if (offset && state.offsetStabileCheck && offset.left === state.offsetStabileCheck.left && offset.top === state.offsetStabileCheck.top) {
+
+        story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
+
+        if (!state.animating) {
+          const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
+          angular.element(scrollElement).animate({scrollTop: offset.top - 100}, 100);
+          state.animating = true;
+          debounce();
+        } else {
+          this.$scope.$apply(() => {
+            this.popoverOffset = offset;
+            this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(story));
+          });
+        }
+      } else {
+        debounce();
+      }
+    };
+
+    if (state.waitingForStoryToChange) {
+      return;
+    }
+
+    this.waitForStoryChange(story);
+
+    state.debounceCount = 0;
+    state.animating = false;
+
+    debounce();
+  }
+
+  peekNext(): Story|null {
+    if (this.isCurrentLastStory()) {
+      return null;
+    } else {
+      return this.storyLine.stories[this.activeIndex + 1];
+    }
   }
 
   nextStory() {
@@ -388,6 +435,7 @@ class InteractiveHelpController {
   }
 
   showStory(index: number) {
+    this.styleSetState.waitingForStoryToChange = false;
     const story = this.storyLine.stories[index];
     this.popoverController.show(story, this.isFirstStory(index), this.isLastStory(index));
   }
@@ -460,7 +508,7 @@ class HelpPopoverController {
     this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
     this.first = first;
     this.last = last;
-    this.showNext = story.nextCondition !== 'click';
+    this.showNext = !isClick(story.nextCondition);
     this.showPrevious = !story.cannotMoveBack;
 
     if (story.nextCondition === 'valid-input') {
