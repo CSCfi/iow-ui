@@ -695,7 +695,7 @@ $input-select: 80px;
     position: inherit;
   }
 
-  input, select, textarea {
+  input:not([type="checkbox"]), select, textarea {
     width: 100%;
   }
 
