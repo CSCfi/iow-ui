@@ -198,6 +198,7 @@ class InteractiveHelpController {
           if (tryCount > 20) {
             // reset values to state as before wait
             $scope.$apply(() => {
+              this.styleSetState.waitingForStoryToChange = false;
               this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(currentStory));
               this.popoverOffset = this.popoverController.calculateOffset();
             });
@@ -403,6 +404,7 @@ class InteractiveHelpController {
           debounce();
         } else {
           this.$scope.$apply(() => {
+            this.styleSetState.waitingForStoryToChange = false;
             this.popoverOffset = offset;
             this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(story));
           });
@@ -465,7 +467,6 @@ class InteractiveHelpController {
   }
 
   showStory(index: number) {
-    this.styleSetState.waitingForStoryToChange = false;
     const story = this.storyLine.stories[index];
     this.popoverController.show(story, this.isFirstStory(index), this.isLastStory(index));
   }
