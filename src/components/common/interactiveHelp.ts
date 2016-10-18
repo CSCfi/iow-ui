@@ -328,10 +328,10 @@ class InteractiveHelpController {
     const marginLeft = focusTo.margin && focusTo.margin.left || 0;
 
     return {
-      width: focusTo.element.outerWidth(false) + marginLeft + marginRight,
-      height: focusTo.element.outerHeight(false) + marginTop + marginBottom,
-      left: focusToElementOffset.left - marginLeft,
-      top: focusToElementOffset.top - marginTop
+      width: Math.trunc(focusTo.element.outerWidth(false)) + marginLeft + marginRight,
+      height: Math.trunc(focusTo.element.outerHeight(false)) + marginTop + marginBottom,
+      left: Math.trunc(focusToElementOffset.left) - marginLeft,
+      top: Math.trunc(focusToElementOffset.top) - marginTop
     };
   }
 
@@ -583,14 +583,16 @@ class HelpPopoverController {
       return null;
     }
 
-    const popoverWidth = this.$element.width();
-    const popoverHeight = this.$element.height();
-    const left = element.offset().left;
-    const top = element.offset().top;
-    const width = element.width();
-    const height = element.height();
+    const popoverWidth = Math.trunc(this.$element.width());
+    const popoverHeight = Math.trunc(this.$element.height());
+    const left = Math.trunc(element.offset().left);
+    const top = Math.trunc(element.offset().top);
+    const width = Math.trunc(element.width());
+    const height = Math.trunc(element.height());
     const arrow = 13;
-    const documentWidth = angular.element(this.$document).width();
+    const documentWidth = Math.trunc(angular.element(this.$document).width());
+
+    // truncate result because firefox seems to results slightly fluctuating values each time
 
     switch (position) {
       case 'left':
@@ -601,7 +603,7 @@ class HelpPopoverController {
         const rightPopoverLeft = left + width + arrow * 3;
         const rightPopoverRight = documentWidth - (rightPopoverLeft + popoverWidth);
         const rightWidthOffScreen = rightPopoverRight < 0 ? -rightPopoverRight : 0;
-        return { top: top, left: left + width + arrow * 3, width: popoverWidth - rightWidthOffScreen};
+        return { top: top, left: left + width + arrow * 3, width: popoverWidth - rightWidthOffScreen };
       case 'top':
         return { top: top - popoverHeight - arrow, left: left };
       case 'bottom':
