@@ -525,7 +525,7 @@ class HelpPopoverController {
   showPrevious: boolean;
   ngModel: INgModelController|null;
 
-  constructor(private $element: JQuery) {
+  constructor(private $element: JQuery, private $document: IDocumentService) {
     this.helpController.register(this);
   }
 
@@ -567,7 +567,7 @@ class HelpPopoverController {
     this.helpController.previousStory();
   }
 
-  calculateOffset() {
+  calculateOffset(): Positioning|null {
 
     const element = this.story.popoverTo();
     const position = this.story.popoverPosition;
@@ -582,13 +582,19 @@ class HelpPopoverController {
     const top = element.offset().top;
     const width = element.width();
     const height = element.height();
-    const arrow = 15;
+    const arrow = 13;
+    const documentWidth = angular.element(this.$document).width();
 
     switch (position) {
       case 'left':
-        return { top: top, left: left - popoverWidth - arrow };
+        const leftPopoverLeft = left - popoverWidth - arrow;
+        const leftWidthOffScreen = leftPopoverLeft < 0 ? -leftPopoverLeft : 0;
+        return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen };
       case 'right':
-        return { top: top, left: left + width + arrow * 3};
+        const rightPopoverLeft = left + width + arrow * 3;
+        const rightPopoverRight = documentWidth - (rightPopoverLeft + popoverWidth);
+        const rightWidthOffScreen = rightPopoverRight < 0 ? -rightPopoverRight : 0;
+        return { top: top, left: left + width + arrow * 3, width: popoverWidth - rightWidthOffScreen};
       case 'top':
         return { top: top - popoverHeight - arrow, left: left };
       case 'bottom':
