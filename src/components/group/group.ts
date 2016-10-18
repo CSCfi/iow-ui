@@ -207,14 +207,14 @@ class GroupController extends EditableEntityController<Group> {
           nextCondition: 'valid-input'
         },
         {
-          popoverTo: () => angular.element('button.create'),
+          popoverTo: () => angular.element('.modal-dialog button.create'),
           focusTo: () => ({
-            element: angular.element('button.create')
+            element: angular.element('.modal-dialog button.create')
           }),
           popoverPosition: 'left',
           title: 'Create new',
           content: 'Diipadaa',
-          nextCondition: 'click'
+          nextCondition: 'modifying-click'
         },
         {
           popoverTo: () => angular.element('button.save'),
