@@ -499,9 +499,9 @@ mod.directive('helpPopover', () => {
         <div class="help-content-wrapper">
           <h3>{{ctrl.story.title | translate}}</h3>
           <p>{{ctrl.story.content | translate}}</p>
-          <button ng-show="ctrl.showPrevious" ng-click="ctrl.previous()" class="small button help-navigate ng-animate-disabled" translate>previous</button>
-          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-navigate ng-animate-disabled" translate>next</button>
-          <button ng-show="ctrl.showClose" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next ng-animate-disabled" translate>close</button>
+          <button ng-show="ctrl.showPrevious" ng-click="ctrl.previous()" class="small button help-navigate" translate>previous</button>
+          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-navigate" translate>next</button>
+          <button ng-show="ctrl.showClose" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next" translate>close</button>
           <a ng-click="ctrl.close(true)" class="help-close">&times;</a>
         </div>
       `,

@@ -23,7 +23,6 @@ mod.directive('iowSelect', () => {
         <div ng-if-body="ctrl.show" class="input-popup">
           <ul class="dropdown-menu" ng-style="ctrl.popupStyle">
             <li ng-repeat="item in ctrl.items"
-                class="ng-animate-disabled"
                 ng-class="{ active: ctrl.isSelected($index) }" 
                 ng-mouseenter="ctrl.setSelection($index)" 
                 ng-mousedown="ctrl.selectSelection(event)"

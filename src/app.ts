@@ -62,8 +62,8 @@ mod.config(($locationProvider: ILocationProvider,
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);
 
-  // disable angular-animate framework when 'ng-animate-disabled' class is added to animated element
-  $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
+  // enable angular-animate framework when 'ng-animate-enabled' class is added to animated element
+  $animateProvider.classNameFilter(/ng-animate-enabled/);
 
   $uibTooltipProvider.options({ appendToBody: true });
   $uibTooltipProvider.setTriggers({'mouseenter': 'mouseleave click'});

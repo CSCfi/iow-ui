@@ -26,7 +26,6 @@ mod.directive('autocomplete', ($document: JQuery) => {
       <div ng-if-body="ctrl.show" class="input-popup">
         <ul class="dropdown-menu" ng-style="ctrl.popupStyle">
           <li ng-repeat="match in ctrl.autocompleteMatches track by ctrl.formatValue(match)"
-              class="ng-animate-disabled"
               ng-class="{ active: ctrl.isSelected($index) }" 
               ng-mouseenter="ctrl.setSelection($index)" 
               ng-mousedown="ctrl.selectSelection(event)"
