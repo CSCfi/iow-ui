@@ -195,7 +195,7 @@ class InteractiveHelpController {
 
         const waitForElementToDisappear = () => {
 
-          if (tryCount > 20) {
+          if (tryCount > 30) {
             // reset values to state as before wait
             $scope.$apply(() => {
               this.styleSetState.waitingForStoryToChange = false;
