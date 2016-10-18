@@ -209,6 +209,7 @@ class InteractiveHelpController {
             tryCount++;
             setTimeout(waitForElementToDisappear, 50);
           } else {
+            this.styleSetState.waitingForStoryToChange = false;
             $scope.$apply(() => this.nextStory());
           }
         };
