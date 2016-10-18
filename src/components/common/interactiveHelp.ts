@@ -598,12 +598,22 @@ class HelpPopoverController {
       case 'left':
         const leftPopoverLeft = left - popoverWidth - arrow;
         const leftWidthOffScreen = leftPopoverLeft < 0 ? -leftPopoverLeft : 0;
-        return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen };
+
+        if (leftWidthOffScreen) {
+          return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen };
+        } else {
+          return { top: top, left: leftPopoverLeft };
+        }
       case 'right':
         const rightPopoverLeft = left + width + arrow * 3;
         const rightPopoverRight = documentWidth - (rightPopoverLeft + popoverWidth);
         const rightWidthOffScreen = rightPopoverRight < 0 ? -rightPopoverRight : 0;
-        return { top: top, left: left + width + arrow * 3, width: popoverWidth - rightWidthOffScreen };
+
+        if (rightWidthOffScreen) {
+          return { top: top, left: rightPopoverLeft, width: popoverWidth - rightWidthOffScreen };
+        } else {
+          return { top: top, left: rightPopoverLeft };
+        }
       case 'top':
         return { top: top - popoverHeight - arrow, left: left };
       case 'bottom':
