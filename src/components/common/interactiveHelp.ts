@@ -10,6 +10,7 @@ export type PopoverPosition = 'top'|'right'|'left'|'bottom';
 
 export type NextCondition = 'explicit'         // explicit next button to continue
                           | 'click'            // click on element to continue
+                          | 'modifying-click'  // click on element which is expected to disappear to continue
                           | 'valid-input';     // valid input is needed before allowing to continue
 
 export interface StoryLine {
@@ -78,7 +79,7 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
                           'iframe, object, embed, *[tabindex], *[contenteditable=true]';
 
 function isClick(nextCondition: NextCondition) {
-  return nextCondition === 'click';
+  return nextCondition === 'click' || nextCondition === 'modifying-click';
 }
 
 class InteractiveHelpController {
@@ -186,8 +187,37 @@ class InteractiveHelpController {
       }
     };
 
-    const manageNextClick = () => {
-      $scope.$apply(() => this.nextStory());
+    const manageNextClick = (currentStory: Story) => {
+
+      if (currentStory.nextCondition === 'modifying-click') {
+
+        let tryCount = 0;
+
+        const waitForElementToDisappear = () => {
+
+          if (tryCount > 20) {
+            // reset values to state as before wait
+            $scope.$apply(() => {
+              this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(currentStory));
+              this.popoverOffset = this.popoverController.calculateOffset();
+            });
+            return;
+          }
+
+          if (elementExists(currentStory.popoverTo())) {
+            tryCount++;
+            setTimeout(waitForElementToDisappear, 50);
+          } else {
+            $scope.$apply(() => this.nextStory());
+          }
+        };
+
+        waitForElementToDisappear();
+        $scope.$apply(() => this.waitForStoryChange(this.peekNext()));
+
+      } else {
+        $scope.$apply(() => this.nextStory());
+      }
     };
 
     const keyDownListener = (event: JQueryEventObject) => {
@@ -213,7 +243,7 @@ class InteractiveHelpController {
         }
 
         if (isTargetElementInsideElement(event, popoverElement[0])) {
-          manageNextClick();
+          manageNextClick(story);
         }
       }
     };
