@@ -499,9 +499,9 @@ mod.directive('helpPopover', () => {
         <div class="help-content-wrapper">
           <h3>{{ctrl.story.title | translate}}</h3>
           <p>{{ctrl.story.content | translate}}</p>
-          <button ng-style="ctrl.previousStyle" ng-click="ctrl.previous()" class="small button help-navigate" translate>previous</button>
-          <button ng-style="ctrl.nextStyle" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-navigate" translate>next</button>
-          <button ng-style="ctrl.closeStyle" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next" translate>close</button>
+          <button ng-show="ctrl.showPrevious" ng-click="ctrl.previous()" class="small button help-navigate ng-animate-disabled" translate>previous</button>
+          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-navigate ng-animate-disabled" translate>next</button>
+          <button ng-show="ctrl.showClose" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next ng-animate-disabled" translate>close</button>
           <a ng-click="ctrl.close(true)" class="help-close">&times;</a>
         </div>
       `,
@@ -521,9 +521,9 @@ class HelpPopoverController {
   story: Story;
   arrowClass: string[] = [];
   // Styles are set manually instead of ng-if or ng-show because using them causes visual delay for buttons disappearing
-  nextStyle: { display: string|null } = { display: 'none' };
-  previousStyle: { display: string|null } = { display: 'none' };
-  closeStyle: { display: string|null } = { display: 'none' };
+  showNext: boolean;
+  showPrevious: boolean;
+  showClose: boolean;
   ngModel: INgModelController|null;
 
   constructor(private $element: JQuery, private $document: IDocumentService) {
@@ -537,16 +537,9 @@ class HelpPopoverController {
   show(story: Story, first: boolean, last: boolean) {
     this.story = story;
     this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
-
-    function buttonStyle(show: boolean) {
-      return {
-        display: show ? null : 'none'
-      };
-    }
-
-    this.nextStyle = buttonStyle(!last && !isClick(story.nextCondition));
-    this.closeStyle = buttonStyle(last && !isClick(story.nextCondition));
-    this.previousStyle = buttonStyle(!first && !story.cannotMoveBack);
+    this.showNext = !last && !isClick(story.nextCondition);
+    this.showClose = last && !isClick(story.nextCondition);
+    this.showPrevious = !first && !story.cannotMoveBack;
 
     if (story.nextCondition === 'valid-input') {
       this.ngModel = story.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
