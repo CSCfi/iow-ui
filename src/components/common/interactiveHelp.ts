@@ -114,7 +114,7 @@ class InteractiveHelpController {
       return e && e.length > 0 && isVisible(e[0]);
     }
 
-    const isFocusInElement = (element: HTMLElement) => (event.target || event.srcElement) === element;
+    const isFocusInElement = (event: JQueryEventObject, element: HTMLElement) => (event.target || event.srcElement) === element;
 
     const loadFocusableElementList = () => {
 
@@ -136,7 +136,7 @@ class InteractiveHelpController {
       return result;
     };
 
-    function stopEvent() {
+    function stopEvent(event: JQueryEventObject) {
       event.preventDefault();
       event.stopPropagation();
     }
@@ -159,31 +159,31 @@ class InteractiveHelpController {
         const lastElement = focusableElements[focusableElements.length - 1];
 
         if (event.shiftKey) {
-          if (isFocusInElement(firstElement)) {
+          if (isFocusInElement(event, firstElement)) {
             if (!this.currentStory().cannotMoveBack) {
               $scope.$apply(() => this.previousStory());
             }
-            stopEvent();
+            stopEvent(event);
           }
         } else {
-          if (isFocusInElement(lastElement)) {
+          if (isFocusInElement(event, lastElement)) {
             if (!isClick(this.currentStory().nextCondition) && this.popoverController.isValid()) {
               $scope.$apply(() => this.nextStory());
             } else {
               firstElement.focus();
             }
-            stopEvent();
+            stopEvent(event);
           }
         }
 
         // prevent input focus breaking from story focusable area
         if (!activeElementIsFocusable()) {
           firstElement.focus();
-          stopEvent();
+          stopEvent(event);
         }
 
       } else {
-        stopEvent();
+        stopEvent(event);
       }
     };
 
