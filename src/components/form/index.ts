@@ -32,6 +32,7 @@ import './localizedSelect';
 import './maxInput';
 import './minInput';
 import './ignoreDirty';
+import './ignoreForm';
 import './dragSortable';
 import './editableTable';
 import './iowSelect';
