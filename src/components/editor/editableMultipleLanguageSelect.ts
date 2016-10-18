@@ -21,6 +21,8 @@ mod.directive('editableMultipleLanguageSelect', () => {
                    type="text"
                    restrict-duplicates="ctrl.ngModel"
                    language-input
+                   ignore-form
+                   autocomplete="false"
                    ng-model="ctrl.input" />
           </autocomplete>
         </input-container>

@@ -35,6 +35,7 @@ mod.directive('editableMultipleUriSelect', () => {
                    type="text"
                    restrict-duplicates="ctrl.ngModel"
                    uri-input
+                   ignore-form
                    model="ctrl.model"
                    ng-model="ctrl.input" />
           </autocomplete>

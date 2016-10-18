@@ -24,6 +24,7 @@ mod.directive('editableMultipleDataTypeInput', () => {
                    type="text"
                    restrict-duplicates="ctrl.ngModel"
                    datatype-input="ctrl.inputType"
+                   ignore-form
                    reference-data="ctrl.referenceData"
                    ng-model="ctrl.input" />
           </code-value-input-autocomplete>
