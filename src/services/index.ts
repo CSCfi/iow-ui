@@ -16,6 +16,7 @@ import { EntityLoaderService } from './entityLoader';
 import { ResetService } from './resetService';
 import { SessionService } from './sessionService';
 import { FrameService } from './frameService';
+import { InteractiveHelpService } from './interactiveHelpService';
 
 import { module as mod }  from './module';
 export default mod.name;
@@ -38,3 +39,4 @@ mod.service('resetService', ResetService);
 mod.service('entityLoaderService', EntityLoaderService);
 mod.service('sessionService', SessionService);
 mod.service('frameService', FrameService);
+mod.service('interactiveHelpService', InteractiveHelpService);

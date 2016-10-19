@@ -5,6 +5,7 @@ import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
+import { InteractiveHelpService } from '../../services/interactiveHelpService';
 
 export type PopoverPosition = 'top'|'right'|'left'|'bottom';
 
@@ -52,11 +53,18 @@ interface StyleSetState {
 export class InteractiveHelp {
 
   /* @ngInject */
-  constructor(private overlayService: OverlayService) {
+  constructor(private overlayService: OverlayService, private interactiveHelpService: InteractiveHelpService) {
   }
 
   open(storyLine: StoryLine) {
-    return this.overlayService.open({
+
+    if (this.interactiveHelpService.open) {
+      throw new Error('Cannot open help when another help is already open');
+    }
+
+    this.interactiveHelpService.open = true;
+
+    const result = this.overlayService.open({
       template: `
         <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverStyle()"></help-popover>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
@@ -71,6 +79,10 @@ export class InteractiveHelp {
       },
       disableScroll: true
     }).result;
+
+    result.then(() => this.interactiveHelpService.open = false);
+
+    return result;
   }
 }
 
