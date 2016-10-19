@@ -1,19 +1,17 @@
 import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
-import * as _ from 'lodash';
 import * as moment from 'moment';
 import { config } from '../config';
 import { upperCaseFirst } from 'change-case';
 import { Uri, Urn } from '../entities/uri';
 import { Language } from '../utils/language';
 import { expandContextWithKnownModels, collectIds } from '../utils/entity';
-import { normalizeAsArray, index } from '../utils/array';
+import { index } from '../utils/array';
 import { requireDefined, assertNever } from '../utils/object';
 import * as frames from '../entities/frames';
 import { FrameService } from './frameService';
 import { GraphData } from '../entities/contract';
 import { KnownModelType } from '../entities/type';
 import { ModelPositions, VisualizationClass, DefaultVisualizationClass } from '../entities/visualization';
-import { ReferenceDataCode, ReferenceData, ReferenceDataServer } from '../entities/referenceData';
 import { Model, ModelListItem, ImportedNamespace, Link } from '../entities/model';
 
 export class ClassVisualization {
@@ -42,9 +40,6 @@ export class ClassVisualization {
 }
 
 export class ModelService {
-
-  // indexed by reference data id
-  private referenceDataCodesCache = new Map<string, IPromise<ReferenceDataCode[]>>();
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
@@ -175,52 +170,6 @@ export class ModelService {
     return new ModelPositions([], frame['@context'], frame);
   }
 
-  getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('codeServer'))
-      .then(response => this.deserializeReferenceDataServers(response.data!));
-  }
-
-  getReferenceDatasForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
-      .then(response => this.deserializeReferenceDatas(response.data!));
-  }
-
-  getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
-    return this.$q.all(_.map(servers, server => this.getReferenceDatasForServer(server)))
-      .then(referenceDatas => _.flatten(referenceDatas));
-  }
-
-  getAllReferenceDatas(): IPromise<ReferenceData[]> {
-    return this.getReferenceDataServers().then(servers => this.getReferenceDatasForServers(servers));
-  }
-
-  getReferenceDataCodes(referenceData: ReferenceData|ReferenceData[]): IPromise<ReferenceDataCode[]> {
-
-    const getSingle = (rd: ReferenceData) => {
-      const cached = this.referenceDataCodesCache.get(rd.id.uri);
-
-      if (cached) {
-        return cached;
-      } else {
-        const result = this.$http.get<GraphData>(config.apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri}})
-          .then(response => this.deserializeReferenceDataCodes(response.data!));
-
-        this.referenceDataCodesCache.set(rd.id.uri, result);
-        return result;
-      }
-    };
-
-    const internalReferenceData = _.filter(normalizeAsArray(referenceData), rd => !rd.isExternal());
-
-    return this.$q.all(_.map(internalReferenceData, rd => getSingle(rd)))
-        .then(referenceDatas => _.flatten(referenceDatas));
-  }
-
-  newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
-      .then(response => this.deserializeReferenceData(response.data!));
-  }
-
   private deserializeModelList(data: GraphData): IPromise<ModelListItem[]> {
     return this.frameService.frameAndMapArray(data, frames.modelListFrame(data), () => ModelListItem);
   }
@@ -251,21 +200,5 @@ export class ModelService {
 
   private deserializeModelPositions(data: GraphData): IPromise<ModelPositions> {
     return this.frameService.frameAndMapArrayEntity(data, frames.modelPositionsFrame(data), () => ModelPositions);
-  }
-
-  private deserializeReferenceDataServers(data: GraphData): IPromise<ReferenceDataServer[]> {
-    return this.frameService.frameAndMapArray(data, frames.referenceDataServerFrame(data), () => ReferenceDataServer);
-  }
-
-  private deserializeReferenceData(data: GraphData): IPromise<ReferenceData> {
-    return this.frameService.frameAndMap(data, true, frames.referenceDataFrame(data), () => ReferenceData);
-  }
-
-  private deserializeReferenceDatas(data: GraphData): IPromise<ReferenceData[]> {
-    return this.frameService.frameAndMapArray(data, frames.referenceDataFrame(data), () => ReferenceData);
-  }
-
-  private deserializeReferenceDataCodes(data: GraphData): IPromise<ReferenceDataCode[]> {
-    return this.frameService.frameAndMapArray(data, frames.referenceDataCodeFrame(data), () => ReferenceDataCode);
   }
 }

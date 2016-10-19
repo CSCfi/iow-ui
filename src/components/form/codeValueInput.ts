@@ -1,6 +1,6 @@
 import { IAttributes, IAsyncModelValidators, IQService, IScope, INgModelController } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { ModelService } from '../../services/modelService';
+import { ReferenceDataService } from '../../services/referenceDataService';
 import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
 import { any } from '../../utils/array';
@@ -10,7 +10,7 @@ export function placeholderText(gettextCatalog: gettextCatalog) {
   return gettextCatalog.getString('Write reference data code');
 }
 
-export function createAsyncValidators($q: IQService, referenceData: ReferenceData[], modelService: ModelService): IAsyncModelValidators {
+export function createAsyncValidators($q: IQService, referenceData: ReferenceData[], referenceDataService: ReferenceDataService): IAsyncModelValidators {
 
   const hasExternalReferenceData = any(referenceData, rd => rd.isExternal());
 
@@ -20,7 +20,7 @@ export function createAsyncValidators($q: IQService, referenceData: ReferenceDat
       if (referenceData.length === 0 || hasExternalReferenceData || !codeValue) {
         return $q.resolve();
       } else {
-        return modelService.getReferenceDataCodes(referenceData).then(values => {
+        return referenceDataService.getReferenceDataCodes(referenceData).then(values => {
           for (const value of values) {
             if (value.identifier === codeValue) {
               return true;
@@ -33,7 +33,7 @@ export function createAsyncValidators($q: IQService, referenceData: ReferenceDat
   };
 }
 
-mod.directive('codeValueInput', /* @ngInject */ ($q: IQService, modelService: ModelService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
+mod.directive('codeValueInput', /* @ngInject */ ($q: IQService, referenceDataService: ReferenceDataService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
   return {
     scope: {
       referenceData: '='
@@ -49,7 +49,7 @@ mod.directive('codeValueInput', /* @ngInject */ ($q: IQService, modelService: Mo
       }
 
       $scope.$watch(() => $scope.referenceData, referenceData => {
-        Object.assign(modelController.$asyncValidators, createAsyncValidators($q, referenceData, modelService));
+        Object.assign(modelController.$asyncValidators, createAsyncValidators($q, referenceData, referenceDataService));
       });
     }
   };

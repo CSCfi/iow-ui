@@ -1,6 +1,6 @@
 import { IScope } from 'angular';
 import { module as mod }  from './module';
-import { ModelService } from '../../services/modelService';
+import { ReferenceDataService } from '../../services/referenceDataService';
 import { ViewReferenceDataModal } from './viewReferenceDataModal';
 import { ReferenceData, ReferenceDataCode } from '../../entities/referenceData';
 import { LanguageContext } from '../../entities/contract';
@@ -29,10 +29,10 @@ class ReferenceDataViewController {
   showCodes: boolean;
   codes: ReferenceDataCode[];
 
-  constructor($scope: IScope, modelService: ModelService, private viewReferenceDataModal: ViewReferenceDataModal) {
+  constructor($scope: IScope, referenceDataService: ReferenceDataService, private viewReferenceDataModal: ViewReferenceDataModal) {
     $scope.$watch(() => this.referenceData, referenceData => {
       if (referenceData && !referenceData.isExternal()) {
-        modelService.getReferenceDataCodes(referenceData)
+        referenceDataService.getReferenceDataCodes(referenceData)
           .then(values => this.codes = values);
       } else {
         this.codes = [];

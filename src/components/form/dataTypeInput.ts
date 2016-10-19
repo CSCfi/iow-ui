@@ -1,11 +1,11 @@
+import { module as mod }  from './module';
 import { IAttributes, IScope, IQService, INgModelController } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { resolveValidator } from './validators';
 import { LanguageService } from '../../services/languageService';
 import { createAsyncValidators } from './codeValueInput';
-import { ModelService } from '../../services/modelService';
+import { ReferenceDataService } from '../../services/referenceDataService';
 import { isUpperCase } from 'change-case';
-import { module as mod }  from './module';
 import { DataType } from '../../entities/dataTypes';
 import { ReferenceData } from '../../entities/referenceData';
 
@@ -14,14 +14,14 @@ export function placeholderText(dataType: DataType, gettextCatalog: gettextCatal
   const localization = gettextCatalog.getString(dataType);
   const placeholder = gettextCatalog.getString('Input') + ' ' + (isUpperCase(localization) ? localization : localization.toLowerCase()) + '...';
   return validator.format ? placeholder + ` (${validator.format})` : placeholder;
-};
+}
 
 interface DatatypeInputScope extends IScope {
   datatypeInput: DataType;
   referenceData: ReferenceData[];
 }
 
-mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: ModelService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
+mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, referenceDataService: ReferenceDataService, languageService: LanguageService, gettextCatalog: gettextCatalog) => {
   return {
     restrict: 'EA',
     scope: {
@@ -48,7 +48,7 @@ mod.directive('datatypeInput', /* @ngInject */ ($q: IQService, modelService: Mod
       }
 
       function initializeReferenceData(referenceData: ReferenceData[]) {
-        Object.assign(ngModel.$asyncValidators, createAsyncValidators($q, referenceData, modelService));
+        Object.assign(ngModel.$asyncValidators, createAsyncValidators($q, referenceData, referenceDataService));
         ngModel.$validate();
       }
 

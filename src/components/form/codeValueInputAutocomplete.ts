@@ -1,5 +1,5 @@
 import { module as mod }  from './module';
-import { ModelService } from '../../services/modelService';
+import { ReferenceDataService } from '../../services/referenceDataService';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { ReferenceData, ReferenceDataCode } from '../../entities/referenceData';
 import { LanguageContext } from '../../entities/contract';
@@ -25,11 +25,11 @@ export class UriInputAutocompleteController {
   context: LanguageContext;
   localizer: Localizer;
 
-  constructor(private modelService: ModelService, languageService: LanguageService) {
+  constructor(private referenceDataService: ReferenceDataService, languageService: LanguageService) {
     this.localizer = languageService.createLocalizer(this.context);
   }
 
-  datasource = () => this.modelService.getReferenceDataCodes(this.referenceData);
+  datasource = () => this.referenceDataService.getReferenceDataCodes(this.referenceData);
 
   formatter = (codeValue: ReferenceDataCode) => `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
 

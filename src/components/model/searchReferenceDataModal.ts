@@ -1,7 +1,7 @@
 import { IScope, IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import { ModelService } from '../../services/modelService';
+import { ReferenceDataService } from '../../services/referenceDataService';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
@@ -82,7 +82,7 @@ export class SearchReferenceDataModalController implements SearchController<Refe
               private $uibModalInstance: IModalServiceInstance,
               public model: Model,
               public referenceDatasFromModel: boolean,
-              private modelService: ModelService,
+              private referenceDataService: ReferenceDataService,
               languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
               public exclude: Exclusion<ReferenceData>) {
@@ -116,12 +116,12 @@ export class SearchReferenceDataModalController implements SearchController<Refe
       init(model.referenceDatas);
     } else {
 
-      const serversPromise = modelService.getReferenceDataServers().then(servers => this.referenceDataServers = servers);
+      const serversPromise = referenceDataService.getReferenceDataServers().then(servers => this.referenceDataServers = servers);
 
       $scope.$watch(() => this.showServer, server => {
         this.loadingResults = true;
         serversPromise
-          .then(servers => modelService.getReferenceDatasForServers(server ? [server] : servers))
+          .then(servers => referenceDataService.getReferenceDatasForServers(server ? [server] : servers))
           .then(init);
       });
     }
@@ -182,7 +182,7 @@ export class SearchReferenceDataModalController implements SearchController<Refe
     const selection = this.selection;
 
     if (selection instanceof AddNewReferenceDataFormData) {
-      this.modelService.newReferenceData(selection.uri, selection.label, selection.description, this.localizer.language)
+      this.referenceDataService.newReferenceData(selection.uri, selection.label, selection.description, this.localizer.language)
         .then(referenceData => this.$uibModalInstance.close(referenceData), err => this.submitError = err.data.errorMessage);
     } else {
       this.$uibModalInstance.close((<ReferenceData> selection));
