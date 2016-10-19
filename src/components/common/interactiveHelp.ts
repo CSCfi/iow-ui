@@ -585,8 +585,6 @@ class HelpPopoverController {
     const arrow = 13;
     const documentWidth = angular.element(this.$document).width();
 
-    // truncate result because firefox seems to results slightly fluctuating values each time
-
     switch (position) {
       case 'left':
         const leftPopoverLeft = left - popoverWidth - arrow;
