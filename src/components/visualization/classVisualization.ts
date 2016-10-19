@@ -1,7 +1,7 @@
 import { IAttributes, IQService, IScope, ITimeoutService, IPromise } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import * as _ from 'lodash';
-import { ModelService, ClassVisualization } from '../../services/modelService';
+import { VisualizationService, ClassVisualization } from '../../services/visualizationService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import * as joint from 'jointjs';
 import { module as mod }  from './module';
@@ -133,7 +133,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   constructor(private $scope: IScope,
               private $q: IQService,
               private $timeout: ITimeoutService,
-              private modelService: ModelService,
+              private visualizationService: VisualizationService,
               private languageService: LanguageService,
               private userService: UserService,
               private sessionService: SessionService,
@@ -191,7 +191,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       this.confirmationModal.openVisualizationLocationsSave()
         .then(() => {
           this.saving = true;
-          this.modelService.updateModelPositions(this.model, this.modelPositions)
+          this.visualizationService.updateModelPositions(this.model, this.modelPositions)
             .then(() => {
               this.modelPositions.setPristine();
               this.persistentPositions = this.modelPositions.clone();
@@ -224,7 +224,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       if (invalidateCache || this.graph.getCells().length === 0) {
         this.loading = true;
         this.operationQueue = [];
-        this.modelService.getVisualization(this.model)
+        this.visualizationService.getVisualization(this.model)
           .then(visualization => {
             // Hackish way to apply scope outside potentially currently running digest cycle
             visualization.addPositionChangeListener(() => this.$timeout(() => {}));
