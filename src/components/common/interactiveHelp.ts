@@ -267,6 +267,7 @@ class InteractiveHelpController {
       }
     }, true);
 
+    $scope.$watch(() => this.currentStory().popoverTo().offset(), () => this.setStoryStyles(), true);
     $scope.$watch(() => this.popoverController.story, () => this.setStoryStyles());
 
     const setStoryStylesApplyingScope = () => $scope.$apply(() => this.setStoryStyles());
