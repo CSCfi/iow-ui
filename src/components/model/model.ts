@@ -26,12 +26,12 @@ import {
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { SessionService } from '../../services/sessionService';
 import { isDefined, areEqual } from '../../utils/object';
-import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { Predicate, AbstractPredicate, PredicateListItem } from '../../entities/predicate';
 import { Class, AbstractClass, Property, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { ExternalEntity } from '../../entities/externalEntity';
 import { KnownPredicateType, ClassType, SelectionType } from '../../entities/type';
+import { NotificationModal } from '../common/notificationModal';
 
 mod.directive('model', () => {
   return {
@@ -90,7 +90,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
               private maintenanceModal: MaintenanceModal,
-              private notLoggedInModal: NotLoggedInModal,
+              private notificationModal: NotificationModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               private sessionService: SessionService,
               public languageService: LanguageService) {
@@ -385,7 +385,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
         });
       });
     },
-      () => this.notLoggedInModal.open());
+      () => this.notificationModal.openNotLoggedIn());
   }
 
   private createClass(conceptCreation: EntityCreation) {

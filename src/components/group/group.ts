@@ -13,13 +13,13 @@ import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { Language } from '../../utils/language';
 import { ErrorModal } from '../form/errorModal';
-import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { Group } from '../../entities/group';
 import { ModelListItem } from '../../entities/model';
 import { KnownModelType } from '../../entities/type';
 import { LanguageContext } from '../../entities/contract';
 import { config } from '../../config';
 import { InteractiveHelp } from '../common/interactiveHelp';
+import { NotificationModal } from '../common/notificationModal';
 
 mod.directive('group', () => {
   return {
@@ -54,11 +54,11 @@ class GroupController extends EditableEntityController<Group> {
               private addModelModal: AddModelModal,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
-              notLoggedInModal: NotLoggedInModal,
+              notificationModal: NotificationModal,
               maintenanceModal: MaintenanceModal,
               private $uibModalStack: IModalStackService,
               private interactiveHelp: InteractiveHelp) {
-    super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
 
     $scope.$watch(() => this.groupId, groupId => {
       this.loading = true;
@@ -235,7 +235,7 @@ class GroupController extends EditableEntityController<Group> {
 
     this.userService.ifStillLoggedIn(
       () => openHelp(),
-      () => this.notLoggedInModal.open()
+      () => this.notificationModal.openNotLoggedIn()
     );
   }
 }

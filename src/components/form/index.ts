@@ -1,5 +1,4 @@
 import { ErrorModal } from './errorModal';
-import { NotLoggedInModal } from './notLoggedInModal';
 import { DisplayItemFactory } from './displayItemFactory';
 
 import { module as mod }  from './module';
@@ -39,5 +38,4 @@ import './iowSelect';
 import './inputPopup';
 
 mod.service('errorModal', ErrorModal);
-mod.service('notLoggedInModal', NotLoggedInModal);
 mod.service('displayItemFactory', DisplayItemFactory);

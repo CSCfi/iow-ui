@@ -7,7 +7,6 @@ import { ConceptEditorModalController } from './conceptEditorModal';
 import { UsageService } from '../../services/usageService';
 import { all } from '../../utils/array';
 import { ErrorModal } from '../form/errorModal';
-import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { isDefined } from '../../utils/object';
 import { Concept, ConceptSuggestion } from '../../entities/vocabulary';
 import { Model } from '../../entities/model';
@@ -15,6 +14,7 @@ import { Usage } from '../../entities/usage';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
 import { VocabularyService } from '../../services/vocabularyService';
+import { NotificationModal } from '../common/notificationModal';
 
 mod.directive('conceptView', () => {
   return {
@@ -45,11 +45,11 @@ export class ConceptViewController extends EditableEntityController<Concept> {
               $log: ILogService,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
-              notLoggedInModal: NotLoggedInModal,
+              notificationModal: NotificationModal,
               userService: UserService,
               private vocabularyService: VocabularyService,
               usageService: UsageService) {
-    super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
 
     this.modelController.registerView(this);
 

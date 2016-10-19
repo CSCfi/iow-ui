@@ -6,10 +6,10 @@ import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { ModelController } from './model';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
-import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
+import { NotificationModal } from '../common/notificationModal';
 
 mod.directive('modelView', () => {
   return {
@@ -37,9 +37,9 @@ export class ModelViewController extends EditableEntityController<Model> {
               private modelService: ModelService,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
-              notLoggedInModal: NotLoggedInModal,
+              notificationModal: NotificationModal,
               userService: UserService) {
-    super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
 
     if (this.modelController) {
       this.modelController.registerView(this);

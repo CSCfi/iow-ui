@@ -3,8 +3,8 @@ import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { isModalCancel } from '../../utils/angular';
 import { ErrorModal } from '../form/errorModal';
-import { NotLoggedInModal } from './notLoggedInModal';
 import { EditableEntity, LanguageContext } from '../../entities/contract';
+import { NotificationModal } from '../common/notificationModal';
 
 export interface EditableForm extends IFormController {
   editing: boolean;
@@ -28,7 +28,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
               private $log: ILogService,
               protected deleteConfirmationModal: DeleteConfirmationModal,
               private errorModal: ErrorModal,
-              protected notLoggedInModal: NotLoggedInModal,
+              protected notificationModal: NotificationModal,
               protected userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
       if (!isLoggedIn && wasLoggedIn) {
@@ -96,7 +96,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
             }
             this.persisting = false;
           });
-      }, () => this.notLoggedInModal.open()
+      }, () => this.notificationModal.openNotLoggedIn()
     );
   }
 
@@ -117,7 +117,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   edit() {
     this.userService.ifStillLoggedIn(
       () => this.$scope.form.editing = true,
-      () => this.notLoggedInModal.open()
+      () => this.notificationModal.openNotLoggedIn()
     );
   }
 

@@ -10,7 +10,6 @@ import { first, arraysAreEqual, normalizeAsArray } from '../../utils/array';
 import { UserService } from '../../services/userService';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { SessionService, FocusLevel, NameType } from '../../services/sessionService';
-import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { VisualizationPopoverDetails } from './popover';
 import { ShadowClass, createClassElement, createAssociationLink } from './diagram';
 import { PaperHolder } from './paperHolder';
@@ -29,6 +28,7 @@ import {
   AssociationPropertyPosition
 } from '../../entities/visualization';
 import { Coordinate } from '../../entities/contract';
+import { NotificationModal } from '../common/notificationModal';
 
 
 mod.directive('classVisualization', () => {
@@ -138,7 +138,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
               private userService: UserService,
               private sessionService: SessionService,
               private confirmationModal: ConfirmationModal,
-              private notLoggedInModal: NotLoggedInModal) {
+              private notificationModal: NotificationModal) {
 
     this.changeNotifier.addListener(this);
 
@@ -198,7 +198,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
               this.saving = false;
             });
         });
-    }, () => this.notLoggedInModal.open());
+    }, () => this.notificationModal.openNotLoggedIn());
   }
 
   relayoutPositions() {

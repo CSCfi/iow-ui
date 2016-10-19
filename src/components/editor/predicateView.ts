@@ -8,11 +8,11 @@ import { Show } from '../contracts';
 import { ErrorModal } from '../form/errorModal';
 import { module as mod }  from './module';
 import { setSelectionStyles } from '../../utils/angular';
-import { NotLoggedInModal } from '../form/notLoggedInModal';
 import { Association, Attribute } from '../../entities/predicate';
 import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
+import { NotificationModal } from '../common/notificationModal';
 
 mod.directive('predicateView', () => {
   return {
@@ -50,10 +50,10 @@ export class PredicateViewController extends EditableEntityController<Associatio
               $log: ILogService,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
-              notLoggedInModal: NotLoggedInModal,
+              notificationModal: NotificationModal,
               private predicateService: PredicateService,
               userService: UserService) {
-    super($scope, $log, deleteConfirmationModal, errorModal, notLoggedInModal, userService);
+    super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
     this.modelController.registerView(this);
   }
 

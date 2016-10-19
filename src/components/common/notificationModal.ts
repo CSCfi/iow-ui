@@ -1,21 +1,21 @@
-import { IPromise, ui } from 'angular';
+import { ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 
-export class NotLoggedInModal {
+export class NotificationModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(): IPromise<void> {
-    return this.$uibModal.open({
+  private open(title: string, body: string, onClose: () => void = () => {}): void {
+    const modal = this.$uibModal.open({
       template:
         `
           <modal-template purpose="warning">
           
-            <modal-title translate>Session expired</modal-title>
+            <modal-title translate>${title}</modal-title>
           
             <modal-body>
-              <span translate>Please login to perform the action</span>
+              <span translate>${body}</span>
             </modal-body>
           
             <modal-buttons>
@@ -25,6 +25,12 @@ export class NotLoggedInModal {
           </modal-template>
         `,
       size: 'adapting'
-    }).result;
+    });
+
+    modal.result.then(onClose, onClose);
+  }
+
+  openNotLoggedIn() {
+    this.open('Session expired', 'Please login to perform the action');
   }
 }
