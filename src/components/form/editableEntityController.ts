@@ -28,7 +28,7 @@ export abstract class EditableEntityController<T extends EditableEntity> {
               private $log: ILogService,
               protected deleteConfirmationModal: DeleteConfirmationModal,
               private errorModal: ErrorModal,
-              private notLoggedInModal: NotLoggedInModal,
+              protected notLoggedInModal: NotLoggedInModal,
               protected userService: UserService) {
     $scope.$watch(() => userService.isLoggedIn(), (isLoggedIn, wasLoggedIn) => {
       if (!isLoggedIn && wasLoggedIn) {
