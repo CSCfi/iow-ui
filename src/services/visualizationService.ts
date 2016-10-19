@@ -21,22 +21,19 @@ export class VisualizationService {
   }
 
   getVisualizationClasses(model: Model) {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('exportModel'), {
-      params: {
-        graph: model.id.uri,
-        'content-type': 'application/ld+json'
-      }
-    })
+
+    const params = {
+      graph: model.id.uri,
+      'content-type': 'application/ld+json'
+    };
+
+    return this.$http.get<GraphData>(config.apiEndpointWithName('exportModel'), { params })
       .then(expandContextWithKnownModels(model))
       .then(response => this.deserializeModelVisualization(response.data!));
   }
 
   getModelPositions(model: Model) {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('modelPositions'), {
-      params: {
-        model: model.id.uri
-      }
-    })
+    return this.$http.get<GraphData>(config.apiEndpointWithName('modelPositions'), { params: { model: model.id.uri } })
       .then(expandContextWithKnownModels(model))
       .then(response => this.deserializeModelPositions(response.data!), _err => this.newModelPositions(model));
   }
