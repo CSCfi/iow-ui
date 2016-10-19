@@ -1,5 +1,6 @@
 import 'core-js';
 import './svgShim';
+import 'proxy-polyfill';
 
 window.requestAnimFrame =
   window.requestAnimationFrame

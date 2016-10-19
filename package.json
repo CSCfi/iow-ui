@@ -49,6 +49,7 @@
     "ngclipboard": "1.1.1",
     "node-uuid": "1.4.7",
     "please-wait": "0.0.5",
+    "proxy-polyfill": "0.1.6",
     "uri-js": "2.1.1",
     "webcola": "3.1.3"
   },

@@ -17,7 +17,10 @@ export const commonConfig: Configuration = {
   },
 
   resolve: {
-    extensions: ['', '.ts', '.js']
+    extensions: ['', '.ts', '.js'],
+    alias: {
+      'proxy-polyfill': path.resolve(__dirname, 'node_modules/proxy-polyfill/proxy.min.js')
+    }
   },
 
   module: {
