@@ -172,7 +172,7 @@ class GroupController extends EditableEntityController<Group> {
             title: 'Prefix',
             content: 'Prefix info',
             nextCondition: 'valid-input',
-            cannotMoveBack: true
+            cannotMoveBack: true,
           },
           {
             popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
@@ -194,18 +194,7 @@ class GroupController extends EditableEntityController<Group> {
             popoverPosition: 'left',
             title: 'Library label',
             content: 'Library label info',
-            nextCondition: 'valid-input'
-          },
-          {
-            popoverTo: () => angular.element('.modal-dialog [data-title="Namespace redirection"] input'),
-            focusTo: () => ({
-              element: angular.element('.modal-dialog [data-title="Namespace redirection"]'),
-              margin: editableMargin
-            }),
-            popoverPosition: 'left',
-            title: 'Namespace redirection',
-            content: 'Diipadaa',
-            nextCondition: 'valid-input'
+            nextCondition: 'valid-input',
           },
           {
             popoverTo: () => angular.element('.modal-dialog button.create'),
