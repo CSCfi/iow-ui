@@ -173,6 +173,7 @@ class GroupController extends EditableEntityController<Group> {
             content: 'Prefix info',
             nextCondition: 'valid-input',
             cannotMoveBack: true,
+            initialInputValue: 'testi'
           },
           {
             popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
@@ -195,6 +196,7 @@ class GroupController extends EditableEntityController<Group> {
             title: 'Library label',
             content: 'Library label info',
             nextCondition: 'valid-input',
+            initialInputValue: 'Testikirjasto'
           },
           {
             popoverTo: () => angular.element('.modal-dialog button.create'),
