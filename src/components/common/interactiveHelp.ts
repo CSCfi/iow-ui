@@ -252,12 +252,14 @@ class InteractiveHelpController {
       if (story && isClick(story.nextCondition)) {
         const popoverElement = story.popoverTo();
 
-        if (!elementExists(popoverElement)) {
-          throw new Error('Popover element not found');
-        }
-
-        if (isTargetElementInsideElement(event, popoverElement[0])) {
+        if (elementExists(popoverElement)) {
+          if (isTargetElementInsideElement(event, popoverElement[0])) {
+            manageNextClick(story);
+          }
+        } else if (story.nextCondition === 'modifying-click') {
           manageNextClick(story);
+        } else {
+          throw new Error('Popover element not found');
         }
       }
     };

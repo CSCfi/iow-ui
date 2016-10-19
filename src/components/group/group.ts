@@ -227,7 +227,7 @@ class GroupController extends EditableEntityController<Group> {
             popoverPosition: 'left',
             title: 'Save changes',
             content: 'Diipadaa',
-            nextCondition: 'click',
+            nextCondition: 'modifying-click',
             cannotMoveBack: true
           }
         ]});
