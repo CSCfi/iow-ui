@@ -30,6 +30,7 @@ export interface Story {
   title: string;
   content: string;
   nextCondition: NextCondition;
+  initialInputValue?: any;
   cannotMoveBack?: boolean;
 }
 
@@ -555,13 +556,15 @@ class HelpPopoverController {
     this.showNext = !last && !isClick(story.nextCondition);
     this.showClose = last && !isClick(story.nextCondition);
     this.showPrevious = !first && !story.cannotMoveBack;
+    this.ngModel = story.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
 
-    if (story.nextCondition === 'valid-input') {
-      this.ngModel = story.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
+    if ((story.nextCondition === 'valid-input' || story.initialInputValue) && !this.ngModel) {
+      throw new Error('ng-model does not exits for popover element');
+    }
 
-      if (!this.ngModel) {
-        throw new Error('ng-model does not exits for popover element');
-      }
+    if (story.initialInputValue && !this.ngModel!.$viewValue) {
+      this.ngModel!.$setViewValue(story.initialInputValue);
+      this.ngModel!.$render();
     }
   }
 
