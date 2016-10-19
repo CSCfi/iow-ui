@@ -4,7 +4,7 @@ import { GroupService } from './groupService';
 import { LanguageService } from './languageService';
 import { LocationService } from './locationService';
 import { DefaultModelService, InteractiveHelpModelService, ModelService } from './modelService';
-import { VisualizationService } from './visualizationService';
+import { DefaultVisualizationService, InteractiveHelpVisualizationService, VisualizationService } from './visualizationService';
 import { ReferenceDataService } from './referenceDataService';
 import { PredicateService } from './predicateService';
 import { SearchService } from './searchService';
@@ -37,7 +37,11 @@ mod.service('helpModelService', InteractiveHelpModelService);
 mod.factory('modelService', (interactiveHelpService: InteractiveHelpService, defaultModelService: ModelService, helpModelService: ModelService) =>
   proxyConditionallyToHelp(interactiveHelpService, defaultModelService, helpModelService));
 
-mod.service('visualizationService', VisualizationService);
+mod.service('defaultVisualizationService', DefaultVisualizationService);
+mod.service('helpVisualizationService', InteractiveHelpVisualizationService);
+mod.factory('visualizationService', (interactiveHelpService: InteractiveHelpService, defaultVisualizationService: VisualizationService, helpVisualizationService: VisualizationService) =>
+  proxyConditionallyToHelp(interactiveHelpService, defaultVisualizationService, helpVisualizationService));
+
 mod.service('referenceDataService', ReferenceDataService);
 mod.service('predicateService', PredicateService);
 mod.service('searchService', SearchService);

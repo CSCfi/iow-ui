@@ -1,4 +1,4 @@
-import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
+import { IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
 import { config } from '../config';
 import { upperCaseFirst } from 'change-case';
@@ -17,7 +17,7 @@ export interface ModelService {
   getModelByPrefix(prefix: string): IPromise<Model>;
   createModel(model: Model): IPromise<any>;
   updateModel(model: Model): IPromise<any>;
-  deleteModel(id: Uri): IHttpPromise<any>;
+  deleteModel(id: Uri): IPromise<any>;
   newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: KnownModelType, redirect?: Uri): IPromise<Model>;
   newLink(title: string, description: string, homepage: Uri, lang: Language, context: any): IPromise<Link>;
   getAllImportableNamespaces(): IPromise<ImportedNamespace[]>;
@@ -62,7 +62,7 @@ export class DefaultModelService implements ModelService {
       });
   }
 
-  deleteModel(id: Uri): IHttpPromise<any> {
+  deleteModel(id: Uri): IPromise<any> {
     return this.$http.delete(config.apiEndpointWithName('model'), { params: { id: id.uri } });
   }
 
@@ -147,12 +147,26 @@ export class DefaultModelService implements ModelService {
 
 export class InteractiveHelpModelService implements ModelService {
 
+  private models = new Map<string, Model>();
+
   /* @ngInject */
-  constructor(private defaultModelService: ModelService) {
+  constructor(private $q: IQService, private defaultModelService: ModelService) {
+  }
+
+  private getModelsByPredicate(predicate: (model: Model) => boolean): Model[] {
+    const result: Model[] = [];
+
+    this.models.forEach(model => {
+      if (predicate(model)) {
+        result.push(model);
+      }
+    });
+
+    return result;
   }
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
-    return this.defaultModelService.getModelsByGroup(groupUrn);
+    return this.$q.when(this.getModelsByPredicate(model => model.groupId.equals(groupUrn)));
   }
 
   getModelByUrn(urn: Uri|Urn): IPromise<Model> {
@@ -160,23 +174,35 @@ export class InteractiveHelpModelService implements ModelService {
   }
 
   getModelByPrefix(prefix: string): IPromise<Model> {
-    return this.defaultModelService.getModelByPrefix(prefix);
+
+    const models = this.getModelsByPredicate(model => model.prefix === prefix);
+
+    if (models.length > 0) {
+      return this.$q.when(models[0]);
+    } else {
+      return this.$q.reject();
+    }
   }
 
   createModel(model: Model): IPromise<any> {
-    return this.defaultModelService.createModel(model);
+    model.unsaved = false;
+    model.createdAt = moment();
+    this.models.set(model.id.uri, model);
+    return this.$q.when();
   }
 
   updateModel(model: Model): IPromise<any> {
-    return this.defaultModelService.updateModel(model);
+    model.modifiedAt = moment();
+    this.models.set(model.id.uri, model);
+    return this.$q.when();
   }
 
-  deleteModel(id: Uri): IHttpPromise<any> {
-    return this.defaultModelService.deleteModel(id);
+  deleteModel(id: Uri): IPromise<any> {
+    this.models.delete(id.uri);
+    return this.$q.when();
   }
 
   newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: KnownModelType, redirect?: Uri): IPromise<Model> {
-    console.log(prefix, label, groupId, lang, type, redirect);
     return this.defaultModelService.newModel(prefix, label, groupId, lang, type, redirect);
   }
 

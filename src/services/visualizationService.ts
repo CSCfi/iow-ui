@@ -9,7 +9,12 @@ import { ModelPositions, VisualizationClass, DefaultVisualizationClass } from '.
 import { Model } from '../entities/model';
 import { IPromise, IQService, IHttpService } from 'angular';
 
-export class VisualizationService {
+export interface VisualizationService {
+  getVisualization(model: Model): IPromise<ClassVisualization>;
+  updateModelPositions(model: Model, modelPositions: ModelPositions): IPromise<any>;
+}
+
+export class DefaultVisualizationService implements VisualizationService {
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
@@ -20,7 +25,7 @@ export class VisualizationService {
       .then(([classes, positions]) => new ClassVisualization(classes, positions));
   }
 
-  getVisualizationClasses(model: Model) {
+  private getVisualizationClasses(model: Model) {
 
     const params = {
       graph: model.id.uri,
@@ -32,7 +37,7 @@ export class VisualizationService {
       .then(response => this.deserializeModelVisualization(response.data!));
   }
 
-  getModelPositions(model: Model) {
+  private getModelPositions(model: Model) {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelPositions'), { params: { model: model.id.uri } })
       .then(expandContextWithKnownModels(model))
       .then(response => this.deserializeModelPositions(response.data!), _err => this.newModelPositions(model));
@@ -53,6 +58,28 @@ export class VisualizationService {
 
   private deserializeModelPositions(data: GraphData): IPromise<ModelPositions> {
     return this.frameService.frameAndMapArrayEntity(data, frames.modelPositionsFrame(data), () => ModelPositions);
+  }
+}
+
+export class InteractiveHelpVisualizationService implements VisualizationService {
+
+  private modelPositions = new Map<string, ModelPositions>();
+
+  /* @ngInject */
+  constructor(private $q: IQService, private defaultVisualizationService: DefaultVisualizationService) {
+  }
+
+  getVisualization(model: Model): IPromise<ClassVisualization> {
+
+    const savedPosition = this.modelPositions.get(model.id.uri);
+    const position = savedPosition || this.defaultVisualizationService.newModelPositions(model);
+
+    return this.$q.when(new ClassVisualization([], position));
+  }
+
+  updateModelPositions(model: Model, modelPositions: ModelPositions): IPromise<any> {
+    this.modelPositions.set(model.id.uri, modelPositions.clone());
+    return this.$q.when();
   }
 }
 
