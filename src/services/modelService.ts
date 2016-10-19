@@ -11,7 +11,20 @@ import { GraphData } from '../entities/contract';
 import { KnownModelType } from '../entities/type';
 import { Model, ModelListItem, ImportedNamespace, Link } from '../entities/model';
 
-export class ModelService {
+export interface ModelService {
+  getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]>;
+  getModelByUrn(urn: Uri|Urn): IPromise<Model>;
+  getModelByPrefix(prefix: string): IPromise<Model>;
+  createModel(model: Model): IPromise<any>;
+  updateModel(model: Model): IPromise<any>;
+  deleteModel(id: Uri): IHttpPromise<any>;
+  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: KnownModelType, redirect?: Uri): IPromise<Model>;
+  newLink(title: string, description: string, homepage: Uri, lang: Language, context: any): IPromise<Link>;
+  getAllImportableNamespaces(): IPromise<ImportedNamespace[]>;
+  newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace>;
+}
+
+export class DefaultModelService implements ModelService {
 
   /* @ngInject */
   constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
@@ -129,5 +142,53 @@ export class ModelService {
 
   private deserializeImportedNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
     return this.frameService.frameAndMapArray(data, frames.namespaceFrame(data), () => ImportedNamespace);
+  }
+}
+
+export class InteractiveHelpModelService implements ModelService {
+
+  /* @ngInject */
+  constructor(private defaultModelService: ModelService) {
+  }
+
+  getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
+    return this.defaultModelService.getModelsByGroup(groupUrn);
+  }
+
+  getModelByUrn(urn: Uri|Urn): IPromise<Model> {
+    return this.defaultModelService.getModelByUrn(urn);
+  }
+
+  getModelByPrefix(prefix: string): IPromise<Model> {
+    return this.defaultModelService.getModelByPrefix(prefix);
+  }
+
+  createModel(model: Model): IPromise<any> {
+    return this.defaultModelService.createModel(model);
+  }
+
+  updateModel(model: Model): IPromise<any> {
+    return this.defaultModelService.updateModel(model);
+  }
+
+  deleteModel(id: Uri): IHttpPromise<any> {
+    return this.defaultModelService.deleteModel(id);
+  }
+
+  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: KnownModelType, redirect?: Uri): IPromise<Model> {
+    console.log(prefix, label, groupId, lang, type, redirect);
+    return this.defaultModelService.newModel(prefix, label, groupId, lang, type, redirect);
+  }
+
+  newLink(title: string, description: string, homepage: Uri, lang: Language, context: any): IPromise<Link> {
+    return this.defaultModelService.newLink(title, description, homepage, lang, context);
+  }
+
+  getAllImportableNamespaces(): IPromise<ImportedNamespace[]> {
+    return this.defaultModelService.getAllImportableNamespaces();
+  }
+
+  newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
+    return this.defaultModelService.newNamespaceImport(namespace, prefix, label, lang);
   }
 }

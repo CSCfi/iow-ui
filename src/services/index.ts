@@ -3,7 +3,7 @@ import { VocabularyService } from './vocabularyService';
 import { GroupService } from './groupService';
 import { LanguageService } from './languageService';
 import { LocationService } from './locationService';
-import { ModelService } from './modelService';
+import { DefaultModelService, InteractiveHelpModelService, ModelService } from './modelService';
 import { VisualizationService } from './visualizationService';
 import { ReferenceDataService } from './referenceDataService';
 import { PredicateService } from './predicateService';
@@ -17,16 +17,26 @@ import { ResetService } from './resetService';
 import { SessionService } from './sessionService';
 import { FrameService } from './frameService';
 import { InteractiveHelpService } from './interactiveHelpService';
+import { proxyToInstance } from '../utils/proxy';
 
 import { module as mod }  from './module';
 export default mod.name;
+
+function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpService, defaultService: T, helpService: T) {
+  return proxyToInstance(() => interactiveHelpService.open ? helpService : defaultService);
+}
 
 mod.service('classService', ClassService);
 mod.service('vocabularyService', VocabularyService);
 mod.service('groupService', GroupService);
 mod.service('languageService', LanguageService);
 mod.service('locationService', LocationService);
-mod.service('modelService', ModelService);
+
+mod.service('defaultModelService', DefaultModelService);
+mod.service('helpModelService', InteractiveHelpModelService);
+mod.factory('modelService', (interactiveHelpService: InteractiveHelpService, defaultModelService: ModelService, helpModelService: ModelService) =>
+  proxyConditionallyToHelp(interactiveHelpService, defaultModelService, helpModelService));
+
 mod.service('visualizationService', VisualizationService);
 mod.service('referenceDataService', ReferenceDataService);
 mod.service('predicateService', PredicateService);
