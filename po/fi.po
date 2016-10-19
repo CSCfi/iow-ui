@@ -107,7 +107,7 @@ msgstr "Kaikki palvelimet"
 msgid "All states"
 msgstr "Kaikki tilat"
 
-#: translations/misc.html:257
+#: translations/misc.html:263
 msgid "All types"
 msgstr "Kaikki tyypit"
 
@@ -312,7 +312,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/model/addEditNamespaceModal.html:46
 #: components/model/editReferenceDataModal.html:26
 #: components/model/searchNamespaceModal.html:44
-#: components/model/searchReferenceDataModal.html:91
+#: components/model/searchReferenceDataModal.html:95
 #: components/model/searchVocabularyModal.html:30
 msgid "Cancel"
 msgstr "Peruuta"
@@ -594,7 +594,7 @@ msgid "Create and use attribute"
 msgstr "Luo attribuutti ja käytä"
 
 #: components/group/addModelModal.html:32
-#: components/model/searchReferenceDataModal.html:93
+#: components/model/searchReferenceDataModal.html:97
 msgid "Create new"
 msgstr "Luo uusi"
 
@@ -875,7 +875,7 @@ msgstr "tallenna"
 msgid "Draft"
 msgstr "Luonnos"
 
-#: translations/misc.html:252
+#: translations/misc.html:258
 msgid "Duplicate association target"
 msgstr "Assosiaation kohde on jo lisätty"
 
@@ -1055,6 +1055,10 @@ msgstr "Ryhmän nimi"
 #: translations/titles.html:17
 msgid "Group label info"
 msgstr "Kohdealueen ryhmän nimi"
+
+#: translations/misc.html:252
+msgid "Group not found"
+msgstr "Ryhmää ei löydy"
 
 #: translations/misc.html:21
 msgid "Hide"
@@ -1248,7 +1252,7 @@ msgstr ""
 "Järjestelmä on valitettavasti toistaiseksi poissa käytöstä huoltokatkon "
 "takia."
 
-#: translations/misc.html:256
+#: translations/misc.html:262
 msgid "Match to content"
 msgstr "Hae sisällöstä"
 
@@ -1299,6 +1303,10 @@ msgstr "Tietosisällön kielet"
 #: translations/titles.html:70
 msgid "Model languages info"
 msgstr ""
+
+#: translations/misc.html:251
+msgid "Model not found"
+msgstr " Mallia ei löydy"
 
 #: components/group/group.html:34
 msgid "Models"
@@ -1352,7 +1360,7 @@ msgstr "Uuden soveltamisprofiilin luonti"
 msgid "next"
 msgstr "seuraava"
 
-#: translations/misc.html:254
+#: translations/misc.html:260
 msgid "No"
 msgstr "Ei"
 
@@ -1462,6 +1470,10 @@ msgstr "Attribuutti"
 msgid "owl:ObjectProperty"
 msgstr "Assosiaatio"
 
+#: translations/misc.html:253
+msgid "Page not found"
+msgstr "Sivua ei löydy"
+
 #: translations/titles.html:62
 msgid "Pattern"
 msgstr "Säännollinen lauseke"
@@ -1479,7 +1491,7 @@ msgstr "Pysyvä tunniste"
 msgid "Permanent identifier info"
 msgstr ""
 
-#: translations/misc.html:251
+#: translations/misc.html:257
 msgid "Please login to perform the action"
 msgstr "Ole hyvä ja kirjaudu suorittaaksesi toiminto"
 
@@ -1652,6 +1664,10 @@ msgstr "Resurssin riippuvuudet estävät poistamisen"
 msgid "Resource is in use"
 msgstr "On jo käytössä"
 
+#: translations/misc.html:254
+msgid "Resource not found"
+msgstr "Resurssia ei löydy"
+
 #: translations/misc.html:112
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
@@ -1816,7 +1832,7 @@ msgstr "Erikoistettuja luokkia ei saa valita"
 msgid "Show"
 msgstr "Näytä"
 
-#: translations/misc.html:255
+#: translations/misc.html:261
 msgid "Show classes defined in profiles"
 msgstr "Näytä profiileissa määritellyt luokat"
 
@@ -1984,7 +2000,7 @@ msgstr "Käytä attribuuttia"
 msgid "Use class"
 msgstr "Käytä luokkaa"
 
-#: components/model/searchReferenceDataModal.html:94 translations/misc.html:101
+#: components/model/searchReferenceDataModal.html:98 translations/misc.html:101
 msgid "Use selection"
 msgstr "Käytä valintaa"
 
@@ -2245,9 +2261,20 @@ msgstr "Virheellinen aika"
 
 #: components/common/modalTemplate.html:15
 #: components/editor/addPropertiesFromClassModal.html:26
-#: translations/misc.html:253
+#: translations/misc.html:259
 msgid "Yes"
 msgstr "Kyllä"
+
+#: translations/misc.html:255
+msgid "You will be redirected to the front page"
+msgstr "Sinut uudelleenohjataan etusivulle"
+
+#: translations/misc.html:256
+msgid "You will be redirected to the model"
+msgstr "Sinut uudelleenohjataan mallin sivulle"
+
+#~ msgid "You will be redirected to front page"
+#~ msgstr "Sinut uudelleenohjataan etusivulle"
 
 #~ msgid "Copy reusable to library"
 #~ msgstr "Kopioi ominaisuus kirjastoon"

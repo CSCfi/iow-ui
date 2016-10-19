@@ -8,7 +8,6 @@ import { LocationService } from '../../services/locationService';
 import { GroupService } from '../../services/groupService';
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
-import { MaintenanceModal } from '../maintenance';
 import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { Language } from '../../utils/language';
@@ -55,7 +54,6 @@ class GroupController extends EditableEntityController<Group> {
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
               notificationModal: NotificationModal,
-              maintenanceModal: MaintenanceModal,
               private $uibModalStack: IModalStackService,
               private interactiveHelp: InteractiveHelp) {
     super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
@@ -72,8 +70,8 @@ class GroupController extends EditableEntityController<Group> {
           this.profiles = _.filter(result.models, model => model.isOfType('profile'));
           locationService.atGroup(this.group);
           this.loading = false;
-        }, err => {
-          maintenanceModal.open(err);
+        }, _err => {
+          notificationModal.openGroupNotFound();
         });
     });
   }

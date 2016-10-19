@@ -12,7 +12,6 @@ import { ConfirmationModal } from '../common/confirmationModal';
 import { SearchClassModal } from '../editor/searchClassModal';
 import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { EntityCreation } from '../editor/searchConceptModal';
-import { MaintenanceModal } from '../maintenance';
 import { Show, ChangeNotifier, ChangeListener, SearchClassType, WithDefinedBy } from './../contracts';
 import { Uri } from '../../entities/uri';
 import { comparingLocalizable } from '../../services/comparators';
@@ -89,7 +88,6 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               private searchClassModal: SearchClassModal,
               private searchPredicateModal: SearchPredicateModal,
               private confirmationModal: ConfirmationModal,
-              private maintenanceModal: MaintenanceModal,
               private notificationModal: NotificationModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               private sessionService: SessionService,
@@ -178,16 +176,24 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
     this.openPropertyId = routeData.propertyId;
 
+    const modelNotFoundHandler = () => {
+      this.notificationModal.openModelNotFound();
+      return this.$q.reject('model not found');
+    };
+
+    const resourceNotFoundHandler = () => this.notificationModal.openResourceNotFound(this.model);
+
     if (modelChanged) {
       this.loading = true;
 
       this.updateModelByPrefix(routeData.existingModelPrefix)
-        .then(() => this.$q.all([this.selectRouteOrDefault(routeData), this.updateSelectables()]))
+        .then(() => true, modelNotFoundHandler)
+        .then(() => this.$q.all([this.selectRouteOrDefault(routeData).then(() => true, resourceNotFoundHandler), this.updateSelectables()]))
         .then(() => this.updateLocation())
         .then(() => this.loading = false);
 
     } else if (selectionChanged) {
-      this.selectRouteOrDefault(routeData)
+      this.selectRouteOrDefault(routeData).then(() => true, resourceNotFoundHandler)
         .then(() => this.updateLocation());
     }
   }
@@ -510,9 +516,13 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
               selectionType: selection.selectionType === 'class' ? 'predicate' : 'class'
             }, true);
           } else {
-            return this.updateSelection(entity);
+            if (!entity) {
+              return this.$q.reject('resource not found');
+            } else {
+              return this.updateSelection(entity);
+            }
           }
-        }, (_err: any) => this.updateSelection(null));
+        });
     } else {
       return this.$q.when(this.updateSelection(null));
     }
@@ -547,8 +557,7 @@ export class ModelController implements ChangeNotifier<Class|Predicate> {
 
   private updateModelByPrefix(prefix: string) {
     return this.modelService.getModelByPrefix(prefix)
-      .then(model => this.model = model)
-      .then(() => true, err => this.maintenanceModal.open(err));
+      .then(model => this.model = model);
   }
 
   private updateSelectables(): IPromise<any> {

@@ -2,6 +2,7 @@ import { route } from 'angular';
 import { Uri } from './entities/uri';
 import { ILocationService } from 'angular';
 import { resourceUrl, modelUrl } from './utils/entity';
+import { NotificationModal } from './components/common/notificationModal';
 
 /* @ngInject */
 export function routeConfig($routeProvider: route.IRouteProvider) {
@@ -47,5 +48,12 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
     .when('/model/:prefix/:resource?/:property?', {
       template: '<model></model>',
       reloadOnSearch: false
+    })
+    .otherwise({
+      template: '',
+      /* @ngInject */
+      controller(notificationModal: NotificationModal) {
+        notificationModal.openPageNotFound();
+      }
     });
 }
