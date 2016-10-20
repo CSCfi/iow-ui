@@ -5,7 +5,7 @@ import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
-import { InteractiveHelpService } from '../../services/interactiveHelpService';
+import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 import { StoryLine, NextCondition, Story } from '../../help/contract';
 
 interface Positioning {

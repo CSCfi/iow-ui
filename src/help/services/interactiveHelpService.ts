@@ -1,7 +1,8 @@
-import { InteractiveHelpModelService } from './modelService';
-import { InteractiveHelpVisualizationService } from './visualizationService';
-import { ResetableService } from './';
+import { ResetableService } from './resetableService';
 import { IPromise, IQService } from 'angular';
+import { InteractiveHelpModelService } from './helpModelService';
+import { InteractiveHelpVisualizationService } from './helpVisualizationService';
+import { InteractiveHelpUserService } from './helpUserService';
 
 export class InteractiveHelpService implements ResetableService {
 
@@ -12,11 +13,13 @@ export class InteractiveHelpService implements ResetableService {
   /* @ngInject */
   constructor(private $q: IQService,
               helpModelService: InteractiveHelpModelService,
-              helpVisualizationService: InteractiveHelpVisualizationService) {
+              helpVisualizationService: InteractiveHelpVisualizationService,
+              helpUserService: InteractiveHelpUserService) {
 
     this.helpServices = [
       helpModelService,
-      helpVisualizationService
+      helpVisualizationService,
+      helpUserService
     ];
   }
 

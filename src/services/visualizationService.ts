@@ -8,7 +8,6 @@ import { GraphData } from '../entities/contract';
 import { ModelPositions, VisualizationClass, DefaultVisualizationClass } from '../entities/visualization';
 import { Model } from '../entities/model';
 import { IPromise, IQService, IHttpService } from 'angular';
-import { ResetableService } from './';
 
 export interface VisualizationService {
   getVisualization(model: Model): IPromise<ClassVisualization>;
@@ -59,33 +58,6 @@ export class DefaultVisualizationService implements VisualizationService {
 
   private deserializeModelPositions(data: GraphData): IPromise<ModelPositions> {
     return this.frameService.frameAndMapArrayEntity(data, frames.modelPositionsFrame(data), () => ModelPositions);
-  }
-}
-
-export class InteractiveHelpVisualizationService implements VisualizationService, ResetableService {
-
-  private modelPositions = new Map<string, ModelPositions>();
-
-  /* @ngInject */
-  constructor(private $q: IQService, private defaultVisualizationService: DefaultVisualizationService) {
-  }
-
-  reset(): IPromise<any> {
-    this.modelPositions.clear();
-    return this.$q.when();
-  }
-
-  getVisualization(model: Model): IPromise<ClassVisualization> {
-
-    const savedPosition = this.modelPositions.get(model.id.uri);
-    const position = savedPosition || this.defaultVisualizationService.newModelPositions(model);
-
-    return this.$q.when(new ClassVisualization([], position));
-  }
-
-  updateModelPositions(model: Model, modelPositions: ModelPositions): IPromise<any> {
-    this.modelPositions.set(model.id.uri, modelPositions.clone());
-    return this.$q.when();
   }
 }
 

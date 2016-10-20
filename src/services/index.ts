@@ -1,31 +1,29 @@
-import { IPromise } from 'angular';
+import { module as mod }  from './module';
+export default mod.name;
+
 import { ClassService } from './classService';
 import { VocabularyService } from './vocabularyService';
 import { GroupService } from './groupService';
 import { LanguageService } from './languageService';
 import { LocationService } from './locationService';
-import { DefaultModelService, InteractiveHelpModelService, ModelService } from './modelService';
-import { DefaultVisualizationService, InteractiveHelpVisualizationService, VisualizationService } from './visualizationService';
+import { DefaultModelService, ModelService } from './modelService';
+import { DefaultVisualizationService, VisualizationService } from './visualizationService';
 import { ReferenceDataService } from './referenceDataService';
 import { PredicateService } from './predicateService';
 import { SearchService } from './searchService';
 import { UsageService } from './usageService';
-import { UserService, DefaultUserService, InteractiveHelpUserService } from './userService';
+import { UserService, DefaultUserService } from './userService';
 import { ValidatorService } from './validatorService';
 import { HistoryService } from './historyService';
 import { EntityLoaderService } from './entityLoader';
 import { ResetService } from './resetService';
 import { SessionService } from './sessionService';
 import { FrameService } from './frameService';
-import { InteractiveHelpService } from './interactiveHelpService';
 import { proxyToInstance } from '../utils/proxy';
-
-import { module as mod }  from './module';
-export default mod.name;
-
-export interface ResetableService {
-  reset(): IPromise<any>;
-}
+import { InteractiveHelpModelService } from '../help/services/helpModelService';
+import { InteractiveHelpUserService } from '../help/services/helpUserService';
+import { InteractiveHelpService } from '../help/services/interactiveHelpService';
+import { InteractiveHelpVisualizationService } from '../help/services/helpVisualizationService';
 
 function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpService, defaultService: T, helpService: T) {
   return proxyToInstance(() => interactiveHelpService.open ? helpService : defaultService);

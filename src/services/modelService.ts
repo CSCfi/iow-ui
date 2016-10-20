@@ -10,7 +10,6 @@ import { FrameService } from './frameService';
 import { GraphData } from '../entities/contract';
 import { KnownModelType } from '../entities/type';
 import { Model, ModelListItem, ImportedNamespace, Link } from '../entities/model';
-import { ResetableService } from './';
 
 export interface ModelService {
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]>;
@@ -143,84 +142,5 @@ export class DefaultModelService implements ModelService {
 
   private deserializeImportedNamespaces(data: GraphData): IPromise<ImportedNamespace[]> {
     return this.frameService.frameAndMapArray(data, frames.namespaceFrame(data), () => ImportedNamespace);
-  }
-}
-
-export class InteractiveHelpModelService implements ModelService, ResetableService {
-
-  private models = new Map<string, Model>();
-
-  /* @ngInject */
-  constructor(private $q: IQService, private defaultModelService: ModelService) {
-  }
-
-  reset(): IPromise<any> {
-    this.models.clear();
-    return this.$q.when();
-  }
-
-  private getModelsByPredicate(predicate: (model: Model) => boolean): Model[] {
-    const result: Model[] = [];
-
-    this.models.forEach(model => {
-      if (predicate(model)) {
-        result.push(model);
-      }
-    });
-
-    return result;
-  }
-
-  getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
-    return this.$q.when(this.getModelsByPredicate(model => model.groupId.equals(groupUrn)));
-  }
-
-  getModelByUrn(urn: Uri|Urn): IPromise<Model> {
-    return this.defaultModelService.getModelByUrn(urn);
-  }
-
-  getModelByPrefix(prefix: string): IPromise<Model> {
-
-    const models = this.getModelsByPredicate(model => model.prefix === prefix);
-
-    if (models.length > 0) {
-      return this.$q.when(models[0]);
-    } else {
-      return this.$q.reject();
-    }
-  }
-
-  createModel(model: Model): IPromise<any> {
-    model.unsaved = false;
-    model.createdAt = moment();
-    this.models.set(model.id.uri, model);
-    return this.$q.when();
-  }
-
-  updateModel(model: Model): IPromise<any> {
-    model.modifiedAt = moment();
-    this.models.set(model.id.uri, model);
-    return this.$q.when();
-  }
-
-  deleteModel(id: Uri): IPromise<any> {
-    this.models.delete(id.uri);
-    return this.$q.when();
-  }
-
-  newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: KnownModelType, redirect?: Uri): IPromise<Model> {
-    return this.defaultModelService.newModel(prefix, label, groupId, lang, type, redirect);
-  }
-
-  newLink(title: string, description: string, homepage: Uri, lang: Language, context: any): IPromise<Link> {
-    return this.defaultModelService.newLink(title, description, homepage, lang, context);
-  }
-
-  getAllImportableNamespaces(): IPromise<ImportedNamespace[]> {
-    return this.defaultModelService.getAllImportableNamespaces();
-  }
-
-  newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
-    return this.defaultModelService.newNamespaceImport(namespace, prefix, label, lang);
   }
 }
