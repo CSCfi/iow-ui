@@ -2,7 +2,6 @@ import { IAttributes, IScope } from 'angular';
 import { EditableForm } from './editableEntityController';
 import { module as mod }  from './module';
 import { Url } from '../../entities/uri';
-import * as _ from 'lodash';
 
 mod.directive('editableTable', () => {
   return {
@@ -104,7 +103,7 @@ class EditableTableController<T> {
 
       if (values && this.descriptor) {
         this.properties = this.descriptor.columnDescriptors();
-        this.visibleValues = values ? _.filter(values, this.filter).length : 0;
+        this.visibleValues = values ? values.filter(this.filter).length : 0;
       }
     });
   }

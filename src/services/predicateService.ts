@@ -12,7 +12,7 @@ import { requireDefined } from '../utils/object';
 import { FrameService } from './frameService';
 import { GraphData, EntityFactory } from '../entities/contract';
 import * as frames from '../entities/frames';
-import { containsAny } from '../utils/array';
+import { containsAny, flatten } from '../utils/array';
 import { PredicateListItem, Predicate, Attribute, Association } from '../entities/predicate';
 import { Model } from '../entities/model';
 import { typeSerializer } from '../entities/serializer/serializer';
@@ -48,7 +48,7 @@ export class PredicateService {
       return this.$q.all([
         this.getPredicatesForModel(model),
         this.getExternalPredicatesForModel(model)
-      ]).then(_.flatten);
+      ]).then(flatten);
     });
 
     return () => cachedResultsProvider();

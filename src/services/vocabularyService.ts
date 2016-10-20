@@ -1,5 +1,4 @@
 import { IHttpPromise, IHttpService, IPromise } from 'angular';
-import * as _ from 'lodash';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { Uri, Url } from '../entities/uri';
@@ -41,13 +40,13 @@ export class VocabularyService {
     }
 
     const conceptSuggestions = this.searchConceptSuggestions(searchText, language, vocabulary.id)
-      .then(suggestions => _.map(suggestions, mapResult));
+      .then(suggestions => suggestions.map(mapResult));
 
     const result = [conceptSuggestions];
 
     if (!vocabulary.local) {
       const concepts = this.searchFintoConcepts(searchText, language, requireDefined(vocabulary.vocabularyId))
-        .then(suggestions => _.map(suggestions, mapResult));
+        .then(suggestions => suggestions.map(mapResult));
 
       result.push(concepts);
     }
@@ -67,7 +66,7 @@ export class VocabularyService {
     }
 
     function matchingSuggestions(suggestions: ConceptSuggestion[]): ConceptSuggestion[] {
-      return _.filter(suggestions, suggestion => suggestionContains(suggestion));
+      return suggestions.filter(suggestion => suggestionContains(suggestion));
     }
 
     return this.getConceptSuggestions(vocabularyId).then(suggestions => matchingSuggestions(suggestions));

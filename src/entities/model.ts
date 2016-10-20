@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { requireDefined } from '../utils/object';
 import { normalizeModelType, KnownModelType, State, Type } from './type';
 import { Uri, Url, Urn } from '../entities/uri';
@@ -6,7 +7,7 @@ import { modelUrl, resourceUrl } from '../utils/entity';
 import { GroupListItem } from './group';
 import { Language } from '../utils/language';
 import { Moment } from 'moment';
-import { contains, containsAny } from '../utils/array';
+import { contains, containsAny, remove } from '../utils/array';
 import { DefinedBy } from './definedBy';
 import { Vocabulary } from './vocabulary';
 import { ReferenceData } from './referenceData';
@@ -121,7 +122,7 @@ export class Model extends AbstractModel {
   }
 
   removeVocabulary(vocabulary: Vocabulary) {
-    _.remove(this.vocabularies, vocabulary);
+    remove(this.vocabularies, vocabulary);
   }
 
   addNamespace(ns: ImportedNamespace) {
@@ -132,7 +133,7 @@ export class Model extends AbstractModel {
     if (ns.namespaceType !== NamespaceType.TECHNICAL) {
       delete this.context[ns.prefix];
     }
-    _.remove(this.namespaces, ns);
+    remove(this.namespaces, ns);
   }
 
   addLink(link: Link) {
@@ -140,7 +141,7 @@ export class Model extends AbstractModel {
   }
 
   removeLink(link: Link) {
-    _.remove(this.links, link);
+    remove(this.links, link);
   }
 
   addReferenceData(referenceData: ReferenceData) {
@@ -148,7 +149,7 @@ export class Model extends AbstractModel {
   }
 
   removeReferenceData(referenceData: ReferenceData) {
-    _.remove(this.referenceDatas, referenceData);
+    remove(this.referenceDatas, referenceData);
   }
 
   getNamespaces() {

@@ -1,9 +1,9 @@
 import { IAttributes, INgModelController, IQService, IScope, IModelFormatter } from 'angular';
-import * as _ from 'lodash';
 import { EditableForm } from '../form/editableEntityController';
 import { arrayValidator, arrayAsyncValidator } from '../form/validators';
 import { extendNgModelOptions, formatWithFormatters, ValidationResult, validateWithValidators } from '../../utils/angular';
 import { module as mod }  from './module';
+import { remove } from '../../utils/array';
 
 const skipValidators = new Set<string>(['duplicate']);
 
@@ -137,7 +137,7 @@ export class EditableMultipleController<T> {
   }
 
   deleteValue(value: T) {
-    _.remove(this.ngModel, v => v === value);
+    remove(this.ngModel, value);
   }
 
   keyPressed(event: JQueryEventObject) {

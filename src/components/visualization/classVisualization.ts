@@ -1,6 +1,5 @@
 import { IAttributes, IQService, IScope, ITimeoutService, IPromise } from 'angular';
 import { LanguageService } from '../../services/languageService';
-import * as _ from 'lodash';
 import { VisualizationService, ClassVisualization } from '../../services/visualizationService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
 import * as joint from 'jointjs';
@@ -583,7 +582,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     const addedClasses = this.addClass(klass, true);
     this.graph.addCells(incomingLinks);
 
-    return _.filter(addedClasses, addedClass => !klass.id.equals(addedClass) && !oldOutgoingClassIds.has(addedClass.uri));
+    return addedClasses.filter(addedClass => !klass.id.equals(addedClass) && !oldOutgoingClassIds.has(addedClass.uri));
   }
 
   private addClass(klass: VisualizationClass, addAssociations: boolean) {

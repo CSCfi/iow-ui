@@ -1,8 +1,7 @@
 import { IHttpService, IPromise } from 'angular';
-import * as _  from 'lodash';
 import { config } from '../config';
 import { Uri } from '../entities/uri';
-import { normalizeAsArray } from '../utils/array';
+import { normalizeAsArray, first } from '../utils/array';
 import { FrameService } from './frameService';
 import * as frames from '../entities/frames';
 import { GraphData } from '../entities/contract';
@@ -26,7 +25,7 @@ export class GroupService {
         const context = response.data['@context'];
         return {
           '@context': context,
-          '@graph': _.find(normalizeAsArray(response.data!['@graph']), (group: any) => new Uri(group['@id'], context).equals(groupId))
+          '@graph': first(normalizeAsArray(response.data!['@graph']), (group: any) => new Uri(group['@id'], context).equals(groupId))
         };
       })
       .then(data => this.deserializeGroup(data));

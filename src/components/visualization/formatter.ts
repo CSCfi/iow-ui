@@ -4,6 +4,7 @@ import { NameType } from '../../services/sessionService';
 import { DataType } from '../../entities/dataTypes';
 import { VisualizationClass } from '../../entities/visualization';
 import { Property } from '../../entities/class';
+import { comparingNumber } from '../../services/comparators';
 
 function formatDataTypeAsLabel(dataType: DataType|null, localizer: Localizer) {
   return localizer.getStringWithModelLanguageOrDefault(dataType, 'en');
@@ -155,7 +156,10 @@ export function formatAttributeNamesAndAnnotations(properties: Property[], showC
   const names: string[] = [];
   const annotations: ClassAttributePropertyAnnotation[] = [];
 
-  for (const property of _.sortBy(properties, p => p.index)) {
+  const propertiesInIndexOrder = properties.slice();
+  propertiesInIndexOrder.sort(comparingNumber<Property>(property => property.index));
+
+  for (const property of propertiesInIndexOrder) {
     if (property.isAttribute()) {
 
       const propertyName = formatAttributePropertyName(property, showCardinality, showName, localizer);

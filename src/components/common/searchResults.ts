@@ -1,6 +1,5 @@
 import { IAttributes, IScope, ITranscludeFunction, ICompiledExpression } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import * as _ from 'lodash';
 import { ConfirmationModal } from './confirmationModal';
 import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
@@ -88,7 +87,7 @@ class SearchResultsController<T extends WithId> {
 
   constructor($scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
     $scope.$watchCollection(() => this.items, items => {
-      this.searchResults = _.map(items, item => {
+      this.searchResults = items.map(item => {
         if (item instanceof AddNew) {
           return item;
         } else {

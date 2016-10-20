@@ -1,5 +1,4 @@
 import { ILocationService, ILogService, IPromise, IQService } from 'angular';
-import * as _ from 'lodash';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { AddModelModal } from './addModelModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -61,8 +60,8 @@ class GroupPageController extends EditableEntityController<Group> {
         })
         .then((result: {group: Group, models: ModelListItem[]}) => {
           this.group = result.group;
-          this.models = _.filter(result.models, model => !model.isOfType('profile'));
-          this.profiles = _.filter(result.models, model => model.isOfType('profile'));
+          this.models = result.models.filter(model => !model.isOfType('profile'));
+          this.profiles = result.models.filter(model => model.isOfType('profile'));
           locationService.atGroup(this.group);
           this.loading = false;
         }, _err => {

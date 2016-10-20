@@ -1,5 +1,4 @@
 import { IHttpService, IPromise, IQService } from 'angular';
-import * as _ from 'lodash';
 import { ModelService } from './modelService';
 import { ClassService } from './classService';
 import { PredicateService } from './predicateService';
@@ -17,6 +16,8 @@ import { Class, Property } from '../entities/class';
 import { User } from '../entities/user';
 import { Predicate, Association, Attribute } from '../entities/predicate';
 import { VocabularyService } from './vocabularyService';
+import { first } from '../utils/array';
+import { requireDefined } from '../utils/object';
 
 export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392', {});
 export const ktkGroupId = new Uri('https://tt.eduuni.fi/sites/csc-iow#KTK', {});
@@ -177,7 +178,7 @@ export class EntityLoader {
         for (const importedVocabulary of details.vocabularies || []) {
           promises.push(
             this.vocabularies.then((vocabularies: Vocabulary[]) => {
-                const vocabulary = _.find(vocabularies, (vocabulary: Vocabulary) => vocabulary.vocabularyId === importedVocabulary);
+                const vocabulary = first(vocabularies, (vocabulary: Vocabulary) => vocabulary.vocabularyId === importedVocabulary);
                 if (!vocabulary) {
                   throw new Error('Vocabulary not found: ' + vocabulary);
                 }
@@ -193,7 +194,7 @@ export class EntityLoader {
             promises.push(
               asPromise(assertExists(ns, 'namespace for ' + model.label['fi']))
                 .then(importedNamespace => this.$q.all([this.$q.when(importedNamespace), this.modelService.getAllImportableNamespaces()]))
-                .then(([importedNamespace, importableNamespaces]: [Model, ImportedNamespace[]]) => model.addNamespace(_.find(importableNamespaces, ns => ns.id.equals(importedNamespace.id))))
+                .then(([importedNamespace, importableNamespaces]: [Model, ImportedNamespace[]]) => model.addNamespace(requireDefined(first(importableNamespaces, ns => ns.id.equals(importedNamespace.id)))))
             );
           } else if (isExternalNamespace(ns)) {
             promises.push(this.modelService.newNamespaceImport(ns.namespace, ns.prefix, ns.label, 'fi')

@@ -6,6 +6,7 @@ import Dictionary = _.Dictionary;
 import { LanguageService } from '../../services/languageService';
 import { Property, Class } from '../../entities/class';
 import { LanguageContext } from '../../entities/contract';
+import { flatten } from '../../utils/array';
 
 const noExclude = (_property: Property) => false;
 
@@ -28,7 +29,7 @@ export class AddPropertiesFromClassModal {
       }
     }).result;
   }
-};
+}
 
 export class AddPropertiesFromClassModalController {
 
@@ -52,7 +53,7 @@ export class AddPropertiesFromClassModalController {
   }
 
   selectAll() {
-    this.selectedProperties = _.reject(_.flatten(Object.values(this.properties)), property => this.exclude(property));
+    this.selectedProperties = flatten(Object.values(this.properties)).filter(property => !this.exclude(property));
   }
 
   deselectAll() {

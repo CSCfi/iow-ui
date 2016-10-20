@@ -2,7 +2,6 @@ import { INgModelController, IModelFormatter, ILocationService, IPromise, IQServ
 import { Validator, AsyncValidator } from '../components/form/validators';
 import { normalizeAsArray, all } from './array';
 import { valuesExcludingKeys } from './object';
-import * as _ from 'lodash';
 import { Show } from '../components/contracts';
 
 export function isModalCancel(err: any) {
@@ -79,7 +78,7 @@ export function validateWithValidators<T>($q: IQService, ngModelController: INgM
   const asyncValidators = valuesExcludingKeys<AsyncValidator<T>>(ngModelController.$asyncValidators, skipValidators);
 
   const validateSync = (item: T) => all(validators, validator => validator(item));
-  const validateAsync = (item: T) => $q.all(_.map(asyncValidators, asyncValidator => asyncValidator(item)));
+  const validateAsync = (item: T) => $q.all(asyncValidators.map(asyncValidator => asyncValidator(item)));
 
   const asyncValidationResults: IPromise<any>[] = [];
 

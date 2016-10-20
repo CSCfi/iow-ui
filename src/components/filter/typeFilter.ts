@@ -4,6 +4,7 @@ import { IScope } from 'angular';
 import { isDefined } from '../../utils/object';
 import { ifChanged } from '../../utils/angular';
 import { Type } from '../../entities/type';
+import * as _ from 'lodash';
 
 mod.directive('typeFilter', () => {
   return {

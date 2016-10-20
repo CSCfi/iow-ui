@@ -1,5 +1,4 @@
 import { IAttributes, IScope } from 'angular';
-import * as _ from 'lodash';
 import { ClassViewController } from './classView';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { Uri } from '../../entities/uri';
@@ -115,11 +114,11 @@ export class ClassFormController {
   addPropertiesFromClass(klass: Class, classType: string) {
     if (klass && klass.properties.length > 0) {
 
-      const existingPredicates = new Set<string>(_.map(this.class.properties, property => property.predicateId.uri));
+      const existingPredicates = new Set<string>(this.class.properties.map(property => property.predicateId.uri));
       const exclude = (property: Property) => existingPredicates.has(property.predicateId.uri);
 
       this.addPropertiesFromClassModal.open(klass, classType, this.model, exclude)
-        .then(properties => _.forEach(properties, (property: Property) => this.class.addProperty(property)));
+        .then(properties => properties.forEach((property: Property) => this.class.addProperty(property)));
     }
   }
 

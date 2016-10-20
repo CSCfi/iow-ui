@@ -53,7 +53,7 @@ enum Direction {
 
 export function scaleToFit(paper: joint.dia.Paper, graph: joint.dia.Graph, onlyVisible: boolean) {
 
-  const visibleElements = !onlyVisible ? [] : _.filter(graph.getElements(), e => isVisible(paper, e));
+  const visibleElements = !onlyVisible ? [] : graph.getElements().filter(e => isVisible(paper, e));
   const scale = getScale(paper);
   const padding = 45;
 

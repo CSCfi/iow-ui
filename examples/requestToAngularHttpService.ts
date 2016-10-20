@@ -1,4 +1,5 @@
 import { IPromise, IHttpPromise, IRequestShortcutConfig, IHttpPromiseCallback, IHttpPromiseCallbackArg, IRequestConfig, IHttpService } from 'angular';
+import { remove } from '../src/utils/array';
 const request = require('request');
 const hstd = require('http-status-to-description');
 
@@ -74,7 +75,7 @@ function makeRequest<T>(method: string, url: string, config: IRequestShortcutCon
     }
 
     const callback = (err: any, resp: any, body: any) => {
-      _.remove(pendingRequests, requestConfig);
+      remove(pendingRequests, requestConfig);
       if (err) {
         rejectAndReport(err);
       } else {

@@ -1,5 +1,4 @@
 import { module as mod }  from './module';
-import * as _ from 'lodash';
 import { LanguageService, localizationStrings } from '../../services/languageService';
 import { UserService } from '../../services/userService';
 import { LoginModal } from './loginModal';
@@ -35,7 +34,7 @@ class NavigationController {
               private loginModal: LoginModal,
               private interactiveHelp: InteractiveHelp,
               private libraryCreationStoryLine: LibraryCreationStoryLine) {
-    this.languages = _.map(availableUILanguages, language => {
+    this.languages = availableUILanguages.map(language => {
       const stringsForLang = localizationStrings[language];
       return { code: language, name: (stringsForLang && stringsForLang['In language']) || language };
     });

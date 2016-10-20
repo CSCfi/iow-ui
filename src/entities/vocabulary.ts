@@ -84,7 +84,7 @@ export class FintoConcept extends GraphNode {
   }
 
   getVocabularyNames() {
-    return _.map(this.vocabularies, vocabulary => new VocabularyNameHref(vocabulary));
+    return this.vocabularies.map(vocabulary => new VocabularyNameHref(vocabulary));
   }
 
   clone(): FintoConcept {

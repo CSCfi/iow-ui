@@ -3,7 +3,6 @@ import * as moment from 'moment';
 import { Uri } from '../../entities/uri';
 import { availableLanguages } from '../../utils/language';
 import { contains } from '../../utils/array';
-import * as _ from 'lodash';
 import { DataType } from '../../entities/dataTypes';
 const URI = require('uri-js');
 
@@ -35,7 +34,7 @@ export function arrayValidator<T>(validator: Validator<T>) {
 export function arrayAsyncValidator<T>($q: IQService, asyncValidator: AsyncValidator<T>): AsyncValidator<T[]> {
   return (input: T[]) => {
     if (input) {
-      return $q.all(_.map(input, value => asyncValidator(value)));
+      return $q.all(input.map(value => asyncValidator(value)));
     } else {
       return $q.resolve();
     }

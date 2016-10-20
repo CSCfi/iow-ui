@@ -2,7 +2,6 @@ import { IPromise, IScope, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import * as _ from 'lodash';
 import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
@@ -58,7 +57,7 @@ export class SearchPredicateModal {
   openAddProperty(model: Model, klass: Class): IPromise<Property> {
 
     const exclude = combineExclusions<PredicateListItem>(
-      createExistsExclusion(collectProperties(_.filter(klass.properties, p => p.isAttribute()), p => p.predicateId.uri)),
+      createExistsExclusion(collectProperties(klass.properties.filter(p => p.isAttribute()), p => p.predicateId.uri)),
       createDefinedByExclusion(model)
     );
 

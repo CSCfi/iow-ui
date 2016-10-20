@@ -1,9 +1,8 @@
 import { IHttpService, IPromise, IQService } from 'angular';
-import * as _ from 'lodash';
 import { config } from '../config';
 import { Uri } from '../entities/uri';
 import { Language } from '../utils/language';
-import { normalizeAsArray } from '../utils/array';
+import { normalizeAsArray, flatten } from '../utils/array';
 import * as frames from '../entities/frames';
 import { FrameService } from './frameService';
 import { GraphData } from '../entities/contract';
@@ -29,8 +28,8 @@ export class ReferenceDataService {
   }
 
   getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
-    return this.$q.all(_.map(servers, server => this.getReferenceDatasForServer(server)))
-      .then(referenceDatas => _.flatten(referenceDatas));
+    return this.$q.all(servers.map(server => this.getReferenceDatasForServer(server)))
+      .then(referenceDatas => flatten(referenceDatas));
   }
 
   getAllReferenceDatas(): IPromise<ReferenceData[]> {
@@ -53,10 +52,9 @@ export class ReferenceDataService {
       }
     };
 
-    const internalReferenceData = _.filter(normalizeAsArray(referenceData), rd => !rd.isExternal());
+    const internalReferenceData = normalizeAsArray(referenceData).filter(rd => !rd.isExternal());
 
-    return this.$q.all(_.map(internalReferenceData, rd => getSingle(rd)))
-      .then(referenceDatas => _.flatten(referenceDatas));
+    return this.$q.all(internalReferenceData.map(rd => getSingle(rd))).then(flatten);
   }
 
   newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {

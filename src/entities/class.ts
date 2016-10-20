@@ -11,7 +11,7 @@ import { Uri, Urn } from '../entities/uri';
 import { DefinedBy } from './definedBy';
 import { EntityConstructor, Localizable } from './contract';
 import { DataType } from './dataTypes';
-import { containsAny, swapElements } from '../utils/array';
+import { containsAny, swapElements, remove, removeMatching } from '../utils/array';
 import { ReferenceData } from './referenceData';
 import { Language, hasLocalization } from '../utils/language';
 import { VisualizationClass } from './visualization';
@@ -145,11 +145,11 @@ export class Class extends AbstractClass implements VisualizationClass {
   }
 
   removeProperty(property: Property): void {
-    _.remove(this.properties, property);
+    remove(this.properties, property);
   }
 
   get associationPropertiesWithTarget() {
-    return _.filter(this.properties, property => property.isAssociation() && property.valueClass);
+    return this.properties.filter(property => property.isAssociation() && property.valueClass);
   }
 
   hasAssociationTarget(id: Uri) {
@@ -226,7 +226,7 @@ export class Constraint extends GraphNode {
   }
 
   removeItem(removedItem: ConstraintListItem) {
-    _.remove(this.items, item => item === removedItem);
+    removeMatching(this.items, item => item === removedItem);
   }
 
   serializationValues(_inline: boolean, clone: boolean): {} {

@@ -31,6 +31,7 @@ import { Model } from '../../entities/model';
 import { ExternalEntity } from '../../entities/externalEntity';
 import { KnownPredicateType, ClassType, SelectionType } from '../../entities/type';
 import { NotificationModal } from '../common/notificationModal';
+import { removeMatching } from '../../utils/array';
 
 mod.directive('modelPage', () => {
   return {
@@ -299,9 +300,10 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate> {
   }
 
   selectionDeleted(selection: Class|Predicate) {
-    _.remove(this.classes, item => matchesIdentity(item, selection));
-    _.remove(this.attributes, item => matchesIdentity(item, selection));
-    _.remove(this.associations, item => matchesIdentity(item, selection));
+
+    removeMatching(this.classes, item => matchesIdentity(item, selection));
+    removeMatching(this.attributes, item => matchesIdentity(item, selection));
+    removeMatching(this.associations, item => matchesIdentity(item, selection));
 
     for (const changeListener of this.changeListeners) {
       changeListener.onDelete(selection);
@@ -427,12 +429,12 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate> {
   }
 
   private findEditingViews() {
-    return _.filter(this.views, view => view.isEditing());
+    return this.views.filter(view => view.isEditing());
   }
 
   private confirmThenCancelEditing(editingViews: View[], callback: () => void) {
     this.confirmationModal.openEditInProgress().then(() => {
-      _.forEach(editingViews, view => view.cancelEditing());
+      editingViews.forEach(view => view.cancelEditing());
       callback();
     });
   }
@@ -567,7 +569,7 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate> {
   private updateClasses(): IPromise<any> {
     return this.classService.getClassesAssignedToModel(this.model)
       .then(classes => {
-        this.classes = _.map(classes, klass => new SelectableItem(klass, this));
+        this.classes = classes.map(klass => new SelectableItem(klass, this));
         this.sortClasses();
       });
   }

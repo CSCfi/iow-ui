@@ -1,15 +1,14 @@
 import { IScope, IPromise, IQService, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import * as _ from 'lodash';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService, Localizer } from '../../services/languageService';
 import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../entities/uri';
-import { any } from '../../utils/array';
-import { lowerCase } from 'change-case';
+import { any, flatten, limit } from '../../utils/array';
+import { lowerCase, upperCaseFirst } from 'change-case';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
 import { Concept, Vocabulary, FintoConcept, ConceptSuggestion } from '../../entities/vocabulary';
@@ -17,7 +16,7 @@ import { Model } from '../../entities/model';
 import { ClassType, KnownPredicateType } from '../../entities/type';
 import { VocabularyService, ConceptSearchResult } from '../../services/vocabularyService';
 
-const limit = 1000;
+const limitQueryResults = 1000;
 
 export interface NewEntityData {
   label: string;
@@ -120,7 +119,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     this.localizer = languageService.createLocalizer(model);
     this.defineConceptTitle = type ? `Define concept for the ${newEntityCreation ? 'new ' : ''}${type}` : 'Search concept';
     this.buttonTitle = (newEntityCreation ? 'Create new ' + type : 'Use');
-    this.labelTitle = type ? `${_.capitalize(type)} label` : '';
+    this.labelTitle = type ? `${upperCaseFirst(type)} label` : '';
     this.searchText = initialSearch;
     this.vocabularies = vocabularies.slice();
     this.vocabularies.sort(this.vocabularyComparator);
@@ -135,7 +134,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     $scope.$watch(() => this.localizer.language, ifChanged(() => this.query(this.searchText).then(() => this.search())));
     $scope.$watch(() => this.queryResults, results => {
       if (results) {
-        this.selectableVocabularies = _.filter(vocabularies, vocabulary => {
+        this.selectableVocabularies = vocabularies.filter(vocabulary => {
           for (const concept of results) {
             const exactMatch = this.localizer.translate(concept.label).toLowerCase() === this.searchText.toLowerCase();
             if (exactMatch && concept.vocabulary.id.equals(vocabulary.id)) {
@@ -188,9 +187,9 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     const language = this.languageService.getModelLanguage(this.model);
 
     if (searchText && searchText.length >= 3) {
-      return this.$q.all(_.flatten(_.map(this.activeVocabularies, vocabulary => this.vocabularyService.searchConcepts(vocabulary, language, searchText))))
+      return this.$q.all(flatten(this.activeVocabularies.map(vocabulary => this.vocabularyService.searchConcepts(vocabulary, language, searchText))))
         .then((results: ConceptSearchResult[][]) => {
-          this.queryResults = _.take(_.flatten(results), limit);
+          this.queryResults = limit(flatten(results), limitQueryResults);
 
           this.queryResults.sort(
             comparingLocalizable<ConceptSearchResult>(this.localizer, item => item.label)

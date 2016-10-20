@@ -10,8 +10,6 @@ interface UsageAttributes extends IAttributes {
   showLinks: string;
 }
 
-const noExclude = (_referrer: Referrer) => false;
-
 mod.directive('usage', () => {
   return {
     restrict: 'E',
@@ -43,7 +41,8 @@ class UsageController {
   constructor($scope: IScope) {
     $scope.$watch(() => this.usage, usage => {
       if (usage) {
-        this.referrers = _.groupBy<Referrer>(_.reject(usage.referrers, this.exclude || noExclude), 'normalizedType');
+        const excludeFilter = (referrer: Referrer) => !this.exclude || !this.exclude(referrer);
+        this.referrers = _.groupBy<Referrer>(usage.referrers.filter(excludeFilter), 'normalizedType');
       } else {
         this.referrers = {};
       }

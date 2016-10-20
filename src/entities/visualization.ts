@@ -49,7 +49,7 @@ export class DefaultVisualizationClass extends GraphNode implements Visualizatio
   }
 
   get associationPropertiesWithTarget() {
-    return _.filter(this.properties, property => property.isAssociation() && property.valueClass);
+    return this.properties.filter(property => property.isAssociation() && property.valueClass);
   }
 
   hasAssociationTarget(id: Uri) {

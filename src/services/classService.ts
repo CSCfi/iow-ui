@@ -18,6 +18,7 @@ import { ClassListItem, Class, Property } from '../entities/class';
 import { Model } from '../entities/model';
 import { ExternalEntity } from '../entities/externalEntity';
 import { Predicate, Attribute, Association } from '../entities/predicate';
+import { flatten } from '../utils/array';
 
 export class ClassService {
 
@@ -50,7 +51,7 @@ export class ClassService {
       return this.$q.all([
         this.getClassesForModel(model),
         this.getExternalClassesForModel(model)
-      ]).then(_.flatten);
+      ]).then(flatten);
     });
 
     return () => cachedResultsProvider();

@@ -1,11 +1,11 @@
 import { IScope, IAttributes, INgModelController, IQService, IModelFormatter } from 'angular';
-import * as _ from 'lodash';
 import { isDefined } from '../../utils/object';
 import { esc, tab, enter, pageUp, pageDown, arrowUp, arrowDown } from '../../utils/keyCode';
 import { formatWithFormatters } from '../../utils/angular';
 import { module as mod }  from './module';
 import { DataSource } from './dataSource';
 import { InputWithPopupController } from './inputPopup';
+import { limit } from '../../utils/array';
 
 const maxMatches = 500;
 
@@ -187,7 +187,7 @@ export class AutocompleteController<T> implements InputWithPopupController<T> {
 
   setMatches(dataMatches: T[], selectFirst: boolean) {
     this.selectedSelectionIndex = selectFirst ? 0 : -1;
-    this.popupItems = maxMatches > 0 ?  _.take(dataMatches, maxMatches) : dataMatches;
+    this.popupItems = maxMatches > 0 ?  limit(dataMatches, maxMatches) : dataMatches;
   }
 
   selectSelection(event?: JQueryEventObject) {

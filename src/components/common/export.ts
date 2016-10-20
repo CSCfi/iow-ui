@@ -1,5 +1,4 @@
 import { IScope, IWindowService } from 'angular';
-import * as _ from 'lodash';
 import * as moment from 'moment';
 import { config } from '../../config';
 import { LanguageService } from '../../services/languageService';
@@ -56,7 +55,7 @@ class ExportController {
   constructor($scope: IScope, $window: IWindowService, languageService: LanguageService) {
     $scope.$watchGroup([() => this.entity, () => languageService.getModelLanguage(this.context)], ([entity, lang]) => {
       const hrefBase = entity instanceof Model ? config.apiEndpointWithName('exportModel') : config.apiEndpointWithName('exportResource');
-      this.downloads = _.map(exportOptions, option => {
+      this.downloads = exportOptions.map(option => {
         const href = `${hrefBase}?graph=${encodeURIComponent(entity.id.uri)}&content-type=${encodeURIComponent(option.type)}&lang=${lang}`;
 
         return {

@@ -7,9 +7,9 @@ import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion } from '../../utils/exclusion';
-import * as _ from 'lodash';
 import { ReferenceData } from '../../entities/referenceData';
 import { Model } from '../../entities/model';
+import { remove } from '../../utils/array';
 
 mod.directive('editableReferenceDataSelect', () => {
   return {
@@ -90,7 +90,7 @@ class ReferenceDataTableDescriptor extends TableDescriptor<ReferenceData> {
   }
 
   remove(referenceData: ReferenceData): any {
-    _.remove(this.values(), referenceData);
+    remove(this.values(), referenceData);
   }
 
   canRemove(_referenceData: ReferenceData): boolean {

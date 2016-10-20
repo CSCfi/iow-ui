@@ -18,7 +18,7 @@ export function layoutGraph($q: IQService, graph: joint.dia.Graph, directed: boo
     );
   } else {
     return $q((resolve: IQResolveReject<any>, reject: IQResolveReject<any>) => {
-      colaLayout(graph, _.map(onlyNodeIds, id => id.uri))
+      colaLayout(graph, onlyNodeIds.map(id => id.uri))
         .then(() => resolve(), err => reject(err));
     });
   }
@@ -31,7 +31,7 @@ export function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.El
 
   for (const link of connectedLinks) {
     if (!alreadyAdjusted.has(link.id) && !!link.get('source').id && !!link.get('target').id) {
-      const siblings = _.filter(connectedLinks, _.partial(isSiblingLink, link));
+      const siblings = connectedLinks.filter(connectedLink => isSiblingLink(link, connectedLink));
       adjustSiblingLinks(paper, siblings, alreadyAdjusted, modelPositions, vertexAction);
     }
   }

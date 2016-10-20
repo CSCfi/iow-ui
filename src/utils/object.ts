@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 export type EqualityChecker<T> = (lhs: T, rhs: T) => boolean;
 
 export function referenceEquality<T>(lhs: T, rhs: T) {
@@ -54,10 +52,16 @@ interface MapLike<V> {
 }
 
 export function valuesExcludingKeys<V>(obj: MapLike<V>, exclude: Set<string>): V[] {
-  return _.chain(Object.entries(obj))
-    .filter(entry => !exclude.has(entry[0]))
-    .map(entry => entry[1])
-    .value();
+
+  const result: V[] = [];
+
+  for (const entry of Object.entries(obj)) {
+    if (!exclude.has(entry[0])) {
+      result.push(entry[1]);
+    }
+  }
+
+  return result;
 }
 
 export function assertNever(_x: never, msg?: string): never {
