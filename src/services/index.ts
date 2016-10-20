@@ -1,3 +1,4 @@
+import { IPromise } from 'angular';
 import { ClassService } from './classService';
 import { VocabularyService } from './vocabularyService';
 import { GroupService } from './groupService';
@@ -21,6 +22,10 @@ import { proxyToInstance } from '../utils/proxy';
 
 import { module as mod }  from './module';
 export default mod.name;
+
+export interface ResetableService {
+  reset(): IPromise<any>;
+}
 
 function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpService, defaultService: T, helpService: T) {
   return proxyToInstance(() => interactiveHelpService.open ? helpService : defaultService);

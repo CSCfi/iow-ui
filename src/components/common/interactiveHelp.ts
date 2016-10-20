@@ -63,27 +63,25 @@ export class InteractiveHelp {
       throw new Error('Cannot open help when another help is already open');
     }
 
-    this.interactiveHelpService.open = true;
+    return this.interactiveHelpService.reset().then(() => {
+      this.interactiveHelpService.open = true;
 
-    const result = this.overlayService.open({
-      template: `
+      return this.overlayService.open({
+        template: `
         <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverStyle()"></help-popover>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.left"></div>
       `,
-      controller: InteractiveHelpController,
-      controllerAs: 'ctrl',
-      resolve: {
-        storyLine: () => storyLine
-      },
-      disableScroll: true
-    }).result;
-
-    result.then(() => this.interactiveHelpService.open = false);
-
-    return result;
+        controller: InteractiveHelpController,
+        controllerAs: 'ctrl',
+        resolve: {
+          storyLine: () => storyLine
+        },
+        disableScroll: true
+      }).result.then(() => this.interactiveHelpService.open = false);
+    });
   }
 }
 

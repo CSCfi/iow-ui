@@ -10,6 +10,7 @@ import { FrameService } from './frameService';
 import { GraphData } from '../entities/contract';
 import { KnownModelType } from '../entities/type';
 import { Model, ModelListItem, ImportedNamespace, Link } from '../entities/model';
+import { ResetableService } from './';
 
 export interface ModelService {
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]>;
@@ -145,12 +146,17 @@ export class DefaultModelService implements ModelService {
   }
 }
 
-export class InteractiveHelpModelService implements ModelService {
+export class InteractiveHelpModelService implements ModelService, ResetableService {
 
   private models = new Map<string, Model>();
 
   /* @ngInject */
   constructor(private $q: IQService, private defaultModelService: ModelService) {
+  }
+
+  reset(): IPromise<any> {
+    this.models.clear();
+    return this.$q.when();
   }
 
   private getModelsByPredicate(predicate: (model: Model) => boolean): Model[] {
