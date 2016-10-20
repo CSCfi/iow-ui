@@ -1,5 +1,4 @@
-import { ILocationService, ILogService, IPromise, IQService, ui } from 'angular';
-import IModalStackService = ui.bootstrap.IModalStackService;
+import { ILocationService, ILogService, IPromise, IQService } from 'angular';
 import * as _ from 'lodash';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { AddModelModal } from './addModelModal';
@@ -19,6 +18,7 @@ import { LanguageContext } from '../../entities/contract';
 import { config } from '../../config';
 import { InteractiveHelp } from '../common/interactiveHelp';
 import { NotificationModal } from '../common/notificationModal';
+import { LibraryCreationStoryLine } from '../../help/libraryCreationHelpStoryLine';
 
 mod.directive('group', () => {
   return {
@@ -54,8 +54,8 @@ class GroupController extends EditableEntityController<Group> {
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
               notificationModal: NotificationModal,
-              private $uibModalStack: IModalStackService,
-              private interactiveHelp: InteractiveHelp) {
+              private interactiveHelp: InteractiveHelp,
+              private libraryCreationStoryLine: LibraryCreationStoryLine) {
     super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
 
     $scope.$watch(() => this.groupId, groupId => {
@@ -139,91 +139,8 @@ class GroupController extends EditableEntityController<Group> {
   }
 
   startHelp() {
-
-    const ctrl = this;
-
-    function openHelp() {
-
-      const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
-
-      ctrl.interactiveHelp.open({
-        onCancel() {
-          ctrl.$uibModalStack.dismissAll();
-          ctrl.$location.url(ctrl.group.iowUrl());
-        },
-        stories: [
-          {
-            popoverTo: () => angular.element('#add-library-button'),
-            focusTo: () => ({
-              element: angular.element('#add-library-button')
-            }),
-            popoverPosition: 'left',
-            title: 'Add library',
-            content: 'Diipadaa',
-            nextCondition: 'click'
-          },
-          {
-            popoverTo: () => angular.element('.modal-dialog [data-title="Prefix"] input'),
-            focusTo: () => ({
-              element: angular.element('.modal-dialog [data-title="Prefix"]'),
-              margin: editableMargin
-            }),
-            popoverPosition: 'left',
-            title: 'Prefix',
-            content: 'Prefix info',
-            nextCondition: 'valid-input',
-            cannotMoveBack: true,
-            initialInputValue: 'testi'
-          },
-          {
-            popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
-            focusTo: () => ({
-              element: angular.element('editable-multiple-language-select div.editable-wrap'),
-              margin: Object.assign({}, editableMargin, { bottom: 10 })
-            }),
-            popoverPosition: 'left',
-            title: 'Model languages',
-            content: 'Diipadaa',
-            nextCondition: 'valid-input'
-          },
-          {
-            popoverTo: () => angular.element('.modal-dialog [data-title="Library label"] input'),
-            focusTo: () => ({
-              element: angular.element('.modal-dialog [data-title="Library label"]'),
-              margin: editableMargin
-            }),
-            popoverPosition: 'left',
-            title: 'Library label',
-            content: 'Library label info',
-            nextCondition: 'valid-input',
-            initialInputValue: 'Testikirjasto'
-          },
-          {
-            popoverTo: () => angular.element('.modal-dialog button.create'),
-            focusTo: () => ({
-              element: angular.element('.modal-dialog button.create')
-            }),
-            popoverPosition: 'left',
-            title: 'Create new',
-            content: 'Diipadaa',
-            nextCondition: 'modifying-click'
-          },
-          {
-            popoverTo: () => angular.element('button.save'),
-            focusTo: () => ({
-              element: angular.element('button.save')
-            }),
-            popoverPosition: 'left',
-            title: 'Save changes',
-            content: 'Diipadaa',
-            nextCondition: 'modifying-click',
-            cannotMoveBack: true
-          }
-        ]});
-    }
-
     this.userService.ifStillLoggedIn(
-      () => openHelp(),
+      () => this.interactiveHelp.open(this.libraryCreationStoryLine),
       () => this.notificationModal.openNotLoggedIn()
     );
   }

@@ -17,6 +17,7 @@ import userModule from './components/user';
 import filterModule from './components/filter';
 import componentsModule from './components';
 import servicesModule from './services';
+import helpModule from './help';
 
 import './styles/app.scss';
 import 'font-awesome/scss/font-awesome.scss';
@@ -46,7 +47,8 @@ const mod = angular.module('iow-ui', [
   userModule,
   filterModule,
   componentsModule,
-  servicesModule
+  servicesModule,
+  helpModule
 ]);
 
 mod.config(routeConfig);
