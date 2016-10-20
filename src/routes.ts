@@ -11,7 +11,7 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
       template: '<front-page></front-page>'
     })
     .when('/user', {
-      template: '<user></user>'
+      template: '<user-page></user-page>'
     })
     .when('/group', {
       template: '<group-page group-id="groupId"></group-page>',

@@ -6,17 +6,17 @@ import { Uri } from '../../entities/uri';
 import { DefaultUser } from '../../entities/user';
 import { groupUrl } from '../../utils/entity';
 
-mod.directive('user', () => {
+mod.directive('userPage', () => {
   return {
     restrict: 'E',
-    template: require('./user.html'),
+    template: require('./userPage.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller: UserController
+    controller: UserPageController
   };
 });
 
-class UserController {
+class UserPageController {
 
   user: DefaultUser;
 
