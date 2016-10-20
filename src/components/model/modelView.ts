@@ -3,7 +3,7 @@ import { EditableEntityController, EditableScope, Rights } from '../form/editabl
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelController } from './model';
+import { ModelPageController } from './model';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { Model } from '../../entities/model';
@@ -29,7 +29,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   visible: boolean = false;
   model: Model;
-  modelController: ModelController;
+  modelController: ModelPageController;
 
   /* @ngInject */
   constructor($scope: EditableScope,

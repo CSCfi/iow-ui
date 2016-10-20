@@ -32,17 +32,17 @@ import { ExternalEntity } from '../../entities/externalEntity';
 import { KnownPredicateType, ClassType, SelectionType } from '../../entities/type';
 import { NotificationModal } from '../common/notificationModal';
 
-mod.directive('model', () => {
+mod.directive('modelPage', () => {
   return {
     restrict: 'E',
-    template: require('./model.html'),
+    template: require('./modelPage.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller: ModelController
+    controller: ModelPageController
   };
 });
 
-export class ModelController implements ChangeNotifier<Class|Predicate> {
+export class ModelPageController implements ChangeNotifier<Class|Predicate> {
 
   loading = true;
   views: View[] = [];
@@ -623,7 +623,7 @@ class Tab {
   glyphIconClass: any;
   addNew: () => void;
 
-  constructor(public type: ClassType|KnownPredicateType, public items: () => SelectableItem[], modelController: ModelController) {
+  constructor(public type: ClassType|KnownPredicateType, public items: () => SelectableItem[], modelController: ModelPageController) {
     this.addLabel = 'Add ' + type;
     this.glyphIconClass = glyphIconClassForType([type]);
     this.addNew = () => modelController.addEntity(type);
@@ -661,7 +661,7 @@ class SelectableItem {
 
   hasOverlap = false;
 
-  constructor(public item: ClassListItem|PredicateListItem, private modelController: ModelController) {
+  constructor(public item: ClassListItem|PredicateListItem, private modelController: ModelPageController) {
   }
 
   get id(): Uri {

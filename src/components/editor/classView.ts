@@ -4,7 +4,7 @@ import { ClassService } from '../../services/classService';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelController } from '../model/model';
+import { ModelPageController } from '../model/model';
 import { Show } from '../contracts';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
@@ -43,7 +43,7 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   class: Class;
   model: Model;
-  modelController: ModelController;
+  modelController: ModelPageController;
   show: Show;
   openPropertyId: string;
   width: number;
