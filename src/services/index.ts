@@ -10,7 +10,7 @@ import { ReferenceDataService } from './referenceDataService';
 import { PredicateService } from './predicateService';
 import { SearchService } from './searchService';
 import { UsageService } from './usageService';
-import { UserService } from './userService';
+import { UserService, DefaultUserService, InteractiveHelpUserService } from './userService';
 import { ValidatorService } from './validatorService';
 import { HistoryService } from './historyService';
 import { EntityLoaderService } from './entityLoader';
@@ -51,7 +51,12 @@ mod.service('referenceDataService', ReferenceDataService);
 mod.service('predicateService', PredicateService);
 mod.service('searchService', SearchService);
 mod.service('usageService', UsageService);
-mod.service('userService', UserService);
+
+mod.service('defaultUserService', DefaultUserService);
+mod.service('helpUserService', InteractiveHelpUserService);
+mod.factory('userService', (interactiveHelpService: InteractiveHelpService, defaultUserService: UserService, helpUserService: UserService) =>
+  proxyConditionallyToHelp(interactiveHelpService, defaultUserService, helpUserService));
+
 mod.service('validatorService', ValidatorService);
 mod.service('historyService', HistoryService);
 mod.service('resetService', ResetService);
