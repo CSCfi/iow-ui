@@ -47,11 +47,15 @@ export function hasValue(obj: any) {
   return false;
 }
 
-interface MapLike<V> {
+interface StringMapLike<V> {
   [index: string]: V;
 }
 
-export function valuesExcludingKeys<V>(obj: MapLike<V>, exclude: Set<string>): V[] {
+interface NumberMapLike<V> {
+  [index: number]: V;
+}
+
+export function valuesExcludingKeys<V>(obj: StringMapLike<V>, exclude: Set<string>): V[] {
 
   const result: V[] = [];
 
@@ -73,6 +77,18 @@ export function requireDefined<T>(obj: T|undefined|null, msg?: string): T {
     throw new Error('Object must not be null or undefined: ' + msg);
   }
   return obj;
+}
+
+export function stringMapToObject<V>(map: Map<string, V>): StringMapLike<V> {
+  const result: StringMapLike<V> = {};
+  map.forEach((value, key) => result[key] = value);
+  return result;
+}
+
+export function numberMapToObject<V>(map: Map<number, V>): NumberMapLike<V> {
+  const result: NumberMapLike<V> = {};
+  map.forEach((value, key) => result[key] = value);
+  return result;
 }
 
 

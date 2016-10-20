@@ -167,7 +167,7 @@ export function removeMatching<T>(arr: T[], predicate: (item: T) => boolean) {
 }
 
 export function remove<T>(arr: T[], item: T): void {
-  removeMatching(arr, i => i === item)
+  removeMatching(arr, i => i === item);
 }
 
 export function flatten<T>(arr: T[][]) {
@@ -178,6 +178,29 @@ export function flatten<T>(arr: T[][]) {
     for (const item of innerArr) {
       result.push(item);
     }
+  }
+
+  return result;
+}
+
+export function groupBy<T, I>(arr: T[], indexByExtractor: (item: T) => I): Map<I, T[]> {
+
+  const result = new Map<I, T[]>();
+
+  function createOrGet(indexProperty: I): T[] {
+    const resultList = result.get(indexProperty);
+
+    if (resultList) {
+      return resultList;
+    } else {
+      const newResultList = [];
+      result.set(indexProperty, newResultList);
+      return newResultList;
+    }
+  }
+
+  for (const item of arr) {
+    createOrGet(indexByExtractor(item)).push(item);
   }
 
   return result;

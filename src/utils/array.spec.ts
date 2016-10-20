@@ -1,6 +1,6 @@
 import {
   arraysAreEqual, findFirstMatching, contains, containsAny, containsAll, any, all, resetWith,
-  swapElements, moveElement, remove, flatten, removeMatching
+  swapElements, moveElement, remove, flatten, removeMatching, groupBy
 } from './array';
 
 describe('First matching', () => {
@@ -147,5 +147,24 @@ describe('Flattening arrays', () => {
       [2, 4, 6, 8, 10]
     ];
     expect([1, 3, 5, 7, 2, 4, 6, 8, 10]).toEqual(flatten(a));
+  });
+});
+
+describe('Grouping arrays', () => {
+  it('should work', () => {
+    const a = [
+      { type: 'foo', id: 1 },
+      { type: 'foo', id: 3 },
+      { type: 'foo', id: 5 },
+      { type: 'bar', id: 7 },
+      { type: 'bar', id: 2 },
+      { type: 'bar', id: 4 },
+      { type: 'bar', id: 6 }
+    ];
+
+    const grouped = groupBy(a, item => item.type);
+
+    expect([1, 3, 5]).toEqual(grouped.get('foo')!.map(x => x.id));
+    expect([7, 2, 4, 6]).toEqual(grouped.get('bar')!.map(x => x.id));
   });
 });
