@@ -524,6 +524,10 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
+#: translations/help.html:10
+msgid "Congratulations for completing library creation!"
+msgstr ""
+
 #: translations/titles.html:75
 msgid "Constraint classes"
 msgstr ""

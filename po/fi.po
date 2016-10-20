@@ -525,6 +525,10 @@ msgstr "Ehdotettu termi käsitteelle"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
+#: translations/help.html:10
+msgid "Congratulations for completing library creation!"
+msgstr "Onnittenut tietokomponenttikirjaston luomisessa onnistumisesta!"
+
 #: translations/titles.html:75
 msgid "Constraint classes"
 msgstr "Loogisen rajoitteen luokat"

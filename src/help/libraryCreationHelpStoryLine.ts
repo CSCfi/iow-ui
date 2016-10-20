@@ -1,6 +1,6 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { StoryLine, createStory } from './contract';
+import { StoryLine, createStory, createNotification } from './contract';
 
 const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
 
@@ -95,6 +95,12 @@ const saveLibrary = createStory({
   cannotMoveBack: true
 });
 
+const finishedNotification = createNotification({
+  title: 'Congratulations for completing library creation!',
+  content: 'Diipadaa',
+  cannotMoveBack: true
+});
+
 export class LibraryCreationStoryLine implements StoryLine {
 
   /* @ngInject */
@@ -117,7 +123,8 @@ export class LibraryCreationStoryLine implements StoryLine {
       enterLibraryLanguage,
       enterLibraryLabel,
       createLibrary,
-      saveLibrary
+      saveLibrary,
+      finishedNotification
     ];
   }
 
