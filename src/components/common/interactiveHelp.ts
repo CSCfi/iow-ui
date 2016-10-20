@@ -616,8 +616,8 @@ class HelpPopoverController {
 
     const left = element.offset().left;
     const top = element.offset().top;
-    const width = element.width();
-    const height = element.height();
+    const width = element.prop('offsetWidth');
+    const height = element.prop('offsetHeight');
     const arrow = 13;
     const documentWidth = angular.element(this.$document).width();
 
@@ -632,7 +632,7 @@ class HelpPopoverController {
           return { top: top, left: leftPopoverLeft };
         }
       case 'right':
-        const rightPopoverLeft = left + width + arrow * 3;
+        const rightPopoverLeft = left + width + arrow;
         const rightPopoverRight = documentWidth - (rightPopoverLeft + popoverWidth);
         const rightWidthOffScreen = rightPopoverRight < 0 ? -rightPopoverRight : 0;
 
@@ -644,7 +644,7 @@ class HelpPopoverController {
       case 'top':
         return { top: top - popoverHeight - arrow, left: left };
       case 'bottom':
-        return { top: top + height + arrow * 2, left: left };
+        return { top: top + height + arrow, left: left };
       default:
         return assertNever(position);
     }
