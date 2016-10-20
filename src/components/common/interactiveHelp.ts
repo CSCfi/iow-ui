@@ -6,33 +6,7 @@ import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 import { InteractiveHelpService } from '../../services/interactiveHelpService';
-
-export type PopoverPosition = 'top'|'right'|'left'|'bottom';
-
-export type NextCondition = 'explicit'         // explicit next button to continue
-                          | 'click'            // click on element to continue
-                          | 'modifying-click'  // click on element which is expected to disappear to continue
-                          | 'valid-input';     // valid input is needed before allowing to continue
-
-export interface StoryLine {
-  stories: Story[];
-  onComplete?: () => void;
-  onCancel?: () => void;
-}
-
-export interface Story {
-  popoverTo: () => JQuery;
-  popoverPosition: PopoverPosition;
-  focusTo?: () => {
-    element: JQuery,
-    margin?: { top?: number, right?: number, bottom?: number, left?: number }
-  };
-  title: string;
-  content: string;
-  nextCondition: NextCondition;
-  initialInputValue?: any;
-  cannotMoveBack?: boolean;
-}
+import { StoryLine, NextCondition, Story } from '../../help/contract';
 
 interface Positioning {
   left: number;

@@ -1,6 +1,6 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { StoryLine, Story } from '../components/common/interactiveHelp';
+import { StoryLine, Story } from './contract';
 
 const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
 
