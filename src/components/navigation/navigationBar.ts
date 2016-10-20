@@ -7,7 +7,7 @@ import { User } from '../../entities/user';
 import { IScope, ILocationService } from 'angular';
 import { config } from '../../config';
 import { LibraryCreationStoryLine } from '../../help/libraryCreationHelpStoryLine';
-import { InteractiveHelp } from '../common/interactiveHelp';
+import { HelpSelectionModal } from '../common/helpSelectionModal';
 
 const logoImage = require('../../assets/logo-01.svg');
 
@@ -32,7 +32,7 @@ class NavigationController {
               private languageService: LanguageService,
               private userService: UserService,
               private loginModal: LoginModal,
-              private interactiveHelp: InteractiveHelp,
+              private helpSelectionModal: HelpSelectionModal,
               private libraryCreationStoryLine: LibraryCreationStoryLine) {
     this.languages = availableUILanguages.map(language => {
       const stringsForLang = localizationStrings[language];
@@ -71,6 +71,6 @@ class NavigationController {
   }
 
   startHelp() {
-    this.interactiveHelp.open(this.libraryCreationStoryLine);
+    this.helpSelectionModal.open([this.libraryCreationStoryLine]);
   }
 }

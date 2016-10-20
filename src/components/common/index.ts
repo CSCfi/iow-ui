@@ -6,6 +6,7 @@ import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal } from './deleteConfirmationModal';
 import { HistoryModal } from './historyModal';
 import { NotificationModal } from './notificationModal';
+import { HelpSelectionModal } from './helpSelectionModal';
 import { LanguageService } from '../../services/languageService';
 import { Localizable, LanguageContext } from '../../entities/contract';
 import { InteractiveHelp } from './interactiveHelp';
@@ -40,6 +41,7 @@ mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);
 mod.service('historyModal', HistoryModal);
 mod.service('notificationModal', NotificationModal);
+mod.service('helpSelectionModal', HelpSelectionModal);
 
 mod.filter('translateValue', /* @ngInject */ (languageService: LanguageService) => {
   return (input: Localizable, context?: LanguageContext) => input ? languageService.translate(input, context) : '';

@@ -1050,6 +1050,10 @@ msgstr ""
 msgid "Group not found"
 msgstr ""
 
+#: translations/help.html:8
+msgid "Guide through creating new library"
+msgstr ""
+
 #: translations/misc.html:21
 msgid "Hide"
 msgstr ""
@@ -1777,6 +1781,10 @@ msgstr ""
 
 #: translations/help.html:7
 msgid "Select group"
+msgstr ""
+
+#: translations/help.html:9
+msgid "Select help topic"
 msgstr ""
 
 #: translations/misc.html:180

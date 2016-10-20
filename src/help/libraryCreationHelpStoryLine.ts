@@ -6,7 +6,7 @@ const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
 
 const selectGroup: Story = {
 
-  popoverTo: () => angular.element('#browse-panel'),
+  popoverTo: () => angular.element('#browse-panel .selectable-panel__list'),
   focusTo: () => ({
     element: angular.element('#browse-panel .selectable-panel__list')
   }),
@@ -99,6 +99,14 @@ export class LibraryCreationStoryLine implements StoryLine {
 
   /* @ngInject */
   constructor(private $uibModalStack: IModalStackService, private $location: ILocationService) {
+  }
+
+  get title() {
+    return 'Guide through creating new library';
+  }
+
+  get description() {
+    return 'Diipadaa';
   }
 
   get stories() {

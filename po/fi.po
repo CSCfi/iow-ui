@@ -841,7 +841,13 @@ msgstr "Dialogi on avattuna"
 
 #: translations/help.html:6
 msgid "Diipadaa"
-msgstr "Diipadaa"
+msgstr ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
+"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, "
+"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo "
+"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse "
+"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat "
+"non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 #: components/editor/addPropertiesFromClassModal.html:5
 msgid "Do you want to add following properties from ' + ctrl.classType + '?"
@@ -1059,6 +1065,10 @@ msgstr "Kohdealueen ryhmän nimi"
 #: translations/misc.html:252
 msgid "Group not found"
 msgstr "Ryhmää ei löydy"
+
+#: translations/help.html:8
+msgid "Guide through creating new library"
+msgstr "Uuden tietokomponenttikirjaston luomisen ohjeistus"
 
 #: translations/misc.html:21
 msgid "Hide"
@@ -1791,6 +1801,10 @@ msgstr "Valitse luokka"
 #: translations/help.html:7
 msgid "Select group"
 msgstr "Valitse ryhmä"
+
+#: translations/help.html:9
+msgid "Select help topic"
+msgstr "Valitse ohjeen aihe"
 
 #: translations/misc.html:180
 msgid "Self reference not allowed"

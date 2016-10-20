@@ -6,6 +6,8 @@ export type NextCondition = 'explicit'         // explicit next button to contin
   | 'valid-input';     // valid input is needed before allowing to continue
 
 export interface StoryLine {
+  title: string;
+  description: string;
   stories: Story[];
   onComplete?: () => void;
   onCancel?: () => void;
