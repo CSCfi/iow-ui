@@ -149,3 +149,9 @@ export function arraysAreEqual<T>(lhs: T[], rhs: T[], equals: EqualityChecker<T>
 export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChecker<T> = referenceEquality): T|null {
   return first(arr, item => contains(values, item, equals));
 }
+
+export function remove<T>(arr: T[], item: T): void {
+  for (let itemIndex = arr.indexOf(item); itemIndex !== -1; itemIndex = arr.indexOf(item)) {
+    arr.splice(itemIndex, 1);
+  }
+}

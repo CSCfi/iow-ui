@@ -1,6 +1,6 @@
 import {
   arraysAreEqual, findFirstMatching, contains, containsAny, containsAll, any, all, resetWith,
-  swapElements, moveElement
+  swapElements, moveElement, remove
 } from './array';
 
 describe('First matching', () => {
@@ -109,5 +109,19 @@ describe('Moving element in array', () => {
 
   it('out of bounds should throw', () => {
     expect(() => moveElement([1, 2, 3, 4, 5], 0, 5)).toThrowError();
+  });
+});
+
+describe('Removing element from array', () => {
+  it('should remove only matching item', () => {
+    const a = [1, 2, 3, 4, 5];
+    remove(a, 3);
+    expect([1, 2, 4, 5]).toEqual(a);
+  });
+
+  it('should remove all matching items', () => {
+    const a = [1, 2, 3, 3, 5, 3];
+    remove(a, 3);
+    expect([1, 2, 5]).toEqual(a);
   });
 });

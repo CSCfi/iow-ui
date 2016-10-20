@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { IPromise, IHttpPromise, IRequestShortcutConfig, IHttpPromiseCallback, IHttpPromiseCallbackArg, IRequestConfig, IHttpService } from 'angular';
 const request = require('request');
 const hstd = require('http-status-to-description');
