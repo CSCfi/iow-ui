@@ -6,7 +6,7 @@ import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
-import { StoryLine, NextCondition, Story } from '../../help/contract';
+import { StoryLine, NextCondition, Story, Notification } from '../../help/contract';
 
 interface Positioning {
   left: number;
@@ -22,7 +22,7 @@ interface StyleSetState {
   debounceHandle?: any;
   debounceCount: number;
   animating: boolean;
-  waitingForStoryToChange: boolean;
+  waitingForItemToChange: boolean;
 }
 
 export class InteractiveHelp {
@@ -78,13 +78,13 @@ class InteractiveHelpController {
     offsetStabileCheck: null,
     debounceCount: 0,
     animating: false,
-    waitingForStoryToChange: false
+    waitingForItemToChange: false
   };
 
   /* @ngInject */
   constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, private $document: IDocumentService, private $uibModalStack: IModalStackService, private storyLine: StoryLine) {
 
-    if (!storyLine || storyLine.stories.length === 0) {
+    if (!storyLine || storyLine.items.length === 0) {
       throw new Error('No stories defined');
     }
 
@@ -101,9 +101,7 @@ class InteractiveHelpController {
 
     const isFocusInElement = (event: JQueryEventObject, element: HTMLElement) => (event.target || event.srcElement) === element;
 
-    const loadFocusableElementList = () => {
-
-      const story = this.currentStory();
+    const loadFocusableElementList = (story: Story) => {
 
       if (!story.focusTo) {
         return [];
@@ -126,8 +124,8 @@ class InteractiveHelpController {
       event.stopPropagation();
     }
 
-    const manageFocus = (event: JQueryEventObject) => {
-      const focusableElements = loadFocusableElementList();
+    const manageFocus = (event: JQueryEventObject, story: Story) => {
+      const focusableElements = loadFocusableElementList(story);
 
       const activeElementIsFocusable = () => {
         for (const focusableElement of focusableElements) {
@@ -145,15 +143,15 @@ class InteractiveHelpController {
 
         if (event.shiftKey) {
           if (isFocusInElement(event, firstElement)) {
-            if (!this.currentStory().cannotMoveBack) {
-              $scope.$apply(() => this.previousStory());
+            if (!story.cannotMoveBack) {
+              $scope.$apply(() => this.previousItem());
             }
             stopEvent(event);
           }
         } else {
           if (isFocusInElement(event, lastElement)) {
-            if (!isClick(this.currentStory().nextCondition) && this.popoverController.isValid()) {
-              $scope.$apply(() => this.nextStory());
+            if (!isClick(story.nextCondition) && this.popoverController.isValid()) {
+              $scope.$apply(() => this.nextItem());
             } else {
               firstElement.focus();
             }
@@ -183,7 +181,7 @@ class InteractiveHelpController {
           if (tryCount > 30) {
             // reset values to state as before wait
             $scope.$apply(() => {
-              this.styleSetState.waitingForStoryToChange = false;
+              this.styleSetState.waitingForItemToChange = false;
               this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(currentStory));
               this.popoverOffset = this.popoverController.calculateOffset();
             });
@@ -194,24 +192,32 @@ class InteractiveHelpController {
             tryCount++;
             setTimeout(waitForElementToDisappear, 50);
           } else {
-            this.styleSetState.waitingForStoryToChange = false;
-            $scope.$apply(() => this.nextStory());
+            this.styleSetState.waitingForItemToChange = false;
+            $scope.$apply(() => this.nextItem());
           }
         };
 
         waitForElementToDisappear();
-        $scope.$apply(() => this.waitForStoryChange(this.peekNext()));
+
+        // if next not already applied
+        if (tryCount > 0) {
+          $scope.$apply(() => this.waitForItemChange(this.peekNext()));
+        }
 
       } else {
-        $scope.$apply(() => this.nextStory());
+        $scope.$apply(() => this.nextItem());
       }
     };
 
     const keyDownListener = (event: JQueryEventObject) => {
 
+      const item = this.currentItem();
+
       switch (event.which) {
         case tab:
-          manageFocus(event);
+          if (item.type === 'story') {
+            manageFocus(event, item);
+          }
           break;
         case esc:
           $scope.$apply(() => this.close(true));
@@ -220,17 +226,17 @@ class InteractiveHelpController {
     };
 
     const clickListener = (event: JQueryEventObject) => {
-      const story = this.currentStory();
+      const item = this.currentItem();
 
-      if (story && isClick(story.nextCondition)) {
-        const popoverElement = story.popoverTo();
+      if (item && item.type === 'story' && isClick(item.nextCondition)) {
+        const popoverElement = item.popoverTo();
 
         if (elementExists(popoverElement)) {
           if (isTargetElementInsideElement(event, popoverElement[0])) {
-            manageNextClick(story);
+            manageNextClick(item);
           }
-        } else if (story.nextCondition === 'modifying-click') {
-          manageNextClick(story);
+        } else if (item.nextCondition === 'modifying-click') {
+          manageNextClick(item);
         } else {
           throw new Error('Popover element not found');
         }
@@ -248,23 +254,38 @@ class InteractiveHelpController {
       $document.off('click', clickListener);
     });
 
-    $scope.$watch(() => InteractiveHelpController.calculateFocus(this.currentStory()), positioning => {
-      if (!this.styleSetState.waitingForStoryToChange) {
-        this.backdrop = this.calculateBackdrop(positioning);
-      }
-    }, true);
 
-    $scope.$watch(() => this.currentStory().popoverTo().offset(), () => this.setStoryStyles(), true);
-    $scope.$watch(() => this.popoverController.story, () => this.setStoryStyles());
+    const storyFocus = () => {
+      const item = this.currentItem();
+      return item.type === 'story' ? InteractiveHelpController.calculateFocus(item) : null;
+    };
 
-    const setStoryStylesApplyingScope = () => $scope.$apply(() => this.setStoryStyles());
+    const storyPopoverOffset = () => {
+      const item = this.currentItem();
+      return item.type === 'story' && item.popoverTo().offset();
+    };
 
-    window.addEventListener('resize', setStoryStylesApplyingScope);
-    window.addEventListener('scroll', setStoryStylesApplyingScope);
+    const ifChangeNotInProgress = <T> (cb: (newItem: T, oldItem: T) => any) => {
+      return (newItem: T, oldItem: T) => {
+        if (!this.styleSetState.waitingForItemToChange) {
+          return cb(newItem, oldItem);
+        }
+      };
+    };
+
+    $scope.$watch<Positioning|null>(storyFocus, ifChangeNotInProgress<Positioning|null>(this.calculateBackdrop.bind(this)), true);
+    $scope.$watch(storyPopoverOffset, ifChangeNotInProgress(this.setItemStyles.bind(this)), true);
+
+    $scope.$watch(() => this.popoverController.item, () => this.setItemStyles());
+
+    const setItemStylesApplyingScope = () => $scope.$apply(() => this.setItemStyles());
+
+    window.addEventListener('resize', setItemStylesApplyingScope);
+    window.addEventListener('scroll', setItemStylesApplyingScope);
 
     $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', setStoryStylesApplyingScope);
-      window.removeEventListener('scroll', setStoryStylesApplyingScope);
+      window.removeEventListener('resize', setItemStylesApplyingScope);
+      window.removeEventListener('scroll', setItemStylesApplyingScope);
     });
   }
 
@@ -274,15 +295,15 @@ class InteractiveHelpController {
 
   register(popover: HelpPopoverController) {
     this.popoverController = popover;
-    this.showStory(this.activeIndex);
+    this.showItem(this.activeIndex);
   }
 
-  private waitForStoryChange(nextStory: Story|null) {
+  private waitForItemChange(nextItem: Story|Notification|null) {
 
-    this.styleSetState.waitingForStoryToChange = true;
+    this.styleSetState.waitingForItemToChange = true;
     this.popoverController.hide();
 
-    if (nextStory && nextStory.focusTo) {
+    if (nextItem && (nextItem.type === 'notification' || nextItem.focusTo)) {
       // full backdrop
       this.backdrop = {
         top: { left: 0, top: 0, right: 0, bottom: 0 },
@@ -356,10 +377,10 @@ class InteractiveHelpController {
     }
   }
 
-  private setStoryStyles() {
+  private setItemStyles() {
 
     const state = this.styleSetState;
-    const story = this.currentStory();
+    const item = this.currentItem();
 
     const debounce = () => {
       state.offsetStabileCheck = this.popoverController.calculateOffset();
@@ -370,7 +391,7 @@ class InteractiveHelpController {
       }
 
       if (state.debounceCount > 100) {
-        console.log(story);
+        console.log(item);
         throw new Error('Element not exist or does not stabilize');
       }
 
@@ -383,18 +404,24 @@ class InteractiveHelpController {
 
       if (offset && state.offsetStabileCheck && offset.left === state.offsetStabileCheck.left && offset.top === state.offsetStabileCheck.top) {
 
-        story.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
+        if (item.type === 'story') {
+          item.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
+        }
 
         if (!state.animating) {
           const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
-          angular.element(scrollElement).animate({scrollTop: offset.top - 100}, 100);
+          const scrollTo = item.type === 'story' ? offset.top - 100 : 0;
+          angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
           state.animating = true;
           debounce();
         } else {
           this.$scope.$apply(() => {
-            this.styleSetState.waitingForStoryToChange = false;
+            this.styleSetState.waitingForItemToChange = false;
             this.popoverOffset = offset;
-            this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(story));
+
+            if (item.type === 'story') {
+              this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(item));
+            }
           });
         }
       } else {
@@ -402,11 +429,11 @@ class InteractiveHelpController {
       }
     };
 
-    if (state.waitingForStoryToChange) {
+    if (state.waitingForItemToChange) {
       return;
     }
 
-    this.waitForStoryChange(story);
+    this.waitForItemChange(item);
 
     state.debounceCount = 0;
     state.animating = false;
@@ -414,53 +441,53 @@ class InteractiveHelpController {
     debounce();
   }
 
-  peekNext(): Story|null {
-    if (this.isCurrentLastStory()) {
+  peekNext(): Story|Notification|null {
+    if (this.isCurrentLastItem()) {
       return null;
     } else {
-      return this.storyLine.stories[this.activeIndex + 1];
+      return this.storyLine.items[this.activeIndex + 1];
     }
   }
 
-  nextStory() {
-    if (this.isCurrentLastStory()) {
+  nextItem() {
+    if (this.isCurrentLastItem()) {
       this.close(false);
     } else {
-      this.showStory(++this.activeIndex);
+      this.showItem(++this.activeIndex);
     }
   }
 
-  previousStory() {
-    if (this.isCurrentFirstStory()) {
+  previousItem() {
+    if (this.isCurrentFirstItem()) {
       this.close(true);
     } else {
-      this.showStory(--this.activeIndex);
+      this.showItem(--this.activeIndex);
     }
   }
 
-  isFirstStory(index: number) {
+  isFirstItem(index: number) {
     return index === 0;
   }
 
-  isLastStory(index: number) {
-    return index === this.storyLine.stories.length - 1;
+  isLastItem(index: number) {
+    return index === this.storyLine.items.length - 1;
   }
 
-  isCurrentFirstStory() {
-    return this.isFirstStory(this.activeIndex);
+  isCurrentFirstItem() {
+    return this.isFirstItem(this.activeIndex);
   }
 
-  isCurrentLastStory() {
-    return this.isLastStory(this.activeIndex);
+  isCurrentLastItem() {
+    return this.isLastItem(this.activeIndex);
   }
 
-  showStory(index: number) {
-    const story = this.storyLine.stories[index];
-    this.popoverController.show(story, this.isFirstStory(index), this.isLastStory(index));
+  showItem(index: number) {
+    const item = this.storyLine.items[index];
+    this.popoverController.show(item, this.isFirstItem(index), this.isLastItem(index));
   }
 
-  currentStory() {
-    return this.storyLine.stories[this.activeIndex];
+  currentItem() {
+    return this.storyLine.items[this.activeIndex];
   }
 
   close(cancel: boolean) {
@@ -485,8 +512,8 @@ mod.directive('helpPopover', () => {
         <span ng-class="ctrl.arrowClass"></span>
       
         <div class="help-content-wrapper">
-          <h3>{{ctrl.story.title | translate}}</h3>
-          <p>{{ctrl.story.content | translate}}</p>
+          <h3>{{ctrl.item.title | translate}}</h3>
+          <p>{{ctrl.item.content | translate}}</p>
           <button ng-show="ctrl.showPrevious" ng-click="ctrl.previous()" class="small button help-navigate" translate>previous</button>
           <button ng-show="ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-navigate" translate>next</button>
           <button ng-show="ctrl.showClose" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next" translate>close</button>
@@ -506,9 +533,8 @@ class HelpPopoverController {
 
   helpController: InteractiveHelpController;
 
-  story: Story;
+  item: Story|Notification;
   arrowClass: string[] = [];
-  // Styles are set manually instead of ng-if or ng-show because using them causes visual delay for buttons disappearing
   showNext: boolean;
   showPrevious: boolean;
   showClose: boolean;
@@ -522,21 +548,30 @@ class HelpPopoverController {
     return !this.ngModel || this.ngModel.$valid;
   }
 
-  show(story: Story, first: boolean, last: boolean) {
-    this.story = story;
-    this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
-    this.showNext = !last && !isClick(story.nextCondition);
-    this.showClose = last && !isClick(story.nextCondition);
-    this.showPrevious = !first && !story.cannotMoveBack;
-    this.ngModel = story.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
+  show(item: Story|Notification, first: boolean, last: boolean) {
+    this.item = item;
 
-    if ((story.nextCondition === 'valid-input' || story.initialInputValue) && !this.ngModel) {
-      throw new Error('ng-model does not exits for popover element');
-    }
+    if (item.type === 'story') {
+      this.arrowClass = ['help-arrow', `help-${item.popoverPosition}`];
+      this.showNext = !last && !isClick(item.nextCondition);
+      this.showClose = last && !isClick(item.nextCondition);
+      this.showPrevious = !first && !item.cannotMoveBack;
+      this.ngModel = item.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
 
-    if (story.initialInputValue && !this.ngModel!.$viewValue) {
-      this.ngModel!.$setViewValue(story.initialInputValue);
-      this.ngModel!.$render();
+      if ((item.nextCondition === 'valid-input' || item.initialInputValue) && !this.ngModel) {
+        throw new Error('ng-model does not exits for popover element');
+      }
+
+      if (item.initialInputValue && !this.ngModel!.$viewValue) {
+        this.ngModel!.$setViewValue(item.initialInputValue);
+        this.ngModel!.$render();
+      }
+    } else {
+      this.arrowClass = [];
+      this.showNext = !last;
+      this.showClose = last;
+      this.showPrevious = !first && !item.cannotMoveBack;
+      this.ngModel = null;
     }
   }
 
@@ -550,24 +585,30 @@ class HelpPopoverController {
   }
 
   next() {
-    this.helpController.nextStory();
+    this.helpController.nextItem();
   }
 
   previous() {
-    this.helpController.previousStory();
+    this.helpController.previousItem();
   }
 
   calculateOffset(): Positioning|null {
 
-    const element = this.story.popoverTo();
-    const position = this.story.popoverPosition;
+    const popoverWidth = this.$element.width();
+    const popoverHeight = this.$element.height();
+
+    // center notification
+    if (this.item.type === 'notification') {
+      return { top: window.innerHeight / 2 - popoverHeight / 2, left: window.innerWidth / 2 - popoverWidth / 2 };
+    }
+
+    const element = this.item.popoverTo();
+    const position = this.item.popoverPosition;
 
     if (!element || element.length === 0) {
       return null;
     }
 
-    const popoverWidth = this.$element.width();
-    const popoverHeight = this.$element.height();
     const left = element.offset().left;
     const top = element.offset().top;
     const width = element.width();

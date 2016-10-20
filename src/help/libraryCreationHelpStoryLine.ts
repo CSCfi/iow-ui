@@ -1,10 +1,10 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { StoryLine, Story } from './contract';
+import { StoryLine, createStory } from './contract';
 
 const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
 
-const selectGroup: Story = {
+const selectGroup = createStory({
 
   popoverTo: () => angular.element('#browse-panel .selectable-panel__list'),
   focusTo: () => ({
@@ -14,9 +14,9 @@ const selectGroup: Story = {
   title: 'Select group',
   content: 'Diipadaa',
   nextCondition: 'modifying-click'
-};
+});
 
-const startLibraryCreation: Story = {
+const startLibraryCreation = createStory({
 
   popoverTo: () => angular.element('#add-library-button'),
   focusTo: () => ({
@@ -26,9 +26,9 @@ const startLibraryCreation: Story = {
   title: 'Add library',
   content: 'Diipadaa',
   nextCondition: 'click'
-};
+});
 
-const enterLibraryPrefix: Story = {
+const enterLibraryPrefix = createStory({
 
   popoverTo: () => angular.element('.modal-dialog [data-title="Prefix"] input'),
   focusTo: () => ({
@@ -41,9 +41,9 @@ const enterLibraryPrefix: Story = {
   nextCondition: 'valid-input',
   cannotMoveBack: true,
   initialInputValue: 'testi'
-};
+});
 
-const enterLibraryLabel: Story = {
+const enterLibraryLabel = createStory({
 
   popoverTo: () => angular.element('.modal-dialog [data-title="Library label"] input'),
   focusTo: () => ({
@@ -55,9 +55,9 @@ const enterLibraryLabel: Story = {
   content: 'Library label info',
   nextCondition: 'valid-input',
   initialInputValue: 'Testikirjasto'
-};
+});
 
-const enterLibraryLanguage: Story = {
+const enterLibraryLanguage = createStory({
 
   popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
   focusTo: () => ({
@@ -68,9 +68,9 @@ const enterLibraryLanguage: Story = {
   title: 'Model languages',
   content: 'Diipadaa',
   nextCondition: 'valid-input'
-};
+});
 
-const createLibrary: Story = {
+const createLibrary = createStory({
 
   popoverTo: () => angular.element('.modal-dialog button.create'),
   focusTo: () => ({
@@ -80,9 +80,9 @@ const createLibrary: Story = {
   title: 'Create new',
   content: 'Diipadaa',
   nextCondition: 'modifying-click'
-};
+});
 
-const saveLibrary: Story = {
+const saveLibrary = createStory({
 
   popoverTo: () => angular.element('button.save'),
   focusTo: () => ({
@@ -93,7 +93,7 @@ const saveLibrary: Story = {
   content: 'Diipadaa',
   nextCondition: 'modifying-click',
   cannotMoveBack: true
-};
+});
 
 export class LibraryCreationStoryLine implements StoryLine {
 
@@ -109,7 +109,7 @@ export class LibraryCreationStoryLine implements StoryLine {
     return 'Diipadaa';
   }
 
-  get stories() {
+  get items() {
     return [
       selectGroup,
       startLibraryCreation,

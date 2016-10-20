@@ -8,12 +8,26 @@ export type NextCondition = 'explicit'         // explicit next button to contin
 export interface StoryLine {
   title: string;
   description: string;
-  stories: Story[];
+  items: (Story|Notification)[];
   onComplete?: () => void;
   onCancel?: () => void;
 }
 
-export interface Story {
+export interface Notification extends NotificationDetails {
+  type: 'notification';
+}
+
+export interface NotificationDetails {
+  title: string;
+  content: string;
+  cannotMoveBack?: boolean;
+}
+
+export interface Story extends StoryDetails {
+  type: 'story';
+}
+
+export interface StoryDetails {
   popoverTo: () => JQuery;
   popoverPosition: PopoverPosition;
   focusTo?: () => {
@@ -25,4 +39,17 @@ export interface Story {
   nextCondition: NextCondition;
   initialInputValue?: any;
   cannotMoveBack?: boolean;
+}
+
+
+export function createStory(storyDetails: StoryDetails) {
+  return Object.assign({}, storyDetails, {
+    type: 'story' as 'story'
+  });
+}
+
+export function createNotification(notificationDetails: NotificationDetails): Notification {
+  return Object.assign({}, notificationDetails, {
+    type: 'notification' as 'notification'
+  });
 }
