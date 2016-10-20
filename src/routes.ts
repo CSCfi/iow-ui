@@ -20,7 +20,7 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
       }
     })
     .when('/newModel', {
-      template: '<new-model prefix="prefix" label="label" group="group" languages="languages" type="type" redirect="redirect"></new-model>',
+      template: '<new-model-page prefix="prefix" label="label" group="group" languages="languages" type="type" redirect="redirect"></new-model-page>',
       controller($scope: any, $route: route.IRouteService) {
         const params: any = $route.current!.params;
 

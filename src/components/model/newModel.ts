@@ -6,7 +6,7 @@ import { Language } from '../../utils/language';
 import { KnownModelType } from '../../entities/type';
 import { Model } from '../../entities/model';
 
-mod.directive('newModel', () => {
+mod.directive('newModelPage', () => {
   return {
     restrict: 'E',
     scope: {
@@ -17,14 +17,14 @@ mod.directive('newModel', () => {
       type: '=',
       redirect: '='
     },
-    template: require('./newModel.html'),
+    template: require('./newModelPage.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller: NewModelController
+    controller: NewModelPageController
   };
 });
 
-export class NewModelController {
+export class NewModelPageController {
 
   prefix: string;
   label: string;
