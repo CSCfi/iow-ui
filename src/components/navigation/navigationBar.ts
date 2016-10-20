@@ -67,7 +67,7 @@ class NavigationController {
   }
 
   canStartHelp() {
-    return !config.production;
+    return !config.production && this.showHelp;
   }
 
   startHelp() {
