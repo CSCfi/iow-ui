@@ -1,10 +1,10 @@
 import { module as mod }  from '../module';
 import { IAttributes, IScope } from 'angular';
-import * as _ from 'lodash';
-import Dictionary = _.Dictionary;
 import { EditableForm } from '../form/editableEntityController';
 import { Referrer, Usage } from '../../entities/usage';
 import { LanguageContext } from '../../entities/contract';
+import { groupBy } from '../../utils/array';
+import { stringMapToObject } from '../../utils/object';
 
 interface UsageAttributes extends IAttributes {
   showLinks: string;
@@ -35,14 +35,14 @@ class UsageController {
   exclude: (referrer: Referrer) => boolean;
   context: LanguageContext;
   showLinks: () => boolean;
-  referrers: Dictionary<Referrer[]>;
+  referrers: { [type: string]: Referrer[] };
 
   /* @ngInject */
   constructor($scope: IScope) {
     $scope.$watch(() => this.usage, usage => {
       if (usage) {
-        const excludeFilter = (referrer: Referrer) => !this.exclude || !this.exclude(referrer);
-        this.referrers = _.groupBy<Referrer>(usage.referrers.filter(excludeFilter), 'normalizedType');
+        const excludeFilter = (referrer: Referrer) => referrer.normalizedType && !this.exclude || !this.exclude(referrer);
+        this.referrers = stringMapToObject(groupBy(usage.referrers.filter(excludeFilter), referrer => referrer.normalizedType!));
       } else {
         this.referrers = {};
       }

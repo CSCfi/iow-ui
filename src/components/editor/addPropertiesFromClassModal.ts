@@ -1,12 +1,11 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import gettextCatalog = angular.gettext.gettextCatalog;
-import * as _ from 'lodash';
-import Dictionary = _.Dictionary;
 import { LanguageService } from '../../services/languageService';
 import { Property, Class } from '../../entities/class';
 import { LanguageContext } from '../../entities/contract';
-import { flatten } from '../../utils/array';
+import { flatten, groupBy } from '../../utils/array';
+import { stringMapToObject } from '../../utils/object';
 
 const noExclude = (_property: Property) => false;
 
@@ -33,7 +32,7 @@ export class AddPropertiesFromClassModal {
 
 export class AddPropertiesFromClassModalController {
 
-  properties: Dictionary<Property[]>;
+  properties: { [type: string]: Property[] };
   selectedProperties: Property[];
 
   /* @ngInject */
@@ -44,8 +43,9 @@ export class AddPropertiesFromClassModalController {
               public context: LanguageContext,
               private exclude: (property: Property) => boolean) {
 
-      this.properties = _.groupBy<Property>(klass.properties.map(property => property.copy()), 'normalizedPredicateType');
-      this.selectAll();
+    const copiedPropertiesWithKnownType = klass.properties.filter(p => p.normalizedPredicateType).map(property => property.copy());
+    this.properties = stringMapToObject(groupBy(copiedPropertiesWithKnownType, property => property.normalizedPredicateType!));
+    this.selectAll();
   }
 
   isExcluded(property: Property) {
