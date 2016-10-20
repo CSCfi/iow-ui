@@ -150,8 +150,35 @@ export function findFirstMatching<T>(arr: T[], values: T[], equals: EqualityChec
   return first(arr, item => contains(values, item, equals));
 }
 
-export function remove<T>(arr: T[], item: T): void {
-  for (let itemIndex = arr.indexOf(item); itemIndex !== -1; itemIndex = arr.indexOf(item)) {
-    arr.splice(itemIndex, 1);
+export function removeMatching<T>(arr: T[], predicate: (item: T) => boolean) {
+
+  const matchingIndices: number[] = [];
+
+  for (let i = arr.length; i >= 0; i--) {
+    const item = arr[i];
+    if (predicate(item)) {
+      matchingIndices.push(i);
+    }
   }
+
+  for (const index of matchingIndices) {
+    arr.splice(index, 1);
+  }
+}
+
+export function remove<T>(arr: T[], item: T): void {
+  removeMatching(arr, i => i === item)
+}
+
+export function flatten<T>(arr: T[][]) {
+
+  const result: T[] = [];
+
+  for (const innerArr of arr) {
+    for (const item of innerArr) {
+      result.push(item);
+    }
+  }
+
+  return result;
 }

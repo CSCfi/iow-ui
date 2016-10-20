@@ -1,6 +1,6 @@
 import {
   arraysAreEqual, findFirstMatching, contains, containsAny, containsAll, any, all, resetWith,
-  swapElements, moveElement, remove
+  swapElements, moveElement, remove, flatten, removeMatching
 } from './array';
 
 describe('First matching', () => {
@@ -123,5 +123,29 @@ describe('Removing element from array', () => {
     const a = [1, 2, 3, 3, 5, 3];
     remove(a, 3);
     expect([1, 2, 5]).toEqual(a);
+  });
+});
+
+describe('Removing matching element from array', () => {
+  it('should remove only matching item', () => {
+    const a = [1, 2, 3, 4, 5];
+    removeMatching(a, item => item === 3);
+    expect([1, 2, 4, 5]).toEqual(a);
+  });
+
+  it('should remove all matching items', () => {
+    const a = [1, 2, 3, 3, 5, 3];
+    removeMatching(a, item => item === 3);
+    expect([1, 2, 5]).toEqual(a);
+  });
+});
+
+describe('Flattening arrays', () => {
+  it('should work', () => {
+    const a = [
+      [1, 3, 5, 7],
+      [2, 4, 6, 8, 10]
+    ];
+    expect([1, 3, 5, 7, 2, 4, 6, 8, 10]).toEqual(flatten(a));
   });
 });
