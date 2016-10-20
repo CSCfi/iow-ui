@@ -125,4 +125,8 @@ export class LibraryCreationStoryLine implements StoryLine {
     this.$uibModalStack.dismissAll();
     this.$location.url('/');
   }
+
+  onComplete() {
+    this.$location.url('/');
+  }
 }
