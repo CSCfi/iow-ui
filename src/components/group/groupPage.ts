@@ -20,20 +20,20 @@ import { InteractiveHelp } from '../common/interactiveHelp';
 import { NotificationModal } from '../common/notificationModal';
 import { LibraryCreationStoryLine } from '../../help/libraryCreationHelpStoryLine';
 
-mod.directive('group', () => {
+mod.directive('groupPage', () => {
   return {
     restrict: 'E',
-    template: require('./group.html'),
+    template: require('./groupPage.html'),
     controllerAs: 'ctrl',
     scope: {
       groupId: '='
     },
     bindToController: true,
-    controller: GroupController
+    controller: GroupPageController
   };
 });
 
-class GroupController extends EditableEntityController<Group> {
+class GroupPageController extends EditableEntityController<Group> {
 
   loading: boolean = true;
   groupId: Uri;

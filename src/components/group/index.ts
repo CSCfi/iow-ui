@@ -2,6 +2,6 @@ import { AddModelModal } from './addModelModal';
 import { module as mod }  from './module';
 export default mod.name;
 
-import './group';
+import './groupPage';
 
 mod.service('addModelModal', AddModelModal);

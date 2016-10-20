@@ -14,7 +14,7 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
       template: '<user></user>'
     })
     .when('/group', {
-      template: '<group group-id="groupId"></group>',
+      template: '<group-page group-id="groupId"></group-page>',
       controller($scope: any, $route: route.IRouteService) {
         $scope.groupId = new Uri($route.current!.params.id, {});
       }
