@@ -642,9 +642,23 @@ class HelpPopoverController {
           return { top: top, left: rightPopoverLeft };
         }
       case 'top':
-        return { top: top - popoverHeight - arrow, left: left };
+        const topPopoverRight = documentWidth - (left + popoverWidth);
+        const topWidthOffScreen = topPopoverRight < 0 ? -topPopoverRight : 0;
+
+        if (topWidthOffScreen) {
+          return {top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen };
+        } else {
+          return {top: top - popoverHeight - arrow, left: left};
+        }
       case 'bottom':
-        return { top: top + height + arrow, left: left };
+        const bottomPopoverRight = documentWidth - (left + popoverWidth);
+        const bottomWidthOffScreen = bottomPopoverRight < 0 ? -bottomPopoverRight : 0;
+
+        if (bottomWidthOffScreen) {
+          return { top: top + height + arrow, left: left, width: popoverWidth - bottomWidthOffScreen };
+        } else {
+          return { top: top + height + arrow, left: left };
+        }
       default:
         return assertNever(position);
     }
