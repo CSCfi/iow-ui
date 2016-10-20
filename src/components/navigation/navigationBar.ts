@@ -1,10 +1,14 @@
+import { module as mod }  from './module';
 import * as _ from 'lodash';
 import { LanguageService, localizationStrings } from '../../services/languageService';
 import { UserService } from '../../services/userService';
 import { LoginModal } from './loginModal';
-import { module as mod }  from './module';
 import { availableUILanguages, UILanguage } from '../../utils/language';
 import { User } from '../../entities/user';
+import { IScope, ILocationService } from 'angular';
+import { config } from '../../config';
+import { LibraryCreationStoryLine } from '../../help/libraryCreationHelpStoryLine';
+import { InteractiveHelp } from '../common/interactiveHelp';
 
 const logoImage = require('../../assets/logo-01.svg');
 
@@ -21,13 +25,22 @@ mod.directive('navigationBar', () => {
 
 class NavigationController {
   languages: { code: UILanguage, name: string }[];
+  showHelp: boolean;
 
   /* @ngInject */
-  constructor(private languageService: LanguageService, private userService: UserService, private loginModal: LoginModal) {
+  constructor($scope: IScope,
+              $location: ILocationService,
+              private languageService: LanguageService,
+              private userService: UserService,
+              private loginModal: LoginModal,
+              private interactiveHelp: InteractiveHelp,
+              private libraryCreationStoryLine: LibraryCreationStoryLine) {
     this.languages = _.map(availableUILanguages, language => {
       const stringsForLang = localizationStrings[language];
       return { code: language, name: (stringsForLang && stringsForLang['In language']) || language };
     });
+
+    $scope.$watch(() => $location.path(), path => this.showHelp = path === '/');
   }
 
   get logoImage() {
@@ -52,5 +65,13 @@ class NavigationController {
 
   openLogin() {
     this.loginModal.open();
+  }
+
+  canStartHelp() {
+    return !config.production;
+  }
+
+  startHelp() {
+    this.interactiveHelp.open(this.libraryCreationStoryLine);
   }
 }

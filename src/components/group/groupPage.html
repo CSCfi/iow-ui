@@ -12,9 +12,6 @@
           <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
           <button id="add-library-button" type="button" class="btn btn-default right" ng-click="ctrl.addModel('library')" ng-if="ctrl.canAddModel()" translate>Add library</button>
           <button id="add-profile-button" type="button" class="btn btn-default right" ng-click="ctrl.addModel('profile')" ng-if="ctrl.canAddModel()" translate>Add profile</button>
-          <button type="button" class="btn btn-default right info" ng-click="ctrl.startHelp()" ng-show="ctrl.canStartHelp()" uib-tooltip="{{'Start help' | translate}}">
-            <span class="glyphicon glyphicon-info-sign"></span>
-          </button>
         </editable-entity-buttons>
 
         <div class="col-md-5">

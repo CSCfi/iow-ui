@@ -15,10 +15,7 @@ import { Group } from '../../entities/group';
 import { ModelListItem } from '../../entities/model';
 import { KnownModelType } from '../../entities/type';
 import { LanguageContext } from '../../entities/contract';
-import { config } from '../../config';
-import { InteractiveHelp } from '../common/interactiveHelp';
 import { NotificationModal } from '../common/notificationModal';
-import { LibraryCreationStoryLine } from '../../help/libraryCreationHelpStoryLine';
 
 mod.directive('groupPage', () => {
   return {
@@ -53,9 +50,7 @@ class GroupPageController extends EditableEntityController<Group> {
               private addModelModal: AddModelModal,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
-              notificationModal: NotificationModal,
-              private interactiveHelp: InteractiveHelp,
-              private libraryCreationStoryLine: LibraryCreationStoryLine) {
+              notificationModal: NotificationModal) {
     super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
 
     $scope.$watch(() => this.groupId, groupId => {
@@ -132,16 +127,5 @@ class GroupPageController extends EditableEntityController<Group> {
 
   getContext(): LanguageContext {
     return this.group;
-  }
-
-  canStartHelp() {
-    return !config.production && this.canAddModel();
-  }
-
-  startHelp() {
-    this.userService.ifStillLoggedIn(
-      () => this.interactiveHelp.open(this.libraryCreationStoryLine),
-      () => this.notificationModal.openNotLoggedIn()
-    );
   }
 }

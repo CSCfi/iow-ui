@@ -4,6 +4,18 @@ import { StoryLine, Story } from './contract';
 
 const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
 
+const selectGroup: Story = {
+
+  popoverTo: () => angular.element('#browse-panel'),
+  focusTo: () => ({
+    element: angular.element('#browse-panel .selectable-panel__list')
+  }),
+  popoverPosition: 'left',
+  title: 'Select group',
+  content: 'Diipadaa',
+  nextCondition: 'modifying-click'
+};
+
 const startLibraryCreation: Story = {
 
   popoverTo: () => angular.element('#add-library-button'),
@@ -91,6 +103,7 @@ export class LibraryCreationStoryLine implements StoryLine {
 
   get stories() {
     return [
+      selectGroup,
       startLibraryCreation,
       enterLibraryPrefix,
       enterLibraryLanguage,
