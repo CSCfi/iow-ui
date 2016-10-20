@@ -25,7 +25,8 @@ const startLibraryCreation = createStory({
   popoverPosition: 'left',
   title: 'Add library',
   content: 'Diipadaa',
-  nextCondition: 'click'
+  nextCondition: 'click',
+  cannotMoveBack: true
 });
 
 const enterLibraryPrefix = createStory({
