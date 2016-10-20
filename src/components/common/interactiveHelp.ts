@@ -6,7 +6,7 @@ import { assertNever } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
-import { StoryLine, NextCondition, Story, Notification } from '../../help/contract';
+import { StoryLine, NextCondition, Story, Notification, Click, ModifyingClick } from '../../help/contract';
 
 interface Positioning {
   left: number;
@@ -63,8 +63,8 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
                           'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +
                           'iframe, object, embed, *[tabindex], *[contenteditable=true]';
 
-function isClick(nextCondition: NextCondition) {
-  return nextCondition === 'click' || nextCondition === 'modifying-click';
+function isClick(nextCondition: NextCondition): nextCondition is Click|ModifyingClick {
+  return nextCondition.type === 'click' || nextCondition.type === 'modifying-click';
 }
 
 class InteractiveHelpController {
@@ -172,7 +172,9 @@ class InteractiveHelpController {
 
     const manageNextClick = (currentStory: Story) => {
 
-      if (currentStory.nextCondition === 'modifying-click') {
+      const nextCondition = currentStory.nextCondition;
+
+      if (nextCondition.type === 'modifying-click') {
 
         let tryCount = 0;
 
@@ -188,7 +190,7 @@ class InteractiveHelpController {
             return;
           }
 
-          if (elementExists(currentStory.popoverTo())) {
+          if (elementExists(nextCondition.element())) {
             tryCount++;
             setTimeout(waitForElementToDisappear, 50);
           } else {
@@ -229,13 +231,13 @@ class InteractiveHelpController {
       const item = this.currentItem();
 
       if (item && item.type === 'story' && isClick(item.nextCondition)) {
-        const popoverElement = item.popoverTo();
+        const continueToNextElement = item.nextCondition.element();
 
-        if (elementExists(popoverElement)) {
-          if (isTargetElementInsideElement(event, popoverElement[0])) {
+        if (elementExists(continueToNextElement)) {
+          if (isTargetElementInsideElement(event, continueToNextElement[0])) {
             manageNextClick(item);
           }
-        } else if (item.nextCondition === 'modifying-click') {
+        } else if (item.nextCondition.type === 'modifying-click') {
           manageNextClick(item);
         } else {
           throw new Error('Popover element not found');
@@ -556,9 +558,12 @@ class HelpPopoverController {
       this.showNext = !last && !isClick(item.nextCondition);
       this.showClose = last && !isClick(item.nextCondition);
       this.showPrevious = !first && !item.cannotMoveBack;
-      this.ngModel = item.popoverTo().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
 
-      if ((item.nextCondition === 'valid-input' || item.initialInputValue) && !this.ngModel) {
+      if (item.nextCondition.type === 'valid-input') {
+        this.ngModel = item.nextCondition.element().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
+      }
+
+      if ((item.nextCondition.type === 'valid-input' || item.initialInputValue) && !this.ngModel) {
         throw new Error('ng-model does not exits for popover element');
       }
 

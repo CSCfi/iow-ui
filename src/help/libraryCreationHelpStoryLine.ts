@@ -1,98 +1,108 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { StoryLine, createStory, createNotification } from './contract';
+import {
+  StoryLine, createStory, createNotification, createModifyingClickNextCondition,
+  createClickNextConfition, createValidInputNextCondition
+} from './contract';
 
 const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
 
+const selectGroupElement = () => angular.element('#browse-panel .selectable-panel__list');
 const selectGroup = createStory({
 
-  popoverTo: () => angular.element('#browse-panel .selectable-panel__list'),
+  popoverTo: selectGroupElement,
   focusTo: () => ({
-    element: angular.element('#browse-panel .selectable-panel__list')
+    element: selectGroupElement()
   }),
   popoverPosition: 'left',
   title: 'Select group',
   content: 'Diipadaa',
-  nextCondition: 'modifying-click'
+  nextCondition: createModifyingClickNextCondition(selectGroupElement)
 });
 
+const startLibraryCreationElement = () => angular.element('#add-library-button');
 const startLibraryCreation = createStory({
 
-  popoverTo: () => angular.element('#add-library-button'),
+  popoverTo: startLibraryCreationElement,
   focusTo: () => ({
-    element: angular.element('#add-library-button')
+    element: startLibraryCreationElement()
   }),
   popoverPosition: 'left',
   title: 'Add library',
   content: 'Diipadaa',
-  nextCondition: 'click',
+  nextCondition: createClickNextConfition(startLibraryCreationElement),
   cannotMoveBack: true
 });
 
+const enterLibraryPrefixElement = () => angular.element('.modal-dialog [data-title="Prefix"]');
 const enterLibraryPrefix = createStory({
 
-  popoverTo: () => angular.element('.modal-dialog [data-title="Prefix"] input'),
+  popoverTo: () => enterLibraryPrefixElement().find('input'),
   focusTo: () => ({
-    element: angular.element('.modal-dialog [data-title="Prefix"]'),
+    element: enterLibraryPrefixElement(),
     margin: editableMargin
   }),
   popoverPosition: 'left',
   title: 'Prefix',
   content: 'Prefix info',
-  nextCondition: 'valid-input',
+  nextCondition: createValidInputNextCondition(enterLibraryPrefixElement),
   cannotMoveBack: true,
   initialInputValue: 'testi'
 });
 
+const enterLibraryLabelElement = () => angular.element('.modal-dialog [data-title="Library label"]');
 const enterLibraryLabel = createStory({
 
-  popoverTo: () => angular.element('.modal-dialog [data-title="Library label"] input'),
+  popoverTo: () => enterLibraryLabelElement().find('input'),
   focusTo: () => ({
-    element: angular.element('.modal-dialog [data-title="Library label"]'),
+    element: enterLibraryLabelElement(),
     margin: editableMargin
   }),
   popoverPosition: 'left',
   title: 'Library label',
   content: 'Library label info',
-  nextCondition: 'valid-input',
+  nextCondition: createValidInputNextCondition(() => enterLibraryLabelElement().find('input')),
   initialInputValue: 'Testikirjasto'
 });
 
+const enterLibraryLanguageElement = () => angular.element('editable-multiple-language-select editable-multiple');
 const enterLibraryLanguage = createStory({
 
-  popoverTo: () => angular.element('editable-multiple-language-select editable-multiple'),
+  popoverTo: enterLibraryLanguageElement,
   focusTo: () => ({
-    element: angular.element('editable-multiple-language-select div.editable-wrap'),
+    element: enterLibraryLanguageElement().find('div.editable-wrap'),
     margin: Object.assign({}, editableMargin, { bottom: 10 })
   }),
   popoverPosition: 'left',
   title: 'Model languages',
   content: 'Diipadaa',
-  nextCondition: 'valid-input'
+  nextCondition: createValidInputNextCondition(enterLibraryLanguageElement)
 });
 
+const createLibraryElement = () => angular.element('.modal-dialog button.create');
 const createLibrary = createStory({
 
-  popoverTo: () => angular.element('.modal-dialog button.create'),
+  popoverTo: createLibraryElement,
   focusTo: () => ({
-    element: angular.element('.modal-dialog button.create')
+    element: createLibraryElement()
   }),
   popoverPosition: 'left',
   title: 'Create new',
   content: 'Diipadaa',
-  nextCondition: 'modifying-click'
+  nextCondition: createModifyingClickNextCondition(createLibraryElement)
 });
 
+const saveLibraryElement = () => angular.element('button.save');
 const saveLibrary = createStory({
 
-  popoverTo: () => angular.element('button.save'),
+  popoverTo: saveLibraryElement,
   focusTo: () => ({
-    element: angular.element('button.save')
+    element: saveLibraryElement()
   }),
   popoverPosition: 'left',
   title: 'Save changes',
   content: 'Diipadaa',
-  nextCondition: 'modifying-click',
+  nextCondition: createModifyingClickNextCondition(saveLibraryElement),
   cannotMoveBack: true
 });
 

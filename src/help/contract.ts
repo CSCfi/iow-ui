@@ -1,9 +1,17 @@
-export type PopoverPosition = 'top'|'right'|'left'|'bottom';
+export type PopoverPosition = 'top'
+                            | 'right'
+                            | 'left'
+                            | 'bottom';
 
-export type NextCondition = 'explicit'         // explicit next button to continue
-  | 'click'            // click on element to continue
-  | 'modifying-click'  // click on element which is expected to disappear to continue
-  | 'valid-input';     // valid input is needed before allowing to continue
+export type Explicit =       { type: 'explicit' };                                      // explicit next button to continue
+export type Click =          { type: 'click', element: () => JQuery };                  // click on element to continue
+export type ModifyingClick = { type: 'modifying-click', element: () => JQuery };        // click on element which is expected to disappear to continue
+export type ValidInput =     { type: 'valid-input', element: () => JQuery }             // valid input is needed before allowing to continue
+
+export type NextCondition = Explicit
+                          | Click
+                          | ModifyingClick
+                          | ValidInput
 
 export interface StoryLine {
   title: string;
@@ -52,4 +60,20 @@ export function createNotification(notificationDetails: NotificationDetails): No
   return Object.assign({}, notificationDetails, {
     type: 'notification' as 'notification'
   });
+}
+
+export function createExplicitNextCondition(): Explicit {
+  return { type: 'explicit' };
+}
+
+export function createClickNextConfition(element: () => JQuery): Click {
+  return { type: 'click', element };
+}
+
+export function createModifyingClickNextCondition(element: () => JQuery): ModifyingClick {
+  return { type: 'modifying-click', element };
+}
+
+export function createValidInputNextCondition(element: () => JQuery): ValidInput {
+  return { type: 'valid-input', element };
 }
