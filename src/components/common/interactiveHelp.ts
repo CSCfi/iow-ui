@@ -340,8 +340,8 @@ class InteractiveHelpController {
     const marginLeft = focusTo.margin && focusTo.margin.left || 0;
 
     return {
-      width: Math.trunc(element.outerWidth(false)) + marginLeft + marginRight,
-      height: Math.trunc(element.outerHeight(false)) + marginTop + marginBottom,
+      width: Math.trunc(element.prop('offsetWidth')) + marginLeft + marginRight,
+      height: Math.trunc(element.prop('offsetHeight')) + marginTop + marginBottom,
       left: Math.trunc(focusToElementOffset.left) - marginLeft,
       top: Math.trunc(focusToElementOffset.top) - marginTop
     };

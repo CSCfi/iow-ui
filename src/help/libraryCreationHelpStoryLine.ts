@@ -5,7 +5,7 @@ import {
   createClickNextConfition, createValidInputNextCondition
 } from './contract';
 
-const editableMargin = { left: 15, right: 15, top: 5, bottom: -10 };
+const editableMargin = { left: 20, right: 20 };
 
 const selectGroupElement = () => angular.element('#browse-panel .selectable-panel__list');
 const selectGroup = createStory({
@@ -36,7 +36,7 @@ const enterLibraryPrefix = createStory({
 
   popoverTo: enterLibraryPrefixInputElement,
   focusTo: {
-    element: enterLibraryPrefixElement,
+    element: () => enterLibraryPrefixElement().find('.editable-wrap'),
     margin: editableMargin
   },
   popoverPosition: 'left',
@@ -56,7 +56,7 @@ const enterLibraryLabel = createStory({
 
   popoverTo: enterLibraryLabelInputElement,
   focusTo: {
-    element: enterLibraryLabelElement,
+    element: () => enterLibraryLabelElement().find('.editable-wrap'),
     margin: editableMargin
   },
   popoverPosition: 'left',
@@ -72,10 +72,10 @@ const enterLibraryLabel = createStory({
 const enterLibraryLanguageElement = () => angular.element('editable-multiple-language-select editable-multiple');
 const enterLibraryLanguage = createStory({
 
-  popoverTo: enterLibraryLanguageElement,
+  popoverTo: () => enterLibraryLanguageElement().find('.multi-input'),
   focusTo: {
-    element: () => enterLibraryLanguageElement().find('div.editable-wrap'),
-    margin: Object.assign({}, editableMargin, { bottom: 10 })
+    element: () => enterLibraryLanguageElement().find('.editable-wrap'),
+    margin: Object.assign({}, editableMargin, { bottom: 15 })
   },
   popoverPosition: 'left',
   title: 'Model languages',
