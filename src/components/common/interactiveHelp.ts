@@ -352,36 +352,37 @@ class InteractiveHelpController {
   }
 
   private calculateBackdrop(positioning: Positioning|null) {
-    if (positioning) {
-      return {
-        top: {
-          left: 0,
-          top: 0,
-          right: 0,
-          height: positioning.top - window.scrollY
-        },
-        right: {
-          left: positioning.left + positioning.width,
-          top: positioning.top - window.scrollY,
-          width: this.$document.width() - positioning.left - positioning.width,
-          height: positioning.height
-        },
-        bottom: {
-          left: 0,
-          top: positioning.top + positioning.height - window.scrollY,
-          right: 0,
-          bottom: 0
-        },
-        left: {
-          left: 0,
-          top: positioning.top - window.scrollY,
-          width: positioning.left,
-          height: positioning.height
-        }
-      };
-    } else {
+
+    if (!positioning) {
       return null;
     }
+
+    return {
+      top: {
+        left: 0,
+        top: 0,
+        right: 0,
+        height: positioning.top - window.scrollY
+      },
+      right: {
+        left: positioning.left + positioning.width,
+        top: positioning.top - window.scrollY,
+        width: this.$document.width() - positioning.left - positioning.width,
+        height: positioning.height
+      },
+      bottom: {
+        left: 0,
+        top: positioning.top + positioning.height - window.scrollY,
+        right: 0,
+        bottom: 0
+      },
+      left: {
+        left: 0,
+        top: positioning.top - window.scrollY,
+        width: positioning.left,
+        height: positioning.height
+      }
+    };
   }
 
   private setItemStyles() {
