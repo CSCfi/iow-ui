@@ -17,12 +17,6 @@ interface Positioning {
   bottom?: number;
 }
 
-interface StyleSetState {
-  debounceHandle?: any;
-  debounceCount: number;
-  animating: boolean;
-}
-
 export class InteractiveHelp {
 
   /* @ngInject */
@@ -72,11 +66,6 @@ class InteractiveHelpController {
   activeIndex = 0;
   backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
   validationNgModel: INgModelController|null;
-
-  private styleSetState: StyleSetState = {
-    debounceCount: 0,
-    animating: false
-  };
 
   /* @ngInject */
   constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, private $document: IDocumentService, private storyLine: StoryLine) {
@@ -182,9 +171,9 @@ class InteractiveHelpController {
           if (tryCount > 30) {
             // reset values to state as before wait
             $scope.$apply(() => {
-              this.popoverController.show();
-              this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(currentStory));
-              this.popoverController.updateOffset();
+              this.popoverController.show(false);
+              this.popoverController.updatePositioning();
+              this.updateBackdrop();
             });
             return;
           }
@@ -193,10 +182,7 @@ class InteractiveHelpController {
             tryCount++;
             setTimeout(waitForElementToDisappear, 20);
           } else {
-            $scope.$apply(() => {
-              this.nextItem();
-              this.popoverController.show();
-            });
+            $scope.$apply(() => this.nextItem());
           }
         };
 
@@ -204,7 +190,10 @@ class InteractiveHelpController {
 
         // if next not already applied
         if (tryCount > 0) {
-          $scope.$apply(() => this.waitForItemChange(this.peekNext()));
+          $scope.$apply(() => {
+            this.popoverController.hide();
+            this.updateBackdrop(true);
+          });
         }
 
       } else {
@@ -214,7 +203,7 @@ class InteractiveHelpController {
 
     const keyDownListener = (event: JQueryEventObject) => {
 
-      const item = this.currentItem();
+      const item = requireDefined(this.item);
 
       switch (event.which) {
         case tab:
@@ -229,7 +218,7 @@ class InteractiveHelpController {
     };
 
     const clickListener = (event: JQueryEventObject) => {
-      const item = this.currentItem();
+      const item = this.item;
 
       if (item && item.type === 'story' && isClick(item.nextCondition)) {
         const continueToNextElement = item.nextCondition.element();
@@ -257,42 +246,20 @@ class InteractiveHelpController {
       $document.off('click', clickListener);
     });
 
-
     const storyFocus = () => {
-      const item = this.currentItem();
+      const item = requireDefined(this.item);
       return item.type === 'story' ? InteractiveHelpController.calculateFocus(item) : null;
     };
 
-    const storyPopoverOffset = () => {
-      const item = this.currentItem();
-      return item.type === 'story' && item.popoverTo().offset();
-    };
+    $scope.$watch(storyFocus, () => this.updateBackdrop(), true);
+    const setBackDropApplyingScope = () => $scope.$apply(() => this.updateBackdrop());
 
-    const ifChangeNotInProgress = <T> (cb: (newItem: T, oldItem: T) => any) => {
-      return (newItem: T, oldItem: T) => {
-        if (!this.popoverController.hidden) {
-          return cb(newItem, oldItem);
-        }
-      };
-    };
-
-    const setBackdrop = (positioning: Positioning|null) => {
-      this.backdrop = this.calculateBackdrop(positioning);
-    };
-
-    $scope.$watch<Positioning|null>(storyFocus, ifChangeNotInProgress(setBackdrop), true);
-    $scope.$watch(storyPopoverOffset, ifChangeNotInProgress(this.setItemStyles.bind(this)), true);
-
-    $scope.$watch(() => this.item, () => this.setItemStyles());
-
-    const setItemStylesApplyingScope = () => $scope.$apply(() => this.setItemStyles());
-
-    window.addEventListener('resize', setItemStylesApplyingScope);
-    window.addEventListener('scroll', setItemStylesApplyingScope);
+    window.addEventListener('resize', setBackDropApplyingScope);
+    window.addEventListener('scroll', setBackDropApplyingScope);
 
     $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', setItemStylesApplyingScope);
-      window.removeEventListener('scroll', setItemStylesApplyingScope);
+      window.removeEventListener('resize', setBackDropApplyingScope);
+      window.removeEventListener('scroll', setBackDropApplyingScope);
     });
   }
 
@@ -300,53 +267,46 @@ class InteractiveHelpController {
     this.popoverController = popover;
   }
 
-  private waitForItemChange(nextItem: Story|Notification|null) {
+  private updateBackdrop(next = false) {
 
-    this.popoverController.hide();
-
-    if (nextItem && (nextItem.type === 'notification' || nextItem.focusTo)) {
-      // full backdrop
-      this.backdrop = {
-        top: { left: 0, top: 0, right: 0, bottom: 0 },
-        right: { left: 0, top: 0, width: 0, height: 0 },
-        bottom: { left: 0, top: 0, width: 0, height: 0 },
-        left: { left: 0, top: 0, width: 0, height: 0 }
-      };
-    } else {
-      // hide backdrop
-      this.backdrop = null;
-    }
-  }
-
-  private static calculateFocus(story: Story) {
-
-    if (!story || !story.focusTo) {
-      return null;
-    }
-
-    const focusTo = story.focusTo;
-    const element = story.focusTo.element();
-
-    if (!element || element.length === 0) {
-      return null;
-    }
-
-    const focusToElementOffset = element.offset();
-
-    const marginTop = focusTo.margin && focusTo.margin.top || 0;
-    const marginRight = focusTo.margin && focusTo.margin.right || 0;
-    const marginBottom = focusTo.margin && focusTo.margin.bottom || 0;
-    const marginLeft = focusTo.margin && focusTo.margin.left || 0;
-
-    return {
-      width: Math.trunc(element.prop('offsetWidth')) + marginLeft + marginRight,
-      height: Math.trunc(element.prop('offsetHeight')) + marginTop + marginBottom,
-      left: Math.trunc(focusToElementOffset.left) - marginLeft,
-      top: Math.trunc(focusToElementOffset.top) - marginTop
+    const fullBackdrop = {
+      top: { left: 0, top: 0, right: 0, bottom: 0 },
+      right: { left: 0, top: 0, width: 0, height: 0 },
+      bottom: { left: 0, top: 0, width: 0, height: 0 },
+      left: { left: 0, top: 0, width: 0, height: 0 }
     };
+
+    if (next) {
+      const nextItem = this.peekNext();
+      const nextItemHasFocus = nextItem && (nextItem.type === 'notification' || nextItem.focusTo);
+
+      if (nextItemHasFocus) {
+        this.backdrop = fullBackdrop;
+      } else {
+        this.backdrop = null;
+      }
+    } else {
+      if (!this.item) {
+        this.backdrop = null;
+      } else {
+        switch (this.item.type) {
+          case 'story':
+            this.backdrop = this.calculateBackdrop(this.item);
+            break;
+          case 'notification':
+            console.log('full');
+            this.backdrop = fullBackdrop;
+            break;
+          default:
+            assertNever(this.item, 'Unknown item type');
+        }
+      }
+    }
   }
 
-  private calculateBackdrop(positioning: Positioning|null) {
+  private calculateBackdrop(story: Story) {
+
+    const positioning = InteractiveHelpController.calculateFocus(story);
 
     if (!positioning) {
       return null;
@@ -380,59 +340,32 @@ class InteractiveHelpController {
     };
   }
 
-  private setItemStyles() {
+  private static calculateFocus(story: Story): Positioning|null {
 
-    const state = this.styleSetState;
-    const item = this.currentItem();
+    if (!story || !story.focusTo) {
+      return null;
+    }
 
-    const debounce = () => {
-      this.popoverController.updateOffset();
+    const focusTo = story.focusTo;
+    const element = story.focusTo.element();
 
-      if (state.debounceHandle) {
-        state.debounceCount++;
-        clearTimeout(state.debounceHandle);
-      }
+    if (!element || element.length === 0) {
+      return null;
+    }
 
-      if (state.debounceCount > 100) {
-        console.log(item);
-        throw new Error('Element not exist or does not stabilize');
-      }
+    const focusToElementOffset = element.offset();
 
-      state.debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 20);
+    const marginTop = focusTo.margin && focusTo.margin.top || 0;
+    const marginRight = focusTo.margin && focusTo.margin.right || 0;
+    const marginBottom = focusTo.margin && focusTo.margin.bottom || 0;
+    const marginLeft = focusTo.margin && focusTo.margin.left || 0;
+
+    return {
+      width: Math.trunc(element.prop('offsetWidth')) + marginLeft + marginRight,
+      height: Math.trunc(element.prop('offsetHeight')) + marginTop + marginBottom,
+      left: Math.trunc(focusToElementOffset.left) - marginLeft,
+      top: Math.trunc(focusToElementOffset.top) - marginTop
     };
-
-    const applyPositioningAndFocusWhenStabile = () => {
-
-      if (this.popoverController.isOffsetStabile()) {
-
-        if (item.type === 'story') {
-          item.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
-        }
-
-        if (!state.animating) {
-          this.popoverController.scrollTo();
-          state.animating = true;
-          debounce();
-        } else {
-          this.$scope.$apply(() => {
-            this.popoverController.show();
-
-            if (item.type === 'story') {
-              this.backdrop = this.calculateBackdrop(InteractiveHelpController.calculateFocus(item));
-            }
-          });
-        }
-      } else {
-        debounce();
-      }
-    };
-
-    this.waitForItemChange(item);
-
-    state.debounceCount = 0;
-    state.animating = false;
-
-    debounce();
   }
 
   peekNext(): Story|Notification|null {
@@ -517,10 +450,6 @@ class InteractiveHelpController {
     return this.activeIndex === this.storyLine.items.length - 1;
   }
 
-  currentItem() {
-    return this.storyLine.items[this.activeIndex];
-  }
-
   close(cancel: boolean) {
     this.$overlayInstance.close();
 
@@ -553,7 +482,7 @@ mod.directive('helpPopover', () => {
       `,
     bindToController: true,
     scope: {
-      item: '=',
+      item: '<',
       helpController: '<'
     },
     controller: HelpPopoverController,
@@ -571,13 +500,20 @@ class HelpPopoverController {
   showPrevious: boolean;
   showClose: boolean;
 
-  offset: { left: number; top: number } | null = null;
-  hidden = true;
+  positioning: Positioning|null = null;
+  hidden = false;
 
-  constructor($scope: IScope, private $element: JQuery, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
+  debounceHandle: any;
+  debounceCount = 0;
+
+  constructor(private $scope: IScope, private $element: JQuery, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
+
     this.helpController.register(this);
 
-    $scope.$watch(() => this.item, item => {
+    const setItemStyles = () => {
+
+      const item = this.item;
+
       if (item) {
         switch (item.type) {
           case 'story':
@@ -589,12 +525,29 @@ class HelpPopoverController {
           default:
             assertNever(item, 'Unknown item type');
         }
+
+        this.setOffsetAndShowWhenStabile();
       }
+    };
+
+    const storyPopoverOffset = () => this.item && this.item.type === 'story' && this.item.popoverTo().offset();
+
+    $scope.$watch(() => this.item, () => {
+      this.hide();
+      setItemStyles();
+    });
+    $scope.$watch(storyPopoverOffset, setItemStyles, true);
+
+    window.addEventListener('resize', setItemStyles);
+    window.addEventListener('scroll', setItemStyles);
+
+    $scope.$on('$destroy', () => {
+      window.removeEventListener('resize', setItemStyles);
+      window.removeEventListener('scroll', setItemStyles);
     });
   }
 
   private setStoryStyles(story: Story) {
-
     this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
     this.showNext = !this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
     this.showClose = this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
@@ -608,6 +561,45 @@ class HelpPopoverController {
     this.showPrevious = !this.helpController.isCurrentFirstItem() && !notification.cannotMoveBack;
   }
 
+  private setOffsetAndShowWhenStabile() {
+
+    const debounce = (resetCounter: boolean) => {
+
+      if (resetCounter) {
+        this.debounceCount = 0;
+      }
+
+      if (this.debounceHandle) {
+        this.debounceCount++;
+        clearTimeout(this.debounceHandle);
+      }
+
+      if (this.debounceCount > 100) {
+        throw new Error('Element not exist or does not stabilize');
+      }
+
+      this.debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 20);
+    };
+
+    const applyPositioningAndFocusWhenStabile = () => {
+      if (this.isPositioningStabile()) {
+        this.debounceHandle = null;
+
+        // XXX: does this logic belong to here?
+        if (this.item && this.item.type === 'story') {
+          this.item.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
+        }
+
+        this.$scope.$apply(() => this.show(true));
+      } else {
+        this.updatePositioning();
+        debounce(false);
+      }
+    };
+
+    debounce(true);
+  }
+
   isValid() {
     return this.helpController.isValid();
   }
@@ -616,8 +608,18 @@ class HelpPopoverController {
     this.hidden = true;
   }
 
-  show() {
+  show(scrollTo: boolean) {
     this.hidden = false;
+
+    if (scrollTo) {
+      setTimeout(() => this.scrollTo());
+    }
+  }
+
+  scrollTo() {
+    const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
+    const scrollTo = requireDefined(this.item).type === 'story' ? requireDefined(this.positioning).top - 100 : 0;
+    angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
   }
 
   close(cancel: boolean) {
@@ -633,25 +635,26 @@ class HelpPopoverController {
   }
 
   style() {
-    return this.hidden ? { visibility: 'hidden' } : this.offset;
+    return this.hidden ? { visibility: 'hidden' } : this.positioning;
   }
 
-  scrollTo() {
-    const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
-    const scrollTo = requireDefined(this.item).type === 'story' ? requireDefined(this.offset).top - 100 : 0;
-    angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
+  isPositioningStabile() {
+    const positioning = this.calculatePositioning();
+
+    return positioning && this.positioning
+      && positioning.left === this.positioning.left
+      && positioning.top === this.positioning.top
+      && positioning.width === this.positioning.width
+      && positioning.height === this.positioning.height
+      && positioning.right === this.positioning.right
+      && positioning.bottom === this.positioning.bottom;
   }
 
-  isOffsetStabile() {
-    const offset = this.calculateOffset();
-    return offset && this.offset && offset.left === this.offset.left && offset.top === this.offset.top;
+  updatePositioning() {
+    this.positioning = this.calculatePositioning();
   }
 
-  updateOffset() {
-    this.offset = this.calculateOffset();
-  }
-
-  private calculateOffset(): Positioning|null {
+  private calculatePositioning(): Positioning|null {
 
     if (!this.item) {
       return null;
@@ -659,22 +662,22 @@ class HelpPopoverController {
 
     switch (this.item.type) {
       case 'story':
-        return this.calculateStoryOffset(this.item);
+        return this.calculateStoryPositioning(this.item);
       case 'notification':
-        return this.calculateNotificationOffset(this.item);
+        return this.calculateNotificationPositioning(this.item);
       default:
         return assertNever(this.item, 'Unknown item type');
     }
   }
 
-  private calculateNotificationOffset(_notification: Notification): Positioning {
+  private calculateNotificationPositioning(_notification: Notification): Positioning {
     return {
       top: window.innerHeight / 2 - this.$element.height() / 2,
       left: window.innerWidth / 2 - this.$element.width() / 2
     };
   }
 
-  private calculateStoryOffset(story: Story): Positioning|null {
+  private calculateStoryPositioning(story: Story): Positioning|null {
 
     const element = story.popoverTo();
 
@@ -696,40 +699,20 @@ class HelpPopoverController {
       case 'left':
         const leftPopoverLeft = left - popoverWidth - arrow;
         const leftWidthOffScreen = leftPopoverLeft < 0 ? -leftPopoverLeft : 0;
-
-        if (leftWidthOffScreen) {
-          return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen };
-        } else {
-          return { top: top, left: leftPopoverLeft };
-        }
+        return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen };
       case 'right':
         const rightPopoverLeft = left + width + arrow;
         const rightPopoverRight = documentWidth - (rightPopoverLeft + popoverWidth);
         const rightWidthOffScreen = rightPopoverRight < 0 ? -rightPopoverRight : 0;
-
-        if (rightWidthOffScreen) {
-          return { top: top, left: rightPopoverLeft, width: popoverWidth - rightWidthOffScreen };
-        } else {
-          return { top: top, left: rightPopoverLeft };
-        }
+        return { top: top, left: rightPopoverLeft, width: popoverWidth - rightWidthOffScreen };
       case 'top':
         const topPopoverRight = documentWidth - (left + popoverWidth);
         const topWidthOffScreen = topPopoverRight < 0 ? -topPopoverRight : 0;
-
-        if (topWidthOffScreen) {
-          return {top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen };
-        } else {
-          return {top: top - popoverHeight - arrow, left: left};
-        }
+        return {top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen };
       case 'bottom':
         const bottomPopoverRight = documentWidth - (left + popoverWidth);
         const bottomWidthOffScreen = bottomPopoverRight < 0 ? -bottomPopoverRight : 0;
-
-        if (bottomWidthOffScreen) {
-          return { top: top + height + arrow, left: left, width: popoverWidth - bottomWidthOffScreen };
-        } else {
-          return { top: top + height + arrow, left: left };
-        }
+        return { top: top + height + arrow, left: left, width: popoverWidth - bottomWidthOffScreen };
       default:
         return assertNever(story.popoverPosition, 'Unsupported popover position');
     }
