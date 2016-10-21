@@ -4,19 +4,10 @@ import {
   StoryLine, createStory, createNotification, createModifyingClickNextCondition,
   createClickNextConfition, createValidInputNextCondition
 } from './contract';
-
-const modal = () => angular.element('.modal-dialog');
-const modelView = () => angular.element('model-view');
-
-function child(parent: () => JQuery, selector: string) {
-  return () => parent().find(selector);
-}
-
-const input =                       (parent: () => JQuery) => child(parent, 'input');
-const multiInput =                  (parent: () => JQuery) => child(parent, '.multi-input');
-const editableFocus =               (parent: () => JQuery) => child(parent, '.editable-wrap');
-const findEditableByTitle =         (parent: () => JQuery, title: string) => child(parent, `editable[data-title="${title}"]`);
-const findEditableMultipleByTitle = (parent: () => JQuery, title: string) => child(parent, `editable-multiple[data-title="${title}"]`);
+import {
+  findEditableByTitle, modal, input, editableFocus, findEditableMultipleByTitle, multiInput,
+  modelView, child
+} from './selectors';
 
 const editableMargin = { left: 20, right: 20 };
 
