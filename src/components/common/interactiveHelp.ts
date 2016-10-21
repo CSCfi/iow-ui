@@ -275,7 +275,11 @@ class InteractiveHelpController {
       };
     };
 
-    $scope.$watch<Positioning|null>(storyFocus, ifChangeNotInProgress<Positioning|null>(this.calculateBackdrop.bind(this)), true);
+    const setBackdrop = (positioning: Positioning|null) => {
+      this.backdrop = this.calculateBackdrop(positioning);
+    };
+
+    $scope.$watch<Positioning|null>(storyFocus, ifChangeNotInProgress(setBackdrop), true);
     $scope.$watch(storyPopoverOffset, ifChangeNotInProgress(this.setItemStyles.bind(this)), true);
 
     $scope.$watch(() => this.popoverController.item, () => this.setItemStyles());
