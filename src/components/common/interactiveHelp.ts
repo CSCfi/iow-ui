@@ -42,7 +42,7 @@ export class InteractiveHelp {
 
       return this.overlayService.open({
         template: `
-        <help-popover class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverStyle()"></help-popover>
+        <help-popover item="ctrl.item" class="help-popover" help-controller="ctrl" ng-style="ctrl.popoverStyle()"></help-popover>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
         <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
@@ -69,6 +69,7 @@ function isClick(nextCondition: NextCondition): nextCondition is Click|Modifying
 
 class InteractiveHelpController {
 
+  item: Story|Notification|null;
   popoverController: HelpPopoverController;
   activeIndex = 0;
   backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
@@ -87,6 +88,8 @@ class InteractiveHelpController {
     if (!storyLine || storyLine.items.length === 0) {
       throw new Error('No stories defined');
     }
+
+    this.item = storyLine.items[0];
 
     // Active element needs to be blurred because it can used for example for multiple interactive help activations
     angular.element(document.activeElement).blur();
@@ -282,7 +285,7 @@ class InteractiveHelpController {
     $scope.$watch<Positioning|null>(storyFocus, ifChangeNotInProgress(setBackdrop), true);
     $scope.$watch(storyPopoverOffset, ifChangeNotInProgress(this.setItemStyles.bind(this)), true);
 
-    $scope.$watch(() => this.popoverController.item, () => this.setItemStyles());
+    $scope.$watch(() => this.item, () => this.setItemStyles());
 
     const setItemStylesApplyingScope = () => $scope.$apply(() => this.setItemStyles());
 
@@ -301,7 +304,6 @@ class InteractiveHelpController {
 
   register(popover: HelpPopoverController) {
     this.popoverController = popover;
-    this.showItem(this.activeIndex);
   }
 
   private waitForItemChange(nextItem: Story|Notification|null) {
@@ -461,7 +463,7 @@ class InteractiveHelpController {
     if (this.isCurrentLastItem()) {
       this.close(false);
     } else {
-      this.showItem(++this.activeIndex);
+      this.item = this.storyLine.items[++this.activeIndex];
     }
   }
 
@@ -469,29 +471,16 @@ class InteractiveHelpController {
     if (this.isCurrentFirstItem()) {
       this.close(true);
     } else {
-      this.showItem(--this.activeIndex);
+      this.item = this.storyLine.items[--this.activeIndex];
     }
   }
 
-  isFirstItem(index: number) {
-    return index === 0;
-  }
-
-  isLastItem(index: number) {
-    return index === this.storyLine.items.length - 1;
-  }
-
   isCurrentFirstItem() {
-    return this.isFirstItem(this.activeIndex);
+    return this.activeIndex === 0;
   }
 
   isCurrentLastItem() {
-    return this.isLastItem(this.activeIndex);
-  }
-
-  showItem(index: number) {
-    const item = this.storyLine.items[index];
-    this.popoverController.show(item, this.isFirstItem(index), this.isLastItem(index));
+    return this.activeIndex === this.storyLine.items.length - 1;
   }
 
   currentItem() {
@@ -530,6 +519,7 @@ mod.directive('helpPopover', () => {
       `,
     bindToController: true,
     scope: {
+      item: '=',
       helpController: '<'
     },
     controller: HelpPopoverController,
@@ -541,59 +531,72 @@ class HelpPopoverController {
 
   helpController: InteractiveHelpController;
 
-  item: Story|Notification;
+  item: Story|Notification|null;
   arrowClass: string[] = [];
   showNext: boolean;
   showPrevious: boolean;
   showClose: boolean;
   validationNgModel: INgModelController|null;
 
-  constructor(private $element: JQuery, private $document: IDocumentService) {
+  constructor($scope: IScope, private $element: JQuery, private $document: IDocumentService) {
     this.helpController.register(this);
+
+    $scope.$watch(() => this.item, item => {
+      if (item) {
+        switch (item.type) {
+          case 'story':
+            this.setStoryStyles(item);
+            break;
+          case 'notification':
+            this.setNotificationStyles(item);
+            break;
+          default:
+            assertNever(item, 'Unknown item type');
+        }
+      }
+    });
+  }
+
+  setStoryStyles(story: Story) {
+
+    this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
+    this.showNext = !this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
+    this.showClose = this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
+    this.showPrevious = !this.helpController.isCurrentFirstItem() && !story.cannotMoveBack;
+
+    if (story.nextCondition.type === 'valid-input') {
+      this.validationNgModel = story.nextCondition.element().controller('ngModel');
+
+      if (!this.validationNgModel) {
+        throw new Error('ng-model does not exits for valid-input');
+      }
+    }
+
+    if (story.initialInputValue) {
+
+      const initialInputNgModel = story.initialInputValue.element().controller('ngModel');
+
+      if (!initialInputNgModel) {
+        throw new Error('ng-model does not exits for initial input');
+      } else {
+        if (!initialInputNgModel.$viewValue) {
+          initialInputNgModel.$setViewValue(story.initialInputValue.value);
+          initialInputNgModel.$render();
+        }
+      }
+    }
+  }
+
+  setNotificationStyles(notification: Notification) {
+    this.arrowClass = [];
+    this.showNext = !this.helpController.isCurrentLastItem();
+    this.showClose = this.helpController.isCurrentLastItem();
+    this.showPrevious = !this.helpController.isCurrentFirstItem() && !notification.cannotMoveBack;
+    this.validationNgModel = null;
   }
 
   isValid() {
     return !this.validationNgModel || this.validationNgModel.$valid;
-  }
-
-  show(item: Story|Notification, first: boolean, last: boolean) {
-
-    this.item = item;
-
-    if (item.type === 'story') {
-      this.arrowClass = ['help-arrow', `help-${item.popoverPosition}`];
-      this.showNext = !last && !isClick(item.nextCondition);
-      this.showClose = last && !isClick(item.nextCondition);
-      this.showPrevious = !first && !item.cannotMoveBack;
-
-      if (item.nextCondition.type === 'valid-input') {
-        this.validationNgModel = item.nextCondition.element().controller('ngModel');
-
-        if (!this.validationNgModel) {
-          throw new Error('ng-model does not exits for valid-input');
-        }
-      }
-
-      if (item.initialInputValue) {
-
-        const initialInputNgModel = item.initialInputValue.element().controller('ngModel');
-
-        if (!initialInputNgModel) {
-          throw new Error('ng-model does not exits for initial input');
-        } else {
-          if (!initialInputNgModel.$viewValue) {
-            initialInputNgModel.$setViewValue(item.initialInputValue.value);
-            initialInputNgModel.$render();
-          }
-        }
-      }
-    } else {
-      this.arrowClass = [];
-      this.showNext = !last;
-      this.showClose = last;
-      this.showPrevious = !first && !item.cannotMoveBack;
-      this.validationNgModel = null;
-    }
   }
 
   hide() {
@@ -601,7 +604,6 @@ class HelpPopoverController {
   }
 
   close(cancel: boolean) {
-    this.hide();
     this.helpController.close(cancel);
   }
 
@@ -615,21 +617,38 @@ class HelpPopoverController {
 
   calculateOffset(): Positioning|null {
 
-    const popoverWidth = this.$element.width();
-    const popoverHeight = this.$element.height();
-
-    // center notification
-    if (this.item.type === 'notification') {
-      return { top: window.innerHeight / 2 - popoverHeight / 2, left: window.innerWidth / 2 - popoverWidth / 2 };
+    if (!this.item) {
+      return null;
     }
 
-    const element = this.item.popoverTo();
-    const position = this.item.popoverPosition;
+    switch (this.item.type) {
+      case 'story':
+        return this.calculateStoryOffset(this.item);
+      case 'notification':
+        return this.calculateNotificationOffset(this.item);
+      default:
+        return assertNever(this.item, 'Unknown item type');
+    }
+  }
+
+  calculateNotificationOffset(_notification: Notification): Positioning {
+    return {
+      top: window.innerHeight / 2 - this.$element.height() / 2,
+      left: window.innerWidth / 2 - this.$element.width() / 2
+    };
+  }
+
+  calculateStoryOffset(story: Story): Positioning|null {
+
+    const element = story.popoverTo();
+    const position = story.popoverPosition;
 
     if (!element || element.length === 0) {
       return null;
     }
 
+    const popoverWidth = this.$element.width();
+    const popoverHeight = this.$element.height();
     const left = element.offset().left;
     const top = element.offset().top;
     const width = element.prop('offsetWidth');
