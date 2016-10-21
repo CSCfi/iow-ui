@@ -61,7 +61,7 @@ function isClick(nextCondition: NextCondition): nextCondition is Click|Modifying
 
 class InteractiveHelpController {
 
-  item: Story|Notification|null;
+  item: Story|Notification;
   popoverController: HelpPopoverController;
   activeIndex = 0;
   backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
@@ -158,49 +158,6 @@ class InteractiveHelpController {
       }
     };
 
-    const manageNextClick = (currentStory: Story) => {
-
-      const nextCondition = currentStory.nextCondition;
-
-      if (nextCondition.type === 'modifying-click') {
-
-        let tryCount = 0;
-
-        const waitForElementToDisappear = () => {
-
-          if (tryCount > 30) {
-            // reset values to state as before wait
-            $scope.$apply(() => {
-              this.popoverController.show(false);
-              this.popoverController.updatePositioning();
-              this.updateBackdrop();
-            });
-            return;
-          }
-
-          if (elementExists(nextCondition.element())) {
-            tryCount++;
-            setTimeout(waitForElementToDisappear, 20);
-          } else {
-            $scope.$apply(() => this.nextItem());
-          }
-        };
-
-        waitForElementToDisappear();
-
-        // if next not already applied
-        if (tryCount > 0) {
-          $scope.$apply(() => {
-            this.popoverController.hide();
-            this.updateBackdrop(true);
-          });
-        }
-
-      } else {
-        $scope.$apply(() => this.nextItem());
-      }
-    };
-
     const keyDownListener = (event: JQueryEventObject) => {
 
       const item = requireDefined(this.item);
@@ -217,18 +174,53 @@ class InteractiveHelpController {
       }
     };
 
+    const moveToNextItemAfterElementDisappeared = (element: () => JQuery) => {
+
+      let tryCount = 0;
+
+      const waitForElementToDisappear = () => {
+
+        if (tryCount > 30) {
+          // reset values to state as before wait
+          $scope.$apply(() => {
+            this.popoverController.show(false);
+            this.popoverController.updatePositioning();
+            this.updateBackdrop();
+          });
+          return;
+        }
+
+        if (elementExists(element())) {
+          tryCount++;
+          setTimeout(waitForElementToDisappear, 20);
+        } else {
+          $scope.$apply(() => this.nextItem());
+        }
+      };
+
+      waitForElementToDisappear();
+
+      // if next not already applied
+      if (tryCount > 0) {
+        $scope.$apply(() => {
+          this.popoverController.hide();
+          this.updateBackdrop(true);
+        });
+      }
+    };
+
     const clickListener = (event: JQueryEventObject) => {
       const item = this.item;
 
-      if (item && item.type === 'story' && isClick(item.nextCondition)) {
+      if (item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
         const continueToNextElement = item.nextCondition.element();
 
         if (elementExists(continueToNextElement)) {
           if (isTargetElementInsideElement(event, continueToNextElement[0])) {
-            manageNextClick(item);
+            $scope.$apply(() => this.nextItem());
           }
         } else if (item.nextCondition.type === 'modifying-click') {
-          manageNextClick(item);
+          moveToNextItemAfterElementDisappeared(item.nextCondition.element);
         } else {
           throw new Error('Popover element not found');
         }
@@ -294,7 +286,6 @@ class InteractiveHelpController {
             this.backdrop = this.calculateBackdrop(this.item);
             break;
           case 'notification':
-            console.log('full');
             this.backdrop = fullBackdrop;
             break;
           default:
@@ -368,6 +359,14 @@ class InteractiveHelpController {
     };
   }
 
+  canMoveToNext() {
+    return true;
+  }
+
+  canMoveToPrevious() {
+    return !this.isCurrentFirstItem() && !this.item.cannotMoveBack;
+  }
+
   peekNext(): Story|Notification|null {
     if (this.isCurrentLastItem()) {
       return null;
@@ -423,7 +422,27 @@ class InteractiveHelpController {
   }
 
   isValid() {
-    return !this.validationNgModel || (this.validationNgModel.$valid && !this.validationNgModel.$pending);
+    switch (this.item.type) {
+      case 'story':
+        switch (this.item.nextCondition.type) {
+          case 'explicit':
+          case 'click':
+          case 'modifying-click':
+            return true;
+          case 'valid-input':
+            return this.validationNgModel && this.validationNgModel.$valid && !this.validationNgModel.$pending;
+          case 'element-exists':
+            const element = this.item.nextCondition.element();
+            console.log(element);
+            return element && element.length > 0;
+          default:
+            return assertNever(this.item.nextCondition, 'Unknown next condition');
+        }
+      case 'notification':
+        return true;
+      default:
+        return assertNever(this.item, 'Unknown item type');
+    }
   }
 
   nextItem() {
@@ -494,11 +513,8 @@ class HelpPopoverController {
 
   helpController: InteractiveHelpController;
 
-  item: Story|Notification|null;
+  item: Story|Notification;
   arrowClass: string[] = [];
-  showNext: boolean;
-  showPrevious: boolean;
-  showClose: boolean;
 
   positioning: Positioning|null = null;
   hidden = false;
@@ -517,10 +533,10 @@ class HelpPopoverController {
       if (item) {
         switch (item.type) {
           case 'story':
-            this.setStoryStyles(item);
+            this.arrowClass = ['help-arrow', `help-${item.popoverPosition}`];
             break;
           case 'notification':
-            this.setNotificationStyles(item);
+            this.arrowClass = [];
             break;
           default:
             assertNever(item, 'Unknown item type');
@@ -547,18 +563,20 @@ class HelpPopoverController {
     });
   }
 
-  private setStoryStyles(story: Story) {
-    this.arrowClass = ['help-arrow', `help-${story.popoverPosition}`];
-    this.showNext = !this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
-    this.showClose = this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
-    this.showPrevious = !this.helpController.isCurrentFirstItem() && !story.cannotMoveBack;
+  get showNext() {
+    return this.helpController.canMoveToNext()
+      && !this.helpController.isCurrentLastItem()
+      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
   }
 
-  private setNotificationStyles(notification: Notification) {
-    this.arrowClass = [];
-    this.showNext = !this.helpController.isCurrentLastItem();
-    this.showClose = this.helpController.isCurrentLastItem();
-    this.showPrevious = !this.helpController.isCurrentFirstItem() && !notification.cannotMoveBack;
+  get showClose() {
+    return this.helpController.canMoveToNext()
+      && this.helpController.isCurrentLastItem()
+      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+  }
+
+  get showPrevious() {
+    return this.helpController.canMoveToPrevious();
   }
 
   private setOffsetAndShowWhenStabile() {

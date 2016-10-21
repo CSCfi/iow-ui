@@ -7,11 +7,13 @@ export type Explicit =       { type: 'explicit' };                              
 export type Click =          { type: 'click', element: () => JQuery };                  // click on element to continue
 export type ModifyingClick = { type: 'modifying-click', element: () => JQuery };        // click on element which is expected to disappear to continue
 export type ValidInput =     { type: 'valid-input', element: () => JQuery }             // valid input is needed before allowing to continue
+export type ElementExists =  { type: 'element-exists', element: () => JQuery };         // element must exist before continue is allowed
 
 export type NextCondition = Explicit
                           | Click
                           | ModifyingClick
                           | ValidInput
+                          | ElementExists;
 
 export interface StoryLine {
   title: string;
@@ -78,4 +80,8 @@ export function createModifyingClickNextCondition(element: () => JQuery): Modify
 
 export function createValidInputNextCondition(element: () => JQuery): ValidInput {
   return { type: 'valid-input', element };
+}
+
+export function createElementExistsNextCondition(element: () => JQuery): ElementExists {
+  return { type: 'element-exists', element };
 }
