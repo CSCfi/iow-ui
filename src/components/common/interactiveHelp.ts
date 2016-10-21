@@ -541,18 +541,23 @@ class HelpPopoverController {
   showNext: boolean;
   showPrevious: boolean;
   showClose: boolean;
-  ngModel: INgModelController|null;
+  validationNgModel: INgModelController|null;
 
   constructor(private $element: JQuery, private $document: IDocumentService) {
     this.helpController.register(this);
   }
 
   isValid() {
-    return !this.ngModel || this.ngModel.$valid;
+    return !this.validationNgModel || this.validationNgModel.$valid;
   }
 
   show(item: Story|Notification, first: boolean, last: boolean) {
+
     this.item = item;
+
+    function findNgModel(element: JQuery): INgModelController|null {
+      return element.find('[ng-model]').addBack('[ng-model]').controller('ngModel');
+    }
 
     if (item.type === 'story') {
       this.arrowClass = ['help-arrow', `help-${item.popoverPosition}`];
@@ -561,23 +566,32 @@ class HelpPopoverController {
       this.showPrevious = !first && !item.cannotMoveBack;
 
       if (item.nextCondition.type === 'valid-input') {
-        this.ngModel = item.nextCondition.element().find('[ng-model]').addBack('[ng-model]').controller('ngModel');
+        this.validationNgModel = findNgModel(item.nextCondition.element());
+
+        if (!this.validationNgModel) {
+          throw new Error('ng-model does not exits for valid-input');
+        }
       }
 
-      if ((item.nextCondition.type === 'valid-input' || item.initialInputValue) && !this.ngModel) {
-        throw new Error('ng-model does not exits for popover element');
-      }
+      if (item.initialInputValue) {
 
-      if (item.initialInputValue && !this.ngModel!.$viewValue) {
-        this.ngModel!.$setViewValue(item.initialInputValue);
-        this.ngModel!.$render();
+        const initialInputNgModel = findNgModel(item.initialInputValue.element());
+
+        if (!initialInputNgModel) {
+          throw new Error('ng-model does not exits for initial input');
+        } else {
+          if (!initialInputNgModel.$viewValue) {
+            initialInputNgModel.$setViewValue(item.initialInputValue.value);
+            initialInputNgModel.$render();
+          }
+        }
       }
     } else {
       this.arrowClass = [];
       this.showNext = !last;
       this.showClose = last;
       this.showPrevious = !first && !item.cannotMoveBack;
-      this.ngModel = null;
+      this.validationNgModel = null;
     }
   }
 

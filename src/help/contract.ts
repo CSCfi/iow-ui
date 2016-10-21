@@ -45,10 +45,12 @@ export interface StoryDetails {
   title: string;
   content: string;
   nextCondition: NextCondition;
-  initialInputValue?: any;
+  initialInputValue?: {
+    element: () => JQuery,
+    value: string
+  };
   cannotMoveBack?: boolean;
 }
-
 
 export function createStory(storyDetails: StoryDetails) {
   return Object.assign({}, storyDetails, {

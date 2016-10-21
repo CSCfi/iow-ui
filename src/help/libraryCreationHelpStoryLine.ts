@@ -31,9 +31,10 @@ const startLibraryCreation = createStory({
 });
 
 const enterLibraryPrefixElement = () => angular.element('.modal-dialog [data-title="Prefix"]');
+const enterLibraryPrefixInputElement = () => enterLibraryPrefixElement().find('input');
 const enterLibraryPrefix = createStory({
 
-  popoverTo: () => enterLibraryPrefixElement().find('input'),
+  popoverTo: enterLibraryPrefixInputElement,
   focusTo: {
     element: enterLibraryPrefixElement,
     margin: editableMargin
@@ -43,13 +44,17 @@ const enterLibraryPrefix = createStory({
   content: 'Prefix info',
   nextCondition: createValidInputNextCondition(enterLibraryPrefixElement),
   cannotMoveBack: true,
-  initialInputValue: 'testi'
+  initialInputValue: {
+    value: 'testi',
+    element: enterLibraryPrefixInputElement
+  }
 });
 
 const enterLibraryLabelElement = () => angular.element('.modal-dialog [data-title="Library label"]');
+const enterLibraryLabelInputElement = () => enterLibraryLabelElement().find('input');
 const enterLibraryLabel = createStory({
 
-  popoverTo: () => enterLibraryLabelElement().find('input'),
+  popoverTo: enterLibraryLabelInputElement,
   focusTo: {
     element: enterLibraryLabelElement,
     margin: editableMargin
@@ -57,8 +62,11 @@ const enterLibraryLabel = createStory({
   popoverPosition: 'left',
   title: 'Library label',
   content: 'Library label info',
-  nextCondition: createValidInputNextCondition(() => enterLibraryLabelElement().find('input')),
-  initialInputValue: 'Testikirjasto'
+  nextCondition: createValidInputNextCondition(enterLibraryLabelInputElement),
+  initialInputValue: {
+    value: 'Testikirjasto',
+    element: enterLibraryLabelInputElement
+  }
 });
 
 const enterLibraryLanguageElement = () => angular.element('editable-multiple-language-select editable-multiple');
