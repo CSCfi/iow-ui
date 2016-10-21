@@ -5,6 +5,33 @@ import {
   createClickNextConfition, createValidInputNextCondition
 } from './contract';
 
+const modal = () => angular.element('.modal-dialog');
+const modelView = () => angular.element('model-view');
+
+function child(selector: string, parent: () => JQuery) {
+  return () => parent().find(selector);
+}
+
+function input(parent: () => JQuery) {
+  return () => parent().find('input');
+}
+
+function multiInput(parent: () => JQuery) {
+  return () => parent().find('.multi-input');
+}
+
+function findEditableByTitle(title: string, parent: () => JQuery) {
+  return () => parent().find(`editable[data-title="${title}"]`);
+}
+
+function findEditableMultipleByTitle(title: string, parent: () => JQuery) {
+  return () => parent().find(`editable-multiple[data-title="${title}"]`);
+}
+
+function editableFocus(editableParent: () => JQuery) {
+  return () => editableParent().find('.editable-wrap');
+}
+
 const editableMargin = { left: 20, right: 20 };
 
 const selectGroupElement = () => angular.element('#browse-panel .selectable-panel__list');
@@ -30,13 +57,13 @@ const startLibraryCreation = createStory({
   cannotMoveBack: true
 });
 
-const enterLibraryPrefixElement = () => angular.element('.modal-dialog [data-title="Prefix"]');
-const enterLibraryPrefixInputElement = () => enterLibraryPrefixElement().find('input');
+const enterLibraryPrefixElement = findEditableByTitle('Prefix', modal);
+const enterLibraryPrefixInputElement = input(enterLibraryPrefixElement);
 const enterLibraryPrefix = createStory({
 
   popoverTo: enterLibraryPrefixInputElement,
   focusTo: {
-    element: () => enterLibraryPrefixElement().find('.editable-wrap'),
+    element: editableFocus(enterLibraryPrefixElement),
     margin: editableMargin
   },
   popoverPosition: 'left',
@@ -50,13 +77,13 @@ const enterLibraryPrefix = createStory({
   }
 });
 
-const enterLibraryLabelElement = () => angular.element('.modal-dialog [data-title="Library label"]');
-const enterLibraryLabelInputElement = () => enterLibraryLabelElement().find('input');
+const enterLibraryLabelElement = findEditableByTitle('Library label', modal);
+const enterLibraryLabelInputElement = input(enterLibraryLabelElement);
 const enterLibraryLabel = createStory({
 
   popoverTo: enterLibraryLabelInputElement,
   focusTo: {
-    element: () => enterLibraryLabelElement().find('.editable-wrap'),
+    element: editableFocus(enterLibraryLabelElement),
     margin: editableMargin
   },
   popoverPosition: 'left',
@@ -69,12 +96,13 @@ const enterLibraryLabel = createStory({
   }
 });
 
-const enterLibraryLanguageElement = () => angular.element('editable-multiple-language-select editable-multiple');
+const enterLibraryLanguageElement = findEditableMultipleByTitle('Model languages', modal);
+const enterLibraryLanguageInputElement = multiInput(enterLibraryLanguageElement);
 const enterLibraryLanguage = createStory({
 
-  popoverTo: () => enterLibraryLanguageElement().find('.multi-input'),
+  popoverTo: enterLibraryLanguageInputElement,
   focusTo: {
-    element: () => enterLibraryLanguageElement().find('.editable-wrap'),
+    element: editableFocus(enterLibraryLanguageElement),
     margin: Object.assign({}, editableMargin, { bottom: 15 })
   },
   popoverPosition: 'left',
@@ -83,7 +111,7 @@ const enterLibraryLanguage = createStory({
   nextCondition: createValidInputNextCondition(enterLibraryLanguageElement)
 });
 
-const createLibraryElement = () => angular.element('.modal-dialog button.create');
+const createLibraryElement = child('button.create', modal);
 const createLibrary = createStory({
 
   popoverTo: createLibraryElement,
@@ -94,7 +122,8 @@ const createLibrary = createStory({
   nextCondition: createModifyingClickNextCondition(createLibraryElement)
 });
 
-const saveLibraryElement = () => angular.element('button.save');
+
+const saveLibraryElement = child('button.save', modelView);
 const saveLibrary = createStory({
 
   popoverTo: saveLibraryElement,
