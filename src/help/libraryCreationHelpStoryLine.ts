@@ -8,29 +8,15 @@ import {
 const modal = () => angular.element('.modal-dialog');
 const modelView = () => angular.element('model-view');
 
-function child(selector: string, parent: () => JQuery) {
+function child(parent: () => JQuery, selector: string) {
   return () => parent().find(selector);
 }
 
-function input(parent: () => JQuery) {
-  return () => parent().find('input');
-}
-
-function multiInput(parent: () => JQuery) {
-  return () => parent().find('.multi-input');
-}
-
-function findEditableByTitle(title: string, parent: () => JQuery) {
-  return () => parent().find(`editable[data-title="${title}"]`);
-}
-
-function findEditableMultipleByTitle(title: string, parent: () => JQuery) {
-  return () => parent().find(`editable-multiple[data-title="${title}"]`);
-}
-
-function editableFocus(editableParent: () => JQuery) {
-  return () => editableParent().find('.editable-wrap');
-}
+const input =                       (parent: () => JQuery) => child(parent, 'input');
+const multiInput =                  (parent: () => JQuery) => child(parent, '.multi-input');
+const editableFocus =               (parent: () => JQuery) => child(parent, '.editable-wrap');
+const findEditableByTitle =         (parent: () => JQuery, title: string) => child(parent, `editable[data-title="${title}"]`);
+const findEditableMultipleByTitle = (parent: () => JQuery, title: string) => child(parent, `editable-multiple[data-title="${title}"]`);
 
 const editableMargin = { left: 20, right: 20 };
 
@@ -57,7 +43,7 @@ const startLibraryCreation = createStory({
   cannotMoveBack: true
 });
 
-const enterLibraryPrefixElement = findEditableByTitle('Prefix', modal);
+const enterLibraryPrefixElement = findEditableByTitle(modal, 'Prefix');
 const enterLibraryPrefixInputElement = input(enterLibraryPrefixElement);
 const enterLibraryPrefix = createStory({
 
@@ -77,7 +63,7 @@ const enterLibraryPrefix = createStory({
   }
 });
 
-const enterLibraryLabelElement = findEditableByTitle('Library label', modal);
+const enterLibraryLabelElement = findEditableByTitle(modal, 'Library label');
 const enterLibraryLabelInputElement = input(enterLibraryLabelElement);
 const enterLibraryLabel = createStory({
 
@@ -96,7 +82,7 @@ const enterLibraryLabel = createStory({
   }
 });
 
-const enterLibraryLanguageElement = findEditableMultipleByTitle('Model languages', modal);
+const enterLibraryLanguageElement = findEditableMultipleByTitle(modal, 'Model languages');
 const enterLibraryLanguageInputElement = multiInput(enterLibraryLanguageElement);
 const enterLibraryLanguage = createStory({
 
@@ -111,7 +97,7 @@ const enterLibraryLanguage = createStory({
   nextCondition: createValidInputNextCondition(enterLibraryLanguageElement)
 });
 
-const createLibraryElement = child('button.create', modal);
+const createLibraryElement = child(modal, 'button.create');
 const createLibrary = createStory({
 
   popoverTo: createLibraryElement,
@@ -123,7 +109,7 @@ const createLibrary = createStory({
 });
 
 
-const saveLibraryElement = child('button.save', modelView);
+const saveLibraryElement = child(modelView, 'button.save');
 const saveLibrary = createStory({
 
   popoverTo: saveLibraryElement,
