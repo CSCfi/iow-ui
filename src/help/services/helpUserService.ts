@@ -7,7 +7,7 @@ import { ResetableService } from './resetableService';
 
 class InteractiveHelpUser implements User {
 
-  name: string|any = 'Ohjekäyttäjä';
+  name = 'Ohjekäyttäjä';
 
   isLoggedIn(): boolean {
     return true;
