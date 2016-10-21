@@ -11,11 +11,12 @@ import {
 
 const editableMargin = { left: 20, right: 20 };
 
-const selectGroupElement = () => angular.element('#browse-panel .selectable-panel__list');
+const browsePanel = () => angular.element('#browse-panel');
+const selectGroupElement = child(browsePanel, '.selectable-panel__list');
 const selectGroup = createStory({
 
   popoverTo: selectGroupElement,
-  focusTo: { element: selectGroupElement },
+  focusTo: { element: browsePanel },
   popoverPosition: 'left',
   title: 'Select group',
   content: 'Diipadaa',
