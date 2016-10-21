@@ -25,6 +25,10 @@ declare global {
     controller(name: string): any;
   }
 
+  interface CSS {
+    escape(str: string): string;
+  }
+
   const process: { env: any };
 }
 

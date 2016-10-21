@@ -1,6 +1,7 @@
 import 'core-js';
 import './svgShim';
 import 'proxy-polyfill';
+import 'css.escape';
 
 window.requestAnimFrame =
   window.requestAnimationFrame
