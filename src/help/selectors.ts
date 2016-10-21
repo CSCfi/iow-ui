@@ -10,3 +10,4 @@ export const multiInput =                  (parent: () => JQuery) => child(paren
 export const editableFocus =               (parent: () => JQuery) => child(parent, '.editable-wrap');
 export const findEditableByTitle =         (parent: () => JQuery, title: string) => child(parent, `editable[data-title="${title}"]`);
 export const findEditableMultipleByTitle = (parent: () => JQuery, title: string) => child(parent, `editable-multiple[data-title="${title}"]`);
+export const searchResult =                (parent: () => JQuery, id: string) => child(parent, `search-results #${CSS.escape(id)}`);
