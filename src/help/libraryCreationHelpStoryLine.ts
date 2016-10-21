@@ -2,11 +2,11 @@ import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
   StoryLine, createStory, createNotification, createModifyingClickNextCondition,
-  createClickNextConfition, createValidInputNextCondition
+  createClickNextConfition, createValidInputNextCondition, createElementExistsNextCondition
 } from './contract';
 import {
   findEditableByTitle, modal, input, editableFocus, findEditableMultipleByTitle, multiInput,
-  modelView, child
+  modelView, child, searchResult
 } from './selectors';
 
 const editableMargin = { left: 20, right: 20 };
@@ -113,6 +113,69 @@ const saveLibrary = createStory({
   cannotMoveBack: true
 });
 
+const openLibraryDetailsElement = child(modelView, '.model-header');
+const openLibraryDetails = createStory({
+
+  popoverTo: openLibraryDetailsElement,
+  focusTo: { element: openLibraryDetailsElement },
+  popoverPosition: 'bottom',
+  title: 'Open library details',
+  content: 'Diipadaa',
+  nextCondition: createClickNextConfition(openLibraryDetailsElement),
+  cannotMoveBack: true
+});
+
+const modifyLibraryElement = child(modelView, 'button.edit');
+const modifyLibrary = createStory({
+
+  popoverTo: modifyLibraryElement,
+  focusTo: { element: modifyLibraryElement },
+  popoverPosition: 'left',
+  title: 'Modify library',
+  content: 'Diipadaa',
+  nextCondition: createModifyingClickNextCondition(modifyLibraryElement),
+  cannotMoveBack: true
+});
+
+const requireNamespaceElement = child(modelView, 'imported-namespaces-view button');
+const requireNamespace = createStory({
+
+  popoverTo: requireNamespaceElement,
+  focusTo: { element: requireNamespaceElement },
+  popoverPosition: 'left',
+  title: 'Add reference to namespace',
+  content: 'Diipadaa',
+  nextCondition: createClickNextConfition(requireNamespaceElement),
+  cannotMoveBack: true
+});
+
+const filterForJhsElement = child(modal, 'text-filter input');
+const filterForJhs = createStory({
+
+  popoverTo: filterForJhsElement,
+  focusTo: { element: filterForJhsElement },
+  popoverPosition: 'bottom',
+  title: 'Search for jhs',
+  content: 'Diipadaa',
+  nextCondition: createElementExistsNextCondition(searchResult(modal, 'http://iow.csc.fi/ns/jhs')),
+  initialInputValue: {
+    value: 'julkis',
+    element: filterForJhsElement
+  },
+  cannotMoveBack: true
+});
+
+const selectJhsResultElement = searchResult(modal, 'http://iow.csc.fi/ns/jhs');
+const selectJhsResult = createStory({
+
+  popoverTo: selectJhsResultElement,
+  focusTo: { element: selectJhsResultElement },
+  popoverPosition: 'left',
+  title: 'Select jhs',
+  content: 'Diipadaa',
+  nextCondition: createModifyingClickNextCondition(selectJhsResultElement)
+});
+
 const finishedNotification = createNotification({
   title: 'Congratulations for completing library creation!',
   content: 'Diipadaa',
@@ -141,6 +204,12 @@ export class LibraryCreationStoryLine implements StoryLine {
       enterLibraryLanguage,
       enterLibraryLabel,
       createLibrary,
+      saveLibrary,
+      openLibraryDetails,
+      modifyLibrary,
+      requireNamespace,
+      filterForJhs,
+      selectJhsResult,
       saveLibrary,
       finishedNotification
     ];
