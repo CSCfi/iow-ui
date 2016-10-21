@@ -641,7 +641,6 @@ class HelpPopoverController {
   calculateStoryOffset(story: Story): Positioning|null {
 
     const element = story.popoverTo();
-    const position = story.popoverPosition;
 
     if (!element || element.length === 0) {
       return null;
@@ -656,7 +655,7 @@ class HelpPopoverController {
     const arrow = 13;
     const documentWidth = angular.element(this.$document).width();
 
-    switch (position) {
+    switch (story.popoverPosition) {
       case 'left':
         const leftPopoverLeft = left - popoverWidth - arrow;
         const leftWidthOffScreen = leftPopoverLeft < 0 ? -leftPopoverLeft : 0;
@@ -695,7 +694,7 @@ class HelpPopoverController {
           return { top: top + height + arrow, left: left };
         }
       default:
-        return assertNever(position);
+        return assertNever(story.popoverPosition, 'Unsupported popover position');
     }
   }
 }
