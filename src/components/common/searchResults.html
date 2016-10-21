@@ -1,4 +1,5 @@
 <div ng-repeat="searchResult in ctrl.searchResults | filter : ctrl.isVisible track by searchResult.id.toString()"
+     id="{{searchResult.id.toString()}}"
      ng-class="['search-result', {selected: ctrl.isSelected(searchResult), disabled: searchResult.disabled, 'add-new': searchResult.isAddNew()}]"
      title="{{ctrl.title(searchResult)}}"
      ng-click="ctrl.selectItem(searchResult)"
