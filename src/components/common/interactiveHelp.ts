@@ -74,6 +74,7 @@ class InteractiveHelpController {
   activeIndex = 0;
   backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
   popoverOffset: { left: number; top: number } | null = null;
+  validationNgModel: INgModelController|null;
 
   private styleSetState: StyleSetState = {
     offsetStabileCheck: null,
@@ -89,7 +90,7 @@ class InteractiveHelpController {
       throw new Error('No stories defined');
     }
 
-    this.item = storyLine.items[0];
+    this.showItem(0);
 
     // Active element needs to be blurred because it can used for example for multiple interactive help activations
     angular.element(document.activeElement).blur();
@@ -153,7 +154,7 @@ class InteractiveHelpController {
           }
         } else {
           if (isFocusInElement(event, lastElement)) {
-            if (!isClick(story.nextCondition) && this.popoverController.isValid()) {
+            if (!isClick(story.nextCondition) && this.isValid()) {
               $scope.$apply(() => this.nextItem());
             } else {
               firstElement.focus();
@@ -459,11 +460,61 @@ class InteractiveHelpController {
     }
   }
 
+  showItem(index: number) {
+
+    this.item = this.storyLine.items[index];
+
+    switch (this.item.type) {
+      case 'story':
+        this.setStoryParameters(this.item);
+        break;
+      case 'notification':
+        this.setNotificationParameters(this.item);
+        break;
+      default:
+        assertNever(this.item, 'Unsupported item type');
+    }
+  }
+
+  setStoryParameters(story: Story) {
+    if (story.nextCondition.type === 'valid-input') {
+      this.validationNgModel = story.nextCondition.element().controller('ngModel');
+
+      if (!this.validationNgModel) {
+        throw new Error('ng-model does not exits for valid-input');
+      }
+    } else {
+      this.validationNgModel = null;
+    }
+
+    if (story.initialInputValue) {
+
+      const initialInputNgModel = story.initialInputValue.element().controller('ngModel');
+
+      if (!initialInputNgModel) {
+        throw new Error('ng-model does not exits for initial input');
+      } else {
+        if (!initialInputNgModel.$viewValue) {
+          initialInputNgModel.$setViewValue(story.initialInputValue.value);
+          initialInputNgModel.$render();
+        }
+      }
+    }
+  }
+
+  setNotificationParameters(_notification: Notification) {
+    this.validationNgModel = null;
+  }
+
+  isValid() {
+    return !this.validationNgModel || (this.validationNgModel.$valid && !this.validationNgModel.$pending);
+  }
+
   nextItem() {
     if (this.isCurrentLastItem()) {
       this.close(false);
     } else {
-      this.item = this.storyLine.items[++this.activeIndex];
+      this.showItem(++this.activeIndex);
     }
   }
 
@@ -471,7 +522,7 @@ class InteractiveHelpController {
     if (this.isCurrentFirstItem()) {
       this.close(true);
     } else {
-      this.item = this.storyLine.items[--this.activeIndex];
+      this.showItem(--this.activeIndex);
     }
   }
 
@@ -536,7 +587,6 @@ class HelpPopoverController {
   showNext: boolean;
   showPrevious: boolean;
   showClose: boolean;
-  validationNgModel: INgModelController|null;
 
   constructor($scope: IScope, private $element: JQuery, private $document: IDocumentService) {
     this.helpController.register(this);
@@ -563,28 +613,6 @@ class HelpPopoverController {
     this.showNext = !this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
     this.showClose = this.helpController.isCurrentLastItem() && !isClick(story.nextCondition);
     this.showPrevious = !this.helpController.isCurrentFirstItem() && !story.cannotMoveBack;
-
-    if (story.nextCondition.type === 'valid-input') {
-      this.validationNgModel = story.nextCondition.element().controller('ngModel');
-
-      if (!this.validationNgModel) {
-        throw new Error('ng-model does not exits for valid-input');
-      }
-    }
-
-    if (story.initialInputValue) {
-
-      const initialInputNgModel = story.initialInputValue.element().controller('ngModel');
-
-      if (!initialInputNgModel) {
-        throw new Error('ng-model does not exits for initial input');
-      } else {
-        if (!initialInputNgModel.$viewValue) {
-          initialInputNgModel.$setViewValue(story.initialInputValue.value);
-          initialInputNgModel.$render();
-        }
-      }
-    }
   }
 
   setNotificationStyles(notification: Notification) {
@@ -592,11 +620,10 @@ class HelpPopoverController {
     this.showNext = !this.helpController.isCurrentLastItem();
     this.showClose = this.helpController.isCurrentLastItem();
     this.showPrevious = !this.helpController.isCurrentFirstItem() && !notification.cannotMoveBack;
-    this.validationNgModel = null;
   }
 
   isValid() {
-    return !this.validationNgModel || this.validationNgModel.$valid;
+    return this.helpController.isValid();
   }
 
   hide() {
@@ -655,6 +682,7 @@ class HelpPopoverController {
     const arrow = 13;
     const documentWidth = angular.element(this.$document).width();
 
+    // TODO more generic cropping to viewport
     switch (story.popoverPosition) {
       case 'left':
         const leftPopoverLeft = left - popoverWidth - arrow;
