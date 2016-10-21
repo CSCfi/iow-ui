@@ -107,7 +107,7 @@ class InteractiveHelpController {
         return [];
       }
 
-      const focusableElements = story.focusTo().element.find(focusableSelector).addBack(focusableSelector);
+      const focusableElements = story.focusTo.element().find(focusableSelector).addBack(focusableSelector);
       const result: HTMLElement[] = [];
 
       focusableElements.each((_index: number, element: HTMLElement) => {
@@ -325,13 +325,14 @@ class InteractiveHelpController {
       return null;
     }
 
-    const focusTo = story.focusTo();
+    const focusTo = story.focusTo;
+    const element = story.focusTo.element();
 
-    if (!focusTo.element || focusTo.element.length === 0) {
+    if (!element || element.length === 0) {
       return null;
     }
 
-    const focusToElementOffset = focusTo.element.offset();
+    const focusToElementOffset = element.offset();
 
     const marginTop = focusTo.margin && focusTo.margin.top || 0;
     const marginRight = focusTo.margin && focusTo.margin.right || 0;
@@ -339,8 +340,8 @@ class InteractiveHelpController {
     const marginLeft = focusTo.margin && focusTo.margin.left || 0;
 
     return {
-      width: Math.trunc(focusTo.element.outerWidth(false)) + marginLeft + marginRight,
-      height: Math.trunc(focusTo.element.outerHeight(false)) + marginTop + marginBottom,
+      width: Math.trunc(element.outerWidth(false)) + marginLeft + marginRight,
+      height: Math.trunc(element.outerHeight(false)) + marginTop + marginBottom,
       left: Math.trunc(focusToElementOffset.left) - marginLeft,
       top: Math.trunc(focusToElementOffset.top) - marginTop
     };

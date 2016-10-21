@@ -11,9 +11,7 @@ const selectGroupElement = () => angular.element('#browse-panel .selectable-pane
 const selectGroup = createStory({
 
   popoverTo: selectGroupElement,
-  focusTo: () => ({
-    element: selectGroupElement()
-  }),
+  focusTo: { element: selectGroupElement },
   popoverPosition: 'left',
   title: 'Select group',
   content: 'Diipadaa',
@@ -24,9 +22,7 @@ const startLibraryCreationElement = () => angular.element('#add-library-button')
 const startLibraryCreation = createStory({
 
   popoverTo: startLibraryCreationElement,
-  focusTo: () => ({
-    element: startLibraryCreationElement()
-  }),
+  focusTo: { element: startLibraryCreationElement },
   popoverPosition: 'left',
   title: 'Add library',
   content: 'Diipadaa',
@@ -38,10 +34,10 @@ const enterLibraryPrefixElement = () => angular.element('.modal-dialog [data-tit
 const enterLibraryPrefix = createStory({
 
   popoverTo: () => enterLibraryPrefixElement().find('input'),
-  focusTo: () => ({
-    element: enterLibraryPrefixElement(),
+  focusTo: {
+    element: enterLibraryPrefixElement,
     margin: editableMargin
-  }),
+  },
   popoverPosition: 'left',
   title: 'Prefix',
   content: 'Prefix info',
@@ -54,10 +50,10 @@ const enterLibraryLabelElement = () => angular.element('.modal-dialog [data-titl
 const enterLibraryLabel = createStory({
 
   popoverTo: () => enterLibraryLabelElement().find('input'),
-  focusTo: () => ({
-    element: enterLibraryLabelElement(),
+  focusTo: {
+    element: enterLibraryLabelElement,
     margin: editableMargin
-  }),
+  },
   popoverPosition: 'left',
   title: 'Library label',
   content: 'Library label info',
@@ -69,10 +65,10 @@ const enterLibraryLanguageElement = () => angular.element('editable-multiple-lan
 const enterLibraryLanguage = createStory({
 
   popoverTo: enterLibraryLanguageElement,
-  focusTo: () => ({
-    element: enterLibraryLanguageElement().find('div.editable-wrap'),
+  focusTo: {
+    element: () => enterLibraryLanguageElement().find('div.editable-wrap'),
     margin: Object.assign({}, editableMargin, { bottom: 10 })
-  }),
+  },
   popoverPosition: 'left',
   title: 'Model languages',
   content: 'Diipadaa',
@@ -83,9 +79,7 @@ const createLibraryElement = () => angular.element('.modal-dialog button.create'
 const createLibrary = createStory({
 
   popoverTo: createLibraryElement,
-  focusTo: () => ({
-    element: createLibraryElement()
-  }),
+  focusTo: { element: createLibraryElement },
   popoverPosition: 'left',
   title: 'Create new',
   content: 'Diipadaa',
@@ -96,9 +90,7 @@ const saveLibraryElement = () => angular.element('button.save');
 const saveLibrary = createStory({
 
   popoverTo: saveLibraryElement,
-  focusTo: () => ({
-    element: saveLibraryElement()
-  }),
+  focusTo: { element: saveLibraryElement },
   popoverPosition: 'left',
   title: 'Save changes',
   content: 'Diipadaa',

@@ -38,8 +38,8 @@ export interface Story extends StoryDetails {
 export interface StoryDetails {
   popoverTo: () => JQuery;
   popoverPosition: PopoverPosition;
-  focusTo?: () => {
-    element: JQuery,
+  focusTo?: {
+    element: () => JQuery,
     margin?: { top?: number, right?: number, bottom?: number, left?: number }
   };
   title: string;
