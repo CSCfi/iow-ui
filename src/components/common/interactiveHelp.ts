@@ -559,10 +559,6 @@ class HelpPopoverController {
 
     this.item = item;
 
-    function findNgModel(element: JQuery): INgModelController|null {
-      return element.find('[ng-model]').addBack('[ng-model]').controller('ngModel');
-    }
-
     if (item.type === 'story') {
       this.arrowClass = ['help-arrow', `help-${item.popoverPosition}`];
       this.showNext = !last && !isClick(item.nextCondition);
@@ -570,7 +566,7 @@ class HelpPopoverController {
       this.showPrevious = !first && !item.cannotMoveBack;
 
       if (item.nextCondition.type === 'valid-input') {
-        this.validationNgModel = findNgModel(item.nextCondition.element());
+        this.validationNgModel = item.nextCondition.element().controller('ngModel');
 
         if (!this.validationNgModel) {
           throw new Error('ng-model does not exits for valid-input');
@@ -579,7 +575,7 @@ class HelpPopoverController {
 
       if (item.initialInputValue) {
 
-        const initialInputNgModel = findNgModel(item.initialInputValue.element());
+        const initialInputNgModel = item.initialInputValue.element().controller('ngModel');
 
         if (!initialInputNgModel) {
           throw new Error('ng-model does not exits for initial input');

@@ -46,7 +46,7 @@ const enterLibraryPrefix = createStory({
   popoverPosition: 'left',
   title: 'Prefix',
   content: 'Prefix info',
-  nextCondition: createValidInputNextCondition(enterLibraryPrefixElement),
+  nextCondition: createValidInputNextCondition(enterLibraryPrefixInputElement),
   cannotMoveBack: true,
   initialInputValue: {
     value: 'testi',
@@ -85,7 +85,7 @@ const enterLibraryLanguage = createStory({
   popoverPosition: 'left',
   title: 'Model languages',
   content: 'Diipadaa',
-  nextCondition: createValidInputNextCondition(enterLibraryLanguageElement)
+  nextCondition: createValidInputNextCondition(enterLibraryLanguageInputElement)
 });
 
 const createLibraryElement = child(modal, 'button.create');
