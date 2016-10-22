@@ -649,9 +649,9 @@ class HelpBackdropController {
 
   // XXX: does this logic belong to here?
   private focusFirstFocusable() {
-    if (this.item && this.item.type === 'story') {
+    if (this.item && this.item.type === 'story' && this.item.focusTo) {
 
-      const focusable = this.item.popoverTo().find(focusableSelector).addBack(focusableSelector).eq(0);
+      const focusable = this.item.focusTo.element().find(focusableSelector).addBack(focusableSelector).eq(0);
 
       focusable.focus();
 
