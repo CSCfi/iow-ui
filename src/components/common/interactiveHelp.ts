@@ -7,6 +7,7 @@ import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 import { StoryLine, NextCondition, Story, Notification, Click, ModifyingClick } from '../../help/contract';
+import { contains } from '../../utils/array';
 
 export class InteractiveHelp {
 
@@ -638,15 +639,27 @@ class HelpBackdropController {
     const regionPositionings  = this.resolveRegions();
 
     if (!regionsAreEqual(this.regions, regionPositionings)) {
-      // XXX: does this logic belong to here?
+
       // Do off digest
-      setTimeout(() => {
-        if (this.item && this.item.type === 'story') {
-          this.item.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
-        }
-      });
+      setTimeout(() => this.focusFirstFocusable());
 
       this.regions = regionPositionings;
+    }
+  }
+
+  // XXX: does this logic belong to here?
+  private focusFirstFocusable() {
+    if (this.item && this.item.type === 'story') {
+
+      const focusable = this.item.popoverTo().find(focusableSelector).addBack(focusableSelector).eq(0);
+
+      focusable.focus();
+
+      if (contains(['INPUT', 'TEXTAREA'], focusable.prop('tagName'))) {
+        const valueLength = focusable.val().length;
+        // ensures that cursor will be at the end of the input
+        setTimeout(() => (focusable[0] as HTMLInputElement).setSelectionRange(valueLength, valueLength));
+      }
     }
   }
 
