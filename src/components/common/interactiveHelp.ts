@@ -35,10 +35,7 @@ export class InteractiveHelp {
       return this.overlayService.open({
         template: `
           <help-popover item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()"></help-popover>
-          <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
-          <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
-          <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
-          <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.left"></div>
+          <help-backdrop item="ctrl.item" help-controller="ctrl"></help-backdrop>
         `,
         controller: InteractiveHelpController,
         controllerAs: 'ctrl',
@@ -62,13 +59,14 @@ function isClick(nextCondition: NextCondition): nextCondition is Click|Modifying
 class InteractiveHelpController {
 
   item: Story|Notification;
-  popoverController: HelpPopoverController;
   activeIndex = 0;
-  backdrop: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
   validationNgModel: INgModelController|null;
 
+  popoverController: HelpPopoverController;
+  backdropController: HelpBackdropController;
+
   /* @ngInject */
-  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, private $document: IDocumentService, private storyLine: StoryLine) {
+  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
 
     if (!storyLine || storyLine.items.length === 0) {
       throw new Error('No stories defined');
@@ -185,7 +183,7 @@ class InteractiveHelpController {
           $scope.$apply(() => {
             this.popoverController.show(false);
             this.popoverController.updatePositioning();
-            this.updateBackdrop();
+            this.backdropController.updatePositioning();
           });
           return;
         }
@@ -204,7 +202,7 @@ class InteractiveHelpController {
       if (tryCount > 0) {
         $scope.$apply(() => {
           this.popoverController.hide();
-          this.updateBackdrop(true);
+          this.backdropController.updatePositioning(true);
         });
       }
     };
@@ -237,126 +235,14 @@ class InteractiveHelpController {
       $document.off('keydown', keyDownListener);
       $document.off('click', clickListener);
     });
-
-    const storyFocus = () => {
-      const item = requireDefined(this.item);
-      return item.type === 'story' ? InteractiveHelpController.calculateFocus(item) : null;
-    };
-
-    $scope.$watch(storyFocus, () => this.updateBackdrop(), true);
-    const setBackDropApplyingScope = () => $scope.$apply(() => this.updateBackdrop());
-
-    window.addEventListener('resize', setBackDropApplyingScope);
-    window.addEventListener('scroll', setBackDropApplyingScope);
-
-    $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', setBackDropApplyingScope);
-      window.removeEventListener('scroll', setBackDropApplyingScope);
-    });
   }
 
-  register(popover: HelpPopoverController) {
+  registerPopover(popover: HelpPopoverController) {
     this.popoverController = popover;
   }
 
-  private updateBackdrop(next = false) {
-
-    const fullBackdrop = {
-      top: { left: 0, top: 0, right: 0, bottom: 0 },
-      right: { left: 0, top: 0, width: 0, height: 0 },
-      bottom: { left: 0, top: 0, width: 0, height: 0 },
-      left: { left: 0, top: 0, width: 0, height: 0 }
-    };
-
-    if (next) {
-      const nextItem = this.peekNext();
-      const nextItemHasFocus = nextItem && (nextItem.type === 'notification' || nextItem.focusTo);
-
-      if (nextItemHasFocus) {
-        this.backdrop = fullBackdrop;
-      } else {
-        this.backdrop = null;
-      }
-    } else {
-      if (!this.item) {
-        this.backdrop = null;
-      } else {
-        switch (this.item.type) {
-          case 'story':
-            this.backdrop = this.calculateBackdrop(this.item);
-            break;
-          case 'notification':
-            this.backdrop = fullBackdrop;
-            break;
-          default:
-            assertNever(this.item, 'Unknown item type');
-        }
-      }
-    }
-  }
-
-  private calculateBackdrop(story: Story) {
-
-    const positioning = InteractiveHelpController.calculateFocus(story);
-
-    if (!positioning) {
-      return null;
-    }
-
-    return {
-      top: {
-        left: 0,
-        top: 0,
-        right: 0,
-        height: positioning.top - window.scrollY
-      },
-      right: {
-        left: positioning.left + positioning.width,
-        top: positioning.top - window.scrollY,
-        width: this.$document.width() - positioning.left - positioning.width,
-        height: positioning.height
-      },
-      bottom: {
-        left: 0,
-        top: positioning.top + positioning.height - window.scrollY,
-        right: 0,
-        bottom: 0
-      },
-      left: {
-        left: 0,
-        top: positioning.top - window.scrollY,
-        width: positioning.left,
-        height: positioning.height
-      }
-    };
-  }
-
-  private static calculateFocus(story: Story): Positioning|null {
-
-    if (!story || !story.focusTo) {
-      return null;
-    }
-
-    const focusTo = story.focusTo;
-    const element = story.focusTo.element();
-
-    if (!element || element.length === 0) {
-      return null;
-    }
-
-    const focusToElementOffset = element.offset();
-
-    const marginTop = focusTo.margin && focusTo.margin.top || 0;
-    const marginRight = focusTo.margin && focusTo.margin.right || 0;
-    const marginBottom = focusTo.margin && focusTo.margin.bottom || 0;
-    const marginLeft = focusTo.margin && focusTo.margin.left || 0;
-
-    return {
-      width: Math.trunc(element.prop('offsetWidth')) + marginLeft + marginRight,
-      height: Math.trunc(element.prop('offsetHeight')) + marginTop + marginBottom,
-      left: Math.trunc(focusToElementOffset.left) - marginLeft,
-      top: Math.trunc(focusToElementOffset.top) - marginTop
-    };
+  registerBackdrop(backdrop: HelpBackdropController) {
+    this.backdropController = backdrop;
   }
 
   canMoveToNext() {
@@ -433,7 +319,6 @@ class InteractiveHelpController {
             return this.validationNgModel && this.validationNgModel.$valid && !this.validationNgModel.$pending;
           case 'element-exists':
             const element = this.item.nextCondition.element();
-            console.log(element);
             return element && element.length > 0;
           default:
             return assertNever(this.item.nextCondition, 'Unknown next condition');
@@ -498,7 +383,7 @@ mod.directive('helpPopover', () => {
           <button ng-show="ctrl.showClose" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next" translate>close</button>
           <a ng-click="ctrl.close(true)" class="help-close">&times;</a>
         </div>
-      `,
+    `,
     bindToController: true,
     scope: {
       item: '<',
@@ -524,7 +409,7 @@ class HelpPopoverController {
 
   constructor(private $scope: IScope, private $element: JQuery, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
 
-    this.helpController.register(this);
+    this.helpController.registerPopover(this);
 
     const setItemStyles = () => {
 
@@ -734,5 +619,153 @@ class HelpPopoverController {
       default:
         return assertNever(story.popoverPosition, 'Unsupported popover position');
     }
+  }
+}
+
+mod.directive('helpBackdrop', () => {
+  return {
+    restrict: 'E',
+    template: `
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
+        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.left"></div>
+    `,
+    bindToController: true,
+    scope: {
+      item: '<',
+      helpController: '<'
+    },
+    controller: HelpBackdropController,
+    controllerAs: 'ctrl'
+  };
+});
+
+class HelpBackdropController {
+
+  item: Story|Notification;
+  positioning: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
+
+  helpController: InteractiveHelpController;
+
+  constructor($scope: IScope, private $document: IDocumentService) {
+
+    this.helpController.registerBackdrop(this);
+
+    const storyFocus = () => {
+      const item = requireDefined(this.item);
+      return item.type === 'story' ? HelpBackdropController.calculateFocus(item) : null;
+    };
+
+    $scope.$watch(storyFocus, () => this.updatePositioning(), true);
+    const setBackDropApplyingScope = () => $scope.$apply(() => this.updatePositioning());
+
+    window.addEventListener('resize', setBackDropApplyingScope);
+    window.addEventListener('scroll', setBackDropApplyingScope);
+
+    $scope.$on('$destroy', () => {
+      window.removeEventListener('resize', setBackDropApplyingScope);
+      window.removeEventListener('scroll', setBackDropApplyingScope);
+    });
+  }
+
+  updatePositioning(next = false) {
+
+    const fullBackdrop = {
+      top: { left: 0, top: 0, right: 0, bottom: 0 },
+      right: { left: 0, top: 0, width: 0, height: 0 },
+      bottom: { left: 0, top: 0, width: 0, height: 0 },
+      left: { left: 0, top: 0, width: 0, height: 0 }
+    };
+
+    if (next) {
+      const nextItem = this.helpController.peekNext();
+      const nextItemHasFocus = nextItem && (nextItem.type === 'notification' || nextItem.focusTo);
+
+      if (nextItemHasFocus) {
+        this.positioning = fullBackdrop;
+      } else {
+        this.positioning = null;
+      }
+    } else {
+      if (!this.item) {
+        this.positioning = null;
+      } else {
+        switch (this.item.type) {
+          case 'story':
+            this.positioning = this.calculateBackdrop(this.item);
+            break;
+          case 'notification':
+            this.positioning = fullBackdrop;
+            break;
+          default:
+            assertNever(this.item, 'Unknown item type');
+        }
+      }
+    }
+  }
+
+  private calculateBackdrop(story: Story) {
+
+    const positioning = HelpBackdropController.calculateFocus(story);
+
+    if (!positioning) {
+      return null;
+    }
+
+    return {
+      top: {
+        left: 0,
+        top: 0,
+        right: 0,
+        height: positioning.top - window.scrollY
+      },
+      right: {
+        left: positioning.left + positioning.width,
+        top: positioning.top - window.scrollY,
+        width: this.$document.width() - positioning.left - positioning.width,
+        height: positioning.height
+      },
+      bottom: {
+        left: 0,
+        top: positioning.top + positioning.height - window.scrollY,
+        right: 0,
+        bottom: 0
+      },
+      left: {
+        left: 0,
+        top: positioning.top - window.scrollY,
+        width: positioning.left,
+        height: positioning.height
+      }
+    };
+  }
+
+  private static calculateFocus(story: Story): Positioning|null {
+
+    if (!story || !story.focusTo) {
+      return null;
+    }
+
+    const focusTo = story.focusTo;
+    const element = story.focusTo.element();
+
+    if (!element || element.length === 0) {
+      return null;
+    }
+
+    const focusToElementOffset = element.offset();
+
+    const marginTop = focusTo.margin && focusTo.margin.top || 0;
+    const marginRight = focusTo.margin && focusTo.margin.right || 0;
+    const marginBottom = focusTo.margin && focusTo.margin.bottom || 0;
+    const marginLeft = focusTo.margin && focusTo.margin.left || 0;
+
+    return {
+      width: Math.trunc(element.prop('offsetWidth')) + marginLeft + marginRight,
+      height: Math.trunc(element.prop('offsetHeight')) + marginTop + marginBottom,
+      left: Math.trunc(focusToElementOffset.left) - marginLeft,
+      top: Math.trunc(focusToElementOffset.top) - marginTop
+    };
   }
 }
