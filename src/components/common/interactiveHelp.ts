@@ -165,8 +165,8 @@ class InteractiveHelpController {
     const waitForElementToDisappear = () => {
 
       if (elementExists(element())) {
-        if (++tryCount < 30) {
-          setTimeout(waitForElementToDisappear, 20);
+        if (++tryCount < 100) {
+          setTimeout(waitForElementToDisappear, 10);
         }
       } else {
         this.$scope.$apply(() => this.moveToNextItem());
@@ -462,11 +462,11 @@ class HelpPopoverController {
         clearTimeout(this.debounceHandle);
       }
 
-      if (this.debounceCount > 100) {
+      if (this.debounceCount > 40) {
         throw new Error('Element not exist or does not stabilize');
       }
 
-      this.debounceHandle = setTimeout(applyPositioningAndScrollWhenStabile, 20);
+      this.debounceHandle = setTimeout(applyPositioningAndScrollWhenStabile, 50);
     };
 
     const applyPositioningAndScrollWhenStabile = () => {
