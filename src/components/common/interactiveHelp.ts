@@ -201,7 +201,11 @@ class InteractiveHelpController {
 
       if (elementExists(continueToNextElement)) {
         if (isTargetElementInsideElement(event, continueToNextElement[0])) {
-          this.$scope.$apply(() => this.moveToNextItem());
+          if (item.nextCondition.type === 'modifying-click') {
+            this.moveToNextItemAfterElementDisappeared(item.nextCondition.element);
+          } else {
+            this.$scope.$apply(() => this.moveToNextItem());
+          }
         }
       } else if (item.nextCondition.type === 'modifying-click') {
         this.moveToNextItemAfterElementDisappeared(item.nextCondition.element);
