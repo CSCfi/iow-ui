@@ -43,9 +43,6 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
                           'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +
                           'iframe, object, embed, *[tabindex], *[contenteditable=true]';
 
-function isClick(nextCondition: NextCondition): nextCondition is Click|ModifyingClick {
-  return nextCondition.type === 'click' || nextCondition.type === 'modifying-click';
-}
 
 class InteractiveHelpController {
 
@@ -56,7 +53,7 @@ class InteractiveHelpController {
   backdropController: HelpBackdropController;
 
   /* @ngInject */
-  constructor(public $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
+  constructor(private $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
 
     if (!storyLine || storyLine.items.length === 0) {
       throw new Error('No stories defined');
@@ -67,164 +64,151 @@ class InteractiveHelpController {
     // Active element needs to be blurred because it can used for example for multiple interactive help activations
     angular.element(document.activeElement).blur();
 
-    function isVisible(element: HTMLElement) {
-      return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-    }
-
-    function elementExists(e: JQuery) {
-      return e && e.length > 0 && isVisible(e[0]);
-    }
-
-    const isFocusInElement = (event: JQueryEventObject, element: HTMLElement) => (event.target || event.srcElement) === element;
-
-    const loadFocusableElementList = (story: Story) => {
-
-      if (!story.focusTo) {
-        return [];
-      }
-
-      const focusableElements = story.focusTo.element().find(focusableSelector).addBack(focusableSelector);
-      const result: HTMLElement[] = [];
-
-      focusableElements.each((_index: number, element: HTMLElement) => {
-        if (isVisible(element) && (!element.tabIndex || element.tabIndex > 0)) {
-          result.push(element);
-        }
-      });
-
-      return result;
-    };
-
-    function stopEvent(event: JQueryEventObject) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    const manageFocus = (event: JQueryEventObject, story: Story) => {
-      const focusableElements = loadFocusableElementList(story);
-
-      const activeElementIsFocusable = () => {
-        for (const focusableElement of focusableElements) {
-          if (focusableElement === document.activeElement) {
-            return true;
-          }
-        }
-        return false;
-      };
-
-      if (focusableElements.length > 0) {
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (event.shiftKey) {
-          if (isFocusInElement(event, firstElement)) {
-            if (!story.cannotMoveBack) {
-              $scope.$apply(() => this.moveToPreviousItem());
-            }
-            stopEvent(event);
-          }
-        } else {
-          if (isFocusInElement(event, lastElement)) {
-            if (!isClick(story.nextCondition) && this.isValid()) {
-              $scope.$apply(() => this.moveToNextItem());
-            } else {
-              firstElement.focus();
-            }
-            stopEvent(event);
-          }
-        }
-
-        // prevent input focus breaking from story focusable area
-        if (!activeElementIsFocusable()) {
-          firstElement.focus();
-          stopEvent(event);
-        }
-
-      } else {
-        stopEvent(event);
-      }
-    };
-
-    const keyDownListener = (event: JQueryEventObject) => {
-
-      const item = requireDefined(this.item);
-
-      switch (event.which) {
-        case tab:
-          if (item.type === 'story') {
-            manageFocus(event, item);
-          }
-          break;
-        case esc:
-          $scope.$apply(() => this.close(true));
-          break;
-      }
-    };
-
-    const moveToNextItemAfterElementDisappeared = (element: () => JQuery) => {
-
-      let tryCount = 0;
-
-      const waitForElementToDisappear = () => {
-
-        if (tryCount > 30) {
-          // reset values to state as before wait
-          $scope.$apply(() => {
-            this.popoverController.show(false);
-            this.popoverController.updatePositioning();
-            this.backdropController.updatePositioning();
-          });
-          return;
-        }
-
-        if (elementExists(element())) {
-          tryCount++;
-          setTimeout(waitForElementToDisappear, 20);
-        } else {
-          $scope.$apply(() => this.moveToNextItem());
-        }
-      };
-
-      waitForElementToDisappear();
-
-      // if next not already applied
-      if (tryCount > 0) {
-        $scope.$apply(() => {
-          this.popoverController.hide();
-          this.backdropController.updatePositioning(true);
-        });
-      }
-    };
-
-    const clickListener = (event: JQueryEventObject) => {
-      const item = this.item;
-
-      if (item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
-        const continueToNextElement = item.nextCondition.element();
-
-        if (elementExists(continueToNextElement)) {
-          if (isTargetElementInsideElement(event, continueToNextElement[0])) {
-            $scope.$apply(() => this.moveToNextItem());
-          }
-        } else if (item.nextCondition.type === 'modifying-click') {
-          moveToNextItemAfterElementDisappeared(item.nextCondition.element);
-        } else {
-          throw new Error('Popover element not found');
-        }
-      }
-    };
+    const keyDownHandler = this.keyDownHandler.bind(this);
+    const clickHandler = this.clickHandler.bind(this);
 
     // Lazy initialization of listeners so that it doesn't intervene with help opening event
     window.setTimeout(() => {
-      $document.on('keydown', keyDownListener);
-      $document.on('click', clickListener);
+      $document.on('keydown', keyDownHandler);
+      $document.on('click', clickHandler);
     });
 
-    $scope.$on('$destroy', function() {
-      $document.off('keydown', keyDownListener);
-      $document.off('click', clickListener);
+    $scope.$on('$destroy', () => {
+      $document.off('keydown', keyDownHandler);
+      $document.off('click', clickHandler);
     });
+  }
+
+  loadFocusableElementList() {
+
+    const item = this.item;
+
+    if (item.type === 'notification' || !item.focusTo) {
+      return [];
+    }
+
+    const focusableElements = item.focusTo.element().find(focusableSelector).addBack(focusableSelector);
+    const result: HTMLElement[] = [];
+
+    focusableElements.each((_index: number, element: HTMLElement) => {
+      if (isVisible(element) && (!element.tabIndex || element.tabIndex > 0)) {
+        result.push(element);
+      }
+    });
+
+    return result;
+  };
+
+  manageTabKeyFocus(event: JQueryEventObject) {
+
+    const item = this.item;
+    const focusableElements = this.loadFocusableElementList();
+
+    const activeElementIsFocusable = () => {
+      for (const focusableElement of focusableElements) {
+        if (focusableElement === document.activeElement) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    if (item.type === 'story' && focusableElements.length > 0) {
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) {
+        if (isFocusInElement(event, firstElement)) {
+          if (!item.cannotMoveBack) {
+            this.$scope.$apply(() => this.moveToPreviousItem());
+          }
+          stopEvent(event);
+        }
+      } else {
+        if (isFocusInElement(event, lastElement)) {
+          if (!isClick(item.nextCondition) && this.isValid()) {
+            this.$scope.$apply(() => this.moveToNextItem());
+          } else {
+            firstElement.focus();
+          }
+          stopEvent(event);
+        }
+      }
+
+      // prevent input focus breaking from item focusable area
+      if (!activeElementIsFocusable()) {
+        firstElement.focus();
+        stopEvent(event);
+      }
+
+    } else {
+      stopEvent(event);
+    }
+  };
+
+  keyDownHandler(event: JQueryEventObject) {
+    switch (event.which) {
+      case tab:
+        this.manageTabKeyFocus(event);
+        break;
+      case esc:
+        this.$scope.$apply(() => this.close(true));
+        break;
+    }
+  }
+
+  moveToNextItemAfterElementDisappeared(element: () => JQuery) {
+
+    let tryCount = 0;
+
+    const waitForElementToDisappear = () => {
+
+      if (tryCount > 30) {
+        // reset values to state as before wait
+        this.$scope.$apply(() => {
+          this.popoverController.show(false);
+          this.popoverController.updatePositioning();
+          this.backdropController.updatePositioning();
+        });
+        return;
+      }
+
+      if (elementExists(element())) {
+        tryCount++;
+        setTimeout(waitForElementToDisappear, 20);
+      } else {
+        this.$scope.$apply(() => this.moveToNextItem());
+      }
+    };
+
+    waitForElementToDisappear();
+
+    // if next not already applied
+    if (tryCount > 0) {
+      this.$scope.$apply(() => {
+        this.popoverController.hide();
+        this.backdropController.updatePositioning(true);
+      });
+    }
+  }
+
+  clickHandler(event: JQueryEventObject) {
+    const item = this.item;
+
+    if (item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
+      const continueToNextElement = item.nextCondition.element();
+
+      if (elementExists(continueToNextElement)) {
+        if (isTargetElementInsideElement(event, continueToNextElement[0])) {
+          this.$scope.$apply(() => this.moveToNextItem());
+        }
+      } else if (item.nextCondition.type === 'modifying-click') {
+        this.moveToNextItemAfterElementDisappeared(item.nextCondition.element);
+      } else {
+        throw new Error('Popover element not found');
+      }
+    }
   }
 
   registerPopover(popover: HelpPopoverController) {
@@ -745,6 +729,28 @@ class HelpBackdropController {
       top: Math.trunc(focusToElementOffset.top) - marginTop
     };
   }
+}
+
+
+function isVisible(element: HTMLElement) {
+  return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+}
+
+function elementExists(e: JQuery) {
+  return e && e.length > 0 && isVisible(e[0]);
+}
+
+function isClick(nextCondition: NextCondition): nextCondition is Click|ModifyingClick {
+  return nextCondition.type === 'click' || nextCondition.type === 'modifying-click';
+}
+
+function isFocusInElement(event: JQueryEventObject, element: HTMLElement) {
+  return (event.target || event.srcElement) === element;
+}
+
+function stopEvent(event: JQueryEventObject) {
+  event.preventDefault();
+  event.stopPropagation();
 }
 
 interface Positioning {
