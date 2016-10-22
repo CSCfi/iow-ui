@@ -167,7 +167,6 @@ class InteractiveHelpController {
       if (tryCount > 30) {
         // reset values to state as before wait
         this.$scope.$apply(() => {
-          this.popoverController.show(false);
           this.popoverController.updatePositioning();
           this.backdropController.updatePositioning();
         });
@@ -187,7 +186,6 @@ class InteractiveHelpController {
     // if next not already applied
     if (tryCount > 0) {
       this.$scope.$apply(() => {
-        this.popoverController.hide();
         this.backdropController.updatePositioning(true);
       });
     }
@@ -366,7 +364,6 @@ class HelpPopoverController {
   arrowClass: string[] = [];
 
   positioning: Positioning|null = null;
-  hidden = false;
 
   debounceHandle: any;
   debounceCount = 0;
@@ -391,14 +388,17 @@ class HelpPopoverController {
             assertNever(item, 'Unknown item type');
         }
 
-        this.setOffsetAndShowWhenStabile();
+        this.updatePositioningAfterStabile();
       }
     };
 
     const storyPopoverOffset = () => this.item && this.item.type === 'story' && this.item.popoverTo().offset();
 
     $scope.$watch(() => this.item, () => {
-      this.hide();
+      if (this.positioning) {
+        // item change will change content and this forces width recalculation
+        this.positioning.width = undefined;
+      }
       setItemStyles();
     });
     $scope.$watch(storyPopoverOffset, setItemStyles, true);
@@ -428,7 +428,7 @@ class HelpPopoverController {
     return this.helpController.canMoveToPrevious();
   }
 
-  private setOffsetAndShowWhenStabile() {
+  private updatePositioningAfterStabile() {
 
     const debounce = (resetCounter: boolean) => {
 
@@ -445,13 +445,13 @@ class HelpPopoverController {
         throw new Error('Element not exist or does not stabilize');
       }
 
-      this.debounceHandle = setTimeout(applyPositioningAndFocusWhenStabile, 20);
+      this.debounceHandle = setTimeout(applyPositioningAndScrollWhenStabile, 20);
     };
 
-    const applyPositioningAndFocusWhenStabile = () => {
+    const applyPositioningAndScrollWhenStabile = () => {
       if (this.isPositioningStabile()) {
         this.debounceHandle = null;
-        this.$scope.$apply(() => this.show(true));
+        this.$scope.$apply(() => this.scrollTo());
       } else {
         this.updatePositioning();
         debounce(false);
@@ -463,18 +463,6 @@ class HelpPopoverController {
 
   isValid() {
     return this.helpController.isValid();
-  }
-
-  hide() {
-    this.hidden = true;
-  }
-
-  show(scrollTo: boolean) {
-    this.hidden = false;
-
-    if (scrollTo) {
-      setTimeout(() => this.scrollTo());
-    }
   }
 
   scrollTo() {
@@ -496,7 +484,7 @@ class HelpPopoverController {
   }
 
   style() {
-    return this.hidden ? { visibility: 'hidden' } : this.positioning;
+    return this.positioning;
   }
 
   isPositioningStabile() {
