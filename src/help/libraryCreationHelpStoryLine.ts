@@ -94,9 +94,9 @@ const createLibrary = createStory({
 
   popoverTo: createLibraryElement,
   focusTo: { element: createLibraryElement },
-  popoverPosition: 'left',
+  popoverPosition: 'top',
   title: 'Create new',
-  content: 'Diipadaa',
+  content: 'Create new',
   nextCondition: createModifyingClickNextCondition(createLibraryElement)
 });
 
