@@ -377,7 +377,7 @@ class HelpPopoverController {
       }
     };
 
-    const storyPopoverOffset = () => this.item && this.item.type === 'story' && this.item.popoverTo().offset();
+    const storyPopoverPositioning = () => this.item && this.item.type === 'story' && elementPositioning(this.item.popoverTo());
 
     $scope.$watch(() => this.item, () => {
       if (this.positioning) {
@@ -386,7 +386,7 @@ class HelpPopoverController {
       }
       setItemStyles();
     });
-    $scope.$watch(storyPopoverOffset, setItemStyles, true);
+    $scope.$watch(storyPopoverPositioning, setItemStyles, true);
 
     window.addEventListener('resize', setItemStyles);
     window.addEventListener('scroll', setItemStyles);
@@ -513,10 +513,8 @@ class HelpPopoverController {
 
     const popoverWidth = this.$element.width();
     const popoverHeight = this.$element.height();
-    const left = element.offset().left;
-    const top = element.offset().top;
-    const width = element.prop('offsetWidth');
-    const height = element.prop('offsetHeight');
+    const { left, top, width, height } = elementPositioning(element)!;
+
     const arrow = 13;
     const documentWidth = angular.element(this.$document).width();
 
@@ -675,13 +673,11 @@ class HelpBackdropController {
     }
 
     const focusTo = story.focusTo;
-    const element = story.focusTo.element();
+    const focusToElementPositioning = elementPositioning(story.focusTo.element())!;
 
-    if (!element || element.length === 0) {
+    if (!focusToElementPositioning) {
       return null;
     }
-
-    const focusToElementOffset = element.offset();
 
     const marginTop = focusTo.margin && focusTo.margin.top || 0;
     const marginRight = focusTo.margin && focusTo.margin.right || 0;
@@ -689,14 +685,31 @@ class HelpBackdropController {
     const marginLeft = focusTo.margin && focusTo.margin.left || 0;
 
     return {
-      width: Math.trunc(element.prop('offsetWidth')) + marginLeft + marginRight,
-      height: Math.trunc(element.prop('offsetHeight')) + marginTop + marginBottom,
-      left: Math.trunc(focusToElementOffset.left) - marginLeft,
-      top: Math.trunc(focusToElementOffset.top) - marginTop
+      width: Math.trunc(focusToElementPositioning.width) + marginLeft + marginRight,
+      height: Math.trunc(focusToElementPositioning.height) + marginTop + marginBottom,
+      left: Math.trunc(focusToElementPositioning.left) - marginLeft,
+      top: Math.trunc(focusToElementPositioning.top) - marginTop
     };
   }
 }
 
+function elementPositioning(element: JQuery) {
+
+  if (!element || element.length === 0) {
+    return null;
+  }
+
+  const offset = element.offset();
+  const width = element.prop('offsetWidth');
+  const height = element.prop('offsetHeight');
+
+  return {
+    left: offset.left,
+    top: offset.top,
+    width,
+    height
+  };
+}
 
 function isVisible(element: HTMLElement) {
   return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
