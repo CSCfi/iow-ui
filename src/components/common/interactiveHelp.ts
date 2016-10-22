@@ -603,10 +603,10 @@ mod.directive('helpBackdrop', () => {
   return {
     restrict: 'E',
     template: `
-        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.top"></div>
-        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.right"></div>
-        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.bottom"></div>
-        <div ng-show="ctrl.backdrop" class="help-backdrop" ng-style="ctrl.backdrop.left"></div>
+        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.top"></div>
+        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.right"></div>
+        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.bottom"></div>
+        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.left"></div>
     `,
     bindToController: true,
     scope: {
@@ -621,7 +621,7 @@ mod.directive('helpBackdrop', () => {
 class HelpBackdropController {
 
   item: Story|Notification;
-  regionPositionings: Regions | null;
+  regions: Regions | null;
 
   helpController: InteractiveHelpController;
 
@@ -650,7 +650,7 @@ class HelpBackdropController {
 
     const regionPositionings  = this.resolveRegions(next);
 
-    if (!regionsAreEqual(this.regionPositionings, regionPositionings)) {
+    if (!regionsAreEqual(this.regions, regionPositionings)) {
       // XXX: does this logic belong to here?
       // Do off digest
       setTimeout(() => {
@@ -659,7 +659,7 @@ class HelpBackdropController {
         }
       });
 
-      this.regionPositionings = regionPositionings;
+      this.regions = regionPositionings;
     }
   }
 
