@@ -25,7 +25,7 @@ export class InteractiveHelp {
 
       return this.overlayService.open({
         template: `
-          <help-popover item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()"></help-popover>
+          <help-popover item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()" ng-class="ctrl.popoverController.class()"></help-popover>
           <help-backdrop item="ctrl.item" help-controller="ctrl"></help-backdrop>
         `,
         controller: InteractiveHelpController,
@@ -349,6 +349,7 @@ class HelpPopoverController {
   arrowClass: string[] = [];
 
   positioning: Positioning|null = null;
+  animate = false;
 
   debounceHandle: any;
   debounceCount = 0;
@@ -386,6 +387,41 @@ class HelpPopoverController {
       }
       setItemStyles();
     });
+
+    $scope.$watch(() => elementPositioning($element), (newPositioning, oldPositioning) => {
+
+      // shift animation starting point without animating no make popover transition smoother
+
+      if (oldPositioning && newPositioning && this.positioning && this.item.type === 'story') {
+        // item not moved
+        if (oldPositioning.left === newPositioning.left && oldPositioning.top === newPositioning.top) {
+
+          switch (this.item.popoverPosition) {
+            case 'left':
+              if (oldPositioning.width !== newPositioning.width) {
+                // shift location
+                this.animate = false;
+                this.positioning.left -= (newPositioning.width - oldPositioning.width);
+              }
+              break;
+            case 'top':
+              if (oldPositioning.height !== newPositioning.height) {
+                // shift location
+                this.animate = false;
+                this.positioning.top -= (newPositioning.height - oldPositioning.height);
+              }
+              break;
+            case 'right':
+            case 'bottom':
+              // nop
+              break;
+            default:
+              assertNever(this.item.popoverPosition, 'Unsupported popover position');
+          }
+        }
+      }
+    }, true);
+
     $scope.$watch(storyPopoverPositioning, setItemStyles, true);
 
     window.addEventListener('resize', setItemStyles);
@@ -436,7 +472,10 @@ class HelpPopoverController {
     const applyPositioningAndScrollWhenStabile = () => {
       if (this.isPositioningStabile()) {
         this.debounceHandle = null;
-        this.$scope.$apply(() => this.scrollTo());
+        this.$scope.$apply(() => {
+          this.animate = true;
+          this.scrollTo();
+        });
       } else {
         this.updatePositioning();
         debounce(false);
@@ -470,6 +509,10 @@ class HelpPopoverController {
 
   style() {
     return this.positioning;
+  }
+
+  class() {
+    return { animate: this.animate };
   }
 
   isPositioningStabile() {

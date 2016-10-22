@@ -16,7 +16,10 @@ help-popover {
   font-weight: 400;
   max-width: 500px;
   border-radius: 10px;
-  transition: all 0.3s ease-out;
+
+  &.animate {
+    transition: all 0.3s ease-out;
+  }
 
   p {
     color: #CBD0D4;
