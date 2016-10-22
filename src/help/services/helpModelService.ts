@@ -6,6 +6,7 @@ import { KnownModelType } from '../../entities/type';
 import { ModelService } from '../../services/modelService';
 import { ResetableService } from './resetableService';
 import moment = require('moment');
+import * as _ from 'lodash';
 
 export class InteractiveHelpModelService implements ModelService, ResetableService {
 
@@ -70,7 +71,15 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
   }
 
   newModel(prefix: string, label: string, groupId: Uri, lang: Language[], type: KnownModelType, redirect?: Uri): IPromise<Model> {
-    return this.defaultModelService.newModel(prefix, label, groupId, lang, type, redirect);
+    const temporaryNonConflictingPrefix = 'mkowhero';
+    return this.defaultModelService.newModel(temporaryNonConflictingPrefix, label, groupId, lang, type, redirect)
+      .then(model => {
+        const id = new Uri(_.trimEnd(model.namespace, '#'), model.context).withName(prefix);
+        model.prefix = prefix;
+        model.namespace = id.toString() + '#';
+        model.id = id;
+        return model;
+      });
   }
 
   newLink(title: string, description: string, homepage: Uri, lang: Language, context: any): IPromise<Link> {
