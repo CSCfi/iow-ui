@@ -73,6 +73,10 @@ msgstr "Lisää ominaisuus"
 msgid "Add reference data"
 msgstr "Lisää koodisto"
 
+#: translations/help.html:13
+msgid "Add reference to namespace"
+msgstr "Lisää viite nimiavaruuteen"
+
 #: translations/misc.html:199
 msgid "Add vocabulary"
 msgstr "Lisää sanasto"
@@ -1330,6 +1334,10 @@ msgstr "Tietokomponenttikirjastot"
 msgid "Modified at"
 msgstr "Muokattu"
 
+#: translations/help.html:12
+msgid "Modify library"
+msgstr "Muokkaa tietokomponenttikirjastoa"
+
 #: components/form/errorMessages.html:20
 msgid "Must be imported namespace"
 msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
@@ -1471,6 +1479,10 @@ msgstr "soveltamisprofiilista"
 #: translations/misc.html:83
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
+
+#: translations/help.html:11
+msgid "Open library details"
+msgstr "Avaa tietokomponenttikirjaston tiedot"
 
 #: components/editor/propertyView.html:58
 msgid "Optional metadata"
@@ -1742,6 +1754,10 @@ msgstr "Valitse käsite"
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
+#: translations/help.html:14
+msgid "Search for jhs"
+msgstr "Etsi julkishallinnon tietokomponenttikirjastoa"
+
 #: translations/misc.html:91
 msgid "Search from concept database"
 msgstr "Hae sanastosta…"
@@ -1809,6 +1825,10 @@ msgstr "Valitse ryhmä"
 #: translations/help.html:9
 msgid "Select help topic"
 msgstr "Valitse ohjeen aihe"
+
+#: translations/help.html:15
+msgid "Select jhs"
+msgstr "Valitse julkishallinnon tietokomponenttikirjasto"
 
 #: translations/misc.html:180
 msgid "Self reference not allowed"

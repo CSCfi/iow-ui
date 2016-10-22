@@ -68,6 +68,10 @@ msgstr ""
 msgid "Add reference data"
 msgstr ""
 
+#: translations/help.html:13
+msgid "Add reference to namespace"
+msgstr ""
+
 #: translations/misc.html:199
 msgid "Add vocabulary"
 msgstr ""
@@ -1315,6 +1319,10 @@ msgstr ""
 msgid "Modified at"
 msgstr ""
 
+#: translations/help.html:12
+msgid "Modify library"
+msgstr ""
+
 #: components/form/errorMessages.html:20
 msgid "Must be imported namespace"
 msgstr ""
@@ -1457,6 +1465,10 @@ msgstr ""
 
 #: translations/misc.html:83
 msgid "of shape"
+msgstr ""
+
+#: translations/help.html:11
+msgid "Open library details"
 msgstr ""
 
 #: components/editor/propertyView.html:58
@@ -1725,6 +1737,10 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
+#: translations/help.html:14
+msgid "Search for jhs"
+msgstr ""
+
 #: translations/misc.html:91
 msgid "Search from concept database"
 msgstr ""
@@ -1789,6 +1805,10 @@ msgstr ""
 
 #: translations/help.html:9
 msgid "Select help topic"
+msgstr ""
+
+#: translations/help.html:15
+msgid "Select jhs"
 msgstr ""
 
 #: translations/misc.html:180
