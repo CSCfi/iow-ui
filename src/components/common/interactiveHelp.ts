@@ -254,10 +254,10 @@ class InteractiveHelpController {
   showItem(index: number) {
 
     this.item = this.storyLine.items[index];
-    this.initializeItem(this.item);
+    InteractiveHelpController.initializeItem(this.item);
   }
 
-  private initializeItem(item: Story|Notification) {
+  private static initializeItem(item: Story|Notification) {
     if (item.type === 'story' && item.initialInputValue) {
 
       const initialInputNgModel = item.initialInputValue.element().controller('ngModel');
