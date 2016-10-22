@@ -2,20 +2,11 @@ import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
 import { IScope, IDocumentService, INgModelController, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { assertNever, requireDefined } from '../../utils/object';
+import { assertNever, requireDefined, areEqual } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement } from '../../utils/angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 import { StoryLine, NextCondition, Story, Notification, Click, ModifyingClick } from '../../help/contract';
-
-interface Positioning {
-  left: number;
-  top: number;
-  width?: number;
-  height?: number;
-  right?: number;
-  bottom?: number;
-}
 
 export class InteractiveHelp {
 
@@ -487,12 +478,6 @@ class HelpPopoverController {
     const applyPositioningAndFocusWhenStabile = () => {
       if (this.isPositioningStabile()) {
         this.debounceHandle = null;
-
-        // XXX: does this logic belong to here?
-        if (this.item && this.item.type === 'story') {
-          this.item.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
-        }
-
         this.$scope.$apply(() => this.show(true));
       } else {
         this.updatePositioning();
@@ -521,7 +506,7 @@ class HelpPopoverController {
 
   scrollTo() {
     const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
-    const scrollTo = requireDefined(this.item).type === 'story' ? requireDefined(this.positioning).top - 100 : 0;
+    const scrollTo = requireDefined(this.item).type === 'story' && this.positioning ? this.positioning.top - 100 : 0;
     angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
   }
 
@@ -542,15 +527,7 @@ class HelpPopoverController {
   }
 
   isPositioningStabile() {
-    const positioning = this.calculatePositioning();
-
-    return positioning && this.positioning
-      && positioning.left === this.positioning.left
-      && positioning.top === this.positioning.top
-      && positioning.width === this.positioning.width
-      && positioning.height === this.positioning.height
-      && positioning.right === this.positioning.right
-      && positioning.bottom === this.positioning.bottom;
+    return positioningsAreEqual(this.positioning, this.calculatePositioning());
   }
 
   updatePositioning() {
@@ -644,7 +621,7 @@ mod.directive('helpBackdrop', () => {
 class HelpBackdropController {
 
   item: Story|Notification;
-  positioning: { top: Positioning, right: Positioning, bottom: Positioning, left: Positioning } | null;
+  regionPositionings: Regions | null;
 
   helpController: InteractiveHelpController;
 
@@ -654,7 +631,7 @@ class HelpBackdropController {
 
     const storyFocus = () => {
       const item = requireDefined(this.item);
-      return item.type === 'story' ? HelpBackdropController.calculateFocus(item) : null;
+      return item.type === 'story' ? HelpBackdropController.calculateFocusPositioning(item) : null;
     };
 
     $scope.$watch(storyFocus, () => this.updatePositioning(), true);
@@ -671,6 +648,23 @@ class HelpBackdropController {
 
   updatePositioning(next = false) {
 
+    const regionPositionings  = this.resolveRegions(next);
+
+    if (!regionsAreEqual(this.regionPositionings, regionPositionings)) {
+      // XXX: does this logic belong to here?
+      // Do off digest
+      setTimeout(() => {
+        if (this.item && this.item.type === 'story') {
+          this.item.popoverTo().find(focusableSelector).addBack(focusableSelector).focus();
+        }
+      });
+
+      this.regionPositionings = regionPositionings;
+    }
+  }
+
+  private resolveRegions(next: boolean): Regions|null {
+
     const fullBackdrop = {
       top: { left: 0, top: 0, right: 0, bottom: 0 },
       right: { left: 0, top: 0, width: 0, height: 0 },
@@ -683,31 +677,29 @@ class HelpBackdropController {
       const nextItemHasFocus = nextItem && (nextItem.type === 'notification' || nextItem.focusTo);
 
       if (nextItemHasFocus) {
-        this.positioning = fullBackdrop;
+        return fullBackdrop;
       } else {
-        this.positioning = null;
+        return null;
       }
     } else {
       if (!this.item) {
-        this.positioning = null;
+        return null;
       } else {
         switch (this.item.type) {
           case 'story':
-            this.positioning = this.calculateBackdrop(this.item);
-            break;
+            return this.calculateRegions(this.item);
           case 'notification':
-            this.positioning = fullBackdrop;
-            break;
+            return fullBackdrop;
           default:
-            assertNever(this.item, 'Unknown item type');
+            return assertNever(this.item, 'Unknown item type');
         }
       }
     }
   }
 
-  private calculateBackdrop(story: Story) {
+  private calculateRegions(story: Story): Regions|null {
 
-    const positioning = HelpBackdropController.calculateFocus(story);
+    const positioning = HelpBackdropController.calculateFocusPositioning(story);
 
     if (!positioning) {
       return null;
@@ -741,7 +733,7 @@ class HelpBackdropController {
     };
   }
 
-  private static calculateFocus(story: Story): Positioning|null {
+  private static calculateFocusPositioning(story: Story): Positioning|null {
 
     if (!story || !story.focusTo) {
       return null;
@@ -768,4 +760,40 @@ class HelpBackdropController {
       top: Math.trunc(focusToElementOffset.top) - marginTop
     };
   }
+}
+
+interface Positioning {
+  left: number;
+  top: number;
+  width?: number;
+  height?: number;
+  right?: number;
+  bottom?: number;
+}
+
+function positioningsAreEqual(lhs: Positioning|null, rhs: Positioning|null): boolean {
+  return areEqual(lhs, rhs, (l: Positioning, r: Positioning) =>
+    l.left === r.left
+    && l.top === r.top
+    && l.width === r.width
+    && l.height === r.height
+    && l.right === r.right
+    && l.bottom === r.bottom
+  );
+}
+
+interface Regions {
+  top: Positioning;
+  right: Positioning;
+  bottom: Positioning;
+  left: Positioning;
+}
+
+function regionsAreEqual(lhs: Regions|null, rhs: Regions|null): boolean {
+  return areEqual(lhs, rhs, (l, r) => (
+    positioningsAreEqual(l.top, r.top)
+    && positioningsAreEqual(l.right, r.right)
+    && positioningsAreEqual(l.bottom, r.bottom)
+    && positioningsAreEqual(l.left, r.left)
+  ));
 }
