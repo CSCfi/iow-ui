@@ -120,14 +120,14 @@ class InteractiveHelpController {
         if (event.shiftKey) {
           if (isFocusInElement(event, firstElement)) {
             if (!story.cannotMoveBack) {
-              $scope.$apply(() => this.previousItem());
+              $scope.$apply(() => this.moveToPreviousItem());
             }
             stopEvent(event);
           }
         } else {
           if (isFocusInElement(event, lastElement)) {
             if (!isClick(story.nextCondition) && this.isValid()) {
-              $scope.$apply(() => this.nextItem());
+              $scope.$apply(() => this.moveToNextItem());
             } else {
               firstElement.focus();
             }
@@ -182,7 +182,7 @@ class InteractiveHelpController {
           tryCount++;
           setTimeout(waitForElementToDisappear, 20);
         } else {
-          $scope.$apply(() => this.nextItem());
+          $scope.$apply(() => this.moveToNextItem());
         }
       };
 
@@ -205,7 +205,7 @@ class InteractiveHelpController {
 
         if (elementExists(continueToNextElement)) {
           if (isTargetElementInsideElement(event, continueToNextElement[0])) {
-            $scope.$apply(() => this.nextItem());
+            $scope.$apply(() => this.moveToNextItem());
           }
         } else if (item.nextCondition.type === 'modifying-click') {
           moveToNextItemAfterElementDisappeared(item.nextCondition.element);
@@ -306,7 +306,7 @@ class InteractiveHelpController {
     }
   }
 
-  nextItem() {
+  moveToNextItem() {
     if (this.isCurrentLastItem()) {
       this.close(false);
     } else {
@@ -314,7 +314,7 @@ class InteractiveHelpController {
     }
   }
 
-  previousItem() {
+  moveToPreviousItem() {
     if (this.isCurrentFirstItem()) {
       this.close(true);
     } else {
@@ -500,11 +500,11 @@ class HelpPopoverController {
   }
 
   next() {
-    this.helpController.nextItem();
+    this.helpController.moveToNextItem();
   }
 
   previous() {
-    this.helpController.previousItem();
+    this.helpController.moveToPreviousItem();
   }
 
   style() {
