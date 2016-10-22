@@ -1,6 +1,6 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, IDocumentService, INgModelController, ui } from 'angular';
+import { IScope, IDocumentService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever, requireDefined, areEqual } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
@@ -51,7 +51,6 @@ class InteractiveHelpController {
 
   item: Story|Notification;
   activeIndex = 0;
-  validationNgModel: INgModelController|null;
 
   popoverController: HelpPopoverController;
   backdropController: HelpBackdropController;
@@ -255,47 +254,33 @@ class InteractiveHelpController {
   showItem(index: number) {
 
     this.item = this.storyLine.items[index];
-
-    switch (this.item.type) {
-      case 'story':
-        this.setStoryParameters(this.item);
-        break;
-      case 'notification':
-        this.setNotificationParameters(this.item);
-        break;
-      default:
-        assertNever(this.item, 'Unsupported item type');
-    }
+    this.initializeItem(this.item);
   }
 
-  setStoryParameters(story: Story) {
-    if (story.nextCondition.type === 'valid-input') {
-      this.validationNgModel = story.nextCondition.element().controller('ngModel');
+  private initializeItem(item: Story|Notification) {
+    if (item.type === 'story' && item.initialInputValue) {
 
-      if (!this.validationNgModel) {
-        throw new Error('ng-model does not exits for valid-input');
-      }
-    } else {
-      this.validationNgModel = null;
-    }
-
-    if (story.initialInputValue) {
-
-      const initialInputNgModel = story.initialInputValue.element().controller('ngModel');
+      const initialInputNgModel = item.initialInputValue.element().controller('ngModel');
 
       if (!initialInputNgModel) {
         throw new Error('ng-model does not exits for initial input');
       } else {
         if (!initialInputNgModel.$viewValue) {
-          initialInputNgModel.$setViewValue(story.initialInputValue.value);
+          initialInputNgModel.$setViewValue(item.initialInputValue.value);
           initialInputNgModel.$render();
         }
       }
     }
   }
 
-  setNotificationParameters(_notification: Notification) {
-    this.validationNgModel = null;
+  get validationNgModel() {
+    const item = this.item;
+
+    if (item.type !== 'story' || item.nextCondition.type !== 'valid-input') {
+      throw new Error('No ng-model for current item');
+    }
+
+    return item.nextCondition.element().controller('ngModel');
   }
 
   isValid() {
@@ -307,7 +292,7 @@ class InteractiveHelpController {
           case 'modifying-click':
             return true;
           case 'valid-input':
-            return this.validationNgModel && this.validationNgModel.$valid && !this.validationNgModel.$pending;
+            return this.validationNgModel.$valid && !this.validationNgModel.$pending;
           case 'element-exists':
             const element = this.item.nextCondition.element();
             return element && element.length > 0;
