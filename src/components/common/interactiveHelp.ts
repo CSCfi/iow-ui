@@ -164,31 +164,16 @@ class InteractiveHelpController {
 
     const waitForElementToDisappear = () => {
 
-      if (tryCount > 30) {
-        // reset values to state as before wait
-        this.$scope.$apply(() => {
-          this.popoverController.updatePositioning();
-          this.backdropController.updatePositioning();
-        });
-        return;
-      }
-
       if (elementExists(element())) {
-        tryCount++;
-        setTimeout(waitForElementToDisappear, 20);
+        if (++tryCount < 30) {
+          setTimeout(waitForElementToDisappear, 20);
+        }
       } else {
         this.$scope.$apply(() => this.moveToNextItem());
       }
     };
 
     waitForElementToDisappear();
-
-    // if next not already applied
-    if (tryCount > 0) {
-      this.$scope.$apply(() => {
-        this.backdropController.updatePositioning(true);
-      });
-    }
   }
 
   clickHandler(event: JQueryEventObject) {
@@ -607,9 +592,9 @@ class HelpBackdropController {
     });
   }
 
-  updatePositioning(next = false) {
+  updatePositioning() {
 
-    const regionPositionings  = this.resolveRegions(next);
+    const regionPositionings  = this.resolveRegions();
 
     if (!regionsAreEqual(this.regions, regionPositionings)) {
       // XXX: does this logic belong to here?
@@ -624,7 +609,7 @@ class HelpBackdropController {
     }
   }
 
-  private resolveRegions(next: boolean): Regions|null {
+  private resolveRegions(): Regions|null {
 
     const fullBackdrop = {
       top: { left: 0, top: 0, right: 0, bottom: 0 },
@@ -633,27 +618,16 @@ class HelpBackdropController {
       left: { left: 0, top: 0, width: 0, height: 0 }
     };
 
-    if (next) {
-      const nextItem = this.helpController.peekNext();
-      const nextItemHasFocus = nextItem && (nextItem.type === 'notification' || nextItem.focusTo);
-
-      if (nextItemHasFocus) {
-        return fullBackdrop;
-      } else {
-        return null;
-      }
+    if (!this.item) {
+      return null;
     } else {
-      if (!this.item) {
-        return null;
-      } else {
-        switch (this.item.type) {
-          case 'story':
-            return this.calculateRegions(this.item);
-          case 'notification':
-            return fullBackdrop;
-          default:
-            return assertNever(this.item, 'Unknown item type');
-        }
+      switch (this.item.type) {
+        case 'story':
+          return this.calculateRegions(this.item);
+        case 'notification':
+          return fullBackdrop;
+        default:
+          return assertNever(this.item, 'Unknown item type');
       }
     }
   }
