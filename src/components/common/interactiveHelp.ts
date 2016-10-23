@@ -392,7 +392,6 @@ class HelpPopoverController {
     $scope.$watch(() => elementPositioning($element), (newPositioning, oldPositioning) => {
 
       // shift animation starting point without animating no make popover transition smoother
-
       if (oldPositioning && newPositioning && this.positioning && this.item.type === 'story') {
         // item not moved
         if (oldPositioning.left === newPositioning.left && oldPositioning.top === newPositioning.top) {
@@ -541,6 +540,10 @@ class HelpPopoverController {
   }
 
   private calculateNotificationPositioning(_notification: Notification): Positioning {
+    return this.calculateCenterPositioning();
+  }
+
+  private calculateCenterPositioning() {
     return {
       top: window.innerHeight / 2 - this.$element.height() / 2,
       left: window.innerWidth / 2 - this.$element.width() / 2
