@@ -491,6 +491,9 @@ class HelpPopoverController {
 
   private updatePositioningAfterStabile() {
 
+    const maxWaitInMs = 2000;
+    const pollingIntervalInMs = 20;
+
     const debounce = (resetCounter: boolean) => {
 
       if (resetCounter) {
@@ -502,11 +505,11 @@ class HelpPopoverController {
         clearTimeout(this.debounceHandle);
       }
 
-      if (this.debounceCount > 40) {
+      if (this.debounceCount * pollingIntervalInMs > maxWaitInMs) {
         throw new Error('Element not exist or does not stabilize');
       }
 
-      this.debounceHandle = setTimeout(applyPositioningAndScrollWhenStabile, 50);
+      this.debounceHandle = setTimeout(applyPositioningAndScrollWhenStabile, pollingIntervalInMs);
     };
 
     const applyPositioningAndScrollWhenStabile = () => {
