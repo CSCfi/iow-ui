@@ -2,7 +2,8 @@ import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
   StoryLine, createStory, createNotification, createModifyingClickNextCondition,
-  createClickNextConfition, createValidInputNextCondition, createElementExistsNextCondition
+  createClickNextConfition, createValidInputNextCondition, createElementExistsNextCondition,
+  createNavigatingClickNextCondition
 } from './contract';
 import {
   findEditableByTitle, modal, input, editableFocus, findEditableMultipleByTitle, multiInput,
@@ -20,7 +21,7 @@ const selectGroup = createStory({
   popoverPosition: 'left',
   title: 'Select group',
   content: 'Diipadaa',
-  nextCondition: createModifyingClickNextCondition(selectGroupElement)
+  nextCondition: createNavigatingClickNextCondition(selectGroupElement)
 });
 
 const startLibraryCreationElement = () => angular.element('#add-library-button');
@@ -97,19 +98,18 @@ const createLibrary = createStory({
   popoverPosition: 'top',
   title: 'Create new',
   content: 'Create new',
-  nextCondition: createModifyingClickNextCondition(createLibraryElement)
+  nextCondition: createNavigatingClickNextCondition(createLibraryElement)
 });
 
+const saveUnsavedLibraryElement = child(modelView, 'button.save');
+const saveUnsavedLibrary = createStory({
 
-const saveLibraryElement = child(modelView, 'button.save');
-const saveLibrary = createStory({
-
-  popoverTo: saveLibraryElement,
-  focusTo: { element: saveLibraryElement },
+  popoverTo: saveUnsavedLibraryElement,
+  focusTo: { element: saveUnsavedLibraryElement },
   popoverPosition: 'left',
   title: 'Save changes',
   content: 'Diipadaa',
-  nextCondition: createModifyingClickNextCondition(saveLibraryElement),
+  nextCondition: createNavigatingClickNextCondition(saveUnsavedLibraryElement),
   cannotMoveBack: true
 });
 
@@ -176,6 +176,18 @@ const selectJhsResult = createStory({
   nextCondition: createModifyingClickNextCondition(selectJhsResultElement)
 });
 
+const saveLibraryChangesElement = child(modelView, 'button.save');
+const saveLibraryChanges = createStory({
+
+  popoverTo: saveLibraryChangesElement,
+  focusTo: { element: saveLibraryChangesElement },
+  popoverPosition: 'left',
+  title: 'Save changes',
+  content: 'Diipadaa',
+  nextCondition: createModifyingClickNextCondition(saveLibraryChangesElement),
+  cannotMoveBack: true
+});
+
 const finishedNotification = createNotification({
   title: 'Congratulations for completing library creation!',
   content: 'Diipadaa',
@@ -204,13 +216,13 @@ export class LibraryCreationStoryLine implements StoryLine {
       enterLibraryLanguage,
       enterLibraryLabel,
       createLibrary,
-      saveLibrary,
+      saveUnsavedLibrary,
       openLibraryDetails,
       modifyLibrary,
       requireNamespace,
       filterForJhs,
       selectJhsResult,
-      saveLibrary,
+      saveLibraryChanges,
       finishedNotification
     ];
   }

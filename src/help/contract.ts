@@ -3,14 +3,16 @@ export type PopoverPosition = 'top'
                             | 'left'
                             | 'bottom';
 
-export type Explicit =       { type: 'explicit' };                                      // explicit next button to continue
-export type Click =          { type: 'click', element: () => JQuery };                  // click on element to continue
-export type ModifyingClick = { type: 'modifying-click', element: () => JQuery };        // click on element which is expected to disappear to continue
-export type ValidInput =     { type: 'valid-input', element: () => JQuery }             // valid input is needed before allowing to continue
-export type ElementExists =  { type: 'element-exists', element: () => JQuery };         // element must exist before continue is allowed
+export type Explicit =        { type: 'explicit' };                                      // explicit next button to continue
+export type Click =           { type: 'click', element: () => JQuery };                  // click on element to continue
+export type NavigatingClick = { type: 'navigating-click', element: () => JQuery };       // click on element which is expected to change location
+export type ModifyingClick =  { type: 'modifying-click', element: () => JQuery };        // click on element which is expected to disappear to continue
+export type ValidInput =      { type: 'valid-input', element: () => JQuery }             // valid input is needed before allowing to continue
+export type ElementExists =   { type: 'element-exists', element: () => JQuery };         // element must exist before continue is allowed
 
 export type NextCondition = Explicit
                           | Click
+                          | NavigatingClick
                           | ModifyingClick
                           | ValidInput
                           | ElementExists;
@@ -72,6 +74,10 @@ export function createExplicitNextCondition(): Explicit {
 
 export function createClickNextConfition(element: () => JQuery): Click {
   return { type: 'click', element };
+}
+
+export function createNavigatingClickNextCondition(element: () => JQuery): NavigatingClick {
+  return { type: 'navigating-click', element };
 }
 
 export function createModifyingClickNextCondition(element: () => JQuery): ModifyingClick {

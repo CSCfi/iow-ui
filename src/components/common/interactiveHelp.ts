@@ -1,12 +1,15 @@
 import { module as mod } from './module';
 import { OverlayService, OverlayInstance } from './overlay';
-import { IScope, IDocumentService, ui } from 'angular';
+import { IScope, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever, requireDefined, areEqual } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
-import { isTargetElementInsideElement } from '../../utils/angular';
+import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
-import { StoryLine, NextCondition, Story, Notification, Click, ModifyingClick } from '../../help/contract';
+import {
+  StoryLine, NextCondition, Story, Notification, Click, ModifyingClick,
+  NavigatingClick
+} from '../../help/contract';
 import { contains } from '../../utils/array';
 
 export class InteractiveHelp {
@@ -49,12 +52,17 @@ class InteractiveHelpController {
 
   item: Story|Notification;
   activeIndex = 0;
+  changingLocation = false;
 
   popoverController: HelpPopoverController;
   backdropController: HelpBackdropController;
 
   /* @ngInject */
-  constructor(private $scope: IScope, private $overlayInstance: OverlayInstance, $document: IDocumentService, private storyLine: StoryLine) {
+  constructor(private $scope: IScope,
+              private $overlayInstance: OverlayInstance,
+              $document: IDocumentService,
+              $location: ILocationService,
+              private storyLine: StoryLine) {
 
     if (!storyLine || storyLine.items.length === 0) {
       throw new Error('No stories defined');
@@ -77,6 +85,28 @@ class InteractiveHelpController {
     $scope.$on('$destroy', () => {
       $document.off('keydown', keyDownHandler);
       $document.off('click', clickHandler);
+    });
+
+    let continuing = false;
+
+    $scope.$on('$locationChangeStart', (event, next) => {
+
+      if (!continuing) {
+        event.preventDefault();
+
+        // delay is needed so that click handler has time to modify flag
+        setTimeout(() => {
+          if (this.changingLocation) {
+            continuing = true;
+            $location.url(nextUrl($location, next));
+            this.moveToNextItem();
+          } else {
+            this.close(true);
+          }
+        });
+      } else {
+        continuing = false;
+      }
     });
   }
 
@@ -177,6 +207,11 @@ class InteractiveHelpController {
     waitForElementToDisappear();
   }
 
+  markLocationChange() {
+    this.changingLocation = true;
+    setTimeout(() => this.changingLocation = false, 500);
+  }
+
   clickHandler(event: JQueryEventObject) {
     const item = this.item;
 
@@ -187,14 +222,18 @@ class InteractiveHelpController {
         if (isTargetElementInsideElement(event, continueToNextElement[0])) {
           if (item.nextCondition.type === 'modifying-click') {
             this.moveToNextItemAfterElementDisappeared(item.nextCondition.element);
+          } else if (item.nextCondition.type === 'navigating-click') {
+            this.markLocationChange();
           } else {
             this.$scope.$apply(() => this.moveToNextItem());
           }
         }
       } else if (item.nextCondition.type === 'modifying-click') {
-        this.moveToNextItemAfterElementDisappeared(item.nextCondition.element);
+        this.$scope.$apply(() => this.moveToNextItem());
+      } else if (item.nextCondition.type === 'navigating-click') {
+        this.markLocationChange();
       } else {
-        throw new Error('Popover element not found');
+        throw new Error('Next condition element not found');
       }
     }
   }
@@ -261,6 +300,7 @@ class InteractiveHelpController {
         switch (this.item.nextCondition.type) {
           case 'explicit':
           case 'click':
+          case 'navigating-click':
           case 'modifying-click':
             return true;
           case 'valid-input':
@@ -520,7 +560,11 @@ class HelpPopoverController {
   }
 
   updatePositioning() {
-    this.positioning = this.calculatePositioning();
+    const positioning = this.calculatePositioning();
+
+    if (positioning) {
+      this.positioning = this.calculatePositioning();
+    }
   }
 
   private calculatePositioning(): Positioning|null {
@@ -778,8 +822,8 @@ function elementExists(e: JQuery) {
   return e && e.length > 0 && isVisible(e[0]);
 }
 
-function isClick(nextCondition: NextCondition): nextCondition is Click|ModifyingClick {
-  return nextCondition.type === 'click' || nextCondition.type === 'modifying-click';
+function isClick(nextCondition: NextCondition): nextCondition is Click|ModifyingClick|NavigatingClick {
+  return contains(['click', 'navigating-click', 'modifying-click'], nextCondition.type);
 }
 
 function isFocusInElement(event: JQueryEventObject, element: HTMLElement) {
