@@ -4,7 +4,7 @@ import { ClassService } from '../../services/classService';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelPageController } from '../model/model';
+import { ModelPageController } from '../model/modelPage';
 import { Show } from '../contracts';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';

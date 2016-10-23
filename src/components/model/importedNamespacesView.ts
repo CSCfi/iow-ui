@@ -3,7 +3,7 @@ import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../form/editableTable';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { SearchNamespaceModal } from './searchNamespaceModal';
-import { ModelPageController } from './model';
+import { ModelPageController } from './modelPage';
 import { ModelViewController } from './modelView';
 import { combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';

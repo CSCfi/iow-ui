@@ -3,7 +3,7 @@ import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelPageController } from '../model/model';
+import { ModelPageController } from '../model/modelPage';
 import { Show } from '../contracts';
 import { ErrorModal } from '../form/errorModal';
 import { module as mod }  from './module';

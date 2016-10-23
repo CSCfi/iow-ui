@@ -3,7 +3,7 @@ import { EditableEntityController, EditableScope, Rights } from '../form/editabl
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelPageController } from './model';
+import { ModelPageController } from './modelPage';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { Model } from '../../entities/model';
