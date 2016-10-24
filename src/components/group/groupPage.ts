@@ -1,4 +1,4 @@
-import { ILocationService, ILogService, IPromise, IQService } from 'angular';
+import { IScope, IAttributes, ILocationService, ILogService, IPromise, IQService } from 'angular';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { AddModelModal } from './addModelModal';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
@@ -15,6 +15,10 @@ import { ModelListItem } from '../../entities/model';
 import { KnownModelType } from '../../entities/type';
 import { LanguageContext } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
+import { ApplicationController } from '../application';
+import { HelpProvider } from '../common/helpProvider';
+import { GroupPageHelpService } from '../../help/groupPageHelp';
+import { StoryLine } from '../../help/contract';
 
 mod.directive('groupPage', () => {
   return {
@@ -25,17 +29,22 @@ mod.directive('groupPage', () => {
       groupId: '='
     },
     bindToController: true,
+    require: ['groupPage', '^application'],
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [ctrl, applicationController]: [GroupPageController, ApplicationController]) {
+      applicationController.registerHelpProvider(ctrl);
+    },
     controller: GroupPageController
   };
 });
 
-class GroupPageController extends EditableEntityController<Group> {
+class GroupPageController extends EditableEntityController<Group> implements HelpProvider {
 
   loading: boolean = true;
   groupId: Uri;
   group: Group;
   models: ModelListItem[];
   profiles: ModelListItem[];
+  helpStoryLines: StoryLine[];
 
   /* @ngInject */
   constructor($scope: EditableScope,
@@ -49,7 +58,8 @@ class GroupPageController extends EditableEntityController<Group> {
               private addModelModal: AddModelModal,
               deleteConfirmationModal: DeleteConfirmationModal,
               errorModal: ErrorModal,
-              notificationModal: NotificationModal) {
+              notificationModal: NotificationModal,
+              groupPageHelpService: GroupPageHelpService) {
     super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
 
     $scope.$watch(() => this.groupId, groupId => {
@@ -60,6 +70,7 @@ class GroupPageController extends EditableEntityController<Group> {
         })
         .then((result: {group: Group, models: ModelListItem[]}) => {
           this.group = result.group;
+          this.helpStoryLines = groupPageHelpService.getStoryLines(this.group);
           this.models = result.models.filter(model => !model.isOfType('profile'));
           this.profiles = result.models.filter(model => model.isOfType('profile'));
           locationService.atGroup(this.group);
