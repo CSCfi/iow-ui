@@ -17,12 +17,15 @@ export type NextCondition = Explicit
                           | ValidInput
                           | ElementExists;
 
-export interface StoryLine {
+export interface HelpEventHandler {
+  onComplete?: () => void;
+  onCancel?: () => void;
+}
+
+export interface StoryLine extends HelpEventHandler {
   title: string;
   description: string;
   items: (Story|Notification)[];
-  onComplete?: () => void;
-  onCancel?: () => void;
 }
 
 export interface Notification extends NotificationDetails {
@@ -54,6 +57,10 @@ export interface StoryDetails {
     value: string
   };
   cannotMoveBack?: boolean;
+}
+
+export function augmentHandlers(storyLine: StoryLine, helpEventHandlers: HelpEventHandler) {
+  return Object.assign({}, storyLine, helpEventHandlers);
 }
 
 export function createStory(storyDetails: StoryDetails) {

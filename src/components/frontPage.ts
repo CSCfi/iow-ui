@@ -14,8 +14,7 @@ import { SearchResult } from '../entities/search';
 import { GroupListItem } from '../entities/group';
 import { ApplicationController } from './application';
 import { HelpProvider } from './common/helpProvider';
-import { StoryLine } from '../help/contract';
-import { LibraryCreationStoryLine } from '../help/libraryCreationHelpStoryLine';
+import { FrontPageHelpService } from '../help/frontPageHelp';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -57,6 +56,8 @@ export class FrontPageController implements SearchController<SearchResult>, Help
   contentExtractors = [ (searchResult: SearchResult) => searchResult.label, (searchResult: SearchResult) => searchResult.comment ];
   private searchFilters: SearchFilter<SearchResult>[] = [];
 
+  helpStoryLines = this.frontPageHelpService.getStoryLines();
+
   /* @ngInject */
   constructor($scope: IScope,
               private $location: ILocationService,
@@ -65,7 +66,7 @@ export class FrontPageController implements SearchController<SearchResult>, Help
               private searchService: SearchService,
               private languageService: LanguageService,
               private advancedSearchModal: AdvancedSearchModal,
-              private libraryCreationStoryLine: LibraryCreationStoryLine,
+              private frontPageHelpService: FrontPageHelpService,
               maintenanceModal: MaintenanceModal) {
 
     this.localizer = languageService.createLocalizer(frontPageSearchLanguageContext);
@@ -135,9 +136,5 @@ export class FrontPageController implements SearchController<SearchResult>, Help
     if (url) {
       this.$location.url(url);
     }
-  }
-
-  getStoryLines(): StoryLine[] {
-    return [this.libraryCreationStoryLine];
   }
 }

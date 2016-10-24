@@ -44,7 +44,7 @@ class NavigationController {
       return { code: language, name: (stringsForLang && stringsForLang['In language']) || language };
     });
 
-    const helpStoryLines = () => this.helpProvider ? this.helpProvider.getStoryLines() : [];
+    const helpStoryLines = () => this.helpProvider ? this.helpProvider.helpStoryLines : [];
     $scope.$watchCollection(helpStoryLines, storyLines => this.helpStoryLines = storyLines);
   }
 
