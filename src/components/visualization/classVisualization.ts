@@ -268,7 +268,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
       const forceFitToAllContent = this.selection && this.selection.id.equals(this.model.rootClass);
       this.layoutPositionsAndFocus(forceFitToAllContent).then(() => {
-        this.adjustAllLinks(VertexAction.KeepAll);
+        this.adjustAllLinks(VertexAction.KeepPersistent);
         this.loading = false;
       });
     });
@@ -698,7 +698,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     const onDiagramPositionChange = () => {
       const newCenter = classCell.getBBox().center();
       if (!coordinatesAreEqual(newCenter, classPosition.coordinate)) {
-        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, this.clickType === 'right' ? VertexAction.Reset : VertexAction.KeepNormal);
+        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, this.clickType === 'right' ? VertexAction.Reset : VertexAction.KeepAll);
         classPosition.setCoordinate(newCenter);
       }
     };

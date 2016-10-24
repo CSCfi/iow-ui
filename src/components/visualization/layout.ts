@@ -38,7 +38,7 @@ export function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.El
 }
 
 export enum VertexAction {
-  Reset, KeepNormal, KeepAll
+  Reset, KeepNormal, KeepAll, KeepPersistent
 }
 
 function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<string>, modelPositions: ModelPositions, vertexAction: VertexAction) {
@@ -52,7 +52,8 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
     if (vertexAction === VertexAction.Reset || (vertexAction === VertexAction.KeepNormal && (siblingCount > 1 || isLoop))) {
       return null;
     } else {
-      return getLinkPositionVertices(link);
+      const vertices = getLinkPositionVertices(link);
+      return vertexAction === VertexAction.KeepPersistent && vertices.length === 0 ? null : vertices;
     }
   }
 
