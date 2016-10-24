@@ -535,7 +535,7 @@ msgstr "Poistamisen hyväksyntä"
 
 #: translations/help.html:10
 msgid "Congratulations for completing library creation!"
-msgstr "Onnittenut tietokomponenttikirjaston luomisessa onnistumisesta!"
+msgstr "Onnittelut tietokomponenttikirjaston luomisessa onnistumisesta!"
 
 #: translations/titles.html:75
 msgid "Constraint classes"
