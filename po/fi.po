@@ -168,6 +168,10 @@ msgstr "XML"
 msgid "Are you sure that you want to close dialog?"
 msgstr "Oletko varma, että haluat sulkea dialogin?"
 
+#: translations/help.html:17
+msgid "Are you sure that you want to close help?"
+msgstr "Oletko varma, että haluat sulkea ohjeen?"
+
 #: translations/misc.html:44
 msgid ""
 "Are you sure that you want to continue? By continuing unsaved changes will "
@@ -1077,6 +1081,10 @@ msgstr "Ryhmää ei löydy"
 #: translations/help.html:8
 msgid "Guide through creating new library"
 msgstr "Uuden tietokomponenttikirjaston luomisen ohjeistus"
+
+#: translations/help.html:16
+msgid "Help is open"
+msgstr "Ohje on avattuna"
 
 #: translations/misc.html:21
 msgid "Hide"

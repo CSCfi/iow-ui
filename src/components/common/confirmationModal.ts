@@ -6,7 +6,7 @@ export class ConfirmationModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(title: string, body: string): IPromise<void> {
+  private open(title: string, body: string, additionalCssClass?: string): IPromise<void> {
     return this.$uibModal.open({
       template: `<modal-template purpose="warning" default="true">
                    <modal-title>{{ctrl.title | translate}}</modal-title>
@@ -15,6 +15,7 @@ export class ConfirmationModal {
       controllerAs: 'ctrl',
       /* @ngInject */
       controller: ConfirmationModalController,
+      windowClass: additionalCssClass,
       resolve: {
         title: () => title,
         body: () => body
@@ -28,6 +29,10 @@ export class ConfirmationModal {
 
   openCloseModal() {
     return this.open('Dialog is open', 'Are you sure that you want to close dialog?');
+  }
+
+  openCloseHelp() {
+    return this.open('Help is open', 'Are you sure that you want to close help?', 'over-help');
   }
 
   openVisualizationLocationsSave() {

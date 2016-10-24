@@ -11,6 +11,7 @@ import {
   NavigatingClick
 } from '../../help/contract';
 import { contains } from '../../utils/array';
+import { ConfirmationModal } from './confirmationModal';
 
 export class InteractiveHelp {
 
@@ -62,6 +63,7 @@ class InteractiveHelpController {
               private $overlayInstance: OverlayInstance,
               $document: IDocumentService,
               $location: ILocationService,
+              confirmationModal: ConfirmationModal,
               private storyLine: StoryLine) {
 
     if (!storyLine || storyLine.items.length === 0) {
@@ -101,7 +103,7 @@ class InteractiveHelpController {
             $location.url(nextUrl($location, next));
             this.moveToNextItem();
           } else {
-            this.close(true);
+            confirmationModal.openCloseHelp().then(() => this.close(true));
           }
         });
       } else {
