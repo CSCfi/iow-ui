@@ -9,7 +9,7 @@ import { NotificationModal } from './notificationModal';
 import { HelpSelectionModal } from './helpSelectionModal';
 import { LanguageService } from '../../services/languageService';
 import { Localizable, LanguageContext } from '../../entities/contract';
-import { InteractiveHelpDisplay } from './interactiveHelp';
+import { InteractiveHelpDisplay } from './interactiveHelpDisplay';
 import { OverlayService } from './overlay';
 import { upperCaseFirst } from 'change-case';
 
@@ -36,7 +36,7 @@ import './ngContextMenu';
 import './ngIfBody';
 
 mod.service('overlayService', OverlayService);
-mod.service('interactiveHelp', InteractiveHelpDisplay);
+mod.service('interactiveHelpDisplay', InteractiveHelpDisplay);
 mod.service('confirmationModal', ConfirmationModal);
 mod.service('deleteConfirmationModal', DeleteConfirmationModal);
 mod.service('historyModal', HistoryModal);

@@ -2,7 +2,7 @@ import { ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { InteractiveHelp } from '../../help/contract';
-import { InteractiveHelpDisplay } from './interactiveHelp';
+import { InteractiveHelpDisplay } from './interactiveHelpDisplay';
 
 export class HelpSelectionModal {
 
@@ -41,11 +41,11 @@ export class HelpSelectionModal {
 class HelpSelectionModalController {
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, public helps: InteractiveHelp[], private interactiveHelp: InteractiveHelpDisplay) {
+  constructor(private $uibModalInstance: IModalServiceInstance, public helps: InteractiveHelp[], private interactiveHelpDisplay: InteractiveHelpDisplay) {
   }
 
   startHelp(help: InteractiveHelp) {
     this.$uibModalInstance.close();
-    this.interactiveHelp.open(help);
+    this.interactiveHelpDisplay.open(help);
   }
 }
