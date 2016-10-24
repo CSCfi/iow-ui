@@ -4,10 +4,11 @@ import { UserService } from '../../services/userService';
 import { LoginModal } from './loginModal';
 import { availableUILanguages, UILanguage } from '../../utils/language';
 import { User } from '../../entities/user';
-import { IScope, ILocationService } from 'angular';
 import { config } from '../../config';
-import { LibraryCreationStoryLine } from '../../help/libraryCreationHelpStoryLine';
 import { HelpSelectionModal } from '../common/helpSelectionModal';
+import { StoryLine } from '../../help/contract';
+import { HelpProvider } from '../common/helpProvider';
+import { IScope } from 'angular';
 
 const logoImage = require('../../assets/logo-01.svg');
 
@@ -15,7 +16,9 @@ mod.directive('navigationBar', () => {
   return {
     restrict: 'E',
     template: require('./navigationBar.html'),
-    scope: {},
+    scope: {
+      helpProvider: '<'
+    },
     bindToController: true,
     controllerAs: 'ctrl',
     controller: NavigationController
@@ -23,23 +26,26 @@ mod.directive('navigationBar', () => {
 });
 
 class NavigationController {
+
+  helpProvider: HelpProvider|null;
+
   languages: { code: UILanguage, name: string }[];
-  showHelp: boolean;
+  helpStoryLines: StoryLine[];
 
   /* @ngInject */
   constructor($scope: IScope,
-              $location: ILocationService,
               private languageService: LanguageService,
               private userService: UserService,
               private loginModal: LoginModal,
-              private helpSelectionModal: HelpSelectionModal,
-              private libraryCreationStoryLine: LibraryCreationStoryLine) {
+              private helpSelectionModal: HelpSelectionModal) {
+
     this.languages = availableUILanguages.map(language => {
       const stringsForLang = localizationStrings[language];
       return { code: language, name: (stringsForLang && stringsForLang['In language']) || language };
     });
 
-    $scope.$watch(() => $location.path(), path => this.showHelp = path === '/');
+    const helpStoryLines = () => this.helpProvider ? this.helpProvider.getStoryLines() : [];
+    $scope.$watchCollection(helpStoryLines, storyLines => this.helpStoryLines = storyLines);
   }
 
   get logoImage() {
@@ -67,10 +73,10 @@ class NavigationController {
   }
 
   canStartHelp() {
-    return !config.production && this.showHelp;
+    return !config.production && this.helpStoryLines.length > 0;
   }
 
   startHelp() {
-    this.helpSelectionModal.open([this.libraryCreationStoryLine]);
+    this.helpSelectionModal.open(this.helpStoryLines);
   }
 }

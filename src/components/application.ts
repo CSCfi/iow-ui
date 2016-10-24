@@ -6,6 +6,7 @@ import { config } from '../config';
 import { ConfirmationModal } from './common/confirmationModal';
 import { module as mod }  from './module';
 import { nextUrl } from '../utils/angular';
+import { HelpProvider } from './common/helpProvider';
 
 mod.directive('application', () => {
   return {
@@ -17,11 +18,12 @@ mod.directive('application', () => {
   };
 });
 
-class ApplicationController {
+export class ApplicationController {
 
   applicationInitialized: boolean;
   showFooter: boolean;
   production: boolean;
+  helpProvider: HelpProvider|null;
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -49,5 +51,14 @@ class ApplicationController {
         });
       }
     });
+
+    $scope.$on('$routeChangeSuccess', () => {
+      // reset help provider since every route is not guaranteed to register provider
+      this.helpProvider = null;
+    });
+  }
+
+  registerHelpProvider(helpProvider: HelpProvider) {
+    this.helpProvider = helpProvider;
   }
 }

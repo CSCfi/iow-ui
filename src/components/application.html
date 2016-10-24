@@ -1,5 +1,5 @@
 <div ng-show="ctrl.applicationInitialized">
-  <navigation-bar></navigation-bar>
+  <navigation-bar help-provider="ctrl.helpProvider"></navigation-bar>
   <breadcrumb ng-class="['iow-breadcrumb', { 'with-breadcrumb': ctrl.showFooter }]"></breadcrumb>
   <div ng-class="['main', { 'with-footer': ctrl.showFooter }]" ng-view></div>
   <footer ng-if="ctrl.showFooter"></footer>

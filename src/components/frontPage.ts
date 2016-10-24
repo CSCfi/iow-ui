@@ -1,4 +1,4 @@
-import { IScope, ILocationService} from 'angular';
+import { IScope, ILocationService, IAttributes } from 'angular';
 import { LocationService } from '../services/locationService';
 import { GroupService } from '../services/groupService';
 import { SearchService } from '../services/searchService';
@@ -12,6 +12,10 @@ import { SearchController, SearchFilter, applyFilters } from './filter/contract'
 import { frontPageSearchLanguageContext, LanguageContext } from '../entities/contract';
 import { SearchResult } from '../entities/search';
 import { GroupListItem } from '../entities/group';
+import { ApplicationController } from './application';
+import { HelpProvider } from './common/helpProvider';
+import { StoryLine } from '../help/contract';
+import { LibraryCreationStoryLine } from '../help/libraryCreationHelpStoryLine';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -23,7 +27,11 @@ mod.directive('frontPage', () => {
     bindToController: true,
     template: require('./frontPage.html'),
     controllerAs: 'ctrl',
-    controller: FrontPageController
+    controller: FrontPageController,
+    require: ['frontPage', '^application'],
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [ctrl, applicationController]: [FrontPageController, ApplicationController]) {
+      applicationController.registerHelpProvider(ctrl);
+    }
   };
 });
 
@@ -32,7 +40,7 @@ interface Bullet {
   content: string;
 }
 
-export class FrontPageController implements SearchController<SearchResult> {
+export class FrontPageController implements SearchController<SearchResult>, HelpProvider {
 
   bullets: Bullet[] = [
     { title: 'What is description?', content: 'What is description content' },
@@ -57,6 +65,7 @@ export class FrontPageController implements SearchController<SearchResult> {
               private searchService: SearchService,
               private languageService: LanguageService,
               private advancedSearchModal: AdvancedSearchModal,
+              private libraryCreationStoryLine: LibraryCreationStoryLine,
               maintenanceModal: MaintenanceModal) {
 
     this.localizer = languageService.createLocalizer(frontPageSearchLanguageContext);
@@ -126,5 +135,9 @@ export class FrontPageController implements SearchController<SearchResult> {
     if (url) {
       this.$location.url(url);
     }
+  }
+
+  getStoryLines(): StoryLine[] {
+    return [this.libraryCreationStoryLine];
   }
 }
