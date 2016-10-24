@@ -14,7 +14,7 @@ import { ShadowClass, createClassElement, createAssociationLink } from './diagra
 import { PaperHolder } from './paperHolder';
 import { ClassInteractionListener } from './contract';
 import { moveOrigin, scale, focusElement, centerToElement, scaleToFit } from './paperUtil';
-import { adjustElementLinks, layoutGraph, VertexAction } from './layout';
+import { adjustElementLinks, layoutGraph, VertexAction, calculateLabelPosition } from './layout';
 import { Localizer } from '../../utils/language';
 import { ifChanged } from '../../utils/angular';
 import { coordinatesAreEqual, centerToPosition, copyVertices } from '../../utils/entity';
@@ -734,8 +734,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
       if (!arraysAreEqual(vertices, oldVertices, coordinatesAreEqual)) {
         propertyPosition.setVertices(copyVertices(normalizeAsArray(associationCell.get('vertices'))));
-        // TODO do actual calculation
-        associationCell.prop('labels/0/position', 0.5);
+        associationCell.prop('labels/0/position', calculateLabelPosition(this.paper, this.graph, associationCell));
       }
     };
 

@@ -93,6 +93,26 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
   }
 }
 
+
+export function calculateLabelPosition(paper: joint.dia.Paper, graph: joint.dia.Graph, link: joint.dia.Link) {
+
+  const sourceId = link.get('source').id;
+  const targetId = link.get('target').id;
+  const sourceElement = graph.getCell(sourceId);
+  const links = graph.getConnectedLinks(sourceElement);
+  const siblings = links.filter(l => l.get('target').id === targetId || l.get('source').id === targetId);
+
+  if (!isLoop(link) && siblings.length > 1) {
+    const firstSourceId = siblings[0].get('source').id;
+    const indexInSiblings = siblings.indexOf(link);
+    const length = (paper.findViewByModel(link) as joint.dia.LinkView).getConnectionLength();
+    return calculateNormalSiblingLabelPosition(length, firstSourceId !== sourceId, indexInSiblings);
+  } else {
+    return 0.5;
+  }
+}
+
+
 function calculateNormalSiblingLabelPosition(linkLength: number, inverseDirection: boolean, siblingIndex: number) {
   const sign = siblingIndex % 2 ? 1 : -1;
   const gapBetweenSiblings = 30;
