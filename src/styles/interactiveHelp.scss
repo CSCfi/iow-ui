@@ -4,28 +4,41 @@ body.overlay-open {
   overflow: hidden;
 }
 
+help-popover-dimensions-calculator {
+  visibility: hidden;
+}
+
 help-popover {
+  transition: all 0.3s ease-out;
+
+  .help-content-wrapper {
+    p {
+      overflow: hidden;
+    }
+    overflow: hidden;
+  }
+}
+
+help-popover, help-popover-dimensions-calculator {
   display: block;
   position: absolute;
   background: #1C252E;
   color: #FFF;
   z-index: 1052;
   top: 0;
-  left: 2.5%;
+  left: 0;
   font-family: inherit;
   font-weight: 400;
   max-width: 500px;
+  min-width: 100px;
   border-radius: 10px;
-
-  &.animate {
-    transition: all 0.3s ease-out;
-  }
 
   p {
     color: #CBD0D4;
     font-size: .9em;
     line-height: 1.5em;
     margin: 0 0 1.125em;
+    max-height: 500px;
   }
 
   button, .button {

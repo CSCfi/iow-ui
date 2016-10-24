@@ -37,7 +37,8 @@ export class InteractiveHelpDisplay {
 
       return this.overlayService.open({
         template: `
-          <help-popover item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()" ng-class="ctrl.popoverController.class()"></help-popover>
+          <help-popover item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()"></help-popover>
+          <help-popover-dimensions-calculator item="ctrl.item" help-controller="ctrl"></help-popover-dimensions-calculator>
           <help-backdrop item="ctrl.item" help-controller="ctrl"></help-backdrop>
         `,
         controller: InteractiveHelpController,
@@ -56,13 +57,14 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
                           'iframe, object, embed, *[tabindex], *[contenteditable=true]';
 
 
-class InteractiveHelpController {
+class InteractiveHelpController implements DimensionsProvider {
 
   item: Story|Notification;
   activeIndex = 0;
   changingLocation = false;
 
   popoverController: HelpPopoverController;
+  dimensionsProvider: DimensionsProvider;
   backdropController: HelpBackdropController;
 
   /* @ngInject */
@@ -243,8 +245,16 @@ class InteractiveHelpController {
     }
   }
 
+  getDimensions() {
+    return this.dimensionsProvider.getDimensions();
+  }
+
   registerPopover(popover: HelpPopoverController) {
     this.popoverController = popover;
+  }
+
+  registerDimensionsProvider(provider: DimensionsProvider) {
+    this.dimensionsProvider = provider;
   }
 
   registerBackdrop(backdrop: HelpBackdropController) {
@@ -257,6 +267,22 @@ class InteractiveHelpController {
 
   canMoveToPrevious() {
     return !this.isCurrentFirstItem() && !this.item.cannotMoveBack;
+  }
+
+  get showNext() {
+    return this.canMoveToNext()
+      && !this.isCurrentLastItem()
+      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+  }
+
+  get showClose() {
+    return this.canMoveToNext()
+      && this.isCurrentLastItem()
+      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+  }
+
+  get showPrevious() {
+    return this.canMoveToPrevious();
   }
 
   peekNext(): Story|Notification|null {
@@ -362,6 +388,51 @@ class InteractiveHelpController {
   }
 }
 
+
+mod.directive('helpPopoverDimensionsCalculator', () => {
+  return {
+    restrict: 'E',
+    template: `
+        <span ng-class="ctrl.arrowClass"></span>
+      
+        <div class="help-content-wrapper">
+          <h3>{{ctrl.item.title | translate}}</h3>
+          <p>{{ctrl.item.content | translate}}</p>
+          <button ng-show="ctrl.helpController.showPrevious" class="small button help-navigate" translate>previous</button>
+          <button ng-show="ctrl.helpController.showNext" class="small button help-navigate" translate>next</button>
+          <button ng-show="ctrl.helpController.showClose" class="small button help-next" translate>close</button>
+          <a class="help-close">&times;</a>
+        </div>
+    `,
+    bindToController: true,
+    scope: {
+      item: '<',
+      helpController: '<'
+    },
+    controller: HelpPopoverDimensionsCalculatorController,
+    controllerAs: 'ctrl'
+  };
+});
+
+class HelpPopoverDimensionsCalculatorController implements DimensionsProvider {
+
+  item: Story|Notification;
+  helpController: InteractiveHelpController;
+  arrowClass: string[] = [];
+
+  constructor($scope: IScope, private $element: JQuery) {
+
+    this.helpController.registerDimensionsProvider(this);
+    $scope.$watch(() => this.item, item => this.arrowClass = resolveArrowClass(item));
+  }
+
+  getDimensions(): { width: number; height: number } {
+    // dom api seems to return whole numbers while in reality sizes are floats
+    // increase size by one px to make sure content fits
+    return { width: Math.floor(this.$element.prop('offsetWidth') + 1), height: Math.floor(this.$element.prop('offsetHeight') + 1) };
+  }
+}
+
 mod.directive('helpPopover', () => {
   return {
     restrict: 'E',
@@ -371,10 +442,10 @@ mod.directive('helpPopover', () => {
         <div class="help-content-wrapper">
           <h3>{{ctrl.item.title | translate}}</h3>
           <p>{{ctrl.item.content | translate}}</p>
-          <button ng-show="ctrl.showPrevious" ng-click="ctrl.previous()" class="small button help-navigate" translate>previous</button>
-          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.isValid()" ng-click="ctrl.next()" class="small button help-navigate" translate>next</button>
-          <button ng-show="ctrl.showClose" ng-disabled="!ctrl.isValid()" ng-click="ctrl.close(false)" class="small button help-next" translate>close</button>
-          <a ng-click="ctrl.close(true)" class="help-close">&times;</a>
+          <button ng-show="ctrl.helpController.showPrevious" ng-click="ctrl.helpController.moveToPreviousItem()" class="small button help-navigate" translate>previous</button>
+          <button ng-show="ctrl.helpController.showNext" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.moveToNextItem()" class="small button help-navigate" translate>next</button>
+          <button ng-show="ctrl.helpController.showClose" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.close(false)" class="small button help-next" translate>close</button>
+          <a ng-click="ctrl.helpController.close(true)" class="help-close">&times;</a>
         </div>
     `,
     bindToController: true,
@@ -395,78 +466,25 @@ class HelpPopoverController {
   arrowClass: string[] = [];
 
   positioning: Positioning|null = null;
-  animate = false;
 
   debounceHandle: any;
   debounceCount = 0;
 
-  constructor(private $scope: IScope, private $element: JQuery, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
+  constructor(private $scope: IScope, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
 
     this.helpController.registerPopover(this);
 
     const setItemStyles = () => {
+      this.arrowClass = resolveArrowClass(this.item);
 
-      const item = this.item;
-
-      if (item) {
-        switch (item.type) {
-          case 'story':
-            this.arrowClass = ['help-arrow', `help-${item.popoverPosition}`];
-            break;
-          case 'notification':
-            this.arrowClass = [];
-            break;
-          default:
-            assertNever(item, 'Unknown item type');
-        }
-
+      if (this.item) {
         this.updatePositioningAfterStabile();
       }
     };
 
     const storyPopoverPositioning = () => this.item && this.item.type === 'story' && elementPositioning(this.item.popoverTo());
 
-    $scope.$watch(() => this.item, () => {
-      if (this.positioning) {
-        // item change will change content and this forces width recalculation
-        this.positioning.width = undefined;
-      }
-      setItemStyles();
-    });
-
-    $scope.$watch(() => elementPositioning($element), (newPositioning, oldPositioning) => {
-
-      // shift animation starting point without animating no make popover transition smoother
-      if (oldPositioning && newPositioning && this.positioning && this.item.type === 'story') {
-        // item not moved
-        if (oldPositioning.left === newPositioning.left && oldPositioning.top === newPositioning.top) {
-
-          switch (this.item.popoverPosition) {
-            case 'left':
-              if (oldPositioning.width !== newPositioning.width) {
-                // shift location
-                this.animate = false;
-                this.positioning.left -= (newPositioning.width - oldPositioning.width);
-              }
-              break;
-            case 'top':
-              if (oldPositioning.height !== newPositioning.height) {
-                // shift location
-                this.animate = false;
-                this.positioning.top -= (newPositioning.height - oldPositioning.height);
-              }
-              break;
-            case 'right':
-            case 'bottom':
-              // nop
-              break;
-            default:
-              assertNever(this.item.popoverPosition, 'Unsupported popover position');
-          }
-        }
-      }
-    }, true);
-
+    $scope.$watch(() => this.item, () => setItemStyles);
     $scope.$watch(storyPopoverPositioning, setItemStyles, true);
 
     window.addEventListener('resize', setItemStyles);
@@ -476,22 +494,6 @@ class HelpPopoverController {
       window.removeEventListener('resize', setItemStyles);
       window.removeEventListener('scroll', setItemStyles);
     });
-  }
-
-  get showNext() {
-    return this.helpController.canMoveToNext()
-      && !this.helpController.isCurrentLastItem()
-      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
-  }
-
-  get showClose() {
-    return this.helpController.canMoveToNext()
-      && this.helpController.isCurrentLastItem()
-      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
-  }
-
-  get showPrevious() {
-    return this.helpController.canMoveToPrevious();
   }
 
   private updatePositioningAfterStabile() {
@@ -521,7 +523,6 @@ class HelpPopoverController {
       if (this.isPositioningStabile()) {
         this.debounceHandle = null;
         this.$scope.$apply(() => {
-          this.animate = true;
           this.scrollTo();
         });
       } else {
@@ -533,34 +534,14 @@ class HelpPopoverController {
     debounce(true);
   }
 
-  isValid() {
-    return this.helpController.isValid();
-  }
-
   scrollTo() {
     const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
     const scrollTo = requireDefined(this.item).type === 'story' && this.positioning ? this.positioning.top - 100 : 0;
     angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
   }
 
-  close(cancel: boolean) {
-    this.helpController.close(cancel);
-  }
-
-  next() {
-    this.helpController.moveToNextItem();
-  }
-
-  previous() {
-    this.helpController.moveToPreviousItem();
-  }
-
   style() {
     return this.positioning;
-  }
-
-  class() {
-    return { animate: this.animate };
   }
 
   isPositioningStabile() {
@@ -596,9 +577,13 @@ class HelpPopoverController {
   }
 
   private calculateCenterPositioning() {
+
+    const dimensions = this.helpController.getDimensions();
+
     return {
-      top: window.innerHeight / 2 - this.$element.height() / 2,
-      left: window.innerWidth / 2 - this.$element.width() / 2
+      top: window.innerHeight / 2 - dimensions.height / 2,
+      left: window.innerWidth / 2 - dimensions.width / 2,
+      width: dimensions.width
     };
   }
 
@@ -610,8 +595,9 @@ class HelpPopoverController {
       return null;
     }
 
-    const popoverWidth = this.$element.width();
-    const popoverHeight = this.$element.height();
+    const dimensions = this.helpController.getDimensions();
+    const popoverWidth = dimensions.width;
+    const popoverHeight = dimensions.height;
     const { left, top, width, height } = elementPositioning(element)!;
 
     const arrow = 13;
@@ -631,7 +617,7 @@ class HelpPopoverController {
       case 'top':
         const topPopoverRight = documentWidth - (left + popoverWidth);
         const topWidthOffScreen = topPopoverRight < 0 ? -topPopoverRight : 0;
-        return {top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen };
+        return { top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen };
       case 'bottom':
         const bottomPopoverRight = documentWidth - (left + popoverWidth);
         const bottomWidthOffScreen = bottomPopoverRight < 0 ? -bottomPopoverRight : 0;
@@ -802,6 +788,26 @@ class HelpBackdropController {
       top: Math.trunc(focusToElementPositioning.top) - marginTop
     };
   }
+}
+
+function resolveArrowClass(item: Story|Notification|null) {
+
+  if (!item) {
+    return [];
+  }
+
+  switch (item.type) {
+    case 'story':
+      return ['help-arrow', `help-${item.popoverPosition}`];
+    case 'notification':
+      return [];
+    default:
+      return assertNever(item, 'Unknown item type');
+  }
+}
+
+interface DimensionsProvider {
+  getDimensions(): { width: number, height: number };
 }
 
 function elementPositioning(element: JQuery) {
