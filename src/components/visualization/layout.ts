@@ -115,7 +115,7 @@ export function calculateLabelPosition(paper: joint.dia.Paper, graph: joint.dia.
 
 function calculateNormalSiblingLabelPosition(linkLength: number, inverseDirection: boolean, siblingIndex: number) {
   const sign = siblingIndex % 2 ? 1 : -1;
-  const gapBetweenSiblings = 30;
+  const gapBetweenSiblings = 20;
   return (linkLength / 2) + (sign * (inverseDirection ? -1 : 1) * Math.ceil(siblingIndex / 2) * gapBetweenSiblings) + (inverseDirection ? 10 : 0);
 }
 
