@@ -11,6 +11,7 @@ import {
 } from './selectors';
 
 const editableMargin = { left: 20, right: 20 };
+const editableMultipleMargin = Object.assign({}, editableMargin, { bottom: 15 });
 
 const browsePanel = () => angular.element('#browse-panel');
 const selectGroupElement = child(browsePanel, '.selectable-panel__list');
@@ -82,7 +83,7 @@ const enterLibraryLanguage = createStory({
   popoverTo: enterLibraryLanguageInputElement,
   focusTo: {
     element: editableFocus(enterLibraryLanguageElement),
-    margin: Object.assign({}, editableMargin, { bottom: 15 })
+    margin: editableMultipleMargin
   },
   popoverPosition: 'left',
   title: 'Model languages',
