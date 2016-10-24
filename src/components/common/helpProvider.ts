@@ -1,5 +1,5 @@
-import { StoryLine } from '../../help/contract';
+import { InteractiveHelp } from '../../help/contract';
 
 export interface HelpProvider {
-  helpStoryLines: StoryLine[];
+  helps: InteractiveHelp[];
 }

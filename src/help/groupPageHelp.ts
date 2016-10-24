@@ -1,6 +1,8 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { StoryLine, createNotification, HelpEventHandler, augmentHandlers } from './contract';
+import {
+  StoryLine, createHelpWithDefaultHandler, createNotification, InteractiveHelp
+} from './contract';
 import { startLibraryCreation } from './pages/group/groupPageHelp.po';
 import { enterLibraryPrefix, enterLibraryLanguage, enterLibraryLabel, createLibrary } from './pages/group/modal/addModelModalHelp.po';
 import { saveUnsavedLibrary } from './pages/model/newModelPageHelp.po';
@@ -41,19 +43,12 @@ export class GroupPageHelpService {
   constructor(private $uibModalStack: IModalStackService, private $location: ILocationService) {
   }
 
-  private returnToGroupPageHandler(group: Group): HelpEventHandler {
-    return {
-      onComplete: () => this.returnToGroupPage(group),
-      onCancel: () => this.returnToGroupPage(group)
-    };
-  };
-
   private returnToGroupPage(group: Group) {
     this.$uibModalStack.dismissAll();
     this.$location.url(group.iowUrl());
   }
 
-  getStoryLines(group: Group): StoryLine[] {
-    return [augmentHandlers(createNewLibrary, this.returnToGroupPageHandler(group))];
+  getHelps(group: Group): InteractiveHelp[] {
+    return [createHelpWithDefaultHandler(createNewLibrary, () => this.returnToGroupPage(group))];
   }
 }

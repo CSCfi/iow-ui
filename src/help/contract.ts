@@ -1,3 +1,6 @@
+import { IPromise } from 'angular';
+import { InteractiveHelpService } from './services/interactiveHelpService';
+
 export type PopoverPosition = 'top'
                             | 'right'
                             | 'left'
@@ -17,12 +20,18 @@ export type NextCondition = Explicit
                           | ValidInput
                           | ElementExists;
 
+
 export interface HelpEventHandler {
+  onInit?: (service: InteractiveHelpService) => IPromise<any>;
   onComplete?: () => void;
   onCancel?: () => void;
 }
 
-export interface StoryLine extends HelpEventHandler {
+export interface InteractiveHelp extends HelpEventHandler {
+  storyLine: StoryLine;
+}
+
+export interface StoryLine {
   title: string;
   description: string;
   items: (Story|Notification)[];
@@ -59,8 +68,13 @@ export interface StoryDetails {
   cannotMoveBack?: boolean;
 }
 
-export function augmentHandlers(storyLine: StoryLine, helpEventHandlers: HelpEventHandler) {
-  return Object.assign({}, storyLine, helpEventHandlers);
+export function createHelpWithDefaultHandler(storyLine: StoryLine, onFinish: () => void) {
+  return {
+    storyLine,
+    onInit: (service: InteractiveHelpService) => service.reset(),
+    onComplete: onFinish,
+    onCancel: onFinish
+  };
 }
 
 export function createStory(storyDetails: StoryDetails) {

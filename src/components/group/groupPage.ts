@@ -18,7 +18,7 @@ import { NotificationModal } from '../common/notificationModal';
 import { ApplicationController } from '../application';
 import { HelpProvider } from '../common/helpProvider';
 import { GroupPageHelpService } from '../../help/groupPageHelp';
-import { StoryLine } from '../../help/contract';
+import { InteractiveHelp } from '../../help/contract';
 
 mod.directive('groupPage', () => {
   return {
@@ -44,7 +44,7 @@ class GroupPageController extends EditableEntityController<Group> implements Hel
   group: Group;
   models: ModelListItem[];
   profiles: ModelListItem[];
-  helpStoryLines: StoryLine[];
+  helps: InteractiveHelp[];
 
   /* @ngInject */
   constructor($scope: EditableScope,
@@ -70,7 +70,7 @@ class GroupPageController extends EditableEntityController<Group> implements Hel
         })
         .then((result: {group: Group, models: ModelListItem[]}) => {
           this.group = result.group;
-          this.helpStoryLines = groupPageHelpService.getStoryLines(this.group);
+          this.helps = groupPageHelpService.getHelps(this.group);
           this.models = result.models.filter(model => !model.isOfType('profile'));
           this.profiles = result.models.filter(model => model.isOfType('profile'));
           locationService.atGroup(this.group);

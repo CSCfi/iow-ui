@@ -56,7 +56,7 @@ export class FrontPageController implements SearchController<SearchResult>, Help
   contentExtractors = [ (searchResult: SearchResult) => searchResult.label, (searchResult: SearchResult) => searchResult.comment ];
   private searchFilters: SearchFilter<SearchResult>[] = [];
 
-  helpStoryLines = this.frontPageHelpService.getStoryLines();
+  helps = this.frontPageHelpService.getHelps();
 
   /* @ngInject */
   constructor($scope: IScope,

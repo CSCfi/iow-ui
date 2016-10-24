@@ -1,8 +1,8 @@
 import { ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import { StoryLine } from '../../help/contract';
-import { InteractiveHelp } from './interactiveHelp';
+import { InteractiveHelp } from '../../help/contract';
+import { InteractiveHelpDisplay } from './interactiveHelp';
 
 export class HelpSelectionModal {
 
@@ -10,16 +10,16 @@ export class HelpSelectionModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  open(storyLines: StoryLine[]) {
+  open(helps: InteractiveHelp[]) {
     this.$uibModal.open({
       template: `
         <modal-template>
           <modal-title translate>Select help topic</modal-title>
        
           <modal-body>
-            <div class="help story-line" ng-repeat="storyLine in ctrl.storyLines" ng-click="ctrl.startStoryLine(storyLine)">
-              <h5>{{storyLine.title | translate}}</h5>
-              <div>{{storyLine.description | translate | paragraphize}}</div>
+            <div class="help story-line" ng-repeat="help in ctrl.helps" ng-click="ctrl.startHelp(help)">
+              <h5>{{help.storyLine.title | translate}}</h5>
+              <div>{{help.storyLine.description | translate | paragraphize}}</div>
             </div>
           </modal-body>
          
@@ -32,7 +32,7 @@ export class HelpSelectionModal {
       controllerAs: 'ctrl',
       controller: HelpSelectionModalController,
       resolve: {
-        storyLines: () => storyLines
+        helps: () => helps
       }
     });
   }
@@ -41,11 +41,11 @@ export class HelpSelectionModal {
 class HelpSelectionModalController {
 
   /* @ngInject */
-  constructor(private $uibModalInstance: IModalServiceInstance, public storyLines: StoryLine[], private interactiveHelp: InteractiveHelp) {
+  constructor(private $uibModalInstance: IModalServiceInstance, public helps: InteractiveHelp[], private interactiveHelp: InteractiveHelpDisplay) {
   }
 
-  startStoryLine(storyLine: StoryLine) {
+  startHelp(help: InteractiveHelp) {
     this.$uibModalInstance.close();
-    this.interactiveHelp.open(storyLine);
+    this.interactiveHelp.open(help);
   }
 }

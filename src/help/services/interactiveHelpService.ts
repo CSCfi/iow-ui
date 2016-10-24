@@ -12,9 +12,9 @@ export class InteractiveHelpService implements ResetableService {
 
   /* @ngInject */
   constructor(private $q: IQService,
-              helpModelService: InteractiveHelpModelService,
-              helpVisualizationService: InteractiveHelpVisualizationService,
-              helpUserService: InteractiveHelpUserService) {
+              public helpModelService: InteractiveHelpModelService,
+              public helpVisualizationService: InteractiveHelpVisualizationService,
+              public helpUserService: InteractiveHelpUserService) {
 
     this.helpServices = [
       helpModelService,

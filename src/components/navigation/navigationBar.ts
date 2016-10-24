@@ -6,7 +6,7 @@ import { availableUILanguages, UILanguage } from '../../utils/language';
 import { User } from '../../entities/user';
 import { config } from '../../config';
 import { HelpSelectionModal } from '../common/helpSelectionModal';
-import { StoryLine } from '../../help/contract';
+import { InteractiveHelp } from '../../help/contract';
 import { HelpProvider } from '../common/helpProvider';
 import { IScope } from 'angular';
 
@@ -30,7 +30,7 @@ class NavigationController {
   helpProvider: HelpProvider|null;
 
   languages: { code: UILanguage, name: string }[];
-  helpStoryLines: StoryLine[];
+  helps: InteractiveHelp[];
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -44,8 +44,8 @@ class NavigationController {
       return { code: language, name: (stringsForLang && stringsForLang['In language']) || language };
     });
 
-    const helpStoryLines = () => this.helpProvider && this.helpProvider.helpStoryLines || [];
-    $scope.$watchCollection(helpStoryLines, storyLines => this.helpStoryLines = storyLines);
+    const helps = () => this.helpProvider && this.helpProvider.helps || [];
+    $scope.$watchCollection(helps, h => this.helps = h);
   }
 
   get logoImage() {
@@ -73,10 +73,10 @@ class NavigationController {
   }
 
   canStartHelp() {
-    return !config.production && this.helpStoryLines.length > 0;
+    return !config.production && this.helps.length > 0;
   }
 
   startHelp() {
-    this.helpSelectionModal.open(this.helpStoryLines);
+    this.helpSelectionModal.open(this.helps);
   }
 }

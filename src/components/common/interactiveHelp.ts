@@ -7,25 +7,32 @@ import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 import {
-  StoryLine, NextCondition, Story, Notification, Click, ModifyingClick,
-  NavigatingClick
+  NextCondition, Story, Notification, Click, ModifyingClick,
+  NavigatingClick, InteractiveHelp
 } from '../../help/contract';
 import { contains } from '../../utils/array';
 import { ConfirmationModal } from './confirmationModal';
 
-export class InteractiveHelp {
+export class InteractiveHelpDisplay {
 
   /* @ngInject */
   constructor(private overlayService: OverlayService, private interactiveHelpService: InteractiveHelpService) {
   }
 
-  open(storyLine: StoryLine) {
+  open(help: InteractiveHelp) {
+
+    if (!help || help.storyLine.items.length === 0) {
+      throw new Error('No stories defined');
+    }
 
     if (this.interactiveHelpService.open) {
       throw new Error('Cannot open help when another help is already open');
     }
 
-    return this.interactiveHelpService.reset().then(() => {
+    const initialization = help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset();
+
+    return initialization.then(() => {
+
       this.interactiveHelpService.open = true;
 
       return this.overlayService.open({
@@ -36,7 +43,7 @@ export class InteractiveHelp {
         controller: InteractiveHelpController,
         controllerAs: 'ctrl',
         resolve: {
-          storyLine: () => storyLine
+          help: () => help
         },
         disableScroll: true
       }).result.then(() => this.interactiveHelpService.open = false);
@@ -64,11 +71,7 @@ class InteractiveHelpController {
               $document: IDocumentService,
               $location: ILocationService,
               confirmationModal: ConfirmationModal,
-              private storyLine: StoryLine) {
-
-    if (!storyLine || storyLine.items.length === 0) {
-      throw new Error('No stories defined');
-    }
+              private help: InteractiveHelp) {
 
     this.showItem(0);
 
@@ -260,13 +263,13 @@ class InteractiveHelpController {
     if (this.isCurrentLastItem()) {
       return null;
     } else {
-      return this.storyLine.items[this.activeIndex + 1];
+      return this.help.storyLine.items[this.activeIndex + 1];
     }
   }
 
   showItem(index: number) {
 
-    this.item = this.storyLine.items[index];
+    this.item = this.help.storyLine.items[index];
     InteractiveHelpController.initializeItem(this.item);
   }
 
@@ -341,19 +344,19 @@ class InteractiveHelpController {
   }
 
   isCurrentLastItem() {
-    return this.activeIndex === this.storyLine.items.length - 1;
+    return this.activeIndex === this.help.storyLine.items.length - 1;
   }
 
   close(cancel: boolean) {
     this.$overlayInstance.close();
 
     if (cancel) {
-      if (this.storyLine.onCancel) {
-        this.storyLine.onCancel();
+      if (this.help.onCancel) {
+        this.help.onCancel();
       }
     } else {
-      if (this.storyLine.onComplete) {
-        this.storyLine.onComplete();
+      if (this.help.onComplete) {
+        this.help.onComplete();
       }
     }
   }
