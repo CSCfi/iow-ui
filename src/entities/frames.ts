@@ -77,7 +77,8 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, referen
   memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf'},
   stem: { '@id': 'http://www.w3.org/ns/shacl#stem', '@type': '@id' },
   language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' },
-  isResourceIdentifier: { '@id': 'http://iow.csc.fi/ns/iow#isResourceIdentifier' }
+  isResourceIdentifier: { '@id': 'http://iow.csc.fi/ns/iow#isResourceIdentifier' },
+  uniqueLang: { '@id': 'http://www.w3.org/ns/shacl#uniqueLang' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, conceptContext, {

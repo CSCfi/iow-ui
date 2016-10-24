@@ -30,6 +30,10 @@
         <input id="{{ctrl.property.internalId + 'permanentIdentifier'}}" type="checkbox" ng-model="ctrl.property.resourceIdentifier" restrict-duplicates="ctrl.otherPropertyResourceIdentifiers"/>
       </editable>
 
+      <editable data-title="Unique label" context="ctrl.model" ng-if="ctrl.property.dataType === 'rdf:langString'">
+        <input id="{{ctrl.property.uniqueLang + 'permanentIdentifier'}}" type="checkbox" ng-model="ctrl.property.uniqueLang" />
+      </editable>
+
       <editable-multiple-language-select ng-if="ctrl.model.isOfType('profile') && ctrl.property.dataType === 'rdf:langString'"
                                          data-title="Allowed languages"
                                          id="dataTypeAllowedLanguage"

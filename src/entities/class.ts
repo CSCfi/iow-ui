@@ -333,6 +333,7 @@ export class Property extends GraphNode {
     stem:               { name: 'stem',                 serializer: entityAwareOptional(uriSerializer) },
     editorialNote:      { name: 'editorialNote',        serializer: localizableSerializer },
     resourceIdentifier: { name: 'isResourceIdentifier', serializer: booleanSerializer },
+    uniqueLang:         { name: 'uniqueLang',           serializer: booleanSerializer },
     predicateType:      { name: 'type',                 serializer: optional(Property.propertyTypeSerializer) }
   };
 
@@ -360,6 +361,7 @@ export class Property extends GraphNode {
   stem: Uri|null;
   editorialNote: Localizable;
   resourceIdentifier: boolean;
+  uniqueLang: boolean;
 
   predicateType: KnownPredicateType|null = null;
 

@@ -78,7 +78,7 @@ msgstr ""
 
 #: components/editor/classForm.html:78
 #: components/editor/predicateForm.html:59
-#: components/editor/propertyView.html:131
+#: components/editor/propertyView.html:135
 #: components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
@@ -1471,7 +1471,7 @@ msgstr ""
 msgid "Open library details"
 msgstr ""
 
-#: components/editor/propertyView.html:58
+#: components/editor/propertyView.html:62
 msgid "Optional metadata"
 msgstr ""
 
@@ -1681,7 +1681,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:142
+#: components/editor/propertyView.html:146
 msgid "Reusable predicate"
 msgstr ""
 
@@ -1994,6 +1994,10 @@ msgstr ""
 
 #: translations/misc.html:109
 msgid "Unexpected error"
+msgstr ""
+
+#: translations/misc.html:264
+msgid "Unique label"
 msgstr ""
 
 #: components/form/errorMessages.html:18

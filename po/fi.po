@@ -82,7 +82,7 @@ msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
 #: components/editor/classForm.html:78 components/editor/predicateForm.html:59
-#: components/editor/propertyView.html:131 components/model/conceptForm.html:54
+#: components/editor/propertyView.html:135 components/model/conceptForm.html:54
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -1484,7 +1484,7 @@ msgstr "tarkennetusta luokasta"
 msgid "Open library details"
 msgstr "Avaa tietokomponenttikirjaston tiedot"
 
-#: components/editor/propertyView.html:58
+#: components/editor/propertyView.html:62
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1698,7 +1698,7 @@ msgstr "Resurssia ei löydy"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:142
+#: components/editor/propertyView.html:146
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
@@ -2009,6 +2009,10 @@ msgstr "Ei määritelty"
 #: translations/misc.html:109
 msgid "Unexpected error"
 msgstr "Tapahtui odottamaton virhe"
+
+#: translations/misc.html:264
+msgid "Unique label"
+msgstr "Yksilöllinen nimi"
 
 #: components/form/errorMessages.html:18
 msgid "Unknown namespace"
