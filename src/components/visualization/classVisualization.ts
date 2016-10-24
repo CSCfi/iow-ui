@@ -85,13 +85,17 @@ mod.directive('classVisualization', () => {
         }
       };
 
+      const setClickType = (event: MouseEvent) => controller.clickType = event.which === 3 ? 'right' : 'left';
+
       // init
       window.setTimeout(setDimensions);
       controller.setDimensions = () => window.setTimeout(setDimensionsIfNotAlreadyInProgress);
       window.addEventListener('resize', setDimensionsIfNotAlreadyInProgress);
+      window.addEventListener('mousedown', setClickType);
 
       $scope.$on('$destroy', () => {
         window.removeEventListener('resize', setDimensions);
+        window.removeEventListener('mousedown', setClickType);
       });
     },
     controller: ClassVisualizationController
@@ -127,6 +131,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   popoverDetails: VisualizationPopoverDetails|null;
 
   localizer: Localizer;
+
+  clickType: 'left'|'right' = 'left';
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -692,7 +698,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     const onDiagramPositionChange = () => {
       const newCenter = classCell.getBBox().center();
       if (!coordinatesAreEqual(newCenter, classPosition.coordinate)) {
-        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, isRightClick() ? VertexAction.Reset : VertexAction.KeepNormal);
+        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, this.clickType === 'right' ? VertexAction.Reset : VertexAction.KeepNormal);
         classPosition.setCoordinate(newCenter);
       }
     };
@@ -756,16 +762,5 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     this.$scope.$watch(() => this.showName, ifChanged(() => this.queueWhenNotVisible(associationCell.updateModel)));
 
     return associationCell;
-  }
-}
-
-
-// FIXME: this method does not work with firefox because it doesn't expose global event like chrome
-function isRightClick() {
-  const event = window.event;
-  if (event instanceof MouseEvent) {
-    return event.which === 3;
-  } else {
-    return false;
   }
 }
