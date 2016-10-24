@@ -20,10 +20,7 @@ import { ResetService } from './resetService';
 import { SessionService } from './sessionService';
 import { FrameService } from './frameService';
 import { proxyToInstance } from '../utils/proxy';
-import { InteractiveHelpModelService } from '../help/services/helpModelService';
-import { InteractiveHelpUserService } from '../help/services/helpUserService';
 import { InteractiveHelpService } from '../help/services/interactiveHelpService';
-import { InteractiveHelpVisualizationService } from '../help/services/helpVisualizationService';
 
 function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpService, defaultService: T, helpService: T) {
   return proxyToInstance(() => interactiveHelpService.open ? helpService : defaultService);
@@ -36,12 +33,10 @@ mod.service('languageService', LanguageService);
 mod.service('locationService', LocationService);
 
 mod.service('defaultModelService', DefaultModelService);
-mod.service('helpModelService', InteractiveHelpModelService);
 mod.factory('modelService', (interactiveHelpService: InteractiveHelpService, defaultModelService: ModelService, helpModelService: ModelService) =>
   proxyConditionallyToHelp(interactiveHelpService, defaultModelService, helpModelService));
 
 mod.service('defaultVisualizationService', DefaultVisualizationService);
-mod.service('helpVisualizationService', InteractiveHelpVisualizationService);
 mod.factory('visualizationService', (interactiveHelpService: InteractiveHelpService, defaultVisualizationService: VisualizationService, helpVisualizationService: VisualizationService) =>
   proxyConditionallyToHelp(interactiveHelpService, defaultVisualizationService, helpVisualizationService));
 
@@ -51,7 +46,6 @@ mod.service('searchService', SearchService);
 mod.service('usageService', UsageService);
 
 mod.service('defaultUserService', DefaultUserService);
-mod.service('helpUserService', InteractiveHelpUserService);
 mod.factory('userService', (interactiveHelpService: InteractiveHelpService, defaultUserService: UserService, helpUserService: UserService) =>
   proxyConditionallyToHelp(interactiveHelpService, defaultUserService, helpUserService));
 
@@ -61,4 +55,3 @@ mod.service('resetService', ResetService);
 mod.service('entityLoaderService', EntityLoaderService);
 mod.service('sessionService', SessionService);
 mod.service('frameService', FrameService);
-mod.service('interactiveHelpService', InteractiveHelpService);
