@@ -6,7 +6,7 @@ import {
   createNavigatingClickNextCondition
 } from './contract';
 import {
-  findEditableByTitle, modal, input, editableFocus, findEditableMultipleByTitle, multiInput,
+  editableByTitle, modal, input, editableFocus, editableMultipleByTitle, multiInput,
   modelView, child, searchResult
 } from './selectors';
 
@@ -36,7 +36,7 @@ const startLibraryCreation = createStory({
   cannotMoveBack: true
 });
 
-const enterLibraryPrefixElement = findEditableByTitle(modal, 'Prefix');
+const enterLibraryPrefixElement = editableByTitle(modal, 'Prefix');
 const enterLibraryPrefixInputElement = input(enterLibraryPrefixElement);
 const enterLibraryPrefix = createStory({
 
@@ -56,7 +56,7 @@ const enterLibraryPrefix = createStory({
   }
 });
 
-const enterLibraryLabelElement = findEditableByTitle(modal, 'Library label');
+const enterLibraryLabelElement = editableByTitle(modal, 'Library label');
 const enterLibraryLabelInputElement = input(enterLibraryLabelElement);
 const enterLibraryLabel = createStory({
 
@@ -75,7 +75,7 @@ const enterLibraryLabel = createStory({
   }
 });
 
-const enterLibraryLanguageElement = findEditableMultipleByTitle(modal, 'Model languages');
+const enterLibraryLanguageElement = editableMultipleByTitle(modal, 'Model languages');
 const enterLibraryLanguageInputElement = multiInput(enterLibraryLanguageElement);
 const enterLibraryLanguage = createStory({
 
