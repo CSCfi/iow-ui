@@ -1,4 +1,4 @@
-import { createClickNextConfition, createStory } from '../../contract';
+import { createClickNextCondition, createStory } from '../../contract';
 import { KnownModelType } from '../../../entities/type';
 
 function startModelCreation(type: KnownModelType) {
@@ -12,7 +12,7 @@ function startModelCreation(type: KnownModelType) {
     popoverPosition: 'left',
     title: 'Add ' + type,
     content: 'Diipadaa',
-    nextCondition: createClickNextConfition(startModelCreationElement),
+    nextCondition: createClickNextCondition(startModelCreationElement),
     cannotMoveBack: true
   });
 }

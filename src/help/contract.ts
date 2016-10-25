@@ -93,7 +93,7 @@ export function createExplicitNextCondition(): Explicit {
   return { type: 'explicit' };
 }
 
-export function createClickNextConfition(element: () => JQuery): Click {
+export function createClickNextCondition(element: () => JQuery): Click {
   return { type: 'click', element };
 }
 

@@ -1,4 +1,4 @@
-import { createClickNextConfition, createStory, createModifyingClickNextCondition } from '../../contract';
+import { createClickNextCondition, createStory, createModifyingClickNextCondition } from '../../contract';
 import { modelView, child } from '../../selectors';
 import { KnownModelType } from '../../../entities/type';
 
@@ -28,7 +28,7 @@ export const requireNamespace = createStory({
   popoverPosition: 'left',
   title: 'Add reference to namespace',
   content: 'Diipadaa',
-  nextCondition: createClickNextConfition(requireNamespaceElement),
+  nextCondition: createClickNextCondition(requireNamespaceElement),
   cannotMoveBack: true
 });
 

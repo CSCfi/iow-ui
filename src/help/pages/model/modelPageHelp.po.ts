@@ -1,4 +1,4 @@
-import { createClickNextConfition, createStory } from '../../contract';
+import { createClickNextCondition, createStory } from '../../contract';
 import { modelView, child } from '../../selectors';
 
 const openModelDetailsElement = child(modelView, '.model-header');
@@ -9,6 +9,6 @@ export const openModelDetails = createStory({
   popoverPosition: 'bottom',
   title: 'Open library details',
   content: 'Diipadaa',
-  nextCondition: createClickNextConfition(openModelDetailsElement),
+  nextCondition: createClickNextCondition(openModelDetailsElement),
   cannotMoveBack: true
 });
