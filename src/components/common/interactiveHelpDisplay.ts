@@ -427,9 +427,7 @@ class HelpPopoverDimensionsCalculatorController implements DimensionsProvider {
   }
 
   getDimensions(): { width: number; height: number } {
-    // dom api seems to return whole numbers while in reality sizes are floats
-    // increase size by one px to make sure content fits
-    return { width: Math.floor(this.$element.prop('offsetWidth') + 1), height: Math.floor(this.$element.prop('offsetHeight') + 1) };
+    return requireDefined(elementPositioning(this.$element));
   }
 }
 
@@ -801,15 +799,13 @@ function elementPositioning(element: JQuery) {
     return null;
   }
 
-  const offset = element.offset();
-  const width = element.prop('offsetWidth');
-  const height = element.prop('offsetHeight');
+  const rect = element[0].getBoundingClientRect();
 
   return {
-    left: offset.left,
-    top: offset.top,
-    width,
-    height
+    left: rect.left + window.pageXOffset,
+    top: rect.top + window.pageYOffset,
+    width: rect.width,
+    height: rect.height
   };
 }
 
