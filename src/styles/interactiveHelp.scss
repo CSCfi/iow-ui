@@ -74,6 +74,10 @@ help-popover, help-popover-dimensions-calculator {
     &:hover:not([disabled]) {
       background-color: #0A87A1;
     }
+
+    &:focus {
+      outline:0;
+    }
   }
 
   .help-arrow {
