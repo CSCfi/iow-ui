@@ -1,13 +1,21 @@
 import { createClickNextConfition, createStory } from '../../contract';
+import { KnownModelType } from '../../../entities/type';
 
-const startLibraryCreationElement = () => angular.element('#add-library-button');
-export const startLibraryCreation = createStory({
+function startModelCreation(type: KnownModelType) {
 
-  popoverTo: startLibraryCreationElement,
-  focusTo: { element: startLibraryCreationElement },
-  popoverPosition: 'left',
-  title: 'Add library',
-  content: 'Diipadaa',
-  nextCondition: createClickNextConfition(startLibraryCreationElement),
-  cannotMoveBack: true
-});
+  const startModelCreationElement = () => angular.element(`#add-${type}-button`);
+
+  return createStory({
+
+    popoverTo: startModelCreationElement,
+    focusTo: { element: startModelCreationElement },
+    popoverPosition: 'left',
+    title: 'Add ' + type,
+    content: 'Diipadaa',
+    nextCondition: createClickNextConfition(startModelCreationElement),
+    cannotMoveBack: true
+  });
+}
+
+export const startLibraryCreation = startModelCreation('library');
+export const startProfileCreation = startModelCreation('profile');

@@ -1,17 +1,24 @@
 import { createClickNextConfition, createStory, createModifyingClickNextCondition } from '../../contract';
 import { modelView, child } from '../../selectors';
+import { KnownModelType } from '../../../entities/type';
 
-const modifyLibraryElement = child(modelView, 'button.edit');
-export const modifyLibrary = createStory({
+function modifyModel(type: KnownModelType) {
 
-  popoverTo: modifyLibraryElement,
-  focusTo: { element: modifyLibraryElement },
-  popoverPosition: 'left',
-  title: 'Modify library',
-  content: 'Diipadaa',
-  nextCondition: createModifyingClickNextCondition(modifyLibraryElement),
-  cannotMoveBack: true
-});
+  const modifyModelElement = child(modelView, 'button.edit');
+  return createStory({
+
+    popoverTo: modifyModelElement,
+    focusTo: { element: modifyModelElement },
+    popoverPosition: 'left',
+    title: 'Modify ' + type,
+    content: 'Diipadaa',
+    nextCondition: createModifyingClickNextCondition(modifyModelElement),
+    cannotMoveBack: true
+  });
+}
+
+export const modifyLibrary = modifyModel('library');
+export const modifyProfile = modifyModel('profile');
 
 const requireNamespaceElement = child(modelView, 'imported-namespaces-view button');
 export const requireNamespace = createStory({
@@ -26,14 +33,14 @@ export const requireNamespace = createStory({
 });
 
 
-const saveLibraryChangesElement = child(modelView, 'button.save');
-export const saveLibraryChanges = createStory({
+const saveModelChangesElement = child(modelView, 'button.save');
+export const saveModelChanges = createStory({
 
-  popoverTo: saveLibraryChangesElement,
-  focusTo: { element: saveLibraryChangesElement },
+  popoverTo: saveModelChangesElement,
+  focusTo: { element: saveModelChangesElement },
   popoverPosition: 'left',
   title: 'Save changes',
   content: 'Diipadaa',
-  nextCondition: createModifyingClickNextCondition(saveLibraryChangesElement),
+  nextCondition: createModifyingClickNextCondition(saveModelChangesElement),
   cannotMoveBack: true
 });

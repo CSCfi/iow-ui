@@ -1,14 +1,14 @@
 import { modelView, child } from '../../selectors';
 import { createStory, createNavigatingClickNextCondition } from '../../contract';
 
-const saveUnsavedLibraryElement = child(modelView, 'button.save');
-export const saveUnsavedLibrary = createStory({
+const saveUnsavedModelElement = child(modelView, 'button.save');
+export const saveUnsavedModel = createStory({
 
-  popoverTo: saveUnsavedLibraryElement,
-  focusTo: { element: saveUnsavedLibraryElement },
+  popoverTo: saveUnsavedModelElement,
+  focusTo: { element: saveUnsavedModelElement },
   popoverPosition: 'left',
   title: 'Save changes',
   content: 'Diipadaa',
-  nextCondition: createNavigatingClickNextCondition(saveUnsavedLibraryElement),
+  nextCondition: createNavigatingClickNextCondition(saveUnsavedModelElement),
   cannotMoveBack: true
 });

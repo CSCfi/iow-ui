@@ -68,7 +68,7 @@ msgstr ""
 msgid "Add reference data"
 msgstr ""
 
-#: translations/help.html:13
+#: translations/help.html:16
 msgid "Add reference to namespace"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:17
+#: translations/help.html:20
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -532,8 +532,12 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:10
+#: translations/help.html:11
 msgid "Congratulations for completing library creation!"
+msgstr ""
+
+#: translations/help.html:12
+msgid "Congratulations for completing profile creation!"
 msgstr ""
 
 #: translations/titles.html:75
@@ -1066,7 +1070,11 @@ msgstr ""
 msgid "Guide through creating new library"
 msgstr ""
 
-#: translations/help.html:16
+#: translations/help.html:9
+msgid "Guide through creating new profile"
+msgstr ""
+
+#: translations/help.html:19
 msgid "Help is open"
 msgstr ""
 
@@ -1327,8 +1335,12 @@ msgstr ""
 msgid "Modified at"
 msgstr ""
 
-#: translations/help.html:12
+#: translations/help.html:14
 msgid "Modify library"
+msgstr ""
+
+#: translations/help.html:15
+msgid "Modify profile"
 msgstr ""
 
 #: components/form/errorMessages.html:20
@@ -1475,7 +1487,7 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: translations/help.html:11
+#: translations/help.html:13
 msgid "Open library details"
 msgstr ""
 
@@ -1745,7 +1757,7 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
-#: translations/help.html:14
+#: translations/help.html:17
 msgid "Search for jhs"
 msgstr ""
 
@@ -1811,11 +1823,11 @@ msgstr ""
 msgid "Select group"
 msgstr ""
 
-#: translations/help.html:9
+#: translations/help.html:10
 msgid "Select help topic"
 msgstr ""
 
-#: translations/help.html:15
+#: translations/help.html:18
 msgid "Select jhs"
 msgstr ""
 

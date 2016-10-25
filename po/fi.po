@@ -73,7 +73,7 @@ msgstr "Lisää ominaisuus"
 msgid "Add reference data"
 msgstr "Lisää koodisto"
 
-#: translations/help.html:13
+#: translations/help.html:16
 msgid "Add reference to namespace"
 msgstr "Lisää viite nimiavaruuteen"
 
@@ -168,7 +168,7 @@ msgstr "XML"
 msgid "Are you sure that you want to close dialog?"
 msgstr "Oletko varma, että haluat sulkea dialogin?"
 
-#: translations/help.html:17
+#: translations/help.html:20
 msgid "Are you sure that you want to close help?"
 msgstr "Oletko varma, että haluat sulkea ohjeen?"
 
@@ -533,9 +533,13 @@ msgstr "Ehdotettu termi käsitteelle"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: translations/help.html:10
+#: translations/help.html:11
 msgid "Congratulations for completing library creation!"
 msgstr "Onnittelut tietokomponenttikirjaston luomisessa onnistumisesta!"
+
+#: translations/help.html:12
+msgid "Congratulations for completing profile creation!"
+msgstr "Onnittelut soveltamisprofiilin luomisessa onnistumisesta!"
 
 #: translations/titles.html:75
 msgid "Constraint classes"
@@ -1082,7 +1086,11 @@ msgstr "Ryhmää ei löydy"
 msgid "Guide through creating new library"
 msgstr "Uuden tietokomponenttikirjaston luomisen ohjeistus"
 
-#: translations/help.html:16
+#: translations/help.html:9
+msgid "Guide through creating new profile"
+msgstr "Uuden soveltamisprofiilin luomisen ohjeistus"
+
+#: translations/help.html:19
 msgid "Help is open"
 msgstr "Ohje on avattuna"
 
@@ -1342,9 +1350,13 @@ msgstr "Tietokomponenttikirjastot"
 msgid "Modified at"
 msgstr "Muokattu"
 
-#: translations/help.html:12
+#: translations/help.html:14
 msgid "Modify library"
 msgstr "Muokkaa tietokomponenttikirjastoa"
+
+#: translations/help.html:15
+msgid "Modify profile"
+msgstr "Muokkaa soveltamisprofiilia"
 
 #: components/form/errorMessages.html:20
 msgid "Must be imported namespace"
@@ -1488,7 +1500,7 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: translations/help.html:11
+#: translations/help.html:13
 msgid "Open library details"
 msgstr "Avaa tietokomponenttikirjaston tiedot"
 
@@ -1762,7 +1774,7 @@ msgstr "Valitse käsite"
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
-#: translations/help.html:14
+#: translations/help.html:17
 msgid "Search for jhs"
 msgstr "Etsi julkishallinnon tietokomponenttikirjastoa"
 
@@ -1830,11 +1842,11 @@ msgstr "Valitse luokka"
 msgid "Select group"
 msgstr "Valitse ryhmä"
 
-#: translations/help.html:9
+#: translations/help.html:10
 msgid "Select help topic"
 msgstr "Valitse ohjeen aihe"
 
-#: translations/help.html:15
+#: translations/help.html:18
 msgid "Select jhs"
 msgstr "Valitse julkishallinnon tietokomponenttikirjasto"
 
