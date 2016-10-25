@@ -105,8 +105,8 @@ class InteractiveHelpController implements DimensionsProvider {
         setTimeout(() => {
           if (this.changingLocation) {
             continuing = true;
-            $location.url(nextUrl($location, next));
             this.moveToNextItem();
+            $location.url(nextUrl($location, next));
           } else {
             confirmationModal.openCloseHelp().then(() => this.close(true));
           }
@@ -440,11 +440,11 @@ mod.directive('helpPopover', () => {
         <span ng-class="ctrl.arrowClass"></span>
       
         <div class="help-content-wrapper">
-          <h3>{{ctrl.item.title | translate}}</h3>
-          <p>{{ctrl.item.content | translate}}</p>
-          <button ng-show="ctrl.helpController.showPrevious" ng-click="ctrl.helpController.moveToPreviousItem()" class="small button help-navigate" translate>previous</button>
-          <button ng-show="ctrl.helpController.showNext" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.moveToNextItem()" class="small button help-navigate" translate>next</button>
-          <button ng-show="ctrl.helpController.showClose" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.close(false)" class="small button help-next" translate>close</button>
+          <h3 ng-show="ctrl.title" ng-bind="ctrl.title | translate"></h3>
+          <p ng-show="ctrl.content" ng-bind="ctrl.content | translate"></p>
+          <button ng-show="ctrl.showPrevious" ng-click="ctrl.helpController.moveToPreviousItem()" class="small button help-navigate" translate>previous</button>
+          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.moveToNextItem()" class="small button help-navigate" translate>next</button>
+          <button ng-show="ctrl.showClose" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.close(false)" class="small button help-next" translate>close</button>
           <a ng-click="ctrl.helpController.close(true)" class="help-close">&times;</a>
         </div>
     `,
@@ -465,10 +465,15 @@ class HelpPopoverController {
   item: Story|Notification;
   arrowClass: string[] = [];
 
+  title: string;
+  content: string;
+  showPrevious: boolean;
+  showNext: boolean;
+  showClose: boolean;
+
   positioning: Positioning|null = null;
 
   debounceHandle: any;
-  debounceCount = 0;
 
   constructor(private $scope: IScope, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
 
@@ -478,13 +483,14 @@ class HelpPopoverController {
       this.arrowClass = resolveArrowClass(this.item);
 
       if (this.item) {
-        this.updatePositioningAfterStabile();
+        this.debouncePositionUpdate();
       }
     };
 
     const storyPopoverPositioning = () => this.item && this.item.type === 'story' && elementPositioning(this.item.popoverTo());
 
-    $scope.$watch(() => this.item, () => setItemStyles);
+    $scope.$watch(() => this.helpController.getDimensions(), setItemStyles, true);
+    $scope.$watch(() => this.item, setItemStyles);
     $scope.$watch(storyPopoverPositioning, setItemStyles, true);
 
     window.addEventListener('resize', setItemStyles);
@@ -496,42 +502,33 @@ class HelpPopoverController {
     });
   }
 
-  private updatePositioningAfterStabile() {
+  private debouncePositionUpdate() {
 
-    const maxWaitInMs = 2000;
-    const pollingIntervalInMs = 20;
+    if (this.debounceHandle) {
+      clearTimeout(this.debounceHandle);
+    }
 
-    const debounce = (resetCounter: boolean) => {
+    this.debounceHandle = setTimeout(() => {
+      this.debounceHandle = null;
+      this.$scope.$apply(() => {
+        const positioning = this.calculatePositioning();
 
-      if (resetCounter) {
-        this.debounceCount = 0;
-      }
+        if (positioning && positioning.width > 0) {
+          this.positioning = positioning;
 
-      if (this.debounceHandle) {
-        this.debounceCount++;
-        clearTimeout(this.debounceHandle);
-      }
-
-      if (this.debounceCount * pollingIntervalInMs > maxWaitInMs) {
-        throw new Error('Element not exist or does not stabilize');
-      }
-
-      this.debounceHandle = setTimeout(applyPositioningAndScrollWhenStabile, pollingIntervalInMs);
-    };
-
-    const applyPositioningAndScrollWhenStabile = () => {
-      if (this.isPositioningStabile()) {
-        this.debounceHandle = null;
-        this.$scope.$apply(() => {
-          this.scrollTo();
-        });
-      } else {
-        this.updatePositioning();
-        debounce(false);
-      }
-    };
-
-    debounce(true);
+          // apply positioning before applying content
+          setTimeout(() => {
+            this.$scope.$apply(() => {
+              this.title = this.item.title;
+              this.content = this.item.content;
+              this.showNext = this.helpController.showNext;
+              this.showPrevious = this.helpController.showPrevious;
+              this.showClose = this.helpController.showClose;
+            });
+          });
+        }
+      });
+    }, 100);
   }
 
   scrollTo() {
@@ -542,18 +539,6 @@ class HelpPopoverController {
 
   style() {
     return this.positioning;
-  }
-
-  isPositioningStabile() {
-    return positioningsAreEqual(this.positioning, this.calculatePositioning());
-  }
-
-  updatePositioning() {
-    const positioning = this.calculatePositioning();
-
-    if (positioning) {
-      this.positioning = this.calculatePositioning();
-    }
   }
 
   private calculatePositioning(): Positioning|null {
