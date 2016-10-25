@@ -698,7 +698,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     const onDiagramPositionChange = () => {
       const newCenter = classCell.getBBox().center();
       if (!coordinatesAreEqual(newCenter, classPosition.coordinate)) {
-        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, this.clickType === 'right' ? VertexAction.Reset : VertexAction.KeepAll);
+        const action = this.clickType === 'right' ? VertexAction.Reset : VertexAction.KeepAllButLoops;
+        adjustElementLinks(paper, classCell, new Set<string>(), this.modelPositions, action);
         classPosition.setCoordinate(newCenter);
       }
     };

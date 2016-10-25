@@ -38,7 +38,7 @@ export function adjustElementLinks(paper: joint.dia.Paper, element: joint.dia.El
 }
 
 export enum VertexAction {
-  Reset, KeepNormal, KeepAll, KeepPersistent
+  Reset, KeepAllButLoops, KeepAll, KeepPersistent
 }
 
 function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], alreadyAdjusted: Set<string>, modelPositions: ModelPositions, vertexAction: VertexAction) {
@@ -48,8 +48,8 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
     return sourcePosition.getAssociationProperty(new Uri(link.get('internalId'), {})).vertices;
   }
 
-  function getPersistedVertices(link: joint.dia.Link, siblingCount: number, isLoop: boolean) {
-    if (vertexAction === VertexAction.Reset || (vertexAction === VertexAction.KeepNormal && (siblingCount > 1 || isLoop))) {
+  function getPersistedVertices(link: joint.dia.Link, isLoop: boolean) {
+    if (vertexAction === VertexAction.Reset || (vertexAction === VertexAction.KeepAllButLoops && isLoop)) {
       return null;
     } else {
       const vertices = getLinkPositionVertices(link);
@@ -67,7 +67,7 @@ function adjustSiblingLinks(paper: joint.dia.Paper, siblings: joint.dia.Link[], 
     const link = siblings[i];
     const source = (<joint.dia.Element> graph.getCell(link.get('source').id));
     const target = (<joint.dia.Element> graph.getCell(link.get('target').id));
-    const persistedVertices = getPersistedVertices(link, siblings.length, loop);
+    const persistedVertices = getPersistedVertices(link, loop);
 
     if (persistedVertices) {
       link.set('vertices', persistedVertices);
