@@ -523,7 +523,7 @@ class HelpPopoverController {
               this.showPrevious = this.helpController.showPrevious;
               this.showClose = this.helpController.showClose;
             });
-          });
+          }, 150);
         }
       });
     }, 100);
@@ -591,20 +591,20 @@ class HelpPopoverController {
       case 'left':
         const leftPopoverLeft = left - popoverWidth - arrow;
         const leftWidthOffScreen = leftPopoverLeft < 0 ? -leftPopoverLeft : 0;
-        return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen };
+        return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen, height: leftWidthOffScreen ? undefined : popoverHeight };
       case 'right':
         const rightPopoverLeft = left + width + arrow;
         const rightPopoverRight = documentWidth - (rightPopoverLeft + popoverWidth);
         const rightWidthOffScreen = rightPopoverRight < 0 ? -rightPopoverRight : 0;
-        return { top: top, left: rightPopoverLeft, width: popoverWidth - rightWidthOffScreen };
+        return { top: top, left: rightPopoverLeft, width: popoverWidth - rightWidthOffScreen, height: rightWidthOffScreen ? undefined : popoverHeight };
       case 'top':
         const topPopoverRight = documentWidth - (left + popoverWidth);
         const topWidthOffScreen = topPopoverRight < 0 ? -topPopoverRight : 0;
-        return { top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen };
+        return { top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen, height: topWidthOffScreen ? undefined : popoverHeight };
       case 'bottom':
         const bottomPopoverRight = documentWidth - (left + popoverWidth);
         const bottomWidthOffScreen = bottomPopoverRight < 0 ? -bottomPopoverRight : 0;
-        return { top: top + height + arrow, left: left, width: popoverWidth - bottomWidthOffScreen };
+        return { top: top + height + arrow, left: left, width: popoverWidth - bottomWidthOffScreen, height: bottomWidthOffScreen ? undefined : popoverHeight };
       default:
         return assertNever(story.popoverPosition, 'Unsupported popover position');
     }
