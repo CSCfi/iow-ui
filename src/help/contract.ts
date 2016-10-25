@@ -65,7 +65,7 @@ export interface StoryDetails {
     element: () => JQuery,
     value: string
   };
-  cannotMoveBack?: boolean;
+  reversible?: boolean;
 }
 
 export function createHelpWithDefaultHandler(storyLine: StoryLine, onFinish: () => void) {

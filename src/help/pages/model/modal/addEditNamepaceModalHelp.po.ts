@@ -13,8 +13,7 @@ export const filterForJhs = createStory({
   initialInputValue: {
     value: 'julkis',
     element: filterForJhsElement
-  },
-  cannotMoveBack: true
+  }
 });
 
 const selectJhsResultElement = searchResult(modal, 'http://iow.csc.fi/ns/jhs');

@@ -12,8 +12,7 @@ function startModelCreation(type: KnownModelType) {
     popoverPosition: 'left',
     title: 'Add ' + type,
     content: 'Diipadaa',
-    nextCondition: createClickNextCondition(startModelCreationElement),
-    cannotMoveBack: true
+    nextCondition: createClickNextCondition(startModelCreationElement)
   });
 }
 

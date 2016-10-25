@@ -158,14 +158,14 @@ class InteractiveHelpController implements DimensionsProvider {
 
       if (event.shiftKey) {
         if (isFocusInElement(event, firstElement)) {
-          if (!item.cannotMoveBack) {
+          if (!this.canMoveToPrevious()) {
             this.$scope.$apply(() => this.moveToPreviousItem());
           }
           stopEvent(event);
         }
       } else {
         if (isFocusInElement(event, lastElement)) {
-          if (!isClick(item.nextCondition) && this.isValid()) {
+          if (this.canMoveToNext()! && !isClick(item.nextCondition)) {
             this.$scope.$apply(() => this.moveToNextItem());
           } else {
             firstElement.focus();
@@ -262,23 +262,47 @@ class InteractiveHelpController implements DimensionsProvider {
   }
 
   canMoveToNext() {
-    return true;
+    return this.isValid();
   }
 
   canMoveToPrevious() {
-    return !this.isCurrentFirstItem() && !this.item.cannotMoveBack;
+
+    const previous = this.peekPrevious();
+
+    function isImplicitlyReversible(condition: NextCondition) {
+      switch (condition.type) {
+        case 'explicit':
+        case 'valid-input':
+        case 'element-exists':
+          return true;
+        case 'click':
+        case 'modifying-click':
+        case 'navigating-click':
+          return false;
+        default:
+          return assertNever(condition, 'Unsupported next condition');
+      }
+    }
+
+    function isReversible(item: Story|Notification) {
+      if (item.type === 'notification') {
+        return true;
+      } else if (item.reversible) {
+        return item.reversible;
+      } else {
+        return isImplicitlyReversible(item.nextCondition);
+      }
+    }
+
+    return !!previous && isReversible(previous);
   }
 
   get showNext() {
-    return this.canMoveToNext()
-      && !this.isCurrentLastItem()
-      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return !this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
   }
 
   get showClose() {
-    return this.canMoveToNext()
-      && this.isCurrentLastItem()
-      && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
   }
 
   get showPrevious() {
@@ -290,6 +314,14 @@ class InteractiveHelpController implements DimensionsProvider {
       return null;
     } else {
       return this.help.storyLine.items[this.activeIndex + 1];
+    }
+  }
+
+  peekPrevious(): Story|Notification|null {
+    if (this.isCurrentFirstItem()) {
+      return null;
+    } else {
+      return this.help.storyLine.items[this.activeIndex - 1];
     }
   }
 

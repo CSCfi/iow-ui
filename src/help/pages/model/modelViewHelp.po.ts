@@ -12,8 +12,7 @@ function modifyModel(type: KnownModelType) {
     popoverPosition: 'left',
     title: 'Modify ' + type,
     content: 'Diipadaa',
-    nextCondition: createModifyingClickNextCondition(modifyModelElement),
-    cannotMoveBack: true
+    nextCondition: createModifyingClickNextCondition(modifyModelElement)
   });
 }
 
@@ -28,8 +27,7 @@ export const requireNamespace = createStory({
   popoverPosition: 'left',
   title: 'Add reference to namespace',
   content: 'Diipadaa',
-  nextCondition: createClickNextCondition(requireNamespaceElement),
-  cannotMoveBack: true
+  nextCondition: createClickNextCondition(requireNamespaceElement)
 });
 
 
@@ -41,6 +39,5 @@ export const saveModelChanges = createStory({
   popoverPosition: 'left',
   title: 'Save changes',
   content: 'Diipadaa',
-  nextCondition: createModifyingClickNextCondition(saveModelChangesElement),
-  cannotMoveBack: true
+  nextCondition: createModifyingClickNextCondition(saveModelChangesElement)
 });

@@ -9,6 +9,5 @@ export const openModelDetails = createStory({
   popoverPosition: 'bottom',
   title: 'Open library details',
   content: 'Diipadaa',
-  nextCondition: createClickNextCondition(openModelDetailsElement),
-  cannotMoveBack: true
+  nextCondition: createClickNextCondition(openModelDetailsElement)
 });

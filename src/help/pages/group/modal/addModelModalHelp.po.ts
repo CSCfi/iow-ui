@@ -24,7 +24,6 @@ function enterModelPrefix(type: KnownModelType) {
     title: 'Prefix',
     content: 'Prefix info',
     nextCondition: createValidInputNextCondition(enterModelPrefixInputElement),
-    cannotMoveBack: true,
     initialInputValue: {
       value: type === 'library' ? 'testi' : 'plv',
       element: enterModelPrefixInputElement
