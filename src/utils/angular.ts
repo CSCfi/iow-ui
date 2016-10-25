@@ -16,7 +16,7 @@ function normalizeUrl(url: string): string {
 
 export function nextUrl($location: ILocationService, next: string) {
   const base = formatApplicationBase($location, '' /* TODO parametrize base href here */);
-  return next.substr(base.length + (next.startsWith('#/') ? 2 : 0));
+  return next.substr(base.length + (next.indexOf('#/') !== -1 ? 2 : 0));
 }
 
 export function formatApplicationBase($location: ILocationService, baseHref: string) {
