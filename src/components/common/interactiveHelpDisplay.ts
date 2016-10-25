@@ -492,11 +492,9 @@ class HelpPopoverController {
     $scope.$watch(storyPopoverPositioning, setItemStyles, true);
 
     window.addEventListener('resize', setItemStyles);
-    window.addEventListener('scroll', setItemStyles);
 
     $scope.$on('$destroy', () => {
       window.removeEventListener('resize', setItemStyles);
-      window.removeEventListener('scroll', setItemStyles);
     });
   }
 
