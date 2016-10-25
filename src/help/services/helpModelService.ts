@@ -12,16 +12,8 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
 
   private models = new Map<string, Model>();
 
-  /* @ngInject */
-  constructor(private $q: IQService, private defaultModelService: ModelService) {
-  }
-
-  reset(): IPromise<any> {
-    this.models.clear();
-    return this.$q.when();
-  }
-
-  private getModelsByPredicate(predicate: (model: Model) => boolean): Model[] {
+  // With IE9 proxy-polyfill there cannot be any prototype methods not part of public api
+  private getModelsByPredicate = (predicate: (model: Model) => boolean) => {
     const result: Model[] = [];
 
     this.models.forEach(model => {
@@ -31,6 +23,15 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
     });
 
     return result;
+  };
+
+  /* @ngInject */
+  constructor(private $q: IQService, private defaultModelService: ModelService) {
+  }
+
+  reset(): IPromise<any> {
+    this.models.clear();
+    return this.$q.when();
   }
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
