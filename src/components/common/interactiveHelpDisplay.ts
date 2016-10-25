@@ -516,6 +516,7 @@ class HelpPopoverController {
 
           // apply positioning before applying content
           setTimeout(() => {
+            this.scrollTo();
             this.$scope.$apply(() => {
               this.title = this.item.title;
               this.content = this.item.content;
