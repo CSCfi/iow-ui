@@ -11,5 +11,5 @@ export function proxyToInstance<T>(instance: () => T): T {
     }
   };
 
-  return new Proxy({}, handler) as T;
+  return new Proxy(instance(), handler) as T;
 }
