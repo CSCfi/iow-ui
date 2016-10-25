@@ -740,23 +740,23 @@ class HelpBackdropController {
         left: 0,
         top: 0,
         right: 0,
-        height: positioning.top - window.scrollY
+        height: positioning.top - window.pageYOffset
       },
       right: {
         left: positioning.left + positioning.width,
-        top: positioning.top - window.scrollY,
+        top: positioning.top - window.pageYOffset,
         width: this.$document.width() - positioning.left - positioning.width,
         height: positioning.height
       },
       bottom: {
         left: 0,
-        top: positioning.top + positioning.height - window.scrollY,
+        top: positioning.top + positioning.height - window.pageYOffset,
         right: 0,
         bottom: 0
       },
       left: {
         left: 0,
-        top: positioning.top - window.scrollY,
+        top: positioning.top - window.pageYOffset,
         width: positioning.left,
         height: positioning.height
       }
