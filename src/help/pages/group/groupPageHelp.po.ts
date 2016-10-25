@@ -7,11 +7,13 @@ function startModelCreation(type: KnownModelType) {
 
   return createStory({
 
-    popoverTo: startModelCreationElement,
-    focusTo: { element: startModelCreationElement },
-    popoverPosition: 'left',
     title: 'Add ' + type,
     content: 'Diipadaa',
+    popover: {
+      element: startModelCreationElement,
+      position: 'left'
+    },
+    focus: { element: startModelCreationElement },
     nextCondition: createClickNextCondition(startModelCreationElement)
   });
 }

@@ -121,11 +121,11 @@ class InteractiveHelpController implements DimensionsProvider {
 
     const item = this.item;
 
-    if (item.type === 'notification' || !item.focusTo) {
+    if (item.type === 'notification' || !item.focus) {
       return [];
     }
 
-    const focusableElements = item.focusTo.element().find(focusableSelector).addBack(focusableSelector);
+    const focusableElements = item.focus.element().find(focusableSelector).addBack(focusableSelector);
     const result: HTMLElement[] = [];
 
     focusableElements.each((_index: number, element: HTMLElement) => {
@@ -517,7 +517,7 @@ class HelpPopoverController {
       }
     };
 
-    const storyPopoverPositioning = () => this.item && this.item.type === 'story' && elementPositioning(this.item.popoverTo());
+    const storyPopoverPositioning = () => this.item && this.item.type === 'story' && elementPositioning(this.item.popover.element());
 
     $scope.$watch(() => this.helpController.getDimensions(), setItemStyles, true);
     $scope.$watch(() => this.item, setItemStyles);
@@ -603,7 +603,7 @@ class HelpPopoverController {
 
   private calculateStoryPositioning(story: Story): Positioning|null {
 
-    const element = story.popoverTo();
+    const element = story.popover.element();
 
     if (!element || element.length === 0) {
       return null;
@@ -618,7 +618,7 @@ class HelpPopoverController {
     const documentWidth = angular.element(this.$document).width();
 
     // TODO more generic cropping to viewport
-    switch (story.popoverPosition) {
+    switch (story.popover.position) {
       case 'left':
         const leftPopoverLeft = left - popoverWidth - arrow;
         const leftWidthOffScreen = leftPopoverLeft < 0 ? -leftPopoverLeft : 0;
@@ -637,7 +637,7 @@ class HelpPopoverController {
         const bottomWidthOffScreen = bottomPopoverRight < 0 ? -bottomPopoverRight : 0;
         return { top: top + height + arrow, left: left, width: popoverWidth - bottomWidthOffScreen, height: bottomWidthOffScreen ? undefined : popoverHeight };
       default:
-        return assertNever(story.popoverPosition, 'Unsupported popover position');
+        return assertNever(story.popover.position, 'Unsupported popover position');
     }
   }
 }
@@ -704,9 +704,9 @@ class HelpBackdropController {
 
   // XXX: does this logic belong to here?
   private focusFirstFocusable() {
-    if (this.item && this.item.type === 'story' && this.item.focusTo) {
+    if (this.item && this.item.type === 'story' && this.item.focus) {
 
-      const focusable = this.item.focusTo.element().find(focusableSelector).addBack(focusableSelector).eq(0);
+      const focusable = this.item.focus.element().find(focusableSelector).addBack(focusableSelector).eq(0);
 
       focusable.focus();
 
@@ -779,12 +779,12 @@ class HelpBackdropController {
 
   private static calculateFocusPositioning(story: Story): Positioning|null {
 
-    if (!story || !story.focusTo) {
+    if (!story || !story.focus) {
       return null;
     }
 
-    const focusTo = story.focusTo;
-    const focusToElementPositioning = elementPositioning(story.focusTo.element())!;
+    const focusTo = story.focus;
+    const focusToElementPositioning = elementPositioning(story.focus.element())!;
 
     if (!focusToElementPositioning) {
       return null;
@@ -812,7 +812,7 @@ function resolveArrowClass(item: Story|Notification|null) {
 
   switch (item.type) {
     case 'story':
-      return ['help-arrow', `help-${item.popoverPosition}`];
+      return ['help-arrow', `help-${item.popover.position}`];
     case 'notification':
       return [];
     default:

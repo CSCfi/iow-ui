@@ -5,10 +5,12 @@ const browsePanel = () => angular.element('#browse-panel');
 const selectGroupElement = child(browsePanel, '.selectable-panel__list');
 export const selectGroup = createStory({
 
-  popoverTo: selectGroupElement,
-  focusTo: { element: browsePanel },
-  popoverPosition: 'left',
   title: 'Select group',
   content: 'Diipadaa',
+  popover: {
+    element: selectGroupElement,
+    position: 'left'
+  },
+  focus: { element: browsePanel },
   nextCondition: createNavigatingClickNextCondition(selectGroupElement)
 });

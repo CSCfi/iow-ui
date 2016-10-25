@@ -7,11 +7,13 @@ function modifyModel(type: KnownModelType) {
   const modifyModelElement = child(modelView, 'button.edit');
   return createStory({
 
-    popoverTo: modifyModelElement,
-    focusTo: { element: modifyModelElement },
-    popoverPosition: 'left',
     title: 'Modify ' + type,
     content: 'Diipadaa',
+    popover: {
+      element: modifyModelElement,
+      position: 'left'
+    },
+    focus: { element: modifyModelElement },
     nextCondition: createModifyingClickNextCondition(modifyModelElement)
   });
 }
@@ -22,11 +24,13 @@ export const modifyProfile = modifyModel('profile');
 const requireNamespaceElement = child(modelView, 'imported-namespaces-view button');
 export const requireNamespace = createStory({
 
-  popoverTo: requireNamespaceElement,
-  focusTo: { element: requireNamespaceElement },
-  popoverPosition: 'left',
   title: 'Add reference to namespace',
   content: 'Diipadaa',
+  popover: {
+    element: requireNamespaceElement,
+    position: 'left'
+  },
+  focus: { element: requireNamespaceElement },
   nextCondition: createClickNextCondition(requireNamespaceElement)
 });
 
@@ -34,10 +38,12 @@ export const requireNamespace = createStory({
 const saveModelChangesElement = child(modelView, 'button.save');
 export const saveModelChanges = createStory({
 
-  popoverTo: saveModelChangesElement,
-  focusTo: { element: saveModelChangesElement },
-  popoverPosition: 'left',
   title: 'Save changes',
   content: 'Diipadaa',
+  popover: {
+    element: saveModelChangesElement,
+    position: 'left'
+  },
+  focus: { element: saveModelChangesElement },
   nextCondition: createModifyingClickNextCondition(saveModelChangesElement)
 });

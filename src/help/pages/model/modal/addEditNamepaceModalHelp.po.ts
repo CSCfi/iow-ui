@@ -4,11 +4,13 @@ import { modal, searchResult, child } from '../../../selectors';
 const filterForJhsElement = child(modal, 'text-filter input');
 export const filterForJhs = createStory({
 
-  popoverTo: filterForJhsElement,
-  focusTo: { element: filterForJhsElement },
-  popoverPosition: 'bottom',
   title: 'Search for jhs',
   content: 'Diipadaa',
+  popover: {
+    element: filterForJhsElement,
+    position: 'bottom'
+  },
+  focus: { element: filterForJhsElement },
   nextCondition: createElementExistsNextCondition(searchResult(modal, 'http://iow.csc.fi/ns/jhs')),
   initialInputValue: {
     value: 'julkis',
@@ -19,10 +21,12 @@ export const filterForJhs = createStory({
 const selectJhsResultElement = searchResult(modal, 'http://iow.csc.fi/ns/jhs');
 export const selectJhsResult = createStory({
 
-  popoverTo: selectJhsResultElement,
-  focusTo: { element: selectJhsResultElement },
-  popoverPosition: 'left',
   title: 'Select jhs',
   content: 'Diipadaa',
+  popover: {
+    element: selectJhsResultElement,
+    position: 'left'
+  },
+  focus: { element: selectJhsResultElement },
   nextCondition: createModifyingClickNextCondition(selectJhsResultElement)
 });

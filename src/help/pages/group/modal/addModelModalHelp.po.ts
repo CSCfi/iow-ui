@@ -15,14 +15,16 @@ function enterModelPrefix(type: KnownModelType) {
 
   return createStory({
 
-    popoverTo: enterModelPrefixInputElement,
-    focusTo: {
+    title: 'Prefix',
+    content: 'Prefix info',
+    popover: {
+      element: enterModelPrefixInputElement,
+      position: 'left'
+    },
+    focus: {
       element: editableFocus(enterModelPrefixElement),
       margin: editableMargin
     },
-    popoverPosition: 'left',
-    title: 'Prefix',
-    content: 'Prefix info',
     nextCondition: createValidInputNextCondition(enterModelPrefixInputElement),
     initialInputValue: {
       value: type === 'library' ? 'testi' : 'plv',
@@ -42,14 +44,16 @@ function enterModelLabel(type: KnownModelType) {
 
   return createStory({
 
-    popoverTo: enterModelLabelInputElement,
-    focusTo: {
+    title: title,
+    content: title + ' info',
+    popover: {
+      element: enterModelLabelInputElement,
+      position: 'left'
+    },
+    focus: {
       element: editableFocus(enterModelLabelElement),
       margin: editableMargin
     },
-    popoverPosition: 'left',
-    title: title,
-    content: title + ' info',
     nextCondition: createValidInputNextCondition(enterModelLabelInputElement),
     initialInputValue: {
       value: type === 'library' ? 'Testikirjasto' : 'Palveluprofiili',
@@ -65,24 +69,28 @@ const enterModelLanguageElement = editableMultipleByTitle(modal, 'Model language
 const enterModelLanguageInputElement = multiInput(enterModelLanguageElement);
 export const enterModelLanguage = createStory({
 
-  popoverTo: enterModelLanguageInputElement,
-  focusTo: {
+  title: 'Model languages',
+  content: 'Diipadaa',
+  popover: {
+    element: enterModelLanguageInputElement,
+    position: 'left'
+  },
+  focus: {
     element: editableFocus(enterModelLanguageElement),
     margin: editableMultipleMargin
   },
-  popoverPosition: 'left',
-  title: 'Model languages',
-  content: 'Diipadaa',
   nextCondition: createValidInputNextCondition(enterModelLanguageInputElement)
 });
 
 const createModelElement = child(modal, 'button.create');
 export const createModel = createStory({
 
-  popoverTo: createModelElement,
-  focusTo: { element: createModelElement },
-  popoverPosition: 'top',
   title: 'Create new',
   content: 'Create new',
+  popover: {
+    element: createModelElement,
+    position: 'top'
+  },
+  focus: { element: createModelElement },
   nextCondition: createNavigatingClickNextCondition(createModelElement)
 });
