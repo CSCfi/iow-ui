@@ -1,73 +1,51 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
-  StoryLine, createHelpWithDefaultHandler, createNotification, InteractiveHelp
+  createHelpWithDefaultHandler, createNotification, InteractiveHelp
 } from './contract';
-import { startLibraryCreation, startProfileCreation } from './pages/group/groupPageHelp.po';
+import { startModelCreation } from './pages/group/groupPageHelp.po';
 import {
   enterModelLanguage, createModel,
-  enterProfileLabel, enterLibraryLabel, enterProfilePrefix, enterLibraryPrefix
+  enterModelPrefix, enterModelLabel
 } from './pages/group/modal/addModelModalHelp.po';
 import { saveUnsavedModel } from './pages/model/newModelPageHelp.po';
-import { openModelDetails } from './pages/model/modelPageHelp.po';
-import {
-  requireNamespace, saveModelChanges, modifyLibrary,
-  modifyProfile
-} from './pages/model/modelViewHelp.po';
-import { filterForJhs, selectJhsResult } from './pages/model/modal/addEditNamepaceModalHelp.po';
 import { Group } from '../entities/group';
+import { KnownModelType } from '../entities/type';
+import { saveModelChanges, requireNamespace, modifyModel } from './pages/model/modelViewHelp.po';
+import { selectJhsResult, filterForJhs } from './pages/model/modal/addEditNamepaceModalHelp.po';
+import { openModelDetails } from './pages/model/modelPageHelp.po';
 
-const finishedLibraryNotification = createNotification({
-  title: 'Congratulations for completing library creation!',
-  content: 'Diipadaa',
-  cannotMoveBack: true
-});
+function finishedModelNotification(type: KnownModelType) {
+  return createNotification({
+    title: `Congratulations for completing ${type} creation!`,
+    content: 'Diipadaa'
+  });
+}
 
-export const createNewLibrary: StoryLine = {
-  title: 'Guide through creating new library',
-  description: 'Diipadaa',
-  items: [
-    startLibraryCreation,
-    enterLibraryPrefix,
-    enterModelLanguage,
-    enterLibraryLabel,
-    createModel,
-    saveUnsavedModel,
-    openModelDetails,
-    modifyLibrary,
-    requireNamespace,
-    filterForJhs,
-    selectJhsResult,
-    saveModelChanges,
-    finishedLibraryNotification
-  ]
-};
+function createNewModel(type: KnownModelType) {
+  return {
+    title: `Guide through creating new ${type}`,
+    description: 'Diipadaa',
+    items: [
+      startModelCreation(type),
+      enterModelPrefix(type),
+      enterModelLanguage,
+      enterModelLabel(type),
+      createModel,
+      saveUnsavedModel,
+      openModelDetails(type),
+      modifyModel(type),
+      requireNamespace,
+      filterForJhs,
+      selectJhsResult,
+      saveModelChanges,
+      finishedModelNotification(type)
+    ]
+  };
+}
 
-const finishedProfileNotification = createNotification({
-  title: 'Congratulations for completing profile creation!',
-  content: 'Diipadaa',
-  cannotMoveBack: true
-});
-
-export const createNewProfile: StoryLine = {
-  title: 'Guide through creating new profile',
-  description: 'Diipadaa',
-  items: [
-    startProfileCreation,
-    enterProfilePrefix,
-    enterModelLanguage,
-    enterProfileLabel,
-    createModel,
-    saveUnsavedModel,
-    openModelDetails,
-    modifyProfile,
-    requireNamespace,
-    filterForJhs,
-    selectJhsResult,
-    saveModelChanges,
-    finishedProfileNotification
-  ]
-};
+export const createNewLibrary = createNewModel('library');
+export const createNewProfile = createNewModel('profile');
 
 export class GroupPageHelpService {
 

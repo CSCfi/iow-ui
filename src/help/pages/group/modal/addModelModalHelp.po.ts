@@ -8,7 +8,7 @@ import { KnownModelType } from '../../../../entities/type';
 import { upperCaseFirst } from 'change-case';
 
 
-function enterModelPrefix(type: KnownModelType) {
+export function enterModelPrefix(type: KnownModelType) {
 
   const enterModelPrefixElement = editableByTitle(modal, 'Prefix');
   const enterModelPrefixInputElement = input(enterModelPrefixElement);
@@ -33,10 +33,7 @@ function enterModelPrefix(type: KnownModelType) {
   });
 }
 
-export const enterLibraryPrefix = enterModelPrefix('library');
-export const enterProfilePrefix = enterModelPrefix('profile');
-
-function enterModelLabel(type: KnownModelType) {
+export function enterModelLabel(type: KnownModelType) {
 
   const title = upperCaseFirst(type) + ' label';
   const enterModelLabelElement = editableByTitle(modal, title);
@@ -61,9 +58,6 @@ function enterModelLabel(type: KnownModelType) {
     }
   });
 }
-
-export const enterLibraryLabel = enterModelLabel('library');
-export const enterProfileLabel = enterModelLabel('profile');
 
 const enterModelLanguageElement = editableMultipleByTitle(modal, 'Model languages');
 const enterModelLanguageInputElement = multiInput(enterModelLanguageElement);

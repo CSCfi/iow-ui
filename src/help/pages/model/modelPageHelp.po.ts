@@ -1,15 +1,20 @@
 import { createClickNextCondition, createStory } from '../../contract';
 import { modelView, child } from '../../selectors';
+import { KnownModelType } from '../../../entities/type';
 
-const openModelDetailsElement = child(modelView, '.model-header');
-export const openModelDetails = createStory({
+export function openModelDetails(type: KnownModelType) {
 
-  title: 'Open library details',
-  content: 'Diipadaa',
-  popover: {
-    element: openModelDetailsElement,
-    position: 'bottom'
-  },
-  focus: { element: openModelDetailsElement },
-  nextCondition: createClickNextCondition(openModelDetailsElement)
-});
+  const openModelDetailsElement = child(modelView, '.model-header');
+
+  return createStory({
+
+    title: `Open ${type} details`,
+    content: 'Diipadaa',
+    popover: {
+      element: openModelDetailsElement,
+      position: 'bottom'
+    },
+    focus: { element: openModelDetailsElement },
+    nextCondition: createClickNextCondition(openModelDetailsElement)
+  });
+}

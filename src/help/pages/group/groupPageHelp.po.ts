@@ -1,7 +1,7 @@
 import { createClickNextCondition, createStory } from '../../contract';
 import { KnownModelType } from '../../../entities/type';
 
-function startModelCreation(type: KnownModelType) {
+export function startModelCreation(type: KnownModelType) {
 
   const startModelCreationElement = () => angular.element(`#add-${type}-button`);
 
@@ -17,6 +17,3 @@ function startModelCreation(type: KnownModelType) {
     nextCondition: createClickNextCondition(startModelCreationElement)
   });
 }
-
-export const startLibraryCreation = startModelCreation('library');
-export const startProfileCreation = startModelCreation('profile');

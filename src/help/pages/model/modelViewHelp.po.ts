@@ -2,7 +2,7 @@ import { createClickNextCondition, createStory, createModifyingClickNextConditio
 import { modelView, child } from '../../selectors';
 import { KnownModelType } from '../../../entities/type';
 
-function modifyModel(type: KnownModelType) {
+export function modifyModel(type: KnownModelType) {
 
   const modifyModelElement = child(modelView, 'button.edit');
   return createStory({
