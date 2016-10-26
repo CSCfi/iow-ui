@@ -1,8 +1,7 @@
 import { Moment } from 'moment';
 import { Localizable } from '../entities/contract';
 import { isDefined } from '../utils/object';
-import { translate } from '../utils/language';
-import { Localizer } from './languageService';
+import { translate, Localizer } from '../utils/language';
 
 export interface Comparator<T> {
   (lhs: T, rhs: T): number;

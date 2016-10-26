@@ -3,7 +3,7 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService, Localizer } from '../../services/languageService';
-import { comparingLocalizable } from '../../services/comparators';
+import { comparingLocalizable } from '../../utils/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
 import { any } from '../../utils/array';

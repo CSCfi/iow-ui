@@ -3,7 +3,7 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService, Localizer } from '../../services/languageService';
-import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../entities/uri';

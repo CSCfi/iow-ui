@@ -6,7 +6,7 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
 import { AddNew } from '../common/searchResults';
 import { glyphIconClassForType } from '../../utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';

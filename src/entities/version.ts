@@ -3,7 +3,7 @@ import { UserLogin } from './contract';
 import { Moment } from 'moment';
 import { requireDefined } from '../utils/object';
 import { idToIndexMap } from '../utils/entity';
-import { comparingDate } from '../services/comparators';
+import { comparingDate } from '../utils/comparators';
 import { init } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entityAwareList, entity, entityAwareOptional } from './serializer/entitySerializer';

@@ -7,7 +7,7 @@ import { ClassService } from '../../services/classService';
 import { PredicateService } from '../../services/predicateService';
 import { collectIds } from '../../utils/entity';
 import { IPromise } from 'angular';
-import { comparingLocalizable } from '../../services/comparators';
+import { comparingLocalizable } from '../../utils/comparators';
 import { LanguageService } from '../../services/languageService';
 import { ifChanged } from '../../utils/angular';
 import { ClassListItem } from '../../entities/class';

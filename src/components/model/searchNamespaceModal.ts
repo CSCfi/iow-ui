@@ -4,7 +4,7 @@ import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
-import { comparingBoolean, comparingString } from '../../services/comparators';
+import { comparingBoolean, comparingString } from '../../utils/comparators';
 import { Language } from '../../utils/language';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';

@@ -3,7 +3,7 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
-import { comparingLocalizable } from '../services/comparators';
+import { comparingLocalizable } from '../utils/comparators';
 import { SearchController, SearchFilter, applyFilters } from './filter/contract';
 import { Type } from '../entities/type';
 import { frontPageSearchLanguageContext, LanguageContext } from '../entities/contract';

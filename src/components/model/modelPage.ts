@@ -14,7 +14,7 @@ import { SearchPredicateModal } from '../editor/searchPredicateModal';
 import { EntityCreation } from '../editor/searchConceptModal';
 import { Show, ChangeNotifier, ChangeListener, SearchClassType, WithDefinedBy } from './../contracts';
 import { Uri } from '../../entities/uri';
-import { comparingLocalizable } from '../../services/comparators';
+import { comparingLocalizable } from '../../utils/comparators';
 import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
 import { module as mod }  from './module';
 import { isDifferentUrl, nextUrl } from '../../utils/angular';

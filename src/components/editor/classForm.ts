@@ -12,7 +12,7 @@ import { SearchClassModal, noExclude } from './searchClassModal';
 import { SessionService } from '../../services/sessionService';
 import { LanguageService } from '../../services/languageService';
 import { Localizer } from '../../utils/language';
-import { comparingLocalizable } from '../../services/comparators';
+import { comparingLocalizable } from '../../utils/comparators';
 import { Class, Property, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
 

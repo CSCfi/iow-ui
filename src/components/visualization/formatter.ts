@@ -4,7 +4,7 @@ import { NameType } from '../../services/sessionService';
 import { DataType } from '../../entities/dataTypes';
 import { VisualizationClass } from '../../entities/visualization';
 import { Property } from '../../entities/class';
-import { comparingNumber } from '../../services/comparators';
+import { comparingNumber } from '../../utils/comparators';
 
 function formatDataTypeAsLabel(dataType: DataType|null, localizer: Localizer) {
   return localizer.getStringWithModelLanguageOrDefault(dataType, 'en');

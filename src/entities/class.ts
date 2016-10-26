@@ -15,7 +15,7 @@ import { containsAny, swapElements, remove, removeMatching } from '../utils/arra
 import { ReferenceData } from './referenceData';
 import { Language, hasLocalization } from '../utils/language';
 import { VisualizationClass } from './visualization';
-import { comparingNumber } from '../services/comparators';
+import { comparingNumber } from '../utils/comparators';
 import { Predicate, Attribute, Association } from './predicate';
 import { init, serialize, initSingle } from './mapping';
 import { Concept } from './vocabulary';

@@ -1,7 +1,7 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
-import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchController, SearchFilter, applyFilters } from '../filter/contract';

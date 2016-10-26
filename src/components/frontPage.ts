@@ -7,7 +7,7 @@ import { AdvancedSearchModal } from './advancedSearchModal';
 import { MaintenanceModal } from './maintenance';
 import { Url } from '../entities/uri';
 import { module as mod }  from './module';
-import { comparingLocalizable } from '../services/comparators';
+import { comparingLocalizable } from '../utils/comparators';
 import { SearchController, SearchFilter, applyFilters } from './filter/contract';
 import { frontPageSearchLanguageContext, LanguageContext } from '../entities/contract';
 import { SearchResult } from '../entities/search';

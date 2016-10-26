@@ -4,7 +4,7 @@ import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { ClassService } from '../../services/classService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { comparingBoolean, comparingLocalizable } from '../../services/comparators';
+import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
