@@ -3,30 +3,27 @@ import IModalStackService = ui.bootstrap.IModalStackService;
 import {
   createHelpWithDefaultHandler, createNotification, InteractiveHelp
 } from './contract';
-import { startModelCreation } from './pages/group/groupPageHelp.po';
-import {
-  enterModelLanguage, createModel,
-  enterModelPrefix, enterModelLabel
-} from './pages/group/modal/addModelModalHelp.po';
-import { saveUnsavedModel } from './pages/model/newModelPageHelp.po';
 import { Group } from '../entities/group';
 import { KnownModelType } from '../entities/type';
-import { saveModelChanges, modifyModel } from './pages/model/modelViewHelp.po';
-import { openModelDetails } from './pages/model/modelPageHelp.po';
+import * as GroupPage from './pages/group/groupPageHelp.po';
+import * as AddModelModal from './pages/group/modal/addModelModalHelp.po';
+import * as NewModelPage from './pages/model/newModelPageHelp.po';
+import * as ModelPage from './pages/model/modelPageHelp.po';
+import * as ModelView from './pages/model/modelViewHelp.po';
 import { addNamespaceItems } from './modelPageHelp';
 
 export function createNewModelItems(type: KnownModelType) {
   return [
-    startModelCreation(type),
-    enterModelPrefix(type),
-    enterModelLanguage,
-    enterModelLabel(type),
-    createModel,
-    saveUnsavedModel,
-    openModelDetails(type),
-    modifyModel(type),
+    GroupPage.startModelCreation(type),
+    AddModelModal.enterModelPrefix(type),
+    AddModelModal.enterModelLanguage,
+    AddModelModal.enterModelLabel(type),
+    AddModelModal.createModel,
+    NewModelPage.saveUnsavedModel,
+    ModelPage.openModelDetails(type),
+    ModelView.modifyModel(type),
     ...addNamespaceItems,
-    saveModelChanges
+    ModelView.saveModelChanges
   ];
 }
 

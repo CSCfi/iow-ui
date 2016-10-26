@@ -3,20 +3,18 @@ import IModalStackService = ui.bootstrap.IModalStackService;
 import {
   StoryLine, InteractiveHelp, createNotification
 } from './contract';
-import { openModelDetails } from './pages/model/modelPageHelp.po';
-import {
-  requireNamespace, saveModelChanges, modifyModel
-} from './pages/model/modelViewHelp.po';
-import { filterForModel, selectNamespace } from './pages/model/modal/searchNamepaceModalHelp.po';
 import { Model } from '../entities/model';
 import { InteractiveHelpService } from './services/interactiveHelpService';
 import { KnownModelType } from '../entities/type';
 import { assertNever, requireDefined } from '../utils/object';
+import * as ModelPage from './pages/model/modelPageHelp.po';
+import * as ModelView from './pages/model/modelViewHelp.po';
+import * as SearchNamespaceModal from './pages/model/modal/searchNamepaceModalHelp.po';
 
 export const addNamespaceItems = [
-  requireNamespace,
-  filterForModel('jhs', 'julkis'),
-  selectNamespace('jhs')
+  ModelView.requireNamespace,
+  SearchNamespaceModal.filterForModel('jhs', 'julkis'),
+  SearchNamespaceModal.selectNamespace('jhs')
 ];
 
 const finishedCreateNewModelNotification = createNotification({
@@ -29,10 +27,10 @@ export function addNamespace(type: KnownModelType) {
     title: 'Guide through requiring a namespace',
     description: 'Diipadaa',
     items: [
-      openModelDetails(type),
-      modifyModel(type),
+      ModelPage.openModelDetails(type),
+      ModelView.modifyModel(type),
       ...addNamespaceItems,
-      saveModelChanges,
+      ModelView.saveModelChanges,
       finishedCreateNewModelNotification
     ]
   };

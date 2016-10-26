@@ -2,7 +2,7 @@ import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { createHelpWithDefaultHandler, InteractiveHelp } from './contract';
 import { selectGroup } from './pages/frontPageHelp.po';
-import { createNewModelItems, finishedCreateNewModelNotification } from './groupPageHelp';
+import * as GroupPage from './groupPageHelp';
 import { KnownModelType } from '../entities/type';
 
 function createNewModel(type: KnownModelType) {
@@ -11,8 +11,8 @@ function createNewModel(type: KnownModelType) {
     description: 'Diipadaa',
     items: [
       selectGroup,
-      ...createNewModelItems(type),
-      finishedCreateNewModelNotification(type)
+      ...GroupPage.createNewModelItems(type),
+      GroupPage.finishedCreateNewModelNotification(type)
     ]
   };
 }
