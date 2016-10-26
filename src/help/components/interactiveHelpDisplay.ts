@@ -168,6 +168,22 @@ class InteractiveHelpController implements DimensionsProvider {
       return false;
     };
 
+    const moveToPreviousIfPossible = () => {
+      if (this.canMoveToPrevious()) {
+        this.$scope.$apply(() => this.moveToPreviousItem());
+      }
+    };
+
+    const moveToNextIfPossible = () => {
+      if (this.canMoveToNext()) {
+        if (!isClick(item.nextCondition)) {
+          this.$scope.$apply(() => this.moveToNextItem());
+        } else {
+          item.nextCondition.element().click();
+        }
+      }
+    };
+
     if (focusableElements.length > 0) {
 
       const firstElement = focusableElements[0];
@@ -175,31 +191,28 @@ class InteractiveHelpController implements DimensionsProvider {
 
       if (event.shiftKey) {
         if (isFocusInElement(event, firstElement)) {
-          if (this.canMoveToPrevious()) {
-            this.$scope.$apply(() => this.moveToPreviousItem());
-          }
-          stopEvent(event);
+          moveToPreviousIfPossible();
         }
       } else {
         if (isFocusInElement(event, lastElement)) {
-          if (this.canMoveToNext()! && !isClick(item.nextCondition)) {
-            this.$scope.$apply(() => this.moveToNextItem());
-          } else {
-            firstElement.focus();
-          }
-          stopEvent(event);
+          moveToNextIfPossible();
         }
       }
 
       // prevent input focus breaking from item focusable area
       if (!activeElementIsFocusable()) {
         firstElement.focus();
-        stopEvent(event);
       }
 
     } else {
-      stopEvent(event);
+      if (event.shiftKey && this.canMoveToPrevious()) {
+        moveToPreviousIfPossible();
+      } else {
+        moveToNextIfPossible();
+      }
     }
+
+    stopEvent(event);
   };
 
   keyDownHandler(event: JQueryEventObject) {
