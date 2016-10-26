@@ -1,7 +1,7 @@
 import { Moment } from 'moment';
 import { Localizable } from '../entities/contract';
-import { isDefined } from '../utils/object';
-import { translate, Localizer } from '../utils/language';
+import { isDefined, Optional } from '../utils/object';
+import { Localizer } from '../utils/language';
 
 export interface Comparator<T> {
   (lhs: T, rhs: T): number;
@@ -11,9 +11,31 @@ export interface ChainableComparator<T> extends Comparator<T> {
   andThen(other: Comparator<T>): ChainableComparator<T>;
 }
 
-type Optional<T> = T|null|undefined;
+export function reversed<T>(comparator: Comparator<T>): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => comparator(rhs, lhs));
+}
 
-function compareOptional<T>(lhs: Optional<T>, rhs: Optional<T>, comparator: (l: T, r: T) => number): number {
+export function comparingString<T>(extractor: (item: T) => Optional<string>): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), primitiveComparator));
+}
+
+export function comparingNumber<T>(extractor: (item: T) => Optional<number>): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), primitiveComparator));
+}
+
+export function comparingBoolean<T>(extractor: (item: T) => Optional<boolean>): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), primitiveComparator));
+}
+
+export function comparingDate<T>(extractor: (item: T) => Optional<Moment>): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), dateComparator));
+}
+
+export function comparingLocalizable<T>(localizer: Localizer, extractor: (item: T) => Optional<Localizable>) {
+  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), createLocalizableComparator(localizer)));
+}
+
+function optionalComparator<T>(lhs: Optional<T>, rhs: Optional<T>, comparator: Comparator<T>) {
   if (isDefined(lhs) && !isDefined(rhs)) {
     return 1;
   } else if (!isDefined(lhs) && isDefined(rhs)) {
@@ -23,11 +45,11 @@ function compareOptional<T>(lhs: Optional<T>, rhs: Optional<T>, comparator: (l: 
   }
 }
 
-function comparePrimitive<T extends string|number|boolean>(lhs: T, rhs: T): number {
+function primitiveComparator<T extends string|number|boolean>(lhs: T, rhs: T) {
   return lhs === rhs ? 0 : lhs > rhs ? 1 : -1;
 }
 
-function compareDate(lhs: Moment, rhs: Moment): number {
+function dateComparator(lhs: Moment, rhs: Moment) {
   if (lhs.isAfter(rhs)) {
     return 1;
   } else if (lhs.isBefore(rhs)) {
@@ -37,43 +59,18 @@ function compareDate(lhs: Moment, rhs: Moment): number {
   }
 }
 
-function compareLocalizable(localizer: Localizer) {
+function createLocalizableComparator(localizer: Localizer): Comparator<Localizable> {
   return (lhs: Localizable, rhs: Localizable) => {
-    const language = localizer.language;
-    return comparePrimitive(translate(lhs, language).toLowerCase(), translate(rhs, language).toLowerCase());
+    return primitiveComparator(localizer.translate(lhs), localizer.translate(rhs));
   };
 }
 
-export function reversed<T>(comparator: Comparator<T>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => comparator(rhs, lhs));
-}
-
-export function comparingString<T>(extractor: (item: T) => Optional<string>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => compareOptional(extractor(lhs), extractor(rhs), comparePrimitive));
-}
-
-export function comparingNumber<T>(extractor: (item: T) => Optional<number>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => compareOptional(extractor(lhs), extractor(rhs), comparePrimitive));
-}
-
-export function comparingBoolean<T>(extractor: (item: T) => Optional<boolean>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => compareOptional(extractor(lhs), extractor(rhs), comparePrimitive));
-}
-
-export function comparingDate<T>(extractor: (item: T) => Optional<Moment>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => compareOptional(extractor(lhs), extractor(rhs), compareDate));
-}
-
-export function comparingLocalizable<T>(localizer: Localizer, extractor: (item: T) => Optional<Localizable>) {
-  return makeChainable((lhs: T, rhs: T) => compareOptional(extractor(lhs), extractor(rhs), compareLocalizable(localizer)));
-}
-
-export function makeChainable<T>(comparator: Comparator<T>): ChainableComparator<T> {
+function makeChainable<T>(comparator: Comparator<T>): ChainableComparator<T> {
   (<any> comparator).andThen = (next: Comparator<T>) => makeChainable(chain(comparator, next));
   return <ChainableComparator<T>> comparator;
 }
 
-export function chain<T>(current: Comparator<T>, next: Comparator<T>): Comparator<T> {
+function chain<T>(current: Comparator<T>, next: Comparator<T>): Comparator<T> {
   return (lhs: T, rhs: T) => {
     const currentComparison = current(lhs, rhs);
     if (currentComparison !== 0) {

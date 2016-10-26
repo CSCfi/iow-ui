@@ -1,3 +1,5 @@
+export type Optional<T> = T|null|undefined;
+
 export type EqualityChecker<T> = (lhs: T, rhs: T) => boolean;
 
 export function referenceEquality<T>(lhs: T, rhs: T) {
