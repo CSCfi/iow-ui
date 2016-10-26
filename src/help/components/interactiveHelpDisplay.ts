@@ -2,7 +2,7 @@ import { module as mod } from '../module';
 import { OverlayService, OverlayInstance } from '../../components/common/overlay';
 import { IScope, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { assertNever, requireDefined, areEqual } from '../../utils/object';
+import { assertNever, requireDefined } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
 import { InteractiveHelpService } from '../services/interactiveHelpService';
@@ -13,6 +13,7 @@ import {
 import { contains } from '../../utils/array';
 import { ConfirmationModal } from '../../components/common/confirmationModal';
 
+const popupAnimationTimeInMs = 300; // should match css help-popover transition time
 
 export class InteractiveHelpDisplay {
 
@@ -565,7 +566,7 @@ class HelpPopoverController {
         if (positioning && positioning.width > 0) {
           this.positioning = positioning;
 
-          // apply positioning before applying content
+          // apply positioning before applying content, content is applied in the middle of animation
           setTimeout(() => {
             this.scrollTo();
             this.$scope.$apply(() => {
@@ -575,7 +576,7 @@ class HelpPopoverController {
               this.showPrevious = this.helpController.showPrevious;
               this.showClose = this.helpController.showClose;
             });
-          }, 150);
+          }, popupAnimationTimeInMs / 2);
         }
       });
     }, 100);
@@ -689,40 +690,41 @@ class HelpBackdropController {
 
   helpController: InteractiveHelpController;
 
-  constructor($scope: IScope, private $document: IDocumentService) {
+  debounceHandle: any;
+
+  constructor(private $scope: IScope, private $document: IDocumentService) {
 
     this.helpController.registerBackdrop(this);
 
-    const storyFocus = () => {
-      if (!this.item) {
-        return null;
-      }
+    const storyFocus = () => this.item && this.item.type === 'story' && this.item.focus ? elementPositioning(this.item.focus.element()) : null;
+    const debouncePositionUpdateApplyingScope = () => $scope.$apply(() => this.debouncePositionUpdate());
 
-      return this.item.type === 'story' ? HelpBackdropController.calculateFocusPositioning(this.item) : null;
-    };
+    $scope.$watch(storyFocus, () => this.debouncePositionUpdate(), true);
 
-    $scope.$watch(storyFocus, () => this.updatePositioning(), true);
-    const setBackDropApplyingScope = () => $scope.$apply(() => this.updatePositioning());
-
-    window.addEventListener('resize', setBackDropApplyingScope);
-    window.addEventListener('scroll', setBackDropApplyingScope);
+    window.addEventListener('resize', debouncePositionUpdateApplyingScope);
+    window.addEventListener('scroll', debouncePositionUpdateApplyingScope);
 
     $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', setBackDropApplyingScope);
-      window.removeEventListener('scroll', setBackDropApplyingScope);
+      window.removeEventListener('resize', debouncePositionUpdateApplyingScope);
+      window.removeEventListener('scroll', debouncePositionUpdateApplyingScope);
     });
   }
 
-  updatePositioning() {
+  private debouncePositionUpdate() {
 
-    const regionPositionings  = this.resolveRegions();
+    if (this.debounceHandle) {
+      clearTimeout(this.debounceHandle);
+    }
 
-    if (!regionsAreEqual(this.regions, regionPositionings)) {
+    this.debounceHandle = setTimeout(() => {
+      this.focusFirstFocusable();
+      // apply focus after animation is almost done
+      setTimeout(() => this.$scope.$apply(() => this.regions = this.resolveRegions()), popupAnimationTimeInMs * (4 / 5));
+    }, 100);
 
-      // Do off digest
-      setTimeout(() => this.focusFirstFocusable());
-
-      this.regions = regionPositionings;
+    // show full backdrop if item has focus while waiting for debounce
+    if (this.item && this.item.type === 'story' && this.item.focus) {
+      this.regions = HelpBackdropController.fullBackdrop;
     }
   }
 
@@ -742,14 +744,14 @@ class HelpBackdropController {
     }
   }
 
-  private resolveRegions(): Regions|null {
+  private static fullBackdrop = {
+    top: { left: 0, top: 0, right: 0, bottom: 0 },
+    right: { left: 0, top: 0, width: 0, height: 0 },
+    bottom: { left: 0, top: 0, width: 0, height: 0 },
+    left: { left: 0, top: 0, width: 0, height: 0 }
+  };
 
-    const fullBackdrop = {
-      top: { left: 0, top: 0, right: 0, bottom: 0 },
-      right: { left: 0, top: 0, width: 0, height: 0 },
-      bottom: { left: 0, top: 0, width: 0, height: 0 },
-      left: { left: 0, top: 0, width: 0, height: 0 }
-    };
+  private resolveRegions(): Regions|null {
 
     if (!this.item) {
       return null;
@@ -758,7 +760,7 @@ class HelpBackdropController {
         case 'story':
           return this.calculateRegions(this.item);
         case 'notification':
-          return fullBackdrop;
+          return HelpBackdropController.fullBackdrop;
         default:
           return assertNever(this.item, 'Unknown item type');
       }
@@ -894,29 +896,9 @@ interface Positioning {
   bottom?: number;
 }
 
-function positioningsAreEqual(lhs: Positioning|null, rhs: Positioning|null): boolean {
-  return areEqual(lhs, rhs, (l: Positioning, r: Positioning) =>
-    l.left === r.left
-    && l.top === r.top
-    && l.width === r.width
-    && l.height === r.height
-    && l.right === r.right
-    && l.bottom === r.bottom
-  );
-}
-
 interface Regions {
   top: Positioning;
   right: Positioning;
   bottom: Positioning;
   left: Positioning;
-}
-
-function regionsAreEqual(lhs: Regions|null, rhs: Regions|null): boolean {
-  return areEqual(lhs, rhs, (l, r) => (
-    positioningsAreEqual(l.top, r.top)
-    && positioningsAreEqual(l.right, r.right)
-    && positioningsAreEqual(l.bottom, r.bottom)
-    && positioningsAreEqual(l.left, r.left)
-  ));
 }
