@@ -15,17 +15,13 @@ export function reversed<T>(comparator: Comparator<T>): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => comparator(rhs, lhs));
 }
 
-export function comparingString<T>(extractor: (item: T) => Optional<string>): ChainableComparator<T> {
+export function comparingPrimitive<T>(extractor: (item: T) => Optional<string|number|boolean>): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), primitiveComparator));
 }
 
-export function comparingNumber<T>(extractor: (item: T) => Optional<number>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), primitiveComparator));
-}
-
-export function comparingBoolean<T>(extractor: (item: T) => Optional<boolean>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), primitiveComparator));
-}
+export const comparingNumber = comparingPrimitive;
+export const comparingString = comparingPrimitive;
+export const comparingBoolean = comparingPrimitive;
 
 export function comparingDate<T>(extractor: (item: T) => Optional<Moment>): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), dateComparator));
