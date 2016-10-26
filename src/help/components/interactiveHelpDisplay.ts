@@ -540,7 +540,7 @@ class HelpPopoverController {
 
   debounceHandle: any;
 
-  constructor(private $scope: IScope, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
+  constructor(private $scope: IScope, private $uibModalStack: IModalStackService) {
 
     this.helpController.registerPopover(this);
 
@@ -647,33 +647,69 @@ class HelpPopoverController {
     const dimensions = this.helpController.getDimensions();
     const popoverWidth = dimensions.width;
     const popoverHeight = dimensions.height;
-    const { left, top, width, height } = elementPositioning(element)!;
-
+    const destination = elementPositioning(element)!;
     const arrow = 13;
-    const documentWidth = angular.element(this.$document).width();
 
-    // TODO more generic cropping to viewport
-    switch (story.popover.position) {
-      case 'left':
-        const leftPopoverLeft = left - popoverWidth - arrow;
-        const leftWidthOffScreen = leftPopoverLeft < 0 ? -leftPopoverLeft : 0;
-        return { top: top, left: leftPopoverLeft + leftWidthOffScreen, width: popoverWidth - leftWidthOffScreen, height: leftWidthOffScreen ? undefined : popoverHeight };
-      case 'right':
-        const rightPopoverLeft = left + width + arrow;
-        const rightPopoverRight = documentWidth - (rightPopoverLeft + popoverWidth);
-        const rightWidthOffScreen = rightPopoverRight < 0 ? -rightPopoverRight : 0;
-        return { top: top, left: rightPopoverLeft, width: popoverWidth - rightWidthOffScreen, height: rightWidthOffScreen ? undefined : popoverHeight };
-      case 'top':
-        const topPopoverRight = documentWidth - (left + popoverWidth);
-        const topWidthOffScreen = topPopoverRight < 0 ? -topPopoverRight : 0;
-        return { top: top - popoverHeight - arrow, left: left, width: popoverWidth - topWidthOffScreen, height: topWidthOffScreen ? undefined : popoverHeight };
-      case 'bottom':
-        const bottomPopoverRight = documentWidth - (left + popoverWidth);
-        const bottomWidthOffScreen = bottomPopoverRight < 0 ? -bottomPopoverRight : 0;
-        return { top: top + height + arrow, left: left, width: popoverWidth - bottomWidthOffScreen, height: bottomWidthOffScreen ? undefined : popoverHeight };
-      default:
-        return assertNever(story.popover.position, 'Unsupported popover position');
+    function calculateUnrestricted() {
+      switch (story.popover.position) {
+        case 'left-down':
+          return { top: destination.top, left: destination.left - popoverWidth - arrow, width: popoverWidth, height: popoverHeight };
+        case 'left-up':
+          return { top: destination.bottom - popoverHeight, left: destination.left - popoverWidth - arrow, width: popoverWidth, height: popoverHeight };
+        case 'right-down':
+          return { top: destination.top, left: destination.right + arrow, width: popoverWidth, height: popoverHeight };
+        case 'right-up':
+          return { top: destination.bottom - popoverHeight, left: destination.right + arrow, width: popoverWidth, height: popoverHeight };
+        case 'top-right':
+          return { top: destination.top - popoverHeight - arrow, left: destination.left, width: popoverWidth, height: popoverHeight };
+        case 'top-left':
+          return { top: destination.top - popoverHeight - arrow, left: destination.right - popoverWidth, width: popoverWidth, height: popoverHeight };
+        case 'bottom-right':
+          return { top: destination.bottom + arrow, left: destination.left, width: popoverWidth, height: popoverHeight };
+        case 'bottom-left':
+          return { top: destination.bottom + arrow, left: destination.right - popoverWidth, width: popoverWidth, height: popoverHeight };
+        default:
+          return assertNever(story.popover.position, 'Unsupported popover position');
+      }
     }
+
+    function cropToWindow(position: { left: number, top: number, width: number, height: number }) {
+
+      let newLeft = position.left;
+      let newTop = position.top;
+      let newWidth: number|undefined = position.width;
+      let newHeight: number|undefined = position.height;
+
+      if (newLeft < 0) {
+        newWidth += newLeft;
+        newLeft = 0;
+        newHeight = undefined;
+      }
+
+      if (newTop < 0) {
+        newHeight += newTop;
+        newTop = 0;
+        newWidth = undefined;
+      }
+
+      const right = newLeft + newWidth;
+
+      if (right > window.innerWidth) {
+        newWidth += window.innerWidth - right;
+        newLeft = window.innerWidth - newWidth;
+      }
+
+      const bottom = newTop + newHeight;
+
+      if (bottom > window.innerHeight) {
+        newHeight += window.innerHeight - bottom;
+        newTop = window.innerHeight - newHeight;
+      }
+
+      return { left: newLeft, top: newTop, width: newWidth, height: newHeight };
+    }
+
+    return cropToWindow(calculateUnrestricted());
   }
 }
 
@@ -871,11 +907,18 @@ function elementPositioning(element: JQuery) {
 
   const rect = element[0].getBoundingClientRect();
 
+  const left = rect.left + window.pageXOffset;
+  const top = rect.top + window.pageYOffset;
+  const width = rect.width;
+  const height = rect.height;
+
   return {
-    left: rect.left + window.pageXOffset,
-    top: rect.top + window.pageYOffset,
-    width: rect.width,
-    height: rect.height
+    left,
+    right: left + width,
+    top,
+    bottom: top + height,
+    width,
+    height
   };
 }
 

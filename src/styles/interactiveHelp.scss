@@ -82,29 +82,57 @@ help-popover, help-popover-dimensions-calculator {
 
   .help-arrow {
 
-    &.help-top {
+    &.help-top-right {
       border-style: solid;
       bottom: -27px;
       border-color: #1C252E transparent transparent !important;
     }
 
-    &.help-bottom {
+    &.help-top-left {
+      border-style: solid;
+      bottom: -27px;
+      left: calc(100% - 34px);
+      border-color: #1C252E transparent transparent !important;
+    }
+
+    &.help-bottom-right {
       border-style: solid;
       top: -28px;
       border-color: transparent transparent #1C252E !important;
     }
 
-    &.help-right {
+    &.help-bottom-left {
+      border-style: solid;
+      top: -28px;
+      left: calc(100% - 35px);
+      border-color: transparent transparent #1C252E !important;
+    }
+
+    &.help-right-down {
       border-style: solid;
       left: -27px;
       top: 8px;
       border-color: transparent #1C252E transparent transparent !important;
     }
 
-    &.help-left {
+    &.help-right-up {
+      border-style: solid;
+      left: -27px;
+      bottom: 7px;
+      border-color: transparent #1C252E transparent transparent !important;
+    }
+
+    &.help-left-down {
       border-style: solid;
       left: 100%;
       top: 8px;
+      border-color: transparent transparent transparent #1c252e !important;
+    }
+
+    &.help-left-up {
+      border-style: solid;
+      left: 100%;
+      bottom: 7px;
       border-color: transparent transparent transparent #1c252e !important;
     }
 

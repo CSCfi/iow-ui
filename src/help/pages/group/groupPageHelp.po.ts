@@ -11,7 +11,7 @@ export function startModelCreation(type: KnownModelType) {
     content: 'Diipadaa',
     popover: {
       element: startModelCreationElement,
-      position: 'left'
+      position: 'left-down'
     },
     focus: { element: startModelCreationElement },
     nextCondition: createClickNextCondition(startModelCreationElement)

@@ -19,7 +19,7 @@ export function enterModelPrefix(type: KnownModelType) {
     content: 'Prefix info',
     popover: {
       element: enterModelPrefixInputElement,
-      position: 'left'
+      position: 'left-down'
     },
     focus: {
       element: editableFocus(enterModelPrefixElement),
@@ -45,7 +45,7 @@ export function enterModelLabel(type: KnownModelType) {
     content: title + ' info',
     popover: {
       element: enterModelLabelInputElement,
-      position: 'left'
+      position: 'left-down'
     },
     focus: {
       element: editableFocus(enterModelLabelElement),
@@ -67,7 +67,7 @@ export const enterModelLanguage = createStory({
   content: 'Diipadaa',
   popover: {
     element: enterModelLanguageInputElement,
-    position: 'left'
+    position: 'left-down'
   },
   focus: {
     element: editableFocus(enterModelLanguageElement),
@@ -83,7 +83,7 @@ export const createModel = createStory({
   content: 'Create new',
   popover: {
     element: createModelElement,
-    position: 'top'
+    position: 'top-right'
   },
   focus: { element: createModelElement },
   nextCondition: createNavigatingClickNextCondition(createModelElement)

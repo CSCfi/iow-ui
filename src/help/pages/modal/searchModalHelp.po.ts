@@ -14,7 +14,7 @@ export function filterForSearchResult(label: string, expectedResultId: string, i
     content: 'Diipadaa',
     popover: {
       element: textSearchElement,
-      position: 'bottom'
+      position: 'bottom-right'
     },
     focus: { element: textSearchElement },
     nextCondition: createElementExistsNextCondition(searchResult(modal, expectedResultId)),
@@ -35,7 +35,7 @@ export function selectSearchResult(label: string, resultId: string, selectionNee
     content: 'Diipadaa',
     popover: {
       element: selectResultElement,
-      position: 'left'
+      position: 'left-down'
     },
     focus: { element: selectResultElement },
     nextCondition: selectionNeedsConfirmation ? createClickNextCondition(selectResultElement)

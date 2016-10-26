@@ -12,7 +12,7 @@ export function openModelDetails(type: KnownModelType) {
     content: 'Diipadaa',
     popover: {
       element: openModelDetailsElement,
-      position: 'bottom'
+      position: 'bottom-right'
     },
     focus: { element: openModelDetailsElement },
     nextCondition: createClickNextCondition(openModelDetailsElement)

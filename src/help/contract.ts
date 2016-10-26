@@ -1,10 +1,14 @@
 import { IPromise } from 'angular';
 import { InteractiveHelpService } from './services/interactiveHelpService';
 
-export type PopoverPosition = 'top'
-                            | 'right'
-                            | 'left'
-                            | 'bottom';
+export type PopoverPosition = 'top-left'
+                            | 'top-right'
+                            | 'right-up'
+                            | 'right-down'
+                            | 'left-up'
+                            | 'left-down'
+                            | 'bottom-left'
+                            | 'bottom-right';
 
 export type Explicit =        { type: 'explicit' };                                      // explicit next button to continue
 export type Click =           { type: 'click', element: () => JQuery };                  // click on element to continue

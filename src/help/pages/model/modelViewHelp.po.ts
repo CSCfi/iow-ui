@@ -11,7 +11,7 @@ export function modifyModel(type: KnownModelType) {
     content: 'Diipadaa',
     popover: {
       element: modifyModelElement,
-      position: 'left'
+      position: 'left-down'
     },
     focus: { element: modifyModelElement },
     nextCondition: createModifyingClickNextCondition(modifyModelElement)
@@ -25,7 +25,7 @@ export const requireNamespace = createStory({
   content: 'Diipadaa',
   popover: {
     element: requireNamespaceElement,
-    position: 'left'
+    position: 'left-down'
   },
   focus: { element: requireNamespaceElement },
   nextCondition: createClickNextCondition(requireNamespaceElement)
@@ -39,7 +39,7 @@ export const saveModelChanges = createStory({
   content: 'Diipadaa',
   popover: {
     element: saveModelChangesElement,
-    position: 'left'
+    position: 'left-down'
   },
   focus: { element: saveModelChangesElement },
   nextCondition: createModifyingClickNextCondition(saveModelChangesElement)
