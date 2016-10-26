@@ -134,9 +134,9 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
       if (oldModel && !newModel) { // model removed
         $location.url(oldModel.group.iowUrl());
-      } else if (newModel) {
-        this.helps = modelPageHelpService.getHelps(newModel);
       }
+
+      this.helps = modelPageHelpService.getHelps(newModel);
     });
 
     $scope.$watch(() => this.selection, (selection, oldSelection) => {

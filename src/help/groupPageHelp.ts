@@ -11,9 +11,9 @@ import {
 import { saveUnsavedModel } from './pages/model/newModelPageHelp.po';
 import { Group } from '../entities/group';
 import { KnownModelType } from '../entities/type';
-import { saveModelChanges, requireNamespace, modifyModel } from './pages/model/modelViewHelp.po';
-import { selectJhsResult, filterForJhs } from './pages/model/modal/addEditNamepaceModalHelp.po';
+import { saveModelChanges, modifyModel } from './pages/model/modelViewHelp.po';
 import { openModelDetails } from './pages/model/modelPageHelp.po';
+import { addNamespaceItems } from './modelPageHelp';
 
 export function createNewModelItems(type: KnownModelType) {
   return [
@@ -25,9 +25,7 @@ export function createNewModelItems(type: KnownModelType) {
     saveUnsavedModel,
     openModelDetails(type),
     modifyModel(type),
-    requireNamespace,
-    filterForJhs,
-    selectJhsResult,
+    ...addNamespaceItems,
     saveModelChanges
   ];
 }

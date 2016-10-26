@@ -7,6 +7,7 @@ import { InteractiveHelpUserService } from './services/helpUserService';
 import { InteractiveHelpVisualizationService } from './services/helpVisualizationService';
 import { FrontPageHelpService } from './frontPageHelp';
 import { GroupPageHelpService } from './groupPageHelp';
+import { ModelPageHelpService } from './modelPageHelp';
 
 mod.service('interactiveHelpService', InteractiveHelpService);
 mod.service('helpModelService', InteractiveHelpModelService);
@@ -15,3 +16,4 @@ mod.service('helpUserService', InteractiveHelpUserService);
 
 mod.service('frontPageHelpService', FrontPageHelpService);
 mod.service('groupPageHelpService', GroupPageHelpService);
+mod.service('modelPageHelpService', ModelPageHelpService);

@@ -68,7 +68,7 @@ msgstr ""
 msgid "Add reference data"
 msgstr ""
 
-#: translations/help.html:16
+#: translations/help.html:19
 msgid "Add reference to namespace"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:20
+#: translations/help.html:23
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -532,11 +532,15 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:11
+#: translations/help.html:12
 msgid "Congratulations for completing library creation!"
 msgstr ""
 
-#: translations/help.html:12
+#: translations/help.html:14
+msgid "Congratulations for completing namespace require!"
+msgstr ""
+
+#: translations/help.html:13
 msgid "Congratulations for completing profile creation!"
 msgstr ""
 
@@ -1074,7 +1078,11 @@ msgstr ""
 msgid "Guide through creating new profile"
 msgstr ""
 
-#: translations/help.html:19
+#: translations/help.html:10
+msgid "Guide through requiring a namespace"
+msgstr ""
+
+#: translations/help.html:22
 msgid "Help is open"
 msgstr ""
 
@@ -1335,11 +1343,11 @@ msgstr ""
 msgid "Modified at"
 msgstr ""
 
-#: translations/help.html:14
+#: translations/help.html:17
 msgid "Modify library"
 msgstr ""
 
-#: translations/help.html:15
+#: translations/help.html:18
 msgid "Modify profile"
 msgstr ""
 
@@ -1487,8 +1495,12 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: translations/help.html:13
+#: translations/help.html:15
 msgid "Open library details"
+msgstr ""
+
+#: translations/help.html:16
+msgid "Open profile details"
 msgstr ""
 
 #: components/editor/propertyView.html:62
@@ -1757,7 +1769,7 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
-#: translations/help.html:17
+#: translations/help.html:20
 msgid "Search for jhs"
 msgstr ""
 
@@ -1823,11 +1835,11 @@ msgstr ""
 msgid "Select group"
 msgstr ""
 
-#: translations/help.html:10
+#: translations/help.html:11
 msgid "Select help topic"
 msgstr ""
 
-#: translations/help.html:18
+#: translations/help.html:21
 msgid "Select jhs"
 msgstr ""
 
