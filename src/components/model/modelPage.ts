@@ -1,4 +1,4 @@
-import { IPromise, IScope, ILocationService, IQService, route } from 'angular';
+import { IPromise, IAttributes, IScope, ILocationService, IQService, route } from 'angular';
 import IRouteService = route.IRouteService;
 import ICurrentRoute = route.ICurrentRoute;
 import * as _ from 'lodash';
@@ -32,6 +32,10 @@ import { ExternalEntity } from '../../entities/externalEntity';
 import { KnownPredicateType, ClassType, SelectionType } from '../../entities/type';
 import { NotificationModal } from '../common/notificationModal';
 import { removeMatching } from '../../utils/array';
+import { ApplicationController } from '../application';
+import { HelpProvider } from '../common/helpProvider';
+import { InteractiveHelp } from '../../help/contract';
+import { ModelPageHelpService } from '../../help/modelPageHelp';
 
 mod.directive('modelPage', () => {
   return {
@@ -39,11 +43,15 @@ mod.directive('modelPage', () => {
     template: require('./modelPage.html'),
     controllerAs: 'ctrl',
     bindToController: true,
-    controller: ModelPageController
+    controller: ModelPageController,
+    require: ['modelPage', '^application'],
+    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [ctrl, applicationController]: [ModelPageController, ApplicationController]) {
+      applicationController.registerHelpProvider(ctrl);
+    }
   };
 });
 
-export class ModelPageController implements ChangeNotifier<Class|Predicate> {
+export class ModelPageController implements ChangeNotifier<Class|Predicate>, HelpProvider {
 
   loading = true;
   views: View[] = [];
@@ -70,6 +78,8 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate> {
   private initialRoute: ICurrentRoute;
   private currentRouteParams: any;
 
+  helps: InteractiveHelp[] = [];
+
   selectClassById = (classId: Uri) => {
     this.askPermissionWhenEditing(() => {
       this.selectByTypeAndId({selectionType: 'class', id: classId});
@@ -92,7 +102,8 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate> {
               private notificationModal: NotificationModal,
               private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               private sessionService: SessionService,
-              public languageService: LanguageService) {
+              public languageService: LanguageService,
+              modelPageHelpService: ModelPageHelpService) {
 
     this.localizerProvider = () => languageService.createLocalizer(this.model);
     this._show = sessionService.show;
@@ -123,6 +134,8 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate> {
     $scope.$watch(() => this.model, (newModel: Model, oldModel: Model) => {
       if (oldModel && !newModel) { // model removed
         $location.url(oldModel.group.iowUrl());
+      } else if (newModel) {
+        this.helps = modelPageHelpService.getHelps(newModel);
       }
     });
 

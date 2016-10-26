@@ -15,7 +15,24 @@ import { saveModelChanges, requireNamespace, modifyModel } from './pages/model/m
 import { selectJhsResult, filterForJhs } from './pages/model/modal/addEditNamepaceModalHelp.po';
 import { openModelDetails } from './pages/model/modelPageHelp.po';
 
-function finishedModelNotification(type: KnownModelType) {
+export function createNewModelItems(type: KnownModelType) {
+  return [
+    startModelCreation(type),
+    enterModelPrefix(type),
+    enterModelLanguage,
+    enterModelLabel(type),
+    createModel,
+    saveUnsavedModel,
+    openModelDetails(type),
+    modifyModel(type),
+    requireNamespace,
+    filterForJhs,
+    selectJhsResult,
+    saveModelChanges
+  ];
+}
+
+export function finishedCreateNewModelNotification(type: KnownModelType) {
   return createNotification({
     title: `Congratulations for completing ${type} creation!`,
     content: 'Diipadaa'
@@ -27,25 +44,11 @@ function createNewModel(type: KnownModelType) {
     title: `Guide through creating new ${type}`,
     description: 'Diipadaa',
     items: [
-      startModelCreation(type),
-      enterModelPrefix(type),
-      enterModelLanguage,
-      enterModelLabel(type),
-      createModel,
-      saveUnsavedModel,
-      openModelDetails(type),
-      modifyModel(type),
-      requireNamespace,
-      filterForJhs,
-      selectJhsResult,
-      saveModelChanges,
-      finishedModelNotification(type)
+      ...createNewModelItems(type),
+      finishedCreateNewModelNotification(type)
     ]
   };
 }
-
-export const createNewLibrary = createNewModel('library');
-export const createNewProfile = createNewModel('profile');
 
 export class GroupPageHelpService {
 
@@ -60,8 +63,8 @@ export class GroupPageHelpService {
 
   getHelps(group: Group): InteractiveHelp[] {
     return [
-      createHelpWithDefaultHandler(createNewLibrary, () => this.returnToGroupPage(group)),
-      createHelpWithDefaultHandler(createNewProfile, () => this.returnToGroupPage(group))
+      createHelpWithDefaultHandler(createNewModel('library'), () => this.returnToGroupPage(group)),
+      createHelpWithDefaultHandler(createNewModel('profile'), () => this.returnToGroupPage(group))
     ];
   }
 }

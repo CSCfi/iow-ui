@@ -2,15 +2,20 @@ import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { createHelpWithDefaultHandler, InteractiveHelp } from './contract';
 import { selectGroup } from './pages/frontPageHelp.po';
-import { createNewLibrary, createNewProfile } from './groupPageHelp';
+import { createNewModelItems, finishedCreateNewModelNotification } from './groupPageHelp';
+import { KnownModelType } from '../entities/type';
 
-const selectGroupAndCreateNewLibrary = Object.assign({}, createNewLibrary, {
-  items: [selectGroup, ...createNewLibrary.items]
-});
-
-const selectGroupAndCreateNewProfile = Object.assign({}, createNewProfile, {
-  items: [selectGroup, ...createNewProfile.items]
-});
+function createNewModel(type: KnownModelType) {
+  return {
+    title: `Guide through creating new ${type}`,
+    description: 'Diipadaa',
+    items: [
+      selectGroup,
+      ...createNewModelItems(type),
+      finishedCreateNewModelNotification(type)
+    ]
+  };
+}
 
 export class FrontPageHelpService {
 
@@ -25,8 +30,8 @@ export class FrontPageHelpService {
 
   getHelps(): InteractiveHelp[] {
     return [
-      createHelpWithDefaultHandler(selectGroupAndCreateNewLibrary, this.returnToFrontPage.bind(this)),
-      createHelpWithDefaultHandler(selectGroupAndCreateNewProfile, this.returnToFrontPage.bind(this))
+      createHelpWithDefaultHandler(createNewModel('library'), this.returnToFrontPage.bind(this)),
+      createHelpWithDefaultHandler(createNewModel('profile'), this.returnToFrontPage.bind(this))
     ];
   }
 }
