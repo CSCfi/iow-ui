@@ -175,7 +175,7 @@ class InteractiveHelpController implements DimensionsProvider {
 
       if (event.shiftKey) {
         if (isFocusInElement(event, firstElement)) {
-          if (!this.canMoveToPrevious()) {
+          if (this.canMoveToPrevious()) {
             this.$scope.$apply(() => this.moveToPreviousItem());
           }
           stopEvent(event);
