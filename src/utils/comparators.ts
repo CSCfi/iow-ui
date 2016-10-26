@@ -11,29 +11,21 @@ export interface ChainableComparator<T> extends Comparator<T> {
   andThen(other: Comparator<T>): ChainableComparator<T>;
 }
 
-function compare<T>(l: T, r: T, compareValues: (l: T, r: T) => number): number {
+function compare<T>(l: T|null|undefined, r: T|null|undefined, compareValues: (l: T, r: T) => number): number {
   if (isDefined(l) && !isDefined(r)) {
     return 1;
   } else if (!isDefined(l) && isDefined(r)) {
     return -1;
   } else {
-    return compareValues(l, r);
+    return compareValues(l!, r!);
   }
 }
 
-export function compareStrings(l: string, r: string): number {
+export function comparePrimitive<T extends string|number|boolean|null|undefined>(l: T, r: T): number {
   return compare(l, r, (lhs, rhs) => lhs === rhs ? 0 : lhs > rhs ? 1 : -1);
 }
 
-export function compareNumbers(l: number, r: number): number {
-  return compare(l, r, (lhs, rhs) => lhs === rhs ? 0 : lhs > rhs ? 1 : -1);
-}
-
-export function compareBooleans(l: boolean, r: boolean): number {
-  return compare(l, r, (lhs, rhs) => lhs === rhs ? 0 : lhs === true ? 1 : -1);
-}
-
-export function compareDates(l: Moment, r: Moment): number {
+export function compareDates(l: Moment|null|undefined, r: Moment|null|undefined): number {
   return compare(l, r, (lhs, rhs) => {
     if (lhs.isAfter(rhs)) {
       return 1;
@@ -47,26 +39,26 @@ export function compareDates(l: Moment, r: Moment): number {
 
 export function compareLocalizables(localizer: Localizer, l: Localizable, r: Localizable) {
   const language = localizer.language;
-  return compareStrings(translate(l, language).toLowerCase(), translate(r, language).toLowerCase());
+  return comparePrimitive(translate(l, language).toLowerCase(), translate(r, language).toLowerCase());
 }
 
 export function reversed<T>(comparator: Comparator<T>): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => comparator(rhs, lhs));
 }
 
-export function comparingString<T>(extractor: (item: T) => string): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => compareStrings(extractor(lhs), extractor(rhs)));
+export function comparingString<T>(extractor: (item: T) => string|null|undefined): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => comparePrimitive(extractor(lhs), extractor(rhs)));
 }
 
-export function comparingNumber<T>(extractor: (item: T) => number): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => compareNumbers(extractor(lhs), extractor(rhs)));
+export function comparingNumber<T>(extractor: (item: T) => number|null|undefined): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => comparePrimitive(extractor(lhs), extractor(rhs)));
 }
 
-export function comparingBoolean<T>(extractor: (item: T) => boolean): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => compareBooleans(extractor(lhs), extractor(rhs)));
+export function comparingBoolean<T>(extractor: (item: T) => boolean|null|undefined): ChainableComparator<T> {
+  return makeChainable((lhs: T, rhs: T) => comparePrimitive(extractor(lhs), extractor(rhs)));
 }
 
-export function comparingDate<T>(extractor: (item: T) => Moment): ChainableComparator<T> {
+export function comparingDate<T>(extractor: (item: T) => Moment|null|undefined): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => compareDates(extractor(lhs), extractor(rhs)));
 }
 
