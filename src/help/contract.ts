@@ -22,7 +22,7 @@ export type NextCondition = Explicit
 
 
 export interface HelpEventHandler {
-  onInit?: (service: InteractiveHelpService) => IPromise<any>;
+  onInit?: (service: InteractiveHelpService) => IPromise<boolean>; // result boolean indicates if initialization will change location
   onComplete?: () => void;
   onCancel?: () => void;
 }
@@ -44,7 +44,6 @@ export interface Notification extends NotificationDetails {
 export interface NotificationDetails {
   title: string;
   content: string;
-  cannotMoveBack?: boolean;
 }
 
 export interface Story extends StoryDetails {
@@ -52,6 +51,8 @@ export interface Story extends StoryDetails {
 }
 
 export interface StoryDetails {
+  title: string;
+  content: string;
   popover: {
     element: () => JQuery,
     position: PopoverPosition
@@ -60,8 +61,6 @@ export interface StoryDetails {
     element: () => JQuery,
     margin?: { top?: number, right?: number, bottom?: number, left?: number }
   };
-  title: string;
-  content: string;
   nextCondition: NextCondition;
   initialInputValue?: {
     element: () => JQuery,
@@ -73,7 +72,7 @@ export interface StoryDetails {
 export function createHelpWithDefaultHandler(storyLine: StoryLine, onFinish: () => void) {
   return {
     storyLine,
-    onInit: (service: InteractiveHelpService) => service.reset(),
+    onInit: (service: InteractiveHelpService) => service.reset().then(() => false),
     onComplete: onFinish,
     onCancel: onFinish
   };

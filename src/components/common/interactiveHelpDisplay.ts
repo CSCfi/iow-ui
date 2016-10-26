@@ -29,9 +29,10 @@ export class InteractiveHelpDisplay {
       throw new Error('Cannot open help when another help is already open');
     }
 
+    this.interactiveHelpService.open = true;
     const initialization = help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset();
 
-    return initialization.then(() => {
+    return initialization.then(willChangeLocation => {
 
       this.interactiveHelpService.open = true;
 
@@ -44,7 +45,8 @@ export class InteractiveHelpDisplay {
         controller: InteractiveHelpController,
         controllerAs: 'ctrl',
         resolve: {
-          help: () => help
+          help: () => help,
+          willChangeLocation: () => willChangeLocation
         },
         disableScroll: true
       }).result.then(() => this.interactiveHelpService.open = false);
@@ -59,7 +61,7 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
 
 class InteractiveHelpController implements DimensionsProvider {
 
-  item: Story|Notification;
+  item: Story|Notification|null = null;
   activeIndex = 0;
   changingLocation = false;
 
@@ -73,9 +75,15 @@ class InteractiveHelpController implements DimensionsProvider {
               $document: IDocumentService,
               $location: ILocationService,
               confirmationModal: ConfirmationModal,
-              private help: InteractiveHelp) {
+              private help: InteractiveHelp,
+              willChangeLocation: boolean) {
 
-    this.showItem(0);
+    const isInitialized = () => !!this.item;
+    const initialize = () => this.showItem(0);
+
+    if (!willChangeLocation) {
+      initialize();
+    }
 
     // Active element needs to be blurred because it can used for example for multiple interactive help activations
     angular.element(document.activeElement).blur();
@@ -98,34 +106,36 @@ class InteractiveHelpController implements DimensionsProvider {
 
     $scope.$on('$locationChangeStart', (event, next) => {
 
-      if (!continuing) {
-        event.preventDefault();
-
-        // delay is needed so that click handler has time to modify flag
-        setTimeout(() => {
-          if (this.changingLocation) {
-            continuing = true;
-            this.moveToNextItem();
-            $location.url(nextUrl($location, next));
-          } else {
-            confirmationModal.openCloseHelp().then(() => this.close(true));
-          }
-        });
+      if (willChangeLocation && !isInitialized()) {
+        initialize();
       } else {
-        continuing = false;
+        if (!continuing) {
+          event.preventDefault();
+
+          // delay is needed so that click handler has time to modify flag
+          setTimeout(() => {
+            if (this.changingLocation) {
+              continuing = true;
+              this.moveToNextItem();
+              $location.url(nextUrl($location, next));
+            } else {
+              confirmationModal.openCloseHelp().then(() => this.close(true));
+            }
+          });
+        } else {
+          continuing = false;
+        }
       }
     });
   }
 
-  loadFocusableElementList() {
+  loadFocusableElementList(story: Story) {
 
-    const item = this.item;
-
-    if (item.type === 'notification' || !item.focus) {
+    if (!story.focus) {
       return [];
     }
 
-    const focusableElements = item.focus.element().find(focusableSelector).addBack(focusableSelector);
+    const focusableElements = story.focus.element().find(focusableSelector).addBack(focusableSelector);
     const result: HTMLElement[] = [];
 
     focusableElements.each((_index: number, element: HTMLElement) => {
@@ -140,7 +150,12 @@ class InteractiveHelpController implements DimensionsProvider {
   manageTabKeyFocus(event: JQueryEventObject) {
 
     const item = this.item;
-    const focusableElements = this.loadFocusableElementList();
+
+    if (!item || item.type === 'notification') {
+      return stopEvent(event);
+    }
+
+    const focusableElements = this.loadFocusableElementList(item);
 
     const activeElementIsFocusable = () => {
       for (const focusableElement of focusableElements) {
@@ -151,7 +166,7 @@ class InteractiveHelpController implements DimensionsProvider {
       return false;
     };
 
-    if (item.type === 'story' && focusableElements.length > 0) {
+    if (focusableElements.length > 0) {
 
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
@@ -222,7 +237,7 @@ class InteractiveHelpController implements DimensionsProvider {
   clickHandler(event: JQueryEventObject) {
     const item = this.item;
 
-    if (item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
+    if (item && item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
       const continueToNextElement = item.nextCondition.element();
 
       if (elementExists(continueToNextElement)) {
@@ -298,11 +313,11 @@ class InteractiveHelpController implements DimensionsProvider {
   }
 
   get showNext() {
-    return !this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return !this.isCurrentLastItem() && (!!this.item && (this.item.type === 'notification' || !isClick(this.item.nextCondition)));
   }
 
   get showClose() {
-    return this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return this.isCurrentLastItem() && (!!this.item && (this.item.type === 'notification' || !isClick(this.item.nextCondition)));
   }
 
   get showPrevious() {
@@ -350,7 +365,7 @@ class InteractiveHelpController implements DimensionsProvider {
   get validationNgModel() {
     const item = this.item;
 
-    if (item.type !== 'story' || item.nextCondition.type !== 'valid-input') {
+    if (!item || item.type !== 'story' || item.nextCondition.type !== 'valid-input') {
       throw new Error('No ng-model for current item');
     }
 
@@ -358,6 +373,11 @@ class InteractiveHelpController implements DimensionsProvider {
   }
 
   isValid() {
+
+    if (!this.item) {
+      return false;
+    }
+
     switch (this.item.type) {
       case 'story':
         switch (this.item.nextCondition.type) {
@@ -673,8 +693,11 @@ class HelpBackdropController {
     this.helpController.registerBackdrop(this);
 
     const storyFocus = () => {
-      const item = requireDefined(this.item);
-      return item.type === 'story' ? HelpBackdropController.calculateFocusPositioning(item) : null;
+      if (!this.item) {
+        return null;
+      }
+
+      return this.item.type === 'story' ? HelpBackdropController.calculateFocusPositioning(this.item) : null;
     };
 
     $scope.$watch(storyFocus, () => this.updatePositioning(), true);
