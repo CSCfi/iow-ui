@@ -1,32 +1,44 @@
 import { createModifyingClickNextCondition, createStory, createElementExistsNextCondition } from '../../../contract';
 import { modal, searchResult, child } from '../../../selectors';
 
-const filterForJhsElement = child(modal, 'text-filter input');
-export const filterForJhs = createStory({
+const textSearchElement = child(modal, 'text-filter input');
 
-  title: 'Search for jhs',
-  content: 'Diipadaa',
-  popover: {
-    element: filterForJhsElement,
-    position: 'bottom'
-  },
-  focus: { element: filterForJhsElement },
-  nextCondition: createElementExistsNextCondition(searchResult(modal, 'http://iow.csc.fi/ns/jhs')),
-  initialInputValue: {
-    value: 'julkis',
-    element: filterForJhsElement
-  }
-});
+function modelIdFromPrefix(modelPrefix: string) {
+  return `http://iow.csc.fi/ns/${modelPrefix}`;
+}
 
-const selectJhsResultElement = searchResult(modal, 'http://iow.csc.fi/ns/jhs');
-export const selectJhsResult = createStory({
+export function filterForModel(modelPrefix: string, initialSearch: string) {
 
-  title: 'Select jhs',
-  content: 'Diipadaa',
-  popover: {
-    element: selectJhsResultElement,
-    position: 'left'
-  },
-  focus: { element: selectJhsResultElement },
-  nextCondition: createModifyingClickNextCondition(selectJhsResultElement)
-});
+  return createStory({
+
+    title: `Search for ${modelPrefix}`,
+    content: 'Diipadaa',
+    popover: {
+      element: textSearchElement,
+      position: 'bottom'
+    },
+    focus: { element: textSearchElement },
+    nextCondition: createElementExistsNextCondition(searchResult(modal, modelIdFromPrefix(modelPrefix))),
+    initialInputValue: {
+      value: initialSearch,
+      element: textSearchElement
+    }
+  });
+}
+
+export function selectResult(modelPrefix: string) {
+
+  const selectResultElement = searchResult(modal, modelIdFromPrefix(modelPrefix));
+
+  return createStory({
+
+    title: `Select ${modelPrefix}`,
+    content: 'Diipadaa',
+    popover: {
+      element: selectResultElement,
+      position: 'left'
+    },
+    focus: { element: selectResultElement },
+    nextCondition: createModifyingClickNextCondition(selectResultElement)
+  });
+}
