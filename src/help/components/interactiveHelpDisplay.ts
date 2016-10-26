@@ -1,17 +1,18 @@
-import { module as mod } from './module';
-import { OverlayService, OverlayInstance } from './overlay';
+import { module as mod } from '../module';
+import { OverlayService, OverlayInstance } from '../../components/common/overlay';
 import { IScope, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever, requireDefined, areEqual } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
 import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
-import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
+import { InteractiveHelpService } from '../services/interactiveHelpService';
 import {
   NextCondition, Story, Notification, Click, ModifyingClick,
   NavigatingClick, InteractiveHelp
-} from '../../help/contract';
+} from '../contract';
 import { contains } from '../../utils/array';
-import { ConfirmationModal } from './confirmationModal';
+import { ConfirmationModal } from '../../components/common/confirmationModal';
+
 
 export class InteractiveHelpDisplay {
 
