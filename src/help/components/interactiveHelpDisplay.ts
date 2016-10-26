@@ -153,11 +153,11 @@ class InteractiveHelpController implements DimensionsProvider {
 
     const item = this.item;
 
-    if (!item || item.type === 'notification') {
+    if (!item) {
       return stopEvent(event);
     }
 
-    const focusableElements = this.loadFocusableElementList(item);
+    const focusableElements = item.type === 'story' ? this.loadFocusableElementList(item) : [];
 
     const activeElementIsFocusable = () => {
       for (const focusableElement of focusableElements) {
@@ -176,7 +176,7 @@ class InteractiveHelpController implements DimensionsProvider {
 
     const moveToNextIfPossible = () => {
       if (this.canMoveToNext()) {
-        if (!isClick(item.nextCondition)) {
+        if (item.type === 'notification' || !isClick(item.nextCondition)) {
           this.$scope.$apply(() => this.moveToNextItem());
         } else {
           item.nextCondition.element().click();
