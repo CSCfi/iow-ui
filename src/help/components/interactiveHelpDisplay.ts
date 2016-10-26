@@ -540,7 +540,7 @@ class HelpPopoverController {
 
   debounceHandle: any;
 
-  constructor(private $scope: IScope, private $uibModalStack: IModalStackService) {
+  constructor(private $scope: IScope, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
 
     this.helpController.registerPopover(this);
 
@@ -648,6 +648,8 @@ class HelpPopoverController {
     const popoverWidth = dimensions.width;
     const popoverHeight = dimensions.height;
     const destination = elementPositioning(element)!;
+    const documentWidth = this.$document.width();
+    const documentHeight = this.$document.height();
     const arrow = 13;
 
     function calculateUnrestricted() {
@@ -694,16 +696,16 @@ class HelpPopoverController {
 
       const right = newLeft + newWidth;
 
-      if (right > window.innerWidth) {
-        newWidth += window.innerWidth - right;
-        newLeft = window.innerWidth - newWidth;
+      if (right > documentWidth) {
+        newWidth += documentWidth - right;
+        newLeft = documentWidth - newWidth;
       }
 
       const bottom = newTop + newHeight;
 
-      if (bottom > window.innerHeight) {
-        newHeight += window.innerHeight - bottom;
-        newTop = window.innerHeight - newHeight;
+      if (bottom > documentHeight) {
+        newHeight += documentHeight - bottom;
+        newTop = documentHeight - newHeight;
       }
 
       return { left: newLeft, top: newTop, width: newWidth, height: newHeight };
