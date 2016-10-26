@@ -11,18 +11,20 @@
             <i ng-class="tab.glyphIconClass"></i><p>{{tab.type | translate}}</p>
           </uib-tab-heading>
 
-          <button ng-if="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="tab.addNew()">
-            <span class="glyphicon glyphicon-plus"></span>
-            <span>{{tab.addLabel | translate}}</span>
-          </button>
+          <div ng-if="$index === ctrl.activeTab">
+            <button ng-if="ctrl.canEdit()" type="button" class="btn btn-default btn-md add-new-button" ng-click="tab.addNew()">
+              <span class="glyphicon glyphicon-plus"></span>
+              <span>{{tab.addLabel | translate}}</span>
+            </button>
 
-          <ul class="panel__list" ng-class="{'has-button': ctrl.canEdit()}">
-            <li ng-repeat="item in tab.items() track by item.id.uri"
-                ng-class="{'model-panel__selection': ctrl.isSelected(item)}"
-                ng-click="ctrl.select(item)">
-              {{item.label}} <ajax-loading-indicator-small ng-if="ctrl.isLoading(item)"></ajax-loading-indicator-small>
-            </li>
-          </ul>
+            <ul class="panel__list" ng-class="{'has-button': ctrl.canEdit()}">
+              <li ng-repeat="item in tab.items() track by item.id.uri"
+                  ng-class="{'model-panel__selection': ctrl.isSelected(item)}"
+                  ng-click="ctrl.select(item)">
+                {{item.label}} <ajax-loading-indicator-small ng-if="ctrl.isLoading(item)"></ajax-loading-indicator-small>
+              </li>
+            </ul>
+          </div>
         </uib-tab>
       </uib-tabset>
     </div>
