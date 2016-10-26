@@ -15,30 +15,20 @@ export function reversed<T>(comparator: Comparator<T>): ChainableComparator<T> {
   return makeChainable((lhs: T, rhs: T) => comparator(rhs, lhs));
 }
 
-export function comparingPrimitive<T>(extractor: (item: T) => Optional<string|number|boolean>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), primitiveComparator));
+export function comparingPrimitive<T>(propertyExtractor: (item: T) => Optional<string|number|boolean>): ChainableComparator<T> {
+  return makeChainable(property(propertyExtractor, optional(primitiveComparator)));
 }
 
 export const comparingNumber = comparingPrimitive;
 export const comparingString = comparingPrimitive;
 export const comparingBoolean = comparingPrimitive;
 
-export function comparingDate<T>(extractor: (item: T) => Optional<Moment>): ChainableComparator<T> {
-  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), dateComparator));
+export function comparingDate<T>(propertyExtractor: (item: T) => Optional<Moment>): ChainableComparator<T> {
+  return makeChainable(property(propertyExtractor, optional(dateComparator)));
 }
 
-export function comparingLocalizable<T>(localizer: Localizer, extractor: (item: T) => Optional<Localizable>) {
-  return makeChainable((lhs: T, rhs: T) => optionalComparator(extractor(lhs), extractor(rhs), createLocalizableComparator(localizer)));
-}
-
-function optionalComparator<T>(lhs: Optional<T>, rhs: Optional<T>, comparator: Comparator<T>) {
-  if (isDefined(lhs) && !isDefined(rhs)) {
-    return 1;
-  } else if (!isDefined(lhs) && isDefined(rhs)) {
-    return -1;
-  } else {
-    return comparator(lhs!, rhs!);
-  }
+export function comparingLocalizable<T>(localizer: Localizer, propertyExtractor: (item: T) => Optional<Localizable>): ChainableComparator<T> {
+  return makeChainable(property(propertyExtractor, optional(localized(localizer))));
 }
 
 function primitiveComparator<T extends string|number|boolean>(lhs: T, rhs: T) {
@@ -55,9 +45,23 @@ function dateComparator(lhs: Moment, rhs: Moment) {
   }
 }
 
-function createLocalizableComparator(localizer: Localizer): Comparator<Localizable> {
-  return (lhs: Localizable, rhs: Localizable) => {
-    return primitiveComparator(localizer.translate(lhs), localizer.translate(rhs));
+function localized<T extends Localizable>(localizer: Localizer, localizedComparator: Comparator<string> = primitiveComparator): Comparator<T> {
+  return (lhs: T, rhs: T) => localizedComparator(localizer.translate(lhs), localizer.translate(rhs));
+}
+
+function property<T, P>(propertyExtractor: (item: T) => P, propertyComparator: Comparator<P>): Comparator<T> {
+  return (lhs: T, rhs: T) => propertyComparator(propertyExtractor(lhs), propertyExtractor(rhs));
+}
+
+function optional<T>(comparator: Comparator<T>): Comparator<Optional<T>> {
+  return (lhs: Optional<T>, rhs: Optional<T>) => {
+    if (isDefined(lhs) && !isDefined(rhs)) {
+      return 1;
+    } else if (!isDefined(lhs) && isDefined(rhs)) {
+      return -1;
+    } else {
+      return comparator(lhs!, rhs!);
+    }
   };
 }
 
