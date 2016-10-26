@@ -18,9 +18,6 @@ export function modifyModel(type: KnownModelType) {
   });
 }
 
-export const modifyLibrary = modifyModel('library');
-export const modifyProfile = modifyModel('profile');
-
 const requireNamespaceElement = child(modelView, 'imported-namespaces-view button');
 export const requireNamespace = createStory({
 
