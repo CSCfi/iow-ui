@@ -7,7 +7,7 @@ import { openModelDetails } from './pages/model/modelPageHelp.po';
 import {
   requireNamespace, saveModelChanges, modifyModel
 } from './pages/model/modelViewHelp.po';
-import { filterForModel, selectResult } from './pages/model/modal/addEditNamepaceModalHelp.po';
+import { filterForModel, selectNamespace } from './pages/model/modal/searchNamepaceModalHelp.po';
 import { Model } from '../entities/model';
 import { InteractiveHelpService } from './services/interactiveHelpService';
 import { KnownModelType } from '../entities/type';
@@ -16,7 +16,7 @@ import { assertNever, requireDefined } from '../utils/object';
 export const addNamespaceItems = [
   requireNamespace,
   filterForModel('jhs', 'julkis'),
-  selectResult('jhs')
+  selectNamespace('jhs')
 ];
 
 const finishedCreateNewModelNotification = createNotification({
