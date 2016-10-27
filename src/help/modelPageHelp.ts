@@ -10,6 +10,9 @@ import { assertNever, requireDefined } from '../utils/object';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
 import * as SearchNamespaceModal from './pages/model/modal/searchNamepaceModalHelp.po';
+import * as SearchClassModal from './pages/model/modal/searchClassModalHelp.po';
+import * as AddPropertiesFromClass from './pages/model/modal/addPropertiesFromClassModalHelp.po';
+import * as ClassView from './pages/model/classViewHelp.po';
 
 export const addNamespaceItems = [
   ModelView.requireNamespace,
@@ -33,6 +36,28 @@ export function addNamespace(type: KnownModelType) {
     ]
   };
 }
+
+export const specializeClassItems = [
+  ModelPage.openAddResource('class'),
+  SearchClassModal.filterForClass('jhs', 'Palvelu', 'palv'),
+  SearchClassModal.selectClass('jhs', 'Palvelu'),
+  SearchClassModal.confirmClassSelection,
+  AddPropertiesFromClass.selectProperties,
+  AddPropertiesFromClass.confirmProperties(true),
+  ClassView.saveClassChanges
+];
+
+export const specializeClass = {
+  title: 'Guide through specializing a class',
+  description: 'Diipadaa',
+  items: [
+    ...specializeClassItems,
+    createNotification({
+      title: 'Congratulations for completing specialize class!',
+      content: 'Diipadaa'
+    })
+  ]
+};
 
 export class ModelPageHelpService {
 
@@ -109,8 +134,20 @@ export class ModelPageHelpService {
       return [];
     }
 
-    return [
+    const result = [
       this.createHelp(model, addNamespace(model.normalizedType))
     ];
+
+    switch (model.normalizedType) {
+      case 'profile':
+        result.push(this.createHelp(model, specializeClass, 'jhs'));
+        break;
+      case 'library':
+        break;
+      default:
+        assertNever(model.normalizedType, 'Unsupported model type');
+    }
+
+    return result;
   }
 }

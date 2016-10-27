@@ -68,7 +68,7 @@ msgstr ""
 msgid "Add reference data"
 msgstr ""
 
-#: translations/help.html:19
+#: translations/help.html:21
 msgid "Add reference to namespace"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:23
+#: translations/help.html:28
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -532,16 +532,24 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:12
-msgid "Congratulations for completing library creation!"
-msgstr ""
-
-#: translations/help.html:14
-msgid "Congratulations for completing namespace require!"
+#: translations/help.html:29
+msgid "Confirm selection"
 msgstr ""
 
 #: translations/help.html:13
+msgid "Congratulations for completing library creation!"
+msgstr ""
+
+#: translations/help.html:15
+msgid "Congratulations for completing namespace require!"
+msgstr ""
+
+#: translations/help.html:14
 msgid "Congratulations for completing profile creation!"
+msgstr ""
+
+#: translations/help.html:16
+msgid "Congratulations for completing specialize class!"
 msgstr ""
 
 #: translations/titles.html:75
@@ -1082,7 +1090,11 @@ msgstr ""
 msgid "Guide through requiring a namespace"
 msgstr ""
 
-#: translations/help.html:22
+#: translations/help.html:11
+msgid "Guide through specializing a class"
+msgstr ""
+
+#: translations/help.html:27
 msgid "Help is open"
 msgstr ""
 
@@ -1343,11 +1355,11 @@ msgstr ""
 msgid "Modified at"
 msgstr ""
 
-#: translations/help.html:17
+#: translations/help.html:19
 msgid "Modify library"
 msgstr ""
 
-#: translations/help.html:18
+#: translations/help.html:20
 msgid "Modify profile"
 msgstr ""
 
@@ -1495,11 +1507,11 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: translations/help.html:15
+#: translations/help.html:17
 msgid "Open library details"
 msgstr ""
 
-#: translations/help.html:16
+#: translations/help.html:18
 msgid "Open profile details"
 msgstr ""
 
@@ -1769,8 +1781,12 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
-#: translations/help.html:20
+#: translations/help.html:22
 msgid "Search for jhs"
+msgstr ""
+
+#: translations/help.html:23
+msgid "Search for palvelu"
 msgstr ""
 
 #: translations/misc.html:91
@@ -1835,12 +1851,20 @@ msgstr ""
 msgid "Select group"
 msgstr ""
 
-#: translations/help.html:11
+#: translations/help.html:12
 msgid "Select help topic"
 msgstr ""
 
-#: translations/help.html:21
+#: translations/help.html:24
 msgid "Select jhs"
+msgstr ""
+
+#: translations/help.html:25
+msgid "Select palvelu"
+msgstr ""
+
+#: translations/help.html:26
+msgid "Select properties"
 msgstr ""
 
 #: translations/misc.html:180

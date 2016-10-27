@@ -1,6 +1,6 @@
 import { createClickNextCondition, createStory } from '../../contract';
 import { modelView, child } from '../../selectors';
-import { KnownModelType } from '../../../entities/type';
+import { KnownModelType, KnownPredicateType } from '../../../entities/type';
 
 export function openModelDetails(type: KnownModelType) {
 
@@ -16,5 +16,21 @@ export function openModelDetails(type: KnownModelType) {
     },
     focus: { element: openModelDetailsElement },
     nextCondition: createClickNextCondition(openModelDetailsElement)
+  });
+}
+
+export function openAddResource(type: 'class' | KnownPredicateType) {
+
+  const openAddResourceElement = () => angular.element('button.add-new-button');
+
+  return createStory({
+    popover: {
+      element: openAddResourceElement,
+      position: 'right-down'
+    },
+    focus: { element: openAddResourceElement },
+    title: 'Add ' + type,
+    content: 'Diipadaa',
+    nextCondition: createClickNextCondition(openAddResourceElement)
   });
 }
