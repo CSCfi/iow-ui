@@ -87,11 +87,13 @@ class InteractiveHelpController implements DimensionsProvider {
       initialize();
     }
 
-    // Active element needs to be blurred because it can used for example for multiple interactive help activations
-    angular.element(document.activeElement).blur();
-
     const keyDownHandler = this.keyDownHandler.bind(this);
     const clickHandler = this.clickHandler.bind(this);
+
+    $scope.$watch(() => this.item, () => {
+      // Active element needs to be blurred because it can used for example for multiple interactive help activations
+      angular.element(document.activeElement).blur();
+    });
 
     // Lazy initialization of listeners so that it doesn't intervene with help opening event
     window.setTimeout(() => {
