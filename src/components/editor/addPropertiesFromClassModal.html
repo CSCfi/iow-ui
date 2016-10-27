@@ -1,4 +1,4 @@
-<modal-template>
+<modal-template class="add-properties-from-class">
   <modal-title>{{'Add properties from ' + ctrl.classType | translate}}</modal-title>
 
   <modal-body>
@@ -23,7 +23,7 @@
   </modal-body>
 
   <modal-buttons>
-    <button class="btn btn-primary" type="button" ng-click="$close(ctrl.selectedProperties)" translate>Yes</button>
+    <button class="btn btn-primary confirm" type="button" ng-click="$close(ctrl.selectedProperties)" translate>Yes</button>
     <button class="btn btn-default" type="button" ng-click="$dismiss('cancel')" translate>Cancel</button>
   </modal-buttons>
 </modal-template>
