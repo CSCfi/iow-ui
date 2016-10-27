@@ -306,11 +306,11 @@ class InteractiveHelpController implements DimensionsProvider {
     function isImplicitlyReversible(condition: NextCondition) {
       switch (condition.type) {
         case 'explicit':
-        case 'expected-state':
           return true;
         case 'click':
         case 'modifying-click':
         case 'navigating-click':
+        case 'expected-state':
           return false;
         default:
           return assertNever(condition, 'Unsupported next condition');
