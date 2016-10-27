@@ -92,7 +92,8 @@ class InteractiveHelpController implements DimensionsProvider {
 
     $scope.$watch(() => this.item, () => {
       // Active element needs to be blurred because it can used for example for multiple interactive help activations
-      angular.element(document.activeElement).blur();
+      // Do off frame since blur causes digest which might be already going
+      setTimeout(() => (document.activeElement as HTMLElement).blur());
     });
 
     // Lazy initialization of listeners so that it doesn't intervene with help opening event
