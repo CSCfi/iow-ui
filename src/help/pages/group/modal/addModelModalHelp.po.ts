@@ -3,7 +3,7 @@ import {
   input, modal, editableByTitle, editableFocus, editableMultipleByTitle, multiInput,
   child
 } from '../../../selectors';
-import { editableMargin, editableMultipleMargin } from '../../../constants';
+import { editableMargin, editableMultipleMargin } from '../../../utils';
 import { KnownModelType } from '../../../../entities/type';
 import { upperCaseFirst } from 'change-case';
 
