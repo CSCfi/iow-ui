@@ -37,12 +37,15 @@ export function addNamespace(type: KnownModelType) {
   };
 }
 
+const palveluNimiId = '6cfbd054-2bfc-4e92-8642-477b035f59ee';
+const palveluKuvausId = 'fe884237-f6e2-44ea-ac97-231516da4770';
+
 export const specializeClassItems = [
   ModelPage.openAddResource('class'),
   SearchClassModal.filterForClass('jhs', 'Palvelu', 'palv'),
   SearchClassModal.selectClass('jhs', 'Palvelu'),
   SearchClassModal.confirmClassSelection,
-  AddPropertiesFromClass.selectProperties,
+  AddPropertiesFromClass.selectProperties('Select name and description', [palveluNimiId, palveluKuvausId]),
   AddPropertiesFromClass.confirmProperties(true),
   ClassView.saveClassChanges
 ];

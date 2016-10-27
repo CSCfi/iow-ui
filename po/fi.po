@@ -1878,13 +1878,13 @@ msgstr "Valitse ohjeen aihe"
 msgid "Select jhs"
 msgstr "Valitse julkishallinnon tietokomponenttikirjasto"
 
+#: translations/help.html:26
+msgid "Select name and description"
+msgstr "Valitse attribuutit nimi ja kuvaus"
+
 #: translations/help.html:25
 msgid "Select palvelu"
 msgstr "Valitse palvelu"
-
-#: translations/help.html:26
-msgid "Select properties"
-msgstr "Valitse haluamasi ominaisuudet"
 
 #: translations/misc.html:180
 msgid "Self reference not allowed"
@@ -2374,6 +2374,9 @@ msgstr "Sinut uudelleenohjataan etusivulle"
 #: translations/misc.html:256
 msgid "You will be redirected to the model"
 msgstr "Sinut uudelleenohjataan mallin sivulle"
+
+#~ msgid "Select properties"
+#~ msgstr "Valitse haluamasi ominaisuudet"
 
 #~ msgid "You will be redirected to front page"
 #~ msgstr "Sinut uudelleenohjataan etusivulle"

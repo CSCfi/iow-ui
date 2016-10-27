@@ -1859,12 +1859,12 @@ msgstr ""
 msgid "Select jhs"
 msgstr ""
 
-#: translations/help.html:25
-msgid "Select palvelu"
+#: translations/help.html:26
+msgid "Select name and description"
 msgstr ""
 
-#: translations/help.html:26
-msgid "Select properties"
+#: translations/help.html:25
+msgid "Select palvelu"
 msgstr ""
 
 #: translations/misc.html:180
