@@ -804,7 +804,9 @@ class HelpBackdropController {
       if (contains(['INPUT', 'TEXTAREA'], focusable.prop('tagName'))) {
         const valueLength = focusable.val().length;
         // ensures that cursor will be at the end of the input
-        setTimeout(() => (focusable[0] as HTMLInputElement).setSelectionRange(valueLength, valueLength));
+        if (!contains(['checkbox', 'radio'], focusable.attr('type'))) {
+          setTimeout(() => (focusable[0] as HTMLInputElement).setSelectionRange(valueLength, valueLength));
+        }
       }
     }
   }
