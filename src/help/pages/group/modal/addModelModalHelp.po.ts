@@ -26,6 +26,7 @@ export function enterModelPrefix(type: KnownModelType) {
       margin: editableMargin
     },
     nextCondition: createValidInputNextCondition(enterModelPrefixInputElement),
+    reversible: true,
     initialize: initialInputValue(enterModelPrefixInputElement, type === 'library' ? 'testi' : 'plv')
   });
 }
@@ -49,6 +50,7 @@ export function enterModelLabel(type: KnownModelType) {
       margin: editableMargin
     },
     nextCondition: createValidInputNextCondition(enterModelLabelInputElement),
+    reversible: true,
     initialize: initialInputValue(enterModelLabelInputElement, type === 'library' ? 'Testikirjasto' : 'Palveluprofiili')
   });
 }
@@ -67,6 +69,7 @@ export const enterModelLanguage = createStory({
     element: editableFocus(enterModelLanguageElement),
     margin: editableMultipleMargin
   },
+  reversible: true,
   nextCondition: createValidInputNextCondition(enterModelLanguageInputElement)
 });
 
