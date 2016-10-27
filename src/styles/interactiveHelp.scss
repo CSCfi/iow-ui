@@ -24,7 +24,7 @@ help-popover, help-popover-dimensions-calculator {
   position: absolute;
   background: #1C252E;
   color: #FFF;
-  z-index: 1052;
+  z-index: 1102;
   top: 0;
   left: 0;
   font-family: inherit;
@@ -170,19 +170,21 @@ help-popover, help-popover-dimensions-calculator {
   }
 }
 
+// first modal z-index is 1050 which increases by 10 for each open modal
+
 .help-backdrop {
   position: fixed;
   background: rgba(0, 0, 0, 0.2);
-  z-index: 1051; // modal is 1050
+  z-index: 1100;
   cursor: not-allowed;
 }
 
 .help-interaction-stopper {
   position: fixed;
-  z-index: 1051; // modal is 1050
+  z-index: 1100;
   cursor: not-allowed;
 }
 
 .modal.over-help {
-  z-index: 1060 !important;
+  z-index: 1110 !important;
 }
