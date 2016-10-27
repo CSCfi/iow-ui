@@ -1,5 +1,6 @@
 import { IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
+import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService } from '../../services/languageService';
 import { Property, Class } from '../../entities/class';
@@ -36,15 +37,16 @@ export class AddPropertiesFromClassModalController {
   selectedProperties: Property[];
 
   /* @ngInject */
-  constructor(private languageService: LanguageService,
+  constructor(private $uibModalInstance: IModalServiceInstance,
+              private languageService: LanguageService,
               private gettextCatalog: gettextCatalog,
               klass: Class,
               public classType: string,
               public context: LanguageContext,
               private exclude: (property: Property) => boolean) {
 
-    const copiedPropertiesWithKnownType = klass.properties.filter(p => p.normalizedPredicateType).map(property => property.copy());
-    this.properties = stringMapToObject(groupBy(copiedPropertiesWithKnownType, property => property.normalizedPredicateType!));
+    const propertiesWithKnownType = klass.properties.filter(p => p.normalizedPredicateType);
+    this.properties = stringMapToObject(groupBy(propertiesWithKnownType, property => property.normalizedPredicateType!));
     this.selectAll();
   }
 
@@ -66,5 +68,9 @@ export class AddPropertiesFromClassModalController {
     } else {
       return this.languageService.translate(property.comment);
     }
+  }
+
+  confirm() {
+    this.$uibModalInstance.close(this.selectedProperties.map(property => property.copy()));
   }
 }
