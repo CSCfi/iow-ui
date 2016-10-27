@@ -154,7 +154,7 @@ export function removeMatching<T>(arr: T[], predicate: (item: T) => boolean) {
 
   const matchingIndices: number[] = [];
 
-  for (let i = arr.length; i >= 0; i--) {
+  for (let i = arr.length - 1; i >= 0; i--) {
     const item = arr[i];
     if (predicate(item)) {
       matchingIndices.push(i);
