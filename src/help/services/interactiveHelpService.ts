@@ -3,6 +3,8 @@ import { IPromise, IQService } from 'angular';
 import { InteractiveHelpModelService } from './helpModelService';
 import { InteractiveHelpVisualizationService } from './helpVisualizationService';
 import { InteractiveHelpUserService } from './helpUserService';
+import { InteractiveHelpClassService } from './helpClassService';
+import { InteractiveHelpVocabularyService } from './helpVocabularyService';
 
 export class InteractiveHelpService implements ResetableService {
 
@@ -14,12 +16,16 @@ export class InteractiveHelpService implements ResetableService {
   constructor(private $q: IQService,
               public helpModelService: InteractiveHelpModelService,
               public helpVisualizationService: InteractiveHelpVisualizationService,
-              public helpUserService: InteractiveHelpUserService) {
+              public helpUserService: InteractiveHelpUserService,
+              public helpClassService: InteractiveHelpClassService,
+              public helpVocabularyService: InteractiveHelpVocabularyService) {
 
     this.helpServices = [
       helpModelService,
       helpVisualizationService,
-      helpUserService
+      helpUserService,
+      helpClassService,
+      helpVocabularyService
     ];
   }
 
