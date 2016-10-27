@@ -697,13 +697,13 @@ class HelpPopoverController {
       if (newLeft < 0) {
         newWidth += newLeft;
         newLeft = 0;
-        newHeight = undefined;
+        newHeight = undefined; // allow to expand
       }
 
       if (newTop < 0) {
         newHeight += newTop;
         newTop = 0;
-        newWidth = undefined;
+        newWidth = undefined; // allow to expand
       }
 
       const right = newLeft + newWidth;
@@ -711,6 +711,7 @@ class HelpPopoverController {
       if (right > documentWidth) {
         newWidth += documentWidth - right;
         newLeft = documentWidth - newWidth;
+        newHeight = undefined; // allow to expand
       }
 
       const bottom = newTop + newHeight;
@@ -718,6 +719,7 @@ class HelpPopoverController {
       if (bottom > documentHeight) {
         newHeight += documentHeight - bottom;
         newTop = documentHeight - newHeight;
+        newWidth = undefined; // allow to expand
       }
 
       return { left: newLeft, top: newTop, width: newWidth, height: newHeight };
