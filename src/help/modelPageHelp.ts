@@ -17,11 +17,6 @@ export const addNamespaceItems = [
   SearchNamespaceModal.selectNamespace('jhs')
 ];
 
-const finishedCreateNewModelNotification = createNotification({
-  title: 'Congratulations for completing namespace require!',
-  content: 'Diipadaa'
-});
-
 export function addNamespace(type: KnownModelType) {
   return {
     title: 'Guide through requiring a namespace',
@@ -31,7 +26,10 @@ export function addNamespace(type: KnownModelType) {
       ModelView.modifyModel(type),
       ...addNamespaceItems,
       ModelView.saveModelChanges,
-      finishedCreateNewModelNotification
+      createNotification({
+        title: 'Congratulations for completing namespace require!',
+        content: 'Diipadaa'
+      })
     ]
   };
 }
