@@ -3,6 +3,7 @@ import {
   createElementExistsNextCondition, createStory, createModifyingClickNextCondition,
   createClickNextCondition
 } from '../../contract';
+import { initialInputValue } from '../../utils';
 
 const textSearchElement = child(modal, 'text-filter input');
 
@@ -18,10 +19,7 @@ export function filterForSearchResult(label: string, expectedResultId: string, i
     },
     focus: { element: textSearchElement },
     nextCondition: createElementExistsNextCondition(searchResult(modal, expectedResultId)),
-    initialInputValue: {
-      value: initialSearch,
-      element: textSearchElement
-    }
+    initialize: initialInputValue(textSearchElement, initialSearch)
   });
 }
 

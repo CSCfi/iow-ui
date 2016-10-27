@@ -360,24 +360,13 @@ class InteractiveHelpController implements DimensionsProvider {
 
   showItem(index: number) {
 
-    this.item = this.help.storyLine.items[index];
-    InteractiveHelpController.initializeItem(this.item);
-  }
+    const item = this.help.storyLine.items[index];
 
-  private static initializeItem(item: Story|Notification) {
-    if (item.type === 'story' && item.initialInputValue) {
-
-      const initialInputNgModel = item.initialInputValue.element().controller('ngModel');
-
-      if (!initialInputNgModel) {
-        throw new Error('ng-model does not exits for initial input');
-      } else {
-        if (!initialInputNgModel.$viewValue) {
-          initialInputNgModel.$setViewValue(item.initialInputValue.value);
-          initialInputNgModel.$render();
-        }
-      }
+    if (item.type === 'story' && item.initialize) {
+      item.initialize();
     }
+
+    this.item = item;
   }
 
   isValid() {

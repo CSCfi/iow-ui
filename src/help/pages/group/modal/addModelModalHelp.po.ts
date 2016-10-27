@@ -3,7 +3,7 @@ import {
   input, modal, editableByTitle, editableFocus, editableMultipleByTitle, multiInput,
   child
 } from '../../../selectors';
-import { editableMargin, editableMultipleMargin } from '../../../utils';
+import { editableMargin, editableMultipleMargin, initialInputValue } from '../../../utils';
 import { KnownModelType } from '../../../../entities/type';
 import { upperCaseFirst } from 'change-case';
 
@@ -26,10 +26,7 @@ export function enterModelPrefix(type: KnownModelType) {
       margin: editableMargin
     },
     nextCondition: createValidInputNextCondition(enterModelPrefixInputElement),
-    initialInputValue: {
-      value: type === 'library' ? 'testi' : 'plv',
-      element: enterModelPrefixInputElement
-    }
+    initialize: initialInputValue(enterModelPrefixInputElement, type === 'library' ? 'testi' : 'plv')
   });
 }
 
@@ -52,10 +49,7 @@ export function enterModelLabel(type: KnownModelType) {
       margin: editableMargin
     },
     nextCondition: createValidInputNextCondition(enterModelLabelInputElement),
-    initialInputValue: {
-      value: type === 'library' ? 'Testikirjasto' : 'Palveluprofiili',
-      element: enterModelLabelInputElement
-    }
+    initialize: initialInputValue(enterModelLabelInputElement, type === 'library' ? 'Testikirjasto' : 'Palveluprofiili')
   });
 }
 

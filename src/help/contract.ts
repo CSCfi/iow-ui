@@ -66,10 +66,7 @@ export interface StoryDetails {
     denyInteraction?: boolean
   };
   nextCondition: NextCondition;
-  initialInputValue?: {
-    element: () => JQuery,
-    value: string
-  };
+  initialize?: () => void;
   reversible?: boolean;
 }
 
