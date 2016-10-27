@@ -2,9 +2,9 @@ import { module as mod } from '../module';
 import { OverlayService, OverlayInstance } from '../../components/common/overlay';
 import { IScope, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { assertNever, requireDefined } from '../../utils/object';
+import { assertNever, requireDefined, areEqual } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
-import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
+import { isTargetElementInsideElement, nextUrl, hasFixedPositioningParent } from '../../utils/angular';
 import { InteractiveHelpService } from '../services/interactiveHelpService';
 import {
   NextCondition, Story, Notification, Click, ModifyingClick,
@@ -192,16 +192,19 @@ class InteractiveHelpController implements DimensionsProvider {
       if (event.shiftKey) {
         if (isFocusInElement(event, firstElement)) {
           moveToPreviousIfPossible();
+          stopEvent(event);
         }
       } else {
         if (isFocusInElement(event, lastElement)) {
           moveToNextIfPossible();
+          stopEvent(event);
         }
       }
 
       // prevent input focus breaking from item focusable area
       if (!activeElementIsFocusable()) {
         firstElement.focus();
+        stopEvent(event);
       }
 
     } else {
@@ -210,9 +213,8 @@ class InteractiveHelpController implements DimensionsProvider {
       } else {
         moveToNextIfPossible();
       }
+      stopEvent(event);
     }
-
-    stopEvent(event);
   };
 
   keyDownHandler(event: JQueryEventObject) {
