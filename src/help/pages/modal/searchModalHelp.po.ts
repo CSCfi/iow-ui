@@ -1,31 +1,34 @@
-import { modal, searchResult, child } from '../../selectors';
+import { searchResult, child } from '../../selectors';
 import {
   createStory, createModifyingClickNextCondition,
   createClickNextCondition, createExplicitNextCondition, createExpectedStateNextCondition
 } from '../../contract';
 import { initialInputValue, elementExists } from '../../utils';
 
-export const textSearchElement = child(modal, 'text-filter input');
+export const textSearchElement = (modalParent: () => JQuery) => child(modalParent, 'text-filter input');
+export const searchSelectionElement = (modalParent: () => JQuery) => child(modalParent, '.search-selection');
 
-export function filterForSearchResult(label: string, expectedResultId: string, initialSearch: string) {
+export function filterForSearchResult(modalParent: () => JQuery, label: string, expectedResultId: string, initialSearch: string) {
+
+  const filterForSearchResultTextSearchElement = textSearchElement(modalParent);
 
   return createStory({
 
     title: `Search for ${label}`,
     content: 'Diipadaa',
     popover: {
-      element: textSearchElement,
+      element: filterForSearchResultTextSearchElement,
       position: 'bottom-right'
     },
-    focus: { element: textSearchElement },
-    nextCondition: createExpectedStateNextCondition(elementExists(searchResult(modal, expectedResultId))),
-    initialize: initialInputValue(textSearchElement, initialSearch)
+    focus: { element: filterForSearchResultTextSearchElement },
+    nextCondition: createExpectedStateNextCondition(elementExists(searchResult(modalParent, expectedResultId))),
+    initialize: initialInputValue(filterForSearchResultTextSearchElement, initialSearch)
   });
 }
 
-export function selectSearchResult(label: string, resultId: string, selectionNeedsConfirmation: boolean) {
+export function selectSearchResult(modalParent: () => JQuery, label: string, resultId: string, selectionNeedsConfirmation: boolean) {
 
-  const selectResultElement = searchResult(modal, resultId);
+  const selectResultElement = searchResult(modalParent, resultId);
 
   return createStory({
 
@@ -41,9 +44,9 @@ export function selectSearchResult(label: string, resultId: string, selectionNee
   });
 }
 
-export function focusSearchResult(label: string, content?: string) {
+export function focusSearchSelection(modalParent: () => JQuery, label: string, content?: string) {
 
-  const focusSearchResultElement = child(modal, '.search-selection');
+  const focusSearchResultElement = searchSelectionElement(modalParent);
 
   return createStory({
     title: label,

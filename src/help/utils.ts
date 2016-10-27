@@ -1,6 +1,7 @@
 import { INgModelController } from 'angular';
 
 export const editableMargin = { left: 20, right: 20 };
+export const editableSelectMargin =  Object.assign({}, editableMargin, { bottom: 15 });
 export const editableMultipleMargin = Object.assign({}, editableMargin, { bottom: 15 });
 
 export function getModalController<T>(controllerName = 'ctrl') {
@@ -25,6 +26,10 @@ export function validInput(element: () => JQuery) {
   return inputWithNgModel(element, ngModel => ngModel.$valid && !ngModel.$pending);
 }
 
+export function inputHasExactValue(element: () => JQuery, value: string) {
+  return inputWithNgModel(element, ngModel => ngModel.$viewValue === value);
+}
+
 export function elementExists(element: () => JQuery) {
   return () => {
     const e = element();
@@ -45,4 +50,8 @@ export function initialInputValue(element: () => JQuery, value: string) {
       }
     }
   };
+}
+
+export function modelIdFromPrefix(modelPrefix: string) {
+  return `http://iow.csc.fi/ns/${modelPrefix}`;
 }

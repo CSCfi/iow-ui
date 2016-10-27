@@ -13,6 +13,7 @@ import * as SearchNamespaceModal from './pages/model/modal/searchNamepaceModalHe
 import * as SearchClassModal from './pages/model/modal/searchClassModalHelp.po';
 import * as AddPropertiesFromClass from './pages/model/modal/addPropertiesFromClassModalHelp.po';
 import * as ClassView from './pages/model/classViewHelp.po';
+import * as SearchConceptModal from './pages/model/modal/searchConceptModalHelp.po';
 
 export const addNamespaceItems = [
   ModelView.requireNamespace,
@@ -60,6 +61,32 @@ export const specializeClass = {
     ...specializeClassItems,
     createNotification({
       title: 'Congratulations for completing specialize class!',
+      content: 'Diipadaa'
+    })
+  ]
+};
+
+export const createNewClassItems = [
+  ModelPage.openAddResource('class'),
+  SearchClassModal.filterForNewClass('Tuote'),
+  SearchClassModal.addNewClassSearchResult,
+  SearchConceptModal.filterForConceptSuggestionConcept('Tuote'),
+  SearchConceptModal.addConceptSuggestionSearchResult,
+  SearchConceptModal.enterVocabulary,
+  SearchConceptModal.enterLabel,
+  SearchConceptModal.enterDefinition,
+  SearchConceptModal.confirmConceptSelection,
+  ClassView.focusClass,
+  ClassView.saveClassChanges
+];
+
+export const createNewClass = {
+  title: 'Guide through creating a class',
+  description: 'Diipadaa',
+  items: [
+    ...createNewClassItems,
+    createNotification({
+      title: 'Congratulations for completing new class creation!',
       content: 'Diipadaa'
     })
   ]
@@ -141,7 +168,8 @@ export class ModelPageHelpService {
     }
 
     const result = [
-      this.createHelp(model, addNamespace(model.normalizedType))
+      this.createHelp(model, addNamespace(model.normalizedType)),
+      this.createHelp(model, createNewClass, 'jhs')
     ];
 
     switch (model.normalizedType) {
