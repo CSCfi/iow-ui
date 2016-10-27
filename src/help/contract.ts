@@ -55,7 +55,7 @@ export interface Story extends StoryDetails {
 
 export interface StoryDetails {
   title: string;
-  content: string;
+  content?: string;
   popover: {
     element: () => JQuery,
     position: PopoverPosition

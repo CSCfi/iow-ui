@@ -442,8 +442,8 @@ mod.directive('helpPopoverDimensionsCalculator', () => {
         <span ng-class="ctrl.arrowClass"></span>
       
         <div class="help-content-wrapper">
-          <h3>{{ctrl.item.title | translate}}</h3>
-          <p>{{ctrl.item.content | translate}}</p>
+          <h3 ng-show="ctrl.item.title">{{ctrl.item.title | translate}}</h3>
+          <p ng-show="ctrl.item.content">{{ctrl.item.content | translate}}</p>
           <button ng-show="ctrl.helpController.showPrevious" class="small button help-navigate" translate>previous</button>
           <button ng-show="ctrl.helpController.showNext" class="small button help-navigate" translate>next</button>
           <button ng-show="ctrl.helpController.showClose" class="small button help-next" translate>close</button>
@@ -510,7 +510,7 @@ class HelpPopoverController {
   arrowClass: string[] = [];
 
   title: string;
-  content: string;
+  content?: string;
   showPrevious: boolean;
   showNext: boolean;
   showClose: boolean;
@@ -560,8 +560,7 @@ class HelpPopoverController {
       this.$scope.$apply(() => {
         const positioning = this.calculatePositioning();
 
-        if (positioning && positioning.width > 0) {
-
+        if (positioning) {
           // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
           const shouldScroll = this.item.type !== 'notification' && !isPositionInMargin(80, positioning, this.positioning);
           this.positioning = positioning;
