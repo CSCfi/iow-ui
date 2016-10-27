@@ -1,9 +1,9 @@
-import { createStory, createValidInputNextCondition, createNavigatingClickNextCondition } from '../../../contract';
+import { createStory, createNavigatingClickNextCondition, createExpectedStateNextCondition } from '../../../contract';
 import {
   input, modal, editableByTitle, editableFocus, editableMultipleByTitle, multiInput,
   child
 } from '../../../selectors';
-import { editableMargin, editableMultipleMargin, initialInputValue } from '../../../utils';
+import { editableMargin, editableMultipleMargin, initialInputValue, validInput } from '../../../utils';
 import { KnownModelType } from '../../../../entities/type';
 import { upperCaseFirst } from 'change-case';
 
@@ -25,7 +25,7 @@ export function enterModelPrefix(type: KnownModelType) {
       element: editableFocus(enterModelPrefixElement),
       margin: editableMargin
     },
-    nextCondition: createValidInputNextCondition(enterModelPrefixInputElement),
+    nextCondition: createExpectedStateNextCondition(validInput(enterModelPrefixInputElement)),
     reversible: true,
     initialize: initialInputValue(enterModelPrefixInputElement, type === 'library' ? 'testi' : 'plv')
   });
@@ -49,7 +49,7 @@ export function enterModelLabel(type: KnownModelType) {
       element: editableFocus(enterModelLabelElement),
       margin: editableMargin
     },
-    nextCondition: createValidInputNextCondition(enterModelLabelInputElement),
+    nextCondition: createExpectedStateNextCondition(validInput(enterModelLabelInputElement)),
     reversible: true,
     initialize: initialInputValue(enterModelLabelInputElement, type === 'library' ? 'Testikirjasto' : 'Palveluprofiili')
   });
@@ -70,7 +70,7 @@ export const enterModelLanguage = createStory({
     margin: editableMultipleMargin
   },
   reversible: true,
-  nextCondition: createValidInputNextCondition(enterModelLanguageInputElement)
+  nextCondition: createExpectedStateNextCondition(validInput(enterModelLanguageInputElement))
 });
 
 const createModelElement = child(modal, 'button.create');

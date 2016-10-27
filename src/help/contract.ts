@@ -1,4 +1,4 @@
-import { IPromise, INgModelController } from 'angular';
+import { IPromise } from 'angular';
 import { InteractiveHelpService } from './services/interactiveHelpService';
 
 export type PopoverPosition = 'top-left'
@@ -109,26 +109,4 @@ export function createModifyingClickNextCondition(element: () => JQuery): Modify
 
 export function createExpectedStateNextCondition(valid: () => boolean): ExpectedState {
   return { type: 'expected-state', valid };
-}
-
-export function createValidInputNextCondition(element: () => JQuery): ExpectedState {
-  return createExpectedStateNextCondition(() => {
-
-    const e = element();
-    const ngModel: INgModelController = e.controller('ng-model');
-
-    if (!ngModel) {
-      console.log(e);
-      throw new Error('No ng-model for element');
-    }
-
-    return ngModel.$valid && !ngModel.$pending;
-  });
-}
-
-export function createElementExistsNextCondition(element: () => JQuery): ExpectedState {
-  return createExpectedStateNextCondition(() => {
-    const e = element();
-    return e && e.length > 0;
-  });
 }

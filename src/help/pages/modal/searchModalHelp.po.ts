@@ -1,11 +1,11 @@
 import { modal, searchResult, child } from '../../selectors';
 import {
-  createElementExistsNextCondition, createStory, createModifyingClickNextCondition,
-  createClickNextCondition, createExplicitNextCondition
+  createStory, createModifyingClickNextCondition,
+  createClickNextCondition, createExplicitNextCondition, createExpectedStateNextCondition
 } from '../../contract';
-import { initialInputValue } from '../../utils';
+import { initialInputValue, elementExists } from '../../utils';
 
-const textSearchElement = child(modal, 'text-filter input');
+export const textSearchElement = child(modal, 'text-filter input');
 
 export function filterForSearchResult(label: string, expectedResultId: string, initialSearch: string) {
 
@@ -18,7 +18,7 @@ export function filterForSearchResult(label: string, expectedResultId: string, i
       position: 'bottom-right'
     },
     focus: { element: textSearchElement },
-    nextCondition: createElementExistsNextCondition(searchResult(modal, expectedResultId)),
+    nextCondition: createExpectedStateNextCondition(elementExists(searchResult(modal, expectedResultId))),
     initialize: initialInputValue(textSearchElement, initialSearch)
   });
 }
