@@ -20,7 +20,26 @@ import { ExternalEntity } from '../entities/externalEntity';
 import { Predicate, Attribute, Association } from '../entities/predicate';
 import { flatten } from '../utils/array';
 
-export class ClassService {
+export interface ClassService {
+  getClass(id: Uri|Urn, model: Model): IPromise<Class>;
+  getAllClasses(model: Model): IPromise<ClassListItem[]>;
+  getClassesForModel(model: Model): IPromise<ClassListItem[]>;
+  getClassesForModelDataSource(modelProvider: () => Model): DataSource<ClassListItem>;
+  getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]>;
+  createClass(klass: Class): IPromise<any>;
+  updateClass(klass: Class, originalId: Uri): IPromise<any>;
+  deleteClass(id: Uri, modelId: Uri): IPromise<any>;
+  assignClassToModel(classId: Uri, modelId: Uri): IPromise<any>;
+  newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class>;
+  newShape(classOrExternal: Class|ExternalEntity, profile: Model, external: boolean, lang: Language): IPromise<Class>;
+  newClassFromExternal(externalId: Uri, model: Model): IPromise<Class>;
+  getExternalClass(externalId: Uri, model: Model): IPromise<Class>;
+  getExternalClassesForModel(model: Model): IPromise<ClassListItem[]>;
+  newProperty(predicateOrExternal: Predicate|ExternalEntity, type: KnownPredicateType, model: Model): IPromise<Property>;
+  getInternalOrExternalClass(id: Uri, model: Model): IPromise<Class>;
+}
+
+export class DefaultClassService implements ClassService {
 
   private modelClassesCache = new Map<string, ClassListItem[]>();
 

@@ -1,7 +1,7 @@
 import { module as mod }  from './module';
 export default mod.name;
 
-import { ClassService } from './classService';
+import { ClassService, DefaultClassService } from './classService';
 import { VocabularyService } from './vocabularyService';
 import { GroupService } from './groupService';
 import { LanguageService } from './languageService';
@@ -26,7 +26,10 @@ function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpServ
   return proxyToInstance(() => interactiveHelpService.open ? helpService : defaultService);
 }
 
-mod.service('classService', ClassService);
+mod.service('defaultClassService', DefaultClassService);
+mod.factory('classService', (interactiveHelpService: InteractiveHelpService, defaultClassService: ClassService, helpClassService: ClassService) =>
+  proxyConditionallyToHelp(interactiveHelpService, defaultClassService, helpClassService));
+
 mod.service('vocabularyService', VocabularyService);
 mod.service('groupService', GroupService);
 mod.service('languageService', LanguageService);

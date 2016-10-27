@@ -11,9 +11,11 @@ import { GroupPageHelpService } from './groupPageHelp';
 import { ModelPageHelpService } from './modelPageHelp';
 
 import { InteractiveHelpDisplay } from './components/interactiveHelpDisplay';
+import { InteractiveHelpClassService } from './services/helpClassService';
 
 mod.service('interactiveHelpService', InteractiveHelpService);
 mod.service('helpModelService', InteractiveHelpModelService);
+mod.service('helpClassService', InteractiveHelpClassService);
 mod.service('helpVisualizationService', InteractiveHelpVisualizationService);
 mod.service('helpUserService', InteractiveHelpUserService);
 
