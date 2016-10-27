@@ -34,12 +34,12 @@ mod.directive('float', () => {
 
       function snap(destination: number) {
 
-        const diff = destination - window.scrollY;
+        const diff = destination - window.pageYOffset;
 
         if (Math.abs(diff) < 3) {
-          scrollTo(window.scrollX, destination + 1);
+          scrollTo(window.pageXOffset, destination + 1);
         } else if (diff < 80 && diff > 0) {
-          scrollTo(window.scrollX, window.scrollY + ((destination - window.scrollY) / 2));
+          scrollTo(window.pageXOffset, window.pageYOffset + ((destination - window.pageYOffset) / 2));
           setTimeout(snap, 20, destination);
         }
       }

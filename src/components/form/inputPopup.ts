@@ -56,7 +56,7 @@ class InputPopupController<T> {
         const fixed = hasFixedPositioningParent(e);
         return {
           position: fixed ? 'fixed' : 'absolute',
-          top: offset.top + e.prop('offsetHeight') - (fixed ? window.scrollY : 0),
+          top: offset.top + e.prop('offsetHeight') - (fixed ? window.pageYOffset : 0),
           left: offset.left,
           width: e.prop('offsetWidth')
         };
