@@ -4,6 +4,16 @@ import { normalizeAsArray, all } from './array';
 import { valuesExcludingKeys } from './object';
 import { Show } from '../components/contracts';
 
+export function hasFixedPositioningParent(e: JQuery) {
+  for (let p = e.parent(); p && p.length > 0 && !p.is('body'); p = p.parent()) {
+    if (p.css('position') === 'fixed') {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export function isModalCancel(err: any) {
   return err === 'cancel' || err === 'escape key press';
 }

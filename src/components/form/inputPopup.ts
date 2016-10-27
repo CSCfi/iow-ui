@@ -1,6 +1,6 @@
 import { module as mod } from './module';
 import { IScope, IAttributes, ITranscludeFunction, IRepeatScope } from 'angular';
-import { scrollToElement } from '../../utils/angular';
+import { scrollToElement, hasFixedPositioningParent } from '../../utils/angular';
 
 export interface InputWithPopupController<T> {
   popupItemName: string;
@@ -50,19 +50,10 @@ class InputPopupController<T> {
   /* @ngInject */
   constructor($scope: InputPopupScope) {
 
-      const isFixed = (e: JQuery) => {
-        for (let p = e.parent(); p && p.length > 0 && !p.is('body'); p = p.parent()) {
-          if (p.css('position') === 'fixed') {
-            return true;
-          }
-        }
-
-        return false;
-      };
 
       const calculatePopupStyle = (e: JQuery) => {
         const offset = e.offset();
-        const fixed = isFixed(e);
+        const fixed = hasFixedPositioningParent(e);
         return {
           position: fixed ? 'fixed' : 'absolute',
           top: offset.top + e.prop('offsetHeight') - (fixed ? window.scrollY : 0),
