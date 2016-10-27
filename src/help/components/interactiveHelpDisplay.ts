@@ -563,15 +563,7 @@ class HelpPopoverController {
 
       const positioning = this.calculatePositioning();
 
-      if (!positioning) {
-        this.popoverPositionRetryCount++;
-
-        if (this.popoverPositionRetryCount > 20) {
-          throw new Error('Popover element does not exist');
-        } else {
-          this.debouncePositionUpdate();
-        }
-      } else {
+      if (positioning) {
         this.debounceHandle = null;
 
         // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
@@ -591,6 +583,14 @@ class HelpPopoverController {
             this.showClose = this.helpController.showClose;
           });
         }, popupAnimationTimeInMs / 2);
+      } else {
+        this.popoverPositionRetryCount++;
+
+        if (this.popoverPositionRetryCount > 20) {
+          throw new Error('Popover element does not exist');
+        } else {
+          this.debouncePositionUpdate();
+        }
       }
     }, 100);
   }
@@ -644,7 +644,7 @@ class HelpPopoverController {
 
     const element = story.popover.element();
 
-    if (!element || element.length === 0) {
+    if (!element || element.length === 0 || !isVisible(element[0])) {
       return null;
     }
 
