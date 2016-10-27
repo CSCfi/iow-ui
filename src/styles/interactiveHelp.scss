@@ -177,6 +177,12 @@ help-popover, help-popover-dimensions-calculator {
   cursor: not-allowed;
 }
 
+.help-interaction-stopper {
+  position: fixed;
+  z-index: 1051; // modal is 1050
+  cursor: not-allowed;
+}
+
 .modal.over-help {
   z-index: 1060 !important;
 }

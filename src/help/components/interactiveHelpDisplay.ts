@@ -133,7 +133,7 @@ class InteractiveHelpController implements DimensionsProvider {
 
   loadFocusableElementList(story: Story) {
 
-    if (!story.focus) {
+    if (!story.focus || story.focus.denyInteraction) {
       return [];
     }
 
@@ -719,10 +719,11 @@ mod.directive('helpBackdrop', () => {
   return {
     restrict: 'E',
     template: `
-        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.top"></div>
-        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.right"></div>
-        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.bottom"></div>
-        <div ng-show="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.left"></div>
+        <div ng-if="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.top"></div>
+        <div ng-if="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.right"></div>
+        <div ng-if="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.bottom"></div>
+        <div ng-if="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.left"></div>
+        <div ng-if="ctrl.regions && ctrl.item.focus.denyInteraction" class="help-interaction-stopper" ng-style="ctrl.regions.focus"></div>
     `,
     bindToController: true,
     scope: {
@@ -781,7 +782,7 @@ class HelpBackdropController {
 
   // XXX: does this logic belong to here?
   private focusFirstFocusable() {
-    if (this.item && this.item.type === 'story' && this.item.focus) {
+    if (this.item && this.item.type === 'story' && this.item.focus && !this.item.focus.denyInteraction) {
 
       const focusable = this.item.focus.element().find(focusableSelector).addBack(focusableSelector).eq(0);
 
@@ -801,7 +802,8 @@ class HelpBackdropController {
     top: { left: 0, top: 0, right: 0, bottom: 0 },
     right: { left: 0, top: 0, width: 0, height: 0 },
     bottom: { left: 0, top: 0, width: 0, height: 0 },
-    left: { left: 0, top: 0, width: 0, height: 0 }
+    left: { left: 0, top: 0, width: 0, height: 0 },
+    focus: { left: 0, top: 0, width: 0, height: 0 }
   };
 
   private resolveRegions(): Regions|null {
@@ -852,11 +854,17 @@ class HelpBackdropController {
         top: positioning.top - window.pageYOffset,
         width: positioning.left,
         height: positioning.height
+      },
+      focus: {
+        left: positioning.left,
+        top: positioning.top - window.pageYOffset,
+        width: positioning.width,
+        height: positioning.height
       }
     };
   }
 
-  private static calculateFocusPositioning(story: Story): Positioning|null {
+  private static calculateFocusPositioning(story: Story) {
 
     if (!story || !story.focus) {
       return null;
@@ -961,6 +969,7 @@ interface Regions {
   right: Positioning;
   bottom: Positioning;
   left: Positioning;
+  focus: Positioning;
 }
 
 function isNumberInMargin(margin: number, lhs?: number, rhs?: number) {

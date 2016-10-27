@@ -63,6 +63,7 @@ export interface StoryDetails {
   focus?: {
     element: () => JQuery,
     margin?: { top?: number, right?: number, bottom?: number, left?: number }
+    denyInteraction?: boolean
   };
   nextCondition: NextCondition;
   initialInputValue?: {
