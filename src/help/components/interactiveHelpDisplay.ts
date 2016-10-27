@@ -304,8 +304,7 @@ class InteractiveHelpController implements DimensionsProvider {
     function isImplicitlyReversible(condition: NextCondition) {
       switch (condition.type) {
         case 'explicit':
-        case 'valid-input':
-        case 'element-exists':
+        case 'expected-state':
           return true;
         case 'click':
         case 'modifying-click':
@@ -379,16 +378,6 @@ class InteractiveHelpController implements DimensionsProvider {
     }
   }
 
-  get validationNgModel() {
-    const item = this.item;
-
-    if (!item || item.type !== 'story' || item.nextCondition.type !== 'valid-input') {
-      throw new Error('No ng-model for current item');
-    }
-
-    return item.nextCondition.element().controller('ngModel');
-  }
-
   isValid() {
 
     if (!this.item) {
@@ -403,11 +392,8 @@ class InteractiveHelpController implements DimensionsProvider {
           case 'navigating-click':
           case 'modifying-click':
             return true;
-          case 'valid-input':
-            return this.validationNgModel.$valid && !this.validationNgModel.$pending;
-          case 'element-exists':
-            const element = this.item.nextCondition.element();
-            return element && element.length > 0;
+          case 'expected-state':
+            return this.item.nextCondition.valid();
           default:
             return assertNever(this.item.nextCondition, 'Unknown next condition');
         }
