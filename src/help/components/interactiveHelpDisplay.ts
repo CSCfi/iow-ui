@@ -4,7 +4,7 @@ import { IScope, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever, requireDefined, areEqual } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
-import { isTargetElementInsideElement, nextUrl, hasFixedPositioningParent } from '../../utils/angular';
+import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
 import { InteractiveHelpService } from '../services/interactiveHelpService';
 import {
   NextCondition, Story, Notification, Click, ModifyingClick,
@@ -554,11 +554,16 @@ class HelpPopoverController {
       }
     };
 
-    const storyPopoverPositioning = () => this.item && this.item.type === 'story' && elementPositioning(this.item.popover.element());
+    const storyPopoverPositioning = () => (this.item && this.item.type === 'story') ? elementPositioning(this.item.popover.element()) : null;
 
     $scope.$watch(() => this.helpController.getDimensions(), setItemStyles, true);
     $scope.$watch(() => this.item, setItemStyles);
-    $scope.$watch(storyPopoverPositioning, setItemStyles, true);
+    $scope.$watch(storyPopoverPositioning, (newPos, oldPos) => {
+      // Additional check for sub-pixel fluctuation caused by float (fixed style)
+      if (!isPositionInMargin(1, newPos, oldPos)) {
+        setItemStyles();
+      }
+    }, true);
 
     window.addEventListener('resize', setItemStyles);
 
@@ -579,11 +584,16 @@ class HelpPopoverController {
         const positioning = this.calculatePositioning();
 
         if (positioning && positioning.width > 0) {
+
+          // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
+          const shouldScroll = !isPositionInMargin(50, positioning, this.positioning);
           this.positioning = positioning;
 
           // apply positioning before applying content, content is applied in the middle of animation
           setTimeout(() => {
-            this.scrollTo();
+            if (shouldScroll) {
+              this.scrollTo();
+            }
             this.$scope.$apply(() => {
               this.title = this.item.title;
               this.content = this.item.content;
@@ -961,4 +971,17 @@ interface Regions {
   right: Positioning;
   bottom: Positioning;
   left: Positioning;
+}
+
+function isNumberInMargin(margin: number, lhs?: number, rhs?: number) {
+  return areEqual(lhs, rhs, (l, r) => r >= (l - margin) && r <= (l + margin));
+}
+
+function isPositionInMargin(margin: number, lhs: Positioning|null, rhs: Positioning|null) {
+  return areEqual(lhs, rhs, (l, r) =>
+    isNumberInMargin(margin, l.width, r.width) &&
+    isNumberInMargin(margin, l.height, r.height) &&
+    isNumberInMargin(margin, l.left, r.left) &&
+    isNumberInMargin(margin, l.top, r.top)
+  );
 }
