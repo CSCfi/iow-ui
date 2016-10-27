@@ -574,7 +574,7 @@ class HelpPopoverController {
         this.debounceHandle = null;
 
         // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
-        const shouldScroll = this.item.type !== 'notification' && !isPositionInMargin(80, positioning, this.positioning);
+        const shouldScroll = this.item.type === 'notification' || !isPositionInMargin(80, positioning, this.positioning);
         this.positioning = positioning;
 
         // apply positioning before applying content, content is applied in the middle of animation
@@ -598,9 +598,9 @@ class HelpPopoverController {
     const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
 
     if (this.item.type === 'story' && this.positioning) {
-      const popoverOnTop = this.item.type === 'story' && (this.item.popover.position === 'top-right' || this.item.popover.position === 'top-left');
-      const scrollTo = this.positioning.top - (popoverOnTop ? 600 : 100);
-      angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
+      angular.element(scrollElement).animate({ scrollTop: this.positioning.top - 100 }, 100);
+    } else {
+      angular.element(scrollElement).animate({ scrollTop: 0 }, 100);
     }
   }
 
