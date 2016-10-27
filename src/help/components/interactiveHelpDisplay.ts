@@ -518,6 +518,7 @@ class HelpPopoverController {
   positioning: Positioning|null = null;
 
   debounceHandle: any;
+  popoverPositionRetryCount = 0;
 
   constructor(private $scope: IScope, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
 
@@ -553,33 +554,43 @@ class HelpPopoverController {
 
     if (this.debounceHandle) {
       clearTimeout(this.debounceHandle);
+    } else {
+      this.popoverPositionRetryCount = 0;
     }
 
     this.debounceHandle = setTimeout(() => {
-      this.debounceHandle = null;
-      this.$scope.$apply(() => {
-        const positioning = this.calculatePositioning();
 
-        if (positioning) {
-          // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
-          const shouldScroll = this.item.type !== 'notification' && !isPositionInMargin(80, positioning, this.positioning);
-          this.positioning = positioning;
+      const positioning = this.calculatePositioning();
 
-          // apply positioning before applying content, content is applied in the middle of animation
-          setTimeout(() => {
-            if (shouldScroll) {
-              this.scrollTo();
-            }
-            this.$scope.$apply(() => {
-              this.title = this.item.title;
-              this.content = this.item.content;
-              this.showNext = this.helpController.showNext;
-              this.showPrevious = this.helpController.showPrevious;
-              this.showClose = this.helpController.showClose;
-            });
-          }, popupAnimationTimeInMs / 2);
+      if (!positioning) {
+        this.popoverPositionRetryCount++;
+
+        if (this.popoverPositionRetryCount > 20) {
+          throw new Error('Popover element does not exist');
+        } else {
+          this.debouncePositionUpdate();
         }
-      });
+      } else {
+        this.debounceHandle = null;
+
+        // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
+        const shouldScroll = this.item.type !== 'notification' && !isPositionInMargin(80, positioning, this.positioning);
+        this.positioning = positioning;
+
+        // apply positioning before applying content, content is applied in the middle of animation
+        setTimeout(() => {
+          if (shouldScroll) {
+            this.scrollTo();
+          }
+          this.$scope.$apply(() => {
+            this.title = this.item.title;
+            this.content = this.item.content;
+            this.showNext = this.helpController.showNext;
+            this.showPrevious = this.helpController.showPrevious;
+            this.showClose = this.helpController.showClose;
+          });
+        }, popupAnimationTimeInMs / 2);
+      }
     }, 100);
   }
 
@@ -600,7 +611,7 @@ class HelpPopoverController {
   private calculatePositioning(): Positioning|null {
 
     if (!this.item) {
-      return null;
+      throw new Error('Item does not exist');
     }
 
     switch (this.item.type) {
