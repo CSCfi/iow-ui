@@ -18,6 +18,7 @@ import { FrameService } from '../../services/frameService';
 import * as frames from '../../entities/frames';
 import { VocabularyService } from '../../services/vocabularyService';
 import { identity } from '../../utils/function';
+import { flatten } from '../../utils/array';
 
 export class InteractiveHelpClassService implements ClassService, ResetableService {
 
@@ -63,19 +64,19 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
   }
 
   getAllClasses(model: Model): IPromise<ClassListItem[]> {
-    return this.defaultClassService.getAllClasses(model);
+    return this.$q.all([this.defaultClassService.getAllClasses(model), this.getClassesForModel(model)]).then(flatten);
   }
 
   getClassesForModel(model: Model): IPromise<ClassListItem[]> {
-    return this.defaultClassService.getClassesForModel(model);
+    return this.getClassesAssignedToModel(model);
   }
 
   getClassesForModelDataSource(modelProvider: () => Model): DataSource<ClassListItem> {
     return this.defaultClassService.getClassesForModelDataSource(modelProvider);
   }
 
-  getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]> {
-    return this.defaultClassService.getClassesAssignedToModel(model);
+  getClassesAssignedToModel(_model: Model): IPromise<ClassListItem[]> {
+    return this.$q.when(Array.from(this.classes.values()));
   }
 
   createClass(klass: Class): IPromise<any> {
