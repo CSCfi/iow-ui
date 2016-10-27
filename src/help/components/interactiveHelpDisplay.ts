@@ -585,8 +585,12 @@ class HelpPopoverController {
 
   scrollTo() {
     const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
-    const scrollTo = requireDefined(this.item).type === 'story' && this.positioning ? this.positioning.top - 100 : 0;
-    angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
+
+    if (this.item.type === 'story' && this.positioning) {
+      const popoverOnTop = this.item.type === 'story' && (this.item.popover.position === 'top-right' || this.item.popover.position === 'top-left');
+      const scrollTo = this.positioning.top - (popoverOnTop ? 600 : 100);
+      angular.element(scrollElement).animate({ scrollTop: scrollTo }, 100);
+    }
   }
 
   style() {
