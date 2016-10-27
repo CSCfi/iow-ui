@@ -18,7 +18,19 @@ export interface ConceptSearchResult {
   vocabulary: Vocabulary;
 }
 
-export class VocabularyService {
+export interface VocabularyService {
+  getAllVocabularies(): IPromise<Vocabulary[]>;
+  searchConcepts(vocabulary: Vocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[];
+  getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion>;
+  getConceptSuggestions(vocabularyId: Uri): IPromise<ConceptSuggestion[]>;
+  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri|null, lang: Language, model: Model): IPromise<Uri>;
+  getFintoConcept(id: Uri): IPromise<FintoConcept>;
+  getConceptsForModel(model: Model): IPromise<Concept[]>;
+  updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any>;
+  deleteConceptFromModel(concept: Concept, model: Model): IPromise<any>;
+}
+
+export class DefaultVocabularyService implements VocabularyService {
   /* @ngInject */
   constructor(private $http: IHttpService, private frameService: FrameService) {
   }

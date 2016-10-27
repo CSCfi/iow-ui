@@ -2,7 +2,7 @@ import { module as mod }  from './module';
 export default mod.name;
 
 import { ClassService, DefaultClassService } from './classService';
-import { VocabularyService } from './vocabularyService';
+import { VocabularyService, DefaultVocabularyService } from './vocabularyService';
 import { GroupService } from './groupService';
 import { LanguageService } from './languageService';
 import { LocationService } from './locationService';
@@ -30,7 +30,10 @@ mod.service('defaultClassService', DefaultClassService);
 mod.factory('classService', (interactiveHelpService: InteractiveHelpService, defaultClassService: ClassService, helpClassService: ClassService) =>
   proxyConditionallyToHelp(interactiveHelpService, defaultClassService, helpClassService));
 
-mod.service('vocabularyService', VocabularyService);
+mod.service('defaultVocabularyService', DefaultVocabularyService);
+mod.factory('vocabularyService', (interactiveHelpService: InteractiveHelpService, defaultVocabularyService: VocabularyService, helpVocabularyService: VocabularyService) =>
+  proxyConditionallyToHelp(interactiveHelpService, defaultVocabularyService, helpVocabularyService));
+
 mod.service('groupService', GroupService);
 mod.service('languageService', LanguageService);
 mod.service('locationService', LocationService);
