@@ -390,6 +390,10 @@ msgstr "Luokan yksilöivä curie tunniste"
 msgid "Class information"
 msgstr "Luokan tiedot"
 
+#: translations/help.html:31
+msgid "Class is here"
+msgstr "Luokan tiedot näkyvät täällä"
+
 #: translations/titles.html:18
 msgid "Class label"
 msgstr "Luokan nimi"
@@ -1164,6 +1168,10 @@ msgstr "Lisää nimiavaruus"
 #: translations/misc.html:193
 msgid "Imported namespaces"
 msgstr "Käytetyt nimiavaruudet"
+
+#: translations/help.html:30
+msgid "Imported namespaces are here"
+msgstr "Lisätyt nimiavaruudet näkyvät täällä"
 
 #: translations/misc.html:228
 msgid "In language"

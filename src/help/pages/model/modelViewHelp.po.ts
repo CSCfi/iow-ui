@@ -1,4 +1,7 @@
-import { createClickNextCondition, createStory, createModifyingClickNextCondition } from '../../contract';
+import {
+  createClickNextCondition, createStory, createModifyingClickNextCondition,
+  createExplicitNextCondition
+} from '../../contract';
 import { modelView, child } from '../../selectors';
 import { KnownModelType } from '../../../entities/type';
 
@@ -43,4 +46,19 @@ export const saveModelChanges = createStory({
   },
   focus: { element: saveModelChangesElement },
   nextCondition: createModifyingClickNextCondition(saveModelChangesElement)
+});
+
+const focusNamespacesElement = child(modelView, 'imported-namespaces-view editable-table');
+export const focusNamespaces = createStory({
+  title: 'Imported namespaces are here',
+  content: 'Diipadaa',
+  popover: {
+    element: focusNamespacesElement,
+    position: 'left-down'
+  },
+  focus: {
+    element: focusNamespacesElement,
+    denyInteraction: true
+  },
+  nextCondition: createExplicitNextCondition()
 });

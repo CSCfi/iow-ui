@@ -1,5 +1,5 @@
 import { child, classView } from '../../selectors';
-import { createStory, createModifyingClickNextCondition } from '../../contract';
+import { createStory, createModifyingClickNextCondition, createExplicitNextCondition } from '../../contract';
 
 const saveClassChangesElement = child(classView, 'button.save');
 export const saveClassChanges = createStory({
@@ -12,4 +12,18 @@ export const saveClassChanges = createStory({
   },
   focus: { element: saveClassChangesElement },
   nextCondition: createModifyingClickNextCondition(saveClassChangesElement)
+});
+
+const focusClassElement = child(classView, 'form');
+export const focusClass = createStory({
+  title: 'Class is here',
+  popover: {
+    element: focusClassElement,
+    position: 'top-right'
+  },
+  focus: {
+    element: focusClassElement,
+    denyInteraction: true
+  },
+  nextCondition: createExplicitNextCondition()
 });

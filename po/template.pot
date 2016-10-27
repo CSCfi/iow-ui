@@ -389,6 +389,10 @@ msgstr ""
 msgid "Class information"
 msgstr ""
 
+#: translations/help.html:31
+msgid "Class is here"
+msgstr ""
+
 #: translations/titles.html:18
 msgid "Class label"
 msgstr ""
@@ -1148,6 +1152,10 @@ msgstr ""
 
 #: translations/misc.html:193
 msgid "Imported namespaces"
+msgstr ""
+
+#: translations/help.html:30
+msgid "Imported namespaces are here"
 msgstr ""
 
 #: translations/misc.html:228

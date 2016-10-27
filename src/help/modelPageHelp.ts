@@ -17,7 +17,8 @@ import * as ClassView from './pages/model/classViewHelp.po';
 export const addNamespaceItems = [
   ModelView.requireNamespace,
   SearchNamespaceModal.filterForModel('jhs', 'julkis'),
-  SearchNamespaceModal.selectNamespace('jhs')
+  SearchNamespaceModal.selectNamespace('jhs'),
+  ModelView.focusNamespaces
 ];
 
 export function addNamespace(type: KnownModelType) {
@@ -44,9 +45,11 @@ export const specializeClassItems = [
   ModelPage.openAddResource('class'),
   SearchClassModal.filterForClass('jhs', 'Palvelu', 'palv'),
   SearchClassModal.selectClass('jhs', 'Palvelu'),
+  SearchClassModal.focusSelectedClass,
   SearchClassModal.confirmClassSelection,
   AddPropertiesFromClass.selectProperties('Select name and description', [palveluNimiId, palveluKuvausId]),
   AddPropertiesFromClass.confirmProperties(true),
+  ClassView.focusClass,
   ClassView.saveClassChanges
 ];
 

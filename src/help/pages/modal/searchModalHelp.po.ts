@@ -1,7 +1,7 @@
 import { modal, searchResult, child } from '../../selectors';
 import {
   createElementExistsNextCondition, createStory, createModifyingClickNextCondition,
-  createClickNextCondition
+  createClickNextCondition, createExplicitNextCondition
 } from '../../contract';
 import { initialInputValue } from '../../utils';
 
@@ -38,5 +38,24 @@ export function selectSearchResult(label: string, resultId: string, selectionNee
     focus: { element: selectResultElement },
     nextCondition: selectionNeedsConfirmation ? createClickNextCondition(selectResultElement)
                                               : createModifyingClickNextCondition(selectResultElement)
+  });
+}
+
+export function focusSearchResult(label: string, content?: string) {
+
+  const focusSearchResultElement = child(modal, '.search-selection');
+
+  return createStory({
+    title: label,
+    content: content,
+    popover: {
+      element: focusSearchResultElement,
+      position: 'left-down'
+    },
+    focus: {
+      element: focusSearchResultElement,
+      denyInteraction: true
+    },
+    nextCondition: createExplicitNextCondition()
   });
 }
