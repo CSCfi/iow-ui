@@ -1,6 +1,6 @@
 import { INgModelController } from 'angular';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case';
-import { any, removeMatching } from '../utils/array';
+import { any, removeMatching, contains } from '../utils/array';
 import { Property } from '../entities/class';
 
 export const editableMargin = { left: 20, right: 20 };
@@ -70,4 +70,14 @@ export const propertyIdIsSame = (l: string, r: string) => l.indexOf(r) !== -1 ||
 
 export function onlyProperties(properties: Property[], expectedProperties: string[]) {
   removeMatching(properties, property => !any(expectedProperties, uuid => propertyIdIsSame(uuid, property.internalId.uuid)));
+}
+
+export function moveCursorToEnd(input: JQuery) {
+  if (contains(['INPUT', 'TEXTAREA'], input.prop('tagName'))) {
+    const valueLength = input.val().length;
+    // ensures that cursor will be at the end of the input
+    if (!contains(['checkbox', 'radio'], input.attr('type'))) {
+      setTimeout(() => (input[0] as HTMLInputElement).setSelectionRange(valueLength, valueLength));
+    }
+  }
 }

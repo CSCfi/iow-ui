@@ -12,6 +12,7 @@ import {
 } from '../contract';
 import { contains } from '../../utils/array';
 import { ConfirmationModal } from '../../components/common/confirmationModal';
+import { moveCursorToEnd } from '../utils';
 
 const popupAnimationTimeInMs = 300; // should match css help-popover transition time
 const arrowHeight = 13;
@@ -842,14 +843,7 @@ class HelpBackdropController {
       const focusable = this.item.focus.element().find(focusableSelector).addBack(focusableSelector).eq(0);
 
       focusable.focus();
-
-      if (contains(['INPUT', 'TEXTAREA'], focusable.prop('tagName'))) {
-        const valueLength = focusable.val().length;
-        // ensures that cursor will be at the end of the input
-        if (!contains(['checkbox', 'radio'], focusable.attr('type'))) {
-          setTimeout(() => (focusable[0] as HTMLInputElement).setSelectionRange(valueLength, valueLength));
-        }
-      }
+      moveCursorToEnd(focusable);
     }
   }
 
