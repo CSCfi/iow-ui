@@ -167,7 +167,7 @@ msgstr ""
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:33
+#: translations/help.html:35
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -250,6 +250,10 @@ msgstr ""
 
 #: translations/misc.html:122
 msgid "Attribute information"
+msgstr ""
+
+#: translations/help.html:39
+msgid "Attribute is here"
 msgstr ""
 
 #: translations/titles.html:21
@@ -389,7 +393,7 @@ msgstr ""
 msgid "Class information"
 msgstr ""
 
-#: translations/help.html:36
+#: translations/help.html:38
 msgid "Class is here"
 msgstr ""
 
@@ -536,7 +540,7 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:34
+#: translations/help.html:36
 msgid "Confirm selection"
 msgstr ""
 
@@ -1106,7 +1110,7 @@ msgstr ""
 msgid "Guide through specializing a class"
 msgstr ""
 
-#: translations/help.html:32
+#: translations/help.html:34
 msgid "Help is open"
 msgstr ""
 
@@ -1162,7 +1166,7 @@ msgstr ""
 msgid "Imported namespaces"
 msgstr ""
 
-#: translations/help.html:35
+#: translations/help.html:37
 msgid "Imported namespaces are here"
 msgstr ""
 
@@ -1636,6 +1640,10 @@ msgstr ""
 msgid "Property information"
 msgstr ""
 
+#: translations/help.html:40
+msgid "Property is here"
+msgstr ""
+
 #: translations/titles.html:22
 msgid "Property label"
 msgstr ""
@@ -1801,6 +1809,10 @@ msgstr ""
 msgid "Search for jhs"
 msgstr ""
 
+#: translations/help.html:27
+msgid "Search for nimi"
+msgstr ""
+
 #: translations/help.html:25
 msgid "Search for palvelu"
 msgstr ""
@@ -1867,7 +1879,7 @@ msgstr ""
 msgid "Select class"
 msgstr ""
 
-#: translations/help.html:31
+#: translations/help.html:33
 msgid "Select concept suggest creation"
 msgstr ""
 
@@ -1879,19 +1891,23 @@ msgstr ""
 msgid "Select help topic"
 msgstr ""
 
-#: translations/help.html:27
+#: translations/help.html:28
 msgid "Select jhs"
 msgstr ""
 
-#: translations/help.html:29
+#: translations/help.html:31
 msgid "Select name and description"
 msgstr ""
 
-#: translations/help.html:30
+#: translations/help.html:32
 msgid "Select new creation"
 msgstr ""
 
-#: translations/help.html:28
+#: translations/help.html:30
+msgid "Select nimi"
+msgstr ""
+
+#: translations/help.html:29
 msgid "Select palvelu"
 msgstr ""
 

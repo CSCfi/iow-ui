@@ -168,7 +168,7 @@ msgstr "XML"
 msgid "Are you sure that you want to close dialog?"
 msgstr "Oletko varma, että haluat sulkea dialogin?"
 
-#: translations/help.html:33
+#: translations/help.html:35
 msgid "Are you sure that you want to close help?"
 msgstr "Oletko varma, että haluat sulkea ohjeen?"
 
@@ -256,6 +256,10 @@ msgstr "Attribuutin yksilöivä curie tunniste"
 #: translations/misc.html:122
 msgid "Attribute information"
 msgstr "Attribuutin tiedot"
+
+#: translations/help.html:39
+msgid "Attribute is here"
+msgstr "Attribuutin tiedot näkyvät täällä"
 
 #: translations/titles.html:21
 msgid "Attribute label"
@@ -390,7 +394,7 @@ msgstr "Luokan yksilöivä curie tunniste"
 msgid "Class information"
 msgstr "Luokan tiedot"
 
-#: translations/help.html:36
+#: translations/help.html:38
 msgid "Class is here"
 msgstr "Luokan tiedot näkyvät täällä"
 
@@ -537,7 +541,7 @@ msgstr "Ehdotettu termi käsitteelle"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: translations/help.html:34
+#: translations/help.html:36
 msgid "Confirm selection"
 msgstr "Hyväksy valinta"
 
@@ -1122,7 +1126,7 @@ msgstr "Nimiavaruuden lisäämisen ohjeistus"
 msgid "Guide through specializing a class"
 msgstr "Luokan erikoistamisen ohjeistus"
 
-#: translations/help.html:32
+#: translations/help.html:34
 msgid "Help is open"
 msgstr "Ohje on avattuna"
 
@@ -1177,7 +1181,7 @@ msgstr "Lisää nimiavaruus"
 msgid "Imported namespaces"
 msgstr "Käytetyt nimiavaruudet"
 
-#: translations/help.html:35
+#: translations/help.html:37
 msgid "Imported namespaces are here"
 msgstr "Lisätyt nimiavaruudet näkyvät täällä"
 
@@ -1654,6 +1658,10 @@ msgstr "Ominaisuuden yksilöivä tunniste"
 msgid "Property information"
 msgstr "Ominaisuuden tiedot"
 
+#: translations/help.html:40
+msgid "Property is here"
+msgstr "Ominaisuuden tiedot näkyvät täällä"
+
 #: translations/titles.html:22
 msgid "Property label"
 msgstr "Ominaisuuden nimi"
@@ -1818,6 +1826,10 @@ msgstr "Etsi yhteensopivuuden kuvauksista..."
 msgid "Search for jhs"
 msgstr "Etsi julkishallinnon tietokomponenttikirjastoa"
 
+#: translations/help.html:27
+msgid "Search for nimi"
+msgstr "Etsi nimi attribuuttia"
+
 #: translations/help.html:25
 msgid "Search for palvelu"
 msgstr "Etsi palvelu luokkaa"
@@ -1886,7 +1898,7 @@ msgstr "Valitse attribuutti tai assosiaatio"
 msgid "Select class"
 msgstr "Valitse luokka"
 
-#: translations/help.html:31
+#: translations/help.html:33
 msgid "Select concept suggest creation"
 msgstr "Ehdota uutta käsitettä sanastoon"
 
@@ -1898,19 +1910,23 @@ msgstr "Valitse ryhmä"
 msgid "Select help topic"
 msgstr "Valitse ohjeen aihe"
 
-#: translations/help.html:27
+#: translations/help.html:28
 msgid "Select jhs"
 msgstr "Valitse julkishallinnon tietokomponenttikirjasto"
 
-#: translations/help.html:29
+#: translations/help.html:31
 msgid "Select name and description"
 msgstr "Valitse attribuutit nimi ja kuvaus"
 
-#: translations/help.html:30
+#: translations/help.html:32
 msgid "Select new creation"
 msgstr "Valitse uuden luominen"
 
-#: translations/help.html:28
+#: translations/help.html:30
+msgid "Select nimi"
+msgstr "Valitse nimi"
+
+#: translations/help.html:29
 msgid "Select palvelu"
 msgstr "Valitse palvelu"
 

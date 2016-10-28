@@ -81,7 +81,7 @@ export const createNewClassItems = [
   ClassView.addProperty,
   SearchPredicateModal.filterForPredicate('jhs', 'Nimi', 'nimi'),
   SearchPredicateModal.selectPredicate('jhs', 'Nimi'),
-  SearchPredicateModal.focusSelectedPredicate,
+  SearchPredicateModal.focusSelectedAttribute,
   SearchPredicateModal.confirmPredicateSelection(true),
   ClassView.focusOpenProperty,
   ClassView.saveClassChanges
