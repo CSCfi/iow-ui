@@ -1,4 +1,4 @@
-import { IHttpPromise, IHttpService, IPromise } from 'angular';
+import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../config';
 import { Uri, Url } from '../entities/uri';
@@ -32,7 +32,7 @@ export interface VocabularyService {
 
 export class DefaultVocabularyService implements VocabularyService {
   /* @ngInject */
-  constructor(private $http: IHttpService, private frameService: FrameService) {
+  constructor(private $q: IQService, private $http: IHttpService, private frameService: FrameService) {
   }
 
   getAllVocabularies(): IPromise<Vocabulary[]> {
@@ -109,7 +109,15 @@ export class DefaultVocabularyService implements VocabularyService {
 
   getFintoConcept(id: Uri): IPromise<FintoConcept> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('concept'), {params: {uri: id.uri}})
-      .then(response => this.deserializeFintoConcept(response.data!, id.uri));
+      .then(response => {
+        // XXX: api should be fixed to return non success code when concept not found
+        // but this might not be relevant with ongoing term editor project
+        if (!response.data || !response.data['@graph']) {
+          return this.$q.reject();
+        } else {
+          return this.deserializeFintoConcept(response.data!, id.uri);
+        }
+      });
   }
 
   getConceptsForModel(model: Model): IPromise<Concept[]> {
