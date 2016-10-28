@@ -225,13 +225,13 @@ export class ModelPageHelpService {
 
     const result = [
       this.createHelp(model, addNamespace(model.normalizedType), null, false),
-      this.createHelp(model, createNewClass, exampleImportedLibrary.prefix, false),
-      this.createHelp(model, addAssociation, exampleImportedLibrary.prefix, true)
+      this.createHelp(model, createNewClass, exampleImportedLibrary.prefix, false)
     ];
 
     switch (model.normalizedType) {
       case 'profile':
         result.push(this.createHelp(model, specializeClass, exampleImportedLibrary.prefix, false));
+        result.push(this.createHelp(model, addAssociation, exampleImportedLibrary.prefix, true));
         break;
       case 'library':
         break;
