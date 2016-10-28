@@ -161,7 +161,7 @@ class SearchClassController implements SearchController<ClassListItem> {
       } else {
         this.createNewClass();
       }
-    } else if (item instanceof ClassListItem) {
+    } else if (item instanceof ClassListItem || item instanceof Class /* FIXME: help needs to accept full entities instead of list items */) {
       this.cannotConfirm = this.exclude(item);
 
       if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.toString())) {
