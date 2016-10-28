@@ -6,6 +6,7 @@ import {
 import { editableMargin, editableMultipleMargin, initialInputValue, validInput } from '../../../utils';
 import { KnownModelType } from '../../../../entities/type';
 import { upperCaseFirst } from 'change-case';
+import { exampleLibrary, exampleProfile } from '../../../entities';
 
 
 export function enterModelPrefix(type: KnownModelType) {
@@ -27,7 +28,7 @@ export function enterModelPrefix(type: KnownModelType) {
     },
     nextCondition: createExpectedStateNextCondition(validInput(enterModelPrefixInputElement)),
     reversible: true,
-    initialize: initialInputValue(enterModelPrefixInputElement, type === 'library' ? 'testi' : 'plv')
+    initialize: initialInputValue(enterModelPrefixInputElement, type === 'library' ? exampleLibrary.prefix : exampleProfile.prefix)
   });
 }
 
@@ -51,7 +52,7 @@ export function enterModelLabel(type: KnownModelType) {
     },
     nextCondition: createExpectedStateNextCondition(validInput(enterModelLabelInputElement)),
     reversible: true,
-    initialize: initialInputValue(enterModelLabelInputElement, type === 'library' ? 'Testikirjasto' : 'Palveluprofiili')
+    initialize: initialInputValue(enterModelLabelInputElement, type === 'library' ? exampleLibrary.name : exampleProfile.name)
   });
 }
 
