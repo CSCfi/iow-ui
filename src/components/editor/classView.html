@@ -4,7 +4,7 @@
       <selection-view model="ctrl.model" editable-controller="ctrl" show="ctrl.show">
         <selection-buttons>
           <a class="btn btn-default right" ng-show="ctrl.canAskForRights()" ng-href="{{ctrl.getGroup().homepage}}" target="_blank" translate>Ask for group rights</a>
-          <button type="button" class="btn btn-default right" ng-click="ctrl.addProperty()" ng-show="ctrl.isEditing()" uib-tooltip="{{'Add property' | translate}}">
+          <button type="button" class="btn btn-default right add-property" ng-click="ctrl.addProperty()" ng-show="ctrl.isEditing()" uib-tooltip="{{'Add property' | translate}}">
             <span class="glyphicon glyphicon-plus"></span>
           </button>
           <export ng-hide="ctrl.isEditing()" entity="ctrl.class" context="ctrl.model"></export>
