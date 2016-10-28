@@ -3,11 +3,11 @@
 import { ILogCall, ILogService, IQService } from 'angular';
 import { EntityLoader } from '../src/services/entityLoader';
 import { httpService } from './requestToAngularHttpService';
-import { PredicateService } from '../src/services/predicateService';
+import { DefaultPredicateService } from '../src/services/predicateService';
 import { DefaultModelService } from '../src/services/modelService';
-import { ClassService } from '../src/services/classService';
-import { UserService } from '../src/services/userService';
-import { VocabularyService } from '../src/services/vocabularyService';
+import { DefaultClassService } from '../src/services/classService';
+import { DefaultUserService } from '../src/services/userService';
+import { DefaultVocabularyService } from '../src/services/vocabularyService';
 import { ResetService } from '../src/services/resetService';
 import { FrameService } from '../src/services/frameService';
 
@@ -25,10 +25,10 @@ const log: ILogService = { debug: logFn, error: logFn, info: logFn, log: logFn, 
 const q = <IQService> require('q');
 const frameService = new FrameService(log);
 const modelService = new DefaultModelService(httpService, q, frameService);
-const predicateService = new PredicateService(httpService, q, frameService);
-const classService = new ClassService(httpService, q, predicateService, frameService);
-const userService = new UserService(httpService, frameService);
-const vocabularyService = new VocabularyService(httpService, frameService);
+const predicateService = new DefaultPredicateService(httpService, q, frameService);
+const classService = new DefaultClassService(httpService, q, predicateService, frameService);
+const userService = new DefaultUserService(httpService, frameService);
+const vocabularyService = new DefaultVocabularyService(httpService, q, frameService);
 const resetService = new ResetService(httpService);
 
 

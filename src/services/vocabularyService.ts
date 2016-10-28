@@ -32,7 +32,7 @@ export interface VocabularyService {
 
 export class DefaultVocabularyService implements VocabularyService {
   /* @ngInject */
-  constructor(private $q: IQService, private $http: IHttpService, private frameService: FrameService) {
+  constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
   }
 
   getAllVocabularies(): IPromise<Vocabulary[]> {
