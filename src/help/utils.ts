@@ -1,5 +1,7 @@
 import { INgModelController } from 'angular';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case';
+import { any, removeMatching } from '../utils/array';
+import { Property } from '../entities/class';
 
 export const editableMargin = { left: 20, right: 20 };
 export const editableSelectMargin =  Object.assign({}, editableMargin, { bottom: 15 });
@@ -63,4 +65,11 @@ export function classIdFromPrefixAndName(modelPrefix: string, name: string) {
 
 export function predicateIdFromPrefixAndName(modelPrefix: string, name: string) {
   return modelIdFromPrefix(modelPrefix) + '#' + lowerCaseFirst(name);
+}
+
+// XXX: api returns interesting {uuid}-{uuid} for which only first ui is stabile
+export const propertyIdIsSame = (l: string, r: string) => l.indexOf(r) !== -1 || r.indexOf(l) !== -1;
+
+export function onlyProperties(properties: Property[], expectedProperties: string[]) {
+  removeMatching(properties, property => !any(expectedProperties, uuid => propertyIdIsSame(uuid, property.internalId.uuid)));
 }

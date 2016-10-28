@@ -2,13 +2,10 @@ import { createStory, createExpectedStateNextCondition } from '../../../contract
 import { modalBody, child, modal } from '../../../selectors';
 import { confirm } from '../../modal/modalHelp.po';
 import { AddPropertiesFromClassModalController } from '../../../../components/editor/addPropertiesFromClassModal';
-import { arraysAreEqual, any, removeMatching } from '../../../../utils/array';
-import { getModalController } from '../../../utils';
+import { arraysAreEqual } from '../../../../utils/array';
+import { getModalController, propertyIdIsSame, onlyProperties } from '../../../utils';
 
 const selectPropertiesElement = modalBody;
-
-// XXX: api returns interesting {uuid}-{uuid} for which only first ui is stabile
-const propertyIdIsSame = (l: string, r: string) => l.indexOf(r) !== -1 || r.indexOf(l) !== -1;
 
 export function selectProperties(title: string, expectProperties?: string[]) {
 
@@ -34,7 +31,7 @@ export function selectProperties(title: string, expectProperties?: string[]) {
     initialize: () => {
       if (expectProperties) {
         const ctrl = getModalController<AddPropertiesFromClassModalController>();
-        removeMatching(ctrl.selectedProperties, property => !any(expectProperties, uuid => propertyIdIsSame(uuid, property.internalId.uuid)));
+        onlyProperties(ctrl.selectedProperties, expectProperties);
       }
     }
   });

@@ -1,4 +1,4 @@
-import { IQService, ILocationService, ui } from 'angular';
+import { IQService, ILocationService, IPromise, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
   StoryLine, InteractiveHelp, createNotification
@@ -19,6 +19,8 @@ import {
   exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
   exampleLibrary
 } from './entities';
+import { classIdFromPrefixAndName, onlyProperties } from './utils';
+import { Uri } from '../entities/uri';
 
 export const addNamespaceItems = [
   ModelView.requireNamespace,
@@ -44,16 +46,13 @@ export function addNamespace(type: KnownModelType) {
   };
 }
 
-const palveluNimiId = '6cfbd054-2bfc-4e92-8642-477b035f59ee';
-const palveluKuvausId = 'fe884237-f6e2-44ea-ac97-231516da4770';
-
 export const specializeClassItems = [
   ModelPage.openAddResource('class'),
   SearchClassModal.filterForClass(exampleImportedLibrary.prefix, exampleSpecializedClass.name, 'palv'),
   SearchClassModal.selectClass(exampleImportedLibrary.prefix, exampleSpecializedClass.name),
   SearchClassModal.focusSelectedClass,
   SearchClassModal.confirmClassSelection,
-  AddPropertiesFromClass.selectProperties('Select name and description', [palveluNimiId, palveluKuvausId]),
+  AddPropertiesFromClass.selectProperties('Select name and description', exampleSpecializedClass.properties),
   AddPropertiesFromClass.confirmProperties(true),
   ClassView.focusClass,
   ClassView.saveClassChanges
@@ -156,7 +155,28 @@ export class ModelPageHelpService {
 
       const addClasses = (newModel: Model) => {
         if (createClasses) {
-          return this.$q.when(newModel);
+
+          const resultPromises: IPromise<any>[] = [];
+          const shapeFromClassId = new Uri(classIdFromPrefixAndName(exampleImportedLibrary.prefix, exampleSpecializedClass.name), newModel.context);
+
+          resultPromises.push(
+            service.helpClassService.getClass(shapeFromClassId, newModel)
+              .then(klass => service.helpClassService.newShape(klass, newModel, false, 'fi'))
+              .then(shape => {
+                onlyProperties(shape.properties, exampleSpecializedClass.properties);
+                return shape;
+              })
+              .then(shape => service.helpClassService.createClass(shape))
+          );
+
+          resultPromises.push(
+            service.helpVocabularyService.createConceptSuggestion(newModel.vocabularies[0], exampleNewClass.name, exampleNewClass.comment, null, 'fi', newModel)
+              .then(suggestionId => service.helpClassService.newClass(newModel, exampleNewClass.name, suggestionId, 'fi'))
+              .then(klass => service.helpClassService.createClass(klass))
+          );
+
+          return this.$q.all(resultPromises).then(() => newModel);
+
         } else {
           return this.$q.when(newModel);
         }

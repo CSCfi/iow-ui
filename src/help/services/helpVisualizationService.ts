@@ -4,13 +4,14 @@ import { Model } from '../../entities/model';
 import { ClassVisualization } from '../../services/visualizationService';
 import { DefaultVisualizationService, VisualizationService } from '../../services/visualizationService';
 import { ResetableService } from './resetableService';
+import { InteractiveHelpClassService } from './helpClassService';
 
 export class InteractiveHelpVisualizationService implements VisualizationService, ResetableService {
 
   private modelPositions = new Map<string, ModelPositions>();
 
   /* @ngInject */
-  constructor(private $q: IQService, private defaultVisualizationService: DefaultVisualizationService) {
+  constructor(private $q: IQService, private defaultVisualizationService: DefaultVisualizationService, private helpClassService: InteractiveHelpClassService) {
   }
 
   reset(): IPromise<any> {
@@ -23,7 +24,7 @@ export class InteractiveHelpVisualizationService implements VisualizationService
     const savedPosition = this.modelPositions.get(model.id.uri);
     const position = savedPosition || this.defaultVisualizationService.newModelPositions(model);
 
-    return this.$q.when(new ClassVisualization([], position));
+    return this.$q.when(new ClassVisualization(Array.from(this.helpClassService.classes.values()), position));
   }
 
   updateModelPositions(model: Model, modelPositions: ModelPositions): IPromise<any> {

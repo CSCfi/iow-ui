@@ -92,7 +92,7 @@ export const enterDefinition = createStory({
     margin: editableMargin
   },
   nextCondition: createExpectedStateNextCondition(validInput(enterDefinitionInputElement)),
-  initialize: initialInputValue(enterDefinitionInputElement, 'asia joka tuotetaan'),
+  initialize: initialInputValue(enterDefinitionInputElement, 'asia joka tuotetaan'), // TODO should be parameter
   reversible: true
 });
 
