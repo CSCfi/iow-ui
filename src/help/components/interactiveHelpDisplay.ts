@@ -567,7 +567,7 @@ class HelpPopoverController {
         this.debounceHandle = null;
 
         // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
-        const shouldScroll = this.item.type === 'notification' || !isPositionInMargin(80, positioning, this.positioning);
+        const shouldScroll = this.item.type === 'notification' || !isPositionInMargin(95, positioning, this.positioning);
         this.positioning = positioning;
 
         // apply positioning before applying content, content is applied in the middle of animation
