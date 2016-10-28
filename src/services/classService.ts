@@ -44,7 +44,7 @@ export class DefaultClassService implements ClassService {
   private modelClassesCache = new Map<string, ClassListItem[]>();
 
   /* @ngInject */
-  constructor(private $http: IHttpService, private $q: IQService, private predicateService: PredicateService, private frameService: FrameService) {
+  constructor(private $http: IHttpService, private $q: IQService, private defaultPredicateService: PredicateService, private frameService: FrameService) {
   }
 
   getClass(id: Uri|Urn, model: Model): IPromise<Class> {
@@ -225,7 +225,7 @@ export class DefaultClassService implements ClassService {
   newProperty(predicateOrExternal: Predicate|ExternalEntity, type: KnownPredicateType, model: Model): IPromise<Property> {
 
     const id = requireDefined(predicateOrExternal.id);
-    const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.predicateService.getExternalPredicate(id, model) : this.$q.when(<Predicate> predicateOrExternal);
+    const predicatePromise = (predicateOrExternal instanceof ExternalEntity) ? this.defaultPredicateService.getExternalPredicate(id, model) : this.$q.when(<Predicate> predicateOrExternal);
 
     return this.$q.all([
       predicatePromise,

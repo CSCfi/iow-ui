@@ -17,7 +17,24 @@ import { PredicateListItem, Predicate, Attribute, Association } from '../entitie
 import { Model } from '../entities/model';
 import { typeSerializer } from '../entities/serializer/serializer';
 
-export class PredicateService {
+export interface PredicateService {
+  getPredicate(id: Uri|Urn, model?: Model): IPromise<Predicate>;
+  getAllPredicates(model: Model): IPromise<PredicateListItem[]>;
+  getPredicatesForModel(model: Model): IPromise<PredicateListItem[]>;
+  getPredicatesForModelDataSource(modelProvider: () => Model): DataSource<PredicateListItem>;
+  getPredicatesAssignedToModel(model: Model): IPromise<PredicateListItem[]>;
+  createPredicate(predicate: Predicate): IPromise<any>;
+  updatePredicate(predicate: Predicate, originalId: Uri): IPromise<any>;
+  deletePredicate(id: Uri, modelId: Uri): IPromise<any>;
+  assignPredicateToModel(predicateId: Uri, modelId: Uri): IPromise<any>;
+  newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri, type: KnownPredicateType, lang: Language): IPromise<T>;
+  changePredicateType(predicate: Attribute|Association, newType: KnownPredicateType, model: Model): IPromise<Attribute|Association>;
+  copyPredicate(predicate: Predicate|Uri, type: KnownPredicateType, model: Model): IPromise<Predicate>;
+  getExternalPredicate(externalId: Uri, model: Model): IPromise<Predicate>;
+  getExternalPredicatesForModel(model: Model): IPromise<PredicateListItem[]>;
+}
+
+export class DefaultPredicateService implements PredicateService {
 
   private modelPredicatesCache = new Map<string, PredicateListItem[]>();
 
@@ -154,7 +171,7 @@ export class PredicateService {
       });
   }
 
-  copyPredicate(predicate: Predicate|Uri, type: 'attribute' | 'association', model: Model) {
+  copyPredicate(predicate: Predicate|Uri, type: KnownPredicateType, model: Model) {
 
     function newEmptyPredicate(): Attribute|Association {
 

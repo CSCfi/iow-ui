@@ -9,7 +9,7 @@ import { LocationService } from './locationService';
 import { DefaultModelService, ModelService } from './modelService';
 import { DefaultVisualizationService, VisualizationService } from './visualizationService';
 import { ReferenceDataService } from './referenceDataService';
-import { PredicateService } from './predicateService';
+import { PredicateService, DefaultPredicateService } from './predicateService';
 import { SearchService } from './searchService';
 import { UsageService } from './usageService';
 import { UserService, DefaultUserService } from './userService';
@@ -48,7 +48,11 @@ mod.factory('visualizationService', (interactiveHelpService: InteractiveHelpServ
   proxyConditionallyToHelp(interactiveHelpService, defaultVisualizationService, helpVisualizationService));
 
 mod.service('referenceDataService', ReferenceDataService);
-mod.service('predicateService', PredicateService);
+
+mod.service('defaultPredicateService', DefaultPredicateService);
+mod.factory('predicateService', (interactiveHelpService: InteractiveHelpService, defaultPredicateService: PredicateService, helpPredicateService: PredicateService) =>
+  proxyConditionallyToHelp(interactiveHelpService, defaultPredicateService, helpPredicateService));
+
 mod.service('searchService', SearchService);
 mod.service('usageService', UsageService);
 
