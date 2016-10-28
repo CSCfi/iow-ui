@@ -1,3 +1,4 @@
+import { KnownPredicateType } from '../entities/type';
 export const exampleImportedLibrary = {
   prefix: 'jhs'
 };
@@ -17,7 +18,8 @@ export const exampleNewClass = {
   comment: 'asia joka tuotetaan',
   property: {
     prefix: exampleImportedLibrary.prefix,
-    name: 'Nimi'
+    name: 'Nimi',
+    type: 'attribute' as KnownPredicateType
   }
 };
 

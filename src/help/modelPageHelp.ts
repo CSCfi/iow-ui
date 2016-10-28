@@ -19,7 +19,7 @@ import {
   exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
   exampleLibrary
 } from './entities';
-import { classIdFromPrefixAndName, onlyProperties } from './utils';
+import { classIdFromPrefixAndName, onlyProperties, predicateIdFromPrefixAndName } from './utils';
 import { Uri } from '../entities/uri';
 
 export const addNamespaceItems = [
@@ -169,10 +169,18 @@ export class ModelPageHelpService {
               .then(shape => service.helpClassService.createClass(shape))
           );
 
-          resultPromises.push(
-            service.helpVocabularyService.createConceptSuggestion(newModel.vocabularies[0], exampleNewClass.name, exampleNewClass.comment, null, 'fi', newModel)
-              .then(suggestionId => service.helpClassService.newClass(newModel, exampleNewClass.name, suggestionId, 'fi'))
-              .then(klass => service.helpClassService.createClass(klass))
+          const propertyPromise = service.helpPredicateService.getPredicate(predicateIdFromPrefixAndName(exampleNewClass.property.prefix, exampleNewClass.property.name))
+            .then(predicate => service.helpClassService.newProperty(predicate, exampleNewClass.property.type, newModel));
+
+          const newClassPromise = service.helpVocabularyService.createConceptSuggestion(newModel.vocabularies[0], exampleNewClass.name, exampleNewClass.comment, null, 'fi', newModel)
+            .then(suggestionId => service.helpClassService.newClass(newModel, exampleNewClass.name, suggestionId, 'fi'));
+
+          resultPromises.push(this.$q.all([newClassPromise, propertyPromise])
+            .then(([klass, property]) => {
+              klass.addProperty(property);
+              return klass;
+            })
+            .then(klass => service.helpClassService.createClass(klass))
           );
 
           return this.$q.all(resultPromises).then(() => newModel);
