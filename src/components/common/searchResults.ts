@@ -85,8 +85,11 @@ class SearchResultsController<T extends WithId> {
   onSelect: ICompiledExpression;
   editInProgress: () => boolean;
 
-  constructor($scope: IScope, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
+  constructor($scope: IScope, $element: JQuery, private gettextCatalog: gettextCatalog, private confirmationModal: ConfirmationModal) {
     $scope.$watchCollection(() => this.items, items => {
+
+      $element.parents('.search-results').animate({ scrollTop: 0 }, 0);
+
       this.searchResults = items.map(item => {
         if (item instanceof AddNew) {
           return item;
