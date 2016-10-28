@@ -1,4 +1,4 @@
-import { IPromise, IQService, IHttpService } from 'angular';
+import { IPromise, IQService } from 'angular';
 import { ClassService } from '../../services/classService';
 import { Class, ClassListItem, Property } from '../../entities/class';
 import { Model } from '../../entities/model';
@@ -10,15 +10,12 @@ import { Predicate } from '../../entities/predicate';
 import { KnownPredicateType } from '../../entities/type';
 import { ResetableService } from './resetableService';
 import moment = require('moment');
-import { expandContextWithKnownModels } from '../../utils/entity';
 import { upperCaseFirst } from 'change-case';
-import { config } from '../../config';
-import { GraphData } from '../../entities/contract';
-import { FrameService } from '../../services/frameService';
 import * as frames from '../../entities/frames';
 import { VocabularyService } from '../../services/vocabularyService';
 import { identity } from '../../utils/function';
 import { flatten } from '../../utils/array';
+import { dateSerializer } from '../../entities/serializer/serializer';
 
 export class InteractiveHelpClassService implements ClassService, ResetableService {
 
@@ -39,11 +36,9 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
 
 
   /* @ngInject */
-  constructor(private $http: IHttpService,
-              private $q: IQService,
+  constructor(private $q: IQService,
               private defaultClassService: ClassService,
-              private helpVocabularyService: VocabularyService,
-              private frameService: FrameService) {
+              private helpVocabularyService: VocabularyService) {
   }
 
 
@@ -104,36 +99,36 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
 
-    const temporaryKnownConcept = 'http://jhsmeta.fi/skos/J187';
-    const temporaryKnownModelId = model.id.withName('jhs');
+    return this.$q.all([
+      this.helpVocabularyService.getConceptSuggestion(conceptID).then(identity, _err => null),
+      this.helpVocabularyService.getFintoConcept(conceptID).then(identity, _err => null)
+    ])
+      .then(([suggestion, fintoConcept]) => {
 
-    return this.helpVocabularyService.getConceptSuggestion(conceptID)
-      .then(identity, _err => null)
-      .then(suggestion => {
+        const concept = suggestion || fintoConcept;
 
-        const params = {
-          modelID: temporaryKnownModelId.uri,
-          classLabel: upperCaseFirst(classLabel),
-          conceptID: suggestion ? temporaryKnownConcept : conceptID,
-          lang
+        if (!concept) {
+          throw new Error('Concept not found');
+        }
+
+        const currentTime = dateSerializer.serialize(moment());
+
+        const graph = {
+          '@id': model.namespace + upperCaseFirst(classLabel.replace(' ', '')),
+          '@type': 'rdfs:Class',
+          created: currentTime,
+          modified: currentTime,
+          subject: concept.serialize(true, false),
+          label: { [lang]: upperCaseFirst(classLabel) },
+          comment: Object.assign({}, concept.comment),
+          isDefinedBy: model.asDefinedBy().serialize(true, false),
+          versionInfo: 'Unstable'
         };
 
-        return this.$http.get<GraphData>(config.apiEndpointWithName('classCreator'), { params })
-          .then(expandContextWithKnownModels(model))
-          .then((response: any) => this.deserializeClass(response.data!))
-          .then((klass: Class) => {
-            klass.id = new Uri(model.namespace + klass.id.name, klass.context);
-            klass.definedBy = model.asDefinedBy();
-            klass.unsaved = true;
-            klass.external = model.isNamespaceKnownToBeNotModel(klass.definedBy.id.toString());
-
-            if (suggestion) {
-              klass.subject = suggestion;
-              klass.comment = Object.assign({}, suggestion.comment);
-            }
-
-            return klass;
-          });
+        const context = Object.assign({}, model.context, { [model.prefix]: model.namespace });
+        const newClass = new Class(graph, context, frames.classFrame(graph));
+        newClass.unsaved = true;
+        return newClass;
       });
   }
 
@@ -159,9 +154,5 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
 
   getInternalOrExternalClass(id: Uri, model: Model): IPromise<Class> {
     return this.defaultClassService.getInternalOrExternalClass(id, model);
-  }
-
-  private deserializeClass(data: GraphData): IPromise<Class> {
-    return this.frameService.frameAndMap(data, true, frames.classFrame(data), () => Class);
   }
 }
