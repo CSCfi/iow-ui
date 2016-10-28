@@ -47,10 +47,8 @@ export function initialInputValue(element: () => JQuery, value: string) {
     if (!initialInputNgModel) {
       throw new Error('ng-model does not exits for initial input');
     } else {
-      if (!initialInputNgModel.$viewValue) {
-        initialInputNgModel.$setViewValue(value);
-        initialInputNgModel.$render();
-      }
+      initialInputNgModel.$setViewValue(value);
+      initialInputNgModel.$render();
     }
   };
 }
