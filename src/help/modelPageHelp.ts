@@ -83,6 +83,7 @@ export const createNewClassItems = [
   SearchPredicateModal.selectPredicate('jhs', 'Nimi'),
   SearchPredicateModal.focusSelectedPredicate,
   SearchPredicateModal.confirmPredicateSelection(true),
+  ClassView.focusOpenProperty,
   ClassView.saveClassChanges
 ];
 

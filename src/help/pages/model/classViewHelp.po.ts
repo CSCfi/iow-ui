@@ -41,3 +41,18 @@ export const addProperty = createStory({
   focus: { element: addPropertyElement },
   nextCondition: createClickNextCondition(addPropertyElement)
 });
+
+const focusOpenPropertyElement = child(classView, 'property-view div[ng-if="ctrl.isOpen()"]');
+export const focusOpenProperty = createStory({
+  title: 'Property is here',
+  popover: {
+    element: focusOpenPropertyElement,
+    position: 'top-right'
+  },
+  focus: {
+    element: focusOpenPropertyElement,
+    denyInteraction: true,
+    margin: { left: 10, right: 10, top: 10, bottom: 10 }
+  },
+  nextCondition: createExplicitNextCondition()
+});
