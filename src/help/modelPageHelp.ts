@@ -11,6 +11,7 @@ import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
 import * as SearchNamespaceModal from './pages/model/modal/searchNamepaceModalHelp.po';
 import * as SearchClassModal from './pages/model/modal/searchClassModalHelp.po';
+import * as SearchPredicateModal from './pages/model/modal/searchPredicateModalHelp.po';
 import * as AddPropertiesFromClass from './pages/model/modal/addPropertiesFromClassModalHelp.po';
 import * as ClassView from './pages/model/classViewHelp.po';
 import * as SearchConceptModal from './pages/model/modal/searchConceptModalHelp.po';
@@ -69,7 +70,7 @@ export const specializeClass = {
 export const createNewClassItems = [
   ModelPage.openAddResource('class'),
   SearchClassModal.filterForNewClass('Tuote'),
-  SearchClassModal.addNewClassSearchResult,
+  SearchClassModal.selectAddNewClassSearchResult,
   SearchConceptModal.filterForConceptSuggestionConcept('Tuote'),
   SearchConceptModal.addConceptSuggestionSearchResult,
   SearchConceptModal.enterVocabulary,
@@ -77,6 +78,11 @@ export const createNewClassItems = [
   SearchConceptModal.enterDefinition,
   SearchConceptModal.confirmConceptSelection,
   ClassView.focusClass,
+  ClassView.addProperty,
+  SearchPredicateModal.filterForPredicate('jhs', 'Nimi', 'nimi'),
+  SearchPredicateModal.selectPredicate('jhs', 'Nimi'),
+  SearchPredicateModal.focusSelectedPredicate,
+  SearchPredicateModal.confirmPredicateSelection(true),
   ClassView.saveClassChanges
 ];
 

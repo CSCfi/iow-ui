@@ -1,4 +1,5 @@
 import { INgModelController } from 'angular';
+import { upperCaseFirst, lowerCaseFirst } from 'change-case';
 
 export const editableMargin = { left: 20, right: 20 };
 export const editableSelectMargin =  Object.assign({}, editableMargin, { bottom: 15 });
@@ -54,4 +55,12 @@ export function initialInputValue(element: () => JQuery, value: string) {
 
 export function modelIdFromPrefix(modelPrefix: string) {
   return `http://iow.csc.fi/ns/${modelPrefix}`;
+}
+
+export function classIdFromPrefixAndName(modelPrefix: string, name: string) {
+  return modelIdFromPrefix(modelPrefix) + '#' + upperCaseFirst(name);
+}
+
+export function predicateIdFromPrefixAndName(modelPrefix: string, name: string) {
+  return modelIdFromPrefix(modelPrefix) + '#' + lowerCaseFirst(name);
 }

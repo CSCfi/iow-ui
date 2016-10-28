@@ -1,24 +1,21 @@
 import { confirm } from '../../modal/modalHelp.po';
 import {
   filterForSearchResult, selectSearchResult, focusSearchSelection,
-  textSearchElement
+  textSearchElement, searchResultsElement
 } from '../../modal/searchModalHelp.po';
 import { modal, child, first } from '../../../selectors';
 import {
   createStory, createExpectedStateNextCondition,
-  createClickNextCondition
+  createClickNextCondition, createScrollWithElement
 } from '../../../contract';
-import { initialInputValue, inputHasExactValue } from '../../../utils';
+import { initialInputValue, inputHasExactValue, classIdFromPrefixAndName } from '../../../utils';
 
 const searchClassModal = child(modal, '.search-class');
 const searchClassModalTextSearchElement = textSearchElement(searchClassModal);
-
-function resourceIdFromPrefixAndName(modelPrefix: string, name: string) {
-  return `http://iow.csc.fi/ns/${modelPrefix}#${name}`;
-}
+const searchClassResultsElement = searchResultsElement(searchClassModal);
 
 export function filterForClass(modelPrefix: string, className: string, initialSearch: string) {
-  return filterForSearchResult(searchClassModal, className.toLowerCase(), resourceIdFromPrefixAndName(modelPrefix, className), initialSearch);
+  return filterForSearchResult(searchClassModal, className.toLowerCase(), classIdFromPrefixAndName(modelPrefix, className), initialSearch);
 }
 
 export function filterForNewClass(className: string) {
@@ -33,24 +30,26 @@ export function filterForNewClass(className: string) {
     },
     focus: { element: searchClassModalTextSearchElement },
     nextCondition: createExpectedStateNextCondition(inputHasExactValue(searchClassModalTextSearchElement, className)),
-    initialize: initialInputValue(searchClassModalTextSearchElement, className)
+    initialize: initialInputValue(searchClassModalTextSearchElement, className),
+    reversible: true
   });
 }
 
 export function selectClass(modelPrefix: string, className: string) {
-  return selectSearchResult(searchClassModal, className.toLowerCase(), resourceIdFromPrefixAndName(modelPrefix, className), true);
+  return selectSearchResult(searchClassModal, className.toLowerCase(), classIdFromPrefixAndName(modelPrefix, className), true);
 }
 
-const addNewClassSearchResultElement = first(child(searchClassModal, '.search-result.add-new'));
-export const addNewClassSearchResult = createStory({
+const selectAddNewClassSearchResultElement = first(child(searchClassResultsElement, '.search-result.add-new'));
+export const selectAddNewClassSearchResult = createStory({
   title: 'Select new creation',
   content: 'Diipadaa',
   popover: {
-    element: addNewClassSearchResultElement,
-    position: 'bottom-right'
+    element: selectAddNewClassSearchResultElement,
+    position: 'bottom-right',
+    scroll: createScrollWithElement(searchClassResultsElement, 0)
   },
-  focus: { element: addNewClassSearchResultElement },
-  nextCondition: createClickNextCondition(addNewClassSearchResultElement)
+  focus: { element: selectAddNewClassSearchResultElement },
+  nextCondition: createClickNextCondition(selectAddNewClassSearchResultElement)
 });
 
 export const focusSelectedClass = focusSearchSelection(searchClassModal, 'Class is here', 'Diipadaa');

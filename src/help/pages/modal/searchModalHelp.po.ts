@@ -1,12 +1,13 @@
 import { searchResult, child } from '../../selectors';
 import {
   createStory, createModifyingClickNextCondition,
-  createClickNextCondition, createExplicitNextCondition, createExpectedStateNextCondition
+  createClickNextCondition, createExplicitNextCondition, createExpectedStateNextCondition, createScrollWithElement
 } from '../../contract';
 import { initialInputValue, elementExists } from '../../utils';
 
 export const textSearchElement = (modalParent: () => JQuery) => child(modalParent, 'text-filter input');
 export const searchSelectionElement = (modalParent: () => JQuery) => child(modalParent, '.search-selection');
+export const searchResultsElement = (modalParent: () => JQuery) => child(modalParent, '.search-results');
 
 export function filterForSearchResult(modalParent: () => JQuery, label: string, expectedResultId: string, initialSearch: string) {
 
@@ -22,7 +23,8 @@ export function filterForSearchResult(modalParent: () => JQuery, label: string, 
     },
     focus: { element: filterForSearchResultTextSearchElement },
     nextCondition: createExpectedStateNextCondition(elementExists(searchResult(modalParent, expectedResultId))),
-    initialize: initialInputValue(filterForSearchResultTextSearchElement, initialSearch)
+    initialize: initialInputValue(filterForSearchResultTextSearchElement, initialSearch),
+    reversible: true
   });
 }
 
@@ -36,11 +38,13 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
     content: 'Diipadaa',
     popover: {
       element: selectResultElement,
-      position: 'left-down'
+      position: 'left-down',
+      scroll: createScrollWithElement(searchResultsElement(modalParent), 200)
     },
     focus: { element: selectResultElement },
     nextCondition: selectionNeedsConfirmation ? createClickNextCondition(selectResultElement)
-                                              : createModifyingClickNextCondition(selectResultElement)
+                                              : createModifyingClickNextCondition(selectResultElement),
+    reversible: selectionNeedsConfirmation
   });
 }
 

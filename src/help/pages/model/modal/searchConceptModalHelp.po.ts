@@ -2,15 +2,17 @@ import { confirm } from '../../modal/modalHelp.po';
 import { modal, child, first, editableByTitle, input, editableFocus } from '../../../selectors';
 import {
   createStory, createExpectedStateNextCondition,
-  createClickNextCondition
+  createClickNextCondition, createScrollWithElement
 } from '../../../contract';
 import {
   initialInputValue, inputHasExactValue, validInput,
   editableSelectMargin, editableMargin
 } from '../../../utils';
+import { searchResultsElement } from '../../modal/searchModalHelp.po';
 
 const searchConceptModal = child(modal, '.search-concept');
 const conceptTextSearchElement = child(searchConceptModal, 'text-filter input');
+const searchConceptResultsElement = searchResultsElement(searchConceptModal);
 
 export function filterForConceptSuggestionConcept(conceptName: string) {
   return createStory({
@@ -27,13 +29,14 @@ export function filterForConceptSuggestionConcept(conceptName: string) {
   });
 }
 
-const addConceptSuggestionSearchResultElement = first(child(searchConceptModal, '.search-result.add-new'));
+const addConceptSuggestionSearchResultElement = first(child(searchConceptResultsElement, '.search-result.add-new'));
 export const addConceptSuggestionSearchResult = createStory({
   title: 'Select concept suggest creation',
   content: 'Diipadaa',
   popover: {
     element: addConceptSuggestionSearchResultElement,
-    position: 'bottom-right'
+    position: 'bottom-right',
+    scroll: createScrollWithElement(searchConceptResultsElement, 0)
   },
   focus: { element: addConceptSuggestionSearchResultElement },
   nextCondition: createClickNextCondition(addConceptSuggestionSearchResultElement)
