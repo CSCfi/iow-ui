@@ -212,7 +212,7 @@ class InteractiveHelpController implements DimensionsProvider {
       }
 
     } else {
-      if (event.shiftKey && this.canMoveToPrevious()) {
+      if (event.shiftKey) {
         moveToPreviousIfPossible();
       } else {
         moveToNextIfPossible();
