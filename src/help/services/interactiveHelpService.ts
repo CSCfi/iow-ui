@@ -5,6 +5,8 @@ import { InteractiveHelpVisualizationService } from './helpVisualizationService'
 import { InteractiveHelpUserService } from './helpUserService';
 import { InteractiveHelpClassService } from './helpClassService';
 import { InteractiveHelpVocabularyService } from './helpVocabularyService';
+import { InteractiveHelpPredicateService } from './helpPredicateService';
+import { InteractiveHelpValidatorService } from './helpValidatorService';
 
 export class InteractiveHelpService implements ResetableService {
 
@@ -18,14 +20,18 @@ export class InteractiveHelpService implements ResetableService {
               public helpVisualizationService: InteractiveHelpVisualizationService,
               public helpUserService: InteractiveHelpUserService,
               public helpClassService: InteractiveHelpClassService,
-              public helpVocabularyService: InteractiveHelpVocabularyService) {
+              public helpPredicateService: InteractiveHelpPredicateService,
+              public helpVocabularyService: InteractiveHelpVocabularyService,
+              public helpValidatorService: InteractiveHelpValidatorService) {
 
     this.helpServices = [
       helpModelService,
       helpVisualizationService,
       helpUserService,
       helpClassService,
-      helpVocabularyService
+      helpPredicateService,
+      helpVocabularyService,
+      helpValidatorService
     ];
   }
 
