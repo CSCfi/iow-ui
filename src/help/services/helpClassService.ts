@@ -22,7 +22,7 @@ import { flatten } from '../../utils/array';
 
 export class InteractiveHelpClassService implements ClassService, ResetableService {
 
-  private classes = new Map<string, Class>();
+  classes = new Map<string, Class>();
 
   // With IE9 proxy-polyfill there cannot be any prototype methods not part of public api
   private getClassesByPredicate = (predicate: (klass: Class) => boolean) => {

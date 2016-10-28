@@ -13,7 +13,7 @@ import { PredicateService } from './predicateService';
 import { SearchService } from './searchService';
 import { UsageService } from './usageService';
 import { UserService, DefaultUserService } from './userService';
-import { ValidatorService } from './validatorService';
+import { DefaultValidatorService, ValidatorService } from './validatorService';
 import { HistoryService } from './historyService';
 import { EntityLoaderService } from './entityLoader';
 import { ResetService } from './resetService';
@@ -21,6 +21,7 @@ import { SessionService } from './sessionService';
 import { FrameService } from './frameService';
 import { proxyToInstance } from '../utils/proxy';
 import { InteractiveHelpService } from '../help/services/interactiveHelpService';
+import { InteractiveHelpValidatorService } from '../help/services/helpValidatorService';
 
 function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpService, defaultService: T, helpService: T) {
   return proxyToInstance(() => interactiveHelpService.open ? helpService : defaultService);
@@ -55,7 +56,10 @@ mod.service('defaultUserService', DefaultUserService);
 mod.factory('userService', (interactiveHelpService: InteractiveHelpService, defaultUserService: UserService, helpUserService: UserService) =>
   proxyConditionallyToHelp(interactiveHelpService, defaultUserService, helpUserService));
 
-mod.service('validatorService', ValidatorService);
+mod.service('defaultValidatorService', DefaultValidatorService);
+mod.service('validatorService', (interactiveHelpService: InteractiveHelpService, defaultValidatorService: ValidatorService, helpValidatorService: InteractiveHelpValidatorService) =>
+  proxyConditionallyToHelp(interactiveHelpService, defaultValidatorService, helpValidatorService));
+
 mod.service('historyService', HistoryService);
 mod.service('resetService', ResetService);
 mod.service('entityLoaderService', EntityLoaderService);

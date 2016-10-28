@@ -3,7 +3,12 @@ import { Uri } from '../entities/uri';
 import { pascalCase, camelCase } from 'change-case';
 import { config } from '../config';
 
-export class ValidatorService {
+export interface ValidatorService {
+  classDoesNotExist(id: Uri): IPromise<boolean>;
+  predicateDoesNotExist(id: Uri): IPromise<boolean>;
+}
+
+export class DefaultValidatorService implements DefaultValidatorService {
   /* @ngInject */
   constructor(private $q: IQService, private $http: IHttpService) {
   }

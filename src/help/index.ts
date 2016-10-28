@@ -7,6 +7,7 @@ import { InteractiveHelpClassService } from './services/helpClassService';
 import { InteractiveHelpUserService } from './services/helpUserService';
 import { InteractiveHelpVocabularyService } from './services/helpVocabularyService';
 import { InteractiveHelpVisualizationService } from './services/helpVisualizationService';
+import { InteractiveHelpValidatorService } from './services/helpValidatorService';
 
 import { FrontPageHelpService } from './frontPageHelp';
 import { GroupPageHelpService } from './groupPageHelp';
@@ -20,6 +21,7 @@ mod.service('helpClassService', InteractiveHelpClassService);
 mod.service('helpUserService', InteractiveHelpUserService);
 mod.service('helpVocabularyService', InteractiveHelpVocabularyService);
 mod.service('helpVisualizationService', InteractiveHelpVisualizationService);
+mod.service('helpValidatorService', InteractiveHelpValidatorService);
 
 mod.service('frontPageHelpService', FrontPageHelpService);
 mod.service('groupPageHelpService', GroupPageHelpService);
