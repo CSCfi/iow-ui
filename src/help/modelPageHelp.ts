@@ -15,11 +15,15 @@ import * as SearchPredicateModal from './pages/model/modal/searchPredicateModalH
 import * as AddPropertiesFromClass from './pages/model/modal/addPropertiesFromClassModalHelp.po';
 import * as ClassView from './pages/model/classViewHelp.po';
 import * as SearchConceptModal from './pages/model/modal/searchConceptModalHelp.po';
+import {
+  exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
+  exampleLibrary
+} from './entities';
 
 export const addNamespaceItems = [
   ModelView.requireNamespace,
-  SearchNamespaceModal.filterForModel('jhs', 'julkis'),
-  SearchNamespaceModal.selectNamespace('jhs'),
+  SearchNamespaceModal.filterForModel(exampleImportedLibrary.prefix, 'julkis'),
+  SearchNamespaceModal.selectNamespace(exampleImportedLibrary.prefix),
   ModelView.focusNamespaces
 ];
 
@@ -45,8 +49,8 @@ const palveluKuvausId = 'fe884237-f6e2-44ea-ac97-231516da4770';
 
 export const specializeClassItems = [
   ModelPage.openAddResource('class'),
-  SearchClassModal.filterForClass('jhs', 'Palvelu', 'palv'),
-  SearchClassModal.selectClass('jhs', 'Palvelu'),
+  SearchClassModal.filterForClass(exampleImportedLibrary.prefix, exampleSpecializedClass.name, 'palv'),
+  SearchClassModal.selectClass(exampleImportedLibrary.prefix, exampleSpecializedClass.name),
   SearchClassModal.focusSelectedClass,
   SearchClassModal.confirmClassSelection,
   AddPropertiesFromClass.selectProperties('Select name and description', [palveluNimiId, palveluKuvausId]),
@@ -69,9 +73,9 @@ export const specializeClass = {
 
 export const createNewClassItems = [
   ModelPage.openAddResource('class'),
-  SearchClassModal.filterForNewClass('Tuote'),
+  SearchClassModal.filterForNewClass(exampleNewClass.name),
   SearchClassModal.selectAddNewClassSearchResult,
-  SearchConceptModal.filterForConceptSuggestionConcept('Tuote'),
+  SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.name),
   SearchConceptModal.addConceptSuggestionSearchResult,
   SearchConceptModal.enterVocabulary,
   SearchConceptModal.enterLabel,
@@ -79,8 +83,8 @@ export const createNewClassItems = [
   SearchConceptModal.confirmConceptSelection,
   ClassView.focusClass,
   ClassView.addProperty,
-  SearchPredicateModal.filterForPredicate('jhs', 'Nimi', 'nimi'),
-  SearchPredicateModal.selectPredicate('jhs', 'Nimi'),
+  SearchPredicateModal.filterForPredicate(exampleNewClass.property.prefix, exampleNewClass.property.name, 'nimi'),
+  SearchPredicateModal.selectPredicate(exampleNewClass.property.prefix, exampleNewClass.property.name),
   SearchPredicateModal.focusSelectedAttribute,
   SearchPredicateModal.confirmPredicateSelection(true),
   ClassView.focusOpenProperty,
@@ -99,6 +103,22 @@ export const createNewClass = {
   ]
 };
 
+export const addAssociationItems = [
+
+];
+
+export const addAssociation = {
+  title: 'Guide through adding an association',
+  description: 'Diipadaa',
+  items: [
+    ...addAssociationItems,
+    createNotification({
+      title: 'Congratulations for completing adding an association!',
+      content: 'Diipadaa'
+    })
+  ]
+};
+
 export class ModelPageHelpService {
 
   /* @ngInject */
@@ -110,7 +130,7 @@ export class ModelPageHelpService {
     this.$location.url(model.iowUrl());
   }
 
-  private initialize(model: Model, requirePrefix?: string) {
+  private initialize(model: Model, requirePrefix: string|null, createClasses: boolean) {
 
     return (service: InteractiveHelpService) => {
 
@@ -134,6 +154,14 @@ export class ModelPageHelpService {
         }
       };
 
+      const addClasses = (newModel: Model) => {
+        if (createClasses) {
+          return this.$q.when(newModel);
+        } else {
+          return this.$q.when(newModel);
+        }
+      };
+
       const navigate = (newModel: Model) => {
         this.$location.url(newModel.iowUrl());
         return true;
@@ -143,15 +171,16 @@ export class ModelPageHelpService {
         return service.helpModelService.newModel(prefix, label, model.groupId, model.language, model.normalizedType)
           .then(addNamespace)
           .then(persistModel)
+          .then(addClasses)
           .then(navigate);
       };
 
       return service.reset().then(() => {
         switch (model.normalizedType) {
           case 'library':
-            return createModelAndNavigate('testi', 'Testikirjasto');
+            return createModelAndNavigate(exampleLibrary.prefix, exampleLibrary.name);
           case 'profile':
-            return createModelAndNavigate('plv', 'Palveluprofiili');
+            return createModelAndNavigate(exampleProfile.prefix, exampleProfile.name);
           default:
             return assertNever(model.normalizedType, 'Unknown model type');
         }
@@ -159,10 +188,10 @@ export class ModelPageHelpService {
     };
   }
 
-  private createHelp(model: Model, storyLine: StoryLine, requirePrefix?: string) {
+  private createHelp(model: Model, storyLine: StoryLine, requirePrefix: string|null, createClasses: boolean) {
     return {
       storyLine,
-      onInit: this.initialize(model, requirePrefix),
+      onInit: this.initialize(model, requirePrefix, createClasses),
       onComplete: () => this.returnToModelPage(model),
       onCancel: () => this.returnToModelPage(model)
     };
@@ -175,13 +204,14 @@ export class ModelPageHelpService {
     }
 
     const result = [
-      this.createHelp(model, addNamespace(model.normalizedType)),
-      this.createHelp(model, createNewClass, 'jhs')
+      this.createHelp(model, addNamespace(model.normalizedType), null, false),
+      this.createHelp(model, createNewClass, exampleImportedLibrary.prefix, false),
+      this.createHelp(model, addAssociation, exampleImportedLibrary.prefix, true)
     ];
 
     switch (model.normalizedType) {
       case 'profile':
-        result.push(this.createHelp(model, specializeClass, 'jhs'));
+        result.push(this.createHelp(model, specializeClass, exampleImportedLibrary.prefix, false));
         break;
       case 'library':
         break;
