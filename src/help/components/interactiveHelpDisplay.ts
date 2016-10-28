@@ -577,28 +577,27 @@ class HelpPopoverController {
       const positioning = this.calculatePositioning();
       const dimension = this.helpController.dimensionsProvider.getDimensions();
 
-      if (positioning) {
+      const wouldBeOffScreen = positioning && !fitsToWindow({ top: positioning.top, height: dimension.height });
+      const shouldScroll = this.item.type === 'notification' || positioning && !fitsToWindow({ top: positioning.top, height: dimension.height });
 
-        const wouldBeOffScreen = !fitsToWindow({ top: positioning.top, height: dimension.height });
+      if (shouldScroll) {
+        this.scrollTo();
+      }
 
-        if (wouldBeOffScreen) {
-          this.scrollTo();
-          retry();
-        } else {
-          this.debounceHandle = null;
-          this.positioning = positioning;
+      if (positioning && !wouldBeOffScreen) {
+        this.debounceHandle = null;
+        this.positioning = positioning;
 
-          // apply positioning before applying content, content is applied in the middle of animation
-          setTimeout(() => {
-            this.$scope.$apply(() => {
-              this.title = this.item.title;
-              this.content = this.item.content;
-              this.showNext = this.helpController.showNext;
-              this.showPrevious = this.helpController.showPrevious;
-              this.showClose = this.helpController.showClose;
-            });
-          }, popupAnimationTimeInMs / 2);
-        }
+        // apply positioning before applying content, content is applied in the middle of animation
+        setTimeout(() => {
+          this.$scope.$apply(() => {
+            this.title = this.item.title;
+            this.content = this.item.content;
+            this.showNext = this.helpController.showNext;
+            this.showPrevious = this.helpController.showPrevious;
+            this.showClose = this.helpController.showClose;
+          });
+        }, popupAnimationTimeInMs / 2);
       } else {
         retry();
       }
