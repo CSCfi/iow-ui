@@ -73,7 +73,6 @@ export interface StoryDetails {
 export function createHelpWithDefaultHandler(storyLine: StoryLine, onFinish: () => void) {
   return {
     storyLine,
-    onInit: (service: InteractiveHelpService) => service.reset().then(() => false),
     onComplete: onFinish,
     onCancel: onFinish
   };

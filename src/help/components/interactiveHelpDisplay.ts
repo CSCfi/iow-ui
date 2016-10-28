@@ -32,7 +32,7 @@ export class InteractiveHelpDisplay {
     }
 
     this.interactiveHelpService.open = true;
-    const initialization = help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset();
+    const initialization = help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset().then(() => false);
 
     return initialization.then(willChangeLocation => {
 
