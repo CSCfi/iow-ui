@@ -23,6 +23,14 @@ export type NextCondition = Explicit
                           | ModifyingClick
                           | ExpectedState;
 
+export type ScrollWithDefault = { type: 'scroll-with-default', offsetFromTop: number };
+export type ScrollWithElement = { type: 'scroll-with-element', element: () => JQuery, offsetFromTop: number };
+export type ScrollNone =        { type: 'scroll-none' };
+
+
+export type PopoverScroll = ScrollWithDefault
+                          | ScrollWithElement
+                          | ScrollNone;
 
 export interface HelpEventHandler {
   onInit?: (service: InteractiveHelpService) => IPromise<boolean>; // result boolean indicates if initialization will change location
@@ -59,6 +67,7 @@ export interface StoryDetails {
   popover: {
     element: () => JQuery,
     position: PopoverPosition
+    scroll?: PopoverScroll // when not defined it will be implicitly ScrollWithDefault 100px offset
   };
   focus?: {
     element: () => JQuery,
@@ -108,4 +117,16 @@ export function createModifyingClickNextCondition(element: () => JQuery): Modify
 
 export function createExpectedStateNextCondition(valid: () => boolean): ExpectedState {
   return { type: 'expected-state', valid };
+}
+
+export function createScrollWithDefault(offsetFromTop: number): ScrollWithDefault {
+  return { type: 'scroll-with-default', offsetFromTop };
+}
+
+export function createScrollWithElement(element: () => JQuery, offsetFromTop: number): ScrollWithElement {
+  return { type: 'scroll-with-element', element, offsetFromTop };
+}
+
+export function createScrollNone(): ScrollNone {
+  return { type: 'scroll-none' };
 }

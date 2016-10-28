@@ -8,12 +8,13 @@ import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
 import { InteractiveHelpService } from '../services/interactiveHelpService';
 import {
   NextCondition, Story, Notification, Click, ModifyingClick,
-  NavigatingClick, InteractiveHelp
+  NavigatingClick, InteractiveHelp, createScrollWithDefault
 } from '../contract';
 import { contains } from '../../utils/array';
 import { ConfirmationModal } from '../../components/common/confirmationModal';
 
 const popupAnimationTimeInMs = 300; // should match css help-popover transition time
+const arrowHeight = 13;
 
 export class InteractiveHelpDisplay {
 
@@ -545,9 +546,11 @@ class HelpPopoverController {
     }, true);
 
     window.addEventListener('resize', setItemStyles);
+    window.addEventListener('scroll', setItemStyles);
 
     $scope.$on('$destroy', () => {
       window.removeEventListener('resize', setItemStyles);
+      window.removeEventListener('scroll', setItemStyles);
     });
   }
 
@@ -559,49 +562,97 @@ class HelpPopoverController {
       this.popoverPositionRetryCount = 0;
     }
 
+    const retry = () => {
+      this.popoverPositionRetryCount++;
+
+      if (this.popoverPositionRetryCount > 20) {
+        throw new Error('Popover element does not exist');
+      } else {
+        this.debouncePositionUpdate();
+      }
+    };
+
     this.debounceHandle = setTimeout(() => {
 
       const positioning = this.calculatePositioning();
+      const dimension = this.helpController.dimensionsProvider.getDimensions();
 
       if (positioning) {
-        this.debounceHandle = null;
 
-        // tolerance is needed because of sub-pixel fluctuation and editor snap (auto-scroll) region
-        const shouldScroll = this.item.type === 'notification' || !isPositionInMargin(95, positioning, this.positioning);
-        this.positioning = positioning;
+        const wouldBeOffScreen = !fitsToWindow({ top: positioning.top, height: dimension.height });
 
-        // apply positioning before applying content, content is applied in the middle of animation
-        setTimeout(() => {
-          if (shouldScroll) {
-            this.scrollTo();
-          }
-          this.$scope.$apply(() => {
-            this.title = this.item.title;
-            this.content = this.item.content;
-            this.showNext = this.helpController.showNext;
-            this.showPrevious = this.helpController.showPrevious;
-            this.showClose = this.helpController.showClose;
-          });
-        }, popupAnimationTimeInMs / 2);
-      } else {
-        this.popoverPositionRetryCount++;
-
-        if (this.popoverPositionRetryCount > 20) {
-          throw new Error('Popover element does not exist');
+        if (wouldBeOffScreen) {
+          this.scrollTo();
+          retry();
         } else {
-          this.debouncePositionUpdate();
+          this.debounceHandle = null;
+          this.positioning = positioning;
+
+          // apply positioning before applying content, content is applied in the middle of animation
+          setTimeout(() => {
+            this.$scope.$apply(() => {
+              this.title = this.item.title;
+              this.content = this.item.content;
+              this.showNext = this.helpController.showNext;
+              this.showPrevious = this.helpController.showPrevious;
+              this.showClose = this.helpController.showClose;
+            });
+          }, popupAnimationTimeInMs / 2);
         }
+      } else {
+        retry();
       }
     }, 100);
   }
 
   scrollTo() {
-    const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : 'html, body';
 
-    if (this.item.type === 'story' && this.positioning) {
-      angular.element(scrollElement).animate({ scrollTop: this.positioning.top - 100 }, 100);
+    const item = this.item;
+    const defaultElement = angular.element('html, body');
+
+    if (item.type === 'notification') {
+      defaultElement.animate({ scrollTop: 0 }, 100);
     } else {
-      angular.element(scrollElement).animate({ scrollTop: 0 }, 100);
+
+      const dimension = this.helpController.getDimensions();
+      const popoverScroll = item.popover.scroll || createScrollWithDefault(100);
+      const popoverElement = item.popover.element();
+      const destinationPositioning = elementPositioning(popoverElement)!;
+
+      const offsetOnTopOfDestination = () => {
+        switch (item.popover.position) {
+          case 'left-up':
+          case 'right-up':
+            return Math.min(0, dimension.height + arrowHeight - destinationPositioning.height);
+          case 'top-right':
+          case 'top-left':
+            return dimension.height + arrowHeight;
+          case 'left-down':
+          case 'right-down':
+          case 'bottom-right':
+          case 'bottom-left':
+            return 0;
+          default:
+            return assertNever(item.popover.position, 'Unsupported popover position');
+        }
+      };
+
+      const scrollTop = destinationPositioning.top - offsetOnTopOfDestination();
+      const scrollDurationInMs = 100;
+
+      switch (popoverScroll.type) {
+        case 'scroll-with-element':
+          popoverScroll.element().animate({ scrollTop: scrollTop - popoverScroll.offsetFromTop }, scrollDurationInMs);
+          break;
+        case 'scroll-with-default':
+          const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : defaultElement;
+          scrollElement.animate({ scrollTop: scrollTop - popoverScroll.offsetFromTop }, scrollDurationInMs);
+          break;
+        case 'scroll-none':
+          break;
+        default:
+          assertNever(popoverScroll, 'Unsupported popover scroll type');
+      }
     }
   }
 
@@ -654,26 +705,25 @@ class HelpPopoverController {
     const destination = elementPositioning(element)!;
     const documentWidth = this.$document.width();
     const documentHeight = this.$document.height();
-    const arrow = 13;
 
     function calculateUnrestricted() {
       switch (story.popover.position) {
         case 'left-down':
-          return { top: destination.top, left: destination.left - popoverWidth - arrow, width: popoverWidth, height: popoverHeight };
+          return { top: destination.top, left: destination.left - popoverWidth - arrowHeight, width: popoverWidth, height: popoverHeight };
         case 'left-up':
-          return { top: destination.bottom - popoverHeight, left: destination.left - popoverWidth - arrow, width: popoverWidth, height: popoverHeight };
+          return { top: destination.bottom - popoverHeight, left: destination.left - popoverWidth - arrowHeight, width: popoverWidth, height: popoverHeight };
         case 'right-down':
-          return { top: destination.top, left: destination.right + arrow, width: popoverWidth, height: popoverHeight };
+          return { top: destination.top, left: destination.right + arrowHeight, width: popoverWidth, height: popoverHeight };
         case 'right-up':
-          return { top: destination.bottom - popoverHeight, left: destination.right + arrow, width: popoverWidth, height: popoverHeight };
+          return { top: destination.bottom - popoverHeight, left: destination.right + arrowHeight, width: popoverWidth, height: popoverHeight };
         case 'top-right':
-          return { top: destination.top - popoverHeight - arrow, left: destination.left, width: popoverWidth, height: popoverHeight };
+          return { top: destination.top - popoverHeight - arrowHeight, left: destination.left, width: popoverWidth, height: popoverHeight };
         case 'top-left':
-          return { top: destination.top - popoverHeight - arrow, left: destination.right - popoverWidth, width: popoverWidth, height: popoverHeight };
+          return { top: destination.top - popoverHeight - arrowHeight, left: destination.right - popoverWidth, width: popoverWidth, height: popoverHeight };
         case 'bottom-right':
-          return { top: destination.bottom + arrow, left: destination.left, width: popoverWidth, height: popoverHeight };
+          return { top: destination.bottom + arrowHeight, left: destination.left, width: popoverWidth, height: popoverHeight };
         case 'bottom-left':
-          return { top: destination.bottom + arrow, left: destination.right - popoverWidth, width: popoverWidth, height: popoverHeight };
+          return { top: destination.bottom + arrowHeight, left: destination.right - popoverWidth, width: popoverWidth, height: popoverHeight };
         default:
           return assertNever(story.popover.position, 'Unsupported popover position');
       }
@@ -989,4 +1039,15 @@ function isPositionInMargin(margin: number, lhs: Positioning|null, rhs: Position
     isNumberInMargin(margin, l.left, r.left) &&
     isNumberInMargin(margin, l.top, r.top)
   );
+}
+
+function fitsToWindow(position: {top: number, height: number}) {
+
+  const windowTop = window.pageYOffset;
+  const windowBottom = windowTop + window.innerHeight;
+  const positionTop = position.top;
+  const positionBottom = positionTop + position.height;
+
+  return positionTop >= windowTop && positionTop <= windowBottom
+    && positionBottom >= windowTop && positionBottom <= windowBottom;
 }
