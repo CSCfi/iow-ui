@@ -13,7 +13,7 @@ export class HelpSelectionModal {
   open(helps: InteractiveHelp[]) {
     this.$uibModal.open({
       template: `
-        <modal-template>
+        <modal-template class="help-selection">
           <modal-title translate>Select help topic</modal-title>
        
           <modal-body>
