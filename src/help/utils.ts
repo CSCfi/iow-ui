@@ -4,6 +4,7 @@ import { any, removeMatching, contains } from '../utils/array';
 import { Property } from '../entities/class';
 
 export const editableMargin = { left: 20, right: 20 };
+export const editableMarginInColumn = Object.assign({}, editableMargin, { bottom: 15 });
 export const editableSelectMargin =  Object.assign({}, editableMargin, { bottom: 15 });
 export const editableMultipleMargin = Object.assign({}, editableMargin, { bottom: 15 });
 

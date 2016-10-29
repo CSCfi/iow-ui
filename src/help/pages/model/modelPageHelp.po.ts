@@ -1,6 +1,7 @@
-import { createClickNextCondition, createStory } from '../../contract';
+import { createClickNextCondition, createStory, createNavigatingClickNextCondition } from '../../contract';
 import { modelView, child } from '../../selectors';
 import { KnownModelType, KnownPredicateType } from '../../../entities/type';
+import { classIdFromPrefixAndName } from '../../utils';
 
 export function openModelDetails(type: KnownModelType) {
 
@@ -32,5 +33,21 @@ export function openAddResource(type: 'class' | KnownPredicateType) {
     title: 'Add ' + type,
     content: 'Diipadaa',
     nextCondition: createClickNextCondition(openAddResourceElement)
+  });
+}
+
+export function selectClass(prefix: string, name: string) {
+
+  const selectClassElement = () => angular.element(`.model-panel--left li#${CSS.escape(classIdFromPrefixAndName(prefix, name))}`);
+
+  return createStory({
+    popover: {
+      element: selectClassElement,
+      position: 'top-right'
+    },
+    focus: { element: selectClassElement },
+    title: 'Select ' + name.toLowerCase(),
+    content: 'Diipadaa',
+    nextCondition: createNavigatingClickNextCondition(selectClassElement)
   });
 }

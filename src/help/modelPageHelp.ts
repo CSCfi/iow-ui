@@ -15,12 +15,16 @@ import * as SearchPredicateModal from './pages/model/modal/searchPredicateModalH
 import * as AddPropertiesFromClass from './pages/model/modal/addPropertiesFromClassModalHelp.po';
 import * as ClassView from './pages/model/classViewHelp.po';
 import * as SearchConceptModal from './pages/model/modal/searchConceptModalHelp.po';
+import * as PredicateForm from './pages/model/predicateFormHelp.po';
+import * as ClassForm from './pages/model/classFormHelp.po';
+import * as VisualizationView from './pages/model/visualizationViewHelp.po';
 import {
   exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
   exampleLibrary
 } from './entities';
 import { classIdFromPrefixAndName, onlyProperties, predicateIdFromPrefixAndName } from './utils';
 import { Uri } from '../entities/uri';
+import { classView } from './selectors';
 
 export const addNamespaceItems = [
   ModelView.requireNamespace,
@@ -54,7 +58,7 @@ export const specializeClassItems = [
   SearchClassModal.confirmClassSelection,
   AddPropertiesFromClass.selectProperties('Select name and description', exampleSpecializedClass.properties),
   AddPropertiesFromClass.confirmProperties(true),
-  ClassView.focusClass,
+  ClassForm.focusClass(classView),
   ClassView.saveClassChanges
 ];
 
@@ -78,16 +82,15 @@ export const createNewClassItems = [
   SearchConceptModal.addConceptSuggestionSearchResult,
   SearchConceptModal.enterVocabulary,
   SearchConceptModal.enterLabel,
-  SearchConceptModal.enterDefinition,
-  SearchConceptModal.confirmConceptSelection,
-  ClassView.focusClass,
+  SearchConceptModal.enterDefinition('asia joka tuotetaan'),
+  SearchConceptModal.confirmConceptSelection(true),
+  ClassForm.focusClass(classView),
   ClassView.addProperty,
-  SearchPredicateModal.filterForPredicate(exampleNewClass.property.prefix, exampleNewClass.property.name, 'nimi'),
-  SearchPredicateModal.selectPredicate(exampleNewClass.property.prefix, exampleNewClass.property.name),
+  SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name, 'nimi'),
+  SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name),
   SearchPredicateModal.focusSelectedAttribute,
   SearchPredicateModal.confirmPredicateSelection(true),
-  ClassView.focusOpenProperty,
-  ClassView.saveClassChanges
+  ClassForm.focusOpenProperty(classView)
 ];
 
 export const createNewClass = {
@@ -95,6 +98,7 @@ export const createNewClass = {
   description: 'Diipadaa',
   items: [
     ...createNewClassItems,
+    ClassView.saveClassChanges,
     createNotification({
       title: 'Congratulations for completing new class creation!',
       content: 'Diipadaa'
@@ -103,13 +107,36 @@ export const createNewClass = {
 };
 
 export const addAssociationItems = [
-
+  ClassView.addProperty,
+  SearchPredicateModal.filterForNewPredicate(exampleNewClass.property.association.searchName),
+  SearchPredicateModal.selectAddNewPredicateSearchResult('association'),
+  SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.property.association.searchName),
+  SearchConceptModal.addConceptSuggestionSearchResult,
+  SearchConceptModal.enterVocabulary,
+  SearchConceptModal.enterLabel,
+  SearchConceptModal.enterDefinition(exampleNewClass.property.association.comment),
+  SearchConceptModal.confirmConceptSelection(false),
+  SearchPredicateModal.focusSelectedAssociation,
+  PredicateForm.focusPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', 'Label can be changed'),
+  PredicateForm.enterPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', exampleNewClass.property.association.name),
+  SearchPredicateModal.confirmPredicateSelection(true),
+  ClassForm.focusOpenProperty(classView),
+  ClassForm.selectAssociationTarget(classView),
+  SearchClassModal.filterForClass(exampleProfile.prefix, exampleSpecializedClass.name, exampleSpecializedClass.name),
+  SearchClassModal.selectClass(exampleProfile.prefix, exampleSpecializedClass.name),
+  SearchClassModal.focusSelectedClass,
+  SearchClassModal.confirmClassSelection,
+  ClassForm.focusAssociationTarget(classView),
+  ClassView.saveClassChanges,
+  VisualizationView.focusVisualization
 ];
 
 export const addAssociation = {
   title: 'Guide through adding an association',
   description: 'Diipadaa',
   items: [
+    ModelPage.selectClass(exampleProfile.prefix, exampleNewClass.name),
+    ClassView.modifyClass,
     ...addAssociationItems,
     createNotification({
       title: 'Congratulations for completing adding an association!',
@@ -169,8 +196,8 @@ export class ModelPageHelpService {
               .then(shape => service.helpClassService.createClass(shape))
           );
 
-          const propertyPromise = service.helpPredicateService.getPredicate(predicateIdFromPrefixAndName(exampleNewClass.property.prefix, exampleNewClass.property.name))
-            .then(predicate => service.helpClassService.newProperty(predicate, exampleNewClass.property.type, newModel));
+          const propertyPromise = service.helpPredicateService.getPredicate(predicateIdFromPrefixAndName(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name))
+            .then(predicate => service.helpClassService.newProperty(predicate, 'attribute', newModel));
 
           const newClassPromise = service.helpVocabularyService.createConceptSuggestion(newModel.vocabularies[0], exampleNewClass.name, exampleNewClass.comment, null, 'fi', newModel)
             .then(suggestionId => service.helpClassService.newClass(newModel, exampleNewClass.name, suggestionId, 'fi'));

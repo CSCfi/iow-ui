@@ -10,7 +10,7 @@ import * as AddModelModal from './pages/group/modal/addModelModalHelp.po';
 import * as NewModelPage from './pages/model/newModelPageHelp.po';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
-import { addNamespaceItems, specializeClassItems, createNewClassItems } from './modelPageHelp';
+import { addNamespaceItems, specializeClassItems, createNewClassItems, addAssociationItems } from './modelPageHelp';
 
 export function createNewModelItems(type: KnownModelType) {
   return [
@@ -25,7 +25,8 @@ export function createNewModelItems(type: KnownModelType) {
     ...addNamespaceItems,
     ModelView.saveModelChanges,
     ...(type === 'profile' ? specializeClassItems : []),
-    ...createNewClassItems
+    ...createNewClassItems,
+    ...(type === 'profile' ? addAssociationItems : [])
   ];
 }
 

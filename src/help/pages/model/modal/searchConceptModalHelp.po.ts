@@ -77,23 +77,29 @@ export const enterLabel = createStory({
   reversible: true
 });
 
-const enterDefinitionElement = editableByTitle(modal, 'Definition');
-const enterDefinitionInputElement = input(enterDefinitionElement);
-export const enterDefinition = createStory({
+export function enterDefinition(initialValue: string) {
 
-  title: 'Definition',
-  content: 'Definition info',
-  popover: {
-    element: enterDefinitionInputElement,
-    position: 'left-down'
-  },
-  focus: {
-    element: editableFocus(enterDefinitionElement),
-    margin: editableMargin
-  },
-  nextCondition: createExpectedStateNextCondition(validInput(enterDefinitionInputElement)),
-  initialize: initialInputValue(enterDefinitionInputElement, 'asia joka tuotetaan'), // TODO should be parameter
-  reversible: true
-});
+  const enterDefinitionElement = editableByTitle(modal, 'Definition');
+  const enterDefinitionInputElement = input(enterDefinitionElement);
 
-export const confirmConceptSelection = confirm(searchConceptModal, true);
+  return createStory({
+
+    title: 'Definition',
+    content: 'Definition info',
+    popover: {
+      element: enterDefinitionInputElement,
+      position: 'left-down'
+    },
+    focus: {
+      element: editableFocus(enterDefinitionElement),
+      margin: editableMargin
+    },
+    nextCondition: createExpectedStateNextCondition(validInput(enterDefinitionInputElement)),
+    initialize: initialInputValue(enterDefinitionInputElement, initialValue),
+    reversible: true
+  });
+}
+
+export function confirmConceptSelection(navigates: boolean) {
+  return confirm(searchConceptModal, navigates);
+}
