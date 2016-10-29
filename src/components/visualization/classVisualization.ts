@@ -329,6 +329,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
   private updateClassAndLayout(klass: Class, oldId?: Uri|null) {
 
+    const creation = !oldId;
     const idChanged = oldId && klass.id.notEquals(oldId);
     const oldIdIsAssociationTarget = oldId && this.isAssociationTarget(oldId);
 
@@ -350,7 +351,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId!] : [klass.id], VertexAction.KeepAll);
 
     if (addedClasses.length > 0) {
-      this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
+      if (creation) {
+        this.layoutAndFocus(false, addedClasses);
+      } else {
+        this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
+      }
     } else {
       // Delay focus because dom needs to be repainted
       setTimeout(() => this.focusSelection(false));
