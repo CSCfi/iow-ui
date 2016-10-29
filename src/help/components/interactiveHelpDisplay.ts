@@ -637,22 +637,42 @@ class HelpPopoverController {
         }
       };
 
-      const scrollTop = destinationPositioning.top - offsetOnTopOfDestination();
+      const scrollWithElement = () => {
+        switch (popoverScroll.type) {
+          case 'scroll-with-element':
+            return popoverScroll.element();
+          case 'scroll-with-default':
+            const topModal = this.$uibModalStack.getTop();
+            return topModal ? topModal.value.modalDomEl.find('.modal-content') : defaultElement;
+          case 'scroll-none':
+            return defaultElement;
+          default:
+            assertNever(popoverScroll, 'Unsupported popover scroll type');
+        }
+      };
+
+      const scrollOffsetFromTop = () => {
+        switch (popoverScroll.type) {
+          case 'scroll-with-element':
+          case 'scroll-with-default':
+            return popoverScroll.offsetFromTop;
+          case 'scroll-none':
+            return 0;
+          default:
+            return assertNever(popoverScroll, 'Unsupported popover scroll type');
+        }
+      };
+
+      const scrollElement = scrollWithElement();
+      const scrollElementOffsetFromTop = scrollElement.offset().top;
+
+      const scrollTop = destinationPositioning.top
+                        - scrollElementOffsetFromTop
+                        - Math.max(offsetOnTopOfDestination(), scrollOffsetFromTop());
+
       const scrollDurationInMs = 100;
 
-      switch (popoverScroll.type) {
-        case 'scroll-with-element':
-          popoverScroll.element().animate({ scrollTop: scrollTop - popoverScroll.offsetFromTop }, scrollDurationInMs);
-          break;
-        case 'scroll-with-default':
-          const scrollElement = this.$uibModalStack.getTop() ? this.$uibModalStack.getTop().value.modalDomEl.find('.modal-content') : defaultElement;
-          scrollElement.animate({ scrollTop: scrollTop - popoverScroll.offsetFromTop }, scrollDurationInMs);
-          break;
-        case 'scroll-none':
-          break;
-        default:
-          assertNever(popoverScroll, 'Unsupported popover scroll type');
-      }
+      scrollElement.animate({ scrollTop }, scrollDurationInMs);
     }
   }
 
