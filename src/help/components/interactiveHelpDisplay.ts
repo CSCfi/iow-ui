@@ -253,7 +253,7 @@ class InteractiveHelpController implements DimensionsProvider {
 
   markLocationChange() {
     this.changingLocation = true;
-    setTimeout(() => this.changingLocation = false, 500);
+    setTimeout(() => this.changingLocation = false, 1000);
   }
 
   clickHandler(event: JQueryEventObject) {
