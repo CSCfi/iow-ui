@@ -68,7 +68,7 @@ msgstr ""
 msgid "Add reference data"
 msgstr ""
 
-#: translations/help.html:26
+#: translations/help.html:28
 msgid "Add reference to namespace"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:42
+#: translations/help.html:44
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Association information"
 msgstr ""
 
-#: translations/help.html:47
+#: translations/help.html:49
 msgid "Association is here"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr ""
 msgid "Association list"
 msgstr ""
 
-#: translations/help.html:48
+#: translations/help.html:50
 msgid "Association target is here"
 msgstr ""
 
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Attribute information"
 msgstr ""
 
-#: translations/help.html:46
+#: translations/help.html:48
 msgid "Attribute is here"
 msgstr ""
 
@@ -401,7 +401,7 @@ msgstr ""
 msgid "Class information"
 msgstr ""
 
-#: translations/help.html:45
+#: translations/help.html:47
 msgid "Class is here"
 msgstr ""
 
@@ -457,7 +457,7 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
-#: translations/help.html:51
+#: translations/help.html:53
 msgid "Classes can be seen visually here"
 msgstr ""
 
@@ -552,31 +552,35 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:43
+#: translations/help.html:45
 msgid "Confirm selection"
 msgstr ""
 
-#: translations/help.html:20
+#: translations/help.html:22
 msgid "Congratulations for completing adding an association!"
 msgstr ""
 
-#: translations/help.html:15
-msgid "Congratulations for completing library creation!"
-msgstr ""
-
-#: translations/help.html:17
-msgid "Congratulations for completing namespace require!"
-msgstr ""
-
-#: translations/help.html:19
-msgid "Congratulations for completing new class creation!"
+#: translations/help.html:21
+msgid "Congratulations for completing adding an attribute!"
 msgstr ""
 
 #: translations/help.html:16
-msgid "Congratulations for completing profile creation!"
+msgid "Congratulations for completing library creation!"
 msgstr ""
 
 #: translations/help.html:18
+msgid "Congratulations for completing namespace require!"
+msgstr ""
+
+#: translations/help.html:20
+msgid "Congratulations for completing new class creation!"
+msgstr ""
+
+#: translations/help.html:17
+msgid "Congratulations for completing profile creation!"
+msgstr ""
+
+#: translations/help.html:19
 msgid "Congratulations for completing specialize class!"
 msgstr ""
 
@@ -1106,8 +1110,12 @@ msgstr ""
 msgid "Group not found"
 msgstr ""
 
-#: translations/help.html:13
+#: translations/help.html:14
 msgid "Guide through adding an association"
+msgstr ""
+
+#: translations/help.html:13
+msgid "Guide through adding an attribute"
 msgstr ""
 
 #: translations/help.html:12
@@ -1130,7 +1138,7 @@ msgstr ""
 msgid "Guide through specializing a class"
 msgstr ""
 
-#: translations/help.html:41
+#: translations/help.html:43
 msgid "Help is open"
 msgstr ""
 
@@ -1186,7 +1194,7 @@ msgstr ""
 msgid "Imported namespaces"
 msgstr ""
 
-#: translations/help.html:44
+#: translations/help.html:46
 msgid "Imported namespaces are here"
 msgstr ""
 
@@ -1256,7 +1264,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: translations/help.html:50
+#: translations/help.html:52
 msgid "Label can be changed"
 msgstr ""
 
@@ -1399,15 +1407,15 @@ msgstr ""
 msgid "Modified at"
 msgstr ""
 
-#: translations/help.html:25
+#: translations/help.html:27
 msgid "Modify class"
 msgstr ""
 
-#: translations/help.html:23
+#: translations/help.html:25
 msgid "Modify library"
 msgstr ""
 
-#: translations/help.html:24
+#: translations/help.html:26
 msgid "Modify profile"
 msgstr ""
 
@@ -1555,11 +1563,11 @@ msgstr ""
 msgid "of shape"
 msgstr ""
 
-#: translations/help.html:21
+#: translations/help.html:23
 msgid "Open library details"
 msgstr ""
 
-#: translations/help.html:22
+#: translations/help.html:24
 msgid "Open profile details"
 msgstr ""
 
@@ -1668,7 +1676,7 @@ msgstr ""
 msgid "Property information"
 msgstr ""
 
-#: translations/help.html:49
+#: translations/help.html:51
 msgid "Property is here"
 msgstr ""
 
@@ -1833,23 +1841,23 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
-#: translations/help.html:27
+#: translations/help.html:29
 msgid "Search for jhs"
 msgstr ""
 
-#: translations/help.html:30
+#: translations/help.html:32
 msgid "Search for nimi"
 msgstr ""
 
-#: translations/help.html:28
+#: translations/help.html:30
 msgid "Search for palvelu"
 msgstr ""
 
-#: translations/help.html:29
+#: translations/help.html:31
 msgid "Search for tuote"
 msgstr ""
 
-#: translations/help.html:31
+#: translations/help.html:33
 msgid "Search for tuotetaan"
 msgstr ""
 
@@ -1899,7 +1907,7 @@ msgstr ""
 msgid "Select association"
 msgstr ""
 
-#: translations/help.html:40
+#: translations/help.html:42
 msgid "Select association target"
 msgstr ""
 
@@ -1915,7 +1923,7 @@ msgstr ""
 msgid "Select class"
 msgstr ""
 
-#: translations/help.html:39
+#: translations/help.html:41
 msgid "Select concept suggest creation"
 msgstr ""
 
@@ -1923,35 +1931,35 @@ msgstr ""
 msgid "Select group"
 msgstr ""
 
-#: translations/help.html:14
+#: translations/help.html:15
 msgid "Select help topic"
 msgstr ""
 
-#: translations/help.html:32
+#: translations/help.html:34
 msgid "Select jhs"
 msgstr ""
 
-#: translations/help.html:36
+#: translations/help.html:38
 msgid "Select name and description"
 msgstr ""
 
-#: translations/help.html:38
+#: translations/help.html:40
 msgid "Select new association creation"
 msgstr ""
 
-#: translations/help.html:37
+#: translations/help.html:39
 msgid "Select new creation"
 msgstr ""
 
-#: translations/help.html:34
+#: translations/help.html:36
 msgid "Select nimi"
 msgstr ""
 
-#: translations/help.html:33
+#: translations/help.html:35
 msgid "Select palvelu"
 msgstr ""
 
-#: translations/help.html:35
+#: translations/help.html:37
 msgid "Select tuote"
 msgstr ""
 

@@ -74,6 +74,31 @@ export const specializeClass = {
   ]
 };
 
+
+const addAttributeItems = [
+  ClassView.addProperty,
+  SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name, 'nimi'),
+  SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name),
+  SearchPredicateModal.focusSelectedAttribute,
+  SearchPredicateModal.confirmPredicateSelection(true),
+  ClassForm.focusOpenProperty(classView)
+];
+
+export const addAttribute = {
+  title: 'Guide through adding an attribute',
+  description: 'Diipadaa',
+  items: [
+    ModelPage.selectClass(exampleProfile.prefix, exampleNewClass.name),
+    ClassView.modifyClass,
+    ...addAttributeItems,
+    ClassView.saveClassChanges,
+    createNotification({
+      title: 'Congratulations for completing adding an attribute!',
+      content: 'Diipadaa'
+    })
+  ]
+};
+
 export const createNewClassItems = [
   ModelPage.openAddResource('class'),
   SearchClassModal.filterForNewClass(exampleNewClass.name),
@@ -85,12 +110,7 @@ export const createNewClassItems = [
   SearchConceptModal.enterDefinition('asia joka tuotetaan'),
   SearchConceptModal.confirmConceptSelection(true),
   ClassForm.focusClass(classView),
-  ClassView.addProperty,
-  SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name, 'nimi'),
-  SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name),
-  SearchPredicateModal.focusSelectedAttribute,
-  SearchPredicateModal.confirmPredicateSelection(true),
-  ClassForm.focusOpenProperty(classView)
+  ...addAttributeItems
 ];
 
 export const createNewClass = {
@@ -156,7 +176,8 @@ export class ModelPageHelpService {
     this.$location.url(model.iowUrl());
   }
 
-  private initialize(model: Model, requirePrefix: string|null, createClasses: boolean) {
+  // FIXME: composable initialization logic, make use of entityLoader?
+  private initialize(model: Model, requirePrefix: string|null, createClasses: boolean, skipAttribute: boolean) {
 
     return (service: InteractiveHelpService) => {
 
@@ -204,7 +225,9 @@ export class ModelPageHelpService {
 
           resultPromises.push(this.$q.all([newClassPromise, propertyPromise])
             .then(([klass, property]) => {
-              klass.addProperty(property);
+              if (!skipAttribute) {
+                klass.addProperty(property);
+              }
               return klass;
             })
             .then(klass => service.helpClassService.createClass(klass))
@@ -243,10 +266,10 @@ export class ModelPageHelpService {
     };
   }
 
-  private createHelp(model: Model, storyLine: StoryLine, requirePrefix: string|null, createClasses: boolean) {
+  private createHelp(model: Model, storyLine: StoryLine, requirePrefix: string|null, createClasses: boolean, skipAttribute: boolean) {
     return {
       storyLine,
-      onInit: this.initialize(model, requirePrefix, createClasses),
+      onInit: this.initialize(model, requirePrefix, createClasses, skipAttribute),
       onComplete: () => this.returnToModelPage(model),
       onCancel: () => this.returnToModelPage(model)
     };
@@ -259,14 +282,15 @@ export class ModelPageHelpService {
     }
 
     const result = [
-      this.createHelp(model, addNamespace(model.normalizedType), null, false),
-      this.createHelp(model, createNewClass, exampleImportedLibrary.prefix, false)
+      this.createHelp(model, addNamespace(model.normalizedType), null, false, false),
+      this.createHelp(model, createNewClass, exampleImportedLibrary.prefix, false, false)
     ];
 
     switch (model.normalizedType) {
       case 'profile':
-        result.push(this.createHelp(model, specializeClass, exampleImportedLibrary.prefix, false));
-        result.push(this.createHelp(model, addAssociation, exampleImportedLibrary.prefix, true));
+        result.push(this.createHelp(model, specializeClass, exampleImportedLibrary.prefix, false, false));
+        result.push(this.createHelp(model, addAttribute, exampleImportedLibrary.prefix, true, true));
+        result.push(this.createHelp(model, addAssociation, exampleImportedLibrary.prefix, true, false));
         break;
       case 'library':
         break;
