@@ -1,5 +1,6 @@
 import { module as mod }  from './module';
 import { IScope, IAttributes } from 'angular';
+import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 
 interface FloatAttributes extends IAttributes {
   float: string;
@@ -7,7 +8,7 @@ interface FloatAttributes extends IAttributes {
   snap: string;
 }
 
-mod.directive('float', () => {
+mod.directive('float', (interactiveHelpService: InteractiveHelpService) => {
   return {
     restrict: 'A',
     controller: FloatController,
@@ -15,7 +16,7 @@ mod.directive('float', () => {
     link($scope: IScope, element: JQuery, attributes: FloatAttributes, ctrl: FloatController) {
 
       const placeholderClass = attributes.float;
-      const shouldSnap = attributes.snap === 'true';
+      const shouldSnap = () => !interactiveHelpService.open && attributes.snap === 'true';
       let elementStaticLocation = element.offset();
 
       ctrl.element = element;
