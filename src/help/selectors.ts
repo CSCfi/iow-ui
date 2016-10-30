@@ -25,3 +25,5 @@ export const editableFocus =               (parent: () => JQuery) => child(paren
 export const editableByTitle =             (parent: () => JQuery, title: string) => child(parent, `editable[data-title="${title}"]`);
 export const editableMultipleByTitle =     (parent: () => JQuery, title: string) => child(parent, `editable-multiple[data-title="${title}"]`);
 export const searchResult =                (parent: () => JQuery, id: string) => child(parent, `search-results #${CSS.escape(id)}`);
+
+export const modelPanelElement = () => angular.element('.model-panel--left');

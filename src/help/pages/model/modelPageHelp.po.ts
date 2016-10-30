@@ -2,7 +2,7 @@ import {
   createClickNextCondition, createStory, createNavigatingClickNextCondition,
   createScrollWithDefault
 } from '../../contract';
-import { modelView, child } from '../../selectors';
+import { modelView, child, modelPanelElement } from '../../selectors';
 import { KnownModelType, KnownPredicateType } from '../../../entities/type';
 import { classIdFromPrefixAndName, scrollToTop } from '../../utils';
 
@@ -29,6 +29,7 @@ export function openAddResource(type: 'class' | KnownPredicateType) {
   const openAddResourceElement = () => angular.element('button.add-new-button');
 
   return createStory({
+    scroll: createScrollWithDefault(modelPanelElement),
     popover: {
       element: openAddResourceElement,
       position: 'right-down'
@@ -42,7 +43,6 @@ export function openAddResource(type: 'class' | KnownPredicateType) {
 
 export function selectClass(prefix: string, name: string) {
 
-  const modelPanelElement = () => angular.element('.model-panel--left');
   const selectClassElement = child(modelPanelElement, `li#${CSS.escape(classIdFromPrefixAndName(prefix, name))}`);
 
   return createStory({
