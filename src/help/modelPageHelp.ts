@@ -246,7 +246,7 @@ export class ModelPageHelpService {
       };
 
       const createModelAndNavigate = (prefix: string, label: string) => {
-        return service.helpModelService.newModel(prefix, label, model.groupId, model.language, model.normalizedType)
+        return service.helpModelService.newModel(prefix, label, model.groupId, ['fi', 'en'], model.normalizedType)
           .then(addNamespace)
           .then(persistModel)
           .then(addClasses)
