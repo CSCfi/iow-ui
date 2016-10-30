@@ -196,7 +196,7 @@ class InteractiveHelpController {
     });
   }
 
-  private updatePositions() {
+  private updatePositions(retryCount = 0) {
     const positioning = this.popoverController.calculatePositioning();
 
     if (positioning) {
@@ -206,6 +206,12 @@ class InteractiveHelpController {
           this.backdropController.updatePosition();
         });
       });
+    } else {
+      if (retryCount > 10) {
+        throw new Error('Popover element not found');
+      } else {
+        setTimeout(() => this.updatePositions(retryCount + 1), 100);
+      }
     }
   }
 
