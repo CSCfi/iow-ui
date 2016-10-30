@@ -46,6 +46,7 @@ export class InteractiveHelpDisplay {
           <help-popover item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()"></help-popover>
           <help-popover-dimensions-calculator item="ctrl.item" help-controller="ctrl"></help-popover-dimensions-calculator>
           <help-backdrop item="ctrl.item" help-controller="ctrl"></help-backdrop>
+          <div ng-if="ctrl.item.denyInteraction" class="help-interaction-stopper"></div>
         `,
         controller: InteractiveHelpController,
         controllerAs: 'ctrl',
@@ -190,7 +191,7 @@ class InteractiveHelpController {
       // Active element needs to be blurred because it can used for example for multiple interactive help activations
       (document.activeElement as HTMLElement).blur();
 
-      if (item && item.type === 'story' && item.focus && !item.focus.denyInteraction) {
+      if (item && item.type === 'story' && item.focus && !item.denyInteraction) {
 
         const focusElement = item.focus.element();
 
@@ -302,13 +303,15 @@ class InteractiveHelpController {
     this.currentScrollTop = scrollTop;
   }
 
-  loadFocusableElementList(story: Story) {
+  loadFocusableElementList(item: Story|Notification): HTMLElement[]|null {
 
-    if (!story.focus || story.focus.denyInteraction) {
+    if (item.type === 'notification' || item.denyInteraction) {
       return [];
+    } else if (!item.focus) {
+      return null;
     }
 
-    const focusableElements = story.focus.element().find(focusableSelector).addBack(focusableSelector);
+    const focusableElements = item.focus.element().find(focusableSelector).addBack(focusableSelector);
     const result: HTMLElement[] = [];
 
     focusableElements.each((_index: number, element: HTMLElement) => {
@@ -328,10 +331,10 @@ class InteractiveHelpController {
       return stopEvent(event);
     }
 
-    const focusableElements = item.type === 'story' ? this.loadFocusableElementList(item) : [];
+    const focusableElements = this.loadFocusableElementList(item);
 
     const activeElementIsFocusable = () => {
-      for (const focusableElement of focusableElements) {
+      for (const focusableElement of focusableElements || []) {
         if (focusableElement === document.activeElement) {
           return true;
         }
@@ -355,36 +358,40 @@ class InteractiveHelpController {
       }
     };
 
-    if (focusableElements.length > 0) {
+    if (focusableElements) {
+      if (focusableElements.length > 0) {
 
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
 
-      if (event.shiftKey) {
-        if (isFocusInElement(event, firstElement)) {
-          moveToPreviousIfPossible();
+        if (event.shiftKey) {
+          if (isFocusInElement(event, firstElement)) {
+            moveToPreviousIfPossible();
+            stopEvent(event);
+          }
+        } else {
+          if (isFocusInElement(event, lastElement)) {
+            moveToNextIfPossible();
+            stopEvent(event);
+          }
+        }
+
+        // prevent input focus breaking from item focusable area
+        if (!activeElementIsFocusable()) {
+          firstElement.focus();
           stopEvent(event);
         }
+
       } else {
-        if (isFocusInElement(event, lastElement)) {
+        if (event.shiftKey) {
+          moveToPreviousIfPossible();
+        } else {
           moveToNextIfPossible();
-          stopEvent(event);
         }
-      }
-
-      // prevent input focus breaking from item focusable area
-      if (!activeElementIsFocusable()) {
-        firstElement.focus();
         stopEvent(event);
       }
-
     } else {
-      if (event.shiftKey) {
-        moveToPreviousIfPossible();
-      } else {
-        moveToNextIfPossible();
-      }
-      stopEvent(event);
+      // free focus, don't stop event
     }
   };
 
@@ -822,7 +829,6 @@ mod.directive('helpBackdrop', () => {
         <div ng-if="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.right"></div>
         <div ng-if="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.bottom"></div>
         <div ng-if="ctrl.regions" class="help-backdrop" ng-style="ctrl.regions.left"></div>
-        <div ng-if="ctrl.regions && ctrl.item.focus.denyInteraction" class="help-interaction-stopper" ng-style="ctrl.regions.focus"></div>
     `,
     bindToController: true,
     scope: {

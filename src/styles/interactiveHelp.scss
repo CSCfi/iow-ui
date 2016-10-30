@@ -181,6 +181,8 @@ help-popover, help-popover-dimensions-calculator {
 
 .help-interaction-stopper {
   position: fixed;
+  height: 100vh;
+  width: 100vw;
   z-index: 1100;
   cursor: not-allowed;
 }

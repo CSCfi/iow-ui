@@ -72,11 +72,11 @@ export interface StoryDetails {
   focus?: {
     element: () => JQuery,
     margin?: { top?: number, right?: number, bottom?: number, left?: number }
-    denyInteraction?: boolean
   };
   nextCondition: NextCondition;
   initialize?: () => void;
   reversible?: boolean;
+  denyInteraction?: boolean;
 }
 
 export function createHelpWithDefaultHandler(storyLine: StoryLine, onFinish: () => void) {

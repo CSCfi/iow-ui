@@ -59,10 +59,8 @@ export function focusSearchSelection(modalParent: () => JQuery, label: string, c
       element: focusSearchResultElement,
       position: 'left-down'
     },
-    focus: {
-      element: focusSearchResultElement,
-      denyInteraction: true
-    },
+    focus: { element: focusSearchResultElement },
+    denyInteraction: true,
     nextCondition: createExplicitNextCondition()
   });
 }

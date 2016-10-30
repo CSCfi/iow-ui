@@ -14,10 +14,8 @@ export function focusClass(parent: () => JQuery) {
       element: focusClassElement,
       position: 'top-right'
     },
-    focus: {
-      element: focusClassElement,
-      denyInteraction: true
-    },
+    focus: { element: focusClassElement },
+    denyInteraction: true,
     nextCondition: createExplicitNextCondition()
   });
 }
@@ -35,9 +33,9 @@ export function focusOpenProperty(parent: () => JQuery) {
     },
     focus: {
       element: focusOpenPropertyElement,
-      denyInteraction: true,
       margin: { left: 10, right: 10, top: 0, bottom: 10 }
     },
+    denyInteraction: true,
     nextCondition: createExplicitNextCondition()
   });
 }
@@ -75,9 +73,9 @@ export function focusAssociationTarget(parent: () => JQuery) {
     },
     focus: {
       element: enterAssociationTargetSelectFocusElement,
-      margin: editableMarginInColumn,
-      denyInteraction: true
+      margin: editableMarginInColumn
     },
+    denyInteraction: true,
     nextCondition: createExplicitNextCondition()
   });
 }

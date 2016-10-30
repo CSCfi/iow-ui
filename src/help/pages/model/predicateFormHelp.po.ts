@@ -19,9 +19,9 @@ export function focusPredicateLabel(parent: () => JQuery, type: KnownPredicateTy
     },
     focus: {
       element: editableFocus(enterPredicateLabelElement),
-      margin: editableMarginInColumn,
-      denyInteraction: true
+      margin: editableMarginInColumn
     },
+    denyInteraction: true,
     nextCondition: createExplicitNextCondition(),
     reversible: true
   });

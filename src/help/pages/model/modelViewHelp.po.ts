@@ -57,9 +57,7 @@ export const focusNamespaces = createStory({
     element: focusNamespacesElement,
     position: 'left-down'
   },
-  focus: {
-    element: focusNamespacesElement,
-    denyInteraction: true
-  },
+  focus: { element: focusNamespacesElement },
+  denyInteraction: true,
   nextCondition: createExplicitNextCondition()
 });

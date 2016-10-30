@@ -8,9 +8,7 @@ export const focusVisualization = createStory({
     element: focusVisualizationElement,
     position: 'left-down'
   },
-  focus: {
-    element: focusVisualizationElement,
-    denyInteraction: true
-  },
+  focus: { element: focusVisualizationElement },
+  denyInteraction: true,
   nextCondition: createExplicitNextCondition()
 });
