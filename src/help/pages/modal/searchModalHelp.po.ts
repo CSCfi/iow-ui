@@ -17,10 +17,7 @@ export function filterForSearchResult(modalParent: () => JQuery, label: string, 
 
     title: `Search for ${label}`,
     content: 'Diipadaa',
-    popover: {
-      element: filterForSearchResultTextSearchElement,
-      position: 'bottom-right'
-    },
+    popover: { element: filterForSearchResultTextSearchElement, position: 'bottom-right' },
     focus: { element: filterForSearchResultTextSearchElement },
     nextCondition: createExpectedStateNextCondition(elementExists(searchResult(modalParent, expectedResultId))),
     initialize: initialInputValue(filterForSearchResultTextSearchElement, initialSearch),
@@ -37,10 +34,7 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
     title: `Select ${label}`,
     content: 'Diipadaa',
     scroll: createScrollWithElement(searchResultsElement(modalParent), selectResultElement),
-    popover: {
-      element: selectResultElement,
-      position: 'left-down'
-    },
+    popover: { element: selectResultElement, position: 'left-down' },
     focus: { element: selectResultElement },
     nextCondition: selectionNeedsConfirmation ? createClickNextCondition(selectResultElement)
                                               : createModifyingClickNextCondition(selectResultElement),
@@ -55,10 +49,7 @@ export function focusSearchSelection(modalParent: () => JQuery, label: string, c
   return createStory({
     title: label,
     content: content,
-    popover: {
-      element: focusSearchResultElement,
-      position: 'left-down'
-    },
+    popover: { element: focusSearchResultElement, position: 'left-down' },
     focus: { element: focusSearchResultElement },
     denyInteraction: true,
     nextCondition: createExplicitNextCondition()

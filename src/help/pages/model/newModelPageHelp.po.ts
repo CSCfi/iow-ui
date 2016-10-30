@@ -6,10 +6,7 @@ export const saveUnsavedModel = createStory({
 
   title: 'Save changes',
   content: 'Diipadaa',
-  popover: {
-    element: saveUnsavedModelElement,
-    position: 'left-down'
-  },
+  popover: { element: saveUnsavedModelElement, position: 'left-down' },
   focus: { element: saveUnsavedModelElement },
   nextCondition: createNavigatingClickNextCondition(saveUnsavedModelElement)
 });

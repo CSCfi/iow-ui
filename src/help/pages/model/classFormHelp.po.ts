@@ -10,10 +10,7 @@ export function focusClass(parent: () => JQuery) {
 
   return createStory({
     title: 'Class is here',
-    popover: {
-      element: focusClassElement,
-      position: 'top-right'
-    },
+    popover: { element: focusClassElement, position: 'top-right' },
     focus: { element: focusClassElement },
     denyInteraction: true,
     nextCondition: createExplicitNextCondition()
@@ -27,14 +24,8 @@ export function focusOpenProperty(parent: () => JQuery) {
   return createStory({
     title: 'Property is here',
     scroll: createScrollNone(),
-    popover: {
-      element: focusOpenPropertyElement,
-      position: 'right-down'
-    },
-    focus: {
-      element: focusOpenPropertyElement,
-      margin: { left: 10, right: 10, top: 0, bottom: 10 }
-    },
+    popover: { element: focusOpenPropertyElement, position: 'right-down' },
+    focus: { element: focusOpenPropertyElement, margin: { left: 10, right: 10, top: 0, bottom: 10 } },
     denyInteraction: true,
     nextCondition: createExplicitNextCondition()
   });
@@ -49,10 +40,7 @@ export function selectAssociationTarget(parent: () => JQuery) {
 
     title: 'Select association target',
     scroll: createScrollNone(),
-    popover: {
-      element: enterAssociationTargetSelectButtonElement,
-      position: 'right-down'
-    },
+    popover: { element: enterAssociationTargetSelectButtonElement, position: 'right-down' },
     focus: { element: enterAssociationTargetSelectButtonElement },
     nextCondition: createClickNextCondition(enterAssociationTargetSelectButtonElement)
   });
@@ -67,14 +55,8 @@ export function focusAssociationTarget(parent: () => JQuery) {
 
     title: 'Association target is here',
     scroll: createScrollWithDefault(enterAssociationTargetElement, 150),
-    popover: {
-      element: enterAssociationTargetSelectFocusElement,
-      position: 'right-down'
-    },
-    focus: {
-      element: enterAssociationTargetSelectFocusElement,
-      margin: editableMarginInColumn
-    },
+    popover: { element: enterAssociationTargetSelectFocusElement, position: 'right-down' },
+    focus: { element: enterAssociationTargetSelectFocusElement, margin: editableMarginInColumn },
     denyInteraction: true,
     nextCondition: createExplicitNextCondition()
   });

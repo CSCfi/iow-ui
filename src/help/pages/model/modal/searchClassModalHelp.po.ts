@@ -24,10 +24,7 @@ export function filterForNewClass(className: string) {
 
     title: `Search for ${className.toLowerCase()}`,
     content: 'Diipadaa',
-    popover: {
-      element: searchClassModalTextSearchElement,
-      position: 'bottom-right'
-    },
+    popover: { element: searchClassModalTextSearchElement, position: 'bottom-right' },
     focus: { element: searchClassModalTextSearchElement },
     nextCondition: createExpectedStateNextCondition(inputHasExactValue(searchClassModalTextSearchElement, className)),
     initialize: initialInputValue(searchClassModalTextSearchElement, className),
@@ -44,10 +41,7 @@ export const selectAddNewClassSearchResult = createStory({
   title: 'Select new creation',
   content: 'Diipadaa',
   scroll: createScrollWithElement(searchClassResultsElement, selectAddNewClassSearchResultElement),
-  popover: {
-    element: selectAddNewClassSearchResultElement,
-    position: 'bottom-right'
-  },
+  popover: { element: selectAddNewClassSearchResultElement, position: 'bottom-right' },
   focus: { element: selectAddNewClassSearchResultElement },
   nextCondition: createClickNextCondition(selectAddNewClassSearchResultElement)
 });

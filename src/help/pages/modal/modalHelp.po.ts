@@ -9,10 +9,7 @@ export function confirm(parent: () => JQuery, navigates: boolean) {
 
     title: 'Confirm selection',
     content: 'Diipadaa',
-    popover: {
-      element: confirmButtonElement,
-      position: 'top-left'
-    },
+    popover: { element: confirmButtonElement, position: 'top-left' },
     focus: { element: confirmButtonElement },
     nextCondition: navigates ? createNavigatingClickNextCondition(confirmButtonElement)
                              : createModifyingClickNextCondition(confirmButtonElement)

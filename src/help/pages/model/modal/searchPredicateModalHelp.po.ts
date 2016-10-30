@@ -25,10 +25,7 @@ export function filterForNewPredicate(predicateName: string) {
 
     title: `Search for ${predicateName.toLowerCase()}`,
     content: 'Diipadaa',
-    popover: {
-      element: searchPredicateModalTextSearchElement,
-      position: 'bottom-right'
-    },
+    popover: { element: searchPredicateModalTextSearchElement, position: 'bottom-right' },
     focus: { element: searchPredicateModalTextSearchElement },
     nextCondition: createExpectedStateNextCondition(inputHasExactValue(searchPredicateModalTextSearchElement, predicateName)),
     initialize: initialInputValue(searchPredicateModalTextSearchElement, predicateName),
@@ -47,10 +44,7 @@ export function selectAddNewPredicateSearchResult(type: KnownPredicateType) {
     title: `Select new ${type} creation`,
     content: 'Diipadaa',
     scroll: createScrollWithElement(searchPredicateResultsElement, selectAddNewPredicateSearchResultElement),
-    popover: {
-      element: selectAddNewPredicateSearchResultElement,
-      position: 'bottom-right'
-    },
+    popover: { element: selectAddNewPredicateSearchResultElement, position: 'bottom-right' },
     focus: { element: selectAddNewPredicateSearchResultElement },
     nextCondition: createClickNextCondition(selectAddNewPredicateSearchResultElement)
   });

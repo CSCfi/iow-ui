@@ -12,10 +12,7 @@ export function modifyModel(type: KnownModelType) {
 
     title: 'Modify ' + type,
     content: 'Diipadaa',
-    popover: {
-      element: modifyModelElement,
-      position: 'left-down'
-    },
+    popover: { element: modifyModelElement, position: 'left-down' },
     focus: { element: modifyModelElement },
     nextCondition: createModifyingClickNextCondition(modifyModelElement)
   });
@@ -26,10 +23,7 @@ export const requireNamespace = createStory({
 
   title: 'Add reference to namespace',
   content: 'Diipadaa',
-  popover: {
-    element: requireNamespaceElement,
-    position: 'left-down'
-  },
+  popover: { element: requireNamespaceElement, position: 'left-down' },
   focus: { element: requireNamespaceElement },
   nextCondition: createClickNextCondition(requireNamespaceElement)
 });
@@ -40,10 +34,7 @@ export const saveModelChanges = createStory({
 
   title: 'Save changes',
   content: 'Diipadaa',
-  popover: {
-    element: saveModelChangesElement,
-    position: 'left-down'
-  },
+  popover: { element: saveModelChangesElement, position: 'left-down' },
   focus: { element: saveModelChangesElement },
   nextCondition: createModifyingClickNextCondition(saveModelChangesElement)
 });
@@ -53,10 +44,7 @@ export const focusNamespaces = createStory({
   title: 'Imported namespaces are here',
   scroll: createScrollNone(),
   content: 'Diipadaa',
-  popover: {
-    element: focusNamespacesElement,
-    position: 'left-down'
-  },
+  popover: { element: focusNamespacesElement, position: 'left-down' },
   focus: { element: focusNamespacesElement },
   denyInteraction: true,
   nextCondition: createExplicitNextCondition()

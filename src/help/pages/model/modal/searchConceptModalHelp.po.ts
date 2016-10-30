@@ -19,10 +19,7 @@ export function filterForConceptSuggestionConcept(conceptName: string) {
 
     title: `Search for ${conceptName.toLowerCase()}`,
     content: 'Diipadaa',
-    popover: {
-      element: conceptTextSearchElement,
-      position: 'bottom-right'
-    },
+    popover: { element: conceptTextSearchElement, position: 'bottom-right' },
     focus: { element: conceptTextSearchElement },
     nextCondition: createExpectedStateNextCondition(inputHasExactValue(conceptTextSearchElement, conceptName)),
     initialize: initialInputValue(conceptTextSearchElement, conceptName)
@@ -34,10 +31,7 @@ export const addConceptSuggestionSearchResult = createStory({
   title: 'Select concept suggest creation',
   content: 'Diipadaa',
   scroll: createScrollWithElement(searchConceptResultsElement, addConceptSuggestionSearchResultElement),
-  popover: {
-    element: addConceptSuggestionSearchResultElement,
-    position: 'bottom-right'
-  },
+  popover: { element: addConceptSuggestionSearchResultElement, position: 'bottom-right' },
   focus: { element: addConceptSuggestionSearchResultElement },
   nextCondition: createClickNextCondition(addConceptSuggestionSearchResultElement)
 });
@@ -47,14 +41,8 @@ const enterVocabularyInputElement = input(enterVocabularyElement);
 export const enterVocabulary = createStory({
 
   title: 'Vocabulary',
-  popover: {
-    element: enterVocabularyInputElement,
-    position: 'left-down'
-  },
-  focus: {
-    element: editableFocus(enterVocabularyElement),
-    margin: editableSelectMargin
-  },
+  popover: { element: enterVocabularyInputElement, position: 'left-down' },
+  focus: { element: editableFocus(enterVocabularyElement), margin: editableSelectMargin },
   nextCondition: createExpectedStateNextCondition(validInput(enterVocabularyInputElement)),
   reversible: true
 });
@@ -65,14 +53,8 @@ export const enterLabel = createStory({
 
   title: 'Concept label',
   content: 'Concept label info',
-  popover: {
-    element: enterLabelInputElement,
-    position: 'left-down'
-  },
-  focus: {
-    element: editableFocus(enterLabelElement),
-    margin: editableMargin
-  },
+  popover: { element: enterLabelInputElement, position: 'left-down' },
+  focus: { element: editableFocus(enterLabelElement), margin: editableMargin },
   nextCondition: createExpectedStateNextCondition(validInput(enterLabelInputElement)),
   reversible: true
 });
@@ -86,14 +68,8 @@ export function enterDefinition(initialValue: string) {
 
     title: 'Definition',
     content: 'Definition info',
-    popover: {
-      element: enterDefinitionInputElement,
-      position: 'left-down'
-    },
-    focus: {
-      element: editableFocus(enterDefinitionElement),
-      margin: editableMargin
-    },
+    popover: { element: enterDefinitionInputElement, position: 'left-down' },
+    focus: { element: editableFocus(enterDefinitionElement), margin: editableMargin },
     nextCondition: createExpectedStateNextCondition(validInput(enterDefinitionInputElement)),
     initialize: initialInputValue(enterDefinitionInputElement, initialValue),
     reversible: true

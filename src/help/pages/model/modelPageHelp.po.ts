@@ -15,10 +15,7 @@ export function openModelDetails(type: KnownModelType) {
     title: `Open ${type} details`,
     content: 'Diipadaa',
     scroll: scrollToTop,
-    popover: {
-      element: openModelDetailsElement,
-      position: 'bottom-right'
-    },
+    popover: { element: openModelDetailsElement, position: 'bottom-right' },
     focus: { element: openModelDetailsElement },
     nextCondition: createClickNextCondition(openModelDetailsElement)
   });
@@ -30,10 +27,7 @@ export function openAddResource(type: 'class' | KnownPredicateType) {
 
   return createStory({
     scroll: createScrollWithDefault(modelPanelElement),
-    popover: {
-      element: openAddResourceElement,
-      position: 'right-down'
-    },
+    popover: { element: openAddResourceElement, position: 'right-down' },
     focus: { element: openAddResourceElement },
     title: 'Add ' + type,
     content: 'Diipadaa',
@@ -47,10 +41,7 @@ export function selectClass(prefix: string, name: string) {
 
   return createStory({
     scroll: createScrollWithDefault(modelPanelElement),
-    popover: {
-      element: selectClassElement,
-      position: 'right-down'
-    },
+    popover: { element: selectClassElement, position: 'right-down' },
     focus: { element: selectClassElement },
     title: 'Select ' + name.toLowerCase(),
     content: 'Diipadaa',

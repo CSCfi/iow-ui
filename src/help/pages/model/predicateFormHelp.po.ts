@@ -13,14 +13,8 @@ export function focusPredicateLabel(parent: () => JQuery, type: KnownPredicateTy
   return createStory({
 
     title: storyTitle,
-    popover: {
-      element: enterPredicateLabelInputElement,
-      position: 'left-down'
-    },
-    focus: {
-      element: editableFocus(enterPredicateLabelElement),
-      margin: editableMarginInColumn
-    },
+    popover: { element: enterPredicateLabelInputElement, position: 'left-down' },
+    focus: { element: editableFocus(enterPredicateLabelElement), margin: editableMarginInColumn },
     denyInteraction: true,
     nextCondition: createExplicitNextCondition(),
     reversible: true
@@ -37,14 +31,8 @@ export function enterPredicateLabel(parent: () => JQuery, type: KnownPredicateTy
 
     title: title,
     content: title + ' info',
-    popover: {
-      element: enterPredicateLabelInputElement,
-      position: 'left-down'
-    },
-    focus: {
-      element: editableFocus(enterPredicateLabelElement),
-      margin: editableMarginInColumn
-    },
+    popover: { element: enterPredicateLabelInputElement, position: 'left-down' },
+    focus: { element: editableFocus(enterPredicateLabelElement), margin: editableMarginInColumn },
     nextCondition: createExpectedStateNextCondition(validInput(enterPredicateLabelInputElement)),
     reversible: true,
     initialize: initialInputValue(enterPredicateLabelInputElement, initialValue)

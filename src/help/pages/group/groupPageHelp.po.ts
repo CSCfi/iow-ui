@@ -9,10 +9,7 @@ export function startModelCreation(type: KnownModelType) {
 
     title: 'Add ' + type,
     content: 'Diipadaa',
-    popover: {
-      element: startModelCreationElement,
-      position: 'left-down'
-    },
+    popover: { element: startModelCreationElement, position: 'left-down' },
     focus: { element: startModelCreationElement },
     nextCondition: createClickNextCondition(startModelCreationElement)
   });
