@@ -28,7 +28,7 @@ export class NotificationModal {
       size: 'adapting'
     });
 
-    return modal.result;
+    return modal.result.then(() => true, _err => true);
   }
 
   openNotLoggedIn() {
