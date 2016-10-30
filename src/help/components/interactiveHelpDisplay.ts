@@ -88,6 +88,7 @@ class InteractiveHelpController {
               willChangeLocation: boolean) {
 
     let continuing = willChangeLocation;
+    // Reset expectation if navigation event happened before construction
     setTimeout(() => continuing = false, 500);
     this.showItem(0);
 
@@ -913,10 +914,10 @@ class HelpBackdropController {
     const marginLeft = focusTo.margin && focusTo.margin.left || 0;
 
     return {
-      width: Math.trunc(focusToElementPositioning.width) + marginLeft + marginRight,
-      height: Math.trunc(focusToElementPositioning.height) + marginTop + marginBottom,
-      left: Math.trunc(focusToElementPositioning.left) - marginLeft,
-      top: Math.trunc(focusToElementPositioning.top) - marginTop
+      width: focusToElementPositioning.width + marginLeft + marginRight,
+      height: focusToElementPositioning.height + marginTop + marginBottom,
+      left: focusToElementPositioning.left - marginLeft,
+      top: focusToElementPositioning.top - marginTop
     };
   }
 }
