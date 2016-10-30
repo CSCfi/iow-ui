@@ -88,7 +88,7 @@ class InteractiveHelpController {
               willChangeLocation: boolean) {
 
     let continuing = willChangeLocation;
-    setTimeout(() => continuing = false, 2000);
+    setTimeout(() => continuing = false, 500);
     this.showItem(0);
 
     $scope.$on('$locationChangeStart', (event, next) => {
