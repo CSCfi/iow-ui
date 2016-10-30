@@ -1,6 +1,6 @@
 import {
   createClickNextCondition, createStory, createModifyingClickNextCondition,
-  createExplicitNextCondition
+  createExplicitNextCondition, createScrollNone
 } from '../../contract';
 import { modelView, child } from '../../selectors';
 import { KnownModelType } from '../../../entities/type';
@@ -51,6 +51,7 @@ export const saveModelChanges = createStory({
 const focusNamespacesElement = child(modelView, 'imported-namespaces-view editable-table');
 export const focusNamespaces = createStory({
   title: 'Imported namespaces are here',
+  scroll: createScrollNone(),
   content: 'Diipadaa',
   popover: {
     element: focusNamespacesElement,

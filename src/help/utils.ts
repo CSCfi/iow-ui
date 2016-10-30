@@ -2,6 +2,7 @@ import { INgModelController } from 'angular';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case';
 import { any, removeMatching, contains } from '../utils/array';
 import { Property } from '../entities/class';
+import { createScrollWithDefault } from './contract';
 
 export const editableMargin = { left: 20, right: 20 };
 export const editableMarginInColumn = Object.assign({}, editableMargin, { bottom: 15 });
@@ -53,6 +54,8 @@ export function initialInputValue(element: () => JQuery, value: string) {
     }
   };
 }
+
+export const scrollToTop = createScrollWithDefault(() => angular.element('body'));
 
 export function modelIdFromPrefix(modelPrefix: string) {
   return `http://iow.csc.fi/ns/${modelPrefix}`;

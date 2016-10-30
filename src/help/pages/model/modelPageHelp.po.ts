@@ -1,7 +1,10 @@
-import { createClickNextCondition, createStory, createNavigatingClickNextCondition } from '../../contract';
+import {
+  createClickNextCondition, createStory, createNavigatingClickNextCondition,
+  createScrollWithDefault
+} from '../../contract';
 import { modelView, child } from '../../selectors';
 import { KnownModelType, KnownPredicateType } from '../../../entities/type';
-import { classIdFromPrefixAndName } from '../../utils';
+import { classIdFromPrefixAndName, scrollToTop } from '../../utils';
 
 export function openModelDetails(type: KnownModelType) {
 
@@ -11,6 +14,7 @@ export function openModelDetails(type: KnownModelType) {
 
     title: `Open ${type} details`,
     content: 'Diipadaa',
+    scroll: scrollToTop,
     popover: {
       element: openModelDetailsElement,
       position: 'bottom-right'
@@ -38,12 +42,14 @@ export function openAddResource(type: 'class' | KnownPredicateType) {
 
 export function selectClass(prefix: string, name: string) {
 
-  const selectClassElement = () => angular.element(`.model-panel--left li#${CSS.escape(classIdFromPrefixAndName(prefix, name))}`);
+  const modelPanelElement = () => angular.element('.model-panel--left');
+  const selectClassElement = child(modelPanelElement, `li#${CSS.escape(classIdFromPrefixAndName(prefix, name))}`);
 
   return createStory({
+    scroll: createScrollWithDefault(modelPanelElement),
     popover: {
       element: selectClassElement,
-      position: 'top-right'
+      position: 'right-down'
     },
     focus: { element: selectClassElement },
     title: 'Select ' + name.toLowerCase(),

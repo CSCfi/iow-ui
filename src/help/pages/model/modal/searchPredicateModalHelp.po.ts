@@ -46,10 +46,10 @@ export function selectAddNewPredicateSearchResult(type: KnownPredicateType) {
   return createStory({
     title: `Select new ${type} creation`,
     content: 'Diipadaa',
+    scroll: createScrollWithElement(searchPredicateResultsElement, selectAddNewPredicateSearchResultElement),
     popover: {
       element: selectAddNewPredicateSearchResultElement,
-      position: 'bottom-right',
-      scroll: createScrollWithElement(searchPredicateResultsElement, 0)
+      position: 'bottom-right'
     },
     focus: { element: selectAddNewPredicateSearchResultElement },
     nextCondition: createClickNextCondition(selectAddNewPredicateSearchResultElement)

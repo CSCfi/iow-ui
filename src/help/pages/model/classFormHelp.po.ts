@@ -1,4 +1,6 @@
-import { createStory, createClickNextCondition, createExplicitNextCondition } from '../../contract';
+import {
+  createStory, createClickNextCondition, createExplicitNextCondition, createScrollNone
+} from '../../contract';
 import { editableByTitle, child, editableFocus } from '../../selectors';
 import { editableMarginInColumn } from '../../utils';
 
@@ -26,14 +28,15 @@ export function focusOpenProperty(parent: () => JQuery) {
 
   return createStory({
     title: 'Property is here',
+    scroll: createScrollNone(),
     popover: {
       element: focusOpenPropertyElement,
-      position: 'top-right'
+      position: 'right-down'
     },
     focus: {
       element: focusOpenPropertyElement,
       denyInteraction: true,
-      margin: { left: 10, right: 10, top: 10, bottom: 10 }
+      margin: { left: 10, right: 10, top: 0, bottom: 10 }
     },
     nextCondition: createExplicitNextCondition()
   });
@@ -47,6 +50,7 @@ export function selectAssociationTarget(parent: () => JQuery) {
   return createStory({
 
     title: 'Select association target',
+    scroll: createScrollNone(),
     popover: {
       element: enterAssociationTargetSelectButtonElement,
       position: 'right-down'
@@ -64,9 +68,10 @@ export function focusAssociationTarget(parent: () => JQuery) {
   return createStory({
 
     title: 'Association target is here',
+    scroll: createScrollNone(),
     popover: {
       element: enterAssociationTargetSelectFocusElement,
-      position: 'top-right'
+      position: 'right-down'
     },
     focus: {
       element: enterAssociationTargetSelectFocusElement,

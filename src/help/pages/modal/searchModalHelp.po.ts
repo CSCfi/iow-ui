@@ -36,10 +36,10 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
 
     title: `Select ${label}`,
     content: 'Diipadaa',
+    scroll: createScrollWithElement(searchResultsElement(modalParent), selectResultElement),
     popover: {
       element: selectResultElement,
-      position: 'left-down',
-      scroll: createScrollWithElement(searchResultsElement(modalParent), 200)
+      position: 'left-down'
     },
     focus: { element: selectResultElement },
     nextCondition: selectionNeedsConfirmation ? createClickNextCondition(selectResultElement)

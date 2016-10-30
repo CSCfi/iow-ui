@@ -33,10 +33,10 @@ const addConceptSuggestionSearchResultElement = first(child(searchConceptResults
 export const addConceptSuggestionSearchResult = createStory({
   title: 'Select concept suggest creation',
   content: 'Diipadaa',
+  scroll: createScrollWithElement(searchConceptResultsElement, addConceptSuggestionSearchResultElement),
   popover: {
     element: addConceptSuggestionSearchResultElement,
-    position: 'bottom-right',
-    scroll: createScrollWithElement(searchConceptResultsElement, 0)
+    position: 'bottom-right'
   },
   focus: { element: addConceptSuggestionSearchResultElement },
   nextCondition: createClickNextCondition(addConceptSuggestionSearchResultElement)

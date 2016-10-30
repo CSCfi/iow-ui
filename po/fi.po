@@ -1582,7 +1582,7 @@ msgstr "Avaa tietokomponenttikirjaston tiedot"
 
 #: translations/help.html:24
 msgid "Open profile details"
-msgstr "Avaa soleltamisprofiilin tiedot"
+msgstr "Avaa soveltamisprofiilin tiedot"
 
 #: components/editor/propertyView.html:62
 msgid "Optional metadata"

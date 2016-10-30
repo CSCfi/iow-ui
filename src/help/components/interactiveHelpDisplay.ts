@@ -12,7 +12,7 @@ import {
 } from '../contract';
 import { contains } from '../../utils/array';
 import { ConfirmationModal } from '../../components/common/confirmationModal';
-import { moveCursorToEnd } from '../utils';
+import { moveCursorToEnd, scrollToTop } from '../utils';
 
 const popupAnimationTimeInMs = 300; // should match css help-popover transition time
 const arrowHeight = 13;
@@ -519,161 +519,144 @@ class HelpPopoverController {
   showClose: boolean;
 
   positioning: Positioning|null = null;
-
-  debounceHandle: any;
-  popoverPositionRetryCount = 0;
+  currentScrollTop?: number;
 
   constructor(private $scope: IScope, private $document: IDocumentService, private $uibModalStack: IModalStackService) {
 
     this.helpController.registerPopover(this);
 
     const setItemStyles = () => {
-      this.arrowClass = resolveArrowClass(this.item);
 
-      if (this.item) {
-        this.debouncePositionUpdate();
+      this.arrowClass = resolveArrowClass(this.item);
+      const positioning = this.calculatePositioning();
+
+      if (positioning) {
+        this.scrollTo(this.item, () => this.setPositioning(positioning));
       }
     };
 
     const storyPopoverPositioning = () => (this.item && this.item.type === 'story') ? elementPositioning(this.item.popover.element()) : null;
 
-    $scope.$watch(() => this.helpController.getDimensions(), setItemStyles, true);
-    $scope.$watch(() => this.item, setItemStyles);
+    const debounceSetItemStyles = _.debounce(() => setItemStyles(), 100);
+
+    $scope.$watch(() => this.helpController.getDimensions(), debounceSetItemStyles, true);
+    $scope.$watch(() => this.item, () => {
+      this.currentScrollTop = undefined;
+      debounceSetItemStyles();
+    });
+
     $scope.$watch(storyPopoverPositioning, (newPos, oldPos) => {
       // Additional check for sub-pixel fluctuation caused by float (fixed style)
       if (!isPositionInMargin(1, newPos, oldPos)) {
-        setItemStyles();
+        debounceSetItemStyles();
       }
     }, true);
 
-    window.addEventListener('resize', setItemStyles);
-    window.addEventListener('scroll', setItemStyles);
+    window.addEventListener('resize', debounceSetItemStyles);
+    window.addEventListener('scroll', debounceSetItemStyles);
 
     $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', setItemStyles);
-      window.removeEventListener('scroll', setItemStyles);
+      window.removeEventListener('resize', debounceSetItemStyles);
+      window.removeEventListener('scroll', debounceSetItemStyles);
     });
   }
 
-  private debouncePositionUpdate() {
+  private setPositioning(positioning: Positioning) {
 
-    if (this.debounceHandle) {
-      clearTimeout(this.debounceHandle);
-    } else {
-      this.popoverPositionRetryCount = 0;
+    if (isInWindow(positioning)) {
+
+      this.positioning = positioning;
+
+      // apply positioning before applying content, content is applied in the middle of animation
+      setTimeout(() => {
+        this.$scope.$apply(() => {
+          this.title = this.item.title;
+          this.content = this.item.content;
+          this.showNext = this.helpController.showNext;
+          this.showPrevious = this.helpController.showPrevious;
+          this.showClose = this.helpController.showClose;
+        });
+      }, popupAnimationTimeInMs / 2);
+    }
+  }
+
+  scrollTo(item: Story|Notification, cb: () => void) {
+
+    const scroll = item.type === 'notification' ? scrollToTop : item.scroll || createScrollWithDefault(item.popover.element, 100);
+
+    if (scroll.type === 'scroll-none') {
+      cb();
+      return;
     }
 
-    const retry = () => {
-      this.popoverPositionRetryCount++;
+    const scrollToElement = scroll.element();
+    const scrollToElementPositioning = elementPositioning(scrollToElement)!;
+    const defaultScrollWithElement = angular.element('html, body');
 
-      if (this.popoverPositionRetryCount > 20) {
-        throw new Error('Popover element does not exist');
-      } else {
-        this.debouncePositionUpdate();
+    const calculatePopoverOffsetOnTopOfScrollToElement = (story: Story) => {
+
+      const popoverDimension = this.helpController.getDimensions();
+
+      switch (story.popover.position) {
+        case 'left-up':
+        case 'right-up':
+          return Math.min(0, popoverDimension.height + arrowHeight - scrollToElementPositioning.height);
+        case 'top-right':
+        case 'top-left':
+          return popoverDimension.height + arrowHeight;
+        case 'left-down':
+        case 'right-down':
+        case 'bottom-right':
+        case 'bottom-left':
+          return 0;
+        default:
+          return assertNever(story.popover.position, 'Unsupported popover position');
       }
     };
 
-    this.debounceHandle = setTimeout(() => {
+    const resolveScrollWithElement = () => {
 
-      const positioning = this.calculatePositioning();
-      const dimension = this.helpController.dimensionsProvider.getDimensions();
-
-      const wouldBeOffScreen = positioning && !fitsToWindow({ top: positioning.top, height: dimension.height });
-      const shouldScroll = this.item.type === 'notification' || positioning && !fitsToWindow({ top: positioning.top, height: dimension.height });
-
-      if (shouldScroll) {
-        this.scrollTo();
+      switch (scroll.type) {
+        case 'scroll-with-element':
+          return scroll.scrollElement();
+        case 'scroll-with-default':
+          const topModal = this.$uibModalStack.getTop();
+          return topModal ? topModal.value.modalDomEl.find('.modal-content') : defaultScrollWithElement;
+        default:
+          assertNever(scroll, 'Unsupported popover scroll type');
       }
+    };
 
-      if (positioning && !wouldBeOffScreen) {
-        this.debounceHandle = null;
-        this.positioning = positioning;
+    const scrollWithElement = resolveScrollWithElement();
+    const scrollOffsetFromTop = scroll.offsetFromTop || 0;
 
-        // apply positioning before applying content, content is applied in the middle of animation
-        setTimeout(() => {
-          this.$scope.$apply(() => {
-            this.title = this.item.title;
-            this.content = this.item.content;
-            this.showNext = this.helpController.showNext;
-            this.showPrevious = this.helpController.showPrevious;
-            this.showClose = this.helpController.showClose;
-          });
-        }, popupAnimationTimeInMs / 2);
-      } else {
-        retry();
-      }
-    }, 100);
-  }
+    let scrollTop = scrollToElementPositioning.top - scrollOffsetFromTop;
 
-  scrollTo() {
+    if (scrollWithElement !== defaultScrollWithElement) {
 
-    const item = this.item;
-    const defaultElement = angular.element('html, body');
+      const scrollWithElementOffsetFromTop = scrollWithElement.offset().top;
+      const scrollWithElementScrollingPosition = scrollWithElement.scrollTop();
 
-    if (item.type === 'notification') {
-      defaultElement.animate({ scrollTop: 0 }, 100);
-    } else {
-
-      const dimension = this.helpController.getDimensions();
-      const popoverScroll = item.popover.scroll || createScrollWithDefault(100);
-      const popoverElement = item.popover.element();
-      const destinationPositioning = elementPositioning(popoverElement)!;
-
-      const offsetOnTopOfDestination = () => {
-        switch (item.popover.position) {
-          case 'left-up':
-          case 'right-up':
-            return Math.min(0, dimension.height + arrowHeight - destinationPositioning.height);
-          case 'top-right':
-          case 'top-left':
-            return dimension.height + arrowHeight;
-          case 'left-down':
-          case 'right-down':
-          case 'bottom-right':
-          case 'bottom-left':
-            return 0;
-          default:
-            return assertNever(item.popover.position, 'Unsupported popover position');
-        }
-      };
-
-      const scrollWithElement = () => {
-        switch (popoverScroll.type) {
-          case 'scroll-with-element':
-            return popoverScroll.element();
-          case 'scroll-with-default':
-            const topModal = this.$uibModalStack.getTop();
-            return topModal ? topModal.value.modalDomEl.find('.modal-content') : defaultElement;
-          case 'scroll-none':
-            return defaultElement;
-          default:
-            assertNever(popoverScroll, 'Unsupported popover scroll type');
-        }
-      };
-
-      const scrollOffsetFromTop = () => {
-        switch (popoverScroll.type) {
-          case 'scroll-with-element':
-          case 'scroll-with-default':
-            return popoverScroll.offsetFromTop;
-          case 'scroll-none':
-            return 0;
-          default:
-            return assertNever(popoverScroll, 'Unsupported popover scroll type');
-        }
-      };
-
-      const scrollElement = scrollWithElement();
-      const scrollElementOffsetFromTop = scrollElement.offset().top;
-
-      const scrollTop = destinationPositioning.top
-                        - scrollElementOffsetFromTop
-                        - Math.max(offsetOnTopOfDestination(), scrollOffsetFromTop());
-
-      const scrollDurationInMs = 100;
-
-      scrollElement.animate({ scrollTop }, scrollDurationInMs);
+      scrollTop = scrollTop - scrollWithElementOffsetFromTop + scrollWithElementScrollingPosition;
     }
+
+    if (item.type === 'story') {
+      const popoverOffsetFromTop = calculatePopoverOffsetOnTopOfScrollToElement(item);
+
+      if (popoverOffsetFromTop > scrollOffsetFromTop) {
+        scrollTop -= popoverOffsetFromTop - scrollOffsetFromTop;
+      }
+    }
+
+    if (!isNumberInMargin(10, this.currentScrollTop, scrollTop)) {
+      const duration = 100;
+      scrollWithElement.stop(); // stop previous animation
+      scrollWithElement.animate({ scrollTop }, duration, cb);
+    } else {
+      cb();
+    }
+
+    this.currentScrollTop = scrollTop;
   }
 
   style() {
@@ -1054,13 +1037,13 @@ function isPositionInMargin(margin: number, lhs: Positioning|null, rhs: Position
   );
 }
 
-function fitsToWindow(position: {top: number, height: number}) {
+function isInWindow(positioning: Positioning) {
 
   const windowTop = window.pageYOffset;
   const windowBottom = windowTop + window.innerHeight;
-  const positionTop = position.top;
-  const positionBottom = positionTop + position.height;
+  const positionTop = positioning.top;
+  const positionBottom = positionTop + (positioning.height || 500);
 
   return positionTop >= windowTop && positionTop <= windowBottom
-    && positionBottom >= windowTop && positionBottom <= windowBottom;
+    || positionBottom >= windowTop && positionBottom <= windowBottom;
 }

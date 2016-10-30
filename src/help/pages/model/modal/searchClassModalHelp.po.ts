@@ -43,10 +43,10 @@ const selectAddNewClassSearchResultElement = first(child(searchClassResultsEleme
 export const selectAddNewClassSearchResult = createStory({
   title: 'Select new creation',
   content: 'Diipadaa',
+  scroll: createScrollWithElement(searchClassResultsElement, selectAddNewClassSearchResultElement),
   popover: {
     element: selectAddNewClassSearchResultElement,
-    position: 'bottom-right',
-    scroll: createScrollWithElement(searchClassResultsElement, 0)
+    position: 'bottom-right'
   },
   focus: { element: selectAddNewClassSearchResultElement },
   nextCondition: createClickNextCondition(selectAddNewClassSearchResultElement)

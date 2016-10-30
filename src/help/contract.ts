@@ -23,14 +23,14 @@ export type NextCondition = Explicit
                           | ModifyingClick
                           | ExpectedState;
 
-export type ScrollWithDefault = { type: 'scroll-with-default', offsetFromTop: number };
-export type ScrollWithElement = { type: 'scroll-with-element', element: () => JQuery, offsetFromTop: number };
+export type ScrollWithDefault = { type: 'scroll-with-default', element: () => JQuery, offsetFromTop?: number };
+export type ScrollWithElement = { type: 'scroll-with-element', scrollElement: () => JQuery, element: () => JQuery, offsetFromTop?: number };
 export type ScrollNone =        { type: 'scroll-none' };
 
 
-export type PopoverScroll = ScrollWithDefault
-                          | ScrollWithElement
-                          | ScrollNone;
+export type Scroll = ScrollWithDefault
+                   | ScrollWithElement
+                   | ScrollNone;
 
 export interface HelpEventHandler {
   onInit?: (service: InteractiveHelpService) => IPromise<boolean>; // result boolean indicates if initialization will change location
@@ -64,10 +64,10 @@ export interface Story extends StoryDetails {
 export interface StoryDetails {
   title: string;
   content?: string;
+  scroll?: Scroll; // when not defined it will be implicitly ScrollWithDefault to popover element with 100px offset
   popover: {
     element: () => JQuery,
     position: PopoverPosition
-    scroll?: PopoverScroll // when not defined it will be implicitly ScrollWithDefault 100px offset
   };
   focus?: {
     element: () => JQuery,
@@ -119,12 +119,12 @@ export function createExpectedStateNextCondition(valid: () => boolean): Expected
   return { type: 'expected-state', valid };
 }
 
-export function createScrollWithDefault(offsetFromTop: number): ScrollWithDefault {
-  return { type: 'scroll-with-default', offsetFromTop };
+export function createScrollWithDefault(element: () => JQuery, offsetFromTop?: number): ScrollWithDefault {
+  return { type: 'scroll-with-default', element, offsetFromTop };
 }
 
-export function createScrollWithElement(element: () => JQuery, offsetFromTop: number): ScrollWithElement {
-  return { type: 'scroll-with-element', element, offsetFromTop };
+export function createScrollWithElement(scrollElement: () => JQuery, element: () => JQuery, offsetFromTop?: number): ScrollWithElement {
+  return { type: 'scroll-with-element', scrollElement, element, offsetFromTop };
 }
 
 export function createScrollNone(): ScrollNone {
