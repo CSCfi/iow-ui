@@ -127,6 +127,7 @@ export class Model extends AbstractModel {
 
   addNamespace(ns: ImportedNamespace) {
     this.namespaces.push(ns);
+    this.context[ns.prefix] = ns.namespace;
   }
 
   removeNamespace(ns: ImportedNamespace) {
