@@ -801,42 +801,37 @@ class HelpBackdropController {
 
   helpController: InteractiveHelpController;
 
-  debounceHandle: any;
-
   constructor(private $scope: IScope, private $document: IDocumentService) {
 
     this.helpController.registerBackdrop(this);
 
     const storyFocus = () => this.item && this.item.type === 'story' && this.item.focus ? elementPositioning(this.item.focus.element()) : null;
-    const debouncePositionUpdateApplyingScope = () => $scope.$apply(() => this.debouncePositionUpdate());
+    const debouncePositionUpdate = _.debounce(() => this.updatePosition());
 
-    $scope.$watch(storyFocus, () => this.debouncePositionUpdate(), true);
+    $scope.$watch(() => this.item, () => {
+      // show full backdrop if item has focus while waiting for debounce
+      if (this.item && this.item.type === 'story' && this.item.focus) {
+        this.regions = HelpBackdropController.fullBackdrop;
+      }
 
-    window.addEventListener('resize', debouncePositionUpdateApplyingScope);
-    window.addEventListener('scroll', debouncePositionUpdateApplyingScope);
+      debouncePositionUpdate();
+    });
+
+    $scope.$watch(storyFocus, debouncePositionUpdate, true);
+
+    window.addEventListener('resize', debouncePositionUpdate);
+    window.addEventListener('scroll', debouncePositionUpdate);
 
     $scope.$on('$destroy', () => {
-      window.removeEventListener('resize', debouncePositionUpdateApplyingScope);
-      window.removeEventListener('scroll', debouncePositionUpdateApplyingScope);
+      window.removeEventListener('resize', debouncePositionUpdate);
+      window.removeEventListener('scroll', debouncePositionUpdate);
     });
   }
 
-  private debouncePositionUpdate() {
-
-    if (this.debounceHandle) {
-      clearTimeout(this.debounceHandle);
-    }
-
-    this.debounceHandle = setTimeout(() => {
-      this.focusFirstFocusable();
-      // apply focus after animation is almost done
-      setTimeout(() => this.$scope.$apply(() => this.regions = this.resolveRegions()), popupAnimationTimeInMs * (4 / 5));
-    }, 100);
-
-    // show full backdrop if item has focus while waiting for debounce
-    if (this.item && this.item.type === 'story' && this.item.focus) {
-      this.regions = HelpBackdropController.fullBackdrop;
-    }
+  private updatePosition() {
+    this.focusFirstFocusable();
+    // apply focus after animation is almost done
+    setTimeout(() => this.$scope.$apply(() => this.regions = this.resolveRegions()), popupAnimationTimeInMs * (4 / 5));
   }
 
   // XXX: does this logic belong to here?
