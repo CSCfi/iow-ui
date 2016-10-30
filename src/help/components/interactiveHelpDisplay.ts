@@ -67,7 +67,7 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
 
 class InteractiveHelpController {
 
-  item: Story|Notification|null = null;
+  item: Story|Notification;
   activeIndex = 0;
   changingLocation = false;
 
@@ -87,19 +87,14 @@ class InteractiveHelpController {
               private help: InteractiveHelp,
               willChangeLocation: boolean) {
 
-    const isInitialized = () => !!this.item;
-    const initialize = () => this.showItem(0);
-
-    if (!willChangeLocation) {
-      initialize();
-    }
-
+    let initialLocationChangeHandled = false;
     let continuing = false;
+    this.showItem(0);
 
     $scope.$on('$locationChangeStart', (event, next) => {
 
-      if (willChangeLocation && !isInitialized()) {
-        initialize();
+      if (willChangeLocation && !initialLocationChangeHandled) {
+        initialLocationChangeHandled = true;
       } else {
         if (!continuing) {
           event.preventDefault();
@@ -126,14 +121,12 @@ class InteractiveHelpController {
 
     $scope.$watch(() => this.item, debounceUpdatePositions);
 
-    const itemPopoverPositioning = () => (this.item && this.item.type === 'story') ? elementPositioning(this.item.popover.element()) : null;
-    const itemFocusPositioning = () => this.item && this.item.type === 'story' && this.item.focus ? elementPositioning(this.item.focus.element()) : null;
+    const itemPopoverPositioning = () => (this.item.type === 'story') ? elementPositioning(this.item.popover.element()) : null;
+    const itemFocusPositioning = () => this.item.type === 'story' && this.item.focus ? elementPositioning(this.item.focus.element()) : null;
     const itemScrollPositioning = () => {
-      if (this.item) {
-        const scroll = this.resolveScroll();
-        if (scroll.type !== 'scroll-none') {
-          return elementPositioning(scroll.element());
-        }
+      const scroll = this.resolveScroll();
+      if (scroll.type !== 'scroll-none') {
+        return elementPositioning(scroll.element());
       }
       return null;
     };
@@ -181,6 +174,7 @@ class InteractiveHelpController {
 
     this.manageActiveElement(item);
 
+    this.currentScrollTop = undefined;
     this.item = item;
   }
 
@@ -220,13 +214,13 @@ class InteractiveHelpController {
   }
 
   private resolveScroll() {
-    const item = requireDefined(this.item);
+    const item = this.item;
     return item.type === 'notification' ? scrollToTop : item.scroll || createScrollWithDefault(item.popover.element, 100);
   }
 
   scrollTo(cb: () => void) {
 
-    const item = requireDefined(this.item);
+    const item = this.item;
     const scroll = this.resolveScroll();
 
     if (scroll.type === 'scroll-none') {
@@ -326,11 +320,6 @@ class InteractiveHelpController {
   manageTabKeyFocus(event: JQueryEventObject) {
 
     const item = this.item;
-
-    if (!item) {
-      return stopEvent(event);
-    }
-
     const focusableElements = this.loadFocusableElementList(item);
 
     const activeElementIsFocusable = () => {
@@ -432,7 +421,7 @@ class InteractiveHelpController {
   clickHandler(event: JQueryEventObject) {
     const item = this.item;
 
-    if (item && item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
+    if (item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
       const continueToNextElement = item.nextCondition.element();
 
       if (elementExists(continueToNextElement)) {
@@ -507,11 +496,11 @@ class InteractiveHelpController {
   }
 
   get showNext() {
-    return !this.isCurrentLastItem() && (!!this.item && (this.item.type === 'notification' || !isClick(this.item.nextCondition)));
+    return !this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
   }
 
   get showClose() {
-    return this.isCurrentLastItem() && (!!this.item && (this.item.type === 'notification' || !isClick(this.item.nextCondition)));
+    return this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
   }
 
   get showPrevious() {
@@ -535,11 +524,6 @@ class InteractiveHelpController {
   }
 
   isValid() {
-
-    if (!this.item) {
-      return false;
-    }
-
     switch (this.item.type) {
       case 'story':
         switch (this.item.nextCondition.type) {
@@ -711,11 +695,6 @@ class HelpPopoverController {
   }
 
   calculatePositioning(): Positioning|null {
-
-    if (!this.item) {
-      throw new Error('Item does not exist');
-    }
-
     switch (this.item.type) {
       case 'story':
         return this.calculateStoryPositioning(this.item);
@@ -868,18 +847,13 @@ class HelpBackdropController {
   };
 
   private resolveRegions(): Regions|null {
-
-    if (!this.item) {
-      return null;
-    } else {
-      switch (this.item.type) {
-        case 'story':
-          return this.calculateRegions(this.item);
-        case 'notification':
-          return HelpBackdropController.fullBackdrop;
-        default:
-          return assertNever(this.item, 'Unknown item type');
-      }
+    switch (this.item.type) {
+      case 'story':
+        return this.calculateRegions(this.item);
+      case 'notification':
+        return HelpBackdropController.fullBackdrop;
+      default:
+        return assertNever(this.item, 'Unknown item type');
     }
   }
 
