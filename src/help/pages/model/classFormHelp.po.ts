@@ -1,5 +1,5 @@
 import {
-  createStory, createClickNextCondition, createExplicitNextCondition, createScrollNone
+  createStory, createClickNextCondition, createExplicitNextCondition, createScrollNone, createScrollWithDefault
 } from '../../contract';
 import { editableByTitle, child, editableFocus } from '../../selectors';
 import { editableMarginInColumn } from '../../utils';
@@ -68,7 +68,7 @@ export function focusAssociationTarget(parent: () => JQuery) {
   return createStory({
 
     title: 'Association target is here',
-    scroll: createScrollNone(),
+    scroll: createScrollWithDefault(enterAssociationTargetElement, 150),
     popover: {
       element: enterAssociationTargetSelectFocusElement,
       position: 'right-down'
