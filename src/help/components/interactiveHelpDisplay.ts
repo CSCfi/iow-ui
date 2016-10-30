@@ -87,33 +87,28 @@ class InteractiveHelpController {
               private help: InteractiveHelp,
               willChangeLocation: boolean) {
 
-    let initialLocationChangeHandled = false;
-    let continuing = false;
+    let continuing = willChangeLocation;
+    setTimeout(() => continuing = false, 2000);
     this.showItem(0);
 
     $scope.$on('$locationChangeStart', (event, next) => {
+      if (!continuing) {
+        event.preventDefault();
 
-      if (willChangeLocation && !initialLocationChangeHandled) {
-        initialLocationChangeHandled = true;
+        // delay is needed so that click handler has time to modify flag
+        setTimeout(() => {
+          if (this.changingLocation) {
+            continuing = true;
+            $scope.$apply(() => {
+              $location.url(nextUrl($location, next));
+              this.moveToNextItem();
+            });
+          } else {
+            confirmationModal.openCloseHelp().then(() => this.close(true));
+          }
+        });
       } else {
-        if (!continuing) {
-          event.preventDefault();
-
-          // delay is needed so that click handler has time to modify flag
-          setTimeout(() => {
-            if (this.changingLocation) {
-              continuing = true;
-              $scope.$apply(() => {
-                $location.url(nextUrl($location, next));
-                this.moveToNextItem();
-              });
-            } else {
-              confirmationModal.openCloseHelp().then(() => this.close(true));
-            }
-          });
-        } else {
-          continuing = false;
-        }
+        continuing = false;
       }
     });
 
