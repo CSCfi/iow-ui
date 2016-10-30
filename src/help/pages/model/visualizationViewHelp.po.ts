@@ -6,6 +6,5 @@ export const focusVisualization = createStory({
   scroll: createScrollWithDefault(focusVisualizationElement),
   popover: { element: focusVisualizationElement, position: 'left-down' },
   focus: { element: focusVisualizationElement },
-  denyInteraction: true,
   nextCondition: createExplicitNextCondition()
 });

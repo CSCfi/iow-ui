@@ -28,6 +28,7 @@ import {
 } from '../../entities/visualization';
 import { Coordinate } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
+import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 
 
 mod.directive('classVisualization', () => {
@@ -142,6 +143,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
               private languageService: LanguageService,
               private userService: UserService,
               private sessionService: SessionService,
+              private interactiveHelpService: InteractiveHelpService,
               private confirmationModal: ConfirmationModal,
               private notificationModal: NotificationModal) {
 
@@ -188,7 +190,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   }
 
   canSave() {
-    return this.userService.user.isMemberOf(this.model.group);
+    return !this.interactiveHelpService.open && this.userService.user.isMemberOf(this.model.group);
   }
 
   savePositions() {
