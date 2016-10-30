@@ -3,13 +3,14 @@ import { ValidatorService } from '../../services/validatorService';
 import { ResetableService } from './resetableService';
 import { Uri } from '../../entities/uri';
 import { InteractiveHelpClassService } from './helpClassService';
+import { InteractiveHelpPredicateService } from './helpPredicateService';
 
 export class InteractiveHelpValidatorService implements ValidatorService, ResetableService {
 
   /* @ngInject */
   constructor(private $q: IQService,
-              private defaultValidatorService: ValidatorService,
-              private helpClassService: InteractiveHelpClassService) {
+              private helpClassService: InteractiveHelpClassService,
+              private helpPredicateService: InteractiveHelpPredicateService) {
   }
 
   classDoesNotExist(id: Uri): IPromise<boolean> {
@@ -17,7 +18,7 @@ export class InteractiveHelpValidatorService implements ValidatorService, Reseta
   }
 
   predicateDoesNotExist(id: Uri): IPromise<boolean> {
-    return this.defaultValidatorService.predicateDoesNotExist(id);
+    return this.$q.when(!this.helpPredicateService.predicates.has(id.toString()));
   }
 
   reset(): IPromise<any> {
