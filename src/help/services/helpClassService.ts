@@ -6,8 +6,8 @@ import { Urn, Uri } from '../../entities/uri';
 import { DataSource } from '../../components/form/dataSource';
 import { Language } from '../../utils/language';
 import { ExternalEntity } from '../../entities/externalEntity';
-import { Predicate } from '../../entities/predicate';
-import { KnownPredicateType } from '../../entities/type';
+import { Predicate, Association, Attribute } from '../../entities/predicate';
+import { KnownPredicateType, reverseMapType } from '../../entities/type';
 import { ResetableService } from './resetableService';
 import moment = require('moment');
 import { upperCaseFirst } from 'change-case';
@@ -149,10 +149,50 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
   }
 
   newProperty(predicateOrExternal: Predicate|ExternalEntity, type: KnownPredicateType, model: Model): IPromise<Property> {
-    return this.defaultClassService.newProperty(predicateOrExternal, type, model);
+    if (predicateOrExternal instanceof ExternalEntity) {
+      return this.defaultClassService.newProperty(predicateOrExternal, type, model);
+    } else {
+
+      const currentTime = dateSerializer.serialize(moment());
+      const context = Object.assign({}, model.context, predicateOrExternal.context, { [model.prefix]: model.namespace });
+
+      const graph: any = {
+        '@id': Uri.randomUUID().toString(),
+        created: currentTime,
+        type: reverseMapType(type),
+        label: Object.assign({}, predicateOrExternal.label),
+        comment: Object.assign({}, predicateOrExternal.comment),
+        predicate: predicateOrExternal.id.curie
+      };
+
+      if (type === 'attribute') {
+        if (!predicateIsAttribute(predicateOrExternal)) {
+          throw new Error('Predicate must be attribute');
+        }
+        graph.datatype = predicateOrExternal.dataType || 'xsd:string';
+      } else {
+        if (!predicateIsAssociation(predicateOrExternal)) {
+          throw new Error('Predicate must be association');
+        }
+        graph.valueShape = predicateOrExternal.valueClass && predicateOrExternal.valueClass.curie;
+      }
+
+      const newProperty = new Property(graph, context, frames.propertyFrame(graph));
+      newProperty.state = 'Unstable';
+
+      return this.$q.when(newProperty);
+    }
   }
 
   getInternalOrExternalClass(id: Uri, model: Model): IPromise<Class> {
     return this.defaultClassService.getInternalOrExternalClass(id, model);
   }
+}
+
+function predicateIsAssociation(predicate: Predicate): predicate is Association {
+  return predicate.isOfType('association');
+}
+
+function predicateIsAttribute(predicate: Predicate): predicate is Attribute {
+  return predicate.isOfType('attribute');
 }
