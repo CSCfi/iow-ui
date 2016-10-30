@@ -1,4 +1,5 @@
 import { module as mod } from '../module';
+import * as _ from 'lodash';
 import { OverlayService, OverlayInstance } from '../../components/common/overlay';
 import { IScope, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
