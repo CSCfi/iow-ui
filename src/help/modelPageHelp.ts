@@ -1,12 +1,11 @@
-import { IQService, ILocationService, IPromise, ui } from 'angular';
+import { IPromise, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
   StoryLine, InteractiveHelp, createNotification
 } from './contract';
 import { Model } from '../entities/model';
-import { InteractiveHelpService } from './services/interactiveHelpService';
 import { KnownModelType } from '../entities/type';
-import { assertNever, requireDefined } from '../utils/object';
+import { requireDefined } from '../utils/object';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
 import * as SearchNamespaceModal from './pages/model/modal/searchNamepaceModalHelp.po';
@@ -22,9 +21,10 @@ import {
   exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
   exampleLibrary
 } from './entities';
-import { onlyProperties, modelIdFromPrefix, classIdFromNamespaceId, predicateIdFromNamespaceId } from './utils';
-import { Uri } from '../entities/uri';
+import { classIdFromNamespaceId, predicateIdFromNamespaceId, modelIdFromPrefix, isExpectedProperty } from './utils';
 import { classView } from './selectors';
+import { EntityLoaderService, EntityLoader, PropertyDetails } from '../services/entityLoader';
+import { InteractiveHelpService } from './services/interactiveHelpService';
 
 export const addNamespaceItems = [
   ModelView.requireNamespace,
@@ -168,112 +168,11 @@ export const addAssociation = {
 export class ModelPageHelpService {
 
   /* @ngInject */
-  constructor(private $q: IQService, private $uibModalStack: IModalStackService, private $location: ILocationService) {
+  constructor(private $uibModalStack: IModalStackService,
+              private $location: ILocationService,
+              private entityLoaderService: EntityLoaderService) {
   }
 
-  private returnToModelPage(model: Model) {
-    this.$uibModalStack.dismissAll();
-    this.$location.url(model.iowUrl());
-  }
-
-  // FIXME: composable initialization logic, make use of entityLoader?
-  private initialize(model: Model, requirePrefix: string|null, createClasses: boolean, skipAttribute: boolean) {
-
-    return (service: InteractiveHelpService) => {
-
-      const persistModel = (newModel: Model) => {
-        service.helpModelService.createModel(newModel);
-        return newModel;
-      };
-
-      const addNamespace = (newModel: Model) => {
-        if (requirePrefix) {
-          return service.helpModelService.getAllImportableNamespaces()
-            .then(namespaces => {
-
-              const jhs = requireDefined(namespaces.find(ns => ns.prefix === requirePrefix));
-              newModel.addNamespace(jhs);
-
-              return newModel;
-            });
-        } else {
-          return this.$q.when(newModel);
-        }
-      };
-
-      const addClasses = (newModel: Model) => {
-        if (createClasses) {
-
-          const resultPromises: IPromise<any>[] = [];
-          const shapeFromClassId = new Uri(classIdFromNamespaceId(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name), newModel.context);
-
-          resultPromises.push(
-            service.helpClassService.getClass(shapeFromClassId, newModel)
-              .then(klass => service.helpClassService.newShape(klass, newModel, false, 'fi'))
-              .then(shape => {
-                onlyProperties(shape.properties, exampleSpecializedClass.properties);
-                return shape;
-              })
-              .then(shape => service.helpClassService.createClass(shape))
-          );
-
-          const propertyPromise = service.helpPredicateService.getPredicate(predicateIdFromNamespaceId(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name))
-            .then(predicate => service.helpClassService.newProperty(predicate, 'attribute', newModel));
-
-          const newClassPromise = service.helpVocabularyService.createConceptSuggestion(newModel.vocabularies[0], exampleNewClass.name, exampleNewClass.comment, null, 'fi', newModel)
-            .then(suggestionId => service.helpClassService.newClass(newModel, exampleNewClass.name, suggestionId, 'fi'));
-
-          resultPromises.push(this.$q.all([newClassPromise, propertyPromise])
-            .then(([klass, property]) => {
-              if (!skipAttribute) {
-                klass.addProperty(property);
-              }
-              return klass;
-            })
-            .then(klass => service.helpClassService.createClass(klass))
-          );
-
-          return this.$q.all(resultPromises).then(() => newModel);
-
-        } else {
-          return this.$q.when(newModel);
-        }
-      };
-
-      const navigate = (newModel: Model) => {
-        this.$location.url(newModel.iowUrl());
-        return true;
-      };
-
-      const createModelAndNavigate = (prefix: string, label: string) => {
-        return service.helpModelService.newModel(prefix, label, model.groupId, ['fi', 'en'], model.normalizedType)
-          .then(addNamespace)
-          .then(persistModel)
-          .then(addClasses)
-          .then(navigate);
-      };
-
-      return service.reset().then(() => {
-        switch (model.normalizedType) {
-          case 'library':
-            return createModelAndNavigate(exampleLibrary.prefix, exampleLibrary.name);
-          case 'profile':
-            return createModelAndNavigate(exampleProfile.prefix, exampleProfile.name);
-          default:
-            return assertNever(model.normalizedType, 'Unknown model type');
-        }
-      });
-    };
-  }
-
-  private createHelp(model: Model, storyLine: StoryLine, requirePrefix: string|null, createClasses: boolean, skipAttribute: boolean) {
-    return {
-      storyLine,
-      onInit: this.initialize(model, requirePrefix, createClasses, skipAttribute),
-      onComplete: () => this.returnToModelPage(model),
-      onCancel: () => this.returnToModelPage(model)
-    };
-  }
 
   getHelps(model: Model|null): InteractiveHelp[] {
 
@@ -281,23 +180,120 @@ export class ModelPageHelpService {
       return [];
     }
 
-    const result = [
-      this.createHelp(model, addNamespace(model.normalizedType), null, false, false),
-      this.createHelp(model, createNewClass, exampleImportedLibrary.prefix, false, false)
-    ];
+    const helps = new HelpBuilder(this.$location, this.$uibModalStack, this.entityLoaderService, model);
 
-    switch (model.normalizedType) {
-      case 'profile':
-        result.push(this.createHelp(model, specializeClass, exampleImportedLibrary.prefix, false, false));
-        result.push(this.createHelp(model, addAttribute, exampleImportedLibrary.prefix, true, true));
-        result.push(this.createHelp(model, addAssociation, exampleImportedLibrary.prefix, true, false));
-        break;
-      case 'library':
-        break;
-      default:
-        assertNever(model.normalizedType, 'Unsupported model type');
+    helps.add(addNamespace(model.normalizedType), builder => builder.newModel());
+    helps.add(createNewClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
+
+    if (model.normalizedType === 'profile') {
+
+      helps.add(specializeClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
+
+      helps.add(addAttribute, builder => {
+        builder.newModel(exampleImportedLibrary.namespaceId);
+        builder.newClass();
+      });
+
+      helps.add(addAssociation, builder => {
+        builder.newModel(exampleImportedLibrary.namespaceId);
+        builder.newClass({
+          label: { 'fi': exampleNewClass.name },
+          predicate: predicateIdFromNamespaceId(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name)
+        });
+        builder.specializeClass();
+      });
     }
 
-    return result;
+    return helps.result;
   }
+}
+
+
+class ModelBuilder {
+
+  private model?: IPromise<Model>;
+
+  constructor(private entityLoader: EntityLoader, private contextModel: Model) {
+  }
+
+  newModel(...namespaces: string[]) {
+
+    if (this.model) {
+      throw new Error('Duplicate model initialization');
+    }
+
+    const type = this.contextModel.normalizedType;
+    const prefix = type === 'library' ? exampleLibrary.prefix : exampleProfile.prefix;
+    const label = type === 'library' ? exampleLibrary.prefix : exampleProfile.prefix;
+
+    this.model = this.entityLoader.createModel(type, this.contextModel.groupId, {
+      prefix,
+      label: { fi: label },
+      namespaces: namespaces
+    });
+
+    return this.model;
+  }
+
+  newClass(...properties: PropertyDetails[]) {
+    return this.entityLoader.createClass(requireDefined(this.model), {
+      label: { fi: exampleNewClass.name },
+      comment: { fi: exampleNewClass.comment },
+      properties
+    });
+  }
+
+  specializeClass() {
+    return this.entityLoader.specializeClass(requireDefined(this.model), {
+      class: classIdFromNamespaceId(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name),
+      propertyFilter: isExpectedProperty(exampleSpecializedClass.properties)
+    });
+  }
+
+  get result(): IPromise<Model> {
+    return this.entityLoader.result.then(() => requireDefined(this.model));
+  }
+}
+
+class HelpBuilder {
+
+  result: InteractiveHelp[] = [];
+
+  constructor(private $location: ILocationService,
+              private $uibModalStack: IModalStackService,
+              private entityLoaderService: EntityLoaderService,
+              private contextModel: Model) {
+  }
+
+  add(storyLine: StoryLine, initializer: (builder: ModelBuilder) => void) {
+
+    const model = this.contextModel;
+
+    this.result.push({
+      storyLine,
+      onInit: (service: InteractiveHelpService) => {
+
+        const builder = new ModelBuilder(this.entityLoaderService.create(model.context, false), model);
+
+        return service.reset()
+          .then(() => {
+            initializer(builder);
+            return builder.result;
+          })
+        .then(this.navigate.bind(this));
+      },
+      onComplete: () => this.returnToModelPage(model),
+      onCancel: () => this.returnToModelPage(model)
+    });
+  };
+
+  private returnToModelPage(model: Model) {
+    this.$uibModalStack.dismissAll();
+    this.$location.url(model.iowUrl());
+  }
+
+  private navigate(newModel: Model) {
+    this.$location.url(newModel.iowUrl());
+    return true;
+  };
 }

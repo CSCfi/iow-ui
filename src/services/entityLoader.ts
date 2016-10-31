@@ -16,7 +16,7 @@ import { Class, Property } from '../entities/class';
 import { User } from '../entities/user';
 import { Predicate, Association, Attribute } from '../entities/predicate';
 import { VocabularyService } from './vocabularyService';
-import { first } from '../utils/array';
+import { first, keepMatching } from '../utils/array';
 import { requireDefined } from '../utils/object';
 
 export const asiaConceptId = new Uri('http://jhsmeta.fi/skos/J392', {});
@@ -27,7 +27,7 @@ export type Resolvable<T> = IPromise<T>|(() => IPromise<T>);
 export type UriResolvable<T extends { id: Uri }> = Url|IPromise<T>|(() => IPromise<T>);
 
 export interface EntityDetails {
-  label: Localizable;
+  label?: Localizable;
   comment?: Localizable;
   state?: State;
 }
@@ -39,9 +39,10 @@ export interface ExternalNamespaceDetails {
 }
 
 export interface ModelDetails extends EntityDetails {
+  label: Localizable;
   prefix: string;
   vocabularies?: string[];
-  namespaces?: (Resolvable<Model>|ExternalNamespaceDetails)[];
+  namespaces?: (UriResolvable<Model>|ExternalNamespaceDetails)[];
 }
 
 export interface ConstraintDetails {
@@ -51,6 +52,7 @@ export interface ConstraintDetails {
 }
 
 export interface ClassDetails extends EntityDetails {
+  label: Localizable;
   id?: string;
   subClassOf?: UriResolvable<Class>;
   concept?: Url|ConceptSuggestionDetails;
@@ -60,14 +62,16 @@ export interface ClassDetails extends EntityDetails {
 }
 
 export interface ShapeDetails extends EntityDetails {
-  class: Resolvable<Class>;
+  class: UriResolvable<Class>;
   id?: string;
   equivalentClasses?: UriResolvable<Class>[];
+  propertyFilter?: (accept: Property) => boolean;
   properties?: PropertyDetails[];
   constraint?: ConstraintDetails;
 }
 
 export interface PredicateDetails extends EntityDetails {
+  label: Localizable;
   id?: string;
   subPropertyOf?: UriResolvable<Predicate>;
   concept?: string|ConceptSuggestionDetails;
@@ -83,7 +87,7 @@ export interface AssociationDetails extends PredicateDetails {
 }
 
 export interface PropertyDetails extends EntityDetails {
-  predicate: Resolvable<Predicate>;
+  predicate: UriResolvable<Predicate>;
   example?: string;
   dataType?: DataType;
   valueClass?: UriResolvable<Class>;
@@ -155,8 +159,8 @@ export class EntityLoader {
     return new Uri(value, this.context);
   }
 
-  result(successCallback: () => void, errorCallback: (err: any) => void) {
-    this.$q.all(this.actions).then(successCallback, errorCallback);
+  get result(): IPromise<any> {
+    return this.$q.all(this.actions);
   }
 
   createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<ConceptSuggestion> {
@@ -167,7 +171,7 @@ export class EntityLoader {
     return this.addAction(result, details);
   }
 
-  private createModel(type: KnownModelType, groupId: Uri, details: ModelDetails): IPromise<Model> {
+  createModel(type: KnownModelType, groupId: Uri, details: ModelDetails): IPromise<Model> {
     const result = this.loggedIn
       .then(() => this.modelService.newModel(details.prefix, details.label['fi'], groupId, ['fi', 'en'], type))
       .then(model => {
@@ -192,9 +196,9 @@ export class EntityLoader {
 
           if (isUriResolvable(ns)) {
             promises.push(
-              asPromise(assertExists(ns, 'namespace for ' + model.label['fi']))
+              asUriPromise(assertExists(ns, 'namespace for ' + model.label['fi']), this.context)
                 .then(importedNamespace => this.$q.all([this.$q.when(importedNamespace), this.modelService.getAllImportableNamespaces()]))
-                .then(([importedNamespace, importableNamespaces]: [Model, ImportedNamespace[]]) => model.addNamespace(requireDefined(first(importableNamespaces, ns => ns.id.equals(importedNamespace.id)))))
+                .then(([importedNamespace, importableNamespaces]: [Uri, ImportedNamespace[]]) => model.addNamespace(requireDefined(first(importableNamespaces, ns => ns.id.equals(importedNamespace)))))
             );
           } else if (isExternalNamespace(ns)) {
             promises.push(this.modelService.newNamespaceImport(ns.namespace, ns.prefix, ns.label, 'fi')
@@ -231,7 +235,8 @@ export class EntityLoader {
 
   specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
     const result = this.loggedIn
-      .then(() =>  this.$q.all([modelPromise, asPromise(assertExists(details.class, 'class to specialize for ' + details.label['fi']))]))
+      .then(() =>  this.$q.all([modelPromise, asUriPromise(assertExists(details.class, 'class to specialize for ' + details.class.toString()))]))
+      .then(([model, classId]: [Model, Uri]) => this.classService.getClass(classId, model).then(klass => [model, klass]))
       .then(([model, klass]: [Model, Class]) => {
         return this.classService.newShape(klass, model, false, 'fi')
           .then(shape => {
@@ -246,8 +251,16 @@ export class EntityLoader {
               }));
             }
 
+            if (details.propertyFilter && details.properties) {
+              throw new Error('Shape cannot declare both properties and property filter');
+            }
+
+            if (details.propertyFilter) {
+              keepMatching(shape.properties, details.propertyFilter);
+            }
+
             for (const equivalentClass of details.equivalentClasses || []) {
-              promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.label['fi']), this.context, shape.context).then(id => shape.equivalentClasses.push(id)));
+              promises.push(asUriPromise(assertExists(equivalentClass, 'equivalent class for ' + details.class.toString()), this.context, shape.context).then(id => shape.equivalentClasses.push(id)));
             }
 
             if (details.constraint) {
@@ -255,7 +268,7 @@ export class EntityLoader {
               shape.constraint.comment = details.constraint.comment;
 
               for (const constraintShape of details.constraint.shapes) {
-                promises.push(asPromise(assertExists(constraintShape, 'constraint item for ' + details.label['fi'])).then(item => shape.constraint.addItem(item)));
+                promises.push(asPromise(assertExists(constraintShape, 'constraint item for ' + details.class.toString())).then(item => shape.constraint.addItem(item)));
               }
             }
 
@@ -370,7 +383,8 @@ export class EntityLoader {
 
   createProperty(modelPromise: IPromise<Model>, details: PropertyDetails): IPromise<Property> {
     const result = this.loggedIn
-      .then(() => this.$q.all([modelPromise, asPromise(assertExists(details.predicate, 'predicate'))]))
+      .then(() => this.$q.all([modelPromise, asUriPromise(assertExists(details.predicate, 'predicate'))]))
+      .then(([model, predicateId]: [Model, Uri]) => this.predicateService.getPredicate(predicateId, model).then(predicate => [model, predicate]))
       .then(([model, p]: [Model, Predicate]) => {
         if (p.normalizedType === 'property') {
           throw new Error('Type must not be property');
@@ -409,8 +423,14 @@ function failWithDetails(details: any): (err: any) => void {
 }
 
 function setDetails(entity: { label: Localizable, comment: Localizable, state: State|null }, details: EntityDetails) {
-  entity.label = details.label;
-  entity.comment = details.comment || {};
+  if (details.label) {
+    entity.label = details.label;
+  }
+
+  if (details.comment) {
+    entity.comment = details.comment;
+  }
+
   if (details.state) {
     entity.state = details.state;
   }
@@ -454,7 +474,7 @@ function isExternalNamespace(obj: any): obj is ExternalNamespaceDetails {
 }
 
 function isUriResolvable<T>(obj: any): obj is UriResolvable<T> {
-  return isPromiseProvider(obj) || isPromise(obj);
+  return typeof obj === 'string' || isPromiseProvider(obj) || isPromise(obj);
 }
 
 function asUriPromise<T extends { id: Uri }>(resolvable: UriResolvable<T>, ...contexts: any[]): IPromise<Uri> {

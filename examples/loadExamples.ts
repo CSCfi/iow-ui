@@ -5,7 +5,7 @@ import './modelOILI';
 
 import { loader } from './exampleLoader';
 
-loader.result(() => {
+loader.result.then(() => {
   console.log('=========== Result ==========');
   console.log('All OK!');
   console.log('=============================');
