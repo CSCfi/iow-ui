@@ -8,14 +8,14 @@ import {
   createStory, createExpectedStateNextCondition,
   createClickNextCondition, createScrollWithElement
 } from '../../../contract';
-import { initialInputValue, inputHasExactValue, classIdFromPrefixAndName } from '../../../utils';
+import { initialInputValue, inputHasExactValue, classIdFromNamespaceId } from '../../../utils';
 
 const searchClassModal = child(modal, '.search-class');
 const searchClassModalTextSearchElement = textSearchElement(searchClassModal);
 const searchClassResultsElement = searchResultsElement(searchClassModal);
 
-export function filterForClass(modelPrefix: string, className: string, initialSearch: string) {
-  return filterForSearchResult(searchClassModal, className.toLowerCase(), classIdFromPrefixAndName(modelPrefix, className), initialSearch);
+export function filterForClass(namespaceId: string, className: string, initialSearch: string) {
+  return filterForSearchResult(searchClassModal, className.toLowerCase(), classIdFromNamespaceId(namespaceId, className), initialSearch);
 }
 
 export function filterForNewClass(className: string) {
@@ -32,8 +32,8 @@ export function filterForNewClass(className: string) {
   });
 }
 
-export function selectClass(modelPrefix: string, className: string) {
-  return selectSearchResult(searchClassModal, className.toLowerCase(), classIdFromPrefixAndName(modelPrefix, className), true);
+export function selectClass(namespaceId: string, className: string) {
+  return selectSearchResult(searchClassModal, className.toLowerCase(), classIdFromNamespaceId(namespaceId, className), true);
 }
 
 const selectAddNewClassSearchResultElement = first(child(searchClassResultsElement, '.search-result.add-new'));

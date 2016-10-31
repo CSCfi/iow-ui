@@ -4,7 +4,7 @@ import {
 } from '../../contract';
 import { modelView, child, modelPanelElement } from '../../selectors';
 import { KnownModelType, KnownPredicateType } from '../../../entities/type';
-import { classIdFromPrefixAndName, scrollToTop } from '../../utils';
+import { scrollToTop, classIdFromNamespaceId } from '../../utils';
 
 export function openModelDetails(type: KnownModelType) {
 
@@ -35,9 +35,9 @@ export function openAddResource(type: 'class' | KnownPredicateType) {
   });
 }
 
-export function selectClass(prefix: string, name: string) {
+export function selectClass(namespaceId: string, name: string) {
 
-  const selectClassElement = child(modelPanelElement, `li#${CSS.escape(classIdFromPrefixAndName(prefix, name))}`);
+  const selectClassElement = child(modelPanelElement, `li#${CSS.escape(classIdFromNamespaceId(namespaceId, name))}`);
 
   return createStory({
     scroll: createScrollWithDefault(modelPanelElement),

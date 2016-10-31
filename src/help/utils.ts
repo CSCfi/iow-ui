@@ -1,6 +1,6 @@
 import { INgModelController } from 'angular';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case';
-import { any, removeMatching, contains } from '../utils/array';
+import { any, contains, keepMatching } from '../utils/array';
 import { Property } from '../entities/class';
 import { createScrollWithDefault } from './contract';
 import { config } from '../config';
@@ -62,19 +62,22 @@ export function modelIdFromPrefix(modelPrefix: string) {
   return `${config.defaultDomain}ns/${modelPrefix}`;
 }
 
-export function classIdFromPrefixAndName(modelPrefix: string, name: string) {
-  return modelIdFromPrefix(modelPrefix) + '#' + upperCaseFirst(name);
+export function classIdFromNamespaceId(namespaceId: string, name: string) {
+  return namespaceId + '#' + upperCaseFirst(name);
 }
 
-export function predicateIdFromPrefixAndName(modelPrefix: string, name: string) {
-  return modelIdFromPrefix(modelPrefix) + '#' + lowerCaseFirst(name);
+export function predicateIdFromNamespaceId(namespaceId: string, name: string) {
+  return namespaceId + '#' + lowerCaseFirst(name);
 }
 
 // XXX: api returns interesting {uuid}-{uuid} for which only first ui is stabile
 export const propertyIdIsSame = (l: string, r: string) => l.indexOf(r) !== -1 || r.indexOf(l) !== -1;
 
+export const isExpectedProperty = (expectedProperties: string[]) =>
+  (property: Property) => any(expectedProperties, uuid => propertyIdIsSame(uuid, property.internalId.uuid));
+
 export function onlyProperties(properties: Property[], expectedProperties: string[]) {
-  removeMatching(properties, property => !any(expectedProperties, uuid => propertyIdIsSame(uuid, property.internalId.uuid)));
+  keepMatching(properties, isExpectedProperty(expectedProperties));
 }
 
 export function moveCursorToEnd(input: JQuery) {

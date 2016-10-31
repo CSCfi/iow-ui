@@ -22,14 +22,14 @@ import {
   exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
   exampleLibrary
 } from './entities';
-import { classIdFromPrefixAndName, onlyProperties, predicateIdFromPrefixAndName } from './utils';
+import { onlyProperties, modelIdFromPrefix, classIdFromNamespaceId, predicateIdFromNamespaceId } from './utils';
 import { Uri } from '../entities/uri';
 import { classView } from './selectors';
 
 export const addNamespaceItems = [
   ModelView.requireNamespace,
-  SearchNamespaceModal.filterForModel(exampleImportedLibrary.prefix, 'julkis'),
-  SearchNamespaceModal.selectNamespace(exampleImportedLibrary.prefix),
+  SearchNamespaceModal.filterForModel(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId, 'julkis'),
+  SearchNamespaceModal.selectNamespace(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId),
   ModelView.focusNamespaces
 ];
 
@@ -52,8 +52,8 @@ export function addNamespace(type: KnownModelType) {
 
 export const specializeClassItems = [
   ModelPage.openAddResource('class'),
-  SearchClassModal.filterForClass(exampleImportedLibrary.prefix, exampleSpecializedClass.name, 'palv'),
-  SearchClassModal.selectClass(exampleImportedLibrary.prefix, exampleSpecializedClass.name),
+  SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name, 'palv'),
+  SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name),
   SearchClassModal.focusSelectedClass,
   SearchClassModal.confirmClassSelection,
   AddPropertiesFromClass.selectProperties('Select name and description', exampleSpecializedClass.properties),
@@ -77,8 +77,8 @@ export const specializeClass = {
 
 const addAttributeItems = [
   ClassView.addProperty,
-  SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name, 'nimi'),
-  SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name),
+  SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, 'nimi'),
+  SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name),
   SearchPredicateModal.focusSelectedAttribute,
   SearchPredicateModal.confirmPredicateSelection(true),
   ClassForm.focusOpenProperty(classView)
@@ -88,7 +88,7 @@ export const addAttribute = {
   title: 'Guide through adding an attribute',
   description: 'Diipadaa',
   items: [
-    ModelPage.selectClass(exampleProfile.prefix, exampleNewClass.name),
+    ModelPage.selectClass(modelIdFromPrefix(exampleProfile.prefix), exampleNewClass.name),
     ClassView.modifyClass,
     ...addAttributeItems,
     ClassView.saveClassChanges,
@@ -142,8 +142,8 @@ export const addAssociationItems = [
   SearchPredicateModal.confirmPredicateSelection(true),
   ClassForm.focusOpenProperty(classView),
   ClassForm.selectAssociationTarget(classView),
-  SearchClassModal.filterForClass(exampleProfile.prefix, exampleSpecializedClass.name, exampleSpecializedClass.name),
-  SearchClassModal.selectClass(exampleProfile.prefix, exampleSpecializedClass.name),
+  SearchClassModal.filterForClass(modelIdFromPrefix(exampleProfile.prefix), exampleSpecializedClass.name, exampleSpecializedClass.name),
+  SearchClassModal.selectClass(modelIdFromPrefix(exampleProfile.prefix), exampleSpecializedClass.name),
   SearchClassModal.focusSelectedClass,
   SearchClassModal.confirmClassSelection,
   ClassForm.focusAssociationTarget(classView),
@@ -155,7 +155,7 @@ export const addAssociation = {
   title: 'Guide through adding an association',
   description: 'Diipadaa',
   items: [
-    ModelPage.selectClass(exampleProfile.prefix, exampleNewClass.name),
+    ModelPage.selectClass(modelIdFromPrefix(exampleProfile.prefix), exampleNewClass.name),
     ClassView.modifyClass,
     ...addAssociationItems,
     createNotification({
@@ -205,7 +205,7 @@ export class ModelPageHelpService {
         if (createClasses) {
 
           const resultPromises: IPromise<any>[] = [];
-          const shapeFromClassId = new Uri(classIdFromPrefixAndName(exampleImportedLibrary.prefix, exampleSpecializedClass.name), newModel.context);
+          const shapeFromClassId = new Uri(classIdFromNamespaceId(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name), newModel.context);
 
           resultPromises.push(
             service.helpClassService.getClass(shapeFromClassId, newModel)
@@ -217,7 +217,7 @@ export class ModelPageHelpService {
               .then(shape => service.helpClassService.createClass(shape))
           );
 
-          const propertyPromise = service.helpPredicateService.getPredicate(predicateIdFromPrefixAndName(exampleNewClass.property.attribute.prefix, exampleNewClass.property.attribute.name))
+          const propertyPromise = service.helpPredicateService.getPredicate(predicateIdFromNamespaceId(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name))
             .then(predicate => service.helpClassService.newProperty(predicate, 'attribute', newModel));
 
           const newClassPromise = service.helpVocabularyService.createConceptSuggestion(newModel.vocabularies[0], exampleNewClass.name, exampleNewClass.comment, null, 'fi', newModel)

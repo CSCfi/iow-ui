@@ -1,5 +1,6 @@
 export const exampleImportedLibrary = {
-  prefix: 'jhs'
+  prefix: 'jhs',
+  namespaceId: 'http://iow.csc.fi/ns/jhs'
 };
 
 export const exampleLibrary = {
@@ -18,6 +19,7 @@ export const exampleNewClass = {
   property: {
     attribute: {
       prefix: exampleImportedLibrary.prefix,
+      namespaceId: exampleImportedLibrary.namespaceId,
       name: 'Nimi'
     },
     association: {

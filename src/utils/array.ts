@@ -166,6 +166,10 @@ export function removeMatching<T>(arr: T[], predicate: (item: T) => boolean) {
   }
 }
 
+export function keepMatching<T>(arr: T[], predicate: (item: T) => boolean) {
+  removeMatching(arr, item => !predicate(item));
+}
+
 export function remove<T>(arr: T[], item: T): void {
   removeMatching(arr, i => i === item);
 }

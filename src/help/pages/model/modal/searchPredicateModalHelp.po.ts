@@ -8,15 +8,15 @@ import {
   createStory, createExpectedStateNextCondition,
   createClickNextCondition, createScrollWithElement
 } from '../../../contract';
-import { initialInputValue, inputHasExactValue, predicateIdFromPrefixAndName } from '../../../utils';
+import { initialInputValue, inputHasExactValue, predicateIdFromNamespaceId } from '../../../utils';
 import { KnownPredicateType } from '../../../../entities/type';
 
 export const searchPredicateModalElement = child(modal, '.search-predicate');
 const searchPredicateModalTextSearchElement = textSearchElement(searchPredicateModalElement);
 const searchPredicateResultsElement =  searchResultsElement(searchPredicateModalElement);
 
-export function filterForPredicate(modelPrefix: string, predicateName: string, initialSearch: string) {
-  return filterForSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromPrefixAndName(modelPrefix, predicateName), initialSearch);
+export function filterForPredicate(namespaceId: string, predicateName: string, initialSearch: string) {
+  return filterForSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromNamespaceId(namespaceId, predicateName), initialSearch);
 }
 
 export function filterForNewPredicate(predicateName: string) {
@@ -33,8 +33,8 @@ export function filterForNewPredicate(predicateName: string) {
   });
 }
 
-export function selectPredicate(modelPrefix: string, predicateName: string) {
-  return selectSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromPrefixAndName(modelPrefix, predicateName), true);
+export function selectPredicate(namespaceId: string, predicateName: string) {
+  return selectSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromNamespaceId(namespaceId, predicateName), true);
 }
 
 export function selectAddNewPredicateSearchResult(type: KnownPredicateType) {
