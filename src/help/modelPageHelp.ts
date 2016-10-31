@@ -228,7 +228,7 @@ class ModelBuilder {
 
     const type = this.contextModel.normalizedType;
     const prefix = type === 'library' ? exampleLibrary.prefix : exampleProfile.prefix;
-    const label = type === 'library' ? exampleLibrary.prefix : exampleProfile.prefix;
+    const label = type === 'library' ? exampleLibrary.name : exampleProfile.name;
 
     this.model = this.entityLoader.createModel(type, this.contextModel.groupId, {
       prefix,
