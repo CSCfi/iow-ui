@@ -9,6 +9,7 @@ export interface Config {
   gitDate: Moment;
   gitHash: string;
   fintoUrl: string;
+  defaultDomain: string;
 }
 
 class EnvironmentConfig implements Config {
@@ -39,6 +40,10 @@ class EnvironmentConfig implements Config {
 
   get fintoUrl() {
     return process.env.FINTO_URL || 'http://dev.finto.fi/';
+  }
+
+  get defaultDomain() {
+    return process.env.NODE_ENV === 'production' ? 'http://iow.csc.fi/' : 'http://iowdev.csc.fi/';
   }
 }
 
