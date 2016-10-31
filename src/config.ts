@@ -43,7 +43,7 @@ class EnvironmentConfig implements Config {
   }
 
   get defaultDomain() {
-    return process.env.NODE_ENV === 'production' ? 'http://iow.csc.fi/' : 'http://iowdev.csc.fi/';
+    return 'http://iow.csc.fi/';
   }
 }
 
