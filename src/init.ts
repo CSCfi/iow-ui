@@ -10,7 +10,7 @@ const logo = require('./assets/logo-01.svg');
 const backgroundColor = '#375e97';
 
 function loadingScreen() {
-  if (config.production) {
+  if (config.environment !== 'local') {
     return pw.pleaseWait({
       logo,
       backgroundColor,

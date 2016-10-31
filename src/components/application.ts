@@ -34,7 +34,7 @@ export class ApplicationController {
 
     userService.updateLogin().then(() => this.applicationInitialized = true);
     $scope.$watch(() => $location.path(), path => this.showFooter = path === '/');
-    this.production = config.production;
+    this.production = config.environment === 'production';
 
     $scope.$on('$locationChangeStart', (event, next) => {
 

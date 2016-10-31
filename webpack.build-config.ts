@@ -23,7 +23,16 @@ const buildConfig: webpack.Configuration = {
         warnings: false
       }
     }),
-    new AssetsPlugin({path: commonConfig.output!.path})
+    new AssetsPlugin({path: commonConfig.output!.path}),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+        GIT_DATE: JSON.stringify(process.env.GIT_DATE),
+        GIT_HASH: JSON.stringify(process.env.GIT_HASH),
+        FINTO_URL: JSON.stringify(process.env.FINTO_URL),
+        API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT)
+      }
+    })
   ]
 };
 

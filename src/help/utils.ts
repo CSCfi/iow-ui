@@ -59,7 +59,7 @@ export function initialInputValue(element: () => JQuery, value: string) {
 export const scrollToTop = createScrollWithDefault(() => angular.element('body'));
 
 export function modelIdFromPrefix(modelPrefix: string) {
-  return `${config.defaultDomain}ns/${modelPrefix}`;
+  return config.defaultModelNamespace(modelPrefix);
 }
 
 export function classIdFromNamespaceId(namespaceId: string, name: string) {

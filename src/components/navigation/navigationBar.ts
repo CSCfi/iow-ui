@@ -73,7 +73,7 @@ class NavigationController {
   }
 
   canStartHelp() {
-    return !config.production && this.helps.length > 0;
+    return config.environment !== 'production' && this.helps.length > 0;
   }
 
   startHelp() {

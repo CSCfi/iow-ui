@@ -1,15 +1,19 @@
 import * as moment from 'moment';
 import { Moment } from 'moment';
+import { assertNever } from './utils/object';
+
+export type Environment = 'local'
+                        | 'development'
+                        | 'production';
 
 export interface Config {
   apiEndpointWithName(name: string): string;
   apiEndpoint: string;
-  production: boolean;
-  development: boolean;
+  environment: Environment;
   gitDate: Moment;
   gitHash: string;
   fintoUrl: string;
-  defaultDomain: string;
+  defaultModelNamespace(prefix: string): string;
 }
 
 class EnvironmentConfig implements Config {
@@ -22,12 +26,8 @@ class EnvironmentConfig implements Config {
     return process.env.API_ENDPOINT || '/api';
   }
 
-  get production() {
-    return process.env.NODE_ENV === 'production';
-  }
-
-  get development() {
-    return process.env.NODE_ENV === 'development';
+  get environment(): Environment {
+    return process.env.NODE_ENV;
   }
 
   get gitDate() {
@@ -42,8 +42,16 @@ class EnvironmentConfig implements Config {
     return process.env.FINTO_URL || 'http://dev.finto.fi/';
   }
 
-  get defaultDomain() {
-    return 'http://iow.csc.fi/';
+  defaultModelNamespace(prefix: string) {
+    switch (this.environment) {
+      case 'local':
+      case 'production':
+        return `http://iow.csc.fi/ns/${prefix}`;
+      case 'development':
+        return `http://iowdev.csc.fi/ns/${prefix}`;
+      default:
+        return assertNever(this.environment, 'Unsupported environment: ' + this.environment);
+    }
   }
 }
 

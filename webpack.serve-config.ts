@@ -16,7 +16,12 @@ const serveConfig: webpack.Configuration = {
       minChunks: isVendorModule
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('local'),
+      }
+    })
   ],
   devServer: {
     host: '0.0.0.0',
