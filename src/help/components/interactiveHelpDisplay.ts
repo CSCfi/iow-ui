@@ -113,7 +113,7 @@ class InteractiveHelpController {
       }
     });
 
-    const debounceUpdatePositions = _.debounce(this.updatePositions.bind(this), 200);
+    const debounceUpdatePositions = _.debounce(() => this.updatePositions(), 200);
 
     $scope.$watch(() => this.item, debounceUpdatePositions);
 
