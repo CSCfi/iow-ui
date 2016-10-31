@@ -59,7 +59,12 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
   }
 
   getAllClasses(model: Model): IPromise<ClassListItem[]> {
-    return this.$q.all([this.defaultClassService.getAllClasses(model), this.getClassesForModel(model)]).then(flatten);
+    return this.$q.all([
+      this.defaultClassService.getAllClasses(model)
+        .then(classes => classes.filter(klass => klass.definedBy.id.notEquals(model.id))),
+      this.getClassesForModel(model)
+    ])
+      .then(flatten);
   }
 
   getClassesForModel(model: Model): IPromise<ClassListItem[]> {

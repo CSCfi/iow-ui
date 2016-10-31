@@ -52,7 +52,12 @@ export class InteractiveHelpPredicateService implements PredicateService, Reseta
   }
 
   getAllPredicates(model: Model): IPromise<PredicateListItem[]> {
-    return this.$q.all([this.defaultPredicateService.getAllPredicates(model), this.getPredicatesForModel(model)]).then(flatten);
+    return this.$q.all([
+      this.defaultPredicateService.getAllPredicates(model)
+        .then(predicates => predicates.filter(predicate => predicate.definedBy.id.notEquals(model.id))),
+      this.getPredicatesForModel(model)
+    ])
+      .then(flatten);
   }
 
   getPredicatesForModel(model: Model): IPromise<PredicateListItem[]> {
