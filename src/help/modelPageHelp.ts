@@ -84,20 +84,22 @@ const addAttributeItems: Story[] = [
   ClassForm.focusOpenProperty(classView)
 ];
 
-export const addAttribute: StoryLine = {
-  title: 'Guide through adding an attribute',
-  description: 'Diipadaa',
-  items: [
-    ModelPage.selectClass(modelIdFromPrefix(exampleProfile.prefix), exampleNewClass.name),
-    ClassView.modifyClass,
-    ...addAttributeItems,
-    ClassView.saveClassChanges,
-    createNotification({
-      title: 'Congratulations for completing adding an attribute!',
-      content: 'Diipadaa'
-    })
-  ]
-};
+export function addAttribute(modelPrefix: string): StoryLine {
+  return {
+    title: 'Guide through adding an attribute',
+    description: 'Diipadaa',
+    items: [
+      ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
+      ClassView.modifyClass,
+      ...addAttributeItems,
+      ClassView.saveClassChanges,
+      createNotification({
+        title: 'Congratulations for completing adding an attribute!',
+        content: 'Diipadaa'
+      })
+    ]
+  };
+}
 
 export const createNewClassItems: Story[] = [
   ModelPage.openAddResource('class'),
@@ -181,19 +183,21 @@ export class ModelPageHelpService {
     }
 
     const helps = new HelpBuilder(this.$location, this.$uibModalStack, this.entityLoaderService, model);
+    const isProfile = model.normalizedType === 'profile';
 
     helps.add(addNamespace(model.normalizedType), builder => builder.newModel());
     helps.add(createNewClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
 
-    if (model.normalizedType === 'profile') {
-
+    if (isProfile) {
       helps.add(specializeClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
+    }
 
-      helps.add(addAttribute, builder => {
-        builder.newModel(exampleImportedLibrary.namespaceId);
-        builder.newClass();
-      });
+    helps.add(addAttribute(isProfile ? exampleProfile.prefix : exampleLibrary.prefix), builder => {
+      builder.newModel(exampleImportedLibrary.namespaceId);
+      builder.newClass();
+    });
 
+    if (isProfile) {
       helps.add(addAssociation, builder => {
         builder.newModel(exampleImportedLibrary.namespaceId);
         builder.newClass({
