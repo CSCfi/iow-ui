@@ -109,7 +109,7 @@ export const createNewClassItems: Story[] = [
   SearchConceptModal.addConceptSuggestionSearchResult,
   SearchConceptModal.enterVocabulary,
   SearchConceptModal.enterLabel,
-  SearchConceptModal.enterDefinition('asia joka tuotetaan'),
+  SearchConceptModal.enterDefinition(exampleNewClass.comment),
   SearchConceptModal.confirmConceptSelection(true),
   ClassForm.focusClass(classView),
   ...addAttributeItems
