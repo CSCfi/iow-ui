@@ -1,11 +1,11 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { createHelpWithDefaultHandler, InteractiveHelp } from './contract';
+import { createHelpWithDefaultHandler, InteractiveHelp, StoryLine } from './contract';
 import { selectGroup } from './pages/frontPageHelp.po';
 import * as GroupPage from './groupPageHelp';
 import { KnownModelType } from '../entities/type';
 
-function createNewModel(type: KnownModelType) {
+function createNewModel(type: KnownModelType): StoryLine {
   return {
     title: `Guide through creating new ${type}`,
     description: 'Diipadaa',

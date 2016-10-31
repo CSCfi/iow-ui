@@ -1,7 +1,7 @@
 import { IPromise, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
-  StoryLine, InteractiveHelp, createNotification
+  StoryLine, InteractiveHelp, createNotification, Story
 } from './contract';
 import { Model } from '../entities/model';
 import { KnownModelType } from '../entities/type';
@@ -26,14 +26,14 @@ import { classView } from './selectors';
 import { EntityLoaderService, EntityLoader, PropertyDetails } from '../services/entityLoader';
 import { InteractiveHelpService } from './services/interactiveHelpService';
 
-export const addNamespaceItems = [
+export const addNamespaceItems: Story[] = [
   ModelView.requireNamespace,
   SearchNamespaceModal.filterForModel(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId, 'julkis'),
   SearchNamespaceModal.selectNamespace(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId),
   ModelView.focusNamespaces
 ];
 
-export function addNamespace(type: KnownModelType) {
+export function addNamespace(type: KnownModelType): StoryLine {
   return {
     title: 'Guide through requiring a namespace',
     description: 'Diipadaa',
@@ -50,7 +50,7 @@ export function addNamespace(type: KnownModelType) {
   };
 }
 
-export const specializeClassItems = [
+export const specializeClassItems: Story[] = [
   ModelPage.openAddResource('class'),
   SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name, 'palv'),
   SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name),
@@ -62,7 +62,7 @@ export const specializeClassItems = [
   ClassView.saveClassChanges
 ];
 
-export const specializeClass = {
+export const specializeClass: StoryLine = {
   title: 'Guide through specializing a class',
   description: 'Diipadaa',
   items: [
@@ -75,7 +75,7 @@ export const specializeClass = {
 };
 
 
-const addAttributeItems = [
+const addAttributeItems: Story[] = [
   ClassView.addProperty,
   SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, 'nimi'),
   SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name),
@@ -84,7 +84,7 @@ const addAttributeItems = [
   ClassForm.focusOpenProperty(classView)
 ];
 
-export const addAttribute = {
+export const addAttribute: StoryLine = {
   title: 'Guide through adding an attribute',
   description: 'Diipadaa',
   items: [
@@ -99,7 +99,7 @@ export const addAttribute = {
   ]
 };
 
-export const createNewClassItems = [
+export const createNewClassItems: Story[] = [
   ModelPage.openAddResource('class'),
   SearchClassModal.filterForNewClass(exampleNewClass.name),
   SearchClassModal.selectAddNewClassSearchResult,
@@ -113,7 +113,7 @@ export const createNewClassItems = [
   ...addAttributeItems
 ];
 
-export const createNewClass = {
+export const createNewClass: StoryLine = {
   title: 'Guide through creating a class',
   description: 'Diipadaa',
   items: [
@@ -126,7 +126,7 @@ export const createNewClass = {
   ]
 };
 
-export const addAssociationItems = [
+export const addAssociationItems: Story[] = [
   ClassView.addProperty,
   SearchPredicateModal.filterForNewPredicate(exampleNewClass.property.association.searchName),
   SearchPredicateModal.selectAddNewPredicateSearchResult('association'),
@@ -151,7 +151,7 @@ export const addAssociationItems = [
   VisualizationView.focusVisualization
 ];
 
-export const addAssociation = {
+export const addAssociation: StoryLine = {
   title: 'Guide through adding an association',
   description: 'Diipadaa',
   items: [

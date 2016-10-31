@@ -1,7 +1,7 @@
 import { ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
-  createHelpWithDefaultHandler, createNotification, InteractiveHelp
+  createHelpWithDefaultHandler, createNotification, InteractiveHelp, Story, Notification, StoryLine
 } from './contract';
 import { Group } from '../entities/group';
 import { KnownModelType } from '../entities/type';
@@ -12,7 +12,7 @@ import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
 import { addNamespaceItems, specializeClassItems, createNewClassItems, addAssociationItems } from './modelPageHelp';
 
-export function createNewModelItems(type: KnownModelType) {
+export function createNewModelItems(type: KnownModelType): Story[] {
   return [
     GroupPage.startModelCreation(type),
     AddModelModal.enterModelPrefix(type),
@@ -30,14 +30,14 @@ export function createNewModelItems(type: KnownModelType) {
   ];
 }
 
-export function finishedCreateNewModelNotification(type: KnownModelType) {
+export function finishedCreateNewModelNotification(type: KnownModelType): Notification {
   return createNotification({
     title: `Congratulations for completing ${type} creation!`,
     content: 'Diipadaa'
   });
 }
 
-function createNewModel(type: KnownModelType) {
+function createNewModel(type: KnownModelType): StoryLine {
   return {
     title: `Guide through creating new ${type}`,
     description: 'Diipadaa',
