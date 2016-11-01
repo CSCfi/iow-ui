@@ -66,7 +66,7 @@ export class PredicateViewController extends EditableEntityController<Associatio
   }
 
   remove(entity: Association|Attribute) {
-    return this.predicateService.deletePredicate(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(entity));
+    return this.predicateService.deletePredicate(entity.id, this.model).then(() => this.modelController.selectionDeleted(entity));
   }
 
   rights(): Rights {

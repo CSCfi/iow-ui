@@ -24,7 +24,7 @@ export class InteractiveHelpVisualizationService implements VisualizationService
     const savedPosition = this.modelPositions.get(model.id.uri);
     const position = savedPosition || this.defaultVisualizationService.newModelPositions(model);
 
-    return this.$q.when(new ClassVisualization(Array.from(this.helpClassService.classes.values()), position));
+    return this.helpClassService.store.getAllResourceValuesForModel(model).then(classes => new ClassVisualization(classes, position));
   }
 
   updateModelPositions(model: Model, modelPositions: ModelPositions): IPromise<any> {

@@ -430,7 +430,7 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
   }
 
   private assignClassToModel(klass: Class) {
-    return this.classService.assignClassToModel(klass.id, this.model.id);
+    return this.classService.assignClassToModel(klass.id, this.model);
   }
 
   private createPredicate(conceptCreation: EntityCreation, type: KnownPredicateType) {
@@ -438,7 +438,7 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
   }
 
   private assignPredicateToModel(id: Uri) {
-    return this.predicateService.assignPredicateToModel(id, this.model.id);
+    return this.predicateService.assignPredicateToModel(id, this.model);
   }
 
   private findEditingViews() {

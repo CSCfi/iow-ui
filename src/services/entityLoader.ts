@@ -171,6 +171,10 @@ export class EntityLoader {
     return this.addAction(result, details);
   }
 
+  getModel(id: Uri|Url) {
+    return this.modelService.getModelByUrn(id);
+  }
+
   createModel(type: KnownModelType, groupId: Uri, details: ModelDetails): IPromise<Model> {
     const result = this.loggedIn
       .then(() => this.modelService.newModel(details.prefix, details.label['fi'], groupId, ['fi', 'en'], type))
@@ -225,10 +229,14 @@ export class EntityLoader {
     return this.createModel('profile', groupId, details);
   }
 
+  getClass(modelPromise: IPromise<Model>, id: Uri|Url) {
+    return modelPromise.then(model => this.classService.getClass(id, model));
+  }
+
   assignClass(modelPromise: IPromise<Model>, classPromise: IPromise<Class>): IPromise<Class> {
     const result = this.loggedIn
       .then(() => this.$q.all([modelPromise, classPromise]))
-      .then(([model, klass]: [Model, Class]) => this.classService.assignClassToModel(klass.id, model.id).then(() => klass));
+      .then(([model, klass]: [Model, Class]) => this.classService.assignClassToModel(klass.id, model).then(() => klass));
 
     return this.addAction(result, 'assign class');
   }
@@ -325,10 +333,14 @@ export class EntityLoader {
     return this.addAction(result, details);
   }
 
+  getPredicate(modelPromise: IPromise<Model>, id: Uri|Url) {
+    return modelPromise.then(model => this.predicateService.getPredicate(id, model));
+  }
+
   assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromise<Predicate>): IPromise<Predicate> {
     const result = this.loggedIn
       .then(() =>  this.$q.all([modelPromise, predicatePromise]))
-      .then(([model, predicate]: [Model, Predicate]) => this.predicateService.assignPredicateToModel(predicate.id, model.id).then(() => predicate));
+      .then(([model, predicate]: [Model, Predicate]) => this.predicateService.assignPredicateToModel(predicate.id, model).then(() => predicate));
 
     return this.addAction(result, 'assign predicate');
   }

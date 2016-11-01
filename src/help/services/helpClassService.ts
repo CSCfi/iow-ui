@@ -16,24 +16,11 @@ import { VocabularyService } from '../../services/vocabularyService';
 import { identity } from '../../utils/function';
 import { flatten } from '../../utils/array';
 import { dateSerializer } from '../../entities/serializer/serializer';
+import { ResourceStore } from './resourceStore';
 
 export class InteractiveHelpClassService implements ClassService, ResetableService {
 
-  classes = new Map<string, Class>();
-
-  // With IE9 proxy-polyfill there cannot be any prototype methods not part of public api
-  private getClassesByPredicate = (predicate: (klass: Class) => boolean) => {
-    const result: Class[] = [];
-
-    this.classes.forEach(klass => {
-      if (predicate(klass)) {
-        result.push(klass);
-      }
-    });
-
-    return result;
-  };
-
+  store = new ResourceStore<Class>(this.$q, (id, model) => this.defaultClassService.getClass(id, model));
 
   /* @ngInject */
   constructor(private $q: IQService,
@@ -41,65 +28,73 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
               private helpVocabularyService: VocabularyService) {
   }
 
-
   reset(): IPromise<any> {
-    this.classes.clear();
+    this.store.clear();
     return this.$q.when();
   }
 
   getClass(id: Uri|Urn, model: Model): IPromise<Class> {
-
-    const classes = this.getClassesByPredicate(klass => klass.id.toString() === id.toString());
-
-    if (classes.length > 0) {
-      return this.$q.when(classes[0]);
+    if (this.store.knowsModel(model)) {
+      return this.store.getResourceForModelById(model, id);
     } else {
       return this.defaultClassService.getClass(id, model);
     }
   }
 
   getAllClasses(model: Model): IPromise<ClassListItem[]> {
-    return this.$q.all([
-      this.defaultClassService.getAllClasses(model)
-        .then(classes => classes.filter(klass => klass.definedBy.id.notEquals(model.id))),
-      this.getClassesForModel(model)
-    ])
-      .then(flatten);
+    if (this.store.knowsModel(model)) {
+      return this.$q.all([
+        this.defaultClassService.getAllClasses(model)
+          .then(classes => classes.filter(klass => klass.definedBy.id.notEquals(model.id))),
+        this.$q.when(this.store.getResourceValuesForAllModels())
+      ])
+        .then(flatten);
+    } else {
+      return this.defaultClassService.getAllClasses(model);
+    }
   }
 
   getClassesForModel(model: Model): IPromise<ClassListItem[]> {
-    return this.getClassesAssignedToModel(model);
+    if (this.store.knowsModel(model)) {
+      return this.store.getAllResourceValuesForModel(model);
+    } else {
+      return this.defaultClassService.getClassesForModel(model);
+    }
   }
 
   getClassesForModelDataSource(modelProvider: () => Model): DataSource<ClassListItem> {
-    return this.defaultClassService.getClassesForModelDataSource(modelProvider);
+    return (_search: string) => this.getClassesForModel(modelProvider());
   }
 
-  getClassesAssignedToModel(_model: Model): IPromise<ClassListItem[]> {
-    return this.$q.when(Array.from(this.classes.values()));
+  getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]> {
+    if (this.store.knowsModel(model)) {
+      return this.store.getAllResourceValuesForModel(model);
+    } else {
+      return this.defaultClassService.getClassesAssignedToModel(model);
+    }
   }
 
   createClass(klass: Class): IPromise<any> {
     klass.unsaved = false;
     klass.createdAt = moment();
-    this.classes.set(klass.id.uri, klass);
+    this.store.addResourceToModel(klass.definedBy, klass);
     return this.$q.when();
   }
 
   updateClass(klass: Class, originalId: Uri): IPromise<any> {
-    this.classes.delete(originalId.uri);
     klass.modifiedAt = moment();
-    this.classes.set(klass.id.uri, klass);
+    this.store.updateResourceInModel(klass.definedBy, klass, originalId.uri);
     return this.$q.when();
   }
 
-  deleteClass(id: Uri, _modelId: Uri): IPromise<any> {
-    this.classes.delete(id.uri);
+  deleteClass(id: Uri, model: Model): IPromise<any> {
+    this.store.deleteResourceFromModel(model, id.uri);
     return this.$q.when();
   }
 
-  assignClassToModel(classId: Uri, modelId: Uri): IPromise<any> {
-    return this.defaultClassService.assignClassToModel(classId, modelId);
+  assignClassToModel(classId: Uri, model: Model): IPromise<any> {
+    this.store.assignResourceToModel(model, classId.uri);
+    return this.$q.when();
   }
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {

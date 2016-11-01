@@ -14,85 +14,83 @@ import { identity } from '../../utils/function';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case';
 import { dateSerializer } from '../../entities/serializer/serializer';
 import * as frames from '../../entities/frames';
+import { ResourceStore } from './resourceStore';
 
 export class InteractiveHelpPredicateService implements PredicateService, ResetableService {
 
-  predicates = new Map<string, Predicate>();
-
-  // With IE9 proxy-polyfill there cannot be any prototype methods not part of public api
-  private getPredicatesByPredicate = (predicate: (p: Predicate) => boolean) => {
-    const result: Predicate[] = [];
-
-    this.predicates.forEach(p => {
-      if (predicate(p)) {
-        result.push(p);
-      }
-    });
-
-    return result;
-  };
+  store = new ResourceStore(this.$q, (id, model) => this.getPredicate(id, model));
 
   /* @ngInject */
   constructor(private $q: IQService, private defaultPredicateService: PredicateService, private helpVocabularyService: VocabularyService) {
   }
 
   reset(): IPromise<any> {
-    this.predicates.clear();
+    this.store.clear();
     return this.$q.when();
   }
 
-  getPredicate(id: Uri|Urn, model?: Model): IPromise<Predicate> {
-    const predicates = this.getPredicatesByPredicate(p => p.id.toString() === id.toString());
-
-    if (predicates.length > 0) {
-      return this.$q.when(predicates[0]);
+  getPredicate(id: Uri|Urn, model: Model): IPromise<Predicate> {
+    if (this.store.knowsModel(model)) {
+      return this.store.getResourceForModelById(model, id);
     } else {
       return this.defaultPredicateService.getPredicate(id, model);
     }
   }
 
   getAllPredicates(model: Model): IPromise<PredicateListItem[]> {
-    return this.$q.all([
-      this.defaultPredicateService.getAllPredicates(model)
-        .then(predicates => predicates.filter(predicate => predicate.definedBy.id.notEquals(model.id))),
-      this.getPredicatesForModel(model)
-    ])
-      .then(flatten);
+    if (this.store.knowsModel(model)) {
+      return this.$q.all([
+        this.defaultPredicateService.getAllPredicates(model)
+          .then(predicates => predicates.filter(predicate => predicate.definedBy.id.notEquals(model.id))),
+        this.$q.when(this.store.getResourceValuesForAllModels())
+      ])
+        .then(flatten);
+    } else {
+      return this.defaultPredicateService.getAllPredicates(model);
+    }
   }
 
   getPredicatesForModel(model: Model): IPromise<PredicateListItem[]> {
-    return this.getPredicatesAssignedToModel(model);
+    if (this.store.knowsModel(model)) {
+      return this.store.getAllResourceValuesForModel(model);
+    } else {
+      return this.defaultPredicateService.getPredicatesForModel(model);
+    }
   }
 
   getPredicatesForModelDataSource(modelProvider: () => Model): DataSource<PredicateListItem> {
-    return this.defaultPredicateService.getPredicatesForModelDataSource(modelProvider);
+    return (_search: string) => this.getPredicatesForModel(modelProvider());
   }
 
-  getPredicatesAssignedToModel(_model: Model): IPromise<PredicateListItem[]> {
-    return this.$q.when(Array.from(this.predicates.values()));
+  getPredicatesAssignedToModel(model: Model): IPromise<PredicateListItem[]> {
+    if (this.store.knowsModel(model)) {
+      return this.store.getAllResourceValuesForModel(model);
+    } else {
+      return this.defaultPredicateService.getPredicatesAssignedToModel(model);
+    }
   }
 
   createPredicate(predicate: Predicate): IPromise<any> {
     predicate.unsaved = false;
     predicate.createdAt = moment();
-    this.predicates.set(predicate.id.uri, predicate);
+    this.store.addResourceToModel(predicate.definedBy, predicate);
     return this.$q.when(predicate);
   }
 
   updatePredicate(predicate: Predicate, originalId: Uri): IPromise<any> {
-    this.predicates.delete(originalId.uri);
     predicate.modifiedAt = moment();
-    this.predicates.set(predicate.id.uri, predicate);
+    this.store.updateResourceInModel(predicate.definedBy, predicate, originalId.uri);
     return this.$q.when(predicate);
   }
 
-  deletePredicate(id: Uri, _modelId: Uri): IPromise<any> {
-    this.predicates.delete(id.uri);
+  deletePredicate(id: Uri, model: Model): IPromise<any> {
+    this.store.deleteResourceFromModel(model, id.uri);
     return this.$q.when();
   }
 
-  assignPredicateToModel(predicateId: Uri, modelId: Uri): IPromise<any> {
-    return this.defaultPredicateService.assignPredicateToModel(predicateId, modelId);
+  assignPredicateToModel(predicateId: Uri, model: Model): IPromise<any> {
+    this.store.assignResourceToModel(model, predicateId.uri);
+    return this.$q.when();
   }
 
   newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri, type: KnownPredicateType, lang: Language): IPromise<T> {

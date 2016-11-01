@@ -123,7 +123,7 @@ class PropertyPredicateViewController {
   }
 
   assignReusablePredicateToModel() {
-    this.predicateService.assignPredicateToModel(this.property.predicateId, this.model.id)
+    this.predicateService.assignPredicateToModel(this.property.predicateId, this.model)
       .then(() => this.updateChangeActions());
   }
 

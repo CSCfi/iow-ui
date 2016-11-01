@@ -28,8 +28,8 @@ export interface ClassService {
   getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]>;
   createClass(klass: Class): IPromise<any>;
   updateClass(klass: Class, originalId: Uri): IPromise<any>;
-  deleteClass(id: Uri, modelId: Uri): IPromise<any>;
-  assignClassToModel(classId: Uri, modelId: Uri): IPromise<any>;
+  deleteClass(id: Uri, model: Model): IPromise<any>;
+  assignClassToModel(classId: Uri, model: Model): IPromise<any>;
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class>;
   newShape(classOrExternal: Class|ExternalEntity, profile: Model, external: boolean, lang: Language): IPromise<Class>;
   newClassFromExternal(externalId: Uri, model: Model): IPromise<Class>;
@@ -123,22 +123,22 @@ export class DefaultClassService implements ClassService {
       });
   }
 
-  deleteClass(id: Uri, modelId: Uri): IHttpPromise<any> {
+  deleteClass(id: Uri, model: Model): IHttpPromise<any> {
     const requestParams = {
       id: id.uri,
-      model: modelId.uri
+      model: model.id.uri
     };
     return this.$http.delete(config.apiEndpointWithName('class'), {params: requestParams})
-      .then(() => this.modelClassesCache.delete(modelId.uri));
+      .then(() => this.modelClassesCache.delete(model.id.uri));
   }
 
-  assignClassToModel(classId: Uri, modelId: Uri): IHttpPromise<any> {
+  assignClassToModel(classId: Uri, model: Model): IHttpPromise<any> {
     const requestParams = {
       id: classId.uri,
-      model: modelId.uri
+      model: model.id.uri
     };
     return this.$http.post(config.apiEndpointWithName('class'), undefined, {params: requestParams})
-      .then(() => this.modelClassesCache.delete(modelId.uri));
+      .then(() => this.modelClassesCache.delete(model.id.uri));
   }
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {

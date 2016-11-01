@@ -80,7 +80,7 @@ export class ClassViewController extends EditableEntityController<Class> {
   }
 
   remove(entity: Class) {
-    return this.classService.deleteClass(entity.id, this.model.id).then(() => this.modelController.selectionDeleted(entity));
+    return this.classService.deleteClass(entity.id, this.model).then(() => this.modelController.selectionDeleted(entity));
   }
 
   rights(): Rights {
