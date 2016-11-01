@@ -9,6 +9,7 @@ import { HelpSelectionModal } from '../common/helpSelectionModal';
 import { InteractiveHelp } from '../../help/contract';
 import { HelpProvider } from '../common/helpProvider';
 import { IScope } from 'angular';
+import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 
 const logoImage = require('../../assets/logo-01.svg');
 
@@ -37,6 +38,7 @@ class NavigationController {
               private languageService: LanguageService,
               private userService: UserService,
               private loginModal: LoginModal,
+              private interactiveHelpService: InteractiveHelpService,
               private helpSelectionModal: HelpSelectionModal) {
 
     this.languages = availableUILanguages.map(language => {
@@ -73,7 +75,7 @@ class NavigationController {
   }
 
   canStartHelp() {
-    return config.environment !== 'production' && this.helps.length > 0;
+    return this.interactiveHelpService.isClosed() && config.environment !== 'production' && this.helps.length > 0;
   }
 
   startHelp() {
