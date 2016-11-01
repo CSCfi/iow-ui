@@ -94,6 +94,10 @@ export class ResourceStore<T extends { id: Uri }> {
     return this.getAllResourcesForModel(model).then(resources => resources.get(id.toString()));
   }
 
+  getResourceForAnyModelById(id: Uri|Url): T|undefined {
+    return this.getResourcesForAllModels().get(id.toString());
+  }
+
   assignResourceToModel(model: Model|DefinedBy, id: ResourceId) {
     this.getAssignedResourcesIdsForModel(model).add(id);
   }

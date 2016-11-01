@@ -30,24 +30,23 @@ export class InteractiveHelpPredicateService implements PredicateService, Reseta
   }
 
   getPredicate(id: Uri|Urn, model: Model): IPromise<Predicate> {
-    if (this.store.knowsModel(model)) {
-      return this.store.getResourceForModelById(model, id);
+
+    const resource = this.store.getResourceForAnyModelById(id);
+
+    if (resource) {
+      return this.$q.when(resource);
     } else {
       return this.defaultPredicateService.getPredicate(id, model);
     }
   }
 
   getAllPredicates(model: Model): IPromise<PredicateListItem[]> {
-    if (this.store.knowsModel(model)) {
-      return this.$q.all([
-        this.defaultPredicateService.getAllPredicates(model)
-          .then(predicates => predicates.filter(predicate => predicate.definedBy.id.notEquals(model.id))),
-        this.$q.when(this.store.getResourceValuesForAllModels())
-      ])
-        .then(flatten);
-    } else {
-      return this.defaultPredicateService.getAllPredicates(model);
-    }
+
+    const resources = this.store.getResourcesForAllModels();
+
+    return this.defaultPredicateService.getAllPredicates(model)
+      .then(classes => classes.filter(klass => !resources.has(klass.id.toString())))
+      .then(nonConflictingClasses => flatten([nonConflictingClasses, Array.from(resources.values())]));
   }
 
   getPredicatesForModel(model: Model): IPromise<PredicateListItem[]> {

@@ -34,24 +34,23 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
   }
 
   getClass(id: Uri|Urn, model: Model): IPromise<Class> {
-    if (this.store.knowsModel(model)) {
-      return this.store.getResourceForModelById(model, id);
+
+    const resource = this.store.getResourceForAnyModelById(id);
+
+    if (resource) {
+      return this.$q.when(resource);
     } else {
       return this.defaultClassService.getClass(id, model);
     }
   }
 
   getAllClasses(model: Model): IPromise<ClassListItem[]> {
-    if (this.store.knowsModel(model)) {
-      return this.$q.all([
-        this.defaultClassService.getAllClasses(model)
-          .then(classes => classes.filter(klass => klass.definedBy.id.notEquals(model.id))),
-        this.$q.when(this.store.getResourceValuesForAllModels())
-      ])
-        .then(flatten);
-    } else {
-      return this.defaultClassService.getAllClasses(model);
-    }
+
+    const resources = this.store.getResourcesForAllModels();
+
+    return this.defaultClassService.getAllClasses(model)
+      .then(classes => classes.filter(klass => !resources.has(klass.id.toString())))
+      .then(nonConflictingClasses => flatten([nonConflictingClasses, Array.from(resources.values())]));
   }
 
   getClassesForModel(model: Model): IPromise<ClassListItem[]> {
