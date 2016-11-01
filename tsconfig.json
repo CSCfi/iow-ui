@@ -27,5 +27,9 @@
       "moment"
     ]
   },
-  "exclude": ["types", "node_modules"]
+  "exclude": ["types", "node_modules"],
+  "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true,
+    "forkCheckerSilent": true
+  }
 }

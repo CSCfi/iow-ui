@@ -2,6 +2,7 @@ import * as webpack from 'webpack';
 import { commonConfig, isVendorModule } from './webpack.common-config';
 import { smart as smartMerge } from 'webpack-merge';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 const fastRebuild = true;
 
@@ -21,7 +22,8 @@ const serveConfig: webpack.Configuration = {
       'process.env': {
         NODE_ENV: JSON.stringify('local'),
       }
-    })
+    }),
+    new ForkCheckerPlugin()
   ],
   devServer: {
     host: '0.0.0.0',
