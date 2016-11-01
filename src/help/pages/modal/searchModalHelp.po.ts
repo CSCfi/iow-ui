@@ -1,9 +1,9 @@
-import { searchResult, child } from '../../selectors';
+import { searchResult, child, nth } from '../../selectors';
 import {
   createStory, createModifyingClickNextCondition,
   createClickNextCondition, createExplicitNextCondition, createExpectedStateNextCondition, createScrollWithElement
 } from '../../contract';
-import { initialInputValue, elementExists } from '../../utils';
+import { initialInputValue, elementExists, inputHasExactValue } from '../../utils';
 
 export const textSearchElement = (modalParent: () => JQuery) => child(modalParent, 'text-filter input');
 export const searchSelectionElement = (modalParent: () => JQuery) => child(modalParent, '.search-selection');
@@ -39,6 +39,37 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
     nextCondition: selectionNeedsConfirmation ? createClickNextCondition(selectResultElement)
                                               : createModifyingClickNextCondition(selectResultElement),
     reversible: selectionNeedsConfirmation
+  });
+}
+
+export function filterForAddNewResult(modalParent: () => JQuery, searchFor: string, expectSearch: string) {
+
+  const filterForAddNewElement = textSearchElement(modalParent);
+
+  return createStory({
+
+    title: `Search for ${searchFor.toLowerCase()}`,
+    content: 'Diipadaa',
+    popover: { element: filterForAddNewElement, position: 'bottom-right' },
+    focus: { element: filterForAddNewElement },
+    nextCondition: createExpectedStateNextCondition(inputHasExactValue(filterForAddNewElement, expectSearch.toLowerCase())),
+    initialize: initialInputValue(filterForAddNewElement, expectSearch.toLowerCase()),
+    reversible: true
+  });
+}
+
+export function selectAddNewResult(modalParent: () => JQuery, addNewIndex: number, title: string) {
+
+  const selectAddNewSearchResultsElement = searchResultsElement(modalParent);
+  const selectAddNewElement = nth(child(selectAddNewSearchResultsElement, '.search-result.add-new'), addNewIndex);
+
+  return createStory({
+    title: title,
+    content: 'Diipadaa',
+    scroll: createScrollWithElement(selectAddNewSearchResultsElement, selectAddNewElement),
+    popover: { element: selectAddNewElement, position: 'bottom-right' },
+    focus: { element: selectAddNewElement },
+    nextCondition: createClickNextCondition(selectAddNewElement)
   });
 }
 

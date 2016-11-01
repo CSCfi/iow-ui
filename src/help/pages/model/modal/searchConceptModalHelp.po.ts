@@ -1,40 +1,19 @@
 import { confirm } from '../../modal/modalHelp.po';
-import { modal, child, first, editableByTitle, input, editableFocus } from '../../../selectors';
+import { modal, child, editableByTitle, input, editableFocus } from '../../../selectors';
+import { createStory, createExpectedStateNextCondition } from '../../../contract';
 import {
-  createStory, createExpectedStateNextCondition,
-  createClickNextCondition, createScrollWithElement
-} from '../../../contract';
-import {
-  initialInputValue, inputHasExactValue, validInput,
+  initialInputValue, validInput,
   editableSelectMargin, editableMargin
 } from '../../../utils';
-import { searchResultsElement } from '../../modal/searchModalHelp.po';
+import { filterForAddNewResult, selectAddNewResult } from '../../modal/searchModalHelp.po';
 
 const searchConceptModal = child(modal, '.search-concept');
-const conceptTextSearchElement = child(searchConceptModal, 'text-filter input');
-const searchConceptResultsElement = searchResultsElement(searchConceptModal);
 
 export function filterForConceptSuggestionConcept(conceptName: string) {
-  return createStory({
-
-    title: `Search for ${conceptName.toLowerCase()}`,
-    content: 'Diipadaa',
-    popover: { element: conceptTextSearchElement, position: 'bottom-right' },
-    focus: { element: conceptTextSearchElement },
-    nextCondition: createExpectedStateNextCondition(inputHasExactValue(conceptTextSearchElement, conceptName)),
-    initialize: initialInputValue(conceptTextSearchElement, conceptName)
-  });
+  return filterForAddNewResult(searchConceptModal, conceptName, conceptName);
 }
 
-const addConceptSuggestionSearchResultElement = first(child(searchConceptResultsElement, '.search-result.add-new'));
-export const addConceptSuggestionSearchResult = createStory({
-  title: 'Select concept suggest creation',
-  content: 'Diipadaa',
-  scroll: createScrollWithElement(searchConceptResultsElement, addConceptSuggestionSearchResultElement),
-  popover: { element: addConceptSuggestionSearchResultElement, position: 'bottom-right' },
-  focus: { element: addConceptSuggestionSearchResultElement },
-  nextCondition: createClickNextCondition(addConceptSuggestionSearchResultElement)
-});
+export const addConceptSuggestionSearchResult = selectAddNewResult(searchConceptModal, 0, 'Select concept suggest creation');
 
 const enterVocabularyElement = editableByTitle(modal, 'Vocabulary');
 const enterVocabularyInputElement = input(enterVocabularyElement);

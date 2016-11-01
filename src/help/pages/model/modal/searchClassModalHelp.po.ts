@@ -1,50 +1,26 @@
 import { confirm } from '../../modal/modalHelp.po';
 import {
   filterForSearchResult, selectSearchResult, focusSearchSelection,
-  textSearchElement, searchResultsElement
+  filterForAddNewResult, selectAddNewResult
 } from '../../modal/searchModalHelp.po';
-import { modal, child, first } from '../../../selectors';
-import {
-  createStory, createExpectedStateNextCondition,
-  createClickNextCondition, createScrollWithElement
-} from '../../../contract';
-import { initialInputValue, inputHasExactValue, classIdFromNamespaceId } from '../../../utils';
+import { modal, child } from '../../../selectors';
+import { classIdFromNamespaceId } from '../../../utils';
 
 const searchClassModal = child(modal, '.search-class');
-const searchClassModalTextSearchElement = textSearchElement(searchClassModal);
-const searchClassResultsElement = searchResultsElement(searchClassModal);
 
 export function filterForClass(namespaceId: string, className: string, initialSearch: string) {
   return filterForSearchResult(searchClassModal, className.toLowerCase(), classIdFromNamespaceId(namespaceId, className), initialSearch);
 }
 
 export function filterForNewClass(className: string) {
-
-  return createStory({
-
-    title: `Search for ${className.toLowerCase()}`,
-    content: 'Diipadaa',
-    popover: { element: searchClassModalTextSearchElement, position: 'bottom-right' },
-    focus: { element: searchClassModalTextSearchElement },
-    nextCondition: createExpectedStateNextCondition(inputHasExactValue(searchClassModalTextSearchElement, className)),
-    initialize: initialInputValue(searchClassModalTextSearchElement, className),
-    reversible: true
-  });
+  return filterForAddNewResult(searchClassModal, className, className);
 }
 
 export function selectClass(namespaceId: string, className: string) {
   return selectSearchResult(searchClassModal, className.toLowerCase(), classIdFromNamespaceId(namespaceId, className), true);
 }
 
-const selectAddNewClassSearchResultElement = first(child(searchClassResultsElement, '.search-result.add-new'));
-export const selectAddNewClassSearchResult = createStory({
-  title: 'Select new creation',
-  content: 'Diipadaa',
-  scroll: createScrollWithElement(searchClassResultsElement, selectAddNewClassSearchResultElement),
-  popover: { element: selectAddNewClassSearchResultElement, position: 'bottom-right' },
-  focus: { element: selectAddNewClassSearchResultElement },
-  nextCondition: createClickNextCondition(selectAddNewClassSearchResultElement)
-});
+export const selectAddNewClassSearchResult = selectAddNewResult(searchClassModal, 0, 'Select new creation');
 
 export const focusSelectedClass = focusSearchSelection(searchClassModal, 'Class is here', 'Diipadaa');
 
