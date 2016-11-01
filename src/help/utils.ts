@@ -36,6 +36,17 @@ export function inputHasExactValue(element: () => JQuery, value: string) {
   return inputWithNgModel(element, ngModel => ngModel.$viewValue === value);
 }
 
+export function expectAll(...expectations: (() => boolean)[]): () => boolean {
+  return () => {
+    for (const expectation of expectations) {
+      if (!expectation()) {
+        return false;
+      }
+    }
+    return true;
+  };
+}
+
 export function elementExists(element: () => JQuery) {
   return () => {
     const e = element();

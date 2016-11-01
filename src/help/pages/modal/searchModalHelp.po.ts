@@ -1,9 +1,9 @@
-import { searchResult, child, nth } from '../../selectors';
+import { searchResult, child, nth, first } from '../../selectors';
 import {
   createStory, createModifyingClickNextCondition,
   createClickNextCondition, createExplicitNextCondition, createExpectedStateNextCondition, createScrollWithElement
 } from '../../contract';
-import { initialInputValue, elementExists, inputHasExactValue } from '../../utils';
+import { initialInputValue, elementExists, inputHasExactValue, expectAll } from '../../utils';
 
 export const textSearchElement = (modalParent: () => JQuery) => child(modalParent, 'text-filter input');
 export const searchSelectionElement = (modalParent: () => JQuery) => child(modalParent, '.search-selection');
@@ -45,6 +45,7 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
 export function filterForAddNewResult(modalParent: () => JQuery, searchFor: string, expectSearch: string) {
 
   const filterForAddNewElement = textSearchElement(modalParent);
+  const addNewResultsElements = first(child(modalParent, '.search-result.add-new'));
 
   return createStory({
 
@@ -52,7 +53,12 @@ export function filterForAddNewResult(modalParent: () => JQuery, searchFor: stri
     content: 'Diipadaa',
     popover: { element: filterForAddNewElement, position: 'bottom-right' },
     focus: { element: filterForAddNewElement },
-    nextCondition: createExpectedStateNextCondition(inputHasExactValue(filterForAddNewElement, expectSearch.toLowerCase())),
+    nextCondition: createExpectedStateNextCondition(
+      expectAll(
+        inputHasExactValue(filterForAddNewElement, expectSearch.toLowerCase()),
+        elementExists(addNewResultsElements)
+      )
+    ),
     initialize: initialInputValue(filterForAddNewElement, expectSearch.toLowerCase()),
     reversible: true
   });
