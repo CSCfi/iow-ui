@@ -15,8 +15,12 @@ export class ViewReferenceDataModal {
           <modal-template>
             <modal-title translate>Reference data information</modal-title>
             
-            <modal-body>
-              <reference-data-view reference-data="ctrl.referenceData" context="ctrl.context" class="popup" show-codes="true"></reference-data-view>
+            <modal-body class="full-height">
+              <div class="row">
+                <div class="col-md-12">
+                  <reference-data-view reference-data="ctrl.referenceData" context="ctrl.context" class="popup" show-codes="true"></reference-data-view>
+                </div>
+              </div>
             </modal-body>
             
             <modal-buttons>

@@ -1,19 +1,12 @@
 <modal-template class="search-namespace">
   <modal-title translate>Search namespaces</modal-title>
 
-  <modal-body>
-    <div class="clearfix" style="margin-bottom: 15px">
-
-      <model-language-chooser context="ctrl.model" class="pull-left"></model-language-chooser>
-
-      <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew()">
-        <span class="glyphicon glyphicon-plus"></span>
-        {{'Add new namespace' | translate}}
-      </button>
-    </div>
-
+  <modal-body class="full-height">
     <div class="row">
       <div class="col-md-6">
+
+        <model-language-chooser context="ctrl.model" class="pull-left"></model-language-chooser>
+
         <text-filter search-text="ctrl.searchText" search-controller="ctrl" content-extractors="ctrl.contentExtractors" placeholder="'search namespace'"></text-filter>
 
         <div class="search-panel">
@@ -29,7 +22,15 @@
         </div>
       </div>
 
-      <div class="col-md-6 search-results with-button">
+      <div class="col-md-6 search-results">
+
+        <div class="clearfix" style="margin-bottom: 10px">
+          <button type="button" class="btn btn-default btn-md pull-right" ng-click="ctrl.createNew()">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{'Add new namespace' | translate}}
+          </button>
+        </div>
+
         <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selected" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">

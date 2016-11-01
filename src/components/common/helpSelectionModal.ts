@@ -16,10 +16,14 @@ export class HelpSelectionModal {
         <modal-template class="help-selection">
           <modal-title translate>Select help topic</modal-title>
        
-          <modal-body>
-            <div class="help story-line" ng-repeat="help in ctrl.helps" ng-click="ctrl.startHelp(help)">
-              <h5>{{help.storyLine.title | translate}}</h5>
-              <div>{{help.storyLine.description | translate | paragraphize}}</div>
+          <modal-body class="full-height">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="help story-line" ng-repeat="help in ctrl.helps" ng-click="ctrl.startHelp(help)">
+                  <h5>{{help.storyLine.title | translate}}</h5>
+                  <div>{{help.storyLine.description | translate | paragraphize}}</div>
+                </div>
+              </div>
             </div>
           </modal-body>
          
