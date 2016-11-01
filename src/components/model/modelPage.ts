@@ -36,6 +36,7 @@ import { ApplicationController } from '../application';
 import { HelpProvider } from '../common/helpProvider';
 import { InteractiveHelp } from '../../help/contract';
 import { ModelPageHelpService } from '../../help/modelPageHelp';
+import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 
 mod.directive('modelPage', () => {
   return {
@@ -103,6 +104,7 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
               private addPropertiesFromClassModal: AddPropertiesFromClassModal,
               private sessionService: SessionService,
               public languageService: LanguageService,
+              interactiveHelpService: InteractiveHelpService,
               modelPageHelpService: ModelPageHelpService) {
 
     this.localizerProvider = () => languageService.createLocalizer(this.model);
@@ -126,7 +128,7 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
     });
 
     $scope.$on('$locationChangeStart', (event, next, current) => {
-      if ((this.selection && !this.selection.unsaved) && isDifferentUrl(current, next)) {
+      if (interactiveHelpService.isClosed() && (this.selection && !this.selection.unsaved) && isDifferentUrl(current, next)) {
         this.ifEditing(() => event.preventDefault(), () => $location.url(nextUrl($location, next)));
       }
     });

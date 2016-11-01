@@ -30,16 +30,14 @@ export class InteractiveHelpDisplay {
       throw new Error('No stories defined');
     }
 
-    if (this.interactiveHelpService.open) {
+    if (this.interactiveHelpService.isOpen()) {
       throw new Error('Cannot open help when another help is already open');
     }
 
-    this.interactiveHelpService.open = true;
+    this.interactiveHelpService.open();
     const initialization = help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset().then(() => false);
 
     return initialization.then(willChangeLocation => {
-
-      this.interactiveHelpService.open = true;
 
       return this.overlayService.open({
         template: `
@@ -55,7 +53,7 @@ export class InteractiveHelpDisplay {
           willChangeLocation: () => willChangeLocation
         },
         disableScroll: true
-      }).result.then(() => this.interactiveHelpService.open = false);
+      }).result.then(() => this.interactiveHelpService.close());
     });
   }
 }

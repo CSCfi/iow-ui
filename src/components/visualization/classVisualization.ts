@@ -190,7 +190,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   }
 
   canSave() {
-    return !this.interactiveHelpService.open && this.userService.user.isMemberOf(this.model.group);
+    return this.interactiveHelpService.isClosed() && this.userService.user.isMemberOf(this.model.group);
   }
 
   savePositions() {

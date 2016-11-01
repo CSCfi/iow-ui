@@ -16,7 +16,7 @@ mod.directive('float', (interactiveHelpService: InteractiveHelpService) => {
     link($scope: IScope, element: JQuery, attributes: FloatAttributes, ctrl: FloatController) {
 
       const placeholderClass = attributes.float;
-      const shouldSnap = () => !interactiveHelpService.open && attributes.snap === 'true';
+      const shouldSnap = () => interactiveHelpService.isClosed() && attributes.snap === 'true';
       let elementStaticLocation = element.offset();
 
       ctrl.element = element;

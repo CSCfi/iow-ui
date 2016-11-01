@@ -10,7 +10,8 @@ import { InteractiveHelpValidatorService } from './helpValidatorService';
 
 export class InteractiveHelpService implements ResetableService {
 
-  open = false;
+  private _open = false;
+  private _closing = false;
 
   private helpServices: ResetableService[];
 
@@ -33,6 +34,29 @@ export class InteractiveHelpService implements ResetableService {
       helpVocabularyService,
       helpValidatorService
     ];
+  }
+
+  isClosing() {
+    return this._closing;
+  }
+
+  isOpen() {
+    return this._open;
+  }
+
+  isClosed() {
+    return !this.isOpen() && !this.isClosing();
+  }
+
+  open() {
+    this._open = true;
+    this._closing = false;
+  }
+
+  close() {
+    this._open = false;
+    this._closing = true;
+    setTimeout(() => this._closing = false);
   }
 
   reset(): IPromise<any> {

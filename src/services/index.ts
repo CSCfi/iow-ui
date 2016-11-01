@@ -24,7 +24,7 @@ import { InteractiveHelpService } from '../help/services/interactiveHelpService'
 import { InteractiveHelpValidatorService } from '../help/services/helpValidatorService';
 
 function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpService, defaultService: T, helpService: T) {
-  return proxyToInstance(() => interactiveHelpService.open ? helpService : defaultService);
+  return proxyToInstance(() => interactiveHelpService.isOpen() ? helpService : defaultService);
 }
 
 mod.service('defaultClassService', DefaultClassService);
