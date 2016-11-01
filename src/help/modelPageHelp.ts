@@ -18,7 +18,7 @@ import * as PredicateForm from './pages/model/predicateFormHelp.po';
 import * as ClassForm from './pages/model/classFormHelp.po';
 import * as VisualizationView from './pages/model/visualizationViewHelp.po';
 import {
-  exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
+  exampleImportedLibrary, exampleSpecializedOrAssignedClass, exampleNewClass, exampleProfile,
   exampleLibrary, exampleAssignedClass
 } from './entities';
 import { classIdFromNamespaceId, predicateIdFromNamespaceId, modelIdFromPrefix, isExpectedProperty } from './utils';
@@ -52,11 +52,11 @@ export function addNamespace(type: KnownModelType): StoryLine {
 
 export const specializeClassItems: Story[] = [
   ModelPage.openAddResource('class'),
-  SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name, 'palv'),
-  SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name),
+  SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, 'palv'),
+  SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name),
   SearchClassModal.focusSelectedClass,
-  SearchClassModal.confirmClassSelection,
-  AddPropertiesFromClass.selectProperties('Select name and description', exampleSpecializedClass.properties),
+  SearchClassModal.confirmClassSelection(false),
+  AddPropertiesFromClass.selectProperties('Select name and description', exampleSpecializedOrAssignedClass.properties),
   AddPropertiesFromClass.confirmProperties(true),
   ClassForm.focusClass(classView),
   ClassView.saveClassChanges
@@ -74,6 +74,26 @@ export const specializeClass: StoryLine = {
   ]
 };
 
+export const assignClassItems: Story[] = [
+  ModelPage.openAddResource('class'),
+  SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, 'palv'),
+  SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name),
+  SearchClassModal.focusSelectedClass,
+  SearchClassModal.confirmClassSelection(true),
+  ClassForm.focusClass(classView)
+];
+
+export const assignClass: StoryLine = {
+  title: 'Guide through assigning class to a library',
+  description: 'Diipadaa',
+  items: [
+    ...assignClassItems,
+    createNotification({
+      title: 'Congratulations for completing class assignation!',
+      content: 'Diipadaa'
+    })
+  ]
+};
 
 const addAttributeItems: Story[] = [
   ClassView.addProperty,
@@ -145,10 +165,10 @@ export function addAssociationItems(namespaceId: string): Story[] {
     SearchPredicateModal.confirmPredicateSelection(true),
     ClassForm.focusOpenProperty(classView),
     ClassForm.selectAssociationTarget(classView),
-    SearchClassModal.filterForClass(namespaceId, exampleSpecializedClass.name, exampleSpecializedClass.name),
-    SearchClassModal.selectClass(namespaceId, exampleSpecializedClass.name),
+    SearchClassModal.filterForClass(namespaceId, exampleSpecializedOrAssignedClass.name, exampleSpecializedOrAssignedClass.name),
+    SearchClassModal.selectClass(namespaceId, exampleSpecializedOrAssignedClass.name),
     SearchClassModal.focusSelectedClass,
-    SearchClassModal.confirmClassSelection,
+    SearchClassModal.confirmClassSelection(false),
     ClassForm.focusAssociationTarget(classView),
     ClassView.saveClassChanges,
     VisualizationView.focusVisualization
@@ -179,7 +199,6 @@ export class ModelPageHelpService {
               private entityLoaderService: EntityLoaderService) {
   }
 
-
   getHelps(model: Model|null): InteractiveHelp[] {
 
     if (!model) {
@@ -197,6 +216,8 @@ export class ModelPageHelpService {
 
     if (isProfile) {
       helps.add(specializeClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
+    } else {
+      helps.add(assignClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
     }
 
     helps.add(addAttribute(modelPrefix), builder => {
@@ -267,8 +288,8 @@ class ModelBuilder {
 
   specializeClass() {
     return this.entityLoader.specializeClass(requireDefined(this.model), {
-      class: classIdFromNamespaceId(exampleSpecializedClass.namespaceId, exampleSpecializedClass.name),
-      propertyFilter: isExpectedProperty(exampleSpecializedClass.properties)
+      class: classIdFromNamespaceId(exampleSpecializedOrAssignedClass.namespaceId, exampleSpecializedOrAssignedClass.name),
+      propertyFilter: isExpectedProperty(exampleSpecializedOrAssignedClass.properties)
     });
   }
 

@@ -10,11 +10,19 @@ import * as AddModelModal from './pages/group/modal/addModelModalHelp.po';
 import * as NewModelPage from './pages/model/newModelPageHelp.po';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
-import { addNamespaceItems, specializeClassItems, createNewClassItems, addAssociationItems } from './modelPageHelp';
-import { exampleProfile } from './entities';
+import {
+  addNamespaceItems, specializeClassItems, createNewClassItems, addAssociationItems,
+  assignClassItems
+} from './modelPageHelp';
+import { exampleProfile, exampleImportedLibrary } from './entities';
 import { modelIdFromPrefix } from './utils';
 
 export function createNewModelItems(type: KnownModelType): Story[] {
+
+  const isProfile = type === 'profile';
+  const namespaceId = isProfile ? modelIdFromPrefix(exampleProfile.prefix)
+                                : exampleImportedLibrary.namespaceId;
+
   return [
     GroupPage.startModelCreation(type),
     AddModelModal.enterModelPrefix(type),
@@ -26,9 +34,9 @@ export function createNewModelItems(type: KnownModelType): Story[] {
     ModelView.modifyModel(type),
     ...addNamespaceItems,
     ModelView.saveModelChanges,
-    ...(type === 'profile' ? specializeClassItems : []),
+    ...(isProfile ? specializeClassItems : assignClassItems),
     ...createNewClassItems,
-    ...(type === 'profile' ? addAssociationItems(modelIdFromPrefix(exampleProfile.prefix)) : [])
+    ...addAssociationItems(namespaceId)
   ];
 }
 

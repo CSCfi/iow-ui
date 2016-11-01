@@ -48,4 +48,4 @@ export const selectAddNewClassSearchResult = createStory({
 
 export const focusSelectedClass = focusSearchSelection(searchClassModal, 'Class is here', 'Diipadaa');
 
-export const confirmClassSelection = confirm(searchClassModal, false);
+export const confirmClassSelection = (navigates: boolean) => confirm(searchClassModal, navigates);
