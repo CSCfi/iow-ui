@@ -7,13 +7,13 @@
   <div class="col-md-12">
     <editable data-title="Concept label" context="ctrl.model">
       <div class="input-group input-group-md">
-        <input id="conceptLabel" type="text" class="form-control" localized-input="label" ng-model="ctrl.concept.label" />
+        <input id="conceptLabel" type="text" class="form-control" localized-input="label" context="ctrl.model" ng-model="ctrl.concept.label" />
       </div>
     </editable>
 
     <editable data-title="Definition" context="ctrl.model">
       <div class="input-group input-group-md">
-        <textarea id="conceptComment" class="form-control" localized-input="required" ng-model="ctrl.concept.comment"></textarea>
+        <textarea id="conceptComment" class="form-control" localized-input="required" context="ctrl.model" ng-model="ctrl.concept.comment"></textarea>
       </div>
     </editable>
 
