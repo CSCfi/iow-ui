@@ -19,7 +19,7 @@ import * as ClassForm from './pages/model/classFormHelp.po';
 import * as VisualizationView from './pages/model/visualizationViewHelp.po';
 import {
   exampleImportedLibrary, exampleSpecializedClass, exampleNewClass, exampleProfile,
-  exampleLibrary
+  exampleLibrary, exampleAssignedClass
 } from './entities';
 import { classIdFromNamespaceId, predicateIdFromNamespaceId, modelIdFromPrefix, isExpectedProperty } from './utils';
 import { classView } from './selectors';
@@ -128,44 +128,48 @@ export const createNewClass: StoryLine = {
   ]
 };
 
-export const addAssociationItems: Story[] = [
-  ClassView.addProperty,
-  SearchPredicateModal.filterForNewPredicate(exampleNewClass.property.association.searchName),
-  SearchPredicateModal.selectAddNewPredicateSearchResult('association'),
-  SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.property.association.searchName),
-  SearchConceptModal.addConceptSuggestionSearchResult,
-  SearchConceptModal.enterVocabulary,
-  SearchConceptModal.enterLabel,
-  SearchConceptModal.enterDefinition(exampleNewClass.property.association.comment),
-  SearchConceptModal.confirmConceptSelection(false),
-  SearchPredicateModal.focusSelectedAssociation,
-  PredicateForm.focusPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', 'Label can be changed'),
-  PredicateForm.enterPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', exampleNewClass.property.association.name),
-  SearchPredicateModal.confirmPredicateSelection(true),
-  ClassForm.focusOpenProperty(classView),
-  ClassForm.selectAssociationTarget(classView),
-  SearchClassModal.filterForClass(modelIdFromPrefix(exampleProfile.prefix), exampleSpecializedClass.name, exampleSpecializedClass.name),
-  SearchClassModal.selectClass(modelIdFromPrefix(exampleProfile.prefix), exampleSpecializedClass.name),
-  SearchClassModal.focusSelectedClass,
-  SearchClassModal.confirmClassSelection,
-  ClassForm.focusAssociationTarget(classView),
-  ClassView.saveClassChanges,
-  VisualizationView.focusVisualization
-];
+export function addAssociationItems(namespaceId: string): Story[] {
+  return [
+    ClassView.addProperty,
+    SearchPredicateModal.filterForNewPredicate(exampleNewClass.property.association.searchName),
+    SearchPredicateModal.selectAddNewPredicateSearchResult('association'),
+    SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.property.association.searchName),
+    SearchConceptModal.addConceptSuggestionSearchResult,
+    SearchConceptModal.enterVocabulary,
+    SearchConceptModal.enterLabel,
+    SearchConceptModal.enterDefinition(exampleNewClass.property.association.comment),
+    SearchConceptModal.confirmConceptSelection(false),
+    SearchPredicateModal.focusSelectedAssociation,
+    PredicateForm.focusPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', 'Label can be changed'),
+    PredicateForm.enterPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', exampleNewClass.property.association.name),
+    SearchPredicateModal.confirmPredicateSelection(true),
+    ClassForm.focusOpenProperty(classView),
+    ClassForm.selectAssociationTarget(classView),
+    SearchClassModal.filterForClass(namespaceId, exampleSpecializedClass.name, exampleSpecializedClass.name),
+    SearchClassModal.selectClass(namespaceId, exampleSpecializedClass.name),
+    SearchClassModal.focusSelectedClass,
+    SearchClassModal.confirmClassSelection,
+    ClassForm.focusAssociationTarget(classView),
+    ClassView.saveClassChanges,
+    VisualizationView.focusVisualization
+  ];
+}
 
-export const addAssociation: StoryLine = {
-  title: 'Guide through adding an association',
-  description: 'Diipadaa',
-  items: [
-    ModelPage.selectClass(modelIdFromPrefix(exampleProfile.prefix), exampleNewClass.name),
-    ClassView.modifyClass,
-    ...addAssociationItems,
-    createNotification({
-      title: 'Congratulations for completing adding an association!',
-      content: 'Diipadaa'
-    })
-  ]
-};
+export function addAssociation(modelPrefix: string, associationTargetNamespaceId: string): StoryLine {
+  return {
+    title: 'Guide through adding an association',
+    description: 'Diipadaa',
+    items: [
+      ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
+      ClassView.modifyClass,
+      ...addAssociationItems(associationTargetNamespaceId),
+      createNotification({
+        title: 'Congratulations for completing adding an association!',
+        content: 'Diipadaa'
+      })
+    ]
+  };
+}
 
 export class ModelPageHelpService {
 
@@ -184,6 +188,9 @@ export class ModelPageHelpService {
 
     const helps = new HelpBuilder(this.$location, this.$uibModalStack, this.entityLoaderService, model);
     const isProfile = model.normalizedType === 'profile';
+    const modelPrefix = isProfile ? exampleProfile.prefix : exampleLibrary.prefix;
+    const associationNamespaceId = isProfile ? modelIdFromPrefix(exampleProfile.prefix)
+                                             : exampleImportedLibrary.namespaceId;
 
     helps.add(addNamespace(model.normalizedType), builder => builder.newModel());
     helps.add(createNewClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
@@ -192,21 +199,24 @@ export class ModelPageHelpService {
       helps.add(specializeClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
     }
 
-    helps.add(addAttribute(isProfile ? exampleProfile.prefix : exampleLibrary.prefix), builder => {
+    helps.add(addAttribute(modelPrefix), builder => {
       builder.newModel(exampleImportedLibrary.namespaceId);
       builder.newClass();
     });
 
-    if (isProfile) {
-      helps.add(addAssociation, builder => {
-        builder.newModel(exampleImportedLibrary.namespaceId);
-        builder.newClass({
-          label: { 'fi': exampleNewClass.name },
-          predicate: predicateIdFromNamespaceId(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name)
-        });
-        builder.specializeClass();
+    helps.add(addAssociation(modelPrefix, associationNamespaceId), builder => {
+      builder.newModel(exampleImportedLibrary.namespaceId);
+      builder.newClass({
+        label: { 'fi': exampleNewClass.name },
+        predicate: predicateIdFromNamespaceId(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name)
       });
-    }
+
+      if (isProfile) {
+        builder.specializeClass();
+      } else {
+        builder.assignClass();
+      }
+    });
 
     return helps.result;
   }
@@ -247,9 +257,17 @@ class ModelBuilder {
     });
   }
 
+  assignClass() {
+
+    const model = requireDefined(this.model);
+    const classToAssign = this.entityLoader.getClass(model, classIdFromNamespaceId(exampleAssignedClass.namespaceId, exampleAssignedClass.name));
+
+    return this.entityLoader.assignClass(model, classToAssign);
+  }
+
   specializeClass() {
     return this.entityLoader.specializeClass(requireDefined(this.model), {
-      class: classIdFromNamespaceId(exampleImportedLibrary.namespaceId, exampleSpecializedClass.name),
+      class: classIdFromNamespaceId(exampleSpecializedClass.namespaceId, exampleSpecializedClass.name),
       propertyFilter: isExpectedProperty(exampleSpecializedClass.properties)
     });
   }

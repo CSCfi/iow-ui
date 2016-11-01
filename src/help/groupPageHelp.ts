@@ -11,6 +11,8 @@ import * as NewModelPage from './pages/model/newModelPageHelp.po';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
 import { addNamespaceItems, specializeClassItems, createNewClassItems, addAssociationItems } from './modelPageHelp';
+import { exampleProfile } from './entities';
+import { modelIdFromPrefix } from './utils';
 
 export function createNewModelItems(type: KnownModelType): Story[] {
   return [
@@ -26,7 +28,7 @@ export function createNewModelItems(type: KnownModelType): Story[] {
     ModelView.saveModelChanges,
     ...(type === 'profile' ? specializeClassItems : []),
     ...createNewClassItems,
-    ...(type === 'profile' ? addAssociationItems : [])
+    ...(type === 'profile' ? addAssociationItems(modelIdFromPrefix(exampleProfile.prefix)) : [])
   ];
 }
 
