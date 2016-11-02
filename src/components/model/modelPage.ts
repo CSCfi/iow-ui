@@ -128,7 +128,7 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
     });
 
     $scope.$on('$locationChangeStart', (event, next, current) => {
-      if (interactiveHelpService.isClosed() && (this.selection && !this.selection.unsaved) && isDifferentUrl(current, next)) {
+      if (interactiveHelpService.isClosed() && isDifferentUrl(current, next)) {
         this.ifEditing(() => event.preventDefault(), () => $location.url(nextUrl($location, next)));
       }
     });
