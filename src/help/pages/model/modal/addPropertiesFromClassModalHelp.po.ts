@@ -30,7 +30,8 @@ export function selectProperties(title: string, expectProperties?: string[]) {
         const ctrl = getModalController<AddPropertiesFromClassModalController>();
         onlyProperties(ctrl.selectedProperties, expectProperties);
       }
-    }
+    },
+    reversible: true
   });
 }
 
