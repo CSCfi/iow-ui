@@ -236,6 +236,15 @@ export class Model extends AbstractModel {
     return false;
   }
 
+  isRequiredNamespace(ns: string) {
+    for (const require of this.namespaces) {
+      if (ns === require.namespace) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   linkToResource(id: Uri|null) {
     if (id && !id.isUrn()) {
       if (this.isNamespaceKnownToBeModel(id.namespace)) {

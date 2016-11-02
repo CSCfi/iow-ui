@@ -53,18 +53,7 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
     result['idNameRequired'] = value => !value || !isValidUri(value) || !value.namespaceResolves() || value.name.length > 0;
 
     if (type === 'required-namespace') {
-      result['mustBeRequiredNS'] = value => {
-        function isRequiredNamespace(ns: string) {
-          for (const require of modelProvider().namespaces) {
-            if (ns === require.namespace) {
-              return true;
-            }
-          }
-          return false;
-        }
-
-        return !value || !isValidUri(value) || !value.namespaceResolves() || isRequiredNamespace(value.namespace);
-      };
+      result['mustBeRequiredNS'] = value =>  !value || !isValidUri(value) || !value.namespaceResolves() || modelProvider().isRequiredNamespace(value.namespace);
     }
   }
 
