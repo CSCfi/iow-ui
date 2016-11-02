@@ -2,6 +2,7 @@ import { module as mod } from './module';
 import { SearchController, TextAnalysis } from './contract';
 import { IScope } from 'angular';
 import { ifChanged } from '../../utils/angular';
+import { isDefined } from '../../utils/object';
 
 mod.directive('textFilter', () => {
   return {
@@ -36,7 +37,7 @@ class TextSearchController<T> {
 
   constructor($scope: IScope) {
 
-    this.searchController.addFilter((item: TextAnalysis<T>) => !this.searchText || !!item.matchScore || item.score < 2);
+    this.searchController.addFilter((item: TextAnalysis<T>) => !this.searchText || isDefined(item.matchScore) || item.score < 2);
 
     $scope.$watch(() => this.searchText, ifChanged(() => this.searchController.search()));
   }
