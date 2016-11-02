@@ -3,11 +3,11 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { SearchService } from '../services/searchService';
 import { LanguageService, Localizer } from '../services/languageService';
-import { comparingLocalizable } from '../utils/comparators';
-import { SearchController, SearchFilter, applyFilters } from './filter/contract';
+import { SearchController, SearchFilter } from './filter/contract';
 import { Type } from '../entities/type';
 import { frontPageSearchLanguageContext, LanguageContext } from '../entities/contract';
 import { SearchResult } from '../entities/search';
+import { filterAndSortSearchResults, defaultLabelComparator } from './filter/util';
 
 export class AdvancedSearchModal {
   /* @ngInject */
@@ -48,7 +48,6 @@ class AdvancedSearchController implements SearchController<SearchResult> {
     $scope.$watch(() => this.searchText, text => {
       if (text) {
         this.searchService.searchAnything(text)
-          .then(results => results.sort(comparingLocalizable<SearchResult>(this.localizer, result => result.label)))
           .then(results => this.apiSearchResults = results)
           .then(() => this.search());
       } else {
@@ -71,7 +70,7 @@ class AdvancedSearchController implements SearchController<SearchResult> {
   }
 
   search() {
-    this.searchResults = applyFilters(this.apiSearchResults, this.searchFilters);
+    this.searchResults = filterAndSortSearchResults<SearchResult>(this.apiSearchResults, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer));
   }
 
   selectSearchResult(searchResult: SearchResult) {

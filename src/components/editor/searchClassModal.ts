@@ -4,16 +4,16 @@ import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { ClassService } from '../../services/classService';
 import { LanguageService, Localizer } from '../../services/languageService';
-import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { EditableForm } from '../form/editableEntityController';
 import { glyphIconClassForType } from '../../utils/entity';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchFilter, SearchController, applyFilters } from '../filter/contract';
+import { SearchFilter, SearchController } from '../filter/contract';
 import { AbstractClass, Class, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { ExternalEntity } from '../../entities/externalEntity';
+import { filterAndSortSearchResults, defaultLabelComparator } from '../filter/util';
 
 export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
@@ -99,11 +99,6 @@ class SearchClassController implements SearchController<ClassListItem> {
 
     const appendResults = (classes: ClassListItem[]) => {
       this.classes = this.classes.concat(classes);
-
-      this.classes.sort(
-        comparingBoolean<ClassListItem>(item => !!this.exclude(item))
-          .andThen(comparingLocalizable<ClassListItem>(this.localizer, item => item.label)));
-
       this.search();
       this.loadingResults = false;
     };
@@ -135,12 +130,11 @@ class SearchClassController implements SearchController<ClassListItem> {
   }
 
   search() {
-    const result: (ClassListItem|AddNewClass)[] = [
+    this.searchResults = [
       new AddNewClass(`${this.gettextCatalog.getString('Create new class')} '${this.searchText}'`, this.canAddNew.bind(this), false),
-      new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true)
+      new AddNewClass(`${this.gettextCatalog.getString('Create new shape')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddNew() && this.model.isOfType('profile'), true),
+      ...filterAndSortSearchResults(this.classes, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer, this.exclude))
     ];
-
-    this.searchResults = result.concat(applyFilters(this.classes, this.searchFilters));
   }
 
   canAddNew() {

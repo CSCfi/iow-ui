@@ -9,12 +9,13 @@ import { AddNew } from '../common/searchResults';
 import { Uri } from '../../entities/uri';
 import { any, flatten, limit } from '../../utils/array';
 import { lowerCase, upperCaseFirst } from 'change-case';
-import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
+import { SearchController, SearchFilter } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
 import { Concept, Vocabulary, FintoConcept, ConceptSuggestion } from '../../entities/vocabulary';
 import { Model } from '../../entities/model';
 import { ClassType, KnownPredicateType } from '../../entities/type';
 import { VocabularyService, ConceptSearchResult } from '../../services/vocabularyService';
+import { filterAndSortSearchResults, defaultLabelComparator } from '../filter/util';
 
 const limitQueryResults = 1000;
 
@@ -126,7 +127,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     this.loadingResults = false;
 
     this.addFilter(concept =>
-      any(this.activeVocabularies, vocabulary => concept.vocabulary.id.equals(vocabulary.id))
+      any(this.activeVocabularies, vocabulary => concept.item.vocabulary.id.equals(vocabulary.id))
     );
 
     $scope.$watch(() => this.searchText, () => this.query(this.searchText).then(() => this.search()));
@@ -190,11 +191,6 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
       return this.$q.all(flatten(this.activeVocabularies.map(vocabulary => this.vocabularyService.searchConcepts(vocabulary, language, searchText))))
         .then((results: ConceptSearchResult[][]) => {
           this.queryResults = limit(flatten(results), limitQueryResults);
-
-          this.queryResults.sort(
-            comparingLocalizable<ConceptSearchResult>(this.localizer, item => item.label)
-              .andThen(comparingBoolean<ConceptSearchResult>(item => item.suggestion)));
-
           this.loadingResults = false;
         });
     } else {
@@ -208,9 +204,11 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
 
       const suggestText = `${this.gettextCatalog.getString('suggest')} '${this.searchText}'`;
       const toVocabularyText = `${this.gettextCatalog.getString('to vocabulary')}`;
-      const result: (ConceptSearchResult|AddNewConcept)[] = [new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew())];
 
-      this.searchResults = result.concat(applyFilters(this.queryResults, this.searchFilters));
+      this.searchResults = [
+        new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew()),
+        ...filterAndSortSearchResults<ConceptSearchResult>(this.queryResults, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer))
+      ];
     } else {
       this.searchResults = [];
     }

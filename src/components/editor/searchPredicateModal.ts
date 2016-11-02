@@ -6,19 +6,19 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { EditableForm } from '../form/editableEntityController';
-import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
 import { AddNew } from '../common/searchResults';
 import { glyphIconClassForType } from '../../utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from '../../services/classService';
 import { collectProperties } from '../../utils/array';
 import { createExistsExclusion, createDefinedByExclusion, combineExclusions, Exclusion } from '../../utils/exclusion';
-import { SearchFilter, SearchController, applyFilters } from '../filter/contract';
+import { SearchFilter, SearchController } from '../filter/contract';
 import { PredicateListItem, AbstractPredicate, Predicate } from '../../entities/predicate';
 import { Model } from '../../entities/model';
 import { KnownPredicateType } from '../../entities/type';
 import { ExternalEntity } from '../../entities/externalEntity';
 import { Class, Property } from '../../entities/class';
+import { filterAndSortSearchResults, defaultLabelComparator } from '../filter/util';
 
 const noExclude = (_item: PredicateListItem) => null;
 
@@ -129,11 +129,6 @@ export class SearchPredicateController implements SearchController<PredicateList
 
     const appendResults = (predicates: PredicateListItem[]) => {
       this.predicates = this.predicates.concat(predicates);
-
-      this.predicates.sort(
-        comparingBoolean<PredicateListItem>(item => !!this.exclude(item))
-          .andThen(comparingLocalizable<PredicateListItem>(this.localizer, item => item.label)));
-
       this.search();
       this.loadingResults = false;
     };
@@ -173,13 +168,12 @@ export class SearchPredicateController implements SearchController<PredicateList
   }
 
   search() {
-    const result: (PredicateListItem|AddNewPredicate)[] = [
+    this.searchResults = [
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new attribute')} '${this.searchText}'`, this.isAttributeAddable.bind(this), 'attribute', false),
       new AddNewPredicate(`${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`, this.isAssociationAddable.bind(this), 'association', false),
-      new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), this.type, true)
+      new AddNewPredicate(`${this.gettextCatalog.getString('Create new predicate')} ${this.gettextCatalog.getString('by referencing external uri')}`, () => this.canAddExternal(), this.type, true),
+      ...filterAndSortSearchResults(this.predicates, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer, this.exclude))
     ];
-
-    this.searchResults = result.concat(applyFilters(this.predicates, this.searchFilters));
   }
 
   selectItem(item: PredicateListItem|AddNewPredicate) {

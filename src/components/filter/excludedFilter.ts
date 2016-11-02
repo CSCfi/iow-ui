@@ -1,5 +1,5 @@
 import { module as mod } from './module';
-import { SearchController } from './contract';
+import { SearchController, TextAnalysis } from './contract';
 import { IScope } from 'angular';
 import { Exclusion } from '../../utils/exclusion';
 import { ifChanged } from '../../utils/angular';
@@ -26,8 +26,8 @@ class ProfileFilterController<T> {
 
   /* @ngInject */
   constructor($scope: IScope) {
-    this.searchController.addFilter((item: T) =>
-      this.showExcluded || !this.exclude(item)
+    this.searchController.addFilter((item: TextAnalysis<T>) =>
+      this.showExcluded || !this.exclude(item.item)
     );
 
     $scope.$watch(() => this.exclude, ifChanged(() => this.searchController.search()));

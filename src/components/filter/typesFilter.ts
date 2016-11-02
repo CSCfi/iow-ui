@@ -1,5 +1,5 @@
 import { module as mod } from './module';
-import { SearchController } from './contract';
+import { SearchController, TextAnalysis } from './contract';
 import { IScope } from 'angular';
 import { WithIdAndType } from '../contracts';
 import { containsAny } from '../../utils/array';
@@ -37,8 +37,8 @@ class TypesFilterController {
   /* @ngInject */
   constructor($scope: IScope) {
 
-    this.searchController.addFilter((item: WithIdAndType) =>
-      containsAny(item.type, this.searchTypes)
+    this.searchController.addFilter((item: TextAnalysis<WithIdAndType>) =>
+      containsAny(item.item.type, this.searchTypes)
     );
 
     $scope.$watchCollection(() => this.searchTypes, ifChanged(() => this.searchController.search()));

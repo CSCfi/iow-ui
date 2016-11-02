@@ -1,7 +1,5 @@
 import { module as mod } from './module';
-import { SearchController, ContentExtractor } from './contract';
-import { valueContains } from '../../utils/searchFilter';
-import { any } from '../../utils/array';
+import { SearchController, TextAnalysis } from './contract';
 import { IScope } from 'angular';
 import { ifChanged } from '../../utils/angular';
 
@@ -32,16 +30,13 @@ mod.directive('textFilter', () => {
 
 class TextSearchController<T> {
 
-  contentExtractors: ContentExtractor<T>[];
   placeholder: string;
   searchController: SearchController<T>;
   searchText: string;
 
   constructor($scope: IScope) {
 
-    this.searchController.addFilter((item: T) =>
-        !this.searchText || any(this.contentExtractors, extractor => valueContains(extractor(item), this.searchText))
-    );
+    this.searchController.addFilter((item: TextAnalysis<T>) => !this.searchText || !!item.matchScore || item.score < 2);
 
     $scope.$watch(() => this.searchText, ifChanged(() => this.searchController.search()));
   }

@@ -1,5 +1,5 @@
 import { module as mod } from './module';
-import { SearchController } from './contract';
+import { SearchController, TextAnalysis } from './contract';
 import { IScope } from 'angular';
 import { isDefined } from '../../utils/object';
 import { ifChanged } from '../../utils/angular';
@@ -51,8 +51,8 @@ class TypeFilterController {
         .value();
     }));
 
-    this.searchController.addFilter((item: WithNormalizedType) =>
-      !this.type || item.normalizedType === this.type
+    this.searchController.addFilter((item: TextAnalysis<WithNormalizedType>) =>
+      !this.type || item.item.normalizedType === this.type
     );
 
     $scope.$watch(() => this.type, ifChanged(() => this.searchController.search()));

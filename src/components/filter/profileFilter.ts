@@ -1,5 +1,5 @@
 import { module as mod } from './module';
-import { SearchController } from './contract';
+import { SearchController, TextAnalysis } from './contract';
 import { IScope } from 'angular';
 import { WithDefinedBy } from '../contracts';
 import { ifChanged } from '../../utils/angular';
@@ -31,8 +31,8 @@ class ProfileFilterController {
 
   /* @ngInject */
   constructor($scope: IScope) {
-    this.searchController.addFilter((item: WithDefinedBy) =>
-        this.showProfiles || !item.definedBy.isOfType('profile')
+    this.searchController.addFilter((item: TextAnalysis<WithDefinedBy>) =>
+        this.showProfiles || !item.item.definedBy.isOfType('profile')
     );
 
     $scope.$watch(() => this.showProfiles, ifChanged(() => this.searchController.search()));

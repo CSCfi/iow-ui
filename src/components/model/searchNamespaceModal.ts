@@ -7,9 +7,10 @@ import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { comparingBoolean, comparingString } from '../../utils/comparators';
 import { Language } from '../../utils/language';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
+import { SearchController, SearchFilter, TextAnalysis } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
 import { ImportedNamespace, Model } from '../../entities/model';
+import { filterAndSortSearchResults } from '../filter/util';
 
 const noExclude = (_ns: ImportedNamespace) => null;
 
@@ -59,17 +60,12 @@ class SearchNamespaceController implements SearchController<ImportedNamespace> {
 
     modelService.getAllImportableNamespaces().then(result => {
       this.namespaces = result;
-
-      this.namespaces.sort(
-        comparingBoolean((item: ImportedNamespace) => !!this.exclude(item))
-          .andThen(comparingString((item: ImportedNamespace) => item.namespace)));
-
       this.search();
       this.loadingResults = false;
     });
 
     this.addFilter(ns =>
-      this.showTechnical || !!this.searchText || !ns.technical
+      this.showTechnical || !!this.searchText || !ns.item.technical
     );
 
     $scope.$watch(() => this.showTechnical, ifChanged(() => this.search()));
@@ -85,7 +81,10 @@ class SearchNamespaceController implements SearchController<ImportedNamespace> {
 
 
   search() {
-    this.searchResults = applyFilters(this.namespaces, this.searchFilters);
+    const comparator = comparingBoolean<TextAnalysis<ImportedNamespace>>(item => !!this.exclude(item.item))
+      .andThen(comparingString<TextAnalysis<ImportedNamespace>>(item => item.item.namespace));
+
+    this.searchResults = filterAndSortSearchResults(this.namespaces, this.searchText, this.contentExtractors, this.searchFilters, comparator);
   }
 
   textFilter(ns: ImportedNamespace) {

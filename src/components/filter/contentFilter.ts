@@ -1,12 +1,7 @@
 import { module as mod } from './module';
-import { SearchController, ContentExtractor } from './contract';
+import { SearchController, ContentExtractor, ContentMatcher } from './contract';
 import { IScope } from 'angular';
 import { ifChanged } from '../../utils/angular';
-
-export interface ContentMatcher<T> {
-  name: string;
-  extractor: ContentExtractor<T>;
-}
 
 mod.directive('contentFilter', () => {
   return {

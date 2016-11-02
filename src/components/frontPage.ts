@@ -7,14 +7,14 @@ import { AdvancedSearchModal } from './advancedSearchModal';
 import { MaintenanceModal } from './maintenance';
 import { Url } from '../entities/uri';
 import { module as mod }  from './module';
-import { comparingLocalizable } from '../utils/comparators';
-import { SearchController, SearchFilter, applyFilters } from './filter/contract';
+import { SearchController, SearchFilter } from './filter/contract';
 import { frontPageSearchLanguageContext, LanguageContext } from '../entities/contract';
 import { SearchResult } from '../entities/search';
 import { GroupListItem } from '../entities/group';
 import { ApplicationController } from './application';
 import { HelpProvider } from './common/helpProvider';
 import { FrontPageHelpService } from '../help/frontPageHelp';
+import { filterAndSortSearchResults, defaultLabelComparator } from './filter/util';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -80,7 +80,6 @@ export class FrontPageController implements SearchController<SearchResult>, Help
     $scope.$watch(() => this.searchText, text => {
       if (text) {
         this.searchService.searchAnything(text)
-          .then(results => results.sort(comparingLocalizable<SearchResult>(this.localizer, result => result.label)))
           .then(results => this.apiSearchResults = results)
           .then(() => this.search());
       } else {
@@ -114,7 +113,7 @@ export class FrontPageController implements SearchController<SearchResult>, Help
   }
 
   search() {
-    this.searchResults = applyFilters(this.apiSearchResults, this.searchFilters);
+    this.searchResults = filterAndSortSearchResults<SearchResult>(this.apiSearchResults, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer));
   }
 
   selectSearchResult(searchResult: SearchResult) {

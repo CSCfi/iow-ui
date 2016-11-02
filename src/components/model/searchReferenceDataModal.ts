@@ -2,7 +2,7 @@ import { IScope, IPromise, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { ReferenceDataService } from '../../services/referenceDataService';
-import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
+import { comparingLocalizable } from '../../utils/comparators';
 import { Localizer, LanguageService } from '../../services/languageService';
 import { AddNew } from '../common/searchResults';
 import gettextCatalog = angular.gettext.gettextCatalog;
@@ -11,10 +11,11 @@ import { Uri } from '../../entities/uri';
 import { any, all } from '../../utils/array';
 import * as _ from 'lodash';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
+import { SearchController, SearchFilter } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
 import { ReferenceData, ReferenceDataServer, ReferenceDataGroup } from '../../entities/referenceData';
 import { Model } from '../../entities/model';
+import { filterAndSortSearchResults, defaultTitleComparator } from '../filter/util';
 
 const noExclude = (_referenceData: ReferenceData) => null;
 
@@ -103,10 +104,6 @@ export class SearchReferenceDataModalController implements SearchController<Refe
         this.showGroup = null;
       }
 
-      this.referenceDatas.sort(
-        comparingBoolean<ReferenceData>(referenceData => !!this.exclude(referenceData))
-          .andThen(comparingLocalizable<ReferenceData>(this.localizer, referenceData => referenceData.title)));
-
       this.search();
       this.loadingResults = false;
     };
@@ -127,7 +124,7 @@ export class SearchReferenceDataModalController implements SearchController<Refe
     }
 
     this.addFilter(referenceData =>
-      !this.showGroup || any(referenceData.groups, group => group.id.equals(this.showGroup!.id))
+      !this.showGroup || any(referenceData.item.groups, group => group.id.equals(this.showGroup!.id))
     );
 
     $scope.$watch(() => this.showGroup, ifChanged<ReferenceDataGroup|null>(() => this.search()));
@@ -148,11 +145,10 @@ export class SearchReferenceDataModalController implements SearchController<Refe
   search() {
     if (this.referenceDatas) {
 
-      const result: (ReferenceData|AddNewReferenceData)[] = [
-        new AddNewReferenceData(`${this.gettextCatalog.getString('Create new reference data')} '${this.searchText}'`, this.canAddNew.bind(this))
+      this.searchResults = [
+        new AddNewReferenceData(`${this.gettextCatalog.getString('Create new reference data')} '${this.searchText}'`, this.canAddNew.bind(this)),
+        ...filterAndSortSearchResults(this.referenceDatas, this.searchText, this.contentExtractors, this.searchFilters, defaultTitleComparator(this.localizer, this.exclude))
       ];
-
-      this.searchResults = result.concat(applyFilters(this.referenceDatas, this.searchFilters));
     }
   }
 

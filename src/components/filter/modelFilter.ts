@@ -1,6 +1,6 @@
 import { module as mod } from './module';
 import * as _ from 'lodash';
-import { SearchController } from './contract';
+import { SearchController, TextAnalysis } from './contract';
 import { IScope } from 'angular';
 import { isDefined } from '../../utils/object';
 import { ClassService } from '../../services/classService';
@@ -85,13 +85,13 @@ class ModelFilterController {
       this.models = [this.model, ...definedByFromClasses];
     });
 
-    this.searchController.addFilter((item: ItemType) => {
+    this.searchController.addFilter((item: TextAnalysis<ItemType>) => {
         if (!this.showModel) {
           return true;
         } else if (this.showModel === this.model) {
-          return this.currentModelItemIds.has(item.id.toString());
+          return this.currentModelItemIds.has(item.item.id.toString());
         } else {
-          return isDefined(item.definedBy) && item.definedBy.id.equals(this.showModel.id);
+          return isDefined(item.item.definedBy) && item.item.definedBy.id.equals(this.showModel.id);
         }
       }
     );

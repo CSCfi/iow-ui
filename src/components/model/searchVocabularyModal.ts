@@ -4,10 +4,11 @@ import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { Exclusion } from '../../utils/exclusion';
-import { SearchController, SearchFilter, applyFilters } from '../filter/contract';
+import { SearchController, SearchFilter } from '../filter/contract';
 import { Vocabulary } from '../../entities/vocabulary';
 import { LanguageContext } from '../../entities/contract';
 import { VocabularyService } from '../../services/vocabularyService';
+import { filterAndSortSearchResults, defaultTitleComparator } from '../filter/util';
 
 const noExclude = (_vocabulary: Vocabulary) => null;
 
@@ -79,7 +80,7 @@ class SearchVocabularyController implements SearchController<Vocabulary> {
   }
 
   search() {
-    this.searchResults = applyFilters(this.vocabularies, this.searchFilters);
+    this.searchResults = filterAndSortSearchResults(this.vocabularies, this.searchText, this.contentExtractors, this.searchFilters, defaultTitleComparator(this.localizer, this.exclude));
   }
 
   selectItem(vocabulary: Vocabulary) {
