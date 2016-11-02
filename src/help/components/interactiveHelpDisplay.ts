@@ -4,7 +4,7 @@ import { OverlayService, OverlayInstance } from '../../components/common/overlay
 import { IScope, IPromise, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever, requireDefined, areEqual } from '../../utils/object';
-import { tab, esc } from '../../utils/keyCode';
+import { tab, esc, enter } from '../../utils/keyCode';
 import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
 import { InteractiveHelpService } from '../services/interactiveHelpService';
 import {
@@ -332,6 +332,24 @@ class InteractiveHelpController {
     return result;
   };
 
+  moveToPreviousIfPossible() {
+    if (this.canMoveToPrevious()) {
+      this.$scope.$apply(() => this.moveToPreviousItem());
+    }
+  }
+
+  moveToNextIfPossible() {
+    const item = this.item!;
+
+    if (this.canMoveToNext()) {
+      if (item.type === 'notification' || !isClick(item.nextCondition)) {
+        this.$scope.$apply(() => this.moveToNextItem());
+      } else {
+        item.nextCondition.element().click();
+      }
+    }
+  }
+
   manageTabKeyFocus(item: Story|Notification, event: JQueryEventObject) {
 
     const focusableElements = InteractiveHelpController.loadFocusableElementList(item);
@@ -345,22 +363,6 @@ class InteractiveHelpController {
       return false;
     };
 
-    const moveToPreviousIfPossible = () => {
-      if (this.canMoveToPrevious()) {
-        this.$scope.$apply(() => this.moveToPreviousItem());
-      }
-    };
-
-    const moveToNextIfPossible = () => {
-      if (this.canMoveToNext()) {
-        if (item.type === 'notification' || !isClick(item.nextCondition)) {
-          this.$scope.$apply(() => this.moveToNextItem());
-        } else {
-          item.nextCondition.element().click();
-        }
-      }
-    };
-
     if (focusableElements) {
       if (focusableElements.length > 0) {
 
@@ -369,12 +371,12 @@ class InteractiveHelpController {
 
         if (event.shiftKey) {
           if (isFocusInElement(event, firstElement)) {
-            moveToPreviousIfPossible();
+            this.moveToPreviousIfPossible();
             stopEvent(event);
           }
         } else {
           if (isFocusInElement(event, lastElement)) {
-            moveToNextIfPossible();
+            this.moveToNextIfPossible();
             stopEvent(event);
           }
         }
@@ -387,9 +389,9 @@ class InteractiveHelpController {
 
       } else {
         if (event.shiftKey) {
-          moveToPreviousIfPossible();
+          this.moveToPreviousIfPossible();
         } else {
-          moveToNextIfPossible();
+          this.moveToNextIfPossible();
         }
         stopEvent(event);
       }
@@ -407,6 +409,10 @@ class InteractiveHelpController {
     switch (event.which) {
       case tab:
         this.manageTabKeyFocus(this.item!, event);
+        break;
+      case enter:
+        this.moveToNextIfPossible();
+        stopEvent(event);
         break;
       case esc:
         this.$scope.$apply(() => this.close(true));

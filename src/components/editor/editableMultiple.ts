@@ -4,6 +4,7 @@ import { arrayValidator, arrayAsyncValidator } from '../form/validators';
 import { extendNgModelOptions, formatWithFormatters, ValidationResult, validateWithValidators } from '../../utils/angular';
 import { module as mod }  from './module';
 import { remove } from '../../utils/array';
+import { enter } from '../../utils/keyCode';
 
 const skipValidators = new Set<string>(['duplicate']);
 
@@ -141,10 +142,9 @@ export class EditableMultipleController<T> {
   }
 
   keyPressed(event: JQueryEventObject) {
-    const enter = 13;
-    if (event.keyCode === enter) {
-      event.preventDefault();
+    if (event.keyCode === enter && this.input) {
       this.addValueFromInput();
+      event.preventDefault();
     }
   }
 

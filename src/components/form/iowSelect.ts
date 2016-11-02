@@ -87,10 +87,7 @@ export class IowSelectController<T> implements InputWithPopupController<T> {
     [pageDown]: () => this.openIfNotShown(() => this.moveSelection(10)),
     [pageUp]: () => this.openIfNotShown(() => this.moveSelection(-10)),
     [enter]: () => this.openIfNotShown(() => this.selectSelection()),
-    [tab]: () => {
-      this.selectSelection();
-      return false;
-    },
+    [tab]: () => this.selectSelection(),
     [esc]: () => this.close()
   };
 
@@ -134,17 +131,15 @@ export class IowSelectController<T> implements InputWithPopupController<T> {
     this.selectedSelectionIndex = -1;
   }
 
-  selectSelection(event?: JQueryEventObject) {
-
-    if (event) {
-      event.preventDefault();
-    }
+  selectSelection(): boolean {
 
     if (this.selectedSelectionIndex >= 0) {
       this.ngModel = this.popupItems[this.selectedSelectionIndex];
     }
 
     this.close();
+
+    return this.selectedSelectionIndex >= 0;
   }
 
   private findSelectionIndex() {

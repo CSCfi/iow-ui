@@ -106,10 +106,7 @@ export class AutocompleteController<T> implements InputWithPopupController<T> {
     [pageDown]: () => this.moveSelection(10),
     [pageUp]: () => this.moveSelection(-10),
     [enter]: () => this.selectSelection(),
-    [tab]: () => {
-      this.selectSelection();
-      return false;
-    },
+    [tab]: () => this.selectSelection(),
     [esc]: () => this.clear()
   };
 
@@ -190,11 +187,7 @@ export class AutocompleteController<T> implements InputWithPopupController<T> {
     this.popupItems = maxMatches > 0 ?  limit(dataMatches, maxMatches) : dataMatches;
   }
 
-  selectSelection(event?: JQueryEventObject) {
-
-    if (event) {
-      event.preventDefault();
-    }
+  selectSelection(): boolean {
 
     const value = this.selectedSelectionIndex >= 0 ? this.popupItems[this.selectedSelectionIndex] : null;
 
@@ -203,6 +196,8 @@ export class AutocompleteController<T> implements InputWithPopupController<T> {
     }
 
     this.clear();
+
+    return !!value;
   }
 
   get show() {
