@@ -2,6 +2,7 @@ import * as levenshtein from 'fast-levenshtein';
 import { valueContains } from '../../utils/searchFilter';
 import { ContentExtractor, TextAnalysis } from '../../components/filter/contract';
 import { isLocalizable } from '../../utils/entity';
+import { isDefined } from '../../utils/object';
 
 export function analyze<T>(search: string, item: T, extractors: ContentExtractor<T>[]): TextAnalysis<T> {
 
@@ -23,7 +24,8 @@ export function analyze<T>(search: string, item: T, extractors: ContentExtractor
       score = Math.min(score, valueScore);
 
       if (valueContains(value, search)) {
-        matchScore = Math.min(matchScore || Number.MAX_SAFE_INTEGER, valueScore);
+        const previousMatchScore: number = isDefined(matchScore) ? matchScore : Number.MAX_SAFE_INTEGER;
+        matchScore = Math.min(previousMatchScore, valueScore);
       }
     }
   }
