@@ -72,6 +72,7 @@ class InteractiveHelpController {
   backdropController: HelpBackdropController;
 
   currentScrollTop?: number;
+  inTransition = false;
 
   /* @ngInject */
   constructor(private $scope: IScope,
@@ -177,6 +178,7 @@ class InteractiveHelpController {
 
     this.manageActiveElement(item);
 
+    this.inTransition = true;
     this.currentScrollTop = undefined;
     this.item = item;
   }
@@ -214,6 +216,7 @@ class InteractiveHelpController {
     if (positioning) {
       this.scrollTo(this.item, () => {
         this.$scope.$apply(() => {
+          this.inTransition = false;
           this.popoverController.setPositioning(positioning);
           this.backdropController.updatePosition();
         });
@@ -485,7 +488,7 @@ class InteractiveHelpController {
   }
 
   canMoveToNext() {
-    return this.isValid();
+    return !this.inTransition && this.isValid();
   }
 
   canMoveToPrevious() {
@@ -516,7 +519,7 @@ class InteractiveHelpController {
       }
     }
 
-    return !!previous && isReversible(previous);
+    return !this.inTransition && !!previous && isReversible(previous);
   }
 
   get showNext() {
@@ -528,15 +531,7 @@ class InteractiveHelpController {
   }
 
   get showPrevious() {
-    return this.canMoveToPrevious();
-  }
-
-  peekNext(): Story|Notification|null {
-    if (this.isCurrentLastItem()) {
-      return null;
-    } else {
-      return this.help.storyLine.items[this.activeIndex + 1];
-    }
+    return !this.isCurrentFirstItem();
   }
 
   peekPrevious(): Story|Notification|null {
@@ -664,9 +659,9 @@ mod.directive('helpPopover', () => {
         <div class="help-content-wrapper">
           <h3 ng-show="ctrl.title" ng-bind="ctrl.title | translate"></h3>
           <p ng-show="ctrl.content" ng-bind="ctrl.content | translate"></p>
-          <button ng-show="ctrl.showPrevious" ng-click="ctrl.helpController.moveToPreviousItem()" class="small button help-navigate" translate>previous</button>
-          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.moveToNextItem()" class="small button help-navigate" translate>next</button>
-          <button ng-show="ctrl.showClose" ng-disabled="!ctrl.helpController.isValid()" ng-click="ctrl.helpController.close(false)" class="small button help-next" translate>close</button>
+          <button ng-show="ctrl.showPrevious" ng-disabled="!ctrl.helpController.canMoveToPrevious()" ng-click="ctrl.helpController.moveToPreviousItem()" class="small button help-navigate" translate>previous</button>
+          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.helpController.canMoveToNext()" ng-click="ctrl.helpController.moveToNextItem()" class="small button help-navigate" translate>next</button>
+          <button ng-show="ctrl.showClose" ng-disabled="!ctrl.helpController.canMoveToNext()" ng-click="ctrl.helpController.close(false)" class="small button help-next" translate>close</button>
           <a ng-click="ctrl.helpController.close(true)" class="help-close">&times;</a>
         </div>
     `,
