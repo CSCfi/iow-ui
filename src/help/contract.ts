@@ -10,11 +10,11 @@ export type PopoverPosition = 'top-left'
                             | 'bottom-left'
                             | 'bottom-right';
 
-export type Explicit =        { type: 'explicit' };                                      // explicit next button to continue
-export type Click =           { type: 'click', element: () => JQuery };                  // click on element to continue
-export type NavigatingClick = { type: 'navigating-click', element: () => JQuery };       // click on element which is expected to change location
-export type ModifyingClick =  { type: 'modifying-click', element: () => JQuery };        // click on element which is expected to disappear to continue
-export type ExpectedState =   { type: 'expected-state', valid: () => boolean }           // free control for validation
+export type Explicit =        { type: 'explicit' };                                                     // explicit next button to continue
+export type Click =           { type: 'click', element: () => JQuery, ambiguous?: boolean };            // click on element to continue
+export type NavigatingClick = { type: 'navigating-click', element: () => JQuery, ambiguous?: boolean }; // click on element which is expected to change location
+export type ModifyingClick =  { type: 'modifying-click', element: () => JQuery, ambiguous?: boolean };  // click on element which is expected to disappear to continue
+export type ExpectedState =   { type: 'expected-state', valid: () => boolean }                          // free control for validation
 
 
 export type NextCondition = Explicit
@@ -103,16 +103,16 @@ export function createExplicitNextCondition(): Explicit {
   return { type: 'explicit' };
 }
 
-export function createClickNextCondition(element: () => JQuery): Click {
-  return { type: 'click', element };
+export function createClickNextCondition(element: () => JQuery, ambiguous?: boolean): Click {
+  return { type: 'click', element, ambiguous };
 }
 
-export function createNavigatingClickNextCondition(element: () => JQuery): NavigatingClick {
-  return { type: 'navigating-click', element };
+export function createNavigatingClickNextCondition(element: () => JQuery, ambiguous?: boolean): NavigatingClick {
+  return { type: 'navigating-click', element, ambiguous };
 }
 
-export function createModifyingClickNextCondition(element: () => JQuery): ModifyingClick {
-  return { type: 'modifying-click', element };
+export function createModifyingClickNextCondition(element: () => JQuery, ambiguous?: boolean): ModifyingClick {
+  return { type: 'modifying-click', element, ambiguous };
 }
 
 export function createExpectedStateNextCondition(valid: () => boolean): ExpectedState {

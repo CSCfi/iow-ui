@@ -332,73 +332,6 @@ class InteractiveHelpController {
     return result;
   };
 
-  moveToPreviousIfPossible() {
-    if (this.canMoveToPrevious()) {
-      this.$scope.$apply(() => this.moveToPreviousItem());
-    }
-  }
-
-  moveToNextIfPossible() {
-    const item = this.item!;
-
-    if (this.canMoveToNext()) {
-      if (item.type === 'notification' || !isClick(item.nextCondition)) {
-        this.$scope.$apply(() => this.moveToNextItem());
-      } else {
-        item.nextCondition.element().click();
-      }
-    }
-  }
-
-  manageTabKeyFocus(item: Story|Notification, event: JQueryEventObject) {
-
-    const focusableElements = InteractiveHelpController.loadFocusableElementList(item);
-
-    const activeElementIsFocusable = () => {
-      for (const focusableElement of focusableElements || []) {
-        if (focusableElement === document.activeElement) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    if (focusableElements) {
-      if (focusableElements.length > 0) {
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (event.shiftKey) {
-          if (isFocusInElement(event, firstElement)) {
-            this.moveToPreviousIfPossible();
-            stopEvent(event);
-          }
-        } else {
-          if (isFocusInElement(event, lastElement)) {
-            this.moveToNextIfPossible();
-            stopEvent(event);
-          }
-        }
-
-        // prevent input focus breaking from item focusable area
-        if (!activeElementIsFocusable()) {
-          firstElement.focus();
-          stopEvent(event);
-        }
-
-      } else {
-        if (event.shiftKey) {
-          this.moveToPreviousIfPossible();
-        } else {
-          this.moveToNextIfPossible();
-        }
-        stopEvent(event);
-      }
-    } else {
-      // free focus, don't stop event
-    }
-  };
 
   keyDownHandler(event: JQueryEventObject) {
 
@@ -406,12 +339,75 @@ class InteractiveHelpController {
       stopEvent(event);
     }
 
+    const moveToPreviousIfPossible = () => {
+      if (this.canMoveToPrevious()) {
+        this.$scope.$apply(() => this.moveToPreviousItem());
+      }
+    };
+
+    const moveToNextIfPossible = () => {
+      if (this.canMoveToNext()) {
+        this.$scope.$apply(() => this.tryToMoveToNextItem());
+      }
+    };
+
+    const manageTabKeyFocus = (item: Story|Notification) => {
+
+      const focusableElements = InteractiveHelpController.loadFocusableElementList(item);
+
+      const activeElementIsFocusable = () => {
+        for (const focusableElement of focusableElements || []) {
+          if (focusableElement === document.activeElement) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      if (focusableElements) {
+        if (focusableElements.length > 0) {
+
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (event.shiftKey) {
+            if (isFocusInElement(event, firstElement)) {
+              moveToPreviousIfPossible();
+              stopEvent(event);
+            }
+          } else {
+            if (isFocusInElement(event, lastElement)) {
+              moveToNextIfPossible();
+              stopEvent(event);
+            }
+          }
+
+          // prevent input focus breaking from item focusable area
+          if (!activeElementIsFocusable()) {
+            firstElement.focus();
+            stopEvent(event);
+          }
+
+        } else {
+          if (event.shiftKey) {
+            moveToPreviousIfPossible();
+          } else {
+            moveToNextIfPossible();
+          }
+          stopEvent(event);
+        }
+      } else {
+        // free focus, don't stop event
+      }
+    };
+
+
     switch (event.which) {
       case tab:
-        this.manageTabKeyFocus(this.item!, event);
+        manageTabKeyFocus(this.item!);
         break;
       case enter:
-        this.moveToNextIfPossible();
+        moveToNextIfPossible();
         stopEvent(event);
         break;
       case esc:
@@ -529,11 +525,11 @@ class InteractiveHelpController {
   }
 
   get showNext() {
-    return !!this.item && !this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return !!this.item && !this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition) || !this.item.nextCondition.ambiguous);
   }
 
   get showClose() {
-    return !!this.item && this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return !!this.item && this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition) || !this.item.nextCondition.ambiguous);
   }
 
   get showPrevious() {
@@ -571,6 +567,27 @@ class InteractiveHelpController {
         return true;
       default:
         return assertNever(this.item, 'Unknown item type');
+    }
+  }
+
+  tryToMoveToNextItem() {
+
+    const item = requireDefined(this.item);
+
+    if (item.type === 'notification') {
+      this.moveToNextItem();
+    } else {
+
+      const nextCondition = item.nextCondition;
+
+      if (isClick(nextCondition)) {
+        if (!nextCondition.ambiguous) {
+          // off frame so multiple digests are prevented
+          setTimeout(() => nextCondition.element().click());
+        }
+      } else {
+        this.moveToNextItem();
+      }
     }
   }
 
@@ -666,7 +683,7 @@ mod.directive('helpPopover', () => {
           <h3 ng-show="ctrl.title" ng-bind="ctrl.title | translate"></h3>
           <p ng-show="ctrl.content" ng-bind="ctrl.content | translate"></p>
           <button ng-show="ctrl.showPrevious" ng-disabled="!ctrl.helpController.canMoveToPrevious()" ng-click="ctrl.helpController.moveToPreviousItem()" class="small button help-navigate" translate>previous</button>
-          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.helpController.canMoveToNext()" ng-click="ctrl.helpController.moveToNextItem()" class="small button help-navigate" translate>next</button>
+          <button ng-show="ctrl.showNext" ng-disabled="!ctrl.helpController.canMoveToNext()" ng-click="ctrl.helpController.tryToMoveToNextItem()" class="small button help-navigate" translate>next</button>
           <button ng-show="ctrl.showClose" ng-disabled="!ctrl.helpController.canMoveToNext()" ng-click="ctrl.helpController.close(false)" class="small button help-next" translate>close</button>
           <a ng-click="ctrl.helpController.close(true)" class="help-close">&times;</a>
         </div>

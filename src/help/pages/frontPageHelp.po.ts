@@ -9,5 +9,5 @@ export const selectGroup = createStory({
   content: 'Diipadaa',
   popover: { element: selectGroupElement, position: 'left-down' },
   focus: { element: browsePanel },
-  nextCondition: createNavigatingClickNextCondition(selectGroupElement)
+  nextCondition: createNavigatingClickNextCondition(selectGroupElement, true)
 });
