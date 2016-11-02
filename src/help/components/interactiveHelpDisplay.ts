@@ -1,7 +1,7 @@
 import { module as mod } from '../module';
 import * as _ from 'lodash';
 import { OverlayService, OverlayInstance } from '../../components/common/overlay';
-import { IScope, IDocumentService, ILocationService, ui } from 'angular';
+import { IScope, IPromise, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import { assertNever, requireDefined, areEqual } from '../../utils/object';
 import { tab, esc } from '../../utils/keyCode';
@@ -34,27 +34,25 @@ export class InteractiveHelpDisplay {
       throw new Error('Cannot open help when another help is already open');
     }
 
+    const stateInitialization = () => help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset().then(() => false);
+
     this.interactiveHelpService.open();
-    const initialization = help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset().then(() => false);
 
-    return initialization.then(willChangeLocation => {
-
-      return this.overlayService.open({
-        template: `
-          <help-popover item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()"></help-popover>
-          <help-popover-dimensions-calculator item="ctrl.item" help-controller="ctrl"></help-popover-dimensions-calculator>
+    return this.overlayService.open({
+      template: `
+          <help-popover ng-show="ctrl.item" item="ctrl.item" help-controller="ctrl" ng-style="ctrl.popoverController.style()"></help-popover>
+          <help-popover-dimensions-calculator ng-show="ctrl.item" item="ctrl.item" help-controller="ctrl"></help-popover-dimensions-calculator>
           <help-backdrop item="ctrl.item" help-controller="ctrl"></help-backdrop>
-          <div ng-if="ctrl.item.denyInteraction" class="help-interaction-stopper"></div>
+          <div ng-show="ctrl.item.denyInteraction" class="help-interaction-stopper"></div>
         `,
-        controller: InteractiveHelpController,
-        controllerAs: 'ctrl',
-        resolve: {
-          help: () => help,
-          willChangeLocation: () => willChangeLocation
-        },
-        disableScroll: true
-      }).result.then(() => this.interactiveHelpService.close());
-    });
+      controller: InteractiveHelpController,
+      controllerAs: 'ctrl',
+      resolve: {
+        help: () => help,
+        stateInitialization: () => stateInitialization
+      },
+      disableScroll: true
+    }).result.then(() => this.interactiveHelpService.close());
   }
 }
 
@@ -65,7 +63,7 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
 
 class InteractiveHelpController {
 
-  item: Story|Notification;
+  item: Story|Notification|null = null;
   activeIndex = 0;
   changingLocation = false;
 
@@ -83,12 +81,16 @@ class InteractiveHelpController {
               private $uibModalStack: IModalStackService,
               confirmationModal: ConfirmationModal,
               private help: InteractiveHelp,
-              willChangeLocation: boolean) {
+              stateInitialization: () => IPromise<boolean>) {
 
-    let continuing = willChangeLocation;
-    // Reset expectation if navigation event happened before construction
-    setTimeout(() => continuing = false, 500);
-    this.showItem(0);
+    let continuing = false;
+
+    stateInitialization().then(willChangeLocation => {
+      continuing = willChangeLocation;
+      // Reset expectation if navigation event happened before construction
+      setTimeout(() => continuing = false, 500);
+      this.showItem(0);
+    });
 
     $scope.$on('$locationChangeStart', (event, next) => {
       if (!continuing) {
@@ -115,18 +117,25 @@ class InteractiveHelpController {
 
     $scope.$watch(() => this.item, debounceUpdatePositions);
 
-    const itemPopoverPositioning = () => (this.item.type === 'story') ? elementPositioning(this.item.popover.element()) : null;
-    const itemFocusPositioning = () => this.item.type === 'story' && this.item.focus ? elementPositioning(this.item.focus.element()) : null;
+    const itemPopoverPositioning = () => (this.item && this.item.type === 'story') ? elementPositioning(this.item.popover.element()) : null;
+    const itemFocusPositioning = () => this.item && this.item.type === 'story' && this.item.focus ? elementPositioning(this.item.focus.element()) : null;
     const itemScrollPositioning = () => {
-      const scroll = this.resolveScroll();
+
+      if (!this.item) {
+        return null;
+      }
+
+      const scroll = InteractiveHelpController.resolveScroll(this.item);
+
       if (scroll.type !== 'scroll-none') {
         return elementPositioning(scroll.element());
       }
+
       return null;
     };
 
-    const keyDownHandler = this.keyDownHandler.bind(this);
-    const clickHandler = this.clickHandler.bind(this);
+    const keyDownHandler = (event: JQueryEventObject) => this.keyDownHandler(event);
+    const clickHandler = (event: JQueryEventObject) => this.clickHandler(event);
 
     // Additional checks for sub-pixel fluctuation are needed for example because of float (fixed style)
     $scope.$watch(itemPopoverPositioning, (newPos, oldPos) => { if (!isPositionInMargin(1, newPos, oldPos)) debounceUpdatePositions(); }, true);
@@ -195,10 +204,15 @@ class InteractiveHelpController {
   }
 
   private updatePositions(retryCount = 0) {
-    const positioning = this.popoverController.calculatePositioning();
+
+    if (!this.item) {
+      return;
+    }
+
+    const positioning = this.popoverController.calculatePositioning(this.item);
 
     if (positioning) {
-      this.scrollTo(() => {
+      this.scrollTo(this.item, () => {
         this.$scope.$apply(() => {
           this.popoverController.setPositioning(positioning);
           this.backdropController.updatePosition();
@@ -213,15 +227,13 @@ class InteractiveHelpController {
     }
   }
 
-  private resolveScroll() {
-    const item = this.item;
+  private static resolveScroll(item: Story|Notification) {
     return item.type === 'notification' ? scrollToTop : item.scroll || createScrollWithDefault(item.popover.element, 100);
   }
 
-  scrollTo(cb: () => void) {
+  scrollTo(item: Story|Notification, cb: () => void) {
 
-    const item = this.item;
-    const scroll = this.resolveScroll();
+    const scroll = InteractiveHelpController.resolveScroll(item);
 
     if (scroll.type === 'scroll-none') {
       cb();
@@ -297,7 +309,7 @@ class InteractiveHelpController {
     this.currentScrollTop = scrollTop;
   }
 
-  loadFocusableElementList(item: Story|Notification): HTMLElement[]|null {
+  private static loadFocusableElementList(item: Story|Notification): HTMLElement[]|null {
 
     if (item.type === 'notification' || item.denyInteraction) {
       return [];
@@ -317,10 +329,9 @@ class InteractiveHelpController {
     return result;
   };
 
-  manageTabKeyFocus(event: JQueryEventObject) {
+  manageTabKeyFocus(item: Story|Notification, event: JQueryEventObject) {
 
-    const item = this.item;
-    const focusableElements = this.loadFocusableElementList(item);
+    const focusableElements = InteractiveHelpController.loadFocusableElementList(item);
 
     const activeElementIsFocusable = () => {
       for (const focusableElement of focusableElements || []) {
@@ -385,9 +396,14 @@ class InteractiveHelpController {
   };
 
   keyDownHandler(event: JQueryEventObject) {
+
+    if (!this.item) {
+      stopEvent(event);
+    }
+
     switch (event.which) {
       case tab:
-        this.manageTabKeyFocus(event);
+        this.manageTabKeyFocus(this.item!, event);
         break;
       case esc:
         this.$scope.$apply(() => this.close(true));
@@ -421,7 +437,7 @@ class InteractiveHelpController {
   clickHandler(event: JQueryEventObject) {
     const item = this.item;
 
-    if (item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
+    if (item && item.type === 'story' && isClick(item.nextCondition) && this.isValid()) {
       const continueToNextElement = item.nextCondition.element();
 
       if (elementExists(continueToNextElement)) {
@@ -445,6 +461,9 @@ class InteractiveHelpController {
   }
 
   getPopoverDimensions() {
+    if (!this.popoverDimensionsProvider) {
+      return { width: 0, height: 0 };
+    }
     return this.popoverDimensionsProvider.getDimensions();
   }
 
@@ -457,7 +476,12 @@ class InteractiveHelpController {
   }
 
   registerBackdrop(backdrop: HelpBackdropController) {
+
     this.backdropController = backdrop;
+
+    if (!this.item) {
+      this.backdropController.setFullBackdrop();
+    }
   }
 
   canMoveToNext() {
@@ -496,11 +520,11 @@ class InteractiveHelpController {
   }
 
   get showNext() {
-    return !this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return !!this.item && !this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
   }
 
   get showClose() {
-    return this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
+    return !!this.item && this.isCurrentLastItem() && (this.item.type === 'notification' || !isClick(this.item.nextCondition));
   }
 
   get showPrevious() {
@@ -524,6 +548,11 @@ class InteractiveHelpController {
   }
 
   isValid() {
+
+    if (!this.item) {
+      return false;
+    }
+
     switch (this.item.type) {
       case 'story':
         switch (this.item.nextCondition.type) {
@@ -655,7 +684,7 @@ class HelpPopoverController {
 
   helpController: InteractiveHelpController;
 
-  item: Story|Notification;
+  item: Story|Notification|null;
   arrowClass: string[] = [];
 
   title: string;
@@ -673,6 +702,8 @@ class HelpPopoverController {
 
   setPositioning(positioning: Positioning) {
 
+    const item = requireDefined(this.item);
+
     if (isInWindow(positioning)) {
 
       this.positioning = positioning;
@@ -680,8 +711,8 @@ class HelpPopoverController {
       // apply positioning before applying content, content is applied in the middle of animation
       setTimeout(() => {
         this.$scope.$apply(() => {
-          this.title = this.item.title;
-          this.content = this.item.content;
+          this.title = item.title;
+          this.content = item.content;
           this.showNext = this.helpController.showNext;
           this.showPrevious = this.helpController.showPrevious;
           this.showClose = this.helpController.showClose;
@@ -694,25 +725,26 @@ class HelpPopoverController {
     return this.positioning;
   }
 
-  calculatePositioning(): Positioning|null {
-    switch (this.item.type) {
+  calculatePositioning(item: Story|Notification): Positioning|null {
+
+    const popoverDimensions = this.helpController.getPopoverDimensions();
+    const documentDimensions = { width: this.$document.width(), height: this.$document.height() };
+
+    switch (item.type) {
       case 'story':
-        return this.calculateStoryPositioning(this.item);
+        return HelpPopoverController.calculateStoryPositioning(item, popoverDimensions, documentDimensions);
       case 'notification':
-        return this.calculateNotificationPositioning(this.item);
+        return HelpPopoverController.calculateNotificationPositioning(popoverDimensions);
       default:
-        return assertNever(this.item, 'Unknown item type');
+        return assertNever(item, 'Unknown item type');
     }
   }
 
-  private calculateNotificationPositioning(_notification: Notification): Positioning {
-    return this.calculateCenterPositioning();
+  private static calculateNotificationPositioning(popoverDimensions: Dimensions): Positioning {
+    return HelpPopoverController.calculateCenterPositioning(popoverDimensions);
   }
 
-  private calculateCenterPositioning() {
-
-    const dimensions = this.helpController.getPopoverDimensions();
-
+  private static calculateCenterPositioning(dimensions: Dimensions) {
     return {
       top: window.innerHeight / 2 - dimensions.height / 2,
       left: window.innerWidth / 2 - dimensions.width / 2,
@@ -720,7 +752,7 @@ class HelpPopoverController {
     };
   }
 
-  private calculateStoryPositioning(story: Story): Positioning|null {
+  private static calculateStoryPositioning(story: Story, popoverDimensions: Dimensions, documentDimensions: Dimensions): Positioning|null {
 
     const element = story.popover.element();
 
@@ -728,12 +760,11 @@ class HelpPopoverController {
       return null;
     }
 
-    const dimensions = this.helpController.getPopoverDimensions();
-    const popoverWidth = dimensions.width;
-    const popoverHeight = dimensions.height;
+    const popoverWidth = popoverDimensions.width;
+    const popoverHeight = popoverDimensions.height;
     const destination = elementPositioning(element)!;
-    const documentWidth = this.$document.width();
-    const documentHeight = this.$document.height();
+    const documentWidth = documentDimensions.width;
+    const documentHeight = documentDimensions.height;
 
     function calculateUnrestricted() {
       switch (story.popover.position) {
@@ -821,7 +852,7 @@ mod.directive('helpBackdrop', () => {
 
 class HelpBackdropController {
 
-  item: Story|Notification;
+  item: Story|Notification|null;
   regions: Regions | null;
 
   helpController: InteractiveHelpController;
@@ -835,7 +866,9 @@ class HelpBackdropController {
   }
 
   updatePosition() {
-    this.regions = this.resolveRegions();
+    if (this.item) {
+      this.regions = this.resolveRegions(this.item);
+    }
   }
 
   private static fullBackdrop = {
@@ -846,18 +879,18 @@ class HelpBackdropController {
     focus: { left: 0, top: 0, width: 0, height: 0 }
   };
 
-  private resolveRegions(): Regions|null {
-    switch (this.item.type) {
+  private resolveRegions(item: Story|Notification): Regions|null {
+    switch (item.type) {
       case 'story':
-        return this.calculateRegions(this.item);
+        return HelpBackdropController.calculateRegions(item, this.$document.width());
       case 'notification':
         return HelpBackdropController.fullBackdrop;
       default:
-        return assertNever(this.item, 'Unknown item type');
+        return assertNever(item, 'Unknown item type');
     }
   }
 
-  private calculateRegions(story: Story): Regions|null {
+  private static calculateRegions(story: Story, documentWidth: number): Regions|null {
 
     const positioning = HelpBackdropController.calculateFocusPositioning(story);
 
@@ -875,7 +908,7 @@ class HelpBackdropController {
       right: {
         left: positioning.left + positioning.width,
         top: positioning.top - window.pageYOffset,
-        width: this.$document.width() - positioning.left - positioning.width,
+        width: documentWidth - positioning.left - positioning.width,
         height: positioning.height
       },
       bottom: {
@@ -942,8 +975,10 @@ function resolveArrowClass(item: Story|Notification|null) {
   }
 }
 
+type Dimensions = { width: number, height: number };
+
 interface PopoverDimensionsProvider {
-  getDimensions(): { width: number, height: number };
+  getDimensions(): Dimensions;
 }
 
 function elementPositioning(element: JQuery) {
