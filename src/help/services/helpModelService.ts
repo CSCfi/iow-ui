@@ -7,6 +7,8 @@ import { ModelService } from '../../services/modelService';
 import { ResetableService } from './resetableService';
 import moment = require('moment');
 import * as _ from 'lodash';
+import { InteractiveHelpClassService } from './helpClassService';
+import { InteractiveHelpPredicateService } from './helpPredicateService';
 
 export class InteractiveHelpModelService implements ModelService, ResetableService {
 
@@ -26,7 +28,10 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
   };
 
   /* @ngInject */
-  constructor(private $q: IQService, private defaultModelService: ModelService) {
+  constructor(private $q: IQService,
+              private defaultModelService: ModelService,
+              private helpClassService: InteractiveHelpClassService,
+              private helpPredicateService: InteractiveHelpPredicateService) {
   }
 
   reset(): IPromise<any> {
@@ -57,6 +62,8 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
     model.unsaved = false;
     model.createdAt = moment();
     this.models.set(model.id.uri, model);
+    this.helpClassService.trackModel(model);
+    this.helpPredicateService.trackModel(model);
     return this.$q.when();
   }
 

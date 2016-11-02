@@ -15,10 +15,15 @@ import { upperCaseFirst, lowerCaseFirst } from 'change-case';
 import { dateSerializer } from '../../entities/serializer/serializer';
 import * as frames from '../../entities/frames';
 import { ResourceStore } from './resourceStore';
+import { DefinedBy } from '../../entities/definedBy';
 
 export class InteractiveHelpPredicateService implements PredicateService, ResetableService {
 
   store = new ResourceStore(this.$q, (id, model) => this.getPredicate(id, model));
+  trackedModels = new Set<string>();
+
+  trackModel = (model: Model|DefinedBy) => this.trackedModels.add(model.id.uri);
+  tracksModel = (model: Model|DefinedBy) => this.trackedModels.has(model.id.uri);
 
   /* @ngInject */
   constructor(private $q: IQService, private defaultPredicateService: PredicateService, private helpVocabularyService: VocabularyService) {
@@ -50,7 +55,7 @@ export class InteractiveHelpPredicateService implements PredicateService, Reseta
   }
 
   getPredicatesForModel(model: Model): IPromise<PredicateListItem[]> {
-    if (this.store.knowsModel(model)) {
+    if (this.tracksModel(model)) {
       return this.store.getAllResourceValuesForModel(model);
     } else {
       return this.defaultPredicateService.getPredicatesForModel(model);
@@ -62,7 +67,7 @@ export class InteractiveHelpPredicateService implements PredicateService, Reseta
   }
 
   getPredicatesAssignedToModel(model: Model): IPromise<PredicateListItem[]> {
-    if (this.store.knowsModel(model)) {
+    if (this.tracksModel(model)) {
       return this.store.getAllResourceValuesForModel(model);
     } else {
       return this.defaultPredicateService.getPredicatesAssignedToModel(model);

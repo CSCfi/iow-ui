@@ -116,10 +116,6 @@ export class ResourceStore<T extends { id: Uri }> {
     this.getAssignedResourcesIdsForModel(model).delete(resourceId);
   }
 
-  knowsModel(model: Model|DefinedBy) {
-    return this.resources.has(model.id.uri) || this.assignedResources.has(model.id.uri);
-  }
-
   private static createMapFromEntries<V>(...entries: Iterable<ResourceEntry<V>>[]): Map<ResourceId, V> {
     return new Map<ResourceId, V>(flatten(entries.map(e => Array.from(e))));
   }

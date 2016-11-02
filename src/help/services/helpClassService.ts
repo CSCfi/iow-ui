@@ -17,10 +17,16 @@ import { identity } from '../../utils/function';
 import { flatten } from '../../utils/array';
 import { dateSerializer } from '../../entities/serializer/serializer';
 import { ResourceStore } from './resourceStore';
+import { DefinedBy } from '../../entities/definedBy';
 
 export class InteractiveHelpClassService implements ClassService, ResetableService {
 
   store = new ResourceStore<Class>(this.$q, (id, model) => this.defaultClassService.getClass(id, model));
+  trackedModels = new Set<string>();
+
+  trackModel = (model: Model|DefinedBy) => this.trackedModels.add(model.id.uri);
+  tracksModel = (model: Model|DefinedBy) => this.trackedModels.has(model.id.uri);
+
 
   /* @ngInject */
   constructor(private $q: IQService,
@@ -54,7 +60,7 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
   }
 
   getClassesForModel(model: Model): IPromise<ClassListItem[]> {
-    if (this.store.knowsModel(model)) {
+    if (this.tracksModel(model)) {
       return this.store.getAllResourceValuesForModel(model);
     } else {
       return this.defaultClassService.getClassesForModel(model);
@@ -66,7 +72,7 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
   }
 
   getClassesAssignedToModel(model: Model): IPromise<ClassListItem[]> {
-    if (this.store.knowsModel(model)) {
+    if (this.tracksModel(model)) {
       return this.store.getAllResourceValuesForModel(model);
     } else {
       return this.defaultClassService.getClassesAssignedToModel(model);
