@@ -22,6 +22,10 @@
              class="search-result" ng-click="ctrl.selectSearchResult(searchResult)" key-control-selection>
           <div><i ng-class="searchResult.glyphIconClass"></i><h5><highlight text="searchResult.label" context="ctrl.context" search="ctrl.searchText"></highlight></h5></div>
           <p><highlight text="searchResult.comment" context="ctrl.context" search="ctrl.searchText"></highlight></p>
+          <div class="origin">
+            <span class="pull-left">{{searchResult.definedBy | translateLabel: ctrl.context}}</span>
+            <span class="pull-right" ng-bind-html="searchResult.id.compact | highlight: ctrl.searchText"></span>
+          </div>
         </div>
       </div>
     </div>

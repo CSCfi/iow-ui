@@ -1172,6 +1172,14 @@ modal-body {
   }
 }
 
+.origin {
+  font-size: x-small;
+  border-top: #dddddd solid 1px;
+  margin: 0 10px 0 0;
+  width: calc(100% - 10px);
+  display: inline-block;
+}
+
 modal-body {
 
   .empty-message {
@@ -1208,14 +1216,6 @@ modal-body {
   }
 
   .search-results {
-
-    .origin {
-      font-size: x-small;
-      border-top: #dddddd solid 1px;
-      margin: 0 10px 0 0;
-      width: calc(100% - 10px);
-      display: inline-block;
-    }
 
     .search-result {
       font-size: small;
@@ -1475,6 +1475,19 @@ a.accordion-toggle {
 
 .selectable-panel__list {
   @extend .panel__list;
+
+  &.search-results {
+    i {
+      float: right;
+      padding: 10px 5px 0 0;
+      line-height: 5px;
+    }
+
+    li { padding: 10px 15px;
+      p { padding: 0; }
+    }
+  }
+
   max-height: 400px;
   overflow-y: auto;
   margin: -15px;

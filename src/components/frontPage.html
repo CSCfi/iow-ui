@@ -15,12 +15,19 @@
             <model-language-chooser ng-show="ctrl.searchResults.length > 0" context="ctrl.context"></model-language-chooser>
           </div>
 
-          <ul class="selectable-panel__list">
+          <ul class="selectable-panel__list search-results">
             <li ng-show="ctrl.searchText && ctrl.searchResults.length === 0" translate>No search results</li>
             <li ng-repeat="searchResult in ctrl.searchResults" ng-click="ctrl.selectSearchResult(searchResult)" key-control-selection>
-              <i ng-class="searchResult.glyphIconClass"></i>
-              <span ng-class="{link: searchResult.iowUrl}"><highlight text="searchResult.label" context="ctrl.context" search="ctrl.searchText"></highlight></span>
+              <div>
+                <i ng-class="searchResult.glyphIconClass"></i>
+                <span ng-class="{link: searchResult.iowUrl}"><highlight text="searchResult.label" context="ctrl.context" search="ctrl.searchText"></highlight></span>
+              </div>
+
               <p><highlight text="searchResult.comment" context="ctrl.context" search="ctrl.searchText"></highlight></p>
+              <div class="origin">
+                <span class="pull-left">{{searchResult.definedBy | translateLabel: ctrl.context}}</span>
+                <span class="pull-right" ng-bind-html="searchResult.id.compact | highlight: ctrl.searchText"></span>
+              </div>
             </li>
           </ul>
 
