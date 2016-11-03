@@ -11,7 +11,7 @@ import { contains, containsAny, remove } from '../utils/array';
 import { DefinedBy } from './definedBy';
 import { Vocabulary } from './vocabulary';
 import { ReferenceData } from './referenceData';
-import { init, serialize, serializeSingle } from './mapping';
+import { init, serialize } from './mapping';
 import { GraphNode } from './graphNode';
 import {
   uriSerializer, entityAwareList, entity, entityAwareOptional, normalized
@@ -341,17 +341,13 @@ export class ImportedNamespace extends GraphNode {
 
     const onlyIdAndType = inline && !clone && this.namespaceType === NamespaceType.MODEL;
 
-    const result = {};
+    const exclude = !onlyIdAndType ? [] : [
+      ImportedNamespace.importedNamespaceMappings._namespace,
+      ImportedNamespace.importedNamespaceMappings._prefix,
+      ImportedNamespace.importedNamespaceMappings.label
+    ];
 
-    serializeSingle(result, this, clone, (instance: ImportedNamespace) => instance.id, ImportedNamespace.importedNamespaceMappings.id);
-    serializeSingle(result, this, clone, (instance: ImportedNamespace) => instance.type, GraphNode.graphNodeMappings.type);
-
-    if (!onlyIdAndType) {
-      serializeSingle(result, this, clone, (instance: ImportedNamespace) => instance._namespace, ImportedNamespace.importedNamespaceMappings._namespace);
-      serializeSingle(result, this, clone, (instance: ImportedNamespace) => instance._prefix, ImportedNamespace.importedNamespaceMappings._prefix);
-    }
-
-    return result;
+    return serialize(this, clone, ImportedNamespace.importedNamespaceMappings, exclude);
   }
 }
 
