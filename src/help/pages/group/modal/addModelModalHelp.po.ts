@@ -61,7 +61,7 @@ export const createModel = createStory({
 
   title: 'Create new',
   content: 'Create new',
-  popover: { element: createModelElement, position: 'top-right' },
+  popover: { element: createModelElement, position: 'top-left' },
   focus: { element: createModelElement },
   nextCondition: createNavigatingClickNextCondition(createModelElement)
 });
