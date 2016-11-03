@@ -16,9 +16,18 @@ export class SearchModal extends Modal {
     return this.searchResults.element(by.cssContainingText('h5', name));
   }
 
-  selectResult(name: string) {
+  findResultElementById(id: string) {
+    return this.searchResults.element(by.id(id));
+  }
+
+  selectResultByName(name: string) {
     return browser.wait(protractor.until.elementLocated(by.css('search-results')))
       .then(() => this.findResultElementByName(name).click());
+  }
+
+  selectResultById(id: string) {
+    return browser.wait(protractor.until.elementLocated(by.css('search-results')))
+      .then(() => this.findResultElementById(id).click());
   }
 
   confirm() {

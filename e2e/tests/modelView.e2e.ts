@@ -35,7 +35,7 @@ describe('Model view', () => {
     it('Adds vocabulary', () => {
       view.edit();
       const modal = view.vocabularies.addNew();
-      modal.selectResult(VocabulariesView.EOS);
+      modal.selectResultByName(VocabulariesView.EOS);
       view.saveAndReload();
       expect(view.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(true);
     });
@@ -51,7 +51,7 @@ describe('Model view', () => {
       view.edit();
       const modal = view.referenceData.addNew();
       modal.search('haku');
-      modal.selectResult(ReferenceDataView.hakukelpoisuus);
+      modal.selectResultById(ReferenceDataView.hakukelpoisuusId);
       modal.confirm();
       view.saveAndReload();
       expect(view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).isPresent()).toBe(true);
@@ -75,7 +75,7 @@ describe('Model view', () => {
       view.edit();
       const modal = view.namespaces.addNew();
       modal.search('E2E');
-      modal.selectResult(library2Parameters.label);
+      modal.selectResultByName(library2Parameters.label);
       view.saveAndReload();
       expect(view.namespaces.getRowByName(library2Parameters.label).isPresent()).toBe(true);
     });

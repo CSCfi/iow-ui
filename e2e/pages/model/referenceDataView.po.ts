@@ -5,6 +5,7 @@ import { ViewReferenceDataModal } from './modal/viewReferenceDataModal.po';
 export class ReferenceDataView extends ModelPanelView<ReferenceDataModal> {
 
   static hakukelpoisuus = 'Hakukelpoisuus';
+  static hakukelpoisuusId = 'https://virkailija.opintopolku.fi/koodisto-service/rest/json/hakukelpoisuus/koodi';
   static nameColumn = 'Koodiston nimi';
 
   constructor() {
