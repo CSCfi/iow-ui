@@ -1,22 +1,19 @@
 import * as webpack from 'webpack';
-import { commonConfig, isVendorModule } from './webpack.common-config';
+import { commonConfig } from './webpack.common-config';
 import { smart as smartMerge } from 'webpack-merge';
 const AssetsPlugin = require('assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+// TODO: Figure out how to split vendor dependencies into own chunk with require.ensure code folding used in init.ts
+
 const buildConfig: webpack.Configuration = {
   output: {
-    filename: 'app.[chunkhash].js',
+    filename: '[name].[chunkhash].js',
     publicPath: '/assets/'
   },
   devtool: 'source-map',
   plugins: [
     new HtmlWebpackPlugin({ template: 'src/index.html', filename: '../index.html' }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor.[chunkhash].js',
-      minChunks: isVendorModule
-    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {

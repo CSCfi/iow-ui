@@ -10,10 +10,12 @@ interface Configuration extends webpack.Configuration {
 }
 
 export const commonConfig: Configuration = {
-  entry: './src/init.ts',
+  entry: {
+    init: './src/init.ts'
+  },
   output: {
     path: path.join(__dirname, 'public/assets'),
-    filename: 'app.js'
+    filename: '[name].js'
   },
 
   resolve: {
@@ -48,9 +50,3 @@ export const commonConfig: Configuration = {
     configuration: require('./tslint.json')
   }
 };
-
-const appDir = path.join(__dirname, 'src');
-
-export function isVendorModule(module: { resource: string }) {
-  return module.resource && module.resource.indexOf(appDir) === -1;
-}

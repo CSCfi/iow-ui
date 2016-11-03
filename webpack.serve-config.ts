@@ -1,5 +1,5 @@
 import * as webpack from 'webpack';
-import { commonConfig, isVendorModule } from './webpack.common-config';
+import { commonConfig } from './webpack.common-config';
 import { smart as smartMerge } from 'webpack-merge';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
@@ -11,11 +11,6 @@ const serveConfig: webpack.Configuration = {
   debug: true,
   plugins: [
     new HtmlWebpackPlugin({ template: 'src/index.html' }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor.js',
-      minChunks: isVendorModule
-    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({

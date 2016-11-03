@@ -29,7 +29,7 @@ if (Modernizr.es5syntax && Modernizr.svg) {
 
   require.ensure(['./app'], require => {
     require('./app').done.then(() => waitScreen.finish());
-  });
+  }, 'app');
 } else {
 
   pw.pleaseWait({
