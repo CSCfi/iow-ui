@@ -1,5 +1,6 @@
-import { config } from '../config';
+import { config, dateFormat } from '../config';
 import { module as mod }  from './module';
+import moment = require('moment');
 
 mod.directive('footer', () => {
   return {
@@ -12,5 +13,5 @@ mod.directive('footer', () => {
 
 class FooterController {
   gitHash = config.gitHash;
-  gitDate = config.gitDate;
+  gitDate = moment(config.gitDate, dateFormat);
 }

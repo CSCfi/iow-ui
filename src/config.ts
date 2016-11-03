@@ -1,16 +1,16 @@
-import * as moment from 'moment';
-import { Moment } from 'moment';
 import { assertNever } from './utils/object';
 
 export type Environment = 'local'
                         | 'development'
                         | 'production';
 
+export const dateFormat = 'YYYY-MM-DD HH:mm:ss ZZ';
+
 export interface Config {
   apiEndpointWithName(name: string): string;
   apiEndpoint: string;
   environment: Environment;
-  gitDate: Moment;
+  gitDate: string;
   gitHash: string;
   fintoUrl: string;
   defaultModelNamespace(prefix: string): string;
@@ -31,7 +31,7 @@ class EnvironmentConfig implements Config {
   }
 
   get gitDate() {
-    return moment(process.env.GIT_DATE, 'YYYY-MM-DD HH:mm:ss ZZ');
+    return process.env.GIT_DATE;
   }
 
   get gitHash() {
