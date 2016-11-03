@@ -7,7 +7,7 @@ export class Modal {
   body = this.element.$('modal-body');
 
   constructor() {
-    browser.wait(protractor.ExpectedConditions.presenceOf(this.body.$$('*').first()));
+    browser.wait(this.body.$$('*').first().isDisplayed);
   }
 
   close() {
