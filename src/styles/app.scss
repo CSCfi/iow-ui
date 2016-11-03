@@ -1004,15 +1004,15 @@ ajax-loading-indicator-small {
   &.modal-medium {
     width: 60%;
     @media (max-width: $screen-lg-min) {
-      // use large width on smaller displays
-      width: 95%;
+      // use larger width on smaller displays
+      width: 80%;
     }
   }
   &.modal-small {
     width: 30%;
     @media (max-width: $screen-lg-min) {
-      // use medium width on smaller displays
-      width: 60%;
+      // use larger width on smaller displays
+      width: 50%;
     }
   }
   &.modal-adapting {
