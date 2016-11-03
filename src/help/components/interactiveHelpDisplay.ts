@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { OverlayService, OverlayInstance } from '../../components/common/overlay';
 import { IScope, IPromise, IDocumentService, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
-import { assertNever, requireDefined, areEqual } from '../../utils/object';
+import { assertNever, requireDefined, areEqual, Optional } from '../../utils/object';
 import { tab, esc, enter } from '../../utils/keyCode';
 import { isTargetElementInsideElement, nextUrl } from '../../utils/angular';
 import { InteractiveHelpService } from '../services/interactiveHelpService';
@@ -63,7 +63,7 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
 
 class InteractiveHelpController {
 
-  item: Story|Notification|null = null;
+  item?: Story|Notification;
   activeIndex = 0;
   changingLocation = false;
 
@@ -312,7 +312,7 @@ class InteractiveHelpController {
     this.currentScrollTop = scrollTop;
   }
 
-  private static loadFocusableElementList(item: Story|Notification): HTMLElement[]|null {
+  private static loadFocusableElementList(item: Story|Notification): Optional<HTMLElement[]> {
 
     if (item.type === 'notification' || item.denyInteraction) {
       return [];
@@ -536,7 +536,7 @@ class InteractiveHelpController {
     return !this.isCurrentFirstItem();
   }
 
-  peekPrevious(): Story|Notification|null {
+  peekPrevious(): Optional<Story|Notification> {
     if (this.isCurrentFirstItem()) {
       return null;
     } else {
@@ -702,7 +702,7 @@ class HelpPopoverController {
 
   helpController: InteractiveHelpController;
 
-  item: Story|Notification|null;
+  item?: Story|Notification;
   arrowClass: string[] = [];
 
   title: string;
@@ -711,7 +711,7 @@ class HelpPopoverController {
   showNext: boolean;
   showClose: boolean;
 
-  positioning: Positioning|null = null;
+  positioning: Optional<Positioning>;
 
   constructor(private $scope: IScope, private $document: IDocumentService) {
     this.helpController.registerPopover(this);
@@ -743,7 +743,7 @@ class HelpPopoverController {
     return this.positioning;
   }
 
-  calculatePositioning(item: Story|Notification): Positioning|null {
+  calculatePositioning(item: Story|Notification): Optional<Positioning> {
 
     const popoverDimensions = this.helpController.getPopoverDimensions();
     const documentDimensions = { width: this.$document.width(), height: this.$document.height() };
@@ -762,15 +762,15 @@ class HelpPopoverController {
     return HelpPopoverController.calculateCenterPositioning(popoverDimensions);
   }
 
-  private static calculateCenterPositioning(dimensions: Dimensions) {
+  private static calculateCenterPositioning(popoverDimensions: Dimensions) {
     return {
-      top: window.innerHeight / 2 - dimensions.height / 2,
-      left: window.innerWidth / 2 - dimensions.width / 2,
-      width: dimensions.width
+      top: window.innerHeight / 2 - popoverDimensions.height / 2,
+      left: window.innerWidth / 2 - popoverDimensions.width / 2,
+      width: popoverDimensions.width
     };
   }
 
-  private static calculateStoryPositioning(story: Story, popoverDimensions: Dimensions, documentDimensions: Dimensions): Positioning|null {
+  private static calculateStoryPositioning(story: Story, popoverDimensions: Dimensions, documentDimensions: Dimensions): Optional<Positioning> {
 
     const element = story.popover.element();
 
@@ -870,8 +870,8 @@ mod.directive('helpBackdrop', () => {
 
 class HelpBackdropController {
 
-  item: Story|Notification|null;
-  regions: Regions | null;
+  item?: Story|Notification;
+  regions: Optional<Regions>;
 
   helpController: InteractiveHelpController;
 
@@ -897,7 +897,7 @@ class HelpBackdropController {
     focus: { left: 0, top: 0, width: 0, height: 0 }
   };
 
-  private resolveRegions(item: Story|Notification): Regions|null {
+  private resolveRegions(item: Story|Notification): Optional<Regions> {
     switch (item.type) {
       case 'story':
         return HelpBackdropController.calculateRegions(item, this.$document.width());
@@ -908,7 +908,7 @@ class HelpBackdropController {
     }
   }
 
-  private static calculateRegions(story: Story, documentWidth: number): Regions|null {
+  private static calculateRegions(story: Story, documentWidth: number): Optional<Regions> {
 
     const positioning = HelpBackdropController.calculateFocusPositioning(story);
 
@@ -977,7 +977,7 @@ class HelpBackdropController {
   }
 }
 
-function resolveArrowClass(item: Story|Notification|null) {
+function resolveArrowClass(item: Optional<Story|Notification>) {
 
   if (!item) {
     return [];
@@ -1064,7 +1064,7 @@ function isNumberInMargin(margin: number, lhs?: number, rhs?: number) {
   return areEqual(lhs, rhs, (l, r) => r >= (l - margin) && r <= (l + margin));
 }
 
-function isPositionInMargin(margin: number, lhs: Positioning|null, rhs: Positioning|null) {
+function isPositionInMargin(margin: number, lhs: Optional<Positioning>, rhs: Optional<Positioning>) {
   return areEqual(lhs, rhs, (l, r) =>
     isNumberInMargin(margin, l.width, r.width) &&
     isNumberInMargin(margin, l.height, r.height) &&
