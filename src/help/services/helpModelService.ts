@@ -9,23 +9,11 @@ import moment = require('moment');
 import * as _ from 'lodash';
 import { InteractiveHelpClassService } from './helpClassService';
 import { InteractiveHelpPredicateService } from './helpPredicateService';
+import { ResourceStore } from './resourceStore';
 
 export class InteractiveHelpModelService implements ModelService, ResetableService {
 
-  private models = new Map<string, Model>();
-
-  // With IE9 proxy-polyfill there cannot be any prototype methods not part of public api
-  private getModelsByPredicate = (predicate: (model: Model) => boolean) => {
-    const result: Model[] = [];
-
-    this.models.forEach(model => {
-      if (predicate(model)) {
-        result.push(model);
-      }
-    });
-
-    return result;
-  };
+  store = new ResourceStore<Model>();
 
   /* @ngInject */
   constructor(private $q: IQService,
@@ -35,33 +23,43 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
   }
 
   reset(): IPromise<any> {
-    this.models.clear();
+    this.store.clear();
     return this.$q.when();
   }
 
   getModelsByGroup(groupUrn: Uri): IPromise<ModelListItem[]> {
-    return this.$q.when(this.getModelsByPredicate(model => model.groupId.equals(groupUrn)));
+
+    const storeModels = this.store.findAll(model => model.groupId.equals(groupUrn));
+
+    return this.defaultModelService.getModelsByGroup(groupUrn).then(models => [...models, ...storeModels]);
   }
 
   getModelByUrn(urn: Uri|Urn): IPromise<Model> {
-    return this.defaultModelService.getModelByUrn(urn);
+
+    const storeModel = this.store.findFirst(model => model.id.uri === urn.toString());
+
+    if (storeModel) {
+      return this.$q.when(storeModel);
+    } else {
+      return this.defaultModelService.getModelByUrn(urn);
+    }
   }
 
   getModelByPrefix(prefix: string): IPromise<Model> {
 
-    const models = this.getModelsByPredicate(model => model.prefix === prefix);
+    const storeModel = this.store.findFirst(model => model.prefix === prefix);
 
-    if (models.length > 0) {
-      return this.$q.when(models[0]);
+    if (storeModel) {
+      return this.$q.when(storeModel);
     } else {
-      return this.$q.reject();
+      return this.defaultModelService.getModelByPrefix(prefix);
     }
   }
 
   createModel(model: Model): IPromise<any> {
     model.unsaved = false;
     model.createdAt = moment();
-    this.models.set(model.id.uri, model);
+    this.store.add(model);
     this.helpClassService.trackModel(model);
     this.helpPredicateService.trackModel(model);
     return this.$q.when();
@@ -69,12 +67,12 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
 
   updateModel(model: Model): IPromise<any> {
     model.modifiedAt = moment();
-    this.models.set(model.id.uri, model);
+    this.store.add(model);
     return this.$q.when();
   }
 
   deleteModel(id: Uri): IPromise<any> {
-    this.models.delete(id.uri);
+    this.store.delete(id.uri);
     return this.$q.when();
   }
 

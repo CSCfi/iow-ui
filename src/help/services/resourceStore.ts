@@ -3,6 +3,7 @@ import { Model } from '../../entities/model';
 import { Uri, Url } from '../../entities/uri';
 import { flatten } from '../../utils/array';
 import { DefinedBy } from '../../entities/definedBy';
+import { Optional } from '../../utils/object';
 
 type ModelId = string;
 type ResourceId = string;
@@ -10,14 +11,51 @@ type ResourceEntry<T> = [ResourceId, T];
 
 export class ResourceStore<T extends { id: Uri }> {
 
-  resources = new Map<ModelId, Map<ResourceId, T>>();
+  resources = new Map<ResourceId, T>();
+
+  values(): T[] {
+    return Array.from(this.resources.values());
+  }
+
+  entries(): [ResourceId, T][] {
+    return Array.from(this.resources.entries());
+  }
+
+  get(id: ResourceId): T|undefined {
+    return this.resources.get(id);
+  }
+
+  add(resource: T) {
+    this.resources.set(resource.id.uri, resource);
+  }
+
+  delete(id: ResourceId): boolean {
+    return this.resources.delete(id);
+  }
+
+  findFirst(predicate: (item: T) => boolean): Optional<T> {
+    return Array.from(this.resources.values()).find(predicate);
+  }
+
+  findAll(predicate: (item: T) => boolean): T[] {
+    return Array.from(this.resources.values()).filter(predicate);
+  }
+
+  clear() {
+    this.resources.clear();
+  }
+}
+
+export class ModelResourceStore<T extends { id: Uri }> {
+
+  resources = new Map<ModelId, ResourceStore<T>>();
   assignedResources = new Map<ModelId, Set<ResourceId>>();
 
   constructor(private $q: IQService, private fetchFallback: (id: ResourceId, model: Model) => IPromise<T>) {
   }
 
   getResourcesForAllModels(): Map<ResourceId, T> {
-    return ResourceStore.createMapFromEntries(this.getAllResourceEntries());
+    return ModelResourceStore.createMapFromEntries(this.getAllResourceEntries());
   }
 
   getResourceValuesForAllModels(): T[] {
@@ -25,19 +63,18 @@ export class ResourceStore<T extends { id: Uri }> {
   }
 
   private getAllResourceEntries(): ResourceEntry<T>[] {
-    return flatten(Array.from(this.resources.values()).map(m => Array.from(m.entries())));
+    return flatten(Array.from(this.resources.values()).map(s => s.entries()));
   }
 
-  getResourcesForModel(model: Model|DefinedBy): Map<ResourceId, T> {
-    const resourceMap = this.resources.get(model.id.uri);
+  getResourcesForModel(model: Model|DefinedBy): ResourceStore<T> {
+    let store = this.resources.get(model.id.uri);
 
-    if (!resourceMap) {
-      const newMap = new Map<ResourceId, T>();
-      this.resources.set(model.id.uri, newMap);
-      return newMap;
-    } else {
-      return resourceMap;
+    if (!store) {
+      store = new ResourceStore<T>();
+      this.resources.set(model.id.uri, store);
     }
+
+    return store;
   }
 
   getResourceValuesForModel(model: Model|DefinedBy): T[] {
@@ -74,7 +111,7 @@ export class ResourceStore<T extends { id: Uri }> {
     }
 
     return this.$q.all(fallbackResourcePromises)
-      .then((fallbackResources: T[]) => ResourceStore.createMapFromEntries(linkedResourcesFromStore.entries(), fallbackResources.map(wrapAsEntry)));
+      .then((fallbackResources: T[]) => ModelResourceStore.createMapFromEntries(linkedResourcesFromStore.entries(), fallbackResources.map(wrapAsEntry)));
   }
 
   getAssignedResourceValuesForModel(model: Model): IPromise<T[]> {
@@ -83,7 +120,7 @@ export class ResourceStore<T extends { id: Uri }> {
 
   getAllResourcesForModel(model: Model): IPromise<Map<ResourceId, T>> {
     return this.getAssignedResourcesForModel(model)
-      .then(assignedResources => ResourceStore.createMapFromEntries(assignedResources.entries(), this.getResourcesForModel(model).entries()));
+      .then(assignedResources => ModelResourceStore.createMapFromEntries(assignedResources.entries(), this.getResourcesForModel(model).entries()));
   }
 
   getAllResourceValuesForModel(model: Model): IPromise<T[]> {
@@ -103,12 +140,12 @@ export class ResourceStore<T extends { id: Uri }> {
   }
 
   addResourceToModel(model: Model|DefinedBy, resource: T) {
-    this.getResourcesForModel(model).set(resource.id.uri, resource);
+    this.getResourcesForModel(model).add(resource);
   }
 
   updateResourceInModel(model: Model|DefinedBy, resource: T, originalId: ResourceId) {
     this.deleteResourceFromModel(model, originalId);
-    this.getResourcesForModel(model).set(resource.id.uri, resource);
+    this.getResourcesForModel(model).add(resource);
   }
 
   deleteResourceFromModel(model: Model|DefinedBy, resourceId: ResourceId) {

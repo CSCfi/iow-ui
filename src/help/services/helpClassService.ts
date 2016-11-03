@@ -16,12 +16,12 @@ import { VocabularyService } from '../../services/vocabularyService';
 import { identity } from '../../utils/function';
 import { flatten } from '../../utils/array';
 import { dateSerializer } from '../../entities/serializer/serializer';
-import { ResourceStore } from './resourceStore';
+import { ModelResourceStore } from './resourceStore';
 import { DefinedBy } from '../../entities/definedBy';
 
 export class InteractiveHelpClassService implements ClassService, ResetableService {
 
-  store = new ResourceStore<Class>(this.$q, (id, model) => this.defaultClassService.getClass(id, model));
+  store = new ModelResourceStore<Class>(this.$q, (id, model) => this.defaultClassService.getClass(id, model));
   trackedModels = new Set<string>();
 
   trackModel = (model: Model|DefinedBy) => this.trackedModels.add(model.id.uri);

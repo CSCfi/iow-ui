@@ -14,12 +14,12 @@ import { identity } from '../../utils/function';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case';
 import { dateSerializer } from '../../entities/serializer/serializer';
 import * as frames from '../../entities/frames';
-import { ResourceStore } from './resourceStore';
+import { ModelResourceStore } from './resourceStore';
 import { DefinedBy } from '../../entities/definedBy';
 
 export class InteractiveHelpPredicateService implements PredicateService, ResetableService {
 
-  store = new ResourceStore(this.$q, (id, model) => this.getPredicate(id, model));
+  store = new ModelResourceStore(this.$q, (id, model) => this.getPredicate(id, model));
   trackedModels = new Set<string>();
 
   trackModel = (model: Model|DefinedBy) => this.trackedModels.add(model.id.uri);
