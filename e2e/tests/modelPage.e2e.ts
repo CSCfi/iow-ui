@@ -6,6 +6,7 @@ import { expectCurrentUrlToEqualPath } from '../util/url';
 import { library1Parameters, library2Parameters } from './test-data';
 import { NavBar } from '../pages/common/navbar.po';
 import { GroupPage } from '../pages/group/groupPage.po';
+import { FrontPage } from '../pages/frontPage.po';
 
 describe('Model page', () => {
 
@@ -14,8 +15,11 @@ describe('Model page', () => {
   describe('Before models are created', () => {
 
     const createLibraryAndCheckExpectations = (parameters: NewModelParameters) => {
-      const page = ModelPage.navigateToNewModel(parameters);
+
+      FrontPage.navigate();
       navbar.ensureLoggedIn();
+
+      const page = ModelPage.navigateToNewModel(parameters);
       page.modelView.buttons.save();
       expectCurrentUrlToEqualPath(ModelPage.pathToExistingModel(parameters.prefix));
     };
