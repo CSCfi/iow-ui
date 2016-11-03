@@ -10,18 +10,15 @@ export class InteractiveHelpValidatorService implements ValidatorService, Reseta
   /* @ngInject */
   constructor(private $q: IQService,
               private helpClassService: InteractiveHelpClassService,
-              private helpPredicateService: InteractiveHelpPredicateService,
-              private defaultValidatorService: ValidatorService) {
+              private helpPredicateService: InteractiveHelpPredicateService) {
   }
 
   classDoesNotExist(id: Uri): IPromise<boolean> {
-    const helpServiceHasResource = this.helpClassService.store.getResourcesForAllModels().has(id.toString());
-    return helpServiceHasResource ? this.$q.when(true) : this.defaultValidatorService.classDoesNotExist(id);
+    return this.$q.when(this.helpClassService.store.getResourcesForAllModels().has(id.toString()));
   }
 
   predicateDoesNotExist(id: Uri): IPromise<boolean> {
-    const helpServiceHasResource = this.helpPredicateService.store.getResourcesForAllModels().has(id.toString());
-    return helpServiceHasResource ? this.$q.when(true) : this.defaultValidatorService.predicateDoesNotExist(id);
+    return this.$q.when(this.helpPredicateService.store.getResourcesForAllModels().has(id.toString()));
   }
 
   reset(): IPromise<any> {
