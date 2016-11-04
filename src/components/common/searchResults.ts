@@ -90,7 +90,7 @@ class SearchResultsController<T extends WithId> {
 
       $element.parents('.search-results').animate({ scrollTop: 0 }, 0);
 
-      this.searchResults = items.map(item => {
+      this.searchResults = (items || []).map(item => {
         if (item instanceof AddNew) {
           return item;
         } else {
