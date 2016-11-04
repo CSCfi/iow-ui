@@ -294,8 +294,10 @@ export class ImportedNamespace extends GraphNode {
       return NamespaceType.EXTERNAL;
     } else if (this.isOfType('standard')) {
       return NamespaceType.TECHNICAL;
-    } else {
+    } else if (this.isOfType('model', 'library', 'profile')) {
       return NamespaceType.MODEL;
+    } else {
+      throw new Error('Unsupported type ' + this.type.join(','));
     }
   }
 

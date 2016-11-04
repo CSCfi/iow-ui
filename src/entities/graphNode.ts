@@ -16,8 +16,8 @@ export abstract class GraphNode {
     init(this, GraphNode.graphNodeMappings);
   }
 
-  isOfType(type: Type) {
-    return containsAny(this.type, [type]);
+  isOfType(...type: Type[]) {
+    return containsAny(this.type, type);
   }
 
   get glyphIconClass(): any {
