@@ -1,4 +1,5 @@
 /// <reference types="jasmine" />
+/// <reference types="protractor" />
 
 // FIXME: If angular is imported properly then while initializing disableNgAnimate global window variable is missing
 //        If just types are used by referencing angular.module etc... then compiler reports "Identifier 'angular' must be imported from a module"
