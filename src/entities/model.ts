@@ -297,7 +297,7 @@ export class ImportedNamespace extends GraphNode {
     } else if (this.isOfType('model', 'library', 'profile')) {
       return NamespaceType.MODEL;
     } else {
-      throw new Error('Unsupported type ' + this.type.join(','));
+      throw new Error('Unsupported type for imported namespace: [' + this.type.join(',') + '] for ' + this.id.toString());
     }
   }
 
