@@ -2,7 +2,7 @@ import { IAttributes, IScope } from 'angular';
 import { ClassFormController } from './classForm';
 import { Uri } from '../../entities/uri';
 import { LanguageService } from '../../services/languageService';
-import { any } from '../../utils/array';
+import { any, all } from '../../utils/array';
 import { module as mod }  from './module';
 import { hasLocalization } from '../../utils/language';
 import { Property, Class } from '../../entities/class';
@@ -38,8 +38,15 @@ mod.directive('propertyView', () => {
         }
       }
 
-      $scope.$watchCollection(() => thisController.class && thisController.class.properties, () => {
-        if (thisController.isOpen()) {
+      if (thisController.isOpen()) {
+        scrollTo();
+      }
+
+      $scope.$watchCollection(() => thisController.class && thisController.class.properties, (oldProperties) => {
+
+        const isPropertyAdded = all(oldProperties, p => thisController.property.internalId.notEquals(p.internalId));
+
+        if (thisController.isOpen() && isPropertyAdded) {
           scrollTo();
         }
       });
