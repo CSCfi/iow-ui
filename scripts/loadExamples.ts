@@ -1,9 +1,9 @@
 import 'core-js';
-import './modelJHS';
-import './modelEDU';
-import './modelOILI';
+import '../examples/modelJHS';
+import '../examples/modelEDU';
+import '../examples/modelOILI';
 
-import { loader } from './exampleLoader';
+import { loader } from '../examples/exampleLoader';
 
 loader.result.then(() => {
   console.log('=========== Result ==========');

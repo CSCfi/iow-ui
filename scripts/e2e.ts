@@ -1,20 +1,19 @@
-/// <reference types="jasmine" />
-/// <reference types="protractor" />
+const launcher: Launcher = require('../node_modules/protractor/built/launcher');
+
+interface Launcher {
+  init: (configFile: string|null, additionalConfig: any) => void;
+}
 
 // FIXME: If angular is imported properly then while initializing disableNgAnimate global window variable is missing
 //        If just types are used by referencing angular.module etc... then compiler reports "Identifier 'angular' must be imported from a module"
 
 declare const angular: any;
 
-export const config = {
+const config = {
   baseUrl: 'http://localhost:9001/',
-
   specs: ['e2e/tests/app.e2e.ts'],
-
   framework: 'jasmine2',
-
   allScriptsTimeout: 110000,
-
   jasmineNodeOpts: {
     showTiming: true,
     showColors: true,
@@ -23,7 +22,6 @@ export const config = {
     defaultTimeoutInterval: 400000
   },
   directConnect: true,
-
   capabilities: {
     'browserName': 'chrome'
   },
@@ -38,3 +36,5 @@ export const config = {
     browser.addMockModule('disableNgAnimate', disableNgAnimate);
   }
 };
+
+launcher.init(null, config);

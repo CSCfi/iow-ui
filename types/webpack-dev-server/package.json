@@ -1,5 +1,5 @@
 {
-  "name": "@types/webpack-merge",
+  "name": "@types/webpack-dev-server",
   "version": "0.0.0",
   "dependencies": {
     "@types/webpack": "1.12.33"
