@@ -10,7 +10,7 @@ require('ts-node').register(
         'webpack',
         'karma',
         'protractor'
-      ],
+      ]
     },
     files: []
   })
