@@ -150,6 +150,14 @@ export class ConceptSuggestion extends GraphNode {
     return glyphIconClassForType(this.type);
   }
 
+  get vocabularyId(): Uri {
+    if (this.vocabulary instanceof Vocabulary) {
+      return this.vocabulary.id;
+    } else {
+      return this.vocabulary;
+    }
+  }
+
   getVocabularyNames() {
     return [new VocabularyNameHref(this.vocabulary)];
   }

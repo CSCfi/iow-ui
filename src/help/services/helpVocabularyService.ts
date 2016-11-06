@@ -10,30 +10,18 @@ import { FrameService } from '../../services/frameService';
 import * as frames from '../../entities/frames';
 import moment = require('moment');
 import { dateSerializer } from '../../entities/serializer/serializer';
+import { ResourceStore } from './resourceStore';
 
 export class InteractiveHelpVocabularyService implements VocabularyService, ResetableService {
 
-  private conceptSuggestions = new Map<string, ConceptSuggestion>();
-
-  // With IE9 proxy-polyfill there cannot be any prototype methods not part of public api
-  private getConceptSuggestionsByPredicate = (predicate: (conceptSuggestion: ConceptSuggestion) => boolean) => {
-    const result: ConceptSuggestion[] = [];
-
-    this.conceptSuggestions.forEach(conceptSuggestion => {
-      if (predicate(conceptSuggestion)) {
-        result.push(conceptSuggestion);
-      }
-    });
-
-    return result;
-  };
+  store = new ResourceStore<ConceptSuggestion>();
 
   /* @ngInject */
   constructor(private $q: IQService, private defaultVocabularyService: VocabularyService, private frameService: FrameService) {
   }
 
   reset(): IPromise<any> {
-    this.conceptSuggestions.clear();
+    this.store.clear();
     return this.$q.when();
   }
 
@@ -46,17 +34,22 @@ export class InteractiveHelpVocabularyService implements VocabularyService, Rese
   }
 
   getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion> {
-    const conceptSuggestions = this.getConceptSuggestionsByPredicate(conceptSuggestion => conceptSuggestion.id.toString() === id.toString());
 
-    if (conceptSuggestions.length > 0) {
-      return this.$q.when(conceptSuggestions[0]);
+    const conceptSuggestion = this.store.findFirst(cs => cs.id.equals(id));
+
+    if (conceptSuggestion) {
+      return this.$q.when(conceptSuggestion);
     } else {
       return this.defaultVocabularyService.getConceptSuggestion(id);
     }
   }
 
   getConceptSuggestions(vocabularyId: Uri): IPromise<ConceptSuggestion[]> {
-    return this.defaultVocabularyService.getConceptSuggestions(vocabularyId);
+
+    const storeSuggestions = this.store.findAll(cs => vocabularyId.equals(cs.vocabularyId));
+
+    return this.defaultVocabularyService.getConceptSuggestions(vocabularyId)
+      .then(suggestions => [...storeSuggestions, ...suggestions]);
   }
 
   createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, _broaderConceptId: Uri|any, lang: Language, model: Model): IPromise<Uri> {
@@ -79,11 +72,12 @@ export class InteractiveHelpVocabularyService implements VocabularyService, Rese
   }
 
   getConceptsForModel(model: Model): IPromise<Concept[]> {
+    // TODO should probably return suggestions from store also
     return this.defaultVocabularyService.getConceptsForModel(model);
   }
 
   updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any> {
-    this.conceptSuggestions.set(conceptSuggestion.id.toString(), conceptSuggestion);
+    this.store.add(conceptSuggestion);
     return this.$q.when();
   }
 
