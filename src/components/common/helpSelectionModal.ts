@@ -21,7 +21,7 @@ export class HelpSelectionModal {
               <div class="col-md-12">
                 <div class="help story-line" ng-repeat="help in ctrl.helps" ng-click="ctrl.startHelp(help)">
                   <h5>{{help.storyLine.title | translate}}</h5>
-                  <div>{{help.storyLine.description | translate | paragraphize}}</div>
+                  <div>{{help.storyLine.description | translate}}</div>
                 </div>
               </div>
             </div>

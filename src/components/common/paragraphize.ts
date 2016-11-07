@@ -23,9 +23,11 @@ class ParagraphizeController {
   context: LanguageContext;
 }
 
+// FIXME: has a problem with scandinavian characters rendered as entities
 mod.filter('paragraphize', /* @ngInject */ ($sce: ISCEService, $sanitize: ISanitizeService) => {
   return (text: string) => {
-    return $sce.trustAsHtml(applyParagraph($sanitize(text)));
+    console.log($sanitize);
+    return $sce.trustAsHtml(applyParagraph(text));
   };
 });
 
