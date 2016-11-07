@@ -85,7 +85,8 @@ function createConfig(build: boolean): Configuration {
     },
     output: {
       path: path.join(__dirname, 'public/assets'),
-      filename: build ? '[name].[chunkhash].js' : '[name].js'
+      filename: build ? '[name].[chunkhash].js' : '[name].js',
+      publicPath: build ? '/assets/' : '/'
     },
 
     debug: !build,
