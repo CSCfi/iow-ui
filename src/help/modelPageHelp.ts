@@ -19,28 +19,33 @@ import * as ClassForm from './pages/model/classFormHelp.po';
 import * as VisualizationView from './pages/model/visualizationViewHelp.po';
 import {
   exampleImportedLibrary, exampleSpecializedOrAssignedClass, exampleNewClass, exampleProfile,
-  exampleLibrary, exampleAssignedClass
+  exampleLibrary
 } from './entities';
 import { classIdFromNamespaceId, predicateIdFromNamespaceId, modelIdFromPrefix, isExpectedProperty } from './utils';
 import { classView } from './selectors';
 import { EntityLoaderService, EntityLoader, PropertyDetails } from '../services/entityLoader';
 import { InteractiveHelpService } from './services/interactiveHelpService';
+import gettextCatalog = angular.gettext.gettextCatalog;
+import { Localizable } from '../entities/contract';
+import { availableUILanguages } from '../utils/language';
 
-export const addNamespaceItems: Story[] = [
-  ModelView.requireNamespace,
-  SearchNamespaceModal.filterForModel(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId, 'julkis'),
-  SearchNamespaceModal.selectNamespace(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId),
-  ModelView.focusNamespaces
-];
+export function addNamespaceItems(gettextCatalog: gettextCatalog): Story[] {
+  return [
+    ModelView.requireNamespace,
+    SearchNamespaceModal.filterForModel(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId, gettextCatalog),
+    SearchNamespaceModal.selectNamespace(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId),
+    ModelView.focusNamespaces
+  ];
+}
 
-export function addNamespace(type: KnownModelType): StoryLine {
+export function addNamespace(type: KnownModelType, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through requiring a namespace',
     description: 'Diipadaa',
-    items: [
+    items: () => [
       ModelPage.openModelDetails(type),
       ModelView.modifyModel(type),
-      ...addNamespaceItems,
+      ...addNamespaceItems(gettextCatalog),
       ModelView.saveModelChanges,
       createNotification({
         title: 'Congratulations for completing namespace require!',
@@ -50,68 +55,78 @@ export function addNamespace(type: KnownModelType): StoryLine {
   };
 }
 
-export const specializeClassItems: Story[] = [
-  ModelPage.openAddResource('class'),
-  SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, 'palv'),
-  SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name),
-  SearchClassModal.focusSelectedClass,
-  SearchClassModal.confirmClassSelection(false),
-  AddPropertiesFromClass.selectProperties('Select name and description', exampleSpecializedOrAssignedClass.properties),
-  AddPropertiesFromClass.confirmProperties(true),
-  ClassForm.focusClass(classView),
-  ClassView.saveClassChanges
-];
+export function specializeClassItems(gettextCatalog: gettextCatalog): Story[] {
+  return [
+    ModelPage.openAddResource('class'),
+    SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, gettextCatalog),
+    SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name),
+    SearchClassModal.focusSelectedClass,
+    SearchClassModal.confirmClassSelection(false),
+    AddPropertiesFromClass.selectProperties('Select name and description', exampleSpecializedOrAssignedClass.properties),
+    AddPropertiesFromClass.confirmProperties(true),
+    ClassForm.focusClass(classView),
+    ClassView.saveClassChanges
+  ];
+}
 
-export const specializeClass: StoryLine = {
-  title: 'Guide through specializing a class',
-  description: 'Diipadaa',
-  items: [
-    ...specializeClassItems,
-    createNotification({
-      title: 'Congratulations for completing specialize class!',
-      content: 'Diipadaa'
-    })
-  ]
-};
+export function specializeClass(gettextCatalog: gettextCatalog): StoryLine {
+  return {
+    title: 'Guide through specializing a class',
+    description: 'Diipadaa',
+    items: () => [
+      ...specializeClassItems(gettextCatalog),
+      createNotification({
+        title: 'Congratulations for completing specialize class!',
+        content: 'Diipadaa'
+      })
+    ]
+  };
+}
 
-export const assignClassItems: Story[] = [
-  ModelPage.openAddResource('class'),
-  SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, 'palv'),
-  SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name),
-  SearchClassModal.focusSelectedClass,
-  SearchClassModal.confirmClassSelection(true),
-  ClassForm.focusClass(classView)
-];
+export function assignClassItems(gettextCatalog: gettextCatalog): Story[] {
+  return [
+    ModelPage.openAddResource('class'),
+    SearchClassModal.filterForClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, gettextCatalog),
+    SearchClassModal.selectClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name),
+    SearchClassModal.focusSelectedClass,
+    SearchClassModal.confirmClassSelection(true),
+    ClassForm.focusClass(classView)
+  ];
+}
 
-export const assignClass: StoryLine = {
-  title: 'Guide through assigning class to a library',
-  description: 'Diipadaa',
-  items: [
-    ...assignClassItems,
-    createNotification({
-      title: 'Congratulations for completing class assignation!',
-      content: 'Diipadaa'
-    })
-  ]
-};
+export function assignClass(gettextCatalog: gettextCatalog): StoryLine {
+  return {
+    title: 'Guide through assigning class to a library',
+    description: 'Diipadaa',
+    items: () => [
+      ...assignClassItems(gettextCatalog),
+      createNotification({
+        title: 'Congratulations for completing class assignation!',
+        content: 'Diipadaa'
+      })
+    ]
+  };
+}
 
-const addAttributeItems: Story[] = [
-  ClassView.addProperty,
-  SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, 'nimi'),
-  SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name),
-  SearchPredicateModal.focusSelectedAttribute,
-  SearchPredicateModal.confirmPredicateSelection(true),
-  ClassForm.focusOpenProperty(classView)
-];
+function addAttributeItems(gettextCatalog: gettextCatalog): Story[] {
+  return [
+    ClassView.addProperty,
+    SearchPredicateModal.filterForPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, gettextCatalog),
+    SearchPredicateModal.selectPredicate(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name),
+    SearchPredicateModal.focusSelectedAttribute,
+    SearchPredicateModal.confirmPredicateSelection(true),
+    ClassForm.focusOpenProperty(classView)
+  ];
+}
 
-export function addAttribute(modelPrefix: string): StoryLine {
+export function addAttribute(modelPrefix: string, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through adding an attribute',
     description: 'Diipadaa',
-    items: [
+    items: () => [
       ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
       ClassView.modifyClass,
-      ...addAttributeItems,
+      ...addAttributeItems(gettextCatalog),
       ClassView.saveClassChanges,
       createNotification({
         title: 'Congratulations for completing adding an attribute!',
@@ -121,51 +136,55 @@ export function addAttribute(modelPrefix: string): StoryLine {
   };
 }
 
-export const createNewClassItems: Story[] = [
-  ModelPage.openAddResource('class'),
-  SearchClassModal.filterForNewClass(exampleNewClass.name),
-  SearchClassModal.selectAddNewClassSearchResult,
-  SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.name),
-  SearchConceptModal.addConceptSuggestionSearchResult,
-  SearchConceptModal.enterVocabulary,
-  SearchConceptModal.enterLabel,
-  SearchConceptModal.enterDefinition(exampleNewClass.comment),
-  SearchConceptModal.confirmConceptSelection(true),
-  ClassForm.focusClass(classView),
-  ...addAttributeItems
-];
-
-export const createNewClass: StoryLine = {
-  title: 'Guide through creating a class',
-  description: 'Diipadaa',
-  items: [
-    ...createNewClassItems,
-    ClassView.saveClassChanges,
-    createNotification({
-      title: 'Congratulations for completing new class creation!',
-      content: 'Diipadaa'
-    })
-  ]
-};
-
-export function addAssociationItems(namespaceId: string): Story[] {
+export function createNewClassItems(gettextCatalog: gettextCatalog): Story[] {
   return [
-    ClassView.addProperty,
-    SearchPredicateModal.filterForNewPredicate(exampleNewClass.property.association.searchName),
-    SearchPredicateModal.selectAddNewPredicateSearchResult('association'),
-    SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.property.association.searchName),
+    ModelPage.openAddResource('class'),
+    SearchClassModal.filterForNewClass(exampleNewClass.name, gettextCatalog),
+    SearchClassModal.selectAddNewClassSearchResult,
+    SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.name, gettextCatalog),
     SearchConceptModal.addConceptSuggestionSearchResult,
     SearchConceptModal.enterVocabulary,
     SearchConceptModal.enterLabel,
-    SearchConceptModal.enterDefinition(exampleNewClass.property.association.comment),
+    SearchConceptModal.enterDefinition(exampleNewClass.comment, gettextCatalog),
+    SearchConceptModal.confirmConceptSelection(true),
+    ClassForm.focusClass(classView),
+    ...addAttributeItems(gettextCatalog)
+  ];
+}
+
+export function createNewClass(gettextCatalog: gettextCatalog): StoryLine {
+  return {
+    title: 'Guide through creating a class',
+    description: 'Diipadaa',
+    items: () => [
+      ...createNewClassItems(gettextCatalog),
+      ClassView.saveClassChanges,
+      createNotification({
+        title: 'Congratulations for completing new class creation!',
+        content: 'Diipadaa'
+      })
+    ]
+  };
+}
+
+export function addAssociationItems(namespaceId: string, gettextCatalog: gettextCatalog): Story[] {
+  return [
+    ClassView.addProperty,
+    SearchPredicateModal.filterForNewPredicate(exampleNewClass.property.association.searchName, gettextCatalog),
+    SearchPredicateModal.selectAddNewPredicateSearchResult('association'),
+    SearchConceptModal.filterForConceptSuggestionConcept(exampleNewClass.property.association.searchName, gettextCatalog),
+    SearchConceptModal.addConceptSuggestionSearchResult,
+    SearchConceptModal.enterVocabulary,
+    SearchConceptModal.enterLabel,
+    SearchConceptModal.enterDefinition(exampleNewClass.property.association.comment, gettextCatalog),
     SearchConceptModal.confirmConceptSelection(false),
     SearchPredicateModal.focusSelectedAssociation,
     PredicateForm.focusPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', 'Label can be changed'),
-    PredicateForm.enterPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', exampleNewClass.property.association.name),
+    PredicateForm.enterPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', exampleNewClass.property.association.name, gettextCatalog),
     SearchPredicateModal.confirmPredicateSelection(true),
     ClassForm.focusOpenProperty(classView),
     ClassForm.selectAssociationTarget(classView),
-    SearchClassModal.filterForClass(namespaceId, exampleSpecializedOrAssignedClass.name, exampleSpecializedOrAssignedClass.name),
+    SearchClassModal.filterForClass(namespaceId, exampleSpecializedOrAssignedClass.name, gettextCatalog),
     SearchClassModal.selectClass(namespaceId, exampleSpecializedOrAssignedClass.name),
     SearchClassModal.focusSelectedClass,
     SearchClassModal.confirmClassSelection(false),
@@ -175,14 +194,14 @@ export function addAssociationItems(namespaceId: string): Story[] {
   ];
 }
 
-export function addAssociation(modelPrefix: string, associationTargetNamespaceId: string): StoryLine {
+export function addAssociation(modelPrefix: string, associationTargetNamespaceId: string, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through adding an association',
     description: 'Diipadaa',
-    items: [
+    items: () => [
       ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
       ClassView.modifyClass,
-      ...addAssociationItems(associationTargetNamespaceId),
+      ...addAssociationItems(associationTargetNamespaceId, gettextCatalog),
       createNotification({
         title: 'Congratulations for completing adding an association!',
         content: 'Diipadaa'
@@ -196,7 +215,18 @@ export class ModelPageHelpService {
   /* @ngInject */
   constructor(private $uibModalStack: IModalStackService,
               private $location: ILocationService,
-              private entityLoaderService: EntityLoaderService) {
+              private entityLoaderService: EntityLoaderService,
+              private gettextCatalog: gettextCatalog) {
+  }
+
+  private asLocalizable(key: string) {
+    const result: Localizable = {};
+
+    for (const language of availableUILanguages) {
+      result[language] = this.gettextCatalog.getString(key);
+    }
+
+    return result;
   }
 
   getHelps(model: Model|null): InteractiveHelp[] {
@@ -205,30 +235,30 @@ export class ModelPageHelpService {
       return [];
     }
 
-    const helps = new HelpBuilder(this.$location, this.$uibModalStack, this.entityLoaderService, model);
+    const helps = new HelpBuilder(this.$location, this.$uibModalStack, this.entityLoaderService, this.asLocalizable.bind(this), model);
     const isProfile = model.normalizedType === 'profile';
     const modelPrefix = isProfile ? exampleProfile.prefix : exampleLibrary.prefix;
     const associationNamespaceId = isProfile ? modelIdFromPrefix(exampleProfile.prefix)
                                              : exampleImportedLibrary.namespaceId;
 
-    helps.add(addNamespace(model.normalizedType), builder => builder.newModel());
-    helps.add(createNewClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
+    helps.add(addNamespace(model.normalizedType, this.gettextCatalog), builder => builder.newModel());
+    helps.add(createNewClass(this.gettextCatalog), builder => builder.newModel(exampleImportedLibrary.namespaceId));
 
     if (isProfile) {
-      helps.add(specializeClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
+      helps.add(specializeClass(this.gettextCatalog), builder => builder.newModel(exampleImportedLibrary.namespaceId));
     } else {
-      helps.add(assignClass, builder => builder.newModel(exampleImportedLibrary.namespaceId));
+      helps.add(assignClass(this.gettextCatalog), builder => builder.newModel(exampleImportedLibrary.namespaceId));
     }
 
-    helps.add(addAttribute(modelPrefix), builder => {
+    helps.add(addAttribute(modelPrefix, this.gettextCatalog), builder => {
       builder.newModel(exampleImportedLibrary.namespaceId);
       builder.newClass();
     });
 
-    helps.add(addAssociation(modelPrefix, associationNamespaceId), builder => {
+    helps.add(addAssociation(modelPrefix, associationNamespaceId, this.gettextCatalog), builder => {
       builder.newModel(exampleImportedLibrary.namespaceId);
       builder.newClass({
-        label: { 'fi': exampleNewClass.name },
+        label: this.asLocalizable(exampleNewClass.name),
         predicate: predicateIdFromNamespaceId(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name)
       });
 
@@ -248,7 +278,9 @@ class ModelBuilder {
 
   private model?: IPromise<Model>;
 
-  constructor(private entityLoader: EntityLoader, private contextModel: Model) {
+  constructor(private entityLoader: EntityLoader,
+              private contextModel: Model,
+              private asLocalizable: (key: string) => Localizable) {
   }
 
   newModel(...namespaces: string[]) {
@@ -263,7 +295,7 @@ class ModelBuilder {
 
     this.model = this.entityLoader.createModel(type, this.contextModel.groupId, {
       prefix,
-      label: { fi: label },
+      label: this.asLocalizable(label),
       namespaces: namespaces
     });
 
@@ -272,8 +304,8 @@ class ModelBuilder {
 
   newClass(...properties: PropertyDetails[]) {
     return this.entityLoader.createClass(requireDefined(this.model), {
-      label: { fi: exampleNewClass.name },
-      comment: { fi: exampleNewClass.comment },
+      label: this.asLocalizable(exampleNewClass.name),
+      comment: this.asLocalizable(exampleNewClass.comment),
       properties
     });
   }
@@ -281,7 +313,7 @@ class ModelBuilder {
   assignClass() {
 
     const model = requireDefined(this.model);
-    const classToAssign = this.entityLoader.getClass(model, classIdFromNamespaceId(exampleAssignedClass.namespaceId, exampleAssignedClass.name));
+    const classToAssign = this.entityLoader.getClass(model, classIdFromNamespaceId(exampleSpecializedOrAssignedClass.namespaceId, exampleSpecializedOrAssignedClass.name));
 
     return this.entityLoader.assignClass(model, classToAssign);
   }
@@ -305,6 +337,7 @@ class HelpBuilder {
   constructor(private $location: ILocationService,
               private $uibModalStack: IModalStackService,
               private entityLoaderService: EntityLoaderService,
+              private asLocalizable: (key: string) => Localizable,
               private contextModel: Model) {
   }
 
@@ -316,7 +349,7 @@ class HelpBuilder {
       storyLine,
       onInit: (service: InteractiveHelpService) => {
 
-        const builder = new ModelBuilder(this.entityLoaderService.create(model.context, false), model);
+        const builder = new ModelBuilder(this.entityLoaderService.create(model.context, false), model, this.asLocalizable);
 
         return service.reset()
           .then(() => {

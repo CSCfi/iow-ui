@@ -4,23 +4,30 @@ import {
   createClickNextCondition, createExplicitNextCondition, createExpectedStateNextCondition, createScrollWithElement
 } from '../../contract';
 import { initialInputValue, elementExists, inputHasExactValue, expectAll } from '../../utils';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 export const textSearchElement = (modalParent: () => JQuery) => child(modalParent, 'text-filter input');
 export const searchSelectionElement = (modalParent: () => JQuery) => child(modalParent, '.search-selection');
 export const searchResultsElement = (modalParent: () => JQuery) => child(modalParent, '.search-results');
 
-export function filterForSearchResult(modalParent: () => JQuery, label: string, expectedResultId: string, initialSearch: string) {
+
+export function filterForSearchResult(modalParent: () => JQuery, label: string, expectedResultId: string, gettextCatalog: gettextCatalog) {
 
   const filterForSearchResultTextSearchElement = textSearchElement(modalParent);
 
+  function formatInitialSearch() {
+    const localizedLabel = gettextCatalog.getString(label);
+    return localizedLabel.toLowerCase().substring(0, Math.min(4, localizedLabel.length));
+  }
+
   return createStory({
 
-    title: `Search for ${label}`,
+    title: `Search for ${label.toLowerCase()}`,
     content: 'Diipadaa',
     popover: { element: filterForSearchResultTextSearchElement, position: 'bottom-right' },
     focus: { element: filterForSearchResultTextSearchElement },
     nextCondition: createExpectedStateNextCondition(elementExists(searchResult(modalParent, expectedResultId))),
-    initialize: initialInputValue(filterForSearchResultTextSearchElement, initialSearch),
+    initialize: initialInputValue(filterForSearchResultTextSearchElement, formatInitialSearch()),
     reversible: true
   });
 }
@@ -31,7 +38,7 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
 
   return createStory({
 
-    title: `Select ${label}`,
+    title: `Select ${label.toLowerCase()}`,
     content: 'Diipadaa',
     scroll: createScrollWithElement(searchResultsElement(modalParent), selectResultElement),
     popover: { element: selectResultElement, position: 'left-down' },
@@ -42,10 +49,11 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
   });
 }
 
-export function filterForAddNewResult(modalParent: () => JQuery, searchFor: string, expectSearch: string) {
+export function filterForAddNewResult(modalParent: () => JQuery, searchFor: string, gettextCatalog: gettextCatalog) {
 
   const filterForAddNewElement = textSearchElement(modalParent);
   const addNewResultsElements = first(child(modalParent, '.search-result.add-new'));
+  const localizedSearch = gettextCatalog.getString(searchFor).toLowerCase();
 
   return createStory({
 
@@ -55,11 +63,11 @@ export function filterForAddNewResult(modalParent: () => JQuery, searchFor: stri
     focus: { element: filterForAddNewElement },
     nextCondition: createExpectedStateNextCondition(
       expectAll(
-        inputHasExactValue(filterForAddNewElement, expectSearch.toLowerCase()),
+        inputHasExactValue(filterForAddNewElement, localizedSearch),
         elementExists(addNewResultsElements)
       )
     ),
-    initialize: initialInputValue(filterForAddNewElement, expectSearch.toLowerCase()),
+    initialize: initialInputValue(filterForAddNewElement, localizedSearch),
     reversible: true
   });
 }

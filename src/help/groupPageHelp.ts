@@ -16,8 +16,9 @@ import {
 } from './modelPageHelp';
 import { exampleProfile, exampleImportedLibrary } from './entities';
 import { modelIdFromPrefix } from './utils';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
-export function createNewModelItems(type: KnownModelType): Story[] {
+export function createNewModelItems(type: KnownModelType, gettextCatalog: gettextCatalog): Story[] {
 
   const isProfile = type === 'profile';
   const namespaceId = isProfile ? modelIdFromPrefix(exampleProfile.prefix)
@@ -27,16 +28,16 @@ export function createNewModelItems(type: KnownModelType): Story[] {
     GroupPage.startModelCreation(type),
     AddModelModal.enterModelPrefix(type),
     AddModelModal.enterModelLanguage,
-    AddModelModal.enterModelLabel(type),
+    AddModelModal.enterModelLabel(type, gettextCatalog),
     AddModelModal.createModel,
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails(type),
     ModelView.modifyModel(type),
-    ...addNamespaceItems,
+    ...addNamespaceItems(gettextCatalog),
     ModelView.saveModelChanges,
-    ...(isProfile ? specializeClassItems : assignClassItems),
-    ...createNewClassItems,
-    ...addAssociationItems(namespaceId)
+    ...(isProfile ? specializeClassItems(gettextCatalog) : assignClassItems(gettextCatalog)),
+    ...createNewClassItems(gettextCatalog),
+    ...addAssociationItems(namespaceId, gettextCatalog)
   ];
 }
 
@@ -47,12 +48,12 @@ export function finishedCreateNewModelNotification(type: KnownModelType): Notifi
   });
 }
 
-function createNewModel(type: KnownModelType): StoryLine {
+function createNewModel(type: KnownModelType, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: `Guide through creating new ${type}`,
     description: 'Diipadaa',
-    items: [
-      ...createNewModelItems(type),
+    items: () => [
+      ...createNewModelItems(type, gettextCatalog),
       finishedCreateNewModelNotification(type)
     ]
   };
@@ -61,7 +62,7 @@ function createNewModel(type: KnownModelType): StoryLine {
 export class GroupPageHelpService {
 
   /* @ngInject */
-  constructor(private $uibModalStack: IModalStackService, private $location: ILocationService) {
+  constructor(private $uibModalStack: IModalStackService, private $location: ILocationService, private gettextCatalog: gettextCatalog) {
   }
 
   private returnToGroupPage(group: Group) {
@@ -71,8 +72,8 @@ export class GroupPageHelpService {
 
   getHelps(group: Group): InteractiveHelp[] {
     return [
-      createHelpWithDefaultHandler(createNewModel('library'), () => this.returnToGroupPage(group)),
-      createHelpWithDefaultHandler(createNewModel('profile'), () => this.returnToGroupPage(group))
+      createHelpWithDefaultHandler(createNewModel('library', this.gettextCatalog), () => this.returnToGroupPage(group)),
+      createHelpWithDefaultHandler(createNewModel('profile', this.gettextCatalog), () => this.returnToGroupPage(group))
     ];
   }
 }

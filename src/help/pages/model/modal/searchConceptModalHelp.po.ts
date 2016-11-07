@@ -6,11 +6,12 @@ import {
   editableSelectMargin, editableMargin
 } from '../../../utils';
 import { filterForAddNewResult, selectAddNewResult } from '../../modal/searchModalHelp.po';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const searchConceptModal = child(modal, '.search-concept');
 
-export function filterForConceptSuggestionConcept(conceptName: string) {
-  return filterForAddNewResult(searchConceptModal, conceptName, conceptName);
+export function filterForConceptSuggestionConcept(conceptName: string, gettextCatalog: gettextCatalog) {
+  return filterForAddNewResult(searchConceptModal, conceptName, gettextCatalog);
 }
 
 export const addConceptSuggestionSearchResult = selectAddNewResult(searchConceptModal, 0, 'Select concept suggest creation');
@@ -38,7 +39,7 @@ export const enterLabel = createStory({
   reversible: true
 });
 
-export function enterDefinition(initialValue: string) {
+export function enterDefinition(initialValue: string, gettextCatalog: gettextCatalog) {
 
   const enterDefinitionElement = editableByTitle(modal, 'Definition');
   const enterDefinitionInputElement = input(enterDefinitionElement);
@@ -50,7 +51,7 @@ export function enterDefinition(initialValue: string) {
     popover: { element: enterDefinitionInputElement, position: 'left-down' },
     focus: { element: editableFocus(enterDefinitionElement), margin: editableMargin },
     nextCondition: createExpectedStateNextCondition(validInput(enterDefinitionInputElement)),
-    initialize: initialInputValue(enterDefinitionInputElement, initialValue),
+    initialize: initialInputValue(enterDefinitionInputElement, gettextCatalog.getString(initialValue)),
     reversible: true
   });
 }

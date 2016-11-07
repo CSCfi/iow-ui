@@ -3,6 +3,7 @@ import { KnownPredicateType } from '../../../entities/type';
 import { upperCaseFirst } from 'change-case';
 import { editableByTitle, input, editableFocus } from '../../selectors';
 import { validInput, initialInputValue, editableMarginInColumn } from '../../utils';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 export function focusPredicateLabel(parent: () => JQuery, type: KnownPredicateType, storyTitle: string) {
 
@@ -21,7 +22,7 @@ export function focusPredicateLabel(parent: () => JQuery, type: KnownPredicateTy
   });
 }
 
-export function enterPredicateLabel(parent: () => JQuery, type: KnownPredicateType, initialValue: string) {
+export function enterPredicateLabel(parent: () => JQuery, type: KnownPredicateType, initialValue: string, gettextCatalog: gettextCatalog) {
 
   const title = upperCaseFirst(type) + ' label';
   const enterPredicateLabelElement = editableByTitle(parent, title);
@@ -35,6 +36,6 @@ export function enterPredicateLabel(parent: () => JQuery, type: KnownPredicateTy
     focus: { element: editableFocus(enterPredicateLabelElement), margin: editableMarginInColumn },
     nextCondition: createExpectedStateNextCondition(validInput(enterPredicateLabelInputElement)),
     reversible: true,
-    initialize: initialInputValue(enterPredicateLabelInputElement, initialValue)
+    initialize: initialInputValue(enterPredicateLabelInputElement, gettextCatalog.getString(initialValue))
   });
 }

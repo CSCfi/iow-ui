@@ -4,14 +4,15 @@ import { createHelpWithDefaultHandler, InteractiveHelp, StoryLine } from './cont
 import { selectGroup } from './pages/frontPageHelp.po';
 import * as GroupPage from './groupPageHelp';
 import { KnownModelType } from '../entities/type';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
-function createNewModel(type: KnownModelType): StoryLine {
+function createNewModel(type: KnownModelType, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: `Guide through creating new ${type}`,
     description: `Guide through creating new ${type} description`,
-    items: [
+    items: () => [
       selectGroup,
-      ...GroupPage.createNewModelItems(type),
+      ...GroupPage.createNewModelItems(type, gettextCatalog),
       GroupPage.finishedCreateNewModelNotification(type)
     ]
   };
@@ -20,7 +21,7 @@ function createNewModel(type: KnownModelType): StoryLine {
 export class FrontPageHelpService {
 
   /* @ngInject */
-  constructor(private $uibModalStack: IModalStackService, private $location: ILocationService) {
+  constructor(private $uibModalStack: IModalStackService, private $location: ILocationService, private gettextCatalog: gettextCatalog) {
   }
 
   private returnToFrontPage() {
@@ -30,8 +31,8 @@ export class FrontPageHelpService {
 
   getHelps(): InteractiveHelp[] {
     return [
-      createHelpWithDefaultHandler(createNewModel('library'), this.returnToFrontPage.bind(this)),
-      createHelpWithDefaultHandler(createNewModel('profile'), this.returnToFrontPage.bind(this))
+      createHelpWithDefaultHandler(createNewModel('library', this.gettextCatalog), this.returnToFrontPage.bind(this)),
+      createHelpWithDefaultHandler(createNewModel('profile', this.gettextCatalog), this.returnToFrontPage.bind(this))
     ];
   }
 }

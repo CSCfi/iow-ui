@@ -6,19 +6,20 @@ import {
 import { modal, child } from '../../../selectors';
 import { predicateIdFromNamespaceId } from '../../../utils';
 import { KnownPredicateType } from '../../../../entities/type';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 export const searchPredicateModalElement = child(modal, '.search-predicate');
 
-export function filterForPredicate(namespaceId: string, predicateName: string, initialSearch: string) {
-  return filterForSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromNamespaceId(namespaceId, predicateName), initialSearch);
+export function filterForPredicate(namespaceId: string, predicateName: string, gettextCatalog: gettextCatalog) {
+  return filterForSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromNamespaceId(namespaceId, predicateName), gettextCatalog);
 }
 
-export function filterForNewPredicate(predicateName: string) {
-  return filterForAddNewResult(searchPredicateModalElement, predicateName, predicateName);
+export function filterForNewPredicate(predicateName: string, gettextCatalog: gettextCatalog) {
+  return filterForAddNewResult(searchPredicateModalElement, predicateName, gettextCatalog);
 }
 
 export function selectPredicate(namespaceId: string, predicateName: string) {
-  return selectSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromNamespaceId(namespaceId, predicateName), true);
+  return selectSearchResult(searchPredicateModalElement, predicateName, predicateIdFromNamespaceId(namespaceId, predicateName), true);
 }
 
 export function selectAddNewPredicateSearchResult(type: KnownPredicateType) {

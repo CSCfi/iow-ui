@@ -5,19 +5,20 @@ import {
 } from '../../modal/searchModalHelp.po';
 import { modal, child } from '../../../selectors';
 import { classIdFromNamespaceId } from '../../../utils';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const searchClassModal = child(modal, '.search-class');
 
-export function filterForClass(namespaceId: string, className: string, initialSearch: string) {
-  return filterForSearchResult(searchClassModal, className.toLowerCase(), classIdFromNamespaceId(namespaceId, className), initialSearch);
+export function filterForClass(namespaceId: string, className: string, gettextCatalog: gettextCatalog) {
+  return filterForSearchResult(searchClassModal, className, classIdFromNamespaceId(namespaceId, className), gettextCatalog);
 }
 
-export function filterForNewClass(className: string) {
-  return filterForAddNewResult(searchClassModal, className, className);
+export function filterForNewClass(className: string, gettextCatalog: gettextCatalog) {
+  return filterForAddNewResult(searchClassModal, className, gettextCatalog);
 }
 
 export function selectClass(namespaceId: string, className: string) {
-  return selectSearchResult(searchClassModal, className.toLowerCase(), classIdFromNamespaceId(namespaceId, className), true);
+  return selectSearchResult(searchClassModal, className, classIdFromNamespaceId(namespaceId, className), true);
 }
 
 export const selectAddNewClassSearchResult = selectAddNewResult(searchClassModal, 0, 'Select new creation');

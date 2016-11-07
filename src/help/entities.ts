@@ -15,7 +15,7 @@ export const exampleProfile = {
 
 export const exampleNewClass = {
   name: 'Tuote',
-  comment: 'asia joka tuotetaan',
+  comment: 'Asia joka tuotetaan',
   property: {
     attribute: {
       prefix: exampleImportedLibrary.prefix,
@@ -28,11 +28,6 @@ export const exampleNewClass = {
       comment: 'tapahtumaketju joka toteuttaa jotain'
     }
   }
-};
-
-export const exampleAssignedClass = {
-  namespaceId: exampleImportedLibrary.namespaceId,
-  name: 'Palvelu'
 };
 
 const palveluNimiId = '6cfbd054-2bfc-4e92-8642-477b035f59ee';

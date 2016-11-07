@@ -45,7 +45,7 @@ export interface InteractiveHelp extends HelpEventHandler {
 export interface StoryLine {
   title: string;
   description: string;
-  items: (Story|Notification)[];
+  items: () => (Story|Notification)[];
 }
 
 export interface Notification extends NotificationDetails {
@@ -79,7 +79,7 @@ export interface StoryDetails {
   denyInteraction?: boolean;
 }
 
-export function createHelpWithDefaultHandler(storyLine: StoryLine, onFinish: () => void) {
+export function createHelpWithDefaultHandler(storyLine: StoryLine, onFinish: () => void): InteractiveHelp {
   return {
     storyLine,
     onComplete: onFinish,

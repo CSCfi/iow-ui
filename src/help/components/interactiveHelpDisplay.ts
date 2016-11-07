@@ -14,6 +14,7 @@ import {
 import { contains } from '../../utils/array';
 import { ConfirmationModal } from '../../components/common/confirmationModal';
 import { moveCursorToEnd, scrollToTop } from '../utils';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 const popupAnimationTimeInMs = 300; // should match css help-popover transition time
 const arrowHeight = 13;
@@ -21,20 +22,27 @@ const arrowHeight = 13;
 export class InteractiveHelpDisplay {
 
   /* @ngInject */
-  constructor(private overlayService: OverlayService, private interactiveHelpService: InteractiveHelpService) {
+  constructor(private overlayService: OverlayService,
+              private interactiveHelpService: InteractiveHelpService,
+              private gettextCatalog: gettextCatalog) {
   }
 
   open(help: InteractiveHelp) {
 
-    if (!help || help.storyLine.items.length === 0) {
-      throw new Error('No stories defined');
+    if (!help) {
+      throw new Error('No help defined');
     }
 
     if (this.interactiveHelpService.isOpen()) {
       throw new Error('Cannot open help when another help is already open');
     }
 
-    const stateInitialization = () => help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset().then(() => false);
+    const originalGettextCatalogDebug = this.gettextCatalog.debug;
+
+    const stateInitialization = () => {
+      this.gettextCatalog.debug = false;
+      return help.onInit ? help.onInit(this.interactiveHelpService) : this.interactiveHelpService.reset().then(() => false);
+    };
 
     this.interactiveHelpService.open();
 
@@ -52,7 +60,10 @@ export class InteractiveHelpDisplay {
         stateInitialization: () => stateInitialization
       },
       disableScroll: true
-    }).result.then(() => this.interactiveHelpService.close());
+    }).result.then(() => {
+      this.interactiveHelpService.close();
+      this.gettextCatalog.debug = originalGettextCatalogDebug;
+    });
   }
 }
 
@@ -64,6 +75,7 @@ const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
 class InteractiveHelpController {
 
   item?: Story|Notification;
+  items: (Story|Notification)[];
   activeIndex = 0;
   changingLocation = false;
 
@@ -90,6 +102,12 @@ class InteractiveHelpController {
       continuing = willChangeLocation;
       // Reset expectation if navigation event happened before construction
       setTimeout(() => continuing = false, 500);
+      this.items = help.storyLine.items();
+
+      if (this.items.length === 0) {
+        throw new Error('No stories defined');
+      }
+
       this.showItem(0);
     });
 
@@ -163,7 +181,7 @@ class InteractiveHelpController {
 
   showItem(index: number) {
 
-    const item = this.help.storyLine.items[index];
+    const item = this.items[index];
 
     if (item.type === 'story' && item.initialize) {
       item.initialize();
@@ -540,7 +558,7 @@ class InteractiveHelpController {
     if (this.isCurrentFirstItem()) {
       return null;
     } else {
-      return this.help.storyLine.items[this.activeIndex - 1];
+      return this.items[this.activeIndex - 1];
     }
   }
 
@@ -612,7 +630,7 @@ class InteractiveHelpController {
   }
 
   isCurrentLastItem() {
-    return this.activeIndex === this.help.storyLine.items.length - 1;
+    return this.activeIndex === this.items.length - 1;
   }
 
   close(cancel: boolean) {
