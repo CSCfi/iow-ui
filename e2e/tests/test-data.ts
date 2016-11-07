@@ -7,7 +7,22 @@ export const library1Parameters = {
   prefix: 'e2e',
   language: ['fi', 'en'] as Language[],
   groupId: GroupPage.JHS_ID,
-  type: 'library' as KnownModelType
+  type: 'library' as KnownModelType,
+  classes: {
+    first: {
+      name: 'Luokka 1'
+    }
+  },
+  attributes: {
+    first: {
+      name: 'Attribuutti 1'
+    }
+  },
+  associations: {
+    first: {
+      name: 'Assosiaatio 1'
+    }
+  }
 };
 
 export const library2Parameters = {

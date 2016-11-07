@@ -1,14 +1,18 @@
 import Key = protractor.Key;
 import EC = protractor.ExpectedConditions;
 import { anyTextToBePresentInElement } from '../../util/expectation';
+import ElementFinder = protractor.ElementFinder;
 
 export class Modal {
 
-  element = element(by.css('.modal:first-child'));
-  title = this.element.$('modal-title');
-  body = this.element.$('modal-body');
+  element: ElementFinder;
+  title: ElementFinder;
+  body: ElementFinder;
 
-  constructor() {
+  constructor(modalClass?: string) {
+    this.element = element(by.css(modalClass ? `.modal-dialog .${modalClass}`: '.modal:first-child'));
+    this.title = this.element.$('modal-title');
+    this.element.$('modal-body');
     browser.wait(anyTextToBePresentInElement(this.title));
   }
 

@@ -22,43 +22,43 @@ describe('Model view', () => {
 
     it('Modifies model properties', () => {
       view.edit();
-      view.label.appendValue(' edit');
-      view.description.appendValue('Kuvaus');
-      view.language.addItem('pl');
+      view.form.label.appendValue(' edit');
+      view.form.description.appendValue('Kuvaus');
+      view.form.language.addItem('pl');
       view.saveAndReload();
 
-      expect(view.label.content.getText()).toBe(library1Parameters.label + ' edit');
-      expect(view.description.content.getText()).toBe('Kuvaus');
-      expect(view.language.content.getText()).toBe('fi, en, pl');
+      expect(view.form.label.content.getText()).toBe(library1Parameters.label + ' edit');
+      expect(view.form.description.content.getText()).toBe('Kuvaus');
+      expect(view.form.language.content.getText()).toBe('fi, en, pl');
     });
 
     it('Adds vocabulary', () => {
       view.edit();
-      const modal = view.vocabularies.addNew();
+      const modal = view.form.vocabularies.addNew();
       modal.selectResultByName(VocabulariesView.EOS);
       view.saveAndReload();
-      expect(view.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(true);
+      expect(view.form.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(true);
     });
 
     it('Removes vocabulary', () => {
       view.edit();
-      view.vocabularies.getRowByName(VocabulariesView.EOS).remove();
+      view.form.vocabularies.getRowByName(VocabulariesView.EOS).remove();
       view.saveAndReload();
-      expect(view.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(false);
+      expect(view.form.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(false);
     });
 
     it('Adds reference data', () => {
       view.edit();
-      const modal = view.referenceData.addNew();
+      const modal = view.form.referenceData.addNew();
       modal.search('haku');
       modal.selectResultById(ReferenceDataView.hakukelpoisuusId);
       modal.confirm();
       view.saveAndReload();
-      expect(view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).isPresent()).toBe(true);
+      expect(view.form.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).isPresent()).toBe(true);
     });
 
     it('Opens reference data details', () => {
-      const modal = view.referenceData.clickName(ReferenceDataView.hakukelpoisuus);
+      const modal = view.form.referenceData.clickName(ReferenceDataView.hakukelpoisuus);
       expect(modal.label.content.getText()).toBe(ReferenceDataView.hakukelpoisuus);
       modal.close();
       expect(modal.isClosed()).toBe(true);
@@ -66,74 +66,74 @@ describe('Model view', () => {
 
     it('Removes reference data', () => {
       view.edit();
-      view.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).remove();
+      view.form.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).remove();
       view.saveAndReload();
-      expect(view.referenceData.table.isEmpty()).toBe(true);
+      expect(view.form.referenceData.table.isEmpty()).toBe(true);
     });
 
     it('Adds other library as namespace', () => {
       view.edit();
-      const modal = view.namespaces.addNew();
+      const modal = view.form.namespaces.addNew();
       modal.search('E2E');
       modal.selectResultByName(library2Parameters.label);
       view.saveAndReload();
-      expect(view.namespaces.getRowByName(library2Parameters.label).isPresent()).toBe(true);
+      expect(view.form.namespaces.getRowByName(library2Parameters.label).isPresent()).toBe(true);
     });
 
     it('Adds external namespace', () => {
       view.edit();
-      const modal = view.namespaces.addNew();
+      const modal = view.form.namespaces.addNew();
       const addModal = modal.createNewNamespace();
       addModal.label.setValue('Foobar');
       addModal.namespace.setValue('http://www.google.com/');
       addModal.prefix.setValue('foo');
       addModal.confirm();
       view.saveAndReload();
-      expect(view.namespaces.getRowByName('Foobar').isPresent()).toBe(true);
+      expect(view.form.namespaces.getRowByName('Foobar').isPresent()).toBe(true);
     });
 
     it('Edits external namespace', () => {
       view.edit();
-      const modal = view.namespaces.editRowByName('Foobar');
+      const modal = view.form.namespaces.editRowByName('Foobar');
       modal.label.appendValue(' edit');
       modal.confirm();
       view.saveAndReload();
-      expect(view.namespaces.getRowByName('Foobar edit').isPresent()).toBe(true);
+      expect(view.form.namespaces.getRowByName('Foobar edit').isPresent()).toBe(true);
     });
 
     it('Removes namespaces', () => {
       view.edit();
-      view.namespaces.getRowByName(library2Parameters.label).remove();
-      view.namespaces.getRowByName('Foobar edit').remove();
+      view.form.namespaces.getRowByName(library2Parameters.label).remove();
+      view.form.namespaces.getRowByName('Foobar edit').remove();
       view.saveAndReload();
-      expect(view.namespaces.table.isEmpty()).toBe(true);
+      expect(view.form.namespaces.table.isEmpty()).toBe(true);
     });
 
     it('Adds link', () => {
       view.edit();
-      const addModal = view.links.addNew();
+      const addModal = view.form.links.addNew();
       addModal.homepage.setValue('http://example.org');
       addModal.label.setValue('Example');
       addModal.description.setValue('Example description');
       addModal.confirm();
       view.saveAndReload();
-      expect(view.links.getRowByName('Example').isPresent()).toBe(true);
+      expect(view.form.links.getRowByName('Example').isPresent()).toBe(true);
     });
 
     it('Edits link', () => {
       view.edit();
-      const editModal = view.links.editRowByName('Example');
+      const editModal = view.form.links.editRowByName('Example');
       editModal.label.appendValue('2');
       editModal.confirm();
       view.saveAndReload();
-      expect(view.links.getRowByName('Example2').isPresent()).toBe(true);
+      expect(view.form.links.getRowByName('Example2').isPresent()).toBe(true);
     });
 
     it('Removes link', () => {
       view.edit();
-      view.links.removeRowByName('Example2');
+      view.form.links.removeRowByName('Example2');
       view.saveAndReload();
-      expect(view.links.table.isEmpty()).toBe(true);
+      expect(view.form.links.table.isEmpty()).toBe(true);
     });
   });
 });

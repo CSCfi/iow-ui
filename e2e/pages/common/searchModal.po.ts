@@ -1,5 +1,6 @@
 import { Modal } from './modal.po';
 import { SubmitButton } from './component/submitButton.po';
+import EC = protractor.ExpectedConditions;
 
 export class SearchModal extends Modal {
 
@@ -8,16 +9,32 @@ export class SearchModal extends Modal {
   loadingIndicator = this.searchResults.$('ajax-loading-indicator');
   confirmButton = new SubmitButton(this.element.$('modal-buttons button.confirm'));
 
-  search(text: string) {
-    return browser.wait(protractor.ExpectedConditions.stalenessOf(this.loadingIndicator)).then(() => this.searchElement.sendKeys(text));
+  constructor(modalClass?: string) {
+    super(modalClass);
+  }
+
+  search(text: string, clear = false) {
+    return browser.wait(protractor.ExpectedConditions.stalenessOf(this.loadingIndicator)).then(() => {
+      if (clear) {
+        this.searchElement.clear();
+      }
+      return this.searchElement.sendKeys(text);
+    });
   }
 
   findResultElementByName(name: string) {
+    this.waitForResults();
     return this.searchResults.element(by.cssContainingText('h5', name));
   }
 
   findResultElementById(id: string) {
+    this.waitForResults();
     return this.searchResults.element(by.id(id));
+  }
+
+  findAddNewResultElementByIndex(index: number) {
+    this.waitForResults();
+    return this.searchResults.all(by.css(`.search-result.add-new`)).get(index);
   }
 
   selectResultByName(name: string) {
@@ -30,7 +47,17 @@ export class SearchModal extends Modal {
       .then(() => this.findResultElementById(id).click());
   }
 
+  selectAddNewResultByIndex(index: number) {
+    return browser.wait(protractor.until.elementLocated(by.css('search-results')))
+      .then(() => this.findAddNewResultElementByIndex(index).click());
+  }
+
   confirm() {
     this.confirmButton.submit();
+    browser.wait(EC.not(EC.presenceOf(this.element)));
+  }
+
+  private waitForResults() {
+    browser.wait(EC.presenceOf(this.searchResults.$('.search-result')));
   }
 }
