@@ -1,6 +1,5 @@
 import { module as mod } from './module';
-import { ISCEService, sanitize } from 'angular';
-import ISanitizeService = sanitize.ISanitizeService;
+import { ISCEService } from 'angular';
 import { Localizable, LanguageContext } from '../../entities/contract';
 
 mod.directive('paragraphize', () => {
@@ -23,10 +22,9 @@ class ParagraphizeController {
   context: LanguageContext;
 }
 
-// FIXME: has a problem with scandinavian characters rendered as entities
-mod.filter('paragraphize', /* @ngInject */ ($sce: ISCEService, $sanitize: ISanitizeService) => {
+// FIXME: sanitize has a problem with scandinavian characters rendered as entities
+mod.filter('paragraphize', /* @ngInject */ ($sce: ISCEService) => {
   return (text: string) => {
-    console.log($sanitize);
     return $sce.trustAsHtml(applyParagraph(text));
   };
 });
