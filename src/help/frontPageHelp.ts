@@ -8,7 +8,7 @@ import { KnownModelType } from '../entities/type';
 function createNewModel(type: KnownModelType): StoryLine {
   return {
     title: `Guide through creating new ${type}`,
-    description: 'Diipadaa',
+    description: `Guide through creating new ${type} description`,
     items: [
       selectGroup,
       ...GroupPage.createNewModelItems(type),
