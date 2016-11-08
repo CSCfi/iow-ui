@@ -21,7 +21,7 @@ export function isModalCancel(err: any) {
 const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
 
 function normalizeUrl(url: string): string {
-  return url.replace(/^#/, '').replace(/:/g, '%3A').replace(uuidRegex, '');
+  return url.replace(/^#/, '').replace(/:/g, '%3A').replace(uuidRegex, '').replace(/\/+$/, '');
 }
 
 export function nextUrl($location: ILocationService, next: string) {
