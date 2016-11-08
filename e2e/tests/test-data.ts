@@ -11,10 +11,6 @@ export const library1Parameters = {
   classes: {
     first: {
       name: 'Luokka 1'
-    },
-    second: {
-      name: 'Asia',
-      conceptId: 'http://jhsmeta.fi/skos/J392'
     }
   },
   attributes: {
@@ -34,5 +30,11 @@ export const library2Parameters = {
   prefix: 'e2e2',
   language: ['fi', 'en'] as Language[],
   groupId: GroupPage.JHS_ID,
-  type: 'library' as KnownModelType
+  type: 'library' as KnownModelType,
+  classes: {
+    first: {
+      name: 'Asia',
+      conceptId: 'http://jhsmeta.fi/skos/J392'
+    }
+  }
 };
