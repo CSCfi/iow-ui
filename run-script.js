@@ -1,20 +1,11 @@
+require('core-js');
 const path = require('path');
 const tsconfig = require('./tsconfig.json');
 
-require('ts-node').register(
-  Object.assign(tsconfig, {
-    compilerOptions: {
-      module: 'commonjs',
-      types: [
-        'node',
-        'webpack',
-        'karma',
-        'protractor'
-      ]
-    },
-    files: []
-  })
-);
+tsconfig.compilerOptions.types = [ 'node', 'webpack', 'karma', 'protractor' ];
+tsconfig.files = [];
+
+require('ts-node').register(tsconfig);
 
 if (process.argv.length !== 3) {
   throw new Error('Must contain exactly one parameter');
