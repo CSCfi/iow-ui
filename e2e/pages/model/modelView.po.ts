@@ -32,15 +32,11 @@ export class ModelView {
   }
 
   ensureOpen() {
-    if (this.isClosed()) {
-      this.toggle();
-    }
-  }
-
-  ensureClosed() {
-    if (this.isOpen()) {
-      this.toggle();
-    }
+    this.isClosed().then(closed => {
+      if (closed) {
+        this.toggle();
+      }
+    });
   }
 
   isOpen() {
