@@ -1,6 +1,6 @@
 import { Language } from '../../src/utils/language';
 import { GroupPage } from '../pages/group/groupPage.po';
-import { KnownModelType } from '../../src/entities/type';
+import { KnownModelType, KnownPredicateType } from '../../src/entities/type';
 import { modelIdFromPrefix, classIdFromNamespaceId } from '../util/resource';
 
 export const library2Parameters = {
@@ -13,6 +13,10 @@ export const library2Parameters = {
     first: {
       name: 'Asia',
       conceptId: 'http://jhsmeta.fi/skos/J392'
+    },
+    second: {
+      name: 'Henkilö',
+      conceptId: 'http://jhsmeta.fi/skos/J7'
     }
   }
 };
@@ -25,7 +29,13 @@ export const library1Parameters = {
   type: 'library' as KnownModelType,
   classes: {
     first: {
-      name: 'Luokka 1'
+      name: 'Luokka 1',
+      properties: {
+        first: {
+          name: 'Property 1',
+          type: 'attribute' as KnownPredicateType
+        }
+      }
     },
     second: {
       name: library2Parameters.classes.first.name,
@@ -52,7 +62,7 @@ export const profileParameters = {
   type: 'profile' as KnownModelType,
   classes: {
     first: {
-      name: 'Asia',
+      name: library2Parameters.classes.first.name,
       id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.name)
     }
   }
