@@ -13,6 +13,20 @@ describe('Add resources', () => {
     navbar.ensureLoggedIn();
   });
 
+  it('adds new class using existing concept', () => {
+
+    const searchClass = page.addClass();
+    searchClass.search(library1Parameters.classes.second.name);
+    const searchConcept = searchClass.selectAddNew();
+
+    searchConcept.selectResultById(library1Parameters.classes.second.conceptId);
+    searchConcept.confirm();
+
+    const view = page.classView('class');
+    view.saveAndReload();
+    expect(view.form.label.content.getText()).toBe(library1Parameters.classes.second.name);
+  });
+
   it('adds new class using concept suggestion', () => {
 
     const searchClass = page.addClass();

@@ -11,6 +11,10 @@ export const library1Parameters = {
   classes: {
     first: {
       name: 'Luokka 1'
+    },
+    second: {
+      name: 'Asia',
+      conceptId: 'http://jhsmeta.fi/skos/J392'
     }
   },
   attributes: {
