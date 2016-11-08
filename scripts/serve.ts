@@ -8,12 +8,21 @@ const port = 9001;
 const apiPort = 8084;
 
 function applyHotLoading(config: webpack.Configuration) {
-  return Object.assign({}, config, {
-    entry: Object.assign({}, config.entry, {
-      dev: `webpack-dev-server/client?http://${hostname}:${port}/`,
-      hot: 'webpack/hot/dev-server'
-    })
-  });
+
+  function appendEntry(entry: any) {
+
+    const result: any = {
+      client: `webpack-dev-server/client?http://${hostname}:${port}/`
+    };
+
+    for (const [key, value] of Array.from(Object.entries(entry))) {
+      result[key] = [value, 'webpack/hot/dev-server'];
+    }
+
+    return result;
+  }
+
+  return Object.assign({}, config, { entry: appendEntry(config.entry) });
 }
 
 const compiler = applyProgressBar(webpack(applyHotLoading(serveConfig)));
