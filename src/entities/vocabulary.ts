@@ -1,4 +1,4 @@
-import { config } from '../config';
+import { config } from '../../config';
 import {
   localizableSerializer, dateSerializer,
   optional, userLoginSerializer, stringSerializer, identitySerializer

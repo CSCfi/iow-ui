@@ -1,5 +1,5 @@
 import { IHttpService, IPromise } from 'angular';
-import { config } from '../config';
+import { config } from '../../config';
 import { EditableEntity, GraphData } from '../entities/contract';
 import { FrameService } from './frameService';
 import { usageFrame } from '../entities/frames';

@@ -1,4 +1,4 @@
-import { config } from '../config';
+import { config } from '../../config';
 import { expandContextWithKnownModels, collectIds } from '../utils/entity';
 import { index } from '../utils/array';
 import { requireDefined } from '../utils/object';

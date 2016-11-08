@@ -2,7 +2,7 @@ import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
 import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';
-import { config } from '../config';
+import { config } from '../../config';
 import { Uri, Urn } from '../entities/uri';
 import { reverseMapType } from '../entities/type';
 import { expandContextWithKnownModels } from '../utils/entity';

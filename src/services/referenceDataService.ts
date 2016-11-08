@@ -1,5 +1,5 @@
 import { IHttpService, IPromise, IQService } from 'angular';
-import { config } from '../config';
+import { config } from '../../config';
 import { Uri } from '../entities/uri';
 import { Language } from '../utils/language';
 import { normalizeAsArray, flatten } from '../utils/array';

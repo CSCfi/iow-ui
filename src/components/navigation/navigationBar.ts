@@ -4,7 +4,7 @@ import { UserService } from '../../services/userService';
 import { LoginModal } from './loginModal';
 import { availableUILanguages, UILanguage } from '../../utils/language';
 import { User } from '../../entities/user';
-import { config } from '../../config';
+import { config } from '../../../config';
 import { HelpSelectionModal } from '../common/helpSelectionModal';
 import { InteractiveHelp } from '../../help/contract';
 import { HelpProvider } from '../common/helpProvider';

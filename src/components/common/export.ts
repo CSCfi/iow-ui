@@ -1,6 +1,6 @@
 import { IScope, IWindowService } from 'angular';
 import * as moment from 'moment';
-import { config } from '../../config';
+import { config } from '../../../config';
 import { LanguageService } from '../../services/languageService';
 import { module as mod }  from './module';
 import { Model } from '../../entities/model';

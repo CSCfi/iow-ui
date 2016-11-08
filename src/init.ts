@@ -3,7 +3,7 @@
 
 import './vendor/modernizr';
 import './styles/loading.scss';
-import { config } from './config';
+import { config } from '../config';
 const pw = require('please-wait');
 
 const logo = require('./assets/logo-01.svg');

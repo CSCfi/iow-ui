@@ -1,6 +1,6 @@
 import { IHttpService, IPromise, IQService } from 'angular';
 import * as moment from 'moment';
-import { config } from '../config';
+import { config } from '../../config';
 import { upperCaseFirst } from 'change-case';
 import { Uri, Urn } from '../entities/uri';
 import { Language } from '../utils/language';

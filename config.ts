@@ -1,4 +1,4 @@
-import { assertNever } from './utils/object';
+import { assertNever } from './src/utils/object';
 
 export type Environment = 'local'
                         | 'development'

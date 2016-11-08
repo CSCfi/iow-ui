@@ -1,6 +1,6 @@
 import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
 import { upperCaseFirst } from 'change-case';
-import { config } from '../config';
+import { config } from '../../config';
 import { Uri, Url } from '../entities/uri';
 import { Language } from '../utils/language';
 import { requireDefined } from '../utils/object';

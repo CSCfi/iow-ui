@@ -1,5 +1,5 @@
 import { IPromise, IHttpService } from 'angular';
-import { config } from '../config';
+import { config } from '../../config';
 import { Language } from '../utils/language';
 import { GraphData } from '../entities/contract';
 import { FrameService } from './frameService';

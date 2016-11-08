@@ -1,5 +1,5 @@
 import { IHttpService, IPromise } from 'angular';
-import { config } from '../config';
+import { config } from '../../config';
 
 export class ResetService {
 

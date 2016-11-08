@@ -3,7 +3,7 @@ import { upperCaseFirst, lowerCaseFirst } from 'change-case';
 import { any, contains, keepMatching } from '../utils/array';
 import { Property } from '../entities/class';
 import { createScrollWithDefault } from './contract';
-import { config } from '../config';
+import { config } from '../../config';
 
 export const editableMargin = { left: 20, right: 20 };
 export const editableMarginInColumn = Object.assign({}, editableMargin, { bottom: 15 });

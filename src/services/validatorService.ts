@@ -1,7 +1,7 @@
 import { IPromise, IHttpService, IQService } from 'angular';
 import { Uri } from '../entities/uri';
 import { pascalCase, camelCase } from 'change-case';
-import { config } from '../config';
+import { config } from '../../config';
 
 export interface ValidatorService {
   classDoesNotExist(id: Uri): IPromise<boolean>;

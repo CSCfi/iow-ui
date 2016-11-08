@@ -7,7 +7,7 @@ import { ResetService } from './resetService';
 import { Uri, Url } from '../entities/uri';
 import { DataType } from '../entities/dataTypes';
 import { identity } from '../utils/function';
-import { config } from '../config';
+import { config } from '../../config';
 import { Localizable } from '../entities/contract';
 import { State, ConstraintType, KnownModelType, KnownPredicateType } from '../entities/type';
 import { ImportedNamespace, Model } from '../entities/model';
