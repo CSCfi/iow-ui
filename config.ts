@@ -1,5 +1,3 @@
-import { assertNever } from './src/utils/object';
-
 export type Environment = 'local'
                         | 'development'
                         | 'production';
@@ -50,9 +48,13 @@ class EnvironmentConfig implements Config {
       case 'development':
         return `http://iowdev.csc.fi/ns/${prefix}`;
       default:
-        return assertNever(this.environment, 'Unsupported environment: ' + this.environment);
+        return assertNever(this.environment);
     }
   }
+}
+
+function assertNever(environment: never): never {
+  throw new Error('Unsupported environment: ' + environment);
 }
 
 export const config: Config = new EnvironmentConfig();
