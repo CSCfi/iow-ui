@@ -32,7 +32,6 @@ const mod = angular.module('iow-ui', [
   require('angular-animate'),
   require('angular-messages'),
   require('angular-route'),
-  require('angular-sanitize'),
   require('angular-ui-bootstrap'),
   'gettext',
   'checklist-model',

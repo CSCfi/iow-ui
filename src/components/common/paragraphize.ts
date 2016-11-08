@@ -22,15 +22,13 @@ class ParagraphizeController {
   context: LanguageContext;
 }
 
-// FIXME: sanitize has a problem with scandinavian characters rendered as entities
 mod.filter('paragraphize', /* @ngInject */ ($sce: ISCEService) => {
   return (text: string) => {
     return $sce.trustAsHtml(applyParagraph(text));
   };
 });
 
-const sanitizedLineFeed = '&#10;';
-const paragraphRegex = new RegExp(`(.*?${sanitizedLineFeed}${sanitizedLineFeed})`);
+const paragraphRegex = new RegExp(`(.*?\n\n})`);
 
 function applyParagraph(text: string): string {
   if (!text) {
