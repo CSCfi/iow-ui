@@ -16,7 +16,13 @@ export const library2Parameters = {
     },
     second: {
       name: 'Henkilö',
-      conceptId: 'http://jhsmeta.fi/skos/J7'
+      conceptId: 'http://jhsmeta.fi/skos/J7',
+      properties: {
+        first: {
+          name: 'Property 1',
+          type: 'attribute' as KnownPredicateType
+        }
+      }
     }
   }
 };
@@ -30,12 +36,6 @@ export const library1Parameters = {
   classes: {
     first: {
       name: 'Luokka 1',
-      properties: {
-        first: {
-          name: 'Property 1',
-          type: 'attribute' as KnownPredicateType
-        }
-      }
     },
     second: {
       name: library2Parameters.classes.first.name,
@@ -64,6 +64,10 @@ export const profileParameters = {
     first: {
       name: library2Parameters.classes.first.name,
       id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.name)
+    },
+    second: {
+      name: library2Parameters.classes.second.name,
+      id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.second.name)
     }
   }
 };

@@ -3,6 +3,7 @@ import { NavBar } from '../pages/common/navbar.po';
 import { library1Parameters, library2Parameters, profileParameters } from './test-data';
 import { ClassView } from '../pages/editor/classView.po';
 import { classNameToResourceId } from '../util/resource';
+import { AddPropertiesFromClassModal } from '../pages/editor/modal/addPropertiesFromClassModal.po';
 
 const navbar = new NavBar();
 
@@ -120,7 +121,7 @@ describe('Add resources', () => {
     let view: ClassView;
 
     beforeEach(() => {
-      page = ModelPage.navigateToResource(library1Parameters.prefix, library1Parameters.type, classNameToResourceId(library1Parameters.classes.first.name));
+      page = ModelPage.navigateToResource(library2Parameters.prefix, library2Parameters.type, classNameToResourceId(library2Parameters.classes.second.name));
       view = page.classView('class')
     });
 
@@ -129,15 +130,31 @@ describe('Add resources', () => {
       view.edit();
       const searchPredicate = view.addProperty();
 
-      searchPredicate.search(library1Parameters.classes.first.properties.first.name);
-      const searchConcept = searchPredicate.selectAddNew(library1Parameters.classes.first.properties.first.type);
+      searchPredicate.search(library2Parameters.classes.second.properties.first.name);
+      const searchConcept = searchPredicate.selectAddNew(library2Parameters.classes.second.properties.first.type);
       searchConcept.suggestNewConcept();
       searchConcept.definition.appendValue('Definition');
       searchConcept.confirm();
       searchPredicate.confirm();
 
       view.saveAndReload();
-      expect(view.form.getProperty(0).label.content.getText()).toBe(library1Parameters.classes.first.properties.first.name);
+      expect(view.form.getProperty(0).label.content.getText()).toBe(library2Parameters.classes.second.properties.first.name);
     });
+  });
+
+  it('specializes class with properties from library', () => {
+
+    const page = ModelPage.navigateToExistingModel(profileParameters.prefix, profileParameters.type);
+
+    const searchClass = page.addClass();
+    searchClass.search(profileParameters.classes.second.name);
+    searchClass.selectResultById(profileParameters.classes.second.id);
+    searchClass.confirm();
+
+    new AddPropertiesFromClassModal().confirm();
+
+    const view = page.classView('shape');
+    view.saveAndReload();
+    expect(view.form.label.content.getText()).toBe(profileParameters.classes.second.name);
   });
 });
