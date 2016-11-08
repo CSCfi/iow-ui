@@ -1,7 +1,6 @@
 import { ModelPage } from '../pages/model/modelPage.po';
 import { NavBar } from '../pages/common/navbar.po';
-import { library1Parameters, library2Parameters } from './test-data';
-import { classIdFromNamespaceId, modelIdFromPrefix } from '../util/resource';
+import { library1Parameters, library2Parameters, profileParameters } from './test-data';
 
 const navbar = new NavBar();
 
@@ -83,12 +82,26 @@ describe('Add resources', () => {
     const page = ModelPage.navigateToExistingModel(library1Parameters.prefix, library1Parameters.type);
 
     const searchClass = page.addClass();
-    searchClass.search(library2Parameters.classes.first.name);
-    searchClass.selectResultById(classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.name));
+    searchClass.search(library1Parameters.classes.second.name);
+    searchClass.selectResultById(library1Parameters.classes.second.id);
     searchClass.confirm();
 
     const view = page.classView('class');
     view.reload();
-    expect(view.form.label.content.getText()).toBe(library2Parameters.classes.first.name);
+    expect(view.form.label.content.getText()).toBe(library1Parameters.classes.second.name);
+  });
+
+  it('specializes class without properties from library', () => {
+
+    const page = ModelPage.navigateToExistingModel(profileParameters.prefix, profileParameters.type);
+
+    const searchClass = page.addClass();
+    searchClass.search(profileParameters.classes.first.name);
+    searchClass.selectResultById(profileParameters.classes.first.id);
+    searchClass.confirm();
+
+    const view = page.classView('shape');
+    view.saveAndReload();
+    expect(view.form.label.content.getText()).toBe(profileParameters.classes.first.name);
   });
 });
