@@ -10,6 +10,7 @@ export function focusClass(parent: () => JQuery) {
 
   return createStory({
     title: 'Class is here',
+    content: 'Class is here info',
     popover: { element: focusClassElement, position: 'top-right' },
     focus: { element: focusClassElement },
     denyInteraction: true,
@@ -23,6 +24,7 @@ export function focusOpenProperty(parent: () => JQuery) {
 
   return createStory({
     title: 'Property is here',
+    content: 'Property is here info',
     scroll: createScrollNone(),
     popover: { element: focusOpenPropertyElement, position: 'right-down' },
     focus: { element: focusOpenPropertyElement, margin: { left: 10, right: 10, top: 0, bottom: 10 } },

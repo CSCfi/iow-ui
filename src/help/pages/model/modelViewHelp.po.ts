@@ -11,7 +11,7 @@ export function modifyModel(type: KnownModelType) {
   return createStory({
 
     title: 'Modify ' + type,
-    content: 'Diipadaa',
+    content: 'Modify ' + type + ' description',
     popover: { element: modifyModelElement, position: 'left-down' },
     focus: { element: modifyModelElement },
     nextCondition: createModifyingClickNextCondition(modifyModelElement)
@@ -22,7 +22,7 @@ const requireNamespaceElement = child(modelView, 'imported-namespaces-view butto
 export const requireNamespace = createStory({
 
   title: 'Add reference to namespace',
-  content: 'Diipadaa',
+  content: 'Add reference to namespace description',
   popover: { element: requireNamespaceElement, position: 'left-down' },
   focus: { element: requireNamespaceElement },
   nextCondition: createClickNextCondition(requireNamespaceElement)
@@ -33,7 +33,7 @@ const saveModelChangesElement = child(modelView, 'button.save');
 export const saveModelChanges = createStory({
 
   title: 'Save changes',
-  content: 'Diipadaa',
+  content: 'Changes need to be saved',
   popover: { element: saveModelChangesElement, position: 'left-down' },
   focus: { element: saveModelChangesElement },
   nextCondition: createModifyingClickNextCondition(saveModelChangesElement)
@@ -43,7 +43,7 @@ const focusNamespacesElement = child(modelView, 'imported-namespaces-view editab
 export const focusNamespaces = createStory({
   title: 'Imported namespaces are here',
   scroll: createScrollNone(),
-  content: 'Diipadaa',
+  content: 'Imported namespaces can be used to link resources to existing standards',
   popover: { element: focusNamespacesElement, position: 'left-down' },
   focus: { element: focusNamespacesElement },
   denyInteraction: true,

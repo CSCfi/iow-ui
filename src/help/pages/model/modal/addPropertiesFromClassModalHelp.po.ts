@@ -12,7 +12,7 @@ export function selectProperties(title: string, expectProperties?: string[]) {
   return createStory({
 
     title: title,
-    content: 'Diipadaa',
+    content: title + ' info',
     popover: { element: selectPropertiesElement, position: 'left-down' },
     focus: { element: selectPropertiesElement },
     nextCondition: createExpectedStateNextCondition(() => {

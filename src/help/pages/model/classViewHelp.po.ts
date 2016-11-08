@@ -8,7 +8,7 @@ const modifyClassElement = child(classView, 'button.edit');
 export const modifyClass = createStory({
 
   title: 'Modify class',
-  content: 'Diipadaa',
+  content: 'Classes can be modified',
   scroll: createScrollWithDefault(classView),
   popover: { element: modifyClassElement, position: 'left-down' },
   focus: { element: modifyClassElement },
@@ -19,7 +19,7 @@ const saveClassChangesElement = child(classView, 'button.save');
 export const saveClassChanges = createStory({
 
   title: 'Save changes',
-  content: 'Diipadaa',
+  content: 'Changes need to be saved',
   scroll: createScrollNone(),
   popover: { element: saveClassChangesElement, position: 'left-down' },
   focus: { element: saveClassChangesElement },

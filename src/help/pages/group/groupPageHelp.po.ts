@@ -8,7 +8,7 @@ export function startModelCreation(type: KnownModelType) {
   return createStory({
 
     title: 'Add ' + type,
-    content: 'Diipadaa',
+    content: 'Add ' + type + ' description',
     popover: { element: startModelCreationElement, position: 'left-down' },
     focus: { element: startModelCreationElement },
     nextCondition: createClickNextCondition(startModelCreationElement)

@@ -50,7 +50,7 @@ const enterModelLanguageInputElement = multiInput(enterModelLanguageElement);
 export const enterModelLanguage = createStory({
 
   title: 'Model languages',
-  content: 'Diipadaa',
+  content: 'Model languages info',
   popover: { element: enterModelLanguageInputElement, position: 'left-down' },
   focus: { element: editableFocus(enterModelLanguageElement), margin: editableMultipleMargin },
   reversible: true,
@@ -59,9 +59,7 @@ export const enterModelLanguage = createStory({
 
 const createModelElement = child(modal, 'button.create');
 export const createModel = createStory({
-
   title: 'Create new',
-  content: 'Create new',
   popover: { element: createModelElement, position: 'top-left' },
   focus: { element: createModelElement },
   nextCondition: createNavigatingClickNextCondition(createModelElement)

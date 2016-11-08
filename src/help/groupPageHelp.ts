@@ -44,14 +44,14 @@ export function createNewModelItems(type: KnownModelType, gettextCatalog: gettex
 export function finishedCreateNewModelNotification(type: KnownModelType): Notification {
   return createNotification({
     title: `Congratulations for completing ${type} creation!`,
-    content: 'Diipadaa'
+    content: `Congratulations for completing ${type} creation! description`
   });
 }
 
 function createNewModel(type: KnownModelType, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: `Guide through creating new ${type}`,
-    description: 'Diipadaa',
+    description: `Guide through creating new ${type} description`,
     items: () => [
       ...createNewModelItems(type, gettextCatalog),
       finishedCreateNewModelNotification(type)

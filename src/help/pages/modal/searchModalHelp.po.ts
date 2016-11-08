@@ -23,7 +23,7 @@ export function filterForSearchResult(modalParent: () => JQuery, label: string, 
   return createStory({
 
     title: `Search for ${label.toLowerCase()}`,
-    content: 'Diipadaa',
+    content: `Search for ${label.toLowerCase()} info`,
     popover: { element: filterForSearchResultTextSearchElement, position: 'bottom-right' },
     focus: { element: filterForSearchResultTextSearchElement },
     nextCondition: createExpectedStateNextCondition(elementExists(searchResult(modalParent, expectedResultId))),
@@ -39,7 +39,7 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
   return createStory({
 
     title: `Select ${label.toLowerCase()}`,
-    content: 'Diipadaa',
+    content: `Select ${label.toLowerCase()} info`,
     scroll: createScrollWithElement(searchResultsElement(modalParent), selectResultElement),
     popover: { element: selectResultElement, position: 'left-down' },
     focus: { element: selectResultElement },
@@ -58,7 +58,7 @@ export function filterForAddNewResult(modalParent: () => JQuery, searchFor: stri
   return createStory({
 
     title: `Search for ${searchFor.toLowerCase()}`,
-    content: 'Diipadaa',
+    content: `Search for ${searchFor.toLowerCase()} info`,
     popover: { element: filterForAddNewElement, position: 'bottom-right' },
     focus: { element: filterForAddNewElement },
     nextCondition: createExpectedStateNextCondition(
@@ -79,7 +79,7 @@ export function selectAddNewResult(modalParent: () => JQuery, addNewIndex: numbe
 
   return createStory({
     title: title,
-    content: 'Diipadaa',
+    content: title + ' info',
     scroll: createScrollWithElement(selectAddNewSearchResultsElement, selectAddNewElement),
     popover: { element: selectAddNewElement, position: 'bottom-right' },
     focus: { element: selectAddNewElement },

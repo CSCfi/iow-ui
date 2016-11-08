@@ -21,6 +21,7 @@ const enterVocabularyInputElement = input(enterVocabularyElement);
 export const enterVocabulary = createStory({
 
   title: 'Vocabulary',
+  content: 'Select the vocabulary that is missing the required concept',
   popover: { element: enterVocabularyInputElement, position: 'left-down' },
   focus: { element: editableFocus(enterVocabularyElement), margin: editableSelectMargin },
   nextCondition: createExpectedStateNextCondition(validInput(enterVocabularyInputElement)),
@@ -47,7 +48,7 @@ export function enterDefinition(initialValue: string, gettextCatalog: gettextCat
   return createStory({
 
     title: 'Definition',
-    content: 'Definition info',
+    content: 'Suggest definition or description for the concept',
     popover: { element: enterDefinitionInputElement, position: 'left-down' },
     focus: { element: editableFocus(enterDefinitionElement), margin: editableMargin },
     nextCondition: createExpectedStateNextCondition(validInput(enterDefinitionInputElement)),

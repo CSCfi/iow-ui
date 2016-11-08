@@ -5,7 +5,7 @@ const saveUnsavedModelElement = child(modelView, 'button.save');
 export const saveUnsavedModel = createStory({
 
   title: 'Save changes',
-  content: 'Diipadaa',
+  content: 'Changes need to be saved',
   popover: { element: saveUnsavedModelElement, position: 'left-down' },
   focus: { element: saveUnsavedModelElement },
   nextCondition: createNavigatingClickNextCondition(saveUnsavedModelElement)

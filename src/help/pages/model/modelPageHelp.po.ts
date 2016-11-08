@@ -13,7 +13,7 @@ export function openModelDetails(type: KnownModelType) {
   return createStory({
 
     title: `Open ${type} details`,
-    content: 'Diipadaa',
+    content: `Open ${type} details description`,
     scroll: scrollToTop,
     popover: { element: openModelDetailsElement, position: 'bottom-right' },
     focus: { element: openModelDetailsElement },
@@ -30,7 +30,7 @@ export function openAddResource(type: 'class' | KnownPredicateType) {
     popover: { element: openAddResourceElement, position: 'right-down' },
     focus: { element: openAddResourceElement },
     title: 'Add ' + type,
-    content: 'Diipadaa',
+    content: 'Add ' + type + " description",
     nextCondition: createClickNextCondition(openAddResourceElement)
   });
 }
@@ -44,7 +44,7 @@ export function selectClass(namespaceId: string, name: string) {
     popover: { element: selectClassElement, position: 'right-down' },
     focus: { element: selectClassElement },
     title: 'Select ' + name.toLowerCase(),
-    content: 'Diipadaa',
+    content: 'Select ' + name.toLowerCase() + ' description',
     nextCondition: createNavigatingClickNextCondition(selectClassElement)
   });
 }

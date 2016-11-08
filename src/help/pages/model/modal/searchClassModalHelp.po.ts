@@ -23,6 +23,6 @@ export function selectClass(namespaceId: string, className: string) {
 
 export const selectAddNewClassSearchResult = selectAddNewResult(searchClassModal, 0, 'Select new creation');
 
-export const focusSelectedClass = focusSearchSelection(searchClassModal, 'Class is here', 'Diipadaa');
+export const focusSelectedClass = focusSearchSelection(searchClassModal, 'Class is here', 'Class is here info');
 
 export const confirmClassSelection = (navigates: boolean) => confirm(searchClassModal, navigates);

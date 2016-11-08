@@ -28,9 +28,21 @@ msgstr "Lisää attribuutti tai assosiaatio"
 msgid "Add class"
 msgstr "Lisää luokka"
 
+#: translations/help.html:45
+msgid "Add class description"
+msgstr "Voit lisätä uuden luokan täältä"
+
 #: components\group/groupPage.html:13
 msgid "Add library"
 msgstr "Lisää tietokomponenttikirjasto"
+
+#: translations/help.html:44
+msgid "Add library description"
+msgstr ""
+"Lisäämällä uuden tietokomponenttikirjaston voit luoda uusia "
+"uudelleenkäytettäviä luokkia ja ominaisuuksia sekä linkittää toimialueella "
+"määritellyt tietomääritykset kansallisiin sanastoihin, koodistoihin sekä "
+"kansainvälisiin tietomallistandardeihin"
 
 #: translations/misc.html:203
 msgid "Add link"
@@ -43,6 +55,13 @@ msgstr "Luo uusi nimiavaruus"
 #: components\group/groupPage.html:14
 msgid "Add profile"
 msgstr "Lisää soveltamisprofiili"
+
+#: translations/help.html:43
+msgid "Add profile description"
+msgstr ""
+"Lisäämällä uuden soveltamisprofiilin voit kuvata haluamasi tietosisällön "
+"höydyntämällä tietokomponenttikirjastoissa määriteltyjä uudelleenkäytettäviä "
+"luokkia sekä määritellä uusia luokkia hyödyntäen toimialakohtaisia sanastoja."
 
 #: translations/misc.html:148
 msgid "Add properties from class"
@@ -73,9 +92,15 @@ msgstr "Lisää ominaisuus"
 msgid "Add reference data"
 msgstr "Lisää koodisto"
 
-#: translations/help.html:32
+#: translations/help.html:41
 msgid "Add reference to namespace"
 msgstr "Lisää viite nimiavaruuteen"
+
+#: translations/help.html:42
+msgid "Add reference to namespace description"
+msgstr ""
+"Lisäämällä uuden nimiavaruuden voit linkittää luokkia tai ominaisuuksia "
+"kansainvälisiin suosituksiin"
 
 #: translations/misc.html:199
 msgid "Add vocabulary"
@@ -168,7 +193,7 @@ msgstr "XML"
 msgid "Are you sure that you want to close dialog?"
 msgstr "Oletko varma, että haluat sulkea dialogin?"
 
-#: translations/help.html:48
+#: translations/help.html:77
 msgid "Are you sure that you want to close help?"
 msgstr "Oletko varma, että haluat sulkea ohjeen?"
 
@@ -190,6 +215,10 @@ msgid ""
 msgstr ""
 "Oletko varma, että haluat tallettaa? Tallettaminen korvaa edelliset "
 "sijainnit."
+
+#: translations/help.html:95
+msgid "Asia joka tuotetaan"
+msgstr ""
 
 #: components\editor/classView.html:6 components\editor/predicateView.html:6
 #: components\group/groupPage.html:12 components\model/conceptView.html:5
@@ -229,9 +258,15 @@ msgstr "Assosiaation yksilöivä curie tunniste"
 msgid "Association information"
 msgstr "Assosiaation tiedot"
 
-#: translations/help.html:53
+#: translations/help.html:84
 msgid "Association is here"
 msgstr "Assosiaation tiedot näkyvät täällä"
+
+#: translations/help.html:85
+msgid "Association is here info"
+msgstr ""
+"Assosiaation tiedoissa määritellään pysyvä URI unniste, nimi, määritelmä ja "
+"yleinen kohde"
 
 #: translations/titles.html:20
 msgid "Association label"
@@ -245,7 +280,7 @@ msgstr "Assosiaation ihmisluettava nimi"
 msgid "Association list"
 msgstr "Assosiaatiot"
 
-#: translations/help.html:54
+#: translations/help.html:86
 msgid "Association target is here"
 msgstr "Assosiaation kohde näkyy täällä"
 
@@ -265,9 +300,15 @@ msgstr "Attribuutin yksilöivä curie tunniste"
 msgid "Attribute information"
 msgstr "Attribuutin tiedot"
 
-#: translations/help.html:52
+#: translations/help.html:82
 msgid "Attribute is here"
 msgstr "Attribuutin tiedot näkyvät täällä"
+
+#: translations/help.html:83
+msgid "Attribute is here info"
+msgstr ""
+"Attribuutin tiedoissa määritellään pysyvä URI tunniste, nimi, määritelmä ja "
+"tietotyyppi"
 
 #: translations/titles.html:21
 msgid "Attribute label"
@@ -354,6 +395,10 @@ msgstr "Vaihda käsite"
 msgid "Change reusable predicate"
 msgstr "Vaihda uudelleenkäytettävä ominaisuus"
 
+#: translations/help.html:102
+msgid "Changes need to be saved"
+msgstr "Jos haluat tallettaa muutokset paina \"Tallenna\""
+
 #: components\editor/choosePredicateTypeModal.html:13
 msgid "Choose"
 msgstr "valitse"
@@ -402,9 +447,15 @@ msgstr "Luokan yksilöivä curie tunniste"
 msgid "Class information"
 msgstr "Luokan tiedot"
 
-#: translations/help.html:51
+#: translations/help.html:80
 msgid "Class is here"
 msgstr "Luokan tiedot näkyvät täällä"
+
+#: translations/help.html:81
+msgid "Class is here info"
+msgstr ""
+"Luokan tiedoissa määritellään luokan nimi, kuvaus, käsite johon luokka "
+"perustuu sekä luokan ominaisuudet"
 
 #: translations/titles.html:18
 msgid "Class label"
@@ -450,17 +501,21 @@ msgstr ""
 
 #: translations/titles.html:60
 msgid "Class type"
-msgstr "Kohteen tyyppi"
+msgstr "Luokan tyyppi"
 
 #: translations/titles.html:60
 msgid "Class type info"
-msgstr ""
+msgstr "Luokalla voi olla useita sallittuja luokkamääreitä"
 
 #: translations/misc.html:161
 msgid "Classes are not allowed"
 msgstr "Erikoistamattomia luokkia ei saa valita"
 
-#: translations/help.html:57
+#: translations/help.html:101
+msgid "Classes can be modified"
+msgstr "Luokkaa voidaan muokata täältä"
+
+#: translations/help.html:90
 msgid "Classes can be seen visually here"
 msgstr "Luokat ja niiden väliset assosiaatiot näkyvät visuaalisesti täällä"
 
@@ -489,6 +544,8 @@ msgstr "Käsitteen määritelmä"
 #: translations/titles.html:26
 msgid "Concept definition info"
 msgstr ""
+"Käsitteen määritelmä kuvaa käsitesisältöä yleisellä tasolla ottaen huomioon "
+"vain olennaiset käsitepiirteet"
 
 #: translations/titles.html:11
 msgid "Concept id"
@@ -536,6 +593,10 @@ msgstr "Käsite-ehdotuksen määritelmä"
 #: translations/titles.html:27
 msgid "Concept suggestion definition info"
 msgstr ""
+"Käsite-ehdotuksen määritelmä tulee voi olla taustatietoa käsitteen käytöstä "
+"tai ehdotettu hyvin muotoiltu määritelmä. Hyvin muotoiltu määritelmä esittää "
+"täsmällisesti jonkin asian merkityssisällön, ottamalla huomioon vain "
+"välttämättömät mutta kuitenkin riittävät asian piirteet."
 
 #: components\model/conceptForm.html:2 translations/misc.html:127
 msgid "Concept suggestion information"
@@ -553,39 +614,51 @@ msgstr "Ehdotettu termi käsitteelle"
 msgid "Confirm delete"
 msgstr "Poistamisen hyväksyntä"
 
-#: translations/help.html:49
+#: translations/help.html:78
 msgid "Confirm selection"
 msgstr "Hyväksy valinta"
 
-#: translations/help.html:26
+#: translations/help.html:8
+msgid "Confirm selection info"
+msgstr "Hyväksy tehdyt muutokset ja jatka"
+
+#: translations/help.html:30
 msgid "Congratulations for completing adding an association!"
 msgstr "Onnittelut assosiaation lisäämisessä onnistumisesta!"
 
-#: translations/help.html:25
+#: translations/help.html:29
 msgid "Congratulations for completing adding an attribute!"
 msgstr "Onnittelut attribuutin lisäämisessä onnstumisesta!"
 
-#: translations/help.html:23
+#: translations/help.html:27
 msgid "Congratulations for completing class assignation!"
 msgstr "Onnittelut luokan kirjastoon liittämisessä onnistumisesta!"
 
-#: translations/help.html:19
+#: translations/help.html:21
 msgid "Congratulations for completing library creation!"
 msgstr "Onnittelut tietokomponenttikirjaston luomisessa onnistumisesta!"
 
-#: translations/help.html:21
+#: translations/help.html:23
+msgid "Congratulations for completing library creation! description"
+msgstr "Voit nyt siirtyä tekemään oikeita tietokomponenttikirjastoja"
+
+#: translations/help.html:25
 msgid "Congratulations for completing namespace require!"
 msgstr "Onnittelut nimiavaruuden lisäämisessä onnistumisesta!"
 
-#: translations/help.html:24
+#: translations/help.html:28
 msgid "Congratulations for completing new class creation!"
 msgstr "Onnittelut uuden luokan lisäämisessä onnistumisesta!"
 
-#: translations/help.html:20
+#: translations/help.html:22
 msgid "Congratulations for completing profile creation!"
 msgstr "Onnittelut soveltamisprofiilin luomisessa onnistumisesta!"
 
-#: translations/help.html:22
+#: translations/help.html:24
+msgid "Congratulations for completing profile creation! description"
+msgstr "Voit nyt siirtyä tekemään oikeita soveltamisprofiileja"
+
+#: translations/help.html:26
 msgid "Congratulations for completing specialize class!"
 msgstr "Onnittelut luokan erikoistamisessa onnistumisesta!"
 
@@ -1118,6 +1191,12 @@ msgstr "Ryhmä"
 msgid "Group"
 msgstr "Ryhmä"
 
+#: translations/help.html:9
+msgid ""
+"Group is a categorization of interoperability descriptions to different "
+"fields and domains"
+msgstr "Ryhmä luokittelee yhteentoimivuuden kuvaukset toimialoittain"
+
 #: translations/titles.html:17
 msgid "Group label"
 msgstr "Ryhmän nimi"
@@ -1130,27 +1209,27 @@ msgstr "Kohdealueen ryhmän nimi"
 msgid "Group not found"
 msgstr "Ryhmää ei löydy"
 
-#: translations/help.html:17
+#: translations/help.html:19
 msgid "Guide through adding an association"
 msgstr "Assosiaation lisäämisen ohjeistus"
 
-#: translations/help.html:16
+#: translations/help.html:18
 msgid "Guide through adding an attribute"
 msgstr "Attribuutin lisäämisen ohjeistus"
 
-#: translations/help.html:14
+#: translations/help.html:16
 msgid "Guide through assigning class to a library"
 msgstr "Luokan kirjastoon liittämisen ohjeistus"
 
-#: translations/help.html:15
+#: translations/help.html:17
 msgid "Guide through creating a class"
 msgstr "Uuden luokan luomisen ohjeistus"
 
-#: translations/help.html:8
+#: translations/help.html:10
 msgid "Guide through creating new library"
 msgstr "Ohje uuden tietokomponenttikirjaston luomiseen"
 
-#: translations/help.html:9
+#: translations/help.html:11
 msgid "Guide through creating new library description"
 msgstr ""
 "Tietokomponenttikirjastolla tarkoitetaan toimialakohtaisesti määriteltyä "
@@ -1158,11 +1237,11 @@ msgstr ""
 "tietorakenteita. Tietokomponentit linkitetään toimialueella käytettyihin "
 "kansainvälisiin ja kansallisiin standardeihin, sanastoihin ja koodistoihin."
 
-#: translations/help.html:10
+#: translations/help.html:12
 msgid "Guide through creating new profile"
 msgstr "Ohje uuden soveltamisprofiilin luomiseen"
 
-#: translations/help.html:11
+#: translations/help.html:13
 msgid "Guide through creating new profile description"
 msgstr ""
 "Soveltamisprofiililla tarkoitetaan tiettyyn käyttötapaukseen määriteltyä "
@@ -1170,15 +1249,15 @@ msgstr ""
 "uudelleenkäytettäviä tietokomponentteja. Soveltamisprofilin avulla "
 "dokumentoidaan tarvittavat tietosisällöt ja tietorakenteet."
 
-#: translations/help.html:12
+#: translations/help.html:14
 msgid "Guide through requiring a namespace"
 msgstr "Nimiavaruuden lisäämisen ohjeistus"
 
-#: translations/help.html:13
+#: translations/help.html:15
 msgid "Guide through specializing a class"
 msgstr "Luokan erikoistamisen ohjeistus"
 
-#: translations/help.html:47
+#: translations/help.html:76
 msgid "Help is open"
 msgstr "Ohje on avattuna"
 
@@ -1233,9 +1312,15 @@ msgstr "Lisää nimiavaruus"
 msgid "Imported namespaces"
 msgstr "Käytetyt nimiavaruudet"
 
-#: translations/help.html:50
+#: translations/help.html:79
 msgid "Imported namespaces are here"
 msgstr "Lisätyt nimiavaruudet näkyvät täällä"
+
+#: translations/help.html:103
+msgid "Imported namespaces can be used to link resources to existing standards"
+msgstr ""
+"Sisällytettyjä nimiavaruuksia voidaan käyttää tietokomponenttien "
+"linkittämiseen"
 
 #: translations/misc.html:228
 msgid "In language"
@@ -1300,11 +1385,15 @@ msgstr "Ei ole tunnettu kielikoodi"
 msgid "Is not valid reference data code"
 msgstr "Ei tunnettu koodiston arvo"
 
+#: translations/help.html:100
+msgid "jhs"
+msgstr ""
+
 #: translations/misc.html:224
 msgid "Label"
 msgstr "Nimi"
 
-#: translations/help.html:56
+#: translations/help.html:89
 msgid "Label can be changed"
 msgstr "Nimeä voidaan muuttaa"
 
@@ -1433,6 +1522,9 @@ msgstr "Tietosisällön kielet"
 #: translations/titles.html:70
 msgid "Model languages info"
 msgstr ""
+"Kielen määrittämisen avulla tietomalli voidaan lokalisoida valituille "
+"kielille. Kieli määritellään listaamalla halutut kielet ISO-639-2 "
+"luokituksen mukaisesti. "
 
 #: translations/misc.html:251
 msgid "Model not found"
@@ -1446,17 +1538,35 @@ msgstr "Tietokomponenttikirjastot"
 msgid "Modified at"
 msgstr "Muokattu"
 
-#: translations/help.html:31
+#: translations/help.html:37
 msgid "Modify class"
 msgstr "Muokkaa luokkaa"
 
-#: translations/help.html:29
+#: translations/help.html:40
+msgid "Modify class description"
+msgstr ""
+"Luokkaa voidaan muokata, kuten tarkentaa määritelmiä tai lisätä uusia "
+"ominaisuuksia"
+
+#: translations/help.html:35
 msgid "Modify library"
 msgstr "Muokkaa tietokomponenttikirjastoa"
 
-#: translations/help.html:30
+#: translations/help.html:38
+msgid "Modify library description"
+msgstr ""
+"Tietokomponenttikirjastoa voidaan muokata jos halutaan tarkentaa "
+"kuvailutietoja tai lisätä uusia sanastoja, koodistoja tai nimiavaruuksia"
+
+#: translations/help.html:36
 msgid "Modify profile"
 msgstr "Muokkaa soveltamisprofiilia"
+
+#: translations/help.html:39
+msgid "Modify profile description"
+msgstr ""
+"Soveltamisprofiilia voidaan muokata kun halutaan tarkentaa kuvailutietoja, "
+"lisätä uusia sanastoja, koodistoja tai nimiavaruuksia"
 
 #: components\form/errorMessages.html:20
 msgid "Must be imported namespace"
@@ -1476,7 +1586,7 @@ msgstr "Nimiavaruuden nimi"
 
 #: translations/titles.html:28
 msgid "Namespace label info"
-msgstr ""
+msgstr "Nimiavaruuden ihmisluettava nimi"
 
 #: translations/titles.html:73
 msgid "Namespace redirection"
@@ -1485,6 +1595,8 @@ msgstr "Nimiavaruuden uudelleenohjaus"
 #: translations/titles.html:73
 msgid "Namespace redirection info"
 msgstr ""
+"Nimiavaruuden uudelleenohjauksen avulla voidaan määritellä tietomalleja "
+"joissa käytetään jotain ulkoista nimiavaruutta"
 
 #: components\form/errorMessages.html:15
 msgid "Negative error"
@@ -1501,6 +1613,10 @@ msgstr "Uuden soveltamisprofiilin luonti"
 #: translations/help.html:2
 msgid "next"
 msgstr "seuraava"
+
+#: translations/help.html:96
+msgid "Nimi"
+msgstr ""
 
 #: translations/misc.html:260
 msgid "No"
@@ -1600,13 +1716,25 @@ msgstr "soveltamisprofiilista"
 msgid "of shape"
 msgstr "tarkennetusta luokasta"
 
-#: translations/help.html:27
+#: translations/help.html:31
 msgid "Open library details"
 msgstr "Avaa tietokomponenttikirjaston tiedot"
 
-#: translations/help.html:28
+#: translations/help.html:32
+msgid "Open library details description"
+msgstr ""
+"Tietokomponenttikirjastoon liittyvät lisätiedot, kuten käytetyt sanastot ja "
+"koodistot löytyvät tämän paneelin alta"
+
+#: translations/help.html:33
 msgid "Open profile details"
 msgstr "Avaa soveltamisprofiilin tiedot"
+
+#: translations/help.html:34
+msgid "Open profile details description"
+msgstr ""
+"Soveltamisprofiiliin liittyvät lisätiedot, kuten käytetyt sanastot ja "
+"koodistot löytyvät tämän paneelin alta."
 
 #: components\editor/propertyView.html:62
 msgid "Optional metadata"
@@ -1624,6 +1752,14 @@ msgstr "Assosiaatio"
 msgid "Page not found"
 msgstr "Sivua ei löydy"
 
+#: translations/help.html:91
+msgid "Palvelu"
+msgstr ""
+
+#: translations/help.html:93
+msgid "Palveluprofiili"
+msgstr ""
+
 #: translations/titles.html:62
 msgid "Pattern"
 msgstr "Säännollinen lauseke"
@@ -1640,6 +1776,7 @@ msgstr "Pysyvä tunniste"
 #: translations/titles.html:57
 msgid "Permanent identifier info"
 msgstr ""
+"Pysyvillä ja yksilöivä tunniste joka yksilöidään valitun nimiavaruuden avulla"
 
 #: translations/misc.html:257
 msgid "Please login to perform the action"
@@ -1718,9 +1855,15 @@ msgstr "Ominaisuuden yksilöivä tunniste"
 msgid "Property information"
 msgstr "Ominaisuuden tiedot"
 
-#: translations/help.html:55
+#: translations/help.html:87
 msgid "Property is here"
 msgstr "Ominaisuuden tiedot näkyvät täällä"
+
+#: translations/help.html:88
+msgid "Property is here info"
+msgstr ""
+"Ominaisuuden tiedoissa kuvataan nimi, määritelmä, arvoalue sekä käsite johon "
+"ominaisuus perustuu"
 
 #: translations/titles.html:22
 msgid "Property label"
@@ -1772,7 +1915,7 @@ msgstr "Koodiston nimi"
 
 #: translations/titles.html:29
 msgid "Reference data label info"
-msgstr ""
+msgstr "Koodisto on sovittu joukko koodiarvoja"
 
 #: translations/misc.html:209
 msgid "Reference data name"
@@ -1789,6 +1932,7 @@ msgstr "Koodiston URI"
 #: translations/titles.html:13
 msgid "Reference data URI info"
 msgstr ""
+"Koodiston URI tunniste on pysyvä ja yksilöivä viittaus koodiston sijaintiin"
 
 #: components\navigation/loginModal.html:11
 msgid "Register"
@@ -1841,6 +1985,8 @@ msgstr "Juurisolmu"
 #: translations/titles.html:76
 msgid "Root class info"
 msgstr ""
+"Juurisolmua käytetään määrittelemään hierarkkisen tietomallin lähtöpiste, "
+"esimerkiksi XML tai JSON sanoman ensimmäinen entiteetti."
 
 #: components\form/editableEntityButtons.html:4
 msgid "Save changes"
@@ -1882,25 +2028,45 @@ msgstr "Valitse käsite"
 msgid "search descriptions"
 msgstr "Etsi yhteensopivuuden kuvauksista..."
 
-#: translations/help.html:33
+#: translations/help.html:46
 msgid "Search for jhs"
 msgstr "Etsi julkishallinnon tietokomponenttikirjastoa"
 
-#: translations/help.html:36
+#: translations/help.html:61
+msgid "Search for jhs info"
+msgstr "Lisätään viite Julkisen hallinnon tietokomponenttikirjastoon"
+
+#: translations/help.html:49
 msgid "Search for nimi"
 msgstr "Etsi nimi attribuuttia"
 
-#: translations/help.html:34
+#: translations/help.html:64
+msgid "Search for nimi info"
+msgstr "Haetaan olemassaolevia ominaisuuksia"
+
+#: translations/help.html:47
 msgid "Search for palvelu"
 msgstr "Etsi palvelu luokkaa"
 
-#: translations/help.html:35
+#: translations/help.html:62
+msgid "Search for palvelu info"
+msgstr "Haetaan olemassaolevista määrittelyistä Palvelu luokkaa"
+
+#: translations/help.html:48
 msgid "Search for tuote"
 msgstr "Etsi tuote luokkaa"
 
-#: translations/help.html:37
+#: translations/help.html:63
+msgid "Search for tuote info"
+msgstr "Haetaan määrittelyistä Tuote luokkaa"
+
+#: translations/help.html:50
 msgid "Search for tuotetaan"
 msgstr "Etsi tuotetaan assosiaatiota"
+
+#: translations/help.html:65
+msgid "Search for tuotetaan info"
+msgstr "Haetaan olemassaolevista määrittelyistä tuotetaan assosiaatiota"
 
 #: translations/misc.html:91
 msgid "Search from concept database"
@@ -1950,9 +2116,13 @@ msgstr "Valitse kaikki"
 msgid "Select association"
 msgstr "Valitse assosiaatio"
 
-#: translations/help.html:46
+#: translations/help.html:59
 msgid "Select association target"
 msgstr "Aloita assosiaation kohteen valinta"
+
+#: translations/help.html:74
+msgid "Select association target info"
+msgstr "Assosiaation kohteella tarkoitetaan luokkaa johon halutaan viitata"
 
 #: translations/misc.html:96
 msgid "Select attribute"
@@ -1966,45 +2136,83 @@ msgstr "Valitse attribuutti tai assosiaatio"
 msgid "Select class"
 msgstr "Valitse luokka"
 
-#: translations/help.html:45
+#: translations/help.html:58
 msgid "Select concept suggest creation"
 msgstr "Ehdota uutta käsitettä sanastoon"
+
+#: translations/help.html:73
+msgid "Select concept suggest creation info"
+msgstr ""
+"Tee käsite-ehdotus jos olemassaolevaa käsitettä ei ole määriteltynä "
+"käytetyissä sanastoissa"
 
 #: translations/help.html:7
 msgid "Select group"
 msgstr "Valitse ryhmä"
 
-#: translations/help.html:18
+#: translations/help.html:20
 msgid "Select help topic"
 msgstr "Valitse ohjeen aihe"
 
-#: translations/help.html:38
+#: translations/help.html:51
 msgid "Select jhs"
 msgstr "Valitse julkishallinnon tietokomponenttikirjasto"
 
-#: translations/help.html:42
+#: translations/help.html:66
+msgid "Select jhs info"
+msgstr "Tietokomponenttikirjasto valitaan tulosjoukosta"
+
+#: translations/help.html:55
 msgid "Select name and description"
 msgstr "Valitse attribuutit nimi ja kuvaus"
 
-#: translations/help.html:44
+#: translations/help.html:70
+msgid "Select name and description info"
+msgstr "Valitaan ominaisuuksien joukosta halutut ominaisuudet"
+
+#: translations/help.html:57
 msgid "Select new association creation"
 msgstr "Valitse uuden assosiaation luominen"
 
-#: translations/help.html:43
+#: translations/help.html:72
+msgid "Select new association creation info"
+msgstr "Tee uusi assosiaatio jos et löydä uudelleenkäytettäviä ominaisuuksia"
+
+#: translations/help.html:56
 msgid "Select new creation"
 msgstr "Valitse uuden luominen"
 
-#: translations/help.html:40
+#: translations/help.html:71
+msgid "Select new creation info"
+msgstr "Tee uusi jos et löydä olemassaolevia tietomäärityksiä"
+
+#: translations/help.html:53
 msgid "Select nimi"
 msgstr "Valitse nimi"
 
-#: translations/help.html:39
+#: translations/help.html:68
+msgid "Select nimi info"
+msgstr "Valitaan uudelleenkäytettävä tietomääritys"
+
+#: translations/help.html:52
 msgid "Select palvelu"
 msgstr "Valitse palvelu"
 
-#: translations/help.html:41
+#: translations/help.html:67
+msgid "Select palvelu info"
+msgstr "Valitaan uudelleenkäytettävä tietomääritys"
+
+#: translations/help.html:104
+msgid "Select the vocabulary that is missing the required concept"
+msgstr "Valitse sanasto johon haluat ehdottaa uutta käsitettä"
+
+#: translations/help.html:54
 msgid "Select tuote"
 msgstr "Valitse tuote"
+
+#: translations/help.html:69
+msgid "Select tuote info"
+msgstr "Valitaan uudelleenkäytettävä tietomääritys"
 
 #: translations/misc.html:180
 msgid "Self reference not allowed"
@@ -2110,6 +2318,11 @@ msgstr "Toiminnossa tapahtui virhe"
 msgid "suggest"
 msgstr "ehdota"
 
+#: translations/help.html:105
+msgid "Suggest definition or description for the concept"
+msgstr ""
+"Ehdota käsitteelle määritelmää kuvailemalla käsite mahdollisimman hyvin"
+
 #: components\model/conceptEditorModal.html:51
 msgid "Suggested in"
 msgstr "Ehdotettu kirjastossa"
@@ -2154,9 +2367,17 @@ msgstr "Yläkäsite"
 msgid "Superproperty info"
 msgstr "Yleistettävissä oleva ominaisuus, joka on semantiikaltaan laajempi"
 
+#: translations/help.html:99
+msgid "tapahtumaketju joka toteuttaa jotain"
+msgstr ""
+
 #: translations/misc.html:195
 msgid "Technical namespaces"
 msgstr "Tekniset nimiavaruudet"
+
+#: translations/help.html:92
+msgid "Testikirjasto"
+msgstr "Testlibrary"
 
 #: translations/misc.html:134
 msgid "text/turtle"
@@ -2173,6 +2394,18 @@ msgstr "Ihmisluettava nimi"
 #: translations/misc.html:173
 msgid "to vocabulary"
 msgstr "sanastoon"
+
+#: translations/help.html:94
+msgid "Tuote"
+msgstr ""
+
+#: translations/help.html:97
+msgid "Tuotetaan"
+msgstr ""
+
+#: translations/help.html:98
+msgid "Tuotetaan palvelussa"
+msgstr ""
 
 #: translations/misc.html:106
 msgid "Unauthorized"
