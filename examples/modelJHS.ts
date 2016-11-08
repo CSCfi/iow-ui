@@ -178,7 +178,12 @@ export namespace Attributes {
 
   export const nimi = loader.createAttribute(model, {
     label: { fi: 'Nimi' },
-    dataType: 'xsd:string'
+    dataType: 'xsd:string',
+  });
+
+  export const kuvaus = loader.createAttribute(model, {
+    label: { fi: 'Kuvaus' },
+    dataType: 'xsd:string',
   });
 
   export const numero = loader.createAttribute(model, {
@@ -488,6 +493,22 @@ export namespace Classes {
         label:   { fi: 'Organisaatiomuoto' },
         comment: { fi: 'Organisaatiomuodon kuvaava tyyppi' },
         valueClass: 'skos:Concept'
+      }
+    ]
+  });
+
+  export const palvelu = loader.createClass(model, {
+    label: { fi: 'Palvelu'  },
+    properties: [
+      {
+        predicate: Attributes.nimi,
+        label: { fi: 'Nimi' },
+        internalId: '6cfbd054-2bfc-4e92-8642-477b035f59ee'
+      },
+      {
+        predicate: Attributes.kuvaus,
+        label: { fi: 'Kuvaus' },
+        internalId: 'fe884237-f6e2-44ea-ac97-231516da4770'
       }
     ]
   });

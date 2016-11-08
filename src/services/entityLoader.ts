@@ -94,6 +94,7 @@ export interface PropertyDetails extends EntityDetails {
   minCount?: number;
   maxCount?: number;
   pattern?: string;
+  internalId?: string;
 }
 
 export interface ConceptSuggestionDetails {
@@ -411,6 +412,10 @@ export class EntityLoader {
             p.valueClass = id;
           }
         });
+
+        if (details.internalId) {
+          p.internalId = Uri.fromUUID(details.internalId);
+        }
 
         if (details.dataType) {
           p.dataType = details.dataType;
