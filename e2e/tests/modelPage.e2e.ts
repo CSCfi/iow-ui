@@ -3,7 +3,7 @@
 
 import { ModelPage, NewModelParameters } from '../pages/model/modelPage.po';
 import { expectCurrentUrlToEqualPath } from '../util/url';
-import { library1Parameters, library2Parameters } from './test-data';
+import { library1Parameters, library2Parameters, profileParameters } from './test-data';
 import { NavBar } from '../pages/common/navbar.po';
 import { GroupPage } from '../pages/group/groupPage.po';
 import { FrontPage } from '../pages/frontPage.po';
@@ -31,6 +31,10 @@ describe('Model page', () => {
     it('Creates another model', () => {
       createLibraryAndCheckExpectations(library2Parameters);
     });
+
+    it('Creates profile', () => {
+      createLibraryAndCheckExpectations(profileParameters);
+    });
   });
 
   describe('After model is created', () => {
@@ -56,6 +60,10 @@ describe('Model page', () => {
 
     it('Removes another model', () => {
       removeLibraryAndCheckExpectations(library2Parameters);
+    });
+
+    it('Removes profile', () => {
+      removeLibraryAndCheckExpectations(profileParameters);
     });
   });
 });

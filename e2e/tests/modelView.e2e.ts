@@ -1,13 +1,13 @@
 import { ModelPage } from '../pages/model/modelPage.po';
 import { NavBar } from '../pages/common/navbar.po';
-import { library1Parameters, library2Parameters } from './test-data';
+import { library1Parameters, library2Parameters, profileParameters } from './test-data';
 import { ModelView } from '../pages/model/modelView.po';
 import { VocabulariesView } from '../pages/model/vocabulariesView.po';
 import { ReferenceDataView } from '../pages/model/referenceDataView.po';
 
 const navbar = new NavBar();
 
-describe('Model view', () => {
+describe('Library 1 model view', () => {
 
   let view: ModelView;
 
@@ -105,6 +105,29 @@ describe('Model view', () => {
       editModal.confirm();
       view.saveAndReload();
       expect(view.form.links.getRowByName('Example2').isPresent()).toBe(true);
+    });
+  });
+});
+
+describe('Library 1 model view', () => {
+
+  let view: ModelView;
+
+  beforeEach(() => {
+    const page = ModelPage.navigateToExistingModel(profileParameters.prefix, profileParameters.type);
+    navbar.ensureLoggedIn();
+    page.modelView.ensureOpen();
+    view = page.modelView;
+  });
+
+  describe('After navigated', () => {
+    it('Adds library as namespace', () => {
+      view.edit();
+      const modal = view.form.namespaces.addNew();
+      modal.search('E2E');
+      modal.selectResultByName(library2Parameters.label);
+      view.saveAndReload();
+      expect(view.form.namespaces.getRowByName(library2Parameters.label).isPresent()).toBe(true);
     });
   });
 });
