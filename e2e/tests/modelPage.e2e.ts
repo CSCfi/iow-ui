@@ -40,6 +40,7 @@ describe('Model page', () => {
     require('./classView.e2e');
     require('./predicateView.e2e');
     require('./conceptEditor.e2e');
+    require('./modelView.clean.e2e');
 
     const removeLibraryAndCheckExpectations = (parameters: NewModelParameters) => {
       const page = ModelPage.navigateToExistingModel(parameters.prefix, parameters.type);

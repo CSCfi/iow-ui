@@ -40,13 +40,6 @@ describe('Model view', () => {
       expect(view.form.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(true);
     });
 
-    it('Removes vocabulary', () => {
-      view.edit();
-      view.form.vocabularies.getRowByName(VocabulariesView.EOS).remove();
-      view.saveAndReload();
-      expect(view.form.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(false);
-    });
-
     it('Adds reference data', () => {
       view.edit();
       const modal = view.form.referenceData.addNew();
@@ -62,13 +55,6 @@ describe('Model view', () => {
       expect(modal.label.content.getText()).toBe(ReferenceDataView.hakukelpoisuus);
       modal.close();
       expect(modal.isClosed()).toBe(true);
-    });
-
-    it('Removes reference data', () => {
-      view.edit();
-      view.form.referenceData.getRowByName(ReferenceDataView.hakukelpoisuus).remove();
-      view.saveAndReload();
-      expect(view.form.referenceData.table.isEmpty()).toBe(true);
     });
 
     it('Adds other library as namespace', () => {
@@ -101,14 +87,6 @@ describe('Model view', () => {
       expect(view.form.namespaces.getRowByName('Foobar edit').isPresent()).toBe(true);
     });
 
-    it('Removes namespaces', () => {
-      view.edit();
-      view.form.namespaces.getRowByName(library2Parameters.label).remove();
-      view.form.namespaces.getRowByName('Foobar edit').remove();
-      view.saveAndReload();
-      expect(view.form.namespaces.table.isEmpty()).toBe(true);
-    });
-
     it('Adds link', () => {
       view.edit();
       const addModal = view.form.links.addNew();
@@ -127,13 +105,6 @@ describe('Model view', () => {
       editModal.confirm();
       view.saveAndReload();
       expect(view.form.links.getRowByName('Example2').isPresent()).toBe(true);
-    });
-
-    it('Removes link', () => {
-      view.edit();
-      view.form.links.removeRowByName('Example2');
-      view.saveAndReload();
-      expect(view.form.links.table.isEmpty()).toBe(true);
     });
   });
 });
