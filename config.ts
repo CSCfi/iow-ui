@@ -41,15 +41,19 @@ class EnvironmentConfig implements Config {
   }
 
   defaultModelNamespace(prefix: string) {
-    switch (this.environment) {
-      case 'local':
-      case 'production':
-        return `http://iow.csc.fi/ns/${prefix}`;
-      case 'development':
-        return `http://iowdev.csc.fi/ns/${prefix}`;
-      default:
-        return assertNever(this.environment);
-    }
+    return defaultModelNamespaceForEnvironmentAndPrefix(this.environment, prefix);
+  }
+}
+
+export function defaultModelNamespaceForEnvironmentAndPrefix(environment: Environment, prefix: string) {
+  switch (environment) {
+    case 'local':
+    case 'production':
+      return `http://iow.csc.fi/ns/${prefix}`;
+    case 'development':
+      return `http://iowdev.csc.fi/ns/${prefix}`;
+    default:
+      return assertNever(environment);
   }
 }
 
