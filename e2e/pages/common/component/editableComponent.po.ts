@@ -23,6 +23,7 @@ export class EditableComponent {
   }
 
   setValue(value: string) {
+    browser.wait(this.inputElement.isDisplayed, 1000);
     this.inputElement.clear().then(() => {
       this.appendValue(value);
     });
