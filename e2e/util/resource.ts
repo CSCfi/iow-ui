@@ -5,12 +5,23 @@ export function modelIdFromPrefix(modelPrefix: string) {
   return defaultModelNamespaceForEnvironmentAndPrefix('local', modelPrefix);
 }
 
+function normalizeId(id: string) {
+  return id
+    .replace(/\s/, '')
+    .replace(/ö/, 'o')
+    .replace(/Ö/, 'O')
+    .replace(/ä/, 'a')
+    .replace(/Ä/, 'A')
+    .replace(/å/, 'a')
+    .replace(/Å/, 'A');
+}
+
 export function classNameToResourceId(name: string) {
-  return upperCaseFirst(name.replace(' ', ''));
+  return normalizeId(upperCaseFirst(name));
 }
 
 export function predicateNameToResourceId(name: string) {
-  return lowerCaseFirst(name.replace(' ', ''));
+  return normalizeId(lowerCaseFirst(name));
 }
 
 export function classIdFromNamespaceId(namespaceId: string, name: string) {
