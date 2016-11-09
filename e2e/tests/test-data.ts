@@ -88,6 +88,10 @@ export const profileParameters = {
     second: {
       name: library2Parameters.classes.second.name,
       id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.second.name)
+    },
+    third: {
+      name: 'Sijainti',
+      id: 'http://purl.org/dc/terms/Location'
     }
   }
 };

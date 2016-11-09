@@ -234,4 +234,20 @@ describe('Add resources', () => {
     view.saveAndReload();
     expect(view.form.label.content.getText()).toBe(profileParameters.classes.second.name);
   });
+
+  it('specialized external class', () => {
+
+    const page = ModelPage.navigateToExistingModel(profileParameters.prefix, profileParameters.type);
+
+    const searchClass = page.addClass();
+    searchClass.search(profileParameters.classes.third.name);
+    searchClass.selectAddNewExternal();
+    searchClass.externalIdElement.setValue(profileParameters.classes.third.id);
+    searchClass.confirm();
+
+    const view = page.classView('shape');
+    view.form.label.setValue(profileParameters.classes.third.name);
+    view.saveAndReload();
+    expect(view.form.label.content.getText()).toBe(profileParameters.classes.third.name);
+  });
 });
