@@ -7,8 +7,6 @@ import { DataSource } from './dataSource';
 import { InputWithPopupController } from './inputPopup';
 import { limit } from '../../utils/array';
 
-const maxMatches = 500;
-
 // TODO: similarities with iowSelect
 mod.directive('autocomplete', ($document: JQuery) => {
   return {
@@ -19,7 +17,8 @@ mod.directive('autocomplete', ($document: JQuery) => {
       matcher: '=',
       formatter: '=',
       valueExtractor: '=',
-      excludeProvider: '=?'
+      excludeProvider: '=?',
+      maxMatches: '='
     },
     bindToController: true,
     template: `
@@ -99,6 +98,8 @@ export class AutocompleteController<T> implements InputWithPopupController<T> {
 
   popupItemName = 'match';
   element: JQuery;
+
+  maxMatches: number;
 
   private keyEventHandlers: {[key: number]: () => void|boolean} = {
     [arrowDown]: () => this.moveSelection(1),
@@ -184,6 +185,7 @@ export class AutocompleteController<T> implements InputWithPopupController<T> {
 
   setMatches(dataMatches: T[], selectFirst: boolean) {
     this.selectedSelectionIndex = selectFirst ? 0 : -1;
+    const maxMatches = this.maxMatches || 500;
     this.popupItems = maxMatches > 0 ?  limit(dataMatches, maxMatches) : dataMatches;
   }
 
