@@ -129,5 +129,14 @@ describe('Library 1 model view', () => {
       view.saveAndReload();
       expect(view.form.namespaces.getRowByName(library2Parameters.label).isPresent()).toBe(true);
     });
+
+    it('Adds technical namespace', () => {
+      view.edit();
+      const modal = view.form.namespaces.addNew();
+      modal.search('dcterms');
+      modal.selectResultByName('dcterms');
+      view.saveAndReload();
+      expect(view.form.namespaces.getRowByName('dcterms').isPresent()).toBe(true);
+    })
   });
 });

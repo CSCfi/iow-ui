@@ -20,8 +20,6 @@ export class AddModelModal extends Modal {
 
   submit() {
     this.submitButton.submit();
-    const modelPage = new ModelPage(this.type);
-    return browser.wait(modelPage.modelView.title.isDisplayed)
-      .then(() => new ModelPage(this.type));
+    return new ModelPage(this.type, true);
   }
 }

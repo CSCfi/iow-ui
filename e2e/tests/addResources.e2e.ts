@@ -114,8 +114,35 @@ describe('Add resources', () => {
     expect(view.form.label.content.getText()).toBe(profileParameters.classes.first.name);
   });
 
+  describe('Adds properties to profile class', () => {
 
-  describe('Adds properties', () => {
+    let page: ModelPage;
+    let view: ClassView;
+
+    beforeEach(() => {
+      page = ModelPage.navigateToResource(profileParameters.prefix, profileParameters.type, classNameToResourceId(profileParameters.classes.first.name));
+      view = page.classView('shape');
+    });
+
+    it('adds external attribute', () => {
+
+      view.edit();
+      const searchPredicate = view.addProperty();
+
+      searchPredicate.search(profileParameters.classes.first.properties.first.name);
+      searchPredicate.selectAddNewExternal();
+      searchPredicate.externalIdElement.setValue(profileParameters.classes.first.properties.first.id);
+      searchPredicate.confirm();
+
+      browser.sleep(800); // wait for scroll
+      view.form.getProperty(0).label.setValue(profileParameters.classes.first.properties.first.name);
+      view.saveAndReload();
+      browser.sleep(800); // wait for scroll
+      expect(view.form.getProperty(0).label.content.getText()).toBe(profileParameters.classes.first.properties.first.name);
+    });
+  });
+
+  describe('Adds properties to library 2 class 2', () => {
 
     let page: ModelPage;
     let view: ClassView;

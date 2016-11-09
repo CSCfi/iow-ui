@@ -6,6 +6,7 @@ import { SearchClassModal } from '../editor/modal/searchClassModal.po';
 import { ClassView } from '../editor/classView.po';
 import { PredicateView } from '../editor/predicateView.po';
 import { SearchPredicateModal } from '../editor/modal/searchPredicateModal.po';
+import EC = protractor.ExpectedConditions;
 
 export interface NewModelParameters {
   prefix: string;
@@ -17,7 +18,7 @@ export interface NewModelParameters {
 
 export class ModelPage {
 
-  static navigate = (type: KnownModelType, path: string) => navigateAndReturn(path, new ModelPage(type));
+  static navigate = (type: KnownModelType, path: string) => navigateAndReturn(path, new ModelPage(type, false));
 
   static pathToNewModel(params: NewModelParameters) {
     const { prefix, label, language, groupId, type } = params;
@@ -35,25 +36,33 @@ export class ModelPage {
   classView = (type: ClassType) => new ClassView(type);
   predicateView = (type: KnownPredicateType) => new PredicateView(type);
 
-  constructor(private type: KnownModelType) {
+  constructor(private type: KnownModelType, private newModel: boolean) {
+  }
+
+  waitToBeRendered() {
+    if (this.newModel) {
+      browser.wait(EC.presenceOf(this.modelView.title));
+    } else {
+      browser.wait(EC.presenceOf(element(by.css('.model-panel--left'))));
+    }
   }
 
   addClass() {
-    browser.wait(element(by.css('.model-panel--left')).isDisplayed);
+    this.waitToBeRendered();
     element(by.cssContainingText('li.uib-tab', 'Luokka')).click();
     element(by.css('button.add-new-button')).click();
     return new SearchClassModal();
   }
 
   addAttribute() {
-    browser.wait(element(by.css('.model-panel--left')).isDisplayed);
+    this.waitToBeRendered();
     element(by.cssContainingText('li.uib-tab', 'Attribuutti')).click();
     element(by.css('button.add-new-button')).click();
     return new SearchPredicateModal('attribute');
   }
 
   addAssociation() {
-    browser.wait(element(by.css('.model-panel--left')).isDisplayed);
+    this.waitToBeRendered();
     element(by.cssContainingText('li.uib-tab', 'Assosiaatio')).click();
     element(by.css('button.add-new-button')).click();
     return new SearchPredicateModal('association');

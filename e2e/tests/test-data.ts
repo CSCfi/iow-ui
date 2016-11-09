@@ -76,7 +76,14 @@ export const profileParameters = {
   classes: {
     first: {
       name: library2Parameters.classes.first.name,
-      id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.name)
+      id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.name),
+      properties: {
+        first: {
+          name: 'Luotu',
+          type: 'external' as 'external',
+          id: 'http://purl.org/dc/terms/created'
+        }
+      }
     },
     second: {
       name: library2Parameters.classes.second.name,

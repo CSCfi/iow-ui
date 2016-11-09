@@ -37,10 +37,9 @@ describe('Group page', () => {
     addModelModal.prefix.setValue(library1Parameters.prefix);
     addModelModal.label.setValue(library1Parameters.label);
     addModelModal.language.setItems(library1Parameters.language);
-    addModelModal.submit()
-      .then(modelPage => {
-        expect(modelPage.modelView.title.getText()).toBe(library1Parameters.label);
-        expectCurrentUrlToEqualPath(ModelPage.pathToNewModel(library1Parameters));
-      });
+    const modelPage = addModelModal.submit();
+    modelPage.waitToBeRendered();
+    expect(modelPage.modelView.title.getText()).toBe(library1Parameters.label);
+    expectCurrentUrlToEqualPath(ModelPage.pathToNewModel(library1Parameters));
   });
 });
