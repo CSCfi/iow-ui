@@ -197,7 +197,7 @@ export function groupBy<T, I>(arr: T[], indexByExtractor: (item: T) => I): Map<I
     if (resultList) {
       return resultList;
     } else {
-      const newResultList = [];
+      const newResultList: T[] = [];
       result.set(indexProperty, newResultList);
       return newResultList;
     }
