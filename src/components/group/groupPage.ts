@@ -86,10 +86,13 @@ class GroupPageController extends EditableEntityController<Group> implements Hel
   }
 
   addModel(type: KnownModelType) {
-    this.addModelModal.open(this.groupId, type).then((result: {prefix: string, label: string, language: Language[], redirect?: Uri}) => {
-      this.$location.path('/newModel');
-      this.$location.search({ prefix: result.prefix, label: result.label, language: result.language, group: this.groupId.uri, type, redirect: result.redirect && result.redirect.uri });
-    });
+    this.userService.ifStillLoggedIn(() => {
+        this.addModelModal.open(this.groupId, type).then((result: {prefix: string, label: string, language: Language[], redirect?: Uri}) => {
+          this.$location.path('/newModel');
+          this.$location.search({ prefix: result.prefix, label: result.label, language: result.language, group: this.groupId.uri, type, redirect: result.redirect && result.redirect.uri });
+        });
+      },
+      () => this.notificationModal.openNotLoggedIn());
   };
 
   selectModel(model: ModelListItem) {
