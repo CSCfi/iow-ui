@@ -1,7 +1,7 @@
 import { Language } from '../../src/utils/language';
 import { GroupPage } from '../pages/group/groupPage.po';
 import { KnownModelType, KnownPredicateType } from '../../src/entities/type';
-import { modelIdFromPrefix, classIdFromNamespaceId } from '../util/resource';
+import { modelIdFromPrefix, classIdFromNamespaceId, predicateIdFromNamespaceId } from '../util/resource';
 
 export const library2Parameters = {
   label: 'E2E Kirjasto2',
@@ -26,8 +26,26 @@ export const library2Parameters = {
           name: 'Yhteystieto',
           type: 'association' as KnownPredicateType,
           conceptId: 'http://jhsmeta.fi/skos/J110'
+        },
+        third: {
+          name: 'Attribuutti 1',
+          id: predicateIdFromNamespaceId(modelIdFromPrefix('e2e2'), 'Attribuutti 1')
+        },
+        fourth: {
+          name: 'Assosiaatio 1',
+          id: predicateIdFromNamespaceId(modelIdFromPrefix('e2e2'), 'Assosiaatio 1')
         }
       }
+    }
+  },
+  attributes: {
+    first: {
+      name: 'Attribuutti 1'
+    }
+  },
+  associations: {
+    first: {
+      name: 'Assosiaatio 1'
     }
   }
 };
@@ -45,16 +63,6 @@ export const library1Parameters = {
     second: {
       name: library2Parameters.classes.first.name,
       id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.name)
-    }
-  },
-  attributes: {
-    first: {
-      name: 'Attribuutti 1'
-    }
-  },
-  associations: {
-    first: {
-      name: 'Assosiaatio 1'
     }
   }
 };

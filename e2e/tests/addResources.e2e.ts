@@ -6,7 +6,7 @@ import { classNameToResourceId } from '../util/resource';
 import { AddPropertiesFromClassModal } from '../pages/editor/modal/addPropertiesFromClassModal.po';
 
 const navbar = new NavBar();
-
+// FIXME: extract common logic to page objects
 describe('Add resources', () => {
 
   beforeEach(() => {
@@ -54,10 +54,10 @@ describe('Add resources', () => {
 
   it('adds new attribute using concept suggestion', () => {
 
-    const page = ModelPage.navigateToExistingModel(library1Parameters.prefix, library1Parameters.type);
+    const page = ModelPage.navigateToExistingModel(library2Parameters.prefix, library2Parameters.type);
 
     const searchAttribute = page.addAttribute();
-    searchAttribute.search(library1Parameters.attributes.first.name);
+    searchAttribute.search(library2Parameters.attributes.first.name);
     const searchConcept = searchAttribute.selectAddNew();
 
     searchConcept.suggestNewConcept();
@@ -66,15 +66,15 @@ describe('Add resources', () => {
 
     const view = page.predicateView('attribute');
     view.saveAndReload();
-    expect(view.form.label.content.getText()).toBe(library1Parameters.attributes.first.name);
+    expect(view.form.label.content.getText()).toBe(library2Parameters.attributes.first.name);
   });
 
   it('adds new association using concept suggestion', () => {
 
-    const page = ModelPage.navigateToExistingModel(library1Parameters.prefix, library1Parameters.type);
+    const page = ModelPage.navigateToExistingModel(library2Parameters.prefix, library2Parameters.type);
 
     const searchAssociation = page.addAssociation();
-    searchAssociation.search(library1Parameters.associations.first.name);
+    searchAssociation.search(library2Parameters.associations.first.name);
     const searchConcept = searchAssociation.selectAddNew();
 
     searchConcept.suggestNewConcept();
@@ -83,7 +83,7 @@ describe('Add resources', () => {
 
     const view = page.predicateView('association');
     view.saveAndReload();
-    expect(view.form.label.content.getText()).toBe(library1Parameters.associations.first.name);
+    expect(view.form.label.content.getText()).toBe(library2Parameters.associations.first.name);
   });
 
   it('assigns class from another library', () => {
@@ -122,7 +122,8 @@ describe('Add resources', () => {
 
     beforeEach(() => {
       page = ModelPage.navigateToResource(library2Parameters.prefix, library2Parameters.type, classNameToResourceId(library2Parameters.classes.second.name));
-      view = page.classView('class')
+      view = page.classView('class');
+      browser.wait(view.element.isDisplayed);
     });
 
     it('adds new attribute using concept suggestion', () => {
@@ -137,7 +138,9 @@ describe('Add resources', () => {
       searchConcept.confirm();
       searchPredicate.confirm();
 
+      browser.sleep(800); // wait for scroll
       view.saveAndReload();
+      browser.sleep(800); // wait for scroll
       expect(view.form.getProperty(0).label.content.getText()).toBe(library2Parameters.classes.second.properties.first.name);
     });
 
@@ -152,8 +155,40 @@ describe('Add resources', () => {
       searchConcept.confirm();
       searchPredicate.confirm();
 
+      browser.sleep(800); // wait for scroll
       view.saveAndReload();
+      browser.sleep(800); // wait for scroll
       expect(view.form.getProperty(1).label.content.getText()).toBe(library2Parameters.classes.second.properties.second.name);
+    });
+
+    it('adds existing attribute', () => {
+
+      view.edit();
+      const searchPredicate = view.addProperty();
+
+      searchPredicate.search(library2Parameters.classes.second.properties.third.name);
+      searchPredicate.selectResultById(library2Parameters.classes.second.properties.third.id);
+      searchPredicate.confirm();
+
+      browser.sleep(800); // wait for scroll
+      view.saveAndReload();
+      browser.sleep(800); // wait for scroll
+      expect(view.form.getProperty(2).label.content.getText()).toBe(library2Parameters.classes.second.properties.third.name);
+    });
+
+    it('adds existing association', () => {
+
+      view.edit();
+      const searchPredicate = view.addProperty();
+
+      searchPredicate.search(library2Parameters.classes.second.properties.fourth.name);
+      searchPredicate.selectResultById(library2Parameters.classes.second.properties.fourth.id);
+      searchPredicate.confirm();
+
+      browser.sleep(800); // wait for scroll
+      view.saveAndReload();
+      browser.sleep(800); // wait for scroll
+      expect(view.form.getProperty(3).label.content.getText()).toBe(library2Parameters.classes.second.properties.fourth.name);
     });
   });
 

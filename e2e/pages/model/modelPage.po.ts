@@ -39,18 +39,21 @@ export class ModelPage {
   }
 
   addClass() {
+    browser.wait(element(by.css('.model-panel--left')).isDisplayed);
     element(by.cssContainingText('li.uib-tab', 'Luokka')).click();
     element(by.css('button.add-new-button')).click();
     return new SearchClassModal();
   }
 
   addAttribute() {
+    browser.wait(element(by.css('.model-panel--left')).isDisplayed);
     element(by.cssContainingText('li.uib-tab', 'Attribuutti')).click();
     element(by.css('button.add-new-button')).click();
     return new SearchPredicateModal('attribute');
   }
 
   addAssociation() {
+    browser.wait(element(by.css('.model-panel--left')).isDisplayed);
     element(by.cssContainingText('li.uib-tab', 'Assosiaatio')).click();
     element(by.css('button.add-new-button')).click();
     return new SearchPredicateModal('association');
