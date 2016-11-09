@@ -125,7 +125,7 @@ describe('Add resources', () => {
       view = page.classView('class')
     });
 
-    it('adds attribute using existing concept', () => {
+    it('adds new attribute using concept suggestion', () => {
 
       view.edit();
       const searchPredicate = view.addProperty();
@@ -139,6 +139,21 @@ describe('Add resources', () => {
 
       view.saveAndReload();
       expect(view.form.getProperty(0).label.content.getText()).toBe(library2Parameters.classes.second.properties.first.name);
+    });
+
+    it('adds new association using existing concept', () => {
+
+      view.edit();
+      const searchPredicate = view.addProperty();
+
+      searchPredicate.search(library2Parameters.classes.second.properties.second.name);
+      const searchConcept = searchPredicate.selectAddNew(library2Parameters.classes.second.properties.second.type);
+      searchConcept.selectResultById(library2Parameters.classes.second.properties.second.conceptId);
+      searchConcept.confirm();
+      searchPredicate.confirm();
+
+      view.saveAndReload();
+      expect(view.form.getProperty(1).label.content.getText()).toBe(library2Parameters.classes.second.properties.second.name);
     });
   });
 

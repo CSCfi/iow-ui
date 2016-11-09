@@ -21,6 +21,11 @@ export const library2Parameters = {
         first: {
           name: 'Property 1',
           type: 'attribute' as KnownPredicateType
+        },
+        second: {
+          name: 'Yhteystieto',
+          type: 'association' as KnownPredicateType,
+          conceptId: 'http://jhsmeta.fi/skos/J110'
         }
       }
     }
