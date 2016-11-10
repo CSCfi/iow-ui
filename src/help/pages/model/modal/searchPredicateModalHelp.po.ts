@@ -11,7 +11,7 @@ import gettextCatalog = angular.gettext.gettextCatalog;
 export const searchPredicateModalElement = child(modal, '.search-predicate');
 
 export function filterForPredicate(namespaceId: string, predicateName: string, gettextCatalog: gettextCatalog) {
-  return filterForSearchResult(searchPredicateModalElement, predicateName.toLowerCase(), predicateIdFromNamespaceId(namespaceId, predicateName), gettextCatalog);
+  return filterForSearchResult(searchPredicateModalElement, predicateName, predicateIdFromNamespaceId(namespaceId, predicateName), gettextCatalog);
 }
 
 export function filterForNewPredicate(predicateName: string, gettextCatalog: gettextCatalog) {
