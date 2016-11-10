@@ -41,15 +41,14 @@ export function addNamespaceItems(gettextCatalog: gettextCatalog): Story[] {
 export function addNamespace(type: KnownModelType, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through requiring a namespace',
-    description: 'Diipadaa',
+    description: 'This tutorial shows how to import new namespace to the model',
     items: () => [
       ModelPage.openModelDetails(type),
       ModelView.modifyModel(type),
       ...addNamespaceItems(gettextCatalog),
       ModelView.saveModelChanges,
       createNotification({
-        title: 'Congratulations for completing namespace require!',
-        content: 'Diipadaa'
+        title: 'Congratulations for completing namespace require!'
       })
     ]
   };
@@ -72,12 +71,11 @@ export function specializeClassItems(gettextCatalog: gettextCatalog): Story[] {
 export function specializeClass(gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through specializing a class',
-    description: 'Diipadaa',
+    description: 'This tutorial shows how to create a new shape from a class',
     items: () => [
       ...specializeClassItems(gettextCatalog),
       createNotification({
-        title: 'Congratulations for completing specialize class!',
-        content: 'Diipadaa'
+        title: 'Congratulations for completing specialize class!'
       })
     ]
   };
@@ -97,12 +95,11 @@ export function assignClassItems(gettextCatalog: gettextCatalog): Story[] {
 export function assignClass(gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through assigning class to a library',
-    description: 'Diipadaa',
+    description: 'This tutorial shows how to add Class from existing library',
     items: () => [
       ...assignClassItems(gettextCatalog),
       createNotification({
-        title: 'Congratulations for completing class assignation!',
-        content: 'Diipadaa'
+        title: 'Congratulations for completing class assignation!'
       })
     ]
   };
@@ -122,15 +119,14 @@ function addAttributeItems(gettextCatalog: gettextCatalog): Story[] {
 export function addAttribute(modelPrefix: string, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through adding an attribute',
-    description: 'Diipadaa',
+    description: 'This tutorial shows how to add new attribute',
     items: () => [
       ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
       ClassView.modifyClass,
       ...addAttributeItems(gettextCatalog),
       ClassView.saveClassChanges,
       createNotification({
-        title: 'Congratulations for completing adding an attribute!',
-        content: 'Diipadaa'
+        title: 'Congratulations for completing adding an attribute!'
       })
     ]
   };
@@ -155,13 +151,12 @@ export function createNewClassItems(gettextCatalog: gettextCatalog): Story[] {
 export function createNewClass(gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through creating a class',
-    description: 'Diipadaa',
+    description: 'This tutorial shows how to create a new Class',
     items: () => [
       ...createNewClassItems(gettextCatalog),
       ClassView.saveClassChanges,
       createNotification({
-        title: 'Congratulations for completing new class creation!',
-        content: 'Diipadaa'
+        title: 'Congratulations for completing new class creation!'
       })
     ]
   };
@@ -179,7 +174,7 @@ export function addAssociationItems(namespaceId: string, gettextCatalog: gettext
     SearchConceptModal.enterDefinition(exampleNewClass.property.association.comment, gettextCatalog),
     SearchConceptModal.confirmConceptSelection(false),
     SearchPredicateModal.focusSelectedAssociation,
-    PredicateForm.focusPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', 'Label can be changed'),
+   // PredicateForm.focusPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', 'Label can be changed'),
     PredicateForm.enterPredicateLabel(SearchPredicateModal.searchPredicateModalElement, 'association', exampleNewClass.property.association.name, gettextCatalog),
     SearchPredicateModal.confirmPredicateSelection(true),
     ClassForm.focusOpenProperty(classView),
@@ -197,14 +192,13 @@ export function addAssociationItems(namespaceId: string, gettextCatalog: gettext
 export function addAssociation(modelPrefix: string, associationTargetNamespaceId: string, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through adding an association',
-    description: 'Diipadaa',
+    description: 'This tutorial shows how to add association to a Class',
     items: () => [
       ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
       ClassView.modifyClass,
       ...addAssociationItems(associationTargetNamespaceId, gettextCatalog),
       createNotification({
-        title: 'Congratulations for completing adding an association!',
-        content: 'Diipadaa'
+        title: 'Congratulations for completing adding an association!'
       })
     ]
   };

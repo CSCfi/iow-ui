@@ -54,7 +54,7 @@ export interface Notification extends NotificationDetails {
 
 export interface NotificationDetails {
   title: string;
-  content: string;
+  content?: string;
 }
 
 export interface Story extends StoryDetails {

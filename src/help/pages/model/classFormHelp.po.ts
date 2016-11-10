@@ -41,6 +41,7 @@ export function selectAssociationTarget(parent: () => JQuery) {
   return createStory({
 
     title: 'Select association target',
+    content: 'Association target must be selected from list of existing classes',
     scroll: createScrollNone(),
     popover: { element: enterAssociationTargetSelectButtonElement, position: 'right-down' },
     focus: { element: enterAssociationTargetSelectButtonElement },
@@ -56,6 +57,7 @@ export function focusAssociationTarget(parent: () => JQuery) {
   return createStory({
 
     title: 'Association target is here',
+    content:'Association target can be changed from the list or by typing the identifier',
     scroll: createScrollWithDefault(enterAssociationTargetElement, 150),
     popover: { element: enterAssociationTargetSelectFocusElement, position: 'right-down' },
     focus: { element: enterAssociationTargetSelectFocusElement, margin: editableMarginInColumn },

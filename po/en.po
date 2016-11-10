@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-11-10 11:05+0200\n"
+"PO-Revision-Date: 2016-11-10 16:57+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -187,7 +187,7 @@ msgstr "XML"
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:82
+#: translations/help.html:84
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgid ""
 "Are you sure you want to save? Saving overrides previously saves positions."
 msgstr ""
 
-#: translations/help.html:100
+#: translations/help.html:102
 msgid "Asia joka tuotetaan"
 msgstr "Thing that is being produced"
 
@@ -248,11 +248,11 @@ msgstr "CURIE that identifies the Object property"
 msgid "Association information"
 msgstr ""
 
-#: translations/help.html:89
+#: translations/help.html:91
 msgid "Association is here"
 msgstr ""
 
-#: translations/help.html:90
+#: translations/help.html:92
 msgid "Association is here info"
 msgstr ""
 "New association consists for permanent URI identifer, name, description and "
@@ -270,9 +270,18 @@ msgstr "Name of the association"
 msgid "Association list"
 msgstr ""
 
-#: translations/help.html:91
+#: translations/help.html:115
+msgid ""
+"Association target can be changed from the list or by typing the identifier"
+msgstr ""
+
+#: translations/help.html:93
 msgid "Association target is here"
 msgstr "Target of the association is the class that is being referred to"
+
+#: translations/help.html:114
+msgid "Association target must be selected from list of existing classes"
+msgstr ""
 
 #: translations/misc.html:33
 msgid "attribute"
@@ -290,11 +299,11 @@ msgstr "CURIE that identifies the Datatype property"
 msgid "Attribute information"
 msgstr ""
 
-#: translations/help.html:87
+#: translations/help.html:89
 msgid "Attribute is here"
 msgstr ""
 
-#: translations/help.html:88
+#: translations/help.html:90
 msgid "Attribute is here info"
 msgstr ""
 "Attribute information consists of permanent URI identifier, name, "
@@ -385,7 +394,7 @@ msgstr ""
 msgid "Change reusable predicate"
 msgstr ""
 
-#: translations/help.html:107
+#: translations/help.html:109
 msgid "Changes need to be saved"
 msgstr ""
 
@@ -437,11 +446,11 @@ msgstr "CURIE that identifies the class"
 msgid "Class information"
 msgstr ""
 
-#: translations/help.html:85
+#: translations/help.html:87
 msgid "Class is here"
 msgstr ""
 
-#: translations/help.html:86
+#: translations/help.html:88
 msgid "Class is here info"
 msgstr "Information about the selected Class is seen in here"
 
@@ -497,11 +506,11 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
-#: translations/help.html:106
+#: translations/help.html:108
 msgid "Classes can be modified"
 msgstr ""
 
-#: translations/help.html:95
+#: translations/help.html:97
 msgid "Classes can be seen visually here"
 msgstr ""
 
@@ -594,7 +603,7 @@ msgstr "Suggested term for the concept"
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:83
+#: translations/help.html:85
 msgid "Confirm selection"
 msgstr ""
 
@@ -727,7 +736,7 @@ msgstr ""
 msgid "Create new class"
 msgstr ""
 
-#: translations/help.html:111
+#: translations/help.html:113
 msgid "Create new info"
 msgstr ""
 "This is all that is required for creating a new model. Prefix will be used "
@@ -1239,7 +1248,7 @@ msgstr ""
 msgid "Guide through specializing a class"
 msgstr ""
 
-#: translations/help.html:81
+#: translations/help.html:83
 msgid "Help is open"
 msgstr ""
 
@@ -1296,11 +1305,11 @@ msgstr ""
 msgid "Imported namespaces"
 msgstr ""
 
-#: translations/help.html:84
+#: translations/help.html:86
 msgid "Imported namespaces are here"
 msgstr ""
 
-#: translations/help.html:108
+#: translations/help.html:110
 msgid "Imported namespaces can be used to link resources to existing standards"
 msgstr ""
 
@@ -1369,7 +1378,7 @@ msgstr ""
 msgid "Is not valid reference data code"
 msgstr ""
 
-#: translations/help.html:105
+#: translations/help.html:107
 msgid "jhs"
 msgstr ""
 
@@ -1377,7 +1386,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: translations/help.html:94
+#: translations/help.html:96
 msgid "Label can be changed"
 msgstr ""
 
@@ -1586,7 +1595,7 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: translations/help.html:101
+#: translations/help.html:103
 msgid "Nimi"
 msgstr "Name"
 
@@ -1728,11 +1737,11 @@ msgstr "Association"
 msgid "Page not found"
 msgstr ""
 
-#: translations/help.html:96
+#: translations/help.html:98
 msgid "Palvelu"
 msgstr "Service"
 
-#: translations/help.html:98
+#: translations/help.html:100
 msgid "Palveluprofiili"
 msgstr "Serviceprofile"
 
@@ -1826,11 +1835,11 @@ msgstr "URI that identifies the property"
 msgid "Property information"
 msgstr ""
 
-#: translations/help.html:92
+#: translations/help.html:94
 msgid "Property is here"
 msgstr "Use of Property is defined here"
 
-#: translations/help.html:93
+#: translations/help.html:95
 msgid "Property is here info"
 msgstr ""
 "Information about the property usage consists of Class specific name of the "
@@ -2051,11 +2060,19 @@ msgstr "Search for produces term"
 
 #: translations/help.html:69
 msgid "Search for tuotetaan concept info"
-msgstr "Search for the Tuote term in the existing terminologies"
+msgstr "Search for the Product term in the existing terminologies"
 
 #: translations/help.html:68
 msgid "Search for tuotetaan info"
 msgstr "Lets add new association to Product class"
+
+#: translations/help.html:70
+msgid "Search for tuotetaan predicate"
+msgstr "Search for is produced by association"
+
+#: translations/help.html:71
+msgid "Search for tuotetaan predicate info"
+msgstr "Lets search for existing predicates to create a new association"
 
 #: translations/misc.html:91
 msgid "Search from concept database"
@@ -2105,7 +2122,7 @@ msgstr ""
 msgid "Select association target"
 msgstr ""
 
-#: translations/help.html:79
+#: translations/help.html:81
 msgid "Select association target info"
 msgstr "You can create new association from here"
 
@@ -2125,7 +2142,7 @@ msgstr ""
 msgid "Select concept suggest creation"
 msgstr "Create new concept suggestion"
 
-#: translations/help.html:78
+#: translations/help.html:80
 msgid "Select concept suggest creation info"
 msgstr ""
 "If some concept is not defined in the used terminologies, you can create new "
@@ -2143,7 +2160,7 @@ msgstr ""
 msgid "Select jhs"
 msgstr ""
 
-#: translations/help.html:70
+#: translations/help.html:72
 msgid "Select jhs info"
 msgstr "Select Namespace from the list"
 
@@ -2151,7 +2168,7 @@ msgstr "Select Namespace from the list"
 msgid "Select name and description"
 msgstr ""
 
-#: translations/help.html:75
+#: translations/help.html:77
 msgid "Select name and description info"
 msgstr ""
 "Here you can select which attributes or associations you want to use in our "
@@ -2161,7 +2178,7 @@ msgstr ""
 msgid "Select new association creation"
 msgstr ""
 
-#: translations/help.html:77
+#: translations/help.html:79
 msgid "Select new association creation info"
 msgstr "New association can be created from here"
 
@@ -2169,7 +2186,7 @@ msgstr "New association can be created from here"
 msgid "Select new creation"
 msgstr "Select Create new class"
 
-#: translations/help.html:76
+#: translations/help.html:78
 msgid "Select new creation info"
 msgstr "If some Class is not found, it can be created from here"
 
@@ -2177,7 +2194,7 @@ msgstr "If some Class is not found, it can be created from here"
 msgid "Select nimi"
 msgstr "Select name"
 
-#: translations/help.html:72
+#: translations/help.html:74
 msgid "Select nimi info"
 msgstr "Name was found from the library and can be selected from the list"
 
@@ -2185,11 +2202,11 @@ msgstr "Name was found from the library and can be selected from the list"
 msgid "Select palvelu"
 msgstr "Select Public Service"
 
-#: translations/help.html:71
+#: translations/help.html:73
 msgid "Select palvelu info"
 msgstr "Select search results from the list"
 
-#: translations/help.html:109
+#: translations/help.html:111
 msgid "Select the vocabulary that is missing the required concept"
 msgstr ""
 
@@ -2197,7 +2214,7 @@ msgstr ""
 msgid "Select tuote"
 msgstr "Select Product"
 
-#: translations/help.html:73 translations/help.html:74
+#: translations/help.html:75 translations/help.html:76
 msgid "Select tuote info"
 msgstr "Lets add new Product class"
 
@@ -2305,7 +2322,7 @@ msgstr ""
 msgid "suggest"
 msgstr ""
 
-#: translations/help.html:110
+#: translations/help.html:112
 msgid "Suggest definition or description for the concept"
 msgstr ""
 
@@ -2353,7 +2370,7 @@ msgstr ""
 msgid "Superproperty info"
 msgstr ""
 
-#: translations/help.html:104
+#: translations/help.html:106
 msgid "tapahtumaketju joka toteuttaa jotain"
 msgstr "event that produces something"
 
@@ -2361,13 +2378,37 @@ msgstr "event that produces something"
 msgid "Technical namespaces"
 msgstr ""
 
-#: translations/help.html:97
+#: translations/help.html:99
 msgid "Testikirjasto"
 msgstr "Test library"
 
 #: translations/misc.html:134
 msgid "text/turtle"
 msgstr "Turtle"
+
+#: translations/help.html:123
+msgid "This tutorial shows how to add association to a Class"
+msgstr ""
+
+#: translations/help.html:120
+msgid "This tutorial shows how to add Class from existing library"
+msgstr ""
+
+#: translations/help.html:121
+msgid "This tutorial shows how to add new attribute"
+msgstr ""
+
+#: translations/help.html:122
+msgid "This tutorial shows how to create a new Class"
+msgstr ""
+
+#: translations/help.html:119
+msgid "This tutorial shows how to create a new shape from a class"
+msgstr ""
+
+#: translations/help.html:118
+msgid "This tutorial shows how to import new namespace to the model"
+msgstr ""
 
 #: components\model/referenceDataView.html:20 translations/titles.html:71
 msgid "Title"
@@ -2381,15 +2422,15 @@ msgstr "Name of the vocabulary"
 msgid "to vocabulary"
 msgstr ""
 
-#: translations/help.html:99
+#: translations/help.html:101
 msgid "Tuote"
 msgstr "Product"
 
-#: translations/help.html:102
+#: translations/help.html:104
 msgid "Tuotetaan"
 msgstr "Is produced"
 
-#: translations/help.html:103
+#: translations/help.html:105
 msgid "Tuotetaan palvelussa"
 msgstr "Is produced in service"
 
@@ -2705,6 +2746,10 @@ msgstr "Invalid time"
 #: components\editor/addPropertiesFromClassModal.html:26
 #: translations/misc.html:259
 msgid "Yes"
+msgstr ""
+
+#: translations/help.html:116
+msgid "You can add new attribute or association to the Class from here"
 msgstr ""
 
 #: translations/misc.html:255
