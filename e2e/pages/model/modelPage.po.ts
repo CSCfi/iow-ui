@@ -19,11 +19,13 @@ export interface NewModelParameters {
   type: KnownModelType;
 }
 
+type WaitFor = 'model-view' | 'editor' | 'resource-selection';
+
 export class ModelPage {
 
-  static navigate = (type: KnownModelType, path: string, newModel: boolean) => {
+  static navigate = (type: KnownModelType, path: string, waitFor: WaitFor) => {
     browser.get(path);
-    const page = new ModelPage(type, newModel);
+    const page = new ModelPage(type, waitFor);
     page.waitToBeRendered();
     return page;
   };
@@ -36,9 +38,9 @@ export class ModelPage {
   static pathToExistingModel = (prefix: string) => `/model/${prefix}/`;
   static pathWithResource = (prefix: string, resourceName: string) => ModelPage.pathToExistingModel(prefix) + `${resourceName}`;
 
-  static navigateToNewModel = (params: NewModelParameters) => ModelPage.navigate(params.type, ModelPage.pathToNewModel(params), true);
-  static navigateToExistingModel = (prefix: string, type: KnownModelType) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(prefix), false);
-  static navigateToResource = (prefix: string, type: KnownModelType, resourceName: string) =>  ModelPage.navigate(type, ModelPage.pathWithResource(prefix, resourceName), false);
+  static navigateToNewModel = (params: NewModelParameters) => ModelPage.navigate(params.type, ModelPage.pathToNewModel(params), 'model-view');
+  static navigateToExistingModel = (prefix: string, type: KnownModelType) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(prefix), 'resource-selection');
+  static navigateToResource = (prefix: string, type: KnownModelType, resourceName: string) =>  ModelPage.navigate(type, ModelPage.pathWithResource(prefix, resourceName), 'editor');
 
   modelView = new ModelView(this.type);
   classView = (type: ClassType) => new ClassView(type);
@@ -47,14 +49,22 @@ export class ModelPage {
   resourceSelection = element(by.css('.model-panel--left'));
   resourceSelectionItems = this.resourceSelection.$('.panel__list');
 
-  constructor(private type: KnownModelType, private newModel: boolean) {
+  constructor(private type: KnownModelType, private waitFor: WaitFor) {
   }
 
   waitToBeRendered() {
-    if (this.newModel) {
-      browser.wait(EC.presenceOf(this.modelView.title));
-    } else {
-      browser.wait(EC.presenceOf(this.resourceSelection));
+    switch (this.waitFor) {
+      case 'model-view':
+        browser.wait(EC.visibilityOf(this.modelView.title));
+        break;
+      case 'editor':
+        browser.wait(EC.visibilityOf(element(by.css('selection-view'))));
+        break;
+      case 'resource-selection':
+        browser.wait(EC.visibilityOf(this.resourceSelection));
+        break;
+      default:
+        assertNever(this.waitFor);
     }
   }
 

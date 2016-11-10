@@ -20,7 +20,7 @@ export class AddModelModal extends Modal {
 
   submit() {
     this.submitButton.submit();
-    const page = new ModelPage(this.type, true);
+    const page = new ModelPage(this.type, 'model-view');
     page.waitToBeRendered();
     return page;
   }

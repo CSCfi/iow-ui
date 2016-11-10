@@ -15,6 +15,6 @@ export class FrontPage {
   groupLinks = element(by.id('browse-panel')).all(by.css('li'));
 
   waitToBeRendered() {
-    browser.wait(EC.presenceOf(this.footer));
+    browser.wait(EC.visibilityOf(this.footer));
   }
 }

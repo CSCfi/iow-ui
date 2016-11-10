@@ -15,7 +15,7 @@ export class GroupPage {
   label = EditableComponent.byTitleLocalizationKey(element(by.css('body')), 'Group label');
 
   waitToBeRendered() {
-    browser.wait(EC.presenceOf(this.label.content));
+    browser.wait(EC.visibilityOf(this.label.content));
   }
 
   addLibrary() {
