@@ -1,11 +1,13 @@
-import { ModelPage, AddResourceParameters } from '../pages/model/modelPage.po';
+import { ModelPage } from '../pages/model/modelPage.po';
 import { NavBar } from '../pages/common/navbar.po';
-import { library1Parameters, library2Parameters, profileParameters } from './test-data';
 import { ClassView } from '../pages/editor/classView.po';
-import { classNameToResourceId } from '../util/resource';
+import {
+  classNameToResourceIdName, ClassDescriptor, PredicateDescriptor,
+  PropertyDescriptor, AddResourceParameters
+} from '../util/resource';
 import { AddPropertiesFromClassModal } from '../pages/editor/modal/addPropertiesFromClassModal.po';
-import { ClassType, KnownPredicateType } from '../../src/entities/type';
 import { PredicateView } from '../pages/editor/predicateView.po';
+import { library2Parameters, profileParameters, library1Parameters } from './test-data';
 
 const navbar = new NavBar();
 
@@ -18,7 +20,7 @@ function verifyName(view: ClassView|PredicateView, params: AddResourceParameters
   expect(view.form.label.content.getText()).toBe(params.name);
 }
 
-function addClassAndVerify(page: ModelPage, klass: { origin: AddResourceParameters, classType: ClassType }, setName: boolean, selectProperties: boolean) {
+function addClassAndVerify(page: ModelPage, klass: ClassDescriptor, setName: boolean, selectProperties: boolean) {
 
   page.addClass(klass.origin);
 
@@ -26,20 +28,20 @@ function addClassAndVerify(page: ModelPage, klass: { origin: AddResourceParamete
     new AddPropertiesFromClassModal().confirm();
   }
 
-  const view = page.classView(klass.classType);
+  const view = page.classView(klass.type);
 
   if (setName) {
     view.form.label.setValue(klass.origin.name);
   }
 
-  const save = klass.origin.type !== 'existingResource' || klass.classType  !== 'class';
+  const save = klass.origin.type !== 'existingResource' || klass.type  !== 'class';
 
   verifyName(view, klass.origin, save);
 }
 
-function addPredicateAndVerify(page: ModelPage, predicate: { origin: AddResourceParameters, predicateType: KnownPredicateType }, setName: boolean) {
-  page.addPredicate(predicate.predicateType, predicate.origin);
-  const view = page.predicateView(predicate.predicateType);
+function addPredicateAndVerify(page: ModelPage, predicate: PredicateDescriptor, setName: boolean) {
+  page.addPredicate(predicate.type, predicate.origin);
+  const view = page.predicateView(predicate.type);
 
   if (setName) {
     view.form.label.setValue(predicate.origin.name);
@@ -56,13 +58,14 @@ function verifyPropertyName(view: ClassView, params: AddResourceParameters, inde
   expect(view.form.getProperty(index).label.content.getText()).toBe(params.name);
 }
 
-function addPropertyAndVerify(view: ClassView, property: { origin: AddResourceParameters, predicateType: KnownPredicateType, index: number }, setName: boolean) {
+function addPropertyAndVerify(view: ClassView, properties: PropertyDescriptor[], index: number, setName: boolean) {
+  const property = properties[index];
   view.edit();
   view.addProperty(property);
   if (setName) {
-    view.form.getProperty(property.index).label.setValue(property.origin.name);
+    view.form.getProperty(index).label.setValue(property.origin.name);
   }
-  verifyPropertyName(view, property.origin, property.index);
+  verifyPropertyName(view, property.origin, index);
 }
 
 describe('Add resources', () => {
@@ -108,12 +111,12 @@ describe('Add resources', () => {
     let view: ClassView;
 
     beforeEach(() => {
-      page = ModelPage.navigateToResource(profileParameters.prefix, profileParameters.type, classNameToResourceId(profileParameters.classes.first.origin.name));
+      page = ModelPage.navigateToResource(profileParameters.prefix, profileParameters.type, classNameToResourceIdName(profileParameters.classes.first.origin.name));
       view = page.classView('shape');
     });
 
     it('adds external attribute', () => {
-      addPropertyAndVerify(view, profileParameters.classes.first.properties.first, true);
+      addPropertyAndVerify(view, profileParameters.classes.first.properties, 0, true);
     });
   });
 
@@ -123,25 +126,25 @@ describe('Add resources', () => {
     let view: ClassView;
 
     beforeEach(() => {
-      page = ModelPage.navigateToResource(library2Parameters.prefix, library2Parameters.type, classNameToResourceId(library2Parameters.classes.second.origin.name));
+      page = ModelPage.navigateToResource(library2Parameters.prefix, library2Parameters.type, classNameToResourceIdName(library2Parameters.classes.second.origin.name));
       view = page.classView('class');
       browser.wait(view.element.isDisplayed);
     });
 
     it('adds new attribute using concept suggestion', () => {
-      addPropertyAndVerify(view, library2Parameters.classes.second.properties.first, false);
+      addPropertyAndVerify(view, library2Parameters.classes.second.properties, 0, false);
     });
 
     it('adds new association using existing concept', () => {
-      addPropertyAndVerify(view, library2Parameters.classes.second.properties.second, false);
+      addPropertyAndVerify(view, library2Parameters.classes.second.properties, 1, false);
     });
 
     it('adds existing attribute', () => {
-      addPropertyAndVerify(view, library2Parameters.classes.second.properties.third, false);
+      addPropertyAndVerify(view, library2Parameters.classes.second.properties, 2, false);
     });
 
     it('adds existing association', () => {
-      addPropertyAndVerify(view, library2Parameters.classes.second.properties.fourth, false);
+      addPropertyAndVerify(view, library2Parameters.classes.second.properties, 3, false);
     });
   });
 

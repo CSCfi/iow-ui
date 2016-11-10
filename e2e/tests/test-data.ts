@@ -1,11 +1,10 @@
 import { Language } from '../../src/utils/language';
 import { GroupPage } from '../pages/group/groupPage.po';
 import { KnownModelType, ClassType, KnownPredicateType } from '../../src/entities/type';
-import { modelIdFromPrefix, classIdFromNamespaceId, predicateIdFromNamespaceId } from '../util/resource';
 import {
-  fromConceptSuggestion, fromExistingResource, fromExternalResource,
-  fromExistingConcept
-} from '../pages/model/modelPage.po';
+  fromExistingConcept, fromExistingResource, fromConceptSuggestion, fromExternalResource,
+  predicateIdFromPrefix, classIdFromPrefix
+} from '../util/resource';
 
 export const library2Parameters = {
   label: 'E2E Kirjasto2',
@@ -19,47 +18,43 @@ export const library2Parameters = {
         name: 'Asia',
         conceptId: 'http://jhsmeta.fi/skos/J392'
       }),
-      classType: 'class' as ClassType
+      type: 'class' as ClassType
     },
     second: {
       origin: fromExistingConcept({
         name: 'Henkilö',
         conceptId: 'http://jhsmeta.fi/skos/J7'
       }),
-      classType: 'class' as ClassType,
-      properties: {
-        first: {
+      type: 'class' as ClassType,
+      properties: [
+        {
           origin: fromConceptSuggestion({
             name: 'Property 1'
           }),
-          predicateType: 'attribute' as KnownPredicateType,
-          index: 0
+          type: 'attribute' as KnownPredicateType,
         },
-        second: {
+        {
           origin: fromExistingConcept({
             name: 'Yhteystieto',
             conceptId: 'http://jhsmeta.fi/skos/J110'
           }),
-          predicateType: 'association' as KnownPredicateType,
-          index: 1
+          type: 'association' as KnownPredicateType,
         },
-        third: {
+        {
           origin: fromExistingResource({
             name: 'Attribuutti 1',
-            id: predicateIdFromNamespaceId(modelIdFromPrefix('e2e2'), 'Attribuutti 1')
+            id: predicateIdFromPrefix('e2e2', 'Attribuutti 1'),
           }),
-          predicateType: 'attribute' as KnownPredicateType,
-          index: 2
+          type: 'attribute' as KnownPredicateType,
         },
-        fourth: {
+        {
           origin: fromExistingResource({
             name: 'Assosiaatio 1',
-            id: predicateIdFromNamespaceId(modelIdFromPrefix('e2e2'), 'Assosiaatio 1')
+            id: predicateIdFromPrefix('e2e2', 'Assosiaatio 1')
           }),
-          predicateType: 'association' as KnownPredicateType,
-          index: 3
+          type: 'association' as KnownPredicateType,
         }
-      }
+      ]
     }
   },
   attributes: {
@@ -67,7 +62,7 @@ export const library2Parameters = {
       origin: fromConceptSuggestion({
         name: 'Attribuutti 1'
       }),
-      predicateType: 'attribute' as KnownPredicateType
+      type: 'attribute' as KnownPredicateType
     }
   },
   associations: {
@@ -75,7 +70,7 @@ export const library2Parameters = {
       origin: fromConceptSuggestion({
         name: 'Assosiaatio 1'
       }),
-      predicateType: 'association' as KnownPredicateType
+      type: 'association' as KnownPredicateType
     }
   }
 };
@@ -91,14 +86,14 @@ export const library1Parameters = {
       origin: fromConceptSuggestion({
         name: 'Luokka 1'
       }),
-      classType: 'class' as ClassType
+      type: 'class' as ClassType
     },
     second: {
       origin: fromExistingResource({
         name: library2Parameters.classes.first.origin.name,
-        id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.origin.name)
+        id: classIdFromPrefix(library2Parameters.prefix, library2Parameters.classes.first.origin.name)
       }),
-      classType: 'class' as ClassType
+      type: 'class' as ClassType
     }
   }
 };
@@ -113,33 +108,32 @@ export const profileParameters = {
     first: {
       origin: fromExistingResource({
         name: library2Parameters.classes.first.origin.name,
-        id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.first.origin.name)
+        id: classIdFromPrefix(library2Parameters.prefix, library2Parameters.classes.first.origin.name)
       }),
-      classType: 'shape' as ClassType,
-      properties: {
-        first: {
+      type: 'shape' as ClassType,
+      properties: [
+        {
           origin: fromExternalResource({
             name: 'Luotu',
             id: 'http://purl.org/dc/terms/created'
           }),
-          predicateType: 'attribute' as KnownPredicateType,
-          index: 0
+          type: 'attribute' as KnownPredicateType
         }
-      }
+      ]
     },
     second: {
       origin: fromExistingResource({
         name: library2Parameters.classes.second.origin.name,
-        id: classIdFromNamespaceId(modelIdFromPrefix(library2Parameters.prefix), library2Parameters.classes.second.origin.name)
+        id: classIdFromPrefix(library2Parameters.prefix, library2Parameters.classes.second.origin.name)
       }),
-      classType: 'shape' as ClassType
+      type: 'shape' as ClassType
     },
     third: {
       origin: fromExternalResource({
         name: 'Sijainti',
         id: 'http://purl.org/dc/terms/Location'
       }),
-      classType: 'shape' as ClassType
+      type: 'shape' as ClassType
     }
   }
 };

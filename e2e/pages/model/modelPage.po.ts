@@ -8,6 +8,7 @@ import { PredicateView } from '../editor/predicateView.po';
 import { SearchPredicateModal } from '../editor/modal/searchPredicateModal.po';
 import EC = protractor.ExpectedConditions;
 import { assertNever } from '../../../src/utils/object';
+import { AddResourceParameters } from '../../util/resource';
 
 export interface NewModelParameters {
   prefix: string;
@@ -15,33 +16,6 @@ export interface NewModelParameters {
   language: Language[];
   groupId: string;
   type: KnownModelType;
-}
-
-
-export type FromConceptSuggestion = { type: 'conceptSuggestion', name: string };
-export type FromExistingConcept =   { type: 'existingConcept', name: string, conceptId: string };
-export type FromExistingResource =  { type: 'existingResource', name: string, id: string };
-export type FromExternalResource =  { type: 'externalResource', name: string, id: string };
-
-export type AddResourceParameters = FromConceptSuggestion
-                                  | FromExistingConcept
-                                  | FromExistingResource
-                                  | FromExternalResource;
-
-export function fromConceptSuggestion(params: { name: string }): FromConceptSuggestion {
-  return { type: 'conceptSuggestion', name: params.name };
-}
-
-export function fromExistingConcept(params: { name: string, conceptId: string }): FromExistingConcept {
-  return { type: 'existingConcept', name: params.name, conceptId: params.conceptId };
-}
-
-export function fromExistingResource(params: { name: string, id: string }): FromExistingResource {
-  return { type: 'existingResource', name: params.name, id: params.id };
-}
-
-export function fromExternalResource(params: { name: string, id: string }): FromExternalResource {
-  return { type: 'externalResource', name: params.name, id: params.id };
 }
 
 export class ModelPage {
@@ -64,6 +38,8 @@ export class ModelPage {
   classView = (type: ClassType) => new ClassView(type);
   predicateView = (type: KnownPredicateType) => new PredicateView(type);
 
+  resourceSelection = element(by.css('.model-panel--left'));
+
   constructor(private type: KnownModelType, private newModel: boolean) {
   }
 
@@ -71,14 +47,31 @@ export class ModelPage {
     if (this.newModel) {
       browser.wait(EC.presenceOf(this.modelView.title));
     } else {
-      browser.wait(EC.presenceOf(element(by.css('.model-panel--left'))));
+      browser.wait(EC.presenceOf(this.resourceSelection));
+    }
+  }
+
+  ensureResourceTabIsOpen(tab: ClassType|KnownPredicateType) {
+    switch (tab) {
+      case 'class':
+      case 'shape':
+        this.resourceSelection.element(by.cssContainingText('li.uib-tab', 'Luokka')).click();
+        break;
+      case 'attribute':
+        this.resourceSelection.element(by.cssContainingText('li.uib-tab', 'Attribuutti')).click();
+        break;
+      case 'association':
+        this.resourceSelection.element(by.cssContainingText('li.uib-tab', 'Assosiaatio')).click();
+        break;
+      default:
+        assertNever(tab);
     }
   }
 
   addClass(params: AddResourceParameters) {
     this.waitToBeRendered();
 
-    element(by.cssContainingText('li.uib-tab', 'Luokka')).click();
+    this.ensureResourceTabIsOpen('class');
     element(by.css('button.add-new-button')).click();
 
     const searchClass = new SearchClassModal();
@@ -114,18 +107,9 @@ export class ModelPage {
 
     this.waitToBeRendered();
 
-    switch (type) {
-      case 'attribute':
-        element(by.cssContainingText('li.uib-tab', 'Attribuutti')).click();
-        break;
-      case 'association':
-        element(by.cssContainingText('li.uib-tab', 'Assosiaatio')).click();
-        break;
-      default:
-        assertNever(type);
-    }
-
+    this.ensureResourceTabIsOpen(type);
     element(by.css('button.add-new-button')).click();
+
     const searchPredicate = new SearchPredicateModal(type);
     searchPredicate.search(params.name);
 

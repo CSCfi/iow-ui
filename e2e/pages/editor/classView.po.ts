@@ -1,11 +1,11 @@
 import { EditableEntityButtons } from '../common/component/editableEntityButtons.po';
 import { NavBar } from '../common/navbar.po';
 import { ClassForm } from './classForm.po';
-import { ClassType, KnownPredicateType } from '../../../src/entities/type';
+import { ClassType } from '../../../src/entities/type';
 import ElementFinder = protractor.ElementFinder;
 import { SearchPredicateModal } from './modal/searchPredicateModal.po';
-import { AddResourceParameters } from '../model/modelPage.po';
 import { assertNever } from '../../../src/utils/object';
+import { PropertyDescriptor } from '../../util/resource';
 
 const navbar = new NavBar();
 
@@ -28,7 +28,7 @@ export class ClassView {
   constructor(private type: ClassType) {
   }
 
-  addProperty(property: { origin: AddResourceParameters, predicateType: KnownPredicateType }) {
+  addProperty(property: PropertyDescriptor) {
 
     this.buttons.addPropertyButton.click();
     const searchPredicate = new SearchPredicateModal();
@@ -37,14 +37,14 @@ export class ClassView {
 
     switch (property.origin.type) {
       case 'conceptSuggestion':
-        const suggestionModal = searchPredicate.selectAddNew(property.predicateType);
+        const suggestionModal = searchPredicate.selectAddNew(property.type);
         suggestionModal.suggestNewConcept();
         suggestionModal.definition.appendValue('Definition');
         suggestionModal.confirm();
         searchPredicate.confirm();
         break;
       case 'existingConcept':
-        const conceptModal = searchPredicate.selectAddNew(property.predicateType);
+        const conceptModal = searchPredicate.selectAddNew(property.type);
         conceptModal.selectResultById(property.origin.conceptId);
         conceptModal.confirm();
         searchPredicate.confirm();
