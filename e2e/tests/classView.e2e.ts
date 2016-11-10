@@ -31,6 +31,17 @@ describe('Library 2 class view', () => {
     expect(view.form.description.content.getText()).toBe(editedDescription);
   });
 
+  it('edits property', () => {
+    const klass = library2Parameters.classes.second;
+    const view = page.selectClass(library2Parameters.prefix, klass);
+    view.edit();
+    const editedDescription = 'foo';
+    const openProperty = () => view.form.openProperty(0, klass.properties[0].type);
+    openProperty().description.setValue(editedDescription);
+    view.saveAndReload();
+    expect(openProperty().description.content.getText()).toBe(editedDescription);
+  });
+
   it('removes properties', () => {
 
     const klass = library2Parameters.classes.second;
