@@ -8,7 +8,9 @@ import { PredicateView } from '../editor/predicateView.po';
 import { SearchPredicateModal } from '../editor/modal/searchPredicateModal.po';
 import EC = protractor.ExpectedConditions;
 import { assertNever } from '../../../src/utils/object';
-import { AddResourceParameters } from '../../util/resource';
+import {
+  AddResourceParameters, ClassDescriptor, resolveResourceId, PredicateDescriptor
+} from '../../util/resource';
 
 export interface NewModelParameters {
   prefix: string;
@@ -39,6 +41,7 @@ export class ModelPage {
   predicateView = (type: KnownPredicateType) => new PredicateView(type);
 
   resourceSelection = element(by.css('.model-panel--left'));
+  resourceSelectionItems = this.resourceSelection.$('.panel__list');
 
   constructor(private type: KnownModelType, private newModel: boolean) {
   }
@@ -145,5 +148,20 @@ export class ModelPage {
 
   addAssociation(params: AddResourceParameters) {
     this.addPredicate('association', params);
+  }
+
+  selectResourceById(type: ClassType|KnownPredicateType, id: string) {
+    this.ensureResourceTabIsOpen(type);
+    this.resourceSelectionItems.element(by.css(`li#${CSS.escape(id)}`)).click();
+  }
+
+  selectClass(modelPrefix: string, klass: ClassDescriptor) {
+    this.selectResourceById(klass.type, resolveResourceId(modelPrefix, klass));
+    return this.classView(klass.type);
+  }
+
+  selectPredicate(modelPrefix: string, predicate: PredicateDescriptor) {
+    this.selectResourceById(predicate.type, resolveResourceId(modelPrefix, predicate));
+    return this.predicateView(predicate.type);
   }
 }

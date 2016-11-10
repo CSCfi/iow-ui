@@ -103,3 +103,21 @@ export function predicateIdFromPrefix(modelPrefix: string, predicateName: string
 export function classIdFromPrefix(modelPrefix: string, className: string) {
   return classIdFromNamespaceId(modelIdFromPrefix(modelPrefix), className);
 }
+
+export function resolveResourceId(modelPrefix: string, resource: ResourceDescriptor<any>): string {
+  switch (resource.origin.type) {
+    case 'conceptSuggestion':
+    case 'existingConcept':
+      return resourceIdFromPrefix(resource.type, modelPrefix, resource.origin.name);
+    case 'existingResource':
+      if (resource.type === 'shape') {
+        return resourceIdFromPrefix(resource.type, modelPrefix, resource.origin.name);
+      } else {
+        return resource.origin.id;
+      }
+    case 'externalResource':
+      return resource.origin.id;
+    default:
+      return assertNever(resource.origin);
+  }
+}
