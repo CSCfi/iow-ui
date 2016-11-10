@@ -3,19 +3,22 @@ import ElementFinder = protractor.ElementFinder;
 import { upperCaseFirst } from 'change-case';
 import { ClassType } from '../../../src/entities/type';
 import { PropertyView } from './propertyView.po';
+import EC = protractor.ExpectedConditions;
 
 export class ClassForm {
 
-  label: EditableComponent;
+  label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(this.type) + ' label');
   description = EditableComponent.byTitleLocalizationKey(this.element, 'Description');
+  properties = this.element.$$('accordion.properties accordion-group');
 
-  constructor(public element: ElementFinder, type: ClassType) {
-    this.label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(type) + ' label');
+  constructor(public element: ElementFinder, public type: ClassType) {
   }
 
   getProperty(index: number) {
     this.ensurePropertyOpen(index);
-    return new PropertyView(this.getPropertyElementAtIndex(index).element(by.css('property-view')));
+    const openedPropertyView = this.getPropertyElementAtIndex(index).element(by.css('property-view'));
+    browser.wait(EC.presenceOf(openedPropertyView));
+    return new PropertyView(openedPropertyView);
   }
 
   private getPropertyElementAtIndex(index: number) {
@@ -35,7 +38,7 @@ export class ClassForm {
   }
 
   isPropertyOpen(index: number) {
-    return this.getPropertyElementAtIndex(index).element(by.css('property-view > div')).isDisplayed();
+    return this.getPropertyElementAtIndex(index).element(by.css('property-view > div')).isPresent();
   }
 
   isPropertyClosed(index: number) {

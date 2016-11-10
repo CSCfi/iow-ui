@@ -5,7 +5,7 @@
 
         <button ng-if="ctrl.isEditing()"
                 type="button"
-                class="btn btn-default pull-right"
+                class="btn btn-default pull-right remove"
                 style="margin-left: 5px"
                 ng-disabled="!ctrl.property.inUnstableState"
                 ng-click="ctrl.removeProperty(ctrl.property)" uib-tooltip="{{'Delete property' | translate}}"><i class="fa fa-trash"></i></button>

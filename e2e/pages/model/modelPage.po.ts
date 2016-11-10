@@ -151,6 +151,7 @@ export class ModelPage {
   }
 
   selectResourceById(type: ClassType|KnownPredicateType, id: string) {
+    browser.wait(EC.presenceOf(this.resourceSelection));
     this.ensureResourceTabIsOpen(type);
     this.resourceSelectionItems.element(by.css(`li#${CSS.escape(id)}`)).click();
   }
