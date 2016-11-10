@@ -1,4 +1,5 @@
 require('core-js');
+require('css.escape');
 const path = require('path');
 const tsconfig = require('./tsconfig.json');
 
