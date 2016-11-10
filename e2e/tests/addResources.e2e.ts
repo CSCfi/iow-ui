@@ -87,12 +87,12 @@ describe('Add resources', () => {
 
   it('adds new attribute using concept suggestion', () => {
     const page = ModelPage.navigateToExistingModel(library2Parameters.prefix, library2Parameters.type);
-    addPredicateAndVerify(page, library2Parameters.attributes.first, false);
+    addPredicateAndVerify(page, library2Parameters.predicates.first, false);
   });
 
   it('adds new association using concept suggestion', () => {
     const page = ModelPage.navigateToExistingModel(library2Parameters.prefix, library2Parameters.type);
-    addPredicateAndVerify(page, library2Parameters.associations.first, false);
+    addPredicateAndVerify(page, library2Parameters.predicates.second, false);
   });
 
   it('assigns class from another library', () => {

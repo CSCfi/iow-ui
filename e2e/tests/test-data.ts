@@ -57,16 +57,14 @@ export const library2Parameters = {
       ]
     }
   },
-  attributes: {
+  predicates: {
     first: {
       origin: fromConceptSuggestion({
         name: 'Attribuutti 1'
       }),
       type: 'attribute' as KnownPredicateType
-    }
-  },
-  associations: {
-    first: {
+    },
+    second: {
       origin: fromConceptSuggestion({
         name: 'Assosiaatio 1'
       }),

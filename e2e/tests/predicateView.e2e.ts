@@ -14,7 +14,7 @@ describe('Library 2 predicate view', () => {
   });
 
   it('edits predicate', () => {
-    const view = page.selectPredicate(library2Parameters.prefix, library2Parameters.attributes.first);
+    const view = page.selectPredicate(library2Parameters.prefix, library2Parameters.predicates.first);
     view.edit();
     const editedDescription = 'foo';
     view.form.description.setValue(editedDescription);
@@ -24,7 +24,7 @@ describe('Library 2 predicate view', () => {
 
   it('removes attributes', () => {
 
-    page.selectPredicate(library2Parameters.prefix, library2Parameters.attributes.first)
+    page.selectPredicate(library2Parameters.prefix, library2Parameters.predicates.first)
       .buttons.removeAndConfirm();
 
     expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
@@ -32,7 +32,7 @@ describe('Library 2 predicate view', () => {
 
   it('removes associations', () => {
 
-    page.selectPredicate(library2Parameters.prefix, library2Parameters.associations.first)
+    page.selectPredicate(library2Parameters.prefix, library2Parameters.predicates.second)
       .buttons.removeAndConfirm();
 
     expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
