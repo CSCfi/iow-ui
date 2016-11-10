@@ -4,12 +4,6 @@ import { NavBar } from '../pages/common/navbar.po';
 
 const navbar = new NavBar();
 
-function times(n: number, cb: () => void) {
-  for (let i = 0; i < n; i++) {
-    cb();
-  }
-}
-
 describe('Library 2 class view', () => {
 
   let page: ModelPage;
@@ -19,16 +13,25 @@ describe('Library 2 class view', () => {
     page = ModelPage.navigateToExistingModel(library2Parameters.prefix, library2Parameters.type);
   });
 
+  it('shows property predicate details', () => {
+
+    const klass = library2Parameters.classes.second;
+    const view = page.selectClass(library2Parameters.prefix, klass);
+    const propertyView = view.form.openProperty(0, klass.properties[0].type);
+
+    expect(propertyView.openPropertyReusablePredicate().label).toMatch(/.+/);
+  });
+
   it('removes properties', () => {
 
+    const klass = library2Parameters.classes.second;
     const view = page.selectClass(library2Parameters.prefix, library2Parameters.classes.second);
 
     view.edit();
 
-    times(library2Parameters.classes.second.properties.length, () => {
-      const propertyView = view.form.getProperty(0);
-      propertyView.remove();
-    });
+    for (const property of klass.properties) {
+      view.form.openProperty(0, property.type).remove();
+    }
 
     view.saveAndReload();
     expect(view.form.properties.count()).toBe(0);

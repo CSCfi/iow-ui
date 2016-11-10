@@ -1,7 +1,7 @@
 import { EditableComponent } from '../common/component/editableComponent.po';
 import ElementFinder = protractor.ElementFinder;
 import { upperCaseFirst } from 'change-case';
-import { ClassType } from '../../../src/entities/type';
+import { ClassType, KnownPredicateType } from '../../../src/entities/type';
 import { PropertyView } from './propertyView.po';
 import EC = protractor.ExpectedConditions;
 
@@ -14,11 +14,11 @@ export class ClassForm {
   constructor(public element: ElementFinder, public type: ClassType) {
   }
 
-  getProperty(index: number) {
+  openProperty(index: number, type: KnownPredicateType) {
     this.ensurePropertyOpen(index);
     const openedPropertyView = this.getPropertyElementAtIndex(index).element(by.css('property-view'));
     browser.wait(EC.presenceOf(openedPropertyView));
-    return new PropertyView(openedPropertyView);
+    return new PropertyView(openedPropertyView, type);
   }
 
   private getPropertyElementAtIndex(index: number) {

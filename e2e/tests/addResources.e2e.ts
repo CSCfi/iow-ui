@@ -52,10 +52,10 @@ function addPredicateAndVerify(page: ModelPage, predicate: PredicateDescriptor, 
   verifyName(view, predicate.origin, save);
 }
 
-function verifyPropertyName(view: ClassView, params: AddResourceParameters, index: number) {
+function verifyPropertyName(view: ClassView, property: PropertyDescriptor, index: number) {
   view.saveAndReload();
   browser.sleep(800); // wait for scroll
-  expect(view.form.getProperty(index).label.content.getText()).toBe(params.name);
+  expect(view.form.openProperty(index, property.type).label.content.getText()).toBe(property.origin.name);
 }
 
 function addPropertyAndVerify(view: ClassView, properties: PropertyDescriptor[], index: number, setName: boolean) {
@@ -63,9 +63,9 @@ function addPropertyAndVerify(view: ClassView, properties: PropertyDescriptor[],
   view.edit();
   view.addProperty(property);
   if (setName) {
-    view.form.getProperty(index).label.setValue(property.origin.name);
+    view.form.openProperty(index, property.type).label.setValue(property.origin.name);
   }
-  verifyPropertyName(view, property.origin, index);
+  verifyPropertyName(view, property, index);
 }
 
 describe('Add resources', () => {
