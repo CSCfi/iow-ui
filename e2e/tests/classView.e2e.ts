@@ -22,6 +22,15 @@ describe('Library 2 class view', () => {
     expect(propertyView.openPropertyReusablePredicate().label).toMatch(/.+/);
   });
 
+  it('edits class', () => {
+    const view = page.selectClass(library2Parameters.prefix, library2Parameters.classes.second);
+    view.edit();
+    const editedDescription = 'foo';
+    view.form.description.setValue(editedDescription);
+    view.saveAndReload();
+    expect(view.form.description.content.getText()).toBe(editedDescription);
+  });
+
   it('removes properties', () => {
 
     const klass = library2Parameters.classes.second;
@@ -43,22 +52,6 @@ describe('Library 2 class view', () => {
       .buttons.removeAndConfirm();
 
     page.selectClass(library2Parameters.prefix, library2Parameters.classes.second)
-      .buttons.removeAndConfirm();
-
-    expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
-  });
-
-  it('removes attributes', () => {
-
-    page.selectPredicate(library2Parameters.prefix, library2Parameters.attributes.first)
-      .buttons.removeAndConfirm();
-
-    expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
-  });
-
-  it('removes associations', () => {
-
-    page.selectPredicate(library2Parameters.prefix, library2Parameters.associations.first)
       .buttons.removeAndConfirm();
 
     expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
