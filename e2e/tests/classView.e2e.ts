@@ -22,4 +22,18 @@ describe('Library 2 class view', () => {
 
     expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
   });
+
+  it('removes attributes', () => {
+    page.selectPredicate(library2Parameters.prefix, library2Parameters.attributes.first)
+      .buttons.removeAndConfirm();
+
+    expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
+  });
+
+  it('removes associations', () => {
+    page.selectPredicate(library2Parameters.prefix, library2Parameters.associations.first)
+      .buttons.removeAndConfirm();
+
+    expect(page.resourceSelectionItems.$$('li').count()).toBe(0);
+  });
 });
