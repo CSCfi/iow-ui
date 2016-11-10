@@ -109,7 +109,7 @@ describe('Library 1 model view', () => {
   });
 });
 
-describe('Library 1 model view', () => {
+describe('Profile model view', () => {
 
   let view: ModelView;
 
