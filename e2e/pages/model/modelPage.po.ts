@@ -1,6 +1,5 @@
 import { ModelView } from './modelView.po';
 import { Language } from '../../../src/utils/language';
-import { navigateAndReturn } from '../../util/browser';
 import { KnownModelType, ClassType, KnownPredicateType } from '../../../src/entities/type';
 import { SearchClassModal } from '../editor/modal/searchClassModal.po';
 import { ClassView } from '../editor/classView.po';
@@ -22,7 +21,12 @@ export interface NewModelParameters {
 
 export class ModelPage {
 
-  static navigate = (type: KnownModelType, path: string) => navigateAndReturn(path, new ModelPage(type, false));
+  static navigate = (type: KnownModelType, path: string, newModel: boolean) => {
+    browser.get(path);
+    const page = new ModelPage(type, newModel);
+    page.waitToBeRendered();
+    return page;
+  };
 
   static pathToNewModel(params: NewModelParameters) {
     const { prefix, label, language, groupId, type } = params;
@@ -32,9 +36,9 @@ export class ModelPage {
   static pathToExistingModel = (prefix: string) => `/model/${prefix}/`;
   static pathWithResource = (prefix: string, resourceName: string) => ModelPage.pathToExistingModel(prefix) + `${resourceName}`;
 
-  static navigateToNewModel = (params: NewModelParameters) => ModelPage.navigate(params.type, ModelPage.pathToNewModel(params));
-  static navigateToExistingModel = (prefix: string, type: KnownModelType) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(prefix));
-  static navigateToResource = (prefix: string, type: KnownModelType, resourceName: string) =>  ModelPage.navigate(type, ModelPage.pathWithResource(prefix, resourceName));
+  static navigateToNewModel = (params: NewModelParameters) => ModelPage.navigate(params.type, ModelPage.pathToNewModel(params), true);
+  static navigateToExistingModel = (prefix: string, type: KnownModelType) =>  ModelPage.navigate(type, ModelPage.pathToExistingModel(prefix), false);
+  static navigateToResource = (prefix: string, type: KnownModelType, resourceName: string) =>  ModelPage.navigate(type, ModelPage.pathWithResource(prefix, resourceName), false);
 
   modelView = new ModelView(this.type);
   classView = (type: ClassType) => new ClassView(type);
@@ -72,7 +76,6 @@ export class ModelPage {
   }
 
   addClass(params: AddResourceParameters) {
-    this.waitToBeRendered();
 
     this.ensureResourceTabIsOpen('class');
     element(by.css('button.add-new-button')).click();
@@ -107,8 +110,6 @@ export class ModelPage {
   }
 
   addPredicate(type: KnownPredicateType, params: AddResourceParameters) {
-
-    this.waitToBeRendered();
 
     this.ensureResourceTabIsOpen(type);
     element(by.css('button.add-new-button')).click();

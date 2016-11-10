@@ -1,13 +1,22 @@
 import { EditableComponent } from '../common/component/editableComponent.po';
 import { AddModelModal } from './addModelModal.po';
-import { navigateAndReturn } from '../../util/browser';
+import EC = protractor.ExpectedConditions;
 
 export class GroupPage {
 
   static path = (id: string) => `/group?id=${encodeURIComponent(id)}`;
-  static navigate = (id: string) => navigateAndReturn(GroupPage.path(id), new GroupPage());
+  static navigate = (id: string) => {
+    GroupPage.path(id);
+    const page = new GroupPage();
+    page.waitToBeRendered();
+    return page;
+  };
 
   label = EditableComponent.byTitleLocalizationKey(element(by.css('body')), 'Group label');
+
+  waitToBeRendered() {
+    browser.wait(EC.presenceOf(this.label.content));
+  }
 
   addLibrary() {
     element(by.id('add-library-button')).click();

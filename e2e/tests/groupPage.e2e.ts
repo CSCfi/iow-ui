@@ -38,7 +38,6 @@ describe('Group page', () => {
     addModelModal.label.setValue(library1Parameters.label);
     addModelModal.language.setItems(library1Parameters.language);
     const modelPage = addModelModal.submit();
-    modelPage.waitToBeRendered();
     expect(modelPage.modelView.title.getText()).toBe(library1Parameters.label);
     expectCurrentUrlToEqualPath(ModelPage.pathToNewModel(library1Parameters));
   });

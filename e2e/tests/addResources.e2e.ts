@@ -128,7 +128,6 @@ describe('Add resources', () => {
     beforeEach(() => {
       page = ModelPage.navigateToResource(library2Parameters.prefix, library2Parameters.type, classNameToResourceIdName(library2Parameters.classes.second.origin.name));
       view = page.classView('class');
-      browser.wait(view.element.isDisplayed);
     });
 
     it('adds new attribute using concept suggestion', () => {
