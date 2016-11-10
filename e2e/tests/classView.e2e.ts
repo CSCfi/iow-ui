@@ -14,9 +14,8 @@ describe('Library 2 class view', () => {
   });
 
   it('removes classes', () => {
-    const view = page.selectClass(library2Parameters.prefix, library2Parameters.classes.first);
-
-    view.buttons.removeAndConfirm();
+    page.selectClass(library2Parameters.prefix, library2Parameters.classes.first)
+      .buttons.removeAndConfirm();
 
     page.selectClass(library2Parameters.prefix, library2Parameters.classes.second)
       .buttons.removeAndConfirm();
