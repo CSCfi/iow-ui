@@ -18,9 +18,13 @@ export class PredicateView {
     this.buttons.edit();
   }
 
-  saveAndReload() {
-    this.buttons.save();
+  reload() {
     browser.refresh();
     navbar.ensureLoggedIn();
+  }
+
+  saveAndReload() {
+    this.buttons.save();
+    this.reload();
   }
 }

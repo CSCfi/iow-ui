@@ -7,6 +7,7 @@ import { ClassView } from '../editor/classView.po';
 import { PredicateView } from '../editor/predicateView.po';
 import { SearchPredicateModal } from '../editor/modal/searchPredicateModal.po';
 import EC = protractor.ExpectedConditions;
+import { assertNever } from '../../../src/utils/object';
 
 export interface NewModelParameters {
   prefix: string;
@@ -14,6 +15,33 @@ export interface NewModelParameters {
   language: Language[];
   groupId: string;
   type: KnownModelType;
+}
+
+
+export type FromConceptSuggestion = { type: 'conceptSuggestion', name: string };
+export type FromExistingConcept =   { type: 'existingConcept', name: string, conceptId: string };
+export type FromExistingResource =  { type: 'existingResource', name: string, id: string };
+export type FromExternalResource =  { type: 'externalResource', name: string, id: string };
+
+export type AddResourceParameters = FromConceptSuggestion
+                                  | FromExistingConcept
+                                  | FromExistingResource
+                                  | FromExternalResource;
+
+export function fromConceptSuggestion(params: { name: string }): FromConceptSuggestion {
+  return { type: 'conceptSuggestion', name: params.name };
+}
+
+export function fromExistingConcept(params: { name: string, conceptId: string }): FromExistingConcept {
+  return { type: 'existingConcept', name: params.name, conceptId: params.conceptId };
+}
+
+export function fromExistingResource(params: { name: string, id: string }): FromExistingResource {
+  return { type: 'existingResource', name: params.name, id: params.id };
+}
+
+export function fromExternalResource(params: { name: string, id: string }): FromExternalResource {
+  return { type: 'externalResource', name: params.name, id: params.id };
 }
 
 export class ModelPage {
@@ -47,24 +75,91 @@ export class ModelPage {
     }
   }
 
-  addClass() {
+  addClass(params: AddResourceParameters) {
     this.waitToBeRendered();
+
     element(by.cssContainingText('li.uib-tab', 'Luokka')).click();
     element(by.css('button.add-new-button')).click();
-    return new SearchClassModal();
+
+    const searchClass = new SearchClassModal();
+    searchClass.search(params.name);
+
+    switch (params.type) {
+      case 'conceptSuggestion':
+        const suggestionModal = searchClass.selectAddNew();
+        suggestionModal.suggestNewConcept();
+        suggestionModal.definition.appendValue('Definition');
+        suggestionModal.confirm();
+        break;
+      case 'existingConcept':
+        const conceptModal = searchClass.selectAddNew();
+        conceptModal.selectResultById(params.conceptId);
+        conceptModal.confirm();
+        break;
+      case 'existingResource':
+        searchClass.selectResultById(params.id);
+        searchClass.confirm();
+        break;
+      case 'externalResource':
+        searchClass.selectAddNewExternal();
+        searchClass.externalIdElement.setValue(params.id);
+        searchClass.confirm();
+        break;
+      default:
+        assertNever(params);
+    }
   }
 
-  addAttribute() {
+  addPredicate(type: KnownPredicateType, params: AddResourceParameters) {
+
     this.waitToBeRendered();
-    element(by.cssContainingText('li.uib-tab', 'Attribuutti')).click();
+
+    switch (type) {
+      case 'attribute':
+        element(by.cssContainingText('li.uib-tab', 'Attribuutti')).click();
+        break;
+      case 'association':
+        element(by.cssContainingText('li.uib-tab', 'Assosiaatio')).click();
+        break;
+      default:
+        assertNever(type);
+    }
+
     element(by.css('button.add-new-button')).click();
-    return new SearchPredicateModal('attribute');
+    const searchPredicate = new SearchPredicateModal(type);
+    searchPredicate.search(params.name);
+
+    switch (params.type) {
+      case 'conceptSuggestion':
+        const suggestionModal = searchPredicate.selectAddNew();
+        suggestionModal.suggestNewConcept();
+        suggestionModal.definition.appendValue('Definition');
+        suggestionModal.confirm();
+        break;
+      case 'existingConcept':
+        const conceptModal = searchPredicate.selectAddNew();
+        conceptModal.selectResultById(params.conceptId);
+        conceptModal.confirm();
+        break;
+      case 'existingResource':
+        searchPredicate.selectResultById(params.id);
+        searchPredicate.confirm();
+        break;
+      case 'externalResource':
+        searchPredicate.selectAddNewExternal();
+        searchPredicate.externalIdElement.setValue(params.id);
+        searchPredicate.confirm();
+        break;
+      default:
+        assertNever(params);
+    }
   }
 
-  addAssociation() {
-    this.waitToBeRendered();
-    element(by.cssContainingText('li.uib-tab', 'Assosiaatio')).click();
-    element(by.css('button.add-new-button')).click();
-    return new SearchPredicateModal('association');
+  addAttribute(params: AddResourceParameters) {
+    this.addPredicate('attribute', params);
+  }
+
+  addAssociation(params: AddResourceParameters) {
+    this.addPredicate('association', params);
   }
 }
