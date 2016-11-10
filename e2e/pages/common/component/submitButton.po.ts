@@ -7,7 +7,7 @@ export class SubmitButton {
   }
 
   submit() {
-    browser.wait(protractor.ExpectedConditions.elementToBeClickable(this.element), 1000).then(() => {
+    browser.wait(protractor.ExpectedConditions.elementToBeClickable(this.element)).then(() => {
       this.element.click();
     });
     browser.wait(EC.invisibilityOf(this.element));
