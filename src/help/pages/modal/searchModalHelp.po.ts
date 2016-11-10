@@ -49,7 +49,7 @@ export function selectSearchResult(modalParent: () => JQuery, label: string, res
   });
 }
 
-export function filterForAddNewResult(modalParent: () => JQuery, searchFor: string, gettextCatalog: gettextCatalog) {
+export function filterForAddNewResult(modalParent: () => JQuery, searchFor: string, gettextCatalog: gettextCatalog, searchType: string) {
 
   const filterForAddNewElement = textSearchElement(modalParent);
   const addNewResultsElements = first(child(modalParent, '.search-result.add-new'));
@@ -57,8 +57,8 @@ export function filterForAddNewResult(modalParent: () => JQuery, searchFor: stri
 
   return createStory({
 
-    title: `Search for ${searchFor.toLowerCase()}`,
-    content: `Search for ${searchFor.toLowerCase()} info`,
+    title: `Search for ${searchFor.toLowerCase()} ${searchType}`,
+    content: `Search for ${searchFor.toLowerCase()} ${searchType} info`,
     popover: { element: filterForAddNewElement, position: 'bottom-right' },
     focus: { element: filterForAddNewElement },
     nextCondition: createExpectedStateNextCondition(

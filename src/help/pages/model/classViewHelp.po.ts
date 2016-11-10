@@ -29,6 +29,7 @@ export const saveClassChanges = createStory({
 const addPropertyElement = child(classView, 'button.add-property');
 export const addProperty = createStory({
   title: 'Add property',
+  content: 'You can add new attribute or association to the Class from here',
   scroll: createScrollNone(),
   popover: { element: addPropertyElement, position: 'left-down' },
   focus: { element: addPropertyElement },

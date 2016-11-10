@@ -60,6 +60,7 @@ export const enterModelLanguage = createStory({
 const createModelElement = child(modal, 'button.create');
 export const createModel = createStory({
   title: 'Create new',
+  content: 'Create new info',
   popover: { element: createModelElement, position: 'top-left' },
   focus: { element: createModelElement },
   nextCondition: createNavigatingClickNextCondition(createModelElement)

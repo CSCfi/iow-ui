@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-11-09 09:02+0200\n"
+"PO-Revision-Date: 2016-11-10 11:05+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -187,7 +187,7 @@ msgstr "XML"
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:77
+#: translations/help.html:82
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgid ""
 "Are you sure you want to save? Saving overrides previously saves positions."
 msgstr ""
 
-#: translations/help.html:95
+#: translations/help.html:100
 msgid "Asia joka tuotetaan"
 msgstr "Thing that is being produced"
 
@@ -248,11 +248,11 @@ msgstr "CURIE that identifies the Object property"
 msgid "Association information"
 msgstr ""
 
-#: translations/help.html:84
+#: translations/help.html:89
 msgid "Association is here"
 msgstr ""
 
-#: translations/help.html:85
+#: translations/help.html:90
 msgid "Association is here info"
 msgstr ""
 "New association consists for permanent URI identifer, name, description and "
@@ -270,7 +270,7 @@ msgstr "Name of the association"
 msgid "Association list"
 msgstr ""
 
-#: translations/help.html:86
+#: translations/help.html:91
 msgid "Association target is here"
 msgstr "Target of the association is the class that is being referred to"
 
@@ -290,11 +290,11 @@ msgstr "CURIE that identifies the Datatype property"
 msgid "Attribute information"
 msgstr ""
 
-#: translations/help.html:82
+#: translations/help.html:87
 msgid "Attribute is here"
 msgstr ""
 
-#: translations/help.html:83
+#: translations/help.html:88
 msgid "Attribute is here info"
 msgstr ""
 "Attribute information consists of permanent URI identifier, name, "
@@ -385,7 +385,7 @@ msgstr ""
 msgid "Change reusable predicate"
 msgstr ""
 
-#: translations/help.html:102
+#: translations/help.html:107
 msgid "Changes need to be saved"
 msgstr ""
 
@@ -437,11 +437,11 @@ msgstr "CURIE that identifies the class"
 msgid "Class information"
 msgstr ""
 
-#: translations/help.html:80
+#: translations/help.html:85
 msgid "Class is here"
 msgstr ""
 
-#: translations/help.html:81
+#: translations/help.html:86
 msgid "Class is here info"
 msgstr "Information about the selected Class is seen in here"
 
@@ -497,11 +497,11 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
-#: translations/help.html:101
+#: translations/help.html:106
 msgid "Classes can be modified"
 msgstr ""
 
-#: translations/help.html:90
+#: translations/help.html:95
 msgid "Classes can be seen visually here"
 msgstr ""
 
@@ -594,7 +594,7 @@ msgstr "Suggested term for the concept"
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:78
+#: translations/help.html:83
 msgid "Confirm selection"
 msgstr ""
 
@@ -620,7 +620,7 @@ msgstr ""
 
 #: translations/help.html:23
 msgid "Congratulations for completing library creation! description"
-msgstr ""
+msgstr "You can now proceed on creating real Core Component libraries"
 
 #: translations/help.html:25
 msgid "Congratulations for completing namespace require!"
@@ -636,7 +636,7 @@ msgstr ""
 
 #: translations/help.html:24
 msgid "Congratulations for completing profile creation! description"
-msgstr ""
+msgstr "You can now proceed on creating real Application Profiles."
 
 #: translations/help.html:26
 msgid "Congratulations for completing specialize class!"
@@ -726,6 +726,13 @@ msgstr ""
 #: translations/misc.html:174
 msgid "Create new class"
 msgstr ""
+
+#: translations/help.html:111
+msgid "Create new info"
+msgstr ""
+"This is all that is required for creating a new model. Prefix will be used "
+"to create namespace in the workbech domain. Alternatively you could use the "
+"Namespace redirection to use other domain as the namespace. "
 
 #: translations/misc.html:176
 msgid "Create new predicate"
@@ -1207,8 +1214,8 @@ msgid "Guide through creating new library description"
 msgstr ""
 "Core Component libraries are Linked Data models defining reusable Classes, "
 "Datatype properties and Object properties. Core Components are created based "
-"on well defined Concepts described in terminological dictonaries. Core "
-"component can be linked to existing standards using IRI-identifiers."
+"on well defined Concepts described in terminological dictonaries and linked "
+"to existing metadata standards using IRI-identifiers."
 
 #: translations/help.html:12
 msgid "Guide through creating new profile"
@@ -1218,10 +1225,11 @@ msgstr "Guide trough creating new Application Profile"
 msgid "Guide through creating new profile description"
 msgstr ""
 "Application Profiles are machine readable information models that document "
-"the information structures using Core Components and other Linked Data based "
-"data models. Application Profiles can be used to document the information "
-"sturctures, link application specific datamodels to international standards, "
-"as a base for physical data model in any syntax"
+"the information structures using Shapes created from Core Components and "
+"other external Linked Data models. Application Profiles can be used to "
+"document the information sturctures, link application specific datamodels to "
+"international standards and use the application profile as a base for "
+"physical data model in any syntax."
 
 #: translations/help.html:14
 msgid "Guide through requiring a namespace"
@@ -1231,7 +1239,7 @@ msgstr ""
 msgid "Guide through specializing a class"
 msgstr ""
 
-#: translations/help.html:76
+#: translations/help.html:81
 msgid "Help is open"
 msgstr ""
 
@@ -1288,11 +1296,11 @@ msgstr ""
 msgid "Imported namespaces"
 msgstr ""
 
-#: translations/help.html:79
+#: translations/help.html:84
 msgid "Imported namespaces are here"
 msgstr ""
 
-#: translations/help.html:103
+#: translations/help.html:108
 msgid "Imported namespaces can be used to link resources to existing standards"
 msgstr ""
 
@@ -1316,7 +1324,7 @@ msgstr ""
 
 #: components\model/conceptForm.html:41 translations/misc.html:190
 msgid "Internal vocabulary"
-msgstr ""
+msgstr "Internal terminology"
 
 #: components/frontPage.html:55
 msgid "Interoperability method"
@@ -1361,7 +1369,7 @@ msgstr ""
 msgid "Is not valid reference data code"
 msgstr ""
 
-#: translations/help.html:100
+#: translations/help.html:105
 msgid "jhs"
 msgstr ""
 
@@ -1369,7 +1377,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: translations/help.html:89
+#: translations/help.html:94
 msgid "Label can be changed"
 msgstr ""
 
@@ -1578,7 +1586,7 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: translations/help.html:96
+#: translations/help.html:101
 msgid "Nimi"
 msgstr "Name"
 
@@ -1720,11 +1728,11 @@ msgstr "Association"
 msgid "Page not found"
 msgstr ""
 
-#: translations/help.html:91
+#: translations/help.html:96
 msgid "Palvelu"
 msgstr "Service"
 
-#: translations/help.html:93
+#: translations/help.html:98
 msgid "Palveluprofiili"
 msgstr "Serviceprofile"
 
@@ -1818,11 +1826,11 @@ msgstr "URI that identifies the property"
 msgid "Property information"
 msgstr ""
 
-#: translations/help.html:87
+#: translations/help.html:92
 msgid "Property is here"
 msgstr "Use of Property is defined here"
 
-#: translations/help.html:88
+#: translations/help.html:93
 msgid "Property is here info"
 msgstr ""
 "Information about the property usage consists of Class specific name of the "
@@ -1993,17 +2001,17 @@ msgstr ""
 msgid "Search for jhs"
 msgstr ""
 
-#: translations/help.html:61
+#: translations/help.html:63
 msgid "Search for jhs info"
 msgstr ""
 "In this tutorial we are going to use Finnish Public Sector Core Component "
 "library"
 
-#: translations/help.html:49
+#: translations/help.html:50
 msgid "Search for nimi"
 msgstr "Search for name"
 
-#: translations/help.html:64
+#: translations/help.html:67
 msgid "Search for nimi info"
 msgstr "Lets add name Property to the Class"
 
@@ -2011,23 +2019,41 @@ msgstr "Lets add name Property to the Class"
 msgid "Search for palvelu"
 msgstr "Search for service"
 
-#: translations/help.html:62
+#: translations/help.html:64
 msgid "Search for palvelu info"
 msgstr "Lets search for a class about a service"
 
 #: translations/help.html:48
-msgid "Search for tuote"
-msgstr "Search for Product"
+msgid "Search for tuote class"
+msgstr "Search for Product class"
 
-#: translations/help.html:63
-msgid "Search for tuote info"
-msgstr "Lets add new Class about some Product"
+#: translations/help.html:65
+msgid "Search for tuote class info"
+msgstr "Lets add a class about a Product in our model"
 
-#: translations/help.html:50
+#: translations/help.html:49
+msgid "Search for tuote concept"
+msgstr "Search for Product in the terminology"
+
+#: translations/help.html:66
+msgid "Search for tuote concept info"
+msgstr ""
+"When creating a new class you need to search for the concept from the "
+"existing terminologies"
+
+#: translations/help.html:51
 msgid "Search for tuotetaan"
 msgstr "Search for produces"
 
-#: translations/help.html:65
+#: translations/help.html:52
+msgid "Search for tuotetaan concept"
+msgstr "Search for produces term"
+
+#: translations/help.html:69
+msgid "Search for tuotetaan concept info"
+msgstr "Search for the Tuote term in the existing terminologies"
+
+#: translations/help.html:68
 msgid "Search for tuotetaan info"
 msgstr "Lets add new association to Product class"
 
@@ -2075,11 +2101,11 @@ msgstr ""
 msgid "Select association"
 msgstr ""
 
-#: translations/help.html:59
+#: translations/help.html:61
 msgid "Select association target"
 msgstr ""
 
-#: translations/help.html:74
+#: translations/help.html:79
 msgid "Select association target info"
 msgstr "You can create new association from here"
 
@@ -2095,11 +2121,11 @@ msgstr ""
 msgid "Select class"
 msgstr ""
 
-#: translations/help.html:58
+#: translations/help.html:60
 msgid "Select concept suggest creation"
 msgstr "Create new concept suggestion"
 
-#: translations/help.html:73
+#: translations/help.html:78
 msgid "Select concept suggest creation info"
 msgstr ""
 "If some concept is not defined in the used terminologies, you can create new "
@@ -2113,63 +2139,65 @@ msgstr ""
 msgid "Select help topic"
 msgstr ""
 
-#: translations/help.html:51
+#: translations/help.html:53
 msgid "Select jhs"
 msgstr ""
 
-#: translations/help.html:66
+#: translations/help.html:70
 msgid "Select jhs info"
 msgstr "Select Namespace from the list"
 
-#: translations/help.html:55
+#: translations/help.html:57
 msgid "Select name and description"
 msgstr ""
 
-#: translations/help.html:70
+#: translations/help.html:75
 msgid "Select name and description info"
-msgstr "Select name and description"
+msgstr ""
+"Here you can select which attributes or associations you want to use in our "
+"application profile"
 
-#: translations/help.html:57
+#: translations/help.html:59
 msgid "Select new association creation"
 msgstr ""
 
-#: translations/help.html:72
+#: translations/help.html:77
 msgid "Select new association creation info"
 msgstr "New association can be created from here"
 
-#: translations/help.html:56
+#: translations/help.html:58
 msgid "Select new creation"
 msgstr "Select Create new class"
 
-#: translations/help.html:71
+#: translations/help.html:76
 msgid "Select new creation info"
 msgstr "If some Class is not found, it can be created from here"
 
-#: translations/help.html:53
+#: translations/help.html:55
 msgid "Select nimi"
 msgstr "Select name"
 
-#: translations/help.html:68
+#: translations/help.html:72
 msgid "Select nimi info"
 msgstr "Name was found from the library and can be selected from the list"
 
-#: translations/help.html:52
+#: translations/help.html:54
 msgid "Select palvelu"
 msgstr "Select Public Service"
 
-#: translations/help.html:67
+#: translations/help.html:71
 msgid "Select palvelu info"
 msgstr "Select search results from the list"
 
-#: translations/help.html:104
+#: translations/help.html:109
 msgid "Select the vocabulary that is missing the required concept"
 msgstr ""
 
-#: translations/help.html:54
+#: translations/help.html:56
 msgid "Select tuote"
 msgstr "Select Product"
 
-#: translations/help.html:69
+#: translations/help.html:73 translations/help.html:74
 msgid "Select tuote info"
 msgstr "Lets add new Product class"
 
@@ -2277,7 +2305,7 @@ msgstr ""
 msgid "suggest"
 msgstr ""
 
-#: translations/help.html:105
+#: translations/help.html:110
 msgid "Suggest definition or description for the concept"
 msgstr ""
 
@@ -2325,7 +2353,7 @@ msgstr ""
 msgid "Superproperty info"
 msgstr ""
 
-#: translations/help.html:99
+#: translations/help.html:104
 msgid "tapahtumaketju joka toteuttaa jotain"
 msgstr "event that produces something"
 
@@ -2333,7 +2361,7 @@ msgstr "event that produces something"
 msgid "Technical namespaces"
 msgstr ""
 
-#: translations/help.html:92
+#: translations/help.html:97
 msgid "Testikirjasto"
 msgstr "Test library"
 
@@ -2353,15 +2381,15 @@ msgstr "Name of the vocabulary"
 msgid "to vocabulary"
 msgstr ""
 
-#: translations/help.html:94
+#: translations/help.html:99
 msgid "Tuote"
 msgstr "Product"
 
-#: translations/help.html:97
+#: translations/help.html:102
 msgid "Tuotetaan"
 msgstr "Is produced"
 
-#: translations/help.html:98
+#: translations/help.html:103
 msgid "Tuotetaan palvelussa"
 msgstr "Is produced in service"
 
@@ -2686,6 +2714,12 @@ msgstr ""
 #: translations/misc.html:256
 msgid "You will be redirected to the model"
 msgstr ""
+
+#~ msgid "Search for tuote"
+#~ msgstr "Search for Product"
+
+#~ msgid "Search for tuote info"
+#~ msgstr "Lets add new Class about some Product"
 
 #~ msgid "Write code"
 #~ msgstr "Write code…"

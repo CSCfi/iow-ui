@@ -15,7 +15,7 @@ export function filterForPredicate(namespaceId: string, predicateName: string, g
 }
 
 export function filterForNewPredicate(predicateName: string, gettextCatalog: gettextCatalog) {
-  return filterForAddNewResult(searchPredicateModalElement, predicateName, gettextCatalog);
+  return filterForAddNewResult(searchPredicateModalElement, predicateName, gettextCatalog, "predicate");
 }
 
 export function selectPredicate(namespaceId: string, predicateName: string) {
