@@ -57,7 +57,7 @@ export function focusAssociationTarget(parent: () => JQuery) {
   return createStory({
 
     title: 'Association target is here',
-    content:'Association target can be changed from the list or by typing the identifier',
+    content: 'Association target can be changed from the list or by typing the identifier',
     scroll: createScrollWithDefault(enterAssociationTargetElement, 150),
     popover: { element: enterAssociationTargetSelectFocusElement, position: 'right-down' },
     focus: { element: enterAssociationTargetSelectFocusElement, margin: editableMarginInColumn },
