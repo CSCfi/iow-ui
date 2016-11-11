@@ -1,6 +1,7 @@
 import { Modal } from '../../common/modal.po';
 import { SubmitButton } from '../../common/component/submitButton.po';
 import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../../util/expectation';
 
 export class AddPropertiesFromClassModal extends Modal {
 
@@ -12,6 +13,6 @@ export class AddPropertiesFromClassModal extends Modal {
 
   confirm() {
     this.confirmButton.submit();
-    browser.wait(EC.not(EC.presenceOf(this.element)));
+    browser.wait(EC.not(EC.presenceOf(this.element)), defaultTimeout);
   }
 }

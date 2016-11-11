@@ -11,10 +11,10 @@ export class AddModelModal extends Modal {
   prefix = EditableComponent.byTitleLocalizationKey(this.element, 'Prefix');
   label: EditableComponent;
   language = EditableMultipleComponent.byElementNameAndTitleLocalizationKey(this.element, 'editable-multiple-language-select', 'Model languages');
-  submitButton = new SubmitButton(element(by.buttonText('Luo uusi')));
+  submitButton = new SubmitButton(this.element.$('button.create'));
 
   constructor(private type: KnownModelType) {
-    super();
+    super('add-model');
     this.label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(type) + ' label');
   }
 

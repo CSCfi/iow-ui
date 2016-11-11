@@ -1,13 +1,15 @@
-<modal-template>
-  <modal-title>{{'Login' | translate}}</modal-title>
+<div class="login">
+  <modal-template>
+    <modal-title>{{'Login' | translate}}</modal-title>
 
-  <modal-body>
-    <p translate>eDuuni information</p>
-    <p translate>Login information</p>
-  </modal-body>
+    <modal-body>
+      <p translate>eDuuni information</p>
+      <p translate>Login information</p>
+    </modal-body>
 
-  <modal-buttons>
-    <button id="login-button" type="button" class="btn btn-default" ng-click="ctrl.login()" translate>Login</button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.register()" translate>Register</button>
-  </modal-buttons>
-</modal-template>
+    <modal-buttons>
+      <button id="login-button" type="button" class="btn btn-default" ng-click="ctrl.login()" translate>Login</button>
+      <button type="button" class="btn btn-default" ng-click="ctrl.register()" translate>Register</button>
+    </modal-buttons>
+  </modal-template>
+</div>

@@ -1,5 +1,7 @@
 import { Modal } from '../common/modal.po';
 import { EditableTable } from '../common/component/editableTable.po';
+import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../util/expectation';
 
 export class ModelPanelView<M extends Modal> {
 
@@ -11,6 +13,7 @@ export class ModelPanelView<M extends Modal> {
   }
 
   addNew() {
+    browser.wait(EC.visibilityOf(this.addNewButton), defaultTimeout);
     this.addNewButton.click();
     return new this.modalConstructor();
   }

@@ -1,12 +1,13 @@
 import { EditableComponent } from '../common/component/editableComponent.po';
 import { AddModelModal } from './addModelModal.po';
 import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../util/expectation';
 
 export class GroupPage {
 
   static path = (id: string) => `/group?id=${encodeURIComponent(id)}`;
   static navigate = (id: string) => {
-    GroupPage.path(id);
+    browser.get(GroupPage.path(id));
     const page = new GroupPage();
     page.waitToBeRendered();
     return page;
@@ -15,7 +16,7 @@ export class GroupPage {
   label = EditableComponent.byTitleLocalizationKey(element(by.css('body')), 'Group label');
 
   waitToBeRendered() {
-    browser.wait(EC.visibilityOf(this.label.content));
+    browser.wait(EC.visibilityOf(this.label.content), defaultTimeout);
   }
 
   addLibrary() {

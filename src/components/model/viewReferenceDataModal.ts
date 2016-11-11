@@ -11,7 +11,7 @@ export class ViewReferenceDataModal {
   open(referenceData: ReferenceData, context: LanguageContext): IPromise<any> {
     return this.$uibModal.open({
       template: `
-        <form>
+        <form class="view-reference-data">
           <modal-template>
             <modal-title translate>Reference data information</modal-title>
             

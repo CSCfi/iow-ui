@@ -1,5 +1,6 @@
 import { ElementFinder } from 'protractor';
 import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../../util/expectation';
 
 export class EditableComponent {
 
@@ -24,7 +25,7 @@ export class EditableComponent {
   }
 
   setValue(value: string) {
-    browser.wait(EC.visibilityOf(this.inputElement));
+    browser.wait(EC.visibilityOf(this.inputElement), defaultTimeout);
     this.inputElement.clear().then(() => {
       this.appendValue(value);
     });

@@ -7,6 +7,10 @@ export class AddEditNamespaceModal extends Modal {
   namespace = EditableComponent.byTitleLocalizationKey(this.element, 'Namespace');
   prefix = EditableComponent.byTitleLocalizationKey(this.element, 'Prefix');
 
+  constructor() {
+    super('add-edit-namespace');
+  }
+
   confirm() {
     this.element.$('modal-buttons button.confirm').click();
   }

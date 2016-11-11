@@ -1,5 +1,6 @@
 import ElementFinder = protractor.ElementFinder;
 import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../../util/expectation';
 
 export class SubmitButton {
 
@@ -7,10 +8,9 @@ export class SubmitButton {
   }
 
   submit() {
-    browser.wait(protractor.ExpectedConditions.elementToBeClickable(this.element)).then(() => {
-      this.element.click();
-    });
-    browser.wait(EC.invisibilityOf(this.element));
+    browser.wait(protractor.ExpectedConditions.elementToBeClickable(this.element), defaultTimeout);
+    this.element.click();
+    browser.wait(EC.invisibilityOf(this.element), defaultTimeout);
   }
 
   isVisible() {

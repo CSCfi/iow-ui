@@ -1,6 +1,7 @@
 import { Modal } from './modal.po';
 import { SubmitButton } from './component/submitButton.po';
 import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../util/expectation';
 
 export class SearchModal extends Modal {
 
@@ -9,12 +10,12 @@ export class SearchModal extends Modal {
   loadingIndicator = this.searchResults.$('ajax-loading-indicator');
   confirmButton = new SubmitButton(this.element.$('modal-buttons button.confirm'));
 
-  constructor(modalClass?: string) {
+  constructor(modalClass: string) {
     super(modalClass);
   }
 
   search(text: string, clear = false) {
-    return browser.wait(protractor.ExpectedConditions.stalenessOf(this.loadingIndicator)).then(() => {
+    return browser.wait(protractor.ExpectedConditions.stalenessOf(this.loadingIndicator), defaultTimeout).then(() => {
       if (clear) {
         this.searchElement.clear();
       }
@@ -38,26 +39,26 @@ export class SearchModal extends Modal {
   }
 
   selectResultByName(name: string) {
-    return browser.wait(protractor.until.elementLocated(by.css('search-results')))
+    return browser.wait(protractor.until.elementLocated(by.css('search-results')), defaultTimeout)
       .then(() => this.findResultElementByName(name).click());
   }
 
   selectResultById(id: string) {
-    return browser.wait(protractor.until.elementLocated(by.css('search-results')))
+    return browser.wait(protractor.until.elementLocated(by.css('search-results')), defaultTimeout)
       .then(() => this.findResultElementById(id).click());
   }
 
   selectAddNewResultByIndex(index: number) {
-    return browser.wait(protractor.until.elementLocated(by.css('search-results')))
+    return browser.wait(protractor.until.elementLocated(by.css('search-results')), defaultTimeout)
       .then(() => this.findAddNewResultElementByIndex(index).click());
   }
 
   confirm() {
     this.confirmButton.submit();
-    browser.wait(EC.not(EC.presenceOf(this.element)));
+    browser.wait(EC.not(EC.presenceOf(this.element)), defaultTimeout);
   }
 
   private waitForResults() {
-    browser.wait(EC.presenceOf(this.searchResults.$('.search-result')));
+    browser.wait(EC.presenceOf(this.searchResults.$('.search-result')), defaultTimeout);
   }
 }

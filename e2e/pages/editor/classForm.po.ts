@@ -4,6 +4,7 @@ import { upperCaseFirst } from 'change-case';
 import { ClassType, KnownPredicateType } from '../../../src/entities/type';
 import { PropertyView } from './propertyView.po';
 import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../util/expectation';
 
 export class ClassForm {
 
@@ -17,7 +18,7 @@ export class ClassForm {
   openProperty(index: number, type: KnownPredicateType) {
     this.ensurePropertyOpen(index);
     const openedPropertyView = this.getPropertyElementAtIndex(index).element(by.css('property-view'));
-    browser.wait(EC.presenceOf(openedPropertyView));
+    browser.wait(EC.presenceOf(openedPropertyView), defaultTimeout);
     return new PropertyView(openedPropertyView, type);
   }
 

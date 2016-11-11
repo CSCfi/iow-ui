@@ -8,10 +8,12 @@ export class ConfirmationModal {
 
   private open(title: string, body: string, additionalCssClass?: string): IPromise<void> {
     return this.$uibModal.open({
-      template: `<modal-template purpose="warning" default="true">
-                   <modal-title>{{ctrl.title | translate}}</modal-title>
-                   <modal-body>{{ctrl.body | translate}}</modal-body>
-                 </modal-template>`,
+      template: `<div class="confirmation">
+                   <modal-template purpose="warning" default="true">
+                     <modal-title>{{ctrl.title | translate}}</modal-title>
+                     <modal-body>{{ctrl.body | translate}}</modal-body>
+                   </modal-template>
+                 </div>`,
       controllerAs: 'ctrl',
       /* @ngInject */
       controller: ConfirmationModalController,

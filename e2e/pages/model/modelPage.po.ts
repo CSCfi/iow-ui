@@ -10,6 +10,7 @@ import { assertNever } from '../../../src/utils/object';
 import {
   AddResourceParameters, ClassDescriptor, resolveResourceId, PredicateDescriptor
 } from '../../util/resource';
+import { defaultTimeout } from '../../util/expectation';
 
 export interface NewModelParameters {
   prefix: string;
@@ -55,13 +56,13 @@ export class ModelPage {
   waitToBeRendered() {
     switch (this.waitFor) {
       case 'model-view':
-        browser.wait(EC.visibilityOf(this.modelView.title));
+        browser.wait(EC.visibilityOf(this.modelView.title), defaultTimeout);
         break;
       case 'editor':
-        browser.wait(EC.visibilityOf(element(by.css('selection-view'))));
+        browser.wait(EC.visibilityOf(element(by.css('selection-view'))), defaultTimeout);
         break;
       case 'resource-selection':
-        browser.wait(EC.visibilityOf(this.resourceSelection));
+        browser.wait(EC.visibilityOf(this.resourceSelection), defaultTimeout);
         break;
       default:
         assertNever(this.waitFor);
@@ -162,7 +163,7 @@ export class ModelPage {
   }
 
   selectResourceById(type: ClassType|KnownPredicateType, id: string) {
-    browser.wait(EC.presenceOf(this.resourceSelection));
+    browser.wait(EC.presenceOf(this.resourceSelection), defaultTimeout);
     this.ensureResourceTabIsOpen(type);
     this.resourceSelectionItems.element(by.css(`li#${CSS.escape(id)}`)).click();
   }

@@ -4,4 +4,8 @@ import { NonEditableComponent } from '../../common/component/nonEditableComponen
 export class ViewReferenceDataModal extends Modal {
 
   label = NonEditableComponent.byTitleLocalizationKey(this.element, 'Reference data name');
+
+  constructor() {
+    super('view-reference-data');
+  }
 }

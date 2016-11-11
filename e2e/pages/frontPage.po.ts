@@ -1,4 +1,5 @@
 import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../util/expectation';
 
 export class FrontPage {
 
@@ -15,6 +16,6 @@ export class FrontPage {
   groupLinks = element(by.id('browse-panel')).all(by.css('li'));
 
   waitToBeRendered() {
-    browser.wait(EC.visibilityOf(this.footer));
+    browser.wait(EC.visibilityOf(this.footer), defaultTimeout);
   }
 }
