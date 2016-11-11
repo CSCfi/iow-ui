@@ -6,6 +6,8 @@ import ElementFinder = protractor.ElementFinder;
 import { SearchPredicateModal } from './modal/searchPredicateModal.po';
 import { assertNever } from '../../../src/utils/object';
 import { PropertyDescriptor } from '../../util/resource';
+import EC = protractor.ExpectedConditions;
+import { defaultTimeout } from '../../util/expectation';
 
 const navbar = new NavBar();
 
@@ -26,6 +28,7 @@ export class ClassView {
   form = new ClassForm(this.element, this.type);
 
   constructor(private type: ClassType) {
+    browser.wait(EC.visibilityOf(this.element), defaultTimeout);
   }
 
   addProperty(property: PropertyDescriptor) {
