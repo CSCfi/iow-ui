@@ -18,6 +18,18 @@ mod.directive('ngIfBody', /* @ngInject */ ($document: IDocumentService) => {
 
       const body = angular.element($document.find('body'));
 
+      function cleanFromBody() {
+        if (previousElement) {
+          previousElement.remove();
+          previousElement = null;
+        }
+
+        if (childScope) {
+          childScope.$destroy();
+          childScope = null;
+        }
+      }
+
       $scope.$watch(attributes.ngIfBody, (value) => {
         if (value) {
           if (!childScope) {
@@ -29,18 +41,11 @@ mod.directive('ngIfBody', /* @ngInject */ ($document: IDocumentService) => {
             });
           }
         } else {
-          // clean from body
-          if (previousElement) {
-            previousElement.remove();
-            previousElement = null;
-          }
-
-          if (childScope) {
-            childScope.$destroy();
-            childScope = null;
-          }
+          cleanFromBody();
         }
       });
+
+      $scope.$on('$destroy', cleanFromBody);
     }
   };
 });
