@@ -10,8 +10,4 @@ export class AddEditNamespaceModal extends Modal {
   constructor() {
     super('add-edit-namespace');
   }
-
-  confirm() {
-    this.element.$('modal-buttons button.confirm').click();
-  }
 }

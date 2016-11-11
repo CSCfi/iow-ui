@@ -10,8 +10,4 @@ export class AddEditLinkModal extends Modal {
   constructor() {
     super('add-edit-link');
   }
-
-  confirm() {
-    this.element.$('modal-buttons button.confirm').click();
-  }
 }

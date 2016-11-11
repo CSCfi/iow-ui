@@ -1,5 +1,4 @@
 import { Modal } from './modal.po';
-import { SubmitButton } from './component/submitButton.po';
 import EC = protractor.ExpectedConditions;
 import { defaultTimeout } from '../../util/expectation';
 
@@ -8,7 +7,6 @@ export class SearchModal extends Modal {
   searchElement = this.element.element(by.model('ctrl.searchText'));
   searchResults = this.element.$('.search-results');
   loadingIndicator = this.searchResults.$('ajax-loading-indicator');
-  confirmButton = new SubmitButton(this.element.$('modal-buttons button.confirm'));
 
   constructor(modalClass: string) {
     super(modalClass);
@@ -51,11 +49,6 @@ export class SearchModal extends Modal {
   selectAddNewResultByIndex(index: number) {
     return browser.wait(protractor.until.elementLocated(by.css('search-results')), defaultTimeout)
       .then(() => this.findAddNewResultElementByIndex(index).click());
-  }
-
-  confirm() {
-    this.confirmButton.submit();
-    browser.wait(EC.not(EC.presenceOf(this.element)), defaultTimeout);
   }
 
   private waitForResults() {
