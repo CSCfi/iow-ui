@@ -11,10 +11,9 @@ import * as NewModelPage from './pages/model/newModelPageHelp.po';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
 import {
-  addNamespaceItems, specializeClassItems, createNewClassItems, addAssociationItems,
-  assignClassItems
-} from './modelPageHelp';
-import { exampleProfile, exampleImportedLibrary, exampleLibrary } from './entities';
+  exampleProfile, exampleImportedLibrary, exampleLibrary, exampleSpecializedOrAssignedClass,
+  exampleNewClass
+} from './entities';
 import { modelIdFromPrefix } from './utils';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
@@ -29,11 +28,18 @@ export function createNewLibraryItems(gettextCatalog: gettextCatalog): Story[] {
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('library'),
     ModelView.modifyModel('library'),
-    ...addNamespaceItems(gettextCatalog),
+    ...ModelPage.addNamespaceItems(gettextCatalog),
     ModelView.saveModelChanges,
-    ...assignClassItems(gettextCatalog),
-    ...createNewClassItems(gettextCatalog),
-    ...addAssociationItems(exampleImportedLibrary.namespaceId, gettextCatalog)
+    ...ModelPage.assignClassItems(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, gettextCatalog),
+    ...ModelPage.createNewClassItems(exampleNewClass.name, exampleNewClass.comment, exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, gettextCatalog),
+    ...ModelPage.addAssociationItems(
+      exampleNewClass.property.association.searchName,
+      exampleNewClass.property.association.name,
+      exampleNewClass.property.association.comment,
+      exampleImportedLibrary.namespaceId,
+      exampleSpecializedOrAssignedClass.name,
+      gettextCatalog
+    )
   ];
 }
 
@@ -48,11 +54,18 @@ export function createNewProfileItems(gettextCatalog: gettextCatalog): Story[] {
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('profile'),
     ModelView.modifyModel('profile'),
-    ...addNamespaceItems(gettextCatalog),
+    ...ModelPage.addNamespaceItems(gettextCatalog),
     ModelView.saveModelChanges,
-    ...specializeClassItems(gettextCatalog),
-    ...createNewClassItems(gettextCatalog),
-    ...addAssociationItems(modelIdFromPrefix(exampleProfile.prefix), gettextCatalog)
+    ...ModelPage.specializeClassItems(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, exampleSpecializedOrAssignedClass.properties, gettextCatalog),
+    ...ModelPage.createNewClassItems(exampleNewClass.name, exampleNewClass.comment, exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, gettextCatalog),
+    ...ModelPage.addAssociationItems(
+      exampleNewClass.property.association.searchName,
+      exampleNewClass.property.association.name,
+      exampleNewClass.property.association.comment,
+      modelIdFromPrefix(exampleProfile.prefix),
+      exampleSpecializedOrAssignedClass.name,
+      gettextCatalog
+    )
   ];
 }
 
