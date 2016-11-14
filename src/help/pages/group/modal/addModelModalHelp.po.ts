@@ -6,11 +6,10 @@ import {
 import { editableMargin, editableMultipleMargin, initialInputValue, validInput } from '../../../utils';
 import { KnownModelType } from '../../../../entities/type';
 import { upperCaseFirst } from 'change-case';
-import { exampleLibrary, exampleProfile } from '../../../entities';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
 
-export function enterModelPrefix(type: KnownModelType) {
+export function enterModelPrefix(prefix: string) {
 
   const enterModelPrefixElement = editableByTitle(modal, 'Prefix');
   const enterModelPrefixInputElement = input(enterModelPrefixElement);
@@ -23,11 +22,11 @@ export function enterModelPrefix(type: KnownModelType) {
     focus: { element: editableFocus(enterModelPrefixElement), margin: editableMargin },
     nextCondition: createExpectedStateNextCondition(validInput(enterModelPrefixInputElement)),
     reversible: true,
-    initialize: initialInputValue(enterModelPrefixInputElement, type === 'library' ? exampleLibrary.prefix : exampleProfile.prefix)
+    initialize: initialInputValue(enterModelPrefixInputElement, prefix)
   });
 }
 
-export function enterModelLabel(type: KnownModelType, gettextCatalog: gettextCatalog) {
+export function enterModelLabel(type: KnownModelType, label: string, gettextCatalog: gettextCatalog) {
 
   const title = upperCaseFirst(type) + ' label';
   const enterModelLabelElement = editableByTitle(modal, title);
@@ -41,7 +40,7 @@ export function enterModelLabel(type: KnownModelType, gettextCatalog: gettextCat
     focus: { element: editableFocus(enterModelLabelElement), margin: editableMargin },
     nextCondition: createExpectedStateNextCondition(validInput(enterModelLabelInputElement)),
     reversible: true,
-    initialize: initialInputValue(enterModelLabelInputElement, gettextCatalog.getString(type === 'library' ? exampleLibrary.name : exampleProfile.name))
+    initialize: initialInputValue(enterModelLabelInputElement, gettextCatalog.getString(label))
   });
 }
 

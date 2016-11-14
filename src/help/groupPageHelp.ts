@@ -14,7 +14,7 @@ import {
   addNamespaceItems, specializeClassItems, createNewClassItems, addAssociationItems,
   assignClassItems
 } from './modelPageHelp';
-import { exampleProfile, exampleImportedLibrary } from './entities';
+import { exampleProfile, exampleImportedLibrary, exampleLibrary } from './entities';
 import { modelIdFromPrefix } from './utils';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
@@ -22,9 +22,9 @@ export function createNewLibraryItems(gettextCatalog: gettextCatalog): Story[] {
 
   return [
     GroupPage.startModelCreation('library'),
-    AddModelModal.enterModelPrefix('library'),
+    AddModelModal.enterModelPrefix(exampleLibrary.prefix),
     AddModelModal.enterModelLanguage,
-    AddModelModal.enterModelLabel('library', gettextCatalog),
+    AddModelModal.enterModelLabel('library', exampleLibrary.name, gettextCatalog),
     AddModelModal.createModel,
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('library'),
@@ -41,9 +41,9 @@ export function createNewProfileItems(gettextCatalog: gettextCatalog): Story[] {
 
   return [
     GroupPage.startModelCreation('profile'),
-    AddModelModal.enterModelPrefix('profile'),
+    AddModelModal.enterModelPrefix(exampleProfile.prefix),
     AddModelModal.enterModelLanguage,
-    AddModelModal.enterModelLabel('profile', gettextCatalog),
+    AddModelModal.enterModelLabel('profile', exampleProfile.name, gettextCatalog),
     AddModelModal.createModel,
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('profile'),
