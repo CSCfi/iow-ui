@@ -8,7 +8,7 @@ import { config } from '../../../config';
 import { HelpSelectionModal } from '../common/helpSelectionModal';
 import { InteractiveHelp } from '../../help/contract';
 import { HelpProvider } from '../common/helpProvider';
-import { IScope } from 'angular';
+import { IScope, ILocationService, route } from 'angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 
 const logoImage = require('../../assets/logo-01.svg');
@@ -35,6 +35,8 @@ class NavigationController {
 
   /* @ngInject */
   constructor($scope: IScope,
+              $route: route.IRouteService,
+              $location: ILocationService,
               private languageService: LanguageService,
               private userService: UserService,
               private loginModal: LoginModal,
@@ -47,7 +49,16 @@ class NavigationController {
     });
 
     const helps = () => this.helpProvider && this.helpProvider.helps || [];
-    $scope.$watchCollection(helps, h => this.helps = h);
+
+    $scope.$watchCollection(helps, h => {
+      this.helps = h;
+
+      if ($route.current && $route.current!.params.hasOwnProperty('help')) {
+        this.startHelp().then(() => {}, _err => {
+          $location.search('help', null as any);
+        });
+      }
+    });
   }
 
   get logoImage() {
@@ -79,6 +90,6 @@ class NavigationController {
   }
 
   startHelp() {
-    this.helpSelectionModal.open(this.helps);
+    return this.helpSelectionModal.open(this.helps);
   }
 }

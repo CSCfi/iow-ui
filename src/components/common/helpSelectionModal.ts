@@ -11,7 +11,7 @@ export class HelpSelectionModal {
   }
 
   open(helps: InteractiveHelp[]) {
-    this.$uibModal.open({
+    return this.$uibModal.open({
       template: `
         <modal-template class="help-selection">
           <modal-title translate>Select help topic</modal-title>
@@ -28,7 +28,7 @@ export class HelpSelectionModal {
           </modal-body>
          
           <modal-buttons>
-            <button class="btn btn-primary" type="button" ng-click="$close('cancel')" translate>Close</button>
+            <button class="btn btn-primary" type="button" ng-click="$dismiss('cancel')" translate>Close</button>
           </modal-buttons>
         </modal-template>
       `,
@@ -38,7 +38,7 @@ export class HelpSelectionModal {
       resolve: {
         helps: () => helps
       }
-    });
+    }).result;
   }
 }
 
@@ -49,7 +49,7 @@ class HelpSelectionModalController {
   }
 
   startHelp(help: InteractiveHelp) {
-    this.$uibModalInstance.close();
+    this.$uibModalInstance.dismiss();
     this.interactiveHelpDisplay.open(help);
   }
 }
