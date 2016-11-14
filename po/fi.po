@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: translations/misc.html:62 translations/misc.html:98
@@ -2433,7 +2433,7 @@ msgstr "Tekniset nimiavaruudet"
 
 #: translations/help.html:99
 msgid "Testikirjasto"
-msgstr "Testlibrary"
+msgstr "Testikirjasto"
 
 #: translations/misc.html:134
 msgid "text/turtle"
