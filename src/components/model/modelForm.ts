@@ -2,6 +2,7 @@ import { IAttributes, IScope } from 'angular';
 import { module as mod }  from './module';
 import { ModelViewController } from './modelView';
 import { Model } from '../../entities/model';
+import { ModelControllerService } from './modelControllerService';
 
 mod.directive('modelForm', () => {
   return {
@@ -23,5 +24,6 @@ mod.directive('modelForm', () => {
 
 class ModelFormController {
   model: Model;
+  modelController: ModelControllerService;
   isEditing: () => boolean;
 }

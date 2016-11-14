@@ -5,6 +5,9 @@ import { Uri } from '../../entities/uri';
 import { Language } from '../../utils/language';
 import { KnownModelType } from '../../entities/type';
 import { Model } from '../../entities/model';
+import { ModelControllerService, View } from './modelControllerService';
+import { Class } from '../../entities/class';
+import { Predicate } from '../../entities/predicate';
 
 mod.directive('newModelPage', () => {
   return {
@@ -24,7 +27,7 @@ mod.directive('newModelPage', () => {
   };
 });
 
-export class NewModelPageController {
+export class NewModelPageController implements ModelControllerService {
 
   prefix: string;
   label: string;
@@ -55,5 +58,18 @@ export class NewModelPageController {
         $location.url(newModel.iowUrl());
       }
     });
+  }
+
+  getUsedNamespaces(): Set<string> {
+    return new Set();
+  }
+
+  registerView(_view: View) {
+  }
+
+  selectionEdited(_oldSelection: Class|Predicate|null, _newSelection: Class|Predicate) {
+  }
+
+  selectionDeleted(_selection: Class|Predicate) {
   }
 }

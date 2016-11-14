@@ -3,11 +3,11 @@ import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../form/editableTable';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { SearchNamespaceModal } from './searchNamespaceModal';
-import { ModelPageController } from './modelPage';
 import { ModelViewController } from './modelView';
 import { combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';
 import { Model, ImportedNamespace, NamespaceType } from '../../entities/model';
+import { ModelControllerService } from './modelControllerService';
 
 mod.directive('importedNamespacesView', () => {
   return {
@@ -39,7 +39,7 @@ mod.directive('importedNamespacesView', () => {
 class ImportedNamespacesViewController {
 
   model: Model;
-  modelController: ModelPageController;
+  modelController: ModelControllerService;
   isEditing: () => boolean;
 
   descriptor: ImportedNamespaceTableDescriptor;
@@ -77,7 +77,7 @@ class ImportedNamespacesViewController {
 
 class ImportedNamespaceTableDescriptor extends TableDescriptor<ImportedNamespace> {
 
-  constructor(private addEditNamespaceModal: AddEditNamespaceModal, private model: Model, private languageService: LanguageService, private modelController: ModelPageController) {
+  constructor(private addEditNamespaceModal: AddEditNamespaceModal, private model: Model, private languageService: LanguageService, private modelController: ModelControllerService) {
     super();
   }
 

@@ -4,7 +4,6 @@ import { ClassService } from '../../services/classService';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelPageController } from '../model/modelPage';
 import { Show } from '../contracts';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
@@ -14,6 +13,7 @@ import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
+import { ModelControllerService } from '../model/modelControllerService';
 
 mod.directive('classView', () => {
   return {
@@ -43,7 +43,7 @@ export class ClassViewController extends EditableEntityController<Class> {
 
   class: Class;
   model: Model;
-  modelController: ModelPageController;
+  modelController: ModelControllerService;
   show: Show;
   openPropertyId: string;
   width: number;

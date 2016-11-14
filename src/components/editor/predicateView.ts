@@ -3,7 +3,6 @@ import { PredicateService } from '../../services/predicateService';
 import { UserService } from '../../services/userService';
 import { EditableEntityController, EditableScope, Rights } from '../form/editableEntityController';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelPageController } from '../model/modelPage';
 import { Show } from '../contracts';
 import { ErrorModal } from '../form/errorModal';
 import { module as mod }  from './module';
@@ -13,6 +12,7 @@ import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
+import { ModelControllerService } from '../model/modelControllerService';
 
 mod.directive('predicateView', () => {
   return {
@@ -41,7 +41,7 @@ export class PredicateViewController extends EditableEntityController<Associatio
 
   predicate: Association|Attribute;
   model: Model;
-  modelController: ModelPageController;
+  modelController: ModelControllerService;
   show: Show;
   width: number;
 

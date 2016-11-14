@@ -3,13 +3,13 @@ import { EditableEntityController, EditableScope, Rights } from '../form/editabl
 import { ModelService } from '../../services/modelService';
 import { UserService } from '../../services/userService';
 import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
-import { ModelPageController } from './modelPage';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
 import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
+import { ModelControllerService } from './modelControllerService';
 
 mod.directive('modelView', () => {
   return {
@@ -29,7 +29,7 @@ export class ModelViewController extends EditableEntityController<Model> {
 
   visible: boolean = false;
   model: Model;
-  modelController: ModelPageController;
+  modelController: ModelControllerService;
 
   /* @ngInject */
   constructor($scope: EditableScope,

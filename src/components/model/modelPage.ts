@@ -37,6 +37,7 @@ import { HelpProvider } from '../common/helpProvider';
 import { InteractiveHelp } from '../../help/contract';
 import { ModelPageHelpService } from '../../help/modelPageHelp';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
+import { ModelControllerService, View } from './modelControllerService';
 
 mod.directive('modelPage', () => {
   return {
@@ -52,7 +53,7 @@ mod.directive('modelPage', () => {
   };
 });
 
-export class ModelPageController implements ChangeNotifier<Class|Predicate>, HelpProvider {
+export class ModelPageController implements ChangeNotifier<Class|Predicate>, HelpProvider, ModelControllerService {
 
   loading = true;
   views: View[] = [];
@@ -647,10 +648,6 @@ class Tab {
   }
 }
 
-interface View {
-  isEditing(): boolean;
-  cancelEditing(): void;
-}
 
 interface WithIdAndType {
   id: Uri;
