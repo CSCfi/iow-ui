@@ -12,7 +12,7 @@ function createNewModel(type: KnownModelType, gettextCatalog: gettextCatalog): S
     description: `Guide through creating new ${type} description`,
     items: () => [
       selectGroup,
-      ...GroupPage.createNewModelItems(type, gettextCatalog),
+      ...(type === 'profile' ? GroupPage.createNewProfileItems(gettextCatalog) : GroupPage.createNewLibraryItems(gettextCatalog)),
       GroupPage.finishedCreateNewModelNotification(type)
     ]
   };

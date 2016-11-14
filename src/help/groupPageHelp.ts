@@ -18,26 +18,41 @@ import { exampleProfile, exampleImportedLibrary } from './entities';
 import { modelIdFromPrefix } from './utils';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
-export function createNewModelItems(type: KnownModelType, gettextCatalog: gettextCatalog): Story[] {
-
-  const isProfile = type === 'profile';
-  const namespaceId = isProfile ? modelIdFromPrefix(exampleProfile.prefix)
-                                : exampleImportedLibrary.namespaceId;
+export function createNewLibraryItems(gettextCatalog: gettextCatalog): Story[] {
 
   return [
-    GroupPage.startModelCreation(type),
-    AddModelModal.enterModelPrefix(type),
+    GroupPage.startModelCreation('library'),
+    AddModelModal.enterModelPrefix('library'),
     AddModelModal.enterModelLanguage,
-    AddModelModal.enterModelLabel(type, gettextCatalog),
+    AddModelModal.enterModelLabel('library', gettextCatalog),
     AddModelModal.createModel,
     NewModelPage.saveUnsavedModel,
-    ModelPage.openModelDetails(type),
-    ModelView.modifyModel(type),
+    ModelPage.openModelDetails('library'),
+    ModelView.modifyModel('library'),
     ...addNamespaceItems(gettextCatalog),
     ModelView.saveModelChanges,
-    ...(isProfile ? specializeClassItems(gettextCatalog) : assignClassItems(gettextCatalog)),
+    ...assignClassItems(gettextCatalog),
     ...createNewClassItems(gettextCatalog),
-    ...addAssociationItems(namespaceId, gettextCatalog)
+    ...addAssociationItems(exampleImportedLibrary.namespaceId, gettextCatalog)
+  ];
+}
+
+export function createNewProfileItems(gettextCatalog: gettextCatalog): Story[] {
+
+  return [
+    GroupPage.startModelCreation('profile'),
+    AddModelModal.enterModelPrefix('profile'),
+    AddModelModal.enterModelLanguage,
+    AddModelModal.enterModelLabel('profile', gettextCatalog),
+    AddModelModal.createModel,
+    NewModelPage.saveUnsavedModel,
+    ModelPage.openModelDetails('profile'),
+    ModelView.modifyModel('profile'),
+    ...addNamespaceItems(gettextCatalog),
+    ModelView.saveModelChanges,
+    ...specializeClassItems(gettextCatalog),
+    ...createNewClassItems(gettextCatalog),
+    ...addAssociationItems(modelIdFromPrefix(exampleProfile.prefix), gettextCatalog)
   ];
 }
 
@@ -53,7 +68,7 @@ function createNewModel(type: KnownModelType, gettextCatalog: gettextCatalog): S
     title: `Guide through creating new ${type}`,
     description: `Guide through creating new ${type} description`,
     items: () => [
-      ...createNewModelItems(type, gettextCatalog),
+      ...(type === 'profile' ? createNewProfileItems(gettextCatalog) : createNewLibraryItems(gettextCatalog)),
       finishedCreateNewModelNotification(type)
     ]
   };
