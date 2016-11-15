@@ -6,18 +6,18 @@ import * as jQuery from 'jquery';
 window.jQuery = jQuery;
 import * as angular from 'angular';
 import { routeConfig } from './routes';
-import commonModule from './components/common';
-import editorModule from './components/editor';
-import visualizationModule from './components/visualization';
-import formModule from './components/form';
-import groupModule from './components/group';
-import modelModule from './components/model';
-import navigationModule from './components/navigation';
-import userModule from './components/user';
-import filterModule from './components/filter';
-import componentsModule from './components';
-import servicesModule from './services';
-import helpModule from './help';
+import { module as commonModule } from './components/common';
+import { module as editorModule } from './components/editor';
+import { module as visualizationModule } from './components/visualization';
+import { module as formModule } from './components/form';
+import { module as groupModule } from './components/group';
+import { module as modelModule } from './components/model';
+import { module as navigationModule } from './components/navigation';
+import { module as userModule } from './components/user';
+import { module as filterModule } from './components/filter';
+import { module as componentsModule } from './components';
+import { module as servicesModule } from './services';
+import { module as helpModule } from './help';
 
 import './styles/app.scss';
 import 'font-awesome/scss/font-awesome.scss';
@@ -36,18 +36,18 @@ const mod = angular.module('iow-ui', [
   'gettext',
   'checklist-model',
   'ngclipboard',
-  commonModule,
-  editorModule,
-  visualizationModule,
-  formModule,
-  groupModule,
-  modelModule,
-  navigationModule,
-  userModule,
-  filterModule,
-  componentsModule,
-  servicesModule,
-  helpModule
+  commonModule.name,
+  editorModule.name,
+  visualizationModule.name,
+  formModule.name,
+  groupModule.name,
+  modelModule.name,
+  navigationModule.name,
+  userModule.name,
+  filterModule.name,
+  componentsModule.name,
+  servicesModule.name,
+  helpModule.name
 ]);
 
 mod.config(routeConfig);

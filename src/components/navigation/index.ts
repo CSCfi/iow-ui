@@ -1,7 +1,7 @@
 import { LoginModal } from './loginModal';
 
 import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import './breadcrumb';
 import './navigationBar';

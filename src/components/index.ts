@@ -2,7 +2,7 @@ import { AdvancedSearchModal } from './advancedSearchModal';
 import { MaintenanceModal } from './maintenance';
 
 import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import './application';
 import './frontPage';

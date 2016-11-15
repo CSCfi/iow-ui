@@ -1,5 +1,4 @@
-import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import './textFilter';
 import './contentFilter';

@@ -1,4 +1,5 @@
-import { module as mod }  from './module';
+import { module as mod } from './module';
+export { module } from './module'
 import { ISCEService } from 'angular';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Moment } from 'moment';
@@ -11,8 +12,6 @@ import { LanguageService } from '../../services/languageService';
 import { Localizable, LanguageContext } from '../../entities/contract';
 import { OverlayService } from './overlay';
 import { upperCaseFirst } from 'change-case';
-
-export default mod.name;
 
 import './accordion';
 import './accordionChevron';

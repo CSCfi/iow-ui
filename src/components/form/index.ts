@@ -2,7 +2,7 @@ import { ErrorModal } from './errorModal';
 import { DisplayItemFactory } from './displayItemFactory';
 
 import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import './autocomplete';
 import './codeValueInput';

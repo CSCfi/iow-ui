@@ -5,7 +5,7 @@ import { SearchClassModal } from './searchClassModal';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import './classForm';
 import './classView';

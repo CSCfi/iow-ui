@@ -1,5 +1,5 @@
 import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import { ClassService, DefaultClassService } from './classService';
 import { VocabularyService, DefaultVocabularyService } from './vocabularyService';

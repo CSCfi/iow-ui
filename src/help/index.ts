@@ -1,5 +1,5 @@
 import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import { InteractiveHelpService } from './services/interactiveHelpService';
 import { InteractiveHelpModelService } from './services/helpModelService';

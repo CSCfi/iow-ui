@@ -8,7 +8,7 @@ import { EditReferenceDataModal } from './editReferenceDataModal';
 import { ViewReferenceDataModal} from './viewReferenceDataModal';
 import { ConceptEditorModal } from './conceptEditorModal';
 import { module as mod }  from './module';
-export default mod.name;
+export { module } from './module';
 
 import './editableRootClass';
 import './conceptForm';
