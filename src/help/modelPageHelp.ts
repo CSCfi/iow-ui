@@ -9,10 +9,7 @@ import { requireDefined } from '../utils/object';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
 import * as ClassView from './pages/model/classViewHelp.po';
-import {
-  exampleImportedLibrary, exampleSpecializedOrAssignedClass, exampleNewClass, exampleProfile,
-  exampleLibrary
-} from './entities';
+import { exampleProfile, exampleLibrary } from './entities';
 import { classIdFromNamespaceId, predicateIdFromNamespaceId, modelIdFromPrefix, isExpectedProperty } from './utils';
 import { EntityLoaderService, EntityLoader, PropertyDetails } from '../services/entityLoader';
 import { InteractiveHelpService } from './services/interactiveHelpService';
@@ -62,12 +59,12 @@ function assignClass(namespaceId: string, className: string, gettextCatalog: get
   };
 }
 
-function addAttribute(modelPrefix: string, attributeNamespaceId: string, attributeName: string, gettextCatalog: gettextCatalog): StoryLine {
+function addAttribute(modelPrefix: string, className: string, attributeNamespaceId: string, attributeName: string, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through adding an attribute',
     description: 'This tutorial shows how to add new attribute',
     items: () => [
-      ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
+      ModelPage.selectClass(modelIdFromPrefix(modelPrefix), className),
       ClassView.modifyClass,
       ...ModelPage.addPropertyUsingExistingPredicateItems(attributeNamespaceId, attributeName, gettextCatalog),
       ClassView.saveClassChanges,
@@ -92,12 +89,12 @@ function createNewClass(className: string, classComment: string, attributeNamesp
   };
 }
 
-function addAssociation(modelPrefix: string, searchName: string, name: string, comment: string, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog): StoryLine {
+function addAssociation(modelPrefix: string, className: string, searchName: string, name: string, comment: string, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through adding an association',
     description: 'This tutorial shows how to add association to a Class',
     items: () => [
-      ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
+      ModelPage.selectClass(modelIdFromPrefix(modelPrefix), className),
       ClassView.modifyClass,
       ...ModelPage.addAssociationItems(searchName, name, comment, associationTargetNamespaceId, associationTargetName, gettextCatalog),
       createNotification({
@@ -134,45 +131,111 @@ export class ModelPageHelpService {
 
     const helps = new HelpBuilder(this.$location, this.$uibModalStack, this.entityLoaderService, this.asLocalizable.bind(this), model);
     const isProfile = model.normalizedType === 'profile';
-    const modelPrefix = isProfile ? exampleProfile.prefix : exampleLibrary.prefix;
-    const associationNamespaceId = isProfile ? modelIdFromPrefix(exampleProfile.prefix)
-                                             : exampleImportedLibrary.namespaceId;
-
-    helps.add(addNamespace(model.normalizedType, this.gettextCatalog), builder => builder.newModel());
-    helps.add(createNewClass(exampleNewClass.name, exampleNewClass.comment, exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, this.gettextCatalog), builder => builder.newModel(exampleImportedLibrary.namespaceId));
 
     if (isProfile) {
-      helps.add(specializeClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, exampleSpecializedOrAssignedClass.properties, this.gettextCatalog), builder => builder.newModel(exampleImportedLibrary.namespaceId));
-    } else {
-      helps.add(assignClass(exampleImportedLibrary.namespaceId, exampleSpecializedOrAssignedClass.name, this.gettextCatalog), builder => builder.newModel(exampleImportedLibrary.namespaceId));
-    }
 
-    helps.add(addAttribute(modelPrefix, exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name, this.gettextCatalog), builder => {
-      builder.newModel(exampleImportedLibrary.namespaceId);
-      builder.newClass();
-    });
-
-    helps.add(addAssociation(
-      modelPrefix,
-      exampleNewClass.property.association.searchName,
-      exampleNewClass.property.association.name,
-      exampleNewClass.property.association.comment,
-      associationNamespaceId,
-      exampleSpecializedOrAssignedClass.name,
-      this.gettextCatalog
-    ), builder => {
-      builder.newModel(exampleImportedLibrary.namespaceId);
-      builder.newClass({
-        label: this.asLocalizable(exampleNewClass.name),
-        predicate: predicateIdFromNamespaceId(exampleNewClass.property.attribute.namespaceId, exampleNewClass.property.attribute.name)
+      helps.add(addNamespace(model.normalizedType, this.gettextCatalog), builder => {
+        builder.newModel(exampleProfile.prefix, exampleProfile.name);
       });
 
-      if (isProfile) {
-        builder.specializeClass();
-      } else {
-        builder.assignClass();
-      }
-    });
+      helps.add(createNewClass(
+        exampleProfile.newClass.name,
+        exampleProfile.newClass.comment,
+        exampleProfile.newClass.property.attribute.namespaceId,
+        exampleProfile.newClass.property.attribute.name, this.gettextCatalog), builder => {
+          builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
+        }
+      );
+
+      helps.add(specializeClass(
+        exampleProfile.importedLibrary.namespaceId,
+        exampleProfile.specializedClass.name,
+        exampleProfile.specializedClass.properties,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
+        }
+      );
+
+      helps.add(addAttribute(
+        exampleProfile.prefix,
+        exampleProfile.newClass.name,
+        exampleProfile.newClass.property.attribute.namespaceId,
+        exampleProfile.newClass.property.attribute.name,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
+          builder.newClass(exampleProfile.newClass.name, exampleProfile.newClass.comment);
+        }
+      );
+
+      helps.add(addAssociation(
+        exampleProfile.prefix,
+        exampleProfile.newClass.name,
+        exampleProfile.newClass.property.association.searchName,
+        exampleProfile.newClass.property.association.name,
+        exampleProfile.newClass.property.association.comment,
+        modelIdFromPrefix(exampleProfile.prefix),
+        exampleProfile.specializedClass.name,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
+          builder.newClass(exampleProfile.newClass.name, exampleProfile.newClass.comment, {
+            label: this.asLocalizable(exampleProfile.newClass.name),
+            predicate: predicateIdFromNamespaceId(exampleProfile.newClass.property.attribute.namespaceId, exampleProfile.newClass.property.attribute.name)
+          });
+          builder.specializeClass(exampleProfile.specializedClass.namespaceId, exampleProfile.specializedClass.namespaceId, exampleProfile.specializedClass.properties);
+        }
+      );
+
+    } else {
+
+      helps.add(addNamespace(model.normalizedType, this.gettextCatalog), builder => {
+        builder.newModel(exampleLibrary.prefix, exampleLibrary.name);
+      });
+
+      helps.add(createNewClass(
+        exampleLibrary.newClass.name,
+        exampleLibrary.newClass.comment,
+        exampleLibrary.newClass.property.attribute.namespaceId,
+        exampleLibrary.newClass.property.attribute.name, this.gettextCatalog), builder => {
+          builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
+        }
+      );
+
+      helps.add(assignClass(
+        exampleLibrary.importedLibrary.namespaceId,
+        exampleLibrary.assignedClass.name,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
+        }
+      );
+
+      helps.add(addAttribute(
+        exampleLibrary.prefix,
+        exampleLibrary.newClass.name,
+        exampleLibrary.newClass.property.attribute.namespaceId,
+        exampleLibrary.newClass.property.attribute.name,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
+          builder.newClass(exampleLibrary.newClass.name, exampleLibrary.newClass.comment);
+        }
+      );
+
+      helps.add(addAssociation(
+        exampleLibrary.prefix,
+        exampleLibrary.newClass.name,
+        exampleLibrary.newClass.property.association.searchName,
+        exampleLibrary.newClass.property.association.name,
+        exampleLibrary.newClass.property.association.comment,
+        exampleLibrary.importedLibrary.namespaceId,
+        exampleLibrary.assignedClass.name,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
+          builder.newClass(exampleLibrary.newClass.name, exampleLibrary.newClass.comment, {
+            label: this.asLocalizable(exampleLibrary.newClass.name),
+            predicate: predicateIdFromNamespaceId(exampleLibrary.newClass.property.attribute.namespaceId, exampleLibrary.newClass.property.attribute.name)
+          });
+          builder.assignClass(exampleLibrary.assignedClass.namespaceId, exampleLibrary.assignedClass.name);
+      });
+    }
 
     return helps.result;
   }
@@ -188,45 +251,43 @@ class ModelBuilder {
               private asLocalizable: (key: string) => Localizable) {
   }
 
-  newModel(...namespaces: string[]) {
+  newModel(prefix: string, name: string, ...namespaces: string[]) {
 
     if (this.model) {
       throw new Error('Duplicate model initialization');
     }
 
     const type = this.contextModel.normalizedType;
-    const prefix = type === 'library' ? exampleLibrary.prefix : exampleProfile.prefix;
-    const label = type === 'library' ? exampleLibrary.name : exampleProfile.name;
 
     this.model = this.entityLoader.createModel(type, this.contextModel.groupId, {
       prefix,
-      label: this.asLocalizable(label),
+      label: this.asLocalizable(name),
       namespaces: namespaces
     });
 
     return this.model;
   }
 
-  newClass(...properties: PropertyDetails[]) {
+  newClass(name: string, comment: string, ...properties: PropertyDetails[]) {
     return this.entityLoader.createClass(requireDefined(this.model), {
-      label: this.asLocalizable(exampleNewClass.name),
-      comment: this.asLocalizable(exampleNewClass.comment),
+      label: this.asLocalizable(name),
+      comment: this.asLocalizable(comment),
       properties
     });
   }
 
-  assignClass() {
+  assignClass(namespaceId: string, name: string) {
 
     const model = requireDefined(this.model);
-    const classToAssign = this.entityLoader.getClass(model, classIdFromNamespaceId(exampleSpecializedOrAssignedClass.namespaceId, exampleSpecializedOrAssignedClass.name));
+    const classToAssign = this.entityLoader.getClass(model, classIdFromNamespaceId(namespaceId, name));
 
     return this.entityLoader.assignClass(model, classToAssign);
   }
 
-  specializeClass() {
+  specializeClass(namespaceId: string, name: string, properties: string[]) {
     return this.entityLoader.specializeClass(requireDefined(this.model), {
-      class: classIdFromNamespaceId(exampleSpecializedOrAssignedClass.namespaceId, exampleSpecializedOrAssignedClass.name),
-      propertyFilter: isExpectedProperty(exampleSpecializedOrAssignedClass.properties)
+      class: classIdFromNamespaceId(namespaceId, name),
+      propertyFilter: isExpectedProperty(properties)
     });
   }
 
