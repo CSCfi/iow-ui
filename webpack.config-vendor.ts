@@ -4,6 +4,8 @@ import * as path from 'path';
 import * as webpack from 'webpack';
 const AssetsPlugin = require('assets-webpack-plugin');
 
+const skippedDependencies = ['font-awesome'];
+
 export function createConfig(build: boolean): webpack.Configuration {
 
   const outputPath = path.join(__dirname, 'public');
@@ -22,7 +24,7 @@ export function createConfig(build: boolean): webpack.Configuration {
 
   return {
     entry: {
-      'vendor': Array.from(Object.keys(require('./package.json').dependencies)).filter(dep => dep !== 'font-awesome')
+      'vendor': Array.from(Object.keys(require('./package.json').dependencies)).filter(dep => skippedDependencies.indexOf(dep) === -1)
     },
     output: {
       path: assetsPath,
