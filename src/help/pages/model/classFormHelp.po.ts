@@ -3,6 +3,8 @@ import {
 } from '../../contract';
 import { editableByTitle, child, editableFocus } from '../../selectors';
 import { editableMarginInColumn } from '../../utils';
+import * as SearchClassModal from './modal/searchClassModalHelp.po';
+import gettextCatalog = angular.gettext.gettextCatalog;
 
 export function focusClass(parent: () => JQuery) {
 
@@ -64,4 +66,12 @@ export function focusAssociationTarget(parent: () => JQuery) {
     denyInteraction: true,
     nextCondition: createExplicitNextCondition()
   });
+}
+
+export function addAssociationTarget(context: () => JQuery, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog) {
+  return [
+    selectAssociationTarget(context),
+    ...SearchClassModal.findAndSelectExistingClassItems(associationTargetNamespaceId, associationTargetName, false, gettextCatalog),
+    focusAssociationTarget(context)
+  ];
 }

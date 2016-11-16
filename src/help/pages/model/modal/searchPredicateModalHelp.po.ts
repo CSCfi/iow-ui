@@ -6,6 +6,8 @@ import {
 import { modal, child } from '../../../selectors';
 import { predicateIdFromNamespaceId } from '../../../utils';
 import { KnownPredicateType } from '../../../../entities/type';
+import * as SearchConceptModal from './searchConceptModalHelp.po';
+import * as PredicateForm from '../predicateFormHelp.po';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
 export const searchPredicateModalElement = child(modal, '.search-predicate');
@@ -31,4 +33,30 @@ export const focusSelectedAssociation = focusSearchSelection(searchPredicateModa
 
 export function confirmPredicateSelection(navigates: boolean) {
  return confirm(searchPredicateModalElement, navigates);
+}
+
+export function findAndSelectExistingPredicateItems(namespaceId: string, predicateName: string, gettextCatalog: angular.gettext.gettextCatalog) {
+  return [
+    filterForPredicate(namespaceId, predicateName, gettextCatalog),
+    selectPredicate(namespaceId, predicateName),
+    focusSelectedAttribute,
+    confirmPredicateSelection(true)
+  ];
+}
+
+export function findAndCreateNewBasedOnSuggestion(name: string, comment: string, navigates: boolean, gettextCatalog: gettextCatalog) {
+  return [
+    filterForNewPredicate(name, gettextCatalog),
+    selectAddNewPredicateSearchResult('association'),
+    ...SearchConceptModal.findAndCreateNewSuggestion(name, comment, navigates, gettextCatalog)
+  ];
+}
+
+export function findAndCreateNewPropertyBasedOnSuggestion(searchName: string, name: string, comment: string, gettextCatalog: gettextCatalog) {
+  return [
+    ...findAndCreateNewBasedOnSuggestion(searchName, comment, false, gettextCatalog),
+    focusSelectedAssociation,
+    PredicateForm.enterPredicateLabel(searchPredicateModalElement, 'association', name, gettextCatalog),
+    confirmPredicateSelection(true)
+  ];
 }

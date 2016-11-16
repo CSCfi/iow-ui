@@ -38,3 +38,10 @@ export function selectProperties(title: string, expectProperties?: string[]) {
 export function confirmProperties(navigates: boolean) {
   return confirm(child(modal, '.add-properties-from-class'), navigates);
 }
+
+export function selectAndConfirmProperties(navigates: boolean, properties?: string[]) {
+  return [
+    selectProperties('Select name and description', properties),
+    confirmProperties(navigates)
+  ];
+}

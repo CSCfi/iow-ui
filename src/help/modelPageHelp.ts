@@ -69,7 +69,7 @@ function addAttribute(modelPrefix: string, attributeNamespaceId: string, attribu
     items: () => [
       ModelPage.selectClass(modelIdFromPrefix(modelPrefix), exampleNewClass.name),
       ClassView.modifyClass,
-      ...ModelPage.addAttributeItems(attributeNamespaceId, attributeName, gettextCatalog),
+      ...ModelPage.addPropertyUsingExistingPredicateItems(attributeNamespaceId, attributeName, gettextCatalog),
       ClassView.saveClassChanges,
       createNotification({
         title: 'Congratulations for completing adding an attribute!'

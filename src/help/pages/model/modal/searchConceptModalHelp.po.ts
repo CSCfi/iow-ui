@@ -60,3 +60,15 @@ export function enterDefinition(initialValue: string, gettextCatalog: gettextCat
 export function confirmConceptSelection(navigates: boolean) {
   return confirm(searchConceptModal, navigates);
 }
+
+
+export function findAndCreateNewSuggestion(name: string, definition: string, navigates: boolean, gettextCatalog: gettextCatalog) {
+  return [
+    filterForConceptSuggestionConcept(name, gettextCatalog),
+    addConceptSuggestionSearchResult,
+    enterVocabulary,
+    enterLabel,
+    enterDefinition(definition, gettextCatalog),
+    confirmConceptSelection(navigates)
+  ];
+}
