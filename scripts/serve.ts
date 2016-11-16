@@ -1,7 +1,8 @@
 import * as webpack from 'webpack';
 import * as WebpackDevServer from 'webpack-dev-server';
-import { serveConfig } from '../webpack.config';
-import { applyProgressBar } from './webpackProgressBar';
+import { createConfig as createVendorConfig } from '../webpack.config-vendor';
+import { createConfig as createAppConfig } from '../webpack.config';
+import { applyProgressBar, report } from './webpackUtils';
 
 const hostname = 'localhost';
 const port = 9001;
@@ -25,19 +26,22 @@ function applyHotLoading(config: webpack.Configuration) {
   return Object.assign({}, config, { entry: appendEntry(config.entry) });
 }
 
-const compiler = applyProgressBar(webpack(applyHotLoading(serveConfig)));
+applyProgressBar(webpack(createVendorConfig(false))).run((err: Error, stats: webpack.compiler.Stats) => {
 
-const server = new WebpackDevServer(compiler, {
-  stats: true,
-  contentBase: './src',
-  hot: true,
-  historyApiFallback: '/',
-  proxy: {
-    '/api/*': {
-      target: `http://${hostname}:${apiPort}/`,
-      secure: false
+  report(err, stats);
+
+  const server = new WebpackDevServer(applyProgressBar(webpack(applyHotLoading(createAppConfig(false)))), {
+    stats: true,
+    contentBase: './src',
+    hot: true,
+    historyApiFallback: '/',
+    proxy: {
+      '/api/*': {
+        target: `http://${hostname}:${apiPort}/`,
+        secure: false
+      }
     }
-  }
-});
+  });
 
-server.listen(port, '0.0.0.0');
+  server.listen(port, '0.0.0.0');
+});

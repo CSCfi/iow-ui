@@ -1,16 +1,9 @@
 import * as webpack from 'webpack';
-import { buildConfig } from '../webpack.config';
-import { applyProgressBar } from './webpackProgressBar';
+import { createConfig as createVendorConfig } from '../webpack.config-vendor';
+import { createConfig as createAppConfig } from '../webpack.config';
+import { applyProgressBar, report } from './webpackUtils';
 
-const compiler = applyProgressBar(webpack(buildConfig));
-
-compiler.run((err: Error, stats: webpack.compiler.Stats) => {
-  if (err) {
-    throw err;
-  }
-
-  console.log(stats.toString({
-    chunks: false,
-    colors: true
-  }));
+applyProgressBar(webpack(createVendorConfig(true))).run((err: Error, stats: webpack.compiler.Stats) => {
+  report(err, stats);
+  applyProgressBar(webpack(createAppConfig(true))).run(report);
 });
