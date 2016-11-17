@@ -350,7 +350,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       }
     }
 
-    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId!] : [klass.id], VertexAction.KeepAll);
+    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId!] : [klass.id], oldId ? VertexAction.KeepAll : VertexAction.Reset);
 
     if (addedClasses.length > 0) {
       if (creation) {
