@@ -73,12 +73,31 @@ export function modelIdFromPrefix(modelPrefix: string) {
   return config.defaultModelNamespace(modelPrefix);
 }
 
+function normalizeAsId(resourceName: string) {
+  return resourceName
+    .replace(/\s/g, '')
+    .replace(/ö/g, 'o')
+    .replace(/Ö/g, 'O')
+    .replace(/ä/g, 'a')
+    .replace(/Ä/g, 'A')
+    .replace(/å/g, 'a')
+    .replace(/Å/g, 'A');
+}
+
+export function classNameToResourceIdName(className: string) {
+  return normalizeAsId(upperCaseFirst(className));
+}
+
+export function predicateNameToResourceIdName(predicateName: string) {
+  return normalizeAsId(lowerCaseFirst(predicateName));
+}
+
 export function classIdFromNamespaceId(namespaceId: string, name: string) {
-  return namespaceId + '#' + upperCaseFirst(name);
+  return namespaceId + '#' + classNameToResourceIdName(name);
 }
 
 export function predicateIdFromNamespaceId(namespaceId: string, name: string) {
-  return namespaceId + '#' + lowerCaseFirst(name);
+  return namespaceId + '#' + predicateNameToResourceIdName(name);
 }
 
 // XXX: api returns interesting {uuid}-{uuid} for which only first ui is stabile
