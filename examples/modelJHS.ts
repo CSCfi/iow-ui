@@ -453,8 +453,8 @@ export namespace Classes {
     ]
   });
 
-  export const yhteystieto = loader.createClass(model, {
-    label: { fi: 'Yhteystieto'  },
+  export const yhteystiedot = loader.createClass(model, {
+    label: { fi: 'Yhteystiedot'  },
     properties: [
       {
         predicate: Attributes.puhelinnumero,
@@ -486,7 +486,7 @@ export namespace Classes {
       {
         predicate: Associations.yhteystiedot,
         label:   { fi: 'Yhteystieto' },
-        valueClass: yhteystieto
+        valueClass: yhteystiedot
       },
       {
         predicate: Attributes.tyyppi,
