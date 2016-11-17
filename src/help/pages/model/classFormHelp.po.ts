@@ -4,6 +4,7 @@ import {
 import { editableByTitle, child, editableFocus } from '../../selectors';
 import { editableMarginInColumn } from '../../utils';
 import * as SearchClassModal from './modal/searchClassModalHelp.po';
+import * as AddPropertiesFromClassModal from './modal/addPropertiesFromClassModalHelp.po';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
 export function focusClass(parent: () => JQuery) {
@@ -51,6 +52,22 @@ export function selectAssociationTarget(parent: () => JQuery) {
   });
 }
 
+export function selectSuperClass(parent: () => JQuery) {
+
+  const enterSuperClassElement = editableByTitle(parent, 'Superclass');
+  const enterSuperClassSelectButtonElement = child(enterSuperClassElement, 'button');
+
+  return createStory({
+
+    title: 'Select super class',
+    content: 'Super class must be selected from list of existing classes',
+    scroll: createScrollNone(),
+    popover: { element: enterSuperClassSelectButtonElement, position: 'right-down' },
+    focus: { element: enterSuperClassSelectButtonElement },
+    nextCondition: createClickNextCondition(enterSuperClassSelectButtonElement)
+  });
+}
+
 export function focusAssociationTarget(parent: () => JQuery) {
 
   const enterAssociationTargetElement = editableByTitle(parent, 'Value class');
@@ -68,10 +85,36 @@ export function focusAssociationTarget(parent: () => JQuery) {
   });
 }
 
+export function focusSuperClass(parent: () => JQuery) {
+
+  const enterSuperClassElement = editableByTitle(parent, 'Superclass');
+  const enterSuperClassSelectFocusElement = editableFocus(enterSuperClassElement);
+
+  return createStory({
+
+    title: 'Super class is here',
+    content: 'Super class can be changed from the list or by typing the identifier',
+    scroll: createScrollWithDefault(enterSuperClassElement, 150),
+    popover: { element: enterSuperClassSelectFocusElement, position: 'right-down' },
+    focus: { element: enterSuperClassSelectFocusElement, margin: editableMarginInColumn },
+    denyInteraction: true,
+    nextCondition: createExplicitNextCondition()
+  });
+}
+
 export function addAssociationTargetItems(context: () => JQuery, target: { namespaceId: string, name: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     selectAssociationTarget(context),
     ...SearchClassModal.findAndSelectExistingClassItems(target.namespaceId, target.name, false, gettextCatalog),
     focusAssociationTarget(context)
+  ];
+}
+
+export function addSuperClassItems(context: () => JQuery, superClass: { name: string, namespaceId: string, properties: string[] }, gettextCatalog: gettextCatalog): Story[] {
+  return [
+    selectSuperClass(context),
+    ...SearchClassModal.findAndSelectExistingClassItems(superClass.namespaceId, superClass.name, false, gettextCatalog),
+    ...AddPropertiesFromClassModal.selectAndConfirmPropertiesItems('Select registration number and vehicle code', false, superClass.properties),
+    focusSuperClass(context)
   ];
 }

@@ -59,7 +59,7 @@ export function specializeClassItems(klass: { namespaceId: string, name: string,
   return [
     openAddResource('class'),
     ...SearchClassModal.findAndSelectExistingClassItems(klass.namespaceId, klass.name, false, gettextCatalog),
-    ...AddPropertiesFromClass.selectAndConfirmPropertiesItems(true, klass.properties),
+    ...AddPropertiesFromClass.selectAndConfirmPropertiesItems('Select name and description', true, klass.properties),
     ClassForm.focusClass(ClassView.element),
     ClassView.saveClassChanges
   ];

@@ -40,9 +40,9 @@ export function confirmProperties(navigates: boolean) {
   return confirm(child(modal, '.add-properties-from-class'), navigates);
 }
 
-export function selectAndConfirmPropertiesItems(navigates: boolean, properties: string[]): Story[] {
+export function selectAndConfirmPropertiesItems(title: string, navigates: boolean, properties: string[]): Story[] {
   return [
-    selectProperties('Select name and description', properties),
+    selectProperties(title, properties),
     confirmProperties(navigates)
   ];
 }

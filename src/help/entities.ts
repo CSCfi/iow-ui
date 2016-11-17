@@ -1,7 +1,10 @@
 import { modelIdFromPrefix } from '../../e2e/util/resource';
 import { KnownPredicateType } from '../entities/type';
+
 const palveluNimiId = '6cfbd054-2bfc-4e92-8642-477b035f59ee';
 const palveluKuvausId = 'fe884237-f6e2-44ea-ac97-231516da4770';
+const rekisterinumeroId = '1b029515-4ee3-44dd-ac27-b9d59888be21';
+const lajikoodiId = '361ec89c-a723-4788-bd0d-927f414a1152';
 
 export const exampleImportedLibrary = {
   prefix: 'jhs',
@@ -17,9 +20,9 @@ export const exampleLibrary = {
     name: 'Vene',
     comment: 'Vedessä kulkeva alus, joka on laivaa pienempi',
     superClass: {
-      searchName: 'liikenneväline',
       namespaceId: exampleImportedLibrary.namespaceId,
-      name: 'Liikenneväline'
+      name: 'Liikenneväline',
+      properties: [rekisterinumeroId, lajikoodiId]
     },
     property: {
       name: {

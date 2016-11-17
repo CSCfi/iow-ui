@@ -30,6 +30,7 @@ export function createNewLibraryItems(gettextCatalog: gettextCatalog): Story[] {
     ...ModelPage.assignClassItems(exampleLibrary.contact, gettextCatalog),
     ...ModelPage.assignClassItems(exampleLibrary.address, gettextCatalog),
     ...ModelPage.createNewClassItems(exampleLibrary.newClass, gettextCatalog),
+    ...ClassForm.addSuperClassItems(ClassView.element, exampleLibrary.newClass.superClass, gettextCatalog),
     ...ClassView.addPropertyUsingExistingPredicateItems(exampleLibrary.newClass.property.name, gettextCatalog),
     ...ClassView.addPropertyBasedOnSuggestionItems(exampleLibrary.newClass.property.passengers, gettextCatalog),
     ...ClassView.addPropertyBasedOnExistingConceptItems(exampleLibrary.newClass.property.owner, gettextCatalog),
