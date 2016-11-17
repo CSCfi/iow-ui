@@ -14,11 +14,11 @@ msgstr ""
 msgid "Add attribute"
 msgstr ""
 
-#: components\editor/searchPredicateModal.html:9
+#: components/editor/searchPredicateModal.html:9
 msgid "Add attribute or association"
 msgstr ""
 
-#: components\editor/searchClassModal.html:5
+#: components/editor/searchClassModal.html:5
 #: translations/misc.html:51
 msgid "Add class"
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 msgid "Add class description"
 msgstr ""
 
-#: components\group/groupPage.html:13
+#: components/group/groupPage.html:13
 msgid "Add library"
 msgstr ""
 
@@ -39,11 +39,11 @@ msgstr ""
 msgid "Add link"
 msgstr ""
 
-#: components\model/searchNamespaceModal.html:30
+#: components/model/searchNamespaceModal.html:30
 msgid "Add new namespace"
 msgstr ""
 
-#: components\group/groupPage.html:14
+#: components/group/groupPage.html:14
 msgid "Add profile"
 msgstr ""
 
@@ -71,11 +71,11 @@ msgstr ""
 msgid "Add properties from super class"
 msgstr ""
 
-#: components\editor/classView.html:7
+#: components/editor/classView.html:7
 msgid "Add property"
 msgstr ""
 
-#: components\editor/editableReferenceDataSelect.html:12
+#: components/editor/editableReferenceDataSelect.html:12
 #: translations/misc.html:206
 msgid "Add reference data"
 msgstr ""
@@ -92,15 +92,15 @@ msgstr ""
 msgid "Add vocabulary"
 msgstr ""
 
-#: components\editor/classForm.html:78
-#: components\editor/predicateForm.html:59
-#: components\editor/propertyView.html:135
-#: components\model/conceptForm.html:54
-#: components\model/modelForm.html:20
+#: components/editor/classForm.html:78
+#: components/editor/predicateForm.html:59
+#: components/editor/propertyView.html:135
+#: components/model/conceptForm.html:54
+#: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr ""
 
-#: components\user/userPage.html:22
+#: components/user/userPage.html:22
 #: translations/misc.html:147
 msgid "Admin groups"
 msgstr ""
@@ -110,19 +110,19 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: components\model/searchReferenceDataModal.html:32
+#: components/model/searchReferenceDataModal.html:32
 msgid "All groups"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:56
+#: components/model/conceptEditorModal.html:56
 msgid "All models"
 msgstr ""
 
-#: components\model/searchReferenceDataModal.html:21
+#: components/model/searchReferenceDataModal.html:21
 msgid "All servers"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:42
+#: components/model/conceptEditorModal.html:42
 msgid "All states"
 msgstr ""
 
@@ -130,8 +130,8 @@ msgstr ""
 msgid "All types"
 msgstr ""
 
-#: components\editor/searchConceptModal.html:25
-#: components\model/conceptEditorModal.html:31
+#: components/editor/searchConceptModal.html:25
+#: components/model/conceptEditorModal.html:31
 msgid "All vocabularies"
 msgstr ""
 
@@ -155,7 +155,7 @@ msgstr ""
 msgid "and create new"
 msgstr ""
 
-#: components\group/groupPage.html:46
+#: components/group/groupPage.html:46
 msgid "Application profiles"
 msgstr ""
 
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Are you sure that you want to close dialog?"
 msgstr ""
 
-#: translations/help.html:84
+#: translations/help.html:119
 msgid "Are you sure that you want to close help?"
 msgstr ""
 
@@ -191,7 +191,7 @@ msgstr ""
 msgid "Are you sure that you want to continue? By continuing unsaved changes will be lost."
 msgstr ""
 
-#: components\common/deleteConfirmationModal.html:11
+#: components/common/deleteConfirmationModal.html:12
 #: translations/misc.html:48
 msgid "Are you sure that you want to delete?"
 msgstr ""
@@ -200,15 +200,15 @@ msgstr ""
 msgid "Are you sure you want to save? Saving overrides previously saves positions."
 msgstr ""
 
-#: translations/help.html:102
+#: translations/help.html:140
 msgid "Asia joka tuotetaan"
 msgstr ""
 
-#: components\editor/classView.html:6
-#: components\editor/predicateView.html:6
-#: components\group/groupPage.html:12
-#: components\model/conceptView.html:5
-#: components\model/modelView.html:11
+#: components/editor/classView.html:6
+#: components/editor/predicateView.html:6
+#: components/group/groupPage.html:12
+#: components/model/conceptView.html:5
+#: components/model/modelView.html:11
 msgid "Ask for group rights"
 msgstr ""
 
@@ -244,11 +244,11 @@ msgstr ""
 msgid "Association information"
 msgstr ""
 
-#: translations/help.html:91
+#: translations/help.html:126
 msgid "Association is here"
 msgstr ""
 
-#: translations/help.html:92
+#: translations/help.html:127
 msgid "Association is here info"
 msgstr ""
 
@@ -264,15 +264,15 @@ msgstr ""
 msgid "Association list"
 msgstr ""
 
-#: translations/help.html:115
+#: translations/help.html:153
 msgid "Association target can be changed from the list or by typing the identifier"
 msgstr ""
 
-#: translations/help.html:93
+#: translations/help.html:128
 msgid "Association target is here"
 msgstr ""
 
-#: translations/help.html:114
+#: translations/help.html:152
 msgid "Association target must be selected from list of existing classes"
 msgstr ""
 
@@ -292,11 +292,11 @@ msgstr ""
 msgid "Attribute information"
 msgstr ""
 
-#: translations/help.html:89
+#: translations/help.html:124
 msgid "Attribute is here"
 msgstr ""
 
-#: translations/help.html:90
+#: translations/help.html:125
 msgid "Attribute is here info"
 msgstr ""
 
@@ -328,16 +328,16 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:3
+#: components/model/conceptEditorModal.html:3
 #: translations/misc.html:214
 msgid "Browse concepts"
 msgstr ""
 
-#: components\model/referenceDataView.html:10
+#: components/model/referenceDataView.html:10
 msgid "Browse reference data codes"
 msgstr ""
 
-#: components\editor/searchConceptModal.html:32
+#: components/editor/searchConceptModal.html:32
 msgid "Browse vocabulary"
 msgstr ""
 
@@ -354,22 +354,22 @@ msgid "Can be selected only from this profile"
 msgstr ""
 
 #: components/advancedSearchModal.html:35
-#: components\common/modalTemplate.html:16
-#: components\editor/addPropertiesFromClassModal.html:27
-#: components\editor/searchClassModal.html:84
-#: components\editor/searchConceptModal.html:87
-#: components\editor/searchPredicateModal.html:105
-#: components\group/addModelModal.html:31
-#: components\model/addEditLinkModal.html:20
-#: components\model/addEditNamespaceModal.html:46
-#: components\model/editReferenceDataModal.html:26
-#: components\model/searchNamespaceModal.html:45
-#: components\model/searchReferenceDataModal.html:95
-#: components\model/searchVocabularyModal.html:30
+#: components/common/modalTemplate.html:16
+#: components/editor/addPropertiesFromClassModal.html:27
+#: components/editor/searchClassModal.html:84
+#: components/editor/searchConceptModal.html:87
+#: components/editor/searchPredicateModal.html:105
+#: components/group/addModelModal.html:31
+#: components/model/addEditLinkModal.html:20
+#: components/model/addEditNamespaceModal.html:46
+#: components/model/editReferenceDataModal.html:26
+#: components/model/searchNamespaceModal.html:45
+#: components/model/searchReferenceDataModal.html:95
+#: components/model/searchVocabularyModal.html:31
 msgid "Cancel"
 msgstr ""
 
-#: components\form/editableEntityButtons.html:3
+#: components/form/editableEntityButtons.html:3
 msgid "Cancel edit"
 msgstr ""
 
@@ -377,8 +377,8 @@ msgstr ""
 msgid "Cannot import profile"
 msgstr ""
 
-#: components\editor/subjectView.html:10
-#: components\editor/subjectView.html:41
+#: components/editor/subjectView.html:10
+#: components/editor/subjectView.html:41
 #: translations/misc.html:238
 msgid "Change concept"
 msgstr ""
@@ -387,11 +387,11 @@ msgstr ""
 msgid "Change reusable predicate"
 msgstr ""
 
-#: translations/help.html:109
+#: translations/help.html:147
 msgid "Changes need to be saved"
 msgstr ""
 
-#: components\editor/choosePredicateTypeModal.html:13
+#: components/editor/choosePredicateTypeModal.html:13
 msgid "Choose"
 msgstr ""
 
@@ -403,12 +403,12 @@ msgstr ""
 msgid "Choose attribute"
 msgstr ""
 
-#: components\editor/editableConstraint.html:35
+#: components/editor/editableConstraint.html:35
 #: translations/misc.html:67
 msgid "Choose class"
 msgstr ""
 
-#: components\editor/editableConceptSelect.html:18
+#: components/editor/editableConceptSelect.html:18
 #: translations/misc.html:239
 msgid "Choose concept"
 msgstr ""
@@ -417,7 +417,7 @@ msgstr ""
 msgid "Choose reference data"
 msgstr ""
 
-#: components\model/editableRootClass.html:7
+#: components/model/editableRootClass.html:7
 msgid "Choose root class"
 msgstr ""
 
@@ -441,11 +441,11 @@ msgstr ""
 msgid "Class information"
 msgstr ""
 
-#: translations/help.html:87
+#: translations/help.html:122
 msgid "Class is here"
 msgstr ""
 
-#: translations/help.html:88
+#: translations/help.html:123
 msgid "Class is here info"
 msgstr ""
 
@@ -481,11 +481,11 @@ msgstr ""
 msgid "Class property label info"
 msgstr ""
 
-#: components\editor/searchClassModal.html:17
+#: components/editor/searchClassModal.html:17
 msgid "Class search info"
 msgstr ""
 
-#: components\editor/searchClassModal.html:16
+#: components/editor/searchClassModal.html:16
 msgid "Class search or create info"
 msgstr ""
 
@@ -501,16 +501,16 @@ msgstr ""
 msgid "Classes are not allowed"
 msgstr ""
 
-#: translations/help.html:108
+#: translations/help.html:146
 msgid "Classes can be modified"
 msgstr ""
 
-#: translations/help.html:97
+#: translations/help.html:135
 msgid "Classes can be seen visually here"
 msgstr ""
 
-#: components\editor/editableConceptSelect.html:19
-#: components\model/editableRootClass.html:8
+#: components/editor/editableConceptSelect.html:19
+#: components/model/editableRootClass.html:8
 msgid "Clear selection"
 msgstr ""
 
@@ -518,8 +518,8 @@ msgstr ""
 msgid "close"
 msgstr ""
 
-#: components\common/historyModal.html:36
-#: components\model/conceptEditorModal.html:85
+#: components/common/historyModal.html:36
+#: components/model/conceptEditorModal.html:85
 #: translations/misc.html:167
 msgid "Close"
 msgstr ""
@@ -544,13 +544,21 @@ msgstr ""
 msgid "Concept id info"
 msgstr ""
 
-#: components\editor/subjectView.html:4
-#: components\model/conceptForm.html:3
+#: components/editor/subjectView.html:4
+#: components/model/conceptForm.html:3
 #: translations/misc.html:126
 msgid "Concept information"
 msgstr ""
 
-#: components\editor/searchConceptModal.html:77
+#: translations/help.html:130
+msgid "Concept is here"
+msgstr ""
+
+#: translations/help.html:131
+msgid "Concept is here info"
+msgstr ""
+
+#: components/editor/searchConceptModal.html:77
 msgid "Concept is suggested to vocabulary"
 msgstr ""
 
@@ -562,11 +570,11 @@ msgstr ""
 msgid "Concept label info"
 msgstr ""
 
-#: components\editor/searchConceptModal.html:13
+#: components/editor/searchConceptModal.html:13
 msgid "Concept search info"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:38
+#: components/model/conceptEditorModal.html:38
 msgid "Concept state"
 msgstr ""
 
@@ -582,7 +590,7 @@ msgstr ""
 msgid "Concept suggestion definition info"
 msgstr ""
 
-#: components\model/conceptForm.html:2
+#: components/model/conceptForm.html:2
 #: translations/misc.html:127
 msgid "Concept suggestion information"
 msgstr ""
@@ -595,12 +603,12 @@ msgstr ""
 msgid "Concept suggestion label info"
 msgstr ""
 
-#: components\common/deleteConfirmationModal.html:2
+#: components/common/deleteConfirmationModal.html:3
 #: translations/misc.html:47
 msgid "Confirm delete"
 msgstr ""
 
-#: translations/help.html:85
+#: translations/help.html:120
 msgid "Confirm selection"
 msgstr ""
 
@@ -716,8 +724,8 @@ msgstr ""
 msgid "Create and use attribute"
 msgstr ""
 
-#: components\group/addModelModal.html:32
-#: components\model/searchReferenceDataModal.html:97
+#: components/group/addModelModal.html:32
+#: components/model/searchReferenceDataModal.html:97
 msgid "Create new"
 msgstr ""
 
@@ -733,7 +741,7 @@ msgstr ""
 msgid "Create new class"
 msgstr ""
 
-#: translations/help.html:113
+#: translations/help.html:151
 msgid "Create new info"
 msgstr ""
 
@@ -829,7 +837,7 @@ msgstr ""
 msgid "Define concept for the shape"
 msgstr ""
 
-#: components\editor/choosePredicateTypeModal.html:2
+#: components/editor/choosePredicateTypeModal.html:2
 msgid "Define type for class property"
 msgstr ""
 
@@ -933,7 +941,7 @@ msgstr ""
 msgid "Delete profile"
 msgstr ""
 
-#: components\editor/propertyView.html:11
+#: components/editor/propertyView.html:11
 msgid "Delete property"
 msgstr ""
 
@@ -957,7 +965,7 @@ msgstr ""
 msgid "Description info"
 msgstr ""
 
-#: components\editor/addPropertiesFromClassModal.html:22
+#: components/editor/addPropertiesFromClassModal.html:22
 msgid "Deselect all"
 msgstr ""
 
@@ -969,7 +977,7 @@ msgstr ""
 msgid "Diipadaa"
 msgstr ""
 
-#: components\editor/addPropertiesFromClassModal.html:5
+#: components/editor/addPropertiesFromClassModal.html:5
 msgid "Do you want to add following properties from ' + ctrl.classType + '?"
 msgstr ""
 
@@ -993,7 +1001,7 @@ msgstr ""
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
-#: components\common/export.html:7
+#: components/common/export.html:7
 msgid "Download"
 msgstr ""
 
@@ -1005,12 +1013,12 @@ msgstr ""
 msgid "Duplicate association target"
 msgstr ""
 
-#: components\form/errorMessages.html:11
+#: components/form/errorMessages.html:11
 msgid "Duplicate error"
 msgstr ""
 
-#: components\form/editableEntityButtons.html:5
-#: components\model/editReferenceDataModal.html:27
+#: components/form/editableEntityButtons.html:5
+#: components/model/editReferenceDataModal.html:27
 msgid "Edit"
 msgstr ""
 
@@ -1026,7 +1034,7 @@ msgstr ""
 msgid "Edit namespace"
 msgstr ""
 
-#: components\model/editReferenceDataModal.html:3
+#: components/model/editReferenceDataModal.html:3
 #: translations/misc.html:211
 msgid "Edit reference data"
 msgstr ""
@@ -1039,7 +1047,7 @@ msgstr ""
 msgid "Editorial note info"
 msgstr ""
 
-#: components\navigation/loginModal.html:5
+#: components/navigation/loginModal.html:6
 msgid "eDuuni information"
 msgstr ""
 
@@ -1087,11 +1095,11 @@ msgstr ""
 msgid "Example info"
 msgstr ""
 
-#: components\form/errorMessages.html:8
+#: components/form/errorMessages.html:8
 msgid "Existing id error"
 msgstr ""
 
-#: components\common/export.html:2
+#: components/common/export.html:2
 msgid "Export"
 msgstr ""
 
@@ -1120,13 +1128,13 @@ msgid "fi"
 msgstr ""
 
 #: components/advancedSearchModal.html:13
-#: components\editor/searchClassModal.html:22
-#: components\editor/searchConceptModal.html:18
-#: components\editor/searchPredicateModal.html:30
-#: components\model/conceptEditorModal.html:23
-#: components\model/searchNamespaceModal.html:13
-#: components\model/searchReferenceDataModal.html:14
-#: components\model/searchVocabularyModal.html:11
+#: components/editor/searchClassModal.html:22
+#: components/editor/searchConceptModal.html:18
+#: components/editor/searchPredicateModal.html:30
+#: components/model/conceptEditorModal.html:23
+#: components/model/searchNamespaceModal.html:13
+#: components/model/searchReferenceDataModal.html:14
+#: components/model/searchVocabularyModal.html:12
 msgid "Filter results"
 msgstr ""
 
@@ -1138,7 +1146,7 @@ msgstr ""
 msgid "Fixed value info"
 msgstr ""
 
-#: components\common/deleteConfirmationModal.html:6
+#: components/common/deleteConfirmationModal.html:7
 msgid "Following items are depending on the deleted"
 msgstr ""
 
@@ -1154,7 +1162,7 @@ msgstr ""
 msgid "Frontend"
 msgstr ""
 
-#: components\form/errorMessages.html:16
+#: components/form/errorMessages.html:16
 msgid "Greater than max error"
 msgstr ""
 
@@ -1162,7 +1170,7 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-#: components\model/searchReferenceDataModal.html:28
+#: components/model/searchReferenceDataModal.html:28
 msgid "Group"
 msgstr ""
 
@@ -1222,7 +1230,7 @@ msgstr ""
 msgid "Guide through specializing a class"
 msgstr ""
 
-#: translations/help.html:83
+#: translations/help.html:118
 msgid "Help is open"
 msgstr ""
 
@@ -1230,7 +1238,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: components\common/historyModal.html:3
+#: components/common/historyModal.html:3
 #: translations/misc.html:166
 msgid "Historical versions"
 msgstr ""
@@ -1261,11 +1269,11 @@ msgstr ""
 msgid "ID is already in use"
 msgstr ""
 
-#: components\form/errorMessages.html:19
+#: components/form/errorMessages.html:19
 msgid "Id name is required"
 msgstr ""
 
-#: components\model/referenceDataView.html:19
+#: components/model/referenceDataView.html:19
 #: translations/misc.html:200
 msgid "Identifier"
 msgstr ""
@@ -1278,11 +1286,11 @@ msgstr ""
 msgid "Imported namespaces"
 msgstr ""
 
-#: translations/help.html:86
+#: translations/help.html:121
 msgid "Imported namespaces are here"
 msgstr ""
 
-#: translations/help.html:110
+#: translations/help.html:148
 msgid "Imported namespaces can be used to link resources to existing standards"
 msgstr ""
 
@@ -1302,7 +1310,7 @@ msgstr ""
 msgid "Internal group page info"
 msgstr ""
 
-#: components\model/conceptForm.html:41
+#: components/model/conceptForm.html:41
 #: translations/misc.html:190
 msgid "Internal vocabulary"
 msgstr ""
@@ -1320,35 +1328,35 @@ msgstr ""
 msgid "Invalid ID"
 msgstr ""
 
-#: components\form/errorMessages.html:7
+#: components/form/errorMessages.html:7
 msgid "Invalid id error"
 msgstr ""
 
-#: components\form/errorMessages.html:6
+#: components/form/errorMessages.html:6
 msgid "Invalid namespace error"
 msgstr ""
 
-#: components\form/errorMessages.html:5
+#: components/form/errorMessages.html:5
 msgid "Invalid stem error"
 msgstr ""
 
-#: components\form/errorMessages.html:4
+#: components/form/errorMessages.html:4
 msgid "Invalid url error"
 msgstr ""
 
-#: components\navigation/navigationBar.html:3
+#: components/navigation/navigationBar.html:3
 msgid "IOW"
 msgstr ""
 
-#: components\form/errorMessages.html:21
+#: components/form/errorMessages.html:21
 msgid "Is not valid language code"
 msgstr ""
 
-#: components\form/errorMessages.html:22
+#: components/form/errorMessages.html:22
 msgid "Is not valid reference data code"
 msgstr ""
 
-#: translations/help.html:107
+#: translations/help.html:145
 msgid "jhs"
 msgstr ""
 
@@ -1356,7 +1364,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: translations/help.html:96
+#: translations/help.html:134
 msgid "Label can be changed"
 msgstr ""
 
@@ -1368,11 +1376,11 @@ msgstr ""
 msgid "ld+json frame"
 msgstr ""
 
-#: components\form/errorMessages.html:13
+#: components/form/errorMessages.html:13
 msgid "Length error"
 msgstr ""
 
-#: components\form/errorMessages.html:17
+#: components/form/errorMessages.html:17
 msgid "Less than min error"
 msgstr ""
 
@@ -1404,21 +1412,21 @@ msgstr ""
 msgid "Local ID"
 msgstr ""
 
-#: components\editor/editableConstraint.html:5
+#: components/editor/editableConstraint.html:5
 msgid "Logical constraints"
 msgstr ""
 
-#: components\navigation/loginModal.html:10
-#: components\navigation/loginModal.html:2
-#: components\navigation/navigationBar.html:17
+#: components/navigation/loginModal.html:11
+#: components/navigation/loginModal.html:3
+#: components/navigation/navigationBar.html:17
 msgid "Login"
 msgstr ""
 
-#: components\navigation/loginModal.html:6
+#: components/navigation/loginModal.html:7
 msgid "Login information"
 msgstr ""
 
-#: components\navigation/navigationBar.html:25
+#: components/navigation/navigationBar.html:25
 msgid "Logout"
 msgstr ""
 
@@ -1454,7 +1462,7 @@ msgstr ""
 msgid "Max length info"
 msgstr ""
 
-#: components\user/userPage.html:15
+#: components/user/userPage.html:15
 #: translations/misc.html:146
 msgid "Member groups"
 msgstr ""
@@ -1491,7 +1499,7 @@ msgstr ""
 msgid "Model not found"
 msgstr ""
 
-#: components\group/groupPage.html:31
+#: components/group/groupPage.html:31
 msgid "Models"
 msgstr ""
 
@@ -1523,7 +1531,7 @@ msgstr ""
 msgid "Modify profile description"
 msgstr ""
 
-#: components\form/errorMessages.html:20
+#: components/form/errorMessages.html:20
 msgid "Must be imported namespace"
 msgstr ""
 
@@ -1551,7 +1559,7 @@ msgstr ""
 msgid "Namespace redirection info"
 msgstr ""
 
-#: components\form/errorMessages.html:15
+#: components/form/errorMessages.html:15
 msgid "Negative error"
 msgstr ""
 
@@ -1567,7 +1575,7 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: translations/help.html:103
+#: translations/help.html:141
 msgid "Nimi"
 msgstr ""
 
@@ -1575,20 +1583,20 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: components\group/groupPage.html:33
+#: components/group/groupPage.html:33
 msgid "No models yet"
 msgstr ""
 
-#: components\group/groupPage.html:48
+#: components/group/groupPage.html:48
 msgid "No profiles yet"
 msgstr ""
 
-#: components\editor/classForm.html:72
+#: components/editor/classForm.html:72
 msgid "No properties yet"
 msgstr ""
 
-#: components\common/usage.html:1
-#: components\common/usagePanel.html:8
+#: components/common/usage.html:1
+#: components/common/usagePanel.html:8
 msgid "No referrers"
 msgstr ""
 
@@ -1605,9 +1613,9 @@ msgstr ""
 msgid "None added"
 msgstr ""
 
-#: components\editor/editableConceptSelect.html:4
-#: components\editor/editableReferenceDataSelect.html:4
-#: components\editor/subjectView.html:17
+#: components/editor/editableConceptSelect.html:4
+#: components/editor/editableReferenceDataSelect.html:4
+#: components/editor/subjectView.html:17
 msgid "Not defined"
 msgstr ""
 
@@ -1627,7 +1635,7 @@ msgstr ""
 msgid "Not removed"
 msgstr ""
 
-#: components\model/editableRootClass.html:4
+#: components/model/editableRootClass.html:4
 msgid "Not selected"
 msgstr ""
 
@@ -1687,7 +1695,7 @@ msgstr ""
 msgid "Open profile details description"
 msgstr ""
 
-#: components\editor/propertyView.html:62
+#: components/editor/propertyView.html:62
 msgid "Optional metadata"
 msgstr ""
 
@@ -1703,11 +1711,11 @@ msgstr ""
 msgid "Page not found"
 msgstr ""
 
-#: translations/help.html:98
+#: translations/help.html:136
 msgid "Palvelu"
 msgstr ""
 
-#: translations/help.html:100
+#: translations/help.html:138
 msgid "Palveluprofiili"
 msgstr ""
 
@@ -1735,7 +1743,7 @@ msgstr ""
 msgid "Predicate in use"
 msgstr ""
 
-#: components\editor/propertyPredicateView.html:28
+#: components/editor/propertyPredicateView.html:28
 msgid "Predicate information not found"
 msgstr ""
 
@@ -1755,7 +1763,7 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: components\form/errorMessages.html:14
+#: components/form/errorMessages.html:14
 msgid "Prefix error"
 msgstr ""
 
@@ -1795,16 +1803,16 @@ msgstr ""
 msgid "Property id info"
 msgstr ""
 
-#: components\editor/propertyView.html:4
+#: components/editor/propertyView.html:4
 #: translations/misc.html:124
 msgid "Property information"
 msgstr ""
 
-#: translations/help.html:94
+#: translations/help.html:132
 msgid "Property is here"
 msgstr ""
 
-#: translations/help.html:95
+#: translations/help.html:133
 msgid "Property is here info"
 msgstr ""
 
@@ -1840,7 +1848,7 @@ msgstr ""
 msgid "rdfs:Literal error"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:43
+#: components/model/conceptEditorModal.html:43
 #: translations/misc.html:17
 msgid "Recommendation"
 msgstr ""
@@ -1865,7 +1873,7 @@ msgstr ""
 msgid "Reference data name"
 msgstr ""
 
-#: components\model/searchReferenceDataModal.html:17
+#: components/model/searchReferenceDataModal.html:17
 msgid "Reference data server"
 msgstr ""
 
@@ -1877,7 +1885,7 @@ msgstr ""
 msgid "Reference data URI info"
 msgstr ""
 
-#: components\navigation/loginModal.html:11
+#: components/navigation/loginModal.html:12
 msgid "Register"
 msgstr ""
 
@@ -1889,11 +1897,11 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: components\form/errorMessages.html:9
+#: components/form/errorMessages.html:9
 msgid "Required error"
 msgstr ""
 
-#: components\form/errorMessages.html:10
+#: components/form/errorMessages.html:10
 msgid "Required localized error"
 msgstr ""
 
@@ -1913,11 +1921,11 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components\editor/propertyView.html:146
+#: components/editor/propertyView.html:146
 msgid "Reusable predicate"
 msgstr ""
 
-#: components\editor/propertyPredicateView.html:5
+#: components/editor/propertyPredicateView.html:5
 msgid "Reusable predicate information"
 msgstr ""
 
@@ -1929,7 +1937,7 @@ msgstr ""
 msgid "Root class info"
 msgstr ""
 
-#: components\form/editableEntityButtons.html:4
+#: components/form/editableEntityButtons.html:4
 msgid "Save changes"
 msgstr ""
 
@@ -1957,7 +1965,7 @@ msgstr ""
 msgid "search class"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:15
+#: components/model/conceptEditorModal.html:15
 msgid "search concept"
 msgstr ""
 
@@ -1969,27 +1977,83 @@ msgstr ""
 msgid "search descriptions"
 msgstr ""
 
+#: translations/help.html:53
+msgid "Search for henkilö"
+msgstr ""
+
+#: translations/help.html:54
+msgid "Search for henkilö info"
+msgstr ""
+
 #: translations/help.html:46
 msgid "Search for jhs"
 msgstr ""
 
-#: translations/help.html:63
+#: translations/help.html:87
 msgid "Search for jhs info"
+msgstr ""
+
+#: translations/help.html:63
+msgid "Search for liikenneväline"
+msgstr ""
+
+#: translations/help.html:64
+msgid "Search for liikenneväline info"
+msgstr ""
+
+#: translations/help.html:100
+msgid "Search for matkustajien lukumäärä"
+msgstr ""
+
+#: translations/help.html:102
+msgid "Search for matkustajien lukumäärä concept"
+msgstr ""
+
+#: translations/help.html:103
+msgid "Search for matkustajien lukumäärä concept info"
+msgstr ""
+
+#: translations/help.html:101
+msgid "Search for matkustajien lukumäärä info"
 msgstr ""
 
 #: translations/help.html:50
 msgid "Search for nimi"
 msgstr ""
 
-#: translations/help.html:67
+#: translations/help.html:91
 msgid "Search for nimi info"
+msgstr ""
+
+#: translations/help.html:96
+msgid "Search for omistaja"
+msgstr ""
+
+#: translations/help.html:97
+msgid "Search for omistaja info"
+msgstr ""
+
+#: translations/help.html:98
+msgid "Search for omistaja predicate"
+msgstr ""
+
+#: translations/help.html:99
+msgid "Search for omistaja predicate info"
+msgstr ""
+
+#: translations/help.html:57
+msgid "Search for osoite"
+msgstr ""
+
+#: translations/help.html:58
+msgid "Search for osoite info"
 msgstr ""
 
 #: translations/help.html:47
 msgid "Search for palvelu"
 msgstr ""
 
-#: translations/help.html:64
+#: translations/help.html:88
 msgid "Search for palvelu info"
 msgstr ""
 
@@ -1997,7 +2061,7 @@ msgstr ""
 msgid "Search for tuote class"
 msgstr ""
 
-#: translations/help.html:65
+#: translations/help.html:89
 msgid "Search for tuote class info"
 msgstr ""
 
@@ -2005,7 +2069,7 @@ msgstr ""
 msgid "Search for tuote concept"
 msgstr ""
 
-#: translations/help.html:66
+#: translations/help.html:90
 msgid "Search for tuote concept info"
 msgstr ""
 
@@ -2017,20 +2081,44 @@ msgstr ""
 msgid "Search for tuotetaan concept"
 msgstr ""
 
-#: translations/help.html:69
+#: translations/help.html:93
 msgid "Search for tuotetaan concept info"
 msgstr ""
 
-#: translations/help.html:68
+#: translations/help.html:92
 msgid "Search for tuotetaan info"
 msgstr ""
 
-#: translations/help.html:70
+#: translations/help.html:94
 msgid "Search for tuotetaan predicate"
 msgstr ""
 
-#: translations/help.html:71
+#: translations/help.html:95
 msgid "Search for tuotetaan predicate info"
+msgstr ""
+
+#: translations/help.html:59
+msgid "Search for vene class"
+msgstr ""
+
+#: translations/help.html:60
+msgid "Search for vene class info"
+msgstr ""
+
+#: translations/help.html:61
+msgid "Search for vene concept"
+msgstr ""
+
+#: translations/help.html:62
+msgid "Search for vene concept info"
+msgstr ""
+
+#: translations/help.html:55
+msgid "Search for yhteystiedot"
+msgstr ""
+
+#: translations/help.html:56
+msgid "Search for yhteystiedot info"
 msgstr ""
 
 #: translations/misc.html:91
@@ -2041,15 +2129,15 @@ msgstr ""
 msgid "search namespace"
 msgstr ""
 
-#: components\model/searchNamespaceModal.html:2
+#: components/model/searchNamespaceModal.html:2
 msgid "Search namespaces"
 msgstr ""
 
-#: components\editor/searchPredicateModal.html:23
+#: components/editor/searchPredicateModal.html:23
 msgid "Search or create predicate info"
 msgstr ""
 
-#: components\editor/searchPredicateModal.html:22
+#: components/editor/searchPredicateModal.html:22
 msgid "Search predicate info"
 msgstr ""
 
@@ -2058,12 +2146,12 @@ msgstr ""
 msgid "search reference data"
 msgstr ""
 
-#: components\model/searchReferenceDataModal.html:3
+#: components/model/searchReferenceDataModal.html:3
 #: translations/misc.html:207
 msgid "Search reference data"
 msgstr ""
 
-#: components\model/searchVocabularyModal.html:2
+#: components/model/searchVocabularyModal.html:3
 msgid "Search vocabularies"
 msgstr ""
 
@@ -2071,7 +2159,7 @@ msgstr ""
 msgid "search vocabulary"
 msgstr ""
 
-#: components\editor/addPropertiesFromClassModal.html:21
+#: components/editor/addPropertiesFromClassModal.html:21
 msgid "Select all"
 msgstr ""
 
@@ -2079,11 +2167,11 @@ msgstr ""
 msgid "Select association"
 msgstr ""
 
-#: translations/help.html:61
+#: translations/help.html:84
 msgid "Select association target"
 msgstr ""
 
-#: translations/help.html:81
+#: translations/help.html:116
 msgid "Select association target info"
 msgstr ""
 
@@ -2091,19 +2179,19 @@ msgstr ""
 msgid "Select attribute"
 msgstr ""
 
-#: components\editor/searchPredicateModal.html:5
+#: components/editor/searchPredicateModal.html:5
 msgid "Select attribute or association"
 msgstr ""
 
-#: components\editor/searchClassModal.html:4
+#: components/editor/searchClassModal.html:4
 msgid "Select class"
 msgstr ""
 
-#: translations/help.html:60
+#: translations/help.html:83
 msgid "Select concept suggest creation"
 msgstr ""
 
-#: translations/help.html:80
+#: translations/help.html:115
 msgid "Select concept suggest creation info"
 msgstr ""
 
@@ -2115,65 +2203,125 @@ msgstr ""
 msgid "Select help topic"
 msgstr ""
 
-#: translations/help.html:53
+#: translations/help.html:69
+msgid "Select henkilö"
+msgstr ""
+
+#: translations/help.html:70
+msgid "Select henkilö info"
+msgstr ""
+
+#: translations/help.html:65
 msgid "Select jhs"
 msgstr ""
 
-#: translations/help.html:72
+#: translations/help.html:106
 msgid "Select jhs info"
 msgstr ""
 
-#: translations/help.html:57
-msgid "Select name and description"
+#: translations/help.html:75
+msgid "Select liikenneväline"
+msgstr ""
+
+#: translations/help.html:76
+msgid "Select liikenneväline info"
 msgstr ""
 
 #: translations/help.html:77
-msgid "Select name and description info"
-msgstr ""
-
-#: translations/help.html:59
-msgid "Select new association creation"
-msgstr ""
-
-#: translations/help.html:79
-msgid "Select new association creation info"
-msgstr ""
-
-#: translations/help.html:58
-msgid "Select new creation"
-msgstr ""
-
-#: translations/help.html:78
-msgid "Select new creation info"
-msgstr ""
-
-#: translations/help.html:55
-msgid "Select nimi"
-msgstr ""
-
-#: translations/help.html:74
-msgid "Select nimi info"
-msgstr ""
-
-#: translations/help.html:54
-msgid "Select palvelu"
-msgstr ""
-
-#: translations/help.html:73
-msgid "Select palvelu info"
+msgid "Select name and description"
 msgstr ""
 
 #: translations/help.html:111
+msgid "Select name and description info"
+msgstr ""
+
+#: translations/help.html:82
+msgid "Select new association creation"
+msgstr ""
+
+#: translations/help.html:114
+msgid "Select new association creation info"
+msgstr ""
+
+#: translations/help.html:81
+msgid "Select new attribute creation"
+msgstr ""
+
+#: translations/help.html:113
+msgid "Select new attribute creation info"
+msgstr ""
+
+#: translations/help.html:80
+msgid "Select new creation"
+msgstr ""
+
+#: translations/help.html:112
+msgid "Select new creation info"
+msgstr ""
+
+#: translations/help.html:67
+msgid "Select nimi"
+msgstr ""
+
+#: translations/help.html:108
+msgid "Select nimi info"
+msgstr ""
+
+#: translations/help.html:104
+msgid "Select omistaja"
+msgstr ""
+
+#: translations/help.html:105
+msgid "Select omistaja info"
+msgstr ""
+
+#: translations/help.html:73
+msgid "Select osoite"
+msgstr ""
+
+#: translations/help.html:74
+msgid "Select osoite info"
+msgstr ""
+
+#: translations/help.html:66
+msgid "Select palvelu"
+msgstr ""
+
+#: translations/help.html:107
+msgid "Select palvelu info"
+msgstr ""
+
+#: translations/help.html:78
+msgid "Select registration number and vehicle code"
+msgstr ""
+
+#: translations/help.html:79
+msgid "Select registration number and vehicle code info"
+msgstr ""
+
+#: translations/help.html:85
+msgid "Select super class"
+msgstr ""
+
+#: translations/help.html:149
 msgid "Select the vocabulary that is missing the required concept"
 msgstr ""
 
-#: translations/help.html:56
+#: translations/help.html:68
 msgid "Select tuote"
 msgstr ""
 
-#: translations/help.html:75
-#: translations/help.html:76
+#: translations/help.html:109
+#: translations/help.html:110
 msgid "Select tuote info"
+msgstr ""
+
+#: translations/help.html:71
+msgid "Select yhteystiedot"
+msgstr ""
+
+#: translations/help.html:72
+msgid "Select yhteystiedot info"
 msgstr ""
 
 #: translations/misc.html:180
@@ -2216,7 +2364,7 @@ msgstr ""
 msgid "Shapes are not allowed"
 msgstr ""
 
-#: components\common/export.html:4
+#: components/common/export.html:4
 #: translations/misc.html:20
 msgid "Show"
 msgstr ""
@@ -2233,7 +2381,7 @@ msgstr ""
 msgid "Show history"
 msgstr ""
 
-#: components\model/searchNamespaceModal.html:19
+#: components/model/searchNamespaceModal.html:19
 msgid "Show technical namespaces"
 msgstr ""
 
@@ -2253,7 +2401,7 @@ msgstr ""
 msgid "Specialized from class info"
 msgstr ""
 
-#: components\navigation/navigationBar.html:9
+#: components/navigation/navigationBar.html:9
 #: translations/help.html:1
 msgid "Start help"
 msgstr ""
@@ -2266,7 +2414,7 @@ msgstr ""
 msgid "State info"
 msgstr ""
 
-#: components\form/errorMessages.html:12
+#: components/form/errorMessages.html:12
 msgid "String error"
 msgstr ""
 
@@ -2282,22 +2430,34 @@ msgstr ""
 msgid "suggest"
 msgstr ""
 
-#: translations/help.html:112
+#: translations/help.html:150
 msgid "Suggest definition or description for the concept"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:51
+#: components/model/conceptEditorModal.html:51
 msgid "Suggested in"
 msgstr ""
 
-#: components\editor/searchConceptModal.html:39
+#: components/editor/searchConceptModal.html:39
 #: translations/misc.html:12
 msgid "suggestion"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:44
+#: components/model/conceptEditorModal.html:44
 #: translations/misc.html:19
 msgid "Suggestion"
+msgstr ""
+
+#: translations/help.html:155
+msgid "Super class can be changed from the list or by typing the identifier"
+msgstr ""
+
+#: translations/help.html:129
+msgid "Super class is here"
+msgstr ""
+
+#: translations/help.html:154
+msgid "Super class must be selected from list of existing classes"
 msgstr ""
 
 #: translations/titles.html:36
@@ -2332,7 +2492,7 @@ msgstr ""
 msgid "Superproperty info"
 msgstr ""
 
-#: translations/help.html:106
+#: translations/help.html:144
 msgid "tapahtumaketju joka toteuttaa jotain"
 msgstr ""
 
@@ -2340,7 +2500,7 @@ msgstr ""
 msgid "Technical namespaces"
 msgstr ""
 
-#: translations/help.html:99
+#: translations/help.html:137
 msgid "Testikirjasto"
 msgstr ""
 
@@ -2348,31 +2508,31 @@ msgstr ""
 msgid "text/turtle"
 msgstr ""
 
-#: translations/help.html:123
+#: translations/help.html:163
 msgid "This tutorial shows how to add association to a Class"
 msgstr ""
 
-#: translations/help.html:120
+#: translations/help.html:160
 msgid "This tutorial shows how to add Class from existing library"
 msgstr ""
 
-#: translations/help.html:121
+#: translations/help.html:161
 msgid "This tutorial shows how to add new attribute"
 msgstr ""
 
-#: translations/help.html:122
+#: translations/help.html:162
 msgid "This tutorial shows how to create a new Class"
 msgstr ""
 
-#: translations/help.html:119
+#: translations/help.html:159
 msgid "This tutorial shows how to create a new shape from a class"
 msgstr ""
 
-#: translations/help.html:118
+#: translations/help.html:158
 msgid "This tutorial shows how to import new namespace to the model"
 msgstr ""
 
-#: components\model/referenceDataView.html:20
+#: components/model/referenceDataView.html:20
 #: translations/titles.html:71
 msgid "Title"
 msgstr ""
@@ -2385,15 +2545,15 @@ msgstr ""
 msgid "to vocabulary"
 msgstr ""
 
-#: translations/help.html:101
+#: translations/help.html:139
 msgid "Tuote"
 msgstr ""
 
-#: translations/help.html:104
+#: translations/help.html:142
 msgid "Tuotetaan"
 msgstr ""
 
-#: translations/help.html:105
+#: translations/help.html:143
 msgid "Tuotetaan palvelussa"
 msgstr ""
 
@@ -2413,7 +2573,7 @@ msgstr ""
 msgid "Unique label"
 msgstr ""
 
-#: components\form/errorMessages.html:18
+#: components/form/errorMessages.html:18
 msgid "Unknown namespace"
 msgstr ""
 
@@ -2425,7 +2585,7 @@ msgstr ""
 msgid "URI stem"
 msgstr ""
 
-#: components\common/usagePanel.html:4
+#: components/common/usagePanel.html:4
 msgid "Usage"
 msgstr ""
 
@@ -2445,13 +2605,13 @@ msgstr ""
 msgid "Use class"
 msgstr ""
 
-#: components\model/searchReferenceDataModal.html:98
+#: components/model/searchReferenceDataModal.html:98
 #: translations/misc.html:101
 msgid "Use selection"
 msgstr ""
 
-#: components\navigation/navigationBar.html:24
-#: components\user/userPage.html:3
+#: components/navigation/navigationBar.html:24
+#: components/user/userPage.html:3
 msgid "User details"
 msgstr ""
 
@@ -2475,7 +2635,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: components\editor/visualizationView.html:5
+#: components/editor/visualizationView.html:5
 msgid "Visualization"
 msgstr ""
 
@@ -2483,12 +2643,12 @@ msgstr ""
 msgid "Vocabularies"
 msgstr ""
 
-#: components\model/conceptEditorModal.html:26
+#: components/model/conceptEditorModal.html:26
 #: translations/titles.html:53
 msgid "Vocabulary"
 msgstr ""
 
-#: components\editor/searchConceptModal.html:20
+#: components/editor/searchConceptModal.html:20
 msgid "Vocabulary filter"
 msgstr ""
 
@@ -2684,13 +2844,13 @@ msgstr ""
 msgid "xsd:time error"
 msgstr ""
 
-#: components\common/modalTemplate.html:15
-#: components\editor/addPropertiesFromClassModal.html:26
+#: components/common/modalTemplate.html:15
+#: components/editor/addPropertiesFromClassModal.html:26
 #: translations/misc.html:259
 msgid "Yes"
 msgstr ""
 
-#: translations/help.html:116
+#: translations/help.html:156
 msgid "You can add new attribute or association to the Class from here"
 msgstr ""
 
