@@ -124,7 +124,7 @@ export namespace Classes {
   });
 
   export const yhteystiedot = loader.specializeClass(model, {
-    class: Jhs.Classes.yhteystieto,
+    class: Jhs.Classes.yhteystiedot,
     label: { fi: 'Yhteystiedot' }
   });
 

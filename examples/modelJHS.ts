@@ -247,6 +247,14 @@ export namespace Attributes {
     label: { fi: 'Y-tunnus' },
     dataType: 'xsd:string'
   });
+
+  export const rekisterinumero = loader.createAttribute(model, {
+    label: { fi: 'Rekisterinumero' }
+  });
+
+  export const lajikoodi = loader.createAttribute(model, {
+    label: { fi: 'Lajikoodi' }
+  });
 }
 
 export namespace Classes {
@@ -509,6 +517,22 @@ export namespace Classes {
         predicate: Attributes.kuvaus,
         label: { fi: 'Kuvaus' },
         internalId: 'fe884237-f6e2-44ea-ac97-231516da4770'
+      }
+    ]
+  });
+
+  export const liikennevaline = loader.createClass(model, {
+    label: { fi: 'Liikenneväline' },
+    properties: [
+      {
+        predicate: Attributes.rekisterinumero,
+        label: { fi: 'Rekisterinumero' },
+        internalId: ''
+      },
+      {
+        predicate: Attributes.lajikoodi,
+        label: { fi: 'Lajikoodi' },
+        internalId: ''
       }
     ]
   });
