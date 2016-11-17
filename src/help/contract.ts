@@ -74,7 +74,7 @@ export interface StoryDetails {
     margin?: { top?: number, right?: number, bottom?: number, left?: number }
   };
   nextCondition: NextCondition;
-  initialize?: () => void;
+  initialize?: () => boolean; // return true on success, false will try to retry
   reversible?: boolean;
   denyInteraction?: boolean;
 }

@@ -184,7 +184,19 @@ class InteractiveHelpController {
     const item = this.items[index];
 
     if (item.type === 'story' && item.initialize) {
-      item.initialize();
+
+      const tryToInitialize = (init: () => boolean, retryCount = 0) => {
+        const success = init();
+        if (!success) {
+          if (retryCount > 10) {
+            throw new Error('Cannot initialize');
+          } else {
+            setTimeout(() => tryToInitialize(init, retryCount + 1), 100);
+          }
+        }
+      };
+
+      tryToInitialize(item.initialize);
     }
 
     // show full backdrop if item has focus while waiting for debounce
