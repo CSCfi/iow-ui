@@ -1,4 +1,5 @@
 import { modelIdFromPrefix } from '../../e2e/util/resource';
+import { KnownPredicateType } from '../entities/type';
 const palveluNimiId = '6cfbd054-2bfc-4e92-8642-477b035f59ee';
 const palveluKuvausId = 'fe884237-f6e2-44ea-ac97-231516da4770';
 
@@ -16,17 +17,20 @@ export const exampleLibrary = {
     name: 'Vene',
     comment: 'Vedessä kulkeva alus, joka on laivaa pienempi',
     property: {
-      nameAttribute: {
+      name: {
+        type: 'attribute' as KnownPredicateType,
         prefix: exampleImportedLibrary.prefix,
         namespaceId: exampleImportedLibrary.namespaceId,
         name: 'Nimi'
       },
-      passengersAttribute: {
+      passengers: {
+        type: 'attribute' as KnownPredicateType,
         searchName: 'Matkustajien lukumäärä',
         name: 'Matkustajien lukumäärä',
         comment: 'Matkustajien lukumäärä'
       },
-      association: {
+      owner: {
+        type: 'association' as KnownPredicateType,
         searchName: 'Omistaja',
         name: 'Omistaja',
         conceptId: 'http://jhsmeta.fi/skos/J197',
@@ -60,11 +64,13 @@ export const exampleProfile = {
     comment: 'Asia joka tuotetaan',
     property: {
       attribute: {
+        type: 'attribute' as KnownPredicateType,
         prefix: exampleImportedLibrary.prefix,
         namespaceId: exampleImportedLibrary.namespaceId,
         name: 'Nimi'
       },
       association: {
+        type: 'association' as KnownPredicateType,
         searchName: 'Tuotetaan',
         name: 'Tuotetaan palvelussa',
         comment: 'tapahtumaketju joka toteuttaa jotain',

@@ -42,26 +42,26 @@ export const addProperty = createStory({
   nextCondition: createClickNextCondition(addPropertyElement)
 });
 
-export function addPropertyUsingExistingPredicateItems(type: KnownPredicateType, namespaceId: string, attributeName: string, gettextCatalog: gettextCatalog): Story[] {
+export function addPropertyUsingExistingPredicateItems(predicate: { type: KnownPredicateType, namespaceId: string, name: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     addProperty,
-    ...SearchPredicateModal.findAndSelectExistingPredicateItems(type, namespaceId, attributeName, gettextCatalog),
+    ...SearchPredicateModal.findAndSelectExistingPredicateItems(predicate.type, predicate.namespaceId, predicate.name, gettextCatalog),
     ClassForm.focusOpenProperty(element)
   ];
 }
 
-export function addPropertyBasedOnSuggestionItems(type: KnownPredicateType, searchName: string, name: string, comment: string, gettextCatalog: gettextCatalog): Story[] {
+export function addPropertyBasedOnSuggestionItems(predicate: { type: KnownPredicateType, searchName: string, name: string, comment: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     addProperty,
-    ...SearchPredicateModal.findAndCreateNewPropertyBasedOnSuggestionItems(type, searchName, name, comment, gettextCatalog),
+    ...SearchPredicateModal.findAndCreateNewPropertyBasedOnSuggestionItems(predicate.type, predicate.searchName, predicate.name, predicate.comment, gettextCatalog),
     ClassForm.focusOpenProperty(element)
   ];
 }
 
-export function addPropertyBasedOnExistingConceptItems(type: KnownPredicateType, searchName: string, name: string, conceptId: string, gettextCatalog: gettextCatalog): Story[] {
+export function addPropertyBasedOnExistingConceptItems(predicate: { type: KnownPredicateType, searchName: string, name: string, conceptId: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     addProperty,
-    ...SearchPredicateModal.findAndCreateNewPropertyBasedOnExistingConceptItems(type, searchName, name, conceptId, gettextCatalog),
+    ...SearchPredicateModal.findAndCreateNewPropertyBasedOnExistingConceptItems(predicate.type, predicate.searchName, predicate.name, predicate.conceptId, gettextCatalog),
     ClassForm.focusOpenProperty(element)
   ];
 }

@@ -55,28 +55,28 @@ export function selectClass(namespaceId: string, name: string) {
   });
 }
 
-export function specializeClassItems(namespaceId: string, className: string, selectProperties: string[], gettextCatalog: gettextCatalog): Story[] {
+export function specializeClassItems(klass: { namespaceId: string, name: string, properties: string[] }, gettextCatalog: gettextCatalog): Story[] {
   return [
     openAddResource('class'),
-    ...SearchClassModal.findAndSelectExistingClassItems(namespaceId, className, false, gettextCatalog),
-    ...AddPropertiesFromClass.selectAndConfirmPropertiesItems(true, selectProperties),
+    ...SearchClassModal.findAndSelectExistingClassItems(klass.namespaceId, klass.name, false, gettextCatalog),
+    ...AddPropertiesFromClass.selectAndConfirmPropertiesItems(true, klass.properties),
     ClassForm.focusClass(ClassView.element),
     ClassView.saveClassChanges
   ];
 }
 
-export function assignClassItems(namespaceId: string, className: string, gettextCatalog: gettextCatalog): Story[] {
+export function assignClassItems(klass: { namespaceId: string, name: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     openAddResource('class'),
-    ...SearchClassModal.findAndSelectExistingClassItems(namespaceId, className, true, gettextCatalog),
+    ...SearchClassModal.findAndSelectExistingClassItems(klass.namespaceId, klass.name, true, gettextCatalog),
     ClassForm.focusClass(ClassView.element)
   ];
 }
 
-export function createNewClassItems(className: string, classComment: string, gettextCatalog: gettextCatalog): Story[] {
+export function createNewClassItems(klass: { name: string, comment: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     openAddResource('class'),
-    ...SearchClassModal.findAndCreateNewBasedOnConceptSuggestionItems(className, classComment, gettextCatalog),
+    ...SearchClassModal.findAndCreateNewBasedOnConceptSuggestionItems(klass.name, klass.comment, gettextCatalog),
     ClassForm.focusClass(ClassView.element)
   ];
 }

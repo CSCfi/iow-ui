@@ -24,58 +24,16 @@ export function createNewLibraryItems(gettextCatalog: gettextCatalog): Story[] {
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('library'),
     ModelView.modifyModel('library'),
-    ...ModelView.addNamespaceItems(
-      exampleLibrary.importedLibrary.prefix,
-      exampleLibrary.importedLibrary.namespaceId,
-      gettextCatalog
-    ),
+    ...ModelView.addNamespaceItems(exampleLibrary.importedLibrary, gettextCatalog),
     ModelView.saveModelChanges,
-    ...ModelPage.assignClassItems(
-      exampleLibrary.assignedClass.namespaceId,
-      exampleLibrary.assignedClass.name,
-      gettextCatalog
-    ),
-    ...ModelPage.assignClassItems(
-      exampleLibrary.assignedClass2.namespaceId,
-      exampleLibrary.assignedClass2.name,
-      gettextCatalog
-    ),
-    ...ModelPage.assignClassItems(
-      exampleLibrary.assignedClass3.namespaceId,
-      exampleLibrary.assignedClass3.name,
-      gettextCatalog
-    ),
-    ...ModelPage.createNewClassItems(
-      exampleLibrary.newClass.name,
-      exampleLibrary.newClass.comment,
-      gettextCatalog
-    ),
-    ...ClassView.addPropertyUsingExistingPredicateItems(
-      'attribute',
-      exampleLibrary.newClass.property.nameAttribute.namespaceId,
-      exampleLibrary.newClass.property.nameAttribute.name,
-      gettextCatalog
-    ),
-    ...ClassView.addPropertyBasedOnSuggestionItems(
-      'attribute',
-      exampleLibrary.newClass.property.passengersAttribute.searchName,
-      exampleLibrary.newClass.property.passengersAttribute.name,
-      exampleLibrary.newClass.property.passengersAttribute.comment,
-      gettextCatalog
-    ),
-    ...ClassView.addPropertyBasedOnExistingConceptItems(
-      'association',
-      exampleLibrary.newClass.property.association.searchName,
-      exampleLibrary.newClass.property.association.name,
-      exampleLibrary.newClass.property.association.conceptId,
-      gettextCatalog
-    ),
-    ...ClassForm.addAssociationTargetItems(
-      ClassView.element,
-      exampleLibrary.newClass.property.association.target.namespaceId,
-      exampleLibrary.newClass.property.association.target.name,
-      gettextCatalog
-    ),
+    ...ModelPage.assignClassItems(exampleLibrary.assignedClass, gettextCatalog),
+    ...ModelPage.assignClassItems(exampleLibrary.assignedClass2, gettextCatalog),
+    ...ModelPage.assignClassItems(exampleLibrary.assignedClass3, gettextCatalog),
+    ...ModelPage.createNewClassItems(exampleLibrary.newClass, gettextCatalog),
+    ...ClassView.addPropertyUsingExistingPredicateItems(exampleLibrary.newClass.property.name, gettextCatalog),
+    ...ClassView.addPropertyBasedOnSuggestionItems(exampleLibrary.newClass.property.passengers, gettextCatalog),
+    ...ClassView.addPropertyBasedOnExistingConceptItems(exampleLibrary.newClass.property.owner, gettextCatalog),
+    ...ClassForm.addAssociationTargetItems(ClassView.element, exampleLibrary.newClass.property.owner.target, gettextCatalog),
     ClassView.saveClassChanges,
     VisualizationView.focusVisualization
   ];
@@ -88,42 +46,13 @@ export function createNewProfileItems(gettextCatalog: gettextCatalog): Story[] {
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('profile'),
     ModelView.modifyModel('profile'),
-    ...ModelView.addNamespaceItems(
-      exampleProfile.importedLibrary.prefix,
-      exampleProfile.importedLibrary.namespaceId,
-      gettextCatalog
-    ),
+    ...ModelView.addNamespaceItems(exampleProfile.importedLibrary, gettextCatalog),
     ModelView.saveModelChanges,
-    ...ModelPage.specializeClassItems(
-      exampleProfile.specializedClass.namespaceId,
-      exampleProfile.specializedClass.name,
-      exampleProfile.specializedClass.properties,
-      gettextCatalog
-    ),
-    ...ModelPage.createNewClassItems(
-      exampleProfile.newClass.name,
-      exampleProfile.newClass.comment,
-      gettextCatalog
-    ),
-    ...ClassView.addPropertyUsingExistingPredicateItems(
-      'attribute',
-      exampleProfile.newClass.property.attribute.namespaceId,
-      exampleProfile.newClass.property.attribute.name,
-      gettextCatalog
-    ),
-    ...ClassView.addPropertyBasedOnSuggestionItems(
-      'association',
-      exampleProfile.newClass.property.association.searchName,
-      exampleProfile.newClass.property.association.name,
-      exampleProfile.newClass.property.association.comment,
-      gettextCatalog
-    ),
-    ...ClassForm.addAssociationTargetItems(
-      ClassView.element,
-      exampleProfile.newClass.property.association.target.namespaceId,
-      exampleProfile.newClass.property.association.target.name,
-      gettextCatalog
-    ),
+    ...ModelPage.specializeClassItems(exampleProfile.specializedClass, gettextCatalog),
+    ...ModelPage.createNewClassItems(exampleProfile.newClass, gettextCatalog),
+    ...ClassView.addPropertyUsingExistingPredicateItems(exampleProfile.newClass.property.attribute, gettextCatalog),
+    ...ClassView.addPropertyBasedOnSuggestionItems(exampleProfile.newClass.property.association, gettextCatalog),
+    ...ClassForm.addAssociationTargetItems(ClassView.element, exampleProfile.newClass.property.association.target, gettextCatalog),
     ClassView.saveClassChanges,
     VisualizationView.focusVisualization
   ];

@@ -54,11 +54,11 @@ export const focusNamespaces = createStory({
   nextCondition: createExplicitNextCondition()
 });
 
-export function addNamespaceItems(prefix: string, namespaceId: string, gettextCatalog: gettextCatalog): Story[] {
+export function addNamespaceItems(ns: { prefix: string, namespaceId: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     requireNamespace,
-    SearchNamespaceModal.filterForModel(prefix, namespaceId, gettextCatalog),
-    SearchNamespaceModal.selectNamespace(prefix, namespaceId),
+    SearchNamespaceModal.filterForModel(ns.prefix, ns.namespaceId, gettextCatalog),
+    SearchNamespaceModal.selectNamespace(ns.prefix, ns.namespaceId),
     focusNamespaces
   ];
 }

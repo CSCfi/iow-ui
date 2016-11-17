@@ -68,10 +68,10 @@ export function focusAssociationTarget(parent: () => JQuery) {
   });
 }
 
-export function addAssociationTargetItems(context: () => JQuery, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog): Story[] {
+export function addAssociationTargetItems(context: () => JQuery, target: { namespaceId: string, name: string }, gettextCatalog: gettextCatalog): Story[] {
   return [
     selectAssociationTarget(context),
-    ...SearchClassModal.findAndSelectExistingClassItems(associationTargetNamespaceId, associationTargetName, false, gettextCatalog),
+    ...SearchClassModal.findAndSelectExistingClassItems(target.namespaceId, target.name, false, gettextCatalog),
     focusAssociationTarget(context)
   ];
 }
