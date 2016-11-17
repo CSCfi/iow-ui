@@ -527,12 +527,12 @@ export namespace Classes {
       {
         predicate: Attributes.rekisterinumero,
         label: { fi: 'Rekisterinumero' },
-        internalId: ''
+        internalId: '1b029515-4ee3-44dd-ac27-b9d59888be21'
       },
       {
         predicate: Attributes.lajikoodi,
         label: { fi: 'Lajikoodi' },
-        internalId: ''
+        internalId: '361ec89c-a723-4788-bd0d-927f414a1152'
       }
     ]
   });
