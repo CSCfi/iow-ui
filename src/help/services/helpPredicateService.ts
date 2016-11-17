@@ -11,11 +11,12 @@ import { flatten } from '../../utils/array';
 import moment = require('moment');
 import { VocabularyService } from '../../services/vocabularyService';
 import { identity } from '../../utils/function';
-import { upperCaseFirst, lowerCaseFirst } from 'change-case';
+import { upperCaseFirst } from 'change-case';
 import { dateSerializer } from '../../entities/serializer/serializer';
 import * as frames from '../../entities/frames';
 import { ModelResourceStore } from './resourceStore';
 import { DefinedBy } from '../../entities/definedBy';
+import { predicateNameToResourceIdName } from '../utils';
 
 export class InteractiveHelpPredicateService implements PredicateService, ResetableService {
 
@@ -114,7 +115,7 @@ export class InteractiveHelpPredicateService implements PredicateService, Reseta
         const currentTime = dateSerializer.serialize(moment());
 
         const graph = {
-          '@id': model.namespace + lowerCaseFirst(predicateLabel.replace(' ', '')),
+          '@id': model.namespace + predicateNameToResourceIdName(predicateLabel),
           '@type': reverseMapType(type),
           created: currentTime,
           modified: currentTime,

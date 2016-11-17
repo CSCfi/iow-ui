@@ -18,6 +18,7 @@ import { flatten } from '../../utils/array';
 import { dateSerializer } from '../../entities/serializer/serializer';
 import { ModelResourceStore } from './resourceStore';
 import { DefinedBy } from '../../entities/definedBy';
+import { classNameToResourceIdName } from '../utils';
 
 export class InteractiveHelpClassService implements ClassService, ResetableService {
 
@@ -119,7 +120,7 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
         const currentTime = dateSerializer.serialize(moment());
 
         const graph = {
-          '@id': model.namespace + upperCaseFirst(classLabel.replace(' ', '')),
+          '@id': model.namespace + classNameToResourceIdName(classLabel),
           '@type': 'rdfs:Class',
           created: currentTime,
           modified: currentTime,
