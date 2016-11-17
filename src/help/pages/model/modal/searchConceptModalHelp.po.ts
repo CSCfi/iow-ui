@@ -7,7 +7,7 @@ import {
 } from '../../../utils';
 import {
   filterForAddNewResult, selectAddNewResult, selectSearchResult,
-  focusSearchSelection
+  focusSearchSelection, filterForSearchResult
 } from '../../modal/searchModalHelp.po';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
@@ -15,6 +15,10 @@ const searchConceptModal = child(modal, '.search-concept');
 
 export function filterForConceptSuggestionConcept(conceptName: string, gettextCatalog: gettextCatalog) {
   return filterForAddNewResult(searchConceptModal, conceptName, gettextCatalog, "concept");
+}
+
+export function filterForConcept(className: string, conceptId: string, gettextCatalog: gettextCatalog) {
+  return filterForSearchResult(searchConceptModal, className, conceptId, gettextCatalog);
 }
 
 export const addConceptSuggestionSearchResult = selectAddNewResult(searchConceptModal, 0, 'Select concept suggest creation');
@@ -83,7 +87,7 @@ export function findAndCreateNewSuggestionItems(name: string, definition: string
 
 export function findAndSelectExistingConceptItems(name: string, conceptId: string, navigates: boolean, gettextCatalog: gettextCatalog): Story[] {
   return [
-    filterForConceptSuggestionConcept(name, gettextCatalog),
+    filterForConcept(name, conceptId, gettextCatalog),
     selectConcept(conceptId, name),
     focusSelectedConcept,
     confirmConceptSelection(navigates)
