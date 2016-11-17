@@ -141,7 +141,7 @@ export class ModelPageHelpService {
           builder.newModel(exampleProfile.prefix, exampleProfile.name);
       });
 
-      helps.add(createNewClass(exampleProfile.newClass, exampleProfile.newClass.property.attribute, this.gettextCatalog), builder => {
+      helps.add(createNewClass(exampleProfile.newClass, exampleProfile.newClass.property.name, this.gettextCatalog), builder => {
           builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
       });
 
@@ -149,7 +149,7 @@ export class ModelPageHelpService {
           builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
       });
 
-      helps.add(addAttribute(exampleProfile.prefix, exampleProfile.newClass.name, exampleProfile.newClass.property.attribute, this.gettextCatalog), builder => {
+      helps.add(addAttribute(exampleProfile.prefix, exampleProfile.newClass.name, exampleProfile.newClass.property.name, this.gettextCatalog), builder => {
         builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
         builder.newClass(exampleProfile.newClass.name, exampleProfile.newClass.comment);
       });
@@ -158,15 +158,15 @@ export class ModelPageHelpService {
         exampleProfile.prefix,
         exampleProfile.newClass.name,
         [
-          ...ClassView.addPropertyBasedOnSuggestionItems(exampleProfile.newClass.property.association, this.gettextCatalog),
-          ...ClassForm.addAssociationTargetItems(ClassView.element, exampleProfile.newClass.property.association.target, this.gettextCatalog),
+          ...ClassView.addPropertyBasedOnSuggestionItems(exampleProfile.newClass.property.produced, this.gettextCatalog),
+          ...ClassForm.addAssociationTargetItems(ClassView.element, exampleProfile.newClass.property.produced.target, this.gettextCatalog),
           ClassView.saveClassChanges,
           VisualizationView.focusVisualization
         ]), builder => {
           builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
           builder.newClass(exampleProfile.newClass.name, exampleProfile.newClass.comment, {
             label: this.asLocalizable(exampleProfile.newClass.name),
-            predicate: predicateIdFromNamespaceId(exampleProfile.newClass.property.attribute.namespaceId, exampleProfile.newClass.property.attribute.name)
+            predicate: predicateIdFromNamespaceId(exampleProfile.newClass.property.name.namespaceId, exampleProfile.newClass.property.name.name)
           });
           builder.specializeClass(exampleProfile.specializedClass.namespaceId, exampleProfile.specializedClass.namespaceId, exampleProfile.specializedClass.properties);
         }
@@ -182,7 +182,7 @@ export class ModelPageHelpService {
         builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
       });
 
-      helps.add(assignClass(exampleLibrary.assignedClass, this.gettextCatalog), builder => {
+      helps.add(assignClass(exampleLibrary.person, this.gettextCatalog), builder => {
         builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
       });
 
@@ -203,7 +203,7 @@ export class ModelPageHelpService {
             label: this.asLocalizable(exampleLibrary.newClass.name),
             predicate: predicateIdFromNamespaceId(exampleLibrary.newClass.property.name.namespaceId, exampleLibrary.newClass.property.name.name)
           });
-          builder.assignClass(exampleLibrary.assignedClass.namespaceId, exampleLibrary.assignedClass.name);
+          builder.assignClass(exampleLibrary.person.namespaceId, exampleLibrary.person.name);
       });
     }
 

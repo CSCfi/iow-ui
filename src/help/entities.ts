@@ -16,6 +16,11 @@ export const exampleLibrary = {
   newClass: {
     name: 'Vene',
     comment: 'Vedessä kulkeva alus, joka on laivaa pienempi',
+    superClass: {
+      searchName: 'liikenneväline',
+      namespaceId: exampleImportedLibrary.namespaceId,
+      name: 'Liikenneväline'
+    },
     property: {
       name: {
         type: 'attribute' as KnownPredicateType,
@@ -41,15 +46,15 @@ export const exampleLibrary = {
       }
     }
   },
-  assignedClass: {
+  person: {
     namespaceId: exampleImportedLibrary.namespaceId,
     name: 'Henkilö'
   },
-  assignedClass2: {
+  contact: {
     namespaceId: exampleImportedLibrary.namespaceId,
     name: 'Yhteystiedot'
   },
-  assignedClass3: {
+  address: {
     namespaceId: exampleImportedLibrary.namespaceId,
     name: 'Osoite'
   }
@@ -63,13 +68,13 @@ export const exampleProfile = {
     name: 'Tuote',
     comment: 'Asia joka tuotetaan',
     property: {
-      attribute: {
+      name: {
         type: 'attribute' as KnownPredicateType,
         prefix: exampleImportedLibrary.prefix,
         namespaceId: exampleImportedLibrary.namespaceId,
         name: 'Nimi'
       },
-      association: {
+      produced: {
         type: 'association' as KnownPredicateType,
         searchName: 'Tuotetaan',
         name: 'Tuotetaan palvelussa',
