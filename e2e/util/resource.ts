@@ -9,9 +9,9 @@ export type FromExistingResource =  { type: 'existingResource', name: string, id
 export type FromExternalResource =  { type: 'externalResource', name: string, id: string };
 
 export type AddResourceParameters = FromConceptSuggestion
-  | FromExistingConcept
-  | FromExistingResource
-  | FromExternalResource;
+                                  | FromExistingConcept
+                                  | FromExistingResource
+                                  | FromExternalResource;
 
 export function fromConceptSuggestion(params: { name: string }): FromConceptSuggestion {
   return { type: 'conceptSuggestion', name: params.name };
@@ -30,7 +30,7 @@ export function fromExternalResource(params: { name: string, id: string }): From
 }
 
 export interface ResourceDescriptor<T> {
-  origin: AddResourceParameters
+  origin: AddResourceParameters;
   type: T;
 }
 
@@ -50,13 +50,13 @@ export function modelIdFromPrefix(modelPrefix: string) {
 
 function normalizeAsId(resourceName: string) {
   return resourceName
-    .replace(/\s/, '')
-    .replace(/ö/, 'o')
-    .replace(/Ö/, 'O')
-    .replace(/ä/, 'a')
-    .replace(/Ä/, 'A')
-    .replace(/å/, 'a')
-    .replace(/Å/, 'A');
+    .replace(/\s/g, '')
+    .replace(/ö/g, 'o')
+    .replace(/Ö/g, 'O')
+    .replace(/ä/g, 'a')
+    .replace(/Ä/g, 'A')
+    .replace(/å/g, 'a')
+    .replace(/Å/g, 'A');
 }
 
 export function classNameToResourceIdName(className: string) {
