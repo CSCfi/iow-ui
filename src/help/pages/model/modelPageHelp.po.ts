@@ -2,23 +2,19 @@ import {
   createClickNextCondition, createStory, createNavigatingClickNextCondition,
   createScrollWithDefault, Story
 } from '../../contract';
-import { modelView, child, modelPanelElement, classView } from '../../selectors';
+import { child, modelPanelElement } from '../../selectors';
 import { KnownModelType, KnownPredicateType } from '../../../entities/type';
 import { scrollToTop, classIdFromNamespaceId } from '../../utils';
 import gettextCatalog = angular.gettext.gettextCatalog;
-import { exampleImportedLibrary } from '../../entities';
-import * as SearchNamespaceModal from './modal/searchNamepaceModalHelp.po';
 import * as SearchClassModal from './modal/searchClassModalHelp.po';
-import * as SearchPredicateModal from './modal/searchPredicateModalHelp.po';
 import * as AddPropertiesFromClass from './modal/addPropertiesFromClassModalHelp.po';
 import * as ModelView from './modelViewHelp.po';
 import * as ClassView from './classViewHelp.po';
 import * as ClassForm from './classFormHelp.po';
-import * as VisualizationView from './visualizationViewHelp.po';
 
 export function openModelDetails(type: KnownModelType) {
 
-  const openModelDetailsElement = child(modelView, '.model-header');
+  const openModelDetailsElement = child(ModelView.element, '.model-header');
 
   return createStory({
 
@@ -59,22 +55,12 @@ export function selectClass(namespaceId: string, name: string) {
   });
 }
 
-
-export function addNamespaceItems(gettextCatalog: gettextCatalog): Story[] {
-  return [
-    ModelView.requireNamespace,
-    SearchNamespaceModal.filterForModel(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId, gettextCatalog),
-    SearchNamespaceModal.selectNamespace(exampleImportedLibrary.prefix, exampleImportedLibrary.namespaceId),
-    ModelView.focusNamespaces
-  ];
-}
-
 export function specializeClassItems(namespaceId: string, className: string, selectProperties: string[], gettextCatalog: gettextCatalog): Story[] {
   return [
     openAddResource('class'),
     ...SearchClassModal.findAndSelectExistingClassItems(namespaceId, className, false, gettextCatalog),
-    ...AddPropertiesFromClass.selectAndConfirmProperties(true, selectProperties),
-    ClassForm.focusClass(classView),
+    ...AddPropertiesFromClass.selectAndConfirmPropertiesItems(true, selectProperties),
+    ClassForm.focusClass(ClassView.element),
     ClassView.saveClassChanges
   ];
 }
@@ -83,34 +69,14 @@ export function assignClassItems(namespaceId: string, className: string, gettext
   return [
     openAddResource('class'),
     ...SearchClassModal.findAndSelectExistingClassItems(namespaceId, className, true, gettextCatalog),
-    ClassForm.focusClass(classView)
+    ClassForm.focusClass(ClassView.element)
   ];
 }
 
-export function addPropertyUsingExistingPredicateItems(namespaceId: string, attributeName: string, gettextCatalog: gettextCatalog): Story[] {
-  return [
-    ClassView.addProperty,
-    ...SearchPredicateModal.findAndSelectExistingPredicateItems(namespaceId, attributeName, gettextCatalog),
-    ClassForm.focusOpenProperty(classView)
-  ];
-}
-
-export function createNewClassItems(className: string, classComment: string, attributeNamespaceId: string, attributeName: string, gettextCatalog: gettextCatalog): Story[] {
+export function createNewClassItems(className: string, classComment: string, gettextCatalog: gettextCatalog): Story[] {
   return [
     openAddResource('class'),
-    ...SearchClassModal.findAndCreateNewBasedOnConceptSuggestion(className, classComment, gettextCatalog),
-    ClassForm.focusClass(classView),
-    ...addPropertyUsingExistingPredicateItems(attributeNamespaceId, attributeName, gettextCatalog)
-  ];
-}
-
-export function addAssociationItems(searchName: string, name: string, comment: string, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog): Story[] {
-  return [
-    ClassView.addProperty,
-    ...SearchPredicateModal.findAndCreateNewPropertyBasedOnSuggestion(searchName, name, comment, gettextCatalog),
-    ClassForm.focusOpenProperty(classView),
-    ...ClassForm.addAssociationTarget(classView, associationTargetNamespaceId, associationTargetName, gettextCatalog),
-    ClassView.saveClassChanges,
-    VisualizationView.focusVisualization
+    ...SearchClassModal.findAndCreateNewBasedOnConceptSuggestionItems(className, classComment, gettextCatalog),
+    ClassForm.focusClass(ClassView.element)
   ];
 }

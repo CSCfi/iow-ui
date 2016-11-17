@@ -1,4 +1,4 @@
-import { createStory, createExpectedStateNextCondition } from '../../../contract';
+import { createStory, createExpectedStateNextCondition, Story } from '../../../contract';
 import { modalBody, child, modal } from '../../../selectors';
 import { confirm } from '../../modal/modalHelp.po';
 import { AddPropertiesFromClassModalController } from '../../../../components/editor/addPropertiesFromClassModal';
@@ -40,7 +40,7 @@ export function confirmProperties(navigates: boolean) {
   return confirm(child(modal, '.add-properties-from-class'), navigates);
 }
 
-export function selectAndConfirmProperties(navigates: boolean, properties: string[]) {
+export function selectAndConfirmPropertiesItems(navigates: boolean, properties: string[]): Story[] {
   return [
     selectProperties('Select name and description', properties),
     confirmProperties(navigates)

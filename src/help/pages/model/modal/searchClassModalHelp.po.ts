@@ -7,6 +7,7 @@ import { modal, child } from '../../../selectors';
 import { classIdFromNamespaceId } from '../../../utils';
 import * as SearchConceptModal from './searchConceptModalHelp.po';
 import gettextCatalog = angular.gettext.gettextCatalog;
+import { Story } from '../../../contract';
 
 const searchClassModal = child(modal, '.search-class');
 
@@ -28,7 +29,7 @@ export const focusSelectedClass = focusSearchSelection(searchClassModal, 'Class 
 
 export const confirmClassSelection = (navigates: boolean) => confirm(searchClassModal, navigates);
 
-export function findAndSelectExistingClassItems(namespaceId: string, className: string, navigates: boolean, gettextCatalog: angular.gettext.gettextCatalog) {
+export function findAndSelectExistingClassItems(namespaceId: string, className: string, navigates: boolean, gettextCatalog: angular.gettext.gettextCatalog): Story[] {
   return [
     filterForClass(namespaceId, className, gettextCatalog),
     selectClass(namespaceId, className),
@@ -37,10 +38,10 @@ export function findAndSelectExistingClassItems(namespaceId: string, className: 
   ];
 }
 
-export function findAndCreateNewBasedOnConceptSuggestion(name: string, comment: string, gettextCatalog: gettextCatalog) {
+export function findAndCreateNewBasedOnConceptSuggestionItems(name: string, comment: string, gettextCatalog: gettextCatalog): Story[] {
   return [
     filterForNewClass(name, gettextCatalog),
     selectAddNewClassSearchResult,
-    ...SearchConceptModal.findAndCreateNewSuggestion(name, comment, true, gettextCatalog)
+    ...SearchConceptModal.findAndCreateNewSuggestionItems(name, comment, true, gettextCatalog)
   ];
 }

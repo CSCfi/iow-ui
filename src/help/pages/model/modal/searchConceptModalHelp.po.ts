@@ -1,11 +1,14 @@
 import { confirm } from '../../modal/modalHelp.po';
 import { modal, child, editableByTitle, input, editableFocus } from '../../../selectors';
-import { createStory, createExpectedStateNextCondition } from '../../../contract';
+import { createStory, createExpectedStateNextCondition, Story } from '../../../contract';
 import {
   initialInputValue, validInput,
   editableSelectMargin, editableMargin
 } from '../../../utils';
-import { filterForAddNewResult, selectAddNewResult } from '../../modal/searchModalHelp.po';
+import {
+  filterForAddNewResult, selectAddNewResult, selectSearchResult,
+  focusSearchSelection
+} from '../../modal/searchModalHelp.po';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
 const searchConceptModal = child(modal, '.search-concept');
@@ -15,6 +18,12 @@ export function filterForConceptSuggestionConcept(conceptName: string, gettextCa
 }
 
 export const addConceptSuggestionSearchResult = selectAddNewResult(searchConceptModal, 0, 'Select concept suggest creation');
+
+export function selectConcept(conceptId: string, conceptName: string) {
+  return selectSearchResult(searchConceptModal, conceptName, conceptId, true);
+}
+
+export const focusSelectedConcept = focusSearchSelection(searchConceptModal, 'Concept is here', 'Concept is here info');
 
 const enterVocabularyElement = editableByTitle(modal, 'Vocabulary');
 const enterVocabularyInputElement = input(enterVocabularyElement);
@@ -61,14 +70,22 @@ export function confirmConceptSelection(navigates: boolean) {
   return confirm(searchConceptModal, navigates);
 }
 
-
-export function findAndCreateNewSuggestion(name: string, definition: string, navigates: boolean, gettextCatalog: gettextCatalog) {
+export function findAndCreateNewSuggestionItems(name: string, definition: string, navigates: boolean, gettextCatalog: gettextCatalog): Story[] {
   return [
     filterForConceptSuggestionConcept(name, gettextCatalog),
     addConceptSuggestionSearchResult,
     enterVocabulary,
     enterLabel,
     enterDefinition(definition, gettextCatalog),
+    confirmConceptSelection(navigates)
+  ];
+}
+
+export function findAndSelectExistingConceptItems(name: string, conceptId: string, navigates: boolean, gettextCatalog: gettextCatalog): Story[] {
+  return [
+    filterForConceptSuggestionConcept(name, gettextCatalog),
+    selectConcept(conceptId, name),
+    focusSelectedConcept,
     confirmConceptSelection(navigates)
   ];
 }

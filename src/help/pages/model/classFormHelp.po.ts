@@ -1,5 +1,5 @@
 import {
-  createStory, createClickNextCondition, createExplicitNextCondition, createScrollNone, createScrollWithDefault
+  createStory, createClickNextCondition, createExplicitNextCondition, createScrollNone, createScrollWithDefault, Story
 } from '../../contract';
 import { editableByTitle, child, editableFocus } from '../../selectors';
 import { editableMarginInColumn } from '../../utils';
@@ -68,7 +68,7 @@ export function focusAssociationTarget(parent: () => JQuery) {
   });
 }
 
-export function addAssociationTarget(context: () => JQuery, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog) {
+export function addAssociationTargetItems(context: () => JQuery, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog): Story[] {
   return [
     selectAssociationTarget(context),
     ...SearchClassModal.findAndSelectExistingClassItems(associationTargetNamespaceId, associationTargetName, false, gettextCatalog),

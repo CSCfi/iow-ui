@@ -1,7 +1,7 @@
 import { IPromise, ILocationService, ui } from 'angular';
 import IModalStackService = ui.bootstrap.IModalStackService;
 import {
-  StoryLine, InteractiveHelp, createNotification
+  StoryLine, InteractiveHelp, createNotification, Story
 } from './contract';
 import { Model } from '../entities/model';
 import { KnownModelType } from '../entities/type';
@@ -16,15 +16,17 @@ import { InteractiveHelpService } from './services/interactiveHelpService';
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { Localizable } from '../entities/contract';
 import { availableUILanguages } from '../utils/language';
+import * as ClassForm from './pages/model/classFormHelp.po';
+import * as VisualizationView from './pages/model/visualizationViewHelp.po';
 
-function addNamespace(type: KnownModelType, gettextCatalog: gettextCatalog): StoryLine {
+function addNamespace(type: KnownModelType, prefix: string, namespaceId: string, gettextCatalog: gettextCatalog): StoryLine {
   return {
     title: 'Guide through requiring a namespace',
     description: 'This tutorial shows how to import new namespace to the model',
     items: () => [
       ModelPage.openModelDetails(type),
       ModelView.modifyModel(type),
-      ...ModelPage.addNamespaceItems(gettextCatalog),
+      ...ModelView.addNamespaceItems(prefix, namespaceId, gettextCatalog),
       ModelView.saveModelChanges,
       createNotification({
         title: 'Congratulations for completing namespace require!'
@@ -66,7 +68,7 @@ function addAttribute(modelPrefix: string, className: string, attributeNamespace
     items: () => [
       ModelPage.selectClass(modelIdFromPrefix(modelPrefix), className),
       ClassView.modifyClass,
-      ...ModelPage.addPropertyUsingExistingPredicateItems(attributeNamespaceId, attributeName, gettextCatalog),
+      ...ClassView.addPropertyUsingExistingPredicateItems('attribute', attributeNamespaceId, attributeName, gettextCatalog),
       ClassView.saveClassChanges,
       createNotification({
         title: 'Congratulations for completing adding an attribute!'
@@ -80,7 +82,8 @@ function createNewClass(className: string, classComment: string, attributeNamesp
     title: 'Guide through creating a class',
     description: 'This tutorial shows how to create a new Class',
     items: () => [
-      ...ModelPage.createNewClassItems(className, classComment, attributeNamespaceId, attributeName, gettextCatalog),
+      ...ModelPage.createNewClassItems(className, classComment, gettextCatalog),
+      ...ClassView.addPropertyUsingExistingPredicateItems('attribute', attributeNamespaceId, attributeName, gettextCatalog),
       ClassView.saveClassChanges,
       createNotification({
         title: 'Congratulations for completing new class creation!'
@@ -89,14 +92,14 @@ function createNewClass(className: string, classComment: string, attributeNamesp
   };
 }
 
-function addAssociation(modelPrefix: string, className: string, searchName: string, name: string, comment: string, associationTargetNamespaceId: string, associationTargetName: string, gettextCatalog: gettextCatalog): StoryLine {
+function addAssociation(modelPrefix: string, className: string, addAssociationItems: Story[]): StoryLine {
   return {
     title: 'Guide through adding an association',
     description: 'This tutorial shows how to add association to a Class',
     items: () => [
       ModelPage.selectClass(modelIdFromPrefix(modelPrefix), className),
       ClassView.modifyClass,
-      ...ModelPage.addAssociationItems(searchName, name, comment, associationTargetNamespaceId, associationTargetName, gettextCatalog),
+      ...addAssociationItems,
       createNotification({
         title: 'Congratulations for completing adding an association!'
       })
@@ -134,8 +137,12 @@ export class ModelPageHelpService {
 
     if (isProfile) {
 
-      helps.add(addNamespace(model.normalizedType, this.gettextCatalog), builder => {
-        builder.newModel(exampleProfile.prefix, exampleProfile.name);
+      helps.add(addNamespace(
+        model.normalizedType,
+        exampleProfile.importedLibrary.prefix,
+        exampleProfile.importedLibrary.namespaceId,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleProfile.prefix, exampleProfile.name);
       });
 
       helps.add(createNewClass(
@@ -148,7 +155,7 @@ export class ModelPageHelpService {
       );
 
       helps.add(specializeClass(
-        exampleProfile.importedLibrary.namespaceId,
+        exampleProfile.specializedClass.namespaceId,
         exampleProfile.specializedClass.name,
         exampleProfile.specializedClass.properties,
         this.gettextCatalog), builder => {
@@ -170,12 +177,23 @@ export class ModelPageHelpService {
       helps.add(addAssociation(
         exampleProfile.prefix,
         exampleProfile.newClass.name,
-        exampleProfile.newClass.property.association.searchName,
-        exampleProfile.newClass.property.association.name,
-        exampleProfile.newClass.property.association.comment,
-        modelIdFromPrefix(exampleProfile.prefix),
-        exampleProfile.specializedClass.name,
-        this.gettextCatalog), builder => {
+        [
+          ...ClassView.addPropertyBasedOnSuggestionItems(
+            'association',
+            exampleProfile.newClass.property.association.searchName,
+            exampleProfile.newClass.property.association.name,
+            exampleProfile.newClass.property.association.comment,
+            this.gettextCatalog
+          ),
+          ...ClassForm.addAssociationTargetItems(
+            ClassView.element,
+            exampleProfile.newClass.property.association.target.namespaceId,
+            exampleProfile.newClass.property.association.target.name,
+            this.gettextCatalog
+          ),
+          ClassView.saveClassChanges,
+          VisualizationView.focusVisualization
+        ]), builder => {
           builder.newModel(exampleProfile.prefix, exampleProfile.name, exampleProfile.importedLibrary.namespaceId);
           builder.newClass(exampleProfile.newClass.name, exampleProfile.newClass.comment, {
             label: this.asLocalizable(exampleProfile.newClass.name),
@@ -187,21 +205,25 @@ export class ModelPageHelpService {
 
     } else {
 
-      helps.add(addNamespace(model.normalizedType, this.gettextCatalog), builder => {
-        builder.newModel(exampleLibrary.prefix, exampleLibrary.name);
+      helps.add(addNamespace(
+        model.normalizedType,
+        exampleLibrary.importedLibrary.prefix,
+        exampleLibrary.importedLibrary.namespaceId,
+        this.gettextCatalog), builder => {
+          builder.newModel(exampleLibrary.prefix, exampleLibrary.name);
       });
 
       helps.add(createNewClass(
         exampleLibrary.newClass.name,
         exampleLibrary.newClass.comment,
-        exampleLibrary.newClass.property.attribute.namespaceId,
-        exampleLibrary.newClass.property.attribute.name, this.gettextCatalog), builder => {
+        exampleLibrary.newClass.property.nameAttribute.namespaceId,
+        exampleLibrary.newClass.property.nameAttribute.name, this.gettextCatalog), builder => {
           builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
         }
       );
 
       helps.add(assignClass(
-        exampleLibrary.importedLibrary.namespaceId,
+        exampleLibrary.assignedClass.namespaceId,
         exampleLibrary.assignedClass.name,
         this.gettextCatalog), builder => {
           builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
@@ -211,8 +233,8 @@ export class ModelPageHelpService {
       helps.add(addAttribute(
         exampleLibrary.prefix,
         exampleLibrary.newClass.name,
-        exampleLibrary.newClass.property.attribute.namespaceId,
-        exampleLibrary.newClass.property.attribute.name,
+        exampleLibrary.newClass.property.nameAttribute.namespaceId,
+        exampleLibrary.newClass.property.nameAttribute.name,
         this.gettextCatalog), builder => {
           builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
           builder.newClass(exampleLibrary.newClass.name, exampleLibrary.newClass.comment);
@@ -222,16 +244,27 @@ export class ModelPageHelpService {
       helps.add(addAssociation(
         exampleLibrary.prefix,
         exampleLibrary.newClass.name,
-        exampleLibrary.newClass.property.association.searchName,
-        exampleLibrary.newClass.property.association.name,
-        exampleLibrary.newClass.property.association.comment,
-        exampleLibrary.importedLibrary.namespaceId,
-        exampleLibrary.assignedClass.name,
-        this.gettextCatalog), builder => {
+        [
+          ...ClassView.addPropertyBasedOnExistingConceptItems(
+            'association',
+            exampleLibrary.newClass.property.association.searchName,
+            exampleLibrary.newClass.property.association.name,
+            exampleLibrary.newClass.property.association.conceptId,
+            this.gettextCatalog
+          ),
+          ...ClassForm.addAssociationTargetItems(
+            ClassView.element,
+            exampleLibrary.newClass.property.association.target.namespaceId,
+            exampleLibrary.newClass.property.association.target.name,
+            this.gettextCatalog
+          ),
+          ClassView.saveClassChanges,
+          VisualizationView.focusVisualization
+        ]), builder => {
           builder.newModel(exampleLibrary.prefix, exampleLibrary.name, exampleLibrary.importedLibrary.namespaceId);
           builder.newClass(exampleLibrary.newClass.name, exampleLibrary.newClass.comment, {
             label: this.asLocalizable(exampleLibrary.newClass.name),
-            predicate: predicateIdFromNamespaceId(exampleLibrary.newClass.property.attribute.namespaceId, exampleLibrary.newClass.property.attribute.name)
+            predicate: predicateIdFromNamespaceId(exampleLibrary.newClass.property.nameAttribute.namespaceId, exampleLibrary.newClass.property.nameAttribute.name)
           });
           builder.assignClass(exampleLibrary.assignedClass.namespaceId, exampleLibrary.assignedClass.name);
       });

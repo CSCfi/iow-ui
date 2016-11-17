@@ -9,6 +9,7 @@ import { KnownPredicateType } from '../../../../entities/type';
 import * as SearchConceptModal from './searchConceptModalHelp.po';
 import * as PredicateForm from '../predicateFormHelp.po';
 import gettextCatalog = angular.gettext.gettextCatalog;
+import { Story } from '../../../contract';
 
 export const searchPredicateModalElement = child(modal, '.search-predicate');
 
@@ -35,28 +36,45 @@ export function confirmPredicateSelection(navigates: boolean) {
  return confirm(searchPredicateModalElement, navigates);
 }
 
-export function findAndSelectExistingPredicateItems(namespaceId: string, predicateName: string, gettextCatalog: angular.gettext.gettextCatalog) {
+export function findAndSelectExistingPredicateItems(type: KnownPredicateType, namespaceId: string, predicateName: string, gettextCatalog: angular.gettext.gettextCatalog): Story[] {
   return [
     filterForPredicate(namespaceId, predicateName, gettextCatalog),
     selectPredicate(namespaceId, predicateName),
-    focusSelectedAttribute,
+    type === 'attribute' ? focusSelectedAttribute : focusSelectedAssociation,
     confirmPredicateSelection(true)
   ];
 }
 
-export function findAndCreateNewBasedOnSuggestion(name: string, comment: string, navigates: boolean, gettextCatalog: gettextCatalog) {
+export function findAndCreateNewBasedOnSuggestionItems(type: KnownPredicateType, name: string, comment: string, navigates: boolean, gettextCatalog: gettextCatalog): Story[] {
   return [
     filterForNewPredicate(name, gettextCatalog),
-    selectAddNewPredicateSearchResult('association'),
-    ...SearchConceptModal.findAndCreateNewSuggestion(name, comment, navigates, gettextCatalog)
+    selectAddNewPredicateSearchResult(type),
+    ...SearchConceptModal.findAndCreateNewSuggestionItems(name, comment, navigates, gettextCatalog)
   ];
 }
 
-export function findAndCreateNewPropertyBasedOnSuggestion(searchName: string, name: string, comment: string, gettextCatalog: gettextCatalog) {
+export function findAndCreateNewBasedOnExistingConceptItems(type: KnownPredicateType, name: string, conceptId: string, navigates: boolean, gettextCatalog: gettextCatalog): Story[] {
   return [
-    ...findAndCreateNewBasedOnSuggestion(searchName, comment, false, gettextCatalog),
-    focusSelectedAssociation,
-    PredicateForm.enterPredicateLabel(searchPredicateModalElement, 'association', name, gettextCatalog),
+    filterForNewPredicate(name, gettextCatalog),
+    selectAddNewPredicateSearchResult(type),
+    ...SearchConceptModal.findAndSelectExistingConceptItems(name, conceptId, navigates, gettextCatalog)
+  ];
+}
+
+export function findAndCreateNewPropertyBasedOnSuggestionItems(type: KnownPredicateType, searchName: string, name: string, comment: string, gettextCatalog: gettextCatalog): Story[] {
+  return [
+    ...findAndCreateNewBasedOnSuggestionItems(type, searchName, comment, false, gettextCatalog),
+    type === 'attribute' ? focusSelectedAttribute : focusSelectedAssociation,
+    PredicateForm.enterPredicateLabel(searchPredicateModalElement, type, name, gettextCatalog),
+    confirmPredicateSelection(true)
+  ];
+}
+
+export function findAndCreateNewPropertyBasedOnExistingConceptItems(type: KnownPredicateType, searchName: string, name: string, conceptId: string, gettextCatalog: gettextCatalog): Story[] {
+  return [
+    ...findAndCreateNewBasedOnExistingConceptItems(type, searchName, conceptId, false, gettextCatalog),
+    type === 'attribute' ? focusSelectedAttribute : focusSelectedAssociation,
+    PredicateForm.enterPredicateLabel(searchPredicateModalElement, type, name, gettextCatalog),
     confirmPredicateSelection(true)
   ];
 }

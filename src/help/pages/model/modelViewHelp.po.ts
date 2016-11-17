@@ -1,13 +1,17 @@
 import {
   createClickNextCondition, createStory, createModifyingClickNextCondition,
-  createExplicitNextCondition, createScrollNone
+  createExplicitNextCondition, createScrollNone, Story
 } from '../../contract';
-import { modelView, child } from '../../selectors';
+import { child } from '../../selectors';
 import { KnownModelType } from '../../../entities/type';
+import gettextCatalog = angular.gettext.gettextCatalog;
+import * as SearchNamespaceModal from './modal/searchNamepaceModalHelp.po';
+
+export const element = () => angular.element('model-view');
 
 export function modifyModel(type: KnownModelType) {
 
-  const modifyModelElement = child(modelView, 'button.edit');
+  const modifyModelElement = child(element, 'button.edit');
   return createStory({
 
     title: 'Modify ' + type,
@@ -18,7 +22,7 @@ export function modifyModel(type: KnownModelType) {
   });
 }
 
-const requireNamespaceElement = child(modelView, 'imported-namespaces-view button');
+const requireNamespaceElement = child(element, 'imported-namespaces-view button');
 export const requireNamespace = createStory({
 
   title: 'Add reference to namespace',
@@ -29,7 +33,7 @@ export const requireNamespace = createStory({
 });
 
 
-const saveModelChangesElement = child(modelView, 'button.save');
+const saveModelChangesElement = child(element, 'button.save');
 export const saveModelChanges = createStory({
 
   title: 'Save changes',
@@ -39,7 +43,7 @@ export const saveModelChanges = createStory({
   nextCondition: createModifyingClickNextCondition(saveModelChangesElement)
 });
 
-const focusNamespacesElement = child(modelView, 'imported-namespaces-view editable-table');
+const focusNamespacesElement = child(element, 'imported-namespaces-view editable-table');
 export const focusNamespaces = createStory({
   title: 'Imported namespaces are here',
   scroll: createScrollNone(),
@@ -49,3 +53,12 @@ export const focusNamespaces = createStory({
   denyInteraction: true,
   nextCondition: createExplicitNextCondition()
 });
+
+export function addNamespaceItems(prefix: string, namespaceId: string, gettextCatalog: gettextCatalog): Story[] {
+  return [
+    requireNamespace,
+    SearchNamespaceModal.filterForModel(prefix, namespaceId, gettextCatalog),
+    SearchNamespaceModal.selectNamespace(prefix, namespaceId),
+    focusNamespaces
+  ];
+}

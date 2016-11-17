@@ -9,38 +9,75 @@ import * as GroupPage from './pages/group/groupPageHelp.po';
 import * as NewModelPage from './pages/model/newModelPageHelp.po';
 import * as ModelPage from './pages/model/modelPageHelp.po';
 import * as ModelView from './pages/model/modelViewHelp.po';
+import * as ModelForm from './pages/model/modelFormHelp.po';
+import * as ClassView from './pages/model/classViewHelp.po';
+import * as ClassForm from './pages/model/classFormHelp.po';
+import * as VisualizationView from './pages/model/visualizationViewHelp.po';
 import { exampleProfile, exampleLibrary } from './entities';
-import { modelIdFromPrefix } from './utils';
 import gettextCatalog = angular.gettext.gettextCatalog;
 
 export function createNewLibraryItems(gettextCatalog: gettextCatalog): Story[] {
 
   return [
     ...GroupPage.createModel('library', exampleLibrary.prefix, exampleLibrary.name, gettextCatalog),
+    ModelForm.enterModelComment(ModelView.element, exampleLibrary.comment, gettextCatalog),
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('library'),
     ModelView.modifyModel('library'),
-    ...ModelPage.addNamespaceItems(gettextCatalog),
+    ...ModelView.addNamespaceItems(
+      exampleLibrary.importedLibrary.prefix,
+      exampleLibrary.importedLibrary.namespaceId,
+      gettextCatalog
+    ),
     ModelView.saveModelChanges,
     ...ModelPage.assignClassItems(
-      exampleLibrary.importedLibrary.namespaceId,
+      exampleLibrary.assignedClass.namespaceId,
       exampleLibrary.assignedClass.name,
+      gettextCatalog
+    ),
+    ...ModelPage.assignClassItems(
+      exampleLibrary.assignedClass2.namespaceId,
+      exampleLibrary.assignedClass2.name,
+      gettextCatalog
+    ),
+    ...ModelPage.assignClassItems(
+      exampleLibrary.assignedClass3.namespaceId,
+      exampleLibrary.assignedClass3.name,
       gettextCatalog
     ),
     ...ModelPage.createNewClassItems(
       exampleLibrary.newClass.name,
       exampleLibrary.newClass.comment,
-      exampleLibrary.newClass.property.attribute.namespaceId,
-      exampleLibrary.newClass.property.attribute.name, gettextCatalog
+      gettextCatalog
     ),
-    ...ModelPage.addAssociationItems(
+    ...ClassView.addPropertyUsingExistingPredicateItems(
+      'attribute',
+      exampleLibrary.newClass.property.nameAttribute.namespaceId,
+      exampleLibrary.newClass.property.nameAttribute.name,
+      gettextCatalog
+    ),
+    ...ClassView.addPropertyBasedOnSuggestionItems(
+      'attribute',
+      exampleLibrary.newClass.property.passengersAttribute.searchName,
+      exampleLibrary.newClass.property.passengersAttribute.name,
+      exampleLibrary.newClass.property.passengersAttribute.comment,
+      gettextCatalog
+    ),
+    ...ClassView.addPropertyBasedOnExistingConceptItems(
+      'association',
       exampleLibrary.newClass.property.association.searchName,
       exampleLibrary.newClass.property.association.name,
-      exampleLibrary.newClass.property.association.comment,
-      exampleLibrary.importedLibrary.namespaceId,
-      exampleLibrary.assignedClass.name,
+      exampleLibrary.newClass.property.association.conceptId,
       gettextCatalog
-    )
+    ),
+    ...ClassForm.addAssociationTargetItems(
+      ClassView.element,
+      exampleLibrary.newClass.property.association.target.namespaceId,
+      exampleLibrary.newClass.property.association.target.name,
+      gettextCatalog
+    ),
+    ClassView.saveClassChanges,
+    VisualizationView.focusVisualization
   ];
 }
 
@@ -51,10 +88,14 @@ export function createNewProfileItems(gettextCatalog: gettextCatalog): Story[] {
     NewModelPage.saveUnsavedModel,
     ModelPage.openModelDetails('profile'),
     ModelView.modifyModel('profile'),
-    ...ModelPage.addNamespaceItems(gettextCatalog),
+    ...ModelView.addNamespaceItems(
+      exampleProfile.importedLibrary.prefix,
+      exampleProfile.importedLibrary.namespaceId,
+      gettextCatalog
+    ),
     ModelView.saveModelChanges,
     ...ModelPage.specializeClassItems(
-      exampleProfile.importedLibrary.namespaceId,
+      exampleProfile.specializedClass.namespaceId,
       exampleProfile.specializedClass.name,
       exampleProfile.specializedClass.properties,
       gettextCatalog
@@ -62,18 +103,29 @@ export function createNewProfileItems(gettextCatalog: gettextCatalog): Story[] {
     ...ModelPage.createNewClassItems(
       exampleProfile.newClass.name,
       exampleProfile.newClass.comment,
+      gettextCatalog
+    ),
+    ...ClassView.addPropertyUsingExistingPredicateItems(
+      'attribute',
       exampleProfile.newClass.property.attribute.namespaceId,
       exampleProfile.newClass.property.attribute.name,
       gettextCatalog
     ),
-    ...ModelPage.addAssociationItems(
+    ...ClassView.addPropertyBasedOnSuggestionItems(
+      'association',
       exampleProfile.newClass.property.association.searchName,
       exampleProfile.newClass.property.association.name,
       exampleProfile.newClass.property.association.comment,
-      modelIdFromPrefix(exampleProfile.prefix),
-      exampleProfile.specializedClass.name,
       gettextCatalog
-    )
+    ),
+    ...ClassForm.addAssociationTargetItems(
+      ClassView.element,
+      exampleProfile.newClass.property.association.target.namespaceId,
+      exampleProfile.newClass.property.association.target.name,
+      gettextCatalog
+    ),
+    ClassView.saveClassChanges,
+    VisualizationView.focusVisualization
   ];
 }
 

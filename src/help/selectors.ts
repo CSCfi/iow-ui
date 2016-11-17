@@ -1,7 +1,5 @@
 export const modal = () => angular.element('.modal-dialog');
 export const modalBody = child(modal, '.modal-body');
-export const modelView = () => angular.element('model-view');
-export const classView = () => angular.element('class-view');
 
 export function child(parent: () => JQuery, selector: string) {
   return () => parent().find(selector);
