@@ -26,6 +26,6 @@
       "moment"
     ]
   },
-  "files": ["./src/init.ts"],
-  "exclude": ["types", "node_modules"]
+  "include": [ "src/**/*.ts" ],
+  "exclude": [ "types", "node_modules" , "public", "src/**/*.d.ts", "src/**/*.spec.ts"]
 }
