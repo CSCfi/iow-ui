@@ -1,4 +1,4 @@
-/// <reference path="node_modules/awesome-typescript-loader/lib/runtime.d.ts" />
+/// <reference path="./src/webpack-runtime.d.ts" />
 /// <reference types="jasmine" />
 
 import 'core-js';
