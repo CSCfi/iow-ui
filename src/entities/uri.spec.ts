@@ -131,7 +131,11 @@ describe('Contextless URL with value as curie', () => {
   it('does not have resolving namespace',           () => expect(uri.resolves()).toBe(false));
   it('does not have namespace',                     () => expect(() => uri.namespace).toThrowError());
   it('equals itself',                               () => expect(uri.equals(uri)).toBe(true));
+  it('equals uri of itself',                        () => expect(uri.equals(new Uri(uri.uri, context))).toBe(true));
   it('cannot return new instance within namespace', () => expect(() => uri.withName('Enemy').curie).toThrow());
+  it('does not equal uri with different namespace', () => expect(uri.notEquals(new Uri(context.iow + name, context))).toBe(true));
+  it('does not equal uri with different name',      () => expect(uri.notEquals(new Uri(unknownPrefix + ':' + 'Enemy', context))).toBe(true));
+  it('does not equal different uri',                () => expect(uri.notEquals(new Uri('http://www.google.com/Foo', context))).toBe(true));
 });
 
 describe('URN value', () => {
