@@ -1,0 +1,60 @@
+@import './variables';
+
+$enabledColor: #bbb;
+
+@mixin class-visualization() {
+
+  .enabled {
+    background-color: $enabledColor;
+  }
+
+  .link-tools .tool-remove { display: none }
+  .link-tools .tool-options { display: none }
+  .link .mark-errors { display: none; }
+  .marker-arrowheads { display: none; }
+  .uml-class-methods-rect { display: none }
+
+  text {
+    font-family: $font-family-base;
+    font-weight: normal;
+  }
+
+  .uml-class-name-text {
+    fill: #fff;
+  }
+
+  .uml-class-name-rect {
+    fill: $brand-primary;
+    stroke: none;
+  }
+
+  .uml-class-attrs-rect {
+    fill: #f5f5f5;
+    stroke: #ddd;
+    stroke-width: 1px;
+  }
+
+  .joint-type-uml-class {
+    &.background {
+      fill-opacity: 0.3;
+    }
+
+    > g.shadow .uml-class-name-rect {
+      fill: $gray;
+    }
+
+    &.selected {
+      .uml-class-name-rect {
+        fill: #c2606e;
+      }
+    }
+  }
+
+  .joint-link.background {
+    fill-opacity: 0.3;
+
+    path {
+      stroke: #ddd;
+    }
+  }
+}

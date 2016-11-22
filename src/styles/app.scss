@@ -4,32 +4,13 @@
 // See also: https://github.com/jtangelder/sass-loader/issues/40
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
-$gray-base:             #222;
-$gray-darker:           lighten($gray-base, 13.5%);
-$gray-dark:             lighten($gray-base, 20%);
-$gray:                  #6f6f6f;
-$gray-light:            lighten($gray-base, 60%);
-$gray-lighter:          lighten($gray-base, 93.5%);
-
-$brand-primary:         #375e97;
-$brand-success:         #43ac6a;
-$brand-info:            #5bc0de;
-$brand-warning:         #E99002;
-$brand-danger:          #D32F2F;
-
-$navbar-margin-bottom:  0 !default;
-$navbar-default-bg:     $brand-primary !default;
-
-$brand-accent-lighter:  #ebeff2;
-$brand-accent-light:    #7e9cad;
-$brand-accent-dark:     #375e97;
-
 @import './mixin';
-@import '../vendor/variables';
+@import './variables';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../vendor/bootswatch';
 @import '~jointjs/dist/joint.css';
 @import './interactiveHelp';
+@import './classVisualization';
 
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
@@ -802,6 +783,8 @@ modal-body {
 
 .visualization-container {
 
+  @include class-visualization();
+
   display: inline-block;
   width: 100%;
   height: calc(100vh - 77px);
@@ -850,60 +833,6 @@ modal-body {
       &:after {
         border-left-color: rgba(85, 85, 85, 0.9);
       }
-    }
-  }
-
-  .enabled {
-    background-color: $enabledColor;
-  }
-
-  .link-tools .tool-remove { display: none }
-  .link-tools .tool-options { display: none }
-  .link .mark-errors { display: none; }
-  .marker-arrowheads { display: none; }
-  .uml-class-methods-rect { display: none }
-
-  text {
-    font-family: $font-family-base;
-    font-weight: normal;
-  }
-
-  .uml-class-name-text {
-    fill: #fff;
-  }
-
-  .uml-class-name-rect {
-    fill: $brand-primary;
-    stroke: none;
-  }
-
-  .uml-class-attrs-rect {
-    fill: #f5f5f5;
-    stroke: #ddd;
-    stroke-width: 1px;
-  }
-
-  .joint-type-uml-class {
-    &.background {
-      fill-opacity: 0.3;
-    }
-
-    > g.shadow .uml-class-name-rect {
-      fill: $gray;
-    }
-
-    &.selected {
-      .uml-class-name-rect {
-        fill: #c2606e;
-      }
-    }
-  }
-
-  .joint-link.background {
-    fill-opacity: 0.3;
-
-    path {
-      stroke: #ddd;
     }
   }
 }
