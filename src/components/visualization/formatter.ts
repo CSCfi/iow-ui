@@ -36,7 +36,8 @@ function formatClassNameAsId(klass: VisualizationClass) {
 }
 
 function formatClassNameAsLocalId(klass: VisualizationClass) {
-  return klass.id.namespaceResolves() ? klass.id.name : klass.id.uri;
+  const resolved = klass.id.resolve();
+  return resolved ? resolved.name : klass.id.uri;
 }
 
 export function formatClassName(klass: VisualizationClass, showName: NameType, localizer: Localizer) {

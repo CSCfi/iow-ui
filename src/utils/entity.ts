@@ -1,6 +1,6 @@
 import { containsAny, collectProperties, index, contains } from './array';
 import { WithId } from '../components/contracts';
-import { areEqual, requireDefined, isDefined } from './object';
+import { areEqual, requireDefined } from './object';
 import { IHttpPromiseCallbackArg } from 'angular';
 import { Uri, Urn, RelativeUrl } from '../entities/uri';
 import { Localizable, Coordinate, Dimensions, GraphData, EntityConstructor } from '../entities/contract';
@@ -23,8 +23,8 @@ export function modelUrl(prefix: string): RelativeUrl {
 }
 
 export function resourceUrl(modelPrefix: string, resource: Uri) {
-  const resourcePrefix = resource.findPrefix();
-  const linked = isDefined(resourcePrefix) && resourcePrefix !== modelPrefix;
+  const resolved = resource.resolve();
+  const linked = resolved && resolved.prefix !== modelPrefix;
   return modelUrl(modelPrefix) +  (linked ? resource.curie : resource.name) + '/';
 }
 

@@ -44,16 +44,16 @@ export function createValidators(type: UriInputType, modelProvider: () => Model)
     result['stem'] = isValidUriStem;
   } else if (type === 'free-url') {
     result['xsd:anyURI'] = isValidUri;
-    result['url'] = value => !value || !isValidUri(value) || isValidUrl(value);
+    result['url'] = (value: Uri) => !value || !isValidUri(value) || isValidUrl(value);
   } else if (type === 'free-uri') {
     result['xsd:anyURI'] = isValidUri;
   } else {
     result['xsd:anyURI'] = isValidUri;
-    result['unknownNS'] = value => !value || !isValidUri(value) || value.namespaceResolves();
-    result['idNameRequired'] = value => !value || !isValidUri(value) || !value.namespaceResolves() || value.name.length > 0;
+    result['unknownNS'] = (value: Uri) => !value || !isValidUri(value) || value.resolves();
+    result['idNameRequired'] = (value: Uri) => !value || !isValidUri(value) || !value.resolves() || value.name.length > 0;
 
     if (type === 'required-namespace') {
-      result['mustBeRequiredNS'] = value =>  !value || !isValidUri(value) || !value.namespaceResolves() || modelProvider().isRequiredNamespace(value.namespace);
+      result['mustBeRequiredNS'] = (value: Uri) =>  !value || !isValidUri(value) || !value.resolves() || modelProvider().isRequiredNamespace(value.namespace);
     }
   }
 

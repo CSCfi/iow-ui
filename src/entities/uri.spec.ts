@@ -37,7 +37,6 @@ const context = {
   "dc" : "http://purl.org/dc/elements/1.1/"
 };
 
-
 describe('Contextual URL with value as URL', () => {
 
   const nsPrefix = 'foaf';
@@ -53,7 +52,7 @@ describe('Contextual URL with value as URL', () => {
   it('is not urn',                                  () => expect(uri.isUrn()).toBe(false));
   it('does not have urn',                           () => expect(uri.urn).toBeNull());
   it('has name',                                    () => expect(uri.name).toBe(name));
-  it('has resolving namespace',                     () => expect(uri.namespaceResolves()).toBe(true));
+  it('has resolving namespace',                     () => expect(uri.resolves()).toBe(true));
   it('has namespace',                               () => expect(uri.namespace).toBe(ns));
   it('equals itself',                               () => expect(uri.equals(uri)).toBe(true));
   it('equals uri of itself',                        () => expect(uri.equals(new Uri(uri.uri, context))).toBe(true));
@@ -79,7 +78,7 @@ describe('Contextual URL with value as curie', () => {
   it('is not urn',                                  () => expect(uri.isUrn()).toBe(false));
   it('does not have urn',                           () => expect(uri.urn).toBeNull());
   it('has name',                                    () => expect(uri.name).toBe(name));
-  it('has resolving namespace',                     () => expect(uri.namespaceResolves()).toBe(true));
+  it('has resolving namespace',                     () => expect(uri.resolves()).toBe(true));
   it('has namespace',                               () => expect(uri.namespace).toBe(ns));
   it('equals itself',                               () => expect(uri.equals(uri)).toBe(true));
   it('equals uri of itself',                        () => expect(uri.equals(new Uri(uri.uri, context))).toBe(true));
@@ -104,7 +103,7 @@ describe('Contextless URL with value as URL', () => {
   it('is not urn',                                  () => expect(uri.isUrn()).toBe(false));
   it('does not have urn',                           () => expect(uri.urn).toBeNull());
   it('does not have name',                          () => expect(uri.name).toBe(name));
-  it('does not have resolving namespace',           () => expect(uri.namespaceResolves()).toBe(false));
+  it('does not have resolving namespace',           () => expect(uri.resolves()).toBe(false));
   it('has namespace',                               () => expect(uri.namespace).toBe(notResolvingNs));
   it('equals itself',                               () => expect(uri.equals(uri)).toBe(true));
   it('equals uri of itself',                        () => expect(uri.equals(new Uri(uri.uri, context))).toBe(true));
@@ -118,20 +117,21 @@ describe('Contextless URL with value as curie', () => {
 
   const unknownPrefix = 'example';
   const name = 'Friend';
-  const uri = new Uri(unknownPrefix + ':' + name, context);
+  const value = unknownPrefix + ':' + name;
+  const uri = new Uri(value, context);
 
-  it('compacts to curie',                           () => expect(uri.compact).toBe(unknownPrefix + ':' + name));
-  it('has curie',                                   () => expect(uri.curie).toBe(unknownPrefix + ':' + name));
-  it('does not have uri',                           () => expect(() => uri.uri).toThrowError());
+  it('compacts to itself',                          () => expect(uri.compact).toBe(value));
+  it('does not have curie',                         () => expect(() => uri.curie).toThrow());
+  it('has uri',                                     () => expect(uri.uri).toBe(value));
   it('is url',                                      () => expect(uri.isUrl()).toBe(true));
-  it('does not have url',                           () => expect(() => uri.url).toThrowError());
+  it('has url',                                     () => expect(uri.url).toBe(value));
   it('is not urn',                                  () => expect(uri.isUrn()).toBe(false));
   it('does not have urn',                           () => expect(uri.urn).toBeNull());
-  it('has name',                                    () => expect(uri.name).toBe(name));
-  it('does not have resolving namespace',           () => expect(uri.namespaceResolves()).toBe(false));
+  it('does not have name',                          () => expect(() => uri.name).toThrow());
+  it('does not have resolving namespace',           () => expect(uri.resolves()).toBe(false));
   it('does not have namespace',                     () => expect(() => uri.namespace).toThrowError());
-  it('equals does not work',                        () => expect(() => uri.equals(uri)).toThrowError());
-  it('can return new instance within namespace',    () => expect(uri.withName('Enemy').curie === (unknownPrefix + ':' + 'Enemy')).toBe(true));
+  it('equals itself',                               () => expect(uri.equals(uri)).toBe(true));
+  it('cannot return new instance within namespace', () => expect(() => uri.withName('Enemy').curie).toThrow());
 });
 
 describe('URN value', () => {
@@ -147,11 +147,35 @@ describe('URN value', () => {
   it('is urn',                                      () => expect(uri.isUrn()).toBe(true));
   it('has urn',                                     () => expect(uri.urn).toBe(uriValue));
   it('does not have name',                          () => expect(() => uri.name).toThrowError());
-  it('does not have resolving namespace',           () => expect(uri.namespaceResolves()).toBe(false));
+  it('does not have resolving namespace',           () => expect(uri.resolves()).toBe(false));
   it('does not have namespace',                     () => expect(() => uri.namespace).toThrowError());
   it('equals itself',                               () => expect(uri.equals(uri)).toBe(true));
   it('equals uri of itself',                        () => expect(uri.equals(new Uri(uri.uri, context))).toBe(true));
   it('does not equal different url',                () => expect(uri.notEquals(new Uri('http://www.google.com/Foo', context))).toBe(true));
   it('does not equal different urn',                () => expect(uri.notEquals(new Uri('urn:uuid:61ecfdfb-030d-4be3-9f9d-2de0949f88e5', context))).toBe(true));
   it('cannot return new instance within namespace', () => expect(() => uri.withName('Enemy')).toThrowError());
+});
+
+describe('Contextless URL with value as URL with colons in URL path', () => {
+
+  const notResolvingNs = 'http://urn.fi/';
+  const name = 'URN:NBN:fi:au:mts:';
+  const uri = new Uri(notResolvingNs + name, context);
+
+  it('compacts to uri',                             () => expect(uri.compact).toBe(notResolvingNs + name));
+  it('does not have curie',                         () => expect(() => uri.curie).toThrowError());
+  it('has uri',                                     () => expect(uri.uri).toBe(notResolvingNs + name));
+  it('is url',                                      () => expect(uri.isUrl()).toBe(true));
+  it('has url',                                     () => expect(uri.url).toBe(uri.uri));
+  it('is not urn',                                  () => expect(uri.isUrn()).toBe(false));
+  it('does not have urn',                           () => expect(uri.urn).toBeNull());
+  it('does not have name',                          () => expect(uri.name).toBe(name));
+  it('does not have resolving namespace',           () => expect(uri.resolves()).toBe(false));
+  it('has namespace',                               () => expect(uri.namespace).toBe(notResolvingNs));
+  it('equals itself',                               () => expect(uri.equals(uri)).toBe(true));
+  it('equals uri of itself',                        () => expect(uri.equals(new Uri(uri.uri, context))).toBe(true));
+  it('does not equal uri with different namespace', () => expect(uri.notEquals(new Uri(context.iow + name, context))).toBe(true));
+  it('does not equal uri with different name',      () => expect(uri.notEquals(new Uri(notResolvingNs + 'Enemy', context))).toBe(true));
+  it('does not equal different uri',                () => expect(uri.notEquals(new Uri('http://www.google.com/Foo', context))).toBe(true));
+  it('can return new instance within namespace',    () => expect(uri.withName('Enemy').equals(new Uri(notResolvingNs + 'Enemy', context))).toBe(true));
 });

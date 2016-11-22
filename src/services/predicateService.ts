@@ -55,8 +55,7 @@ export class DefaultPredicateService implements PredicateService {
   }
 
   getPredicatesForModel(model: Model) {
-    return this.getAllPredicates(model)
-      .then(predicates => predicates.filter(predicate => predicate.id.isCurieUrl()));  // if curie, it is known namespace
+    return this.getAllPredicates(model).then(predicates => predicates.filter(predicate => predicate.id.resolves()));  // if resolves, it is known namespace
   }
 
   getPredicatesForModelDataSource(modelProvider: () => Model): DataSource<PredicateListItem> {

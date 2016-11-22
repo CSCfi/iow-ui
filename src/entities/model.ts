@@ -248,7 +248,7 @@ export class Model extends AbstractModel {
   linkToResource(id: Uri|null) {
     if (id && !id.isUrn()) {
       if (this.isNamespaceKnownToBeModel(id.namespace)) {
-        return resourceUrl(requireDefined(id.findResolvablePrefix()), id);
+        return resourceUrl(requireDefined(id.resolve()).prefix, id);
       } else {
         return id.url;
       }

@@ -61,7 +61,7 @@ export class DefaultClassService implements ClassService {
 
   getClassesForModel(model: Model) {
     return this.getAllClasses(model)
-      .then(classes => classes.filter(klass => klass.id.isCurieUrl())); // if curie, it is known namespace
+      .then(classes => classes.filter(klass => klass.id.resolves())); // if resolves, it is known namespace
   }
 
   getClassesForModelDataSource(modelProvider: () => Model): DataSource<ClassListItem> {

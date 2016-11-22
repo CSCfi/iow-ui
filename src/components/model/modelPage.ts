@@ -489,13 +489,14 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
         const startsWithCapital = /^([A-Z]).*/.test(resourceUri.name);
         const selectionType: SelectionType = startsWithCapital ? 'class' : 'predicate';
 
-        if (resourceUri.namespaceResolves()) {
+        if (resourceUri.resolves()) {
           return that.$q.resolve({
             id: resourceUri,
             selectionType
           });
         } else {
-          return that.modelService.getModelByPrefix(resourceUri.findPrefix()!).then(model => {
+          const prefix = routeData.resourceCurie.split(':')[0];
+          return that.modelService.getModelByPrefix(prefix).then(model => {
             return {
               id: new Uri(routeData.resourceCurie, model.context),
               selectionType
