@@ -2,6 +2,10 @@
 // TODO explicit type reference path should not be needed
 // https://github.com/TypeStrong/ts-node/issues/168
 
+interface CSS {
+  escape(str: string): string;
+}
+
 const launcher: Launcher = require('../node_modules/protractor/built/launcher');
 
 interface Launcher {
