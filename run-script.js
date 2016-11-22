@@ -3,10 +3,14 @@ require('css.escape');
 const path = require('path');
 const tsconfig = require('./tsconfig.json');
 
-tsconfig.compilerOptions.types = [ 'node', 'webpack', 'karma', 'protractor' ];
-tsconfig.files = [];
+const config = {
+  files: [],
+  compilerOptions: Object.assign({}, tsconfig.compilerOptions, {
+    types: [ 'node', 'webpack', 'karma', 'protractor' ]
+  })
+};
 
-require('ts-node').register(tsconfig);
+require('ts-node').register(config);
 
 if (process.argv.length !== 3) {
   throw new Error('Must contain exactly one parameter');
