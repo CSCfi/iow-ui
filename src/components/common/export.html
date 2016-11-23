@@ -2,9 +2,13 @@
   <button class="btn btn-default" uib-dropdown-toggle uib-tooltip="{{'Export' | translate}}"><i class="fa fa-download"></i>&nbsp;<span class="caret"></span></button>
   <ul class="dropdown-menu" role="menu">
     <li role="menuitem" class="dropdown-header" translate>Show</li>
-    <li role="menuitem" ng-repeat="download in ctrl.downloads track by download.name"><a target="_blank" ng-href="{{download.hrefRaw}}">{{download.name | translate}}</a></li>
+    <li role="menuitem" ng-repeat="download in ctrl.downloads track by download.name">
+      <a target="_blank" ng-href="{{download.hrefRaw}}" ng-click="download.onClick()">{{download.name | translate}}</a>
+    </li>
     <li role="separator" class="divider"></li>
     <li role="menuitem" class="dropdown-header" translate>Download</li>
-    <li role="menuitem" ng-repeat="download in ctrl.downloads track by download.name"><a target="_self" download="{{download.filename}}" ng-href="{{download.href}}">{{download.name | translate}}</a></li>
+    <li role="menuitem" ng-repeat="download in ctrl.downloads track by download.name">
+      <a target="_self" download="{{download.filename}}" ng-href="{{download.href}}" ng-click="download.onClick()">{{download.name | translate}}</a>
+    </li>
   </ul>
 </div>

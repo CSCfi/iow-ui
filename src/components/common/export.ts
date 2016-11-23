@@ -44,7 +44,7 @@ class ExportController {
   entity: Model|Class|Predicate;
   context: LanguageContext;
 
-  downloads: { name: string, filename: string, href: string , hrefRaw: string}[];
+  downloads: { name: string, filename: string, href: string, hrefRaw: string, onClick?: () => void }[];
 
   framedUrlObject: string;
   framedUrlObjectRaw: string;
@@ -102,7 +102,12 @@ class ExportController {
             name: 'ld+json frame',
             filename: 'frame.json',
             href: this.frameUrlObject,
-            hrefRaw: this.frameUrlObjectRaw
+            hrefRaw: this.frameUrlObjectRaw,
+            onClick: () => {
+              if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(frameBlob, 'frame.json');
+              }
+            }
           });
         }
 
@@ -110,7 +115,12 @@ class ExportController {
           name: 'framed ld+json',
           filename: formatFileName(this.entity, 'json'),
           href: this.framedUrlObject,
-          hrefRaw: this.framedUrlObjectRaw
+          hrefRaw: this.framedUrlObjectRaw,
+          onClick: () => {
+            if (window.navigator.msSaveOrOpenBlob) {
+              window.navigator.msSaveOrOpenBlob(framedDataBlob, formatFileName(this.entity, 'json'));
+            }
+          }
         });
       }
     });
