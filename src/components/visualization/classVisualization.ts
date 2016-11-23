@@ -1,4 +1,4 @@
-import { IAttributes, IQService, IScope, ITimeoutService, IPromise } from 'angular';
+import { IAttributes, IQService, IScope, ITimeoutService, IPromise, IWindowService } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import { VisualizationService, ClassVisualization } from '../../services/visualizationService';
 import { ChangeNotifier, ChangeListener, Show } from '../contracts';
@@ -29,7 +29,7 @@ import {
 import { Coordinate } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
-
+import * as moment from 'moment';
 
 mod.directive('classVisualization', () => {
   return {
@@ -54,7 +54,16 @@ mod.directive('classVisualization', () => {
                  <a role="button" class="btn btn-default btn-xs" ng-click="ctrl.toggleShowName()"><i>{{ctrl.showNameLabel | translate}}</i></a>
                  <a role="button" class="btn btn-default btn-xs" ng-show="ctrl.canSave()" ng-disabled="ctrl.modelPositions.isPristine()" ng-click="ctrl.savePositions()"><i class="fa fa-save"></i></a>
                  <a role="button" class="btn btn-default btn-xs" ng-disabled="ctrl.saving" ng-click="ctrl.layoutPersistentPositions()" ng-context-menu="ctrl.relayoutPositions()"><i class="fa fa-refresh"></i></a>
+                 <div class="btn-group" uib-dropdown is-open="ctrl.exportOpen" ng-if="ctrl.downloads">
+                  <button class="btn btn-default btn-xs" uib-dropdown-toggle><i class="fa fa-download"></i>&nbsp;<span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu" ng-if="ctrl.exportOpen">
+                      <li role="menuitem" ng-repeat="download in ctrl.downloads track by download.name">
+                        <a target="_self" download="{{download.filename}}" ng-href="{{download.href}}" ng-click="download.onClick()">{{download.name}}</a>
+                      </li>
+                    </ul>
+                  </div>
                </div>
+               <canvas style="display:none; background-color: white"></canvas>
                <visualization-popover details="ctrl.popoverDetails" context="ctrl.model"></visualization-popover>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
@@ -64,6 +73,8 @@ mod.directive('classVisualization', () => {
     link($scope: IScope, element: JQuery, _attributes: IAttributes, controller: ClassVisualizationController) {
       element.addClass('visualization-container');
       controller.paperHolder = new PaperHolder(element, controller);
+      controller.svg = () => element.find('svg')[0] as any as SVGElement;
+      controller.canvas = element.find('canvas')[0] as HTMLCanvasElement;
 
       const setDimensions = () => {
         controller.dimensionChangeInProgress = true;
@@ -76,6 +87,9 @@ mod.directive('classVisualization', () => {
           moveOrigin(paper, xd / 2, yd / 2);
           window.setTimeout(setDimensions);
         } else {
+          const canvas = controller.canvas;
+          canvas.width = element.width();
+          canvas.height = element.height();
           controller.dimensionChangeInProgress = false;
         }
       };
@@ -135,10 +149,16 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
   clickType: 'left'|'right' = 'left';
 
+  exportOpen = false;
+  svg: () => SVGElement;
+  canvas: HTMLCanvasElement;
+  downloads: Download[];
+
   /* @ngInject */
   constructor(private $scope: IScope,
               private $q: IQService,
               private $timeout: ITimeoutService,
+              private $window: IWindowService,
               private visualizationService: VisualizationService,
               private languageService: LanguageService,
               private userService: UserService,
@@ -159,6 +179,96 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       }
     }));
     $scope.$watch(() => this.selectionFocus, ifChanged(() => this.focusSelection(false)));
+
+    if (Modernizr.bloburls) {
+      this.downloads = []; // set as empty array which indicates that exports are supported
+      $scope.$watch(() => this.exportOpen, open => {
+        if (open) {
+          this.revokePreviousDownloads();
+          this.generateExports().then(downloads => this.downloads = downloads);
+        }
+      });
+
+      $scope.$on('$destroy', () => this.revokePreviousDownloads());
+    }
+  }
+
+  revokePreviousDownloads() {
+    for (const download of this.downloads) {
+      this.$window.URL.revokeObjectURL(download.href);
+    }
+  }
+
+  generateExports(): IPromise<Download[]> {
+
+    const UTF8_BOM = '\ufeff';
+    const svgBlob = new Blob([UTF8_BOM, this.svgToString()], { type: 'image/svg+xml;charset=utf-8' });
+
+    const filenameForExtension = (extension: string) =>
+      `${this.model.prefix}-visualization-${moment().format('YYYY-MM-DD')}.${extension.toLowerCase()}`;
+
+    const createDownload = (blob: Blob, extension: string) => {
+      return {
+        name: extension.toUpperCase(),
+        filename: filenameForExtension(extension),
+        href: this.$window.URL.createObjectURL(blob),
+        onClick: () => {
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, filenameForExtension(extension));
+          }
+        }
+      };
+    };
+
+    return this.svgToPng(svgBlob)
+      .then(pngBlob => [createDownload(pngBlob, 'png'), createDownload(svgBlob, 'svg')],
+        _err => [createDownload(svgBlob, 'svg')]);
+  }
+
+  svgToPng(svgBlob: Blob): IPromise<Blob> {
+
+    const deferred = this.$q.defer();
+    const canvas = this.canvas;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    const svgURL = this.$window.URL.createObjectURL(svgBlob);
+
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    img.onload = () => {
+
+      // Timeout hack for IE which incorrectly calls onload even when loading isn't actually ready
+      setTimeout(() => {
+
+        ctx.drawImage(img, 0, 0);
+        this.$window.URL.revokeObjectURL(svgURL);
+
+        try {
+          canvas.toBlob(pngBlob => {
+            if (pngBlob) {
+              deferred.resolve(pngBlob);
+            } else {
+              deferred.reject('Null result');
+            }
+          }, 'image/png');
+        } catch (e) {
+          console.log('Cannot export PNG');
+          deferred.reject(e);
+        }
+      });
+    };
+
+    img.src = svgURL;
+
+    return deferred.promise;
+  }
+
+  svgToString() {
+    // brutal way to inject styles to the document but creating new dom hierarchy seems to be impossible to get to work with IE
+    return new XMLSerializer().serializeToString(this.svg())
+      .replace('</svg>', '<style>' + require('!raw!sass!../../styles/classVisualizationSvgExport.scss') + '</style></svg>');
   }
 
   get selectionFocus() {
@@ -771,4 +881,11 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
     return associationCell;
   }
+}
+
+interface Download {
+  name: string;
+  filename: string;
+  href: string;
+  onClick: () => void;
 }
