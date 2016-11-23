@@ -2,6 +2,7 @@ import 'core-js';
 import './svgShim';
 import 'proxy-polyfill';
 import 'css.escape';
+import './vendor/canvas-toBlob';
 
 window.requestAnimFrame =
   window.requestAnimationFrame
