@@ -61,7 +61,6 @@ export abstract class EditableEntityController<T extends EditableEntity> {
   saveEdited() {
     const editable = this.getEditable();
     const editableInEdit = this.editableInEdit;
-    this.$log.info(JSON.stringify(editableInEdit!.serialize(), null, 2));
     this.persisting = true;
     (editable!.unsaved ? this.create(editableInEdit!) : this.update(editableInEdit!, editable!))
       .then(() => {
