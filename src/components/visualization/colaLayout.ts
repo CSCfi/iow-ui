@@ -78,7 +78,9 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 }
 
 
-const scaleCorrection = 15;
+// scaling is based on only manual testing to get results that seem sensible
+// there is probably better way to get positions that are not too tight
+const allElementScaleCorrection = 15;
 
 function hash(str: string) {
   let hash = 0;
@@ -100,8 +102,8 @@ export function layout(graph: joint.dia.Graph, onlyNodeIds: string[] = []): Prom
       id: element.id,
       x: (element.attributes.position.x || hash('x' + element.id)),
       y: (element.attributes.position.y || hash('y' + element.id)),
-      width: element.attributes.size.width / scaleCorrection,
-      height: element.attributes.size.height / scaleCorrection,
+      width: element.attributes.size.width / allElementScaleCorrection,
+      height: element.attributes.size.height / allElementScaleCorrection,
       fixed: onlyNodeIdsSet.size > 0 && !onlyNodeIdsSet.has(element.id)
     });
   });
@@ -145,8 +147,8 @@ export function layout(graph: joint.dia.Graph, onlyNodeIds: string[] = []): Prom
 
         Iterable.forEach(nodes.values(), node => {
           const element = jointElements.get(node.id)!;
-          const normalizedX = (node.x - min.x) * scaleCorrection;
-          const normalizedY = (node.y - min.y) * scaleCorrection;
+          const normalizedX = (node.x - min.x) * allElementScaleCorrection;
+          const normalizedY = (node.y - min.y) * allElementScaleCorrection;
           element.position(normalizedX, normalizedY);
         });
       }
