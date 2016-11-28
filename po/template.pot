@@ -35,7 +35,7 @@ msgstr ""
 msgid "Add library description"
 msgstr ""
 
-#: translations/misc.html:203
+#: translations/misc.html:204
 msgid "Add link"
 msgstr ""
 
@@ -76,7 +76,7 @@ msgid "Add property"
 msgstr ""
 
 #: components/editor/editableReferenceDataSelect.html:12
-#: translations/misc.html:206
+#: translations/misc.html:207
 msgid "Add reference data"
 msgstr ""
 
@@ -88,7 +88,7 @@ msgstr ""
 msgid "Add reference to namespace description"
 msgstr ""
 
-#: translations/misc.html:199
+#: translations/misc.html:200
 msgid "Add vocabulary"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "All states"
 msgstr ""
 
-#: translations/misc.html:263
+#: translations/misc.html:264
 msgid "All types"
 msgstr ""
 
@@ -135,7 +135,7 @@ msgstr ""
 msgid "All vocabularies"
 msgstr ""
 
-#: translations/misc.html:227
+#: translations/misc.html:228
 msgid "Allowed languages"
 msgstr ""
 
@@ -212,19 +212,19 @@ msgstr ""
 msgid "Ask for group rights"
 msgstr ""
 
-#: translations/misc.html:231
+#: translations/misc.html:232
 msgid "Assign reusable predicate to library"
 msgstr ""
 
-#: translations/misc.html:232
+#: translations/misc.html:233
 msgid "Assign reusable predicate to profile"
 msgstr ""
 
-#: translations/misc.html:188
+#: translations/misc.html:189
 msgid "Assigned to this library"
 msgstr ""
 
-#: translations/misc.html:187
+#: translations/misc.html:188
 msgid "Assigned to this profile"
 msgstr ""
 
@@ -329,7 +329,7 @@ msgid "Browse"
 msgstr ""
 
 #: components/model/conceptEditorModal.html:3
-#: translations/misc.html:214
+#: translations/misc.html:215
 msgid "Browse concepts"
 msgstr ""
 
@@ -341,15 +341,15 @@ msgstr ""
 msgid "Browse vocabulary"
 msgstr ""
 
-#: translations/misc.html:179
+#: translations/misc.html:180
 msgid "by referencing external uri"
 msgstr ""
 
-#: translations/misc.html:168
+#: translations/misc.html:169
 msgid "Can be selected only from this library"
 msgstr ""
 
-#: translations/misc.html:169
+#: translations/misc.html:170
 msgid "Can be selected only from this profile"
 msgstr ""
 
@@ -379,11 +379,11 @@ msgstr ""
 
 #: components/editor/subjectView.html:10
 #: components/editor/subjectView.html:41
-#: translations/misc.html:238
+#: translations/misc.html:239
 msgid "Change concept"
 msgstr ""
 
-#: translations/misc.html:230
+#: translations/misc.html:231
 msgid "Change reusable predicate"
 msgstr ""
 
@@ -409,11 +409,11 @@ msgid "Choose class"
 msgstr ""
 
 #: components/editor/editableConceptSelect.html:18
-#: translations/misc.html:239
+#: translations/misc.html:240
 msgid "Choose concept"
 msgstr ""
 
-#: translations/misc.html:212
+#: translations/misc.html:213
 msgid "Choose reference data"
 msgstr ""
 
@@ -520,7 +520,7 @@ msgstr ""
 
 #: components/common/historyModal.html:36
 #: components/model/conceptEditorModal.html:85
-#: translations/misc.html:167
+#: translations/misc.html:168
 msgid "Close"
 msgstr ""
 
@@ -668,52 +668,56 @@ msgstr ""
 msgid "Contact info"
 msgstr ""
 
-#: translations/misc.html:198
+#: translations/misc.html:199
 msgid "Controlled vocabularies"
 msgstr ""
 
-#: translations/misc.html:243
+#: translations/misc.html:244
 msgid "Convert to association"
 msgstr ""
 
-#: translations/misc.html:244
+#: translations/misc.html:245
 msgid "Convert to attribute"
 msgstr ""
 
-#: translations/misc.html:246
+#: translations/misc.html:247
 msgid "Copied"
 msgstr ""
 
-#: translations/misc.html:247
+#: translations/misc.html:248
 msgid "Copy"
 msgstr ""
 
-#: translations/misc.html:245
+#: translations/misc.html:246
 msgid "Copy \"{{text}}\" to clipboard"
 msgstr ""
 
-#: translations/misc.html:248
+#: translations/misc.html:249
 msgid "Copy properties"
 msgstr ""
 
-#: translations/misc.html:249
+#: translations/misc.html:250
 msgid "Copy properties from class"
 msgstr ""
 
-#: translations/misc.html:233
+#: translations/misc.html:234
 msgid "Copy reusable association to library"
 msgstr ""
 
-#: translations/misc.html:234
+#: translations/misc.html:235
 msgid "Copy reusable association to profile"
 msgstr ""
 
-#: translations/misc.html:235
+#: translations/misc.html:236
 msgid "Copy reusable attribute to library"
 msgstr ""
 
-#: translations/misc.html:236
+#: translations/misc.html:237
 msgid "Copy reusable attribute to profile"
+msgstr ""
+
+#: translations/misc.html:165
+msgid "Copy shape"
 msgstr ""
 
 #: translations/misc.html:105
@@ -729,15 +733,15 @@ msgstr ""
 msgid "Create new"
 msgstr ""
 
-#: translations/misc.html:178
+#: translations/misc.html:179
 msgid "Create new association"
 msgstr ""
 
-#: translations/misc.html:177
+#: translations/misc.html:178
 msgid "Create new attribute"
 msgstr ""
 
-#: translations/misc.html:174
+#: translations/misc.html:175
 msgid "Create new class"
 msgstr ""
 
@@ -745,15 +749,15 @@ msgstr ""
 msgid "Create new info"
 msgstr ""
 
-#: translations/misc.html:176
+#: translations/misc.html:177
 msgid "Create new predicate"
 msgstr ""
 
-#: translations/misc.html:210
+#: translations/misc.html:211
 msgid "Create new reference data"
 msgstr ""
 
-#: translations/misc.html:175
+#: translations/misc.html:176
 msgid "Create new shape"
 msgstr ""
 
@@ -865,7 +869,7 @@ msgstr ""
 msgid "Defined by profile info"
 msgstr ""
 
-#: translations/misc.html:237
+#: translations/misc.html:238
 msgid "Defined in vocabularies"
 msgstr ""
 
@@ -909,27 +913,27 @@ msgstr ""
 msgid "Delete class from this library"
 msgstr ""
 
-#: translations/misc.html:216
+#: translations/misc.html:217
 msgid "Delete concept"
 msgstr ""
 
-#: translations/misc.html:217
+#: translations/misc.html:218
 msgid "Delete concept from this library"
 msgstr ""
 
-#: translations/misc.html:218
+#: translations/misc.html:219
 msgid "Delete concept from this profile"
 msgstr ""
 
-#: translations/misc.html:219
+#: translations/misc.html:220
 msgid "Delete conceptSuggestion"
 msgstr ""
 
-#: translations/misc.html:220
+#: translations/misc.html:221
 msgid "Delete conceptSuggestion from this library"
 msgstr ""
 
-#: translations/misc.html:221
+#: translations/misc.html:222
 msgid "Delete conceptSuggestion from this profile"
 msgstr ""
 
@@ -1001,7 +1005,7 @@ msgstr ""
 msgid "Do you want to add following properties from super class?"
 msgstr ""
 
-#: components/common/export.html:7
+#: components/common/export.html:9
 msgid "Download"
 msgstr ""
 
@@ -1009,7 +1013,7 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: translations/misc.html:258
+#: translations/misc.html:259
 msgid "Duplicate association target"
 msgstr ""
 
@@ -1026,16 +1030,16 @@ msgstr ""
 msgid "Edit in progress"
 msgstr ""
 
-#: translations/misc.html:204
+#: translations/misc.html:205
 msgid "Edit link"
 msgstr ""
 
-#: translations/misc.html:192
+#: translations/misc.html:193
 msgid "Edit namespace"
 msgstr ""
 
 #: components/model/editReferenceDataModal.html:3
-#: translations/misc.html:211
+#: translations/misc.html:212
 msgid "Edit reference data"
 msgstr ""
 
@@ -1103,15 +1107,15 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: translations/misc.html:182
+#: translations/misc.html:183
 msgid "External class not found"
 msgstr ""
 
-#: translations/misc.html:184
+#: translations/misc.html:185
 msgid "External predicate is of wrong type"
 msgstr ""
 
-#: translations/misc.html:183
+#: translations/misc.html:184
 msgid "External predicate not found"
 msgstr ""
 
@@ -1186,7 +1190,7 @@ msgstr ""
 msgid "Group label info"
 msgstr ""
 
-#: translations/misc.html:252
+#: translations/misc.html:253
 msgid "Group not found"
 msgstr ""
 
@@ -1239,7 +1243,7 @@ msgid "Hide"
 msgstr ""
 
 #: components/common/historyModal.html:3
-#: translations/misc.html:166
+#: translations/misc.html:167
 msgid "Historical versions"
 msgstr ""
 
@@ -1261,7 +1265,7 @@ msgstr ""
 msgid "How?"
 msgstr ""
 
-#: translations/misc.html:225
+#: translations/misc.html:226
 msgid "ID"
 msgstr ""
 
@@ -1274,15 +1278,15 @@ msgid "Id name is required"
 msgstr ""
 
 #: components/model/referenceDataView.html:19
-#: translations/misc.html:200
+#: translations/misc.html:201
 msgid "Identifier"
 msgstr ""
 
-#: translations/misc.html:194
+#: translations/misc.html:195
 msgid "Import namespace"
 msgstr ""
 
-#: translations/misc.html:193
+#: translations/misc.html:194
 msgid "Imported namespaces"
 msgstr ""
 
@@ -1294,11 +1298,11 @@ msgstr ""
 msgid "Imported namespaces can be used to link resources to existing standards"
 msgstr ""
 
-#: translations/misc.html:228
+#: translations/misc.html:229
 msgid "In language"
 msgstr ""
 
-#: translations/misc.html:185
+#: translations/misc.html:186
 msgid "Input"
 msgstr ""
 
@@ -1311,7 +1315,7 @@ msgid "Internal group page info"
 msgstr ""
 
 #: components/model/conceptForm.html:41
-#: translations/misc.html:190
+#: translations/misc.html:191
 msgid "Internal vocabulary"
 msgstr ""
 
@@ -1320,11 +1324,11 @@ msgid "Interoperability method"
 msgstr ""
 
 #: components/frontPage.html:56
-#: translations/misc.html:223
+#: translations/misc.html:224
 msgid "Interoperability method description"
 msgstr ""
 
-#: translations/misc.html:181
+#: translations/misc.html:182
 msgid "Invalid ID"
 msgstr ""
 
@@ -1360,7 +1364,7 @@ msgstr ""
 msgid "jhs"
 msgstr ""
 
-#: translations/misc.html:224
+#: translations/misc.html:225
 msgid "Label"
 msgstr ""
 
@@ -1368,7 +1372,7 @@ msgstr ""
 msgid "Label can be changed"
 msgstr ""
 
-#: translations/misc.html:189
+#: translations/misc.html:190
 msgid "language code"
 msgstr ""
 
@@ -1404,11 +1408,11 @@ msgstr ""
 msgid "licensed under the"
 msgstr ""
 
-#: translations/misc.html:202
+#: translations/misc.html:203
 msgid "Links"
 msgstr ""
 
-#: translations/misc.html:226
+#: translations/misc.html:227
 msgid "Local ID"
 msgstr ""
 
@@ -1431,16 +1435,16 @@ msgid "Logout"
 msgstr ""
 
 #: components/maintenance.html:2
-#: translations/misc.html:170
+#: translations/misc.html:171
 msgid "Maintenance"
 msgstr ""
 
 #: components/maintenance.html:5
-#: translations/misc.html:171
+#: translations/misc.html:172
 msgid "Maintenance content"
 msgstr ""
 
-#: translations/misc.html:262
+#: translations/misc.html:263
 msgid "Match to content"
 msgstr ""
 
@@ -1495,7 +1499,7 @@ msgstr ""
 msgid "Model languages info"
 msgstr ""
 
-#: translations/misc.html:251
+#: translations/misc.html:252
 msgid "Model not found"
 msgstr ""
 
@@ -1579,7 +1583,7 @@ msgstr ""
 msgid "Nimi"
 msgstr ""
 
-#: translations/misc.html:260
+#: translations/misc.html:261
 msgid "No"
 msgstr ""
 
@@ -1609,7 +1613,7 @@ msgstr ""
 msgid "Non specialized classes are not allowed"
 msgstr ""
 
-#: translations/misc.html:196
+#: translations/misc.html:197
 msgid "None added"
 msgstr ""
 
@@ -1707,7 +1711,7 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: translations/misc.html:253
+#: translations/misc.html:254
 msgid "Page not found"
 msgstr ""
 
@@ -1735,11 +1739,11 @@ msgstr ""
 msgid "Permanent identifier info"
 msgstr ""
 
-#: translations/misc.html:257
+#: translations/misc.html:258
 msgid "Please login to perform the action"
 msgstr ""
 
-#: translations/misc.html:241
+#: translations/misc.html:242
 msgid "Predicate in use"
 msgstr ""
 
@@ -1751,7 +1755,7 @@ msgstr ""
 msgid "Predicate type"
 msgstr ""
 
-#: translations/misc.html:242
+#: translations/misc.html:243
 msgid "Predicate type cannot be changed because it is already used by following resources"
 msgstr ""
 
@@ -1853,7 +1857,7 @@ msgstr ""
 msgid "Recommendation"
 msgstr ""
 
-#: translations/misc.html:205
+#: translations/misc.html:206
 msgid "Reference data"
 msgstr ""
 
@@ -1869,7 +1873,7 @@ msgstr ""
 msgid "Reference data label info"
 msgstr ""
 
-#: translations/misc.html:209
+#: translations/misc.html:210
 msgid "Reference data name"
 msgstr ""
 
@@ -1889,11 +1893,11 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: translations/misc.html:191
+#: translations/misc.html:192
 msgid "Remove"
 msgstr ""
 
-#: translations/misc.html:186
+#: translations/misc.html:187
 msgid "Required"
 msgstr ""
 
@@ -1913,7 +1917,7 @@ msgstr ""
 msgid "Resource is in use"
 msgstr ""
 
-#: translations/misc.html:254
+#: translations/misc.html:255
 msgid "Resource not found"
 msgstr ""
 
@@ -1969,7 +1973,7 @@ msgstr ""
 msgid "search concept"
 msgstr ""
 
-#: translations/misc.html:215
+#: translations/misc.html:216
 msgid "Search concept"
 msgstr ""
 
@@ -2141,13 +2145,13 @@ msgstr ""
 msgid "Search predicate info"
 msgstr ""
 
-#: translations/misc.html:208
+#: translations/misc.html:209
 #: translations/misc.html:94
 msgid "search reference data"
 msgstr ""
 
 #: components/model/searchReferenceDataModal.html:3
-#: translations/misc.html:207
+#: translations/misc.html:208
 msgid "Search reference data"
 msgstr ""
 
@@ -2324,11 +2328,11 @@ msgstr ""
 msgid "Select yhteystiedot info"
 msgstr ""
 
-#: translations/misc.html:180
+#: translations/misc.html:181
 msgid "Self reference not allowed"
 msgstr ""
 
-#: translations/misc.html:250
+#: translations/misc.html:251
 msgid "Session expired"
 msgstr ""
 
@@ -2369,7 +2373,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: translations/misc.html:261
+#: translations/misc.html:262
 msgid "Show classes defined in profiles"
 msgstr ""
 
@@ -2377,7 +2381,7 @@ msgstr ""
 msgid "Show excluded"
 msgstr ""
 
-#: translations/misc.html:165
+#: translations/misc.html:166
 msgid "Show history"
 msgstr ""
 
@@ -2418,11 +2422,11 @@ msgstr ""
 msgid "String error"
 msgstr ""
 
-#: translations/misc.html:172
+#: translations/misc.html:173
 msgid "Subject"
 msgstr ""
 
-#: translations/misc.html:240
+#: translations/misc.html:241
 msgid "Submit error"
 msgstr ""
 
@@ -2496,7 +2500,7 @@ msgstr ""
 msgid "tapahtumaketju joka toteuttaa jotain"
 msgstr ""
 
-#: translations/misc.html:195
+#: translations/misc.html:196
 msgid "Technical namespaces"
 msgstr ""
 
@@ -2541,7 +2545,7 @@ msgstr ""
 msgid "Title info"
 msgstr ""
 
-#: translations/misc.html:173
+#: translations/misc.html:174
 msgid "to vocabulary"
 msgstr ""
 
@@ -2561,7 +2565,7 @@ msgstr ""
 msgid "Unauthorized"
 msgstr ""
 
-#: translations/misc.html:229
+#: translations/misc.html:230
 msgid "Undefined"
 msgstr ""
 
@@ -2569,7 +2573,7 @@ msgstr ""
 msgid "Unexpected error"
 msgstr ""
 
-#: translations/misc.html:264
+#: translations/misc.html:265
 msgid "Unique label"
 msgstr ""
 
@@ -2581,7 +2585,7 @@ msgstr ""
 msgid "Unstable"
 msgstr ""
 
-#: translations/misc.html:222
+#: translations/misc.html:223
 msgid "URI stem"
 msgstr ""
 
@@ -2639,7 +2643,7 @@ msgstr ""
 msgid "Visualization"
 msgstr ""
 
-#: translations/misc.html:197
+#: translations/misc.html:198
 msgid "Vocabularies"
 msgstr ""
 
@@ -2664,7 +2668,7 @@ msgstr ""
 msgid "Vocabulary info"
 msgstr ""
 
-#: translations/misc.html:201
+#: translations/misc.html:202
 msgid "Vocabulary name"
 msgstr ""
 
@@ -2696,7 +2700,7 @@ msgstr ""
 msgid "Write identifier"
 msgstr ""
 
-#: translations/misc.html:213
+#: translations/misc.html:214
 msgid "Write reference data code"
 msgstr ""
 
@@ -2846,7 +2850,7 @@ msgstr ""
 
 #: components/common/modalTemplate.html:15
 #: components/editor/addPropertiesFromClassModal.html:26
-#: translations/misc.html:259
+#: translations/misc.html:260
 msgid "Yes"
 msgstr ""
 
@@ -2854,10 +2858,10 @@ msgstr ""
 msgid "You can add new attribute or association to the Class from here"
 msgstr ""
 
-#: translations/misc.html:255
+#: translations/misc.html:256
 msgid "You will be redirected to the front page"
 msgstr ""
 
-#: translations/misc.html:256
+#: translations/misc.html:257
 msgid "You will be redirected to the model"
 msgstr ""

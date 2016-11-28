@@ -24,7 +24,7 @@ import {
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
 import { SessionService } from '../../services/sessionService';
-import { isDefined, areEqual } from '../../utils/object';
+import { isDefined, areEqual, Optional } from '../../utils/object';
 import { Predicate, AbstractPredicate, PredicateListItem } from '../../entities/predicate';
 import { Class, AbstractClass, Property, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
@@ -327,25 +327,40 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
   }
 
   public addEntity(type: ClassType|KnownPredicateType) {
-    const isProfile = this.model.isOfType('profile');
-    const classExclusion = combineExclusions<AbstractClass>(createClassTypeExclusion(SearchClassType.Class), createDefinedByExclusion(this.model));
-    const predicateExclusion = combineExclusions<AbstractPredicate>(createExistsExclusion(collectIds([this.attributes, this.associations])), createDefinedByExclusion(this.model));
-
     if (type === 'class' || type === 'shape') {
-      if (isProfile) {
-        return this.addClass(classExclusion);
+      if (this.model.isOfType('profile')) {
+        // profiles can create multiple shapes of single class so exists exclusion is not wanted
+        // profiles can create copy of shapes so type exclusion is not wanted
+        return this.addClass(createDefinedByExclusion(this.model));
       } else {
-        return this.addClass(combineExclusions<AbstractClass>(classExclusion, createExistsExclusion(collectIds(this.classes))));
+        return this.addClass(combineExclusions<AbstractClass>(
+          createClassTypeExclusion(SearchClassType.Class),
+          createDefinedByExclusion(this.model),
+          createExistsExclusion(collectIds(this.classes)))
+        );
       }
     } else {
-      this.addPredicate(type, predicateExclusion);
+      this.addPredicate(type, combineExclusions<AbstractPredicate>(
+        createExistsExclusion(collectIds([this.attributes, this.associations])),
+        createDefinedByExclusion(this.model))
+      );
     }
   }
 
   private addClass(exclusion: Exclusion<AbstractClass>) {
 
     const isProfile = this.model.isOfType('profile');
-    const textForSelection = (_klass: Class) => isProfile ? 'Specialize class' : 'Use class';
+    const textForSelection = (klass: Optional<Class>) => {
+      if (isProfile) {
+        if (klass && klass.isOfType('shape')) {
+          return 'Copy shape';
+        } else {
+          return 'Specialize class';
+        }
+      } else {
+        return 'Use class';
+      }
+    };
 
     this.createOrAssignEntity(
       () => this.searchClassModal.open(this.model, exclusion, textForSelection),
@@ -360,6 +375,11 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
       (klass: Class) => {
         if (klass.unsaved) {
           return this.$q.when(klass);
+        } else if (klass.isOfType('shape')) {
+          if (!isProfile) {
+            throw new Error('Shapes can be copied only to profile');
+          }
+          return this.copyShape(klass);
         } else if (isProfile) {
           return this.createShape(klass, klass.external);
         } else {
@@ -430,6 +450,10 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
         shape.properties = properties;
         return shape;
       });
+  }
+
+  private copyShape(shape: Class) {
+    return this.$q.when(shape.copy(this.model));
   }
 
   private assignClassToModel(klass: Class) {
