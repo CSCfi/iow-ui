@@ -30,6 +30,7 @@ import {
   createSerializer, stringSerializer, list, valueOrDefault, booleanSerializer
 } from './serializer/serializer';
 import { normalizingDefinedBySerializer } from './serializer/common';
+import { Model } from './model';
 
 export abstract class AbstractClass extends GraphNode {
 
@@ -159,6 +160,18 @@ export class Class extends AbstractClass implements VisualizationClass {
       }
     }
     return false;
+  }
+
+  copy(toProfile: Model): Class {
+    if (!toProfile.isOfType('profile')) {
+      throw new Error('Class can be copied only to profile: ' + toProfile.id.toString());
+    }
+    const clone = this.clone();
+    clone.id = new Uri(toProfile.namespace + this.id.name, Object.assign({}, this.context, { [toProfile.prefix]: toProfile.namespace }));
+    clone.properties = clone.properties.map(p => p.copy());
+    clone.unsaved = true;
+    clone.definedBy = toProfile.asDefinedBy();
+    return clone;
   }
 
   clone(): Class {
