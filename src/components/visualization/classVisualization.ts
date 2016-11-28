@@ -460,14 +460,15 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       }
     }
 
-    this.adjustElementLinks(oldIdIsAssociationTarget ? [klass.id, oldId!] : [klass.id], oldId ? VertexAction.KeepAll : VertexAction.Reset);
-
     if (addedClasses.length > 0) {
-      if (creation) {
-        this.layoutAndFocus(false, addedClasses);
-      } else {
-        this.layoutAndFocus(false, addedClasses.filter(classId => klass.id.notEquals(classId)));
-      }
+      this.layoutAndFocus(false, addedClasses.filter(classId => creation || klass.id.notEquals(classId)))
+        .then(() => {
+          if (oldIdIsAssociationTarget) {
+            this.adjustElementLinks([oldId!], VertexAction.Reset);
+          }
+
+          this.adjustElementLinks([klass.id], VertexAction.KeepPersistent);
+        });
     } else {
       // Delay focus because dom needs to be repainted
       setTimeout(() => this.focusSelection(false));
