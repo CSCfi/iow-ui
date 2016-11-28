@@ -461,6 +461,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
     }
 
     if (addedClasses.length > 0) {
+      this.loading = true;
       this.layoutAndFocus(false, addedClasses.filter(classId => creation || klass.id.notEquals(classId)))
         .then(() => {
           if (oldIdIsAssociationTarget) {
@@ -468,6 +469,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
           }
 
           this.adjustElementLinks([klass.id], VertexAction.KeepPersistent);
+          this.loading = false;
         });
     } else {
       // Delay focus because dom needs to be repainted
