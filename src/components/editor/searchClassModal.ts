@@ -14,6 +14,7 @@ import { AbstractClass, Class, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { ExternalEntity } from '../../entities/externalEntity';
 import { filterAndSortSearchResults, defaultLabelComparator } from '../filter/util';
+import { Optional } from '../../utils/object';
 
 export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
@@ -23,7 +24,7 @@ export class SearchClassModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private openModal(model: Model, exclude: Exclusion<AbstractClass>, defaultToCurrentModel: boolean, onlySelection: boolean, textForSelection: (klass: Class) => string) {
+  private openModal(model: Model, exclude: Exclusion<AbstractClass>, defaultToCurrentModel: boolean, onlySelection: boolean, textForSelection: (klass: Optional<Class>) => string) {
     return this.$uibModal.open({
       template: require('./searchClassModal.html'),
       size: 'large',
@@ -40,11 +41,11 @@ export class SearchClassModal {
     }).result;
   }
 
-  open(model: Model, exclude: Exclusion<AbstractClass>, textForSelection: (klass: Class) => string): IPromise<ExternalEntity|EntityCreation|Class> {
+  open(model: Model, exclude: Exclusion<AbstractClass>, textForSelection: (klass: Optional<Class>) => string): IPromise<ExternalEntity|EntityCreation|Class> {
     return this.openModal(model, exclude, false, false, textForSelection);
   }
 
-  openWithOnlySelection(model: Model, defaultToCurrentModel: boolean, exclude: Exclusion<AbstractClass>, textForSelection: (klass: Class) => string = defaultTextForSelection): IPromise<Class> {
+  openWithOnlySelection(model: Model, defaultToCurrentModel: boolean, exclude: Exclusion<AbstractClass>, textForSelection: (klass: Optional<Class>) => string = defaultTextForSelection): IPromise<Class> {
     return this.openModal(model, exclude, defaultToCurrentModel, true, textForSelection);
   }
 }
@@ -90,7 +91,7 @@ class SearchClassController implements SearchController<ClassListItem> {
               public exclude: Exclusion<AbstractClass>,
               public defaultToCurrentModel: boolean,
               public onlySelection: boolean,
-              public textForSelection: (klass: Class) => string,
+              public textForSelection: (klass: Optional<Class>) => string,
               private searchConceptModal: SearchConceptModal,
               private gettextCatalog: gettextCatalog) {
 
