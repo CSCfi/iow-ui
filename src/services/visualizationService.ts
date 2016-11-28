@@ -1,5 +1,5 @@
 import { config } from '../../config';
-import { expandContextWithKnownModels, collectIds } from '../utils/entity';
+import { expandContextWithKnownModels } from '../utils/entity';
 import { index } from '../utils/array';
 import { requireDefined } from '../utils/object';
 import * as frames from '../entities/frames';
@@ -63,22 +63,34 @@ export class DefaultVisualizationService implements VisualizationService {
 
 export class ClassVisualization {
 
-  private classIndex: Map<string, VisualizationClass>;
+  private classes: Map<string, VisualizationClass>;
 
-  constructor(public classes: VisualizationClass[], public positions: ModelPositions) {
-    this.classIndex = index(classes, klass => klass.id.toString());
+  constructor(classes: VisualizationClass[], public positions: ModelPositions) {
+    this.classes = index(classes, klass => klass.id.toString());
+  }
+
+  get size() {
+    return this.classes.size;
+  }
+
+  addOrReplaceClass(klass: VisualizationClass) {
+    this.classes.set(klass.id.toString(), klass);
+  }
+
+  getClasses() {
+    return Array.from(this.classes.values());
   }
 
   getClassById(classId: string) {
-    return requireDefined(this.classIndex.get(classId));
+    return requireDefined(this.classes.get(classId));
   }
 
   getClassIds() {
-    return collectIds(this.classes);
+    return new Set(this.classes.keys());
   }
 
   getClassIdsWithoutPosition() {
-    return this.classes.filter(c => !this.positions.isClassDefined(c.id)).map(c => c.id);
+    return Array.from(this.classes.values()).filter(c => !this.positions.isClassDefined(c.id)).map(c => c.id);
   }
 
   addPositionChangeListener(listener: () => void) {

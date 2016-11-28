@@ -417,7 +417,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
   layoutPositionsAndFocus(forceFitToAllContent: boolean) {
     const withoutPositionIds = this.classVisualization.getClassIdsWithoutPosition();
-    const layoutAll = withoutPositionIds.length === this.classVisualization.classes.length;
+    const layoutAll = withoutPositionIds.length === this.classVisualization.size;
     const ids = layoutAll ? undefined : withoutPositionIds;
 
     return this.layoutAndFocus(forceFitToAllContent, ids);
@@ -665,6 +665,9 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   }
 
   private addOrReplaceClass(klass: VisualizationClass) {
+
+    this.classVisualization.addOrReplaceClass(klass);
+
     if (this.isExistingClass(klass.id)) {
       return this.replaceClass(klass);
     } else {
@@ -773,7 +776,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
     const cells: joint.dia.Cell[] = [];
 
-    for (const klass of visualization.classes) {
+    for (const klass of visualization.getClasses()) {
 
       for (const property of klass.properties) {
 
