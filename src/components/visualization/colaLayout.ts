@@ -80,7 +80,7 @@ function index<T extends {id: string}>(items: T[]): Map<string, T> {
 
 // scaling is based on only manual testing to get results that seem sensible
 // there is probably better way to get positions that are not too tight
-const allElementScaleCorrection = 15;
+const allElementScaleCorrection = 20;
 
 function hash(str: string) {
   let hash = 0;
