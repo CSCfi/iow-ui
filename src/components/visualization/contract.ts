@@ -5,4 +5,6 @@ export interface ClassInteractionListener {
   onClassHover(classId: string, coordinate: Coordinate): void;
   onPropertyHover(classId: string, propertyId: string, coordinate: Coordinate): void;
   onHoverExit(): void;
+  onClassContextMenu(classId: string, coordinate: Coordinate): void;
+  onDismissContextMenu(): void;
 }

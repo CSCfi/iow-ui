@@ -4,6 +4,8 @@ import { ClassInteractionListener } from './contract';
 import { Iterable } from '../../utils/iterable';
 import { moveOrigin, scale } from './paperUtil';
 import { Model } from '../../entities/model';
+import { Coordinate } from '../../entities/contract';
+import { Optional } from '../../utils/object';
 
 interface Cached {
   element: JQuery;
@@ -69,9 +71,11 @@ function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
 
 function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionListener): Cleanable {
 
+  const paperElement = paper.$el;
   let movingElementOrVertex = false;
   let drag: {x: number, y: number}|null;
   let mouse: {x: number, y: number};
+  let showMenu: Optional<string>;
 
   const startDragHandler = () => drag = mouse;
 
@@ -125,14 +129,43 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
 
   const hoverExitHandler = () => listener.onHoverExit();
 
+  const prepareShowContextMenuHandler = (e: JQueryEventObject) => {
+    const location = clientToPaperLocation(paper, clientToOffsetCoordinate(paper, e));
+    const views = paper.findViewsFromPoint(location);
+
+    if (views.length > 0) {
+      showMenu = views[0].model.id;
+    } else {
+      listener.onDismissContextMenu();
+      showMenu = null;
+    }
+  };
+
+  const cancelShowMenuHandler = () => showMenu = null;
+
+  const showContextMenuHandler = (e: JQueryEventObject) => {
+    if (showMenu) {
+      listener.onClassContextMenu(showMenu, clientToOffsetCoordinate(paper, e));
+    }
+  };
+
+  const hideContextMenuHandler = () => {
+    listener.onDismissContextMenu();
+    showMenu = null;
+  };
+
   paper.on('blank:pointerdown', startDragHandler);
   window.addEventListener('mouseup', stopDragHandler);
   window.addEventListener('mousemove', dragMoveHandler);
-  jQuery(paper.$el).mousewheel(mouseWheelHandler);
+  angular.element(paperElement).mousewheel(mouseWheelHandler);
   paper.on('cell:pointerdown', startCellMoveHandler);
   paper.on('cell:pointerclick', classClickHandler);
   paper.on('cell:mouseover', hoverHandler);
   paper.on('cell:mouseout', hoverExitHandler);
+  paperElement.on('contextmenu', prepareShowContextMenuHandler);
+  paperElement.on('mousemove', cancelShowMenuHandler);
+  paperElement.on('mouseup', showContextMenuHandler);
+  paperElement.on('click', hideContextMenuHandler);
 
   return {
     clean() {
@@ -141,4 +174,16 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
       window.removeEventListener('mousemove', dragMoveHandler);
     }
   };
+}
+
+function clientToOffsetCoordinate(paper: joint.dia.Paper, event: JQueryEventObject) {
+  const paperOffset = paper.$el.offset();
+  return { x: event.clientX - paperOffset.left, y: event.clientY - paperOffset.top };
+}
+
+function clientToPaperLocation(paper: joint.dia.Paper, offsetCoordinate: Coordinate): Coordinate {
+  const svgPoint: SVGPoint = (paper as any).svg.createSVGPoint();
+  svgPoint.x = offsetCoordinate.x;
+  svgPoint.y = offsetCoordinate.y;
+  return svgPoint.matrixTransform(paper.viewport.getCTM().inverse());
 }

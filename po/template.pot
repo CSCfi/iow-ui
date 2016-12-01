@@ -126,7 +126,7 @@ msgstr ""
 msgid "All states"
 msgstr ""
 
-#: translations/misc.html:264
+#: translations/misc.html:266
 msgid "All types"
 msgstr ""
 
@@ -210,6 +210,10 @@ msgstr ""
 #: components/model/conceptView.html:5
 #: components/model/modelView.html:11
 msgid "Ask for group rights"
+msgstr ""
+
+#: translations/misc.html:234
+msgid "Assign class predicate to library"
 msgstr ""
 
 #: translations/misc.html:232
@@ -379,7 +383,7 @@ msgstr ""
 
 #: components/editor/subjectView.html:10
 #: components/editor/subjectView.html:41
-#: translations/misc.html:239
+#: translations/misc.html:241
 msgid "Change concept"
 msgstr ""
 
@@ -409,7 +413,7 @@ msgid "Choose class"
 msgstr ""
 
 #: components/editor/editableConceptSelect.html:18
-#: translations/misc.html:240
+#: translations/misc.html:242
 msgid "Choose concept"
 msgstr ""
 
@@ -672,47 +676,47 @@ msgstr ""
 msgid "Controlled vocabularies"
 msgstr ""
 
-#: translations/misc.html:244
+#: translations/misc.html:246
 msgid "Convert to association"
 msgstr ""
 
-#: translations/misc.html:245
+#: translations/misc.html:247
 msgid "Convert to attribute"
 msgstr ""
 
-#: translations/misc.html:247
+#: translations/misc.html:249
 msgid "Copied"
 msgstr ""
 
-#: translations/misc.html:248
+#: translations/misc.html:250
 msgid "Copy"
 msgstr ""
 
-#: translations/misc.html:246
+#: translations/misc.html:248
 msgid "Copy \"{{text}}\" to clipboard"
 msgstr ""
 
-#: translations/misc.html:249
+#: translations/misc.html:251
 msgid "Copy properties"
 msgstr ""
 
-#: translations/misc.html:250
+#: translations/misc.html:252
 msgid "Copy properties from class"
 msgstr ""
 
-#: translations/misc.html:234
+#: translations/misc.html:236
 msgid "Copy reusable association to library"
 msgstr ""
 
-#: translations/misc.html:235
+#: translations/misc.html:237
 msgid "Copy reusable association to profile"
 msgstr ""
 
-#: translations/misc.html:236
+#: translations/misc.html:238
 msgid "Copy reusable attribute to library"
 msgstr ""
 
-#: translations/misc.html:237
+#: translations/misc.html:239
 msgid "Copy reusable attribute to profile"
 msgstr ""
 
@@ -869,7 +873,7 @@ msgstr ""
 msgid "Defined by profile info"
 msgstr ""
 
-#: translations/misc.html:238
+#: translations/misc.html:240
 msgid "Defined in vocabularies"
 msgstr ""
 
@@ -1013,7 +1017,7 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: translations/misc.html:259
+#: translations/misc.html:261
 msgid "Duplicate association target"
 msgstr ""
 
@@ -1190,7 +1194,7 @@ msgstr ""
 msgid "Group label info"
 msgstr ""
 
-#: translations/misc.html:253
+#: translations/misc.html:255
 msgid "Group not found"
 msgstr ""
 
@@ -1444,7 +1448,7 @@ msgstr ""
 msgid "Maintenance content"
 msgstr ""
 
-#: translations/misc.html:263
+#: translations/misc.html:265
 msgid "Match to content"
 msgstr ""
 
@@ -1499,7 +1503,7 @@ msgstr ""
 msgid "Model languages info"
 msgstr ""
 
-#: translations/misc.html:252
+#: translations/misc.html:254
 msgid "Model not found"
 msgstr ""
 
@@ -1583,7 +1587,7 @@ msgstr ""
 msgid "Nimi"
 msgstr ""
 
-#: translations/misc.html:261
+#: translations/misc.html:263
 msgid "No"
 msgstr ""
 
@@ -1711,7 +1715,7 @@ msgstr ""
 msgid "owl:ObjectProperty"
 msgstr ""
 
-#: translations/misc.html:254
+#: translations/misc.html:256
 msgid "Page not found"
 msgstr ""
 
@@ -1739,11 +1743,11 @@ msgstr ""
 msgid "Permanent identifier info"
 msgstr ""
 
-#: translations/misc.html:258
+#: translations/misc.html:260
 msgid "Please login to perform the action"
 msgstr ""
 
-#: translations/misc.html:242
+#: translations/misc.html:244
 msgid "Predicate in use"
 msgstr ""
 
@@ -1755,7 +1759,7 @@ msgstr ""
 msgid "Predicate type"
 msgstr ""
 
-#: translations/misc.html:243
+#: translations/misc.html:245
 msgid "Predicate type cannot be changed because it is already used by following resources"
 msgstr ""
 
@@ -1917,7 +1921,7 @@ msgstr ""
 msgid "Resource is in use"
 msgstr ""
 
-#: translations/misc.html:255
+#: translations/misc.html:257
 msgid "Resource not found"
 msgstr ""
 
@@ -2332,7 +2336,7 @@ msgstr ""
 msgid "Self reference not allowed"
 msgstr ""
 
-#: translations/misc.html:251
+#: translations/misc.html:253
 msgid "Session expired"
 msgstr ""
 
@@ -2373,7 +2377,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: translations/misc.html:262
+#: translations/misc.html:264
 msgid "Show classes defined in profiles"
 msgstr ""
 
@@ -2395,6 +2399,10 @@ msgstr ""
 
 #: translations/misc.html:164
 msgid "Specialize class"
+msgstr ""
+
+#: translations/misc.html:235
+msgid "Specialize class predicate to profile"
 msgstr ""
 
 #: translations/titles.html:40
@@ -2426,7 +2434,7 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: translations/misc.html:241
+#: translations/misc.html:243
 msgid "Submit error"
 msgstr ""
 
@@ -2573,7 +2581,7 @@ msgstr ""
 msgid "Unexpected error"
 msgstr ""
 
-#: translations/misc.html:265
+#: translations/misc.html:267
 msgid "Unique label"
 msgstr ""
 
@@ -2850,7 +2858,7 @@ msgstr ""
 
 #: components/common/modalTemplate.html:15
 #: components/editor/addPropertiesFromClassModal.html:26
-#: translations/misc.html:260
+#: translations/misc.html:262
 msgid "Yes"
 msgstr ""
 
@@ -2858,10 +2866,10 @@ msgstr ""
 msgid "You can add new attribute or association to the Class from here"
 msgstr ""
 
-#: translations/misc.html:256
+#: translations/misc.html:258
 msgid "You will be redirected to the front page"
 msgstr ""
 
-#: translations/misc.html:257
+#: translations/misc.html:259
 msgid "You will be redirected to the model"
 msgstr ""

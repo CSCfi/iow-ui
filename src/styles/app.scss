@@ -835,6 +835,16 @@ modal-body {
       }
     }
   }
+
+  visualization-context-menu {
+
+    position: absolute;
+
+    .dropdown-menu {
+      display: inline-block;
+      position: relative;
+    }
+  }
 }
 
 visualization-view ajax-loading-indicator {

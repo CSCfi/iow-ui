@@ -18,7 +18,7 @@ import { adjustElementLinks, layoutGraph, VertexAction, calculateLabelPosition }
 import { Localizer } from '../../utils/language';
 import { ifChanged } from '../../utils/angular';
 import { coordinatesAreEqual, centerToPosition, copyVertices } from '../../utils/entity';
-import { mapOptional, requireDefined } from '../../utils/object';
+import { mapOptional, requireDefined, Optional } from '../../utils/object';
 import { Class, Property } from '../../entities/class';
 import { Predicate } from '../../entities/predicate';
 import { Model } from '../../entities/model';
@@ -30,6 +30,7 @@ import { Coordinate } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 import * as moment from 'moment';
+import { ContextMenuTarget } from './contextMenu';
 import { ModelPageActions } from '../model/modelPage';
 
 mod.directive('classVisualization', () => {
@@ -148,6 +149,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   localizer: Localizer;
 
   clickType: 'left'|'right' = 'left';
+  contextMenuTarget: Optional<ContextMenuTarget>;
 
   exportOpen = false;
   svg: () => SVGElement;
@@ -582,6 +584,24 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
       default:
         throw new Error('Unsupported show name type: ' + this.showName);
     }
+  }
+
+  onClassContextMenu(classId: string, coordinate: Coordinate): void {
+
+    if (this.userService.user.isLoggedIn()) {
+      this.userService.ifStillLoggedIn(() => {
+
+        const klass = this.classVisualization.hasClass(classId) ? this.classVisualization.getClassById(classId)
+                                                                : new AssociationTargetPlaceholderClass(new Uri(classId, this.model.context), this.model);
+        this.contextMenuTarget = { coordinate, target: klass };
+      }, () => this.notificationModal.openNotLoggedIn());
+    }
+  }
+
+  onDismissContextMenu(): void {
+    this.$scope.$apply(() => {
+      this.contextMenuTarget = null;
+    });
   }
 
   onClassClick(classId: string): void {
