@@ -227,7 +227,7 @@ msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
 #: translations/misc.html:234
-msgid "Assign class predicate to library"
+msgid "Assign class to library"
 msgstr "Lisää luokka kirjastoon"
 
 #: translations/misc.html:232
@@ -2495,8 +2495,8 @@ msgid "Specialize class"
 msgstr "Tarkenna luokka"
 
 #: translations/misc.html:235
-msgid "Specialize class predicate to profile"
-msgstr "Erikoista luokka soveltamisprofiiliin"
+msgid "Specialize class to profile"
+msgstr "Tarkenna luokka soveltamisprofiiliin"
 
 #: translations/titles.html:40
 msgid "Specialized from class"
@@ -2988,6 +2988,12 @@ msgstr "Sinut uudelleenohjataan etusivulle"
 #: translations/misc.html:259
 msgid "You will be redirected to the model"
 msgstr "Sinut uudelleenohjataan mallin sivulle"
+
+#~ msgid "Assign class predicate to library"
+#~ msgstr "Lisää luokka kirjastoon"
+
+#~ msgid "Specialize class predicate to profile"
+#~ msgstr "Erikoista luokka soveltamisprofiiliin"
 
 #~ msgid "Search for tuote"
 #~ msgstr "Etsi tuote luokkaa"

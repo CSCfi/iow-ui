@@ -213,7 +213,7 @@ msgid "Ask for group rights"
 msgstr ""
 
 #: translations/misc.html:234
-msgid "Assign class predicate to library"
+msgid "Assign class to library"
 msgstr ""
 
 #: translations/misc.html:232
@@ -2402,7 +2402,7 @@ msgid "Specialize class"
 msgstr ""
 
 #: translations/misc.html:235
-msgid "Specialize class predicate to profile"
+msgid "Specialize class to profile"
 msgstr ""
 
 #: translations/titles.html:40
