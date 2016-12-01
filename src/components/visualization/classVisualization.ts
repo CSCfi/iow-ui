@@ -655,6 +655,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
     const id: Uri = klass instanceof Class ? klass.id : <Uri> klass;
 
+    this.classVisualization.removeClass(id.toString());
+
     // remove to be unreferenced shadow classes
     for (const element of this.graph.getNeighbors(<joint.dia.Element> this.graph.getCell(id.uri))) {
       if (element instanceof ShadowClass && this.graph.getConnectedLinks(element).length === 1) {

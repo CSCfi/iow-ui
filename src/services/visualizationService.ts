@@ -73,12 +73,20 @@ export class ClassVisualization {
     return this.classes.size;
   }
 
+  removeClass(classId: string) {
+    this.classes.delete(classId);
+  }
+
   addOrReplaceClass(klass: VisualizationClass) {
     this.classes.set(klass.id.toString(), klass);
   }
 
   getClasses() {
     return Array.from(this.classes.values());
+  }
+
+  hasClass(classId: string) {
+    return this.classes.has(classId);
   }
 
   getClassById(classId: string) {
