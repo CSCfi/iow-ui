@@ -1,7 +1,7 @@
 import { IAttributes, IQService, IScope, ITimeoutService, IPromise, IWindowService } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import { VisualizationService, ClassVisualization } from '../../services/visualizationService';
-import { ChangeNotifier, ChangeListener, Show } from '../contracts';
+import { ChangeListener, Show } from '../contracts';
 import * as joint from 'jointjs';
 import { module as mod }  from './module';
 import { Uri } from '../../entities/uri';
@@ -30,6 +30,7 @@ import { Coordinate } from '../../entities/contract';
 import { NotificationModal } from '../common/notificationModal';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
 import * as moment from 'moment';
+import { ModelPageActions } from '../model/modelPage';
 
 mod.directive('classVisualization', () => {
   return {
@@ -37,8 +38,7 @@ mod.directive('classVisualization', () => {
     scope: {
       selection: '=',
       model: '=',
-      changeNotifier: '=',
-      selectClassById: '='
+      modelPageActions: '='
     },
     template: `
                <div class="visualization-buttons">
@@ -65,6 +65,7 @@ mod.directive('classVisualization', () => {
                </div>
                <canvas style="display:none; background-color: white"></canvas>
                <visualization-popover details="ctrl.popoverDetails" context="ctrl.model"></visualization-popover>
+               <visualization-context-menu ng-if="ctrl.contextMenuTarget" target="ctrl.contextMenuTarget" model="ctrl.model" model-page-actions="ctrl.modelPageActions"></visualization-context-menu>
                <ajax-loading-indicator class="loading-indicator" ng-show="ctrl.loading"></ajax-loading-indicator>
     `,
     bindToController: true,
@@ -122,7 +123,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   selection: Class|Predicate;
 
   model: Model;
-  changeNotifier: ChangeNotifier<Class|Predicate>;
+  modelPageActions: ModelPageActions;
 
   loading: boolean;
 
@@ -140,7 +141,6 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   classVisualization: ClassVisualization;
   persistentPositions: ModelPositions;
 
-  selectClassById: (id: Uri) => IPromise<any>;
   setDimensions: () => void;
 
   popoverDetails: VisualizationPopoverDetails|null;
@@ -167,7 +167,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
               private confirmationModal: ConfirmationModal,
               private notificationModal: NotificationModal) {
 
-    this.changeNotifier.addListener(this);
+    this.modelPageActions.addListener(this);
 
     $scope.$watch(() => this.model, () => this.refresh());
     $scope.$watch(() => this.selection, ifChanged((newSelection, oldSelection) => {
@@ -583,7 +583,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
   }
 
   onClassClick(classId: string): void {
-    this.selectClassById(new Uri(classId, {}));
+    this.modelPageActions.select({ id: new Uri(classId, {}), selectionType: 'class' });
   }
 
   onClassHover(classId: string, coordinate: Coordinate): void {

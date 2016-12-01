@@ -53,7 +53,17 @@ mod.directive('modelPage', () => {
   };
 });
 
-export class ModelPageController implements ChangeNotifier<Class|Predicate>, HelpProvider, ModelControllerService {
+export interface ModelPageActions extends ChangeNotifier<Class|Predicate> {
+  select(item: WithIdAndType): void;
+  createClass(conceptCreation: EntityCreation): void;
+  createShape(classOrExternal: Class|ExternalEntity, external: boolean): void;
+  copyShape(shape: Class): void;
+  assignClassToModel(klass: Class): void;
+  createPredicate(conceptCreation: EntityCreation, type: KnownPredicateType): void;
+  assignPredicateToModel(predicate: Predicate): void;
+}
+
+export class ModelPageController implements ModelPageActions, HelpProvider, ModelControllerService {
 
   loading = true;
   views: View[] = [];
@@ -81,12 +91,6 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
   private currentRouteParams: any;
 
   helps: InteractiveHelp[] = [];
-
-  selectClassById = (classId: Uri) => {
-    this.askPermissionWhenEditing(() => {
-      this.selectByTypeAndId({selectionType: 'class', id: classId});
-    });
-  };
 
   /* @ngInject */
   constructor($scope: IScope,
@@ -296,7 +300,7 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
     return matchesIdentity(listItem, this.selectedItem) && !matchesIdentity(listItem, this.selection);
   }
 
-  select(item: SelectableItem) {
+  select(item: WithIdAndType) {
     this.askPermissionWhenEditing(() => {
       this.selectByTypeAndId(item);
     });
@@ -366,24 +370,21 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
       () => this.searchClassModal.open(this.model, exclusion, textForSelection),
       (external: ExternalEntity) => {
         if (isProfile) {
-          return this.createShape(external, true);
+          this.createShape(external, true);
         } else {
-          return this.$q.reject('Library does not support external');
+          this.$q.reject('Library does not support external');
         }
       },
       (concept: EntityCreation) => this.createClass(concept),
       (klass: Class) => {
         if (klass.unsaved) {
-          return this.$q.when(klass);
+          this.selectNewlyCreatedOrAssignedEntity(klass);
         } else if (klass.isOfType('shape')) {
-          if (!isProfile) {
-            throw new Error('Shapes can be copied only to profile');
-          }
-          return this.copyShape(klass);
+          this.copyShape(klass);
         } else if (isProfile) {
-          return this.createShape(klass, klass.external);
+          this.createShape(klass, klass.external);
         } else {
-          return this.assignClassToModel(klass).then(() => klass);
+          this.assignClassToModel(klass).then(() => klass);
         }
       }
     );
@@ -394,51 +395,51 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
       () => this.searchPredicateModal.openAddPredicate(this.model, type, exclusion),
       (_external: ExternalEntity) => this.$q.reject('Unsupported operation'),
       (concept: EntityCreation) => this.createPredicate(concept, type),
-      (predicate: Predicate) => this.assignPredicateToModel(predicate.id).then(() => predicate)
+      (predicate: Predicate) => this.assignPredicateToModel(predicate)
     );
   }
 
   private createOrAssignEntity<T extends Class|Predicate>(modal: () => IPromise<ExternalEntity|EntityCreation|T>,
-                                                          fromExternalEntity: (external: ExternalEntity) => IPromise<T>,
-                                                          fromConcept: (concept: EntityCreation) => IPromise<T>,
-                                                          fromEntity: (entity: T) => IPromise<T>) {
+                                                          fromExternalEntity: (external: ExternalEntity) => void,
+                                                          fromConcept: (concept: EntityCreation) => void,
+                                                          fromEntity: (entity: T) => void) {
     this.userService.ifStillLoggedIn(() => {
-      this.askPermissionWhenEditing(() => {
-        modal().then(result => {
-
-          const mapEntity = () => {
+        this.askPermissionWhenEditing(() => {
+          modal().then(result => {
             if (result instanceof EntityCreation) {
-              return fromConcept(result);
+              fromConcept(result);
             } else if (result instanceof ExternalEntity) {
-              return fromExternalEntity(result);
+              fromExternalEntity(result);
             } else {
-              return fromEntity(<T> result);
+              fromEntity(<T> result);
             }
-          };
-
-          mapEntity().then(entity => {
-              this.updateSelection(entity);
-              if (!entity.unsaved) {
-                this.updateSelectables();
-
-                for (const changeListener of this.changeListeners) {
-                  changeListener.onAssign(entity);
-                }
-              }
-            });
+          });
         });
-      });
-    },
+      },
       () => this.notificationModal.openNotLoggedIn());
   }
 
-  private createClass(conceptCreation: EntityCreation) {
-    return this.classService.newClass(this.model, conceptCreation.entity.label, conceptCreation.concept.id, this.languageService.getModelLanguage(this.model));
+  selectNewlyCreatedOrAssignedEntity<T extends Class|Predicate>(entity: T) {
+
+    this.updateSelection(entity);
+
+    if (!entity.unsaved) {
+      this.updateSelectables();
+
+      for (const changeListener of this.changeListeners) {
+        changeListener.onAssign(entity);
+      }
+    }
   }
 
-  private createShape(classOrExternal: Class|ExternalEntity, external: boolean) {
+  createClass(conceptCreation: EntityCreation) {
+    this.classService.newClass(this.model, conceptCreation.entity.label, conceptCreation.concept.id, this.languageService.getModelLanguage(this.model))
+      .then(klass => this.selectNewlyCreatedOrAssignedEntity(klass));
+  }
 
-    return this.classService.newShape(classOrExternal, this.model, external, this.languageService.getModelLanguage(this.model))
+  createShape(classOrExternal: Class|ExternalEntity, external: boolean) {
+
+    this.classService.newShape(classOrExternal, this.model, external, this.languageService.getModelLanguage(this.model))
       .then(shape => {
         if (shape.properties.length > 0) {
           return this.$q.all([this.$q.when(shape), this.addPropertiesFromClassModal.open(shape, external ? 'external class' : 'scope class', this.model)]);
@@ -448,24 +449,33 @@ export class ModelPageController implements ChangeNotifier<Class|Predicate>, Hel
       })
       .then(([shape, properties]: [Class, Property[]]) => {
         shape.properties = properties;
-        return shape;
+        this.selectNewlyCreatedOrAssignedEntity(shape);
       });
   }
 
-  private copyShape(shape: Class) {
-    return this.$q.when(shape.copy(this.model));
+  copyShape(shape: Class) {
+
+    if (!this.model.isOfType('profile')) {
+      throw new Error('Shapes can be copied only to profile');
+    }
+
+    const copiedShape = shape.copy(this.model);
+    this.selectNewlyCreatedOrAssignedEntity(copiedShape);
   }
 
-  private assignClassToModel(klass: Class) {
-    return this.classService.assignClassToModel(klass.id, this.model);
+  assignClassToModel(klass: Class) {
+    return this.classService.assignClassToModel(klass.id, this.model)
+      .then(() => this.selectNewlyCreatedOrAssignedEntity(klass));
   }
 
-  private createPredicate(conceptCreation: EntityCreation, type: KnownPredicateType) {
-    return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.getModelLanguage(this.model));
+  createPredicate(conceptCreation: EntityCreation, type: KnownPredicateType) {
+    return this.predicateService.newPredicate(this.model, conceptCreation.entity.label, conceptCreation.concept.id, type, this.languageService.getModelLanguage(this.model))
+      .then(predicate => this.selectNewlyCreatedOrAssignedEntity(predicate));
   }
 
-  private assignPredicateToModel(id: Uri) {
-    return this.predicateService.assignPredicateToModel(id, this.model);
+  assignPredicateToModel(predicate: Predicate) {
+    return this.predicateService.assignPredicateToModel(predicate.id, this.model)
+      .then(() => this.selectNewlyCreatedOrAssignedEntity(predicate));
   }
 
   private findEditingViews() {

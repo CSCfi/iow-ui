@@ -6,6 +6,7 @@ import { assertNever } from '../../utils/object';
 import { Class } from '../../entities/class';
 import { Predicate } from '../../entities/predicate';
 import { Model } from '../../entities/model';
+import { ModelPageActions } from '../model/modelPage';
 
 mod.directive('visualizationView', () => {
   return {
@@ -13,8 +14,7 @@ mod.directive('visualizationView', () => {
       selection: '=',
       model: '=',
       show: '=',
-      changeNotifier: '=',
-      selectClassById: '=',
+      modelPageActions: '=',
       selectionWidth: '='
     },
     restrict: 'E',
@@ -65,6 +65,7 @@ export class VisualizationViewController {
   model: Model;
   show: Show;
   selectionWidth: number;
+  modelPageActions: ModelPageActions;
 
   enlargeVisualization() {
     this.show++;
