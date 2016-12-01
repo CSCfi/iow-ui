@@ -5,20 +5,24 @@ import { Iterable } from '../../utils/iterable';
 import { moveOrigin, scale } from './paperUtil';
 import { Model } from '../../entities/model';
 
-export class PaperHolder {
+interface Cached {
+  element: JQuery;
+  paper: joint.dia.Paper;
+  clean: () => void;
+}
 
-  private cache = new Map<string, { element: JQuery, paper: joint.dia.Paper }>();
+interface Cleanable {
+  clean(): void;
+}
+
+export class PaperHolder implements Cleanable {
+
+  private cache = new Map<string, Cached>();
 
   constructor(private element: JQuery, private listener: ClassInteractionListener) {
   }
 
   getPaper(model: Model): joint.dia.Paper {
-
-    const createPaperAndRegisterHandlers = (element: JQuery) => {
-      const paper = createPaper(element, new joint.dia.Graph);
-      registerHandlers(paper, this.listener);
-      return paper;
-    };
 
     const cached = this.cache.get(model.id.uri);
 
@@ -27,8 +31,9 @@ export class PaperHolder {
     } else {
       const newElement = jQuery(document.createElement('div'));
       this.element.append(newElement);
-      const newPaper = createPaperAndRegisterHandlers(newElement);
-      this.cache.set(model.id.uri, { element: newElement, paper: newPaper });
+      const newPaper = createPaper(newElement, new joint.dia.Graph);
+      const cleanable = registerHandlers(newPaper, this.listener);
+      this.cache.set(model.id.uri, { element: newElement, paper: newPaper, clean: () => cleanable.clean() });
       return newPaper;
     }
   }
@@ -41,6 +46,12 @@ export class PaperHolder {
         value.element.hide();
       }
     });
+  }
+
+  clean() {
+    for (const cached of Array.from(this.cache.values())) {
+      cached.clean();
+    }
   }
 }
 
@@ -56,7 +67,7 @@ function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
   });
 }
 
-function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionListener) {
+function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionListener): Cleanable {
 
   let movingElementOrVertex = false;
   let drag: {x: number, y: number}|null;
@@ -122,4 +133,12 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
   paper.on('cell:pointerclick', classClickHandler);
   paper.on('cell:mouseover', hoverHandler);
   paper.on('cell:mouseout', hoverExitHandler);
+
+  return {
+    clean() {
+      paper.remove();
+      window.removeEventListener('mouseup', stopDragHandler);
+      window.removeEventListener('mousemove', dragMoveHandler);
+    }
+  };
 }

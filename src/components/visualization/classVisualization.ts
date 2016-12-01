@@ -191,6 +191,8 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
 
       $scope.$on('$destroy', () => this.revokePreviousDownloads());
     }
+
+    $scope.$on('$destroy', () => this.paperHolder.clean());
   }
 
   revokePreviousDownloads() {
