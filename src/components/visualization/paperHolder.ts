@@ -62,14 +62,14 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
   let drag: {x: number, y: number}|null;
   let mouse: {x: number, y: number};
 
-  paper.on('blank:pointerdown', () => drag = mouse);
+  const startDragHandler = () => drag = mouse;
 
-  jQuery(window).mouseup(() => {
+  const stopDragHandler = () => {
     drag = null;
     movingElementOrVertex = false;
-  });
+  };
 
-  jQuery(window).mousemove(event => {
+  const dragMoveHandler = (event: MouseEvent) => {
 
     mouse = { x: event.pageX, y: event.pageY};
 
@@ -78,23 +78,23 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
       moveOrigin(paper, drag.x - mouse.x, drag.y - mouse.y);
       drag = mouse;
     }
-  });
+  };
 
-  jQuery(paper.$el).mousewheel(event => {
+  const mouseWheelHandler = (event: MousewheelEvent) => {
     event.preventDefault();
     scale(paper, (event.deltaY * event.deltaFactor / 500), event.offsetX, event.offsetY);
-  });
+  };
 
-  paper.on('cell:pointerdown', () => movingElementOrVertex = true);
+  const startCellMoveHandler = () => movingElementOrVertex = true;
 
-  paper.on('cell:pointerclick', (cellView: joint.dia.CellView) => {
+  const classClickHandler = (cellView: joint.dia.CellView) => {
     const cell: joint.dia.Cell = cellView.model;
     if (cell instanceof joint.shapes.uml.Class && !(cell instanceof ShadowClass)) {
       listener.onClassClick(cell.id);
     }
-  });
+  };
 
-  paper.on('cell:mouseover', (cellView: joint.dia.CellView, event: MouseEvent) => {
+  const hoverHandler = (cellView: joint.dia.CellView, event: MouseEvent) => {
     if (!drag && !movingElementOrVertex && event.target instanceof SVGElement) {
 
       const targetElement = jQuery(event.target);
@@ -110,9 +110,16 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
         }
       }
     }
-  });
+  };
 
-  paper.on('cell:mouseout', () => {
-    listener.onHoverExit();
-  });
+  const hoverExitHandler = () => listener.onHoverExit();
+
+  paper.on('blank:pointerdown', startDragHandler);
+  window.addEventListener('mouseup', stopDragHandler);
+  window.addEventListener('mousemove', dragMoveHandler);
+  jQuery(paper.$el).mousewheel(mouseWheelHandler);
+  paper.on('cell:pointerdown', startCellMoveHandler);
+  paper.on('cell:pointerclick', classClickHandler);
+  paper.on('cell:mouseover', hoverHandler);
+  paper.on('cell:mouseout', hoverExitHandler);
 }
