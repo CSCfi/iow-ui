@@ -1,6 +1,6 @@
 import {
   localizableSerializer,
-  stringSerializer
+  stringSerializer, identitySerializer, valueOrDefault
 } from './serializer/serializer';
 import { Uri } from '../entities/uri';
 import { Localizable } from './contract';
@@ -8,7 +8,7 @@ import { glyphIconClassForType } from '../utils/entity';
 import { init, serialize } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entity, entityAwareOptional, entityAwareList } from './serializer/entitySerializer';
-import { ConceptType } from './type';
+import { ConceptType, State } from './type';
 
 export class Material extends GraphNode {
 
@@ -67,7 +67,8 @@ export class Concept extends GraphNode {
     comment:        { name: 'definition',        serializer: localizableSerializer },
     vocabularies:   { name: 'inScheme',          serializer: entityAwareList(entity(() => Vocabulary)) },
     material:       { name: 'graph',             serializer: entity(() => Material) },
-    broaderConcept: { name: 'broader',           serializer: entityAwareOptional(entity(() => Concept)) }
+    broaderConcept: { name: 'broader',           serializer: entityAwareOptional(entity(() => Concept)) },
+    state:          { name: 'term_status',       serializer: valueOrDefault(identitySerializer<State>(), 'Unstable') }
   };
 
   id: Uri;
@@ -77,6 +78,7 @@ export class Concept extends GraphNode {
   vocabularies: Vocabulary[];
   material: Material;
   broaderConcept: Concept|null;
+  state: State;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -88,7 +90,7 @@ export class Concept extends GraphNode {
   }
 
   get suggestion() {
-    return false; // TODO flag for concept suggestion?
+    return this.state !== 'Recommendation';
   }
 
   get unsaved() {
