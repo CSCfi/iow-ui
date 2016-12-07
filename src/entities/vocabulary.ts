@@ -120,9 +120,9 @@ export class Concept extends GraphNode {
 export class LegacyConcept extends GraphNode {
 
   static conceptMappings = {
-    id:             { name: '@id',               serializer: uriSerializer },
-    label:          { name: 'prefLabel',         serializer: localizableSerializer },
-    comment:        { name: 'definition',        serializer: localizableSerializer }
+    id:             { name: '@id',                     serializer: uriSerializer },
+    label:          { name: 'prefLabel',               serializer: localizableSerializer },
+    comment:        { name: ['definition', 'comment'], serializer: localizableSerializer }
   };
 
   id: Uri;
