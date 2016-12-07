@@ -40,13 +40,7 @@ export class DefaultVocabularyService implements VocabularyService {
     }
 
     return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSearch'), { params })
-      .then(response => this.deserializeConcepts(response.data!), err => {
-        if (err.status === 404) {
-          return [];
-        } else {
-          throw err;
-        }
-      });
+      .then(response => this.deserializeConcepts(response.data!));
   }
 
   createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri|null, lang: Language, model: Model): IPromise<Concept> {
