@@ -49,6 +49,7 @@
               <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion label" value="ctrl.selection.label" context="ctrl.context"></non-editable>
               <non-editable data-title="Concept id" value="ctrl.selection.id" context="ctrl.context"></non-editable>
               <non-editable data-title="Definition" value="ctrl.selection.comment" context="ctrl.context"></non-editable>
+              <non-editable-vocabulary vocabularies="ctrl.selection.vocabularies" context="ctrl.context"></non-editable-vocabulary>
             </div>
 
             <div ng-if="ctrl.isSelectionNewConceptData()">
