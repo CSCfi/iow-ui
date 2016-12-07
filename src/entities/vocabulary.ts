@@ -9,7 +9,6 @@ import { init, serialize } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entity, entityAwareOptional, entityAwareList } from './serializer/entitySerializer';
 import { ConceptType } from './type';
-import { normalizeAsArray, contains } from '../utils/array';
 
 export class Material extends GraphNode {
 
