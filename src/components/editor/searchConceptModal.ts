@@ -228,17 +228,11 @@ class SearchConceptController implements SearchController<Concept> {
   }
 
   resolveInitialVocabulary() {
-    for (const vocabulary of this.selectableVocabularies) {
-      if (any(this.model.group.vocabularies, v => v.internalId === vocabulary.internalId)) {
-        return vocabulary;
-      }
-    }
-
-    return this.selectableVocabularies[0];
+    return this.vocabularies[0];
   }
 
   canAddNew() {
-    return this.allowSuggestions && !!this.searchText && this.selectableVocabularies.length > 0;
+    return this.allowSuggestions && !!this.searchText && this.vocabularies.length > 0;
   }
 
   confirm() {

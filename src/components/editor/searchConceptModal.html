@@ -56,7 +56,7 @@
 
               <editable data-title="Vocabulary" context="ctrl.context" autofocus>
                 <select id="vocabularySelection" class="form-control" required ng-model="ctrl.selection.vocabulary"
-                        ng-options="(vocabulary.title | translateValue: ctrl.model) for vocabulary in ctrl.selectableVocabularies">
+                        ng-options="(vocabulary.title | translateValue: ctrl.model) for vocabulary in ctrl.vocabularies">
                 </select>
               </editable>
 
