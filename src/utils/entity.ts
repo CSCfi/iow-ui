@@ -56,7 +56,7 @@ export function isConcept(concept: Concept|LegacyConcept|null|undefined): concep
 }
 
 export function resolveConceptConstructor(graph: any): EntityConstructor<Concept|LegacyConcept> {
-  return graph.hasOwnProperty('id') ? Concept : LegacyConcept;
+  return graph.hasOwnProperty('graph') ? Concept : LegacyConcept;
 }
 
 export function isLocalizable(obj: any): obj is Localizable {
