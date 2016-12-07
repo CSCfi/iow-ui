@@ -6,7 +6,7 @@ import { module as mod }  from './module';
 import { ConceptEditorModalController } from './conceptEditorModal';
 import { UsageService } from '../../services/usageService';
 import { ErrorModal } from '../form/errorModal';
-import { Concept } from '../../entities/vocabulary';
+import { Concept, LegacyConcept } from '../../entities/vocabulary';
 import { Model } from '../../entities/model';
 import { Usage } from '../../entities/usage';
 import { GroupListItem } from '../../entities/group';
@@ -29,7 +29,7 @@ mod.directive('conceptView', () => {
 });
 
 // XXX: Not editable for now, might change in future
-export class ConceptViewController extends EditableEntityController<Concept> {
+export class ConceptViewController extends EditableEntityController<Concept|LegacyConcept> {
 
   concept: Concept|null;
   model: Model;
