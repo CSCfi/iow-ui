@@ -9,6 +9,7 @@ import { init, serialize } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entity, entityAwareOptional, entityAwareList } from './serializer/entitySerializer';
 import { ConceptType } from './type';
+import { normalizeAsArray, contains } from '../utils/array';
 
 export class Material extends GraphNode {
 
@@ -140,6 +141,19 @@ export class LegacyConcept extends GraphNode {
 
   get legacy() {
     return true;
+  }
+
+  get unsaved() {
+    return false;
+  }
+
+  get normalizedType(): ConceptType {
+    return 'concept';
+  }
+
+  clone(): LegacyConcept {
+    const serialization = this.serialize(false, true);
+    return new LegacyConcept(serialization['@graph'], serialization['@context'], this.frame);
   }
 
   get glyphIconClass() {
