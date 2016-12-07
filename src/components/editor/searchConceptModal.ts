@@ -160,7 +160,8 @@ class SearchConceptController implements SearchController<Concept> {
     if (searchText) {
       return this.vocabularyService.searchConcepts(searchText, this.selectedVocabulary ? this.selectedVocabulary.vocabulary : undefined)
         .then((results: Concept[]) => {
-          this.queryResults = limit(results, limitQueryResults);
+          const resultsWithReferencedVocabularies = results.filter(concept => any(concept.vocabularies, cv => any(this.vocabularies, v => v.internalId === cv.internalId)));
+          this.queryResults = limit(resultsWithReferencedVocabularies, limitQueryResults);
           this.loadingResults = false;
         });
     } else {
