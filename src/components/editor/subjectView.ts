@@ -3,8 +3,6 @@ import { SearchConceptModal } from './searchConceptModal';
 import { Class } from '../../entities/class';
 import { Predicate } from '../../entities/predicate';
 import { Model } from '../../entities/model';
-import { LanguageService } from '../../services/languageService';
-import { isConcept } from '../../utils/entity';
 
 mod.directive('subjectView', () => {
   return {
@@ -27,17 +25,7 @@ class SubjectViewController {
   model: Model;
   isEditing: () => boolean;
 
-  constructor(private searchConceptModal: SearchConceptModal, private languageService: LanguageService) {
-  }
-
-  get vocabularies(): string {
-    if (isConcept(this.entity.subject)) {
-      return this.entity.subject.vocabularies
-        .map(vocabulary => this.languageService.translate(vocabulary.title, this.model))
-        .join(', ');
-    } else {
-      return '';
-    }
+  constructor(private searchConceptModal: SearchConceptModal) {
   }
 
   changeSubject() {
