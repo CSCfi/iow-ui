@@ -277,6 +277,11 @@ export function conceptFrame(data: any, id: Uri|Url): Frame {
       '@default': [],
       '@embed': '@always'
     },
+    graph: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    },
     broader: {
       '@omitDefault': true,
       '@default': [],
@@ -290,6 +295,11 @@ export function conceptListFrame(data: any): Frame {
   return frame(data, conceptContext, {
     '@type': 'skos:Concept',
     inScheme: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    },
+    graph: {
       '@omitDefault': true,
       '@default': [],
       '@embed': '@always'
