@@ -19,7 +19,7 @@
 
     <editable-concept-select concept="ctrl.concept.broaderConcept" data-title="Broader concept" model="ctrl.model" allow-suggestions="false"></editable-concept-select>
 
-    <non-editable-vocabulary vocabularies="ctrl.concept.vocabularies"></non-editable-vocabulary>
+    <non-editable-vocabulary ng-if="!ctrl.concept.legacy" vocabularies="ctrl.concept.vocabularies"></non-editable-vocabulary>
   </div>
 </div>
 
