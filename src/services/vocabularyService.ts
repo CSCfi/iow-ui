@@ -9,6 +9,7 @@ import * as frames from '../entities/frames';
 import { Vocabulary, Concept, LegacyConcept } from '../entities/vocabulary';
 import { Model } from '../entities/model';
 import { requireSingle } from '../utils/array';
+import { resolveConceptConstructor } from '../utils/entity';
 
 export interface VocabularyService {
   getAllVocabularies(): IPromise<Vocabulary[]>;
@@ -78,7 +79,7 @@ export class DefaultVocabularyService implements VocabularyService {
 
   getConceptsForModel(model: Model): IPromise<(Concept|LegacyConcept)[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelConcepts'), {params: {model: model.id.uri}})
-      .then(response => this.deserializeConcepts(response.data!));
+      .then(response => this.deserializeModelConcepts(response.data!));
   }
 
   deserializeConcept(data: GraphData, id: Url): IPromise<Concept> {
@@ -87,6 +88,10 @@ export class DefaultVocabularyService implements VocabularyService {
 
   deserializeConcepts(data: GraphData): IPromise<Concept[]> {
     return this.frameService.frameAndMapArray(data, frames.conceptListFrame(data), () => Concept);
+  }
+
+  deserializeModelConcepts(data: GraphData): IPromise<(Concept|LegacyConcept)[]> {
+    return this.frameService.frameAndMapArray(data, frames.conceptListFrame(data), resolveConceptConstructor);
   }
 
   deserializeVocabularies(data: GraphData): IPromise<Vocabulary[]> {
