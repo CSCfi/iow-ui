@@ -97,7 +97,6 @@ class SearchConceptController implements SearchController<Concept> {
   loadingResults: boolean;
   selectedItem: Concept|AddNewConcept;
   vocabularies: ModelVocabulary[];
-  selectableVocabularies: ModelVocabulary[];
   private localizer: Localizer;
 
   contentExtractors = [ (concept: Concept) => concept.label ];
@@ -133,21 +132,6 @@ class SearchConceptController implements SearchController<Concept> {
     $scope.$watch(() => this.searchText, () => this.query(this.searchText).then(() => this.search()));
     $scope.$watch(() => this.selectedVocabulary, ifChanged(() => this.query(this.searchText).then(() => this.search())));
     $scope.$watch(() => this.localizer.language, ifChanged(() => this.query(this.searchText).then(() => this.search())));
-    $scope.$watch(() => this.queryResults, results => {
-      if (results) {
-        this.selectableVocabularies = vocabularies.filter(vocabulary => {
-          for (const concept of results) {
-            const exactMatch = this.localizer.translate(concept.label).toLowerCase() === this.searchText.toLowerCase();
-            if (exactMatch && any(concept.vocabularies, v => v.internalId === vocabulary.internalId)) {
-              return false;
-            }
-          }
-          return true;
-        });
-
-        this.selectableVocabularies.sort(this.vocabularyComparator);
-      }
-    });
   }
 
   addFilter(filter: SearchFilter<Concept>) {
