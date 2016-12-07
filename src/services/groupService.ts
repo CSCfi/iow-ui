@@ -1,7 +1,6 @@
 import { IHttpService, IPromise } from 'angular';
 import { config } from '../../config';
 import { Uri } from '../entities/uri';
-import { normalizeAsArray, first } from '../utils/array';
 import { FrameService } from './frameService';
 import * as frames from '../entities/frames';
 import { GraphData } from '../entities/contract';
@@ -21,21 +20,14 @@ export class GroupService {
   getGroup(groupId: Uri): IPromise<Group> {
     // TODO proper API
     return this.$http.get<GraphData>(config.apiEndpointWithName('groups'))
-      .then((response: any) => {
-        const context = response.data['@context'];
-        return {
-          '@context': context,
-          '@graph': first(normalizeAsArray(response.data!['@graph']), (group: any) => new Uri(group['@id'], context).equals(groupId))
-        };
-      })
-      .then(data => this.deserializeGroup(data));
+      .then(response => this.deserializeGroup(response.data!, groupId));
   }
 
   private deserializeGroupList(data: GraphData): IPromise<GroupListItem[]> {
     return this.frameService.frameAndMapArray(data, frames.groupListFrame(data), () => GroupListItem);
   }
 
-  private deserializeGroup(data: GraphData): IPromise<Group> {
-    return this.frameService.frameAndMap(data, true, frames.groupFrame(data), () => Group);
+  private deserializeGroup(data: GraphData, id: Uri): IPromise<Group> {
+    return this.frameService.frameAndMap(data, true, frames.groupFrame(data, id), () => Group);
   }
 }

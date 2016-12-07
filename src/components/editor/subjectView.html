@@ -44,13 +44,14 @@
 
       <div class="row">
         <div class="col-md-12">
-          <non-editable data-title="{{ctrl.subjectDefinitionTitle}}" value="ctrl.entity.subject.comment" context="ctrl.model"></non-editable>
+          <non-editable ng-if="!ctrl.entity.subject.suggestion" data-title="Concept definition" value="ctrl.entity.subject.comment" context="ctrl.model"></non-editable>
+          <non-editable ng-if="ctrl.entity.subject.suggestion" data-title="Concept suggestion definition" value="ctrl.entity.subject.comment" context="ctrl.model"></non-editable>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" ng-if="!ctrl.entity.subject.legacy">
         <div class="col-md-12">
-          <non-editable data-title="Defined in vocabularies" value="ctrl.vocabularies" context="ctrl.model" link="ctrl.link"></non-editable>
+          <non-editable-vocabulary vocabularies="ctrl.entity.subject" context="ctrl.model"></non-editable-vocabulary>
         </div>
       </div>
 

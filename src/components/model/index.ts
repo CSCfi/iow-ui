@@ -24,6 +24,7 @@ import './linksView';
 import './referenceDataView';
 import './referenceDatasView';
 import './technicalNamespaces';
+import './nonEditableVocabularies';
 
 mod.service('addEditLinkModal', AddEditLinkModal);
 mod.service('addEditNamespaceModal', AddEditNamespaceModal);

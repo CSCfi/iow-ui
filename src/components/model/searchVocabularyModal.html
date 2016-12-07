@@ -22,6 +22,10 @@
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selected" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)">
             <h5><highlight text="searchResult.title" context="ctrl.context" search="ctrl.searchText"></highlight></h5>
             <p><highlight text="searchResult.description" context="ctrl.context" search="ctrl.searchText"></highlight></p>
+
+            <div class="origin">
+              <span class="pull-left">{{searchResult.material.code}}</span>
+            </div>
           </search-results>
         </div>
       </div>

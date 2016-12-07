@@ -41,7 +41,7 @@ class EditableConceptSelectController {
   }
 
   selectConcept() {
-    this.searchConceptModal.openSelection(this.model.vocabularies, this.model, this.allowSuggestions, this.type)
+    this.searchConceptModal.openSelection(this.model.modelVocabularies, this.model, this.allowSuggestions, this.type)
       .then(concept => this.concept = concept);
   }
 

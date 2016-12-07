@@ -5,15 +5,12 @@ import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { module as mod }  from './module';
 import { ConceptEditorModalController } from './conceptEditorModal';
 import { UsageService } from '../../services/usageService';
-import { all } from '../../utils/array';
 import { ErrorModal } from '../form/errorModal';
-import { isDefined } from '../../utils/object';
-import { Concept, ConceptSuggestion } from '../../entities/vocabulary';
+import { Concept } from '../../entities/vocabulary';
 import { Model } from '../../entities/model';
 import { Usage } from '../../entities/usage';
 import { GroupListItem } from '../../entities/group';
 import { LanguageContext } from '../../entities/contract';
-import { VocabularyService } from '../../services/vocabularyService';
 import { NotificationModal } from '../common/notificationModal';
 
 mod.directive('conceptView', () => {
@@ -31,6 +28,7 @@ mod.directive('conceptView', () => {
   };
 });
 
+// XXX: Not editable for now, might change in future
 export class ConceptViewController extends EditableEntityController<Concept> {
 
   concept: Concept|null;
@@ -47,7 +45,6 @@ export class ConceptViewController extends EditableEntityController<Concept> {
               errorModal: ErrorModal,
               notificationModal: NotificationModal,
               userService: UserService,
-              private vocabularyService: VocabularyService,
               usageService: UsageService) {
     super($scope, $log, deleteConfirmationModal, errorModal, notificationModal, userService);
 
@@ -67,42 +64,22 @@ export class ConceptViewController extends EditableEntityController<Concept> {
   }
 
   create(_entity: Concept) {
-    return this.$q.reject('Concept creation is not possible');
+    return this.$q.reject('Concept creation is not implemented');
   }
 
-  update(entity: Concept, _oldEntity: Concept) {
-    if (entity instanceof ConceptSuggestion) {
-      return this.vocabularyService.updateConceptSuggestion(entity).then(() => this.modelController.selectionEdited(entity));
-    } else {
-      return this.$q.reject('Entity must be instance of ConceptSuggestion');
-    }
+  update(_entity: Concept, _oldEntity: Concept) {
+    return this.$q.reject('Concept update is not implemented');
   }
 
-  remove(entity: Concept) {
-    return this.vocabularyService.deleteConceptFromModel(entity, this.model).then(() => this.modelController.selectionDeleted(entity));
-  }
-
-  isNotInUseInThisModel(): boolean {
-    return isDefined(this.usage) && all(this.usage.referrers, referrer => !isDefined(referrer.definedBy) || referrer.definedBy.id.notEquals(this.model.id));
-  }
-
-  isNotInUse() {
-    return isDefined(this.usage) && this.usage.referrers.length === 0;
+  remove(_entity: Concept) {
+    return this.$q.reject('Concept remove is not implemented');
   }
 
   rights(): Rights {
     return {
-      edit: () => !this.loading && !this.isReference() && this.userService.user.isMemberOf(this.model.group),
-      remove: () => !this.loading && this.isNotInUseInThisModel() && this.userService.user.isMemberOf(this.model.group)
+      edit: () => false,
+      remove: () => false
     };
-  }
-
-  canAskForRights(): boolean {
-    return this.userService.isLoggedIn() && !this.belongToGroup();
-  }
-
-  belongToGroup(): boolean {
-    return this.userService.user.isMemberOf(this.getGroup());
   }
 
   getGroup(): GroupListItem {
@@ -115,21 +92,6 @@ export class ConceptViewController extends EditableEntityController<Concept> {
 
   setEditable(editable: Concept) {
     this.concept = editable;
-  }
-
-  isReference(): boolean {
-    const concept = this.concept;
-    return !(concept instanceof ConceptSuggestion && (!concept.definedBy || concept.definedBy.id.equals(this.model.id)));
-  }
-
-  getRemoveText(): string {
-    const text = super.getRemoveText();
-    return this.isNotInUse() ? text : text + ' from this ' + this.model.normalizedType;
-  }
-
-  openDeleteConfirmationModal() {
-    const onlyDefinedInModel = this.isReference() ? this.model : null;
-    return this.deleteConfirmationModal.open(this.getEditable()!, this.getContext(), onlyDefinedInModel);
   }
 
   getContext(): LanguageContext {

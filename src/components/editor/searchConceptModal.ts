@@ -3,18 +3,18 @@ import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import gettextCatalog = angular.gettext.gettextCatalog;
 import { LanguageService, Localizer } from '../../services/languageService';
-import { comparingBoolean, comparingLocalizable } from '../../utils/comparators';
+import { comparingLocalizable } from '../../utils/comparators';
 import { EditableForm } from '../form/editableEntityController';
 import { AddNew } from '../common/searchResults';
 import { Uri } from '../../entities/uri';
-import { any, flatten, limit } from '../../utils/array';
+import { any, limit } from '../../utils/array';
 import { lowerCase, upperCaseFirst } from 'change-case';
 import { SearchController, SearchFilter } from '../filter/contract';
 import { ifChanged } from '../../utils/angular';
-import { Concept, Vocabulary, FintoConcept, ConceptSuggestion } from '../../entities/vocabulary';
-import { Model } from '../../entities/model';
+import { Concept } from '../../entities/vocabulary';
+import { Model, ModelVocabulary } from '../../entities/model';
 import { ClassType, KnownPredicateType } from '../../entities/type';
-import { VocabularyService, ConceptSearchResult } from '../../services/vocabularyService';
+import { VocabularyService } from '../../services/vocabularyService';
 import { filterAndSortSearchResults, defaultLabelComparator } from '../filter/util';
 
 const limitQueryResults = 1000;
@@ -32,7 +32,7 @@ class NewConceptData {
   comment: string;
   broaderConcept: Concept;
 
-  constructor(public label: string, public vocabulary: Vocabulary) {
+  constructor(public label: string, public vocabulary: ModelVocabulary) {
   }
 }
 
@@ -42,7 +42,7 @@ export class SearchConceptModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(vocabularies: Vocabulary[], model: Model, type: ClassType|KnownPredicateType|null, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
+  private open(vocabularies: ModelVocabulary[], model: Model, type: ClassType|KnownPredicateType|null, allowSuggestions: boolean, newEntityCreation: boolean, initialSearch: string) {
     return this.$uibModal.open({
       template: require('./searchConceptModal.html'),
       size: 'large',
@@ -60,11 +60,11 @@ export class SearchConceptModal {
     }).result;
   }
 
-  openSelection(vocabularies: Vocabulary[], model: Model, allowSuggestions: boolean, type?: ClassType|KnownPredicateType): IPromise<Concept> {
+  openSelection(vocabularies: ModelVocabulary[], model: Model, allowSuggestions: boolean, type?: ClassType|KnownPredicateType): IPromise<Concept> {
     return this.open(vocabularies, model, type || null, allowSuggestions, false, '');
   }
 
-  openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: ClassType|KnownPredicateType, initialSearch: string): IPromise<EntityCreation> {
+  openNewEntityCreation(vocabularies: ModelVocabulary[], model: Model, type: ClassType|KnownPredicateType, initialSearch: string): IPromise<EntityCreation> {
     return this.open(vocabularies, model, type, true, true, initialSearch);
   }
 }
@@ -74,34 +74,34 @@ export interface SearchPredicateScope extends IScope {
 }
 
 function isConcept(obj: Concept|NewConceptData): obj is Concept {
-  return obj instanceof FintoConcept || obj instanceof ConceptSuggestion;
+  return obj instanceof Concept;
 }
 
 function isNewConceptData(obj: Concept|NewConceptData): obj is NewConceptData {
   return obj instanceof NewConceptData;
 }
 
-class SearchConceptController implements SearchController<ConceptSearchResult> {
+class SearchConceptController implements SearchController<Concept> {
 
   close = this.$uibModalInstance.dismiss;
-  queryResults: ConceptSearchResult[];
-  searchResults: (ConceptSearchResult|AddNewConcept)[];
+  queryResults: Concept[];
+  searchResults: (Concept|AddNewConcept)[];
   selection: Concept|NewConceptData;
   defineConceptTitle: string;
   buttonTitle: string;
   labelTitle: string;
-  selectedVocabulary: Vocabulary;
+  selectedVocabulary: ModelVocabulary;
   searchText: string = '';
   submitError: string|null = null;
   editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
-  selectedItem: ConceptSearchResult|AddNewConcept;
-  vocabularies: Vocabulary[];
-  selectableVocabularies: Vocabulary[];
+  selectedItem: Concept|AddNewConcept;
+  vocabularies: ModelVocabulary[];
+  selectableVocabularies: ModelVocabulary[];
   private localizer: Localizer;
 
-  contentExtractors = [ (concept: ConceptSearchResult) => concept.label ];
-  private searchFilters: SearchFilter<ConceptSearchResult>[] = [];
+  contentExtractors = [ (concept: Concept) => concept.label ];
+  private searchFilters: SearchFilter<Concept>[] = [];
 
   /* @ngInject */
   constructor(private $scope: SearchPredicateScope,
@@ -112,7 +112,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
               initialSearch: string,
               public newEntityCreation: boolean,
               private allowSuggestions: boolean,
-              vocabularies: Vocabulary[],
+              vocabularies: ModelVocabulary[],
               private model: Model,
               private vocabularyService: VocabularyService,
               private gettextCatalog: gettextCatalog) {
@@ -127,7 +127,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     this.loadingResults = false;
 
     this.addFilter(concept =>
-      any(this.activeVocabularies, vocabulary => concept.item.vocabulary.id.equals(vocabulary.id))
+      !this.selectedVocabulary || any(concept.item.vocabularies, v => v.internalId === this.selectedVocabulary.internalId)
     );
 
     $scope.$watch(() => this.searchText, () => this.query(this.searchText).then(() => this.search()));
@@ -138,7 +138,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
         this.selectableVocabularies = vocabularies.filter(vocabulary => {
           for (const concept of results) {
             const exactMatch = this.localizer.translate(concept.label).toLowerCase() === this.searchText.toLowerCase();
-            if (exactMatch && concept.vocabulary.id.equals(vocabulary.id)) {
+            if (exactMatch && any(concept.vocabularies, v => v.internalId === vocabulary.internalId)) {
               return false;
             }
           }
@@ -150,7 +150,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     });
   }
 
-  addFilter(filter: SearchFilter<ConceptSearchResult>) {
+  addFilter(filter: SearchFilter<Concept>) {
     this.searchFilters.push(filter);
   }
 
@@ -158,17 +158,8 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     return this.queryResults;
   }
 
-  translateVocabulary(vocabulary: Vocabulary) {
-    if (vocabulary.local) {
-      return this.gettextCatalog.getString('Internal vocabulary');
-    } else {
-      return this.languageService.translate(vocabulary.title, this.model);
-    }
-  }
-
   get vocabularyComparator() {
-    return comparingBoolean<Vocabulary>(vocabulary => !vocabulary.local)
-      .andThen(comparingLocalizable<Vocabulary>(this.localizer, vocabulary => vocabulary.title));
+    return comparingLocalizable<ModelVocabulary>(this.localizer, vocabulary => vocabulary.title);
   }
 
   isSelectionConcept() {
@@ -179,18 +170,13 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     return isNewConceptData(this.selection);
   }
 
-  get activeVocabularies() {
-    return this.selectedVocabulary ? [this.selectedVocabulary] : this.vocabularies;
-  }
-
   query(searchText: string): IPromise<any> {
     this.loadingResults = true;
-    const language = this.languageService.getModelLanguage(this.model);
 
-    if (searchText && searchText.length >= 3) {
-      return this.$q.all(flatten(this.activeVocabularies.map(vocabulary => this.vocabularyService.searchConcepts(vocabulary, language, searchText))))
-        .then((results: ConceptSearchResult[][]) => {
-          this.queryResults = limit(flatten(results), limitQueryResults);
+    if (searchText) {
+      return this.vocabularyService.searchConcepts(searchText, this.selectedVocabulary ? this.selectedVocabulary.vocabulary : undefined)
+        .then((results: Concept[]) => {
+          this.queryResults = limit(results, limitQueryResults);
           this.loadingResults = false;
         });
     } else {
@@ -207,14 +193,14 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
 
       this.searchResults = [
         new AddNewConcept(suggestText + ' ' + toVocabularyText, () => this.canAddNew()),
-        ...filterAndSortSearchResults<ConceptSearchResult>(this.queryResults, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer))
+        ...filterAndSortSearchResults<Concept>(this.queryResults, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer))
       ];
     } else {
       this.searchResults = [];
     }
   }
 
-  selectItem(item: ConceptSearchResult|AddNewConcept) {
+  selectItem(item: Concept|AddNewConcept) {
 
     this.selectedItem = item;
     this.submitError = null;
@@ -223,23 +209,18 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
     if (item instanceof AddNewConcept) {
       this.selection = new NewConceptData(lowerCase(this.searchText, this.localizer.language), this.resolveInitialVocabulary());
     } else {
-      const conceptSearchResult: ConceptSearchResult = <ConceptSearchResult> item;
-      const conceptPromise: IPromise<Concept> = conceptSearchResult.suggestion
-        ? this.vocabularyService.getConceptSuggestion(conceptSearchResult.id)
-        : this.vocabularyService.getFintoConcept(conceptSearchResult.id);
-
-      conceptPromise.then(concept => this.selection = concept);
+      this.vocabularyService.getConcept(item.id).then(concept => this.selection = concept);
     }
   }
 
-  loadingSelection(item: ConceptSearchResult|AddNew) {
+  loadingSelection(item: Concept|AddNew) {
     if (item instanceof AddNew || item !== this.selectedItem) {
       return false;
     } else {
       if (!this.selection) {
         return true;
       } else {
-        const searchResult = <ConceptSearchResult> item;
+        const searchResult = <Concept> item;
         const selection = this.selection;
         return isConcept(selection) && !searchResult.id.equals(selection.id);
       }
@@ -248,7 +229,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
 
   resolveInitialVocabulary() {
     for (const vocabulary of this.selectableVocabularies) {
-      if (vocabulary.local) {
+      if (any(this.model.group.vocabularies, v => v.internalId === vocabulary.internalId)) {
         return vocabulary;
       }
     }
@@ -279,8 +260,7 @@ class SearchConceptController implements SearchController<ConceptSearchResult> {
 
     if (isNewConceptData(selection)) {
 
-      const conceptSuggestion = this.vocabularyService.createConceptSuggestion(selection.vocabulary, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model)
-        .then(conceptId => this.vocabularyService.getConceptSuggestion(conceptId));
+      const conceptSuggestion = this.vocabularyService.createConceptSuggestion(selection.vocabulary.vocabulary, selection.label, selection.comment, extractId(selection.broaderConcept), language, this.model);
 
       if (this.newEntityCreation) {
         return conceptSuggestion.then(cs => new EntityCreation(cs, newEntity(cs)));

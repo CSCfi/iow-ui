@@ -41,7 +41,7 @@ export const exampleLibrary = {
         type: 'association' as KnownPredicateType,
         searchName: 'Omistaja',
         name: 'Omistaja',
-        conceptId: 'http://jhsmeta.fi/skos/J197',
+        conceptId: 'http://jhsmeta.fi/skos/J197', // FIXME
         target: {
           namespaceId: exampleImportedLibrary.namespaceId,
           name: 'Henkilö'

@@ -1,10 +1,6 @@
-import { IAttributes, IScope } from 'angular';
-import gettextCatalog = angular.gettext.gettextCatalog;
-import { ConceptViewController } from './conceptView';
-import { LanguageService, Localizer } from '../../services/languageService';
+import { Localizer } from '../../services/languageService';
 import { module as mod }  from './module';
-import { Uri } from '../../entities/uri';
-import { Concept, VocabularyNameHref, ConceptSuggestion, Vocabulary } from '../../entities/vocabulary';
+import { Concept, LegacyConcept } from '../../entities/vocabulary';
 import { Model } from '../../entities/model';
 
 mod.directive('conceptForm', () => {
@@ -18,41 +14,17 @@ mod.directive('conceptForm', () => {
     require: ['conceptForm', '?^conceptView'],
     controllerAs: 'ctrl',
     bindToController: true,
-    link(_$scope: IScope, _element: JQuery, _attributes: IAttributes, [thisController, classViewController]: [ConceptFormController, ConceptViewController]) {
-      thisController.isEditing = () => classViewController && classViewController.isEditing();
-    },
     controller: ConceptFormController
   };
 });
 
 export class ConceptFormController {
 
-  concept: Concept;
+  concept: Concept|LegacyConcept;
   model: Model;
-  isEditing: () => boolean;
-  vocabularyNames: VocabularyNameHref[];
   localizer: Localizer;
 
-  constructor($scope: IScope, languageService: LanguageService, public gettextCatalog: gettextCatalog) {
-    this.localizer = languageService.createLocalizer(this.model);
-    $scope.$watch(() => this.concept, (concept: Concept) => {
-      if (concept instanceof ConceptSuggestion) {
-        const vocabulary = concept.vocabulary;
-        const vocabularyId = vocabulary instanceof Vocabulary ? vocabulary.id : <Uri> vocabulary;
-
-        for (const vocabulary of this.model.vocabularies) {
-          if (vocabulary.id.equals(vocabularyId)) {
-            concept.vocabulary = vocabulary;
-            break;
-          }
-        }
-      }
-
-      this.vocabularyNames = concept.getVocabularyNames();
-    });
-  }
-
   isConceptEditable() {
-    return this.concept instanceof ConceptSuggestion;
+    return this.concept.suggestion;
   }
 }

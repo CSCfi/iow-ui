@@ -1,33 +1,21 @@
-import { IHttpPromise, IHttpService, IPromise, IQService } from 'angular';
+import { IHttpService, IPromise, IQService } from 'angular';
 import { upperCaseFirst } from 'change-case';
 import { config } from '../../config';
 import { Uri, Url } from '../entities/uri';
 import { Language } from '../utils/language';
-import { requireDefined } from '../utils/object';
 import { FrameService } from './frameService';
-import { Localizable, GraphData } from '../entities/contract';
-import { resolveConceptConstructor } from '../utils/entity';
+import { GraphData } from '../entities/contract';
 import * as frames from '../entities/frames';
-import { ConceptSuggestion, FintoConceptSearchResult, Vocabulary, Concept, FintoConcept } from '../entities/vocabulary';
+import { Vocabulary, Concept, LegacyConcept } from '../entities/vocabulary';
 import { Model } from '../entities/model';
-
-export interface ConceptSearchResult {
-  id: Uri;
-  label: Localizable;
-  suggestion: boolean;
-  vocabulary: Vocabulary;
-}
+import { requireSingle } from '../utils/array';
 
 export interface VocabularyService {
   getAllVocabularies(): IPromise<Vocabulary[]>;
-  searchConcepts(vocabulary: Vocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[];
-  getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion>;
-  getConceptSuggestions(vocabularyId: Uri): IPromise<ConceptSuggestion[]>;
-  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri|null, lang: Language, model: Model): IPromise<Uri>;
-  getFintoConcept(id: Uri): IPromise<FintoConcept>;
+  searchConcepts(searchText: string, vocabulary?: Vocabulary): IPromise<Concept[]>;
+  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri|null, lang: Language, model: Model): IPromise<Concept>;
+  getConcept(id: Uri): IPromise<Concept>;
   getConceptsForModel(model: Model): IPromise<Concept[]>;
-  updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any>;
-  deleteConceptFromModel(concept: Concept, model: Model): IPromise<any>;
 }
 
 export class DefaultVocabularyService implements VocabularyService {
@@ -40,74 +28,42 @@ export class DefaultVocabularyService implements VocabularyService {
       .then(response => this.deserializeVocabularies(response.data!));
   }
 
-  searchConcepts(vocabulary: Vocabulary, language: Language, searchText: string): IPromise<ConceptSearchResult[]>[] {
+  searchConcepts(searchText: string, vocabulary?: Vocabulary): IPromise<Concept[]> {
 
-    function mapResult(result: FintoConceptSearchResult|ConceptSuggestion) {
-      return {
-        id: result.id,
-        label: result.label,
-        suggestion: result instanceof ConceptSuggestion,
-        vocabulary: vocabulary
-      };
+    const params: any = {
+      term: searchText
+    };
+
+    if (vocabulary) {
+      params.schemeURI = vocabulary.id.toString();
     }
 
-    const conceptSuggestions = this.searchConceptSuggestions(searchText, language, vocabulary.id)
-      .then(suggestions => suggestions.map(mapResult));
-
-    const result = [conceptSuggestions];
-
-    if (!vocabulary.local) {
-      const concepts = this.searchFintoConcepts(searchText, language, requireDefined(vocabulary.vocabularyId))
-        .then(suggestions => suggestions.map(mapResult));
-
-      result.push(concepts);
-    }
-
-    return result;
-}
-
-  private searchFintoConcepts(query: string, lang: Language, vocabularyId: string): IPromise<FintoConceptSearchResult[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSearch'), {params: {term: query, lang, vocid: vocabularyId}})
-      .then(response => this.deserializeFintoConceptSearchResults(response.data!));
+    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSearch'), { params })
+      .then(response => this.deserializeConcepts(response.data!), err => {
+        if (err.status === 404) {
+          return [];
+        } else {
+          throw err;
+        }
+      });
   }
 
-  private searchConceptSuggestions(query: string, lang: Language, vocabularyId: Uri): IPromise<ConceptSuggestion[]> {
-    function suggestionContains(suggestion: ConceptSuggestion): boolean {
-      const localization = suggestion.label[lang] || '';
-      return localization.toLowerCase().includes(query.toLowerCase());
-    }
-
-    function matchingSuggestions(suggestions: ConceptSuggestion[]): ConceptSuggestion[] {
-      return suggestions.filter(suggestion => suggestionContains(suggestion));
-    }
-
-    return this.getConceptSuggestions(vocabularyId).then(suggestions => matchingSuggestions(suggestions));
-  }
-
-  getConceptSuggestion(id: Uri): IPromise<ConceptSuggestion> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {conceptID: id.uri}})
-      .then(response => this.deserializeConceptSuggestion(response.data!));
-  }
-
-  getConceptSuggestions(vocabularyId: Uri): IPromise<ConceptSuggestion[]> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('conceptSuggestion'), {params: {schemeID: vocabularyId.uri}})
-      .then(response => this.deserializeConceptSuggestions(response.data!));
-  }
-
-  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri|null, lang: Language, model: Model): IPromise<Uri> {
-    return this.$http.put(config.apiEndpointWithName('conceptSuggestion'), null, {
+  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, broaderConceptId: Uri|null, lang: Language, model: Model): IPromise<Concept> {
+    return this.$http.put<GraphData>(config.apiEndpointWithName('conceptSuggestion'), null, {
       params: {
         schemeID: vocabulary.id.uri,
+        graphUUID: vocabulary.material.internalId,
         label: upperCaseFirst(label),
         comment,
         lang,
         topConceptID: broaderConceptId && broaderConceptId.uri,
         modelID: model.id.uri
       }})
-      .then((response: any) => new Uri(response.data['@id'], {}));
+      .then(response => this.deserializeConcepts(response.data!))
+      .then(concepts => requireSingle(concepts));
   }
 
-  getFintoConcept(id: Uri): IPromise<FintoConcept> {
+  getConcept(id: Uri): IPromise<Concept> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('concept'), {params: {uri: id.uri}})
       .then(response => {
         // XXX: api should be fixed to return non success code when concept not found
@@ -115,50 +71,22 @@ export class DefaultVocabularyService implements VocabularyService {
         if (!response.data || !response.data['@graph']) {
           return this.$q.reject();
         } else {
-          return this.deserializeFintoConcept(response.data!, id.uri);
+          return this.deserializeConcept(response.data!, id.uri);
         }
       });
   }
 
-  getConceptsForModel(model: Model): IPromise<Concept[]> {
+  getConceptsForModel(model: Model): IPromise<(Concept|LegacyConcept)[]> {
     return this.$http.get<GraphData>(config.apiEndpointWithName('modelConcepts'), {params: {model: model.id.uri}})
       .then(response => this.deserializeConcepts(response.data!));
   }
 
-  updateConceptSuggestion(conceptSuggestion: ConceptSuggestion): IPromise<any> {
-    const requestParams = {
-      conceptID: conceptSuggestion.id.uri
-    };
-
-    return this.$http.post<GraphData>(config.apiEndpointWithName('conceptSuggestion'), conceptSuggestion.serialize(), {params: requestParams});
-  }
-
-  deleteConceptFromModel(concept: Concept, model: Model): IHttpPromise<any> {
-    const requestParams = {
-      id: concept.id.uri,
-      model: model.id.uri
-    };
-    return this.$http.delete(config.apiEndpointWithName('modelConcepts'), {params: requestParams});
-  }
-
-  deserializeConceptSuggestion(data: GraphData): IPromise<ConceptSuggestion> {
-    return this.frameService.frameAndMap(data, true, frames.iowConceptFrame(data), () => ConceptSuggestion);
-  }
-
-  deserializeConceptSuggestions(data: GraphData): IPromise<ConceptSuggestion[]> {
-    return this.frameService.frameAndMapArray(data, frames.iowConceptFrame(data), () => ConceptSuggestion);
-  }
-
-  deserializeFintoConcept(data: GraphData, id: Url): IPromise<FintoConcept> {
-    return this.frameService.frameAndMap(data, true, frames.fintoConceptFrame(data, id), () => FintoConcept);
-  }
-
-  deserializeFintoConceptSearchResults(data: GraphData): IPromise<FintoConceptSearchResult[]> {
-    return this.frameService.frameAndMapArray(data, frames.fintoConceptSearchResultsFrame(data), () => FintoConceptSearchResult);
+  deserializeConcept(data: GraphData, id: Url): IPromise<Concept> {
+    return this.frameService.frameAndMap(data, true, frames.conceptFrame(data, id), () => Concept);
   }
 
   deserializeConcepts(data: GraphData): IPromise<Concept[]> {
-    return this.frameService.frameAndMapArray(data, frames.iowConceptFrame(data), resolveConceptConstructor);
+    return this.frameService.frameAndMapArray(data, frames.conceptListFrame(data), () => Concept);
   }
 
   deserializeVocabularies(data: GraphData): IPromise<Vocabulary[]> {

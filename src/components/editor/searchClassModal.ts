@@ -204,7 +204,7 @@ class SearchClassController implements SearchController<ClassListItem> {
   }
 
   createNewClass() {
-    return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, 'class', this.searchText)
+    return this.searchConceptModal.openNewEntityCreation(this.model.modelVocabularies, this.model, 'class', this.searchText)
       .then(conceptCreation => this.$uibModalInstance.close(conceptCreation));
   }
 }

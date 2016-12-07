@@ -23,7 +23,7 @@
           <span class="title" translate>Filter results</span>
 
           <div class="form-group">
-            <label for="model" translate>Vocabulary</label>
+            <label for="vocabulary" translate>Vocabulary</label>
             <div class="input-group input-group-md">
               <div class="selectContainer">
                 <select id="vocabulary" class="form-control" ng-model="ctrl.showVocabulary"
@@ -35,25 +35,13 @@
           </div>
 
           <div class="form-group">
-            <label for="model" translate>Concept state</label>
+            <label for="conceptType" translate>Concept state</label>
             <div class="input-group input-group-md">
               <div class="selectContainer">
                 <select id="conceptType" class="form-control" ng-model="ctrl.showConceptType">
                   <option value="" translate>All states</option>
                   <option value="concept" translate>Recommendation</option>
                   <option value="conceptSuggestion" translate>Suggestion</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="model" translate>Suggested in</label>
-            <div class="input-group input-group-md">
-              <div class="selectContainer">
-                <select id="model" class="form-control" ng-model="ctrl.showModel"
-                        ng-options="(model | translateLabel: ctrl.model) for model in ctrl.models">
-                  <option value="" translate>All models</option>
                 </select>
               </div>
             </div>
@@ -67,9 +55,12 @@
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selection" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
           <h5>{{searchResult | translateLabel: ctrl.model}}</h5>
-          <p>{{searchResult.definedBy | translateLabel: ctrl.model}}</p>
-          <p ng-init="vocabularyNames = searchResult.getVocabularyNames()">
-            <span ng-repeat="vocabularyName in vocabularyNames">{{vocabularyName.getLocalizedName(ctrl.localizer, ctrl.gettextCatalog)}}<span ng-show="!$last">, </span></span>
+
+          <p>
+            <span ng-repeat="vocabulary in ctrl.searchResult.vocabularies">
+              {{vocabulary.title | translateValue: ctrl.model}}
+              <span ng-show="!$last">, </span>
+            </span>
           </p>
         </search-results>
       </div>

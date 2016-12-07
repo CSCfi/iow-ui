@@ -94,6 +94,7 @@ export class Model extends AbstractModel {
   comment: Localizable;
   state: State;
   vocabularies: Vocabulary[];
+  modelVocabularies: ModelVocabulary[];
   namespaces: ImportedNamespace[];
   links: Link[];
   referenceDatas: ReferenceData[];
@@ -105,12 +106,12 @@ export class Model extends AbstractModel {
   modifiedAt: Moment|null;
   createdAt: Moment|null;
 
-
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
 
     init(this, Model.modelMappings);
     this.copyNamespacesFromRequires();
+    this.updateModelVocabularies();
   }
 
   get groupId() {
@@ -119,10 +120,19 @@ export class Model extends AbstractModel {
 
   addVocabulary(vocabulary: Vocabulary) {
     this.vocabularies.push(vocabulary);
+    this.updateModelVocabularies();
   }
 
   removeVocabulary(vocabulary: Vocabulary) {
     remove(this.vocabularies, vocabulary);
+    this.updateModelVocabularies();
+  }
+
+  private updateModelVocabularies() {
+    this.modelVocabularies = [
+      ...this.group.vocabularies.map(v => new ModelVocabulary(v, true)),
+      ...this.vocabularies.map(v => new ModelVocabulary(v, false))
+    ];
   }
 
   addNamespace(ns: ImportedNamespace) {
@@ -267,6 +277,36 @@ export class Model extends AbstractModel {
   serializationValues(_inline: boolean, clone: boolean): {} {
     this.copyNamespacesFromRequires();
     return serialize(this, clone, Object.assign({}, AbstractModel.abstractModelMappings, Model.modelMappings));
+  }
+}
+
+export class ModelVocabulary {
+
+  constructor(public vocabulary: Vocabulary, public fixed: boolean) {
+  }
+
+  get id() {
+    return this.vocabulary.id;
+  }
+
+  get internalId() {
+    return this.vocabulary.internalId;
+  }
+
+  get material() {
+    return this.vocabulary.material;
+  }
+
+  get title() {
+    return this.vocabulary.title;
+  }
+
+  get description() {
+    return this.vocabulary.description;
+  }
+
+  get href() {
+    return this.vocabulary.href;
   }
 }
 

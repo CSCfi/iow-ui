@@ -11,6 +11,7 @@ export type Type = ModelType
                  | 'activity'
                  | 'resource'
                  | 'collection'
+                 | 'material'
                  | 'vocabulary'
                  | 'standard'
                  | 'referenceData'
@@ -36,7 +37,6 @@ export type KnownPredicateType = 'attribute'
                                | 'association';
 
 export type ConceptType = 'concept'
-                        | 'conceptSuggestion';
 
 export type SelectionType = 'class'
                           | 'predicate';
@@ -72,7 +72,7 @@ registerType('library', ['dcap:MetadataVocabulary']);
 registerType('constraint', ['sh:AbstractOrNodeConstraint', 'sh:AbstractAndNodeConstraint', 'sh:AbstractNotNodeConstraint']);
 registerType('user', ['foaf:Person']);
 registerType('concept', ['skos:Concept']);
-registerType('conceptSuggestion', ['iow:ConceptSuggestion']);
+registerType('material', ['termed:Graph']);
 registerType('vocabulary', ['skos:ConceptScheme']);
 registerType('entity', ['prov:Entity']);
 registerType('activity', ['prov:Activity']);

@@ -8,7 +8,7 @@ import { createExistsExclusion } from '../../utils/exclusion';
 import { ConceptEditorModal } from './conceptEditorModal';
 import { collectProperties } from '../../utils/array';
 import { requireDefined } from '../../utils/object';
-import { Model } from '../../entities/model';
+import { Model, ModelVocabulary } from '../../entities/model';
 import { Vocabulary } from '../../entities/vocabulary';
 
 mod.directive('vocabulariesView', () => {
@@ -64,7 +64,7 @@ class VocabulariesViewController {
   }
 
   addVocabulary() {
-    const vocabularies = collectProperties(this.model.vocabularies, vocabulary => vocabulary.id.uri);
+    const vocabularies = collectProperties(this.model.modelVocabularies, vocabulary => vocabulary.id.uri);
     const exclude = createExistsExclusion(vocabularies);
 
     this.searchVocabularyModal.open(this.model, exclude)
@@ -75,40 +75,36 @@ class VocabulariesViewController {
   }
 }
 
-class VocabularyTableDescriptor extends TableDescriptor<Vocabulary> {
+class VocabularyTableDescriptor extends TableDescriptor<ModelVocabulary> {
 
   constructor(private model: Model, private languageService: LanguageService) {
     super();
   }
 
-  columnDescriptors(): ColumnDescriptor<Vocabulary>[] {
+  columnDescriptors(): ColumnDescriptor<ModelVocabulary>[] {
     return [
-      { headerName: 'Identifier', nameExtractor: vocabulary => requireDefined(vocabulary.vocabularyId), cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
+      { headerName: 'Identifier', nameExtractor: vocabulary => requireDefined(vocabulary.material.code), cssClass: 'prefix', hrefExtractor: vocabulary => vocabulary.href},
       { headerName: 'Vocabulary name', nameExtractor: vocabulary => this.languageService.translate(vocabulary.title, this.model)}
     ];
   }
 
-  values(): Vocabulary[] {
-    return this.model && this.model.vocabularies;
+  values(): ModelVocabulary[] {
+    return this.model && this.model.modelVocabularies;
   }
 
-  canEdit(_vocabulary: Vocabulary): boolean {
+  canEdit(_vocabulary: ModelVocabulary): boolean {
     return false;
   }
 
-  canRemove(vocabulary: Vocabulary): boolean {
-    return !vocabulary.local;
+  canRemove(vocabulary: ModelVocabulary): boolean {
+    return !vocabulary.fixed;
   }
 
-  remove(vocabulary: Vocabulary): any {
-    this.model.removeVocabulary(vocabulary);
+  remove(vocabulary: ModelVocabulary): any {
+    this.model.removeVocabulary(vocabulary.vocabulary);
   }
 
-  orderBy(vocabulary: Vocabulary): any {
+  orderBy(vocabulary: ModelVocabulary): any {
     return vocabulary.id;
-  }
-
-  filter(vocabulary: Vocabulary) {
-    return !vocabulary.local;
   }
 }

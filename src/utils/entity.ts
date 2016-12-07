@@ -1,14 +1,13 @@
-import { containsAny, collectProperties, index, contains } from './array';
+import { containsAny, collectProperties, index } from './array';
 import { WithId } from '../components/contracts';
-import { areEqual, requireDefined } from './object';
+import { areEqual, requireDefined, isDefined } from './object';
 import { IHttpPromiseCallbackArg } from 'angular';
 import { Uri, Urn, RelativeUrl } from '../entities/uri';
 import { Localizable, Coordinate, Dimensions, GraphData, EntityConstructor } from '../entities/contract';
 import { Type } from '../entities/type';
 import { DefinedBy } from '../entities/definedBy';
-import { Concept, ConceptSuggestion, FintoConcept } from '../entities/vocabulary';
 import { Model } from '../entities/model';
-import { typeSerializer } from '../entities/serializer/serializer';
+import { LegacyConcept, Concept } from '../entities/vocabulary';
 
 export interface Destination {
   id: Uri;
@@ -52,12 +51,12 @@ export function idToIndexMap<T extends {id: Uri }>(items: T[]): Map<Urn, number>
   return new Map(items.map<[string, number]>((item: T, index: number) => [item.id.toString(), index]));
 }
 
-export function resolveConceptConstructor(graph: any): EntityConstructor<Concept> {
-  return isConceptSuggestionGraph(graph) ? ConceptSuggestion : FintoConcept;
+export function isConcept(concept: Concept|LegacyConcept|null|undefined): concept is Concept {
+  return isDefined(concept) && !concept.legacy;
 }
 
-export function isConceptSuggestionGraph(withType: { '@type': string|string[] }) {
-  return contains(typeSerializer.deserialize(withType['@type']), 'conceptSuggestion');
+export function resolveConceptConstructor(graph: any): EntityConstructor<Concept|LegacyConcept> {
+  return graph.hasOwnProperty('id') ? Concept : LegacyConcept;
 }
 
 export function isLocalizable(obj: any): obj is Localizable {

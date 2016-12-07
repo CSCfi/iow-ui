@@ -100,13 +100,8 @@ export class InteractiveHelpPredicateService implements PredicateService, Reseta
 
   newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri, type: KnownPredicateType, lang: Language): IPromise<T> {
 
-    return this.$q.all([
-      this.helpVocabularyService.getConceptSuggestion(conceptID).then(identity, _err => null),
-      this.helpVocabularyService.getFintoConcept(conceptID).then(identity, _err => null)
-    ])
-      .then(([suggestion, fintoConcept]) => {
-
-        const concept = suggestion || fintoConcept;
+    return this.helpVocabularyService.getConcept(conceptID).then(identity, _err => null)
+      .then(concept => {
 
         if (!concept) {
           throw new Error('Concept not found');

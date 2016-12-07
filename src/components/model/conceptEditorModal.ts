@@ -6,16 +6,15 @@ import { LanguageService, Localizer } from '../../services/languageService';
 import { comparingLocalizable } from '../../utils/comparators';
 import { ConfirmationModal } from '../common/confirmationModal';
 import { ConceptViewController } from './conceptView';
-import { any } from '../../utils/array';
 import { Uri } from '../../entities/uri';
 import { localizableContains } from '../../utils/language';
 import * as _ from 'lodash';
-import { isDefined } from '../../utils/object';
 import { Model } from '../../entities/model';
-import { Concept, Vocabulary, ConceptSuggestion } from '../../entities/vocabulary';
+import { Concept, Vocabulary, LegacyConcept } from '../../entities/vocabulary';
 import { DefinedBy } from '../../entities/definedBy';
-import { ConceptType } from '../../entities/type';
 import { VocabularyService } from '../../services/vocabularyService';
+import { any } from '../../utils/array';
+import { isConcept } from '../../utils/entity';
 
 export class ConceptEditorModal {
 
@@ -39,15 +38,14 @@ export class ConceptEditorModal {
 
 export class ConceptEditorModalController {
 
-  concepts: Concept[] = [];
-  searchResults: Concept[] = [];
-  selection: Concept;
+  concepts: (Concept|LegacyConcept)[] = [];
+  searchResults: (Concept|LegacyConcept)[] = [];
+  selection: Concept|LegacyConcept;
 
-  models: DefinedBy[] = [];
   vocabularies: Vocabulary[] = [];
   showModel: DefinedBy;
   showVocabulary: Vocabulary;
-  showConceptType: ConceptType;
+  showConceptType: 'concept'|'conceptSuggestion';
   searchText: string = '';
 
   loadingResults: boolean;
@@ -71,19 +69,13 @@ export class ConceptEditorModalController {
     vocabularyService.getConceptsForModel(model)
       .then(concepts => {
         this.concepts = concepts;
-        this.models = _.chain(concepts)
-          .filter(concept => concept instanceof ConceptSuggestion && !!concept.definedBy)
-          .map(concept => concept as ConceptSuggestion)
-          .map(concept => concept.definedBy!)
-          .uniqBy(definedBy => definedBy.id.uri)
-          .value();
 
         this.vocabularies = _.chain(concepts)
           .map(concept => concept.vocabularies)
           .flatten<Vocabulary|Uri>()
-          .filter(vocabulary => vocabulary instanceof Vocabulary && !vocabulary.local)
+          .filter(vocabulary => vocabulary instanceof Vocabulary)
           .map(vocabulary => vocabulary as Vocabulary)
-          .uniqBy(vocabulary => vocabulary.vocabularyId)
+          .uniqBy(vocabulary => vocabulary.internalId)
           .value();
 
         this.sort();
@@ -109,9 +101,8 @@ export class ConceptEditorModalController {
   }
 
   sort() {
-    const labelComparator = comparingLocalizable<Concept|DefinedBy>(this.localizer, definedBy => definedBy.label);
+    const labelComparator = comparingLocalizable<Concept|LegacyConcept>(this.localizer, definedBy => definedBy.label);
     this.concepts.sort(labelComparator);
-    this.models.sort(labelComparator);
   }
 
   getConceptIndex(concept: Concept) {
@@ -142,28 +133,23 @@ export class ConceptEditorModalController {
   search() {
     this.searchResults = this.concepts.filter(concept =>
       this.textFilter(concept) &&
-      this.modelFilter(concept) &&
       this.vocabularyFilter(concept) &&
       this.conceptTypeFilter(concept)
     );
   }
 
-  private textFilter(concept: Concept): boolean {
+  private textFilter(concept: Concept|LegacyConcept): boolean {
     return !this.searchText || localizableContains(concept.label, this.searchText);
   }
 
-  private modelFilter(concept: Concept): boolean {
-    return !this.showModel || (concept instanceof ConceptSuggestion && isDefined(concept.definedBy) && concept.definedBy.id.equals(this.showModel.id));
+  private vocabularyFilter(concept: Concept|LegacyConcept): boolean {
+    return !this.showVocabulary || isConcept(concept) && any(concept.vocabularies, v => v.internalId === this.showVocabulary.internalId);
   }
 
-  private vocabularyFilter(concept: Concept): boolean {
-    return !this.showVocabulary || any(concept.getVocabularyNames(), vocabulary => vocabulary.id.equals(this.showVocabulary.id));
-  }
-
-  private conceptTypeFilter(concept: Concept): boolean {
+  private conceptTypeFilter(concept: Concept|LegacyConcept): boolean {
     return !this.showConceptType
-      || this.showConceptType === 'conceptSuggestion' && concept.isOfType(this.showConceptType)
-      || this.showConceptType === 'concept' && !concept.isOfType('conceptSuggestion');
+      || this.showConceptType === 'conceptSuggestion' && concept.suggestion
+      || this.showConceptType === 'concept' && !concept.suggestion;
   }
 
   selectItem(item: Concept) {

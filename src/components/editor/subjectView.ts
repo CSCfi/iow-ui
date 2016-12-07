@@ -1,11 +1,10 @@
 import { module as mod }  from './module';
-import { IScope } from 'angular';
-import { LanguageService } from '../../services/languageService';
-import gettextCatalog = angular.gettext.gettextCatalog;
 import { SearchConceptModal } from './searchConceptModal';
 import { Class } from '../../entities/class';
 import { Predicate } from '../../entities/predicate';
 import { Model } from '../../entities/model';
+import { LanguageService } from '../../services/languageService';
+import { isConcept } from '../../utils/entity';
 
 mod.directive('subjectView', () => {
   return {
@@ -28,29 +27,17 @@ class SubjectViewController {
   model: Model;
   isEditing: () => boolean;
 
-  subjectDefinitionTitle: string;
-  vocabularies: string;
-  link: string|null = null;
+  constructor(private searchConceptModal: SearchConceptModal, private languageService: LanguageService) {
+  }
 
-  constructor($scope: IScope, private searchConceptModal: SearchConceptModal, languageService: LanguageService, gettextCatalog: gettextCatalog) {
-
-    const localizer = languageService.createLocalizer(this.model);
-
-    const setValues = () => {
-      const subject = this.entity.subject;
-      this.subjectDefinitionTitle = (!subject || !subject.suggestion) ? 'Concept definition' : 'Concept suggestion definition';
-
-      if (subject) {
-        this.vocabularies = subject.getVocabularyNames().map(v => v.getLocalizedName(localizer, gettextCatalog)).join(', ');
-        this.link = subject.suggestion ? null : subject.id.url;
-      } else {
-        this.link = null;
-      }
-    };
-
-    $scope.$watch(() => this.entity && this.entity.subject, setValues);
-    $scope.$watch(() => languageService.UILanguage, setValues);
-    $scope.$watch(() => localizer.language, setValues);
+  get vocabularies(): string {
+    if (isConcept(this.entity.subject)) {
+      return this.entity.subject.vocabularies
+        .map(vocabulary => this.languageService.translate(vocabulary.title, this.model))
+        .join(', ');
+    } else {
+      return '';
+    }
   }
 
   changeSubject() {
@@ -58,6 +45,6 @@ class SubjectViewController {
     if (normalizedType === 'property') {
       throw new Error('Must be known predicate type');
     }
-    this.searchConceptModal.openSelection(this.model.vocabularies, this.model, true, normalizedType).then(concept => this.entity.subject = concept);
+    this.searchConceptModal.openSelection(this.model.modelVocabularies, this.model, true, normalizedType).then(concept => this.entity.subject = concept);
   }
 }

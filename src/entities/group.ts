@@ -6,24 +6,26 @@ import { GroupType } from './type';
 import { Localizable } from './contract';
 import { init } from './mapping';
 import { GraphNode } from './graphNode';
-import { uriSerializer } from './serializer/entitySerializer';
+import { uriSerializer, entity, entityAwareList } from './serializer/entitySerializer';
+import { Vocabulary } from './vocabulary';
 
 export abstract class AbstractGroup extends GraphNode {
 
   static abstractGroupMapping = {
-    id:       { name: '@id',      serializer: uriSerializer },
-    label:    { name: 'label',    serializer: localizableSerializer },
-    comment:  { name: 'comment',  serializer: localizableSerializer },
-    homepage: { name: 'homepage', serializer: optional(identitySerializer<Url>()) }
+    id:           { name: '@id',        serializer: uriSerializer },
+    label:        { name: 'label',      serializer: localizableSerializer },
+    comment:      { name: 'comment',    serializer: localizableSerializer },
+    homepage:     { name: 'homepage',   serializer: optional(identitySerializer<Url>()) },
+    vocabularies: { name: 'references', serializer: entityAwareList(entity(() => Vocabulary)) }
   };
 
   id: Uri;
   label: Localizable;
   comment: Localizable;
   homepage: Url|null;
+  vocabularies: Vocabulary[];
   normalizedType: GroupType = 'group';
   selectionType: GroupType = 'group';
-
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);

@@ -10,7 +10,6 @@ export interface Config {
   environment: Environment;
   gitDate: string;
   gitHash: string;
-  fintoUrl: string;
   defaultModelNamespace(prefix: string): string;
 }
 
@@ -34,10 +33,6 @@ class EnvironmentConfig implements Config {
 
   get gitHash() {
     return process.env.GIT_HASH;
-  }
-
-  get fintoUrl() {
-    return process.env.FINTO_URL || 'http://dev.finto.fi/';
   }
 
   defaultModelNamespace(prefix: string) {

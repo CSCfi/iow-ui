@@ -5,7 +5,7 @@ export const model = loader.createLibrary(jhsGroupId, {
   prefix: 'jhs',
   label:   { fi: 'Julkishallinnon tietokomponentit' },
   comment: { fi: 'Julkisessa hallinnossa ja kaikilla toimialoilla yleisesti käytössä olevat tietosisällöt' },
-  vocabularies: ['eos']
+  vocabularies: ['eos'] // FIXME to something like 'http://purl.org/att/tuha/'
 });
 
 export namespace Associations {

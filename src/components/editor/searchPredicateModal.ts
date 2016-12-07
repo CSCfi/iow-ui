@@ -243,7 +243,7 @@ export class SearchPredicateController implements SearchController<PredicateList
   }
 
   createNew(type: KnownPredicateType) {
-    return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, type, this.searchText)
+    return this.searchConceptModal.openNewEntityCreation(this.model.modelVocabularies, this.model, type, this.searchText)
       .then(result => {
         if (!this.typeSelectable) {
           this.$uibModalInstance.close(result);

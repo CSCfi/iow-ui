@@ -21,7 +21,7 @@
               <div class="input-group input-group-lg">
                 <div class="selectContainer">
                   <select id="vocabulary" class="form-control" ng-model="ctrl.selectedVocabulary" ignore-dirty
-                          ng-options="ctrl.translateVocabulary(vocabulary) for vocabulary in ctrl.vocabularies">
+                          ng-options="(vocabulary.title | translateValue: ctrl.model) for vocabulary in ctrl.vocabularies">
                     <option value="" translate>All vocabularies</option>
                   </select>
                 </div>
@@ -55,7 +55,7 @@
 
               <editable data-title="Vocabulary" context="ctrl.context" autofocus>
                 <select id="vocabularySelection" class="form-control" required ng-model="ctrl.selection.vocabulary"
-                        ng-options="ctrl.translateVocabulary(vocabulary) for vocabulary in ctrl.selectableVocabularies">
+                        ng-options="(vocabulary.title | translateValue: ctrl.model) for vocabulary in ctrl.selectableVocabularies">
                 </select>
               </editable>
 

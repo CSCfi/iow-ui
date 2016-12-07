@@ -1,4 +1,4 @@
-import { Url, Uri, Urn } from '../entities/uri';
+import { Uri, Urn, Url } from '../entities/uri';
 
 export type Frame = {};
 
@@ -31,8 +31,13 @@ const coreContext = {
 };
 
 const vocabularyContext = Object.assign({}, coreContext, {
-  description,
-  isFormatOf: { '@id': 'http://purl.org/dc/terms/isFormatOf', '@type': '@id' }
+  code: { '@id' : 'http://termed.thl.fi/meta/code' },
+  graphCode: { '@id' : 'http://termed.thl.fi/meta/graphCode' },
+  graphId: { '@id' : 'http://termed.thl.fi/meta/graphId' },
+  typeId: { '@id' : 'http://termed.thl.fi/meta/typeId' },
+  id: { '@id' : 'http://termed.thl.fi/meta/id' },
+  graph: { '@id' : 'http://termed.thl.fi/meta/graph',  '@type' : '@id' },
+  hasTopConcept: { '@id' : 'http://www.w3.org/2004/02/skos/core#hasTopConcept', '@type' : '@id' }
 });
 
 const conceptContext = Object.assign({}, coreContext, {
@@ -141,12 +146,26 @@ function frame(data: any, context: {}, frame?: {}) {
   return Object.assign({ '@context': Object.assign({}, data['@context'], context) }, frame);
 }
 
-export function groupFrame(data: any): Frame {
-  return frame(data, groupContext);
+export function groupFrame(data: any, id: Uri): Frame {
+  return frame(data, groupContext, {
+    '@id': id.toString(),
+    graph: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    }
+  });
 }
 
 export function groupListFrame(data: any): Frame {
-  return frame(data, groupContext);
+  return frame(data, groupContext, {
+    '@type': 'foaf:Group',
+    graph: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    }
+  });
 }
 
 export function modelFrame(data: any, options: { id?: Uri|Urn, prefix?: string } = {}): Frame {
@@ -249,7 +268,25 @@ export function classListFrame(data: any): Frame {
   return frame(data, classContext, { isDefinedBy: {} });
 }
 
-export function iowConceptFrame(data: any): Frame {
+export function conceptFrame(data: any, id: Uri|Url): Frame {
+
+  return frame(data, conceptContext, {
+    '@id': id.toString(),
+    inScheme: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    },
+    broader: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    }
+  });
+}
+
+export function conceptListFrame(data: any): Frame {
+
   return frame(data, conceptContext, {
     '@type': 'skos:Concept',
     inScheme: {
@@ -257,12 +294,7 @@ export function iowConceptFrame(data: any): Frame {
       '@default': [],
       '@embed': '@always'
     },
-    isDefinedBy: {
-      '@omitDefault': true,
-      '@default': [],
-      '@embed': '@always'
-    },
-    broaderConcept: {
+    broader: {
       '@omitDefault': true,
       '@default': [],
       '@embed': '@always'
@@ -272,36 +304,18 @@ export function iowConceptFrame(data: any): Frame {
 
 export function vocabularyFrame(data: any): Frame {
   return frame(data, vocabularyContext, {
-    '@type': ['skos:ConceptScheme', 'skos:Collection']
+    '@type': ['skos:ConceptScheme'],
+    graph: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@always'
+    },
+    hasTopConcept: {
+      '@omitDefault': true,
+      '@default': [],
+      '@embed': '@never'
+    }
   });
-}
-
-export function fintoConceptFrame(data: any, id: Url): Frame {
-
-  const context = Object.assign({}, coreContext, {
-    value: null,
-    lang: null,
-    uri: null,
-    type: null,
-    graph: null,
-    comment,
-    inScheme
-  });
-
-  return frame(data, context, { '@id': id });
-}
-
-export function fintoConceptSearchResultsFrame(data: any): Frame {
-
-  const context = Object.assign({}, coreContext, {
-    value: null,
-    lang: null,
-    uri: null,
-    type: null,
-    graph: null
-  });
-
-  return frame(data, context, { '@type': 'skos:Concept' });
 }
 
 export function userFrame(data: any): Frame {

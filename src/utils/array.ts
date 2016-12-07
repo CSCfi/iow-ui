@@ -209,3 +209,11 @@ export function groupBy<T, I>(arr: T[], indexByExtractor: (item: T) => I): Map<I
 
   return result;
 }
+
+export function requireSingle<T>(arr: T[]): T {
+  if (arr.length !== 1) {
+    throw new Error('Single element required, was: ' + arr.length);
+  }
+
+  return arr[0];
+}

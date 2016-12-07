@@ -11,7 +11,7 @@ import { config } from '../../config';
 import { Localizable } from '../entities/contract';
 import { State, ConstraintType, KnownModelType, KnownPredicateType } from '../entities/type';
 import { ImportedNamespace, Model } from '../entities/model';
-import { Vocabulary, ConceptSuggestion } from '../entities/vocabulary';
+import { Vocabulary, Concept } from '../entities/vocabulary';
 import { Class, Property } from '../entities/class';
 import { User } from '../entities/user';
 import { Predicate, Association, Attribute } from '../entities/predicate';
@@ -164,10 +164,9 @@ export class EntityLoader {
     return this.$q.all(this.actions);
   }
 
-  createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<ConceptSuggestion> {
+  createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<Concept> {
     const result = this.loggedIn.then(() => modelPromise)
-      .then((model: Model) => this.vocabularyService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, null, 'fi', model))
-      .then(conceptId => this.vocabularyService.getConceptSuggestion(conceptId));
+      .then((model: Model) => this.vocabularyService.createConceptSuggestion(model.modelVocabularies[0].vocabulary, details.label, details.comment, null, 'fi', model));
 
     return this.addAction(result, details);
   }
@@ -187,7 +186,7 @@ export class EntityLoader {
         for (const importedVocabulary of details.vocabularies || []) {
           promises.push(
             this.vocabularies.then((vocabularies: Vocabulary[]) => {
-                const vocabulary = first(vocabularies, (vocabulary: Vocabulary) => vocabulary.vocabularyId === importedVocabulary);
+                const vocabulary = first(vocabularies, (vocabulary: Vocabulary) => vocabulary.id.toString() === importedVocabulary);
                 if (!vocabulary) {
                   throw new Error('Vocabulary not found: ' + vocabulary);
                 }

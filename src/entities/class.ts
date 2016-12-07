@@ -1,7 +1,6 @@
 import { requireDefined, assertNever } from '../utils/object';
 import {
-  resourceUrl, glyphIconClassForType, glyphIconClassUnknown,
-  resolveConceptConstructor
+  resourceUrl, glyphIconClassForType, glyphIconClassUnknown, resolveConceptConstructor
 } from '../utils/entity';
 import {
   normalizeClassType, SelectionType, PredicateType,
@@ -18,7 +17,7 @@ import { VisualizationClass } from './visualization';
 import { comparingNumber } from '../utils/comparators';
 import { Predicate, Attribute, Association } from './predicate';
 import { init, serialize, initSingle } from './mapping';
-import { Concept } from './vocabulary';
+import { Concept, LegacyConcept } from './vocabulary';
 import { Moment } from 'moment';
 import { GraphNode } from './graphNode';
 import {
@@ -100,7 +99,7 @@ export class Class extends AbstractClass implements VisualizationClass {
   scopeClass: Uri|null;
   state: State|null;
   properties: Property[];
-  subject: Concept|null;
+  subject: Concept|LegacyConcept|null;
   equivalentClasses: Uri[];
   constraint: Constraint;
   version: Urn;

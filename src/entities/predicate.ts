@@ -6,7 +6,7 @@ import { DefinedBy } from './definedBy';
 import { Localizable } from './contract';
 import { Moment } from 'moment';
 import { DataType } from './dataTypes';
-import { Concept } from './vocabulary';
+import { Concept, LegacyConcept } from './vocabulary';
 import { init, serialize } from './mapping';
 import { GraphNode } from './graphNode';
 import {
@@ -81,7 +81,7 @@ export class Predicate extends AbstractPredicate {
 
   state: State|null; // External don't have state
   subPropertyOf: Uri|null;
-  subject: Concept|null;
+  subject: Concept|LegacyConcept|null;
   equivalentProperties: Uri[];
   version: Urn|null;
   editorialNote: Localizable;

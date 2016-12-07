@@ -142,7 +142,15 @@ export class DefaultClassService implements ClassService {
   }
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
-    return this.$http.get<GraphData>(config.apiEndpointWithName('classCreator'), {params: {modelID: model.id.uri, classLabel: upperCaseFirst(classLabel), conceptID: conceptID.uri, lang}})
+
+    const params = {
+      modelID: model.id.uri,
+      classLabel: upperCaseFirst(classLabel),
+      conceptID: conceptID.uri,
+      lang
+    };
+
+    return this.$http.get<GraphData>(config.apiEndpointWithName('classCreator'), {params})
       .then(expandContextWithKnownModels(model))
       .then((response: any) => this.deserializeClass(response.data!))
       .then((klass: Class) => {

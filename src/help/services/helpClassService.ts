@@ -104,14 +104,8 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
   }
 
   newClass(model: Model, classLabel: string, conceptID: Uri, lang: Language): IPromise<Class> {
-
-    return this.$q.all([
-      this.helpVocabularyService.getConceptSuggestion(conceptID).then(identity, _err => null),
-      this.helpVocabularyService.getFintoConcept(conceptID).then(identity, _err => null)
-    ])
-      .then(([suggestion, fintoConcept]) => {
-
-        const concept = suggestion || fintoConcept;
+    return this.helpVocabularyService.getConcept(conceptID).then(identity, _err => null)
+      .then(concept => {
 
         if (!concept) {
           throw new Error('Concept not found');
