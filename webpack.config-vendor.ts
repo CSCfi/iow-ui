@@ -20,7 +20,7 @@ export function createConfig(build: boolean): webpack.Configuration {
     })
   ];
 
-  const servePlugins = [];
+  const servePlugins: webpack.Plugin[] = [];
 
   return {
     entry: {

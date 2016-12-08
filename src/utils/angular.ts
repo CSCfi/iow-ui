@@ -131,7 +131,7 @@ export function isTargetElementInsideElement(event: { target: Element }, element
 
   const target = event.target;
 
-  for (let e = target; !!e; e = e.parentElement) {
+  for (let e: Element|null = target; !!e; e = e.parentElement) {
     if (e === element) {
       return true;
     }
