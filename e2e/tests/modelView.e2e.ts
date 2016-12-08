@@ -35,9 +35,9 @@ describe('Library 1 model view', () => {
     it('Adds vocabulary', () => {
       view.edit();
       const modal = view.form.vocabularies.addNew();
-      modal.selectResultByName(VocabulariesView.EOS);
+      modal.selectResultByName(VocabulariesView.TUHA);
       view.saveAndReload();
-      expect(view.form.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(true);
+      expect(view.form.vocabularies.getRowByName(VocabulariesView.TUHA).isPresent()).toBe(true);
     });
 
     it('Adds reference data', () => {

@@ -20,9 +20,9 @@ describe('Model view clean', () => {
 
   it('Removes vocabulary', () => {
     view.edit();
-    view.form.vocabularies.getRowByName(VocabulariesView.EOS).remove();
+    view.form.vocabularies.getRowByName(VocabulariesView.TUHA).remove();
     view.saveAndReload();
-    expect(view.form.vocabularies.getRowByName(VocabulariesView.EOS).isPresent()).toBe(false);
+    expect(view.form.vocabularies.getRowByName(VocabulariesView.TUHA).isPresent()).toBe(false);
   });
 
   it('Removes reference data', () => {

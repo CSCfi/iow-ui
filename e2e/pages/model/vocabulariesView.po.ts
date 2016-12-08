@@ -3,7 +3,7 @@ import { VocabularyModal } from './modal/vocabularyModal.po';
 
 export class VocabulariesView extends ModelPanelView<VocabularyModal> {
 
-  static EOS = 'Elinikäisen oppimisen sanasto';
+  static TUHA = 'Tutkimushallinnon sanasto';
 
   constructor() {
     super('vocabularies-view', VocabularyModal);
