@@ -32,7 +32,8 @@ export class DefaultVocabularyService implements VocabularyService {
   searchConcepts(searchText: string, vocabulary?: Vocabulary): IPromise<Concept[]> {
 
     const params: any = {
-      term: searchText
+      // XXX: api wants search strings as lower case otherwise it finds nothing
+      term: searchText ? searchText.toLowerCase() : ''
     };
 
     if (vocabulary) {
