@@ -31,13 +31,18 @@ export function initSingle<T, N extends GraphNode>(instance: N, mapping: Mapping
 
   const value = resolveValue(mapping.name);
 
-  switch (mapping.serializer.type) {
-    case 'Normal':
-      return mapping.serializer.deserialize(value);
-    case 'EntityAware':
-      return mapping.serializer.deserialize(value, instance);
-    default:
-      return assertNever(mapping.serializer, 'Unsupported serializer');
+  try {
+    switch (mapping.serializer.type) {
+      case 'Normal':
+        return mapping.serializer.deserialize(value);
+      case 'EntityAware':
+        return mapping.serializer.deserialize(value, instance);
+      default:
+        return assertNever(mapping.serializer, 'Unsupported serializer');
+    }
+  } catch (e) {
+    console.log(`Error while deserializing property ${mapping.name}`, instance);
+    throw e;
   }
 }
 
