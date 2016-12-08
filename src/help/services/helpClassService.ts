@@ -108,7 +108,7 @@ export class InteractiveHelpClassService implements ClassService, ResetableServi
       .then(concept => {
 
         if (!concept) {
-          throw new Error('Concept not found');
+          throw new Error('Concept not found: ' + conceptID.toString());
         }
 
         const currentTime = dateSerializer.serialize(moment());
