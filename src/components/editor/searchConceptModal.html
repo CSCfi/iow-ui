@@ -36,6 +36,7 @@
           <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
           <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selectedItem" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
+            <!-- TODO duplication with conceptEditorModal search results -->
             <div>
               <i ng-class="searchResult.glyphIconClass"></i>
               <h5>

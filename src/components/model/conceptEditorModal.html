@@ -54,14 +54,22 @@
         <ajax-loading-indicator ng-if="ctrl.loadingResults"></ajax-loading-indicator>
 
         <search-results ng-if="!ctrl.loadingResults" items="ctrl.searchResults" selected="ctrl.selection" exclude="ctrl.exclude" on-select="ctrl.selectItem(item)" edit-in-progress="ctrl.editInProgress">
-          <h5>{{searchResult | translateLabel: ctrl.model}}</h5>
+          <!-- TODO duplication with searchConceptModal search results -->
+          <div>
+            <i ng-class="searchResult.glyphIconClass"></i>
+            <h5>
+              <highlight text="searchResult.label" context="ctrl.model" search="ctrl.searchText"></highlight> <span ng-show="searchResult.suggestion">({{'suggestion' | translate}})</span>
+            </h5>
+          </div>
 
-          <p>
-            <span ng-repeat="vocabulary in ctrl.searchResult.vocabularies">
-              {{vocabulary.title | translateValue: ctrl.model}}
-              <span ng-show="!$last">, </span>
-            </span>
-          </p>
+          <div class="origin">
+            <div class="pull-left">
+                <span ng-repeat="vocabulary in searchResult.vocabularies">
+                  {{vocabulary.title | translateValue: ctrl.model}} <span ng-show="!$last">, </span>
+                </span>
+            </div>
+            <span class="pull-right" ng-if="searchResult.id.isUrl()">{{searchResult.id.url}}</span>
+          </div>
         </search-results>
       </div>
 
