@@ -6,8 +6,6 @@ import { Vocabulary, Concept } from '../../entities/vocabulary';
 import { Uri } from '../../entities/uri';
 import { Model } from '../../entities/model';
 import * as frames from '../../entities/frames';
-import moment = require('moment');
-import { dateSerializer } from '../../entities/serializer/serializer';
 import { ResourceStore } from './resourceStore';
 
 export class InteractiveHelpVocabularyService implements VocabularyService, ResetableService {
@@ -33,13 +31,16 @@ export class InteractiveHelpVocabularyService implements VocabularyService, Rese
 
   createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, _broaderConceptId: Uri|any, lang: Language, model: Model): IPromise<Concept> {
 
+    const id = Uri.randomUUID();
+
     const graph = {
-      '@id': Uri.randomUUID().toString(),
-      '@type': [ 'iow:ConceptSuggestion', 'skos:Concept' ],
+      '@id': id.toString(),
+      'id': id.uuid,
+      '@type': [ 'skos:Concept' ],
       prefLabel: { [lang]: label },
       definition: { [lang]: comment },
-      inScheme:  vocabulary.id.toString(),
-      atTime: dateSerializer.serialize(moment())
+      inScheme: vocabulary.serialize(true, true),
+      graph: vocabulary.material.serialize(true, true)
     };
 
     const conceptSuggestion = new Concept(graph, model.context, frames.conceptFrame);
@@ -48,7 +49,13 @@ export class InteractiveHelpVocabularyService implements VocabularyService, Rese
   }
 
   getConcept(id: Uri): IPromise<Concept> {
-    return this.defaultVocabularyService.getConcept(id);
+    const conceptSuggestion = this.store.findFirst(cs => cs.id.equals(id));
+
+    if (conceptSuggestion) {
+      return this.$q.when(conceptSuggestion);
+    } else {
+      return this.defaultVocabularyService.getConcept(id);
+    }
   }
 
   getConceptsForModel(model: Model): IPromise<Concept[]> {
