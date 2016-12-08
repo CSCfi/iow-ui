@@ -55,29 +55,23 @@
         <div class="col-md-4 search-selection">
           <div ng-if="ctrl.selection">
 
-            <div ng-if="ctrl.isSelectionConcept()">
-              <non-editable ng-if="!ctrl.selection.suggestion" data-title="Concept label" value="ctrl.selection.label" context="ctrl.context"></non-editable>
-              <non-editable ng-if="ctrl.selection.suggestion" data-title="Concept suggestion label" value="ctrl.selection.label" context="ctrl.context"></non-editable>
-              <non-editable data-title="Concept id" value="ctrl.selection.id" context="ctrl.context"></non-editable>
-              <non-editable data-title="Definition" value="ctrl.selection.comment" context="ctrl.context"></non-editable>
-              <non-editable-vocabulary vocabularies="ctrl.selection.vocabularies" context="ctrl.context"></non-editable-vocabulary>
-            </div>
+            <concept-form ng-if="ctrl.isSelectionConcept()" concept="ctrl.selection" model="ctrl.model"></concept-form>
 
             <div ng-if="ctrl.isSelectionNewConceptData()">
 
-              <editable data-title="Vocabulary" context="ctrl.context" autofocus>
+              <editable data-title="Vocabulary" context="ctrl.model" autofocus>
                 <select id="vocabularySelection" class="form-control" required ng-model="ctrl.selection.vocabulary"
                         ng-options="(vocabulary.title | translateValue: ctrl.model) for vocabulary in ctrl.vocabularies">
                 </select>
               </editable>
 
-              <editable data-title="Concept label" context="ctrl.context">
+              <editable data-title="Concept label" context="ctrl.model">
                 <div class="input-group input-group-md">
                   <input id="conceptLabel" type="text" class="form-control" required string-input="label" ng-model="ctrl.selection.label" />
                 </div>
               </editable>
 
-              <editable data-title="Definition" context="ctrl.context">
+              <editable data-title="Definition" context="ctrl.model">
                 <div class="input-group input-group-md">
                   <textarea id="conceptComment" class="form-control" required string-input ng-model="ctrl.selection.comment"></textarea>
                 </div>

@@ -83,6 +83,7 @@ function isNewConceptData(obj: Concept|NewConceptData): obj is NewConceptData {
 
 class SearchConceptController implements SearchController<Concept> {
 
+  editInProgress = () => this.$scope.form.editing && this.$scope.form.$dirty;
   close = this.$uibModalInstance.dismiss;
   queryResults: Concept[];
   searchResults: (Concept|AddNewConcept)[];
@@ -93,7 +94,6 @@ class SearchConceptController implements SearchController<Concept> {
   selectedVocabulary: ModelVocabulary;
   searchText: string = '';
   submitError: string|null = null;
-  editInProgress = () => this.$scope.form.$dirty;
   loadingResults: boolean;
   selectedItem: Concept|AddNewConcept;
   vocabularies: ModelVocabulary[];
@@ -112,7 +112,7 @@ class SearchConceptController implements SearchController<Concept> {
               public newEntityCreation: boolean,
               private allowSuggestions: boolean,
               vocabularies: ModelVocabulary[],
-              private model: Model,
+              public model: Model,
               private vocabularyService: VocabularyService,
               private gettextCatalog: gettextCatalog) {
 
@@ -189,9 +189,11 @@ class SearchConceptController implements SearchController<Concept> {
 
     this.selectedItem = item;
     this.submitError = null;
+    this.$scope.form.editing = false;
     this.$scope.form.$setPristine();
 
     if (item instanceof AddNewConcept) {
+      this.$scope.form.editing = true;
       this.selection = new NewConceptData(lowerCase(this.searchText, this.localizer.language), this.resolveInitialVocabulary());
     } else {
       this.vocabularyService.getConcept(item.id).then(concept => this.selection = concept);
