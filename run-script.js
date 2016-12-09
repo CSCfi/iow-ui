@@ -6,6 +6,7 @@ const tsconfig = require('./tsconfig.json');
 const config = {
   files: [],
   compilerOptions: Object.assign({}, tsconfig.compilerOptions, {
+    typeRoots: [ 'node_modules/@types', 'types' ],
     types: [ 'node', 'webpack', 'karma', 'protractor' ]
   })
 };
