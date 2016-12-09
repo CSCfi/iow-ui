@@ -106,7 +106,7 @@
     "strip-sourcemap-loader": "0.0.1",
     "style-loader": "0.13.1",
     "ts-loader": "1.2.1",
-    "ts-node": "1.6.1",
+    "ts-node": "1.7.0",
     "tslint": "3.15.1",
     "tslint-loader": "2.1.5",
     "typescript": "2.1.4",
