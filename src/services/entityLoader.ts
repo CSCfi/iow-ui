@@ -420,7 +420,7 @@ export class EntityLoader {
           p.dataType = details.dataType;
         }
 
-        p.example = details.example || null;
+        p.example = details.example ? [details.example] : [];
         p.minCount = details.minCount || null;
         p.maxCount = details.maxCount || null;
         p.pattern = details.pattern || null;

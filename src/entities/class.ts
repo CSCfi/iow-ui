@@ -354,7 +354,7 @@ export class Property extends GraphNode {
   state: State;
   label: Localizable;
   comment: Localizable;
-  example: string|null;
+  example: string[];
   defaultValue: string|null;
   dataType: DataType|null;
   language: Language[];
