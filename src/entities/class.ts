@@ -326,7 +326,7 @@ export class Property extends GraphNode {
     state:              { name: 'versionInfo',          serializer: valueOrDefault(identitySerializer<State>(), 'Unstable') },
     label:              { name: 'label',                serializer: localizableSerializer },
     comment:            { name: 'comment',              serializer: localizableSerializer },
-    example:            { name: 'example',              serializer: optional(stringSerializer) },
+    example:            { name: 'example',              serializer: list(stringSerializer) },
     defaultValue:       { name: 'defaultValue',         serializer: optional(stringSerializer) },
     dataType:           { name: 'datatype',             serializer: optional(identitySerializer<DataType>()) },
     language:           { name: 'language',             serializer: list(identitySerializer<Language>()) },
