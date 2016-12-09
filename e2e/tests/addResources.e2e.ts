@@ -8,6 +8,7 @@ import {
 import { AddPropertiesFromClassModal } from '../pages/editor/modal/addPropertiesFromClassModal.po';
 import { PredicateView } from '../pages/editor/predicateView.po';
 import { library2Parameters, profileParameters, library1Parameters } from './test-data';
+import { ClassForm } from '../pages/editor/classForm.po';
 
 const navbar = new NavBar();
 
@@ -20,7 +21,7 @@ function verifyName(view: ClassView|PredicateView, params: AddResourceParameters
   expect(view.form.label.content.getText()).toBe(params.name);
 }
 
-function addClassAndVerify(page: ModelPage, klass: ClassDescriptor, setName: boolean, selectProperties: boolean) {
+function addClassAndVerify(page: ModelPage, klass: ClassDescriptor, selectProperties: boolean, mangler?: (view: ClassForm, klass: ClassDescriptor) => void) {
 
   page.addClass(klass.origin);
 
@@ -30,8 +31,8 @@ function addClassAndVerify(page: ModelPage, klass: ClassDescriptor, setName: boo
 
   const view = page.classView(klass.type);
 
-  if (setName) {
-    view.form.label.setValue(klass.origin.name);
+  if (mangler) {
+    mangler(view.form, klass);
   }
 
   const save = klass.origin.type !== 'existingResource' || klass.type  !== 'class';
@@ -76,13 +77,17 @@ describe('Add resources', () => {
 
   it('adds new classes using existing concepts', () => {
     const page = ModelPage.navigateToExistingModel(library2Parameters.prefix, library2Parameters.type);
-    addClassAndVerify(page, library2Parameters.classes.first, false, false);
-    addClassAndVerify(page, library2Parameters.classes.second, false, false);
+    addClassAndVerify(page, library2Parameters.classes.first, false);
+    addClassAndVerify(page, library2Parameters.classes.second, false, (form, klass) => {
+      // Concept label is "Luonnollinen henkilö" so class needs some mangling
+      form.id.setValue(classNameToResourceIdName(klass.origin.name));
+      form.label.setValue(klass.origin.name);
+    })
   });
 
   it('adds new class using concept suggestion', () => {
     const page = ModelPage.navigateToExistingModel(library1Parameters.prefix, library1Parameters.type);
-    addClassAndVerify(page, library1Parameters.classes.first, false, false);
+    addClassAndVerify(page, library1Parameters.classes.first, false);
   });
 
   it('adds new attribute using concept suggestion', () => {
@@ -97,12 +102,12 @@ describe('Add resources', () => {
 
   it('assigns class from another library', () => {
     const page = ModelPage.navigateToExistingModel(library1Parameters.prefix, library1Parameters.type);
-    addClassAndVerify(page, library1Parameters.classes.second, false, false);
+    addClassAndVerify(page, library1Parameters.classes.second, false);
   });
 
   it('specializes class without properties from library', () => {
     const page = ModelPage.navigateToExistingModel(profileParameters.prefix, profileParameters.type);
-    addClassAndVerify(page, profileParameters.classes.first, false, false);
+    addClassAndVerify(page, profileParameters.classes.first, false);
   });
 
   describe('Adds properties to profile class', () => {
@@ -149,11 +154,13 @@ describe('Add resources', () => {
 
   it('specializes class with properties from library', () => {
     const page = ModelPage.navigateToExistingModel(profileParameters.prefix, profileParameters.type);
-    addClassAndVerify(page, profileParameters.classes.second, false, true);
+    addClassAndVerify(page, profileParameters.classes.second, true);
   });
 
   it('specializes external class', () => {
     const page = ModelPage.navigateToExistingModel(profileParameters.prefix, profileParameters.type);
-    addClassAndVerify(page, profileParameters.classes.third, true, false);
+    addClassAndVerify(page, profileParameters.classes.third, false, (form, klass) => {
+      form.label.setValue(klass.origin.name);
+    });
   });
 });

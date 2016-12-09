@@ -8,6 +8,7 @@ import { defaultTimeout } from '../../util/expectation';
 
 export class ClassForm {
 
+  id = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(this.type) + ' id');
   label = EditableComponent.byTitleLocalizationKey(this.element, upperCaseFirst(this.type) + ' label');
   description = EditableComponent.byTitleLocalizationKey(this.element, 'Description');
   properties = this.element.$$('accordion.properties accordion-group');
