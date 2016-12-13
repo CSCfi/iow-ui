@@ -39,7 +39,7 @@ mod.directive('editableMultiple', /* @ngInject */ ($q: IQService) => {
       inputElement.on('keydown', keyDownHandler);
       inputElement.on('blur', blurHandler);
 
-      $scope.$on('$destory', () => {
+      $scope.$on('$destroy', () => {
         inputElement.off('keydown', keyDownHandler);
         inputElement.off('blur', blurHandler);
       });
