@@ -148,7 +148,7 @@
   <h4 translate>Reusable predicate</h4>
 
   <uib-accordion class="reusable-predicate">
-    <uib-accordion-group is-open="predicateOpen">
+    <div uib-accordion-group is-open="predicateOpen">
 
       <uib-accordion-heading>
         <span accordion-chevron is-open="predicateOpen">{{ctrl.predicateName}}</span>
@@ -156,6 +156,6 @@
 
       <property-predicate-view ng-if="predicateOpen" property="ctrl.property" model="ctrl.model"></property-predicate-view>
 
-    </uib-accordion-group>
+    </div>
   </uib-accordion>
 </div>

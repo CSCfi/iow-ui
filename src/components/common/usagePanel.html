@@ -1,5 +1,5 @@
 <uib-accordion>
-  <uib-accordion-group is-open="ctrl.open">
+  <div uib-accordion-group is-open="ctrl.open">
     <uib-accordion-heading>
       <span accordion-chevron is-open="ctrl.open">{{'Usage' | translate}}</span>
     </uib-accordion-heading>
@@ -7,5 +7,5 @@
       <usage ng-show="ctrl.hasReferrers()" usage="ctrl.usage" show-links="true" context="ctrl.context"></usage>
       <p ng-hide="ctrl.loading || ctrl.hasReferrers()" translate>No referrers</p>
     </div>
-  </uib-accordion-group>
+  </div>
 </uib-accordion>
