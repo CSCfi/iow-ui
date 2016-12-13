@@ -41,7 +41,7 @@ export function isDifferentUrl(lhs: string, rhs: string): boolean {
 
 export function extendNgModelOptions(ngModel: INgModelController, options: any) {
   if (ngModel.$options) {
-    Object.assign(ngModel.$options, options);
+    ngModel.$options = ngModel.$options.createChild(options);
   } else {
     ngModel.$options = options;
   }

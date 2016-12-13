@@ -54,13 +54,15 @@ mod.config(routeConfig);
 
 mod.config(($locationProvider: ILocationProvider,
             $logProvider: ILogProvider,
-            $compileProvider: ICompileProvider,
+            $compileProvider: Angular16ICompileProvider,
             $animateProvider: IAnimateProvider,
             $uibTooltipProvider: ITooltipProvider) => {
 
   $locationProvider.html5Mode(true);
   $logProvider.debugEnabled(false);
 
+  // Breaking change in angular 1.5 -> 1.6 consider adopting the $onInit style which is now default
+  $compileProvider.preAssignBindingsEnabled(true);
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|https?|mailto):/);
 
   // enable angular-animate framework when 'ng-animate-enabled' class is added to animated element
@@ -79,3 +81,7 @@ export const done = new Promise((resolve) => {
 
 angular.bootstrap(document.body, ['iow-ui'], {strictDi: true});
 
+// TODO replace with angular 1.6 @types when available
+interface Angular16ICompileProvider extends ICompileProvider {
+  preAssignBindingsEnabled(value: boolean): void;
+}
