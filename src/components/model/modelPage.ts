@@ -545,12 +545,7 @@ export class ModelPageController implements ModelPageActions, HelpProvider, Mode
     return getRouteSelection()
       .then(selectionFromRoute => {
         const selection = selectionFromRoute || rootClassSelection();
-
-        if (!matchesIdentity(this.selection, selection)) {
-          return this.selectByTypeAndId(selection);
-        } else {
-          return this.$q.resolve();
-        }
+        return this.selectByTypeAndId(selection);
       });
   }
 
@@ -559,23 +554,28 @@ export class ModelPageController implements ModelPageActions, HelpProvider, Mode
 
     // set selected item also here for showing selection before entity actually is loaded
     this.selectedItem = selection;
+    const selectionChanged = !matchesIdentity(this.selection, selection);
 
     if (selection) {
-      return this.fetchEntityByTypeAndId(selection)
-        .then(entity => {
-          if (!entity && !isRetry) {
-            return this.selectByTypeAndId({
-              id: selection.id,
-              selectionType: selection.selectionType === 'class' ? 'predicate' : 'class'
-            }, true);
-          } else {
-            if (!entity) {
-              return this.$q.reject('resource not found');
+      if (selectionChanged) {
+        return this.fetchEntityByTypeAndId(selection)
+          .then(entity => {
+            if (!entity && !isRetry) {
+              return this.selectByTypeAndId({
+                id: selection.id,
+                selectionType: selection.selectionType === 'class' ? 'predicate' : 'class'
+              }, true);
             } else {
-              return this.updateSelection(entity);
+              if (!entity) {
+                return this.$q.reject('resource not found');
+              } else {
+                return this.updateSelection(entity);
+              }
             }
-          }
-        });
+          });
+      } else {
+        return this.$q.resolve();
+      }
     } else {
       return this.$q.when(this.updateSelection(null));
     }
