@@ -5,10 +5,10 @@ import {
   isValidPredicateIdentifier
 } from './validators';
 import { Uri } from '../../entities/uri';
-import { extendNgModelOptions } from '../../utils/angular';
 import { module as mod }  from './module';
 import { Class } from '../../entities/class';
 import { Predicate } from '../../entities/predicate';
+import { extendNgModelOptions } from '../../utils/angular';
 
 
 interface IdInputAttributes extends IAttributes {
@@ -25,7 +25,14 @@ mod.directive('idInput', /* @ngInject */ ($q: IQService, validatorService: Valid
     link($scope: IdInputScope, _element: JQuery, attributes: IdInputAttributes, modelController: INgModelController) {
       let previous: Uri|null = null;
 
-      extendNgModelOptions(modelController, { updateOn: 'blur' });
+      extendNgModelOptions(modelController, {
+        updateOnDefault: true,
+        updateOn: 'blur default',
+        debounce: {
+          'blur': 0,
+          'default': 1000
+        }
+      });
 
       modelController.$parsers.push((value: string) => {
         // doesn't handle scenario without initial Uri
