@@ -46,7 +46,7 @@ export class ApplicationController {
         event.preventDefault();
 
         confirmationModal.openCloseModal().then(() => {
-          modalScope.$dismiss();
+          modalScope.$dismiss('cancel');
           $location.url(nextUrl($location, next));
         });
       }
