@@ -1,6 +1,8 @@
 import { IPromise, ILocationService, ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import { Model } from '../../entities/model';
+import { identity } from '../../utils/function';
+import { modalCancelHandler } from '../../utils/angular';
 
 export class NotificationModal {
   /* @ngInject */
@@ -32,22 +34,22 @@ export class NotificationModal {
   }
 
   openNotLoggedIn() {
-    this.open('Session expired', 'Please login to perform the action');
+    this.open('Session expired', 'Please login to perform the action').then(identity, modalCancelHandler);
   }
 
   openModelNotFound() {
-    this.open('Model not found', 'You will be redirected to the front page').then(() => this.$location.url('/'));
+    this.open('Model not found', 'You will be redirected to the front page').then(() => this.$location.url('/'), modalCancelHandler);
   }
 
   openGroupNotFound() {
-    this.open('Group not found', 'You will be redirected to the front page').then(() => this.$location.url('/'));
+    this.open('Group not found', 'You will be redirected to the front page').then(() => this.$location.url('/'), modalCancelHandler);
   }
 
   openPageNotFound() {
-    this.open('Page not found', 'You will be redirected to the front page').then(() => this.$location.url('/'));
+    this.open('Page not found', 'You will be redirected to the front page').then(() => this.$location.url('/'), modalCancelHandler);
   }
 
   openResourceNotFound(model: Model) {
-    return this.open('Resource not found', 'You will be redirected to the model').then(() => this.$location.url(model.iowUrl()));
+    return this.open('Resource not found', 'You will be redirected to the model').then(() => this.$location.url(model.iowUrl()), modalCancelHandler);
   }
 }

@@ -5,6 +5,7 @@ import { TableDescriptor, ColumnDescriptor } from '../form/editableTable';
 import { ModelViewController } from './modelView';
 import { module as mod }  from './module';
 import { Model, Link } from '../../entities/model';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('linksView', () => {
   return {
@@ -51,7 +52,7 @@ class LinksViewController {
       .then((linktion: Link) => {
         this.model.addLink(linktion);
         this.expanded = true;
-      });
+      }, modalCancelHandler);
   }
 }
 

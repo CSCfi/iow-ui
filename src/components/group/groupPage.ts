@@ -19,6 +19,7 @@ import { ApplicationController } from '../application';
 import { HelpProvider } from '../common/helpProvider';
 import { GroupPageHelpService } from '../../help/groupPageHelp';
 import { InteractiveHelp } from '../../help/contract';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('groupPage', () => {
   return {
@@ -90,7 +91,7 @@ class GroupPageController extends EditableEntityController<Group> implements Hel
         this.addModelModal.open(this.groupId, type).then((result: {prefix: string, label: string, language: Language[], redirect?: Uri}) => {
           this.$location.path('/newModel');
           this.$location.search({ prefix: result.prefix, label: result.label, language: result.language, group: this.groupId.uri, type, redirect: result.redirect && result.redirect.uri });
-        });
+        }, modalCancelHandler);
       },
       () => this.notificationModal.openNotLoggedIn());
   };

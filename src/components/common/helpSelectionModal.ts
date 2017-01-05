@@ -49,7 +49,7 @@ class HelpSelectionModalController {
   }
 
   startHelp(help: InteractiveHelp) {
-    this.$uibModalInstance.dismiss();
+    this.$uibModalInstance.close();
     this.interactiveHelpDisplay.open(help);
   }
 }

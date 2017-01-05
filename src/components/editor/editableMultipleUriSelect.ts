@@ -13,6 +13,7 @@ import { ClassListItem } from '../../entities/class';
 import { PredicateListItem } from '../../entities/predicate';
 import { ClassType, KnownPredicateType } from '../../entities/type';
 import { Model } from '../../entities/model';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('editableMultipleUriSelect', () => {
   return {
@@ -87,6 +88,6 @@ class EditableMultipleUriSelectController {
 
     promise.then(result => {
       this.ngModel.push(result.id);
-    });
+    }, modalCancelHandler);
   }
 }

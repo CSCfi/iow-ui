@@ -5,6 +5,7 @@ import { requireDefined } from '../../utils/object';
 import { Model } from '../../entities/model';
 import { ClassListItem } from '../../entities/class';
 import { module as mod }  from './module';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('editableRootClass', () => {
   return {
@@ -46,7 +47,8 @@ class EditableRootClassController {
       }
     };
 
-    this.searchClassModal.openWithOnlySelection(this.model, true, exclude).then(klass => this.model.rootClass = klass.id);
+    this.searchClassModal.openWithOnlySelection(this.model, true, exclude)
+      .then(klass => this.model.rootClass = klass.id, modalCancelHandler);
   }
 
   removeClass() {

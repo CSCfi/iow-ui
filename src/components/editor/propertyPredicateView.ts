@@ -11,6 +11,7 @@ import { requireDefined } from '../../utils/object';
 import { Property } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { Predicate, Association, Attribute } from '../../entities/predicate';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('propertyPredicateView', () => {
   return {
@@ -119,7 +120,7 @@ class PropertyPredicateViewController {
 
     this.searchPredicateModal.openWithOnlySelection(this.model, requireDefined(this.property.normalizedPredicateType), createDefinedByExclusion(this.model)).then(predicate => {
       this.property.predicate = predicate.id; // Could be full predicate instead of id but this is consistent with api data
-    });
+    }, modalCancelHandler);
   }
 
   assignReusablePredicateToModel() {
@@ -130,6 +131,6 @@ class PropertyPredicateViewController {
   copyReusablePredicateToModel(predicateToBeCopied: Predicate|Uri, type: 'attribute'|'association') {
     this.copyPredicateModal.open(predicateToBeCopied, type, this.model)
       .then(copied => this.predicateService.createPredicate(copied).then(() => copied))
-      .then(predicate => this.property.predicate = predicate.id);
+      .then(predicate => this.property.predicate = predicate.id, modalCancelHandler);
   }
 }

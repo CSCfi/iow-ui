@@ -18,6 +18,13 @@ export function isModalCancel(err: any) {
   return err === 'cancel' || err === 'escape key press';
 }
 
+export function modalCancelHandler(err: any) {
+  // Handle cancellation so that angular doesn't report unhandled promise rejection error
+  if (!isModalCancel(err)) {
+    throw err;
+  }
+}
+
 const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
 
 function normalizeUrl(url: string): string {

@@ -1,7 +1,9 @@
-import { IPromise, ui } from 'angular';
+import { ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import { Usage } from '../../entities/usage';
 import { LanguageContext } from '../../entities/contract';
+import { identity } from '../../utils/function';
+import { modalCancelHandler } from '../../utils/angular';
 
 interface UsageParameters {
   usage: Usage;
@@ -13,8 +15,8 @@ export class ErrorModal {
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(title: string, errorMessage: string, usage: UsageParameters|null): IPromise<void> {
-    return this.$uibModal.open({
+  private open(title: string, errorMessage: string, usage: UsageParameters|null) {
+    this.$uibModal.open({
       template:
         `
           <modal-template purpose="danger">
@@ -43,15 +45,15 @@ export class ErrorModal {
         errorMessage: () => errorMessage,
         usage: () => usage
       }
-    }).result;
+    }).result.then(identity, modalCancelHandler);
   }
 
   openSubmitError(errorMessage: string) {
-    return this.open('Submit error', errorMessage, null);
+    this.open('Submit error', errorMessage, null);
   }
 
   openUsageError(title: string, errorMessage: string, usage: Usage, context: LanguageContext) {
-    return this.open(title, errorMessage, { usage, context });
+    this.open(title, errorMessage, { usage, context });
   }
 }
 

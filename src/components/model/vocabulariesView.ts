@@ -10,6 +10,7 @@ import { collectProperties } from '../../utils/array';
 import { requireDefined } from '../../utils/object';
 import { Model, ModelVocabulary } from '../../entities/model';
 import { Vocabulary } from '../../entities/vocabulary';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('vocabulariesView', () => {
   return {
@@ -71,7 +72,7 @@ class VocabulariesViewController {
       .then((vocabulary: Vocabulary) => {
         this.model.addVocabulary(vocabulary);
         this.expanded = true;
-      });
+      }, modalCancelHandler);
   }
 }
 

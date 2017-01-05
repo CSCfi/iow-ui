@@ -5,7 +5,7 @@ import { UserService } from '../services/userService';
 import { config } from '../../config';
 import { ConfirmationModal } from './common/confirmationModal';
 import { module as mod }  from './module';
-import { nextUrl } from '../utils/angular';
+import { nextUrl, modalCancelHandler } from '../utils/angular';
 import { HelpProvider } from './common/helpProvider';
 
 mod.directive('application', () => {
@@ -48,7 +48,7 @@ export class ApplicationController {
         confirmationModal.openCloseModal().then(() => {
           modalScope.$dismiss('cancel');
           $location.url(nextUrl($location, next));
-        });
+        }, modalCancelHandler);
       }
     });
 

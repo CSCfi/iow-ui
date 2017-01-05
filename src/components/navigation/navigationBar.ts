@@ -10,6 +10,8 @@ import { InteractiveHelp } from '../../help/contract';
 import { HelpProvider } from '../common/helpProvider';
 import { IScope, ILocationService, route } from 'angular';
 import { InteractiveHelpService } from '../../help/services/interactiveHelpService';
+import { identity } from '../../utils/function';
+import { modalCancelHandler } from '../../utils/angular';
 
 const logoImage = require('../../assets/logo-01.svg');
 
@@ -90,6 +92,6 @@ class NavigationController {
   }
 
   startHelp() {
-    return this.helpSelectionModal.open(this.helps);
+    return this.helpSelectionModal.open(this.helps).then(identity, modalCancelHandler);
   }
 }

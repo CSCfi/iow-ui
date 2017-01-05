@@ -5,6 +5,7 @@ import { IScope, IAttributes } from 'angular';
 import { Concept } from '../../entities/vocabulary';
 import { Model } from '../../entities/model';
 import { ClassType, KnownPredicateType } from '../../entities/type';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('editableConceptSelect', () => {
   return {
@@ -42,7 +43,7 @@ class EditableConceptSelectController {
 
   selectConcept() {
     this.searchConceptModal.openSelection(this.model.modelVocabularies, this.model, this.allowSuggestions, this.type)
-      .then(concept => this.concept = concept);
+      .then(concept => this.concept = concept, modalCancelHandler);
   }
 
   clearSelection() {

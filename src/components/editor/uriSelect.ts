@@ -12,6 +12,7 @@ import { ClassListItem } from '../../entities/class';
 import { PredicateListItem } from '../../entities/predicate';
 import { ClassType, KnownPredicateType } from '../../entities/type';
 import { Model } from '../../entities/model';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('uriSelect', () => {
   return {
@@ -107,6 +108,6 @@ class UriSelectController {
     promise.then(result => {
       this.uri = result.id;
       this.afterSelected({id: result.id});
-    });
+    }, modalCancelHandler);
   }
 }

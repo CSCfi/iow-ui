@@ -16,7 +16,7 @@ import { ClassInteractionListener } from './contract';
 import { moveOrigin, scale, focusElement, centerToElement, scaleToFit } from './paperUtil';
 import { adjustElementLinks, layoutGraph, VertexAction, calculateLabelPosition } from './layout';
 import { Localizer } from '../../utils/language';
-import { ifChanged } from '../../utils/angular';
+import { ifChanged, modalCancelHandler } from '../../utils/angular';
 import { coordinatesAreEqual, centerToPosition, copyVertices } from '../../utils/entity';
 import { mapOptional, requireDefined, Optional } from '../../utils/object';
 import { Class, Property } from '../../entities/class';
@@ -318,7 +318,7 @@ class ClassVisualizationController implements ChangeListener<Class|Predicate>, C
               this.persistentPositions = this.modelPositions.clone();
               this.saving = false;
             });
-        });
+        }, modalCancelHandler);
     }, () => this.notificationModal.openNotLoggedIn());
   }
 

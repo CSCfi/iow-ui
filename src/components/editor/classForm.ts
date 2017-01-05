@@ -15,6 +15,7 @@ import { Localizer } from '../../utils/language';
 import { comparingLocalizable } from '../../utils/comparators';
 import { Class, Property, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('classForm', () => {
   return {
@@ -103,12 +104,12 @@ export class ClassFormController {
       .then(property => {
         this.class.addProperty(property);
         this.openPropertyId = property.internalId.uuid;
-      });
+      }, modalCancelHandler);
   }
 
   copyPropertiesFromClass() {
     this.searchClassModal.openWithOnlySelection(this.model, false, noExclude, _klass => 'Copy properties')
-      .then(selectedClass => this.addPropertiesFromClass(selectedClass, 'class'));
+      .then(selectedClass => this.addPropertiesFromClass(selectedClass, 'class'), modalCancelHandler);
   }
 
   addPropertiesFromClass(klass: Class, classType: string) {

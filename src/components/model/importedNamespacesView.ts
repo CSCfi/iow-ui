@@ -8,6 +8,7 @@ import { combineExclusions } from '../../utils/exclusion';
 import { module as mod }  from './module';
 import { Model, ImportedNamespace, NamespaceType } from '../../entities/model';
 import { ModelControllerService } from './modelControllerService';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('importedNamespacesView', () => {
   return {
@@ -71,7 +72,7 @@ class ImportedNamespacesViewController {
       .then((ns: ImportedNamespace) => {
         this.model.addNamespace(ns);
         this.expanded = true;
-      });
+      }, modalCancelHandler);
   }
 }
 

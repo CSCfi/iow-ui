@@ -5,6 +5,7 @@ import { Uri } from '../../entities/uri';
 import { module as mod }  from './module';
 import { Exclusion } from '../../utils/exclusion';
 import { WithId } from '../contracts';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('searchResults', () => {
   return {
@@ -120,7 +121,7 @@ class SearchResultsController<T extends WithId> {
     };
 
     if (this.editInProgress && this.editInProgress()) {
-      this.confirmationModal.openEditInProgress().then(doSelection);
+      this.confirmationModal.openEditInProgress().then(doSelection, modalCancelHandler);
     } else {
       doSelection();
     }

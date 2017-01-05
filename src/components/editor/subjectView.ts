@@ -3,6 +3,7 @@ import { SearchConceptModal } from './searchConceptModal';
 import { Class } from '../../entities/class';
 import { Predicate } from '../../entities/predicate';
 import { Model } from '../../entities/model';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('subjectView', () => {
   return {
@@ -33,6 +34,7 @@ class SubjectViewController {
     if (normalizedType === 'property') {
       throw new Error('Must be known predicate type');
     }
-    this.searchConceptModal.openSelection(this.model.modelVocabularies, this.model, true, normalizedType).then(concept => this.entity.subject = concept);
+    this.searchConceptModal.openSelection(this.model.modelVocabularies, this.model, true, normalizedType)
+      .then(concept => this.entity.subject = concept, modalCancelHandler);
   }
 }

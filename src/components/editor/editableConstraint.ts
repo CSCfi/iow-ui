@@ -11,6 +11,7 @@ import { module as mod }  from './module';
 import { Constraint, Class, ConstraintListItem, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { ConstraintType } from '../../entities/type';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('editableConstraint', () => {
   return {
@@ -55,7 +56,7 @@ class EditableConstraint {
       createSelfExclusion(this.class)
     );
 
-    this.searchClassModal.openWithOnlySelection(this.model, true, exclude).then(klass => this.constraint.addItem(klass));
+    this.searchClassModal.openWithOnlySelection(this.model, true, exclude).then(klass => this.constraint.addItem(klass), modalCancelHandler);
   }
 
   removeItem(item: ConstraintListItem) {

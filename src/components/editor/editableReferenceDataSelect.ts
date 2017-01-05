@@ -10,6 +10,7 @@ import { createExistsExclusion } from '../../utils/exclusion';
 import { ReferenceData } from '../../entities/referenceData';
 import { Model } from '../../entities/model';
 import { remove } from '../../utils/array';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('editableReferenceDataSelect', () => {
   return {
@@ -50,7 +51,7 @@ class EditableReferenceDataSelectController {
     this.searchReferenceDataModal.openSelectionForProperty(this.model, exclude).then(referenceData => {
       this.expanded = true;
       this.referenceData.push(referenceData);
-    });
+    }, modalCancelHandler);
   }
 }
 

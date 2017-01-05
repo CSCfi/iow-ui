@@ -10,6 +10,7 @@ import { EditReferenceDataModal } from './editReferenceDataModal';
 import { ViewReferenceDataModal } from './viewReferenceDataModal';
 import { Model } from '../../entities/model';
 import { ReferenceData } from '../../entities/referenceData';
+import { modalCancelHandler } from '../../utils/angular';
 
 mod.directive('referenceDatasView', () => {
   return {
@@ -59,7 +60,7 @@ class ReferenceDatasViewController {
       .then(referenceData => {
         this.model.addReferenceData(referenceData);
         this.expanded = true;
-      });
+      }, modalCancelHandler);
   }
 }
 

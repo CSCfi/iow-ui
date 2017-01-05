@@ -1,15 +1,17 @@
-import { IPromise, ui } from 'angular';
+import { ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import { ReferenceData } from '../../entities/referenceData';
 import { LanguageContext } from '../../entities/contract';
+import { identity } from '../../utils/function';
+import { modalCancelHandler } from '../../utils/angular';
 
 export class ViewReferenceDataModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(referenceData: ReferenceData, context: LanguageContext): IPromise<any> {
-    return this.$uibModal.open({
+  open(referenceData: ReferenceData, context: LanguageContext) {
+    this.$uibModal.open({
       template: `
         <form class="view-reference-data">
           <modal-template>
@@ -37,7 +39,7 @@ export class ViewReferenceDataModal {
         referenceData: () => referenceData,
         context: () => context
       }
-    }).result;
+    }).result.then(identity, modalCancelHandler);
   }
 }
 

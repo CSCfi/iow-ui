@@ -12,14 +12,16 @@ import { Model } from '../../entities/model';
 import { Class } from '../../entities/class';
 import { Predicate } from '../../entities/predicate';
 import { Entity } from '../../entities/version';
+import { identity } from '../../utils/function';
+import { modalCancelHandler } from '../../utils/angular';
 
 export class HistoryModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  open(model: Model, resource: Class|Predicate|Model): IPromise<void> {
-    return this.$uibModal.open({
+  open(model: Model, resource: Class|Predicate|Model) {
+    this.$uibModal.open({
       template: require('./historyModal.html'),
       size: resource instanceof Model ? 'large' : 'medium',
       controllerAs: 'ctrl',
@@ -28,7 +30,7 @@ export class HistoryModal {
         model: () => model,
         resource: () => resource
       }
-    }).result;
+    }).result.then(identity, modalCancelHandler);
   }
 }
 

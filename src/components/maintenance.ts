@@ -1,4 +1,6 @@
 import { ILogService, ui } from 'angular';
+import { identity } from '../utils/function';
+import { modalCancelHandler } from '../utils/angular';
 
 export class MaintenanceModal {
   /* @ngInject */
@@ -13,6 +15,6 @@ export class MaintenanceModal {
       template: require('./maintenance.html'),
       size: 'large',
       backdrop: 'static'
-    }).result;
+    }).result.then(identity, modalCancelHandler);
   }
 }

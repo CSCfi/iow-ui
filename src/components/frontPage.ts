@@ -15,6 +15,7 @@ import { ApplicationController } from './application';
 import { HelpProvider } from './common/helpProvider';
 import { FrontPageHelpService } from '../help/frontPageHelp';
 import { filterAndSortSearchResults, defaultLabelComparator } from './filter/util';
+import { modalCancelHandler } from '../utils/angular';
 
 const frontPageImage = require('../assets/iow_etusivu_kuva.svg');
 const frontPageImageEn = require('../assets/iow_etusivu_kuva-en.svg');
@@ -125,7 +126,8 @@ export class FrontPageController implements SearchController<SearchResult>, Help
   }
 
   openAdvancedSearch() {
-    this.advancedSearchModal.open().then(searchResult => this.selectSearchResult(searchResult));
+    this.advancedSearchModal.open()
+      .then(searchResult => this.selectSearchResult(searchResult), modalCancelHandler);
   }
 
   private go(withIowUrl: {iowUrl(): Url|null}) {

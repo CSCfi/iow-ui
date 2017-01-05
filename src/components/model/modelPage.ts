@@ -17,7 +17,7 @@ import { Uri } from '../../entities/uri';
 import { comparingLocalizable } from '../../utils/comparators';
 import { AddPropertiesFromClassModal } from '../editor/addPropertiesFromClassModal';
 import { module as mod }  from './module';
-import { isDifferentUrl, nextUrl } from '../../utils/angular';
+import { isDifferentUrl, nextUrl, modalCancelHandler } from '../../utils/angular';
 import {
   createClassTypeExclusion, createDefinedByExclusion, combineExclusions,
   createExistsExclusion, Exclusion
@@ -403,6 +403,7 @@ export class ModelPageController implements ModelPageActions, HelpProvider, Mode
                                                           fromExternalEntity: (external: ExternalEntity) => void,
                                                           fromConcept: (concept: EntityCreation) => void,
                                                           fromEntity: (entity: T) => void) {
+
     this.userService.ifStillLoggedIn(() => {
         this.askPermissionWhenEditing(() => {
           modal().then(result => {
@@ -413,7 +414,7 @@ export class ModelPageController implements ModelPageActions, HelpProvider, Mode
             } else {
               fromEntity(<T> result);
             }
-          });
+          }, modalCancelHandler);
         });
       },
       () => this.notificationModal.openNotLoggedIn());
@@ -486,7 +487,7 @@ export class ModelPageController implements ModelPageActions, HelpProvider, Mode
     this.confirmationModal.openEditInProgress().then(() => {
       editingViews.forEach(view => view.cancelEditing());
       callback();
-    });
+    }, modalCancelHandler);
   }
 
   private ifEditing(synchronousCallback: () => void, confirmedCallback: () => void) {

@@ -8,7 +8,7 @@ import { comparingBoolean, comparingString } from '../../utils/comparators';
 import { Language } from '../../utils/language';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchController, SearchFilter, TextAnalysis } from '../filter/contract';
-import { ifChanged } from '../../utils/angular';
+import { ifChanged, modalCancelHandler } from '../../utils/angular';
 import { ImportedNamespace, Model } from '../../entities/model';
 import { filterAndSortSearchResults } from '../filter/util';
 
@@ -105,7 +105,7 @@ class SearchNamespaceController implements SearchController<ImportedNamespace> {
 
   createNew() {
     this.addEditNamespaceModal.openAdd(this.model, this.language)
-      .then(ns => this.$uibModalInstance.close(ns));
+      .then(ns => this.$uibModalInstance.close(ns), modalCancelHandler);
   }
 
   close() {

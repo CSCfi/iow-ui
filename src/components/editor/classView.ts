@@ -7,7 +7,7 @@ import { DeleteConfirmationModal } from '../common/deleteConfirmationModal';
 import { Show } from '../contracts';
 import { module as mod }  from './module';
 import { ErrorModal } from '../form/errorModal';
-import { setSelectionStyles } from '../../utils/angular';
+import { setSelectionStyles, modalCancelHandler } from '../../utils/angular';
 import { Class } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { GroupListItem } from '../../entities/group';
@@ -67,7 +67,7 @@ export class ClassViewController extends EditableEntityController<Class> {
       .then(property => {
         this.editableInEdit!.addProperty(property);
         this.openPropertyId = property.internalId.uuid;
-      });
+      }, modalCancelHandler);
   }
 
   create(entity: Class) {

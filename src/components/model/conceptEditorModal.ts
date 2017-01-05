@@ -15,6 +15,8 @@ import { DefinedBy } from '../../entities/definedBy';
 import { VocabularyService } from '../../services/vocabularyService';
 import { any } from '../../utils/array';
 import { isConcept } from '../../utils/entity';
+import { modalCancelHandler } from '../../utils/angular';
+import { identity } from '../../utils/function';
 
 export class ConceptEditorModal {
 
@@ -23,7 +25,7 @@ export class ConceptEditorModal {
   }
 
   open(model: Model) {
-    return this.$uibModal.open({
+    this.$uibModal.open({
       template: require('./conceptEditorModal.html'),
       size: 'large',
       controller: ConceptEditorModalController,
@@ -32,7 +34,7 @@ export class ConceptEditorModal {
       resolve: {
         model: () => model
       }
-    }).result;
+    }).result.then(identity, modalCancelHandler);
   }
 }
 
@@ -95,7 +97,7 @@ export class ConceptEditorModalController {
         this.confirmationModal.openEditInProgress().then(() => {
           this.view.cancelEditing();
           this.$uibModalInstance.close();
-        });
+        }, modalCancelHandler);
       }
     });
   }

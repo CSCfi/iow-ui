@@ -1,18 +1,20 @@
-import { IPromise, ui } from 'angular';
+import { ui } from 'angular';
 import IModalService = ui.bootstrap.IModalService;
 import IModalServiceInstance = ui.bootstrap.IModalServiceInstance;
 import { Uri } from '../../entities/uri';
 import { Language } from '../../utils/language';
 import { Model } from '../../entities/model';
 import { ReferenceData } from '../../entities/referenceData';
+import { identity } from '../../utils/function';
+import { modalCancelHandler } from '../../utils/angular';
 
 export class EditReferenceDataModal {
   /* @ngInject */
   constructor(private $uibModal: IModalService) {
   }
 
-  private open(model: Model, lang: Language, referenceDataToEdit: ReferenceData): IPromise<ReferenceData> {
-    return this.$uibModal.open({
+  private open(model: Model, lang: Language, referenceDataToEdit: ReferenceData) {
+    this.$uibModal.open({
       template: require('./editReferenceDataModal.html'),
       size: 'small',
       controller: EditReferenceDataModalController,
@@ -23,11 +25,11 @@ export class EditReferenceDataModal {
         lang: () => lang,
         referenceDataToEdit: () => referenceDataToEdit
       }
-    }).result;
+    }).result.then(identity, modalCancelHandler);
   }
 
-  openEdit(referenceData: ReferenceData, model: Model, lang: Language): IPromise<ReferenceData> {
-    return this.open(model, lang, referenceData);
+  openEdit(referenceData: ReferenceData, model: Model, lang: Language) {
+    this.open(model, lang, referenceData);
   }
 }
 
