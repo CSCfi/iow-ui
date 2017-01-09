@@ -143,6 +143,6 @@ class AddEditNamespaceController {
   }
 
   cancel() {
-    this.$uibModalInstance.dismiss();
+    this.$uibModalInstance.dismiss('cancel');
   }
 }
