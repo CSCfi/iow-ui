@@ -341,6 +341,10 @@ export class ImportedNamespace extends GraphNode {
     }
   }
 
+  convertAsTechnical() {
+    this.type = ['standard'];
+  }
+
   get external() {
     return this.namespaceType === NamespaceType.EXTERNAL;
   }

@@ -133,12 +133,21 @@ class AddEditNamespaceController {
     } else {
       this.modelService.newNamespaceImport(this.namespace, this.prefix, this.label, this.language)
         .then(ns => {
-          if (!this.namespaceModifiable() || !this.prefixModifiable()) {
-            ns.type = ['standard'];
-          }
-          return this.$uibModalInstance.close(ns);
+          return this.$uibModalInstance.close(this.mangleAsTechnicalIfNecessary(ns));
         }, err => this.submitError = err.data.errorMessage);
     }
+  }
+
+  // XXX: API should return as technical and shouldn't need mangling
+  private mangleAsTechnicalIfNecessary(ns: ImportedNamespace) {
+
+    const isTechnical = isDefined(this.namespaceBeforeForced) || isDefined(this.prefixBeforeForced);
+
+    if (isTechnical) {
+      ns.convertAsTechnical();
+    }
+
+    return ns;
   }
 
   cancel() {
