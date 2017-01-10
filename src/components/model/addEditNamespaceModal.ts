@@ -131,7 +131,6 @@ class AddEditNamespaceController {
 
       this.$uibModalInstance.close(this.namespaceToEdit);
     } else {
-      // service call only for validation purposes
       this.modelService.newNamespaceImport(this.namespace, this.prefix, this.label, this.language)
         .then(ns => {
           if (!this.namespaceModifiable() || !this.prefixModifiable()) {
