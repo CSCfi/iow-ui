@@ -39,7 +39,7 @@ export function routeConfig($routeProvider: route.IRouteProvider) {
         const resource = $location.hash();
 
         if (resource) {
-          $location.url(resourceUrl(prefix, new Uri(prefix + ':' + resource, {})));
+          $location.url(resourceUrl(prefix, resource));
         } else {
           $location.url(modelUrl(prefix));
         }

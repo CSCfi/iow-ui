@@ -21,10 +21,14 @@ export function modelUrl(prefix: string): RelativeUrl {
   return `/model/${prefix}` + '/';
 }
 
-export function resourceUrl(modelPrefix: string, resource: Uri) {
-  const resolved = resource.resolve();
-  const linked = resolved && resolved.prefix !== modelPrefix;
-  return modelUrl(modelPrefix) +  (linked ? resource.curie : resource.name) + '/';
+export function resourceUrl(modelPrefix: string, resource: Uri|string) {
+  if (typeof resource === 'string') {
+    return modelUrl(modelPrefix) +  resource + '/';
+  } else {
+    const resolved = resource.resolve();
+    const linked = resolved && resolved.prefix !== modelPrefix;
+    return modelUrl(modelPrefix) +  (linked ? resource.curie : resource.name) + '/';
+  }
 }
 
 export function contextlessInternalUrl(destination: Destination) {
