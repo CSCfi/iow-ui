@@ -50,14 +50,15 @@ export function valueOrDefault<T>(serializer: Serializer<T>, defaultData: any): 
 
 export function list<T>(serializer: Serializer<T>, defaultList?: T[]): Serializer<T[]> {
   return createSerializer(
-    (data: T[]) => {
-      if (data.length === 0) {
-        return defaultList ? defaultList : null;
+    (data: T[]) => data.map(d => serializer.serialize(d)),
+    (data: any) => {
+      const arr = normalizeAsArray(data);
+      if (arr.length === 0) {
+        return defaultList ? defaultList : [];
       } else {
-        return data.map(d => serializer.serialize(d));
+        return arr.map(d => serializer.deserialize(d));
       }
-    },
-    (data: any) => normalizeAsArray(data).map(d => serializer.deserialize(d))
+    }
   );
 }
 
