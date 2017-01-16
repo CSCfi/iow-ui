@@ -346,7 +346,9 @@ export class Property extends GraphNode {
     editorialNote:      { name: 'editorialNote',        serializer: localizableSerializer },
     resourceIdentifier: { name: 'isResourceIdentifier', serializer: booleanSerializer },
     uniqueLang:         { name: 'uniqueLang',           serializer: booleanSerializer },
-    predicateType:      { name: 'type',                 serializer: optional(Property.propertyTypeSerializer) }
+    predicateType:      { name: 'type',                 serializer: optional(Property.propertyTypeSerializer) },
+    xmlWrapper:         { name: 'isXmlWrapper',         serializer: booleanSerializer },
+    xmlAttribute:       { name: 'isXmlAttribute',       serializer: booleanSerializer }
   };
 
   internalId: Uri;
@@ -374,6 +376,8 @@ export class Property extends GraphNode {
   editorialNote: Localizable;
   resourceIdentifier: boolean;
   uniqueLang: boolean;
+  xmlWrapper: boolean;
+  xmlAttribute: boolean;
 
   predicateType: KnownPredicateType|null = null;
 

@@ -94,8 +94,8 @@ msgstr ""
 
 #: components/editor/classForm.html:78
 #: components/editor/predicateForm.html:59
-#: components/editor/propertyView.html:135
-#: components/model/conceptForm.html:54
+#: components/editor/propertyView.html:151
+#: components/model/conceptForm.html:31
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr ""
@@ -112,10 +112,6 @@ msgstr ""
 
 #: components/model/searchReferenceDataModal.html:32
 msgid "All groups"
-msgstr ""
-
-#: components/model/conceptEditorModal.html:56
-msgid "All models"
 msgstr ""
 
 #: components/model/searchReferenceDataModal.html:21
@@ -207,7 +203,6 @@ msgstr ""
 #: components/editor/classView.html:6
 #: components/editor/predicateView.html:6
 #: components/group/groupPage.html:12
-#: components/model/conceptView.html:5
 #: components/model/modelView.html:11
 msgid "Ask for group rights"
 msgstr ""
@@ -361,7 +356,7 @@ msgstr ""
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
 #: components/editor/searchClassModal.html:84
-#: components/editor/searchConceptModal.html:87
+#: components/editor/searchConceptModal.html:97
 #: components/editor/searchPredicateModal.html:105
 #: components/group/addModelModal.html:31
 #: components/model/addEditLinkModal.html:20
@@ -369,7 +364,7 @@ msgstr ""
 #: components/model/editReferenceDataModal.html:26
 #: components/model/searchNamespaceModal.html:45
 #: components/model/searchReferenceDataModal.html:95
-#: components/model/searchVocabularyModal.html:31
+#: components/model/searchVocabularyModal.html:35
 msgid "Cancel"
 msgstr ""
 
@@ -523,7 +518,7 @@ msgid "close"
 msgstr ""
 
 #: components/common/historyModal.html:36
-#: components/model/conceptEditorModal.html:85
+#: components/model/conceptEditorModal.html:84
 #: translations/misc.html:168
 msgid "Close"
 msgstr ""
@@ -562,7 +557,7 @@ msgstr ""
 msgid "Concept is here info"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:77
+#: components/editor/searchConceptModal.html:87
 msgid "Concept is suggested to vocabulary"
 msgstr ""
 
@@ -660,11 +655,11 @@ msgstr ""
 msgid "Congratulations for completing specialize class!"
 msgstr ""
 
-#: translations/titles.html:75
+#: translations/titles.html:77
 msgid "Constraint classes"
 msgstr ""
 
-#: translations/titles.html:75
+#: translations/titles.html:77
 msgid "Constraint classes info"
 msgstr ""
 
@@ -769,11 +764,11 @@ msgstr ""
 msgid "Created at"
 msgstr ""
 
-#: translations/titles.html:78
+#: translations/titles.html:80
 msgid "Creator"
 msgstr ""
 
-#: translations/titles.html:78
+#: translations/titles.html:80
 msgid "Creator info"
 msgstr ""
 
@@ -1123,11 +1118,11 @@ msgstr ""
 msgid "External predicate not found"
 msgstr ""
 
-#: translations/titles.html:72
+#: translations/titles.html:74
 msgid "External URI"
 msgstr ""
 
-#: translations/titles.html:72
+#: translations/titles.html:74
 msgid "External URI info"
 msgstr ""
 
@@ -1251,11 +1246,11 @@ msgstr ""
 msgid "Historical versions"
 msgstr ""
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Homepage"
 msgstr ""
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Homepage info"
 msgstr ""
 
@@ -1318,7 +1313,6 @@ msgstr ""
 msgid "Internal group page info"
 msgstr ""
 
-#: components/model/conceptForm.html:41
 #: translations/misc.html:191
 msgid "Internal vocabulary"
 msgstr ""
@@ -1495,11 +1489,11 @@ msgstr ""
 msgid "model"
 msgstr ""
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Model languages"
 msgstr ""
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Model languages info"
 msgstr ""
 
@@ -1559,11 +1553,11 @@ msgstr ""
 msgid "Namespace label info"
 msgstr ""
 
-#: translations/titles.html:73
+#: translations/titles.html:75
 msgid "Namespace redirection"
 msgstr ""
 
-#: translations/titles.html:73
+#: translations/titles.html:75
 msgid "Namespace redirection info"
 msgstr ""
 
@@ -1703,7 +1697,7 @@ msgstr ""
 msgid "Open profile details description"
 msgstr ""
 
-#: components/editor/propertyView.html:62
+#: components/editor/propertyView.html:58
 msgid "Optional metadata"
 msgstr ""
 
@@ -1733,14 +1727,6 @@ msgstr ""
 
 #: translations/titles.html:62
 msgid "Pattern info"
-msgstr ""
-
-#: translations/titles.html:57
-msgid "Permanent identifier"
-msgstr ""
-
-#: translations/titles.html:57
-msgid "Permanent identifier info"
 msgstr ""
 
 #: translations/misc.html:260
@@ -1917,6 +1903,14 @@ msgstr ""
 msgid "Resource dependencies restricts removing"
 msgstr ""
 
+#: translations/titles.html:57
+msgid "Resource identifier"
+msgstr ""
+
+#: translations/titles.html:57
+msgid "Resource identifier info"
+msgstr ""
+
 #: translations/misc.html:113
 msgid "Resource is in use"
 msgstr ""
@@ -1929,7 +1923,7 @@ msgstr ""
 msgid "Resource status restricts removing"
 msgstr ""
 
-#: components/editor/propertyView.html:146
+#: components/editor/propertyView.html:162
 msgid "Reusable predicate"
 msgstr ""
 
@@ -1937,11 +1931,11 @@ msgstr ""
 msgid "Reusable predicate information"
 msgstr ""
 
-#: translations/titles.html:76
+#: translations/titles.html:78
 msgid "Root class"
 msgstr ""
 
-#: translations/titles.html:76
+#: translations/titles.html:78
 msgid "Root class info"
 msgstr ""
 
@@ -2446,11 +2440,8 @@ msgstr ""
 msgid "Suggest definition or description for the concept"
 msgstr ""
 
-#: components/model/conceptEditorModal.html:51
-msgid "Suggested in"
-msgstr ""
-
-#: components/editor/searchConceptModal.html:39
+#: components/editor/searchConceptModal.html:44
+#: components/model/conceptEditorModal.html:61
 #: translations/misc.html:12
 msgid "suggestion"
 msgstr ""
@@ -2508,6 +2499,10 @@ msgstr ""
 msgid "tapahtumaketju joka toteuttaa jotain"
 msgstr ""
 
+#: components/editor/propertyView.html:126
+msgid "Technical metadata"
+msgstr ""
+
 #: translations/misc.html:196
 msgid "Technical namespaces"
 msgstr ""
@@ -2545,11 +2540,11 @@ msgid "This tutorial shows how to import new namespace to the model"
 msgstr ""
 
 #: components/model/referenceDataView.html:20
-#: translations/titles.html:71
+#: translations/titles.html:73
 msgid "Title"
 msgstr ""
 
-#: translations/titles.html:71
+#: translations/titles.html:73
 msgid "Title info"
 msgstr ""
 
@@ -2718,6 +2713,22 @@ msgstr ""
 
 #: translations/misc.html:117
 msgid "Write URL"
+msgstr ""
+
+#: translations/titles.html:69
+msgid "XML Attribute"
+msgstr ""
+
+#: translations/titles.html:69
+msgid "XML Attribute info"
+msgstr ""
+
+#: translations/titles.html:68
+msgid "XML Wrapper"
+msgstr ""
+
+#: translations/titles.html:68
+msgid "XML Wrapper info"
 msgstr ""
 
 #: translations/attribute.html:10

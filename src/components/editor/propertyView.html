@@ -26,10 +26,6 @@
                              range="ctrl.property.dataType">
       </editable-range-select>
 
-      <editable data-title="Permanent identifier" context="ctrl.model" ng-if="ctrl.property.dataType === 'xsd:anyURI'">
-        <input id="{{ctrl.property.internalId + 'permanentIdentifier'}}" type="checkbox" ng-model="ctrl.property.resourceIdentifier" restrict-duplicates="ctrl.otherPropertyResourceIdentifiers"/>
-      </editable>
-
       <editable data-title="Unique label" context="ctrl.model" ng-if="ctrl.property.dataType === 'rdf:langString'">
         <input id="{{ctrl.property.uniqueLang + 'permanentIdentifier'}}" type="checkbox" ng-model="ctrl.property.uniqueLang" />
       </editable>
@@ -127,6 +123,24 @@
     </div>
   </div>
 
+  <h4 translate>Technical metadata</h4>
+
+  <div class="row">
+    <div class="col-md-6">
+      <editable data-title="Resource identifier" context="ctrl.model">
+        <input id="{{ctrl.property.internalId + 'resourceIdentifier'}}" type="checkbox" ng-model="ctrl.property.resourceIdentifier" restrict-duplicates="ctrl.otherPropertyResourceIdentifiers"/>
+      </editable>
+    </div>
+    <div class="col-md-6">
+      <editable data-title="XML Wrapper" context="ctrl.model" ng-if="ctrl.property.isAssociation()">
+        <input id="{{ctrl.property.internalId + 'xmlWrapper'}}" type="checkbox" ng-model="ctrl.property.xmlWrapper"/>
+      </editable>
+      <editable data-title="XML Attribute" context="ctrl.model" ng-if="ctrl.property.isAttribute()">
+        <input id="{{ctrl.property.internalId + 'xmlAttribute'}}" type="checkbox" ng-model="ctrl.property.xmlAttribute"/>
+      </editable>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-12">
       <editable-reference-data-select model="ctrl.model" reference-data="ctrl.property.referenceData"></editable-reference-data-select>
@@ -158,4 +172,5 @@
 
     </div>
   </uib-accordion>
+
 </div>

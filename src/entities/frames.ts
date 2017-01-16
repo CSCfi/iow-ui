@@ -83,7 +83,9 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, referen
   stem: { '@id': 'http://www.w3.org/ns/shacl#stem', '@type': '@id' },
   language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' },
   isResourceIdentifier: { '@id': 'http://iow.csc.fi/ns/iow#isResourceIdentifier' },
-  uniqueLang: { '@id': 'http://www.w3.org/ns/shacl#uniqueLang' }
+  uniqueLang: { '@id': 'http://www.w3.org/ns/shacl#uniqueLang' },
+  isXmlWrapper: { '@id': 'http://iow.csc.fi/ns/iow#isXmlWrapper' },
+  isXmlAttribute: { '@id': 'http://iow.csc.fi/ns/iow#isXmlAttribute' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, conceptContext, {

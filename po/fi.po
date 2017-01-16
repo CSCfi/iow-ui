@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: translations/misc.html:62 translations/misc.html:98
@@ -107,7 +107,7 @@ msgid "Add vocabulary"
 msgstr "Lisää sanasto"
 
 #: components/editor/classForm.html:78 components/editor/predicateForm.html:59
-#: components/editor/propertyView.html:135 components/model/conceptForm.html:54
+#: components/editor/propertyView.html:151 components/model/conceptForm.html:31
 #: components/model/modelForm.html:20
 msgid "Additional information"
 msgstr "Lisätiedot"
@@ -123,10 +123,6 @@ msgstr "Tarkennettu haku"
 #: components/model/searchReferenceDataModal.html:32
 msgid "All groups"
 msgstr "Kaikki ryhmät"
-
-#: components/model/conceptEditorModal.html:56
-msgid "All models"
-msgstr "Kaikki kirjastot"
 
 #: components/model/searchReferenceDataModal.html:21
 msgid "All servers"
@@ -221,8 +217,7 @@ msgid "Asia joka tuotetaan"
 msgstr ""
 
 #: components/editor/classView.html:6 components/editor/predicateView.html:6
-#: components/group/groupPage.html:12 components/model/conceptView.html:5
-#: components/model/modelView.html:11
+#: components/group/groupPage.html:12 components/model/modelView.html:11
 msgid "Ask for group rights"
 msgstr "Pyydä käyttöoikeuksia ryhmään"
 
@@ -381,7 +376,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/common/modalTemplate.html:16
 #: components/editor/addPropertiesFromClassModal.html:27
 #: components/editor/searchClassModal.html:84
-#: components/editor/searchConceptModal.html:87
+#: components/editor/searchConceptModal.html:97
 #: components/editor/searchPredicateModal.html:105
 #: components/group/addModelModal.html:31
 #: components/model/addEditLinkModal.html:20
@@ -389,7 +384,7 @@ msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
 #: components/model/editReferenceDataModal.html:26
 #: components/model/searchNamespaceModal.html:45
 #: components/model/searchReferenceDataModal.html:95
-#: components/model/searchVocabularyModal.html:31
+#: components/model/searchVocabularyModal.html:35
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -544,7 +539,7 @@ msgid "close"
 msgstr "sulje"
 
 #: components/common/historyModal.html:36
-#: components/model/conceptEditorModal.html:85 translations/misc.html:168
+#: components/model/conceptEditorModal.html:84 translations/misc.html:168
 msgid "Close"
 msgstr "Sulje"
 
@@ -583,7 +578,7 @@ msgstr ""
 msgid "Concept is here info"
 msgstr ""
 
-#: components/editor/searchConceptModal.html:77
+#: components/editor/searchConceptModal.html:87
 msgid "Concept is suggested to vocabulary"
 msgstr "Käsitettä ehdotetaan sanastoon"
 
@@ -685,11 +680,11 @@ msgstr "Voit nyt siirtyä tekemään oikeita soveltamisprofiileja"
 msgid "Congratulations for completing specialize class!"
 msgstr "Onnittelut luokan erikoistamisessa onnistumisesta!"
 
-#: translations/titles.html:75
+#: translations/titles.html:77
 msgid "Constraint classes"
 msgstr "Loogisen rajoitteen luokat"
 
-#: translations/titles.html:75
+#: translations/titles.html:77
 msgid "Constraint classes info"
 msgstr ""
 
@@ -799,11 +794,11 @@ msgstr "Luo uusi tarkennettu luokka"
 msgid "Created at"
 msgstr "Luotu"
 
-#: translations/titles.html:78
+#: translations/titles.html:80
 msgid "Creator"
 msgstr "Luoja"
 
-#: translations/titles.html:78
+#: translations/titles.html:80
 msgid "Creator info"
 msgstr ""
 
@@ -1168,11 +1163,11 @@ msgstr "Ulkoinen ominaisuus on väärää tyyppiä"
 msgid "External predicate not found"
 msgstr "Ulkoista ominaisuutta ei löydy"
 
-#: translations/titles.html:72
+#: translations/titles.html:74
 msgid "External URI"
 msgstr "Ulkoinen tunniste"
 
-#: translations/titles.html:72
+#: translations/titles.html:74
 msgid "External URI info"
 msgstr "Viite ulkoiseen URI tunnisteeseen"
 
@@ -1305,11 +1300,11 @@ msgstr "Piilota"
 msgid "Historical versions"
 msgstr "Historialliset versiot"
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Homepage"
 msgstr "Linkki"
 
-#: translations/titles.html:69
+#: translations/titles.html:71
 msgid "Homepage info"
 msgstr "Linkki sivustoon tai sovellukseen joissa tietosisältöjä on hyödynnetty"
 
@@ -1374,7 +1369,7 @@ msgstr "Ryhmän sisäiset sivut"
 msgid "Internal group page info"
 msgstr "Kohdealueen ryhmän sisäiset sivut"
 
-#: components/model/conceptForm.html:41 translations/misc.html:191
+#: translations/misc.html:191
 msgid "Internal vocabulary"
 msgstr "Sisäinen käsitteistö"
 
@@ -1551,11 +1546,11 @@ msgstr "Sallitun arvon minimipituus"
 msgid "model"
 msgstr "Tietokomponenttikirjasto"
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Model languages"
 msgstr "Tietosisällön kielet"
 
-#: translations/titles.html:70
+#: translations/titles.html:72
 msgid "Model languages info"
 msgstr ""
 "Kielen määrittämisen avulla tietomalli voidaan lokalisoida valituille "
@@ -1624,11 +1619,11 @@ msgstr "Nimiavaruuden nimi"
 msgid "Namespace label info"
 msgstr "Nimiavaruuden ihmisluettava nimi"
 
-#: translations/titles.html:73
+#: translations/titles.html:75
 msgid "Namespace redirection"
 msgstr "Nimiavaruuden uudelleenohjaus"
 
-#: translations/titles.html:73
+#: translations/titles.html:75
 msgid "Namespace redirection info"
 msgstr ""
 "Nimiavaruuden uudelleenohjauksen avulla voidaan määritellä tietomalleja "
@@ -1774,7 +1769,7 @@ msgstr ""
 "koodistot löytyvät tämän paneelin alta. Täältä voit myös ladata profiilin "
 "eri formaateissa, kuten XML tai JSON skeemana."
 
-#: components/editor/propertyView.html:62
+#: components/editor/propertyView.html:58
 msgid "Optional metadata"
 msgstr "Valinnaiset metatiedot"
 
@@ -1806,15 +1801,6 @@ msgstr "Säännollinen lauseke"
 msgid "Pattern info"
 msgstr ""
 "Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
-
-#: translations/titles.html:57
-msgid "Permanent identifier"
-msgstr "Pysyvä tunniste"
-
-#: translations/titles.html:57
-msgid "Permanent identifier info"
-msgstr ""
-"Pysyvillä ja yksilöivä tunniste joka yksilöidään valitun nimiavaruuden avulla"
 
 #: translations/misc.html:260
 msgid "Please login to perform the action"
@@ -1996,6 +1982,14 @@ msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
 msgid "Resource dependencies restricts removing"
 msgstr "Resurssin riippuvuudet estävät poistamisen"
 
+#: translations/titles.html:57
+msgid "Resource identifier"
+msgstr "Resurssin tunniste"
+
+#: translations/titles.html:57
+msgid "Resource identifier info"
+msgstr "Käytä attribuutin arvoa resurssin pääasiallisena tunnisteena"
+
 #: translations/misc.html:113
 msgid "Resource is in use"
 msgstr "On jo käytössä"
@@ -2008,7 +2002,7 @@ msgstr "Resurssia ei löydy"
 msgid "Resource status restricts removing"
 msgstr "Ei ole poistettavassa tilassa"
 
-#: components/editor/propertyView.html:146
+#: components/editor/propertyView.html:162
 msgid "Reusable predicate"
 msgstr "Uudelleenkäytettävä ominaisuus"
 
@@ -2016,11 +2010,11 @@ msgstr "Uudelleenkäytettävä ominaisuus"
 msgid "Reusable predicate information"
 msgstr "Uudelleenkäytettävän ominaisuuden tiedot"
 
-#: translations/titles.html:76
+#: translations/titles.html:78
 msgid "Root class"
 msgstr "Juurisolmu"
 
-#: translations/titles.html:76
+#: translations/titles.html:78
 msgid "Root class info"
 msgstr ""
 "Juurisolmua käytetään määrittelemään hierarkkisen tietomallin lähtöpiste, "
@@ -2539,11 +2533,8 @@ msgid "Suggest definition or description for the concept"
 msgstr ""
 "Ehdota käsitteelle määritelmää kuvailemalla käsite mahdollisimman hyvin"
 
-#: components/model/conceptEditorModal.html:51
-msgid "Suggested in"
-msgstr "Ehdotettu kirjastossa"
-
-#: components/editor/searchConceptModal.html:39 translations/misc.html:12
+#: components/editor/searchConceptModal.html:44
+#: components/model/conceptEditorModal.html:61 translations/misc.html:12
 msgid "suggestion"
 msgstr "ehdotus"
 
@@ -2599,6 +2590,10 @@ msgstr "Yleistettävissä oleva ominaisuus, joka on semantiikaltaan laajempi"
 msgid "tapahtumaketju joka toteuttaa jotain"
 msgstr ""
 
+#: components/editor/propertyView.html:126
+msgid "Technical metadata"
+msgstr "Tekninen metadata"
+
 #: translations/misc.html:196
 msgid "Technical namespaces"
 msgstr "Tekniset nimiavaruudet"
@@ -2638,11 +2633,11 @@ msgstr ""
 msgid "This tutorial shows how to import new namespace to the model"
 msgstr "Tässä ohjeessa näytetään nimiavaruuden lisääminen"
 
-#: components/model/referenceDataView.html:20 translations/titles.html:71
+#: components/model/referenceDataView.html:20 translations/titles.html:73
 msgid "Title"
 msgstr "Nimi"
 
-#: translations/titles.html:71
+#: translations/titles.html:73
 msgid "Title info"
 msgstr "Ihmisluettava nimi"
 
@@ -2833,6 +2828,22 @@ msgstr "Kirjoita URI…"
 msgid "Write URL"
 msgstr "Kirjoita URL..."
 
+#: translations/titles.html:69
+msgid "XML Attribute"
+msgstr "XML Attribuutti"
+
+#: translations/titles.html:69
+msgid "XML Attribute info"
+msgstr "Muodosta ominaisuudesta XML Elementin attribuutti XML skeemassa"
+
+#: translations/titles.html:68
+msgid "XML Wrapper"
+msgstr "XML Wrapper"
+
+#: translations/titles.html:68
+msgid "XML Wrapper info"
+msgstr "Muodosta XML Wrapper elementti luokan ominaisuuden tunnisteesta"
+
 #: translations/attribute.html:10
 msgid "xsd:anyURI"
 msgstr "URI"
@@ -2988,6 +2999,20 @@ msgstr "Sinut uudelleenohjataan etusivulle"
 #: translations/misc.html:259
 msgid "You will be redirected to the model"
 msgstr "Sinut uudelleenohjataan mallin sivulle"
+
+#~ msgid "Permanent identifier"
+#~ msgstr "Pysyvä tunniste"
+
+#~ msgid "Permanent identifier info"
+#~ msgstr ""
+#~ "Pysyvillä ja yksilöivä tunniste joka yksilöidään valitun nimiavaruuden "
+#~ "avulla"
+
+#~ msgid "All models"
+#~ msgstr "Kaikki kirjastot"
+
+#~ msgid "Suggested in"
+#~ msgstr "Ehdotettu kirjastossa"
 
 #~ msgid "Assign class predicate to library"
 #~ msgstr "Lisää luokka kirjastoon"
